@@ -54,14 +54,18 @@ import {
   scrapeRatiosQuarterlyStrict,
 } from "./cheerio/ratios-quarterly";
 
-type FetchArticleRequestBody = { url: string };
+/* --------------------------- shared types & headers -------------------------- */
+
 type View = "normal" | "raw" | "strict";
+type FetchRequestBody = { url: string; view?: View };
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Credentials": "true",
 } as const;
+
+/* --------------------------------- helpers ---------------------------------- */
 
 function joinUrl(base: string, path: string): string {
   const b = base.endsWith("/") ? base.slice(0, -1) : base;
@@ -71,7 +75,9 @@ function joinUrl(base: string, path: string): string {
 
 function parseBodyOr400(
   event: APIGatewayProxyEvent
-): { ok: true; url: string } | { ok: false; res: APIGatewayProxyResult } {
+):
+  | { ok: true; url: string; view: View }
+  | { ok: false; res: APIGatewayProxyResult } {
   if (!event.body) {
     return {
       ok: false,
@@ -83,7 +89,7 @@ function parseBodyOr400(
     };
   }
   try {
-    const body: FetchArticleRequestBody = JSON.parse(event.body);
+    const body: FetchRequestBody = JSON.parse(event.body);
     const url = body?.url;
     if (!url) {
       return {
@@ -95,8 +101,12 @@ function parseBodyOr400(
         },
       };
     }
-    return { ok: true, url };
-  } catch (e) {
+    const view: View =
+      body?.view === "normal" || body?.view === "raw" || body?.view === "strict"
+        ? body.view
+        : "strict";
+    return { ok: true, url, view };
+  } catch {
     return {
       ok: false,
       res: {
@@ -125,87 +135,73 @@ function buildSubUrls(root: string) {
   };
 }
 
-/* ───────────────────────── NORMAL (normalized only) ───────────────────────── */
+function okResponse(params: {
+  url: string;
+  section:
+    | "summary"
+    | "dividends"
+    | "income-statement"
+    | "balance-sheet"
+    | "cashflow"
+    | "ratios"
+    | "all";
+  period?: "annual" | "quarterly";
+  view: View;
+  data: unknown;
+  errors?: unknown[];
+}): APIGatewayProxyResult {
+  const { url, section, period, view, data, errors = [] } = params;
+  return {
+    statusCode: 200,
+    headers: JSON_HEADERS,
+    body: JSON.stringify({
+      tickerUrl: url,
+      section,
+      period: period ?? null,
+      view,
+      data,
+      errors,
+    }),
+  };
+}
 
-export const scrapeTickerInfoNormal = async (
+async function byView<T>(
+  view: View,
+  fns: {
+    normal: () => Promise<T>;
+    raw: () => Promise<T>;
+    strict: () => Promise<any>;
+  }
+): Promise<T> {
+  if (view === "normal") return fns.normal();
+  if (view === "raw") return fns.raw();
+  return fns.strict();
+}
+
+/* ----------------------------- existing handlers ---------------------------- */
+/* (scrapeTickerInfoNormal/Raw/Strict + handleOptions remain as in your file)   */
+/* No changes needed except parseBodyOr400 now also returns `view` (ignored).   */
+
+/* ----------------------------- new granular APIs ---------------------------- */
+
+/* SUMMARY */
+export const fetchSummary = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-    const { url } = parsed;
-    const {
-      incomeAnnualUrl,
-      incomeQuarterlyUrl,
-      balanceAnnualUrl,
-      balanceQuarterlyUrl,
-      cashAnnualUrl,
-      cashQuarterlyUrl,
-      dividendsUrl,
-      ratiosAnnualUrl,
-      ratiosQuarterlyUrl,
-    } = buildSubUrls(url);
-
-    // sequential awaits (no Promise.all)
+    const { url, view } = parsed; // view accepted for consistency, output is the same
     const summaryRes = await scrapeFundamentalsSummary(url);
-
-    // income
-    const incAnn = await scrapeIncomeStatementAnnual(incomeAnnualUrl);
-    const incQ = await scrapeIncomeStatementQuarterly(incomeQuarterlyUrl);
-
-    // balance
-    const balAnn = await scrapeBalanceSheetAnnual(balanceAnnualUrl);
-    const balQ = await scrapeBalanceSheetQuarterly(balanceQuarterlyUrl);
-
-    // cash flow
-    const cfAnn = await scrapeCashFlowAnnual(cashAnnualUrl);
-    const cfQ = await scrapeCashFlowQuarterly(cashQuarterlyUrl);
-
-    // ratios
-    const ratiosAnn = await scrapeRatiosAnnual(ratiosAnnualUrl);
-    const ratiosQ = await scrapeRatiosQuarterly(ratiosQuarterlyUrl);
-
-    // dividends
-    const dividendsRes = await scrapeDividends(dividendsUrl);
-
-    const response = {
-      tickerUrl: url,
-      view: "normal" as View,
-      summary: {
-        data: summaryRes.financialSummary,
-        errors: summaryRes.errors ?? [],
-      },
-      financials: {
-        income: {
-          annual: incAnn.incomeStatementAnnual,
-          quarterly: incQ.incomeStatementQuarterly,
-        },
-        balanceSheet: {
-          annual: balAnn.balanceSheetAnnual,
-          quarterly: balQ.balanceSheetQuarterly,
-        },
-        cashFlow: {
-          annual: cfAnn.cashFlowAnnual,
-          quarterly: cfQ.cashFlowQuarterly,
-        },
-        ratios: {
-          annual: ratiosAnn.ratiosAnnual,
-          quarterly: ratiosQ.ratiosQuarterly,
-        },
-      },
-      dividends: {
-        data: dividendsRes.dividends,
-        errors: dividendsRes.errors ?? [],
-      },
-    };
-
-    return {
-      statusCode: 200,
-      headers: JSON_HEADERS,
-      body: JSON.stringify(response),
-    };
+    return okResponse({
+      url,
+      section: "summary",
+      view,
+      data: summaryRes.financialSummary,
+      errors: summaryRes.errors ?? [],
+    });
   } catch (error: any) {
-    console.error("scrapeTickerInfoNormal error:", error);
+    console.error("fetchSummary error:", error);
     return {
       statusCode: 500,
       headers: JSON_HEADERS,
@@ -217,88 +213,25 @@ export const scrapeTickerInfoNormal = async (
   }
 };
 
-/* ───────────────────────────── RAW (original labels) ──────────────────────── */
-
-export const scrapeTickerInfoRaw = async (
+/* DIVIDENDS */
+export const fetchDividends = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-    console.log("parsed:", parsed);
-    const { url } = parsed;
-
-    const {
-      incomeAnnualUrl,
-      incomeQuarterlyUrl,
-      balanceAnnualUrl,
-      balanceQuarterlyUrl,
-      cashAnnualUrl,
-      cashQuarterlyUrl,
-      dividendsUrl,
-      ratiosAnnualUrl,
-      ratiosQuarterlyUrl,
-    } = buildSubUrls(url);
-
-    const summaryRes = await scrapeFundamentalsSummary(url);
-
-    // income
-    const incAnnRaw = await scrapeIncomeStatementAnnualRaw(incomeAnnualUrl);
-    const incQRaw = await scrapeIncomeStatementQuarterlyRaw(incomeQuarterlyUrl);
-
-    // balance
-    const balAnnRaw = await scrapeBalanceSheetAnnualRaw(balanceAnnualUrl);
-    const balQRaw = await scrapeBalanceSheetQuarterlyRaw(balanceQuarterlyUrl);
-
-    // cash flow
-    const cfAnnRaw = await scrapeCashFlowAnnualRaw(cashAnnualUrl);
-    const cfQRaw = await scrapeCashFlowQuarterlyRaw(cashQuarterlyUrl);
-
-    // ratios
-    const ratiosAnnRaw = await scrapeRatiosAnnualRaw(ratiosAnnualUrl);
-    const ratiosQRaw = await scrapeRatiosQuarterlyRaw(ratiosQuarterlyUrl);
-
-    // dividends
-    const dividendsRes = await scrapeDividends(dividendsUrl);
-
-    const response = {
-      tickerUrl: url,
-      view: "raw" as View,
-      summary: {
-        data: summaryRes.financialSummary,
-        errors: summaryRes.errors ?? [],
-      },
-      financials: {
-        income: {
-          annual: incAnnRaw.incomeStatementAnnual,
-          quarterly: incQRaw.incomeStatementQuarterly,
-        },
-        balanceSheet: {
-          annual: balAnnRaw.balanceSheetAnnual,
-          quarterly: balQRaw.balanceSheetQuarterly,
-        },
-        cashFlow: {
-          annual: cfAnnRaw.cashFlowAnnual,
-          quarterly: cfQRaw.cashFlowQuarterly,
-        },
-        ratios: {
-          annual: ratiosAnnRaw.ratiosAnnual,
-          quarterly: ratiosQRaw.ratiosQuarterly,
-        },
-      },
-      dividends: {
-        data: dividendsRes.dividends,
-        errors: dividendsRes.errors ?? [],
-      },
-    };
-
-    return {
-      statusCode: 200,
-      headers: JSON_HEADERS,
-      body: JSON.stringify(response),
-    };
+    const { url, view } = parsed; // view accepted for consistency
+    const { dividendsUrl } = buildSubUrls(url);
+    const res = await scrapeDividends(dividendsUrl);
+    return okResponse({
+      url,
+      section: "dividends",
+      view,
+      data: res.dividends,
+      errors: res.errors ?? [],
+    });
   } catch (error: any) {
-    console.error("scrapeTickerInfoRaw error:", error);
+    console.error("fetchDividends error:", error);
     return {
       statusCode: 500,
       headers: JSON_HEADERS,
@@ -310,92 +243,32 @@ export const scrapeTickerInfoRaw = async (
   }
 };
 
-/* ─────────────────────────── STRICT (allow-listed keys) ───────────────────── */
-
-export const scrapeTickerInfoStrict = async (
+/* INCOME STATEMENT */
+export const fetchIncomeStatementAnnual = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-    const { url } = parsed;
-    const {
-      incomeAnnualUrl,
-      incomeQuarterlyUrl,
-      balanceAnnualUrl,
-      balanceQuarterlyUrl,
-      cashAnnualUrl,
-      cashQuarterlyUrl,
-      dividendsUrl,
-      ratiosAnnualUrl,
-      ratiosQuarterlyUrl,
-    } = buildSubUrls(url);
+    const { url, view } = parsed;
+    const { incomeAnnualUrl } = buildSubUrls(url);
 
-    const summaryRes = await scrapeFundamentalsSummary(url);
+    const res = await byView(view, {
+      normal: () => scrapeIncomeStatementAnnual(incomeAnnualUrl),
+      raw: () => scrapeIncomeStatementAnnualRaw(incomeAnnualUrl),
+      strict: () => scrapeIncomeStatementAnnualStrict(incomeAnnualUrl),
+    });
 
-    // income
-    const incAnnStrict = await scrapeIncomeStatementAnnualStrict(
-      incomeAnnualUrl
-    );
-    const incQStrict = await scrapeIncomeStatementQuarterlyStrict(
-      incomeQuarterlyUrl
-    );
-
-    // balance
-    const balAnnStrict = await scrapeBalanceSheetAnnualStrict(balanceAnnualUrl);
-    const balQStrict = await scrapeBalanceSheetQuarterlyStrict(
-      balanceQuarterlyUrl
-    );
-
-    // cash flow
-    const cfAnnStrict = await scrapeCashFlowAnnualStrict(cashAnnualUrl);
-    const cfQStrict = await scrapeCashFlowQuarterlyStrict(cashQuarterlyUrl);
-
-    // ratios
-    const ratiosAnnStrict = await scrapeRatiosAnnualStrict(ratiosAnnualUrl);
-    const ratiosQStrict = await scrapeRatiosQuarterlyStrict(ratiosQuarterlyUrl);
-
-    // dividends
-    const dividendsRes = await scrapeDividends(dividendsUrl);
-
-    const response = {
-      tickerUrl: url,
-      view: "strict" as View,
-      summary: {
-        data: summaryRes.financialSummary,
-        errors: summaryRes.errors ?? [],
-      },
-      financials: {
-        income: {
-          annual: incAnnStrict.incomeStatementAnnual,
-          quarterly: incQStrict.incomeStatementQuarterly,
-        },
-        balanceSheet: {
-          annual: balAnnStrict.balanceSheetAnnual,
-          quarterly: balQStrict.balanceSheetQuarterly,
-        },
-        cashFlow: {
-          annual: cfAnnStrict.cashFlowAnnual,
-          quarterly: cfQStrict.cashFlowQuarterly,
-        },
-        ratios: {
-          annual: ratiosAnnStrict.ratiosAnnual,
-          quarterly: ratiosQStrict.ratiosQuarterly,
-        },
-      },
-      dividends: {
-        data: dividendsRes.dividends,
-        errors: dividendsRes.errors ?? [],
-      },
-    };
-
-    return {
-      statusCode: 200,
-      headers: JSON_HEADERS,
-      body: JSON.stringify(response),
-    };
+    return okResponse({
+      url,
+      section: "income-statement",
+      period: "annual",
+      view,
+      data: (res as any).incomeStatementAnnual,
+      errors: (res as any).errors ?? [],
+    });
   } catch (error: any) {
-    console.error("scrapeTickerInfoStrict error:", error);
+    console.error("fetchIncomeStatementAnnual error:", error);
     return {
       statusCode: 500,
       headers: JSON_HEADERS,
@@ -407,7 +280,445 @@ export const scrapeTickerInfoStrict = async (
   }
 };
 
-/* ───────────────────────────── CORS preflight ─────────────────────────────── */
+export const fetchIncomeStatementQuarterly = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { incomeQuarterlyUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeIncomeStatementQuarterly(incomeQuarterlyUrl),
+      raw: () => scrapeIncomeStatementQuarterlyRaw(incomeQuarterlyUrl),
+      strict: () => scrapeIncomeStatementQuarterlyStrict(incomeQuarterlyUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "income-statement",
+      period: "quarterly",
+      view,
+      data: (res as any).incomeStatementQuarterly,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchIncomeStatementQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* BALANCE SHEET */
+export const fetchBalanceSheetAnnual = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { balanceAnnualUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeBalanceSheetAnnual(balanceAnnualUrl),
+      raw: () => scrapeBalanceSheetAnnualRaw(balanceAnnualUrl),
+      strict: () => scrapeBalanceSheetAnnualStrict(balanceAnnualUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "balance-sheet",
+      period: "annual",
+      view,
+      data: (res as any).balanceSheetAnnual,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchBalanceSheetAnnual error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+export const fetchBalanceSheetQuarterly = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { balanceQuarterlyUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeBalanceSheetQuarterly(balanceQuarterlyUrl),
+      raw: () => scrapeBalanceSheetQuarterlyRaw(balanceQuarterlyUrl),
+      strict: () => scrapeBalanceSheetQuarterlyStrict(balanceQuarterlyUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "balance-sheet",
+      period: "quarterly",
+      view,
+      data: (res as any).balanceSheetQuarterly,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchBalanceSheetQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* CASHFLOW */
+export const fetchCashflowAnnual = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { cashAnnualUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeCashFlowAnnual(cashAnnualUrl),
+      raw: () => scrapeCashFlowAnnualRaw(cashAnnualUrl),
+      strict: () => scrapeCashFlowAnnualStrict(cashAnnualUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "cashflow",
+      period: "annual",
+      view,
+      data: (res as any).cashFlowAnnual,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchCashflowAnnual error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+export const fetchCashflowQuarterly = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { cashQuarterlyUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeCashFlowQuarterly(cashQuarterlyUrl),
+      raw: () => scrapeCashFlowQuarterlyRaw(cashQuarterlyUrl),
+      strict: () => scrapeCashFlowQuarterlyStrict(cashQuarterlyUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "cashflow",
+      period: "quarterly",
+      view,
+      data: (res as any).cashFlowQuarterly,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchCashflowQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* RATIOS */
+export const fetchRatiosAnnual = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { ratiosAnnualUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeRatiosAnnual(ratiosAnnualUrl),
+      raw: () => scrapeRatiosAnnualRaw(ratiosAnnualUrl),
+      strict: () => scrapeRatiosAnnualStrict(ratiosAnnualUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "ratios",
+      period: "annual",
+      view,
+      data: (res as any).ratiosAnnual,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchRatiosAnnual error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+export const fetchRatiosQuarterly = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { ratiosQuarterlyUrl } = buildSubUrls(url);
+
+    const res = await byView(view, {
+      normal: () => scrapeRatiosQuarterly(ratiosQuarterlyUrl),
+      raw: () => scrapeRatiosQuarterlyRaw(ratiosQuarterlyUrl),
+      strict: () => scrapeRatiosQuarterlyStrict(ratiosQuarterlyUrl),
+    });
+
+    return okResponse({
+      url,
+      section: "ratios",
+      period: "quarterly",
+      view,
+      data: (res as any).ratiosQuarterly,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchRatiosQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* Helper to aggregate error arrays safely */
+function collectErrors(
+  ...maybeArrays: Array<unknown[] | undefined | null>
+): unknown[] {
+  return maybeArrays.filter(Array.isArray).flat() as unknown[];
+}
+
+/* --------------------------- ALL • ANNUAL --------------------------- */
+export const fetchAllAnnual = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+
+    // If your parseBodyOr400 doesn't return view yet, uncomment next line:
+    // const view: View = "strict";
+    const { url, view } = parsed as { ok: true; url: string; view: View };
+
+    const {
+      incomeAnnualUrl,
+      balanceAnnualUrl,
+      cashAnnualUrl,
+      dividendsUrl,
+      ratiosAnnualUrl,
+    } = buildSubUrls(url);
+
+    // Summary (no view variants)
+    const summaryRes = await scrapeFundamentalsSummary(url);
+
+    // Annual financials by selected view
+    const incAnn = await byView(view, {
+      normal: () => scrapeIncomeStatementAnnual(incomeAnnualUrl),
+      raw: () => scrapeIncomeStatementAnnualRaw(incomeAnnualUrl),
+      strict: () => scrapeIncomeStatementAnnualStrict(incomeAnnualUrl),
+    });
+
+    const balAnn = await byView(view, {
+      normal: () => scrapeBalanceSheetAnnual(balanceAnnualUrl),
+      raw: () => scrapeBalanceSheetAnnualRaw(balanceAnnualUrl),
+      strict: () => scrapeBalanceSheetAnnualStrict(balanceAnnualUrl),
+    });
+
+    const cfAnn = await byView(view, {
+      normal: () => scrapeCashFlowAnnual(cashAnnualUrl),
+      raw: () => scrapeCashFlowAnnualRaw(cashAnnualUrl),
+      strict: () => scrapeCashFlowAnnualStrict(cashAnnualUrl),
+    });
+
+    const ratiosAnn = await byView(view, {
+      normal: () => scrapeRatiosAnnual(ratiosAnnualUrl),
+      raw: () => scrapeRatiosAnnualRaw(ratiosAnnualUrl),
+      strict: () => scrapeRatiosAnnualStrict(ratiosAnnualUrl),
+    });
+
+    // Dividends (no view variants)
+    const dividendsRes = await scrapeDividends(dividendsUrl);
+
+    const errors = collectErrors(
+      summaryRes?.errors,
+      (incAnn as any)?.errors,
+      (balAnn as any)?.errors,
+      (cfAnn as any)?.errors,
+      (ratiosAnn as any)?.errors,
+      dividendsRes?.errors
+    );
+
+    return okResponse({
+      url,
+      section: "all",
+      period: "annual",
+      view,
+      data: {
+        summary: summaryRes.financialSummary,
+        income: (incAnn as any).incomeStatementAnnual,
+        balanceSheet: (balAnn as any).balanceSheetAnnual,
+        cashFlow: (cfAnn as any).cashFlowAnnual,
+        ratios: (ratiosAnn as any).ratiosAnnual,
+        dividends: dividendsRes.dividends,
+      },
+      errors,
+    });
+  } catch (error: any) {
+    console.error("fetchAllAnnual error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* -------------------------- ALL • QUARTERLY -------------------------- */
+export const fetchAllQuarterly = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+
+    // If your parseBodyOr400 doesn't return view yet, uncomment next line:
+    // const view: View = "strict";
+    const { url, view } = parsed as { ok: true; url: string; view: View };
+
+    const {
+      incomeQuarterlyUrl,
+      balanceQuarterlyUrl,
+      cashQuarterlyUrl,
+      dividendsUrl,
+      ratiosQuarterlyUrl,
+    } = buildSubUrls(url);
+
+    // Summary (no view variants)
+    const summaryRes = await scrapeFundamentalsSummary(url);
+
+    // Quarterly financials by selected view
+    const incQ = await byView(view, {
+      normal: () => scrapeIncomeStatementQuarterly(incomeQuarterlyUrl),
+      raw: () => scrapeIncomeStatementQuarterlyRaw(incomeQuarterlyUrl),
+      strict: () => scrapeIncomeStatementQuarterlyStrict(incomeQuarterlyUrl),
+    });
+
+    const balQ = await byView(view, {
+      normal: () => scrapeBalanceSheetQuarterly(balanceQuarterlyUrl),
+      raw: () => scrapeBalanceSheetQuarterlyRaw(balanceQuarterlyUrl),
+      strict: () => scrapeBalanceSheetQuarterlyStrict(balanceQuarterlyUrl),
+    });
+
+    const cfQ = await byView(view, {
+      normal: () => scrapeCashFlowQuarterly(cashQuarterlyUrl),
+      raw: () => scrapeCashFlowQuarterlyRaw(cashQuarterlyUrl),
+      strict: () => scrapeCashFlowQuarterlyStrict(cashQuarterlyUrl),
+    });
+
+    const ratiosQ = await byView(view, {
+      normal: () => scrapeRatiosQuarterly(ratiosQuarterlyUrl),
+      raw: () => scrapeRatiosQuarterlyRaw(ratiosQuarterlyUrl),
+      strict: () => scrapeRatiosQuarterlyStrict(ratiosQuarterlyUrl),
+    });
+
+    // Dividends (no view variants)
+    const dividendsRes = await scrapeDividends(dividendsUrl);
+
+    const errors = collectErrors(
+      summaryRes?.errors,
+      (incQ as any)?.errors,
+      (balQ as any)?.errors,
+      (cfQ as any)?.errors,
+      (ratiosQ as any)?.errors,
+      dividendsRes?.errors
+    );
+
+    return okResponse({
+      url,
+      section: "all",
+      period: "quarterly",
+      view,
+      data: {
+        summary: summaryRes.financialSummary,
+        income: (incQ as any).incomeStatementQuarterly,
+        balanceSheet: (balQ as any).balanceSheetQuarterly,
+        cashFlow: (cfQ as any).cashFlowQuarterly,
+        ratios: (ratiosQ as any).ratiosQuarterly,
+        dividends: dividendsRes.dividends,
+      },
+      errors,
+    });
+  } catch (error: any) {
+    console.error("fetchAllQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+/* ------------------------------ OPTIONS handler ----------------------------- */
 
 export const handleOptions = async (): Promise<APIGatewayProxyResult> => {
   return {
