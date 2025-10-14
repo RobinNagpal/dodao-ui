@@ -42,7 +42,7 @@ async function callPythonBackend(requestData: TickerV1GenerationRequestWithTicke
   }
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<GenerationRequestsResponse> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<GenerationRequestsResponse> {
   const { spaceId } = await params;
 
   // First, check how many InProgress requests exist
@@ -112,4 +112,4 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   };
 }
 
-export const POST = withErrorHandlingV2<GenerationRequestsResponse>(postHandler);
+export const GET = withErrorHandlingV2<GenerationRequestsResponse>(getHandler);
