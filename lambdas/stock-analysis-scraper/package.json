@@ -32,6 +32,7 @@
         "prettier": "^2.8.8",
         "serverless": "^4.21.0",
         "serverless-plugin-typescript": "^2.1.5",
+        "tsx": "^4.20.6",
         "typescript": "5.0.4"
     }
 }

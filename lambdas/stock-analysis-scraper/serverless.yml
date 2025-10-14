@@ -11,10 +11,8 @@ provider:
     DATABASE_URL: ${env.DATABASE_URL}
     PUPPETEER_SKIP_DOWNLOAD: true
 
-
 package:
   individually: true
-
   patterns:
     - prisma/**                     # include your source schema (optional but nice)
     - node_modules/.prisma/**       # include generated client assets
@@ -22,25 +20,117 @@ package:
 
 build:
   esbuild:
-    # Path to the esbuild config file relative to the `serverless.yml` file
     configFile: ./esbuild.config.js
     target: node20
     platform: node
-#    exclude:
-#      - 'jsdom'
-#      - 'canvas'
-#    external:
-#      - 'jsdom'
-#      - 'canvas'
-#      - '@postlight/parser'
 
 functions:
+  # Existing combined endpoint (kept as-is)
   scrapeTickerInfo:
-    handler: src/handler.scrapeTickerInfoNormal
+    handler: src/handler.scrapeTickerInfoStrict
     events:
       - httpApi:
           path: /fetch-stock-info
           method: POST
+
+  # New granular endpoints
+
+  # Summary
+  fetchSummary:
+    handler: src/handler.fetchSummary
+    events:
       - httpApi:
-          path: /fetch-stock-info
+          path: /summary
+          method: POST
+
+  # Dividends
+  fetchDividends:
+    handler: src/handler.fetchDividends
+    events:
+      - httpApi:
+          path: /dividends
+          method: POST
+
+  # Income Statement
+  fetchIncomeStatementAnnual:
+    handler: src/handler.fetchIncomeStatementAnnual
+    events:
+      - httpApi:
+          path: /income-statement/annual
+          method: POST
+
+  fetchIncomeStatementQuarterly:
+    handler: src/handler.fetchIncomeStatementQuarterly
+    events:
+      - httpApi:
+          path: /income-statement/quarterly
+          method: POST
+
+  # Balance Sheet
+  fetchBalanceSheetAnnual:
+    handler: src/handler.fetchBalanceSheetAnnual
+    events:
+      - httpApi:
+          path: /balance-sheet/annual
+          method: POST
+
+  fetchBalanceSheetQuarterly:
+    handler: src/handler.fetchBalanceSheetQuarterly
+    events:
+      - httpApi:
+          path: /balance-sheet/quarterly
+          method: POST
+
+  # Cashflow
+  fetchCashflowAnnual:
+    handler: src/handler.fetchCashflowAnnual
+    events:
+      - httpApi:
+          path: /cashflow/annual
+          method: POST
+
+  fetchCashflowQuarterly:
+    handler: src/handler.fetchCashflowQuarterly
+    events:
+      - httpApi:
+          path: /cashflow/quarterly
+          method: POST
+
+  # Ratios
+  fetchRatiosAnnual:
+    handler: src/handler.fetchRatiosAnnual
+    events:
+      - httpApi:
+          path: /ratios/annual
+          method: POST
+
+  fetchRatiosQuarterly:
+    handler: src/handler.fetchRatiosQuarterly
+    events:
+      - httpApi:
+          path: /ratios/quarterly
+          method: POST
+
+  # Aggregate: all annual
+  fetchFinancialsAnnual:
+    handler: src/handler.fetchAllAnnual
+    events:
+      - httpApi:
+          path: /financials/annual
+          method: POST
+
+  # Aggregate: all quarterly
+  fetchFinancialsQuarterly:
+    handler: src/handler.fetchAllQuarterly
+    events:
+      - httpApi:
+          path: /financials/quarterly
+          method: POST
+
+  # One wildcard OPTIONS handler for all routes (httpApi + cors already true, but this helps if you need custom headers)
+  optionsAll:
+    handler: src/handler.handleOptions
+    events:
+      - httpApi:
+          path: /{proxy+}
           method: OPTIONS
