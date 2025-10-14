@@ -1,9 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
-// Summary
+// --- your existing imports (unchanged) ---
 import { scrapeFundamentalsSummary } from "./cheerio/fundamentals-summary";
-
-// Income
 import {
   scrapeIncomeStatementAnnual,
   scrapeIncomeStatementAnnualRaw,
@@ -14,8 +12,6 @@ import {
   scrapeIncomeStatementQuarterlyRaw,
   scrapeIncomeStatementQuarterlyStrict,
 } from "./cheerio/income-statement-quarterly";
-
-// Balance Sheet
 import {
   scrapeBalanceSheetAnnual,
   scrapeBalanceSheetAnnualRaw,
@@ -26,8 +22,6 @@ import {
   scrapeBalanceSheetQuarterlyRaw,
   scrapeBalanceSheetQuarterlyStrict,
 } from "./cheerio/balance-sheet-quarterly";
-
-// Cash Flow
 import {
   scrapeCashFlowAnnual,
   scrapeCashFlowAnnualRaw,
@@ -38,11 +32,7 @@ import {
   scrapeCashFlowQuarterlyRaw,
   scrapeCashFlowQuarterlyStrict,
 } from "./cheerio/cashflow-quarterly";
-
-// Dividends
 import { scrapeDividends } from "./cheerio/dividends";
-
-// Ratios
 import {
   scrapeRatiosAnnual,
   scrapeRatiosAnnualRaw,
@@ -53,6 +43,11 @@ import {
   scrapeRatiosQuarterlyRaw,
   scrapeRatiosQuarterlyStrict,
 } from "./cheerio/ratios-quarterly";
+
+// If you have this in your file already, keep it; router can call it for legacy route:
+export declare const scrapeTickerInfoStrict: (
+  event: APIGatewayProxyEvent
+) => Promise<APIGatewayProxyResult>;
 
 /* --------------------------- shared types & headers -------------------------- */
 
@@ -178,20 +173,14 @@ async function byView<T>(
   return fns.strict();
 }
 
-/* ----------------------------- existing handlers ---------------------------- */
-/* (scrapeTickerInfoNormal/Raw/Strict + handleOptions remain as in your file)   */
-/* No changes needed except parseBodyOr400 now also returns `view` (ignored).   */
+/* ----------------------------- specific handlers ---------------------------- */
+/* (these are your existing functions; unchanged) */
 
-/* ----------------------------- new granular APIs ---------------------------- */
-
-/* SUMMARY */
-export const fetchSummary = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchSummary = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-    const { url, view } = parsed; // view accepted for consistency, output is the same
+    const { url, view } = parsed;
     const summaryRes = await scrapeFundamentalsSummary(url);
     return okResponse({
       url,
@@ -213,14 +202,11 @@ export const fetchSummary = async (
   }
 };
 
-/* DIVIDENDS */
-export const fetchDividends = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchDividends = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-    const { url, view } = parsed; // view accepted for consistency
+    const { url, view } = parsed;
     const { dividendsUrl } = buildSubUrls(url);
     const res = await scrapeDividends(dividendsUrl);
     return okResponse({
@@ -243,22 +229,19 @@ export const fetchDividends = async (
   }
 };
 
-/* INCOME STATEMENT */
 export const fetchIncomeStatementAnnual = async (
   event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { incomeAnnualUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeIncomeStatementAnnual(incomeAnnualUrl),
       raw: () => scrapeIncomeStatementAnnualRaw(incomeAnnualUrl),
       strict: () => scrapeIncomeStatementAnnualStrict(incomeAnnualUrl),
     });
-
     return okResponse({
       url,
       section: "income-statement",
@@ -282,19 +265,17 @@ export const fetchIncomeStatementAnnual = async (
 
 export const fetchIncomeStatementQuarterly = async (
   event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { incomeQuarterlyUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeIncomeStatementQuarterly(incomeQuarterlyUrl),
       raw: () => scrapeIncomeStatementQuarterlyRaw(incomeQuarterlyUrl),
       strict: () => scrapeIncomeStatementQuarterlyStrict(incomeQuarterlyUrl),
     });
-
     return okResponse({
       url,
       section: "income-statement",
@@ -316,22 +297,17 @@ export const fetchIncomeStatementQuarterly = async (
   }
 };
 
-/* BALANCE SHEET */
-export const fetchBalanceSheetAnnual = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchBalanceSheetAnnual = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { balanceAnnualUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeBalanceSheetAnnual(balanceAnnualUrl),
       raw: () => scrapeBalanceSheetAnnualRaw(balanceAnnualUrl),
       strict: () => scrapeBalanceSheetAnnualStrict(balanceAnnualUrl),
     });
-
     return okResponse({
       url,
       section: "balance-sheet",
@@ -355,19 +331,17 @@ export const fetchBalanceSheetAnnual = async (
 
 export const fetchBalanceSheetQuarterly = async (
   event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { balanceQuarterlyUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeBalanceSheetQuarterly(balanceQuarterlyUrl),
       raw: () => scrapeBalanceSheetQuarterlyRaw(balanceQuarterlyUrl),
       strict: () => scrapeBalanceSheetQuarterlyStrict(balanceQuarterlyUrl),
     });
-
     return okResponse({
       url,
       section: "balance-sheet",
@@ -389,22 +363,17 @@ export const fetchBalanceSheetQuarterly = async (
   }
 };
 
-/* CASHFLOW */
-export const fetchCashflowAnnual = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchCashflowAnnual = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { cashAnnualUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeCashFlowAnnual(cashAnnualUrl),
       raw: () => scrapeCashFlowAnnualRaw(cashAnnualUrl),
       strict: () => scrapeCashFlowAnnualStrict(cashAnnualUrl),
     });
-
     return okResponse({
       url,
       section: "cashflow",
@@ -426,21 +395,17 @@ export const fetchCashflowAnnual = async (
   }
 };
 
-export const fetchCashflowQuarterly = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchCashflowQuarterly = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { cashQuarterlyUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeCashFlowQuarterly(cashQuarterlyUrl),
       raw: () => scrapeCashFlowQuarterlyRaw(cashQuarterlyUrl),
       strict: () => scrapeCashFlowQuarterlyStrict(cashQuarterlyUrl),
     });
-
     return okResponse({
       url,
       section: "cashflow",
@@ -462,22 +427,17 @@ export const fetchCashflowQuarterly = async (
   }
 };
 
-/* RATIOS */
-export const fetchRatiosAnnual = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchRatiosAnnual = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { ratiosAnnualUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeRatiosAnnual(ratiosAnnualUrl),
       raw: () => scrapeRatiosAnnualRaw(ratiosAnnualUrl),
       strict: () => scrapeRatiosAnnualStrict(ratiosAnnualUrl),
     });
-
     return okResponse({
       url,
       section: "ratios",
@@ -499,21 +459,17 @@ export const fetchRatiosAnnual = async (
   }
 };
 
-export const fetchRatiosQuarterly = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchRatiosQuarterly = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     const { url, view } = parsed;
     const { ratiosQuarterlyUrl } = buildSubUrls(url);
-
     const res = await byView(view, {
       normal: () => scrapeRatiosQuarterly(ratiosQuarterlyUrl),
       raw: () => scrapeRatiosQuarterlyRaw(ratiosQuarterlyUrl),
       strict: () => scrapeRatiosQuarterlyStrict(ratiosQuarterlyUrl),
     });
-
     return okResponse({
       url,
       section: "ratios",
@@ -542,16 +498,10 @@ function collectErrors(
   return maybeArrays.filter(Array.isArray).flat() as unknown[];
 }
 
-/* --------------------------- ALL • ANNUAL --------------------------- */
-export const fetchAllAnnual = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchAllAnnual = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-
-    // If your parseBodyOr400 doesn't return view yet, uncomment next line:
-    // const view: View = "strict";
     const { url, view } = parsed as { ok: true; url: string; view: View };
 
     const {
@@ -562,35 +512,28 @@ export const fetchAllAnnual = async (
       ratiosAnnualUrl,
     } = buildSubUrls(url);
 
-    // Summary (no view variants)
     const summaryRes = await scrapeFundamentalsSummary(url);
 
-    // Annual financials by selected view
     const incAnn = await byView(view, {
       normal: () => scrapeIncomeStatementAnnual(incomeAnnualUrl),
       raw: () => scrapeIncomeStatementAnnualRaw(incomeAnnualUrl),
       strict: () => scrapeIncomeStatementAnnualStrict(incomeAnnualUrl),
     });
-
     const balAnn = await byView(view, {
       normal: () => scrapeBalanceSheetAnnual(balanceAnnualUrl),
       raw: () => scrapeBalanceSheetAnnualRaw(balanceAnnualUrl),
       strict: () => scrapeBalanceSheetAnnualStrict(balanceAnnualUrl),
     });
-
     const cfAnn = await byView(view, {
       normal: () => scrapeCashFlowAnnual(cashAnnualUrl),
       raw: () => scrapeCashFlowAnnualRaw(cashAnnualUrl),
       strict: () => scrapeCashFlowAnnualStrict(cashAnnualUrl),
     });
-
     const ratiosAnn = await byView(view, {
       normal: () => scrapeRatiosAnnual(ratiosAnnualUrl),
       raw: () => scrapeRatiosAnnualRaw(ratiosAnnualUrl),
       strict: () => scrapeRatiosAnnualStrict(ratiosAnnualUrl),
     });
-
-    // Dividends (no view variants)
     const dividendsRes = await scrapeDividends(dividendsUrl);
 
     const errors = collectErrors(
@@ -630,16 +573,10 @@ export const fetchAllAnnual = async (
   }
 };
 
-/* -------------------------- ALL • QUARTERLY -------------------------- */
-export const fetchAllQuarterly = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const fetchAllQuarterly = async (event: APIGatewayProxyEvent) => {
   try {
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
-
-    // If your parseBodyOr400 doesn't return view yet, uncomment next line:
-    // const view: View = "strict";
     const { url, view } = parsed as { ok: true; url: string; view: View };
 
     const {
@@ -650,35 +587,28 @@ export const fetchAllQuarterly = async (
       ratiosQuarterlyUrl,
     } = buildSubUrls(url);
 
-    // Summary (no view variants)
     const summaryRes = await scrapeFundamentalsSummary(url);
 
-    // Quarterly financials by selected view
     const incQ = await byView(view, {
       normal: () => scrapeIncomeStatementQuarterly(incomeQuarterlyUrl),
       raw: () => scrapeIncomeStatementQuarterlyRaw(incomeQuarterlyUrl),
       strict: () => scrapeIncomeStatementQuarterlyStrict(incomeQuarterlyUrl),
     });
-
     const balQ = await byView(view, {
       normal: () => scrapeBalanceSheetQuarterly(balanceQuarterlyUrl),
       raw: () => scrapeBalanceSheetQuarterlyRaw(balanceQuarterlyUrl),
       strict: () => scrapeBalanceSheetQuarterlyStrict(balanceQuarterlyUrl),
     });
-
     const cfQ = await byView(view, {
       normal: () => scrapeCashFlowQuarterly(cashQuarterlyUrl),
       raw: () => scrapeCashFlowQuarterlyRaw(cashQuarterlyUrl),
       strict: () => scrapeCashFlowQuarterlyStrict(cashQuarterlyUrl),
     });
-
     const ratiosQ = await byView(view, {
       normal: () => scrapeRatiosQuarterly(ratiosQuarterlyUrl),
       raw: () => scrapeRatiosQuarterlyRaw(ratiosQuarterlyUrl),
       strict: () => scrapeRatiosQuarterlyStrict(ratiosQuarterlyUrl),
     });
-
-    // Dividends (no view variants)
     const dividendsRes = await scrapeDividends(dividendsUrl);
 
     const errors = collectErrors(
@@ -718,7 +648,7 @@ export const fetchAllQuarterly = async (
   }
 };
 
-/* ------------------------------ OPTIONS handler ----------------------------- */
+/* ------------------------------ OPTIONS helper ------------------------------ */
 
 export const handleOptions = async (): Promise<APIGatewayProxyResult> => {
   return {
@@ -731,4 +661,90 @@ export const handleOptions = async (): Promise<APIGatewayProxyResult> => {
     },
     body: "",
   };
+};
+
+/* ----------------------------------- ROUTER --------------------------------- */
+
+function normPath(p?: string | null): string {
+  const raw = (p || "/").toLowerCase();
+  if (raw === "/") return "/";
+  return raw.replace(/\/+$/, ""); // strip trailing slashes
+}
+
+export const api = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  const method = (event as any)?.requestContext?.http?.method || "GET";
+  const rawPath =
+    (event as any)?.rawPath ||
+    (event as any)?.requestContext?.http?.path ||
+    "/";
+  const path = normPath(rawPath);
+
+  // Preflight/CORS handled here too (httpApi cors: true already covers it, but this is safe)
+  if (method === "OPTIONS") return handleOptions();
+
+  if (method !== "POST") {
+    return {
+      statusCode: 405,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ error: `Method ${method} not allowed` }),
+    };
+  }
+
+  // Map paths to the existing handlers
+  switch (path) {
+    case "/fetch-stock-info":
+      // legacy single endpoint (if present in your file)
+      return typeof scrapeTickerInfoStrict === "function"
+        ? scrapeTickerInfoStrict(event)
+        : {
+            statusCode: 501,
+            headers: JSON_HEADERS,
+            body: JSON.stringify({ error: "Legacy route not implemented" }),
+          };
+
+    case "/summary":
+      return fetchSummary(event);
+
+    case "/dividends":
+      return fetchDividends(event);
+
+    case "/income-statement/annual":
+      return fetchIncomeStatementAnnual(event);
+
+    case "/income-statement/quarterly":
+      return fetchIncomeStatementQuarterly(event);
+
+    case "/balance-sheet/annual":
+      return fetchBalanceSheetAnnual(event);
+
+    case "/balance-sheet/quarterly":
+      return fetchBalanceSheetQuarterly(event);
+
+    case "/cashflow/annual":
+      return fetchCashflowAnnual(event);
+
+    case "/cashflow/quarterly":
+      return fetchCashflowQuarterly(event);
+
+    case "/ratios/annual":
+      return fetchRatiosAnnual(event);
+
+    case "/ratios/quarterly":
+      return fetchRatiosQuarterly(event);
+
+    case "/financials/annual":
+      return fetchAllAnnual(event);
+
+    case "/financials/quarterly":
+      return fetchAllQuarterly(event);
+
+    default:
+      return {
+        statusCode: 404,
+        headers: JSON_HEADERS,
+        body: JSON.stringify({ error: `No route for ${method} ${path}` }),
+      };
+  }
 };

@@ -1,8 +1,9 @@
-// scripts/generate-event.ts
+// scripts/generate-events.ts
 // Prints a single-line JSON event to STDOUT.
 // Usage:
-//   npx tsx scripts/generate-event.ts --function fetchSummary --url <ticker> --view strict
-//   npx tsx scripts/generate-event.ts --function optionsAll              # preflight example
+//   npx tsx scripts/generate-events.ts --route fetchSummary --url <ticker> --view strict
+//   npx tsx scripts/generate-events.ts --route optionsAll              # preflight example
+//   (legacy arg still works) --function <name>
 
 import * as process from "node:process";
 
@@ -10,7 +11,7 @@ type View = "normal" | "raw" | "strict";
 type HttpMethod = "POST" | "OPTIONS";
 
 type Args = {
-  fn: string;
+  route: string; // logical route key (e.g. fetchSummary)
   url: string;
   view: View;
   origin: string; // for OPTIONS
@@ -27,7 +28,14 @@ function getArg(key: string, dflt?: string): string {
 }
 
 function parseArgs(): Args {
-  const fn = getArg("--function");
+  // Prefer --route, fall back to --function for backward compatibility
+  let route: string;
+  try {
+    route = getArg("--route");
+  } catch {
+    route = getArg("--function"); // legacy
+  }
+
   const url = getArg(
     "--url",
     "https://www.macrotrends.net/stocks/charts/AAPL/apple"
@@ -38,7 +46,7 @@ function parseArgs(): Args {
   if (!["normal", "raw", "strict"].includes(view)) {
     throw new Error(`Invalid --view "${view}". Use: normal | raw | strict.`);
   }
-  return { fn, url, view, origin };
+  return { route, url, view, origin };
 }
 
 type Mapping = { method: HttpMethod; path: string; includeView?: boolean };
@@ -149,11 +157,11 @@ function httpApiV2EventOPTIONS(path: string, origin: string) {
 }
 
 function main() {
-  const { fn, url, view, origin } = parseArgs();
-  const m = MAP[fn];
+  const { route, url, view, origin } = parseArgs();
+  const m = MAP[route];
   if (!m) {
     const known = Object.keys(MAP).sort().join(", ");
-    throw new Error(`Unknown --function "${fn}". Known: ${known}`);
+    throw new Error(`Unknown route "${route}". Known: ${known}`);
   }
 
   let event: any;

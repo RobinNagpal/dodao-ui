@@ -48,8 +48,8 @@ print-config:
 
 # Helper macro to avoid repetition
 define INVOKE_INLINE
-	@echo "Invoking $(1) ..."
-	@$(SLS) invoke local -f $(1) -d "$$($(TSX) scripts/generate-events.ts --function $(1) --url $(TICKER_URL) --view $(VIEW) --origin $(ORIGIN))"
+	@echo "Invoking via router: $(1) ..."
+    @$(SLS) invoke local -f api -d "$$($(TSX) scripts/generate-events.ts --route $(1) --url $(TICKER_URL) --view $(VIEW) --origin $(ORIGIN))"
 endef
 
 # =========================
