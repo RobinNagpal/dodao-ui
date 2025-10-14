@@ -781,7 +781,11 @@ model TickerV1GenerationRequest {
   
   // Request status
   status                             String @default("NotStarted") @map("status")
-  
+
+  // Step tracking
+  completedSteps                     String[] @default([]) @map("completed_steps")
+  failedSteps                        String[] @default([]) @map("failed_steps")
+
   // Timestamps for tracking
   createdAt                          DateTime  @default(now()) @map("created_at")
   updatedAt                          DateTime  @updatedAt @map("updated_at")
