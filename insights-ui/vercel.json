@@ -1,4 +1,10 @@
 {
+  "crons": [
+    {
+      "path": "/api/koala_gains/tickers-v1/generate-ticker-v1-request",
+      "schedule": "*/5 * * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
