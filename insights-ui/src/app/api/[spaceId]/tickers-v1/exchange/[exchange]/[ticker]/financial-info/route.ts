@@ -1,9 +1,22 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
-import yahooFinance from 'yahoo-finance2';
+// @ts-ignore - yahoo-finance2 has type issues with v2.x
+import YahooFinance from 'yahoo-finance2';
+import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 
 type Num = number | null;
+
+export interface FinancialInfoOptionalWrapper {
+  financialInfo: FinancialInfoResponse | null;
+}
+
+// Normalize both shapes (constructor vs. module with bound fns)
+const yf: any = (() => {
+  const mod: any = (YahooFinance as any)?.default ?? YahooFinance;
+  // If it looks like a constructor (has "prototype"), instantiate it once.
+  return typeof mod === 'function' && mod.prototype ? new mod() : mod;
+})();
 
 // Coerce unknown to a finite number, else null.
 const num = (v: unknown): Num => {
@@ -53,17 +66,18 @@ export interface FinancialInfoResponse {
   netProfitMargin: Num;
 }
 
-async function fetchFromYahooFinance(ticker: string): Promise<FinancialInfoResponse> {
-  // 1) Fast quote
-  const q = await yahooFinance.quote(ticker);
+async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<FinancialInfoResponse> {
+  // Convert to Yahoo Finance format (e.g., DIR.UN -> DIR-UN.TO for TSX)
+  const yahooSymbol = convertToYahooFinanceSymbol(ticker, exchange);
 
-  // 2) Summary for fallbacks
-  const qs = await yahooFinance.quoteSummary(ticker, {
+  const q = (await yf.quote(yahooSymbol)) as Record<string, unknown>;
+  const qs = (await yf.quoteSummary(yahooSymbol, {
     modules: ['incomeStatementHistoryQuarterly', 'summaryDetail'],
-  });
+  })) as Record<string, unknown>;
 
   // ----- TTM from quarterly -----
-  const quarterly = qs?.incomeStatementHistoryQuarterly?.incomeStatementHistory ?? [];
+  const incomeStatementData = qs?.incomeStatementHistoryQuarterly as Record<string, unknown> | undefined;
+  const quarterly = incomeStatementData?.incomeStatementHistory ?? [];
 
   const last4 = Array.isArray(quarterly) ? quarterly.slice(0, 4) : [];
 
@@ -85,27 +99,27 @@ async function fetchFromYahooFinance(ticker: string): Promise<FinancialInfoRespo
   const netProfitMargin = totalRevenueTTM && totalRevenueTTM !== 0 && netIncomeTTM != null ? netIncomeTTM / totalRevenueTTM : null;
 
   // ----- DIVIDENDS -----
-  const sd = qs?.summaryDetail;
+  const sd = qs?.summaryDetail as Record<string, unknown> | undefined;
 
-  const annualDividend = pickNum((q as Record<string, unknown>)?.dividendRate, sd?.dividendRate, (q as Record<string, unknown>)?.trailingAnnualDividendRate);
+  const annualDividend = pickNum(q?.dividendRate, sd?.dividendRate, q?.trailingAnnualDividendRate);
 
-  const dividendYield = pickNum((q as Record<string, unknown>)?.dividendYield, sd?.dividendYield, (q as Record<string, unknown>)?.trailingAnnualDividendYield);
+  const dividendYield = pickNum(q?.dividendYield, sd?.dividendYield, q?.trailingAnnualDividendYield);
 
   return {
-    symbol: ((q as Record<string, unknown>)?.symbol as string) ?? ticker,
-    currency: ((q as Record<string, unknown>)?.currency as string) ?? ((q as Record<string, unknown>)?.financialCurrency as string) ?? null,
+    symbol: (q?.symbol as string) ?? ticker,
+    currency: (q?.currency as string) ?? (q?.financialCurrency as string) ?? null,
 
-    price: num((q as Record<string, unknown>)?.regularMarketPrice),
-    dayHigh: num((q as Record<string, unknown>)?.regularMarketDayHigh),
-    dayLow: num((q as Record<string, unknown>)?.regularMarketDayLow),
-    yearHigh: num((q as Record<string, unknown>)?.fiftyTwoWeekHigh),
-    yearLow: num((q as Record<string, unknown>)?.fiftyTwoWeekLow),
+    price: num(q?.regularMarketPrice),
+    dayHigh: num(q?.regularMarketDayHigh),
+    dayLow: num(q?.regularMarketDayLow),
+    yearHigh: num(q?.fiftyTwoWeekHigh),
+    yearLow: num(q?.fiftyTwoWeekLow),
 
-    marketCap: num((q as Record<string, unknown>)?.marketCap),
-    epsDilutedTTM: num((q as Record<string, unknown>)?.epsTrailingTwelveMonths),
-    pe: num((q as Record<string, unknown>)?.trailingPE),
-    avgVolume3M: num((q as Record<string, unknown>)?.averageDailyVolume3Month),
-    dayVolume: num((q as Record<string, unknown>)?.regularMarketVolume),
+    marketCap: num(q?.marketCap),
+    epsDilutedTTM: num(q?.epsTrailingTwelveMonths),
+    pe: num(q?.trailingPE),
+    avgVolume3M: num(q?.averageDailyVolume3Month),
+    dayVolume: num(q?.regularMarketVolume),
 
     annualDividend,
     dividendYield,
@@ -119,17 +133,17 @@ async function fetchFromYahooFinance(ticker: string): Promise<FinancialInfoRespo
 async function getHandler(
   req: NextRequest,
   { params }: { params: Promise<{ spaceId: string; exchange: string; ticker: string }> }
-): Promise<FinancialInfoResponse> {
+): Promise<FinancialInfoOptionalWrapper> {
   const { spaceId, exchange, ticker } = await params;
   const e = exchange?.toUpperCase()?.trim();
   const t = ticker?.toUpperCase()?.trim();
 
   if (!t || !e) {
-    throw new Error('Ticker symbol and exchange are required');
+    return { financialInfo: null };
   }
 
   // Find the ticker in database
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: t,
@@ -140,10 +154,6 @@ async function getHandler(
     },
   });
 
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${t} on exchange ${e} not found`);
-  }
-
   // Check if we have cached data and if it's less than 7 days old
   const now = new Date();
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -152,77 +162,111 @@ async function getHandler(
   const shouldRefetch = !existingFinancialInfo || existingFinancialInfo.updatedAt < sevenDaysAgo;
 
   if (shouldRefetch) {
-    // Fetch fresh data from Yahoo Finance
-    const freshData = await fetchFromYahooFinance(t);
+    try {
+      // Fetch fresh data from Yahoo Finance
+      const freshData = await fetchFromYahooFinance(t, e);
 
-    // Upsert financial info in database (handles both create and update)
-    await prisma.tickerV1FinancialInfo.upsert({
-      where: {
-        tickerId: tickerRecord.id,
-      },
-      update: {
-        currency: freshData.currency,
-        price: freshData.price,
-        dayHigh: freshData.dayHigh,
-        dayLow: freshData.dayLow,
-        yearHigh: freshData.yearHigh,
-        yearLow: freshData.yearLow,
-        marketCap: freshData.marketCap,
-        epsDilutedTTM: freshData.epsDilutedTTM,
-        pe: freshData.pe,
-        avgVolume3M: freshData.avgVolume3M,
-        dayVolume: freshData.dayVolume,
-        annualDividend: freshData.annualDividend,
-        dividendYield: freshData.dividendYield,
-        totalRevenue: freshData.totalRevenue,
-        netIncome: freshData.netIncome,
-        netProfitMargin: freshData.netProfitMargin,
-        updatedAt: now,
-      },
-      create: {
-        tickerId: tickerRecord.id,
-        currency: freshData.currency,
-        price: freshData.price,
-        dayHigh: freshData.dayHigh,
-        dayLow: freshData.dayLow,
-        yearHigh: freshData.yearHigh,
-        yearLow: freshData.yearLow,
-        marketCap: freshData.marketCap,
-        epsDilutedTTM: freshData.epsDilutedTTM,
-        pe: freshData.pe,
-        avgVolume3M: freshData.avgVolume3M,
-        dayVolume: freshData.dayVolume,
-        annualDividend: freshData.annualDividend,
-        dividendYield: freshData.dividendYield,
-        totalRevenue: freshData.totalRevenue,
-        netIncome: freshData.netIncome,
-        netProfitMargin: freshData.netProfitMargin,
-      },
-    });
+      // Upsert financial info in database (handles both create and update)
+      await prisma.tickerV1FinancialInfo.upsert({
+        where: {
+          tickerId: tickerRecord.id,
+        },
+        update: {
+          currency: freshData.currency,
+          price: freshData.price,
+          dayHigh: freshData.dayHigh,
+          dayLow: freshData.dayLow,
+          yearHigh: freshData.yearHigh,
+          yearLow: freshData.yearLow,
+          marketCap: freshData.marketCap,
+          epsDilutedTTM: freshData.epsDilutedTTM,
+          pe: freshData.pe,
+          avgVolume3M: freshData.avgVolume3M,
+          dayVolume: freshData.dayVolume,
+          annualDividend: freshData.annualDividend,
+          dividendYield: freshData.dividendYield,
+          totalRevenue: freshData.totalRevenue,
+          netIncome: freshData.netIncome,
+          netProfitMargin: freshData.netProfitMargin,
+          updatedAt: now,
+        },
+        create: {
+          tickerId: tickerRecord.id,
+          currency: freshData.currency,
+          price: freshData.price,
+          dayHigh: freshData.dayHigh,
+          dayLow: freshData.dayLow,
+          yearHigh: freshData.yearHigh,
+          yearLow: freshData.yearLow,
+          marketCap: freshData.marketCap,
+          epsDilutedTTM: freshData.epsDilutedTTM,
+          pe: freshData.pe,
+          avgVolume3M: freshData.avgVolume3M,
+          dayVolume: freshData.dayVolume,
+          annualDividend: freshData.annualDividend,
+          dividendYield: freshData.dividendYield,
+          totalRevenue: freshData.totalRevenue,
+          netIncome: freshData.netIncome,
+          netProfitMargin: freshData.netProfitMargin,
+        },
+      });
 
-    return freshData;
+      return { financialInfo: freshData };
+    } catch (error) {
+      // If Yahoo Finance fails and we have cached data, return it
+      if (existingFinancialInfo) {
+        console.error(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
+        return {
+          financialInfo: {
+            symbol: tickerRecord.symbol,
+            currency: existingFinancialInfo.currency,
+            price: existingFinancialInfo.price,
+            dayHigh: existingFinancialInfo.dayHigh,
+            dayLow: existingFinancialInfo.dayLow,
+            yearHigh: existingFinancialInfo.yearHigh,
+            yearLow: existingFinancialInfo.yearLow,
+            marketCap: existingFinancialInfo.marketCap,
+            epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
+            pe: existingFinancialInfo.pe,
+            avgVolume3M: existingFinancialInfo.avgVolume3M,
+            dayVolume: existingFinancialInfo.dayVolume,
+            annualDividend: existingFinancialInfo.annualDividend,
+            dividendYield: existingFinancialInfo.dividendYield,
+            totalRevenue: existingFinancialInfo.totalRevenue,
+            netIncome: existingFinancialInfo.netIncome,
+            netProfitMargin: existingFinancialInfo.netProfitMargin,
+          },
+        };
+      }
+
+      // If no cached data, return null instead of throwing error
+      console.error(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
+      return { financialInfo: null };
+    }
   }
 
   // Return cached data
   return {
-    symbol: tickerRecord.symbol,
-    currency: existingFinancialInfo.currency,
-    price: existingFinancialInfo.price,
-    dayHigh: existingFinancialInfo.dayHigh,
-    dayLow: existingFinancialInfo.dayLow,
-    yearHigh: existingFinancialInfo.yearHigh,
-    yearLow: existingFinancialInfo.yearLow,
-    marketCap: existingFinancialInfo.marketCap,
-    epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
-    pe: existingFinancialInfo.pe,
-    avgVolume3M: existingFinancialInfo.avgVolume3M,
-    dayVolume: existingFinancialInfo.dayVolume,
-    annualDividend: existingFinancialInfo.annualDividend,
-    dividendYield: existingFinancialInfo.dividendYield,
-    totalRevenue: existingFinancialInfo.totalRevenue,
-    netIncome: existingFinancialInfo.netIncome,
-    netProfitMargin: existingFinancialInfo.netProfitMargin,
+    financialInfo: {
+      symbol: tickerRecord.symbol,
+      currency: existingFinancialInfo.currency,
+      price: existingFinancialInfo.price,
+      dayHigh: existingFinancialInfo.dayHigh,
+      dayLow: existingFinancialInfo.dayLow,
+      yearHigh: existingFinancialInfo.yearHigh,
+      yearLow: existingFinancialInfo.yearLow,
+      marketCap: existingFinancialInfo.marketCap,
+      epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
+      pe: existingFinancialInfo.pe,
+      avgVolume3M: existingFinancialInfo.avgVolume3M,
+      dayVolume: existingFinancialInfo.dayVolume,
+      annualDividend: existingFinancialInfo.annualDividend,
+      dividendYield: existingFinancialInfo.dividendYield,
+      totalRevenue: existingFinancialInfo.totalRevenue,
+      netIncome: existingFinancialInfo.netIncome,
+      netProfitMargin: existingFinancialInfo.netProfitMargin,
+    },
   };
 }
 
-export const GET = withErrorHandlingV2<FinancialInfoResponse>(getHandler);
+export const GET = withErrorHandlingV2<FinancialInfoOptionalWrapper>(getHandler);
