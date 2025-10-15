@@ -15,7 +15,7 @@ export interface IndustryUpdateRequest {
 
 async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<TickerV1SubIndustry> {
   const { id } = await params;
-  return prisma.tickerV1SubIndustry.findUniqueOrThrow({
+  return prisma.tickerV1SubIndustry.findFirstOrThrow({
     where: {
       subIndustryKey: id,
     },
@@ -29,9 +29,13 @@ async function putHandler(
 ): Promise<TickerV1SubIndustry> {
   const { id } = await params;
   const body: IndustryUpdateRequest = await request.json();
-
+  const subIndustry = await prisma.tickerV1SubIndustry.findFirstOrThrow({
+    where: {
+      subIndustryKey: id,
+    },
+  });
   const updated = await prisma.tickerV1SubIndustry.update({
-    where: { subIndustryKey: id },
+    where: { industryKey_subIndustryKey: { industryKey: subIndustry.industryKey, subIndustryKey: subIndustry.subIndustryKey } },
     data: {
       ...(body.name && { name: body.name }),
       ...(body.summary && { summary: body.summary }),
@@ -50,8 +54,13 @@ async function deleteHandler(
 ): Promise<{ success: boolean }> {
   const { id } = await params;
 
+  const subIndustry = await prisma.tickerV1SubIndustry.findFirstOrThrow({
+    where: {
+      subIndustryKey: id,
+    },
+  });
   await prisma.tickerV1SubIndustry.delete({
-    where: { subIndustryKey: id },
+    where: { industryKey_subIndustryKey: { industryKey: subIndustry.industryKey, subIndustryKey: subIndustry.subIndustryKey } },
   });
 
   return { success: true };
