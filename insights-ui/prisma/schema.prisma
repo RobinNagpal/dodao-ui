@@ -112,6 +112,7 @@ model Ticker {
   CriterionMatch                 CriterionMatch[]
   criteriaMatchesOfLatest10Q     CriteriaMatchesOfLatest10Q?
   latest10QInfo                  Latest10QInfo?
+
   // latest10QInformation           Latest10QInformation?            @relation(fields: [latest10QInformationId], references: [id])
   @@unique([spaceId, tickerKey])
   @@map("tickers")
@@ -499,14 +500,15 @@ model TickerV1Industry {
   summary     String  @map("summary")
   archived    Boolean @default(false) @map("archived")
 
-  subIndustries TickerV1SubIndustry[]
-  tickers       TickerV1[]            @relation("IndustryTickers")
+  subIndustries          TickerV1SubIndustry[]
+  tickers                TickerV1[]               @relation("IndustryTickers")
+  AnalysisCategoryFactor AnalysisCategoryFactor[]
 
   @@index([industryKey])
 }
 
 model TickerV1SubIndustry {
-  subIndustryKey String  @id @map("sub_industry_key")
+  subIndustryKey String  @map("sub_industry_key")
   name           String  @map("name")
   summary        String  @map("summary")
   industryKey    String  @map("industry_key")
@@ -515,29 +517,35 @@ model TickerV1SubIndustry {
   industry TickerV1Industry @relation(fields: [industryKey], references: [industryKey])
 
   // optional backref to tickers
-  tickers TickerV1[] @relation("SubIndustryTickers")
+  tickers                TickerV1[]               @relation("SubIndustryTickers")
+  AnalysisCategoryFactor AnalysisCategoryFactor[]
 
-  @@index([industryKey, subIndustryKey])
+  // ✅ Composite primary key (the lynchpin of Option B)
+  @@id([industryKey, subIndustryKey])
   @@index([industryKey])
 }
 
 model TickerV1 {
-  id             String   @id @default(uuid())
-  name           String   @map("name")
-  symbol         String   @map("symbol")
-  exchange       String   @map("exchange")
-  industryKey    String   @map("industry_key")
-  subIndustryKey String   @map("sub_industry_key")
-  websiteUrl     String?  @map("website_url")
-  summary        String?  @map("summary")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  createdBy      String?  @map("created_by")
-  updatedBy      String?  @map("updated_by")
-  cachedScore    Int      @default(0) @map("cached_score")
+  id              String   @id @default(uuid())
+  name            String   @map("name")
+  symbol          String   @map("symbol")
+  exchange        String   @map("exchange")
+  industryKey     String   @map("industry_key")
+  subIndustryKey  String   @map("sub_industry_key")
+  websiteUrl      String?  @map("website_url")
+  summary         String?  @map("summary")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  createdBy       String?  @map("created_by")
+  updatedBy       String?  @map("updated_by")
+  cachedScore     Int      @default(0) @map("cached_score")
   metaDescription String?  @map("meta_description")
-  spaceId        String   @default("koala_gains") @map("space_id")
-
+  spaceId         String   @default("koala_gains") @map("space_id")
+ 
+  // Direct FK to industry (for quick joins/filters)
+  industry                TickerV1Industry                       @relation("IndustryTickers", fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
+  // Composite FK to subindustry: *enforces the pairing*
+  subIndustry             TickerV1SubIndustry                    @relation("SubIndustryTickers", fields: [industryKey, subIndustryKey], references: [industryKey, subIndustryKey], onUpdate: Cascade, onDelete: Restrict)
   // Relations
   categoryAnalysisResults TickerV1CategoryAnalysisResult[]
   factorResults           TickerV1AnalysisCategoryFactorResult[]
@@ -547,67 +555,62 @@ model TickerV1 {
   generationRequests      TickerV1GenerationRequest[]
 
   // Relation to cached score
-  cachedScoreEntry        TickerV1CachedScore?
+  cachedScoreEntry TickerV1CachedScore?
 
-  // Ensure uniqueness of symbol+exchange per space
-
-  // ✅ new relations
-  industry    TickerV1Industry    @relation("IndustryTickers", fields: [industryKey], references: [industryKey])
-  subIndustry TickerV1SubIndustry @relation("SubIndustryTickers", fields: [subIndustryKey], references: [subIndustryKey])
   financialInfo TickerV1FinancialInfo?
 
+  @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
   @@index([subIndustryKey])
-  @@unique([spaceId, symbol, exchange])
   @@map("tickers_v1")
 }
 
 model TickerV1FinancialInfo {
-  id               String   @id @default(uuid())
-  tickerId         String   @unique @map("ticker_id")
-  currency         String?  @map("currency")
-  price            Float?   @map("price")
-  dayHigh          Float?   @map("day_high")
-  dayLow           Float?   @map("day_low")
-  yearHigh         Float?   @map("year_high")
-  yearLow          Float?   @map("year_low")
-  marketCap        Float?   @map("market_cap")
-  epsDilutedTTM    Float?   @map("eps_diluted_ttm")
-  pe               Float?   @map("pe_ratio")
-  avgVolume3M      Float?   @map("avg_volume_3m")
-  dayVolume        Float?   @map("day_volume")
-  annualDividend   Float?   @map("annual_dividend")
-  dividendYield    Float?   @map("dividend_yield")
-  totalRevenue     Float?   @map("total_revenue")
-  netIncome        Float?   @map("net_income")
-  netProfitMargin  Float?   @map("net_profit_margin")
+  id              String  @id @default(uuid())
+  tickerId        String  @unique @map("ticker_id")
+  currency        String? @map("currency")
+  price           Float?  @map("price")
+  dayHigh         Float?  @map("day_high")
+  dayLow          Float?  @map("day_low")
+  yearHigh        Float?  @map("year_high")
+  yearLow         Float?  @map("year_low")
+  marketCap       Float?  @map("market_cap")
+  epsDilutedTTM   Float?  @map("eps_diluted_ttm")
+  pe              Float?  @map("pe_ratio")
+  avgVolume3M     Float?  @map("avg_volume_3m")
+  dayVolume       Float?  @map("day_volume")
+  annualDividend  Float?  @map("annual_dividend")
+  dividendYield   Float?  @map("dividend_yield")
+  totalRevenue    Float?  @map("total_revenue")
+  netIncome       Float?  @map("net_income")
+  netProfitMargin Float?  @map("net_profit_margin")
 
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  createdBy        String?  @map("created_by")
-  updatedBy        String?  @map("updated_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
 
   // Relation back to TickerV1
-  ticker           TickerV1 @relation(fields: [tickerId], references: [id])
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
   @@index([tickerId])
   @@map("ticker_v1_financial_info")
 }
 
 model TickerV1CachedScore {
-  id                   String                 @id @default(uuid())
-  tickerId             String                 @map("ticker_id")
+  id       String @id @default(uuid())
+  tickerId String @map("ticker_id")
 
   // Scores for each category
-  businessAndMoatScore             Int    @map("business_and_moat_score")
-  financialStatementAnalysisScore  Int    @map("financial_statement_analysis_score")
-  pastPerformanceScore             Int    @map("past_performance_score")
-  futureGrowthScore                Int    @map("future_growth_score")
-  fairValueScore                   Int    @map("fair_value_score")
+  businessAndMoatScore            Int @map("business_and_moat_score")
+  financialStatementAnalysisScore Int @map("financial_statement_analysis_score")
+  pastPerformanceScore            Int @map("past_performance_score")
+  futureGrowthScore               Int @map("future_growth_score")
+  fairValueScore                  Int @map("fair_value_score")
 
   // Final score
-  finalScore                        Int    @map("final_score")
+  finalScore Int @map("final_score")
 
   // Relation to TickerV1
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
@@ -615,32 +618,34 @@ model TickerV1CachedScore {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  createdBy                String?                @map("created_by")
-  updatedBy                String?                @map("updated_by")
+  createdBy String? @map("created_by")
+  updatedBy String? @map("updated_by")
 
   @@unique([tickerId]) // each ticker has only one cached score entry
   @@index([tickerId])
   @@map("ticker_v1_cached_scores")
 }
 
-
 model AnalysisCategoryFactor {
-  id                        String                 @id @default(uuid())
-  industryKey               String                 @map("industry_key")
-  subIndustryKey            String                 @map("sub_industry_key")
-  categoryKey               TickerAnalysisCategory @map("category_key")
-  factorAnalysisKey         String                 @map("factor_analysis_key")
-  factorAnalysisTitle       String                 @map("factor_analysis_title")
-  factorAnalysisDescription String                 @map("factor_analysis_description")
-  factorAnalysisMetrics     String?                @map("factor_analysis_metrics")
-  createdAt                 DateTime               @default(now()) @map("created_at")
-  updatedAt                 DateTime               @updatedAt @map("updated_at")
-  createdBy                 String?                @map("created_by")
-  updatedBy                 String?                @map("updated_by")
-  spaceId                   String                 @default("koala_gains") @map("space_id")
-
+  id                        String                                 @id @default(uuid())
+  industryKey               String                                 @map("industry_key")
+  subIndustryKey            String                                 @map("sub_industry_key")
+  categoryKey               TickerAnalysisCategory                 @map("category_key")
+  factorAnalysisKey         String                                 @map("factor_analysis_key")
+  factorAnalysisTitle       String                                 @map("factor_analysis_title")
+  factorAnalysisDescription String                                 @map("factor_analysis_description")
+  factorAnalysisMetrics     String?                                @map("factor_analysis_metrics")
+  createdAt                 DateTime                               @default(now()) @map("created_at")
+  updatedAt                 DateTime                               @updatedAt @map("updated_at")
+  createdBy                 String?                                @map("created_by")
+  updatedBy                 String?                                @map("updated_by")
+  spaceId                   String                                 @default("koala_gains") @map("space_id")
+  // Enforce valid industry
+  industry                  TickerV1Industry                       @relation(fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
+  // Enforce valid (industryKey, subIndustryKey) pairing
+  subIndustry               TickerV1SubIndustry                    @relation(fields: [industryKey, subIndustryKey], references: [industryKey, subIndustryKey], onUpdate: Cascade, onDelete: Restrict)
   // Backrefs
-  factorResults TickerV1AnalysisCategoryFactorResult[]
+  factorResults             TickerV1AnalysisCategoryFactorResult[]
 
   @@unique([spaceId, industryKey, subIndustryKey, categoryKey, factorAnalysisKey])
   @@map("analysis_category_factors")
@@ -757,44 +762,44 @@ model TickerV1VsCompetition {
 }
 
 model TickerV1GenerationRequest {
-  id        String   @id @default(uuid())
-  tickerId  String   @map("ticker_id")
-  spaceId   String   @default("koala_gains") @map("space_id")
-  
+  id       String @id @default(uuid())
+  tickerId String @map("ticker_id")
+  spaceId  String @default("koala_gains") @map("space_id")
+
   // Core analysis sections (true = regenerate this section)
-  regenerateCompetition              Boolean @default(false) @map("regenerate_competition")
-  regenerateFinancialAnalysis        Boolean @default(false) @map("regenerate_financial_analysis")
-  regenerateBusinessAndMoat          Boolean @default(false) @map("regenerate_business_and_moat")
-  regeneratePastPerformance          Boolean @default(false) @map("regenerate_past_performance")
-  regenerateFutureGrowth             Boolean @default(false) @map("regenerate_future_growth")
-  regenerateFairValue                Boolean @default(false) @map("regenerate_fair_value")
-  regenerateFutureRisk               Boolean @default(false) @map("regenerate_future_risk")
-  
+  regenerateCompetition       Boolean @default(false) @map("regenerate_competition")
+  regenerateFinancialAnalysis Boolean @default(false) @map("regenerate_financial_analysis")
+  regenerateBusinessAndMoat   Boolean @default(false) @map("regenerate_business_and_moat")
+  regeneratePastPerformance   Boolean @default(false) @map("regenerate_past_performance")
+  regenerateFutureGrowth      Boolean @default(false) @map("regenerate_future_growth")
+  regenerateFairValue         Boolean @default(false) @map("regenerate_fair_value")
+  regenerateFutureRisk        Boolean @default(false) @map("regenerate_future_risk")
+
   // Investor analyses
-  regenerateWarrenBuffett            Boolean @default(false) @map("regenerate_warren_buffett")
-  regenerateCharlieMunger            Boolean @default(false) @map("regenerate_charlie_munger")
-  regenerateBillAckman               Boolean @default(false) @map("regenerate_bill_ackman")
-  
+  regenerateWarrenBuffett Boolean @default(false) @map("regenerate_warren_buffett")
+  regenerateCharlieMunger Boolean @default(false) @map("regenerate_charlie_munger")
+  regenerateBillAckman    Boolean @default(false) @map("regenerate_bill_ackman")
+
   // Final steps
-  regenerateFinalSummary             Boolean @default(false) @map("regenerate_final_summary")
-  regenerateCachedScore              Boolean @default(false) @map("regenerate_cached_score")
-  
+  regenerateFinalSummary Boolean @default(false) @map("regenerate_final_summary")
+  regenerateCachedScore  Boolean @default(false) @map("regenerate_cached_score")
+
   // Request status
-  status                             String @default("NotStarted") @map("status")
+  status String @default("NotStarted") @map("status")
 
   // Step tracking
-  completedSteps                     String[] @default([]) @map("completed_steps")
-  failedSteps                        String[] @default([]) @map("failed_steps")
+  completedSteps String[] @default([]) @map("completed_steps")
+  failedSteps    String[] @default([]) @map("failed_steps")
 
   // Timestamps for tracking
-  createdAt                          DateTime  @default(now()) @map("created_at")
-  updatedAt                          DateTime  @updatedAt @map("updated_at")
-  startedAt                          DateTime? @map("started_at")
-  completedAt                        DateTime? @map("completed_at")
-  
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  startedAt   DateTime? @map("started_at")
+  completedAt DateTime? @map("completed_at")
+
   // Relation
-  ticker    TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
-  
+  ticker TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+
   @@index([tickerId])
   @@index([status])
   @@map("ticker_v1_generation_requests")
