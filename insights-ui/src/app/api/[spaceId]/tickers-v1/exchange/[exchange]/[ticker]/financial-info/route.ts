@@ -54,6 +54,12 @@ export interface FinancialInfoResponse {
   netProfitMargin: Num;
 }
 
+// Wrapper to make financial info optional - if there's an error fetching data,
+// we return null instead of crashing the page
+export interface FinancialInfoOptionalWrapper {
+  financialInfo: FinancialInfoResponse | null;
+}
+
 async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<FinancialInfoResponse> {
   // Convert to Yahoo Finance format (e.g., DIR.UN -> DIR-UN.TO for TSX)
   const yahooSymbol = convertToYahooFinanceSymbol(ticker, exchange);
@@ -123,17 +129,17 @@ async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<
 async function getHandler(
   req: NextRequest,
   { params }: { params: Promise<{ spaceId: string; exchange: string; ticker: string }> }
-): Promise<FinancialInfoResponse> {
+): Promise<FinancialInfoOptionalWrapper> {
   const { spaceId, exchange, ticker } = await params;
   const e = exchange?.toUpperCase()?.trim();
   const t = ticker?.toUpperCase()?.trim();
 
   if (!t || !e) {
-    throw new Error('Ticker symbol and exchange are required');
+    return { financialInfo: null };
   }
 
   // Find the ticker in database
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: t,
@@ -143,10 +149,6 @@ async function getHandler(
       financialInfo: true,
     },
   });
-
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${t} on exchange ${e} not found`);
-  }
 
   // Check if we have cached data and if it's less than 7 days old
   const now = new Date();
@@ -205,58 +207,62 @@ async function getHandler(
         },
       });
 
-      return freshData;
+      return { financialInfo: freshData };
     } catch (error) {
       // If Yahoo Finance fails and we have cached data, return it
       if (existingFinancialInfo) {
-        console.warn(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
+        console.log(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
         return {
-          symbol: tickerRecord.symbol,
-          currency: existingFinancialInfo.currency,
-          price: existingFinancialInfo.price,
-          dayHigh: existingFinancialInfo.dayHigh,
-          dayLow: existingFinancialInfo.dayLow,
-          yearHigh: existingFinancialInfo.yearHigh,
-          yearLow: existingFinancialInfo.yearLow,
-          marketCap: existingFinancialInfo.marketCap,
-          epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
-          pe: existingFinancialInfo.pe,
-          avgVolume3M: existingFinancialInfo.avgVolume3M,
-          dayVolume: existingFinancialInfo.dayVolume,
-          annualDividend: existingFinancialInfo.annualDividend,
-          dividendYield: existingFinancialInfo.dividendYield,
-          totalRevenue: existingFinancialInfo.totalRevenue,
-          netIncome: existingFinancialInfo.netIncome,
-          netProfitMargin: existingFinancialInfo.netProfitMargin,
+          financialInfo: {
+            symbol: tickerRecord.symbol,
+            currency: existingFinancialInfo.currency,
+            price: existingFinancialInfo.price,
+            dayHigh: existingFinancialInfo.dayHigh,
+            dayLow: existingFinancialInfo.dayLow,
+            yearHigh: existingFinancialInfo.yearHigh,
+            yearLow: existingFinancialInfo.yearLow,
+            marketCap: existingFinancialInfo.marketCap,
+            epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
+            pe: existingFinancialInfo.pe,
+            avgVolume3M: existingFinancialInfo.avgVolume3M,
+            dayVolume: existingFinancialInfo.dayVolume,
+            annualDividend: existingFinancialInfo.annualDividend,
+            dividendYield: existingFinancialInfo.dividendYield,
+            totalRevenue: existingFinancialInfo.totalRevenue,
+            netIncome: existingFinancialInfo.netIncome,
+            netProfitMargin: existingFinancialInfo.netProfitMargin,
+          },
         };
       }
 
-      // If no cached data, throw error so the frontend knows there's no data
-      console.warn(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
-      throw new Error(`Financial data unavailable for ${t} on exchange ${e}`);
+      // If no cached data, return null instead of throwing error
+      console.log(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
+      return { financialInfo: null };
     }
   }
 
   // Return cached data
   return {
-    symbol: tickerRecord.symbol,
-    currency: existingFinancialInfo.currency,
-    price: existingFinancialInfo.price,
-    dayHigh: existingFinancialInfo.dayHigh,
-    dayLow: existingFinancialInfo.dayLow,
-    yearHigh: existingFinancialInfo.yearHigh,
-    yearLow: existingFinancialInfo.yearLow,
-    marketCap: existingFinancialInfo.marketCap,
-    epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
-    pe: existingFinancialInfo.pe,
-    avgVolume3M: existingFinancialInfo.avgVolume3M,
-    dayVolume: existingFinancialInfo.dayVolume,
-    annualDividend: existingFinancialInfo.annualDividend,
-    dividendYield: existingFinancialInfo.dividendYield,
-    totalRevenue: existingFinancialInfo.totalRevenue,
-    netIncome: existingFinancialInfo.netIncome,
-    netProfitMargin: existingFinancialInfo.netProfitMargin,
+    financialInfo: {
+      symbol: tickerRecord.symbol,
+      currency: existingFinancialInfo.currency,
+      price: existingFinancialInfo.price,
+      dayHigh: existingFinancialInfo.dayHigh,
+      dayLow: existingFinancialInfo.dayLow,
+      yearHigh: existingFinancialInfo.yearHigh,
+      yearLow: existingFinancialInfo.yearLow,
+      marketCap: existingFinancialInfo.marketCap,
+      epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
+      pe: existingFinancialInfo.pe,
+      avgVolume3M: existingFinancialInfo.avgVolume3M,
+      dayVolume: existingFinancialInfo.dayVolume,
+      annualDividend: existingFinancialInfo.annualDividend,
+      dividendYield: existingFinancialInfo.dividendYield,
+      totalRevenue: existingFinancialInfo.totalRevenue,
+      netIncome: existingFinancialInfo.netIncome,
+      netProfitMargin: existingFinancialInfo.netProfitMargin,
+    },
   };
 }
 
-export const GET = withErrorHandlingV2<FinancialInfoResponse>(getHandler);
+export const GET = withErrorHandlingV2<FinancialInfoOptionalWrapper>(getHandler);
