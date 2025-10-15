@@ -152,55 +152,85 @@ async function getHandler(
   const shouldRefetch = !existingFinancialInfo || existingFinancialInfo.updatedAt < sevenDaysAgo;
 
   if (shouldRefetch) {
-    // Fetch fresh data from Yahoo Finance
-    const freshData = await fetchFromYahooFinance(t);
+    try {
+      // Fetch fresh data from Yahoo Finance
+      const freshData = await fetchFromYahooFinance(t);
 
-    // Upsert financial info in database (handles both create and update)
-    await prisma.tickerV1FinancialInfo.upsert({
-      where: {
-        tickerId: tickerRecord.id,
-      },
-      update: {
-        currency: freshData.currency,
-        price: freshData.price,
-        dayHigh: freshData.dayHigh,
-        dayLow: freshData.dayLow,
-        yearHigh: freshData.yearHigh,
-        yearLow: freshData.yearLow,
-        marketCap: freshData.marketCap,
-        epsDilutedTTM: freshData.epsDilutedTTM,
-        pe: freshData.pe,
-        avgVolume3M: freshData.avgVolume3M,
-        dayVolume: freshData.dayVolume,
-        annualDividend: freshData.annualDividend,
-        dividendYield: freshData.dividendYield,
-        totalRevenue: freshData.totalRevenue,
-        netIncome: freshData.netIncome,
-        netProfitMargin: freshData.netProfitMargin,
-        updatedAt: now,
-      },
-      create: {
-        tickerId: tickerRecord.id,
-        currency: freshData.currency,
-        price: freshData.price,
-        dayHigh: freshData.dayHigh,
-        dayLow: freshData.dayLow,
-        yearHigh: freshData.yearHigh,
-        yearLow: freshData.yearLow,
-        marketCap: freshData.marketCap,
-        epsDilutedTTM: freshData.epsDilutedTTM,
-        pe: freshData.pe,
-        avgVolume3M: freshData.avgVolume3M,
-        dayVolume: freshData.dayVolume,
-        annualDividend: freshData.annualDividend,
-        dividendYield: freshData.dividendYield,
-        totalRevenue: freshData.totalRevenue,
-        netIncome: freshData.netIncome,
-        netProfitMargin: freshData.netProfitMargin,
-      },
-    });
+      // Upsert financial info in database (handles both create and update)
+      await prisma.tickerV1FinancialInfo.upsert({
+        where: {
+          tickerId: tickerRecord.id,
+        },
+        update: {
+          currency: freshData.currency,
+          price: freshData.price,
+          dayHigh: freshData.dayHigh,
+          dayLow: freshData.dayLow,
+          yearHigh: freshData.yearHigh,
+          yearLow: freshData.yearLow,
+          marketCap: freshData.marketCap,
+          epsDilutedTTM: freshData.epsDilutedTTM,
+          pe: freshData.pe,
+          avgVolume3M: freshData.avgVolume3M,
+          dayVolume: freshData.dayVolume,
+          annualDividend: freshData.annualDividend,
+          dividendYield: freshData.dividendYield,
+          totalRevenue: freshData.totalRevenue,
+          netIncome: freshData.netIncome,
+          netProfitMargin: freshData.netProfitMargin,
+          updatedAt: now,
+        },
+        create: {
+          tickerId: tickerRecord.id,
+          currency: freshData.currency,
+          price: freshData.price,
+          dayHigh: freshData.dayHigh,
+          dayLow: freshData.dayLow,
+          yearHigh: freshData.yearHigh,
+          yearLow: freshData.yearLow,
+          marketCap: freshData.marketCap,
+          epsDilutedTTM: freshData.epsDilutedTTM,
+          pe: freshData.pe,
+          avgVolume3M: freshData.avgVolume3M,
+          dayVolume: freshData.dayVolume,
+          annualDividend: freshData.annualDividend,
+          dividendYield: freshData.dividendYield,
+          totalRevenue: freshData.totalRevenue,
+          netIncome: freshData.netIncome,
+          netProfitMargin: freshData.netProfitMargin,
+        },
+      });
 
-    return freshData;
+      return freshData;
+    } catch (error) {
+      // If Yahoo Finance fails and we have cached data, return it
+      if (existingFinancialInfo) {
+        console.warn(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
+        return {
+          symbol: tickerRecord.symbol,
+          currency: existingFinancialInfo.currency,
+          price: existingFinancialInfo.price,
+          dayHigh: existingFinancialInfo.dayHigh,
+          dayLow: existingFinancialInfo.dayLow,
+          yearHigh: existingFinancialInfo.yearHigh,
+          yearLow: existingFinancialInfo.yearLow,
+          marketCap: existingFinancialInfo.marketCap,
+          epsDilutedTTM: existingFinancialInfo.epsDilutedTTM,
+          pe: existingFinancialInfo.pe,
+          avgVolume3M: existingFinancialInfo.avgVolume3M,
+          dayVolume: existingFinancialInfo.dayVolume,
+          annualDividend: existingFinancialInfo.annualDividend,
+          dividendYield: existingFinancialInfo.dividendYield,
+          totalRevenue: existingFinancialInfo.totalRevenue,
+          netIncome: existingFinancialInfo.netIncome,
+          netProfitMargin: existingFinancialInfo.netProfitMargin,
+        };
+      }
+
+      // If no cached data, throw error so the frontend knows there's no data
+      console.warn(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
+      throw new Error(`Financial data unavailable for ${t} on exchange ${e}`);
+    }
   }
 
   // Return cached data

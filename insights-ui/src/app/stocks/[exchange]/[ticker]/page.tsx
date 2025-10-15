@@ -126,14 +126,22 @@ async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTi
   return arr;
 }
 
-async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse> {
+async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
   const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchFinancialInfo failed (${res.status}): ${url}`);
+  try {
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.warn(`fetchFinancialInfo failed (${res.status}): ${url}`);
+      return null;
+    }
 
-  const data = (await res.json()) as FinancialInfoResponse;
-  return data;
+    const data = (await res.json()) as FinancialInfoResponse;
+    return data;
+  } catch (error) {
+    console.warn(`fetchFinancialInfo error for ${ticker}:`, error);
+    return null;
+  }
 }
 
 /** Metadata */
@@ -321,10 +329,10 @@ function TickerSummaryInfo({
   financialInfoPromise,
 }: {
   data: Promise<TickerV1FastResponse>;
-  financialInfoPromise: Promise<FinancialInfoResponse>;
+  financialInfoPromise: Promise<FinancialInfoResponse | null>;
 }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
-  const financialData: FinancialInfoResponse = use(financialInfoPromise);
+  const financialData: FinancialInfoResponse | null = use(financialInfoPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -380,9 +388,11 @@ function TickerSummaryInfo({
         </div>
 
         {/* Financial Information - after radar chart */}
-        <Suspense fallback={<FinancialInfoSkeleton />}>
-          <FinancialInfo data={financialData} />
-        </Suspense>
+        {financialData && (
+          <Suspense fallback={<FinancialInfoSkeleton />}>
+            <FinancialInfo data={financialData} />
+          </Suspense>
+        )}
       </section>
       <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
