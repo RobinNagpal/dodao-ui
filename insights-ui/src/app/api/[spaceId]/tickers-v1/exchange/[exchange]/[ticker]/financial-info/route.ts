@@ -2,6 +2,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
 import yahooFinance from 'yahoo-finance2';
+import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 
 type Num = number | null;
 
@@ -53,12 +54,15 @@ export interface FinancialInfoResponse {
   netProfitMargin: Num;
 }
 
-async function fetchFromYahooFinance(ticker: string): Promise<FinancialInfoResponse> {
+async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<FinancialInfoResponse> {
+  // Convert to Yahoo Finance format (e.g., DIR.UN -> DIR-UN.TO for TSX)
+  const yahooSymbol = convertToYahooFinanceSymbol(ticker, exchange);
+
   // 1) Fast quote
-  const q = await yahooFinance.quote(ticker);
+  const q = await yahooFinance.quote(yahooSymbol);
 
   // 2) Summary for fallbacks
-  const qs = await yahooFinance.quoteSummary(ticker, {
+  const qs = await yahooFinance.quoteSummary(yahooSymbol, {
     modules: ['incomeStatementHistoryQuarterly', 'summaryDetail'],
   });
 
@@ -154,7 +158,7 @@ async function getHandler(
   if (shouldRefetch) {
     try {
       // Fetch fresh data from Yahoo Finance
-      const freshData = await fetchFromYahooFinance(t);
+      const freshData = await fetchFromYahooFinance(t, e);
 
       // Upsert financial info in database (handles both create and update)
       await prisma.tickerV1FinancialInfo.upsert({
