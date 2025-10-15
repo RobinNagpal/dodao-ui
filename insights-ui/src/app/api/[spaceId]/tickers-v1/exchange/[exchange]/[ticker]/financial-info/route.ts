@@ -1,10 +1,22 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
-import yahooFinance from 'yahoo-finance2';
+// @ts-ignore - yahoo-finance2 has type issues with v2.x
+import YahooFinance from 'yahoo-finance2';
 import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 
 type Num = number | null;
+
+export interface FinancialInfoOptionalWrapper {
+  financialInfo: FinancialInfoResponse | null;
+}
+
+// Normalize both shapes (constructor vs. module with bound fns)
+const yf: any = (() => {
+  const mod: any = (YahooFinance as any)?.default ?? YahooFinance;
+  // If it looks like a constructor (has "prototype"), instantiate it once.
+  return typeof mod === 'function' && mod.prototype ? new mod() : mod;
+})();
 
 // Coerce unknown to a finite number, else null.
 const num = (v: unknown): Num => {
@@ -54,21 +66,12 @@ export interface FinancialInfoResponse {
   netProfitMargin: Num;
 }
 
-// Wrapper to make financial info optional - if there's an error fetching data,
-// we return null instead of crashing the page
-export interface FinancialInfoOptionalWrapper {
-  financialInfo: FinancialInfoResponse | null;
-}
-
 async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<FinancialInfoResponse> {
   // Convert to Yahoo Finance format (e.g., DIR.UN -> DIR-UN.TO for TSX)
   const yahooSymbol = convertToYahooFinanceSymbol(ticker, exchange);
 
-  // 1) Fast quote
-  const q = (await yahooFinance.quote(yahooSymbol)) as Record<string, unknown>;
-
-  // 2) Summary for fallbacks
-  const qs = (await yahooFinance.quoteSummary(yahooSymbol, {
+  const q = (await yf.quote(yahooSymbol)) as Record<string, unknown>;
+  const qs = (await yf.quoteSummary(yahooSymbol, {
     modules: ['incomeStatementHistoryQuarterly', 'summaryDetail'],
   })) as Record<string, unknown>;
 
