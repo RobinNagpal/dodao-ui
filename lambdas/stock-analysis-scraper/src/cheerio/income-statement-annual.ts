@@ -237,6 +237,7 @@ export interface IncomeAnnualStrictValues {
   costOfRevenue?: number | null;
   grossProfit?: number | null;
   sellingGeneralAndAdmin?: number | null;
+  researchAndDevelopment?: number | null;
   otherOperatingExpenses?: number | null;
   operatingExpenses?: number | null;
   operatingIncome?: number | null;
@@ -246,15 +247,24 @@ export interface IncomeAnnualStrictValues {
   currencyExchangeGain?: number | null;
   otherNonOperatingIncome?: number | null;
   ebtExcludingUnusualItems?: number | null;
+  mergerAndRestructuringCharges?: number | null;
+  legalSettlements?: number | null;
   gainOnSaleOfInvestments?: number | null;
   gainOnSaleOfAssets?: number | null;
   otherUnusualItems?: number | null;
   pretaxIncome?: number | null;
   incomeTaxExpense?: number | null;
+  earningsFromContinuingOperations?: number | null;
+  earningsFromDiscontinuedOperations?: number | null;
+  netIncomeToCompany?: number | null;
+  minorityInterestInEarnings?: number | null;
   netIncome?: number | null;
+  preferredDividendsAndOtherAdjustments?: number | null;
   netIncomeToCommon?: number | null;
   netIncomeGrowth?: number | null;
   sharesOutstanding?: number | null;
+  sharesOutstandingDiluted?: number | null;
+  sharesChange?: number | null;
   eps?: number | null;
   epsGrowth?: number | null;
   freeCashFlow?: number | null;
@@ -272,6 +282,7 @@ export interface IncomeAnnualStrictValues {
   ebitMargin?: number | null;
   effectiveTaxRate?: number | null;
   advertisingExpenses?: number | null;
+  revenueAsReported?: number | null;
 }
 
 // Strongly-typed allowlist of strict keys
@@ -281,6 +292,7 @@ const INCOME_ANNUAL_KEYS = [
   "costOfRevenue",
   "grossProfit",
   "sellingGeneralAndAdmin",
+  "researchAndDevelopment",
   "otherOperatingExpenses",
   "operatingExpenses",
   "operatingIncome",
@@ -290,15 +302,24 @@ const INCOME_ANNUAL_KEYS = [
   "currencyExchangeGain",
   "otherNonOperatingIncome",
   "ebtExcludingUnusualItems",
+  "mergerAndRestructuringCharges",
+  "legalSettlements",
   "gainOnSaleOfInvestments",
   "gainOnSaleOfAssets",
   "otherUnusualItems",
   "pretaxIncome",
   "incomeTaxExpense",
+  "earningsFromContinuingOperations",
+  "earningsFromDiscontinuedOperations",
+  "netIncomeToCompany",
+  "minorityInterestInEarnings",
   "netIncome",
+  "preferredDividendsAndOtherAdjustments",
   "netIncomeToCommon",
   "netIncomeGrowth",
   "sharesOutstanding",
+  "sharesOutstandingDiluted",
+  "sharesChange",
   "eps",
   "epsGrowth",
   "freeCashFlow",
@@ -316,6 +337,7 @@ const INCOME_ANNUAL_KEYS = [
   "ebitMargin",
   "effectiveTaxRate",
   "advertisingExpenses",
+  "revenueAsReported",
 ] as const;
 
 type IncomeAnnualKey = (typeof INCOME_ANNUAL_KEYS)[number];
