@@ -65,15 +65,16 @@ async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<
   const yahooSymbol = convertToYahooFinanceSymbol(ticker, exchange);
 
   // 1) Fast quote
-  const q = await yahooFinance.quote(yahooSymbol);
+  const q = (await yahooFinance.quote(yahooSymbol)) as Record<string, unknown>;
 
   // 2) Summary for fallbacks
-  const qs = await yahooFinance.quoteSummary(yahooSymbol, {
+  const qs = (await yahooFinance.quoteSummary(yahooSymbol, {
     modules: ['incomeStatementHistoryQuarterly', 'summaryDetail'],
-  });
+  })) as Record<string, unknown>;
 
   // ----- TTM from quarterly -----
-  const quarterly = qs?.incomeStatementHistoryQuarterly?.incomeStatementHistory ?? [];
+  const incomeStatementData = qs?.incomeStatementHistoryQuarterly as Record<string, unknown> | undefined;
+  const quarterly = incomeStatementData?.incomeStatementHistory ?? [];
 
   const last4 = Array.isArray(quarterly) ? quarterly.slice(0, 4) : [];
 
@@ -95,27 +96,27 @@ async function fetchFromYahooFinance(ticker: string, exchange: string): Promise<
   const netProfitMargin = totalRevenueTTM && totalRevenueTTM !== 0 && netIncomeTTM != null ? netIncomeTTM / totalRevenueTTM : null;
 
   // ----- DIVIDENDS -----
-  const sd = qs?.summaryDetail;
+  const sd = qs?.summaryDetail as Record<string, unknown> | undefined;
 
-  const annualDividend = pickNum((q as Record<string, unknown>)?.dividendRate, sd?.dividendRate, (q as Record<string, unknown>)?.trailingAnnualDividendRate);
+  const annualDividend = pickNum(q?.dividendRate, sd?.dividendRate, q?.trailingAnnualDividendRate);
 
-  const dividendYield = pickNum((q as Record<string, unknown>)?.dividendYield, sd?.dividendYield, (q as Record<string, unknown>)?.trailingAnnualDividendYield);
+  const dividendYield = pickNum(q?.dividendYield, sd?.dividendYield, q?.trailingAnnualDividendYield);
 
   return {
-    symbol: ((q as Record<string, unknown>)?.symbol as string) ?? ticker,
-    currency: ((q as Record<string, unknown>)?.currency as string) ?? ((q as Record<string, unknown>)?.financialCurrency as string) ?? null,
+    symbol: (q?.symbol as string) ?? ticker,
+    currency: (q?.currency as string) ?? (q?.financialCurrency as string) ?? null,
 
-    price: num((q as Record<string, unknown>)?.regularMarketPrice),
-    dayHigh: num((q as Record<string, unknown>)?.regularMarketDayHigh),
-    dayLow: num((q as Record<string, unknown>)?.regularMarketDayLow),
-    yearHigh: num((q as Record<string, unknown>)?.fiftyTwoWeekHigh),
-    yearLow: num((q as Record<string, unknown>)?.fiftyTwoWeekLow),
+    price: num(q?.regularMarketPrice),
+    dayHigh: num(q?.regularMarketDayHigh),
+    dayLow: num(q?.regularMarketDayLow),
+    yearHigh: num(q?.fiftyTwoWeekHigh),
+    yearLow: num(q?.fiftyTwoWeekLow),
 
-    marketCap: num((q as Record<string, unknown>)?.marketCap),
-    epsDilutedTTM: num((q as Record<string, unknown>)?.epsTrailingTwelveMonths),
-    pe: num((q as Record<string, unknown>)?.trailingPE),
-    avgVolume3M: num((q as Record<string, unknown>)?.averageDailyVolume3Month),
-    dayVolume: num((q as Record<string, unknown>)?.regularMarketVolume),
+    marketCap: num(q?.marketCap),
+    epsDilutedTTM: num(q?.epsTrailingTwelveMonths),
+    pe: num(q?.trailingPE),
+    avgVolume3M: num(q?.averageDailyVolume3Month),
+    dayVolume: num(q?.regularMarketVolume),
 
     annualDividend,
     dividendYield,
