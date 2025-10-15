@@ -541,7 +541,8 @@ model TickerV1 {
   cachedScore     Int      @default(0) @map("cached_score")
   metaDescription String?  @map("meta_description")
   spaceId         String   @default("koala_gains") @map("space_id")
- 
+  stockAnalyzeUrl String?  @map("stock_analyze_url")
+
   // Direct FK to industry (for quick joins/filters)
   industry                TickerV1Industry                       @relation("IndustryTickers", fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
   // Composite FK to subindustry: *enforces the pairing*
