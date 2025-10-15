@@ -215,7 +215,7 @@ async function getHandler(
     } catch (error) {
       // If Yahoo Finance fails and we have cached data, return it
       if (existingFinancialInfo) {
-        console.log(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
+        console.error(`Yahoo Finance fetch failed for ${t}, returning cached data:`, error);
         return {
           financialInfo: {
             symbol: tickerRecord.symbol,
@@ -240,7 +240,7 @@ async function getHandler(
       }
 
       // If no cached data, return null instead of throwing error
-      console.log(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
+      console.error(`Yahoo Finance fetch failed for ${t} and no cached data available:`, error);
       return { financialInfo: null };
     }
   }
