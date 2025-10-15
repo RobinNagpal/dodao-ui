@@ -132,14 +132,14 @@ async function fetchFinancialInfo(exchange: string, ticker: string): Promise<Fin
   try {
     const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
     if (!res.ok) {
-      console.log(`fetchFinancialInfo failed (${res.status}): ${url}`);
+      console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
       return null;
     }
 
     const wrapper = (await res.json()) as { financialInfo: FinancialInfoResponse | null };
     return wrapper.financialInfo;
   } catch (error) {
-    console.log(`fetchFinancialInfo error for ${ticker}:`, error);
+    console.error(`fetchFinancialInfo error for ${ticker}:`, error);
     return null;
   }
 }
