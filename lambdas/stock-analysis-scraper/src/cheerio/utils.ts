@@ -195,40 +195,62 @@ export function parseValueWithUnit(
   return num * (Number.isFinite(mult) ? mult : 1);
 }
 
-/** Robustly extract currency+unit+note from the faded blurb(s) above the table. */
 export function extractFinancialsMeta($: cheerio.CheerioAPI): FinancialsMeta {
   const meta: FinancialsMeta = {};
-  try {
-    // Collect possibly multiple blurbs, concatenate (some pages repeat "Millions PKR...")
-    const texts: string[] = [];
-    $("main .text-faded, .text-faded").each((_, el) => {
+
+  // 1) Scope to the financials section to avoid unrelated tokens
+  const $table = $("#main-table");
+  const $ctx = $table.closest("section, main, .container").first();
+  const texts: string[] = [];
+
+  // gather the faded blurbs immediately around the table
+  $ctx.find(".text-faded").each((_, el) => {
+    const t = normalizeText($(el).text());
+    if (t) texts.push(t);
+  });
+  // also look just above (some pages place the blurb in a previous sibling)
+  $ctx
+    .prevAll(".text-faded")
+    .slice(0, 2)
+    .each((_, el) => {
       const t = normalizeText($(el).text());
       if (t) texts.push(t);
     });
-    const blob = normalizeText(texts.join(" ")); // "Financials in millions PKR. ... Millions PKR. ..."
 
-    // Currency: prefer 3-letter ALL-CAPS tokens (USD, PKR, EUR, etc.)
-    const currencies = blob.match(/\b[A-Z]{3}\b/g);
-    if (currencies && currencies.length > 0) {
-      // choose the last occurrence (often the most specific line)
-      meta.currency = currencies[currencies.length - 1];
-    }
+  const blob = normalizeText(texts.join(" "));
 
-    // Unit: look for "in millions/thousands/billions" OR trailing "Millions" lines; pick the last one
-    const unitMatches = blob.match(/\b(millions?|thousands?|billions?)\b/gi);
-    if (unitMatches && unitMatches.length > 0) {
-      const uRaw = unitMatches[unitMatches.length - 1].toLowerCase();
-      const mapped = UNIT_MAP[uRaw];
-      meta.unit = mapped ?? "ones";
-    } else {
-      meta.unit = "ones";
-    }
-
-    // Fiscal year note (best-effort)
-    const fyNote = blob.match(/fiscal year is[^.]+(?:\.)?/i);
-    if (fyNote) meta.fiscalYearNote = normalizeText(fyNote[0]);
-  } catch {
-    // ignore
+  // 2) Primary: "Financials in millions USD" / "Financials in millions PKR"
+  //    Capture {unit} and {currency} in a single pass, order is consistent on SA.
+  const m = blob.match(
+    /\bFinancials\s+in\s+(millions?|thousands?|billions?)\s+([A-Z]{3})\b/i
+  );
+  if (m) {
+    const unitRaw = m[1].toLowerCase();
+    const cur = m[2].toUpperCase();
+    const UNIT_MAP: Record<string, Unit> = {
+      thousand: "thousands",
+      thousands: "thousands",
+      million: "millions",
+      millions: "millions",
+      billion: "billions",
+      billions: "billions",
+    };
+    meta.unit = UNIT_MAP[unitRaw] ?? "ones";
+    meta.currency = cur; // works for USD, PKR, INR, etc.
   }
+
+  // 3) Secondary currency hint: "Currency is PKR"
+  if (!meta.currency) {
+    const m2 = blob.match(/\bCurrency\s+is\s+([A-Z]{3})\b/i);
+    if (m2) meta.currency = m2[1].toUpperCase();
+  }
+
+  // 4) Fiscal year note (keep as-is)
+  const fy = blob.match(/fiscal year is[^.]+(?:\.)?/i);
+  if (fy) meta.fiscalYearNote = normalizeText(fy[0]);
+
+  // 5) Safe defaults (only if truly absent)
+  if (!meta.unit) meta.unit = "ones";
+
   return meta;
 }

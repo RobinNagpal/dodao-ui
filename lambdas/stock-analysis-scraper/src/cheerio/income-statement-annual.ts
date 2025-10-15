@@ -18,7 +18,7 @@ import * as cheerio from "cheerio";
 export type Unit = "ones" | "thousands" | "millions" | "billions";
 
 export interface IncomeMeta {
-  currency?: string; // e.g., "PKR"
+  currency?: string; // e.g., "USD"
   unit?: Unit; // e.g., "millions"
   fiscalYearNote?: string; // e.g., "Fiscal year is July - June."
 }
@@ -59,6 +59,17 @@ export async function scrapeIncomeStatementAnnualRaw(
     };
   }
   return parseIncomeStatementAnnualRaw(html);
+}
+
+function cleanPeriodEnd(raw?: string): string | undefined {
+  if (!raw) return raw;
+  // Match full date like "Dec 31, 2024"
+  const full = raw.match(
+    /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\b/
+  );
+  if (full) return full[0];
+  // fallback: just remove short year prefix like "Dec '24"
+  return raw.replace(/^[A-Za-z]{3}\s*'?\d{2}\s*/, "").trim();
 }
 
 export function parseIncomeStatementAnnualRaw(
@@ -109,9 +120,10 @@ export function parseIncomeStatementAnnualRaw(
       (/^FY\s*'?(\d{2}|\d{4})$/i.test(text) || /^\d{4}$/.test(text)) &&
       !text.includes("-")
     ) {
-      const periodEnd = peRow.eq(i).text()
+      const rawPe = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
+      const periodEnd = cleanPeriodEnd(rawPe);
       cols.push({ idx: i, fiscalYear: text, periodEnd });
     }
   });

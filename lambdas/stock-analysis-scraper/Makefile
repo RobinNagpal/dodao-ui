@@ -3,7 +3,8 @@
 # =========================
 SLS ?= npx serverless
 TSX ?= npx tsx
-TICKER_URL ?= https://www.macrotrends.net/stocks/charts/AAPL/apple
+# TICKER_URL ?= https://stockanalysis.com/quote/psx/LUCK/
+TICKER_URL ?= https://stockanalysis.com/stocks/SN/
 VIEW ?= strict
 ORIGIN ?= http://localhost:3000
 
