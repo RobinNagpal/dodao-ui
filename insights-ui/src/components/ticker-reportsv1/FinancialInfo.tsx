@@ -22,10 +22,13 @@ export function FinancialCard({ label, value, isLoading = false }: FinancialCard
 }
 
 // Helper to format numbers in millions
-function formatInMillions(value: Num): string {
+function formatInMillions(value: Num, currency?: string | null): string {
   if (value === null) return 'N/A';
   const millions = value / 1_000_000;
-  return `${millions.toFixed(2)}M`;
+  const formatted = millions.toFixed(2);
+  // Only add currency prefix if it's not USD (USD is the default, so we don't show it)
+  const currencyPrefix = currency && currency !== 'USD' ? `${currency} ` : '';
+  return `${currencyPrefix}${formatted}M`;
 }
 
 // Helper to format regular numbers with commas
@@ -52,8 +55,9 @@ function formatPercentageDecimal(value: Num): string {
 // Helper to format currency
 function formatCurrency(value: Num, currency: string | null): string {
   if (value === null) return 'N/A';
-  const currencySymbol = currency === 'USD' ? '$' : currency ? `${currency} ` : '';
-  return `${currencySymbol}${formatNumber(value)}`;
+  // Only show currency prefix if it's not USD (USD is the default, so we don't show it)
+  const currencyPrefix = currency && currency !== 'USD' ? `${currency} ` : '';
+  return `${currencyPrefix}${formatNumber(value)}`;
 }
 
 export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element {
@@ -65,14 +69,14 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
         <FinancialCard label="Current Price" value={formatCurrency(data.price, data.currency)} />
         <FinancialCard label="52 Week Range" value={`${formatCurrency(data.yearLow, data.currency)} - ${formatCurrency(data.yearHigh, data.currency)}`} />
-        <FinancialCard label="Market Cap" value={formatInMillions(data.marketCap)} />
+        <FinancialCard label="Market Cap" value={formatInMillions(data.marketCap, data.currency)} />
         <FinancialCard label="EPS (Diluted TTM)" value={formatCurrency(data.epsDilutedTTM, data.currency)} />
         <FinancialCard label="P/E Ratio" value={formatNumber(data.pe)} />
         <FinancialCard label="Net Profit Margin" value={formatPercentage(data.netProfitMargin)} />
         <FinancialCard label="Avg Volume (3M)" value={formatInMillions(data.avgVolume3M)} />
         <FinancialCard label="Day Volume" value={formatInMillions(data.dayVolume)} />
-        <FinancialCard label="Total Revenue (TTM)" value={formatInMillions(data.totalRevenue)} />
-        <FinancialCard label="Net Income (TTM)" value={formatInMillions(data.netIncome)} />
+        <FinancialCard label="Total Revenue (TTM)" value={formatInMillions(data.totalRevenue, data.currency)} />
+        <FinancialCard label="Net Income (TTM)" value={formatInMillions(data.netIncome, data.currency)} />
         <FinancialCard label="Annual Dividend" value={hasDividends ? formatCurrency(data.annualDividend, data.currency) : '--'} />
         <FinancialCard label="Dividend Yield" value={hasDividends ? formatPercentageDecimal(data.dividendYield) : '--'} />
       </div>
