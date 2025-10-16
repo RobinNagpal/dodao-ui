@@ -3,9 +3,7 @@
 # =========================
 SLS ?= npx serverless
 TSX ?= npx tsx
-# TICKER_URL ?= https://stockanalysis.com/quote/psx/LUCK/ for pakistan stock exchange
-# TICKER_URL ?= https://stockanalysis.com/quote/nse/RELIANCE/ for nse india stock exchange
-TICKER_URL ?= https://stockanalysis.com/stocks/SN/
+TICKER_URL ?= https://www.macrotrends.net/stocks/charts/AAPL/apple
 VIEW ?= strict
 ORIGIN ?= http://localhost:3000
 
