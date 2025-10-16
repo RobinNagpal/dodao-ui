@@ -2,8 +2,6 @@ import {
   fetchHtml,
   load,
   normalizeText,
-  parseNumberLike,
-  parsePercent,
   cellText,
   makeError,
   ScrapeError,
@@ -11,7 +9,7 @@ import {
   toLowerCamelKey,
   extractFinancialsMeta,
   unitMultiplier,
-  parseValueWithUnit,
+  parseValueRaw,
 } from "./utils";
 import * as cheerio from "cheerio";
 
@@ -26,11 +24,11 @@ export interface IncomeMeta {
 export interface IncomeQuarterPeriodRaw {
   fiscalQuarter: string; // e.g., "Q4 2025"
   periodEnd?: string; // e.g., "Jun 30, 2025"
-  values: Record<string, number | null>; // ORIGINAL label -> numeric or null
+  values: Record<string, string | number | null>; // ORIGINAL label -> string (for %), number, or null
 }
 
 export interface IncomeQuarterlyResult<
-  TValues = Record<string, number | null>
+  TValues = Record<string, string | number | null>
 > {
   incomeStatementQuarterly: {
     meta: IncomeMeta;
@@ -47,7 +45,7 @@ export interface IncomeQuarterlyResult<
 
 export async function scrapeIncomeStatementQuarterlyRaw(
   url: string
-): Promise<IncomeQuarterlyResult<Record<string, number | null>>> {
+): Promise<IncomeQuarterlyResult<Record<string, string | number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
@@ -63,9 +61,20 @@ export async function scrapeIncomeStatementQuarterlyRaw(
   return parseIncomeStatementQuarterlyRaw(html);
 }
 
+function cleanPeriodEnd(raw?: string): string | undefined {
+  if (!raw) return raw;
+  // Match full date like "Dec 31, 2024"
+  const full = raw.match(
+    /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\b/
+  );
+  if (full) return full[0];
+  // fallback: just remove short year prefix like "Dec '24"
+  return raw.replace(/^[A-Za-z]{3}\s*'?\d{2}\s*/, "").trim();
+}
+
 export function parseIncomeStatementQuarterlyRaw(
   html: Html
-): IncomeQuarterlyResult<Record<string, number | null>> {
+): IncomeQuarterlyResult<Record<string, string | number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
   const meta = extractFinancialsMeta($);
@@ -111,9 +120,10 @@ export function parseIncomeStatementQuarterlyRaw(
     if (i === 0) return; // first column is the row label
     const text = normalizeText($(th).text());
     if (/^Q[1-4]\s+(?:\d{4}|\d{2})$/i.test(text)) {
-      const periodEnd = peRow.eq(i).text()
+      const rawPe = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
+      const periodEnd = cleanPeriodEnd(rawPe);
       cols.push({ idx: i, fiscalQuarter: text, periodEnd });
     }
   });
@@ -152,10 +162,8 @@ export function parseIncomeStatementQuarterlyRaw(
           return;
         }
 
-        const val = parseValueWithUnit(text, rowLabel, mult);
-        periods[colIdx].values[rowLabel] = Number.isFinite(val as number)
-          ? (val as number)
-          : null;
+        const val = parseValueRaw(text, rowLabel);
+        periods[colIdx].values[rowLabel] = val;
       });
     });
   } catch (err) {
@@ -196,18 +204,18 @@ function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
 
 export async function scrapeIncomeStatementQuarterly(
   url: string
-): Promise<IncomeQuarterlyResult<Record<string, number | null>>> {
+): Promise<IncomeQuarterlyResult<Record<string, string | number | null>>> {
   const raw = await scrapeIncomeStatementQuarterlyRaw(url);
   return transformQuarterlyKeysToLowerCamel(raw);
 }
 
 function transformQuarterlyKeysToLowerCamel(
-  raw: IncomeQuarterlyResult<Record<string, number | null>>
-): IncomeQuarterlyResult<Record<string, number | null>> {
+  raw: IncomeQuarterlyResult<Record<string, string | number | null>>
+): IncomeQuarterlyResult<Record<string, string | number | null>> {
   const { incomeStatementQuarterly, errors } = raw;
 
   const out = incomeStatementQuarterly.periods.map((p) => {
-    const next: Record<string, number | null> = {};
+    const next: Record<string, string | number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
@@ -232,46 +240,46 @@ function transformQuarterlyKeysToLowerCamel(
 /* ───────── STRICT (explicit lowerCamelCase keys; optional) ───────── */
 
 export interface IncomeQuarterlyStrictValues {
-  revenue?: number | null;
-  revenueGrowth?: number | null;
-  costOfRevenue?: number | null;
-  grossProfit?: number | null;
-  sellingGeneralAndAdmin?: number | null;
-  otherOperatingExpenses?: number | null;
-  operatingExpenses?: number | null;
-  operatingIncome?: number | null;
-  interestExpense?: number | null;
-  interestAndInvestmentIncome?: number | null;
-  earningsFromEquityInvestments?: number | null;
-  currencyExchangeGain?: number | null;
-  otherNonOperatingIncome?: number | null;
-  ebtExcludingUnusualItems?: number | null;
-  gainOnSaleOfInvestments?: number | null;
-  gainOnSaleOfAssets?: number | null;
-  otherUnusualItems?: number | null;
-  pretaxIncome?: number | null;
-  incomeTaxExpense?: number | null;
-  netIncome?: number | null;
-  netIncomeToCommon?: number | null;
-  netIncomeGrowth?: number | null;
-  sharesOutstanding?: number | null;
-  eps?: number | null;
-  epsGrowth?: number | null;
-  freeCashFlow?: number | null;
-  freeCashFlowPerShare?: number | null;
-  dividendPerShare?: number | null;
-  dividendGrowth?: number | null;
-  grossMargin?: number | null;
-  operatingMargin?: number | null;
-  profitMargin?: number | null;
-  freeCashFlowMargin?: number | null;
-  ebitda?: number | null;
-  ebitdaMargin?: number | null;
-  dAndAForEbitda?: number | null;
-  ebit?: number | null;
-  ebitMargin?: number | null;
-  effectiveTaxRate?: number | null;
-  advertisingExpenses?: number | null;
+  revenue?: string | number | null;
+  revenueGrowth?: string | number | null;
+  costOfRevenue?: string | number | null;
+  grossProfit?: string | number | null;
+  sellingGeneralAndAdmin?: string | number | null;
+  otherOperatingExpenses?: string | number | null;
+  operatingExpenses?: string | number | null;
+  operatingIncome?: string | number | null;
+  interestExpense?: string | number | null;
+  interestAndInvestmentIncome?: string | number | null;
+  earningsFromEquityInvestments?: string | number | null;
+  currencyExchangeGain?: string | number | null;
+  otherNonOperatingIncome?: string | number | null;
+  ebtExcludingUnusualItems?: string | number | null;
+  gainOnSaleOfInvestments?: string | number | null;
+  gainOnSaleOfAssets?: string | number | null;
+  otherUnusualItems?: string | number | null;
+  pretaxIncome?: string | number | null;
+  incomeTaxExpense?: string | number | null;
+  netIncome?: string | number | null;
+  netIncomeToCommon?: string | number | null;
+  netIncomeGrowth?: string | number | null;
+  sharesOutstanding?: string | number | null;
+  eps?: string | number | null;
+  epsGrowth?: string | number | null;
+  freeCashFlow?: string | number | null;
+  freeCashFlowPerShare?: string | number | null;
+  dividendPerShare?: string | number | null;
+  dividendGrowth?: string | number | null;
+  grossMargin?: string | number | null;
+  operatingMargin?: string | number | null;
+  profitMargin?: string | number | null;
+  freeCashFlowMargin?: string | number | null;
+  ebitda?: string | number | null;
+  ebitdaMargin?: string | number | null;
+  dAndAForEbitda?: string | number | null;
+  ebit?: string | number | null;
+  ebitMargin?: string | number | null;
+  effectiveTaxRate?: string | number | null;
+  advertisingExpenses?: string | number | null;
 }
 
 // allowlist for strict quarterly keys (same as annual to keep schema aligned)
@@ -331,7 +339,7 @@ export async function scrapeIncomeStatementQuarterlyStrict(
 }
 
 function toStrictQuarterly(
-  normalized: IncomeQuarterlyResult<Record<string, number | null>>
+  normalized: IncomeQuarterlyResult<Record<string, string | number | null>>
 ): IncomeQuarterlyResult<IncomeQuarterlyStrictValues> {
   const { incomeStatementQuarterly, errors } = normalized;
 

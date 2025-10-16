@@ -2,8 +2,6 @@ import {
   fetchHtml,
   load,
   normalizeText,
-  parseNumberLike,
-  parsePercent,
   cellText,
   makeError,
   ScrapeError,
@@ -11,7 +9,7 @@ import {
   toLowerCamelKey,
   extractFinancialsMeta,
   unitMultiplier,
-  parseValueWithUnit,
+  parseValueRaw,
 } from "./utils";
 import * as cheerio from "cheerio";
 
@@ -26,10 +24,10 @@ export interface IncomeMeta {
 export interface IncomePeriodRaw {
   fiscalYear: string;
   periodEnd?: string;
-  values: Record<string, number | null>; // ORIGINAL LABEL -> numeric or null
+  values: Record<string, string | number | null>; // ORIGINAL LABEL -> string (for %), number, or null
 }
 
-export interface IncomeAnnualResult<TValues = Record<string, number | null>> {
+export interface IncomeAnnualResult<TValues = Record<string, string | number | null>> {
   incomeStatementAnnual: {
     meta: IncomeMeta;
     periods: Array<{
@@ -45,7 +43,7 @@ export interface IncomeAnnualResult<TValues = Record<string, number | null>> {
 
 export async function scrapeIncomeStatementAnnualRaw(
   url: string
-): Promise<IncomeAnnualResult<Record<string, number | null>>> {
+): Promise<IncomeAnnualResult<Record<string, string | number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
@@ -74,7 +72,7 @@ function cleanPeriodEnd(raw?: string): string | undefined {
 
 export function parseIncomeStatementAnnualRaw(
   html: Html
-): IncomeAnnualResult<Record<string, number | null>> {
+): IncomeAnnualResult<Record<string, string | number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
 
@@ -160,7 +158,7 @@ export function parseIncomeStatementAnnualRaw(
           return;
         }
 
-        const val = parseValueWithUnit(text, rowLabel, mult); // ⬅️ scale here
+        const val = parseValueRaw(text, rowLabel); // ⬅️ raw value (no scaling)
         periods[colIdx].values[rowLabel] = val;
       });
     });
@@ -201,17 +199,17 @@ function extractMeta($: cheerio.CheerioAPI): IncomeMeta {
 
 export async function scrapeIncomeStatementAnnual(
   url: string
-): Promise<IncomeAnnualResult<Record<string, number | null>>> {
+): Promise<IncomeAnnualResult<Record<string, string | number | null>>> {
   const raw = await scrapeIncomeStatementAnnualRaw(url);
   return transformPeriodsKeysToLowerCamel(raw);
 }
 
 function transformPeriodsKeysToLowerCamel(
-  raw: IncomeAnnualResult<Record<string, number | null>>
-): IncomeAnnualResult<Record<string, number | null>> {
+  raw: IncomeAnnualResult<Record<string, string | number | null>>
+): IncomeAnnualResult<Record<string, string | number | null>> {
   const { incomeStatementAnnual, errors } = raw;
   const outPeriods = incomeStatementAnnual.periods.map((p) => {
-    const next: Record<string, number | null> = {};
+    const next: Record<string, string | number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
@@ -232,73 +230,73 @@ function transformPeriodsKeysToLowerCamel(
 /* ---------------- STRICT (explicit lowerCamelCase keys; optional) ---------- */
 
 export interface IncomeAnnualStrictValues {
-  rentalRevenue?: number | null;
-  propertyManagementFees?: number | null;
-  otherRevenue?: number | null;
-  totalRevenue?: number | null;
-  revenue?: number | null;
-  revenueGrowth?: number | null;
-  propertyExpenses?: number | null;
-  costOfRevenue?: number | null;
-  grossProfit?: number | null;
-  sellingGeneralAndAdmin?: number | null;
-  advertisingExpenses?: number | null;
-  researchAndDevelopment?: number | null;
-  otherOperatingExpenses?: number | null;
-  depreciationAndAmortization?: number | null;
-  operatingExpenses?: number | null;
-  totalOperatingExpenses?: number | null;
-  operatingIncome?: number | null;
-  interestExpense?: number | null;
-  interestAndInvestmentIncome?: number | null;
-  earningsFromEquityInvestments?: number | null;
-  currencyExchangeGain?: number | null;
-  otherNonOperatingIncome?: number | null;
-  // ebtExcludingUnusualItems?: number | null;
-  gainOnSaleOfInvestments?: number | null;
-  gainOnSaleOfAssets?: number | null;
-  assetWritedown?: number | null;
-  mergerAndRestructuringCharges?: number | null;
-  legalSettlements?: number | null;
-  totalLegalSettlements?: number | null;
-  otherUnusualItems?: number | null;
-  pretaxIncome?: number | null;
-  incomeTaxExpense?: number | null;
-  earningsFromContinuingOperations?: number | null;
-  earningsFromDiscontinuedOperations?: number | null;
-  netIncomeToCompany?: number | null;
-  minorityInterestInEarnings?: number | null;
-  netIncome?: number | null;
-  preferredDividendsAndOtherAdjustments?: number | null;
-  netIncomeToCommon?: number | null;
-  netIncomeGrowth?: number | null;
-  sharesOutstanding?: number | null;
-  sharesOutstandingDiluted?: number | null;
-  sharesChangeYoY?: number | null;
-  eps?: number | null;
-  epsDiluted?: number | null;
-  epsGrowth?: number | null;
-  dividendPerShare?: number | null;
-  dividendGrowth?: number | null;
-  freeCashFlow?: number | null;
-  freeCashFlowPerShare?: number | null;
-  freeCashFlowMargin?: number | null;
-  grossMargin?: number | null;
-  operatingMargin?: number | null;
-  profitMargin?: number | null;
-  ebitda?: number | null;
-  ebitdaMargin?: number | null;
-  dAndAForEbitda?: number | null;
-  ebit?: number | null;
-  ebitMargin?: number | null;
-  fundsFromOperations?: number | null;
-  fundsFromOperationsPerShare?: number | null;
-  adjustedFundsFromOperations?: number | null;
-  adjustedFundsFromOperationsPerShare?: number | null;
-  affoPerShare?: number | null;
-  ffoPayoutRatio?: number | null;
-  effectiveTaxRate?: number | null;
-  revenueAsReported?: number | null;
+  rentalRevenue?: string | number | null;
+  propertyManagementFees?: string | number | null;
+  otherRevenue?: string | number | null;
+  totalRevenue?: string | number | null;
+  revenue?: string | number | null;
+  revenueGrowth?: string | number | null;
+  propertyExpenses?: string | number | null;
+  costOfRevenue?: string | number | null;
+  grossProfit?: string | number | null;
+  sellingGeneralAndAdmin?: string | number | null;
+  advertisingExpenses?: string | number | null;
+  researchAndDevelopment?: string | number | null;
+  otherOperatingExpenses?: string | number | null;
+  depreciationAndAmortization?: string | number | null;
+  operatingExpenses?: string | number | null;
+  totalOperatingExpenses?: string | number | null;
+  operatingIncome?: string | number | null;
+  interestExpense?: string | number | null;
+  interestAndInvestmentIncome?: string | number | null;
+  earningsFromEquityInvestments?: string | number | null;
+  currencyExchangeGain?: string | number | null;
+  otherNonOperatingIncome?: string | number | null;
+  // ebtExcludingUnusualItems?: string | number | null;
+  gainOnSaleOfInvestments?: string | number | null;
+  gainOnSaleOfAssets?: string | number | null;
+  assetWritedown?: string | number | null;
+  mergerAndRestructuringCharges?: string | number | null;
+  legalSettlements?: string | number | null;
+  totalLegalSettlements?: string | number | null;
+  otherUnusualItems?: string | number | null;
+  pretaxIncome?: string | number | null;
+  incomeTaxExpense?: string | number | null;
+  earningsFromContinuingOperations?: string | number | null;
+  earningsFromDiscontinuedOperations?: string | number | null;
+  netIncomeToCompany?: string | number | null;
+  minorityInterestInEarnings?: string | number | null;
+  netIncome?: string | number | null;
+  preferredDividendsAndOtherAdjustments?: string | number | null;
+  netIncomeToCommon?: string | number | null;
+  netIncomeGrowth?: string | number | null;
+  sharesOutstanding?: string | number | null;
+  sharesOutstandingDiluted?: string | number | null;
+  sharesChangeYoY?: string | number | null;
+  eps?: string | number | null;
+  epsDiluted?: string | number | null;
+  epsGrowth?: string | number | null;
+  dividendPerShare?: string | number | null;
+  dividendGrowth?: string | number | null;
+  freeCashFlow?: string | number | null;
+  freeCashFlowPerShare?: string | number | null;
+  freeCashFlowMargin?: string | number | null;
+  grossMargin?: string | number | null;
+  operatingMargin?: string | number | null;
+  profitMargin?: string | number | null;
+  ebitda?: string | number | null;
+  ebitdaMargin?: string | number | null;
+  dAndAForEbitda?: string | number | null;
+  ebit?: string | number | null;
+  ebitMargin?: string | number | null;
+  fundsFromOperations?: string | number | null;
+  fundsFromOperationsPerShare?: string | number | null;
+  adjustedFundsFromOperations?: string | number | null;
+  adjustedFundsFromOperationsPerShare?: string | number | null;
+  affoPerShare?: string | number | null;
+  ffoPayoutRatio?: string | number | null;
+  effectiveTaxRate?: string | number | null;
+  revenueAsReported?: string | number | null;
 }
 
 const INCOME_ANNUAL_KEYS = [
@@ -407,7 +405,7 @@ export async function scrapeIncomeStatementAnnualStrict(
 }
 
 function toStrict(
-  normalized: IncomeAnnualResult<Record<string, number | null>>
+  normalized: IncomeAnnualResult<Record<string, string | number | null>>
 ): IncomeAnnualResult<IncomeAnnualStrictValues> {
   const { incomeStatementAnnual, errors } = normalized;
 

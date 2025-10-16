@@ -46,16 +46,19 @@ export function parseNumberLike(raw: string): number | undefined {
   return Number.isFinite(n) ? (neg ? -n : n) : undefined;
 }
 
-/** handles "12%", "-13.4%", "(8.1%)", and unicode minus */
-export function parsePercent(raw: string): number | undefined {
+/** handles "12%", "-13.4%", "(8.1%)", and unicode minus - returns string with % symbol */
+export function parsePercent(raw: string): string | undefined {
   const s = normalizeText(raw).replace(/\u2212/g, "-");
-  // Parentheses imply negative
-  const neg = /^\(.*\)$/.test(s);
+  // Check if it contains a percentage
   const m = s.match(/(-?\d+(?:\.\d+)?)\s*%/);
   if (!m) return undefined;
   const n = Number(m[1]);
   if (!Number.isFinite(n)) return undefined;
-  return neg ? -n : n;
+  
+  // Parentheses imply negative
+  const neg = /^\(.*\)$/.test(s);
+  const value = neg ? -n : n;
+  return `${value}%`;
 }
 
 /** "1.47B" -> 1.47e9; also accepts K/M/T/G; returns undefined if not matched */
@@ -176,23 +179,20 @@ export function shouldSkipUnitScaling(
   );
 }
 
-/** Parse a cell, then apply unit scaling if appropriate (NOT for percentages/per-share/ratios). */
-export function parseValueWithUnit(
+/** Parse a cell value as raw (no unit scaling) - returns string for percentages, number for others */
+export function parseValueRaw(
   text: string,
-  label: string,
-  mult: number
-): number | null {
-  // % first
+  label: string
+): string | number | null {
+  // % first - return as string with % symbol
   let pct = parsePercent(text);
-  if (pct != null && Number.isFinite(pct)) return pct;
+  if (pct != null) return pct;
 
-  // numeric (currency/totals/shares/etc.)
+  // numeric (currency/totals/shares/etc.) - return raw number without scaling
   let num = parseNumberLike(text);
   if (num == null || !Number.isFinite(num)) return null;
 
-  if (shouldSkipUnitScaling(label, false)) return num; // keep as-is
-  // Otherwise scale to "ones"
-  return num * (Number.isFinite(mult) ? mult : 1);
+  return num; // return raw number without any unit scaling
 }
 
 export function extractFinancialsMeta($: cheerio.CheerioAPI): FinancialsMeta {
@@ -227,6 +227,71 @@ export function extractFinancialsMeta($: cheerio.CheerioAPI): FinancialsMeta {
   if (m) {
     const unitRaw = m[1].toLowerCase();
     const cur = m[2].toUpperCase();
+    const UNIT_MAP: Record<string, Unit> = {
+      thousand: "thousands",
+      thousands: "thousands",
+      million: "millions",
+      millions: "millions",
+      billion: "billions",
+      billions: "billions",
+    };
+    meta.unit = UNIT_MAP[unitRaw] ?? "ones";
+    meta.currency = cur; // works for USD, PKR, INR, etc.
+  }
+
+  // 3) Secondary currency hint: "Currency is PKR"
+  if (!meta.currency) {
+    const m2 = blob.match(/\bCurrency\s+is\s+([A-Z]{3})\b/i);
+    if (m2) meta.currency = m2[1].toUpperCase();
+  }
+
+  // 4) Fiscal year note (keep as-is)
+  const fy = blob.match(/fiscal year is[^.]+(?:\.)?/i);
+  if (fy) meta.fiscalYearNote = normalizeText(fy[0]);
+
+  // 5) Safe defaults (only if truly absent)
+  if (!meta.unit) meta.unit = "ones";
+
+  return meta;
+}
+
+/** Extract metadata specifically for ratios pages that use "Market cap in millions USD" format */
+export function extractRatiosMeta($: cheerio.CheerioAPI): FinancialsMeta {
+  const meta: FinancialsMeta = {};
+
+  // 1) Scope to the financials section to avoid unrelated tokens
+  const $table = $("#main-table");
+  const $ctx = $table.closest("section, main, .container").first();
+  const texts: string[] = [];
+
+  // gather the faded blurbs immediately around the table
+  $ctx.find(".text-faded").each((_, el) => {
+    const t = normalizeText($(el).text());
+    if (t) texts.push(t);
+  });
+  // also look just above (some pages place the blurb in a previous sibling)
+  $ctx
+    .prevAll(".text-faded")
+    .slice(0, 2)
+    .each((_, el) => {
+      const t = normalizeText($(el).text());
+      if (t) texts.push(t);
+    });
+
+  const blob = normalizeText(texts.join(" "));
+
+  // 2) Primary patterns for ratios - handle both "Market cap in millions USD" and "Financials in millions USD"
+  //    Look for patterns like "Market cap in millions USD" or "Financials in millions USD"
+  const marketCapPattern = /\bMarket\s+cap\s+in\s+(millions?|thousands?|billions?)\s+([A-Z]{3})\b/i;
+  const financialsPattern = /\bFinancials\s+in\s+(millions?|thousands?|billions?)\s+([A-Z]{3})\b/i;
+
+  const marketCapMatch = blob.match(marketCapPattern);
+  const financialsMatch = blob.match(financialsPattern);
+
+  const match = marketCapMatch || financialsMatch;
+  if (match) {
+    const unitRaw = match[1].toLowerCase();
+    const cur = match[2].toUpperCase();
     const UNIT_MAP: Record<string, Unit> = {
       thousand: "thousands",
       thousands: "thousands",
