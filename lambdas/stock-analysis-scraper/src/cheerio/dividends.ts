@@ -26,11 +26,11 @@ export type PayoutFrequency =
 
 export interface DividendSummary {
   annualDividend?: number; // 15.05
-  yieldPct?: number; // 5.63   (percent, not fraction)
+  yieldPct?: string; // "5.63%" (with % symbol)
   exDividendDate?: Date; // next ex-date if present
   payoutFrequency?: PayoutFrequency;
-  payoutRatioPct?: number; // 59.58
-  dividendGrowth1Y?: number; // 4.78
+  payoutRatioPct?: string; // "59.58%" (with % symbol)
+  dividendGrowth1Y?: string; // "4.78%" (with % symbol)
   currency?: string; // Redundant convenience (mirrors meta.currency if seen with the amount line)
 }
 
@@ -117,8 +117,8 @@ export function parseDividends(html: Html): DividendsResult {
 
       switch (true) {
         case /^dividend\s+yield$/i.test(label): {
-          const n = parsePercent(value);
-          if (n != null) summary.yieldPct = n;
+          const pct = parsePercent(value);
+          if (pct != null) summary.yieldPct = pct; // Keep as string with % symbol
           break;
         }
         case /^annual\s+dividend$/i.test(label): {
@@ -140,13 +140,13 @@ export function parseDividends(html: Html): DividendsResult {
           break;
         }
         case /^payout\s+ratio$/i.test(label): {
-          const n = parsePercent(value);
-          if (n != null) summary.payoutRatioPct = n;
+          const pct = parsePercent(value);
+          if (pct != null) summary.payoutRatioPct = pct; // Keep as string with % symbol
           break;
         }
         case /^dividend\s+growth/i.test(label): {
-          const n = parsePercent(value);
-          if (n != null) summary.dividendGrowth1Y = n;
+          const pct = parsePercent(value);
+          if (pct != null) summary.dividendGrowth1Y = pct; // Keep as string with % symbol
           break;
         }
         default:
