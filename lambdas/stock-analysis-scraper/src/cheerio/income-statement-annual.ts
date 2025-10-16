@@ -232,25 +232,35 @@ function transformPeriodsKeysToLowerCamel(
 /* ---------------- STRICT (explicit lowerCamelCase keys; optional) ---------- */
 
 export interface IncomeAnnualStrictValues {
+  rentalRevenue?: number | null;
+  propertyManagementFees?: number | null;
+  otherRevenue?: number | null;
+  totalRevenue?: number | null;
   revenue?: number | null;
   revenueGrowth?: number | null;
+  propertyExpenses?: number | null;
   costOfRevenue?: number | null;
   grossProfit?: number | null;
   sellingGeneralAndAdmin?: number | null;
+  advertisingExpenses?: number | null;
   researchAndDevelopment?: number | null;
   otherOperatingExpenses?: number | null;
+  depreciationAndAmortization?: number | null;
   operatingExpenses?: number | null;
+  totalOperatingExpenses?: number | null;
   operatingIncome?: number | null;
   interestExpense?: number | null;
   interestAndInvestmentIncome?: number | null;
   earningsFromEquityInvestments?: number | null;
   currencyExchangeGain?: number | null;
   otherNonOperatingIncome?: number | null;
-  ebtExcludingUnusualItems?: number | null;
-  mergerAndRestructuringCharges?: number | null;
-  legalSettlements?: number | null;
+  // ebtExcludingUnusualItems?: number | null;
   gainOnSaleOfInvestments?: number | null;
   gainOnSaleOfAssets?: number | null;
+  assetWritedown?: number | null;
+  mergerAndRestructuringCharges?: number | null;
+  legalSettlements?: number | null;
+  totalLegalSettlements?: number | null;
   otherUnusualItems?: number | null;
   pretaxIncome?: number | null;
   incomeTaxExpense?: number | null;
@@ -264,49 +274,73 @@ export interface IncomeAnnualStrictValues {
   netIncomeGrowth?: number | null;
   sharesOutstanding?: number | null;
   sharesOutstandingDiluted?: number | null;
-  sharesChange?: number | null;
+  sharesChangeYoY?: number | null;
   eps?: number | null;
+  epsDiluted?: number | null;
   epsGrowth?: number | null;
-  freeCashFlow?: number | null;
-  freeCashFlowPerShare?: number | null;
   dividendPerShare?: number | null;
   dividendGrowth?: number | null;
+  freeCashFlow?: number | null;
+  freeCashFlowPerShare?: number | null;
+  freeCashFlowMargin?: number | null;
   grossMargin?: number | null;
   operatingMargin?: number | null;
   profitMargin?: number | null;
-  freeCashFlowMargin?: number | null;
   ebitda?: number | null;
   ebitdaMargin?: number | null;
   dAndAForEbitda?: number | null;
   ebit?: number | null;
   ebitMargin?: number | null;
+  fundsFromOperations?: number | null;
+  fundsFromOperationsPerShare?: number | null;
+  adjustedFundsFromOperations?: number | null;
+  adjustedFundsFromOperationsPerShare?: number | null;
+  affoPerShare?: number | null;
+  ffoPayoutRatio?: number | null;
   effectiveTaxRate?: number | null;
-  advertisingExpenses?: number | null;
   revenueAsReported?: number | null;
 }
 
-// Strongly-typed allowlist of strict keys
 const INCOME_ANNUAL_KEYS = [
+  // Revenue block (REIT-first; generic also covered)
+  "rentalRevenue",
+  "propertyManagementFees",
+  "otherRevenue",
+  "totalRevenue",
   "revenue",
   "revenueGrowth",
+
+  // Operating costs
+  "propertyExpenses",
   "costOfRevenue",
   "grossProfit",
   "sellingGeneralAndAdmin",
+  "advertisingExpenses",
   "researchAndDevelopment",
   "otherOperatingExpenses",
+  "depreciationAndAmortization",
   "operatingExpenses",
+  "totalOperatingExpenses",
+
+  // Operating result
   "operatingIncome",
+
+  // Below-operating-line items
   "interestExpense",
   "interestAndInvestmentIncome",
   "earningsFromEquityInvestments",
   "currencyExchangeGain",
   "otherNonOperatingIncome",
-  "ebtExcludingUnusualItems",
-  "mergerAndRestructuringCharges",
-  "legalSettlements",
+  // "ebtExcludingUnusualItems",
   "gainOnSaleOfInvestments",
   "gainOnSaleOfAssets",
+  "assetWritedown",
+  "mergerAndRestructuringCharges",
+  "legalSettlements",
+  "totalLegalSettlements",
   "otherUnusualItems",
+
+  // Taxes & bottom line
   "pretaxIncome",
   "incomeTaxExpense",
   "earningsFromContinuingOperations",
@@ -317,26 +351,44 @@ const INCOME_ANNUAL_KEYS = [
   "preferredDividendsAndOtherAdjustments",
   "netIncomeToCommon",
   "netIncomeGrowth",
+
+  // Share counts & EPS
   "sharesOutstanding",
   "sharesOutstandingDiluted",
-  "sharesChange",
+  "sharesChangeYoY",
   "eps",
+  "epsDiluted",
   "epsGrowth",
-  "freeCashFlow",
-  "freeCashFlowPerShare",
+
+  // Dividends & cash flow per share
   "dividendPerShare",
   "dividendGrowth",
+  "freeCashFlow",
+  "freeCashFlowPerShare",
+  "freeCashFlowMargin",
+
+  // Margins
   "grossMargin",
   "operatingMargin",
   "profitMargin",
-  "freeCashFlowMargin",
+
+  // EBITDA / EBIT
   "ebitda",
   "ebitdaMargin",
   "dAndAForEbitda",
   "ebit",
   "ebitMargin",
+
+  // REIT metrics
+  "fundsFromOperations",
+  "fundsFromOperationsPerShare",
+  "adjustedFundsFromOperations",
+  "adjustedFundsFromOperationsPerShare",
+  "affoPerShare",
+  "ffoPayoutRatio",
+
+  // Other summary lines
   "effectiveTaxRate",
-  "advertisingExpenses",
   "revenueAsReported",
 ] as const;
 
