@@ -1,35 +1,31 @@
 export interface StockFundamentalsSummary {
-  marketCap?: number;
-  revenueTtm?: number;
-  netIncomeTtm?: number;
-  sharesOut?: number;
+  marketCap?: string;
+  revenueTtm?: string;
+  netIncomeTtm?: string;
+  sharesOut?: string;
   epsTtm?: number;
   peRatio?: number;
   forwardPE?: number;
   dividend?: {
     amount?: number;
-    yield?: number;
-    exDividendDate?: string;
-    payoutFrequency?: string;
-    payoutRatioPct?: number;
-    dividendGrowth1Y?: number;
+    yieldPct?: string;
   };
-  exDividendDate?: string;
+  exDividendDate?: Date;
   volume?: number;
   averageVolume?: number;
   open?: number;
   previousClose?: number;
   daysRange?: {
-    low?: number;
-    high?: number;
+    low: number;
+    high: number;
   };
   week52Range?: {
-    low?: number;
-    high?: number;
+    low: number;
+    high: number;
   };
   beta?: number;
   rsi?: number;
-  earningsDate?: string;
+  earningsDate?: Date;
 }
 
 export interface DividendMeta {
@@ -38,20 +34,20 @@ export interface DividendMeta {
 
 export interface DividendSummary {
   annualDividend?: number;
-  yieldPct?: number;
-  exDividendDate?: string;
+  yieldPct?: string;
+  exDividendDate?: Date;
   payoutFrequency?: string;
-  payoutRatioPct?: number;
-  dividendGrowth1Y?: number;
+  payoutRatioPct?: string;
+  dividendGrowth1Y?: string;
   currency?: string;
 }
 
 export interface DividendHistoryRow {
-  exDividendDate?: string;
+  exDividendDate?: Date;
   amount?: number;
   currency?: string;
-  recordDate?: string;
-  payDate?: string;
+  recordDate?: Date;
+  payDate?: Date;
 }
 
 export interface DividendsData {
@@ -60,64 +56,103 @@ export interface DividendsData {
   history: DividendHistoryRow[];
 }
 
-// Generic financial statement types to reduce redundancy
+// Common Financial Meta (used by all statement types)
 export interface FinancialMeta {
   currency?: string;
   unit?: string;
   fiscalYearNote?: string;
 }
 
-export interface FinancialAnnualPeriod {
+// Balance Sheet Types
+export interface BalanceAnnualPeriod {
   fiscalYear: string;
   periodEnd?: string;
-  values: Record<string, number | null>;
+  values: Record<string, string | number | null>;
 }
 
-export interface FinancialQuarterlyPeriod {
+export interface BalanceQuarterlyPeriod {
   fiscalQuarter: string;
   periodEnd?: string;
-  values: Record<string, number | null>;
+  values: Record<string, string | number | null>;
 }
 
-// Specific financial statement data types
+export interface BalanceAnnualData {
+  meta: FinancialMeta;
+  periods: BalanceAnnualPeriod[];
+}
+
+export interface BalanceQuarterlyData {
+  meta: FinancialMeta;
+  periods: BalanceQuarterlyPeriod[];
+}
+
+// Income Statement Types
+export interface IncomeAnnualPeriod {
+  fiscalYear: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
+}
+
+export interface IncomeQuarterlyPeriod {
+  fiscalQuarter: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
+}
+
 export interface IncomeAnnualData {
   meta: FinancialMeta;
-  periods: FinancialAnnualPeriod[];
+  periods: IncomeAnnualPeriod[];
 }
 
 export interface IncomeQuarterlyData {
   meta: FinancialMeta;
-  periods: FinancialQuarterlyPeriod[];
+  periods: IncomeQuarterlyPeriod[];
 }
 
-export interface BalanceSheetAnnualData {
-  meta: FinancialMeta;
-  periods: FinancialAnnualPeriod[];
+// Cash Flow Types
+export interface CashFlowAnnualPeriod {
+  fiscalYear: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
 }
 
-export interface BalanceSheetQuarterlyData {
-  meta: FinancialMeta;
-  periods: FinancialQuarterlyPeriod[];
+export interface CashFlowQuarterlyPeriod {
+  fiscalQuarter: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
 }
 
 export interface CashFlowAnnualData {
   meta: FinancialMeta;
-  periods: FinancialAnnualPeriod[];
+  periods: CashFlowAnnualPeriod[];
 }
 
 export interface CashFlowQuarterlyData {
   meta: FinancialMeta;
-  periods: FinancialQuarterlyPeriod[];
+  periods: CashFlowQuarterlyPeriod[];
+}
+
+// Ratios Types
+export interface RatiosAnnualPeriod {
+  fiscalYear: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
+}
+
+export interface RatiosQuarterlyPeriod {
+  fiscalQuarter: string;
+  periodEnd?: string;
+  values: Record<string, string | number | null>;
 }
 
 export interface RatiosAnnualData {
   meta: FinancialMeta;
-  periods: FinancialAnnualPeriod[];
+  periods: RatiosAnnualPeriod[];
 }
 
 export interface RatiosQuarterlyData {
   meta: FinancialMeta;
-  periods: FinancialQuarterlyPeriod[];
+  periods: RatiosQuarterlyPeriod[];
 }
 
 declare global {
@@ -125,10 +160,10 @@ declare global {
     // Stock analyzer scraper types
     type StockFundamentalsSummary = StockFundamentalsSummary;
     type DividendsData = DividendsData;
+    type BalanceAnnualData = BalanceAnnualData;
+    type BalanceQuarterlyData = BalanceQuarterlyData;
     type IncomeAnnualData = IncomeAnnualData;
     type IncomeQuarterlyData = IncomeQuarterlyData;
-    type BalanceSheetAnnualData = BalanceSheetAnnualData;
-    type BalanceSheetQuarterlyData = BalanceSheetQuarterlyData;
     type CashFlowAnnualData = CashFlowAnnualData;
     type CashFlowQuarterlyData = CashFlowQuarterlyData;
     type RatiosAnnualData = RatiosAnnualData;
