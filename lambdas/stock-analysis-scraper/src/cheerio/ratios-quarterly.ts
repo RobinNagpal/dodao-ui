@@ -7,9 +7,9 @@ import {
   ScrapeError,
   Html,
   toLowerCamelKey,
-  extractFinancialsMeta,
+  extractRatiosMeta,
   unitMultiplier,
-  parseValueWithUnit,
+  parseValueRaw,
 } from "./utils";
 import * as cheerio from "cheerio";
 
@@ -27,7 +27,7 @@ export interface RatiosQuarter {
 }
 
 export interface RatiosQuarterlyResult<
-  TValues = Record<string, number | null>
+  TValues = Record<string, string | number | null>
 > {
   ratiosQuarterly: {
     meta: RatiosMeta;
@@ -40,7 +40,7 @@ export interface RatiosQuarterlyResult<
 
 export async function scrapeRatiosQuarterlyRaw(
   url: string
-): Promise<RatiosQuarterlyResult<Record<string, number | null>>> {
+): Promise<RatiosQuarterlyResult<Record<string, string | number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
@@ -56,13 +56,24 @@ export async function scrapeRatiosQuarterlyRaw(
   return parseRatiosQuarterlyRaw(html);
 }
 
+function cleanPeriodEnd(raw?: string): string | undefined {
+  if (!raw) return raw;
+  // Match full date like "Dec 31, 2024"
+  const full = raw.match(
+    /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\b/
+  );
+  if (full) return full[0];
+  // fallback: just remove short year prefix like "Dec '24"
+  return raw.replace(/^[A-Za-z]{3}\s*'?\d{2}\s*/, "").trim();
+}
+
 export function parseRatiosQuarterlyRaw(
   html: Html
-): RatiosQuarterlyResult<Record<string, number | null>> {
+): RatiosQuarterlyResult<Record<string, string | number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
 
-  const meta = extractFinancialsMeta($); // e.g., "Market cap in millions PKR. Fiscal year is July - June."
+  const meta = extractRatiosMeta($); // e.g., "Market cap in millions PKR. Fiscal year is July - June."
   const mult = unitMultiplier(meta.unit);
 
   const table = $("#main-table");
@@ -105,9 +116,10 @@ export function parseRatiosQuarterlyRaw(
     const isMoreQuarters = /\+\d+\s+quarters/i.test(text);
 
     if ((isCurrent || isQuarter) && !isMoreQuarters) {
-      const periodEnd = peRow.eq(i).text()
+      const rawPe = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
+      const periodEnd = cleanPeriodEnd(rawPe);
       cols.push({ idx: i, fiscalQuarter: text, periodEnd });
     }
   });
@@ -120,7 +132,7 @@ export function parseRatiosQuarterlyRaw(
   }
 
   const periods: Array<
-    RatiosQuarter & { values: Record<string, number | null> }
+    RatiosQuarter & { values: Record<string, string | number | null> }
   > = cols.map((c) => ({
     fiscalQuarter: c.fiscalQuarter,
     periodEnd: c.periodEnd,
@@ -146,11 +158,8 @@ export function parseRatiosQuarterlyRaw(
           return;
         }
 
-        // parseValueWithUnit handles:
-        //  - percentages like "12.3%" → 12.3
-        //  - monetary rows using 'mult' (Millions/Thousands/Billions)
-        //  - plain ratios (e.g., current ratio) as-is
-        const val = parseValueWithUnit(text, rowLabel, mult);
+        // Parse raw values without unit scaling
+        const val = parseValueRaw(text, rowLabel);
         periods[colIdx].values[rowLabel] = val;
       });
     });
@@ -165,17 +174,17 @@ export function parseRatiosQuarterlyRaw(
 
 export async function scrapeRatiosQuarterly(
   url: string
-): Promise<RatiosQuarterlyResult<Record<string, number | null>>> {
+): Promise<RatiosQuarterlyResult<Record<string, string | number | null>>> {
   const raw = await scrapeRatiosQuarterlyRaw(url);
   return transformRatioQuarterlyKeysToLowerCamel(raw);
 }
 
 function transformRatioQuarterlyKeysToLowerCamel(
-  raw: RatiosQuarterlyResult<Record<string, number | null>>
-): RatiosQuarterlyResult<Record<string, number | null>> {
+  raw: RatiosQuarterlyResult<Record<string, string | number | null>>
+): RatiosQuarterlyResult<Record<string, string | number | null>> {
   const { ratiosQuarterly, errors } = raw;
   const out = ratiosQuarterly.periods.map((p) => {
-    const next: Record<string, number | null> = {};
+    const next: Record<string, string | number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
@@ -198,51 +207,51 @@ function transformRatioQuarterlyKeysToLowerCamel(
 
 export interface RatiosQuarterlyStrictValues {
   // Valuation
-  marketCapitalization?: number | null;
-  marketCapGrowth?: number | null; // %
-  enterpriseValue?: number | null;
-  lastClosePrice?: number | null;
+  marketCapitalization?: string | number | null;
+  marketCapGrowth?: string | number | null; // %
+  enterpriseValue?: string | number | null;
+  lastClosePrice?: string | number | null;
 
   // Price multiples
-  peRatio?: number | null;
-  priceToSales?: number | null;
-  priceToBook?: number | null;
-  priceToFreeCashFlow?: number | null;
-  enterpriseValueToEbitda?: number | null;
-  evToRevenue?: number | null;
-  evToEbit?: number | null;
-  pegRatio?: number | null;
+  peRatio?: string | number | null;
+  priceToSales?: string | number | null;
+  priceToBook?: string | number | null;
+  priceToFreeCashFlow?: string | number | null;
+  enterpriseValueToEbitda?: string | number | null;
+  evToRevenue?: string | number | null;
+  evToEbit?: string | number | null;
+  pegRatio?: string | number | null;
 
   // Profitability
-  grossMargin?: number | null; // %
-  operatingMargin?: number | null; // %
-  profitMargin?: number | null; // %
-  ebitdaMargin?: number | null; // %
-  freeCashFlowMargin?: number | null; // %
+  grossMargin?: string | number | null; // %
+  operatingMargin?: string | number | null; // %
+  profitMargin?: string | number | null; // %
+  ebitdaMargin?: string | number | null; // %
+  freeCashFlowMargin?: string | number | null; // %
 
-  returnOnAssets?: number | null; // %
-  returnOnEquity?: number | null; // %
-  returnOnCapital?: number | null; // %
+  returnOnAssets?: string | number | null; // %
+  returnOnEquity?: string | number | null; // %
+  returnOnCapital?: string | number | null; // %
 
   // Efficiency
-  assetTurnover?: number | null;
-  inventoryTurnover?: number | null;
-  receivablesTurnover?: number | null;
-  daysSalesOutstanding?: number | null;
-  daysInventoryOutstanding?: number | null;
-  daysPayablesOutstanding?: number | null;
-  cashConversionCycle?: number | null;
+  assetTurnover?: string | number | null;
+  inventoryTurnover?: string | number | null;
+  receivablesTurnover?: string | number | null;
+  daysSalesOutstanding?: string | number | null;
+  daysInventoryOutstanding?: string | number | null;
+  daysPayablesOutstanding?: string | number | null;
+  cashConversionCycle?: string | number | null;
 
   // Liquidity & leverage
-  currentRatio?: number | null;
-  quickRatio?: number | null;
-  debtToEquity?: number | null;
-  debtToAssets?: number | null;
-  interestCoverage?: number | null;
+  currentRatio?: string | number | null;
+  quickRatio?: string | number | null;
+  debtToEquity?: string | number | null;
+  debtToAssets?: string | number | null;
+  interestCoverage?: string | number | null;
 
   // Dividends
-  dividendYield?: number | null; // %
-  payoutRatio?: number | null; // %
+  dividendYield?: string | number | null; // %
+  payoutRatio?: string | number | null; // %
 }
 
 const RATIOS_QUARTERLY_KEYS = [
@@ -301,7 +310,7 @@ export async function scrapeRatiosQuarterlyStrict(
 }
 
 function toStrictRatiosQuarterly(
-  normalized: RatiosQuarterlyResult<Record<string, number | null>>
+  normalized: RatiosQuarterlyResult<Record<string, string | number | null>>
 ): RatiosQuarterlyResult<RatiosQuarterlyStrictValues> {
   const { ratiosQuarterly, errors } = normalized;
 

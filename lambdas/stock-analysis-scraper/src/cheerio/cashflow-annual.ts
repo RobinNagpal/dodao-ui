@@ -7,7 +7,7 @@ import {
   ScrapeError,
   Html,
   toLowerCamelKey,
-  parseValueWithUnit,
+  parseValueRaw,
   extractFinancialsMeta,
   unitMultiplier,
 } from "./utils";
@@ -24,10 +24,10 @@ export interface CashFlowMeta {
 export interface CashFlowPeriodRaw {
   fiscalYear: string; // e.g., "FY 2025"
   periodEnd?: string; // e.g., "Jun 30, 2025"
-  values: Record<string, number | null>; // ORIGINAL row label -> numeric or null (already unit-scaled to ones)
+  values: Record<string, string | number | null>; // ORIGINAL row label -> string (for %), number, or null
 }
 
-export interface CashFlowAnnualResult<TValues = Record<string, number | null>> {
+export interface CashFlowAnnualResult<TValues = Record<string, string | number | null>> {
   cashFlowAnnual: {
     meta: CashFlowMeta;
     periods: Array<{
@@ -43,7 +43,7 @@ export interface CashFlowAnnualResult<TValues = Record<string, number | null>> {
 
 export async function scrapeCashFlowAnnualRaw(
   url: string
-): Promise<CashFlowAnnualResult<Record<string, number | null>>> {
+): Promise<CashFlowAnnualResult<Record<string, string | number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
@@ -59,9 +59,20 @@ export async function scrapeCashFlowAnnualRaw(
   return parseCashFlowAnnualRaw(html);
 }
 
+function cleanPeriodEnd(raw?: string): string | undefined {
+  if (!raw) return raw;
+  // Match full date like "Dec 31, 2024"
+  const full = raw.match(
+    /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\b/
+  );
+  if (full) return full[0];
+  // fallback: just remove short year prefix like "Dec '24"
+  return raw.replace(/^[A-Za-z]{3}\s*'?\d{2}\s*/, "").trim();
+}
+
 export function parseCashFlowAnnualRaw(
   html: Html
-): CashFlowAnnualResult<Record<string, number | null>> {
+): CashFlowAnnualResult<Record<string, string | number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
 
@@ -108,9 +119,10 @@ export function parseCashFlowAnnualRaw(
       (/^FY\s*'?(\d{2}|\d{4})$/i.test(text) || /^\d{4}$/.test(text)) &&
       !text.includes("-")
     ) {
-      const periodEnd = peRow.eq(i).text()
+      const rawPe = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
+      const periodEnd = cleanPeriodEnd(rawPe);
       cols.push({ idx: i, fiscalYear: text, periodEnd });
     }
   });
@@ -149,8 +161,8 @@ export function parseCashFlowAnnualRaw(
           return;
         }
 
-        // Let the shared parser decide % vs number, apply unit multiplier, handle negatives/() etc.
-        const val = parseValueWithUnit(text, rowLabel, mult);
+        // Parse raw values without unit scaling
+        const val = parseValueRaw(text, rowLabel);
         periods[colIdx].values[rowLabel] = val;
       });
     });
@@ -165,18 +177,18 @@ export function parseCashFlowAnnualRaw(
 
 export async function scrapeCashFlowAnnual(
   url: string
-): Promise<CashFlowAnnualResult<Record<string, number | null>>> {
+): Promise<CashFlowAnnualResult<Record<string, string | number | null>>> {
   const raw = await scrapeCashFlowAnnualRaw(url);
   return transformCashFlowKeysToLowerCamel(raw);
 }
 
 function transformCashFlowKeysToLowerCamel(
-  raw: CashFlowAnnualResult<Record<string, number | null>>
-): CashFlowAnnualResult<Record<string, number | null>> {
+  raw: CashFlowAnnualResult<Record<string, string | number | null>>
+): CashFlowAnnualResult<Record<string, string | number | null>> {
   const { cashFlowAnnual, errors } = raw;
 
   const outPeriods = cashFlowAnnual.periods.map((p) => {
-    const next: Record<string, number | null> = {};
+    const next: Record<string, string | number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
@@ -195,52 +207,52 @@ function transformCashFlowKeysToLowerCamel(
 
 export interface CashFlowAnnualStrictValues {
   // Core adjustments / operating
-  netIncome?: number | null;
-  depreciationAndAmortization?: number | null;
-  stockBasedCompensation?: number | null;
-  deferredIncomeTax?: number | null;
-  otherNonCashItems?: number | null;
-  lossGainFromSaleOfAssets?: number | null;
-  lossGainFromSaleOfInvestments?: number | null;
-  lossGainOnEquityInvestments?: number | null;
+  netIncome?: string | number | null;
+  depreciationAndAmortization?: string | number | null;
+  stockBasedCompensation?: string | number | null;
+  deferredIncomeTax?: string | number | null;
+  otherNonCashItems?: string | number | null;
+  lossGainFromSaleOfAssets?: string | number | null;
+  lossGainFromSaleOfInvestments?: string | number | null;
+  lossGainOnEquityInvestments?: string | number | null;
 
   // Working capital changes (if reported individually)
-  changeInWorkingCapital?: number | null;
-  changeInAccountsReceivable?: number | null;
-  changeInInventory?: number | null;
-  changeInAccountsPayable?: number | null;
-  changeInOtherWorkingCapital?: number | null;
+  changeInWorkingCapital?: string | number | null;
+  changeInAccountsReceivable?: string | number | null;
+  changeInInventory?: string | number | null;
+  changeInAccountsPayable?: string | number | null;
+  changeInOtherWorkingCapital?: string | number | null;
 
   // Cash from operating activities
-  operatingCashFlow?: number | null;
+  operatingCashFlow?: string | number | null;
 
   // Investing
-  capitalExpenditures?: number | null; // aka CapEx / Purchase of PP&E
-  purchaseOfPpAndE?: number | null;
-  saleOfPpAndE?: number | null;
-  acquisitions?: number | null;
-  divestitures?: number | null;
-  purchasesOfInvestments?: number | null;
-  salesMaturitiesOfInvestments?: number | null;
-  otherInvestingActivities?: number | null;
-  investingCashFlow?: number | null;
+  capitalExpenditures?: string | number | null; // aka CapEx / Purchase of PP&E
+  purchaseOfPpAndE?: string | number | null;
+  saleOfPpAndE?: string | number | null;
+  acquisitions?: string | number | null;
+  divestitures?: string | number | null;
+  purchasesOfInvestments?: string | number | null;
+  salesMaturitiesOfInvestments?: string | number | null;
+  otherInvestingActivities?: string | number | null;
+  investingCashFlow?: string | number | null;
 
   // Financing
-  debtIssued?: number | null;
-  debtRepaid?: number | null;
-  commonStockIssued?: number | null;
-  commonStockRepurchased?: number | null;
-  dividendsPaid?: number | null;
-  interestPaid?: number | null;
-  incomeTaxesPaid?: number | null;
-  otherFinancingActivities?: number | null;
-  financingCashFlow?: number | null;
+  debtIssued?: string | number | null;
+  debtRepaid?: string | number | null;
+  commonStockIssued?: string | number | null;
+  commonStockRepurchased?: string | number | null;
+  dividendsPaid?: string | number | null;
+  interestPaid?: string | number | null;
+  incomeTaxesPaid?: string | number | null;
+  otherFinancingActivities?: string | number | null;
+  financingCashFlow?: string | number | null;
 
   // Summary
-  effectOfForexChangesOnCash?: number | null;
-  netChangeInCash?: number | null;
-  freeCashFlow?: number | null;
-  freeCashFlowPerShare?: number | null;
+  effectOfForexChangesOnCash?: string | number | null;
+  netChangeInCash?: string | number | null;
+  freeCashFlow?: string | number | null;
+  freeCashFlowPerShare?: string | number | null;
 }
 
 const CASHFLOW_ANNUAL_KEYS = [
@@ -295,7 +307,7 @@ export async function scrapeCashFlowAnnualStrict(
 }
 
 function toStrictCashFlowAnnual(
-  normalized: CashFlowAnnualResult<Record<string, number | null>>
+  normalized: CashFlowAnnualResult<Record<string, string | number | null>>
 ): CashFlowAnnualResult<CashFlowAnnualStrictValues> {
   const { cashFlowAnnual, errors } = normalized;
 
