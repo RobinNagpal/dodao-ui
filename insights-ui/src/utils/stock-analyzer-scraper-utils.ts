@@ -195,8 +195,22 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   const results = await Promise.all(fetchPromises);
 
   // Prepare data for upsert
-  const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput> = {};
   const allErrors: any[] = existingInfo?.errors ? [...(existingInfo.errors as any[])] : [];
+  const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput> = {};
+  const createData: Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput = {
+    ticker: { connect: { id: ticker.id } },
+    summary: {},
+    dividends: {},
+    incomeStatementAnnual: {},
+    incomeStatementQuarter: {},
+    balanceSheetAnnual: {},
+    balanceSheetQuarter: {},
+    cashFlowAnnual: {},
+    cashFlowQuarter: {},
+    ratiosAnnual: {},
+    ratiosQuarter: {},
+    errors: allErrors,
+  } as Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput;
 
   for (const { config, result, error } of results) {
     if (error) {
@@ -207,8 +221,14 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
         timestamp: new Date().toISOString(),
       });
     } else if (result) {
-      (updateData as any)[config.field] = result.data;
-      (updateData as any)[config.lastUpdatedField] = new Date();
+      // Set data for both update and create
+      const dataValue = result.data;
+      const timestampValue = new Date();
+
+      (updateData as any)[config.field] = dataValue;
+      (updateData as any)[config.lastUpdatedField] = timestampValue;
+      (createData as any)[config.field] = dataValue;
+      (createData as any)[config.lastUpdatedField] = timestampValue;
 
       // Add any errors from the response
       if (result.errors && result.errors.length > 0) {
@@ -221,6 +241,8 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
         );
       }
     }
+    // Note: For failed requests, timestamps remain null in createData
+    // This ensures that failed requests don't appear as "fresh" data
   }
 
   (updateData as any).errors = allErrors;
@@ -231,30 +253,7 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
       tickerId: ticker.id,
     },
     update: updateData,
-    create: {
-      tickerId: ticker.id,
-      summary: updateData.summary || {},
-      lastUpdatedAtSummary: updateData.lastUpdatedAtSummary || new Date(),
-      dividends: updateData.dividends || {},
-      lastUpdatedAtDividends: updateData.lastUpdatedAtDividends || new Date(),
-      incomeStatementAnnual: updateData.incomeStatementAnnual || {},
-      lastUpdatedAtIncomeStatementAnnual: updateData.lastUpdatedAtIncomeStatementAnnual || new Date(),
-      incomeStatementQuarter: updateData.incomeStatementQuarter || {},
-      lastUpdatedAtIncomeStatementQuarter: updateData.lastUpdatedAtIncomeStatementQuarter || new Date(),
-      balanceSheetAnnual: updateData.balanceSheetAnnual || {},
-      lastUpdatedAtBalanceSheetAnnual: updateData.lastUpdatedAtBalanceSheetAnnual || new Date(),
-      balanceSheetQuarter: updateData.balanceSheetQuarter || {},
-      lastUpdatedAtBalanceSheetQuarter: updateData.lastUpdatedAtBalanceSheetQuarter || new Date(),
-      cashFlowAnnual: updateData.cashFlowAnnual || {},
-      lastUpdatedAtCashFlowAnnual: updateData.lastUpdatedAtCashFlowAnnual || new Date(),
-      cashFlowQuarter: updateData.cashFlowQuarter || {},
-      lastUpdatedAtCashFlowQuarter: updateData.lastUpdatedAtCashFlowQuarter || new Date(),
-      ratiosAnnual: updateData.ratiosAnnual || {},
-      lastUpdatedAtRatiosAnnual: updateData.lastUpdatedAtRatiosAnnual || new Date(),
-      ratiosQuarter: updateData.ratiosQuarter || {},
-      lastUpdatedAtRatiosQuarter: updateData.lastUpdatedAtRatiosQuarter || new Date(),
-      errors: allErrors,
-    },
+    create: createData,
   });
 
   console.log(`Updated scraper info for ticker ${ticker.symbol}`);
