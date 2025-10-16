@@ -3,8 +3,8 @@
 # =========================
 SLS ?= npx serverless
 TSX ?= npx tsx
-TICKER_URL ?= https://stockanalysis.com/quote/psx/LUCK/
-VIEW ?= strict
+TICKER_URL ?= https://stockanalysis.com/stocks/sn/
+VIEW ?= normal
 ORIGIN ?= http://localhost:3000
 
 # ==============

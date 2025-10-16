@@ -31,131 +31,134 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get competition analysis (required for past performance analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirst({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
+  // const competitionData = await prisma.tickerV1VsCompetition.findFirst({
+  //   where: {
+  //     spaceId,
+  //     tickerId: tickerRecord.id,
+  //   },
+  // });
 
-  if (!competitionData) {
-    throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
-  }
+  // if (!competitionData) {
+  //   throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
+  // }
 
-  // Get analysis factors for PastPerformance category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.PastPerformance,
-    },
-  });
+  // // Get analysis factors for PastPerformance category
+  // const analysisFactors = await prisma.analysisCategoryFactor.findMany({
+  //   where: {
+  //     spaceId,
+  //     industryKey: tickerRecord.industryKey,
+  //     subIndustryKey: tickerRecord.subIndustryKey,
+  //     categoryKey: TickerAnalysisCategory.PastPerformance,
+  //   },
+  // });
 
-  // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: 'PastPerformance',
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
-  };
+  // // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
+  // const inputJson = {
+  //   name: tickerRecord.name,
+  //   symbol: tickerRecord.symbol,
+  //   industryKey: tickerRecord.industryKey,
+  //   industryName: tickerRecord.industry.name,
+  //   industryDescription: tickerRecord.industry.summary,
+  //   subIndustryKey: tickerRecord.subIndustryKey,
+  //   subIndustryName: tickerRecord.subIndustry.name,
+  //   subIndustryDescription: tickerRecord.subIndustry.summary,
+  //   categoryKey: 'PastPerformance',
+  //   factorAnalysisArray: analysisFactors.map((factor) => ({
+  //     factorAnalysisKey: factor.factorAnalysisKey,
+  //     factorAnalysisTitle: factor.factorAnalysisTitle,
+  //     factorAnalysisDescription: factor.factorAnalysisDescription,
+  //     factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
+  //   })),
+  //   competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+  // };
 
-  // Call the LLM
-  const result = await getLLMResponseForPromptViaInvocation({
-    spaceId,
-    inputJson,
-    promptKey: 'US/public-equities-v1/past-performance',
-    llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_2_5_PRO,
-    requestFrom: 'ui',
-  });
+  // // Call the LLM
+  // const result = await getLLMResponseForPromptViaInvocation({
+  //   spaceId,
+  //   inputJson,
+  //   promptKey: 'US/public-equities-v1/past-performance',
+  //   llmProvider: LLMProvider.GEMINI,
+  //   model: GeminiModel.GEMINI_2_5_PRO,
+  //   requestFrom: 'ui',
+  // });
 
-  if (!result) {
-    throw new Error('Failed to get response from LLM');
-  }
+  // if (!result) {
+  //   throw new Error('Failed to get response from LLM');
+  // }
 
-  const response = result.response as LLMFactorAnalysisResponse;
+  // const response = result.response as LLMFactorAnalysisResponse;
 
-  // Store category analysis result (upsert)
-  const categoryResult = await prisma.tickerV1CategoryAnalysisResult.upsert({
-    where: {
-      spaceId_tickerId_categoryKey: {
-        spaceId,
-        tickerId: tickerRecord.id,
-        categoryKey: TickerAnalysisCategory.PastPerformance,
-      },
-    },
-    update: {
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      categoryKey: TickerAnalysisCategory.PastPerformance,
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-    },
-  });
+  // // Store category analysis result (upsert)
+  // const categoryResult = await prisma.tickerV1CategoryAnalysisResult.upsert({
+  //   where: {
+  //     spaceId_tickerId_categoryKey: {
+  //       spaceId,
+  //       tickerId: tickerRecord.id,
+  //       categoryKey: TickerAnalysisCategory.PastPerformance,
+  //     },
+  //   },
+  //   update: {
+  //     summary: response.overallSummary,
+  //     overallAnalysisDetails: response.overallAnalysisDetails,
+  //     updatedAt: new Date(),
+  //   },
+  //   create: {
+  //     spaceId,
+  //     tickerId: tickerRecord.id,
+  //     categoryKey: TickerAnalysisCategory.PastPerformance,
+  //     summary: response.overallSummary,
+  //     overallAnalysisDetails: response.overallAnalysisDetails,
+  //   },
+  // });
 
-  // Store factor results (upsert each one)
-  const factorResults = [];
-  for (const factor of response.factors) {
-    const analysisFactorRecord = analysisFactors.find((af) => af.factorAnalysisKey === factor.factorAnalysisKey);
+  // // Store factor results (upsert each one)
+  // const factorResults = [];
+  // for (const factor of response.factors) {
+  //   const analysisFactorRecord = analysisFactors.find((af) => af.factorAnalysisKey === factor.factorAnalysisKey);
 
-    if (analysisFactorRecord) {
-      const factorResult = await prisma.tickerV1AnalysisCategoryFactorResult.upsert({
-        where: {
-          spaceId_tickerId_analysisCategoryFactorId: {
-            spaceId,
-            tickerId: tickerRecord.id,
-            analysisCategoryFactorId: analysisFactorRecord.id,
-          },
-        },
-        update: {
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-          updatedAt: new Date(),
-        },
-        create: {
-          spaceId,
-          tickerId: tickerRecord.id,
-          categoryKey: TickerAnalysisCategory.PastPerformance,
-          analysisCategoryFactorId: analysisFactorRecord.id,
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-        },
-      });
-      factorResults.push(factorResult);
-    }
-  }
+  //   if (analysisFactorRecord) {
+  //     const factorResult = await prisma.tickerV1AnalysisCategoryFactorResult.upsert({
+  //       where: {
+  //         spaceId_tickerId_analysisCategoryFactorId: {
+  //           spaceId,
+  //           tickerId: tickerRecord.id,
+  //           analysisCategoryFactorId: analysisFactorRecord.id,
+  //         },
+  //       },
+  //       update: {
+  //         oneLineExplanation: factor.oneLineExplanation,
+  //         detailedExplanation: factor.detailedExplanation,
+  //         result: factor.result,
+  //         updatedAt: new Date(),
+  //       },
+  //       create: {
+  //         spaceId,
+  //         tickerId: tickerRecord.id,
+  //         categoryKey: TickerAnalysisCategory.PastPerformance,
+  //         analysisCategoryFactorId: analysisFactorRecord.id,
+  //         oneLineExplanation: factor.oneLineExplanation,
+  //         detailedExplanation: factor.detailedExplanation,
+  //         result: factor.result,
+  //       },
+  //     });
+  //     factorResults.push(factorResult);
+  //   }
+  // }
 
-  // Calculate past performance score (number of passed factors out of 5)
-  const pastPerformanceScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
+  // // Calculate past performance score (number of passed factors out of 5)
+  // const pastPerformanceScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
 
-  // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.PastPerformance, pastPerformanceScore);
+  // // Update cached score using the utility function
+  // await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.PastPerformance, pastPerformanceScore);
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+
+  const invocationId = '123';
 
   return {
     success: true,
-    invocationId: result.invocationId,
+    // invocationId: result.invocationId,
+    invocationId,
   };
 }
 
