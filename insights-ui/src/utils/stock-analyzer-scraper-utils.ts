@@ -197,20 +197,33 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   // Prepare data for upsert
   const allErrors: any[] = existingInfo?.errors ? [...(existingInfo.errors as any[])] : [];
   const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput> = {};
+  const currentTimestamp = new Date();
+
+  // Initialize createData with all required timestamp fields
   const createData: Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput = {
     ticker: { connect: { id: ticker.id } },
     summary: {},
+    lastUpdatedAtSummary: currentTimestamp,
     dividends: {},
+    lastUpdatedAtDividends: currentTimestamp,
     incomeStatementAnnual: {},
+    lastUpdatedAtIncomeStatementAnnual: currentTimestamp,
     incomeStatementQuarter: {},
+    lastUpdatedAtIncomeStatementQuarter: currentTimestamp,
     balanceSheetAnnual: {},
+    lastUpdatedAtBalanceSheetAnnual: currentTimestamp,
     balanceSheetQuarter: {},
+    lastUpdatedAtBalanceSheetQuarter: currentTimestamp,
     cashFlowAnnual: {},
+    lastUpdatedAtCashFlowAnnual: currentTimestamp,
     cashFlowQuarter: {},
+    lastUpdatedAtCashFlowQuarter: currentTimestamp,
     ratiosAnnual: {},
+    lastUpdatedAtRatiosAnnual: currentTimestamp,
     ratiosQuarter: {},
+    lastUpdatedAtRatiosQuarter: currentTimestamp,
     errors: allErrors,
-  } as Prisma.TickerV1StockAnalyzerScrapperInfoCreateInput;
+  };
 
   for (const { config, result, error } of results) {
     if (error) {
