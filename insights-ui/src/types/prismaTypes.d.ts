@@ -124,7 +124,6 @@ declare global {
   namespace PrismaJson {
     // Stock analyzer scraper types
     type StockFundamentalsSummary = StockFundamentalsSummary;
-    type FinancialStatementData = Record<string, any>;
     type DividendsData = DividendsData;
     type IncomeAnnualData = IncomeAnnualData;
     type IncomeQuarterlyData = IncomeQuarterlyData;
