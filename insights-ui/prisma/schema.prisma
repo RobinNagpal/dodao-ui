@@ -814,31 +814,35 @@ model TickerV1StockAnalyzerScrapperInfo {
 
   // Summary data
   summary                   Json      @map("summary")
-  lastUpdatedAtSummary      DateTime? @map("last_updated_at_summary")
+  lastUpdatedAtSummary      DateTime @map("last_updated_at_summary")
+
+  // Dividends data
+  dividends                Json      @map("dividends")
+  lastUpdatedAtDividends   DateTime @map("last_updated_at_dividends")
 
   // Income Statement data
   incomeStatementAnnual                Json      @map("income_statement_annual")
-  lastUpdatedAtIncomeStatementAnnual   DateTime? @map("last_updated_at_income_statement_annual")
+  lastUpdatedAtIncomeStatementAnnual   DateTime @map("last_updated_at_income_statement_annual")
   incomeStatementQuarter               Json      @map("income_statement_quarter")
-  lastUpdatedAtIncomeStatementQuarter  DateTime? @map("last_updated_at_income_statement_quarter")
+  lastUpdatedAtIncomeStatementQuarter  DateTime @map("last_updated_at_income_statement_quarter")
 
   // Balance Sheet data
   balanceSheetAnnual              Json      @map("balance_sheet_annual")
-  lastUpdatedAtBalanceSheetAnnual DateTime? @map("last_updated_at_balance_sheet_annual")
+  lastUpdatedAtBalanceSheetAnnual DateTime @map("last_updated_at_balance_sheet_annual")
   balanceSheetQuarter             Json      @map("balance_sheet_quarter")
-  lastUpdatedAtBalanceSheetQuarter DateTime? @map("last_updated_at_balance_sheet_quarter")
+  lastUpdatedAtBalanceSheetQuarter DateTime @map("last_updated_at_balance_sheet_quarter")
 
   // Cash Flow data
   cashFlowAnnual              Json      @map("cash_flow_annual")
-  lastUpdatedAtCashFlowAnnual DateTime? @map("last_updated_at_cash_flow_annual")
+  lastUpdatedAtCashFlowAnnual DateTime @map("last_updated_at_cash_flow_annual")
   cashFlowQuarter             Json      @map("cash_flow_quarter")
-  lastUpdatedAtCashFlowQuarter DateTime? @map("last_updated_at_cash_flow_quarter")
+  lastUpdatedAtCashFlowQuarter DateTime @map("last_updated_at_cash_flow_quarter")
 
   // Ratios data
   ratiosAnnual              Json      @map("ratios_annual")
-  lastUpdatedAtRatiosAnnual DateTime? @map("last_updated_at_ratios_annual")
+  lastUpdatedAtRatiosAnnual DateTime @map("last_updated_at_ratios_annual")
   ratiosQuarter             Json      @map("ratios_quarter")
-  lastUpdatedAtRatiosQuarter DateTime? @map("last_updated_at_ratios_quarter")
+  lastUpdatedAtRatiosQuarter DateTime @map("last_updated_at_ratios_quarter")
 
   // Errors array
   errors Json[] @default([]) @map("errors")
