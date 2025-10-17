@@ -29,13 +29,7 @@ export default function VideoModal({ isOpen, onClose }: VideoModalProps) {
   };
 
   return (
-    <FullScreenModal
-      open={isOpen}
-      onClose={handleClose}
-      title="GenAI Business Simulations Demo"
-      showCloseButton={true}
-      showTitleBg={true}
-    >
+    <FullScreenModal open={isOpen} onClose={handleClose} title="GenAI Business Simulations Demo" showCloseButton={true} showTitleBg={true}>
       <div className="w-full h-full" style={{ height: 'calc(100vh - 65px)' }}>
         <iframe
           ref={iframeRef}

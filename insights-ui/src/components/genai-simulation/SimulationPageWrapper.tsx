@@ -44,11 +44,8 @@ export default function SimulationPageWrapper() {
         <FAQSection />
         <CTASection />
       </main>
-      
-      <VideoModal 
-        isOpen={isVideoModalOpen} 
-        onClose={handleCloseVideoModal} 
-      />
+
+      <VideoModal isOpen={isVideoModalOpen} onClose={handleCloseVideoModal} />
     </>
   );
 }
