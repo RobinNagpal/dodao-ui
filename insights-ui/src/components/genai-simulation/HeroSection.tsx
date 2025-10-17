@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, ArrowRightIcon, PlayCircleIcon } from '@heroicons/react/24/outline';
 import studentGif from '@/images/simulations/studentGif.gif';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  onOpenVideo?: () => void;
+}
+
+export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
   const stats = [
     { label: 'Business Disciplines', value: '4+' },
-    { label: 'Ready-to-Use Cases', value: '10+' },
+    { label: 'Ready-to-Use Cases', value: '10+' } ,
     { label: 'Student Capacity', value: 'Scalable' },
     { label: 'Setup Time', value: '< 3 min' },
   ];
@@ -36,7 +40,7 @@ export default function HeroSection() {
             apply business concepts in Marketing, Finance, HR, and other domains while developing practical AI skills.
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-4 lg:gap-6">
             <Link
               href="/#contact"
               className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105"
@@ -44,6 +48,17 @@ export default function HeroSection() {
               Book a Demo
               <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
+            
+            {onOpenVideo && (
+              <button
+                onClick={onOpenVideo}
+                className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-green-500 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105"
+              >
+                <PlayCircleIcon className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                See Video
+              </button>
+            )}
+            
             <Link
               href="#how-it-works"
               className="inline-flex items-center justify-center rounded-lg border border-gray-600 bg-gray-800/50 px-6 py-3 text-base font-semibold text-gray-300 backdrop-blur-sm hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"

@@ -6,3 +6,5 @@ export { default as FeaturesSection } from './FeaturesSection';
 export { default as DemoSection } from './DemoSection';
 export { default as FAQSection } from './FAQSection';
 export { default as CTASection } from './CTASection';
+export { default as VideoModal } from './VideoModal';
+export { default as PageWrapper } from './SimulationPageWrapper';

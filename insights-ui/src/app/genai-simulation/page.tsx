@@ -1,14 +1,5 @@
 import { Metadata } from 'next';
-import {
-  HeroSection,
-  HowItWorksSection,
-  SubjectsSection,
-  BenefitsSection,
-  FeaturesSection,
-  DemoSection,
-  FAQSection,
-  CTASection,
-} from '@/components/genai-simulation';
+import SimulationPageWrapper from '@/components/genai-simulation/SimulationPageWrapper';
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'GenAI Business Simulations | KoalaGains';
@@ -63,16 +54,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function AISimulationPage() {
-  return (
-    <main className="bg-gray-900 overflow-hidden">
-      <HeroSection />
-      <SubjectsSection />
-      <HowItWorksSection />
-      <BenefitsSection />
-      <FeaturesSection />
-      <DemoSection />
-      <FAQSection />
-      <CTASection />
-    </main>
-  );
+  return <SimulationPageWrapper />;
 }
