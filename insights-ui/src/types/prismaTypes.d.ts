@@ -65,17 +65,19 @@ export interface FinancialMeta {
   fiscalYearNote?: string;
 }
 
-// Balance Sheet Types
-export interface BalanceAnnualPeriod {
-  fiscalYear: string;
+// Base Financial Period Type (common structure)
+export interface BaseFinancialPeriod {
   periodEnd?: string;
   values: Record<string, string | number | null>;
 }
 
-export interface BalanceQuarterlyPeriod {
+// Balance Sheet Types
+export interface BalanceAnnualPeriod extends BaseFinancialPeriod {
+  fiscalYear: string;
+}
+
+export interface BalanceQuarterlyPeriod extends BaseFinancialPeriod {
   fiscalQuarter: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
 export interface BalanceAnnualData {
@@ -89,16 +91,12 @@ export interface BalanceQuarterlyData {
 }
 
 // Income Statement Types
-export interface IncomeAnnualPeriod {
+export interface IncomeAnnualPeriod extends BaseFinancialPeriod {
   fiscalYear: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
-export interface IncomeQuarterlyPeriod {
+export interface IncomeQuarterlyPeriod extends BaseFinancialPeriod {
   fiscalQuarter: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
 export interface IncomeAnnualData {
@@ -112,16 +110,12 @@ export interface IncomeQuarterlyData {
 }
 
 // Cash Flow Types
-export interface CashFlowAnnualPeriod {
+export interface CashFlowAnnualPeriod extends BaseFinancialPeriod {
   fiscalYear: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
-export interface CashFlowQuarterlyPeriod {
+export interface CashFlowQuarterlyPeriod extends BaseFinancialPeriod {
   fiscalQuarter: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
 export interface CashFlowAnnualData {
@@ -135,16 +129,12 @@ export interface CashFlowQuarterlyData {
 }
 
 // Ratios Types
-export interface RatiosAnnualPeriod {
+export interface RatiosAnnualPeriod extends BaseFinancialPeriod {
   fiscalYear: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
-export interface RatiosQuarterlyPeriod {
+export interface RatiosQuarterlyPeriod extends BaseFinancialPeriod {
   fiscalQuarter: string;
-  periodEnd?: string;
-  values: Record<string, string | number | null>;
 }
 
 export interface RatiosAnnualData {

@@ -1,6 +1,6 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
-import { ensureStockAnalyzerDataIsFresh } from '@/utils/stock-analyzer-scraper-utils';
+import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -29,7 +29,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Ensure stock analyzer data is fresh
-  await ensureStockAnalyzerDataIsFresh(tickerRecord);
+  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get competition analysis (required for fair value analysis)
   const competitionData = await prisma.tickerV1VsCompetition.findFirst({
@@ -42,6 +42,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   if (!competitionData) {
     throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
   }
+
+  // Extract comprehensive financial data for analysis
+  const financialData = extractFinancialDataForAnalysis(scraperInfo);
 
   // Get analysis factors for FairValue category
   const analysisFactors = await prisma.analysisCategoryFactor.findMany({
@@ -73,6 +76,18 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+
+    // Market Snapshot
+    marketSummary: financialData.marketSummary,
+
+    // Financial Statements
+    incomeStatement: financialData.incomeStatement,
+    balanceSheet: financialData.balanceSheet,
+    cashFlow: financialData.cashFlow,
+    ratios: financialData.ratios,
+    dividends: financialData.dividends,
+
+    // Legacy financial info fields (for backward compatibility)
     price: fi?.price ?? null,
     yearHigh: fi?.yearHigh ?? null,
     yearLow: fi?.yearLow ?? null,

@@ -1,6 +1,6 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
-import { ensureStockAnalyzerDataIsFresh } from '@/utils/stock-analyzer-scraper-utils';
+import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -28,7 +28,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Ensure stock analyzer data is fresh
-  await ensureStockAnalyzerDataIsFresh(tickerRecord);
+  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get competition analysis (required for past performance analysis)
   const competitionData = await prisma.tickerV1VsCompetition.findFirst({
@@ -41,6 +41,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   if (!competitionData) {
     throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
   }
+
+  // Extract comprehensive financial data for past performance analysis (last 5 annuals only)
+  const financialData = extractFinancialDataForPastPerformance(scraperInfo);
 
   // Get analysis factors for PastPerformance category
   const analysisFactors = await prisma.analysisCategoryFactor.findMany({
@@ -70,6 +73,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+
+    // Market Snapshot
+    marketSummary: financialData.marketSummary,
+
+    // Financial Statements - last 5 annuals
+    incomeStatement: financialData.incomeStatement,
+    balanceSheet: financialData.balanceSheet,
+    cashFlow: financialData.cashFlow,
+    ratios: financialData.ratios,
+    dividends: financialData.dividends,
   };
 
   // Call the LLM

@@ -1,5 +1,17 @@
 import { prisma } from '@/prisma';
 import { TickerV1, TickerV1StockAnalyzerScrapperInfo, Prisma } from '@prisma/client';
+import {
+  IncomeAnnualData,
+  IncomeQuarterlyData,
+  BalanceAnnualData,
+  BalanceQuarterlyData,
+  CashFlowAnnualData,
+  CashFlowQuarterlyData,
+  RatiosAnnualData,
+  RatiosQuarterlyData,
+  DividendsData,
+  DividendHistoryRow,
+} from '@/types/prismaTypes';
 
 const LAMBDA_BASE_URL = process.env.STOCK_ANALYZER_LAMBDA_URL || '';
 
@@ -279,4 +291,167 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
  */
 export async function ensureStockAnalyzerDataIsFresh(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
   return await fetchAndUpdateStockAnalyzerData(ticker);
+}
+
+/**
+ * Extract and format comprehensive financial data for LLM analysis (fair value and financial analysis)
+ */
+export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
+  // Helper function to get latest annual data
+  const getLatestAnnual = (data: IncomeAnnualData | BalanceAnnualData | CashFlowAnnualData | RatiosAnnualData | null) => {
+    if (!data?.periods || data.periods.length === 0) return null;
+    // Find the latest annual period (assuming fiscalYear format like "FY 2024")
+    const annualPeriods = data.periods
+      .filter((period) => period.fiscalYear && period.fiscalYear.startsWith('FY'))
+      .sort((a, b) => {
+        const yearA = parseInt(a.fiscalYear.replace('FY ', ''));
+        const yearB = parseInt(b.fiscalYear.replace('FY ', ''));
+        return yearB - yearA; // Descending order
+      });
+    return annualPeriods[0] || null;
+  };
+
+  // Helper function to get last 4 quarters (excluding current quarter if not complete)
+  const getLast4Quarters = (data: IncomeQuarterlyData | BalanceQuarterlyData | CashFlowQuarterlyData | RatiosQuarterlyData | null) => {
+    if (!data?.periods || data.periods.length === 0) return [];
+    return data.periods.slice(0, 4);
+  };
+
+  // Send whole summary data
+  const marketSummary = scraperInfo.summary || {};
+
+  return {
+    marketSummary,
+
+    // Income Statement - last 4 quarters + latest annual
+    incomeStatement: {
+      meta: scraperInfo.incomeStatementQuarter?.meta || scraperInfo.incomeStatementAnnual?.meta || {},
+      last4Quarters: getLast4Quarters(scraperInfo.incomeStatementQuarter as IncomeQuarterlyData | null),
+      latestAnnual: getLatestAnnual(scraperInfo.incomeStatementAnnual as IncomeAnnualData | null),
+    },
+
+    // Balance Sheet - last 4 quarters + latest annual
+    balanceSheet: {
+      meta: scraperInfo.balanceSheetQuarter?.meta || scraperInfo.balanceSheetAnnual?.meta || {},
+      last4Quarters: getLast4Quarters(scraperInfo.balanceSheetQuarter as BalanceQuarterlyData | null),
+      latestAnnual: getLatestAnnual(scraperInfo.balanceSheetAnnual as BalanceAnnualData | null),
+    },
+
+    // Cash Flow Statement - last 4 quarters + latest annual
+    cashFlow: {
+      meta: scraperInfo.cashFlowQuarter?.meta || scraperInfo.cashFlowAnnual?.meta || {},
+      last4Quarters: getLast4Quarters(scraperInfo.cashFlowQuarter as CashFlowQuarterlyData | null),
+      latestAnnual: getLatestAnnual(scraperInfo.cashFlowAnnual as CashFlowAnnualData | null),
+    },
+
+    // Ratios - latest annual + last 4 quarters
+    ratios: {
+      meta: scraperInfo.ratiosQuarter?.meta || scraperInfo.ratiosAnnual?.meta || {},
+      latestAnnual: getLatestAnnual(scraperInfo.ratiosAnnual as RatiosAnnualData | null),
+      last4Quarters: getLast4Quarters(scraperInfo.ratiosQuarter as RatiosQuarterlyData | null),
+    },
+
+    // Dividends - latest + last 4 quarters if applicable
+    dividends: scraperInfo.dividends
+      ? {
+          meta: scraperInfo.dividends.meta || {},
+          summary: scraperInfo.dividends.summary || {},
+          // Get last 4 dividend payments (most recent first)
+          last4Payments: scraperInfo.dividends.history ? scraperInfo.dividends.history.slice(0, 4) : [],
+        }
+      : { meta: {}, summary: {}, last4Payments: [] },
+  };
+}
+
+/**
+ * Extract and format financial data for past performance analysis (last 5 annual periods only)
+ */
+export function extractFinancialDataForPastPerformance(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
+  // Helper function to get last 5 annual periods
+  const getLast5Annuals = (data: IncomeAnnualData | BalanceAnnualData | CashFlowAnnualData | RatiosAnnualData | null) => {
+    if (!data?.periods || data.periods.length === 0) return [];
+    // Filter for annual periods and get last 5
+    const annualPeriods = data.periods
+      .filter((period) => period.fiscalYear && period.fiscalYear.startsWith('FY'))
+      .sort((a, b) => {
+        const yearA = parseInt(a.fiscalYear.replace('FY ', ''));
+        const yearB = parseInt(b.fiscalYear.replace('FY ', ''));
+        return yearB - yearA; // Descending order (newest first)
+      });
+    return annualPeriods.slice(0, 5);
+  };
+
+  // Helper function to get last 5 annual dividend records
+  const getLast5AnnualDividends = (
+    dividendsData: DividendsData
+  ): Array<{
+    year: number;
+    totalAmount: number;
+    paymentCount: number;
+    dividends: DividendHistoryRow[];
+  }> => {
+    if (!dividendsData?.history || dividendsData.history.length === 0) return [];
+
+    // Group dividends by year and calculate annual totals
+    const dividendsByYear = new Map<number, DividendHistoryRow[]>();
+
+    dividendsData.history.forEach((dividend) => {
+      if (dividend.exDividendDate) {
+        const year = new Date(dividend.exDividendDate).getFullYear();
+        if (!dividendsByYear.has(year)) {
+          dividendsByYear.set(year, []);
+        }
+        dividendsByYear.get(year)!.push(dividend);
+      }
+    });
+
+    // Convert to array, sort by year (newest first), and take last 5
+    const annualDividends = Array.from(dividendsByYear.entries())
+      .map(([year, dividends]) => ({
+        year,
+        totalAmount: dividends.reduce((sum, d) => sum + (d.amount || 0), 0),
+        paymentCount: dividends.length,
+        dividends: dividends.sort((a, b) => new Date(b.exDividendDate!).getTime() - new Date(a.exDividendDate!).getTime()), // Most recent first within the year
+      }))
+      .sort((a, b) => b.year - a.year) // Newest years first
+      .slice(0, 5);
+
+    return annualDividends;
+  };
+
+  // Send whole summary data
+  const marketSummary = scraperInfo.summary || {};
+
+  return {
+    marketSummary,
+
+    // Financial Statements - last 5 annuals only
+    incomeStatement: {
+      meta: scraperInfo.incomeStatementAnnual?.meta || {},
+      last5Annuals: getLast5Annuals(scraperInfo.incomeStatementAnnual as IncomeAnnualData | null),
+    },
+
+    balanceSheet: {
+      meta: scraperInfo.balanceSheetAnnual?.meta || {},
+      last5Annuals: getLast5Annuals(scraperInfo.balanceSheetAnnual as BalanceAnnualData | null),
+    },
+
+    cashFlow: {
+      meta: scraperInfo.cashFlowAnnual?.meta || {},
+      last5Annuals: getLast5Annuals(scraperInfo.cashFlowAnnual as CashFlowAnnualData | null),
+    },
+
+    ratios: {
+      meta: scraperInfo.ratiosAnnual?.meta || {},
+      last5Annuals: getLast5Annuals(scraperInfo.ratiosAnnual as RatiosAnnualData | null),
+    },
+
+    dividends: scraperInfo.dividends
+      ? {
+          meta: scraperInfo.dividends.meta || {},
+          summary: scraperInfo.dividends.summary || {},
+          last5Annuals: getLast5AnnualDividends(scraperInfo.dividends),
+        }
+      : { meta: {}, summary: {}, last5Annuals: [] },
+  };
 }
