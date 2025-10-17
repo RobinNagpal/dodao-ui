@@ -4,7 +4,7 @@ import { Prisma, TickerV1VsCompetition } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 /** Case-insensitive variant */
-export async function findByCompanySymbolCI(symbol: string): Promise<TickerV1VsCompetition[]> {
+async function findByCompanySymbolCI(symbol: string): Promise<TickerV1VsCompetition[]> {
   const rows: TickerV1VsCompetition[] = await prisma.$queryRaw<TickerV1VsCompetition[]>(Prisma.sql`
     SELECT
       id,
