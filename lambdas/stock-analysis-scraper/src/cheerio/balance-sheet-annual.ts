@@ -2,14 +2,12 @@ import {
   fetchHtml,
   load,
   normalizeText,
-  parseNumberLike,
-  parsePercent,
   cellText,
   makeError,
   ScrapeError,
   Html,
   toLowerCamelKey,
-  parseValueWithUnit,
+  parseValueRaw,
   extractFinancialsMeta,
   unitMultiplier,
 } from "./utils";
@@ -26,10 +24,10 @@ export interface BalanceMeta {
 export interface BalancePeriodRaw {
   fiscalYear: string;
   periodEnd?: string;
-  values: Record<string, number | null>; // ORIGINAL label -> numeric or null
+  values: Record<string, string | number | null>; // ORIGINAL label -> string (for %), number, or null
 }
 
-export interface BalanceAnnualResult<TValues = Record<string, number | null>> {
+export interface BalanceAnnualResult<TValues = Record<string, string | number | null>> {
   balanceSheetAnnual: {
     meta: BalanceMeta;
     periods: Array<{
@@ -45,7 +43,7 @@ export interface BalanceAnnualResult<TValues = Record<string, number | null>> {
 
 export async function scrapeBalanceSheetAnnualRaw(
   url: string
-): Promise<BalanceAnnualResult<Record<string, number | null>>> {
+): Promise<BalanceAnnualResult<Record<string, string | number | null>>> {
   const { html, error } = await fetchHtml(url);
   if (!html) {
     return {
@@ -61,9 +59,20 @@ export async function scrapeBalanceSheetAnnualRaw(
   return parseBalanceSheetAnnualRaw(html);
 }
 
+function cleanPeriodEnd(raw?: string): string | undefined {
+  if (!raw) return raw;
+  // Match full date like "Dec 31, 2024"
+  const full = raw.match(
+    /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s+\d{4}\b/
+  );
+  if (full) return full[0];
+  // fallback: just remove short year prefix like "Dec '24"
+  return raw.replace(/^[A-Za-z]{3}\s*'?\d{2}\s*/, "").trim();
+}
+
 export function parseBalanceSheetAnnualRaw(
   html: Html
-): BalanceAnnualResult<Record<string, number | null>> {
+): BalanceAnnualResult<Record<string, string | number | null>> {
   const $ = load(html);
   const errors: ScrapeError[] = [];
   const meta = extractFinancialsMeta($);
@@ -109,9 +118,10 @@ export function parseBalanceSheetAnnualRaw(
       (/^FY\s*'?(\d{2}|\d{4})$/i.test(text) || /^\d{4}$/.test(text)) &&
       !text.includes("-")
     ) {
-      const periodEnd = peRow.eq(i).text()
+      const rawPe = peRow.eq(i).text()
         ? normalizeText(peRow.eq(i).text())
         : undefined;
+      const periodEnd = cleanPeriodEnd(rawPe);
       cols.push({ idx: i, fiscalYear: text, periodEnd });
     }
   });
@@ -150,8 +160,8 @@ export function parseBalanceSheetAnnualRaw(
           return;
         }
 
-        // Some rows are percentages (e.g., growth) — try % first, then number
-        const val = parseValueWithUnit(text, rowLabel, mult);
+        // Parse raw values without unit scaling
+        const val = parseValueRaw(text, rowLabel);
         periods[colIdx].values[rowLabel] = val;
       });
     });
@@ -193,17 +203,17 @@ function extractMeta($: cheerio.CheerioAPI): BalanceMeta {
 
 export async function scrapeBalanceSheetAnnual(
   url: string
-): Promise<BalanceAnnualResult<Record<string, number | null>>> {
+): Promise<BalanceAnnualResult<Record<string, string | number | null>>> {
   const raw = await scrapeBalanceSheetAnnualRaw(url);
   return transformBalanceKeysToLowerCamel(raw);
 }
 
 function transformBalanceKeysToLowerCamel(
-  raw: BalanceAnnualResult<Record<string, number | null>>
-): BalanceAnnualResult<Record<string, number | null>> {
+  raw: BalanceAnnualResult<Record<string, string | number | null>>
+): BalanceAnnualResult<Record<string, string | number | null>> {
   const { balanceSheetAnnual, errors } = raw;
   const out = balanceSheetAnnual.periods.map((p) => {
-    const next: Record<string, number | null> = {};
+    const next: Record<string, string | number | null> = {};
     for (const [label, value] of Object.entries(p.values)) {
       const key = toLowerCamelKey(label);
       if (!key) continue;
@@ -222,64 +232,64 @@ function transformBalanceKeysToLowerCamel(
 
 export interface BalanceAnnualStrictValues {
   // Cash & investments
-  cashAndEquivalents?: number | null;
-  shortTermInvestments?: number | null;
-  tradingAssetSecurities?: number | null;
-  cashAndShortTermInvestments?: number | null;
-  cashGrowth?: number | null;
+  cashAndEquivalents?: string | number | null;
+  shortTermInvestments?: string | number | null;
+  tradingAssetSecurities?: string | number | null;
+  cashAndShortTermInvestments?: string | number | null;
+  cashGrowth?: string | number | null;
 
   // Current assets
-  accountsReceivable?: number | null;
-  accountsReceivableNet?: number | null;
-  inventories?: number | null;
-  prepaidExpenses?: number | null;
-  otherCurrentAssets?: number | null;
-  totalCurrentAssets?: number | null;
+  accountsReceivable?: string | number | null;
+  accountsReceivableNet?: string | number | null;
+  inventories?: string | number | null;
+  prepaidExpenses?: string | number | null;
+  otherCurrentAssets?: string | number | null;
+  totalCurrentAssets?: string | number | null;
 
   // Long-term assets
-  propertyPlantAndEquipment?: number | null;
-  propertyPlantAndEquipmentNet?: number | null;
-  accumulatedDepreciation?: number | null;
-  longTermInvestments?: number | null;
-  goodwill?: number | null;
-  intangibleAssets?: number | null;
-  rightOfUseAssets?: number | null;
-  deferredTaxAssets?: number | null;
-  otherLongTermAssets?: number | null;
-  totalAssets?: number | null;
+  propertyPlantAndEquipment?: string | number | null;
+  propertyPlantAndEquipmentNet?: string | number | null;
+  accumulatedDepreciation?: string | number | null;
+  longTermInvestments?: string | number | null;
+  goodwill?: string | number | null;
+  intangibleAssets?: string | number | null;
+  rightOfUseAssets?: string | number | null;
+  deferredTaxAssets?: string | number | null;
+  otherLongTermAssets?: string | number | null;
+  totalAssets?: string | number | null;
 
   // Current liabilities
-  accountsPayable?: number | null;
-  accruedLiabilities?: number | null;
-  shortTermDebt?: number | null;
-  currentPortionOfLongTermDebt?: number | null;
-  currentLeaseLiability?: number | null;
-  otherCurrentLiabilities?: number | null;
-  totalCurrentLiabilities?: number | null;
+  accountsPayable?: string | number | null;
+  accruedLiabilities?: string | number | null;
+  shortTermDebt?: string | number | null;
+  currentPortionOfLongTermDebt?: string | number | null;
+  currentLeaseLiability?: string | number | null;
+  otherCurrentLiabilities?: string | number | null;
+  totalCurrentLiabilities?: string | number | null;
 
   // Long-term liabilities
-  longTermDebt?: number | null;
-  longTermLeaseLiability?: number | null;
-  deferredRevenue?: number | null;
-  deferredTaxLiabilities?: number | null;
-  otherLongTermLiabilities?: number | null;
-  totalLiabilities?: number | null;
+  longTermDebt?: string | number | null;
+  longTermLeaseLiability?: string | number | null;
+  deferredRevenue?: string | number | null;
+  deferredTaxLiabilities?: string | number | null;
+  otherLongTermLiabilities?: string | number | null;
+  totalLiabilities?: string | number | null;
 
   // Equity
-  commonStock?: number | null;
-  additionalPaidInCapital?: number | null;
-  retainedEarnings?: number | null;
-  accumulatedOtherComprehensiveIncome?: number | null;
-  minorityInterest?: number | null;
-  totalShareholdersEquity?: number | null;
-  totalEquity?: number | null;
-  liabilitiesAndShareholdersEquity?: number | null;
+  commonStock?: string | number | null;
+  additionalPaidInCapital?: string | number | null;
+  retainedEarnings?: string | number | null;
+  accumulatedOtherComprehensiveIncome?: string | number | null;
+  minorityInterest?: string | number | null;
+  totalShareholdersEquity?: string | number | null;
+  totalEquity?: string | number | null;
+  liabilitiesAndShareholdersEquity?: string | number | null;
 
   // Per-share & misc
-  sharesOutstanding?: number | null;
-  bookValuePerShare?: number | null;
-  workingCapital?: number | null;
-  currentRatio?: number | null;
+  sharesOutstanding?: string | number | null;
+  bookValuePerShare?: string | number | null;
+  workingCapital?: string | number | null;
+  currentRatio?: string | number | null;
 }
 
 const BALANCE_ANNUAL_KEYS = [
@@ -344,7 +354,7 @@ export async function scrapeBalanceSheetAnnualStrict(
 }
 
 function toStrictBalanceAnnual(
-  normalized: BalanceAnnualResult<Record<string, number | null>>
+  normalized: BalanceAnnualResult<Record<string, string | number | null>>
 ): BalanceAnnualResult<BalanceAnnualStrictValues> {
   const { balanceSheetAnnual, errors } = normalized;
 

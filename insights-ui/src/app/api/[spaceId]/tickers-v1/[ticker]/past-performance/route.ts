@@ -1,5 +1,6 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { ensureStockAnalyzerDataIsFresh } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
@@ -25,6 +26,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   if (!tickerRecord) {
     throw new Error(`Ticker ${ticker} not found`);
   }
+
+  // Ensure stock analyzer data is fresh
+  await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get competition analysis (required for past performance analysis)
   const competitionData = await prisma.tickerV1VsCompetition.findFirst({
