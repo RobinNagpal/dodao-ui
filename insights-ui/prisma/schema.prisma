@@ -560,6 +560,9 @@ model TickerV1 {
 
   financialInfo TickerV1FinancialInfo?
 
+  // Relation to stock analyzer scrapper info (one-to-one)
+  stockAnalyzerScrapperInfo TickerV1StockAnalyzerScrapperInfo?
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -804,4 +807,66 @@ model TickerV1GenerationRequest {
   @@index([tickerId])
   @@index([status])
   @@map("ticker_v1_generation_requests")
+}
+
+model TickerV1StockAnalyzerScrapperInfo {
+  id String @id @default(uuid())
+
+  // Summary data
+  /// [StockFundamentalsSummary]
+  summary                   Json      @map("summary")
+  lastUpdatedAtSummary      DateTime @map("last_updated_at_summary")
+
+  // Dividends data
+  /// [DividendsData]
+  dividends                Json      @map("dividends")
+  lastUpdatedAtDividends   DateTime @map("last_updated_at_dividends")
+
+  // Income Statement data
+  /// [IncomeAnnualData]
+  incomeStatementAnnual                Json      @map("income_statement_annual")
+  lastUpdatedAtIncomeStatementAnnual   DateTime @map("last_updated_at_income_statement_annual")
+  /// [IncomeQuarterlyData]
+  incomeStatementQuarter               Json      @map("income_statement_quarter")
+  lastUpdatedAtIncomeStatementQuarter  DateTime @map("last_updated_at_income_statement_quarter")
+
+  // Balance Sheet data
+  /// [BalanceSheetAnnualData]
+  balanceSheetAnnual              Json      @map("balance_sheet_annual")
+  lastUpdatedAtBalanceSheetAnnual DateTime @map("last_updated_at_balance_sheet_annual")
+  /// [BalanceSheetQuarterlyData]
+  balanceSheetQuarter             Json      @map("balance_sheet_quarter")
+  lastUpdatedAtBalanceSheetQuarter DateTime @map("last_updated_at_balance_sheet_quarter")
+
+  // Cash Flow data
+  /// [CashFlowAnnualData]
+  cashFlowAnnual              Json      @map("cash_flow_annual")
+  lastUpdatedAtCashFlowAnnual DateTime @map("last_updated_at_cash_flow_annual")
+  /// [CashFlowQuarterlyData]
+  cashFlowQuarter             Json      @map("cash_flow_quarter")
+  lastUpdatedAtCashFlowQuarter DateTime @map("last_updated_at_cash_flow_quarter")
+
+  // Ratios data
+  /// [RatiosAnnualData]
+  ratiosAnnual              Json      @map("ratios_annual")
+  lastUpdatedAtRatiosAnnual DateTime @map("last_updated_at_ratios_annual")
+  /// [RatiosQuarterlyData]
+  ratiosQuarter             Json      @map("ratios_quarter")
+  lastUpdatedAtRatiosQuarter DateTime @map("last_updated_at_ratios_quarter")
+
+  // Errors array
+  errors Json[] @default([]) @map("errors")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  // Relation to TickerV1 (one-to-one)
+  tickerId String  @unique @map("ticker_id")
+  ticker   TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@index([tickerId])
+  @@map("ticker_v1_stock_analyzer_scrapper_info")
 }
