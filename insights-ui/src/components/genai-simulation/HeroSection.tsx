@@ -24,7 +24,7 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl py-16 sm:py-24 text-center">
+        <div className="mx-auto max-w-4xl py-12 sm:py-20 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-inset ring-indigo-500/30 backdrop-blur-sm">
             <SparklesIcon className="h-4 w-4" />
             The Academic GenAI Simulations Experience
@@ -40,34 +40,42 @@ export default function HeroSection({ onOpenVideo }: HeroSectionProps) {
             apply business concepts in Marketing, Finance, HR, and other domains while developing practical AI skills.
           </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-4 lg:gap-6">
-            <Link
-              href="/#contact"
-              className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105"
-            >
-              Book a Demo
-              <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <div className="mt-8">
+            {/* First row - See Video button (spans width of two buttons) */}
+            <div className="flex justify-center mb-4">
+              {onOpenVideo && (
+                <button
+                  onClick={onOpenVideo}
+                  className="group inline-flex items-center justify-center rounded-lg border-2 border-indigo-400 bg-indigo-500/20 px-6 py-3 text-base font-semibold text-indigo-300 backdrop-blur-sm hover:bg-indigo-500/30 hover:border-indigo-300 transition-all duration-300 w-full max-w-sm sm:max-w-md"
+                >
+                  <svg className="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                  See Demo Video
+                </button>
+              )}
+            </div>
 
-            {onOpenVideo && (
-              <button
-                onClick={onOpenVideo}
-                className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-green-500 hover:to-emerald-500 transition-all duration-300 transform hover:scale-105"
+            {/* Second row - Book a Demo and See How It Works buttons */}
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-4 lg:gap-6 max-w-sm sm:max-w-md mx-auto">
+              <Link
+                href="/#contact"
+                className="group inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 w-full sm:flex-1"
               >
-                <PlayCircleIcon className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                See Video
-              </button>
-            )}
+                Book a Demo
+                <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
 
-            <Link
-              href="#how-it-works"
-              className="inline-flex items-center justify-center rounded-lg border border-gray-600 bg-gray-800/50 px-6 py-3 text-base font-semibold text-gray-300 backdrop-blur-sm hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300"
-            >
-              See How It Works
-            </Link>
+              <Link
+                href="#how-it-works"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-600 bg-gray-800/50 px-6 py-3 text-base font-semibold text-gray-300 backdrop-blur-sm hover:bg-gray-700/50 hover:border-gray-500 transition-all duration-300 w-full sm:flex-1"
+              >
+                See How It Works
+              </Link>
+            </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-3xl font-bold text-white">{stat.value}</div>
