@@ -1,28 +1,21 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
+import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
+import TickerFields from './TickerFields';
+import type { EditableTickerEntry, TickerFieldsValue } from './types';
 
-/** ---------- Types ---------- */
-
-interface EditableTickerEntry {
-  id: string;
-  name: string;
-  symbol: string;
-  websiteUrl: string;
-  exchange: ExchangeId;
-}
+/** ---------- Types specific to update ---------- */
 
 interface UpdateTickerRequest {
   id: string;
   name: string;
   symbol: string;
-  exchange: ExchangeId;
+  exchange: BasicTickerInfo['exchange']; // still ExchangeId on server-side
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
@@ -49,7 +42,7 @@ interface EditTickersFormProps {
 /** ---------- Component ---------- */
 
 export default function EditTickersForm({ onSuccess, onCancel, tickers, selectedIndustryKey, selectedSubIndustryKey }: EditTickersFormProps): JSX.Element {
-  const [tickerEntries, setTickerEntries] = useState<EditableTickerEntry[]>([]);
+  const [entries, setEntries] = useState<EditableTickerEntry[]>([]);
 
   // Put hook for updating tickers
   const { putData: putTickers, loading: updateTickersLoading } = usePutData<UpdateTickersResponse, UpdateTickersRequest>({
@@ -57,16 +50,17 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
     errorMessage: 'Failed to update tickers.',
   });
 
-  // Initialize ticker entries from props
+  // Initialize entries from props
   useEffect(() => {
-    const editableEntries: EditableTickerEntry[] = tickers.map((ticker) => ({
-      id: ticker.id,
-      name: ticker.name,
-      symbol: ticker.symbol,
-      websiteUrl: ticker.websiteUrl || '',
-      exchange: toExchangeId(ticker.exchange),
+    const editableEntries: EditableTickerEntry[] = tickers.map((t: BasicTickerInfo) => ({
+      id: t.id,
+      name: t.name,
+      symbol: t.symbol.toUpperCase(),
+      websiteUrl: t.websiteUrl || '',
+      exchange: t.exchange as ExchangeId, // `exchange` is already compatible with ExchangeId union
+      stockAnalyzeUrl: t.stockAnalyzeUrl,
     }));
-    setTickerEntries(editableEntries);
+    setEntries(editableEntries);
   }, [tickers]);
 
   /** ---------- Submit ---------- */
@@ -75,8 +69,8 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
     e?.preventDefault();
 
     // Validate rows: exchange required per row (and name/symbol for non-empty rows)
-    for (let i = 0; i < tickerEntries.length; i++) {
-      const t = tickerEntries[i];
+    for (let i = 0; i < entries.length; i++) {
+      const t = entries[i];
 
       if (!t.exchange || !isExchangeId(t.exchange)) {
         // eslint-disable-next-line no-alert
@@ -92,17 +86,15 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
 
     // Prepare update request
     const updateRequest: UpdateTickersRequest = {
-      tickers: tickerEntries.map(
-        (entry): UpdateTickerRequest => ({
-          id: entry.id,
-          name: entry.name,
-          symbol: entry.symbol.toUpperCase(),
-          exchange: entry.exchange,
-          industryKey: selectedIndustryKey,
-          subIndustryKey: selectedSubIndustryKey,
-          websiteUrl: entry.websiteUrl,
-        })
-      ),
+      tickers: entries.map((entry) => ({
+        id: entry.id,
+        name: entry.name,
+        symbol: entry.symbol.toUpperCase(),
+        exchange: entry.exchange,
+        industryKey: selectedIndustryKey,
+        subIndustryKey: selectedSubIndustryKey,
+        websiteUrl: entry.websiteUrl,
+      })),
     };
 
     const result = await putTickers(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, updateRequest);
@@ -112,24 +104,13 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
     }
   };
 
-  /** ---------- Row Mutators ---------- */
+  /** ---------- Mutators ---------- */
 
-  const updateTickerTextField = (index: number, field: 'name' | 'symbol' | 'websiteUrl', value: string): void => {
-    setTickerEntries((prev) => {
-      const updatedEntries = [...prev];
-      updatedEntries[index] = {
-        ...updatedEntries[index],
-        [field]: field === 'symbol' ? value.toUpperCase() : value,
-      };
-      return updatedEntries;
-    });
-  };
-
-  const updateTickerExchange = (index: number, exchange: ExchangeId): void => {
-    setTickerEntries((prev) => {
-      const updatedEntries = [...prev];
-      updatedEntries[index] = { ...updatedEntries[index], exchange };
-      return updatedEntries;
+  const patchRow = (index: number, patch: Partial<EditableTickerEntry>): void => {
+    setEntries((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], ...patch };
+      return next;
     });
   };
 
@@ -147,59 +128,31 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
 
       {/* Ticker Entries */}
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold">Ticker Information ({tickerEntries.length} tickers)</h3>
+        <h3 className="text-lg font-semibold">Ticker Information ({entries.length} tickers)</h3>
 
-        {tickerEntries.map((entry, index) => (
-          <div key={entry.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
-            {/* Exchange FIRST in the row */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Exchange</label>
-                <StyledSelect
-                  label=""
-                  selectedItemId={entry.exchange}
-                  items={exchangeItems}
-                  setSelectedItemId={(id?: string | null) => updateTickerExchange(index, toExchangeId(id))}
-                />
-              </div>
+        {entries.map((entry) => {
+          const coreValue: TickerFieldsValue = {
+            exchange: entry.exchange,
+            name: entry.name,
+            symbol: entry.symbol,
+            websiteUrl: entry.websiteUrl,
+            stockAnalyzeUrl: entry.stockAnalyzeUrl,
+          };
 
-              <div>
-                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Company Name</label>
-                <input
-                  type="text"
-                  value={entry.name}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'name', e.target.value)}
-                  required
-                  className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  placeholder="e.g. Apple Inc."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Symbol</label>
-                <input
-                  type="text"
-                  value={entry.symbol}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'symbol', e.target.value)}
-                  required
-                  className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  placeholder="e.g. AAPL"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
-                <input
-                  type="url"
-                  value={entry.websiteUrl}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'websiteUrl', e.target.value)}
-                  className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                  placeholder="e.g. https://www.apple.com"
-                />
-              </div>
-            </div>
-          </div>
-        ))}
+          return (
+            <TickerFields
+              key={entry.id}
+              value={coreValue}
+              onPatch={(patch): void =>
+                patchRow(
+                  entries.findIndex((e) => e.id === entry.id),
+                  patch
+                )
+              }
+              mdColumns={4}
+            />
+          );
+        })}
       </div>
 
       <div className="flex space-x-4 mt-6">
@@ -208,10 +161,10 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
           variant="contained"
           primary
           loading={updateTickersLoading}
-          disabled={updateTickersLoading || tickerEntries.length === 0}
+          disabled={updateTickersLoading || entries.length === 0}
           onClick={handleUpdateTickers}
         >
-          {updateTickersLoading ? 'Updating...' : `Update ${tickerEntries.length} Tickers`}
+          {updateTickersLoading ? 'Updating...' : `Update ${entries.length} Tickers`}
         </Button>
 
         <Button type="button" variant="outlined" onClick={onCancel}>

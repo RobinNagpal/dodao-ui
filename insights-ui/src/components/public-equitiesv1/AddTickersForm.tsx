@@ -1,13 +1,16 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ExchangeId, exchangeItems, isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
 import React, { useMemo, useRef, useState } from 'react';
+import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
+import TickerFields from './TickerFields';
+import RemoveRowButton from './RemoveRowButton';
+import type { NewTickerEntry, TickerFieldsValue } from './types';
+import { buildKey } from './types';
 
-/** ---------- Types ---------- */
+/** ---------- Types local to Add ---------- */
 
 type AddedTicker = {
   id: string;
@@ -31,27 +34,6 @@ interface BulkResponse {
   errorTickers: ErrorTicker[];
 }
 
-interface TickerEntry {
-  name: string;
-  symbol: string;
-  websiteUrl: string;
-  stockAnalyzeUrl: string;
-  exchange: ExchangeId;
-}
-
-interface NewTickerForm {
-  tickerEntries: TickerEntry[];
-  industryKey: string;
-  subIndustryKey: string;
-}
-
-interface AddTickersFormProps {
-  onSuccess: () => void;
-  onCancel: () => void;
-  selectedIndustryKey: string;
-  selectedSubIndustryKey: string;
-}
-
 type TickerCsvRow = {
   exchange?: string;
   name?: string;
@@ -59,6 +41,13 @@ type TickerCsvRow = {
   websiteUrl?: string;
   stockAnalyzeUrl?: string;
 };
+
+interface AddTickersFormProps {
+  onSuccess: () => void;
+  onCancel: () => void;
+  selectedIndustryKey: string;
+  selectedSubIndustryKey: string;
+}
 
 type NewTickerSubmission = {
   name: string;
@@ -77,18 +66,10 @@ NASDAQ,Apple Inc.,AAPL,https://www.apple.com,https://www.tradingview.com/symbols
 NASDAQ,Microsoft Corporation,MSFT,https://www.microsoft.com,https://www.tradingview.com/symbols/NASDAQ-MSFT/
 TSX,Shopify Inc.,SHOP,https://www.shopify.com,https://www.tradingview.com/symbols/TSX-SHOP/`;
 
-function buildKey(symbol: string, exchange: string): string {
-  return `${symbol.toUpperCase()}|${exchange}`;
-}
-
 /** ---------- Component ---------- */
 
 export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKey, selectedSubIndustryKey }: AddTickersFormProps): JSX.Element {
-  const [newTickerForm, setNewTickerForm] = useState<NewTickerForm>({
-    tickerEntries: [{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }],
-    industryKey: selectedIndustryKey,
-    subIndustryKey: selectedSubIndustryKey,
-  });
+  const [entries, setEntries] = useState<NewTickerEntry[]>([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
 
   const [csvText, setCsvText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -113,8 +94,8 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
     return null;
   };
 
-  const normalizeAndFilterRows = (rows: ReadonlyArray<TickerCsvRow>): TickerEntry[] => {
-    const valid: TickerEntry[] = [];
+  const normalizeAndFilterRows = (rows: ReadonlyArray<TickerCsvRow>): NewTickerEntry[] => {
+    const valid: NewTickerEntry[] = [];
     let invalidCount = 0;
 
     for (const row of rows) {
@@ -144,32 +125,21 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
     return valid;
   };
 
-  const loadTickerEntries = (entries: ReadonlyArray<TickerEntry>): void => {
-    if (entries.length === 0) {
-      setCsvError('No valid ticker entries found in CSV');
-      return;
-    }
-    setNewTickerForm((prev) => ({
-      ...prev,
-      tickerEntries: [...entries],
-    }));
-  };
-
   /** ---------- API Submit (Batch) ---------- */
 
-  const batchSubmit = async (entries: ReadonlyArray<TickerEntry>): Promise<void> => {
+  const batchSubmit = async (rows: ReadonlyArray<NewTickerEntry>): Promise<void> => {
     // Filter out entirely empty rows
-    const filtered = entries
+    const filtered: NewTickerSubmission[] = rows
       .filter((t) => t.name || t.symbol || t.websiteUrl || t.stockAnalyzeUrl)
       .map((t) => ({
         name: t.name.trim(),
         symbol: t.symbol.toUpperCase().trim(),
         exchange: t.exchange,
-        industryKey: newTickerForm.industryKey,
-        subIndustryKey: newTickerForm.subIndustryKey,
+        industryKey: selectedIndustryKey,
+        subIndustryKey: selectedSubIndustryKey,
         websiteUrl: t.websiteUrl.trim(),
         stockAnalyzeUrl: t.stockAnalyzeUrl.trim(),
-      })) as NewTickerSubmission[];
+      }));
 
     if (!filtered.length) return;
 
@@ -206,23 +176,17 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
 
       // Remove successfully added rows from the form; keep error rows
       const addedSet = new Set((data.addedTickers || []).map((t) => buildKey(t.symbol, t.exchange)));
-      setNewTickerForm((prev) => ({
-        ...prev,
-        tickerEntries: prev.tickerEntries.filter((t) => !addedSet.has(buildKey(t.symbol, t.exchange))),
-      }));
+      setEntries((prev) => prev.filter((t) => !addedSet.has(buildKey(t.symbol, t.exchange))));
 
       // If nothing errored and at least one added: reset to single blank and call onSuccess
       const noErrors = (data.errorTickers || []).length === 0;
       if (noErrors && (data.addedTickers || []).length > 0) {
-        setNewTickerForm({
-          tickerEntries: [{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }],
-          industryKey: newTickerForm.industryKey,
-          subIndustryKey: newTickerForm.subIndustryKey,
-        });
+        setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
         onSuccess();
       }
-    } catch (err: any) {
-      setCsvError(err?.message || 'Failed to submit tickers');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to submit tickers';
+      setCsvError(message);
     } finally {
       setLoading(false);
     }
@@ -235,7 +199,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
     Papa.parse<TickerCsvRow>(text, {
       header: true,
       skipEmptyLines: true,
-      complete: async (results) => {
+      complete: async (results): Promise<void> => {
         try {
           const data: TickerCsvRow[] = results.data ?? [];
           if (data.length === 0) {
@@ -249,16 +213,16 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
             return;
           }
           const tickerEntries = normalizeAndFilterRows(data);
-          loadTickerEntries(tickerEntries);
+          setEntries([...tickerEntries]);
           await batchSubmit(tickerEntries); // auto-submit full array when CSV is provided
-        } catch (err) {
-          setCsvError('Error parsing CSV contents');
+        } catch (err: unknown) {
           console.error('CSV text parsing error:', err);
+          setCsvError('Error parsing CSV contents');
         }
       },
-      error: (error: Error) => {
-        setCsvError('Error reading CSV contents');
+      error: (error: Error): void => {
         console.error('CSV text reading error:', error);
+        setCsvError('Error reading CSV contents');
       },
     });
   };
@@ -271,7 +235,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
     Papa.parse<TickerCsvRow>(file, {
       header: true,
       skipEmptyLines: true,
-      complete: async (results) => {
+      complete: async (results): Promise<void> => {
         try {
           const data: TickerCsvRow[] = results.data ?? [];
           if (data.length === 0) {
@@ -285,26 +249,23 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
             return;
           }
           const tickerEntries = normalizeAndFilterRows(data);
-          loadTickerEntries(tickerEntries);
+          setEntries([...tickerEntries]);
           if (fileInputRef.current) fileInputRef.current.value = '';
           await batchSubmit(tickerEntries); // auto-submit on upload
-        } catch (error) {
-          setCsvError('Error parsing CSV file');
+        } catch (error: unknown) {
           console.error('CSV parsing error:', error);
+          setCsvError('Error parsing CSV file');
         }
       },
-      error: (error: Error) => {
-        setCsvError('Error reading CSV file');
+      error: (error: Error): void => {
         console.error('CSV reading error:', error);
+        setCsvError('Error reading CSV file');
       },
     });
   };
 
-  const clearTickerEntries = (): void => {
-    setNewTickerForm((prev) => ({
-      ...prev,
-      tickerEntries: [{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }],
-    }));
+  const clearEntries = (): void => {
+    setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
     setCsvError('');
     setCsvText('');
     setFeedbackAdded([]);
@@ -318,61 +279,47 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
   const handleAddTicker = async (e?: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e?.preventDefault();
 
-    if (!newTickerForm.industryKey || !newTickerForm.subIndustryKey) {
+    if (!selectedIndustryKey || !selectedSubIndustryKey) {
+      // eslint-disable-next-line no-alert
       alert('Please select both Industry and Sub-Industry');
       return;
     }
 
     // Validate rows
-    for (let i = 0; i < newTickerForm.tickerEntries.length; i++) {
-      const t = newTickerForm.tickerEntries[i];
+    for (let i = 0; i < entries.length; i++) {
+      const t = entries[i];
       const hasAny = t.name.trim().length > 0 || t.symbol.trim().length > 0 || t.websiteUrl.trim().length > 0 || t.stockAnalyzeUrl.trim().length > 0;
       if (!hasAny) continue;
       if (!t.exchange || !isExchangeId(t.exchange)) {
+        // eslint-disable-next-line no-alert
         alert(`Row ${i + 1}: Please select a valid Exchange.`);
         return;
       }
       if (!t.name.trim() || !t.symbol.trim()) {
+        // eslint-disable-next-line no-alert
         alert(`Row ${i + 1}: Please provide both Company Name and Symbol.`);
         return;
       }
     }
 
-    await batchSubmit(newTickerForm.tickerEntries);
+    await batchSubmit(entries);
   };
 
-  /** ---------- Row Mutators ---------- */
+  /** ---------- Mutators ---------- */
 
-  const addTickerEntry = (): void => {
-    setNewTickerForm((prev) => ({
-      ...prev,
-      tickerEntries: [...prev.tickerEntries, { name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }],
-    }));
+  const addRow = (): void => {
+    setEntries((prev) => [...prev, { name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
   };
 
-  const removeTickerEntry = (index: number): void => {
-    setNewTickerForm((prev) => ({
-      ...prev,
-      tickerEntries: prev.tickerEntries.filter((_, i) => i !== index),
-    }));
+  const removeRow = (index: number): void => {
+    setEntries((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const updateTickerTextField = (index: number, field: 'name' | 'symbol' | 'websiteUrl' | 'stockAnalyzeUrl', value: string): void => {
-    setNewTickerForm((prev) => {
-      const updatedEntries = [...prev.tickerEntries];
-      updatedEntries[index] = {
-        ...updatedEntries[index],
-        [field]: field === 'symbol' ? value.toUpperCase() : value,
-      } as TickerEntry;
-      return { ...prev, tickerEntries: updatedEntries };
-    });
-  };
-
-  const updateTickerExchange = (index: number, exchange: ExchangeId): void => {
-    setNewTickerForm((prev) => {
-      const updatedEntries = [...prev.tickerEntries];
-      updatedEntries[index] = { ...updatedEntries[index], exchange };
-      return { ...prev, tickerEntries: updatedEntries };
+  const patchRow = (index: number, patch: Partial<NewTickerEntry>): void => {
+    setEntries((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], ...patch };
+      return next;
     });
   };
 
@@ -385,7 +332,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <div>
           <h2 className="text-xl font-semibold">Add New Tickers</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>exchange required</strong>, websiteUrl &amp; stockAnalyzeUrl
+            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>exchange required</strong>; websiteUrl &amp; stockAnalyzeUrl
             optional)
           </p>
         </div>
@@ -400,14 +347,14 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
           <Button
             type="button"
             variant="outlined"
-            onClick={() => parseCsvFromText(csvText)}
+            onClick={(): void => parseCsvFromText(csvText)}
             disabled={csvText.trim().length === 0 || loading}
             className="text-sm"
           >
             Parse & Add CSV
           </Button>
-          {newTickerForm.tickerEntries.length > 1 && (
-            <Button type="button" variant="outlined" onClick={clearTickerEntries} className="text-sm text-red-600 hover:text-red-800">
+          {entries.length > 1 && (
+            <Button type="button" variant="outlined" onClick={clearEntries} className="text-sm text-red-600 hover:text-red-800">
               Clear All
             </Button>
           )}
@@ -426,7 +373,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <textarea
           id="csv-contents"
           value={csvText}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCsvText(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setCsvText(e.target.value)}
           rows={6}
           className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder={`Paste CSV rows here...\n\n${CSV_EXAMPLE}`}
@@ -485,92 +432,48 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         </div>
       )}
 
-      {/* Ticker Entries Form */}
+      {/* Ticker Entries */}
       <div className="space-y-6 mt-4">
         <h3 className="text-lg font-semibold">Ticker Information</h3>
 
-        {newTickerForm.tickerEntries.map((entry, index) => {
+        {entries.map((entry, index) => {
           const key = buildKey(entry.symbol, entry.exchange);
           const inlineError = rowErrors[key];
+
+          const coreValue: TickerFieldsValue = {
+            exchange: entry.exchange,
+            name: entry.name,
+            symbol: entry.symbol,
+            websiteUrl: entry.websiteUrl,
+            stockAnalyzeUrl: entry.stockAnalyzeUrl,
+          };
+
           return (
-            <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Exchange</label>
-                  <StyledSelect
-                    label=""
-                    selectedItemId={entry.exchange}
-                    items={exchangeItems}
-                    setSelectedItemId={(id?: string | null) => updateTickerExchange(index, toExchangeId(id))}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Company Name</label>
-                  <input
-                    type="text"
-                    value={entry.name}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'name', e.target.value)}
-                    required
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    placeholder="e.g. Apple Inc."
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Symbol</label>
-                  <input
-                    type="text"
-                    value={entry.symbol}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'symbol', e.target.value)}
-                    required
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    placeholder="e.g. AAPL"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
-                  <input
-                    type="url"
-                    value={entry.websiteUrl}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'websiteUrl', e.target.value)}
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    placeholder="e.g. https://www.apple.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1 dark:text-gray-300">Stock Analyze URL</label>
-                  <input
-                    type="url"
-                    value={entry.stockAnalyzeUrl}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateTickerTextField(index, 'stockAnalyzeUrl', e.target.value)}
-                    className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                    placeholder="e.g. https://www.tradingview.com/symbols/NASDAQ-AAPL/"
-                  />
-                </div>
-              </div>
-
-              {inlineError && <p className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">⚠ {inlineError}</p>}
+            <div key={index}>
+              <TickerFields
+                value={coreValue}
+                onPatch={(patch): void => patchRow(index, patch)}
+                mdColumns={5} // Add form shows 5 cols when we include stockAnalyzeUrl
+                inlineError={inlineError}
+                renderAfter={
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-4">
+                    <div className="md:col-start-5">
+                      <label className="block text-sm font-medium mb-1 dark:text-gray-300">Stock Analyze URL</label>
+                      <input
+                        type="url"
+                        value={entry.stockAnalyzeUrl}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => patchRow(index, { stockAnalyzeUrl: e.target.value })}
+                        className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                        placeholder="e.g. https://www.tradingview.com/symbols/NASDAQ-AAPL/"
+                      />
+                    </div>
+                  </div>
+                }
+              />
 
               {index > 0 && (
                 <div className="mt-3 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => removeTickerEntry(index)}
-                    className="flex items-center text-red-500 hover:text-red-700"
-                    aria-label={`Remove ticker row ${index + 1}`}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path
-                        fillRule="evenodd"
-                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Remove
-                  </button>
+                  <RemoveRowButton onClick={(): void => removeRow(index)} ariaLabel={`Remove ticker row ${index + 1}`} />
                 </div>
               )}
             </div>
@@ -578,7 +481,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         })}
 
         <div>
-          <button type="button" onClick={addTickerEntry} className="text-blue-600 hover:text-blue-800 flex items-center">
+          <button type="button" onClick={addRow} className="text-blue-600 hover:text-blue-800 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
             </svg>

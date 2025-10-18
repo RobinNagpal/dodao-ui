@@ -1,7 +1,19 @@
 import { prisma } from '@/prisma';
+import { ExchangeId } from '@/utils/exchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry, TickerV1VsCompetition } from '@prisma/client';
 import { NextRequest } from 'next/server';
+
+export interface NewTickerSubmission {
+  name: string;
+  symbol: string;
+  exchange: ExchangeId;
+  industryKey: string;
+  subIndustryKey: string;
+  websiteUrl: string;
+  /** optional in API, keep as empty string when not provided */
+  stockAnalyzeUrl: string;
+}
 
 export interface TickerV1VsCompetitionWithRelations extends TickerV1VsCompetition {
   ticker: TickerV1 & {
@@ -52,5 +64,61 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   return competitionRecords;
 }
+
+async function createTickerFomCompetition(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1> {
+  const { spaceId, ticker } = await context.params;
+
+  const body: NewTickerSubmission = await req.json();
+
+  if (!body.exchange || !body.name || !body.industryKey || !body.subIndustryKey || !body.websiteUrl) {
+    throw new Error('exchange, name, industryKey, subIndustryKey, and websiteUrl are required');
+  }
+
+  const currentTicker = await prisma.tickerV1.findFirst({
+    where: {
+      spaceId: spaceId,
+      symbol: ticker.toUpperCase(),
+    },
+  });
+
+  if (currentTicker) {
+    throw new Error('Ticker already exists');
+  }
+
+  const tickerRecord = await prisma.tickerV1.create({
+    data: {
+      spaceId: spaceId,
+      symbol: ticker.toUpperCase(),
+      exchange: body.exchange,
+      name: body.name,
+      industryKey: body.industryKey,
+      subIndustryKey: body.subIndustryKey,
+      websiteUrl: body.websiteUrl,
+      stockAnalyzeUrl: body.stockAnalyzeUrl,
+    },
+  });
+
+  await prisma.tickerV1GenerationRequest.create({
+    data: {
+      tickerId: tickerRecord.id,
+      regenerateCompetition: true,
+      regenerateFinancialAnalysis: true,
+      regenerateBusinessAndMoat: true,
+      regeneratePastPerformance: true,
+      regenerateFutureGrowth: true,
+      regenerateFairValue: true,
+      regenerateFutureRisk: true,
+      regenerateWarrenBuffett: true,
+      regenerateCharlieMunger: true,
+      regenerateBillAckman: true,
+      regenerateFinalSummary: true,
+      regenerateCachedScore: true,
+    },
+  });
+
+  return tickerRecord;
+}
+
+export const POST = withErrorHandlingV2<TickerV1>(createTickerFomCompetition);
 
 export const GET = withErrorHandlingV2<TickerV1VsCompetitionWithRelations[]>(getHandler);

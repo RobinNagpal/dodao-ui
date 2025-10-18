@@ -86,6 +86,20 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 >
                   Requests
                 </Link>
+                <Link
+                  href="/admin-v1/industry-management"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  Industry Management
+                </Link>
+                <Link
+                  href="/admin-v1/ticker-management"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  Ticker Management
+                </Link>
                 <div className="border-t border-gray-700 my-1"></div>
               </>
             )}
@@ -143,6 +157,18 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                     className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                   >
                     Requests
+                  </Link>
+                  <Link
+                    href="/admin-v1/industry-management"
+                    className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                  >
+                    Industry Management
+                  </Link>
+                  <Link
+                    href="/admin-v1/ticker-management"
+                    className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                  >
+                    Ticker Management
                   </Link>
                   <div className="border-t border-gray-700 my-1"></div>
                 </>
