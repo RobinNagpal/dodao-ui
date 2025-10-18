@@ -85,7 +85,7 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
     throw new Error('Ticker already exists');
   }
 
-  return prisma.tickerV1.create({
+  const tickerRecord = await prisma.tickerV1.create({
     data: {
       spaceId: spaceId,
       symbol: ticker.toUpperCase(),
@@ -97,6 +97,26 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
       stockAnalyzeUrl: body.stockAnalyzeUrl,
     },
   });
+
+  await prisma.tickerV1GenerationRequest.create({
+    data: {
+      tickerId: tickerRecord.id,
+      regenerateCompetition: true,
+      regenerateFinancialAnalysis: true,
+      regenerateBusinessAndMoat: true,
+      regeneratePastPerformance: true,
+      regenerateFutureGrowth: true,
+      regenerateFairValue: true,
+      regenerateFutureRisk: true,
+      regenerateWarrenBuffett: true,
+      regenerateCharlieMunger: true,
+      regenerateBillAckman: true,
+      regenerateFinalSummary: true,
+      regenerateCachedScore: true,
+    },
+  });
+
+  return tickerRecord;
 }
 
 export const POST = withErrorHandlingV2<TickerV1>(createTickerFomCompetition);

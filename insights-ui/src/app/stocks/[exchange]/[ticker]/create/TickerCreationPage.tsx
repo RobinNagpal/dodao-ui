@@ -12,16 +12,13 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1 } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
-
-/** ---------- Props ---------- */
 
 export interface TickerCreationPageProps {
   symbol: string;
   exchange: string;
 }
-
-/** ---------- Helpers ---------- */
 
 function getCompetitionAnalysis(symbol: string, tickerCompetition: TickerV1VsCompetitionWithRelations): JSX.Element | null {
   const competition = tickerCompetition.competitionAnalysisArray.find((c) => c.companySymbol?.toLowerCase() === symbol.toLowerCase()) || null;
@@ -38,9 +35,9 @@ function getCompetitionAnalysis(symbol: string, tickerCompetition: TickerV1VsCom
   );
 }
 
-/** ---------- Component ---------- */
-
 export default function TickerCreationPage({ symbol, exchange }: TickerCreationPageProps): JSX.Element {
+  const router = useRouter();
+
   const { data, loading, error } = useFetchData<TickerV1VsCompetitionWithRelations[]>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${symbol}/creation-infos`,
     { cache: 'no-cache' },
@@ -73,20 +70,21 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
   });
 
   const onOpenFromCard = (tc: TickerV1VsCompetitionWithRelations): void => {
+    const tickerToAdd = tc.competitionAnalysisArray.find((c) => c.companySymbol?.toLowerCase() === symbol.toLowerCase()) || null;
+    if (!tickerToAdd) return;
+
     // Seed defaults from the chosen card, fall back to props if needed
-    const seededExchange = toExchangeId(tc.ticker.exchange ?? exchange);
-    const seededName = tc.ticker.name ?? '';
-    const seededSymbol = (tc.ticker.symbol ?? symbol).toUpperCase();
-    const seededWebsite = tc.ticker.websiteUrl ?? '';
-    const seededStockAnalyzeUrl = tc.ticker.stockAnalyzeUrl ?? '';
+    const seededExchange = toExchangeId(tickerToAdd?.exchangeSymbol);
+    const seededName = tickerToAdd.companyName ?? '';
+    const seededSymbol = tickerToAdd.companySymbol?.toUpperCase() || '';
 
     setActive(tc);
     setForm({
       exchange: seededExchange,
       name: seededName,
       symbol: seededSymbol,
-      websiteUrl: seededWebsite,
-      stockAnalyzeUrl: seededStockAnalyzeUrl,
+      websiteUrl: '',
+      stockAnalyzeUrl: '',
     });
     setOpen(true);
   };
@@ -126,8 +124,9 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
 
     const resp = await createTickersFromCompetition(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, body);
 
-    if (resp) {
+    if (resp?.id) {
       setOpen(false);
+      router.push(`/admin-v1/create-background-reports`);
     }
   };
 
