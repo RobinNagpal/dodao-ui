@@ -27,6 +27,7 @@ export interface BasicTickerInfo {
   exchange: string;
   cachedScore: number | null;
   websiteUrl: string | null;
+  stockAnalyzeUrl: string;
 }
 
 export interface BasicTickersResponse {

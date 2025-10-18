@@ -17,7 +17,7 @@ interface NewTickerRequest {
   websiteUrl?: string;
   summary?: string;
   cachedScore?: number;
-  stockAnalyzeUrl?: string;
+  stockAnalyzeUrl: string;
 }
 
 interface ErrorTicker {
@@ -43,7 +43,7 @@ interface UpdateTickerRequest {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
-  stockAnalyzeUrl?: string;
+  stockAnalyzeUrl: string;
 }
 
 interface UpdateTickersRequest {
@@ -84,9 +84,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
 /** ---------- Helpers ---------- */
 
-function normStr(v?: string | null): string | null {
+function normStr<T extends string | null>(v?: T): T {
   const s = (v ?? '').trim();
-  return s.length ? s : null;
+  return s.length ? (s as T) : (null as T);
 }
 
 function toKey(spaceId: string, symbol: string, exchange: string): string {

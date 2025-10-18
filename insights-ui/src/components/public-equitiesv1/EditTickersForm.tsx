@@ -52,12 +52,13 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
 
   // Initialize entries from props
   useEffect(() => {
-    const editableEntries: EditableTickerEntry[] = tickers.map((t) => ({
+    const editableEntries: EditableTickerEntry[] = tickers.map((t: BasicTickerInfo) => ({
       id: t.id,
       name: t.name,
       symbol: t.symbol.toUpperCase(),
       websiteUrl: t.websiteUrl || '',
       exchange: t.exchange as ExchangeId, // `exchange` is already compatible with ExchangeId union
+      stockAnalyzeUrl: t.stockAnalyzeUrl,
     }));
     setEntries(editableEntries);
   }, [tickers]);
@@ -135,6 +136,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
             name: entry.name,
             symbol: entry.symbol,
             websiteUrl: entry.websiteUrl,
+            stockAnalyzeUrl: entry.stockAnalyzeUrl,
           };
 
           return (

@@ -29,6 +29,7 @@ async function getHandler(
         exchange: true,
         cachedScore: true,
         websiteUrl: true,
+        stockAnalyzeUrl: true,
       },
       orderBy: {
         name: 'asc',
@@ -62,6 +63,7 @@ async function getHandler(
         spaceId: true,
         industryKey: true,
         subIndustryKey: true,
+        stockAnalyzeUrl: true,
         categoryAnalysisResults: {
           select: {
             categoryKey: true,
