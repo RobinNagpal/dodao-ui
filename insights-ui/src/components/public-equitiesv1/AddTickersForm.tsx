@@ -445,6 +445,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
             name: entry.name,
             symbol: entry.symbol,
             websiteUrl: entry.websiteUrl,
+            stockAnalyzeUrl: entry.stockAnalyzeUrl,
           };
 
           return (

@@ -14,9 +14,7 @@ export interface EditableTickerEntry extends TickerFieldsValue {
   id: string;
 }
 
-export interface NewTickerEntry extends TickerFieldsValue {
-  stockAnalyzeUrl: string; // keep empty string if not provided
-}
+export interface NewTickerEntry extends TickerFieldsValue {}
 
 /** Utility key for maps/error lookups */
 export function buildKey(symbol: string, exchange: string): string {
