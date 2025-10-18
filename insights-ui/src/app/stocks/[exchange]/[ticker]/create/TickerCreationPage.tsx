@@ -2,9 +2,13 @@
 
 import { TickerV1VsCompetitionWithRelations } from '@/app/api/[spaceId]/tickers-v1/[ticker]/creation-infos/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
+import { UpsertCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { TickerV1 } from '@prisma/client';
 
 export interface TickerCreationPageProps {
   symbol: string;
@@ -32,6 +36,15 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
     { cache: 'no-cache' },
     'Fetching Ticker Creation Info Failed'
   );
+
+  const {
+    postData,
+    loading: creatingTicker,
+    error: savingError,
+  } = usePostData<TickerV1, UpsertCustomCriteriaRequest>({
+    successMessage: 'Successfully created ticker based on competition',
+    errorMessage: 'Failed to create ticker',
+  });
 
   if (loading) {
     return <FullPageLoader />;
