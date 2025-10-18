@@ -442,40 +442,6 @@ model Latest10QInfo {
   @@map("latest_10q_infos")
 }
 
-// model Latest10QInformation {
-//   id          String               @id @default(uuid())
-//   spaceId     String               @default("koala_gains") @map("space_id")
-//   tickerKey   String               @map("ticker_key")
-//   periodOfReport String               @map("period_of_report")
-//   filingUrl      String               @map("filing_url")
-//   attachments Latest10Attachment[]
-//   Ticker      Ticker[]
-//
-//   @@map("latest_10q_informations")
-// }
-//
-// model Latest10Attachment {
-//   id                     String  @id @default(uuid())
-//   spaceId                String  @default("koala_gains") @map("space_id")
-//   tickerKey              String  @map("ticker_key")
-//   sequenceNumber         String  @map("sequence_number")
-//   documentName           String? @map("document_name")
-//   purpose                String? @map("purpose")
-//   url                    String  @map("url")
-//   latest10QInformationId String? @map("latest_10q_information_id")
-//   /// [CriterionAttachmentMatch]
-//   criterionMatches       Json[]  @map("criterion_matches") @db.JsonB
-//
-//   Latest10QInformation Latest10QInformation? @relation(fields: [latest10QInformationId], references: [id])
-//
-//   @@unique([spaceId, tickerKey, sequenceNumber])
-//   @@map("latest_10_attachments")
-// }
-
-// --------------------------
-// Enums (normalized to match existing style)
-// --------------------------
-
 enum EvaluationResult {
   Pass
   Fail
@@ -748,7 +714,7 @@ model TickerV1VsCompetition {
   summary                  String   @map("summary")
   overallAnalysisDetails   String   @map("introduction_to_analysis")
   // Store as a JSON value (can itself be a JSON array of objects)
-  /// [CompetetionAnalysisArray]
+  /// [CompetitionAnalysis]
   competitionAnalysisArray Json[]   @map("competition_analysis")
   tickerId                 String   @unique @map("ticker_id")
   spaceId                  String   @default("koala_gains") @map("space_id")

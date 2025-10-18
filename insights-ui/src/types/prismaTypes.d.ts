@@ -1,4 +1,4 @@
-import { CompetitionAnalysisArray as CompetitionAnalysisArrayType } from '@/types/public-equity/analysis-factors-types';
+import { CompetitionAnalysis as CompetitionAnalysisType } from '@/types/public-equity/analysis-factors-types';
 
 export interface StockFundamentalsSummary {
   marketCap?: string;
@@ -149,7 +149,7 @@ export interface RatiosQuarterlyData {
 
 declare global {
   namespace PrismaJson {
-    type CompetitionAnalysisArray = CompetitionAnalysisArrayType;
+    type CompetitionAnalysis = CompetitionAnalysisType;
     // Stock analyzer scraper types
     type StockFundamentalsSummary = StockFundamentalsSummary;
     type DividendsData = DividendsData;

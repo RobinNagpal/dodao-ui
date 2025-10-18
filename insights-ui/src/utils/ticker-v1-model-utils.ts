@@ -4,15 +4,18 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisStatus } from '@/types/ticker-typesv1';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import {
+  Prisma,
+  TickerV1,
+  TickerV1Industry,
+  TickerV1SubIndustry,
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CachedScore,
   TickerV1CategoryAnalysisResult,
   TickerV1FutureRisk,
   TickerV1InvestorAnalysisResult,
   TickerV1VsCompetition,
-} from '.prisma/client';
+} from '@prisma/client';
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
   factorResults: (TickerV1AnalysisCategoryFactorResult & {
@@ -68,6 +71,8 @@ export interface TickerV1FastResponse extends TickerV1WithRelations {
   subIndustry: TickerV1SubIndustry;
   analysisStatus: AnalysisStatus;
 }
+
+type SubIndustryWithIndustry = TickerV1SubIndustry & { industry: TickerV1Industry };
 
 export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prisma.TickerV1WhereInput): Promise<TickerV1FullReportResponse | null | undefined> {
   const tickerRecord: TickerV1WithRelations | null = await prisma.tickerV1.findFirst({
@@ -134,7 +139,7 @@ export async function getCompetitorTickers(
   // Process competition analysis to check which competitors exist in our system
   const competitorTickers: CompetitorTicker[] = [];
   if (tickerRecord.vsCompetition?.competitionAnalysisArray) {
-    for (const competition of tickerRecord.vsCompetition.competitionAnalysisArray as any[]) {
+    for (const competition of tickerRecord.vsCompetition.competitionAnalysisArray) {
       const competitorInfo: CompetitorTicker = {
         companyName: competition.companyName,
         companySymbol: competition.companySymbol,
