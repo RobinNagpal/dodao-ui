@@ -68,7 +68,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     subIndustryKey: tickerRecord.subIndustryKey,
     subIndustryName: tickerRecord.subIndustry.name,
     subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: 'FairValue',
+    categoryKey: TickerAnalysisCategory.FairValue,
     factorAnalysisArray: analysisFactors.map((factor) => ({
       factorAnalysisKey: factor.factorAnalysisKey,
       factorAnalysisTitle: factor.factorAnalysisTitle,
@@ -86,22 +86,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     cashFlow: financialData.cashFlow,
     ratios: financialData.ratios,
     dividends: financialData.dividends,
-
-    // Legacy financial info fields (for backward compatibility)
-    price: fi?.price ?? null,
-    yearHigh: fi?.yearHigh ?? null,
-    yearLow: fi?.yearLow ?? null,
-    marketCap: fi?.marketCap ?? null,
-    epsDilutedTTM: fi?.epsDilutedTTM ?? null,
-    pe: fi?.pe ?? null,
-    avgVolume3M: fi?.avgVolume3M ?? null,
-    dayVolume: fi?.dayVolume ?? null,
-    annualDividend: fi?.annualDividend ?? null,
-    dividendYield: fi?.dividendYield ?? null,
-    totalRevenue: fi?.totalRevenue ?? null,
-    netIncome: fi?.netIncome ?? null,
-    netProfitMargin: fi?.netProfitMargin ?? null,
-    currency: fi?.currency ?? null,
   };
 
   // Call the LLM

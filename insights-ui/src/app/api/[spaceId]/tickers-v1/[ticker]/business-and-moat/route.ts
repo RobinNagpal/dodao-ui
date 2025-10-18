@@ -58,7 +58,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     subIndustryKey: tickerRecord.subIndustryKey,
     subIndustryName: tickerRecord.subIndustry.name,
     subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: 'BusinessAndMoat',
+    categoryKey: TickerAnalysisCategory.BusinessAndMoat,
     factorAnalysisArray: analysisFactors.map((factor) => ({
       factorAnalysisKey: factor.factorAnalysisKey,
       factorAnalysisTitle: factor.factorAnalysisTitle,

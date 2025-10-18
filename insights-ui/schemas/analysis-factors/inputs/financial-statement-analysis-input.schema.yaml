@@ -32,13 +32,13 @@ properties:
     description: 'The category being analyzed.'
   factorAnalysisArray:
     type: array
-    description: 'Array of factor definitions under this category.'
+    description: 'Array of factors to analyze for this category.'
     items:
       type: object
       properties:
         factorAnalysisKey:
           type: string
-          description: 'Unique identifier for the factor in SCREAMING_SNAKE_CASE.'
+          description: 'Unique identifier of the factor.'
         factorAnalysisTitle:
           type: string
           description: 'Readable title of the factor.'
@@ -52,35 +52,15 @@ properties:
         - factorAnalysisKey
         - factorAnalysisTitle
         - factorAnalysisDescription
-  competitionAnalysisArray:
-    type: array
-    description: 'Array of competitor information from VsCompetition output, used to benchmark the target company.'
-    items:
-      type: object
-      properties:
-        companyName:
-          type: string
-        companySymbol:
-          type: string
-        exchangeSymbol:
-          type: string
-        exchangeName:
-          type: string
-        detailedComparison:
-          type: string
-      required:
-        - companyName
-        - detailedComparison
-
   # Market Snapshot - comprehensive market data
   marketSummary:
     type: object
     description: 'Complete market summary data from stock analyzer'
 
-  # Financial Statements - Fair Value analysis uses last 4 quarters + latest annual
+  # Financial Statements - last 4 quarters + latest annual
   incomeStatement:
     type: object
-    description: 'Income statement data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Income statement data including meta, last 4 quarters, and latest annual'
     properties:
       meta:
         type: object
@@ -96,7 +76,7 @@ properties:
 
   balanceSheet:
     type: object
-    description: 'Balance sheet data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Balance sheet data including meta, last 4 quarters, and latest annual'
     properties:
       meta:
         type: object
@@ -112,7 +92,7 @@ properties:
 
   cashFlow:
     type: object
-    description: 'Cash flow statement data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Cash flow statement data including meta, last 4 quarters, and latest annual'
     properties:
       meta:
         type: object
@@ -128,7 +108,7 @@ properties:
 
   ratios:
     type: object
-    description: 'Financial ratios data for fair value analysis (latest annual + last 4 quarters)'
+    description: 'Financial ratios data including meta, latest annual, and last 4 quarters'
     properties:
       meta:
         type: object
@@ -144,7 +124,7 @@ properties:
 
   dividends:
     type: object
-    description: 'Dividend data for fair value analysis (last 4 payments)'
+    description: 'Dividend data including meta, summary, and last 4 payments'
     properties:
       meta:
         type: object
@@ -157,6 +137,7 @@ properties:
         description: 'Last 4 dividend payment records'
         items:
           type: object
+
 required:
   - name
   - symbol

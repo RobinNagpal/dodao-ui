@@ -77,74 +77,62 @@ properties:
     type: object
     description: 'Complete market summary data from stock analyzer'
 
-  # Financial Statements - Fair Value analysis uses last 4 quarters + latest annual
+  # Financial Statements - Past Performance analysis uses last 5 annuals
   incomeStatement:
     type: object
-    description: 'Income statement data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Income statement data for past performance analysis (last 5 annuals)'
     properties:
       meta:
         type: object
         description: 'Metadata for income statement'
-      last4Quarters:
+      last5Annuals:
         type: array
-        description: 'Last 4 quarterly income statement periods'
+        description: 'Last 5 annual income statement periods'
         items:
           type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual income statement period'
 
   balanceSheet:
     type: object
-    description: 'Balance sheet data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Balance sheet data for past performance analysis (last 5 annuals)'
     properties:
       meta:
         type: object
         description: 'Metadata for balance sheet'
-      last4Quarters:
+      last5Annuals:
         type: array
-        description: 'Last 4 quarterly balance sheet periods'
+        description: 'Last 5 annual balance sheet periods'
         items:
           type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual balance sheet period'
 
   cashFlow:
     type: object
-    description: 'Cash flow statement data for fair value analysis (last 4 quarters + latest annual)'
+    description: 'Cash flow statement data for past performance analysis (last 5 annuals)'
     properties:
       meta:
         type: object
         description: 'Metadata for cash flow statement'
-      last4Quarters:
+      last5Annuals:
         type: array
-        description: 'Last 4 quarterly cash flow periods'
+        description: 'Last 5 annual cash flow periods'
         items:
           type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual cash flow period'
 
   ratios:
     type: object
-    description: 'Financial ratios data for fair value analysis (latest annual + last 4 quarters)'
+    description: 'Financial ratios data for past performance analysis (last 5 annuals)'
     properties:
       meta:
         type: object
         description: 'Metadata for ratios'
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual ratios period'
-      last4Quarters:
+      last5Annuals:
         type: array
-        description: 'Last 4 quarterly ratios periods'
+        description: 'Last 5 annual ratios periods'
         items:
           type: object
 
   dividends:
     type: object
-    description: 'Dividend data for fair value analysis (last 4 payments)'
+    description: 'Dividend data for past performance analysis (last 5 annuals)'
     properties:
       meta:
         type: object
@@ -152,11 +140,22 @@ properties:
       summary:
         type: object
         description: 'Dividend summary information'
-      last4Payments:
+      last5Annuals:
         type: array
-        description: 'Last 4 dividend payment records'
+        description: 'Last 5 annual dividend records'
         items:
           type: object
+          properties:
+            year:
+              type: number
+            totalAmount:
+              type: number
+            paymentCount:
+              type: number
+            dividends:
+              type: array
+              items:
+                type: object
 required:
   - name
   - symbol
@@ -164,6 +163,7 @@ required:
   - subIndustryKey
   - categoryKey
   - factorAnalysisArray
+  - competitionAnalysisArray
   - industryDescription
   - subIndustryDescription
   - industryName
