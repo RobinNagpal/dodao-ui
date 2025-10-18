@@ -7,6 +7,7 @@ export interface TickerFieldsValue {
   name: string;
   symbol: string;
   websiteUrl: string; // keep empty string if not provided
+  stockAnalyzeUrl: string;
 }
 
 export interface EditableTickerEntry extends TickerFieldsValue {

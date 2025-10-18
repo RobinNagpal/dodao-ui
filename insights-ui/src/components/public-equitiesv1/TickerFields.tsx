@@ -86,6 +86,17 @@ export default function TickerFields({ value, onPatch, renderAfter, inlineError,
             placeholder="e.g. https://www.apple.com"
           />
         </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Stock Analyze URL</label>
+          <input
+            type="url"
+            value={value.stockAnalyzeUrl}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>): void => onPatch({ stockAnalyzeUrl: e.target.value })}
+            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+            placeholder="e.g. https://stock-analyze.com/stocks/aapl"
+          />
+        </div>
       </div>
 
       {renderAfter}
