@@ -126,7 +126,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
 
     if (resp?.id) {
       setOpen(false);
-      router.push(`/admin-v1/create-background-reports`);
+      router.push(`/admin-v1/generation-requests`);
     }
   };
 

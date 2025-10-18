@@ -6,6 +6,9 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { useRouter } from 'next/navigation';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 
 interface AnalysisStatus {
   businessAndMoat: boolean;
@@ -36,13 +39,22 @@ interface ReportGeneratorProps {
 }
 
 export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated }: ReportGeneratorProps): JSX.Element {
+  const router = useRouter();
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
+  const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
+  const [pendingTickers, setPendingTickers] = useState<string[]>([]);
 
   // Post hooks for analysis generation
   const { postData: postAnalysis, loading: analysisLoading } = usePostData<TickerAnalysisResponse, AnalysisRequest>({
     successMessage: 'Analysis generation started successfully!',
     errorMessage: 'Failed to generate analysis.',
+  });
+
+  // Post hook for background generation requests
+  const { postData: postRequest } = usePostData<any, GenerationRequestPayload>({
+    successMessage: 'Background generation request created successfully!',
+    errorMessage: 'Failed to create background generation request.',
   });
 
   const analysisTypes = [
@@ -138,16 +150,30 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     await new Promise((resolve) => setTimeout(resolve, 1000));
   };
 
-  // Function to generate all reports for all tickers in parallel
-  const handleGenerateAllForAllTickers = async (): Promise<void> => {
+  // Function to show the generation modal
+  const handleGenerateAllForAllTickers = (): void => {
     if (selectedTickers.length === 0) return;
+
+    // Store the selected tickers for later use
+    setPendingTickers([...selectedTickers]);
+
+    // Show the modal
+    setShowGenerationModal(true);
+  };
+
+  // Function to handle synchronous report generation
+  const handleSynchronousGeneration = async (): Promise<void> => {
+    // Close the modal
+    setShowGenerationModal(false);
+
+    if (pendingTickers.length === 0) return;
 
     // Set global loading state
     setIsGeneratingAll(true);
 
     try {
       // Create an array of promises for each ticker
-      const tickerPromises = selectedTickers.map(async (ticker) => {
+      const tickerPromises = pendingTickers.map(async (ticker) => {
         // For each ticker, we still need to process reports sequentially
         // to respect dependencies, but we can process different tickers in parallel
         await handleGenerateAll(ticker);
@@ -158,6 +184,52 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     } finally {
       // Reset global loading state
       setIsGeneratingAll(false);
+      // Clear pending tickers
+      setPendingTickers([]);
+    }
+  };
+
+  // Function to handle background report generation
+  const handleBackgroundGeneration = async (): Promise<void> => {
+    // Close the modal
+    setShowGenerationModal(false);
+
+    if (pendingTickers.length === 0) return;
+
+    // Set global loading state
+    setIsGeneratingAll(true);
+
+    try {
+      // Create background generation requests for each ticker
+      const tickerPromises = pendingTickers.map(async (ticker) => {
+        const payload: GenerationRequestPayload = {
+          regenerateCompetition: true,
+          regenerateFinancialAnalysis: true,
+          regenerateBusinessAndMoat: true,
+          regeneratePastPerformance: true,
+          regenerateFutureGrowth: true,
+          regenerateFairValue: true,
+          regenerateFutureRisk: true,
+          regenerateWarrenBuffett: true,
+          regenerateCharlieMunger: true,
+          regenerateBillAckman: true,
+          regenerateFinalSummary: true,
+          regenerateCachedScore: true,
+        };
+
+        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+      });
+
+      // Execute all ticker promises in parallel
+      await Promise.all(tickerPromises);
+
+      // Redirect to the generation requests page
+      router.push('/admin-v1/generation-requests');
+    } finally {
+      // Reset global loading state
+      setIsGeneratingAll(false);
+      // Clear pending tickers
+      setPendingTickers([]);
     }
   };
 
@@ -362,12 +434,42 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     );
   };
 
+  // Function to render the generation modal
+  const renderGenerationModal = () => {
+    return (
+      <FullScreenModal open={showGenerationModal} onClose={() => setShowGenerationModal(false)} title="Select Report Generation Mode">
+        <div className="p-6 flex flex-col items-center space-y-8">
+          <div className="text-lg text-center mb-4">How would you like to generate reports for the selected tickers?</div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
+              <h3 className="text-xl font-semibold mb-4">Synchronous Generation</h3>
+              <p className="text-center mb-6">Generate reports immediately and stay on this page. This may take some time to complete.</p>
+              <Button variant="contained" primary onClick={handleSynchronousGeneration} className="mt-auto w-full">
+                Generate Synchronously
+              </Button>
+            </div>
+
+            <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
+              <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
+              <p className="text-center mb-6">Create generation requests to be processed in the background and redirect to the requests page.</p>
+              <Button variant="contained" primary onClick={handleBackgroundGeneration} className="mt-auto w-full">
+                Generate in Background
+              </Button>
+            </div>
+          </div>
+        </div>
+      </FullScreenModal>
+    );
+  };
+
   return (
     <Block title="Reports Generation" className="text-color">
       {selectedTickers.length > 0 ? (
         <>
           {renderGenerateAllButtons()}
           {renderReportsGrid()}
+          {renderGenerationModal()}
         </>
       ) : (
         <div className="text-center py-8">Select one or more tickers to generate reports</div>
