@@ -5,9 +5,9 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
-import { isExchangeId } from '@/utils/exchangeUtils';
-import TickerFields from './tickers/TickerFields';
-import type { EditableTickerEntry, TickerFieldsValue } from './tickers/types';
+import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
+import TickerFields from './TickerFields';
+import type { EditableTickerEntry, TickerFieldsValue } from './types';
 
 /** ---------- Types specific to update ---------- */
 
@@ -57,7 +57,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
       name: t.name,
       symbol: t.symbol.toUpperCase(),
       websiteUrl: t.websiteUrl || '',
-      exchange: t.exchange, // `exchange` is already compatible with ExchangeId union
+      exchange: t.exchange as ExchangeId, // `exchange` is already compatible with ExchangeId union
     }));
     setEntries(editableEntries);
   }, [tickers]);

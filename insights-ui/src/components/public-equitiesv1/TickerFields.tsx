@@ -3,18 +3,26 @@ import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { exchangeItems, toExchangeId } from '@/utils/exchangeUtils';
 import type { TickerFieldsValue } from './types';
 
+export type TickerFieldsLayout = 'grid' | 'vertical';
+
 export interface TickerFieldsProps {
   /** Current value for the 4 core fields */
   value: TickerFieldsValue;
   /** Patch-style change handler; pass only the fields that changed */
   onPatch: (patch: Partial<TickerFieldsValue>) => void;
-  /** Optional extra field(s) rendered after the core grid (e.g., stockAnalyzeUrl input) */
+  /** Optional extra field(s) rendered after the core fields (e.g., stockAnalyzeUrl input) */
   renderAfter?: React.ReactNode;
   /** Optional inline validation/error text */
   inlineError?: string;
   /** Tailwind/extra className for the surrounding card block */
   className?: string;
-  /** Grid columns for medium+ screens (defaults to 4 like Edit) */
+  /**
+   * Layout mode:
+   * - "grid" (default): 1 col on mobile, `mdColumns` on md+
+   * - "vertical": always single column (stacked) on all breakpoints
+   */
+  layout?: TickerFieldsLayout;
+  /** Grid columns for medium+ screens (only used when layout === "grid") */
   mdColumns?: 4 | 5;
 }
 
@@ -23,10 +31,15 @@ export interface TickerFieldsProps {
  * - Keeps Symbol uppercase
  * - Uses explicit types, no `any`
  */
-export default function TickerFields({ value, onPatch, renderAfter, inlineError, className, mdColumns = 4 }: TickerFieldsProps): JSX.Element {
+export default function TickerFields({ value, onPatch, renderAfter, inlineError, className, layout = 'grid', mdColumns = 4 }: TickerFieldsProps): JSX.Element {
+  // Avoid dynamic Tailwind class pitfalls by mapping explicitly
+  const gridColsClass: 'md:grid-cols-4' | 'md:grid-cols-5' = mdColumns === 5 ? 'md:grid-cols-5' : 'md:grid-cols-4';
+
+  const containerInnerClass = layout === 'vertical' ? 'grid grid-cols-1 gap-4' : `grid grid-cols-1 ${gridColsClass} gap-4`;
+
   return (
     <div className={`p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm ${className ?? ''}`}>
-      <div className={`grid grid-cols-1 md:grid-cols-${mdColumns} gap-4`}>
+      <div className={containerInnerClass}>
         <div>
           <label className="block text-sm font-medium mb-1 dark:text-gray-300">Exchange</label>
           <StyledSelect

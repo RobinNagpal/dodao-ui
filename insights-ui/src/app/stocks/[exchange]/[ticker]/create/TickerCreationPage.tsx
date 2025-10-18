@@ -2,8 +2,8 @@
 
 import { TickerV1VsCompetitionWithRelations } from '@/app/api/[spaceId]/tickers-v1/[ticker]/creation-infos/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { UpsertCustomCriteriaRequest } from '@/types/public-equity/ticker-request-response';
+import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -58,9 +58,14 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       {data?.map((tickerCompetition) => {
         return (
           <div key={tickerCompetition.tickerId} className="p-4 mb-4">
-            <h1 className="text-xl font-bold">
-              {tickerCompetition.ticker.symbol} - {tickerCompetition.ticker.name}
-            </h1>
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl font-bold">
+                {tickerCompetition.ticker.symbol} - {tickerCompetition.ticker.name}
+              </h1>
+              <Button variant="contained" primary>
+                Add Ticker
+              </Button>
+            </div>
             <p>{tickerCompetition.ticker.summary}</p>
             <div className="font-bold mt-2">
               Industry: {tickerCompetition.ticker.industry.industryKey} - {tickerCompetition.ticker.industry.name}

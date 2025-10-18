@@ -5,10 +5,10 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
 import React, { useMemo, useRef, useState } from 'react';
 import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
-import TickerFields from './tickers/TickerFields';
-import RemoveRowButton from './tickers/RemoveRowButton';
-import type { NewTickerEntry, TickerFieldsValue } from './tickers/types';
-import { buildKey } from './tickers/types';
+import TickerFields from './TickerFields';
+import RemoveRowButton from './RemoveRowButton';
+import type { NewTickerEntry, TickerFieldsValue } from './types';
+import { buildKey } from './types';
 
 /** ---------- Types local to Add ---------- */
 
