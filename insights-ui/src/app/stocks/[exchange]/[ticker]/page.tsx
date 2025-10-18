@@ -551,7 +551,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       <div className="mx-auto max-w-7xl py-2">
         <section className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
-            <Competition dataPromise={competitionPromise} />
+            <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
           </Suspense>
         </section>
 

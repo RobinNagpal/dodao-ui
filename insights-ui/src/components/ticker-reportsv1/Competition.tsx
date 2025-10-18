@@ -1,9 +1,10 @@
-import type { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
+import type { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
-import { use } from 'react';
+import React, { use } from 'react';
+import AddTickerAdminButton from './AddTickerAdminButton';
 
 /** Matches the payload the page fetcher provides. */
 export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
@@ -13,11 +14,13 @@ export interface CompetitionPayload {
 }
 
 export interface CompetitionProps {
+  exchange: string;
+  ticker: string;
   /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
   dataPromise: Promise<CompetitionPayload>;
 }
 
-export default function Competition({ dataPromise }: CompetitionProps): JSX.Element | null {
+export default function Competition({ exchange, ticker, dataPromise }: CompetitionProps): JSX.Element | null {
   const { vsCompetition, competitorTickers }: Readonly<CompetitionPayload> = use(dataPromise);
 
   if (!vsCompetition && (!competitorTickers || competitorTickers.length === 0)) {
@@ -55,12 +58,15 @@ export default function Competition({ dataPromise }: CompetitionProps): JSX.Elem
                     ) : (
                       <h3 className="font-semibold">{competitor.companyName}</h3>
                     )}
-                    <div className="flex items-center gap-x-2">
-                      {competitor.companySymbol && (
-                        <span className="text-sm text-gray-400">
-                          {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
-                        </span>
-                      )}
+                    <div className="flex">
+                      <div className="flex items-center gap-x-2">
+                        {competitor.companySymbol && (
+                          <span className="text-sm text-gray-400">
+                            {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <AddTickerAdminButton competitor={competitor} />
                     </div>
                   </div>
                   {competitor.detailedComparison && (

@@ -95,18 +95,47 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       return next;
     });
   };
+
+  // Simple URL validator for http(s)
+  const isValidHttpUrl = (value: string): boolean => {
+    try {
+      const u = new URL(value.trim());
+      return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
   const handleCreateTicker = async (): Promise<void> => {
     if (!active) return;
 
-    // Validate minimally on client
+    // Existing basic checks
     if (!form.name.trim() || !form.symbol.trim()) {
-      // eslint-disable-next-line no-alert
       alert('Please provide both Company Name and Symbol.');
       return;
     }
     if (!form.exchange || !isExchangeId(form.exchange)) {
-      // eslint-disable-next-line no-alert
       alert('Please select a valid Exchange.');
+      return;
+    }
+
+    // NEW: require Website URL
+    if (!form.websiteUrl.trim()) {
+      alert('Please provide the Company Website URL.');
+      return;
+    }
+    if (!isValidHttpUrl(form.websiteUrl)) {
+      alert('Website URL must be a valid http(s) URL.');
+      return;
+    }
+
+    // NEW: require StockAnalyze URL
+    if (!form.stockAnalyzeUrl.trim()) {
+      alert('Please provide the StockAnalyze URL.');
+      return;
+    }
+    if (!isValidHttpUrl(form.stockAnalyzeUrl)) {
+      alert('StockAnalyze URL must be a valid http(s) URL.');
       return;
     }
 
@@ -117,12 +146,10 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       industryKey: active.ticker.industry.industryKey,
       subIndustryKey: active.ticker.subIndustry.subIndustryKey,
       websiteUrl: form.websiteUrl.trim(),
-      stockAnalyzeUrl: form.stockAnalyzeUrl,
+      stockAnalyzeUrl: form.stockAnalyzeUrl.trim(), // NEW: ensure trimmed
     };
 
-    const body: NewTickerSubmission = submission;
-
-    const resp = await createTickersFromCompetition(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, body);
+    const resp = await createTickersFromCompetition(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, submission);
 
     if (resp?.id) {
       setOpen(false);
@@ -173,7 +200,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       {/* Full-screen modal with vertical TickerFields and industry metadata */}
       <FullScreenModal open={open} onClose={(): void => setOpen(false)} title="Create Ticker" showCloseButton showTitleBg>
         {active && (
-          <div className="mx-auto max-w-4xl px-4 pt-4">
+          <div className="mx-auto max-w-4xl px-4 pt-4 text-left">
             {/* Industry & Sub-industry metadata */}
             <div className="mb-4 rounded-md border border-gray-200 dark:border-gray-700 p-3">
               <div className="font-semibold">Industry</div>
