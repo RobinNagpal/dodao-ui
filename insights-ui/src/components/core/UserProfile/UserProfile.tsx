@@ -17,6 +17,7 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
+
   const toggleUserMenu = (): void => {
     setUserMenuOpen((prev) => !prev);
   };
@@ -57,6 +58,18 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
       };
     }
   }, [isMobile]);
+
+  // React to session changes: close user menu; if mobile and session becomes null, also notify parent to close drawer
+  useEffect(() => {
+    // Always collapse the user menu on any session change
+    setUserMenuOpen(false);
+
+    // If session becomes null on mobile, ensure the enclosing mobile menu closes
+    const typed = (koalaSession as KoalaGainsSession | null) ?? null;
+    if (!typed && isMobile && onMenuToggle) {
+      onMenuToggle();
+    }
+  }, [koalaSession, isMobile, onMenuToggle]);
 
   if (isMobile) {
     return (
