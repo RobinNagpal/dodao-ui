@@ -1,7 +1,7 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import { GenerationRequestsResponse } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -34,7 +34,7 @@ type RegenerateField = (typeof REGENERATE_FIELDS)[number];
 /** Enrich the Prisma type with our flag fields (booleans)
  *  and ensure completed/failed steps are arrays (not null).
  */
-type GenerationRequestWithFlags = TickerV1GenerationRequest &
+type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker &
   Record<RegenerateField, boolean> & {
     completedSteps: string[] | null;
     failedSteps: string[] | null;
@@ -98,7 +98,7 @@ const REFRESH_SECONDS: number = 10;
 function getLatestByTicker(items: GenerationRequestWithFlags[]): GenerationRequestWithFlags[] {
   const map: Map<string, GenerationRequestWithFlags> = new Map();
   for (const req of items) {
-    const key: string = req.tickerId; // symbol injected by API
+    const key: string = req.ticker.symbol; // symbol injected by API
     const prev: GenerationRequestWithFlags | undefined = map.get(key);
     if (!prev) {
       map.set(key, req);
@@ -140,7 +140,7 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
           {rows.map((latestRequest: GenerationRequestWithFlags) => {
-            const ticker: string = latestRequest.tickerId;
+            const ticker: string = latestRequest.ticker.symbol;
             const completedSteps: string[] = latestRequest.completedSteps ?? [];
             const failedSteps: string[] = latestRequest.failedSteps ?? [];
             return (

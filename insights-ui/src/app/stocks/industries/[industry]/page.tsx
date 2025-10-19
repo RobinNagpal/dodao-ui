@@ -1,5 +1,5 @@
 // app/stocks/industry/[industry]/page.tsx
-import StockActions from '@/app/stocks/StockActions';
+import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
@@ -168,7 +168,7 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
           rightButton={
             <div className="flex">
               <FiltersButton />
-              <StockActions />
+              <StocksGridPageActions />
             </div>
           }
         />

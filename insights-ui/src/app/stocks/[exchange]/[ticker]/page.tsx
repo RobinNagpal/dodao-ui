@@ -1,11 +1,14 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
+import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
 import { CompetitionResponse } from '@/types/ticker-typesv1';
@@ -20,6 +23,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
@@ -280,7 +284,7 @@ function FinancialInfoSkeleton(): JSX.Element {
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
 
-function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+function BreadcrumbsFromData({ data, session }: { data: Promise<TickerV1FastResponse>; session?: KoalaGainsSession }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
@@ -310,14 +314,16 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
     <Breadcrumbs
       breadcrumbs={breadcrumbs}
       rightButton={
-        <TickerComparisonButton
-          tickerSymbol={d.symbol}
-          tickerName={d.name}
-          tickerIndustryKey={d.industryKey}
-          tickerSubIndustryKey={d.subIndustryKey}
-          tickerIndustryName={industryName}
-          tickerSubIndustryName={subIndustryName}
-        />
+        <StockActions tickerSymbol={d.symbol} session={session}>
+          <TickerComparisonButton
+            tickerSymbol={d.symbol}
+            tickerName={d.name}
+            tickerIndustryKey={d.industryKey}
+            tickerSubIndustryKey={d.subIndustryKey}
+            tickerIndustryName={industryName}
+            tickerSubIndustryName={subIndustryName}
+          />
+        </StockActions>
       }
       hideHomeIcon={true}
     />
@@ -520,6 +526,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const exchange: string = routeParams.exchange.toUpperCase();
   const ticker: string = routeParams.ticker.toUpperCase();
+  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   // Helper: try with route {exchange,ticker}; on error, wait for canonical then retry
   const retryWithCanonical: <T>(fn: (ex: string, tk: string) => Promise<T>) => Promise<T> = <T,>(fn: (ex: string, tk: string) => Promise<T>): Promise<T> =>
@@ -541,7 +548,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     <PageWrapper>
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData data={tickerInfo} />
+        <BreadcrumbsFromData data={tickerInfo} session={session} />
       </Suspense>
 
       <Suspense fallback={<SummaryInfoSkeleton />}>
@@ -551,7 +558,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       <div className="mx-auto max-w-7xl py-2">
         <section className="mb-8">
           <Suspense fallback={<CompetitionSkeleton />}>
-            <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
+            <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} session={session} />
           </Suspense>
         </section>
 
