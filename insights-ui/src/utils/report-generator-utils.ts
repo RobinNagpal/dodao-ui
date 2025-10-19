@@ -154,3 +154,107 @@ export const createBackgroundGenerationRequest = async (
 
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
 };
+
+// Helper function to create a background generation request for a specific analysis type
+export const createSingleAnalysisBackgroundRequest = async (
+  analysisType: string,
+  ticker: string,
+  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+): Promise<void> => {
+  if (!ticker) return;
+
+  // Create a payload with all options set to false by default
+  const payload: GenerationRequestPayload = {
+    regenerateCompetition: false,
+    regenerateFinancialAnalysis: false,
+    regenerateBusinessAndMoat: false,
+    regeneratePastPerformance: false,
+    regenerateFutureGrowth: false,
+    regenerateFairValue: false,
+    regenerateFutureRisk: false,
+    regenerateWarrenBuffett: false,
+    regenerateCharlieMunger: false,
+    regenerateBillAckman: false,
+    regenerateFinalSummary: false,
+    regenerateCachedScore: false,
+  };
+
+  // Set the specific analysis type to true
+  switch (analysisType) {
+    case 'competition':
+      payload.regenerateCompetition = true;
+      break;
+    case 'financial-analysis':
+      payload.regenerateFinancialAnalysis = true;
+      break;
+    case 'business-and-moat':
+      payload.regenerateBusinessAndMoat = true;
+      break;
+    case 'past-performance':
+      payload.regeneratePastPerformance = true;
+      break;
+    case 'future-growth':
+      payload.regenerateFutureGrowth = true;
+      break;
+    case 'fair-value':
+      payload.regenerateFairValue = true;
+      break;
+    case 'future-risk':
+      payload.regenerateFutureRisk = true;
+      break;
+    case 'final-summary':
+      payload.regenerateFinalSummary = true;
+      break;
+    case 'cached-score':
+      payload.regenerateCachedScore = true;
+      break;
+    default:
+      // If it's not a recognized analysis type, do nothing
+      break;
+  }
+
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+};
+
+// Helper function to create a background generation request for a specific investor analysis
+export const createSingleInvestorBackgroundRequest = async (
+  investorKey: string,
+  ticker: string,
+  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+): Promise<void> => {
+  if (!ticker) return;
+
+  // Create a payload with all options set to false by default
+  const payload: GenerationRequestPayload = {
+    regenerateCompetition: false,
+    regenerateFinancialAnalysis: false,
+    regenerateBusinessAndMoat: false,
+    regeneratePastPerformance: false,
+    regenerateFutureGrowth: false,
+    regenerateFairValue: false,
+    regenerateFutureRisk: false,
+    regenerateWarrenBuffett: false,
+    regenerateCharlieMunger: false,
+    regenerateBillAckman: false,
+    regenerateFinalSummary: false,
+    regenerateCachedScore: false,
+  };
+
+  // Set the specific investor analysis to true
+  switch (investorKey) {
+    case 'WARREN_BUFFETT':
+      payload.regenerateWarrenBuffett = true;
+      break;
+    case 'CHARLIE_MUNGER':
+      payload.regenerateCharlieMunger = true;
+      break;
+    case 'BILL_ACKMAN':
+      payload.regenerateBillAckman = true;
+      break;
+    default:
+      // If it's not a recognized investor, do nothing
+      break;
+  }
+
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+};

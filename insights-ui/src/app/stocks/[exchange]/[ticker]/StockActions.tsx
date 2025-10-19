@@ -1,21 +1,19 @@
 'use client';
 
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import {
   analysisTypes,
-  investorAnalysisTypes,
-  generateAnalysis,
-  generateInvestorAnalysis,
-  generateAllReports,
   createBackgroundGenerationRequest,
+  createSingleAnalysisBackgroundRequest,
+  createSingleInvestorBackgroundRequest,
+  investorAnalysisTypes,
 } from '@/utils/report-generator-utils';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 
 interface StockActionsProps {
   tickerSymbol: string;
@@ -24,12 +22,6 @@ interface StockActionsProps {
 
 export default function StockActions({ tickerSymbol, children }: StockActionsProps): JSX.Element {
   const router = useRouter();
-
-  // Post hooks for analysis generation
-  const { postData: postAnalysis } = usePostData<TickerAnalysisResponse, AnalysisRequest>({
-    successMessage: 'Analysis generation started successfully!',
-    errorMessage: 'Failed to generate analysis.',
-  });
 
   // Post hook for background generation requests
   const { postData: postRequest } = usePostData<any, GenerationRequestPayload>({
@@ -48,31 +40,24 @@ export default function StockActions({ tickerSymbol, children }: StockActionsPro
       label: `Generate ${investorType.label}`,
     })),
     { key: 'generate-all', label: 'Generate All Reports' },
-    { key: 'generate-background', label: 'Generate All Reports (Background)' },
   ];
 
   const handleSelect = async (key: string) => {
-    if (key.startsWith('generate-investor-')) {
-      const investorKey = key.replace('generate-investor-', '');
-      await generateInvestorAnalysis(investorKey, tickerSymbol, postAnalysis);
-      return;
-    }
+    try {
+      if (key.startsWith('generate-investor-')) {
+        const investorKey = key.replace('generate-investor-', '');
+        await createSingleInvestorBackgroundRequest(investorKey, tickerSymbol, postRequest);
+      } else if (key.startsWith('generate-')) {
+        const analysisType = key.replace('generate-', '');
+        await createSingleAnalysisBackgroundRequest(analysisType, tickerSymbol, postRequest);
+      } else if (key === 'generate-all') {
+        await createBackgroundGenerationRequest(tickerSymbol, postRequest);
+      }
 
-    if (key.startsWith('generate-')) {
-      const analysisType = key.replace('generate-', '');
-      await generateAnalysis(analysisType, tickerSymbol, postAnalysis);
-      return;
-    }
-
-    if (key === 'generate-all') {
-      await generateAllReports(tickerSymbol, postAnalysis);
-      return;
-    }
-
-    if (key === 'generate-background') {
-      await createBackgroundGenerationRequest(tickerSymbol, postRequest);
+      // Redirect to generation requests page after any generation is initiated
       router.push('/admin-v1/generation-requests');
-      return;
+    } catch (error) {
+      console.error('Error generating report:', error);
     }
   };
 
