@@ -1,5 +1,5 @@
 // app/stocks/page.tsx
-import StockActions from '@/app/stocks/StockActions';
+import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
@@ -112,7 +112,7 @@ export default function StocksPage({ searchParams }: PageProps) {
           rightButton={
             <div className="flex">
               <FiltersButton />
-              <StockActions />
+              <StocksGridPageActions />
             </div>
           }
         />

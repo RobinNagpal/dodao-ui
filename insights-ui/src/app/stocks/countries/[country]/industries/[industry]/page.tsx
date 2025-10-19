@@ -1,4 +1,4 @@
-import StockActions from '@/app/stocks/StockActions';
+import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
@@ -198,7 +198,7 @@ export default async function CountryIndustryStocksPage(props: {
             rightButton={
               <div className="flex">
                 <FiltersButton />
-                <StockActions />
+                <StocksGridPageActions />
               </div>
             }
           />

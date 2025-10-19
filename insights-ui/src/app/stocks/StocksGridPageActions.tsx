@@ -5,7 +5,7 @@ import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/componen
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function StockActions() {
+export default function StocksGridPageActions() {
   const router = useRouter();
 
   const actions: EllipsisDropdownItem[] = [

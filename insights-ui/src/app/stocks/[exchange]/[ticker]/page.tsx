@@ -1,6 +1,7 @@
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
+import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
@@ -310,14 +311,16 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
     <Breadcrumbs
       breadcrumbs={breadcrumbs}
       rightButton={
-        <TickerComparisonButton
-          tickerSymbol={d.symbol}
-          tickerName={d.name}
-          tickerIndustryKey={d.industryKey}
-          tickerSubIndustryKey={d.subIndustryKey}
-          tickerIndustryName={industryName}
-          tickerSubIndustryName={subIndustryName}
-        />
+        <StockActions tickerSymbol={d.symbol}>
+          <TickerComparisonButton
+            tickerSymbol={d.symbol}
+            tickerName={d.name}
+            tickerIndustryKey={d.industryKey}
+            tickerSubIndustryKey={d.subIndustryKey}
+            tickerIndustryName={industryName}
+            tickerSubIndustryName={subIndustryName}
+          />
+        </StockActions>
       }
       hideHomeIcon={true}
     />

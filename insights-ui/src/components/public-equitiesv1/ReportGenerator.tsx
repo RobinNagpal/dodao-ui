@@ -1,31 +1,20 @@
-import React, { useState } from 'react';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import { INVESTOR_OPTIONS } from '@/lib/mappingsV1';
+import {
+  AnalysisStatus,
+  analysisTypes,
+  createBackgroundGenerationRequest,
+  generateAllReports,
+  generateAnalysis,
+  generateInvestorAnalysis,
+  investorAnalysisTypes,
+} from '@/utils/report-generator-utils';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useRouter } from 'next/navigation';
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
-
-interface AnalysisStatus {
-  businessAndMoat: boolean;
-  financialAnalysis: boolean;
-  pastPerformance: boolean;
-  futureGrowth: boolean;
-  fairValue: boolean;
-  competition: boolean;
-  investorAnalysis: {
-    WARREN_BUFFETT: boolean;
-    CHARLIE_MUNGER: boolean;
-    BILL_ACKMAN: boolean;
-  };
-  futureRisk: boolean;
-  finalSummary: boolean;
-  cachedScore: boolean;
-}
+import React, { useState } from 'react';
 
 export interface TickerReportV1 {
   ticker: TickerV1;
@@ -57,22 +46,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     errorMessage: 'Failed to create background generation request.',
   });
 
-  const analysisTypes = [
-    { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'financialAnalysis' as keyof AnalysisStatus },
-    { key: 'competition', label: 'Competition', statusKey: 'competition' as keyof AnalysisStatus },
-    { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' as keyof AnalysisStatus },
-    { key: 'past-performance', label: 'Past Performance', statusKey: 'pastPerformance' as keyof AnalysisStatus },
-    { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' as keyof AnalysisStatus },
-    { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' as keyof AnalysisStatus },
-    { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' as keyof AnalysisStatus },
-    { key: 'final-summary', label: 'Final Summary', statusKey: 'finalSummary' as keyof AnalysisStatus },
-    { key: 'cached-score', label: 'Cached Score', statusKey: 'cachedScore' as keyof AnalysisStatus },
-  ];
-
-  const investorAnalysisTypes = INVESTOR_OPTIONS.map((investor) => ({
-    key: investor.key,
-    label: `${investor.name} Analysis`,
-  }));
+  // Using imported analysis types and investor analysis types from utils
 
   const handleGenerateAnalysis = async (analysisType: string, ticker: string) => {
     if (!ticker) return;
@@ -80,14 +54,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: true }));
 
     try {
-      const payload: AnalysisRequest = {};
-
-      const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/${analysisType}`, payload);
-
-      if (result) {
-        // Notify parent component to refresh the ticker report
-        onReportGenerated(ticker);
-      }
+      await generateAnalysis(analysisType, ticker, postAnalysis, onReportGenerated);
     } finally {
       setLoadingStates((prev) => ({ ...prev, [`${ticker}-${analysisType}`]: false }));
     }
@@ -99,16 +66,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: true }));
 
     try {
-      const payload: AnalysisRequest = {
-        investorKey: investorKey,
-      };
-
-      const result = await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/investor-analysis`, payload);
-
-      if (result) {
-        // Notify parent component to refresh the ticker report
-        onReportGenerated(ticker);
-      }
+      await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
     } finally {
       setLoadingStates((prev) => ({ ...prev, [`${ticker}-investor-${investorKey}`]: false }));
     }
@@ -117,37 +75,8 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const handleGenerateAll = async (ticker: string): Promise<void> => {
     if (!ticker) return;
 
-    // Generate in sequence to respect dependencies (competition first, then past-performance and future-growth)
-    const sequence = [
-      'financial-analysis',
-      'competition', // Must come before past-performance, future-growth, fair-value and business-and-moat
-      'business-and-moat',
-      'fair-value',
-      'future-risk',
-      'past-performance',
-      'future-growth',
-      'final-summary',
-      'cached-score',
-    ];
-
-    for (const analysisType of sequence) {
-      await handleGenerateAnalysis(analysisType, ticker);
-      // Add a small delay between calls
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-
-    // Generate investor analysis for all investors
-    const allInvestors = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
-    for (const investorKey of allInvestors) {
-      await handleGenerateInvestorAnalysis(investorKey, ticker);
-      // Add a small delay between calls
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
-
-    // Generate cached score at the end of all steps
-    await handleGenerateAnalysis('cached-score', ticker);
-    // Add a small delay after the final step
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Use the utility function to generate all reports
+    await generateAllReports(ticker, postAnalysis, onReportGenerated);
   };
 
   // Function to show the generation modal
@@ -202,22 +131,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     try {
       // Create background generation requests for each ticker
       const tickerPromises = pendingTickers.map(async (ticker) => {
-        const payload: GenerationRequestPayload = {
-          regenerateCompetition: true,
-          regenerateFinancialAnalysis: true,
-          regenerateBusinessAndMoat: true,
-          regeneratePastPerformance: true,
-          regenerateFutureGrowth: true,
-          regenerateFairValue: true,
-          regenerateFutureRisk: true,
-          regenerateWarrenBuffett: true,
-          regenerateCharlieMunger: true,
-          regenerateBillAckman: true,
-          regenerateFinalSummary: true,
-          regenerateCachedScore: true,
-        };
-
-        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+        await createBackgroundGenerationRequest(ticker, postRequest);
       });
 
       // Execute all ticker promises in parallel
@@ -248,10 +162,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
       // Create an array of promises for each ticker
       const tickerPromises = selectedTickers.map(async (ticker) => {
         if (!tickerReports[ticker]) return;
-
-        const payload: AnalysisRequest = {};
-        await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/${analysisType}`, payload);
-        onReportGenerated(ticker);
+        await generateAnalysis(analysisType, ticker, postAnalysis, onReportGenerated);
       });
 
       // Execute all ticker promises in parallel
@@ -281,12 +192,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
       // Create an array of promises for each ticker
       const tickerPromises = selectedTickers.map(async (ticker) => {
         if (!tickerReports[ticker]) return;
-
-        const payload: AnalysisRequest = {
-          investorKey: investorKey,
-        };
-        await postAnalysis(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/investor-analysis`, payload);
-        onReportGenerated(ticker);
+        await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
       });
 
       // Execute all ticker promises in parallel
@@ -332,7 +238,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{analysis.label}</td>
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
-                    const isCompleted = report?.analysisStatus[analysis.statusKey];
+                    const isCompleted = analysis.statusKey && report?.analysisStatus[analysis.statusKey];
                     const isLoading = loadingStates[`${ticker}-${analysis.key}`];
 
                     return (

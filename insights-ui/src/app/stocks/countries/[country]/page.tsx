@@ -1,4 +1,4 @@
-import StockActions from '@/app/stocks/StockActions';
+import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -144,7 +144,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
             rightButton={
               <div className="flex">
                 <FiltersButton />
-                <StockActions />
+                <StocksGridPageActions />
               </div>
             }
           />
