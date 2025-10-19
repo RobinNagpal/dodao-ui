@@ -149,7 +149,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       stockAnalyzeUrl: form.stockAnalyzeUrl.trim(), // NEW: ensure trimmed
     };
 
-    const resp = await createTickersFromCompetition(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`, submission);
+    const resp = await createTickersFromCompetition(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${symbol}/creation-infos`, submission);
 
     if (resp?.id) {
       setOpen(false);

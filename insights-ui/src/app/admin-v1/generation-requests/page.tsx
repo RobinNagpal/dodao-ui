@@ -8,12 +8,29 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
-import { TickerV1GenerationRequest } from '@prisma/client';
+import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 /**
  * Canonical list of boolean "regenerate*" flags we render as dots.
  */
+
+type GenerationReportFields = keyof Pick<
+  TickerV1GenerationRequestWithTicker,
+  | 'regenerateCompetition'
+  | 'regenerateFinancialAnalysis'
+  | 'regenerateBusinessAndMoat'
+  | 'regeneratePastPerformance'
+  | 'regenerateFutureGrowth'
+  | 'regenerateFairValue'
+  | 'regenerateFutureRisk'
+  | 'regenerateWarrenBuffett'
+  | 'regenerateCharlieMunger'
+  | 'regenerateBillAckman'
+  | 'regenerateFinalSummary'
+  | 'regenerateCachedScore'
+>;
+
 const REGENERATE_FIELDS = [
   'regenerateCompetition',
   'regenerateFinancialAnalysis',
@@ -27,21 +44,17 @@ const REGENERATE_FIELDS = [
   'regenerateBillAckman',
   'regenerateFinalSummary',
   'regenerateCachedScore',
-];
+] as GenerationReportFields[];
 
 type RegenerateField = (typeof REGENERATE_FIELDS)[number];
 
 /** Enrich the Prisma type with our flag fields (booleans)
  *  and ensure completed/failed steps are arrays (not null).
  */
-type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker &
-  Record<RegenerateField, boolean> & {
-    completedSteps: string[] | null;
-    failedSteps: string[] | null;
-  };
+type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker;
 
 // Field mapping for better display names
-const FIELD_LABELS: Record<RegenerateField, string> = {
+const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCompetition: 'Competition',
   regenerateFinancialAnalysis: 'Financial',
   regenerateBusinessAndMoat: 'Business & Moat',
@@ -95,21 +108,6 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps }: StatusD
 const REFRESH_SECONDS: number = 10;
 
 // ---------- helpers ----------
-function getLatestByTicker(items: GenerationRequestWithFlags[]): GenerationRequestWithFlags[] {
-  const map: Map<string, GenerationRequestWithFlags> = new Map();
-  for (const req of items) {
-    const key: string = req.ticker.symbol; // symbol injected by API
-    const prev: GenerationRequestWithFlags | undefined = map.get(key);
-    if (!prev) {
-      map.set(key, req);
-      continue;
-    }
-    const tNew: number = new Date(req.createdAt as unknown as string).getTime();
-    const tPrev: number = new Date(prev.createdAt as unknown as string).getTime();
-    if (tNew > tPrev) map.set(key, req);
-  }
-  return Array.from(map.values()).sort((a, b) => new Date(b.createdAt as unknown as string).getTime() - new Date(a.createdAt as unknown as string).getTime());
-}
 
 function SectionHeader({ title, count }: { title: string; count: number }): JSX.Element {
   return (
@@ -140,14 +138,19 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
           {rows.map((latestRequest: GenerationRequestWithFlags) => {
-            const ticker: string = latestRequest.ticker.symbol;
+            const exchange: string = latestRequest.ticker.exchange;
+            const symbol: string = latestRequest.ticker.symbol;
             const completedSteps: string[] = latestRequest.completedSteps ?? [];
             const failedSteps: string[] = latestRequest.failedSteps ?? [];
             return (
-              <tr key={ticker}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10">{ticker}</td>
+              <tr key={latestRequest.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
+                  <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
+                    {symbol}
+                  </Link>
+                </td>
                 {regenerateFields.map((field: RegenerateField) => (
-                  <td key={`${ticker}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <td key={`${symbol}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
                     <div className="flex justify-center">
                       <StatusDot
                         isEnabled={Boolean(latestRequest[field])}
@@ -220,21 +223,13 @@ export default function GenerationRequestsPage(): JSX.Element {
   }, [hasActive, reFetchData]);
 
   // Section data (latest per ticker within each status, newest first)
-  const inProgressRows: GenerationRequestWithFlags[] = useMemo(
-    () => getLatestByTicker((data?.inProgress ?? []) as GenerationRequestWithFlags[]),
-    [data?.inProgress]
-  );
-  const notStartedRows: GenerationRequestWithFlags[] = useMemo(
-    () => getLatestByTicker((data?.notStarted ?? []) as GenerationRequestWithFlags[]),
-    [data?.notStarted]
-  );
-  const failedRows: GenerationRequestWithFlags[] = useMemo(() => getLatestByTicker((data?.failed ?? []) as GenerationRequestWithFlags[]), [data?.failed]);
-  const completedRows: GenerationRequestWithFlags[] = useMemo(
-    () => getLatestByTicker((data?.completed ?? []) as GenerationRequestWithFlags[]),
-    [data?.completed]
-  );
 
-  const regenerateFields: RegenerateField[] = REGENERATE_FIELDS;
+  const inProgressRows: GenerationRequestWithFlags[] = data?.inProgress ?? [];
+  const notStartedRows: GenerationRequestWithFlags[] = data?.notStarted ?? [];
+  const failedRows: GenerationRequestWithFlags[] = data?.failed ?? [];
+  const completedRows: GenerationRequestWithFlags[] = data?.completed ?? [];
+
+  const regenerateFields: GenerationReportFields[] = REGENERATE_FIELDS;
 
   return (
     <div className="mt-12 px-4 text-color">
