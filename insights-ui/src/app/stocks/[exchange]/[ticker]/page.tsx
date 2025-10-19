@@ -365,7 +365,7 @@ function TickerSummaryInfo({
 
         <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
           {/* Left: summary */}
-          <div className="lg:w/full lg:max-w-2xl lg:flex-auto">
+          <div className="lg:w/full lg:max-w-2xl lg:flex-auto min-h-[240px]">
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
           </div>
 

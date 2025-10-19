@@ -4,7 +4,6 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import { GenerationRequestsResponse } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';

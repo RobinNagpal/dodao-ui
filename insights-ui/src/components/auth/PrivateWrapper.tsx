@@ -2,7 +2,7 @@
 
 import { KoalaGainsSession } from '@/types/auth';
 import { useSession } from 'next-auth/react';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 interface ClientOnlyAdminProps {
   children: ReactNode;
@@ -10,8 +10,14 @@ interface ClientOnlyAdminProps {
 
 export default function PrivateWrapper({ children }: ClientOnlyAdminProps) {
   const { data: koalaSession } = useSession();
+
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const isAdmin = session?.role === 'Admin';
+  let isAdmin = session?.role === 'Admin';
+
+  useEffect(() => {
+    isAdmin = session?.role === 'Admin';
+  }, [koalaSession]);
+
   if (!isAdmin) {
     return null;
   }
