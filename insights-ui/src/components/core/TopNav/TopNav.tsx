@@ -96,7 +96,7 @@ export default function TopNav(): JSX.Element {
           </div>
         </div>
 
-        {/* Right: mobile hamburger (hidden on /stocks), desktop menus (hidden on /stocks) */}
+        {/* Right: mobile hamburger (hidden on /stocks), desktop menus hidden on /stocks but profile always visible on lg */}
         {!isStocksRoute && (
           <div className="flex lg:hidden">
             <button
@@ -112,94 +112,98 @@ export default function TopNav(): JSX.Element {
           </div>
         )}
 
-        {!isStocksRoute && (
-          <div className="hidden lg:flex lg:items-center lg:space-x-8">
-            {/* KoalaGains Insights Dropdown */}
-            <div className="relative" ref={reportsDropdownRef}>
-              <button
-                type="button"
-                onClick={(): void => setReportsDropdownOpen((prev) => !prev)}
-                onMouseEnter={(): void => setReportsDropdownOpen(true)}
-                className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                aria-expanded={reportsDropdownOpen}
-                aria-haspopup="true"
-              >
-                KoalaGains Insights
-                <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${reportsDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {reportsDropdownOpen && (
-                <div
-                  onMouseLeave={(): void => setReportsDropdownOpen(false)}
-                  className="absolute left-0 z-20 mt-2 w-64 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
-                  role="menu"
+        {/* Desktop right side */}
+        <div className="hidden lg:flex lg:items-center lg:space-x-8">
+          {/* Desktop menus (hidden on /stocks) */}
+          {!isStocksRoute && (
+            <>
+              {/* KoalaGains Insights Dropdown */}
+              <div className="relative" ref={reportsDropdownRef}>
+                <button
+                  type="button"
+                  onClick={(): void => setReportsDropdownOpen((prev) => !prev)}
+                  onMouseEnter={(): void => setReportsDropdownOpen(true)}
+                  className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+                  aria-expanded={reportsDropdownOpen}
+                  aria-haspopup="true"
                 >
-                  {reportsDropdown.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
-                    >
-                      <div className="font-semibold flex items-center">
-                        {item.name}
-                        {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
-                      </div>
-                      <div className="text-xs text-gray-400 mt-1">{item.description}</div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                  KoalaGains Insights
+                  <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${reportsDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {reportsDropdownOpen && (
+                  <div
+                    onMouseLeave={(): void => setReportsDropdownOpen(false)}
+                    className="absolute left-0 z-20 mt-2 w-64 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
+                    role="menu"
+                  >
+                    {reportsDropdown.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                      >
+                        <div className="font-semibold flex items-center">
+                          {item.name}
+                          {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
+                        </div>
+                        <div className="text-xs text-gray-400 mt-1">{item.description}</div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* GenAI Adoption Dropdown */}
-            <div className="relative" ref={genaiDropdownRef}>
-              <button
-                type="button"
-                onClick={(): void => setGenaiDropdownOpen((prev) => !prev)}
-                onMouseEnter={(): void => setGenaiDropdownOpen(true)}
-                className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                aria-expanded={genaiDropdownOpen}
-                aria-haspopup="true"
-              >
-                GenAI Adoption
-                <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${genaiDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {genaiDropdownOpen && (
-                <div
-                  onMouseLeave={(): void => setGenaiDropdownOpen(false)}
-                  className="absolute left-0 z-20 mt-2 w-72 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
-                  role="menu"
+              {/* GenAI Adoption Dropdown */}
+              <div className="relative" ref={genaiDropdownRef}>
+                <button
+                  type="button"
+                  onClick={(): void => setGenaiDropdownOpen((prev) => !prev)}
+                  onMouseEnter={(): void => setGenaiDropdownOpen(true)}
+                  className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+                  aria-expanded={genaiDropdownOpen}
+                  aria-haspopup="true"
                 >
-                  {genaiDropdown.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
-                    >
-                      <div className="font-semibold">{item.name}</div>
-                      <div className="text-xs text-gray-400 mt-1">{item.description}</div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                  GenAI Adoption
+                  <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${genaiDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {genaiDropdownOpen && (
+                  <div
+                    onMouseLeave={(): void => setGenaiDropdownOpen(false)}
+                    className="absolute left-0 z-20 mt-2 w-72 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
+                    role="menu"
+                  >
+                    {genaiDropdown.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                      >
+                        <div className="font-semibold">{item.name}</div>
+                        <div className="text-xs text-gray-400 mt-1">{item.description}</div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            {/* Regular Navigation Items */}
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                target={item.newTab ? '_blank' : '_self'}
-                rel={item.newTab ? 'noopener noreferrer' : undefined}
-              >
-                {item.name}
-              </Link>
-            ))}
+              {/* Regular Navigation Items */}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
+                  target={item.newTab ? '_blank' : '_self'}
+                  rel={item.newTab ? 'noopener noreferrer' : undefined}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </>
+          )}
 
-            {/* User Menu */}
-            <UserProfile />
-          </div>
-        )}
+          {/* User Menu (ALWAYS visible on large screens) */}
+          <UserProfile />
+        </div>
       </nav>
 
       {/* Mobile Menu (not rendered on /stocks so only the search remains visible) */}

@@ -2,6 +2,7 @@
 
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { KoalaGainsSession } from '@/types/auth';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import {
   analysisTypes,
@@ -17,10 +18,11 @@ import React, { ReactNode } from 'react';
 
 interface StockActionsProps {
   tickerSymbol: string;
+  session?: KoalaGainsSession;
   children?: ReactNode;
 }
 
-export default function StockActions({ tickerSymbol, children }: StockActionsProps): JSX.Element {
+export default function StockActions({ tickerSymbol, children, session }: StockActionsProps): JSX.Element {
   const router = useRouter();
 
   // Post hook for background generation requests
@@ -64,7 +66,7 @@ export default function StockActions({ tickerSymbol, children }: StockActionsPro
   return (
     <div className="flex items-center space-x-2">
       {children}
-      <PrivateWrapper>
+      <PrivateWrapper session={session}>
         <EllipsisDropdown items={reportGenerationItems} className="px-2 py-2" onSelect={handleSelect} />
       </PrivateWrapper>
     </div>

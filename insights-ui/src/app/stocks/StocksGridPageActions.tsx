@@ -1,11 +1,15 @@
 'use client';
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { KoalaGainsSession } from '@/types/auth';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function StocksGridPageActions() {
+export interface StocksGridPageActionsProps {
+  session?: KoalaGainsSession;
+}
+export default function StocksGridPageActions({ session }: StocksGridPageActionsProps) {
   const router = useRouter();
 
   const actions: EllipsisDropdownItem[] = [
@@ -15,7 +19,7 @@ export default function StocksGridPageActions() {
   ];
 
   return (
-    <PrivateWrapper>
+    <PrivateWrapper session={session}>
       <EllipsisDropdown
         items={actions}
         className="px-2 py-2"

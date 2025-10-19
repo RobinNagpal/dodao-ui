@@ -6,16 +6,17 @@ import { ReactNode, useEffect } from 'react';
 
 interface ClientOnlyAdminProps {
   children: ReactNode;
+  session?: KoalaGainsSession;
 }
 
-export default function PrivateWrapper({ children }: ClientOnlyAdminProps) {
+export default function PrivateWrapper({ children, session: serverSession }: ClientOnlyAdminProps) {
   const { data: koalaSession } = useSession();
 
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  let isAdmin = session?.role === 'Admin';
+  let isAdmin = session?.role === 'Admin' || serverSession?.role === 'Admin' || false;
 
   useEffect(() => {
-    isAdmin = session?.role === 'Admin';
+    isAdmin = session?.role === 'Admin' || serverSession?.role === 'Admin' || false;
   }, [koalaSession]);
 
   if (!isAdmin) {

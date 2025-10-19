@@ -1,4 +1,5 @@
 // app/stocks/page.tsx
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
@@ -6,6 +7,7 @@ import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import StocksGrid from '@/components/stocks/StocksGrid';
 import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
@@ -13,6 +15,7 @@ import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcru
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import { Suspense } from 'react';
 import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
 
@@ -73,7 +76,9 @@ type PageProps = {
   searchParams: Promise<SearchParams>;
 };
 
-export default function StocksPage({ searchParams }: PageProps) {
+export default async function StocksPage({ searchParams }: PageProps) {
+  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
+
   // Build one promise that resolves to both the data and whether filters were applied.
   const dataPromise: Promise<StocksDataPayload> = (async () => {
     const sp = await searchParams;
@@ -112,7 +117,7 @@ export default function StocksPage({ searchParams }: PageProps) {
           rightButton={
             <div className="flex">
               <FiltersButton />
-              <StocksGridPageActions />
+              <StocksGridPageActions session={session} />
             </div>
           }
         />

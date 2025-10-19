@@ -1,3 +1,4 @@
+import { KoalaGainsSession } from '@/types/auth';
 import { parseMarkdown } from '@/util/parse-markdown';
 import type { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
@@ -16,11 +17,12 @@ export interface CompetitionPayload {
 export interface CompetitionProps {
   exchange: string;
   ticker: string;
+  session?: KoalaGainsSession;
   /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
   dataPromise: Promise<CompetitionPayload>;
 }
 
-export default function Competition({ exchange, ticker, dataPromise }: CompetitionProps): JSX.Element | null {
+export default function Competition({ exchange, ticker, dataPromise, session }: CompetitionProps): JSX.Element | null {
   const { vsCompetition, competitorTickers }: Readonly<CompetitionPayload> = use(dataPromise);
 
   if (!vsCompetition && (!competitorTickers || competitorTickers.length === 0)) {
@@ -66,7 +68,7 @@ export default function Competition({ exchange, ticker, dataPromise }: Competiti
                           </span>
                         )}
                       </div>
-                      <AddTickerAdminButton competitor={competitor} />
+                      <AddTickerAdminButton competitor={competitor} session={session} />
                     </div>
                   </div>
                   {competitor.detailedComparison && (
