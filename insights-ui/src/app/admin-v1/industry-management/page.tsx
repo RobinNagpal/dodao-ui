@@ -1,19 +1,20 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { Plus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 import IndustryTree, { IndustryAction, SubIndustryAction } from './IndustryTree';
 import UpsertIndustryModal from './UpsertIndustryModal';
 import UpsertSubIndustryModal from './UpsertSubIndustryModal';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 type DeleteKind = 'industry' | 'subIndustry';
 
@@ -34,13 +35,7 @@ export default function IndustryManagementPage(): JSX.Element {
     data: industries,
     loading: loadingIndustries,
     reFetchData: refetchIndustries,
-  } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
-
-  const {
-    data: subIndustries,
-    loading: loadingSubIndustries,
-    reFetchData: refetchSubIndustries,
-  } = useFetchData<TickerV1SubIndustry[]>(`${getBaseUrl()}/api/sub-industries`, {}, 'Failed to load sub-industries');
+  } = useFetchData<IndustryWithSubIndustries[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
 
   // Delete hooks
   const { deleteData: deleteIndustry, loading: deletingIndustry } = useDeleteData<{ success: boolean }, never>({
@@ -51,16 +46,6 @@ export default function IndustryManagementPage(): JSX.Element {
     successMessage: 'Sub-industry deleted successfully!',
     errorMessage: 'Failed to delete sub-industry',
   });
-
-  // Map sub-industries by industry for quick lookup
-  const subByIndustry = useMemo<Record<string, TickerV1SubIndustry[]>>(() => {
-    const map: Record<string, TickerV1SubIndustry[]> = {};
-    (subIndustries ?? []).forEach((si) => {
-      if (!map[si.industryKey]) map[si.industryKey] = [];
-      map[si.industryKey].push(si);
-    });
-    return map;
-  }, [subIndustries]);
 
   // Handlers triggered from the tree view
   const onIndustryAction = (action: IndustryAction, industry: TickerV1Industry): void => {
@@ -100,23 +85,20 @@ export default function IndustryManagementPage(): JSX.Element {
     if (deleteKind === 'industry') {
       await deleteIndustry(`${getBaseUrl()}/api/industries/${deleteKey}`);
       await refetchIndustries();
-      await refetchSubIndustries(); // sub-industries may be cascade-deleted/invalidated
     } else {
       await deleteSubIndustry(`${getBaseUrl()}/api/sub-industries/${deleteKey}`);
-      await refetchSubIndustries();
     }
     setDeleteOpen(false);
   };
 
   const handleRefreshAll = (): void => {
     refetchIndustries();
-    refetchSubIndustries();
   };
 
   // Ensure stable expanded map on first load (optional; done inside IndustryTree as well)
   useEffect(() => {}, [industries]);
 
-  const loading = loadingIndustries || loadingSubIndustries;
+  const loading = loadingIndustries;
 
   return (
     <PageWrapper>
@@ -152,12 +134,7 @@ export default function IndustryManagementPage(): JSX.Element {
         </div>
       ) : (
         <div className="rounded-lg border border-gray-700/50 bg-gray-900/40">
-          <IndustryTree
-            industries={industries ?? []}
-            subByIndustry={subByIndustry}
-            onIndustryAction={onIndustryAction}
-            onSubIndustryAction={onSubIndustryAction}
-          />
+          <IndustryTree industries={industries ?? []} onIndustryAction={onIndustryAction} onSubIndustryAction={onSubIndustryAction} />
           {(!industries || industries.length === 0) && (
             <div className="p-8 text-center text-gray-400">No industries yet. Use “Add Industry” to create one.</div>
           )}

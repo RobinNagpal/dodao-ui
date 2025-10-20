@@ -1,5 +1,6 @@
 // industries/route.ts
 import { prisma } from '@/prisma';
+import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { TickerV1Industry } from '@prisma/client';
@@ -14,7 +15,7 @@ export interface CreateIndustryRequest {
   archived?: boolean;
 }
 
-async function getHandler(req: NextRequest): Promise<TickerV1Industry[]> {
+async function getHandler(req: NextRequest): Promise<IndustryWithSubIndustries[]> {
   const { searchParams } = new URL(req.url);
   const archivedParam = searchParams.get('archived');
   const country = searchParams.get('country');
@@ -22,7 +23,7 @@ async function getHandler(req: NextRequest): Promise<TickerV1Industry[]> {
   // Convert string parameter to boolean if it exists
   const archived = archivedParam ? archivedParam === 'true' : undefined;
 
-  let industries: TickerV1Industry[];
+  let industries: IndustryWithSubIndustries[];
 
   if (country) {
     // Get exchanges for the country
@@ -87,5 +88,5 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   return industry;
 }
 
-export const GET = withErrorHandlingV2<TickerV1Industry[]>(getHandler);
+export const GET = withErrorHandlingV2<IndustryWithSubIndustries[]>(getHandler);
 export const POST = withLoggedInAdmin<TickerV1Industry>(postHandler);

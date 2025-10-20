@@ -1,6 +1,6 @@
 import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
 import { CompetitorTicker, TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
-import { TickerV1, TickerAnalysisCategory } from '@prisma/client';
+import { TickerV1, TickerAnalysisCategory, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
 export interface TickerWithIndustryNames extends TickerV1 {
   industryName: string;
@@ -90,3 +90,7 @@ export type CompetitionResponse = {
   vsCompetition: VsCompetition | null;
   competitorTickers: CompetitorTicker[];
 };
+
+export interface IndustryWithSubIndustries extends TickerV1Industry {
+  subIndustries: TickerV1SubIndustry[];
+}

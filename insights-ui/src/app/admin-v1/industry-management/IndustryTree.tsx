@@ -1,5 +1,6 @@
 'use client';
 
+import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
 import { useMemo } from 'react';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import { Building2, Tag } from 'lucide-react';
@@ -10,13 +11,12 @@ export type IndustryAction = 'addSub' | 'edit' | 'delete';
 export type SubIndustryAction = 'edit' | 'delete';
 
 export interface IndustryTreeProps {
-  industries: TickerV1Industry[];
-  subByIndustry: Record<string, TickerV1SubIndustry[]>;
+  industries: IndustryWithSubIndustries[];
   onIndustryAction: (action: IndustryAction, industry: TickerV1Industry) => void;
   onSubIndustryAction: (action: SubIndustryAction, sub: TickerV1SubIndustry) => void;
 }
 
-export default function IndustryTree({ industries, subByIndustry, onIndustryAction, onSubIndustryAction }: IndustryTreeProps): JSX.Element {
+export default function IndustryTree({ industries, onIndustryAction, onSubIndustryAction }: IndustryTreeProps): JSX.Element {
   const sortedIndustries = useMemo(() => [...industries].sort((a, b) => a.name.localeCompare(b.name)), [industries]);
 
   const industryMenu = useMemo<EllipsisDropdownItem[]>(
@@ -39,7 +39,7 @@ export default function IndustryTree({ industries, subByIndustry, onIndustryActi
   return (
     <div className="divide-y divide-gray-800">
       {sortedIndustries.map((ind, idx) => {
-        const subs = (subByIndustry[ind.industryKey] ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
+        const subs = (ind.subIndustries ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
 
         // Alternate background for readability
         const rowBg = idx % 2 === 0 ? 'bg-gray-500/20 hover:bg-gray-500/30' : 'bg-gray-900/20 hover:bg-gray-900/30';

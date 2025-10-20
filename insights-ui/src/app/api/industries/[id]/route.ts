@@ -1,10 +1,11 @@
 // industries/[id]/route.ts
 import { prisma } from '@/prisma';
+import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
-import { TickerV1Industry } from '@prisma/client';
+import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
 export interface IndustryUpdateRequest {
   name?: string;
@@ -12,7 +13,7 @@ export interface IndustryUpdateRequest {
   archived?: boolean;
 }
 
-async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<TickerV1Industry> {
+async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<IndustryWithSubIndustries> {
   const { id } = await params;
   return prisma.tickerV1Industry.findUniqueOrThrow({
     where: {
@@ -58,6 +59,6 @@ async function deleteHandler(
   return { success: true };
 }
 
-export const GET = withErrorHandlingV2<TickerV1Industry>(getHandler);
+export const GET = withErrorHandlingV2<IndustryWithSubIndustries>(getHandler);
 export const PUT = withLoggedInAdmin<TickerV1Industry>(putHandler);
 export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);
