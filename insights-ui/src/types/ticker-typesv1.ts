@@ -94,3 +94,20 @@ export type CompetitionResponse = {
 export interface IndustryWithSubIndustries extends TickerV1Industry {
   subIndustries: TickerV1SubIndustry[];
 }
+
+export interface IndustryWithSubIndustries extends TickerV1Industry {
+  subIndustries: TickerV1SubIndustry[];
+}
+
+/**
+ * Adds computed ticker counts for both industry and sub-industry rows.
+ */
+export interface SubIndustryWithCount extends TickerV1SubIndustry {
+  tickerCount: number;
+}
+
+export interface IndustryWithSubIndustriesAndCounts extends TickerV1Industry {
+  subIndustries: SubIndustryWithCount[];
+  /** Sum of all tickers in this industry's sub-industries */
+  tickerCount: number;
+}

@@ -1,25 +1,33 @@
 'use client';
 
-import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
-import { useMemo } from 'react';
-import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import type { IndustryWithSubIndustriesAndCounts, SubIndustryWithCount } from '@/types/ticker-typesv1';
+import { useMemo, type JSX } from 'react';
+import type { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import { Building2, Tag } from 'lucide-react';
-import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import EllipsisDropdown, { type EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import Link from 'next/link';
 
 export type IndustryAction = 'addSub' | 'edit' | 'delete';
 export type SubIndustryAction = 'edit' | 'delete';
 
 export interface IndustryTreeProps {
-  industries: IndustryWithSubIndustries[];
+  industries: IndustryWithSubIndustriesAndCounts[];
   onIndustryAction: (action: IndustryAction, industry: TickerV1Industry) => void;
   onSubIndustryAction: (action: SubIndustryAction, sub: TickerV1SubIndustry) => void;
 }
 
-export default function IndustryTree({ industries, onIndustryAction, onSubIndustryAction }: IndustryTreeProps): JSX.Element {
-  const sortedIndustries = useMemo(() => [...industries].sort((a, b) => a.name.localeCompare(b.name)), [industries]);
+function CountPill({ count, title }: { count: number; title?: string }): JSX.Element {
+  return (
+    <span title={title} className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-indigo-600 text-white text-[12px] leading-none px-1.5">
+      {count}
+    </span>
+  );
+}
 
-  const industryMenu = useMemo<EllipsisDropdownItem[]>(
+export default function IndustryTree({ industries, onIndustryAction, onSubIndustryAction }: IndustryTreeProps): JSX.Element {
+  const sortedIndustries: IndustryWithSubIndustriesAndCounts[] = useMemo(() => [...industries].sort((a, b) => a.name.localeCompare(b.name)), [industries]);
+
+  const industryMenu: EllipsisDropdownItem[] = useMemo(
     () => [
       { key: 'addSub', label: 'Add sub-industry' },
       { key: 'edit', label: 'Edit' },
@@ -28,7 +36,7 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
     []
   );
 
-  const subMenu = useMemo<EllipsisDropdownItem[]>(
+  const subMenu: EllipsisDropdownItem[] = useMemo(
     () => [
       { key: 'edit', label: 'Edit' },
       { key: 'delete', label: 'Delete' },
@@ -39,10 +47,10 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
   return (
     <div className="divide-y divide-gray-800">
       {sortedIndustries.map((ind, idx) => {
-        const subs = (ind.subIndustries ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
+        const subs: SubIndustryWithCount[] = (ind.subIndustries ?? []).slice().sort((a, b) => a.name.localeCompare(b.name));
 
         // Alternate background for readability
-        const rowBg = idx % 2 === 0 ? 'bg-gray-500/20 hover:bg-gray-500/30' : 'bg-gray-900/20 hover:bg-gray-900/30';
+        const rowBg: string = idx % 2 === 0 ? 'bg-gray-500/20 hover:bg-gray-500/30' : 'bg-gray-900/20 hover:bg-gray-900/30';
 
         return (
           <div key={ind.industryKey} className={`px-3 py-2 transition-colors ${rowBg}`}>
@@ -58,8 +66,11 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
                     target="_blank"
                     className={`hover:text-gray-100 link-color ${ind.archived ? 'text-gray-400' : 'text-gray-100'}`}
                   >
-                    <span className="truncate text-base font-medium">{ind.name}</span>
-                    <span className="truncate text-xs">({ind.industryKey})</span>
+                    <span className="truncate text-base font-medium mr-2">{ind.name}</span>
+                    {/* Count next to name */}
+                    <CountPill count={ind.tickerCount} title="Total tickers in this industry" />
+                    {/* Show key with small gap */}
+                    <span className="truncate text-xs ml-1">( {ind.industryKey} )</span>
                   </Link>
                   <EllipsisDropdown items={industryMenu} onSelect={(key): void => onIndustryAction(key as IndustryAction, ind)} />
 
@@ -83,7 +94,10 @@ export default function IndustryTree({ industries, onIndustryAction, onSubIndust
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="truncate text-sm text-gray-100">{si.name}</span>
-                          <span className="truncate text-xs text-gray-400">({si.subIndustryKey})</span>
+                          {/* Count next to sub-industry name */}
+                          <CountPill count={si.tickerCount} title="Tickers in this sub-industry" />
+                          {/* Key */}
+                          <span className="truncate text-xs text-gray-400 ml-1">( {si.subIndustryKey} )</span>
 
                           <EllipsisDropdown items={subMenu} onSelect={(key): void => onSubIndustryAction(key as SubIndustryAction, si)} />
 

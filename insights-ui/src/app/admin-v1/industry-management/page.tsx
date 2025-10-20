@@ -1,18 +1,18 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import { IndustryWithSubIndustries } from '@/types/ticker-typesv1';
+import type { IndustryWithSubIndustriesAndCounts } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import type { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
-import IndustryTree, { IndustryAction, SubIndustryAction } from './IndustryTree';
+import IndustryTree, { type IndustryAction, type SubIndustryAction } from './IndustryTree';
 import UpsertIndustryModal from './UpsertIndustryModal';
 import UpsertSubIndustryModal from './UpsertSubIndustryModal';
 
@@ -30,12 +30,12 @@ export default function IndustryManagementPage(): JSX.Element {
   const [deleteKind, setDeleteKind] = useState<DeleteKind>('industry');
   const [deleteKey, setDeleteKey] = useState<string>('');
 
-  // Data
+  // Data (now includes counts)
   const {
     data: industries,
     loading: loadingIndustries,
     reFetchData: refetchIndustries,
-  } = useFetchData<IndustryWithSubIndustries[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
+  } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
 
   // Delete hooks
   const { deleteData: deleteIndustry, loading: deletingIndustry } = useDeleteData<{ success: boolean }, never>({
@@ -87,6 +87,7 @@ export default function IndustryManagementPage(): JSX.Element {
       await refetchIndustries();
     } else {
       await deleteSubIndustry(`${getBaseUrl()}/api/sub-industries/${deleteKey}`);
+      await refetchIndustries();
     }
     setDeleteOpen(false);
   };
@@ -98,7 +99,7 @@ export default function IndustryManagementPage(): JSX.Element {
   // Ensure stable expanded map on first load (optional; done inside IndustryTree as well)
   useEffect(() => {}, [industries]);
 
-  const loading = loadingIndustries;
+  const loading: boolean = loadingIndustries;
 
   return (
     <PageWrapper>
@@ -148,7 +149,7 @@ export default function IndustryManagementPage(): JSX.Element {
           setSelectedIndustry(null);
           setShowUpsertIndustry(false);
         }}
-        onSuccess={(): void => handleRefreshAll()}
+        onSuccess={handleRefreshAll}
         industry={selectedIndustry ?? undefined}
       />
 
@@ -159,7 +160,7 @@ export default function IndustryManagementPage(): JSX.Element {
           setSelectedIndustry(null);
           setShowUpsertSubIndustry(false);
         }}
-        onSuccess={(): void => handleRefreshAll()}
+        onSuccess={handleRefreshAll}
         subIndustry={selectedSubIndustry ?? undefined}
         preselectedIndustryKey={selectedIndustry?.industryKey}
       />
