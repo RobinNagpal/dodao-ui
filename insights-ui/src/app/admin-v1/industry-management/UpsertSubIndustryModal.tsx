@@ -1,4 +1,4 @@
-// components/UpsertSubIndustryModal.tsx
+// unchanged except exported here for completeness
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
@@ -45,7 +45,6 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
   const [formError, setFormError] = useState<string>('');
   const isEditMode: boolean = !!subIndustry;
 
-  // Fetch industries for dropdown
   const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
 
   const { putData, loading: updatingSubIndustry } = usePutData<TickerV1SubIndustry, SubIndustryUpdateRequest>({
@@ -89,7 +88,6 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
     e.preventDefault();
     setFormError('');
 
-    // Validate required fields
     if (!industryKey) {
       setFormError('Industry is required.');
       return;
@@ -100,7 +98,7 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
         await putData(`/api/sub-industries/${subIndustry!.subIndustryKey}`, {
           name,
           summary,
-          industryKey, // narrowed to string by guard above
+          industryKey,
           archived,
         });
       } else {
@@ -111,7 +109,7 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
 
         await postData('/api/sub-industries', {
           subIndustryKey,
-          industryKey, // narrowed to string by guard above
+          industryKey,
           name,
           summary,
           archived,
@@ -119,16 +117,13 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
       }
 
       onSuccess();
-      if (!isEditMode) {
-        resetForm();
-      }
+      if (!isEditMode) resetForm();
       onClose();
     } catch {
       setFormError(`Failed to ${isEditMode ? 'update' : 'create'} sub-industry`);
     }
   };
 
-  // Build Select items from industries
   const industryItems: StyledSelectItem[] = useMemo<StyledSelectItem[]>(
     () =>
       (industries ?? []).map((ind: TickerV1Industry) => ({
@@ -138,7 +133,6 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
     [industries]
   );
 
-  // Checkbox group for "Archived"
   const archivedItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => [{ id: 'archived', name: 'archived', label: 'Archived' }], []);
   const handleArchivedChange = (selectedIds: string[]): void => {
     setArchived(selectedIds.includes('archived'));
@@ -146,7 +140,7 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
 
   return (
     <SingleSectionModal open={isOpen} onClose={onClose} title={isEditMode ? 'Edit Sub-industry' : 'Create Sub-industry'}>
-      <form onSubmit={handleSubmit} className="space-y-4 text-left mt-4">
+      <form onSubmit={handleSubmit} className="space-y-3 text-left mt-3">
         {!isEditMode && (
           <Input
             label="Sub-industry Key"
@@ -185,11 +179,11 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
           }}
         />
 
-        <Checkboxes items={archivedItems} selectedItemIds={archived ? ['archived'] : []} onChange={handleArchivedChange} className="mt-2" />
+        <Checkboxes items={archivedItems} selectedItemIds={archived ? ['archived'] : []} onChange={handleArchivedChange} className="mt-1" />
 
         {formError && <p className="text-red-500 text-sm">{formError}</p>}
 
-        <div className="flex justify-end space-x-3 pt-4">
+        <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="outlined" onClick={onClose}>
             Cancel
           </Button>
@@ -197,7 +191,7 @@ export default function UpsertSubIndustryModal({ isOpen, onClose, onSuccess, sub
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {isEditMode ? 'Saving...' : 'Creating...'}
+                {isEditMode ? 'Saving…' : 'Creating…'}
               </>
             ) : isEditMode ? (
               'Save Changes'

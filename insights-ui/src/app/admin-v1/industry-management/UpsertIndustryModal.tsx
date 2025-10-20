@@ -1,4 +1,4 @@
-// components/UpsertIndustryModal.tsx
+// unchanged except exported here for completeness
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
@@ -103,7 +103,6 @@ export default function UpsertIndustryModal({ isOpen, onClose, onSuccess, indust
     }
   };
 
-  // Single-item checkbox group for "Archived"
   const archivedItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => [{ id: 'archived', name: 'archived', label: 'Archived' }], []);
   const handleArchivedChange = (selectedIds: string[]): void => {
     setArchived(selectedIds.includes('archived'));
@@ -111,7 +110,7 @@ export default function UpsertIndustryModal({ isOpen, onClose, onSuccess, indust
 
   return (
     <SingleSectionModal open={isOpen} onClose={onClose} title={isEditMode ? 'Edit Industry' : 'Create Industry'}>
-      <form onSubmit={handleSubmit} className="space-y-4 text-left mt-4">
+      <form onSubmit={handleSubmit} className="space-y-3 text-left mt-3">
         {!isEditMode && (
           <Input
             label="Industry Key"
@@ -141,11 +140,11 @@ export default function UpsertIndustryModal({ isOpen, onClose, onSuccess, indust
           }}
         />
 
-        <Checkboxes items={archivedItems} selectedItemIds={archived ? ['archived'] : []} onChange={handleArchivedChange} className="mt-2" />
+        <Checkboxes items={archivedItems} selectedItemIds={archived ? ['archived'] : []} onChange={handleArchivedChange} className="mt-1" />
 
         {formError && <p className="text-red-500 text-sm">{formError}</p>}
 
-        <div className="flex justify-end space-x-3 pt-4">
+        <div className="flex justify-end gap-2 pt-2">
           <Button type="button" variant="outlined" onClick={onClose}>
             Cancel
           </Button>
@@ -153,7 +152,7 @@ export default function UpsertIndustryModal({ isOpen, onClose, onSuccess, indust
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {isEditMode ? 'Saving...' : 'Creating...'}
+                {isEditMode ? 'Saving…' : 'Creating…'}
               </>
             ) : isEditMode ? (
               'Save Changes'
