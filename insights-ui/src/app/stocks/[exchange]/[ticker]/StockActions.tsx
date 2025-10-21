@@ -3,7 +3,6 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { KoalaGainsSession } from '@/types/auth';
-import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import {
   analysisTypes,
   createBackgroundGenerationRequest,

@@ -6,7 +6,6 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { TickerV1Industry } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
-import { getExchangesByCountry } from '@/utils/countryUtils';
 
 export interface CreateIndustryRequest {
   industryKey: string;
