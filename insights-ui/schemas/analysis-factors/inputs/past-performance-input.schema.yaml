@@ -74,88 +74,29 @@ properties:
 
   # Market Snapshot - comprehensive market data
   marketSummary:
-    type: object
+    type: string
     description: 'Complete market summary data from stock analyzer'
 
-  # Financial Statements - Past Performance analysis uses last 5 annuals
+  # Financial Statements - last 4 quarters + latest annual
   incomeStatement:
-    type: object
-    description: 'Income statement data for past performance analysis (last 5 annuals)'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for income statement'
-      last5Annuals:
-        type: array
-        description: 'Last 5 annual income statement periods'
-        items:
-          type: object
-
+    type: string
+    description: 'Income statement data including meta, last 4 quarters, and latest annual'
   balanceSheet:
-    type: object
-    description: 'Balance sheet data for past performance analysis (last 5 annuals)'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for balance sheet'
-      last5Annuals:
-        type: array
-        description: 'Last 5 annual balance sheet periods'
-        items:
-          type: object
+    type: string
+    description: 'Balance sheet data including meta, last 4 quarters, and latest annual'
 
   cashFlow:
-    type: object
-    description: 'Cash flow statement data for past performance analysis (last 5 annuals)'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for cash flow statement'
-      last5Annuals:
-        type: array
-        description: 'Last 5 annual cash flow periods'
-        items:
-          type: object
+    type: string
+    description: 'Cash flow statement data including meta, last 4 quarters, and latest annual'
 
   ratios:
-    type: object
-    description: 'Financial ratios data for past performance analysis (last 5 annuals)'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for ratios'
-      last5Annuals:
-        type: array
-        description: 'Last 5 annual ratios periods'
-        items:
-          type: object
+    type: string
+    description: 'Financial ratios data including meta, latest annual, and last 4 quarters'
 
   dividends:
-    type: object
-    description: 'Dividend data for past performance analysis (last 5 annuals)'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for dividends'
-      summary:
-        type: object
-        description: 'Dividend summary information'
-      last5Annuals:
-        type: array
-        description: 'Last 5 annual dividend records'
-        items:
-          type: object
-          properties:
-            year:
-              type: number
-            totalAmount:
-              type: number
-            paymentCount:
-              type: number
-            dividends:
-              type: array
-              items:
-                type: object
+    type: string
+    description: 'Dividend data including meta, summary, and last 4 payments'
+
 required:
   - name
   - symbol

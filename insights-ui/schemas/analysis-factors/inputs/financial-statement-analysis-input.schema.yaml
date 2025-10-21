@@ -54,89 +54,29 @@ properties:
         - factorAnalysisDescription
   # Market Snapshot - comprehensive market data
   marketSummary:
-    type: object
+    type: string
     description: 'Complete market summary data from stock analyzer'
 
   # Financial Statements - last 4 quarters + latest annual
   incomeStatement:
-    type: object
+    type: string
     description: 'Income statement data including meta, last 4 quarters, and latest annual'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for income statement'
-      last4Quarters:
-        type: array
-        description: 'Last 4 quarterly income statement periods'
-        items:
-          type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual income statement period'
-
   balanceSheet:
-    type: object
+    type: string
     description: 'Balance sheet data including meta, last 4 quarters, and latest annual'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for balance sheet'
-      last4Quarters:
-        type: array
-        description: 'Last 4 quarterly balance sheet periods'
-        items:
-          type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual balance sheet period'
 
   cashFlow:
-    type: object
+    type: string
     description: 'Cash flow statement data including meta, last 4 quarters, and latest annual'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for cash flow statement'
-      last4Quarters:
-        type: array
-        description: 'Last 4 quarterly cash flow periods'
-        items:
-          type: object
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual cash flow period'
 
   ratios:
-    type: object
+    type: string
     description: 'Financial ratios data including meta, latest annual, and last 4 quarters'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for ratios'
-      latestAnnual:
-        type: [object, 'null']
-        description: 'Most recent annual ratios period'
-      last4Quarters:
-        type: array
-        description: 'Last 4 quarterly ratios periods'
-        items:
-          type: object
 
   dividends:
-    type: object
+    type: string
     description: 'Dividend data including meta, summary, and last 4 payments'
-    properties:
-      meta:
-        type: object
-        description: 'Metadata for dividends'
-      summary:
-        type: object
-        description: 'Dividend summary information'
-      last4Payments:
-        type: array
-        description: 'Last 4 dividend payment records'
-        items:
-          type: object
+
 
 required:
   - name

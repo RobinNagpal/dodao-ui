@@ -78,14 +78,14 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
 
     // Market Snapshot
-    marketSummary: financialData.marketSummary,
+    marketSummary: JSON.stringify(financialData.marketSummary),
 
-    // Financial Statements
-    incomeStatement: financialData.incomeStatement,
-    balanceSheet: financialData.balanceSheet,
-    cashFlow: financialData.cashFlow,
-    ratios: financialData.ratios,
-    dividends: financialData.dividends,
+    // Financial Statements - last 5 annuals
+    incomeStatement: JSON.stringify(financialData.incomeStatement),
+    balanceSheet: JSON.stringify(financialData.balanceSheet),
+    cashFlow: JSON.stringify(financialData.cashFlow),
+    ratios: JSON.stringify(financialData.ratios),
+    dividends: JSON.stringify(financialData.dividends),
   };
 
   // Call the LLM
