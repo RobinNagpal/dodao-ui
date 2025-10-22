@@ -311,10 +311,10 @@ export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyz
     return annualPeriods[0] || null;
   };
 
-  // Helper function to get last 4 quarters (excluding current quarter if not complete)
-  const getLast4Quarters = (data: IncomeQuarterlyData | BalanceQuarterlyData | CashFlowQuarterlyData | RatiosQuarterlyData | null) => {
+  // Helper function to get last 2 quarters (excluding current quarter if not complete)
+  const getLast2Quarters = (data: IncomeQuarterlyData | BalanceQuarterlyData | CashFlowQuarterlyData | RatiosQuarterlyData | null) => {
     if (!data?.periods || data.periods.length === 0) return [];
-    return data.periods.slice(0, 4);
+    return data.periods.slice(0, 2);
   };
 
   // Send whole summary data
@@ -323,35 +323,35 @@ export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyz
   return {
     marketSummary,
 
-    // Income Statement - last 4 quarters + latest annual
+    // Income Statement - last 2 quarters + latest annual
     incomeStatement: {
       meta: scraperInfo.incomeStatementQuarter?.meta || scraperInfo.incomeStatementAnnual?.meta || {},
-      last4Quarters: getLast4Quarters(scraperInfo.incomeStatementQuarter as IncomeQuarterlyData | null),
+      last2Quarters: getLast2Quarters(scraperInfo.incomeStatementQuarter as IncomeQuarterlyData | null),
       latestAnnual: getLatestAnnual(scraperInfo.incomeStatementAnnual as IncomeAnnualData | null),
     },
 
-    // Balance Sheet - last 4 quarters + latest annual
+    // Balance Sheet - last 2 quarters + latest annual
     balanceSheet: {
       meta: scraperInfo.balanceSheetQuarter?.meta || scraperInfo.balanceSheetAnnual?.meta || {},
-      last4Quarters: getLast4Quarters(scraperInfo.balanceSheetQuarter as BalanceQuarterlyData | null),
+      last2Quarters: getLast2Quarters(scraperInfo.balanceSheetQuarter as BalanceQuarterlyData | null),
       latestAnnual: getLatestAnnual(scraperInfo.balanceSheetAnnual as BalanceAnnualData | null),
     },
 
-    // Cash Flow Statement - last 4 quarters + latest annual
+    // Cash Flow Statement - last 2 quarters + latest annual
     cashFlow: {
       meta: scraperInfo.cashFlowQuarter?.meta || scraperInfo.cashFlowAnnual?.meta || {},
-      last4Quarters: getLast4Quarters(scraperInfo.cashFlowQuarter as CashFlowQuarterlyData | null),
+      last2Quarters: getLast2Quarters(scraperInfo.cashFlowQuarter as CashFlowQuarterlyData | null),
       latestAnnual: getLatestAnnual(scraperInfo.cashFlowAnnual as CashFlowAnnualData | null),
     },
 
-    // Ratios - latest annual + last 4 quarters
+    // Ratios - latest annual + last 2 quarters
     ratios: {
       meta: scraperInfo.ratiosQuarter?.meta || scraperInfo.ratiosAnnual?.meta || {},
       latestAnnual: getLatestAnnual(scraperInfo.ratiosAnnual as RatiosAnnualData | null),
-      last4Quarters: getLast4Quarters(scraperInfo.ratiosQuarter as RatiosQuarterlyData | null),
+      last2Quarters: getLast2Quarters(scraperInfo.ratiosQuarter as RatiosQuarterlyData | null),
     },
 
-    // Dividends - latest + last 4 quarters if applicable
+    // Dividends - latest + last 4 payments if applicable
     dividends: scraperInfo.dividends
       ? {
           meta: scraperInfo.dividends.meta || {},
