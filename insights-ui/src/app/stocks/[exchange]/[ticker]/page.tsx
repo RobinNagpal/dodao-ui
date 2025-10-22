@@ -166,6 +166,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     /* keep generic */
   }
 
+  const year = new Date().getFullYear();
+
   // Use metaDescription if available, otherwise truncate summary
   const shortDesc: string = metaDescription || truncateForMeta(summary);
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}`;
@@ -181,11 +183,11 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   ];
 
   return {
-    title: `${companyName} (${ticker}) | KoalaGains`,
+    title: `${companyName} (${ticker}) Stock Analysis & Key Metrics (${year})`,
     description: shortDesc,
     alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${companyName} (${ticker}) | KoalaGains`,
+      title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
       description: shortDesc,
       url: canonicalUrl,
       siteName: 'KoalaGains',
@@ -193,7 +195,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${companyName} (${ticker}) | KoalaGains`,
+      title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
       description: shortDesc,
     },
     keywords,
