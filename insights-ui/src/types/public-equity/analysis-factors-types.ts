@@ -1,5 +1,6 @@
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { TickerV1GenerationRequest } from '@prisma/client';
+import { TopCompaniesToConsider } from '../prismaTypes';
 
 export interface AnalysisFactorDefinition {
   factorAnalysisKey: string;
@@ -49,9 +50,16 @@ export interface LLMFactorAnalysisResponse {
   }>;
 }
 
-export interface LLMInvestorAnalysisFutureRiskResponse {
+export interface LLMFutureRiskResponse {
   summary: string;
   detailedAnalysis: string;
+}
+
+export interface LLMInvestorAnalysisResponse {
+  summary: string;
+  verdict: string;
+  willInvest: boolean;
+  topCompaniesToConsider: TopCompaniesToConsider[];
 }
 
 export interface TickerV1 {

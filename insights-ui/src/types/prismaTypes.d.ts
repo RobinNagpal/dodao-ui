@@ -147,9 +147,12 @@ export interface RatiosQuarterlyData {
   periods: RatiosQuarterlyPeriod[];
 }
 
+export type TopCompaniesToConsider = CompetitionAnalysisType;
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
+    type TopCompaniesToConsider = CompetitionAnalysisType;
     // Stock analyzer scraper types
     type StockFundamentalsSummary = StockFundamentalsSummary;
     type DividendsData = DividendsData;

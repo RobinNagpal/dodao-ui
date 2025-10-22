@@ -22,7 +22,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: ticker.toUpperCase(),
@@ -32,10 +32,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       subIndustry: true,
     },
   });
-
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${ticker} not found`);
-  }
 
   // Prepare input for the prompt (uses competition-input.schema.yaml)
   const inputJson = {

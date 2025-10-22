@@ -12,7 +12,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB with all related analysis data
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: ticker.toUpperCase(),
@@ -31,10 +31,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       },
     },
   });
-
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${ticker} not found`);
-  }
 
   // Prepare category summaries from existing analysis results
   const categorySummaries = tickerRecord.categoryAnalysisResults.map((categoryResult) => ({

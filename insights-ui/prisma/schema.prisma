@@ -671,16 +671,19 @@ model TickerV1AnalysisCategoryFactorResult {
 }
 
 model TickerV1InvestorAnalysisResult {
-  id               String   @id @default(uuid())
-  investorKey      String   @map("investor_key") // e.g. "WARREN_BUFFETT"
-  summary          String   @map("summary")
-  detailedAnalysis String   @map("detailed_analysis")
-  tickerId         String   @map("ticker_id")
-  spaceId          String   @default("koala_gains") @map("space_id")
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  createdBy        String?  @map("created_by")
-  updatedBy        String?  @map("updated_by")
+  id                     String   @id @default(uuid())
+  investorKey            String   @map("investor_key") // e.g. "WARREN_BUFFETT"
+  summary                String   @map("summary")
+  verdict                String   @default("PENDING") @map("verdict")
+  willInvest             Boolean  @default(false) @map("will_invest")
+  /// [TopCompaniesToConsider]
+  topCompaniesToConsider Json[]   @map("top_companies_to_consider")
+  tickerId               String   @map("ticker_id")
+  spaceId                String   @default("koala_gains") @map("space_id")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+  createdBy              String?  @map("created_by")
+  updatedBy              String?  @map("updated_by")
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 

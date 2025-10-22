@@ -5,5 +5,39 @@ properties:
   summary:
     type: string
     description: '3–4 sentences summarizing factually summarizing how this investor would likely view the stock in 2025. Must be written in plain English, ending with a clear takeaway for retail investors and should be backed by data and reasons.'
+  verdict:
+    type: string
+    description: 'The verdict key that best describes how this investor would categorize this stock (e.g., FRANCHISE_COMPOUNDER, STABLE_CASH_RETURNER, etc.).'
+  willInvest:
+    type: boolean
+    description: 'Whether this investor would choose to invest in this stock based on their investment philosophy and the stock''s characteristics.'
+  topCompaniesToConsider:
+    type: array
+    description: 'Array of top companies that this investor might consider as alternatives or benchmarks, including their symbols and brief comparison rationale.'
+    items:
+      type: object
+      properties:
+        companyName:
+          type: string
+          description: 'Name of the company'
+        companySymbol:
+          type: string
+          description: 'Stock symbol of the company'
+        exchangeSymbol:
+          type: string
+          description: 'Exchange where the company is listed'
+        exchangeName:
+          type: string
+          description: 'Name of the exchange'
+        detailedComparison:
+          type: string
+          description: 'Brief comparison rationale explaining why this company might be considered'
+      required:
+        - companyName
+        - companySymbol
+        - detailedComparison
 required:
   - summary
+  - verdict
+  - willInvest
+  - topCompaniesToConsider
