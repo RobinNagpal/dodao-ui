@@ -10,7 +10,7 @@ properties:
     description: 'The verdict key that best describes how this investor would categorize this stock (e.g., FRANCHISE_COMPOUNDER, STABLE_CASH_RETURNER, etc.).'
   willInvest:
     type: boolean
-    description: 'Whether this investor would choose to invest in this stock based on their investment philosophy and the stock''s characteristics.'
+    description: 'Whether this investor would choose to invest in this stock based on their investment philosophy and the stock characteristics.'
   topCompaniesToConsider:
     type: array
     description: 'Array of top companies that this investor might consider as alternatives or benchmarks, including their symbols and brief comparison rationale.'

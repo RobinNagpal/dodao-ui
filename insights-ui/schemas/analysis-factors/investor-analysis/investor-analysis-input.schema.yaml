@@ -31,7 +31,7 @@ properties:
     description: 'The legendary investor whose style is being applied (e.g., WARREN_BUFFETT, CHARLIE_MUNGER, BILL_ACKMAN).'
   verdicts:
     type: array
-    description: 'Array of verdict definitions that the AI should use to analyze the stock from the investor''s perspective.'
+    description: 'Array of verdict definitions that the AI should use to analyze the stock from the investor perspective.'
     items:
       type: object
       properties:

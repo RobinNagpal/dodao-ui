@@ -3,12 +3,7 @@ import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import {
-  AnalysisRequest,
-  CompetitionAnalysisArray,
-  LLMInvestorAnalysisResponse,
-  TickerAnalysisResponse,
-} from '@/types/public-equity/analysis-factors-types';
+import { AnalysisRequest, CompetitionAnalysisArray, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { VERDICT_DEFINITIONS } from '@/lib/mappingsV1';
 

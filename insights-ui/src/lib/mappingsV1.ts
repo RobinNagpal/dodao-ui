@@ -59,8 +59,8 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
       'ROIC durably > WACC (through-cycle)',
       'Visible reinvestment runway (TAM, adjacencies, pricing power)',
       'Primary moat identifiable: network effects / embedded switching costs / toll-road infra / brand or regulatory advantage',
-      'High retention or usage intensity and pricing power'
-    ]
+      'High retention or usage intensity and pricing power',
+    ],
   },
   [VerdictKey.STABLE_CASH_RETURNER]: {
     key: VerdictKey.STABLE_CASH_RETURNER,
@@ -69,18 +69,14 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
     signal_checks: [
       'High, steady FCF conversion; low variability',
       'Modest growth; disciplined, repeatable capital returns',
-      'Often regulated/contracted revenues or entrenched share'
-    ]
+      'Often regulated/contracted revenues or entrenched share',
+    ],
   },
   [VerdictKey.EFFICIENT_SCALER]: {
     key: VerdictKey.EFFICIENT_SCALER,
     label: 'Efficient Scaler',
     one_liner: 'Product-market fit proven; growth comes with improving unit economics and operating leverage.',
-    signal_checks: [
-      'Contribution margins expanding; CAC/payback improving',
-      'Gross/EBIT margins widen with scale',
-      'Cohort profitability and NRR trending up'
-    ]
+    signal_checks: ['Contribution margins expanding; CAC/payback improving', 'Gross/EBIT margins widen with scale', 'Cohort profitability and NRR trending up'],
   },
   [VerdictKey.EMERGING_PRODUCT_MARKET_FIT]: {
     key: VerdictKey.EMERGING_PRODUCT_MARKET_FIT,
@@ -89,8 +85,8 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
     signal_checks: [
       'Rising win rates/engagement; improving retention',
       'Clear path to positive unit economics articulated',
-      'Pilot-to-deployment conversion improving'
-    ]
+      'Pilot-to-deployment conversion improving',
+    ],
   },
   [VerdictKey.CYCLE_ADVANTAGED_LEADER]: {
     key: VerdictKey.CYCLE_ADVANTAGED_LEADER,
@@ -99,8 +95,8 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
     signal_checks: [
       'Cost-curve leadership or structural pricing power',
       'Balance sheet sized for down-cycle; prudent hedging',
-      'Positive through-cycle ROIC; disciplined capacity adds'
-    ]
+      'Positive through-cycle ROIC; disciplined capacity adds',
+    ],
   },
   [VerdictKey.CATALYST_TURNAROUND]: {
     key: VerdictKey.CATALYST_TURNAROUND,
@@ -109,8 +105,8 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
     signal_checks: [
       'Identified levers (leadership, incentives, restructuring, spin/carve-out)',
       'Milestones with timelines/targets and accountability',
-      'Early proof points on margins/asset productivity'
-    ]
+      'Early proof points on margins/asset productivity',
+    ],
   },
   [VerdictKey.AT_RISK_ECONOMICS]: {
     key: VerdictKey.AT_RISK_ECONOMICS,
@@ -118,9 +114,9 @@ export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
     one_liner: 'Durability in doubt due to financial strain or secular erosion—intrinsic value likely shrinking.',
     signal_checks: [
       'Financial: leverage/refi risk/covenant pressure/negative FCF',
-      'Structural: persistent share/margin loss, platform/regulatory dependency, deteriorating unit economics'
-    ]
-  }
+      'Structural: persistent share/margin loss, platform/regulatory dependency, deteriorating unit economics',
+    ],
+  },
 };
 
 // Arrays for dropdowns/selects
