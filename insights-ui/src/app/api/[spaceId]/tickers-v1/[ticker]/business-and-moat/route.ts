@@ -11,7 +11,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirst({
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId,
       symbol: ticker.toUpperCase(),
@@ -22,21 +22,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
   });
 
-  if (!tickerRecord) {
-    throw new Error(`Ticker ${ticker} not found`);
-  }
-
   // Get competition analysis (required for business and moat analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirst({
+  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
     where: {
       spaceId,
       tickerId: tickerRecord.id,
     },
   });
-
-  if (!competitionData) {
-    throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
-  }
 
   // Get analysis factors for BusinessAndMoat category
   const analysisFactors = await prisma.analysisCategoryFactor.findMany({

@@ -3,7 +3,7 @@ import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { LLMInvestorAnalysisFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
@@ -47,7 +47,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     throw new Error('Failed to get response from LLM');
   }
 
-  const response = result.response as LLMInvestorAnalysisFutureRiskResponse;
+  const response = result.response as LLMFutureRiskResponse;
 
   // Store future risk analysis result (upsert)
   const futureRiskResult = await prisma.tickerV1FutureRisk.upsert({

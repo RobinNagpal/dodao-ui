@@ -29,6 +29,31 @@ properties:
   investorKey:
     type: string
     description: 'The legendary investor whose style is being applied (e.g., WARREN_BUFFETT, CHARLIE_MUNGER, BILL_ACKMAN).'
+  verdicts:
+    type: array
+    description: 'Array of verdict definitions that the AI should use to analyze the stock from the investor perspective.'
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          description: 'The verdict key (e.g., FRANCHISE_COMPOUNDER, STABLE_CASH_RETURNER).'
+        label:
+          type: string
+          description: 'The display label for the verdict.'
+        one_liner:
+          type: string
+          description: 'A one-line description of the verdict.'
+        signal_checks:
+          type: array
+          items:
+            type: string
+          description: 'Array of signal checks for this verdict.'
+      required:
+        - key
+        - label
+        - one_liner
+        - signal_checks
   competitionAnalysisArray:
     type: array
     description: 'Array of competitor information from VsCompetition output, used to benchmark the target company.'
@@ -54,6 +79,7 @@ required:
   - industryKey
   - subIndustryKey
   - investorKey
+  - verdicts
   - competitionAnalysisArray
   - industryDescription
   - subIndustryDescription

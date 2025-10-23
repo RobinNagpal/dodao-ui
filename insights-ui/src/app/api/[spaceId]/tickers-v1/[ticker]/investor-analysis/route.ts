@@ -3,13 +3,9 @@ import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import {
-  AnalysisRequest,
-  CompetitionAnalysisArray,
-  LLMInvestorAnalysisFutureRiskResponse,
-  TickerAnalysisResponse,
-} from '@/types/public-equity/analysis-factors-types';
+import { AnalysisRequest, CompetitionAnalysisArray, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { VERDICT_DEFINITIONS } from '@/lib/mappingsV1';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -33,16 +29,12 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   });
 
   // Get competition analysis (required for investor analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirst({
+  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
     where: {
       spaceId,
       tickerId: tickerRecord.id,
     },
   });
-
-  if (!competitionData) {
-    throw new Error(`Competition analysis not found for ticker ${ticker}. Please run competition analysis first.`);
-  }
 
   // Prepare input for the prompt (uses investor-analysis-input.schema.yaml)
   const inputJson = {
@@ -55,6 +47,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     subIndustryName: tickerRecord.subIndustry.name,
     subIndustryDescription: tickerRecord.subIndustry.summary,
     investorKey: investorKey,
+    verdicts: Object.values(VERDICT_DEFINITIONS),
     competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
   };
 
@@ -72,7 +65,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     throw new Error('Failed to get response from LLM');
   }
 
-  const response = result.response as LLMInvestorAnalysisFutureRiskResponse;
+  const response = result.response as LLMInvestorAnalysisResponse;
 
   // Store investor analysis result (upsert)
   const investorAnalysisResult = await prisma.tickerV1InvestorAnalysisResult.upsert({
@@ -85,7 +78,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     },
     update: {
       summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
+      verdict: response.verdict,
+      willInvest: response.willInvest,
+      topCompaniesToConsider: response.topCompaniesToConsider,
       updatedAt: new Date(),
     },
     create: {
@@ -93,7 +88,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       tickerId: tickerRecord.id,
       investorKey,
       summary: response.summary,
-      detailedAnalysis: 'detailedAnalysis',
+      verdict: response.verdict,
+      willInvest: response.willInvest,
+      topCompaniesToConsider: response.topCompaniesToConsider,
     },
   });
 
