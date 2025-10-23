@@ -258,3 +258,64 @@ export const createSingleInvestorBackgroundRequest = async (
 
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
 };
+
+// Helper function to generate selected report types synchronously for multiple tickers
+export const generateSelectedReportsSynchronously = async (
+  tickers: string[],
+  selectedReportTypes: string[],
+  postAnalysis: (url: string, data: AnalysisRequest) => Promise<TickerAnalysisResponse | undefined>,
+  onReportGenerated?: (ticker: string) => void
+): Promise<void> => {
+  if (tickers.length === 0 || selectedReportTypes.length === 0) return;
+
+  // Create an array of promises for each ticker
+  const tickerPromises = tickers.map(async (ticker) => {
+    // Generate only selected report types for each ticker
+    for (const reportType of selectedReportTypes) {
+      if (reportType.startsWith('investor-')) {
+        const investorKey = reportType.replace('investor-', '');
+        await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
+      } else {
+        await generateAnalysis(reportType, ticker, postAnalysis, onReportGenerated);
+      }
+      // Add a small delay between calls
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  });
+
+  // Execute all ticker promises in parallel
+  await Promise.all(tickerPromises);
+};
+
+// Helper function to create background generation requests for selected report types for multiple tickers
+export const generateSelectedReportsInBackground = async (
+  tickers: string[],
+  selectedReportTypes: string[],
+  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+): Promise<void> => {
+  if (tickers.length === 0 || selectedReportTypes.length === 0) return;
+
+  // Create background generation requests for each ticker with only selected types
+  const tickerPromises = tickers.map(async (ticker) => {
+    // Create a payload with only the selected report types
+    const payload: GenerationRequestPayload = {
+      regenerateCompetition: selectedReportTypes.includes('competition'),
+      regenerateFinancialAnalysis: selectedReportTypes.includes('financial-analysis'),
+      regenerateBusinessAndMoat: selectedReportTypes.includes('business-and-moat'),
+      regeneratePastPerformance: selectedReportTypes.includes('past-performance'),
+      regenerateFutureGrowth: selectedReportTypes.includes('future-growth'),
+      regenerateFairValue: selectedReportTypes.includes('fair-value'),
+      regenerateFutureRisk: selectedReportTypes.includes('future-risk'),
+      regenerateWarrenBuffett: selectedReportTypes.includes('investor-WARREN_BUFFETT'),
+      regenerateCharlieMunger: selectedReportTypes.includes('investor-CHARLIE_MUNGER'),
+      regenerateBillAckman: selectedReportTypes.includes('investor-BILL_ACKMAN'),
+      regenerateFinalSummary: selectedReportTypes.includes('final-summary'),
+      regenerateCachedScore: selectedReportTypes.includes('cached-score'),
+    };
+    
+    await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  });
+
+  // Execute all ticker promises in parallel
+  await Promise.all(tickerPromises);
+};
