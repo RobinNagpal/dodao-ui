@@ -455,20 +455,6 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
                 onPatch={(patch): void => patchRow(index, patch)}
                 mdColumns={5} // Add form shows 5 cols when we include stockAnalyzeUrl
                 inlineError={inlineError}
-                renderAfter={
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-4">
-                    <div className="md:col-start-5">
-                      <label className="block text-sm font-medium mb-1 dark:text-gray-300">Stock Analyze URL</label>
-                      <input
-                        type="url"
-                        value={entry.stockAnalyzeUrl}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>): void => patchRow(index, { stockAnalyzeUrl: e.target.value })}
-                        className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                        placeholder="e.g. https://www.tradingview.com/symbols/NASDAQ-AAPL/"
-                      />
-                    </div>
-                  </div>
-                }
               />
 
               {index > 0 && (

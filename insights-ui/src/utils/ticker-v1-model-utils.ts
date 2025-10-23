@@ -1,5 +1,5 @@
 import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { TickerAnalysisCategory, CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisStatus } from '@/types/ticker-typesv1';
@@ -113,6 +113,15 @@ export function getTickerV1AnalysisStatus(
     vsCompetition?: TickerV1VsCompetition | null;
   }
 ): AnalysisStatus {
+  // Calculate the actual score based on categoryAnalysisResults
+  const actualScore = Object.entries(CATEGORY_MAPPINGS)
+    .map(([categoryKey]) => {
+      const report = tickerRecord.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
+      const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === EvaluationResult.Pass ? 1 : 0)) || [];
+      return scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
+    })
+    .reduce((partialSum: number, a) => partialSum + a, 0);
+
   return {
     businessAndMoat: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
     financialAnalysis: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis),
@@ -127,7 +136,7 @@ export function getTickerV1AnalysisStatus(
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
     finalSummary: !!tickerRecord.summary,
-    cachedScore: !!tickerRecord.cachedScore,
+    cachedScore: tickerRecord.categoryAnalysisResults.length > 0 && tickerRecord.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
   };
 }
 

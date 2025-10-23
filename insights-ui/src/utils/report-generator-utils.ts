@@ -1,8 +1,8 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { INVESTOR_OPTIONS } from '@/lib/mappingsV1';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { INVESTOR_OPTIONS, AnalysisTypeKey, INVESTOR_ANALYSIS_PREFIX } from '@/lib/mappingsV1';
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Common types
 export interface AnalysisStatus {
@@ -28,17 +28,17 @@ export interface AnalysisTypeInfo {
   statusKey?: keyof AnalysisStatus;
 }
 
-// Common analysis types
+// Common analysis types using constants
 export const analysisTypes: AnalysisTypeInfo[] = [
-  { key: 'financial-analysis', label: 'Financial Analysis', statusKey: 'financialAnalysis' },
-  { key: 'competition', label: 'Competition', statusKey: 'competition' },
-  { key: 'business-and-moat', label: 'Business & Moat', statusKey: 'businessAndMoat' },
-  { key: 'past-performance', label: 'Past Performance', statusKey: 'pastPerformance' },
-  { key: 'future-growth', label: 'Future Growth', statusKey: 'futureGrowth' },
-  { key: 'fair-value', label: 'Fair Value', statusKey: 'fairValue' },
-  { key: 'future-risk', label: 'Future Risk', statusKey: 'futureRisk' },
-  { key: 'final-summary', label: 'Final Summary', statusKey: 'finalSummary' },
-  { key: 'cached-score', label: 'Cached Score', statusKey: 'cachedScore' },
+  { key: AnalysisTypeKey.FINANCIAL_ANALYSIS, label: 'Financial Analysis', statusKey: 'financialAnalysis' },
+  { key: AnalysisTypeKey.COMPETITION, label: 'Competition', statusKey: 'competition' },
+  { key: AnalysisTypeKey.BUSINESS_AND_MOAT, label: 'Business & Moat', statusKey: 'businessAndMoat' },
+  { key: AnalysisTypeKey.PAST_PERFORMANCE, label: 'Past Performance', statusKey: 'pastPerformance' },
+  { key: AnalysisTypeKey.FUTURE_GROWTH, label: 'Future Growth', statusKey: 'futureGrowth' },
+  { key: AnalysisTypeKey.FAIR_VALUE, label: 'Fair Value', statusKey: 'fairValue' },
+  { key: AnalysisTypeKey.FUTURE_RISK, label: 'Future Risk', statusKey: 'futureRisk' },
+  { key: AnalysisTypeKey.FINAL_SUMMARY, label: 'Final Summary', statusKey: 'finalSummary' },
+  { key: AnalysisTypeKey.CACHED_SCORE, label: 'Cached Score', statusKey: 'cachedScore' },
 ];
 
 // Common investor analysis types
@@ -99,17 +99,17 @@ export const generateAllReports = async (
 ): Promise<void> => {
   if (!ticker) return;
 
-  // Generate in sequence to respect dependencies
+  // Generate in sequence to respect dependencies using constants
   const sequence = [
-    'financial-analysis',
-    'competition', // Must come before past-performance, future-growth, fair-value and business-and-moat
-    'business-and-moat',
-    'fair-value',
-    'future-risk',
-    'past-performance',
-    'future-growth',
-    'final-summary',
-    'cached-score',
+    AnalysisTypeKey.FINANCIAL_ANALYSIS,
+    AnalysisTypeKey.COMPETITION, // Must come before past-performance, future-growth, fair-value and business-and-moat
+    AnalysisTypeKey.BUSINESS_AND_MOAT,
+    AnalysisTypeKey.FAIR_VALUE,
+    AnalysisTypeKey.FUTURE_RISK,
+    AnalysisTypeKey.PAST_PERFORMANCE,
+    AnalysisTypeKey.FUTURE_GROWTH,
+    AnalysisTypeKey.FINAL_SUMMARY,
+    AnalysisTypeKey.CACHED_SCORE,
   ];
 
   for (const analysisType of sequence) {
@@ -127,7 +127,7 @@ export const generateAllReports = async (
   }
 
   // Generate cached score at the end of all steps
-  await generateAnalysis('cached-score', ticker, postAnalysis, onReportGenerated);
+  await generateAnalysis(AnalysisTypeKey.CACHED_SCORE, ticker, postAnalysis, onReportGenerated);
 };
 
 // Helper function to create a background generation request for a ticker
@@ -179,33 +179,33 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateCachedScore: false,
   };
 
-  // Set the specific analysis type to true
+  // Set the specific analysis type to true using constants
   switch (analysisType) {
-    case 'competition':
+    case AnalysisTypeKey.COMPETITION:
       payload.regenerateCompetition = true;
       break;
-    case 'financial-analysis':
+    case AnalysisTypeKey.FINANCIAL_ANALYSIS:
       payload.regenerateFinancialAnalysis = true;
       break;
-    case 'business-and-moat':
+    case AnalysisTypeKey.BUSINESS_AND_MOAT:
       payload.regenerateBusinessAndMoat = true;
       break;
-    case 'past-performance':
+    case AnalysisTypeKey.PAST_PERFORMANCE:
       payload.regeneratePastPerformance = true;
       break;
-    case 'future-growth':
+    case AnalysisTypeKey.FUTURE_GROWTH:
       payload.regenerateFutureGrowth = true;
       break;
-    case 'fair-value':
+    case AnalysisTypeKey.FAIR_VALUE:
       payload.regenerateFairValue = true;
       break;
-    case 'future-risk':
+    case AnalysisTypeKey.FUTURE_RISK:
       payload.regenerateFutureRisk = true;
       break;
-    case 'final-summary':
+    case AnalysisTypeKey.FINAL_SUMMARY:
       payload.regenerateFinalSummary = true;
       break;
-    case 'cached-score':
+    case AnalysisTypeKey.CACHED_SCORE:
       payload.regenerateCachedScore = true;
       break;
     default:
@@ -257,4 +257,97 @@ export const createSingleInvestorBackgroundRequest = async (
   }
 
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+};
+
+// Helper function to generate selected report types synchronously for multiple tickers
+export const generateSelectedReportsSynchronously = async (
+  tickers: string[],
+  selectedReportTypes: string[],
+  postAnalysis: (url: string, data: AnalysisRequest) => Promise<TickerAnalysisResponse | undefined>,
+  onReportGenerated?: (ticker: string) => void
+): Promise<void> => {
+  if (tickers.length === 0 || selectedReportTypes.length === 0) return;
+
+  // Create an array of promises for each ticker
+  const tickerPromises = tickers.map(async (ticker) => {
+    // Generate only selected report types for each ticker
+    for (const reportType of selectedReportTypes) {
+      if (reportType.startsWith(INVESTOR_ANALYSIS_PREFIX)) {
+        const investorKey = reportType.replace(INVESTOR_ANALYSIS_PREFIX, '');
+        await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
+      } else {
+        await generateAnalysis(reportType, ticker, postAnalysis, onReportGenerated);
+      }
+      // Add a small delay between calls
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  });
+
+  // Execute all ticker promises in parallel
+  await Promise.all(tickerPromises);
+};
+
+// Helper function to create background generation requests for selected report types for multiple tickers
+export const generateSelectedReportsInBackground = async (
+  tickers: string[],
+  selectedReportTypes: string[],
+  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+): Promise<void> => {
+  if (tickers.length === 0 || selectedReportTypes.length === 0) return;
+
+  // Create background generation requests for each ticker with only selected types
+  const tickerPromises = tickers.map(async (ticker) => {
+    // Create a payload with all options set to false by default
+    const payload: GenerationRequestPayload = {
+      regenerateCompetition: false,
+      regenerateFinancialAnalysis: false,
+      regenerateBusinessAndMoat: false,
+      regeneratePastPerformance: false,
+      regenerateFutureGrowth: false,
+      regenerateFairValue: false,
+      regenerateFutureRisk: false,
+      regenerateWarrenBuffett: false,
+      regenerateCharlieMunger: false,
+      regenerateBillAckman: false,
+      regenerateFinalSummary: false,
+      regenerateCachedScore: false,
+    };
+
+    // Set the selected report types to true using constants
+    selectedReportTypes.forEach((reportType) => {
+      // Handle regular analysis types
+      if (reportType === AnalysisTypeKey.COMPETITION) {
+        payload.regenerateCompetition = true;
+      } else if (reportType === AnalysisTypeKey.FINANCIAL_ANALYSIS) {
+        payload.regenerateFinancialAnalysis = true;
+      } else if (reportType === AnalysisTypeKey.BUSINESS_AND_MOAT) {
+        payload.regenerateBusinessAndMoat = true;
+      } else if (reportType === AnalysisTypeKey.PAST_PERFORMANCE) {
+        payload.regeneratePastPerformance = true;
+      } else if (reportType === AnalysisTypeKey.FUTURE_GROWTH) {
+        payload.regenerateFutureGrowth = true;
+      } else if (reportType === AnalysisTypeKey.FAIR_VALUE) {
+        payload.regenerateFairValue = true;
+      } else if (reportType === AnalysisTypeKey.FUTURE_RISK) {
+        payload.regenerateFutureRisk = true;
+      } else if (reportType === AnalysisTypeKey.FINAL_SUMMARY) {
+        payload.regenerateFinalSummary = true;
+      } else if (reportType === AnalysisTypeKey.CACHED_SCORE) {
+        payload.regenerateCachedScore = true;
+      }
+      // Handle investor analysis types
+      else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}WARREN_BUFFETT`) {
+        payload.regenerateWarrenBuffett = true;
+      } else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}CHARLIE_MUNGER`) {
+        payload.regenerateCharlieMunger = true;
+      } else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}BILL_ACKMAN`) {
+        payload.regenerateBillAckman = true;
+      }
+    });
+
+    await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  });
+
+  // Execute all ticker promises in parallel
+  await Promise.all(tickerPromises);
 };

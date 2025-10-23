@@ -1,6 +1,6 @@
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
-import { CATEGORY_MAPPINGS } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -35,7 +35,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     .map(([categoryKey]) => {
       const report: FullTickerV1CategoryAnalysisResult | undefined = (tickerRecord.categoryAnalysisResults || []).find((r) => r.categoryKey === categoryKey);
 
-      const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === 'Pass' ? 1 : 0)) || [];
+      const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === EvaluationResult.Pass ? 1 : 0)) || [];
 
       const categorysScoreSum: number = scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
 

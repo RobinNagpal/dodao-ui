@@ -1,5 +1,5 @@
 // Removed unused imports
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -154,12 +154,12 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                       {factorResult.result ? (
                         <div className="flex flex-col items-start space-y-2">
                           <div className="flex items-center space-x-1">
-                            {factorResult.result === 'Pass' ? (
+                            {factorResult.result === EvaluationResult.Pass ? (
                               <CheckCircleIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
                             ) : (
                               <XCircleIcon className="h-4 w-4 text-red-500 flex-shrink-0" />
                             )}
-                            <span className={`text-xs font-medium ${factorResult.result === 'Pass' ? 'text-green-400' : 'text-red-400'}`}>
+                            <span className={`text-xs font-medium ${factorResult.result === EvaluationResult.Pass ? 'text-green-400' : 'text-red-400'}`}>
                               {factorResult.result}
                             </span>
                           </div>

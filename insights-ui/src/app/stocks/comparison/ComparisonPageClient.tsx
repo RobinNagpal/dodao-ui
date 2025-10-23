@@ -3,7 +3,7 @@
 import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -127,8 +127,8 @@ export default function ComparisonPageClient() {
             const factorResults = categoryResult?.factorResults || [];
 
             acc[category] = {
-              passCount: factorResults.filter((f) => f.result === 'Pass').length,
-              failCount: factorResults.filter((f) => f.result === 'Fail').length,
+              passCount: factorResults.filter((f) => f.result === EvaluationResult.Pass).length,
+              failCount: factorResults.filter((f) => f.result === EvaluationResult.Fail).length,
               totalCount: factorResults.length,
               factorResults: factorResults.map((f) => ({
                 factorTitle: f.analysisCategoryFactor?.factorAnalysisTitle || 'Unknown Factor',

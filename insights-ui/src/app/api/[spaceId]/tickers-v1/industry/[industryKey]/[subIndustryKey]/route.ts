@@ -2,8 +2,7 @@ import { prisma } from '@/prisma';
 import { BasicTickersResponse, ReportTickersResponse, AnalysisStatus, ReportTickerInfo } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { CATEGORY_MAPPINGS } from '@/lib/mappingsV1';
+import { TickerAnalysisCategory, CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
 
 async function getHandler(
   req: NextRequest,
@@ -105,7 +104,7 @@ async function getHandler(
       const actualScore = Object.entries(CATEGORY_MAPPINGS)
         .map(([categoryKey]) => {
           const report = ticker.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
-          const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === 'Pass' ? 1 : 0)) || [];
+          const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === EvaluationResult.Pass ? 1 : 0)) || [];
           return scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
         })
         .reduce((partialSum: number, a) => partialSum + a, 0);
