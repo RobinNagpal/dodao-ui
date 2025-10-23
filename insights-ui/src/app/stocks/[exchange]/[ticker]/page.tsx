@@ -7,7 +7,7 @@ import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
@@ -350,7 +350,7 @@ function TickerSummaryInfo({
         name: categoryTitle,
         summary: report?.summary || 'No summary available.',
         scores: report?.factorResults?.map((fr) => ({
-          score: fr.result === 'Pass' ? 1 : 0,
+          score: fr.result === EvaluationResult.Pass ? 1 : 0,
           comment: `${fr.analysisCategoryFactor?.factorAnalysisTitle}: ${fr.oneLineExplanation}`,
         })) || [{ score: 0, comment: 'No analysis available' }],
       };
@@ -477,7 +477,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
                       <div className="flex flex-col gap-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            {factor.result === 'Pass' ? (
+                            {factor.result === EvaluationResult.Pass ? (
                               <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
                             ) : (
                               <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
@@ -486,7 +486,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
                           </div>
                           <span
                             className={`px-2 py-1 rounded-full text-sm font-medium ${
-                              factor.result === 'Pass' ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                              factor.result === EvaluationResult.Pass ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
                             }`}
                           >
                             {factor.result}

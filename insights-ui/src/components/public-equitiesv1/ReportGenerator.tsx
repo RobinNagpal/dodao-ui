@@ -9,6 +9,7 @@ import {
   generateSelectedReportsSynchronously,
   investorAnalysisTypes,
 } from '@/utils/report-generator-utils';
+import { INVESTOR_ANALYSIS_PREFIX } from '@/lib/mappingsV1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -40,7 +41,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
   // Initialize selected report types to all by default
   React.useEffect(() => {
-    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `investor-${i.key}`)];
+    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -133,7 +134,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
   // Helper functions for report type selection
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `investor-${i.key}`)];
+    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -261,7 +262,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
             {/* Investor Analysis Types */}
             {investorAnalysisTypes.map((investor) => {
-              const investorKey = `investor-${investor.key}`;
+              const investorKey = `${INVESTOR_ANALYSIS_PREFIX}${investor.key}`;
               const isSelected = selectedReportTypes.includes(investorKey);
 
               return (
@@ -280,7 +281,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
                     const isCompleted = report?.analysisStatus.investorAnalysis[investor.key as keyof typeof report.analysisStatus.investorAnalysis];
-                    const isLoading = loadingStates[`${ticker}-investor-${investor.key}`];
+                    const isLoading = loadingStates[`${ticker}-${INVESTOR_ANALYSIS_PREFIX}${investor.key}`];
 
                     return (
                       <td key={`${ticker}-${investor.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
