@@ -13,11 +13,14 @@ import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-type
 
 // Zod schema for the aboutReport response
 const AboutReportSchema: ZodObject<{ aboutReport: z.ZodString }> = z.object({
-  aboutReport: z.string().describe('A 2-3 sentence summary for the stock analysis report')
+  aboutReport: z.string().describe('A 2-3 sentence summary for the stock analysis report'),
 });
 
 // Function to get top 2 competitors from the competition analysis
-function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): { comp1: string; comp2: string } {
+function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): {
+  comp1: string;
+  comp2: string;
+} {
   const defaultComp1 = 'Apple Inc.';
   const defaultComp2 = 'Microsoft Corporation';
 
@@ -39,7 +42,7 @@ function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competit
 
   return {
     comp1: competitors[0].companyName,
-    comp2: competitors[1].companyName
+    comp2: competitors[1].companyName,
   };
 }
 
@@ -59,7 +62,7 @@ function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { compe
   const updatedAt = new Date(tickerRecord.updatedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 
   const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${comp1} and ${comp2}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${updatedAt}.`;

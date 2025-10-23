@@ -136,7 +136,11 @@ export function getTickerV1AnalysisStatus(
     },
     futureRisk: tickerRecord.futureRisks.length > 0,
     finalSummary: !!tickerRecord.summary,
-    cachedScore: tickerRecord.categoryAnalysisResults.length > 0 && tickerRecord.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
+    cachedScore:
+      tickerRecord.categoryAnalysisResults.length > 0 &&
+      tickerRecord.cachedScore === actualScore &&
+      !!tickerRecord.aboutReport &&
+      tickerRecord.aboutReport.trim().length > 0, // Only true if there's actual analysis AND scores match AND aboutReport exists
   };
 }
 
