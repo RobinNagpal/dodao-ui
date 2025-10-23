@@ -63,6 +63,7 @@ async function getHandler(
         industryKey: true,
         subIndustryKey: true,
         stockAnalyzeUrl: true,
+        aboutReport: true,
         categoryAnalysisResults: {
           select: {
             categoryKey: true,
@@ -109,6 +110,9 @@ async function getHandler(
         })
         .reduce((partialSum: number, a) => partialSum + a, 0);
 
+      // Calculate aboutReport status
+      const hasAboutReport = !!ticker.aboutReport && ticker.aboutReport.trim().length > 0;
+
       // Calculate analysis status
       const analysisStatus: AnalysisStatus = {
         businessAndMoat: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
@@ -124,7 +128,7 @@ async function getHandler(
         },
         futureRisk: ticker.futureRisks.length > 0,
         finalSummary: !!ticker.summary,
-        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
+        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore && hasAboutReport, // Only true if there's actual analysis AND scores match AND aboutReport exists
       };
 
       // Calculate missing/partial status

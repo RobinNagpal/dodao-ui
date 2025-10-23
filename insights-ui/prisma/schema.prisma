@@ -500,6 +500,7 @@ model TickerV1 {
   subIndustryKey  String   @map("sub_industry_key")
   websiteUrl      String?  @map("website_url")
   summary         String?  @map("summary")
+  aboutReport     String?  @map("about_report")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
   createdBy       String?  @map("created_by")

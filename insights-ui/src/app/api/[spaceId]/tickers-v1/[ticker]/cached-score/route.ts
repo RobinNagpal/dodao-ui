@@ -1,10 +1,99 @@
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
-import { CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
+import { GeminiModelType } from '@/types/llmConstants';
+import { z, ZodObject } from 'zod';
+import { TickerV1 } from '@prisma/client';
+import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
+
+// Zod schema for the aboutReport response
+const AboutReportSchema: ZodObject<{ aboutReport: z.ZodString }> = z.object({
+  aboutReport: z.string().describe('A 2-3 sentence summary for the stock analysis report'),
+});
+
+// Function to get top 2 competitors from the competition analysis
+function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): {
+  comp1: string;
+  comp2: string;
+} {
+  const defaultComp1 = 'Apple Inc.';
+  const defaultComp2 = 'Microsoft Corporation';
+
+  if (!tickerRecord.vsCompetition?.competitionAnalysisArray) {
+    return { comp1: defaultComp1, comp2: defaultComp2 };
+  }
+
+  const competitors = tickerRecord.vsCompetition.competitionAnalysisArray
+    .filter((comp: CompetitionAnalysis) => comp.companyName && comp.companySymbol)
+    .slice(0, 2); // Get top 2
+
+  if (competitors.length === 0) {
+    return { comp1: defaultComp1, comp2: defaultComp2 };
+  }
+
+  if (competitors.length === 1) {
+    return { comp1: competitors[0].companyName, comp2: defaultComp2 };
+  }
+
+  return {
+    comp1: competitors[0].companyName,
+    comp2: competitors[1].companyName,
+  };
+}
+
+// Function to build the base aboutReport text
+function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): string {
+  const { comp1, comp2 } = getTopCompetitors(tickerRecord);
+
+  // Get all category names (factors)
+  const factors = Object.values(CATEGORY_MAPPINGS).join(', ');
+
+  // Get 2 investor names
+  const investorKeys = Object.keys(INVESTOR_MAPPINGS);
+  const investor1 = INVESTOR_MAPPINGS[investorKeys[0] as keyof typeof INVESTOR_MAPPINGS];
+  const investor2 = INVESTOR_MAPPINGS[investorKeys[1] as keyof typeof INVESTOR_MAPPINGS];
+
+  // Format updated date
+  const updatedAt = new Date(tickerRecord.updatedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${comp1} and ${comp2}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${updatedAt}.`;
+
+  return baseInfo;
+}
+
+// Function to generate aboutReport using LLM
+async function generateAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): Promise<string> {
+  const baseInfo = buildBaseAboutReport(tickerRecord);
+
+  const prompt = `You are an expert financial writer creating compelling, SEO-friendly introductions for detailed stock analysis reports. Your primary goal is to generate a unique 2-3 sentence summary for each stock to avoid duplicate content penalties from search engines.
+
+**Instructions:**
+1. Rewrite the "Base Information" below into a fresh and engaging summary for an investor.
+2. The summary MUST be between 2 and 3 sentences.
+3. Naturally incorporate all the provided.
+4. Vary the sentence structure and vocabulary significantly with each request to ensure uniqueness.
+5. The tone should be professional, insightful, and authoritative.
+
+**Base Information:**
+${baseInfo}`;
+
+  try {
+    const response = await getLlmResponse<{ aboutReport: string }>(prompt, AboutReportSchema, GeminiModelType.GEMINI_2_5_PRO);
+    return response.aboutReport;
+  } catch (error) {
+    console.error('Failed to generate aboutReport:', error);
+    return baseInfo;
+  }
+}
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<{ success: boolean }> {
   const { spaceId, ticker } = await params;
@@ -43,9 +132,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     })
     .reduce((partialSum: number, a) => partialSum + a, 0);
 
+  // Generate aboutReport using LLM
+  const aboutReport = await generateAboutReport(tickerRecord);
+
   await prisma.tickerV1.update({
     data: {
       cachedScore: totalScore,
+      aboutReport: aboutReport,
     },
     where: {
       id: tickerRecord.id,

@@ -362,6 +362,9 @@ function TickerSummaryInfo({
   return (
     <>
       <section className="text-left mb-6">
+        {/* About Report - displayed above the main heading */}
+        {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
+
         <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
           {d.name} ({d.symbol}){' '}
           {d.websiteUrl && (

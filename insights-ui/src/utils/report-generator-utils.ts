@@ -38,7 +38,7 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: AnalysisTypeKey.FAIR_VALUE, label: 'Fair Value', statusKey: 'fairValue' },
   { key: AnalysisTypeKey.FUTURE_RISK, label: 'Future Risk', statusKey: 'futureRisk' },
   { key: AnalysisTypeKey.FINAL_SUMMARY, label: 'Final Summary', statusKey: 'finalSummary' },
-  { key: AnalysisTypeKey.CACHED_SCORE, label: 'Cached Score', statusKey: 'cachedScore' },
+  { key: AnalysisTypeKey.CACHED_SCORE, label: 'Cached Score/About Report', statusKey: 'cachedScore' },
 ];
 
 // Common investor analysis types
