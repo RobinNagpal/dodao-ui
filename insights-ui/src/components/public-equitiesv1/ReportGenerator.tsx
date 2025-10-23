@@ -33,17 +33,14 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
   const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
   const [pendingTickers, setPendingTickers] = useState<string[]>([]);
-  
+
   // New state for selected report types
   const [selectedReportTypes, setSelectedReportTypes] = useState<string[]>([]);
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
   // Initialize selected report types to all by default
   React.useEffect(() => {
-    const allReportTypeKeys = [
-      ...analysisTypes.map(a => a.key),
-      ...investorAnalysisTypes.map(i => `investor-${i.key}`)
-    ];
+    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `investor-${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -136,10 +133,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
   // Helper functions for report type selection
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys = [
-      ...analysisTypes.map(a => a.key),
-      ...investorAnalysisTypes.map(i => `investor-${i.key}`)
-    ];
+    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `investor-${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -148,9 +142,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleReportTypeToggle = (reportTypeKey: string): void => {
-    setSelectedReportTypes(prev => {
+    setSelectedReportTypes((prev) => {
       if (prev.includes(reportTypeKey)) {
-        return prev.filter(key => key !== reportTypeKey);
+        return prev.filter((key) => key !== reportTypeKey);
       } else {
         return [...prev, reportTypeKey];
       }
@@ -188,7 +182,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     }
   };
 
-  // Function to handle background specific report generation  
+  // Function to handle background specific report generation
   const handleBackgroundSpecificGeneration = async (): Promise<void> => {
     // Close the modal
     setShowSpecificGenerationModal(false);
@@ -317,20 +311,10 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-white">Select Report Types</h3>
             <div className="flex gap-2">
-              <Button
-                variant="outlined"
-                size="sm"
-                onClick={handleSelectAllReportTypes}
-                disabled={isAnyProcessRunning}
-              >
+              <Button variant="outlined" size="sm" onClick={handleSelectAllReportTypes} disabled={isAnyProcessRunning}>
                 Select All
               </Button>
-              <Button
-                variant="outlined"
-                size="sm"
-                onClick={handleUnselectAllReportTypes}
-                disabled={isAnyProcessRunning}
-              >
+              <Button variant="outlined" size="sm" onClick={handleUnselectAllReportTypes} disabled={isAnyProcessRunning}>
                 Unselect All
               </Button>
             </div>
@@ -352,7 +336,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           >
             {isGeneratingAll ? 'Generating All Reports...' : 'Generate All Reports for All Tickers'}
           </Button>
-          
+
           <Button
             variant="contained"
             onClick={handleGenerateSpecificReportTypes}
@@ -399,12 +383,14 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   // Function to render the specific generation modal
   const renderSpecificGenerationModal = () => {
     return (
-      <FullScreenModal open={showSpecificGenerationModal} onClose={() => setShowSpecificGenerationModal(false)} title="Select Report Generation Mode for Selected Types">
+      <FullScreenModal
+        open={showSpecificGenerationModal}
+        onClose={() => setShowSpecificGenerationModal(false)}
+        title="Select Report Generation Mode for Selected Types"
+      >
         <div className="p-6 flex flex-col items-center space-y-8">
-          <div className="text-lg text-center mb-4">
-            How would you like to generate the selected report types for the selected tickers?
-          </div>
-          
+          <div className="text-lg text-center mb-4">How would you like to generate the selected report types for the selected tickers?</div>
+
           <div className="text-center mb-4">
             <p className="text-gray-300">Selected Report Types: {selectedReportTypes.length}</p>
             <p className="text-gray-300">Selected Tickers: {pendingTickers.length}</p>
@@ -421,7 +407,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
               <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
-              <p className="text-center mb-6">Create generation requests for selected report types to be processed in the background and redirect to the requests page.</p>
+              <p className="text-center mb-6">
+                Create generation requests for selected report types to be processed in the background and redirect to the requests page.
+              </p>
               <Button variant="contained" primary onClick={handleBackgroundSpecificGeneration} className="mt-auto w-full">
                 Generate in Background
               </Button>

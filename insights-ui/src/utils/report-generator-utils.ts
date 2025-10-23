@@ -312,7 +312,7 @@ export const generateSelectedReportsInBackground = async (
       regenerateFinalSummary: selectedReportTypes.includes('final-summary'),
       regenerateCachedScore: selectedReportTypes.includes('cached-score'),
     };
-    
+
     await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
   });
 
