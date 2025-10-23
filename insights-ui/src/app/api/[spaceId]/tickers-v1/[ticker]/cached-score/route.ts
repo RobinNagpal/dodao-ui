@@ -16,39 +16,59 @@ const AboutReportSchema: ZodObject<{ aboutReport: z.ZodString }> = z.object({
   aboutReport: z.string().describe('A 2-3 sentence summary for the stock analysis report'),
 });
 
-// Function to get top 2 competitors from the competition analysis
+// Function to get first 3 competitors from the competition analysis
 function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): {
   comp1: string;
   comp2: string;
+  comp3: string;
+  totalCount: number;
 } {
-  const defaultComp1 = 'Apple Inc.';
-  const defaultComp2 = 'Microsoft Corporation';
+  const defaultComp1 = 'Apple Inc. (AAPL)';
+  const defaultComp2 = 'Microsoft Corporation (MSFT)';
+  const defaultComp3 = 'Google Inc. (GOOGL)';
 
   if (!tickerRecord.vsCompetition?.competitionAnalysisArray) {
-    return { comp1: defaultComp1, comp2: defaultComp2 };
+    return { comp1: defaultComp1, comp2: defaultComp2, comp3: defaultComp3, totalCount: 3 };
   }
 
-  const competitors = tickerRecord.vsCompetition.competitionAnalysisArray
-    .filter((comp: CompetitionAnalysis) => comp.companyName && comp.companySymbol)
-    .slice(0, 2); // Get top 2
+  const allCompetitors = tickerRecord.vsCompetition.competitionAnalysisArray.filter((comp: CompetitionAnalysis) => comp.companyName && comp.companySymbol);
+
+  const competitors = allCompetitors.slice(0, 3); // Get first 3
+  const totalCount = allCompetitors.length;
 
   if (competitors.length === 0) {
-    return { comp1: defaultComp1, comp2: defaultComp2 };
+    return { comp1: defaultComp1, comp2: defaultComp2, comp3: defaultComp3, totalCount: 3 };
   }
 
   if (competitors.length === 1) {
-    return { comp1: competitors[0].companyName, comp2: defaultComp2 };
+    return {
+      comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
+      comp2: defaultComp2,
+      comp3: defaultComp3,
+      totalCount,
+    };
+  }
+
+  if (competitors.length === 2) {
+    return {
+      comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
+      comp2: `${competitors[1].companyName} (${competitors[1].companySymbol})`,
+      comp3: defaultComp3,
+      totalCount,
+    };
   }
 
   return {
-    comp1: competitors[0].companyName,
-    comp2: competitors[1].companyName,
+    comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
+    comp2: `${competitors[1].companyName} (${competitors[1].companySymbol})`,
+    comp3: `${competitors[2].companyName} (${competitors[2].companySymbol})`,
+    totalCount,
   };
 }
 
 // Function to build the base aboutReport text
 function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): string {
-  const { comp1, comp2 } = getTopCompetitors(tickerRecord);
+  const { comp1, comp2, comp3, totalCount } = getTopCompetitors(tickerRecord);
 
   // Get all category names (factors)
   const factors = Object.values(CATEGORY_MAPPINGS).join(', ');
@@ -58,14 +78,31 @@ function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { compe
   const investor1 = INVESTOR_MAPPINGS[investorKeys[0] as keyof typeof INVESTOR_MAPPINGS];
   const investor2 = INVESTOR_MAPPINGS[investorKeys[1] as keyof typeof INVESTOR_MAPPINGS];
 
-  // Format updated date
-  const updatedAt = new Date(tickerRecord.updatedAt).toLocaleDateString('en-US', {
+  // Use today's date instead of ticker's updatedAt
+  const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${comp1} and ${comp2}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${updatedAt}.`;
+  // Build competitors string with "and X more" logic
+  let competitorsText = '';
+  if (totalCount <= 3) {
+    // Show all competitors if 3 or fewer
+    if (totalCount === 1) {
+      competitorsText = comp1;
+    } else if (totalCount === 2) {
+      competitorsText = `${comp1} and ${comp2}`;
+    } else {
+      competitorsText = `${comp1}, ${comp2} and ${comp3}`;
+    }
+  } else {
+    // Show first 3 and mention how many more
+    const remainingCount = totalCount - 3;
+    competitorsText = `${comp1}, ${comp2}, ${comp3} and ${remainingCount} more`;
+  }
+
+  const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${competitorsText}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${today}.`;
 
   return baseInfo;
 }
