@@ -42,13 +42,12 @@ You are an equity analyst specializing in ${industryKey}. Using the JSON schema 
 - Preserve the **same category keys**. Within each category, provide **5 factors** that are **distinct, ${subIndustryKey} specific , and non-overlapping**.
 - For each factor, return:
   - \`factorAnalysisKey\` (ALL_CAPS_SNAKE_CASE, concise,  ${industryKey} - ${subIndustryKey} specific)
-  - \`factorAnalysisTitle\` (clear, title case). Max 6 words.
-  - \`factorAnalysisDescription\` (2–3 sentences, ${industryKey} - ${subIndustryKey} context only)
-  - \`factorAnalysisMetrics\` (4–7 **measurable** metrics; comma-separated. These metrics should the financial data or ratios which can help make a decision about the factor. For example we have "Weighted Average Lease Term (WALT) years, % of leases with rent escalators, Average annual rent escalator %, Renewal rate %  etc that can be used to measure Lease structure & durability for REITs). They should be specific to the industry and sub-industry. 
+  - \`factorAnalysisTitle\` (A clear, simple title in Title Case (max 6 words). It must be easily understood by a retail investor)
+  - \`factorAnalysisDescription\` (2–3 sentences explaining the factor in plain English. Describe what it is and why it matters to an investor, ${industryKey} - ${subIndustryKey} context only)
+  - \`factorAnalysisMetrics\` (A comma-separated list of 4–7 measurable and commonly available metrics. Prioritize well-known financial ratios (e.g., P/E Ratio, Revenue Growth %, Debt-to-Equity) and tangible operational numbers (e.g., Customer Growth Rate, Number of Stores). A retail investor should be able to find these metrics on a standard financial website or in the company's reports. They should be specific to the industry and sub-industry. 
 - **No commentary outside the JSON**. Return **valid JSON only**.
 
 Category keys can be one of - BusinessAndMoat, FinancialStatementAnalysis, PastPerformance, FutureGrowth, FairValue.
-
 
 Return the JSON below in the sequence of category keys mentioned above.
 
@@ -59,13 +58,16 @@ Return the JSON below in the sequence of category keys mentioned above.
 - You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
 - Respect the output JSON schema.
 
+# Notes for FinancialStatementAnalysis and PastPerformance categories
+- Anchor each factor in a financial concept that a retail investor can easily grasp. Then, frame the factor's title and description to show how this concept specifically applies to the business model of a ${industryKey} - ${subIndustryKey}. It should be such that a retail investor can easily understand the factor and the financial performance of the company in the same industry and sub-industry.
+
 # Notes for BusinessAndMoat category
 - The business and moat factors should be such that they consider the superiority of the business and moat as compared to the competitors in the same industry and sub-industry. 
 - Only business who have a real advantage over others should be able to get pass on all the  five factors, so design the factors in such a way that it evaluates the business and moat vs the competitors in the same industry and sub-industry.
 
 # Notes for FairValue category
-- The fair value factors should be such that they consider the fair value of the company as compared to the competitors in the same industry and sub-industry.
-- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company vs the competitors in the same industry and sub-industry.
+- The fair value factors should be such that they consider the fair value of the company in the same industry and sub-industry.
+- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company in the same industry and sub-industry.
 
 
 # Schema
