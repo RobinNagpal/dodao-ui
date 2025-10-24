@@ -415,7 +415,7 @@ function TickerSummaryInfo({
                 <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
                 <div
                   className="text-gray-300 markdown markdown-body"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.summary || 'No summary available.') }}
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
                 />
               </div>
             );
@@ -467,9 +467,9 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
             <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
               <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h3>
 
-              {categoryResult.overallAnalysisDetails && (
+              {categoryResult.summary && (
                 <div className="mb-4">
-                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.overallAnalysisDetails) }} />
+                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.summary) }} />
                 </div>
               )}
 
