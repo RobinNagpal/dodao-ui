@@ -66,8 +66,8 @@ Return the JSON below in the sequence of category keys mentioned above.
 - Only business who have a real advantage over others should be able to get pass on all the  five factors, so design the factors in such a way that it evaluates the business and moat vs the competitors in the same industry and sub-industry.
 
 # Notes for FairValue category
-- The fair value factors should be such that they consider the fair value of the company as compared to the competitors in the same industry and sub-industry.
-- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company vs the competitors in the same industry and sub-industry.
+- The fair value factors should be such that they consider the fair value of the company in the same industry and sub-industry.
+- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company in the same industry and sub-industry.
 
 
 # Schema
