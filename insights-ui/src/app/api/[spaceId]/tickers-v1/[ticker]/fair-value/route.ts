@@ -5,7 +5,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { TickerAnalysisCategory } from '@/lib/mappingsV1';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
@@ -20,20 +20,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     include: {
       industry: true,
       subIndustry: true,
-      financialInfo: true,
     },
   });
 
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
-
-  // Get competition analysis (required for fair value analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
 
   // Extract comprehensive financial data for analysis
   const financialData = extractFinancialDataForAnalysis(scraperInfo);
@@ -47,8 +38,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       categoryKey: TickerAnalysisCategory.FairValue,
     },
   });
-
-  const fi = tickerRecord.financialInfo;
 
   // Prepare input for the prompt
   const inputJson = {
@@ -67,7 +56,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisDescription: factor.factorAnalysisDescription,
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
 
     // Market Snapshot
     marketSummary: JSON.stringify(financialData.marketSummary),
