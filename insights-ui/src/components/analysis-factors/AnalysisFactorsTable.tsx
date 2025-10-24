@@ -58,8 +58,12 @@ Return the JSON below in the sequence of category keys mentioned above.
 - You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
 - Respect the output JSON schema.
 
-# Notes for FinancialStatementAnalysis and PastPerformance categories
+# Notes for FinancialStatementAnalysis category
 - Anchor each factor in a financial concept that a retail investor can easily grasp. Then, frame the factor's title and description to show how this concept specifically applies to the business model of a ${industryKey} - ${subIndustryKey}. It should be such that a retail investor can easily understand the factor and the financial performance of the company in the same industry and sub-industry.
+
+# Notes for PastPerformance category
+- This category is for the past performance of the company in the same industry and sub-industry. So design the factors in such a way that it evaluates the past performance of the company in the same industry and sub-industry.
+- The factors in this category must be grounded in the company's historical financial statements and stock market data.
 
 # Notes for BusinessAndMoat category
 - The business and moat factors should be such that they consider the superiority of the business and moat as compared to the competitors in the same industry and sub-industry. 
