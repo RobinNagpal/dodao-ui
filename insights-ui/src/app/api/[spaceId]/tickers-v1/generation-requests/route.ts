@@ -33,9 +33,15 @@ export interface GenerationRequestsResponse {
     notStarted: number;
     completed: number;
   };
+  pagination: {
+    inProgress: { skip: number; take: number };
+    failed: { skip: number; take: number };
+    notStarted: { skip: number; take: number };
+    completed: { skip: number; take: number };
+  };
 }
 
-async function getRequests(status: GenerationRequestStatus): Promise<TickerV1GenerationRequestWithTicker[]> {
+async function getRequests(status: GenerationRequestStatus, skip: number = 0, take: number = 15): Promise<TickerV1GenerationRequestWithTicker[]> {
   return prisma.tickerV1GenerationRequest.findMany({
     where: {
       status: status,
@@ -43,7 +49,8 @@ async function getRequests(status: GenerationRequestStatus): Promise<TickerV1Gen
     orderBy: {
       createdAt: 'desc',
     },
-    take: 15, // Limit to 15 results
+    skip,
+    take,
     include: {
       ticker: {
         select: {
@@ -73,21 +80,37 @@ async function getHandler(
   _userContext: KoalaGainsJwtTokenPayload,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<GenerationRequestsResponse> {
+  // Parse pagination parameters from URL
+  const url = new URL(req.url);
+
+  // Get pagination parameters for each status
+  const inProgressSkip = parseInt(url.searchParams.get('inProgressSkip') || '0', 10);
+  const inProgressTake = parseInt(url.searchParams.get('inProgressTake') || '15', 10);
+
+  const failedSkip = parseInt(url.searchParams.get('failedSkip') || '0', 10);
+  const failedTake = parseInt(url.searchParams.get('failedTake') || '15', 10);
+
+  const notStartedSkip = parseInt(url.searchParams.get('notStartedSkip') || '0', 10);
+  const notStartedTake = parseInt(url.searchParams.get('notStartedTake') || '15', 10);
+
+  const completedSkip = parseInt(url.searchParams.get('completedSkip') || '0', 10);
+  const completedTake = parseInt(url.searchParams.get('completedTake') || '15', 10);
+
   // Get in progress requests
   const inProgressStatus = GenerationRequestStatus.InProgress;
-  const inProgressRequests = await getRequests(inProgressStatus);
+  const inProgressRequests = await getRequests(inProgressStatus, inProgressSkip, inProgressTake);
 
   // Get the failed requests
   const failedStatus = GenerationRequestStatus.Failed;
-  const failedRequests = await getRequests(failedStatus);
+  const failedRequests = await getRequests(failedStatus, failedSkip, failedTake);
 
   // Get the not started requests
   const notStartedStatus = GenerationRequestStatus.NotStarted;
-  const notStartedRequests = await getRequests(notStartedStatus);
+  const notStartedRequests = await getRequests(notStartedStatus, notStartedSkip, notStartedTake);
 
   // Get the completed requests
   const completedStatus = GenerationRequestStatus.Completed;
-  const completedRequests = await getRequests(completedStatus);
+  const completedRequests = await getRequests(completedStatus, completedSkip, completedTake);
 
   // Get total counts for each status
   const inProgressCount = await prisma.tickerV1GenerationRequest.count({
@@ -116,6 +139,12 @@ async function getHandler(
       failed: failedCount,
       notStarted: notStartedCount,
       completed: completedCount,
+    },
+    pagination: {
+      inProgress: { skip: inProgressSkip, take: inProgressTake },
+      failed: { skip: failedSkip, take: failedTake },
+      notStarted: { skip: notStartedSkip, take: notStartedTake },
+      completed: { skip: completedSkip, take: completedTake },
     },
   };
 }

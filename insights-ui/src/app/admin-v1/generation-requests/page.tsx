@@ -10,9 +10,9 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /**
  * Canonical list of boolean "regenerate*" flags we render as dots.
@@ -112,13 +112,28 @@ const REFRESH_SECONDS: number = 30;
 
 // ---------- helpers ----------
 
-function SectionHeader({ title, count, totalCount }: { title: string; count: number; totalCount: number }): JSX.Element {
+interface SectionHeaderProps {
+  title: string;
+  count: number;
+  totalCount: number;
+  onShowMore?: () => void;
+  hasMore: boolean;
+}
+
+function SectionHeader({ title, count, totalCount, onShowMore, hasMore }: SectionHeaderProps): JSX.Element {
   return (
     <div className="flex items-baseline justify-between mb-2">
       <h3 className="text-xl font-semibold">{title}</h3>
-      <span className="text-sm text-gray-400">
-        Showing latest {count} of {totalCount} • {totalCount} total item{totalCount === 1 ? '' : 's'}
-      </span>
+      <div className="flex items-center gap-4">
+        <span className="text-sm text-gray-400">
+          Showing {count} of {totalCount} • {totalCount} total item{totalCount === 1 ? '' : 's'}
+        </span>
+        {hasMore && onShowMore && (
+          <Button onClick={onShowMore} variant="text" className="text-blue-400 hover:text-blue-300">
+            Show More
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
@@ -220,11 +235,32 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
 
 // ---------- component ----------
 export default function GenerationRequestsPage(): JSX.Element {
-  const { data, loading, reFetchData } = useFetchData<GenerationRequestsResponse>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`,
-    {},
-    'Failed to fetch generation requests'
-  );
+  // Pagination state for each section
+  const [inProgressPagination, setInProgressPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
+  const [failedPagination, setFailedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
+  const [notStartedPagination, setNotStartedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
+  const [completedPagination, setCompletedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
+
+  // Build URL with pagination parameters
+  const baseUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`;
+  const params = new URLSearchParams();
+
+  // Add pagination parameters for each section
+  params.append('inProgressSkip', inProgressPagination.skip.toString());
+  params.append('inProgressTake', inProgressPagination.take.toString());
+
+  params.append('failedSkip', failedPagination.skip.toString());
+  params.append('failedTake', failedPagination.take.toString());
+
+  params.append('notStartedSkip', notStartedPagination.skip.toString());
+  params.append('notStartedTake', notStartedPagination.take.toString());
+
+  params.append('completedSkip', completedPagination.skip.toString());
+  params.append('completedTake', completedPagination.take.toString());
+
+  const apiUrl = `${baseUrl}?${params.toString()}`;
+
+  const { data, loading, reFetchData } = useFetchData<GenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch generation requests');
 
   // Post hook for generation requests
   const {
@@ -237,17 +273,58 @@ export default function GenerationRequestsPage(): JSX.Element {
     errorMessage: 'Failed to create generation request.',
   });
 
-  const hasActive: boolean = useMemo<boolean>(() => {
-    return (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
-  }, [data]);
+  const hasActive: boolean = (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
 
   const [secondsLeft, setSecondsLeft] = useState<number>(REFRESH_SECONDS);
   const [showReloadModal, setShowReloadModal] = useState<boolean>(false);
   const [selectedRequest, setSelectedRequest] = useState<GenerationRequestWithFlags | null>(null);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
 
   function handleManualRefresh(): void {
+    resetPagination();
     reFetchData();
     setSecondsLeft(REFRESH_SECONDS);
+  }
+
+  function handleTogglePause(): void {
+    setIsPaused((prev) => !prev);
+  }
+
+  // Functions to load more items for each section
+  function handleLoadMoreInProgress(): void {
+    setInProgressPagination((prev) => ({
+      skip: prev.skip + prev.take,
+      take: prev.take,
+    }));
+  }
+
+  function handleLoadMoreFailed(): void {
+    setFailedPagination((prev) => ({
+      skip: prev.skip + prev.take,
+      take: prev.take,
+    }));
+  }
+
+  function handleLoadMoreNotStarted(): void {
+    setNotStartedPagination((prev) => ({
+      skip: prev.skip + prev.take,
+      take: prev.take,
+    }));
+  }
+
+  function handleLoadMoreCompleted(): void {
+    setCompletedPagination((prev) => ({
+      skip: prev.skip + prev.take,
+      take: prev.take,
+    }));
+  }
+
+  // Function to reset pagination when manually refreshing
+  function resetPagination(): void {
+    setInProgressPagination({ skip: 0, take: 15 });
+    setFailedPagination({ skip: 0, take: 15 });
+    setNotStartedPagination({ skip: 0, take: 15 });
+    setCompletedPagination({ skip: 0, take: 15 });
   }
 
   function handleReloadRequest(request: GenerationRequestWithFlags): void {
@@ -289,7 +366,7 @@ export default function GenerationRequestsPage(): JSX.Element {
   }
 
   useEffect((): (() => void) | void => {
-    if (!hasActive) {
+    if (!hasActive || isPaused) {
       setSecondsLeft(REFRESH_SECONDS);
       return;
     }
@@ -303,7 +380,7 @@ export default function GenerationRequestsPage(): JSX.Element {
       });
     }, 1_000);
     return () => clearInterval(timerId);
-  }, [hasActive, reFetchData]);
+  }, [hasActive, isPaused, reFetchData]);
 
   // Section data (latest per ticker within each status, newest first)
 
@@ -323,14 +400,28 @@ export default function GenerationRequestsPage(): JSX.Element {
 
         <div className="flex items-center gap-3">
           <div className="text-sm text-gray-300">
-            {hasActive ? (
+            {hasActive && !isPaused ? (
               <span>
                 Reloading in <span className="font-semibold">{secondsLeft}</span> seconds
               </span>
             ) : (
-              <span className="opacity-80">Auto-refresh paused</span>
+              <span className="opacity-80">Auto-refresh {isPaused ? 'paused' : 'inactive'}</span>
             )}
           </div>
+
+          <Button onClick={handleTogglePause} variant="outlined" className="flex items-center gap-2">
+            {isPaused ? (
+              <>
+                <PlayIcon className="w-4 h-4" />
+                Resume
+              </>
+            ) : (
+              <>
+                <PauseIcon className="w-4 h-4" />
+                Pause
+              </>
+            )}
+          </Button>
 
           <Button onClick={handleManualRefresh} variant="outlined" className="flex items-center gap-2">
             <ArrowPathIcon className="w-4 h-4" />
@@ -364,7 +455,13 @@ export default function GenerationRequestsPage(): JSX.Element {
 
       {/* Sections in requested order */}
       <div className="mb-6">
-        <SectionHeader title="In Progress Requests" count={inProgressRows.length} totalCount={data?.counts?.inProgress || inProgressRows.length} />
+        <SectionHeader
+          title="In Progress Requests"
+          count={inProgressRows.length}
+          totalCount={data?.counts?.inProgress || inProgressRows.length}
+          onShowMore={handleLoadMoreInProgress}
+          hasMore={inProgressRows.length < (data?.counts?.inProgress || 0)}
+        />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : inProgressRows.length === 0 ? (
@@ -375,7 +472,13 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Not Started Requests" count={notStartedRows.length} totalCount={data?.counts?.notStarted || notStartedRows.length} />
+        <SectionHeader
+          title="Not Started Requests"
+          count={notStartedRows.length}
+          totalCount={data?.counts?.notStarted || notStartedRows.length}
+          onShowMore={handleLoadMoreNotStarted}
+          hasMore={notStartedRows.length < (data?.counts?.notStarted || 0)}
+        />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : notStartedRows.length === 0 ? (
@@ -386,7 +489,13 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Failed Requests" count={failedRows.length} totalCount={data?.counts?.failed || failedRows.length} />
+        <SectionHeader
+          title="Failed Requests"
+          count={failedRows.length}
+          totalCount={data?.counts?.failed || failedRows.length}
+          onShowMore={handleLoadMoreFailed}
+          hasMore={failedRows.length < (data?.counts?.failed || 0)}
+        />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : failedRows.length === 0 ? (
@@ -397,7 +506,13 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Completed Requests" count={completedRows.length} totalCount={data?.counts?.completed || completedRows.length} />
+        <SectionHeader
+          title="Completed Requests"
+          count={completedRows.length}
+          totalCount={data?.counts?.completed || completedRows.length}
+          onShowMore={handleLoadMoreCompleted}
+          hasMore={completedRows.length < (data?.counts?.completed || 0)}
+        />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : completedRows.length === 0 ? (
