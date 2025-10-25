@@ -49,29 +49,56 @@ You are an equity analyst specializing in ${industryKey}. Using the JSON schema 
 
 Category keys can be one of - BusinessAndMoat, FinancialStatementAnalysis, PastPerformance, FutureGrowth, FairValue.
 
+## Simplicity & Data Availability Guardrails
+
+* **Be specific but simple.** Each factor should hinge on **one plain idea** that a retail investor can grasp without jargon.
+* **Use only data a retail investor can easily get** from: company filings (10-K/20-F/10-Q), earnings releases, investor presentations, annual reports, MD&A, exchange filings, and mainstream finance sites (e.g., Yahoo/Google Finance, company IR pages).
+* **Avoid** metrics that typically require **proprietary/paid or alternative datasets** (e.g., detailed swipe-data market share, geolocation footfall, web-scraped user panels, custom survey indices).
+* **No custom/composite scores** (e.g., “Adjusted Competitive Moat Score”), **no complex models**, and **no equations**. Keep to standard ratios and plainly reported KPIs.
+* If an industry KPI (e.g., market share, NPS, churn) is **not commonly reported**, **replace it with a practical proxy** that is widely available (e.g., **gross margin trend, unit growth, price increases**, backlog growth).
+* Use straightforward periods: **TTM, YoY, 3Y/5Y CAGR, last 8 quarters**.
+* When comparisons are needed, phrase them so an investor can **manually benchmark** against **top peers** or **sector median** using public data (do not require niche datasets).
+* In \`factorAnalysisMetrics\`, list **metric names only** (no formulas, no “vs peers” text), separated by commas, using **standard labels** (e.g., Gross Margin %, ROIC %, Net Debt/EBITDA, FCF Yield %, Inventory Turnover).
+* **Expand acronyms once** in the description if used, then use the acronym.
+
+Category keys can be one of - BusinessAndMoat, FinancialStatementAnalysis, PastPerformance, FutureGrowth, FairValue.
+
 Return the JSON below in the sequence of category keys mentioned above.
 
+
 ## Other important notes
-- Each factor should be specific to that category only under which you return the factors.
-- There should be no duplicate factors in two different categories.
-- Make sure the factors are the most important and relevant to the industry and sub-industry, and the category.
-- You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
-- Respect the output JSON schema.
 
-# Notes for FinancialStatementAnalysis category
-- Anchor each factor in a financial concept that a retail investor can easily grasp. Then, frame the factor's title and description to show how this concept specifically applies to the business model of a ${industryKey} - ${subIndustryKey}. It should be such that a retail investor can easily understand the factor and the financial performance of the company in the same industry and sub-industry.
+* Each factor should be specific to that category only under which you return the factors.
+* There should be no duplicate factors in two different categories.
+* Make sure the factors are the most important and relevant to the industry and sub-industry, and the category.
+* You need to return the factors for each category in the sequence mentioned above. Return 5 factors for all 5 categories.
+* Respect the output JSON schema.
 
-# Notes for PastPerformance category
-- This category is for the past performance of the company in the same industry and sub-industry. So design the factors in such a way that it evaluates the past performance of the company in the same industry and sub-industry.
-- The factors in this category must be grounded in the company's historical financial statements and stock market data.
+# Category-specific guardrails
 
-# Notes for BusinessAndMoat category
-- The business and moat factors should be such that they consider the superiority of the business and moat as compared to the competitors in the same industry and sub-industry. 
-- Only business who have a real advantage over others should be able to get pass on all the  five factors, so design the factors in such a way that it evaluates the business and moat vs the competitors in the same industry and sub-industry.
+## Notes for FinancialStatementAnalysis category
+* Anchor each factor in a **basic financial concept** that is commonly reported and easy to find (e.g., margins, returns, leverage, cash conversion, efficiency).
+* Frame the factor so it reflects **how ${industryKey} - ${subIndustryKey} companies make money** and manage costs/working capital.
+* Prefer metrics like: **Revenue Growth %, Gross/Operating/Net Margin %, ROIC %, ROE %, Net Debt/EBITDA, Interest Coverage, Operating Cash Flow, FCF, Cash Conversion Cycle, Inventory Turnover/Days, Receivables/Payables Days.**
 
-# Notes for FairValue category
-- The fair value factors should be such that they consider the fair value of the company in the same industry and sub-industry.
-- Design the factors in such a way that only the undervalued companies can get pass on all the 5 or 4 factors, the fair value get 3 or 2 and over values gets 1 pass. So design the factors in such a way that it evaluates the fair value of the company in the same industry and sub-industry.
+## Notes for PastPerformance category
+* Evaluate **historical performance** using **reported financials and stock data** over **3–5 years (or last 8 quarters)**.
+* Prefer metrics like: **3Y/5Y Revenue CAGR, EPS CAGR, Operating Margin Trend (bps), FCF Trend, Dividend Growth %, Share Count Change %, Total Shareholder Return (TSR) %, Volatility vs Sector, Drawdowns vs Benchmark**.
+
+## Notes for BusinessAndMoat category
+* Assess **competitive advantages** using **observable, reported indicators** rather than subjective notions.
+* Only include market share/NPS/retention **if commonly reported**; otherwise use robust proxies (e.g., **pricing power via gross margin stability, unit economics, repeat purchase/ARPU if disclosed, contract length/backlog**).
+* Prefer metrics like: **Gross Margin Stability (bps YoY), Price Increase Announcements, Contract Renewal Rate %, Backlog/Book-to-Bill, Unit Economics (ARPU, Contribution Margin), Store/Unit Count, Same-Store/Like-for-Like Growth %.**
+
+## Notes for FutureGrowth category
+* Focus on **near-term, disclosed growth drivers** (e.g., store openings, capacity adds, backlog/pipeline, booked ARR, product launches, geographic expansion, capex plans).
+* Prefer metrics like: **Guided Revenue Growth %, Next FY EPS Growth %, Backlog Growth %, Net New Stores/Units, Book-to-Bill, Capex as % of Sales, R&D as % of Sales, ARR Growth %** (only if commonly reported in the sub-industry; otherwise use revenue/EPS guidance).
+
+## Notes for FairValue category
+* Emphasize **simple, observable valuation checks** that favor **undervalued** names using **multiples and yields** over complex DCFs.
+* Prefer metrics like: **P/E (TTM & NTM), EV/EBITDA, EV/Sales (if early-stage), P/B, FCF Yield %, Dividend Yield %, PEG Ratio** and **comparison to peer median and the company’s 3Y/5Y history**.
+* Design the factors so that **undervalued companies pass 4–5**, fairly valued pass **2–3**, and overvalued pass **0–1**—using the above **simple, public metrics**.
+
 
 
 # Schema
