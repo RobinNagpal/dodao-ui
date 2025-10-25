@@ -4,12 +4,15 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { createBackgroundGenerationRequest, createFailedPartsOnlyGenerationRequest } from '@/utils/report-generator-utils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 /**
  * Canonical list of boolean "regenerate*" flags we render as dots.
@@ -120,7 +123,13 @@ function SectionHeader({ title, count, totalCount }: { title: string; count: num
   );
 }
 
-function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWithFlags[]; regenerateFields: RegenerateField[] }): JSX.Element {
+interface RequestsTableProps {
+  rows: GenerationRequestWithFlags[];
+  regenerateFields: RegenerateField[];
+  onReloadRequest: (request: GenerationRequestWithFlags) => void;
+}
+
+function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTableProps): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -135,6 +144,7 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
             ))}
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Created At</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -143,6 +153,8 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
             const symbol: string = latestRequest.ticker.symbol;
             const completedSteps: string[] = latestRequest.completedSteps ?? [];
             const failedSteps: string[] = latestRequest.failedSteps ?? [];
+            const isFailed = latestRequest.status === GenerationRequestStatus.Failed;
+
             return (
               <tr key={latestRequest.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
@@ -186,6 +198,17 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">{new Date(latestRequest.createdAt as unknown as string).toLocaleString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  {isFailed && failedSteps.length > 0 && (
+                    <button
+                      onClick={() => onReloadRequest(latestRequest)}
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                      title="Reload failed request"
+                    >
+                      <ArrowPathIcon className="w-5 h-5" />
+                    </button>
+                  )}
+                </td>
               </tr>
             );
           })}
@@ -203,16 +226,67 @@ export default function GenerationRequestsPage(): JSX.Element {
     'Failed to fetch generation requests'
   );
 
+  // Post hook for generation requests
+  const {
+    postData: postRequest,
+    data: postDataResponse,
+    loading: postLoading,
+    error,
+  } = usePostData<any, any>({
+    successMessage: 'Generation request created successfully!',
+    errorMessage: 'Failed to create generation request.',
+  });
+
   const hasActive: boolean = useMemo<boolean>(() => {
     return (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
   }, [data]);
 
   const [secondsLeft, setSecondsLeft] = useState<number>(REFRESH_SECONDS);
+  const [showReloadModal, setShowReloadModal] = useState<boolean>(false);
+  const [selectedRequest, setSelectedRequest] = useState<GenerationRequestWithFlags | null>(null);
 
-  const handleManualRefresh: () => void = useCallback((): void => {
+  function handleManualRefresh(): void {
     reFetchData();
     setSecondsLeft(REFRESH_SECONDS);
-  }, [reFetchData]);
+  }
+
+  function handleReloadRequest(request: GenerationRequestWithFlags): void {
+    setSelectedRequest(request);
+    setShowReloadModal(true);
+  }
+
+  function handleCloseModal(): void {
+    setShowReloadModal(false);
+    setSelectedRequest(null);
+  }
+
+  async function handleReloadFailedPartsOnly(): Promise<void> {
+    if (!selectedRequest || !selectedRequest.failedSteps || selectedRequest.failedSteps.length === 0) return;
+
+    try {
+      await createFailedPartsOnlyGenerationRequest(selectedRequest.ticker.symbol, selectedRequest.failedSteps, postRequest);
+
+      // Close modal and refresh data
+      handleCloseModal();
+      reFetchData();
+    } catch (error) {
+      console.error('Failed to create generation request for failed parts:', error);
+    }
+  }
+
+  async function handleReloadFullRequest(): Promise<void> {
+    if (!selectedRequest) return;
+
+    try {
+      await createBackgroundGenerationRequest(selectedRequest.ticker.symbol, postRequest);
+
+      // Close modal and refresh data
+      handleCloseModal();
+      reFetchData();
+    } catch (error) {
+      console.error('Failed to create full generation request:', error);
+    }
+  }
 
   useEffect((): (() => void) | void => {
     if (!hasActive) {
@@ -296,7 +370,7 @@ export default function GenerationRequestsPage(): JSX.Element {
         ) : inProgressRows.length === 0 ? (
           <div className="py-4">No In Progress requests.</div>
         ) : (
-          <RequestsTable rows={inProgressRows} regenerateFields={regenerateFields} />
+          <RequestsTable rows={inProgressRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
         )}
       </div>
 
@@ -307,7 +381,7 @@ export default function GenerationRequestsPage(): JSX.Element {
         ) : notStartedRows.length === 0 ? (
           <div className="py-4">No Not Started requests.</div>
         ) : (
-          <RequestsTable rows={notStartedRows} regenerateFields={regenerateFields} />
+          <RequestsTable rows={notStartedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
         )}
       </div>
 
@@ -318,7 +392,7 @@ export default function GenerationRequestsPage(): JSX.Element {
         ) : failedRows.length === 0 ? (
           <div className="py-4">No Failed requests.</div>
         ) : (
-          <RequestsTable rows={failedRows} regenerateFields={regenerateFields} />
+          <RequestsTable rows={failedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
         )}
       </div>
 
@@ -329,9 +403,32 @@ export default function GenerationRequestsPage(): JSX.Element {
         ) : completedRows.length === 0 ? (
           <div className="py-4">No Completed requests.</div>
         ) : (
-          <RequestsTable rows={completedRows} regenerateFields={regenerateFields} />
+          <RequestsTable rows={completedRows} regenerateFields={regenerateFields} onReloadRequest={handleReloadRequest} />
         )}
       </div>
+
+      {/* Reload Modal */}
+      <FullScreenModal open={showReloadModal} onClose={handleCloseModal} title="Reload Generation Request">
+        <div className="p-4">
+          {selectedRequest && (
+            <>
+              <p className="mb-4">
+                How would you like to reload the generation request for <strong>{selectedRequest.ticker.symbol}</strong>?
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <Button variant="contained" onClick={handleReloadFailedPartsOnly} className="w-full">
+                  Reload Failed Parts Only ({selectedRequest.failedSteps?.length || 0} steps)
+                </Button>
+
+                <Button variant="outlined" onClick={handleReloadFullRequest} className="w-full">
+                  Reload Full Request
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
+      </FullScreenModal>
     </div>
   );
 }

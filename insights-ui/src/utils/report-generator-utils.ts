@@ -1,6 +1,6 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { INVESTOR_OPTIONS, AnalysisTypeKey, INVESTOR_ANALYSIS_PREFIX } from '@/lib/mappingsV1';
+import { INVESTOR_OPTIONS, AnalysisTypeKey, INVESTOR_ANALYSIS_PREFIX, InvestorKey, createInvestorAnalysisKey } from '@/lib/mappingsV1';
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -70,7 +70,7 @@ export const generateAnalysis = async (
 
 // Helper function to generate investor analysis for a specific ticker and investor
 export const generateInvestorAnalysis = async (
-  investorKey: string,
+  investorKey: InvestorKey,
   ticker: string,
   postAnalysis: (url: string, data: AnalysisRequest) => Promise<TickerAnalysisResponse | undefined>,
   onReportGenerated?: (ticker: string) => void
@@ -119,7 +119,7 @@ export const generateAllReports = async (
   }
 
   // Generate investor analysis for all investors
-  const allInvestors = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
+  const allInvestors: InvestorKey[] = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
   for (const investorKey of allInvestors) {
     await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
     // Add a small delay between calls
@@ -216,9 +216,81 @@ export const createSingleAnalysisBackgroundRequest = async (
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
 };
 
+// Helper function to create a background generation request for only the failed parts
+export const createFailedPartsOnlyGenerationRequest = async (
+  ticker: string,
+  failedSteps: string[],
+  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+): Promise<void> => {
+  if (!ticker || !failedSteps.length) return;
+
+  // Create a payload with all options set to false by default
+  const payload: GenerationRequestPayload = {
+    regenerateCompetition: false,
+    regenerateFinancialAnalysis: false,
+    regenerateBusinessAndMoat: false,
+    regeneratePastPerformance: false,
+    regenerateFutureGrowth: false,
+    regenerateFairValue: false,
+    regenerateFutureRisk: false,
+    regenerateWarrenBuffett: false,
+    regenerateCharlieMunger: false,
+    regenerateBillAckman: false,
+    regenerateFinalSummary: false,
+    regenerateCachedScore: false,
+  };
+
+  // Set only the failed steps to true
+  failedSteps.forEach((step) => {
+    switch (step) {
+      case AnalysisTypeKey.COMPETITION:
+        payload.regenerateCompetition = true;
+        break;
+      case AnalysisTypeKey.FINANCIAL_ANALYSIS:
+        payload.regenerateFinancialAnalysis = true;
+        break;
+      case AnalysisTypeKey.BUSINESS_AND_MOAT:
+        payload.regenerateBusinessAndMoat = true;
+        break;
+      case AnalysisTypeKey.PAST_PERFORMANCE:
+        payload.regeneratePastPerformance = true;
+        break;
+      case AnalysisTypeKey.FUTURE_GROWTH:
+        payload.regenerateFutureGrowth = true;
+        break;
+      case AnalysisTypeKey.FAIR_VALUE:
+        payload.regenerateFairValue = true;
+        break;
+      case AnalysisTypeKey.FUTURE_RISK:
+        payload.regenerateFutureRisk = true;
+        break;
+      case createInvestorAnalysisKey('WARREN_BUFFETT'):
+        payload.regenerateWarrenBuffett = true;
+        break;
+      case createInvestorAnalysisKey('CHARLIE_MUNGER'):
+        payload.regenerateCharlieMunger = true;
+        break;
+      case createInvestorAnalysisKey('BILL_ACKMAN'):
+        payload.regenerateBillAckman = true;
+        break;
+      case AnalysisTypeKey.FINAL_SUMMARY:
+        payload.regenerateFinalSummary = true;
+        break;
+      case AnalysisTypeKey.CACHED_SCORE:
+        payload.regenerateCachedScore = true;
+        break;
+      default:
+        // If it's not a recognized step, do nothing
+        break;
+    }
+  });
+
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+};
+
 // Helper function to create a background generation request for a specific investor analysis
 export const createSingleInvestorBackgroundRequest = async (
-  investorKey: string,
+  investorKey: InvestorKey,
   ticker: string,
   postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
 ): Promise<void> => {
@@ -336,11 +408,11 @@ export const generateSelectedReportsInBackground = async (
         payload.regenerateCachedScore = true;
       }
       // Handle investor analysis types
-      else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}WARREN_BUFFETT`) {
+      else if (reportType === createInvestorAnalysisKey('WARREN_BUFFETT')) {
         payload.regenerateWarrenBuffett = true;
-      } else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}CHARLIE_MUNGER`) {
+      } else if (reportType === createInvestorAnalysisKey('CHARLIE_MUNGER')) {
         payload.regenerateCharlieMunger = true;
-      } else if (reportType === `${INVESTOR_ANALYSIS_PREFIX}BILL_ACKMAN`) {
+      } else if (reportType === createInvestorAnalysisKey('BILL_ACKMAN')) {
         payload.regenerateBillAckman = true;
       }
     });
