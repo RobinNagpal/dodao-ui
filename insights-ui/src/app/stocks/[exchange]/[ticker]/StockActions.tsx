@@ -2,6 +2,7 @@
 
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { InvestorKey } from '@/lib/mappingsV1';
 import { KoalaGainsSession } from '@/types/auth';
 import {
   analysisTypes,
@@ -47,7 +48,7 @@ export default function StockActions({ tickerSymbol, children, session }: StockA
     try {
       if (key.startsWith('generate-investor-')) {
         const investorKey = key.replace('generate-investor-', '');
-        await createSingleInvestorBackgroundRequest(investorKey, tickerSymbol, postRequest);
+        await createSingleInvestorBackgroundRequest(investorKey as InvestorKey, tickerSymbol, postRequest);
       } else if (key.startsWith('generate-')) {
         const analysisType = key.replace('generate-', '');
         await createSingleAnalysisBackgroundRequest(analysisType, tickerSymbol, postRequest);

@@ -346,7 +346,7 @@ export const generateSelectedReportsSynchronously = async (
     for (const reportType of selectedReportTypes) {
       if (reportType.startsWith(INVESTOR_ANALYSIS_PREFIX)) {
         const investorKey = reportType.replace(INVESTOR_ANALYSIS_PREFIX, '');
-        await generateInvestorAnalysis(investorKey, ticker, postAnalysis, onReportGenerated);
+        await generateInvestorAnalysis(investorKey as InvestorKey, ticker, postAnalysis, onReportGenerated);
       } else {
         await generateAnalysis(reportType, ticker, postAnalysis, onReportGenerated);
       }
