@@ -9,6 +9,16 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
   ticker: {
     symbol: string;
     exchange: string;
+    name: string;
+    industry: {
+      name: string;
+      industryKey: string;
+    };
+
+    subIndustry: {
+      name: string;
+      subIndustryKey: string;
+    };
   };
 }
 
@@ -17,6 +27,12 @@ export interface GenerationRequestsResponse {
   failed: TickerV1GenerationRequestWithTicker[];
   notStarted: TickerV1GenerationRequestWithTicker[];
   completed: TickerV1GenerationRequestWithTicker[];
+  counts: {
+    inProgress: number;
+    failed: number;
+    notStarted: number;
+    completed: number;
+  };
 }
 
 async function getRequests(status: GenerationRequestStatus): Promise<TickerV1GenerationRequestWithTicker[]> {
@@ -27,11 +43,25 @@ async function getRequests(status: GenerationRequestStatus): Promise<TickerV1Gen
     orderBy: {
       createdAt: 'desc',
     },
+    take: 15, // Limit to 15 results
     include: {
       ticker: {
         select: {
           symbol: true,
           exchange: true,
+          name: true,
+          industry: {
+            select: {
+              name: true,
+              industryKey: true,
+            },
+          },
+          subIndustry: {
+            select: {
+              name: true,
+              subIndustryKey: true,
+            },
+          },
         },
       },
     },
@@ -47,24 +77,46 @@ async function getHandler(
   const inProgressStatus = GenerationRequestStatus.InProgress;
   const inProgressRequests = await getRequests(inProgressStatus);
 
-  // Get the last 10 failed requests
+  // Get the failed requests
   const failedStatus = GenerationRequestStatus.Failed;
   const failedRequests = await getRequests(failedStatus);
 
-  // Get the last 10 not started requests
+  // Get the not started requests
   const notStartedStatus = GenerationRequestStatus.NotStarted;
   const notStartedRequests = await getRequests(notStartedStatus);
 
+  // Get the completed requests
   const completedStatus = GenerationRequestStatus.Completed;
   const completedRequests = await getRequests(completedStatus);
 
-  // Map the requests to include the ticker symbol
+  // Get total counts for each status
+  const inProgressCount = await prisma.tickerV1GenerationRequest.count({
+    where: { status: inProgressStatus },
+  });
+
+  const failedCount = await prisma.tickerV1GenerationRequest.count({
+    where: { status: failedStatus },
+  });
+
+  const notStartedCount = await prisma.tickerV1GenerationRequest.count({
+    where: { status: notStartedStatus },
+  });
+
+  const completedCount = await prisma.tickerV1GenerationRequest.count({
+    where: { status: completedStatus },
+  });
 
   return {
     inProgress: inProgressRequests,
     failed: failedRequests,
     notStarted: notStartedRequests,
     completed: completedRequests,
+    counts: {
+      inProgress: inProgressCount,
+      failed: failedCount,
+      notStarted: notStartedCount,
+      completed: completedCount,
+    },
   };
 }
 

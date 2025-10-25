@@ -105,16 +105,16 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps }: StatusD
   return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
 }
 
-const REFRESH_SECONDS: number = 10;
+const REFRESH_SECONDS: number = 30;
 
 // ---------- helpers ----------
 
-function SectionHeader({ title, count }: { title: string; count: number }): JSX.Element {
+function SectionHeader({ title, count, totalCount }: { title: string; count: number; totalCount: number }): JSX.Element {
   return (
     <div className="flex items-baseline justify-between mb-2">
       <h3 className="text-xl font-semibold">{title}</h3>
       <span className="text-sm text-gray-400">
-        Showing latest per ticker • {count} item{count === 1 ? '' : 's'}
+        Showing latest {count} of {totalCount} • {totalCount} total item{totalCount === 1 ? '' : 's'}
       </span>
     </div>
   );
@@ -127,6 +127,7 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
         <thead className="bg-gray-700">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">Ticker</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Industry</th>
             {regenerateFields.map((field: RegenerateField) => (
               <th key={field} className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">
                 {FIELD_LABELS[field]}
@@ -147,7 +148,15 @@ function RequestsTable({ rows, regenerateFields }: { rows: GenerationRequestWith
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
                     {symbol}
+                    <div className="text-xs text-gray-400">{latestRequest.ticker.name}</div>
                   </Link>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <div className="text-xs text-gray-400">
+                    {latestRequest.ticker.industry?.name || 'Unknown Industry'}
+                    <br />
+                    {latestRequest.ticker.subIndustry?.name || 'Unknown Sub-Industry'}
+                  </div>
                 </td>
                 {regenerateFields.map((field: RegenerateField) => (
                   <td key={`${symbol}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
@@ -281,7 +290,7 @@ export default function GenerationRequestsPage(): JSX.Element {
 
       {/* Sections in requested order */}
       <div className="mb-6">
-        <SectionHeader title="In Progress Requests" count={inProgressRows.length} />
+        <SectionHeader title="In Progress Requests" count={inProgressRows.length} totalCount={data?.counts?.inProgress || inProgressRows.length} />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : inProgressRows.length === 0 ? (
@@ -292,7 +301,7 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Not Started Requests" count={notStartedRows.length} />
+        <SectionHeader title="Not Started Requests" count={notStartedRows.length} totalCount={data?.counts?.notStarted || notStartedRows.length} />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : notStartedRows.length === 0 ? (
@@ -303,7 +312,7 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Failed Requests" count={failedRows.length} />
+        <SectionHeader title="Failed Requests" count={failedRows.length} totalCount={data?.counts?.failed || failedRows.length} />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : failedRows.length === 0 ? (
@@ -314,7 +323,7 @@ export default function GenerationRequestsPage(): JSX.Element {
       </div>
 
       <div className="mb-6">
-        <SectionHeader title="Completed Requests" count={completedRows.length} />
+        <SectionHeader title="Completed Requests" count={completedRows.length} totalCount={data?.counts?.completed || completedRows.length} />
         {loading ? (
           <div className="py-8">Loading generation requests...</div>
         ) : completedRows.length === 0 ? (
