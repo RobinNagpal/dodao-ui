@@ -37,13 +37,16 @@ properties:
       properties:
         key:
           type: string
-          description: 'The verdict key (e.g., FRANCHISE_COMPOUNDER, STABLE_CASH_RETURNER).'
+          description: 'The verdict key (e.g., ENDURING_VALUE_BUILDER, STABLE_CASH_RETURNER).'
         label:
           type: string
           description: 'The display label for the verdict.'
         one_liner:
           type: string
           description: 'A one-line description of the verdict.'
+        score:
+          type: number
+          description: 'Represents the score of the verdict out of 10'
         signal_checks:
           type: array
           items:

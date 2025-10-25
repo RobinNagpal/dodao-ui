@@ -7,7 +7,7 @@ properties:
     description: '3–4 sentences summarizing factually summarizing how this investor would likely view the stock in 2025. Must be written in plain English, ending with a clear takeaway for retail investors and should be backed by data and reasons.'
   verdict:
     type: string
-    description: 'The verdict key that best describes how this investor would categorize this stock (e.g., FRANCHISE_COMPOUNDER, STABLE_CASH_RETURNER, etc.).'
+    description: 'The verdict key that best describes how this investor would categorize this stock (e.g., ENDURING_VALUE_BUILDER, STABLE_CASH_RETURNER, etc.).'
   willInvest:
     type: boolean
     description: 'Whether this investor would choose to invest in this stock based on their investment philosophy and the stock characteristics.'

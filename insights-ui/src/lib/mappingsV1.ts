@@ -34,14 +34,18 @@ export type InvestorKey = keyof typeof INVESTOR_MAPPINGS;
 
 // Verdict types for investor analysis
 export enum VerdictKey {
-  FRANCHISE_COMPOUNDER = 'FRANCHISE_COMPOUNDER',
+  ENDURING_VALUE_BUILDER = 'ENDURING_VALUE_BUILDER',
   CAPITAL_ALLOCATOR_PLATFORM = 'CAPITAL_ALLOCATOR_PLATFORM',
   EFFICIENT_SCALER = 'EFFICIENT_SCALER',
   INNOVATION_OPTIONALITY = 'INNOVATION_OPTIONALITY',
-  REGULATORY_YIELD_ASSET = 'REGULATORY_YIELD_ASSET',
-  STABLE_CASH_RETURNER = 'STABLE_CASH_RETURNER',
   CYCLE_ADVANTAGED_LEADER = 'CYCLE_ADVANTAGED_LEADER',
+  STABLE_CASH_RETURNER = 'STABLE_CASH_RETURNER',
+  BALANCE_SHEET_LENDER = 'BALANCE_SHEET_LENDER',
+  RISK_UNDERWRITER_FLOAT = 'RISK_UNDERWRITER_FLOAT',
+  REGULATORY_YIELD_ASSET = 'REGULATORY_YIELD_ASSET',
+  DEVELOPER_OPERATOR_NAV_CYCLE = 'DEVELOPER_OPERATOR_NAV_CYCLE',
   TRANSITION_VALUE_PLAY = 'TRANSITION_VALUE_PLAY',
+  RESOURCE_EXTRACTOR_RESERVE_REPLACER = 'RESOURCE_EXTRACTOR_RESERVE_REPLACER',
   CATALYST_TURNAROUND = 'CATALYST_TURNAROUND',
   EVENT_DRIVEN_SPECIAL = 'EVENT_DRIVEN_SPECIAL',
   DISTRESSED_OPTIONALITY = 'DISTRESSED_OPTIONALITY',
@@ -53,128 +57,199 @@ export interface VerdictDefinition {
   label: string;
   one_liner: string;
   signal_checks: string[];
+  score: number;
 }
 
 export const VERDICT_DEFINITIONS: Record<VerdictKey, VerdictDefinition> = {
-  [VerdictKey.FRANCHISE_COMPOUNDER]: {
-    key: VerdictKey.FRANCHISE_COMPOUNDER,
-    label: 'Franchise Compounder',
-    one_liner: 'Durable moat compounding per-share intrinsic value with a long reinvestment runway and disciplined, accretive bolt-ons.',
+  [VerdictKey.ENDURING_VALUE_BUILDER]: {
+    key: VerdictKey.ENDURING_VALUE_BUILDER,
+    label: 'Enduring Value Builder',
+    one_liner:
+      'A great business with a strong moat that keeps reinvesting its own profits at high returns inside the core business. As a result, cash earned per share climbs steadily for many years.',
     signal_checks: [
-      'Through-cycle ROIC > WACC with a clear moat (switching costs, brand, network, or regulatory edge)',
-      'Visible reinvestment runway (TAM/adjacencies/pricing power) plus bolt-on M&A executed at >10% IRR',
-      'Strong retention and pricing power supporting steadily rising per-share cash generation',
+      "Over a full cycle, the profit made on each dollar invested is about 3%+ higher than the company's financing cost (returns beat cost of capital by ~300 bps) and there is a clear moat (switching costs, brand, network, or regulatory advantage).",
+      'Reinvests 40%+ of free cash flow (cash left after running the business) back into the core at real returns above 10%; growth is mainly organic, not driven by acquisitions.',
+      'Per-share cash generation rises 5%+ per year with share count flat or falling; NOT a Capital Allocator Platform (i.e., value creation is not mostly from deals/buybacks).',
     ],
+    score: 10,
   },
   [VerdictKey.CAPITAL_ALLOCATOR_PLATFORM]: {
     key: VerdictKey.CAPITAL_ALLOCATOR_PLATFORM,
     label: 'Capital Allocator Platform',
-    one_liner: 'Decentralized model compounding via disciplined reinvestment, M&A, and capital discipline focused on per-share outcomes.',
+    one_liner:
+      'An owner-operator that compounds value mostly by smart deal-making and capital moves (buying companies, buying back shares, recycling assets) with strict hurdles, all focused on per-share outcomes.',
     signal_checks: [
-      'Track record of accretive bolt-ons or redeployments at >10% IRR',
-      'Decentralized ops + capital discipline at hold level with explicit hurdle rates',
-      'Buybacks below intrinsic value and earnings mix improving from reinvested segments',
+      'In the last ~5 years, more than half of value creation came from external moves (M&A, buybacks, spins/asset recycling) earning >10% returns.',
+      'Decentralized operating model with explicit hurdle rates and disciplined capital allocation at the holding-company level.',
+      'Buys back stock below intrinsic value and per-share metrics improve; NOT Enduring Value Builder when organic reinvestment is 40%+ of free cash flow.',
     ],
+    score: 9,
   },
   [VerdictKey.EFFICIENT_SCALER]: {
     key: VerdictKey.EFFICIENT_SCALER,
     label: 'Efficient Scaler',
-    one_liner: 'Proven product-market fit; growth comes with improving unit economics and widening margins today (not just planned).',
+    one_liner:
+      'Product–market fit is proven and growth is already profitable. As the business scales, unit economics improve and margins widen today (not just in a plan).',
     signal_checks: [
-      'Operating margins above peers and expanding with scale; contribution margins rising',
-      'Unit economics improving now (faster CAC payback, cohort profitability improving)',
-      'Net revenue retention trending up; NOT primarily an unproven option bet',
+      'Revenue grows 20%+ year over year and operating margin expands by 1+ percentage point; contribution margins are rising.',
+      'Customers pay back acquisition cost fast (LTV/CAC ≥ 3x and payback ≤ 12 months); customer cohorts turn profitable on schedule; if subscription, net revenue retention ≥ 110%.',
+      'NOT Innovation Optionality (where most upside is still a future bet) and NOT an event-led story.',
     ],
+    score: 8,
   },
   [VerdictKey.INNOVATION_OPTIONALITY]: {
     key: VerdictKey.INNOVATION_OPTIONALITY,
     label: 'Innovation Optionality',
-    one_liner: 'Core business is steady; upside from credible innovation, IP, or platform expansion that the market prices lightly (option value <25% EV).',
+    one_liner:
+      'A steady core business funds credible new products or IP. The market prices those new bets lightly today, so they are upside options rather than the main driver.',
     signal_checks: [
-      'Stable core (high retention/recurring revenue or steady margins) funding new bets',
-      'Innovation/IP pipeline with optionality valued at <25% of EV',
-      'Evidence of early scaling or monetization path; NOT classified as Efficient Scaler unless unit economics are already improving now',
+      'Core is steady (good retention/recurring revenue or stable margins) and represents about 70%+ of company value.',
+      "Innovation pipeline is real but modestly priced (the market assigns roughly 25% or less of the company's value to these new bets); unit economics are not yet at Efficient Scaler quality.",
+      'NOT Efficient Scaler and NOT Event-Driven Special.',
     ],
-  },
-  [VerdictKey.REGULATORY_YIELD_ASSET]: {
-    key: VerdictKey.REGULATORY_YIELD_ASSET,
-    label: 'Regulatory Yield Asset',
-    one_liner: 'Quasi-bond equity: regulated or contracted cash flows (utilities/infra/PPAs/royalty-like) with inflation or rate-base linkage.',
-    signal_checks: [
-      'Revenue governed by ROE framework, PPA, or long-term take-or-pay/availability contracts',
-      'Rate base growth or CPI-linked escalators drive earnings; predictable cost pass-throughs',
-      'Leverage higher but coverage stable on a through-cycle basis',
-    ],
-  },
-  [VerdictKey.STABLE_CASH_RETURNER]: {
-    key: VerdictKey.STABLE_CASH_RETURNER,
-    label: 'Stable Cash Returner',
-    one_liner: 'Predictable cash engine with limited reinvestment needs; value realized via steady, well-funded dividends/buybacks.',
-    signal_checks: [
-      'High, steady FCF conversion with low variability through the cycle',
-      'Revenues are regulated/contracted or entrenched; often with inflation-linked escalators',
-      'Payout safety: dividends/buybacks fully funded by FCF with coverage comfortably >1.2–1.5×',
-    ],
+    score: 7,
   },
   [VerdictKey.CYCLE_ADVANTAGED_LEADER]: {
     key: VerdictKey.CYCLE_ADVANTAGED_LEADER,
     label: 'Cycle-Advantaged Leader',
-    one_liner: 'Cost-curve or pricing-power leader in cyclical markets that out-earns mid-cycle and withstands downturns.',
+    one_liner:
+      'Leader in a cyclical industry that sits low on the cost curve or has pricing power. It stays cash-generative in downturns and out-earns peers across the cycle.',
     signal_checks: [
-      'Bottom-quartile cost position or structural pricing power with disciplined capacity adds',
-      'Balance sheet sized for 20–30% price swings (ample liquidity, low break-even; prudent hedging)',
-      'Positive through-cycle ROIC > WACC with FCF prioritized over volume growth',
+      'Bottom-quartile cost position or structural pricing power with disciplined capacity additions.',
+      'Remains free-cash-flow positive even if prices fall 20–30%; prudent hedging; mid-cycle net debt/EBITDA ≤ 1.5x.',
+      'Through-cycle returns exceed financing cost; NOT a resource extractor with depleting reserves.',
     ],
+    score: 7,
+  },
+  [VerdictKey.STABLE_CASH_RETURNER]: {
+    key: VerdictKey.STABLE_CASH_RETURNER,
+    label: 'Stable Cash Returner',
+    one_liner:
+      'A mature, predictable cash machine with limited need to reinvest. Most of the value shows up as steady dividends and/or buybacks that are well covered by cash.',
+    signal_checks: [
+      'Converts 80%+ of earnings into free cash flow with low volatility across a cycle.',
+      'Pays out 50%+ of normalized free cash flow with comfortable coverage (≥ 1.5x); reinvests 30% or less.',
+      "Less than 70% of revenue is regulated/contracted (otherwise it's a Regulatory Yield Asset).",
+    ],
+    score: 6,
+  },
+  [VerdictKey.BALANCE_SHEET_LENDER]: {
+    key: VerdictKey.BALANCE_SHEET_LENDER,
+    label: 'Balance-Sheet Lender',
+    one_liner:
+      'Banks and similar lenders where earnings come from the spread between what they earn on loans and what they pay on funding, plus credit quality. Discipline in funding, underwriting, and capital is key.',
+    signal_checks: [
+      "Cheap, sticky funding drives resilience (core customer deposits are 70%+ of funding and deposit rates don't spike too fast).",
+      'Credit losses and provisions sit within historical ranges thanks to conservative underwriting and mix.',
+      'Strong capital and liquidity (CET1/LCR above targets) and interest-rate/ALM risks within limits; NOT an insurance underwriter (that would be Risk Underwriter & Float).',
+    ],
+    score: 6,
+  },
+  [VerdictKey.RISK_UNDERWRITER_FLOAT]: {
+    key: VerdictKey.RISK_UNDERWRITER_FLOAT,
+    label: 'Risk Underwriter & Float',
+    one_liner:
+      'Insurance economics: make an underwriting profit (or at least break even) and invest the float safely and productively. Value compounds across cycles when both are done well.',
+    signal_checks: [
+      'Underwriting is profitable through the cycle (combined ratio ≤ 100% with low swings); pricing is adequate and reserves conservative.',
+      'Float (policyholder funds held before claims) is durable and growing; assets are matched in duration and quality to liabilities.',
+      'Capital is comfortably above regulatory needs and reinsurance limits catastrophe risk; NOT a bank/lender.',
+    ],
+    score: 6,
+  },
+  [VerdictKey.REGULATORY_YIELD_ASSET]: {
+    key: VerdictKey.REGULATORY_YIELD_ASSET,
+    label: 'Regulatory Yield Asset',
+    one_liner:
+      'Utility/infra-like equity that behaves a bit like a bond: cash flows are mostly set by contracts or regulators and often rise with inflation or a growing rate base.',
+    signal_checks: [
+      'At least ~70% of revenue comes from regulated frameworks (allowed ROE), power purchase agreements, or long take-or-pay/availability contracts with cost pass-throughs.',
+      'Earnings growth is driven by expanding the regulated asset base or CPI-linked escalators.',
+      'Leverage can be higher, but coverage remains stable through cycles; NOT a developer/operator REIT and NOT a Stable Cash Returner when regulation/contracting is ≥ 70%.',
+    ],
+    score: 5,
+  },
+  [VerdictKey.DEVELOPER_OPERATOR_NAV_CYCLE]: {
+    key: VerdictKey.DEVELOPER_OPERATOR_NAV_CYCLE,
+    label: 'Developer–Operator NAV Cycle',
+    one_liner:
+      'Real-asset developer/owner (e.g., REITs, pipelines, data centers) that creates value when project returns exceed funding costs and capital is recycled based on discount/premium to NAV.',
+    signal_checks: [
+      'Visible value creation: pipeline IRRs exceed funding cost by roughly 3–5 percentage points and pre-leasing/absorption is on track.',
+      'Prudent balance sheet (LTV and interest cover within targets) and diverse funding with limited equity dilution.',
+      'Disciplined recycling based on price-to-NAV; NOT a Regulatory Yield Asset (no regulated rate base) and NOT a Stable Cash Returner if payout is < 50% of FCF.',
+    ],
+    score: 5,
   },
   [VerdictKey.TRANSITION_VALUE_PLAY]: {
     key: VerdictKey.TRANSITION_VALUE_PLAY,
     label: 'Transition Value Play',
-    one_liner: 'Legacy cash generator transitioning toward sustainable or digital model with clear transformation milestones.',
+    one_liner: 'A legacy cash generator that is funding a pivot to a more durable, digital, or sustainable model. The plan is funded and milestones are clear.',
     signal_checks: [
-      'Declining or flat core offset by credible transformation capex with disclosed ROI',
-      'Management transparency on milestones/targets and resourcing',
-      'Mid-term earnings trough identifiable and bridgeable; NOT primarily a dated (≤12m) single event',
+      'Core business is flat to down up to ~10%, but spend on the new model has a disclosed return above funding cost by ~3%+ with a 12–36 month timeline.',
+      'Liquidity runway of 24+ months and management reports progress against milestones.',
+      'NOT an Event-Driven Special (no single hard event is the main thesis) and NOT Distressed Optionality (no near-term refinancing stress).',
     ],
+    score: 4,
+  },
+  [VerdictKey.RESOURCE_EXTRACTOR_RESERVE_REPLACER]: {
+    key: VerdictKey.RESOURCE_EXTRACTOR_RESERVE_REPLACER,
+    label: 'Resource Extractor & Reserve Replacer',
+    one_liner:
+      'Energy/mining businesses with depleting assets. Value depends on replacing reserves cheaply, keeping costs low, and sizing spending for tough commodity cycles.',
+    signal_checks: [
+      'Replaces 100%+ of produced reserves over 3 years and sits low on the cost curve at a conservative commodity price deck (F&D and lifting costs are competitive).',
+      'Spending and leverage are sized for downcycles; project IRRs clear the bar at cautious prices; permits/ESG/license are stable.',
+      'Reserve life and decline profile are healthy; hedging is prudent; NOT a Cycle-Advantaged Leader in manufacturing/processing (i.e., no reserve depletion).',
+    ],
+    score: 4,
   },
   [VerdictKey.CATALYST_TURNAROUND]: {
     key: VerdictKey.CATALYST_TURNAROUND,
     label: 'Catalyst Turnaround',
-    one_liner: 'Under-earning vs potential with specific, time-bound operational/structural fixes and early proof points.',
+    one_liner: 'Under-earning vs potential, with specific operational fixes underway and early proof points. The thesis is the fix, not a one-off event.',
     signal_checks: [
-      'Named catalysts with timelines and ROI targets (leadership, incentives, restructuring, spin/carve-out, digital build-out)',
-      'Bridgeable earnings trough with adequate liquidity and manageable leverage',
-      'Early proof points: margins/asset productivity/FCF conversion improving; NOT event-led as the primary thesis',
+      'Named catalysts with a 4–8 quarter timetable and clear ROI targets (leadership change, incentives, restructuring, mix, digital rebuild).',
+      'Earnings trough is bridgeable with adequate liquidity; at least a ~300 bps margin gap vs peers is closing on plan.',
+      "NOT mainly a dated, hard event (that's Event-Driven Special) and NOT a balance-sheet stress story (that's Distressed Optionality).",
     ],
+    score: 3,
   },
   [VerdictKey.EVENT_DRIVEN_SPECIAL]: {
     key: VerdictKey.EVENT_DRIVEN_SPECIAL,
     label: 'Event-Driven Special',
-    one_liner: 'Value gap driven by an identifiable, dated (≤12 months) hard event—merger, spin, litigation, or policy trigger.',
+    one_liner:
+      'The main reason to own the stock is a near-dated hard event (6–12 months) like a merger close, court ruling, or policy decision with clear upside and a credible path.',
     signal_checks: [
-      'Upcoming event with defined timeline and payoff asymmetry (≤6–12 months)',
-      'Hard catalyst (deal close, ruling, restructuring) with credible financing/regulatory path',
-      'Clear downside floor; event probability >60%; primary thesis is the event (not an operational turnaround)',
+      'A specific event within 6–12 months with >60% estimated chance of success and a clear payoff if it lands.',
+      'Financing/regulatory path is realistic and there is a downside floor (e.g., break fee or asset value).',
+      'Primary thesis is the event; NOT an operational turnaround and NOT primarily about fixing a stressed balance sheet.',
     ],
+    score: 2,
   },
   [VerdictKey.DISTRESSED_OPTIONALITY]: {
     key: VerdictKey.DISTRESSED_OPTIONALITY,
     label: 'Distressed Optionality',
-    one_liner: 'Stressed balance sheet but asymmetric upside from recap, asset sales, or restructuring if the core is sound.',
+    one_liner:
+      'Balance sheet is tight (debt/refi risk), but there is a plausible repair plan and meaningful upside if the company executes. The core business can at least break even on cash before interest.',
     signal_checks: [
-      'Valuation at or below liquidation/replacement value (deep discount to NAV)',
-      'Defined catalyst path (recap, asset monetization, debt exchange) with 12–24 month window',
-      'Operationally viable core post-repair (positive unit economics or cash breakeven ex-interest)',
+      'Valuation sits at or below liquidation/NAV and there is visible stress: near-term maturities (≤ 24 months) or high leverage (> 5x) or low interest coverage (< 1.5x).',
+      'There is a defined path (recap, asset sales, debt exchange) within 12–24 months and the core is cash breakeven before interest costs.',
+      "NOT just a single event without balance-sheet stress (that's Event-Driven Special) and NOT a secular no-hope story (that's Structural Decliner).",
     ],
+    score: 1,
   },
   [VerdictKey.STRUCTURAL_DECLINER]: {
     key: VerdictKey.STRUCTURAL_DECLINER,
     label: 'Structural Decliner',
-    one_liner: 'Cash-generative but trapped in secular decline or tech lag; intrinsic value likely shrinking without a credible pivot.',
+    one_liner:
+      'A business shrinking for structural reasons (technology, competition, behavior change) with no credible, funded plan to fix it. Intrinsic value is likely falling over time.',
     signal_checks: [
-      'Structural erosion: revenue CAGR < -3% and/or persistent share/margin loss',
-      'Technology under-investment causing inefficiencies and share loss',
-      'Financial strain (high leverage/refi risk or sustained negative FCF) with no credible, funded pivot plan',
+      'Revenue falls (about −3% CAGR or worse) and/or share and margins erode for 3+ years.',
+      'Under-investment in product/tech/service shows up as customer churn or obsolescence.',
+      "No credible, funded pivot (otherwise it's a Transition Value Play) and no time-bound operational catalysts (otherwise it's a Catalyst Turnaround/Event-Driven Special).",
     ],
+    score: 0,
   },
 };
 

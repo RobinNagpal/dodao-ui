@@ -412,7 +412,17 @@ function TickerSummaryInfo({
             const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             return (
               <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                <h3 className="text-lg font-semibold mb-2">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                  {categoryResult && (
+                    <div
+                      className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                    >
+                      {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
+                    </div>
+                  )}
+                </div>
                 <div
                   className="text-gray-300 markdown markdown-body"
                   dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
@@ -465,7 +475,15 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 
           return (
             <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-              <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
+                <h3 className="text-xl font-bold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                <div
+                  className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                >
+                  {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
+                </div>
+              </div>
 
               {categoryResult.summary && (
                 <div className="mb-4">
