@@ -1,5 +1,5 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { InvestorKey, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { TickerV1 } from '@prisma/client';
@@ -45,22 +45,21 @@ const getHandler = async (
         t.meta_description AS "metaDescription",
         t.space_id AS "spaceId",
         t.stock_analyze_url AS "stockAnalyzeUrl",
-        COUNT(CASE WHEN fr.category_key = ${TickerAnalysisCategory.BusinessAndMoat} THEN 1 END) AS "businessAndMoatFactorResultsCount",
-        COUNT(CASE WHEN fr.category_key = ${TickerAnalysisCategory.FinancialStatementAnalysis} THEN 1 END) AS "financialAnalysisFactorsResultsCount",
-        COUNT(CASE WHEN fr.category_key = ${TickerAnalysisCategory.PastPerformance} THEN 1 END) AS "pastPerformanceFactorsResultsCount",
-        COUNT(CASE WHEN fr.category_key = ${TickerAnalysisCategory.FutureGrowth} THEN 1 END) AS "futureGrowthFactorsResultsCount",
-        COUNT(CASE WHEN fr.category_key = ${TickerAnalysisCategory.FairValue} THEN 1 END) AS "fairValueFactorsResultsCount",
-        NOT EXISTS (
+        COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.BusinessAndMoat})::int AS "businessAndMoatFactorResultsCount",
+        COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FinancialStatementAnalysis})::int AS "financialAnalysisFactorsResultsCount",
+        COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.PastPerformance})::int AS "pastPerformanceFactorsResultsCount",
+        COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FutureGrowth})::int AS "futureGrowthFactorsResultsCount",
+        COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FairValue})::int AS "fairValueFactorsResultsCount",        NOT EXISTS (
           SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'BILL_ACKMAN'
+          WHERE iar.ticker_id = t.id AND iar.investor_key = 'BILL_ACKMAN'::text
         ) AS "isMissingBillAckmanReport",
         NOT EXISTS (
           SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'WARREN_BUFFETT'
+          WHERE iar.ticker_id = t.id AND iar.investor_key = 'WARREN_BUFFETT'::text
         ) AS "isMissingWarrenBuffettReport",
         NOT EXISTS (
           SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'CHARLIE_MUNGER'
+          WHERE iar.ticker_id = t.id AND iar.investor_key = 'CHARLIE_MUNGER'::text
         ) AS "isMissingCharlieMungerReport"
       FROM 
         tickers_v1 t
@@ -79,6 +78,8 @@ const getHandler = async (
       "futureGrowthFactorsResultsCount" < 1 OR
       "fairValueFactorsResultsCount" < 1;
   `;
+
+  console.log(tickersWithMissingReports);
 
   return tickersWithMissingReports;
 };
