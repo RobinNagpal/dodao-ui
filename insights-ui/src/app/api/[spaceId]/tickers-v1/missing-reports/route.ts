@@ -14,6 +14,16 @@ export interface MissingReportsForTicker extends TickerV1 {
   isMissingBillAckmanReport: boolean;
   isMissingWarrenBuffettReport: boolean;
   isMissingCharlieMungerReport: boolean;
+
+  industry: {
+    name: string;
+    industryKey: string;
+  };
+
+  subIndustry: {
+    name: string;
+    subIndustryKey: string;
+  };
 }
 
 const getHandler = async (
