@@ -1,7 +1,7 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { INVESTOR_OPTIONS, AnalysisTypeKey, INVESTOR_ANALYSIS_PREFIX, InvestorKey, createInvestorAnalysisKey } from '@/lib/mappingsV1';
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Common types
@@ -133,11 +133,12 @@ export const generateAllReports = async (
 // Helper function to create a background generation request for a ticker
 export const createBackgroundGenerationRequest = async (
   ticker: string,
-  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
   if (!ticker) return;
 
   const payload: GenerationRequestPayload = {
+    ticker,
     regenerateCompetition: true,
     regenerateFinancialAnalysis: true,
     regenerateBusinessAndMoat: true,
@@ -152,19 +153,20 @@ export const createBackgroundGenerationRequest = async (
     regenerateCachedScore: true,
   };
 
-  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
 };
 
 // Helper function to create a background generation request for a specific analysis type
 export const createSingleAnalysisBackgroundRequest = async (
   analysisType: string,
   ticker: string,
-  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
   if (!ticker) return;
 
   // Create a payload with all options set to false by default
   const payload: GenerationRequestPayload = {
+    ticker,
     regenerateCompetition: false,
     regenerateFinancialAnalysis: false,
     regenerateBusinessAndMoat: false,
@@ -213,19 +215,20 @@ export const createSingleAnalysisBackgroundRequest = async (
       break;
   }
 
-  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
 };
 
 // Helper function to create a background generation request for only the failed parts
 export const createFailedPartsOnlyGenerationRequest = async (
   ticker: string,
   failedSteps: string[],
-  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
   if (!ticker || !failedSteps.length) return;
 
   // Create a payload with all options set to false by default
   const payload: GenerationRequestPayload = {
+    ticker,
     regenerateCompetition: false,
     regenerateFinancialAnalysis: false,
     regenerateBusinessAndMoat: false,
@@ -285,19 +288,20 @@ export const createFailedPartsOnlyGenerationRequest = async (
     }
   });
 
-  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
 };
 
 // Helper function to create a background generation request for a specific investor analysis
 export const createSingleInvestorBackgroundRequest = async (
   investorKey: InvestorKey,
   ticker: string,
-  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
   if (!ticker) return;
 
   // Create a payload with all options set to false by default
   const payload: GenerationRequestPayload = {
+    ticker,
     regenerateCompetition: false,
     regenerateFinancialAnalysis: false,
     regenerateBusinessAndMoat: false,
@@ -328,7 +332,7 @@ export const createSingleInvestorBackgroundRequest = async (
       break;
   }
 
-  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
 };
 
 // Helper function to generate selected report types synchronously for multiple tickers
@@ -363,14 +367,15 @@ export const generateSelectedReportsSynchronously = async (
 export const generateSelectedReportsInBackground = async (
   tickers: string[],
   selectedReportTypes: string[],
-  postRequest: (url: string, data: GenerationRequestPayload) => Promise<any>
+  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
   if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
-  // Create background generation requests for each ticker with only selected types
-  const tickerPromises = tickers.map(async (ticker) => {
+  // Create an array of payloads for all tickers
+  const payloads: GenerationRequestPayload[] = tickers.map((ticker) => {
     // Create a payload with all options set to false by default
     const payload: GenerationRequestPayload = {
+      ticker,
       regenerateCompetition: false,
       regenerateFinancialAnalysis: false,
       regenerateBusinessAndMoat: false,
@@ -417,9 +422,9 @@ export const generateSelectedReportsInBackground = async (
       }
     });
 
-    await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+    return payload;
   });
 
-  // Execute all ticker promises in parallel
-  await Promise.all(tickerPromises);
+  // Send all payloads in a single request
+  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
 };

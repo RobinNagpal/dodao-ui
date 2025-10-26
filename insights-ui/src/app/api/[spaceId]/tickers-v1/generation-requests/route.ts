@@ -5,6 +5,22 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
+export interface GenerationRequestPayload {
+  ticker: string;
+  regenerateCompetition: boolean;
+  regenerateFinancialAnalysis: boolean;
+  regenerateBusinessAndMoat: boolean;
+  regeneratePastPerformance: boolean;
+  regenerateFutureGrowth: boolean;
+  regenerateFairValue: boolean;
+  regenerateFutureRisk: boolean;
+  regenerateWarrenBuffett: boolean;
+  regenerateCharlieMunger: boolean;
+  regenerateBillAckman: boolean;
+  regenerateFinalSummary: boolean;
+  regenerateCachedScore: boolean;
+}
+
 export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationRequest {
   ticker: {
     symbol: string;
@@ -149,4 +165,100 @@ async function getHandler(
   };
 }
 
+async function postHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload,
+  { params }: { params: Promise<{ spaceId: string }> }
+): Promise<TickerV1GenerationRequest[]> {
+  const { spaceId } = await params;
+  const payloads = (await req.json()) as GenerationRequestPayload[];
+
+  if (!Array.isArray(payloads) || payloads.length === 0) {
+    throw new Error('Request body must be a non-empty array of generation requests');
+  }
+
+  const results: TickerV1GenerationRequest[] = [];
+
+  // Process each request in the array
+  for (const payload of payloads) {
+    const { ticker, ...regenerateOptions } = payload;
+
+    if (!ticker) {
+      throw new Error('Ticker is required for each generation request');
+    }
+
+    // Find the ticker to get its ID
+    const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+      where: {
+        spaceId,
+        symbol: ticker,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    // Check if there's an existing request for this ticker that is NotStarted
+    const existingRequest = await prisma.tickerV1GenerationRequest.findFirst({
+      where: {
+        tickerId: tickerRecord.id,
+        status: GenerationRequestStatus.NotStarted,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    let result: TickerV1GenerationRequest;
+
+    if (existingRequest) {
+      // If there's an existing NotStarted request, update it
+      result = await prisma.tickerV1GenerationRequest.update({
+        where: {
+          id: existingRequest.id,
+        },
+        data: {
+          regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
+          regenerateFinancialAnalysis: regenerateOptions.regenerateFinancialAnalysis || existingRequest.regenerateFinancialAnalysis,
+          regenerateBusinessAndMoat: regenerateOptions.regenerateBusinessAndMoat || existingRequest.regenerateBusinessAndMoat,
+          regeneratePastPerformance: regenerateOptions.regeneratePastPerformance || existingRequest.regeneratePastPerformance,
+          regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
+          regenerateFairValue: regenerateOptions.regenerateFairValue || existingRequest.regenerateFairValue,
+          regenerateFutureRisk: regenerateOptions.regenerateFutureRisk || existingRequest.regenerateFutureRisk,
+          regenerateWarrenBuffett: regenerateOptions.regenerateWarrenBuffett || existingRequest.regenerateWarrenBuffett,
+          regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger || existingRequest.regenerateCharlieMunger,
+          regenerateBillAckman: regenerateOptions.regenerateBillAckman || existingRequest.regenerateBillAckman,
+          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
+          regenerateCachedScore: regenerateOptions.regenerateCachedScore || existingRequest.regenerateCachedScore,
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      // If no existing NotStarted request, create a new one
+      result = await prisma.tickerV1GenerationRequest.create({
+        data: {
+          tickerId: tickerRecord.id,
+          regenerateCompetition: regenerateOptions.regenerateCompetition,
+          regenerateFinancialAnalysis: regenerateOptions.regenerateFinancialAnalysis,
+          regenerateBusinessAndMoat: regenerateOptions.regenerateBusinessAndMoat,
+          regeneratePastPerformance: regenerateOptions.regeneratePastPerformance,
+          regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth,
+          regenerateFairValue: regenerateOptions.regenerateFairValue,
+          regenerateFutureRisk: regenerateOptions.regenerateFutureRisk,
+          regenerateWarrenBuffett: regenerateOptions.regenerateWarrenBuffett,
+          regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger,
+          regenerateBillAckman: regenerateOptions.regenerateBillAckman,
+          regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
+          regenerateCachedScore: regenerateOptions.regenerateCachedScore,
+        },
+      });
+    }
+
+    results.push(result);
+  }
+
+  return results;
+}
+
+export const POST = withLoggedInAdmin<TickerV1GenerationRequest[]>(postHandler);
 export const GET = withLoggedInAdmin<GenerationRequestsResponse>(getHandler);

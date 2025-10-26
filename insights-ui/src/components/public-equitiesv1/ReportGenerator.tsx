@@ -1,4 +1,4 @@
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
 import {
   AnalysisStatus,
@@ -52,7 +52,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   });
 
   // Post hook for background generation requests
-  const { postData: postRequest } = usePostData<any, GenerationRequestPayload>({
+  const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
     successMessage: 'Background generation request created successfully!',
     errorMessage: 'Failed to create background generation request.',
   });

@@ -1,6 +1,6 @@
 'use client';
 
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { InvestorKey } from '@/lib/mappingsV1';
 import { KoalaGainsSession } from '@/types/auth';
@@ -26,7 +26,7 @@ export default function StockActions({ tickerSymbol, children, session }: StockA
   const router = useRouter();
 
   // Post hook for background generation requests
-  const { postData: postRequest } = usePostData<any, GenerationRequestPayload>({
+  const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
     successMessage: 'Background generation request created successfully!',
     errorMessage: 'Failed to create background generation request.',
   });

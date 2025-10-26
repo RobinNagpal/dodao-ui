@@ -6,7 +6,7 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/[ticker]/generation-requests/route';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 
 interface RequestGeneratorProps {
   selectedTickers: string[];
@@ -19,7 +19,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
   const [isCreatingAll, setIsCreatingAll] = useState<boolean>(false);
 
   // Post hooks for request creation
-  const { postData: postRequest, loading: requestLoading } = usePostData<TickerV1GenerationRequest, GenerationRequestPayload>({
+  const { postData: postRequest, loading: requestLoading } = usePostData<TickerV1GenerationRequest[], GenerationRequestPayload[]>({
     successMessage: 'Request creation started successfully!',
     errorMessage: 'Failed to create request.',
   });
@@ -50,7 +50,8 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
     if (!ticker) return;
 
     // Create request with all analysis types set to true
-    const payload = {
+    const payload: GenerationRequestPayload = {
+      ticker,
       regenerateCompetition: true,
       regenerateFinancialAnalysis: true,
       regenerateBusinessAndMoat: true,
@@ -65,15 +66,15 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
       regenerateCachedScore: true,
     };
 
-    const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
+    const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
 
-    if (result) {
+    if (result && result.length > 0) {
       // Notify parent component to refresh the ticker request
       onRequestCreated(ticker);
     }
   };
 
-  // Function to create all requests for all tickers in parallel
+  // Function to create all requests for all tickers in a single request
   const handleCreateAllForAllTickers = async (): Promise<void> => {
     if (selectedTickers.length === 0) return;
 
@@ -81,20 +82,37 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
     setIsCreatingAll(true);
 
     try {
-      // Create an array of promises for each ticker
-      const tickerPromises = selectedTickers.map(async (ticker) => {
-        await handleCreateAll(ticker);
-      });
+      // Create an array of payloads for all tickers
+      const payloads: GenerationRequestPayload[] = selectedTickers.map((ticker) => ({
+        ticker,
+        regenerateCompetition: true,
+        regenerateFinancialAnalysis: true,
+        regenerateBusinessAndMoat: true,
+        regeneratePastPerformance: true,
+        regenerateFutureGrowth: true,
+        regenerateFairValue: true,
+        regenerateFutureRisk: true,
+        regenerateWarrenBuffett: true,
+        regenerateCharlieMunger: true,
+        regenerateBillAckman: true,
+        regenerateFinalSummary: true,
+        regenerateCachedScore: true,
+      }));
 
-      // Execute all ticker promises in parallel
-      await Promise.all(tickerPromises);
+      // Send all payloads in a single request
+      const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
+
+      if (result && result.length > 0) {
+        // Notify parent component to refresh all ticker requests
+        selectedTickers.forEach((ticker) => onRequestCreated(ticker));
+      }
     } finally {
       // Reset global loading state
       setIsCreatingAll(false);
     }
   };
 
-  // Function to create a specific request type for all selected tickers in parallel
+  // Function to create a specific request type for all selected tickers in a single request
   const handleCreateRequestForAllTickers = async (analysisType: string): Promise<void> => {
     if (selectedTickers.length === 0) return;
 
@@ -106,31 +124,35 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
     setLoadingStates(newLoadingStates);
 
     try {
-      // Create an array of promises for each ticker
-      const tickerPromises = selectedTickers.map(async (ticker) => {
-        if (!tickerRequests[ticker]) return;
+      // Filter out tickers that don't have requests
+      const validTickers = selectedTickers.filter((ticker) => tickerRequests[ticker]);
 
-        const payload = {
-          regenerateCompetition: analysisType === 'competition',
-          regenerateFinancialAnalysis: analysisType === 'financial-analysis',
-          regenerateBusinessAndMoat: analysisType === 'business-and-moat',
-          regeneratePastPerformance: analysisType === 'past-performance',
-          regenerateFutureGrowth: analysisType === 'future-growth',
-          regenerateFairValue: analysisType === 'fair-value',
-          regenerateFutureRisk: analysisType === 'future-risk',
-          regenerateWarrenBuffett: false,
-          regenerateCharlieMunger: false,
-          regenerateBillAckman: false,
-          regenerateFinalSummary: analysisType === 'final-summary',
-          regenerateCachedScore: analysisType === 'cached-score',
-        };
+      if (validTickers.length === 0) return;
 
-        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
-        onRequestCreated(ticker);
-      });
+      // Create an array of payloads for all valid tickers
+      const payloads: GenerationRequestPayload[] = validTickers.map((ticker) => ({
+        ticker,
+        regenerateCompetition: analysisType === 'competition',
+        regenerateFinancialAnalysis: analysisType === 'financial-analysis',
+        regenerateBusinessAndMoat: analysisType === 'business-and-moat',
+        regeneratePastPerformance: analysisType === 'past-performance',
+        regenerateFutureGrowth: analysisType === 'future-growth',
+        regenerateFairValue: analysisType === 'fair-value',
+        regenerateFutureRisk: analysisType === 'future-risk',
+        regenerateWarrenBuffett: false,
+        regenerateCharlieMunger: false,
+        regenerateBillAckman: false,
+        regenerateFinalSummary: analysisType === 'final-summary',
+        regenerateCachedScore: analysisType === 'cached-score',
+      }));
 
-      // Execute all ticker promises in parallel
-      await Promise.all(tickerPromises);
+      // Send all payloads in a single request
+      const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
+
+      if (result && result.length > 0) {
+        // Notify parent component to refresh all ticker requests
+        validTickers.forEach((ticker) => onRequestCreated(ticker));
+      }
     } finally {
       // Reset loading states for this analysis type
       const finalLoadingStates = { ...loadingStates };
@@ -141,7 +163,7 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
     }
   };
 
-  // Function to create a specific investor request for all selected tickers in parallel
+  // Function to create a specific investor request for all selected tickers in a single request
   const handleCreateInvestorRequestForAllTickers = async (investorKey: string): Promise<void> => {
     if (selectedTickers.length === 0) return;
 
@@ -153,31 +175,35 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
     setLoadingStates(newLoadingStates);
 
     try {
-      // Create an array of promises for each ticker
-      const tickerPromises = selectedTickers.map(async (ticker) => {
-        if (!tickerRequests[ticker]) return;
+      // Filter out tickers that don't have requests
+      const validTickers = selectedTickers.filter((ticker) => tickerRequests[ticker]);
 
-        const payload = {
-          regenerateCompetition: false,
-          regenerateFinancialAnalysis: false,
-          regenerateBusinessAndMoat: false,
-          regeneratePastPerformance: false,
-          regenerateFutureGrowth: false,
-          regenerateFairValue: false,
-          regenerateFutureRisk: false,
-          regenerateWarrenBuffett: investorKey === 'WARREN_BUFFETT',
-          regenerateCharlieMunger: investorKey === 'CHARLIE_MUNGER',
-          regenerateBillAckman: investorKey === 'BILL_ACKMAN',
-          regenerateFinalSummary: false,
-          regenerateCachedScore: false,
-        };
+      if (validTickers.length === 0) return;
 
-        await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/generation-requests`, payload);
-        onRequestCreated(ticker);
-      });
+      // Create an array of payloads for all valid tickers
+      const payloads: GenerationRequestPayload[] = validTickers.map((ticker) => ({
+        ticker,
+        regenerateCompetition: false,
+        regenerateFinancialAnalysis: false,
+        regenerateBusinessAndMoat: false,
+        regeneratePastPerformance: false,
+        regenerateFutureGrowth: false,
+        regenerateFairValue: false,
+        regenerateFutureRisk: false,
+        regenerateWarrenBuffett: investorKey === 'WARREN_BUFFETT',
+        regenerateCharlieMunger: investorKey === 'CHARLIE_MUNGER',
+        regenerateBillAckman: investorKey === 'BILL_ACKMAN',
+        regenerateFinalSummary: false,
+        regenerateCachedScore: false,
+      }));
 
-      // Execute all ticker promises in parallel
-      await Promise.all(tickerPromises);
+      // Send all payloads in a single request
+      const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
+
+      if (result && result.length > 0) {
+        // Notify parent component to refresh all ticker requests
+        validTickers.forEach((ticker) => onRequestCreated(ticker));
+      }
     } finally {
       // Reset loading states for this investor analysis
       const finalLoadingStates = { ...loadingStates };
