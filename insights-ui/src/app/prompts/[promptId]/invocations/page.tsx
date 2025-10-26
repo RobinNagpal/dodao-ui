@@ -71,7 +71,12 @@ export default function PromptInvocationsListPage(): JSX.Element {
                 <td className="p-2 border border-color">{invocation.prompt.name}</td>
                 <td className="p-2 border border-color">{invocation.prompt.key.replace('US/public-equities/real-estate/equity-reits/', 'equity-reits - ')}</td>
                 <td className="p-2 border border-color">{new Date(invocation.updatedAt).toLocaleString()}</td>
-                <td className="p-2 border border-color">{invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.ticker : '-'}</td>
+                <td className="p-2 border border-color">
+                  {invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.symbol : '-'} <br />{' '}
+                  <span className="text-sm">{invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.name : '-'}</span>
+                  <br /> <span className="text-xs">{invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.industryName : '-'}</span>
+                  <br /> <span className="text-xs">{invocation.inputJson ? JSON.parse(invocation.inputJson.toString())?.subIndustryName : '-'}</span>
+                </td>
                 <td className="p-2 border border-color">{invocation.createdBy}</td>
                 <td className="p-2 border border-color">{invocation.status}</td>
                 <td className="p-2 border border-color">
