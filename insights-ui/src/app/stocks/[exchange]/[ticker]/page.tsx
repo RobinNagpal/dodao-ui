@@ -1,17 +1,17 @@
+import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
-import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
+import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CompetitionResponse } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
@@ -29,7 +29,6 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
-import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 
 /**
  * Static-by-default with on-demand invalidation.

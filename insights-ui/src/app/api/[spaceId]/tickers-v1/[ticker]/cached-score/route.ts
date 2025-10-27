@@ -1,6 +1,6 @@
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
-import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS } from '@/types/ticker-typesv1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';

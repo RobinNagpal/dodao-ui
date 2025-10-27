@@ -1,18 +1,17 @@
 'use client';
 
-import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory, TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { TickerV1FullReportResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { useEffect, useState } from 'react';
 
 interface ComparisonData {
   ticker: string;

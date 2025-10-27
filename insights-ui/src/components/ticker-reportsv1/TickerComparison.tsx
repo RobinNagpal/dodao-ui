@@ -1,8 +1,8 @@
 // Removed unused imports
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory, EvaluationResult } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getScoreColorClasses } from '@/utils/score-utils';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
 // Define strict types for the component
 export interface ComparisonTicker {

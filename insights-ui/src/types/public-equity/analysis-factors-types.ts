@@ -1,4 +1,4 @@
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
 

@@ -2,14 +2,12 @@
 
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
-import { InvestorKey } from '@/lib/mappingsV1';
 import { KoalaGainsSession } from '@/types/auth';
+import { analysisTypes, investorAnalysisTypes, InvestorKey } from '@/types/ticker-typesv1';
 import {
-  analysisTypes,
   createBackgroundGenerationRequest,
   createSingleAnalysisBackgroundRequest,
   createSingleInvestorBackgroundRequest,
-  investorAnalysisTypes,
 } from '@/utils/report-generator-utils';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';

@@ -1,11 +1,11 @@
+import { prisma } from '@/prisma';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { AnalysisRequest, CompetitionAnalysisArray, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
-import { AnalysisRequest, CompetitionAnalysisArray, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
-import { VERDICT_DEFINITIONS } from '@/lib/mappingsV1';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;

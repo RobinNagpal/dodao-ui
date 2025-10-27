@@ -1,24 +1,24 @@
 'use client';
 
 import EditAnalysisFactorsModal from '@/components/analysis-factors/EditAnalysisFactorsModal';
-import ViewAnalysisFactorsModal from '@/components/analysis-factors/ViewAnalysisFactorsModal';
-import UploadJsonModal from '@/components/analysis-factors/UploadJsonModal';
 import ExportJsonModal from '@/components/analysis-factors/ExportJsonModal';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import UploadJsonModal from '@/components/analysis-factors/UploadJsonModal';
+import ViewAnalysisFactorsModal from '@/components/analysis-factors/ViewAnalysisFactorsModal';
 import { UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
+import { SuccessStatus } from '@/types/public-equity/common-types';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState } from 'react';
-import { SuccessStatus } from '@/types/public-equity/common-types';
 
 interface AnalysisFactorsTableProps {
   industryKey: string;

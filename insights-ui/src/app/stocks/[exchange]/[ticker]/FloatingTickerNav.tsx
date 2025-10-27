@@ -1,5 +1,5 @@
 import FloatingNavigation, { NavigationSection } from '@/components/ticker-reportsv1/FloatingNavigation';
-import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/lib/mappingsV1';
+import { CATEGORY_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { use } from 'react';
 

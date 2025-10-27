@@ -1,19 +1,9 @@
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import { AnalysisRequest, TickerAnalysisResponse, TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import {
-  AnalysisStatus,
-  analysisTypes,
-  createBackgroundGenerationRequest,
-  generateAllReports,
-  generateSelectedReportsInBackground,
-  generateSelectedReportsSynchronously,
-  investorAnalysisTypes,
-} from '@/utils/report-generator-utils';
-import { INVESTOR_ANALYSIS_PREFIX } from '@/lib/mappingsV1';
+import { AnalysisStatus, analysisTypes, investorAnalysisTypes, useGenerateReports } from '@/hooks/useGenerateReports';
+import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { INVESTOR_ANALYSIS_PREFIX } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -30,111 +20,63 @@ interface ReportGeneratorProps {
 
 export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated }: ReportGeneratorProps): JSX.Element {
   const router = useRouter();
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
+  const [loadingStates] = useState<Record<string, boolean>>({});
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
   const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
   const [pendingTickers, setPendingTickers] = useState<string[]>([]);
 
-  // New state for selected report types
   const [selectedReportTypes, setSelectedReportTypes] = useState<string[]>([]);
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
-  // Initialize selected report types to all by default
   React.useEffect(() => {
-    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
+    const allReportTypeKeys: string[] = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
-  // Post hooks for analysis generation
-  const { postData: postAnalysis, loading: analysisLoading } = usePostData<TickerAnalysisResponse, AnalysisRequest>({
-    successMessage: 'Analysis generation started successfully!',
-    errorMessage: 'Failed to generate analysis.',
-  });
-
-  // Post hook for background generation requests
-  const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
-    successMessage: 'Background generation request created successfully!',
-    errorMessage: 'Failed to create background generation request.',
-  });
+  const { generateAllReportsForTicker, generateReportsSynchronously, generateReportsInBackground, createFullBackgroundGenerationRequests } =
+    useGenerateReports();
 
   const handleGenerateAll = async (ticker: string): Promise<void> => {
     if (!ticker) return;
-
-    // Use the utility function to generate all reports
-    await generateAllReports(ticker, postAnalysis, onReportGenerated);
+    await generateAllReportsForTicker(ticker, onReportGenerated);
   };
 
-  // Function to show the generation modal
   const handleGenerateAllForAllTickers = (): void => {
     if (selectedTickers.length === 0) return;
-
-    // Store the selected tickers for later use
     setPendingTickers([...selectedTickers]);
-
-    // Show the modal
     setShowGenerationModal(true);
   };
 
-  // Function to handle synchronous report generation
   const handleSynchronousGeneration = async (): Promise<void> => {
-    // Close the modal
     setShowGenerationModal(false);
-
     if (pendingTickers.length === 0) return;
 
-    // Set global loading state
     setIsGeneratingAll(true);
-
     try {
-      // Create an array of promises for each ticker
-      const tickerPromises = pendingTickers.map(async (ticker) => {
-        // For each ticker, we still need to process reports sequentially
-        // to respect dependencies, but we can process different tickers in parallel
-        await handleGenerateAll(ticker);
-      });
-
-      // Execute all ticker promises in parallel
-      await Promise.all(tickerPromises);
+      await Promise.all(pendingTickers.map((t) => handleGenerateAll(t)));
     } finally {
-      // Reset global loading state
       setIsGeneratingAll(false);
-      // Clear pending tickers
       setPendingTickers([]);
     }
   };
 
-  // Function to handle background report generation
+  /** Background path now uses a single BATCH request for all tickers */
   const handleBackgroundGeneration = async (): Promise<void> => {
-    // Close the modal
     setShowGenerationModal(false);
-
     if (pendingTickers.length === 0) return;
 
-    // Set global loading state
     setIsGeneratingAll(true);
-
     try {
-      // Create background generation requests for each ticker
-      const tickerPromises = pendingTickers.map(async (ticker) => {
-        await createBackgroundGenerationRequest(ticker, postRequest);
-      });
-
-      // Execute all ticker promises in parallel
-      await Promise.all(tickerPromises);
-
-      // Redirect to the generation requests page
+      await createFullBackgroundGenerationRequests(pendingTickers);
       router.push('/admin-v1/generation-requests');
     } finally {
-      // Reset global loading state
       setIsGeneratingAll(false);
-      // Clear pending tickers
       setPendingTickers([]);
     }
   };
 
-  // Helper functions for report type selection
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
+    const allReportTypeKeys: string[] = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -143,71 +85,43 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleReportTypeToggle = (reportTypeKey: string): void => {
-    setSelectedReportTypes((prev) => {
-      if (prev.includes(reportTypeKey)) {
-        return prev.filter((key) => key !== reportTypeKey);
-      } else {
-        return [...prev, reportTypeKey];
-      }
-    });
+    setSelectedReportTypes((prev) => (prev.includes(reportTypeKey) ? prev.filter((k) => k !== reportTypeKey) : [...prev, reportTypeKey]));
   };
 
-  // Function to show the specific generation modal
   const handleGenerateSpecificReportTypes = (): void => {
     if (selectedTickers.length === 0 || selectedReportTypes.length === 0) return;
-
-    // Store the selected tickers for later use
     setPendingTickers([...selectedTickers]);
-
-    // Show the modal
     setShowSpecificGenerationModal(true);
   };
 
-  // Function to handle synchronous specific report generation
   const handleSynchronousSpecificGeneration = async (): Promise<void> => {
-    // Close the modal
     setShowSpecificGenerationModal(false);
-
     if (pendingTickers.length === 0 || selectedReportTypes.length === 0) return;
 
-    // Set global loading state
     setIsGeneratingAll(true);
-
     try {
-      await generateSelectedReportsSynchronously(pendingTickers, selectedReportTypes, postAnalysis, onReportGenerated);
+      await generateReportsSynchronously(pendingTickers, selectedReportTypes, onReportGenerated);
     } finally {
-      // Reset global loading state
       setIsGeneratingAll(false);
-      // Clear pending tickers
       setPendingTickers([]);
     }
   };
 
-  // Function to handle background specific report generation
   const handleBackgroundSpecificGeneration = async (): Promise<void> => {
-    // Close the modal
     setShowSpecificGenerationModal(false);
-
     if (pendingTickers.length === 0 || selectedReportTypes.length === 0) return;
 
-    // Set global loading state
     setIsGeneratingAll(true);
-
     try {
-      await generateSelectedReportsInBackground(pendingTickers, selectedReportTypes, postRequest);
-
-      // Redirect to the generation requests page
+      await generateReportsInBackground(pendingTickers, selectedReportTypes);
       router.push('/admin-v1/generation-requests');
     } finally {
-      // Reset global loading state
       setIsGeneratingAll(false);
-      // Clear pending tickers
       setPendingTickers([]);
     }
   };
 
-  // Function to render the grid view of reports
-  const renderReportsGrid = () => {
+  const renderReportsGrid = (): JSX.Element => {
     if (selectedTickers.length === 0) {
       return <div className="text-center py-4">No tickers selected</div>;
     }
@@ -226,10 +140,8 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
-            {/* Regular Analysis Types */}
             {analysisTypes.map((analysis) => {
-              const isSelected = selectedReportTypes.includes(analysis.key);
-
+              const isSelected: boolean = selectedReportTypes.includes(analysis.key);
               return (
                 <tr key={analysis.key}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -245,8 +157,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   </td>
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
-                    const isCompleted = analysis.statusKey && report?.analysisStatus[analysis.statusKey];
-                    const isLoading = loadingStates[`${ticker}-${analysis.key}`];
+                    const isCompleted: boolean = !!(analysis.statusKey && report?.analysisStatus[analysis.statusKey]);
+
+                    const isLoading: boolean = loadingStates[`${ticker}-${analysis.key}`];
 
                     return (
                       <td key={`${ticker}-${analysis.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
@@ -260,10 +173,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
               );
             })}
 
-            {/* Investor Analysis Types */}
             {investorAnalysisTypes.map((investor) => {
-              const investorKey = `${INVESTOR_ANALYSIS_PREFIX}${investor.key}`;
-              const isSelected = selectedReportTypes.includes(investorKey);
+              const investorKey: string = `${INVESTOR_ANALYSIS_PREFIX}${investor.key}`;
+              const isSelected: boolean = selectedReportTypes.includes(investorKey);
 
               return (
                 <tr key={investor.key}>
@@ -280,8 +192,8 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   </td>
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
-                    const isCompleted = report?.analysisStatus.investorAnalysis[investor.key as keyof typeof report.analysisStatus.investorAnalysis];
-                    const isLoading = loadingStates[`${ticker}-${INVESTOR_ANALYSIS_PREFIX}${investor.key}`];
+                    const isCompleted: boolean = !!report?.analysisStatus.investorAnalysis[investor.key as keyof typeof report.analysisStatus.investorAnalysis];
+                    const isLoading: boolean = loadingStates[`${ticker}-${INVESTOR_ANALYSIS_PREFIX}${investor.key}`];
 
                     return (
                       <td key={`${ticker}-${investor.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
@@ -300,14 +212,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     );
   };
 
-  // Function to render the "Generate All" buttons
-  const renderGenerateAllButtons = () => {
-    const isAnyLoading = Object.values(loadingStates).some((loading) => loading);
-    const isAnyProcessRunning = isGeneratingAll || isAnyLoading;
+  const renderGenerateAllButtons = (): JSX.Element => {
+    const isAnyProcessRunning: boolean = isGeneratingAll;
 
     return (
       <div className="space-y-4 my-4">
-        {/* Report Type Selection Controls */}
         <div className="bg-gray-800 rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-white">Select Report Types</h3>
@@ -325,7 +234,6 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           </div>
         </div>
 
-        {/* Generation Buttons */}
         <div className="flex justify-center gap-4">
           <Button
             variant="contained"
@@ -352,8 +260,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     );
   };
 
-  // Function to render the generation modal
-  const renderGenerationModal = () => {
+  const renderGenerationModal = (): JSX.Element => {
     return (
       <FullScreenModal open={showGenerationModal} onClose={() => setShowGenerationModal(false)} title="Select Report Generation Mode">
         <div className="p-6 flex flex-col items-center space-y-8">
@@ -370,7 +277,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
               <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
-              <p className="text-center mb-6">Create generation requests to be processed in the background and redirect to the requests page.</p>
+              <p className="text-center mb-6">Create batch generation requests to be processed in the background and redirect to the requests page.</p>
               <Button variant="contained" primary onClick={handleBackgroundGeneration} className="mt-auto w-full">
                 Generate in Background
               </Button>
@@ -381,8 +288,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     );
   };
 
-  // Function to render the specific generation modal
-  const renderSpecificGenerationModal = () => {
+  const renderSpecificGenerationModal = (): JSX.Element => {
     return (
       <FullScreenModal
         open={showSpecificGenerationModal}
@@ -409,7 +315,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col items-center">
               <h3 className="text-xl font-semibold mb-4">Background Generation</h3>
               <p className="text-center mb-6">
-                Create generation requests for selected report types to be processed in the background and redirect to the requests page.
+                Create batch generation requests for selected report types to be processed in the background and redirect to the requests page.
               </p>
               <Button variant="contained" primary onClick={handleBackgroundSpecificGeneration} className="mt-auto w-full">
                 Generate in Background

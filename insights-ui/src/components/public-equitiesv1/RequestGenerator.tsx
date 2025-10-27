@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GenerationRequestStatus, INVESTOR_OPTIONS } from '@/lib/mappingsV1';
-import { TickerV1GenerationRequest } from '@prisma/client';
+import { INVESTOR_OPTIONS } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { TickerV1GenerationRequest } from '@prisma/client';
+import React, { useState } from 'react';
 
 interface RequestGeneratorProps {
   selectedTickers: string[];

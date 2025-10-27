@@ -1,7 +1,7 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
-import { InvestorKey, TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 

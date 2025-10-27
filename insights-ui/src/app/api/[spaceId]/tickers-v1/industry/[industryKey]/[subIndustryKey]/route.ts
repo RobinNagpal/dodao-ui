@@ -1,8 +1,15 @@
 import { prisma } from '@/prisma';
-import { BasicTickersResponse, ReportTickersResponse, AnalysisStatus, ReportTickerInfo } from '@/types/ticker-typesv1';
+import {
+  AnalysisStatus,
+  BasicTickersResponse,
+  CATEGORY_MAPPINGS,
+  EvaluationResult,
+  ReportTickerInfo,
+  ReportTickersResponse,
+  TickerAnalysisCategory,
+} from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { TickerAnalysisCategory, CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
 
 async function getHandler(
   req: NextRequest,

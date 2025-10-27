@@ -2,12 +2,11 @@
 
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { MissingReportsForTicker } from '@/app/api/[spaceId]/tickers-v1/missing-reports/route';
-import { AnalysisTypeKey, InvestorKey, createInvestorAnalysisKey } from '@/lib/mappingsV1';
+import { AnalysisTypeKey, InvestorKey, createInvestorAnalysisKey } from '@/types/ticker-typesv1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { generateSelectedReportsInBackground } from '@/utils/report-generator-utils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useGenerateReports } from '@/hooks/useGenerateReports';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -141,27 +140,20 @@ export default function MissingReportsPage(): JSX.Element {
   const router = useRouter();
   const [pagination, setPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 50 });
   const [accumulatedData, setAccumulatedData] = useState<MissingReportsForTicker[]>([]);
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [localGenerating, setLocalGenerating] = useState<boolean>(false);
 
-  // Build URL with pagination parameters
-  const baseUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
+  const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
   const params = new URLSearchParams();
-
-  // Add pagination parameters
   params.append('skip', pagination.skip.toString());
   params.append('take', pagination.take.toString());
-
-  const apiUrl = `${baseUrl}?${params.toString()}`;
+  const apiUrl: string = `${baseUrl}?${params.toString()}`;
 
   const { data, loading, reFetchData } = useFetchData<MissingReportsForTicker[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
-  // Post hook for generation requests
-  const { postData: postRequest } = usePostData<any, any>({
-    successMessage: 'Generation requests created successfully!',
-    errorMessage: 'Failed to create generation requests.',
-  });
+  const { generateMissingReports, isGenerating: hookGenerating } = useGenerateReports();
 
-  // Update accumulated data when API response is received
+  const isGenerating: boolean = localGenerating || hookGenerating;
+
   React.useEffect(() => {
     if (data) {
       if (pagination.skip === 0) {
@@ -179,68 +171,50 @@ export default function MissingReportsPage(): JSX.Element {
   }
 
   function handleLoadMore(): void {
-    setPagination((prev) => ({
-      skip: prev.skip + prev.take,
-      take: prev.take,
-    }));
+    setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
 
-  // Function to determine which reports are missing for a ticker
   function getMissingReportTypes(ticker: MissingReportsForTicker): string[] {
     const missingReports: string[] = [];
 
-    if (ticker.businessAndMoatFactorResultsCount === 0) {
-      missingReports.push(AnalysisTypeKey.BUSINESS_AND_MOAT);
-    }
-    if (ticker.financialAnalysisFactorsResultsCount === 0) {
-      missingReports.push(AnalysisTypeKey.FINANCIAL_ANALYSIS);
-    }
-    if (ticker.pastPerformanceFactorsResultsCount === 0) {
-      missingReports.push(AnalysisTypeKey.PAST_PERFORMANCE);
-    }
-    if (ticker.futureGrowthFactorsResultsCount === 0) {
-      missingReports.push(AnalysisTypeKey.FUTURE_GROWTH);
-    }
-    if (ticker.fairValueFactorsResultsCount === 0) {
-      missingReports.push(AnalysisTypeKey.FAIR_VALUE);
-    }
-    if (ticker.isMissingWarrenBuffettReport) {
-      missingReports.push(createInvestorAnalysisKey('WARREN_BUFFETT' as InvestorKey));
-    }
-    if (ticker.isMissingCharlieMungerReport) {
-      missingReports.push(createInvestorAnalysisKey('CHARLIE_MUNGER' as InvestorKey));
-    }
-    if (ticker.isMissingBillAckmanReport) {
-      missingReports.push(createInvestorAnalysisKey('BILL_ACKMAN' as InvestorKey));
-    }
+    if (ticker.businessAndMoatFactorResultsCount === 0) missingReports.push(AnalysisTypeKey.BUSINESS_AND_MOAT);
+    if (ticker.financialAnalysisFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FINANCIAL_ANALYSIS);
+    if (ticker.pastPerformanceFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.PAST_PERFORMANCE);
+    if (ticker.futureGrowthFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FUTURE_GROWTH);
+    if (ticker.fairValueFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FAIR_VALUE);
+    if (ticker.isMissingWarrenBuffettReport) missingReports.push(createInvestorAnalysisKey('WARREN_BUFFETT' as InvestorKey));
+    if (ticker.isMissingCharlieMungerReport) missingReports.push(createInvestorAnalysisKey('CHARLIE_MUNGER' as InvestorKey));
+    if (ticker.isMissingBillAckmanReport) missingReports.push(createInvestorAnalysisKey('BILL_ACKMAN' as InvestorKey));
 
     return missingReports;
   }
 
-  // Function to generate missing reports for all tickers
   async function handleGenerateMissingReports(): Promise<void> {
     if (accumulatedData.length === 0 || isGenerating) return;
 
-    setIsGenerating(true);
-
+    setLocalGenerating(true);
     try {
-      // Process each ticker
-      for (const ticker of accumulatedData) {
-        const missingReportTypes = getMissingReportTypes(ticker);
+      const tickersWithReportTypes: { ticker: string; reportTypes: string[] }[] = [];
+      const tickersWithManyMissingReports: string[] = [];
+
+      for (const t of accumulatedData) {
+        const missingReportTypes: string[] = getMissingReportTypes(t);
         if (missingReportTypes.length > 0) {
-          await generateSelectedReportsInBackground([ticker.symbol], missingReportTypes, postRequest);
+          tickersWithReportTypes.push({ ticker: t.symbol, reportTypes: missingReportTypes });
+          if (missingReportTypes.length >= 3) tickersWithManyMissingReports.push(t.symbol);
         }
       }
 
-      // Redirect to generation-requests page
+      await generateMissingReports(tickersWithReportTypes, tickersWithManyMissingReports);
       router.push('/admin-v1/generation-requests');
-    } catch (error) {
-      console.error('Error generating missing reports:', error);
-      setIsGenerating(false);
+    } catch (err) {
+      console.error('Error generating missing reports:', err);
+    } finally {
+      setLocalGenerating(false);
     }
   }
 
-  const hasMore = data && data.length === pagination.take;
+  const hasMore: boolean = !!data && data.length === pagination.take;
 
   return (
     <div className="mt-12 px-4 text-color">

@@ -2,22 +2,18 @@
 
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
-import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { createBackgroundGenerationRequest, createFailedPartsOnlyGenerationRequest } from '@/utils/report-generator-utils';
+import { useGenerateReports } from '@/hooks/useGenerateReports';
+import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-/**
- * Canonical list of boolean "regenerate*" flags we render as dots.
- */
-
+/** Canonical list of flags we render */
 type GenerationReportFields = keyof Pick<
   TickerV1GenerationRequestWithTicker,
   | 'regenerateCompetition'
@@ -33,7 +29,6 @@ type GenerationReportFields = keyof Pick<
   | 'regenerateFinalSummary'
   | 'regenerateCachedScore'
 >;
-
 const REGENERATE_FIELDS = [
   'regenerateCompetition',
   'regenerateFinancialAnalysis',
@@ -51,12 +46,8 @@ const REGENERATE_FIELDS = [
 
 type RegenerateField = (typeof REGENERATE_FIELDS)[number];
 
-/** Enrich the Prisma type with our flag fields (booleans)
- *  and ensure completed/failed steps are arrays (not null).
- */
 type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker;
 
-// Field mapping for better display names
 const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCompetition: 'Competition',
   regenerateFinancialAnalysis: 'Financial',
@@ -72,7 +63,6 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCachedScore: 'Score',
 };
 
-// Map regenerate field names to their corresponding completedSteps/failedSteps values
 const FIELD_TO_STEP_MAP: Record<RegenerateField, string> = {
   regenerateCompetition: 'competition',
   regenerateFinancialAnalysis: 'financial-analysis',
@@ -96,21 +86,15 @@ interface StatusDotProps {
 }
 
 function StatusDot({ isEnabled, stepName, completedSteps, failedSteps }: StatusDotProps): JSX.Element {
-  if (!isEnabled) {
-    return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
-  }
-  if (failedSteps.includes(stepName)) {
-    return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
-  }
-  if (completedSteps.includes(stepName)) {
-    return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
-  }
+  if (!isEnabled) return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
+  if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
+  if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
   return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
 }
 
 const REFRESH_SECONDS: number = 30;
 
-// ---------- helpers ----------
+/** ---------- helpers ---------- */
 
 interface SectionHeaderProps {
   title: string;
@@ -168,7 +152,7 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
             const symbol: string = latestRequest.ticker.symbol;
             const completedSteps: string[] = latestRequest.completedSteps ?? [];
             const failedSteps: string[] = latestRequest.failedSteps ?? [];
-            const isFailed = latestRequest.status === GenerationRequestStatus.Failed;
+            const isFailed: boolean = latestRequest.status === GenerationRequestStatus.Failed;
 
             return (
               <tr key={latestRequest.id}>
@@ -233,84 +217,45 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
   );
 }
 
-// ---------- component ----------
+/** ---------- component ---------- */
 export default function GenerationRequestsPage(): JSX.Element {
-  // Pagination state for each section
   const [inProgressPagination, setInProgressPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
   const [failedPagination, setFailedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
   const [notStartedPagination, setNotStartedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
   const [completedPagination, setCompletedPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 15 });
 
-  // Accumulated data for each section
   const [accumulatedInProgress, setAccumulatedInProgress] = useState<GenerationRequestWithFlags[]>([]);
   const [accumulatedFailed, setAccumulatedFailed] = useState<GenerationRequestWithFlags[]>([]);
   const [accumulatedNotStarted, setAccumulatedNotStarted] = useState<GenerationRequestWithFlags[]>([]);
   const [accumulatedCompleted, setAccumulatedCompleted] = useState<GenerationRequestWithFlags[]>([]);
 
-  // Build URL with pagination parameters
-  const baseUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`;
+  const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`;
   const params = new URLSearchParams();
-
-  // Add pagination parameters for each section
   params.append('inProgressSkip', inProgressPagination.skip.toString());
   params.append('inProgressTake', inProgressPagination.take.toString());
-
   params.append('failedSkip', failedPagination.skip.toString());
   params.append('failedTake', failedPagination.take.toString());
-
   params.append('notStartedSkip', notStartedPagination.skip.toString());
   params.append('notStartedTake', notStartedPagination.take.toString());
-
   params.append('completedSkip', completedPagination.skip.toString());
   params.append('completedTake', completedPagination.take.toString());
-
-  const apiUrl = `${baseUrl}?${params.toString()}`;
+  const apiUrl: string = `${baseUrl}?${params.toString()}`;
 
   const { data, loading, reFetchData } = useFetchData<GenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch generation requests');
 
-  // Update accumulated data when API response is received
   useEffect(() => {
-    if (data) {
-      // Only set accumulated data if it's empty (initial load) or if we're resetting pagination
-      if (inProgressPagination.skip === 0) {
-        setAccumulatedInProgress(data.inProgress || []);
-      }
-      if (failedPagination.skip === 0) {
-        setAccumulatedFailed(data.failed || []);
-      }
-      if (notStartedPagination.skip === 0) {
-        setAccumulatedNotStarted(data.notStarted || []);
-      }
-      if (completedPagination.skip === 0) {
-        setAccumulatedCompleted(data.completed || []);
-      }
+    if (!data) return;
 
-      // Append data if we're loading more (skip > 0)
-      if (inProgressPagination.skip > 0 && data.inProgress) {
-        setAccumulatedInProgress((prev) => [...prev, ...data.inProgress]);
-      }
-      if (failedPagination.skip > 0 && data.failed) {
-        setAccumulatedFailed((prev) => [...prev, ...data.failed]);
-      }
-      if (notStartedPagination.skip > 0 && data.notStarted) {
-        setAccumulatedNotStarted((prev) => [...prev, ...data.notStarted]);
-      }
-      if (completedPagination.skip > 0 && data.completed) {
-        setAccumulatedCompleted((prev) => [...prev, ...data.completed]);
-      }
-    }
+    if (inProgressPagination.skip === 0) setAccumulatedInProgress(data.inProgress || []);
+    if (failedPagination.skip === 0) setAccumulatedFailed(data.failed || []);
+    if (notStartedPagination.skip === 0) setAccumulatedNotStarted(data.notStarted || []);
+    if (completedPagination.skip === 0) setAccumulatedCompleted(data.completed || []);
+
+    if (inProgressPagination.skip > 0 && data.inProgress) setAccumulatedInProgress((p) => [...p, ...data.inProgress]);
+    if (failedPagination.skip > 0 && data.failed) setAccumulatedFailed((p) => [...p, ...data.failed]);
+    if (notStartedPagination.skip > 0 && data.notStarted) setAccumulatedNotStarted((p) => [...p, ...data.notStarted]);
+    if (completedPagination.skip > 0 && data.completed) setAccumulatedCompleted((p) => [...p, ...data.completed]);
   }, [data, inProgressPagination.skip, failedPagination.skip, notStartedPagination.skip, completedPagination.skip]);
-
-  // Post hook for generation requests
-  const {
-    postData: postRequest,
-    data: postDataResponse,
-    loading: postLoading,
-    error,
-  } = usePostData<any, any>({
-    successMessage: 'Generation request created successfully!',
-    errorMessage: 'Failed to create generation request.',
-  });
 
   const hasActive: boolean = (data?.notStarted?.length ?? 0) > 0 || (data?.inProgress?.length ?? 0) > 0;
 
@@ -329,43 +274,24 @@ export default function GenerationRequestsPage(): JSX.Element {
     setIsPaused((prev) => !prev);
   }
 
-  // Functions to load more items for each section
   function handleLoadMoreInProgress(): void {
-    setInProgressPagination((prev) => ({
-      skip: prev.skip + prev.take,
-      take: prev.take,
-    }));
+    setInProgressPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
-
   function handleLoadMoreFailed(): void {
-    setFailedPagination((prev) => ({
-      skip: prev.skip + prev.take,
-      take: prev.take,
-    }));
+    setFailedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
-
   function handleLoadMoreNotStarted(): void {
-    setNotStartedPagination((prev) => ({
-      skip: prev.skip + prev.take,
-      take: prev.take,
-    }));
+    setNotStartedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
-
   function handleLoadMoreCompleted(): void {
-    setCompletedPagination((prev) => ({
-      skip: prev.skip + prev.take,
-      take: prev.take,
-    }));
+    setCompletedPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
 
-  // Function to reset pagination when manually refreshing
   function resetPagination(): void {
     setInProgressPagination({ skip: 0, take: 15 });
     setFailedPagination({ skip: 0, take: 15 });
     setNotStartedPagination({ skip: 0, take: 15 });
     setCompletedPagination({ skip: 0, take: 15 });
-
-    // Clear accumulated data when resetting pagination
     setAccumulatedInProgress([]);
     setAccumulatedFailed([]);
     setAccumulatedNotStarted([]);
@@ -382,31 +308,27 @@ export default function GenerationRequestsPage(): JSX.Element {
     setSelectedRequest(null);
   }
 
+  const { createFailedPartsOnlyGenerationRequests, createFullBackgroundGenerationRequests } = useGenerateReports();
+
   async function handleReloadFailedPartsOnly(): Promise<void> {
     if (!selectedRequest || !selectedRequest.failedSteps || selectedRequest.failedSteps.length === 0) return;
-
     try {
-      await createFailedPartsOnlyGenerationRequest(selectedRequest.ticker.symbol, selectedRequest.failedSteps, postRequest);
-
-      // Close modal and refresh data
+      await createFailedPartsOnlyGenerationRequests([{ ticker: selectedRequest.ticker.symbol, failedSteps: selectedRequest.failedSteps }]);
       handleCloseModal();
       reFetchData();
-    } catch (error) {
-      console.error('Failed to create generation request for failed parts:', error);
+    } catch (err) {
+      console.error('Failed to create generation request for failed parts:', err);
     }
   }
 
   async function handleReloadFullRequest(): Promise<void> {
     if (!selectedRequest) return;
-
     try {
-      await createBackgroundGenerationRequest(selectedRequest.ticker.symbol, postRequest);
-
-      // Close modal and refresh data
+      await createFullBackgroundGenerationRequests([selectedRequest.ticker.symbol]);
       handleCloseModal();
       reFetchData();
-    } catch (error) {
-      console.error('Failed to create full generation request:', error);
+    } catch (err) {
+      console.error('Failed to create full generation request:', err);
     }
   }
 
@@ -427,8 +349,6 @@ export default function GenerationRequestsPage(): JSX.Element {
     return () => clearInterval(timerId);
   }, [hasActive, isPaused, reFetchData]);
 
-  // Section data (latest per ticker within each status, newest first)
-  // Use accumulated data instead of direct API response data
   const inProgressRows: GenerationRequestWithFlags[] = accumulatedInProgress;
   const notStartedRows: GenerationRequestWithFlags[] = accumulatedNotStarted;
   const failedRows: GenerationRequestWithFlags[] = accumulatedFailed;
@@ -498,7 +418,7 @@ export default function GenerationRequestsPage(): JSX.Element {
         </div>
       </div>
 
-      {/* Sections in requested order */}
+      {/* Sections */}
       <div className="mb-6">
         <div className="bg-gray-800 border border-blue-500 rounded-lg p-4">
           <SectionHeader

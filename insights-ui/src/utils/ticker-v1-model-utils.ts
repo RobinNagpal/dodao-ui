@@ -1,19 +1,18 @@
 import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
-import { TickerAnalysisCategory, CATEGORY_MAPPINGS, EvaluationResult } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { AnalysisStatus } from '@/types/ticker-typesv1';
+import { AnalysisStatus, CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import {
   Prisma,
   TickerV1,
-  TickerV1Industry,
-  TickerV1SubIndustry,
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CachedScore,
   TickerV1CategoryAnalysisResult,
   TickerV1FutureRisk,
+  TickerV1Industry,
   TickerV1InvestorAnalysisResult,
+  TickerV1SubIndustry,
   TickerV1VsCompetition,
 } from '@prisma/client';
 

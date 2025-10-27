@@ -1,6 +1,6 @@
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { EvaluationResult } from '@prisma/client';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 

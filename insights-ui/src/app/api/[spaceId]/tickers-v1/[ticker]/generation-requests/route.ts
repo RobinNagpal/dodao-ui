@@ -1,10 +1,10 @@
-import { prisma } from '@/prisma';
-import { GenerationRequestStatus } from '@/lib/mappingsV1';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { GenerationRequestStatus } from '@/types/ticker-typesv1';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TickerV1GenerationRequest } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 export interface GenerationRequestPayload {
   regenerateCompetition: boolean;

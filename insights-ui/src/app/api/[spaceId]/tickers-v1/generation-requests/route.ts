@@ -1,7 +1,7 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
-import { GenerationRequestStatus } from '@/lib/mappingsV1';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 

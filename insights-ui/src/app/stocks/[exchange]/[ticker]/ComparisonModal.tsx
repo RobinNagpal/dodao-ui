@@ -1,16 +1,15 @@
 'use client';
 
-import { BasicTickersResponse, IndustryTickersResponse } from '@/types/ticker-typesv1';
-import { useState, useEffect } from 'react';
-import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
+import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { BasicTickersResponse, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getScoreColorClasses } from '@/utils/score-utils';
+import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
+import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import TickerComparison, { ComparisonTicker } from '@/components/ticker-reportsv1/TickerComparison';
-import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
+import { useEffect, useState } from 'react';
 
 // Using ComparisonTicker interface imported from TickerComparison component
 

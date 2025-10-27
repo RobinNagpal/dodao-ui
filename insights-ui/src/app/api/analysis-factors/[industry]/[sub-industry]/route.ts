@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
-import { TickerAnalysisCategory } from '@/lib/mappingsV1';
 import { AnalysisFactorDefinition, CategoryAnalysisFactors, UpsertAnalysisFactorsRequest } from '@/types/public-equity/analysis-factors-types';
 import { SuccessStatus } from '@/types/public-equity/common-types';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
