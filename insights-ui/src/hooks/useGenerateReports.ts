@@ -168,35 +168,15 @@ export const useGenerateReports = () => {
   };
 
   /**
-   * Batch background generation for selected report types and tickers.
+   * Batch background generation for specific report types and tickers.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateReportsInBackground = async (tickers: string[], selectedReportTypes: string[], tickersWithManyMissingReports?: string[]): Promise<void> => {
+  const generateSpecificReportsInBackground = async (tickers: string[], selectedReportTypes: string[]): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
     setIsGenerating(true);
     try {
       const payloads: GenerationRequestPayload[] = tickers.map((ticker) => {
-        const hasManyMissing: boolean = (tickersWithManyMissingReports?.includes(ticker) ?? false) || selectedReportTypes.length >= 3;
-
-        if (hasManyMissing) {
-          return {
-            ticker,
-            regenerateCompetition: true,
-            regenerateFinancialAnalysis: true,
-            regenerateBusinessAndMoat: true,
-            regeneratePastPerformance: true,
-            regenerateFutureGrowth: true,
-            regenerateFairValue: true,
-            regenerateFutureRisk: true,
-            regenerateWarrenBuffett: true,
-            regenerateCharlieMunger: true,
-            regenerateBillAckman: true,
-            regenerateFinalSummary: true,
-            regenerateCachedScore: true,
-          };
-        }
-
         const payload: GenerationRequestPayload = {
           ticker,
           regenerateCompetition: false,
@@ -230,6 +210,37 @@ export const useGenerateReports = () => {
 
         return payload;
       });
+
+      await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  /**
+   * Batch background generation for all report types for tickers with many missing reports.
+   * Always sends a single POST with an array of payloads (batch), even when length === 1.
+   */
+  const generateAllReportsInBackground = async (tickers: string[]): Promise<void> => {
+    if (tickers.length === 0) return;
+
+    setIsGenerating(true);
+    try {
+      const payloads: GenerationRequestPayload[] = tickers.map((ticker) => ({
+        ticker,
+        regenerateCompetition: true,
+        regenerateFinancialAnalysis: true,
+        regenerateBusinessAndMoat: true,
+        regeneratePastPerformance: true,
+        regenerateFutureGrowth: true,
+        regenerateFairValue: true,
+        regenerateFutureRisk: true,
+        regenerateWarrenBuffett: true,
+        regenerateCharlieMunger: true,
+        regenerateBillAckman: true,
+        regenerateFinalSummary: true,
+        regenerateCachedScore: true,
+      }));
 
       await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
     } finally {
@@ -341,7 +352,7 @@ export const useGenerateReports = () => {
 
       if (tickersWithManyMissingReports && tickersWithManyMissingReports.length > 0) {
         // Full regeneration for high-miss tickers
-        await createFullBackgroundGenerationRequests(tickersWithManyMissingReports);
+        await generateAllReportsInBackground(tickersWithManyMissingReports);
 
         // For remaining, group by report type
         const remaining: string[] = allTickers.filter((t) => !tickersWithManyMissingReports.includes(t));
@@ -358,12 +369,12 @@ export const useGenerateReports = () => {
             });
 
           for (const [rt, tickers] of Object.entries(typeToTickers)) {
-            await generateReportsInBackground(tickers, [rt], tickersWithManyMissingReports);
+            await generateSpecificReportsInBackground(tickers, [rt]);
           }
         }
       } else {
         // Single batch for everything
-        await generateReportsInBackground(allTickers, allReportTypes);
+        await generateSpecificReportsInBackground(allTickers, allReportTypes);
       }
     } finally {
       setIsGenerating(false);
@@ -374,7 +385,8 @@ export const useGenerateReports = () => {
     /** exports used by UI */
     generateAllReportsForTicker,
     generateReportsSynchronously,
-    generateReportsInBackground,
+    generateSpecificReportsInBackground,
+    generateAllReportsInBackground,
     generateMissingReports,
     createFullBackgroundGenerationRequests,
     createFailedPartsOnlyGenerationRequests,

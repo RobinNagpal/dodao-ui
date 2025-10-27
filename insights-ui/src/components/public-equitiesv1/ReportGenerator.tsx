@@ -33,7 +33,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
-  const { generateAllReportsForTicker, generateReportsSynchronously, generateReportsInBackground, createFullBackgroundGenerationRequests } =
+  const { generateAllReportsForTicker, generateReportsSynchronously, generateSpecificReportsInBackground, createFullBackgroundGenerationRequests } =
     useGenerateReports();
 
   const handleGenerateAll = async (ticker: string): Promise<void> => {
@@ -113,7 +113,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     setIsGeneratingAll(true);
     try {
-      await generateReportsInBackground(pendingTickers, selectedReportTypes);
+      await generateSpecificReportsInBackground(pendingTickers, selectedReportTypes);
       router.push('/admin-v1/generation-requests');
     } finally {
       setIsGeneratingAll(false);
