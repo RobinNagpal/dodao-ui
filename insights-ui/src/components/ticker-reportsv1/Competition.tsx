@@ -17,12 +17,11 @@ export interface CompetitionPayload {
 export interface CompetitionProps {
   exchange: string;
   ticker: string;
-  session?: KoalaGainsSession;
   /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
   dataPromise: Promise<CompetitionPayload>;
 }
 
-export default function Competition({ exchange, ticker, dataPromise, session }: CompetitionProps): JSX.Element | null {
+export default function Competition({ exchange, ticker, dataPromise }: CompetitionProps): JSX.Element | null {
   const { vsCompetition, competitorTickers }: Readonly<CompetitionPayload> = use(dataPromise);
 
   if (!vsCompetition && (!competitorTickers || competitorTickers.length === 0)) {
@@ -68,7 +67,7 @@ export default function Competition({ exchange, ticker, dataPromise, session }: 
                           </span>
                         )}
                       </div>
-                      <AddTickerAdminButton competitor={competitor} session={session} />
+                      <AddTickerAdminButton competitor={competitor} />
                     </div>
                   </div>
                   {competitor.detailedComparison && (

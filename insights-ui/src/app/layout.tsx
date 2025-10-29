@@ -1,19 +1,14 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import SessionProvider from '@/app/providers/SessionProvider';
 import TopNav from '@/components/core/TopNav/TopNav';
 import { themeColors } from '@/util/theme-colors';
-import { NotificationWrapper } from '@dodao/web-core/components/layout/NotificationWrapper';
-import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 import LogRocketComponent from './LogRocketComponent';
+import Providers from './providers/Providers';
 
-export const experimental_ppr = true;
-
-// insights-ui/src/app/layout.tsx
 export const metadata: Metadata = {
   title: 'KoalaGains',
   description:
@@ -62,17 +57,13 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body className="antialiased text-color" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
-        <NotificationProvider>
-          <SessionProvider session={session}>
-            <NotificationWrapper />
-            <TopNav />
-            {children}
-          </SessionProvider>
-        </NotificationProvider>
+        <Providers>
+          <TopNav />
+          {children}
+        </Providers>
 
         {/* --- Analytics / Monitoring (non-blocking) --- */}
 
