@@ -70,7 +70,7 @@ export interface LLMResponseObject<Input, Output> {
 /**
  * Validates data against a schema
  */
-function validateData(schema: object, data: unknown): ValidationResult {
+export function validateData(schema: object, data: unknown): ValidationResult {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
   const valid = validate(data);
@@ -103,7 +103,7 @@ function initializeLLM(provider: LLMProvider, modelName: GeminiModel): BaseChatM
 /**
  * Updates the invocation status in the database
  */
-async function updateInvocationStatus(
+export async function updateInvocationStatus(
   id: string,
   status: PromptInvocationStatus,
   data: Record<string, unknown>,
@@ -142,7 +142,7 @@ interface BaseInvocationData {
  * Creates a regular prompt invocation record
  * @returns The created prompt invocation record
  */
-async function createPromptInvocation<Input>(
+export async function createPromptInvocation<Input>(
   baseData: BaseInvocationData,
   promptData: {
     promptId: string;
@@ -172,7 +172,7 @@ async function createPromptInvocation<Input>(
  * Creates a test prompt invocation record
  * @returns The created test prompt invocation record
  */
-async function createTestPromptInvocation(
+export async function createTestPromptInvocation(
   baseData: BaseInvocationData,
   testData: {
     promptId: string;
@@ -201,7 +201,7 @@ async function createTestPromptInvocation(
 /**
  * Loads and validates a schema from a file
  */
-async function loadSchema(schemaPath: string, schemaName: string): Promise<object> {
+export async function loadSchema(schemaPath: string, schemaName: string): Promise<object> {
   if (!fs.existsSync(schemaPath)) {
     const errorMsg = `Schema file ${schemaName} not found. Path: ${schemaPath}`;
     console.error(errorMsg);
@@ -213,7 +213,7 @@ async function loadSchema(schemaPath: string, schemaName: string): Promise<objec
 /**
  * Compiles a template with input data and optional appended body
  */
-function compileTemplate(template: string, inputData: Record<string, unknown> = {}, bodyToAppend?: string): string {
+export function compileTemplate(template: string, inputData: Record<string, unknown> = {}, bodyToAppend?: string): string {
   const compiledTemplate = Handlebars.compile(template);
   return bodyToAppend ? `${compiledTemplate(inputData)}\n\n\n${bodyToAppend}` : compiledTemplate(inputData);
 }

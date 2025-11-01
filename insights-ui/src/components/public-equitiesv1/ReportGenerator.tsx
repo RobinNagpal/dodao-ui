@@ -1,6 +1,6 @@
 import { AnalysisStatus, analysisTypes, investorAnalysisTypes, useGenerateReports } from '@/hooks/useGenerateReports';
 import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
-import { INVESTOR_ANALYSIS_PREFIX } from '@/types/ticker-typesv1';
+import { ReportType } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -25,11 +25,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
   const [pendingTickers, setPendingTickers] = useState<string[]>([]);
 
-  const [selectedReportTypes, setSelectedReportTypes] = useState<string[]>([]);
+  const [selectedReportTypes, setSelectedReportTypes] = useState<ReportType[]>([]);
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
   React.useEffect(() => {
-    const allReportTypeKeys: string[] = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
+    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -76,7 +76,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys: string[] = [...analysisTypes.map((a) => a.key), ...investorAnalysisTypes.map((i) => `${INVESTOR_ANALYSIS_PREFIX}${i.key}`)];
+    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -84,7 +84,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
     setSelectedReportTypes([]);
   };
 
-  const handleReportTypeToggle = (reportTypeKey: string): void => {
+  const handleReportTypeToggle = (reportTypeKey: ReportType): void => {
     setSelectedReportTypes((prev) => (prev.includes(reportTypeKey) ? prev.filter((k) => k !== reportTypeKey) : [...prev, reportTypeKey]));
   };
 
@@ -141,15 +141,16 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
             {analysisTypes.map((analysis) => {
-              const isSelected: boolean = selectedReportTypes.includes(analysis.key);
+              const analysisKey = analysis.key as ReportType;
+              const isSelected: boolean = selectedReportTypes.includes(analysisKey);
               return (
-                <tr key={analysis.key}>
+                <tr key={analysisKey}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-3">
                       <input
                         type="checkbox"
                         checked={isSelected}
-                        onChange={() => handleReportTypeToggle(analysis.key)}
+                        onChange={() => handleReportTypeToggle(analysisKey)}
                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <span>{analysis.label}</span>
@@ -159,10 +160,10 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                     const report = tickerReports[ticker];
                     const isCompleted: boolean = !!(analysis.statusKey && report?.analysisStatus[analysis.statusKey]);
 
-                    const isLoading: boolean = loadingStates[`${ticker}-${analysis.key}`];
+                    const isLoading: boolean = loadingStates[`${ticker}-${analysisKey}`];
 
                     return (
-                      <td key={`${ticker}-${analysis.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
+                      <td key={`${ticker}-${analysisKey}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
                         </div>
@@ -174,11 +175,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             })}
 
             {investorAnalysisTypes.map((investor) => {
-              const investorKey: string = `${INVESTOR_ANALYSIS_PREFIX}${investor.key}`;
+              const investorKey = investor.key as ReportType;
               const isSelected: boolean = selectedReportTypes.includes(investorKey);
 
               return (
-                <tr key={investor.key}>
+                <tr key={investorKey}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-3">
                       <input
@@ -192,11 +193,22 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   </td>
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
-                    const isCompleted: boolean = !!report?.analysisStatus.investorAnalysis[investor.key as keyof typeof report.analysisStatus.investorAnalysis];
-                    const isLoading: boolean = loadingStates[`${ticker}-${INVESTOR_ANALYSIS_PREFIX}${investor.key}`];
+
+                    // Extract the investor name from the ReportType enum value
+                    let investorName: string = '';
+                    if (investorKey === ReportType.WARREN_BUFFETT) {
+                      investorName = 'WARREN_BUFFETT';
+                    } else if (investorKey === ReportType.CHARLIE_MUNGER) {
+                      investorName = 'CHARLIE_MUNGER';
+                    } else if (investorKey === ReportType.BILL_ACKMAN) {
+                      investorName = 'BILL_ACKMAN';
+                    }
+
+                    const isCompleted: boolean = !!report?.analysisStatus.investorAnalysis[investorName as keyof typeof report.analysisStatus.investorAnalysis];
+                    const isLoading: boolean = loadingStates[`${ticker}-${investorKey}`];
 
                     return (
-                      <td key={`${ticker}-${investor.key}`} className="px-6 py-4 whitespace-nowrap text-sm">
+                      <td key={`${ticker}-${investorKey}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
                         </div>

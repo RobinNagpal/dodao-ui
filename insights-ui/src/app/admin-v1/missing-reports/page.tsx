@@ -2,11 +2,11 @@
 
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { MissingReportsForTicker } from '@/app/api/[spaceId]/tickers-v1/missing-reports/route';
-import { AnalysisTypeKey, InvestorKey, createInvestorAnalysisKey } from '@/types/ticker-typesv1';
+import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { useGenerateReports } from '@/hooks/useGenerateReports';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -174,17 +174,17 @@ export default function MissingReportsPage(): JSX.Element {
     setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
 
-  function getMissingReportTypes(ticker: MissingReportsForTicker): string[] {
-    const missingReports: string[] = [];
+  function getMissingReportTypes(ticker: MissingReportsForTicker): ReportType[] {
+    const missingReports: ReportType[] = [];
 
-    if (ticker.businessAndMoatFactorResultsCount === 0) missingReports.push(AnalysisTypeKey.BUSINESS_AND_MOAT);
-    if (ticker.financialAnalysisFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FINANCIAL_ANALYSIS);
-    if (ticker.pastPerformanceFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.PAST_PERFORMANCE);
-    if (ticker.futureGrowthFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FUTURE_GROWTH);
-    if (ticker.fairValueFactorsResultsCount === 0) missingReports.push(AnalysisTypeKey.FAIR_VALUE);
-    if (ticker.isMissingWarrenBuffettReport) missingReports.push(createInvestorAnalysisKey('WARREN_BUFFETT' as InvestorKey));
-    if (ticker.isMissingCharlieMungerReport) missingReports.push(createInvestorAnalysisKey('CHARLIE_MUNGER' as InvestorKey));
-    if (ticker.isMissingBillAckmanReport) missingReports.push(createInvestorAnalysisKey('BILL_ACKMAN' as InvestorKey));
+    if (ticker.businessAndMoatFactorResultsCount === 0) missingReports.push(ReportType.BUSINESS_AND_MOAT);
+    if (ticker.financialAnalysisFactorsResultsCount === 0) missingReports.push(ReportType.FINANCIAL_ANALYSIS);
+    if (ticker.pastPerformanceFactorsResultsCount === 0) missingReports.push(ReportType.PAST_PERFORMANCE);
+    if (ticker.futureGrowthFactorsResultsCount === 0) missingReports.push(ReportType.FUTURE_GROWTH);
+    if (ticker.fairValueFactorsResultsCount === 0) missingReports.push(ReportType.FAIR_VALUE);
+    if (ticker.isMissingWarrenBuffettReport) missingReports.push(ReportType.WARREN_BUFFETT);
+    if (ticker.isMissingCharlieMungerReport) missingReports.push(ReportType.CHARLIE_MUNGER);
+    if (ticker.isMissingBillAckmanReport) missingReports.push(ReportType.BILL_ACKMAN);
 
     return missingReports;
   }
@@ -194,11 +194,11 @@ export default function MissingReportsPage(): JSX.Element {
 
     setLocalGenerating(true);
     try {
-      const tickersWithReportTypes: { ticker: string; reportTypes: string[] }[] = [];
+      const tickersWithReportTypes: { ticker: string; reportTypes: ReportType[] }[] = [];
       const tickersWithManyMissingReports: string[] = [];
 
       for (const t of accumulatedData) {
-        const missingReportTypes: string[] = getMissingReportTypes(t);
+        const missingReportTypes: ReportType[] = getMissingReportTypes(t);
         if (missingReportTypes.length > 0) {
           tickersWithReportTypes.push({ ticker: t.symbol, reportTypes: missingReportTypes });
           if (missingReportTypes.length >= 3) tickersWithManyMissingReports.push(t.symbol);

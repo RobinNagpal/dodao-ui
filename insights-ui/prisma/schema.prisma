@@ -762,14 +762,16 @@ model TickerV1GenerationRequest {
   status String @default("NotStarted") @map("status")
 
   // Step tracking
+  inProgressStep String?  @map("in_progress_step")
   completedSteps String[] @default([]) @map("completed_steps")
   failedSteps    String[] @default([]) @map("failed_steps")
 
   // Timestamps for tracking
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  startedAt   DateTime? @map("started_at")
-  completedAt DateTime? @map("completed_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  startedAt          DateTime? @map("started_at")
+  completedAt        DateTime? @map("completed_at")
+  lastInvocationTime DateTime? @map("last_invocation_time")
 
   // Relation
   ticker TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
