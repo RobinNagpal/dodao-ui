@@ -15,7 +15,15 @@ export function addDirectoryIfNotPresent(dirPath: string) {
 
 const REGION = process.env.AWS_REGION || 'us-east-1';
 const BUCKET_NAME = 'dodao-ai-insights-agent';
-const s3Client = new S3Client({ region: REGION });
+
+const AWS_ACCESS_KEY_ID = process.env.KOALA_AWS_ACCESS_KEY_ID;
+const AWS_SECRET_ACCESS_KEY = process.env.KOALA_AWS_SECRET_ACCESS_KEY;
+
+if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
+  throw new Error('KOALA_AWS_ACCESS_KEY_ID and KOALA_AWS_SECRET_ACCESS_KEY must be set in the environment');
+}
+
+const s3Client = new S3Client({ region: REGION, credentials: { accessKeyId: AWS_ACCESS_KEY_ID!, secretAccessKey: AWS_SECRET_ACCESS_KEY! } });
 
 export async function uploadJsonTariffFileToS3(data: Uint8Array, key: string, industry: TariffIndustryId): Promise<string> {
   console.log(`Uploading tariff JSON file to S3: ${key}`);
