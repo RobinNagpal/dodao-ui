@@ -1,9 +1,13 @@
-import { prisma } from '@/prisma';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/save-report-utils';
+import {
+  fetchAnalysisFactors,
+  fetchTickerRecordWithIndustryAndSubIndustry,
+  getCompetitionAnalysisArray,
+  saveBusinessAndMoatFactorAnalysisResponse,
+} from '@/utils/save-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -11,34 +15,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Get competition analysis (required for business and moat analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
+  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Get analysis factors for BusinessAndMoat category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-    },
-  });
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
   // Prepare input for the prompt
   const inputJson = {
@@ -57,7 +40,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       factorAnalysisDescription: factor.factorAnalysisDescription,
       factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
     })),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
+    competitionAnalysisArray: competitionAnalysisArray,
   };
 
   // Call the LLM
@@ -75,6 +58,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   const response = result.response as LLMFactorAnalysisResponse;
+
+  // Save the analysis response using the utility function
   await saveBusinessAndMoatFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.BusinessAndMoat);
 
   return {

@@ -724,9 +724,11 @@ export async function trigggerGenerationOfAReport(symbol: string, generationRequ
     const reportOrder = defineReportOrder(spaceId, tickerRecord, generationRequest, competitionData);
 
     // If there are any failed steps, mark the final report as failed
-    if (generationRequest.failedSteps.length > 0 && 
-        !generationRequest.failedSteps.includes(ReportType.FINAL_SUMMARY) &&
-        generationRequest.regenerateFinalSummary) {
+    if (
+      generationRequest.failedSteps.length > 0 &&
+      !generationRequest.failedSteps.includes(ReportType.FINAL_SUMMARY) &&
+      generationRequest.regenerateFinalSummary
+    ) {
       const updatedFailedSteps = [...generationRequest.failedSteps, ReportType.FINAL_SUMMARY];
       await prisma.tickerV1GenerationRequest.update({
         where: {
