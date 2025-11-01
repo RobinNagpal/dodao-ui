@@ -1,64 +1,27 @@
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Get competition analysis (required for business and moat analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
+  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Get analysis factors for BusinessAndMoat category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-    },
-  });
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
   // Prepare input for the prompt
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
-  };
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -76,70 +39,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const response = result.response as LLMFactorAnalysisResponse;
 
-  // Store category analysis result (upsert)
-  const categoryResult = await prisma.tickerV1CategoryAnalysisResult.upsert({
-    where: {
-      spaceId_tickerId_categoryKey: {
-        spaceId,
-        tickerId: tickerRecord.id,
-        categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-      },
-    },
-    update: {
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-    },
-  });
-
-  // Store factor results (upsert each one)
-  const factorResults = [];
-  for (const factor of response.factors) {
-    const analysisFactorRecord = analysisFactors.find((af) => af.factorAnalysisKey === factor.factorAnalysisKey);
-
-    if (analysisFactorRecord) {
-      const factorResult = await prisma.tickerV1AnalysisCategoryFactorResult.upsert({
-        where: {
-          spaceId_tickerId_analysisCategoryFactorId: {
-            spaceId,
-            tickerId: tickerRecord.id,
-            analysisCategoryFactorId: analysisFactorRecord.id,
-          },
-        },
-        update: {
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-          updatedAt: new Date(),
-        },
-        create: {
-          spaceId,
-          tickerId: tickerRecord.id,
-          categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-          analysisCategoryFactorId: analysisFactorRecord.id,
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-        },
-      });
-      factorResults.push(factorResult);
-    }
-  }
-
-  // Calculate business and moat score (number of passed factors out of 5)
-  const businessAndMoatScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
-
-  // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.BusinessAndMoat, businessAndMoatScore);
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Save the analysis response using the utility function
+  await saveBusinessAndMoatFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.BusinessAndMoat);
 
   return {
     success: true,

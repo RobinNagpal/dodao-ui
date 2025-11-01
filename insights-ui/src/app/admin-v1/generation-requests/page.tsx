@@ -4,7 +4,7 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
-import { GenerationRequestStatus } from '@/types/ticker-typesv1';
+import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -313,7 +313,7 @@ export default function GenerationRequestsPage(): JSX.Element {
   async function handleReloadFailedPartsOnly(): Promise<void> {
     if (!selectedRequest || !selectedRequest.failedSteps || selectedRequest.failedSteps.length === 0) return;
     try {
-      await createFailedPartsOnlyGenerationRequests([{ ticker: selectedRequest.ticker.symbol, failedSteps: selectedRequest.failedSteps }]);
+      await createFailedPartsOnlyGenerationRequests([{ ticker: selectedRequest.ticker.symbol, failedSteps: selectedRequest.failedSteps as ReportType[] }]);
       handleCloseModal();
       reFetchData();
     } catch (err) {

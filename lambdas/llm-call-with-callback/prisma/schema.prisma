@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider  = "prisma-json-types-generator"
+  namespace = "PrismaJson"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PromptInvocationStatus {
+  Completed
+  Failed
+  InProgress
+  NotStarted
+}
+
+model PromptInvocation {
+  id                 String                 @id @default(uuid())
+  spaceId            String                 @map("space_id")
+  promptId           String                 @map("prompt_id")
+  promptVersionId    String                 @map("prompt_version_id")
+  inputJson          Json?                  @map("input_json") @db.JsonB
+  outputJson         Json?                  @map("output_json") @db.JsonB
+  transformedJson    Json?                  @map("transformed_json") @db.JsonB
+  status             PromptInvocationStatus @map("status")
+  error              String?                @map("error")
+  createdAt          DateTime               @default(now()) @map("created_at")
+  updatedAt          DateTime               @updatedAt @map("updated_at")
+  createdBy          String                 @map("created_by")
+  updatedBy          String                 @map("updated_by")
+  bodyToAppend       String?                @map("body_to_append")
+  llmProvider        String                 @map("llm_provider")
+  model              String                 @map("model")
+  promptRequestToLlm String?                @map("prompt_request_to_llm")
+
+  @@map("prompt_invocations")
+}

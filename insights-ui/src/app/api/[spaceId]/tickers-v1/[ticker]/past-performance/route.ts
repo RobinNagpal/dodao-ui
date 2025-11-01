@@ -1,10 +1,11 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
+import { savePastPerformanceFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { preparePastPerformanceInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
@@ -12,70 +13,22 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get competition analysis (required for past performance analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
+  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Extract comprehensive financial data for past performance analysis (last 5 annuals only)
   const financialData = extractFinancialDataForPastPerformance(scraperInfo);
 
   // Get analysis factors for PastPerformance category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.PastPerformance,
-    },
-  });
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
 
   // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.PastPerformance,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
-
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, financialData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -93,70 +46,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const response = result.response as LLMFactorAnalysisResponse;
 
-  // Store category analysis result (upsert)
-  const categoryResult = await prisma.tickerV1CategoryAnalysisResult.upsert({
-    where: {
-      spaceId_tickerId_categoryKey: {
-        spaceId,
-        tickerId: tickerRecord.id,
-        categoryKey: TickerAnalysisCategory.PastPerformance,
-      },
-    },
-    update: {
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      categoryKey: TickerAnalysisCategory.PastPerformance,
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-    },
-  });
-
-  // Store factor results (upsert each one)
-  const factorResults = [];
-  for (const factor of response.factors) {
-    const analysisFactorRecord = analysisFactors.find((af) => af.factorAnalysisKey === factor.factorAnalysisKey);
-
-    if (analysisFactorRecord) {
-      const factorResult = await prisma.tickerV1AnalysisCategoryFactorResult.upsert({
-        where: {
-          spaceId_tickerId_analysisCategoryFactorId: {
-            spaceId,
-            tickerId: tickerRecord.id,
-            analysisCategoryFactorId: analysisFactorRecord.id,
-          },
-        },
-        update: {
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-          updatedAt: new Date(),
-        },
-        create: {
-          spaceId,
-          tickerId: tickerRecord.id,
-          categoryKey: TickerAnalysisCategory.PastPerformance,
-          analysisCategoryFactorId: analysisFactorRecord.id,
-          oneLineExplanation: factor.oneLineExplanation,
-          detailedExplanation: factor.detailedExplanation,
-          result: factor.result,
-        },
-      });
-      factorResults.push(factorResult);
-    }
-  }
-
-  // Calculate past performance score (number of passed factors out of 5)
-  const pastPerformanceScore = response.factors.filter((factor) => factor.result && factor.result.toLowerCase().includes('pass')).length;
-
-  // Update cached score using the utility function
-  await updateTickerCachedScore(tickerRecord, TickerAnalysisCategory.PastPerformance, pastPerformanceScore);
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Save the analysis response using the utility function
+  await savePastPerformanceFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.PastPerformance);
 
   return {
     success: true,

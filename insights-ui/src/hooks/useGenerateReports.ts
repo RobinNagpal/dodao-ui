@@ -1,7 +1,7 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { AnalysisTypeKey, createInvestorAnalysisKey, INVESTOR_ANALYSIS_PREFIX, INVESTOR_OPTIONS, InvestorKey } from '@/types/ticker-typesv1';
+import { AnalysisTypeKey, INVESTOR_OPTIONS, InvestorKey, ReportType } from '@/types/ticker-typesv1';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -75,7 +75,7 @@ export const useGenerateReports = () => {
     return postAnalysis(url, payload);
   };
 
-  const generateAnalysis = async (analysisType: string, ticker: string, onReportGenerated?: (ticker: string) => void): Promise<void> => {
+  const generateAnalysis = async (analysisType: ReportType, ticker: string, onReportGenerated?: (ticker: string) => void): Promise<void> => {
     if (!ticker) return;
     try {
       const payload: AnalysisRequest = {};
@@ -107,16 +107,16 @@ export const useGenerateReports = () => {
 
     setIsGenerating(true);
     try {
-      const sequence: string[] = [
-        AnalysisTypeKey.FINANCIAL_ANALYSIS,
-        AnalysisTypeKey.COMPETITION, // must precede subsequent steps
-        AnalysisTypeKey.BUSINESS_AND_MOAT,
-        AnalysisTypeKey.FAIR_VALUE,
-        AnalysisTypeKey.FUTURE_RISK,
-        AnalysisTypeKey.PAST_PERFORMANCE,
-        AnalysisTypeKey.FUTURE_GROWTH,
-        AnalysisTypeKey.FINAL_SUMMARY,
-        AnalysisTypeKey.CACHED_SCORE,
+      const sequence: ReportType[] = [
+        ReportType.FINANCIAL_ANALYSIS,
+        ReportType.COMPETITION, // must precede subsequent steps
+        ReportType.BUSINESS_AND_MOAT,
+        ReportType.FAIR_VALUE,
+        ReportType.FUTURE_RISK,
+        ReportType.PAST_PERFORMANCE,
+        ReportType.FUTURE_GROWTH,
+        ReportType.FINAL_SUMMARY,
+        ReportType.CACHED_SCORE,
       ];
 
       for (const step of sequence) {
@@ -131,7 +131,7 @@ export const useGenerateReports = () => {
       }
 
       // final score refresh
-      await generateAnalysis(AnalysisTypeKey.CACHED_SCORE, ticker, onReportGenerated);
+      await generateAnalysis(ReportType.CACHED_SCORE, ticker, onReportGenerated);
     } finally {
       setIsGenerating(false);
     }
@@ -143,7 +143,7 @@ export const useGenerateReports = () => {
    */
   const generateReportsSynchronously = async (
     tickers: string[],
-    selectedReportTypes: string[],
+    selectedReportTypes: ReportType[],
     onReportGenerated?: (ticker: string) => void
   ): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
@@ -152,9 +152,12 @@ export const useGenerateReports = () => {
     try {
       const perTicker = tickers.map(async (ticker) => {
         for (const reportType of selectedReportTypes) {
-          if (reportType.startsWith(INVESTOR_ANALYSIS_PREFIX)) {
-            const investorKey = reportType.replace(INVESTOR_ANALYSIS_PREFIX, '') as InvestorKey;
-            await generateInvestorAnalysis(investorKey, ticker, onReportGenerated);
+          if (reportType === ReportType.WARREN_BUFFETT) {
+            await generateInvestorAnalysis('WARREN_BUFFETT', ticker, onReportGenerated);
+          } else if (reportType === ReportType.CHARLIE_MUNGER) {
+            await generateInvestorAnalysis('CHARLIE_MUNGER', ticker, onReportGenerated);
+          } else if (reportType === ReportType.BILL_ACKMAN) {
+            await generateInvestorAnalysis('BILL_ACKMAN', ticker, onReportGenerated);
           } else {
             await generateAnalysis(reportType, ticker, onReportGenerated);
           }
@@ -171,7 +174,7 @@ export const useGenerateReports = () => {
    * Batch background generation for specific report types and tickers.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateSpecificReportsInBackground = async (tickers: string[], selectedReportTypes: string[]): Promise<void> => {
+  const generateSpecificReportsInBackground = async (tickers: string[], selectedReportTypes: ReportType[]): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
     setIsGenerating(true);
@@ -194,18 +197,18 @@ export const useGenerateReports = () => {
         };
 
         selectedReportTypes.forEach((rt) => {
-          if (rt === AnalysisTypeKey.COMPETITION) payload.regenerateCompetition = true;
-          else if (rt === AnalysisTypeKey.FINANCIAL_ANALYSIS) payload.regenerateFinancialAnalysis = true;
-          else if (rt === AnalysisTypeKey.BUSINESS_AND_MOAT) payload.regenerateBusinessAndMoat = true;
-          else if (rt === AnalysisTypeKey.PAST_PERFORMANCE) payload.regeneratePastPerformance = true;
-          else if (rt === AnalysisTypeKey.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
-          else if (rt === AnalysisTypeKey.FAIR_VALUE) payload.regenerateFairValue = true;
-          else if (rt === AnalysisTypeKey.FUTURE_RISK) payload.regenerateFutureRisk = true;
-          else if (rt === AnalysisTypeKey.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
-          else if (rt === AnalysisTypeKey.CACHED_SCORE) payload.regenerateCachedScore = true;
-          else if (rt === createInvestorAnalysisKey('WARREN_BUFFETT')) payload.regenerateWarrenBuffett = true;
-          else if (rt === createInvestorAnalysisKey('CHARLIE_MUNGER')) payload.regenerateCharlieMunger = true;
-          else if (rt === createInvestorAnalysisKey('BILL_ACKMAN')) payload.regenerateBillAckman = true;
+          if (rt === ReportType.COMPETITION) payload.regenerateCompetition = true;
+          else if (rt === ReportType.FINANCIAL_ANALYSIS) payload.regenerateFinancialAnalysis = true;
+          else if (rt === ReportType.BUSINESS_AND_MOAT) payload.regenerateBusinessAndMoat = true;
+          else if (rt === ReportType.PAST_PERFORMANCE) payload.regeneratePastPerformance = true;
+          else if (rt === ReportType.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
+          else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
+          else if (rt === ReportType.FUTURE_RISK) payload.regenerateFutureRisk = true;
+          else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
+          else if (rt === ReportType.CACHED_SCORE) payload.regenerateCachedScore = true;
+          else if (rt === ReportType.WARREN_BUFFETT) payload.regenerateWarrenBuffett = true;
+          else if (rt === ReportType.CHARLIE_MUNGER) payload.regenerateCharlieMunger = true;
+          else if (rt === ReportType.BILL_ACKMAN) payload.regenerateBillAckman = true;
         });
 
         return payload;
@@ -283,7 +286,7 @@ export const useGenerateReports = () => {
    * Batch create background requests where each item enables only its failed steps.
    * Accepts an array to keep this strictly batch-only even for a single ticker.
    */
-  const createFailedPartsOnlyGenerationRequests = async (items: { ticker: string; failedSteps: string[] }[]): Promise<void> => {
+  const createFailedPartsOnlyGenerationRequests = async (items: { ticker: string; failedSteps: ReportType[] }[]): Promise<void> => {
     if (items.length === 0) return;
 
     setIsGenerating(true);
@@ -308,18 +311,18 @@ export const useGenerateReports = () => {
           };
 
           it.failedSteps.forEach((step) => {
-            if (step === AnalysisTypeKey.COMPETITION) p.regenerateCompetition = true;
-            else if (step === AnalysisTypeKey.FINANCIAL_ANALYSIS) p.regenerateFinancialAnalysis = true;
-            else if (step === AnalysisTypeKey.BUSINESS_AND_MOAT) p.regenerateBusinessAndMoat = true;
-            else if (step === AnalysisTypeKey.PAST_PERFORMANCE) p.regeneratePastPerformance = true;
-            else if (step === AnalysisTypeKey.FUTURE_GROWTH) p.regenerateFutureGrowth = true;
-            else if (step === AnalysisTypeKey.FAIR_VALUE) p.regenerateFairValue = true;
-            else if (step === AnalysisTypeKey.FUTURE_RISK) p.regenerateFutureRisk = true;
-            else if (step === AnalysisTypeKey.FINAL_SUMMARY) p.regenerateFinalSummary = true;
-            else if (step === AnalysisTypeKey.CACHED_SCORE) p.regenerateCachedScore = true;
-            else if (step === createInvestorAnalysisKey('WARREN_BUFFETT')) p.regenerateWarrenBuffett = true;
-            else if (step === createInvestorAnalysisKey('CHARLIE_MUNGER')) p.regenerateCharlieMunger = true;
-            else if (step === createInvestorAnalysisKey('BILL_ACKMAN')) p.regenerateBillAckman = true;
+            if (step === ReportType.COMPETITION) p.regenerateCompetition = true;
+            else if (step === ReportType.FINANCIAL_ANALYSIS) p.regenerateFinancialAnalysis = true;
+            else if (step === ReportType.BUSINESS_AND_MOAT) p.regenerateBusinessAndMoat = true;
+            else if (step === ReportType.PAST_PERFORMANCE) p.regeneratePastPerformance = true;
+            else if (step === ReportType.FUTURE_GROWTH) p.regenerateFutureGrowth = true;
+            else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
+            else if (step === ReportType.FUTURE_RISK) p.regenerateFutureRisk = true;
+            else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
+            else if (step === ReportType.CACHED_SCORE) p.regenerateCachedScore = true;
+            else if (step === ReportType.WARREN_BUFFETT) p.regenerateWarrenBuffett = true;
+            else if (step === ReportType.CHARLIE_MUNGER) p.regenerateCharlieMunger = true;
+            else if (step === ReportType.BILL_ACKMAN) p.regenerateBillAckman = true;
           });
 
           return p;
@@ -340,7 +343,7 @@ export const useGenerateReports = () => {
    * - If none have many missing reports, send one batch for all tickers and all types.
    */
   const generateMissingReports = async (
-    tickersWithReportTypes: { ticker: string; reportTypes: string[] }[],
+    tickersWithReportTypes: { ticker: string; reportTypes: ReportType[] }[],
     tickersWithManyMissingReports?: string[]
   ): Promise<void> => {
     if (tickersWithReportTypes.length === 0) return;
@@ -348,7 +351,7 @@ export const useGenerateReports = () => {
     setIsGenerating(true);
     try {
       const allTickers: string[] = tickersWithReportTypes.map((t) => t.ticker);
-      const allReportTypes: string[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
+      const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
 
       if (tickersWithManyMissingReports && tickersWithManyMissingReports.length > 0) {
         // Full regeneration for high-miss tickers
@@ -369,7 +372,7 @@ export const useGenerateReports = () => {
             });
 
           for (const [rt, tickers] of Object.entries(typeToTickers)) {
-            await generateSpecificReportsInBackground(tickers, [rt]);
+            await generateSpecificReportsInBackground(tickers, [rt as ReportType]);
           }
         }
       } else {

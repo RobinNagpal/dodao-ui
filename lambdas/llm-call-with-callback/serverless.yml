@@ -1,0 +1,34 @@
+service: llm-call-with-callback
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  httpApi:
+    cors: true
+  environment:
+    NODE_OPTIONS: '--enable-source-maps'
+    DATABASE_URL: ${env.DATABASE_URL}
+    PUPPETEER_SKIP_DOWNLOAD: true
+
+package:
+  individually: true
+  patterns:
+    - prisma/**                     # include your source schema (optional but nice)
+    - node_modules/.prisma/**       # include generated client assets
+    - node_modules/@prisma/**       # include engines
+
+build:
+  esbuild:
+    configFile: ./esbuild.config.js
+    target: node20
+    platform: node
+
+functions:
+  # Single router function handles all routes/methods
+  api:
+    handler: src/handler.api
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY

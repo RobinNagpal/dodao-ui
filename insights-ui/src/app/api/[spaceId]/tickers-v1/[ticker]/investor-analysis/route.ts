@@ -1,9 +1,9 @@
-import { prisma } from '@/prisma';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
-import { AnalysisRequest, CompetitionAnalysisArray, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
+import { AnalysisRequest, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
+import { fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import { saveInvestorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareInvestorAnalysisInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -17,39 +17,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Get competition analysis (required for investor analysis)
-  const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
-    where: {
-      spaceId,
-      tickerId: tickerRecord.id,
-    },
-  });
+  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Prepare input for the prompt (uses investor-analysis-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    investorKey: investorKey,
-    verdicts: Object.values(VERDICT_DEFINITIONS),
-    competitionAnalysisArray: competitionData.competitionAnalysisArray as CompetitionAnalysisArray,
-  };
+  const inputJson = prepareInvestorAnalysisInputJson(tickerRecord, investorKey, competitionAnalysisArray);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -67,34 +41,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const response = result.response as LLMInvestorAnalysisResponse;
 
-  // Store investor analysis result (upsert)
-  const investorAnalysisResult = await prisma.tickerV1InvestorAnalysisResult.upsert({
-    where: {
-      spaceId_tickerId_investorKey: {
-        spaceId,
-        tickerId: tickerRecord.id,
-        investorKey,
-      },
-    },
-    update: {
-      summary: response.summary,
-      verdict: response.verdict,
-      willInvest: response.willInvest,
-      topCompaniesToConsider: response.topCompaniesToConsider,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      investorKey,
-      summary: response.summary,
-      verdict: response.verdict,
-      willInvest: response.willInvest,
-      topCompaniesToConsider: response.topCompaniesToConsider,
-    },
-  });
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Save the investor analysis response using the utility function
+  await saveInvestorAnalysisResponse(ticker.toLowerCase(), response, investorKey);
 
   return {
     success: true,
