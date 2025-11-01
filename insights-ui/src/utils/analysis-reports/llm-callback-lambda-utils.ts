@@ -28,13 +28,42 @@ export interface LLMResponseViaLambdaRequest<Input> {
  * Core function to get LLM response
  */
 export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMResponseViaLambdaRequest<Input>): Promise<void> {
-  // TODO: Make a rest call to lambda which will get results from LLM and invoke callback
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || '';
+  if (!baseUrl) {
+    throw new Error('NEXT_PUBLIC_VERCEL_URL environment variable is not set');
+  }
+
+  const protocol = baseUrl.startsWith('localhost') ? 'http' : 'https';
+  const lambdaUrl = `${protocol}://${baseUrl}/api/llm-call-with-callback`;
+
+  try {
+    const response = await fetch(lambdaUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Lambda call failed with status ${response.status}: ${errorText}`);
+    }
+  } catch (error) {
+    console.error('Error calling lambda:', error);
+    throw error;
+  }
 }
 
-export async function getLLMResponseForPromptViaInvocationViaLambda<Input, Output>(
-  params: LLMResponseViaInvocationRequest<Input>,
-  reportType: ReportType
-): Promise<void> {
+export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
+  symbol: string;
+  generationRequestId: string;
+  params: LLMResponseViaInvocationRequest<Input>;
+  reportType: ReportType;
+}
+
+export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args: LLMResponseForPromptViaInvocationViaLambda<Input>): Promise<void> {
+  const { symbol, generationRequestId, params, reportType } = args;
   const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
   // Validate required fields
@@ -106,7 +135,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input, Outpu
     // Get LLM response
     const lambdaRequest: LLMResponseViaLambdaRequest<Input> = {
       invocationId: invocation.id,
-      callbackUrl: 'https://koalagains.com/api/' + reportType,
+      callbackUrl: `https://koalagains.com/api/${spaceId}/tickers-v1/${symbol}/save-report-callback`,
       inputJson: inputJson,
       promptStringToSendToLLM: finalPrompt,
       inputSchemaString: JSON.stringify(inputSchemaObject),
@@ -115,6 +144,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input, Outpu
       outputSchemaString: JSON.stringify(outputSchema),
       additionalData: {
         reportType: reportType,
+        generationRequestId: generationRequestId,
       },
     };
     await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
