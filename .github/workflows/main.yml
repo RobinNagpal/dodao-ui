@@ -177,6 +177,9 @@ jobs:
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
           echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
+          echo "KOALA_AWS_SECRET_ACCESS_KEY=${{ secrets.KOALA_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "KOALA_AWS_ACCESS_KEY_ID=${{ secrets.KOALA_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
 
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn
