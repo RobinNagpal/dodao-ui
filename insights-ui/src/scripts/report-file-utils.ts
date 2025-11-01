@@ -58,7 +58,11 @@ export async function readFileFromS3(key: string): Promise<string | undefined> {
     const fileData = await transformToString;
 
     return fileData;
-  } catch (error) {}
+  } catch (error) {
+    console.error(`Got error reading file from S3 for key: ${key}`);
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function readFileAndLastModifiedFromS3(key: string): Promise<{ fileData?: string; lastModified?: string } | undefined> {
