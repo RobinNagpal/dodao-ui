@@ -1,6 +1,7 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, saveFairValueFactorAnalysisResponse } from '@/utils/save-report-utils';
-import { prepareFairValueInputJson } from '@/utils/report-input-json-utils';
+import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import { saveFairValueFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareFairValueInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';

@@ -8,7 +8,7 @@ import {
   createBackgroundGenerationRequest,
   createSingleAnalysisBackgroundRequest,
   createSingleInvestorBackgroundRequest,
-} from '@/utils/report-generator-utils';
+} from '@/utils/analysis-reports/report-generator-utils';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useRouter } from 'next/navigation';

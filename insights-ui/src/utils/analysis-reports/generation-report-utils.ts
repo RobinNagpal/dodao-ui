@@ -2,8 +2,23 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
-import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry, VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
-import { getLLMResponseForPromptViaInvocationViaLambda, prepareBaseTickerInputJson, prepareFactorAnalysisInputJson } from '@/utils/llm-callback-lambda-utils';
+import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
+import {
+  fetchAnalysisFactors,
+  fetchTickerRecordWithAnalysisData,
+  fetchTickerRecordWithIndustryAndSubIndustry,
+} from '@/utils/analysis-reports/get-report-data-utils';
+import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
+import {
+  prepareBaseTickerInputJson,
+  prepareBusinessAndMoatInputJson,
+  prepareFairValueInputJson,
+  prepareFinancialAnalysisInputJson,
+  prepareFinalSummaryInputJson,
+  prepareFutureGrowthInputJson,
+  prepareInvestorAnalysisInputJson,
+  preparePastPerformanceInputJson,
+} from '@/utils/analysis-reports/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor, TickerV1GenerationRequest } from '@prisma/client';
 
@@ -15,22 +30,6 @@ interface ReportOrderItem {
   condition: boolean;
   needsCompetitionData: boolean;
   generateFn: () => Promise<void>;
-}
-
-/**
- * Fetches ticker data from the database
- */
-async function fetchTickerData(symbol: string): Promise<TickerV1WithIndustryAndSubIndustry> {
-  return await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      symbol: symbol.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
 }
 
 /**
@@ -267,31 +266,6 @@ async function updateInProgressStep(generationRequest: TickerV1GenerationRequest
 }
 
 /**
- * Checks if all reports are completed and updates the status accordingly
- */
-async function checkAllReportsCompleted(
-  generationRequest: TickerV1GenerationRequest,
-  reportOrder: ReportOrderItem[],
-  updatedCompletedSteps: string[]
-): Promise<void> {
-  const allReportsCompleted = reportOrder.every(
-    (report) => !report.condition || updatedCompletedSteps.includes(report.reportType) || generationRequest.failedSteps.includes(report.reportType)
-  );
-
-  if (allReportsCompleted) {
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        status: GenerationRequestStatus.Completed,
-        completedAt: new Date(),
-      },
-    });
-  }
-}
-
-/**
  * Marks the generation request as completed when there are no reports to generate
  */
 async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
@@ -374,33 +348,13 @@ async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Get analysis factors for FinancialStatementAnalysis category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.FinancialStatementAnalysis,
-    },
-  });
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FinancialStatementAnalysis);
 
   // Extract comprehensive financial data for analysis
   const financialData = extractFinancialDataForAnalysis(scraperInfo);
 
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
-
   // Prepare input for the prompt
-  const inputJson = {
-    ...prepareFactorAnalysisInputJson(baseInputJson, TickerAnalysisCategory.FinancialStatementAnalysis, analysisFactors),
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = prepareFinancialAnalysisInputJson(tickerRecord, analysisFactors, financialData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -422,20 +376,10 @@ async function generateBusinessAndMoatAnalysis(
   competitionAnalysisArray: CompetitionAnalysisArray
 ): Promise<void> {
   // Get analysis factors for BusinessAndMoat category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-    },
-  });
-
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
   // Prepare input for the prompt
-  const inputJson = prepareFactorAnalysisInputJson(baseInputJson, TickerAnalysisCategory.BusinessAndMoat, analysisFactors, competitionAnalysisArray);
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -463,30 +407,10 @@ async function generatePastPerformanceAnalysis(
   const financialData = extractFinancialDataForPastPerformance(scraperInfo);
 
   // Get analysis factors for PastPerformance category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.PastPerformance,
-    },
-  });
-
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
 
   // Prepare input for the prompt
-  const inputJson = {
-    ...prepareFactorAnalysisInputJson(baseInputJson, TickerAnalysisCategory.PastPerformance, analysisFactors, competitionAnalysisArray),
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, financialData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -508,20 +432,10 @@ async function generateFutureGrowthAnalysis(
   competitionAnalysisArray: CompetitionAnalysisArray
 ): Promise<void> {
   // Get analysis factors for FutureGrowth category
-  const analysisFactors = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.FutureGrowth,
-    },
-  });
-
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
+  const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
 
   // Prepare input for the prompt
-  const inputJson = prepareFactorAnalysisInputJson(baseInputJson, TickerAnalysisCategory.FutureGrowth, analysisFactors, competitionAnalysisArray);
+  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
 
   await getLLMResponseForPromptViaInvocationViaLambda(
     {
@@ -544,30 +458,10 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
   const financialData = extractFinancialDataForAnalysis(scraperInfo);
 
   // Get analysis factors for FairValue category
-  const analysisFactors: AnalysisCategoryFactor[] = await prisma.analysisCategoryFactor.findMany({
-    where: {
-      spaceId,
-      industryKey: tickerRecord.industryKey,
-      subIndustryKey: tickerRecord.subIndustryKey,
-      categoryKey: TickerAnalysisCategory.FairValue,
-    },
-  });
-
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
+  const analysisFactors: AnalysisCategoryFactor[] = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
 
   // Prepare input for the prompt
-  const inputJson = {
-    ...prepareFactorAnalysisInputJson(baseInputJson, TickerAnalysisCategory.FairValue, analysisFactors),
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = prepareFairValueInputJson(tickerRecord, analysisFactors, financialData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -607,16 +501,8 @@ async function generateInvestorAnalysis(
   investorKey: ReportType.BILL_ACKMAN | ReportType.CHARLIE_MUNGER | ReportType.WARREN_BUFFETT,
   competitionAnalysisArray: CompetitionAnalysisArray
 ): Promise<void> {
-  // Prepare base input JSON
-  const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
-
   // Prepare input for the prompt
-  const inputJson = {
-    ...baseInputJson,
-    investorKey,
-    verdicts: Object.values(VERDICT_DEFINITIONS),
-    competitionAnalysisArray,
-  };
+  const inputJson = prepareInvestorAnalysisInputJson(tickerRecord, investorKey, competitionAnalysisArray);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -634,55 +520,10 @@ async function generateInvestorAnalysis(
 
 async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry): Promise<void> {
   // Get ticker from DB with all related analysis data
-  const tickerWithAnalysis = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      id: tickerRecord.id,
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-      categoryAnalysisResults: {
-        include: {
-          factorResults: {
-            include: {
-              analysisCategoryFactor: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  // Prepare category summaries from existing analysis results
-  const categorySummaries = tickerWithAnalysis.categoryAnalysisResults.map((categoryResult) => ({
-    categoryKey: categoryResult.categoryKey,
-    overallSummary: categoryResult.overallAnalysisDetails,
-  }));
-
-  // Prepare factor results from existing factor analysis
-  const factorResults = tickerWithAnalysis.categoryAnalysisResults.flatMap((categoryResult) =>
-    categoryResult.factorResults.map((factorResult) => ({
-      categoryKey: categoryResult.categoryKey,
-      factorAnalysisKey: factorResult.analysisCategoryFactor.factorAnalysisKey,
-      oneLineExplanation: factorResult.oneLineExplanation,
-      result: factorResult.result,
-    }))
-  );
+  const tickerWithAnalysis = await fetchTickerRecordWithAnalysisData(tickerRecord.symbol);
 
   // Prepare input for the prompt
-  const inputJson = {
-    name: tickerWithAnalysis.name,
-    symbol: tickerWithAnalysis.symbol,
-    exchange: tickerWithAnalysis.exchange,
-    industryKey: tickerWithAnalysis.industryKey,
-    industryName: tickerWithAnalysis.industry.name,
-    industryDescription: tickerWithAnalysis.industry.summary,
-    subIndustryKey: tickerWithAnalysis.subIndustryKey,
-    subIndustryName: tickerWithAnalysis.subIndustry.name,
-    subIndustryDescription: tickerWithAnalysis.subIndustry.summary,
-    categorySummaries,
-    factorResults,
-  };
+  const inputJson = prepareFinalSummaryInputJson(tickerWithAnalysis);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda(
@@ -703,7 +544,7 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
  */
 export async function trigggerGenerationOfAReport(symbol: string, generationRequest: TickerV1GenerationRequest): Promise<void> {
   // Get ticker from DB
-  const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerData(symbol);
+  const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordWithIndustryAndSubIndustry(symbol);
   const spaceId = KoalaGainsSpaceId;
 
   // Handle in-progress step

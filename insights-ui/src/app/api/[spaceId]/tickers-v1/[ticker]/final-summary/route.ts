@@ -1,12 +1,13 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { fetchTickerRecordWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
 import { LLMProvider, GeminiModel, GeminiModelType } from '@/types/llmConstants';
-import { fetchTickerRecordWithAnalysisData, saveFinalSummaryResponse } from '@/utils/save-report-utils';
-import { prepareFinalSummaryInputJson } from '@/utils/report-input-json-utils';
+import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;

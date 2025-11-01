@@ -2,13 +2,9 @@ import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import {
-  fetchAnalysisFactors,
-  fetchTickerRecordWithIndustryAndSubIndustry,
-  getCompetitionAnalysisArray,
-  saveBusinessAndMoatFactorAnalysisResponse,
-} from '@/utils/save-report-utils';
-import { prepareBusinessAndMoatInputJson } from '@/utils/report-input-json-utils';
+import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 

@@ -1,8 +1,9 @@
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { AnalysisRequest, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray, saveInvestorAnalysisResponse } from '@/utils/save-report-utils';
-import { prepareInvestorAnalysisInputJson } from '@/utils/report-input-json-utils';
+import { fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import { saveInvestorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { prepareInvestorAnalysisInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 

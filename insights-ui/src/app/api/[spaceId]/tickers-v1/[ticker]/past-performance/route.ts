@@ -1,12 +1,8 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
+import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
-import {
-  fetchAnalysisFactors,
-  fetchTickerRecordWithIndustryAndSubIndustry,
-  getCompetitionAnalysisArray,
-  savePastPerformanceFactorAnalysisResponse,
-} from '@/utils/save-report-utils';
-import { preparePastPerformanceInputJson } from '@/utils/report-input-json-utils';
+import { savePastPerformanceFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { preparePastPerformanceInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
