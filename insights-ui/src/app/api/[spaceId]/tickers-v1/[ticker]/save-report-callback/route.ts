@@ -1,7 +1,8 @@
 import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { trigggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
+import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
+  saveCompetitionAnalysisResponse,
   saveFairValueFactorAnalysisResponse,
   saveFinalSummaryResponse,
   saveFinancialAnalysisFactorAnalysisResponse,
@@ -35,6 +36,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     case ReportType.FINANCIAL_ANALYSIS:
       await saveFinancialAnalysisFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FinancialStatementAnalysis);
       break;
+    case ReportType.COMPETITION:
+      await saveCompetitionAnalysisResponse(ticker, llmResponse);
+      break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FairValue);
       break;
@@ -52,7 +56,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   // Trigger generation of the next report
   if (generationRequestId) {
-    await trigggerGenerationOfAReport(ticker, generationRequestId);
+    await triggerGenerationOfAReport(ticker, generationRequestId);
   }
 
   return {

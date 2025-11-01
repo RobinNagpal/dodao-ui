@@ -1,10 +1,11 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { saveCompetitionAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
+import { fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
 interface CompetitionAnalysisResponse {
   summary: string;
@@ -22,28 +23,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Prepare input for the prompt (uses competition-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-  };
+  const inputJson = prepareBaseTickerInputJson(tickerRecord);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -61,30 +44,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const response = result.response as CompetitionAnalysisResponse;
 
-  // Store competition analysis result (upsert)
-  const competitionResult = await prisma.tickerV1VsCompetition.upsert({
-    where: {
-      spaceId_tickerId: {
-        spaceId,
-        tickerId: tickerRecord.id,
-      },
-    },
-    update: {
-      summary: response.summary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      competitionAnalysisArray: response.competitionAnalysisArray,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      summary: response.summary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      competitionAnalysisArray: response.competitionAnalysisArray,
-    },
-  });
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Save the analysis response using the utility function
+  await saveCompetitionAnalysisResponse(ticker.toLowerCase(), response);
 
   return {
     success: true,

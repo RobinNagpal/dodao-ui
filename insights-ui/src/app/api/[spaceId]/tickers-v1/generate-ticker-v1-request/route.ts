@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { TickerV1GenerationRequestWithTicker } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
-import { trigggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
+import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -67,7 +67,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   for (const request of [...inProgressCount, ...notStartedRequests]) {
     try {
       console.log(`Processing request ${request.id} for ticker ${request.ticker.symbol}`);
-      await trigggerGenerationOfAReport(request.ticker.symbol, request.id);
+      await triggerGenerationOfAReport(request.ticker.symbol, request.id);
     } catch (error) {
       console.error(`Error processing request ${request.id}:`, error);
     }

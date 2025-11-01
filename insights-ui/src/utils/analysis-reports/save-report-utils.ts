@@ -163,6 +163,52 @@ export async function saveInvestorAnalysisResponse(ticker: string, response: LLM
 }
 
 /**
+ * Saves competition analysis response
+ */
+export async function saveCompetitionAnalysisResponse(
+  ticker: string,
+  response: {
+    summary: string;
+    overallAnalysisDetails: string;
+    competitionAnalysisArray: Array<{
+      companyName: string;
+      companySymbol?: string;
+      exchangeSymbol?: string;
+      exchangeName?: string;
+      detailedComparison: string;
+    }>;
+  }
+): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+
+  // Store competition analysis result (upsert)
+  await prisma.tickerV1VsCompetition.upsert({
+    where: {
+      spaceId_tickerId: {
+        spaceId,
+        tickerId: tickerRecord.id,
+      },
+    },
+    update: {
+      summary: response.summary,
+      overallAnalysisDetails: response.overallAnalysisDetails,
+      competitionAnalysisArray: response.competitionAnalysisArray,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      summary: response.summary,
+      overallAnalysisDetails: response.overallAnalysisDetails,
+      competitionAnalysisArray: response.competitionAnalysisArray,
+    },
+  });
+
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+}
+
+/**
  * Saves final summary response
  */
 export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string): Promise<void> {

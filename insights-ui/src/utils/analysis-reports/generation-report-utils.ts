@@ -568,7 +568,7 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
 /**
  * Main function to trigger generation of a report
  */
-export async function trigggerGenerationOfAReport(symbol: string, generationRequestId: string): Promise<void> {
+export async function triggerGenerationOfAReport(symbol: string, generationRequestId: string): Promise<void> {
   let generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
     where: { id: generationRequestId },
     include: { ticker: true },

@@ -4,8 +4,6 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  httpApi:
-    cors: true
   environment:
     NODE_OPTIONS: '--enable-source-maps'
     DATABASE_URL: ${env.DATABASE_URL}
@@ -14,9 +12,9 @@ provider:
 package:
   individually: true
   patterns:
-    - prisma/**                     # include your source schema (optional but nice)
-    - node_modules/.prisma/**       # include generated client assets
-    - node_modules/@prisma/**       # include engines
+    - prisma/**
+    - node_modules/.prisma/**
+    - node_modules/@prisma/**
 
 build:
   esbuild:
@@ -25,10 +23,11 @@ build:
     platform: node
 
 functions:
-  # Single router function handles all routes/methods
   api:
     handler: src/handler.api
-    events:
-      - httpApi:
-          path: /llm-call-with-callback
-          method: ANY
+    timeout: 300
+    # 👇 This creates a Lambda Function URL (no API Gateway)
+    url:
+      cors: true                 # same effect as before
+      invokeMode: RESPONSE_STREAM  # enables streaming
+      # authorizer: aws_iam      # optional: protect with IAM; omit for public
