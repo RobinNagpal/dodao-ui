@@ -1,8 +1,9 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { AnalysisCategoryFactor, TickerV1 } from '@prisma/client';
 
 /**
@@ -165,4 +166,103 @@ export async function saveFairValueFactorAnalysisResponse(
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
   await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+}
+
+/**
+ * Saves investor analysis response
+ */
+export async function saveInvestorAnalysisResponse(ticker: string, response: LLMInvestorAnalysisResponse, investorKey: string): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+
+  // Store investor analysis result (upsert)
+  await prisma.tickerV1InvestorAnalysisResult.upsert({
+    where: {
+      spaceId_tickerId_investorKey: {
+        spaceId,
+        tickerId: tickerRecord.id,
+        investorKey,
+      },
+    },
+    update: {
+      summary: response.summary,
+      verdict: response.verdict,
+      willInvest: response.willInvest,
+      topCompaniesToConsider: response.topCompaniesToConsider,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      investorKey,
+      summary: response.summary,
+      verdict: response.verdict,
+      willInvest: response.willInvest,
+      topCompaniesToConsider: response.topCompaniesToConsider,
+    },
+  });
+
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+}
+
+/**
+ * Fetches ticker record with all related analysis data
+ */
+export async function fetchTickerRecordWithAnalysisData(ticker: string): Promise<
+  TickerV1WithIndustryAndSubIndustry & {
+    categoryAnalysisResults: Array<{
+      categoryKey: string;
+      summary: string;
+      factorResults: Array<{
+        analysisCategoryFactor: {
+          factorAnalysisKey: string;
+        };
+        oneLineExplanation: string;
+        result: string;
+      }>;
+    }>;
+  }
+> {
+  const spaceId = KoalaGainsSpaceId;
+  return await prisma.tickerV1.findFirstOrThrow({
+    where: {
+      spaceId,
+      symbol: ticker.toUpperCase(),
+    },
+    include: {
+      industry: true,
+      subIndustry: true,
+      categoryAnalysisResults: {
+        include: {
+          factorResults: {
+            include: {
+              analysisCategoryFactor: true,
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Saves final summary response
+ */
+export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+
+  // Update the ticker's summary and meta description fields
+  await prisma.tickerV1.update({
+    where: {
+      id: tickerRecord.id,
+    },
+    data: {
+      summary: finalSummary,
+      metaDescription: metaDescription,
+      updatedAt: new Date(),
+    },
+  });
+
+  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
 }

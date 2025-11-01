@@ -1,36 +1,17 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
 import { LLMProvider, GeminiModel, GeminiModelType } from '@/types/llmConstants';
+import { fetchTickerRecordWithAnalysisData, saveFinalSummaryResponse } from '@/utils/save-report-utils';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB with all related analysis data
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-      categoryAnalysisResults: {
-        include: {
-          factorResults: {
-            include: {
-              analysisCategoryFactor: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithAnalysisData(ticker);
 
   // Prepare category summaries from existing analysis results
   const categorySummaries = tickerRecord.categoryAnalysisResults.map((categoryResult) => ({
@@ -91,18 +72,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const metaDescription = metaDescriptionResult.metaDescription;
 
-  // Update the ticker's summary and meta description fields
-  await prisma.tickerV1.update({
-    where: {
-      id: tickerRecord.id,
-    },
-    data: {
-      summary: finalSummary,
-      metaDescription: metaDescription,
-      updatedAt: new Date(),
-    },
-  });
-  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+  // Save the final summary response using the utility function
+  await saveFinalSummaryResponse(ticker.toLowerCase(), finalSummary, metaDescription);
 
   return {
     success: true,
