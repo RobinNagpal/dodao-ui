@@ -30,5 +30,5 @@ functions:
     handler: src/handler.api
     events:
       - httpApi:
-          path: /{proxy+}
+          path: /llm-call-with-callback
           method: ANY

@@ -17,7 +17,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const { llmResponse, additionalData } = await req.json();
   const { reportType, generationRequestId } = additionalData;
-
+  console.log('Got request to save report with the following info', {
+    llmResponse,
+    additionalData,
+  });
   // Save the report based on the report type
   switch (reportType) {
     case ReportType.BUSINESS_AND_MOAT:

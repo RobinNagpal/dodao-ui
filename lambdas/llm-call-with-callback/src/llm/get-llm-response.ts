@@ -25,14 +25,14 @@ export interface LLMResponseOptions {
   outputSchemaString: string;
   maxRetries?: number;
   isTestInvocation?: boolean;
+  additionalData?: Record<string, string>;
 }
 
 export interface LLMResponseViaLambda<Input> {
+  invocationId: string;
   callbackUrl: string;
-  inputJson: Input;
+  inputJson?: Input;
   promptStringToSendToLLM: string;
-  promptVersionId: string;
-  promptId: string;
   inputSchemaString: string;
   llmProvider: LLMProvider;
   model: GeminiModel;
@@ -157,8 +157,12 @@ export async function getLLMResponse<Output>({
   outputSchemaString,
   maxRetries = 1,
   isTestInvocation,
+  additionalData,
 }: LLMResponseOptions): Promise<Output> {
   let lastResult: unknown | null = null;
+  const reportType = additionalData?.reportType || "unknown";
+  const symbol = additionalData?.symbol || "unknown";
+  const generationId = additionalData?.generationRequestId || "unknown";
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -166,7 +170,9 @@ export async function getLLMResponse<Output>({
 
       // Handle Gemini with grounding - two-step process
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        console.log("Using Gemini with grounding - performing search first...");
+        console.log(
+          `[${reportType}] [${symbol}] [${generationId}] Using Gemini with grounding - performing search first...`
+        );
 
         // Step 1: Get grounded response from Gemini with Google Search
         const groundedResponse = await getGroundedResponse(
@@ -176,8 +182,9 @@ export async function getLLMResponse<Output>({
 
         // Step 2: Convert the grounded response to structured output
         finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;
+
         console.log(
-          "✅ Grounded response obtained, now converting to structured output"
+          `[${reportType}] [${symbol}] [${generationId}] ✅ Grounded response obtained, now converting to structured output`
         );
       }
 
@@ -194,7 +201,11 @@ export async function getLLMResponse<Output>({
 
       // Get response from LLM
       const result = (await structured.invoke(finalPrompt)) as Output;
-      console.log("Response from llm:", result);
+
+      console.log(
+        `[${reportType}] [${symbol}] [${generationId}] Response from llm:`,
+        result
+      );
       lastResult = result;
 
       // Update invocation status
@@ -213,7 +224,10 @@ export async function getLLMResponse<Output>({
       // Validate output
       const { valid, errors } = validateData(outputSchemaString, result);
       if (!valid) {
-        console.error("Schema validation errors:", errors);
+        console.error(
+          `[${reportType}] [${symbol}] [${generationId}] Schema validation errors:`,
+          errors
+        );
         throw new Error(`Validation failed: ${JSON.stringify(errors)}`);
       }
 
@@ -221,7 +235,12 @@ export async function getLLMResponse<Output>({
     } catch (err: unknown) {
       const isLast = attempt === maxRetries;
       if (!isLast) {
-        console.error(`Attempt ${attempt + 1} failed, retrying…`, err);
+        console.error(
+          `[${reportType}] [${symbol}] [${generationId}] Attempt ${
+            attempt + 1
+          } failed, retrying…`,
+          err
+        );
         continue;
       }
 
@@ -233,7 +252,9 @@ export async function getLLMResponse<Output>({
           isTestInvocation
         );
       } else {
-        console.error("Last attempt failed, no result to save.");
+        console.error(
+          `[${reportType}] [${symbol}] [${generationId}] Last attempt failed, no result to save.`
+        );
         throw new Error(
           `Unexpected failure in getLLMResponse: ${
             err instanceof Error ? err.message : String(err)
@@ -243,7 +264,10 @@ export async function getLLMResponse<Output>({
       throw err;
     }
   }
-  console.error("Failed to get LLM response for request", prompt);
+  console.error(
+    `[${reportType}] [${symbol}] [${generationId}] Failed to get LLM response for request`,
+    prompt
+  );
   throw new Error("Failed to get LLM response for request" + prompt);
 }
 
@@ -255,8 +279,6 @@ export async function getLLMResponseInLamnda<Input, Output>(
   params: LLMResponseViaLambda<Input>
 ): Promise<Output> {
   const {
-    promptId,
-    promptVersionId,
     promptStringToSendToLLM,
     llmProvider,
     model,
@@ -266,18 +288,11 @@ export async function getLLMResponseInLamnda<Input, Output>(
   } = params;
 
   // Create invocation record
-  const invocation = await createPromptInvocation(
-    {
-      spaceId: KoalaGainsSpaceId,
-      llmProvider,
-      model,
+  const invocation = await prisma.promptInvocation.findFirstOrThrow({
+    where: {
+      id: params.invocationId,
     },
-    {
-      promptId: promptId,
-      promptVersionId: promptVersionId,
-      inputJson,
-    }
-  );
+  });
 
   try {
     const { valid, errors } = validateData(inputSchemaString, inputJson);
@@ -285,15 +300,6 @@ export async function getLLMResponseInLamnda<Input, Output>(
       console.error(`Input validation failed: ${JSON.stringify(errors)}`);
       throw new Error(`Input validation failed: ${JSON.stringify(errors)}`);
     }
-
-    // Update invocation with prompt
-    await updateInvocationStatus(
-      invocation.id,
-      PromptInvocationStatus.InProgress,
-      {
-        promptRequestToLlm: promptStringToSendToLLM,
-      }
-    );
 
     // Get LLM response
     const result = await getLLMResponse<Output>({
@@ -303,11 +309,19 @@ export async function getLLMResponseInLamnda<Input, Output>(
       promptString: promptStringToSendToLLM,
       outputSchemaString: outputSchemaString,
       maxRetries: 2,
+      additionalData: params.additionalData,
     });
 
     return result;
   } catch (e) {
-    console.error("Error during prompt invocation:", e);
+    const reportType = params.additionalData?.reportType || "unknown";
+    const symbol = params.additionalData?.symbol || "unknown";
+    const generationId =
+      params.additionalData?.generationRequestId || "unknown";
+    console.error(
+      `[${reportType}] [${symbol}] [${generationId}] Error during prompt invocation:`,
+      e
+    );
     await updateInvocationStatus(invocation.id, PromptInvocationStatus.Failed, {
       error: (e as Error)?.message,
     });

@@ -28,22 +28,22 @@ export interface LLMResponseViaLambdaRequest<Input> {
  * Core function to get LLM response
  */
 export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMResponseViaLambdaRequest<Input>): Promise<void> {
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || '';
+  const baseUrl = process.env.LAMBDA_URL_LLM_CALL_WITH_CALLBACK || '';
   if (!baseUrl) {
-    throw new Error('NEXT_PUBLIC_VERCEL_URL environment variable is not set');
+    throw new Error('LAMBDA_URL_LLM_CALL_WITH_CALLBACK environment variable is not set');
   }
 
-  const protocol = baseUrl.startsWith('localhost') ? 'http' : 'https';
-  const lambdaUrl = `${protocol}://${baseUrl}/api/llm-call-with-callback`;
-
   try {
-    const response = await fetch(lambdaUrl, {
+    const postRequest = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(request),
-    });
+    };
+    console.log('Lambda URL:', baseUrl);
+    console.log('Calling lambda with request:', request);
+    const response = await fetch(baseUrl, postRequest);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -116,7 +116,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
       }
     }
 
-    if (!!inputSchemaObject) {
+    if (!inputSchemaObject) {
       throw new Error('Input schema not implemented yet');
     }
 
@@ -133,9 +133,10 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     const outputSchema = await loadSchema(outputSchemaPath, prompt.outputSchema);
 
     // Get LLM response
+    const callbackBaseUrl = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || `https://koalagains.com`;
     const lambdaRequest: LLMResponseViaLambdaRequest<Input> = {
       invocationId: invocation.id,
-      callbackUrl: `https://koalagains.com/api/${spaceId}/tickers-v1/${symbol}/save-report-callback`,
+      callbackUrl: `${callbackBaseUrl}/api/${spaceId}/tickers-v1/${symbol}/save-report-callback`,
       inputJson: inputJson,
       promptStringToSendToLLM: finalPrompt,
       inputSchemaString: JSON.stringify(inputSchemaObject),
@@ -145,6 +146,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
       additionalData: {
         reportType: reportType,
         generationRequestId: generationRequestId,
+        symbol: symbol,
       },
     };
     await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);

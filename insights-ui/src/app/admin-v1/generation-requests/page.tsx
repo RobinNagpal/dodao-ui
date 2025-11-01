@@ -83,12 +83,14 @@ interface StatusDotProps {
   stepName: string;
   completedSteps: string[];
   failedSteps: string[];
+  inProgressStep?: string | null;
 }
 
-function StatusDot({ isEnabled, stepName, completedSteps, failedSteps }: StatusDotProps): JSX.Element {
+function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgressStep }: StatusDotProps): JSX.Element {
   if (!isEnabled) return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
   if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
   if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
+  if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="Completed" />;
   return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
 }
 
@@ -153,6 +155,7 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
             const completedSteps: string[] = latestRequest.completedSteps ?? [];
             const failedSteps: string[] = latestRequest.failedSteps ?? [];
             const isFailed: boolean = latestRequest.status === GenerationRequestStatus.Failed;
+            const inProgressStep: string | null = latestRequest.inProgressStep ?? null;
 
             return (
               <tr key={latestRequest.id}>
@@ -169,18 +172,22 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
                     {latestRequest.ticker.subIndustry?.name || 'Unknown Sub-Industry'}
                   </div>
                 </td>
-                {regenerateFields.map((field: RegenerateField) => (
-                  <td key={`${symbol}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                    <div className="flex justify-center">
-                      <StatusDot
-                        isEnabled={Boolean(latestRequest[field])}
-                        stepName={FIELD_TO_STEP_MAP[field]}
-                        completedSteps={completedSteps}
-                        failedSteps={failedSteps}
-                      />
-                    </div>
-                  </td>
-                ))}
+                {regenerateFields.map((field: RegenerateField) => {
+                  const stepName = FIELD_TO_STEP_MAP[field];
+                  return (
+                    <td key={`${symbol}-${field}`} className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                      <div className="flex justify-center">
+                        <StatusDot
+                          isEnabled={Boolean(latestRequest[field])}
+                          stepName={stepName}
+                          completedSteps={completedSteps}
+                          failedSteps={failedSteps}
+                          inProgressStep={inProgressStep}
+                        />
+                      </div>
+                    </td>
+                  );
+                })}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${

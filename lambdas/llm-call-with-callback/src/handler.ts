@@ -11,7 +11,7 @@ const logger: Logger = new Logger({ serviceName: "llm-call-with-callback" });
 
 /* --------------------------- shared types & headers -------------------------- */
 
-export const handler = streamifyResponse(myHandler);
+export const api = streamifyResponse(myHandler);
 
 async function myHandler(
   event: APIGatewayProxyEventV2,
@@ -31,8 +31,8 @@ async function myHandler(
 
   const body: LLMResponseViaLambda<any> = JSON.parse(event.body);
 
-  const llmResponse = getLLMResponseInLamnda<any, any>(body);
-
+  const llmResponse = await getLLMResponseInLamnda<any, any>(body);
+  console.log("llmResponse", llmResponse);
   const { callbackUrl, additionalData } = body;
 
   // Send response to callback URL

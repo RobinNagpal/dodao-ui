@@ -20,7 +20,7 @@ import {
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
-import { AnalysisCategoryFactor, TickerV1GenerationRequest } from '@prisma/client';
+import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
 
 /**
  * Type definition for a report in the generation order
@@ -37,8 +37,8 @@ interface ReportOrderItem {
  * Returns true if the function should exit early
  */
 async function handleInProgressStep(
-  generationRequest: TickerV1GenerationRequest
-): Promise<{ isInProgressOrIsCompleted: boolean; updatedRequest: TickerV1GenerationRequest }> {
+  generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }
+): Promise<{ isInProgressOrIsCompleted: boolean; updatedRequest: TickerV1GenerationRequest & { ticker: TickerV1 } }> {
   if (generationRequest.status === GenerationRequestStatus.Completed) {
     return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
   }
@@ -71,10 +71,14 @@ async function handleInProgressStep(
       where: {
         id: generationRequest.id,
       },
+      include: {
+        ticker: true,
+      },
     });
 
     return { isInProgressOrIsCompleted: false, updatedRequest };
   } else {
+    console.log(`Waiting for ${generationRequest.inProgressStep}  of ${generationRequest.ticker.symbol} to finish.... It was started at ${lastInvocationTime}`);
     // If it's not been more than 5 minutes, return early
     return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
   }
@@ -565,7 +569,10 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
  * Main function to trigger generation of a report
  */
 export async function trigggerGenerationOfAReport(symbol: string, generationRequestId: string): Promise<void> {
-  let generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({ where: { id: generationRequestId } });
+  let generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+    where: { id: generationRequestId },
+    include: { ticker: true },
+  });
   // Get ticker from DB
   const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordWithIndustryAndSubIndustry(symbol);
   const spaceId = KoalaGainsSpaceId;
@@ -573,6 +580,7 @@ export async function trigggerGenerationOfAReport(symbol: string, generationRequ
   // Handle in-progress step
   const { isInProgressOrIsCompleted, updatedRequest } = await handleInProgressStep(generationRequest);
   if (isInProgressOrIsCompleted) {
+    console.log('Generation request is already in progress or completed - skipping ', symbol);
     return;
   }
   generationRequest = updatedRequest;
@@ -608,6 +616,7 @@ export async function trigggerGenerationOfAReport(symbol: string, generationRequ
         where: {
           id: generationRequest.id,
         },
+        include: { ticker: true },
       });
     }
 
@@ -621,6 +630,7 @@ export async function trigggerGenerationOfAReport(symbol: string, generationRequ
       // Generate the report
       await nextReport.generateFn();
     } else {
+      console.log('No reports to generate. Marking as completed for ticker: ', symbol, '');
       // If no reports to generate, mark as completed
       await markAsCompleted(generationRequest);
     }
