@@ -6,9 +6,10 @@ import {
   getCompetitionAnalysisArray,
   saveFutureGrowthFactorAnalysisResponse,
 } from '@/utils/save-report-utils';
+import { prepareFutureGrowthInputJson } from '@/utils/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
@@ -24,24 +25,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
 
   // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.FutureGrowth,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionAnalysisArray,
-  };
+  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

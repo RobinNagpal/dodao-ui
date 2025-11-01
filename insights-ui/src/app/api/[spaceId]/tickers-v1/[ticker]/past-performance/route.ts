@@ -6,9 +6,10 @@ import {
   getCompetitionAnalysisArray,
   savePastPerformanceFactorAnalysisResponse,
 } from '@/utils/save-report-utils';
+import { preparePastPerformanceInputJson } from '@/utils/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { CompetitionAnalysisArray, LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
@@ -31,34 +32,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
 
   // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.PastPerformance,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionAnalysisArray,
-
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, financialData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

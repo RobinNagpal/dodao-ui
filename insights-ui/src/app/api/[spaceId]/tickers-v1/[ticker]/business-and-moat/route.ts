@@ -8,6 +8,7 @@ import {
   getCompetitionAnalysisArray,
   saveBusinessAndMoatFactorAnalysisResponse,
 } from '@/utils/save-report-utils';
+import { prepareBusinessAndMoatInputJson } from '@/utils/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -24,24 +25,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
   // Prepare input for the prompt
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-    competitionAnalysisArray: competitionAnalysisArray,
-  };
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

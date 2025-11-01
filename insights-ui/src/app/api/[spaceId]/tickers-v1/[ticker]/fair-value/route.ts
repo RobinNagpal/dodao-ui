@@ -1,5 +1,6 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, saveFairValueFactorAnalysisResponse } from '@/utils/save-report-utils';
+import { prepareFairValueInputJson } from '@/utils/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -23,33 +24,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
 
   // Prepare input for the prompt
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-    categoryKey: TickerAnalysisCategory.FairValue,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-
-    // Market Snapshot
-    marketSummary: JSON.stringify(financialData.marketSummary),
-
-    // Financial Statements - last 5 annuals
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
-  };
+  const inputJson = prepareFairValueInputJson(tickerRecord, analysisFactors, financialData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

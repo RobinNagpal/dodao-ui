@@ -1,8 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
-import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
-import { ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
+import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
   createPromptInvocation,
@@ -30,63 +29,6 @@ export interface LLMResponseViaLambdaRequest<Input> {
  */
 export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMResponseViaLambdaRequest<Input>): Promise<void> {
   // TODO: Make a rest call to lambda which will get results from LLM and invoke callback
-}
-
-/**
- * Prepares the base input JSON for ticker analysis
- */
-export function prepareBaseTickerInputJson(tickerRecord: TickerV1WithIndustryAndSubIndustry): {
-  name: string;
-  symbol: string;
-  industryKey: string;
-  industryName: string;
-  industryDescription: string;
-  subIndustryKey: string;
-  subIndustryName: string;
-  subIndustryDescription: string;
-} {
-  return {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-  };
-}
-
-/**
- * Prepares input JSON for factor analysis
- */
-export function prepareFactorAnalysisInputJson(
-  baseInputJson: ReturnType<typeof prepareBaseTickerInputJson>,
-  categoryKey: TickerAnalysisCategory,
-  analysisFactors: Array<{
-    factorAnalysisKey: string;
-    factorAnalysisTitle: string;
-    factorAnalysisDescription: string;
-    factorAnalysisMetrics?: string | null;
-  }>,
-  competitionAnalysisArray?: CompetitionAnalysisArray
-): Record<string, unknown> {
-  const inputJson: Record<string, unknown> = {
-    ...baseInputJson,
-    categoryKey,
-    factorAnalysisArray: analysisFactors.map((factor) => ({
-      factorAnalysisKey: factor.factorAnalysisKey,
-      factorAnalysisTitle: factor.factorAnalysisTitle,
-      factorAnalysisDescription: factor.factorAnalysisDescription,
-      factorAnalysisMetrics: factor.factorAnalysisMetrics || '',
-    })),
-  };
-
-  if (competitionAnalysisArray) {
-    inputJson.competitionAnalysisArray = competitionAnalysisArray;
-  }
-
-  return inputJson;
 }
 
 export async function getLLMResponseForPromptViaInvocationViaLambda<Input, Output>(
