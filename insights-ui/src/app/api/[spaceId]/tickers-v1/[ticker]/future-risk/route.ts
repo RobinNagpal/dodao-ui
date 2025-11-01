@@ -1,37 +1,20 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { bumpUpdatedAtAndInvalidateCache } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/prisma';
 import { LLMFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';
+import { saveFutureRiskResponse } from '@/utils/analysis-reports/save-report-utils';
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      industry: true,
-      subIndustry: true,
-    },
-  });
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
   // Prepare input for the prompt (uses future-risk-input.schema.yaml)
-  const inputJson = {
-    name: tickerRecord.name,
-    symbol: tickerRecord.symbol,
-    industryKey: tickerRecord.industryKey,
-    industryName: tickerRecord.industry.name,
-    industryDescription: tickerRecord.industry.summary,
-    subIndustryKey: tickerRecord.subIndustryKey,
-    subIndustryName: tickerRecord.subIndustry.name,
-    subIndustryDescription: tickerRecord.subIndustry.summary,
-  };
+  const inputJson = prepareBaseTickerInputJson(tickerRecord);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -49,28 +32,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   const response = result.response as LLMFutureRiskResponse;
 
-  // Store future risk analysis result (upsert)
-  const futureRiskResult = await prisma.tickerV1FutureRisk.upsert({
-    where: {
-      spaceId_tickerId: {
-        spaceId,
-        tickerId: tickerRecord.id,
-      },
-    },
-    update: {
-      summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
-    },
-  });
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Save the analysis response using the utility function
+  await saveFutureRiskResponse(ticker.toLowerCase(), response);
 
   return {
     success: true,

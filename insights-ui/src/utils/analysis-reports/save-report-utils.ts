@@ -209,6 +209,43 @@ export async function saveCompetitionAnalysisResponse(
 }
 
 /**
+ * Saves future risk response
+ */
+export async function saveFutureRiskResponse(
+  ticker: string,
+  response: {
+    summary: string;
+    detailedAnalysis: string;
+  }
+): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+
+  // Store future risk analysis result (upsert)
+  await prisma.tickerV1FutureRisk.upsert({
+    where: {
+      spaceId_tickerId: {
+        spaceId,
+        tickerId: tickerRecord.id,
+      },
+    },
+    update: {
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+    },
+  });
+
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+}
+
+/**
  * Saves final summary response
  */
 export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string): Promise<void> {

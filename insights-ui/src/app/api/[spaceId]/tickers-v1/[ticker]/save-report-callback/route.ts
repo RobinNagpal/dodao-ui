@@ -7,6 +7,7 @@ import {
   saveFinalSummaryResponse,
   saveFinancialAnalysisFactorAnalysisResponse,
   saveFutureGrowthFactorAnalysisResponse,
+  saveFutureRiskResponse,
   saveInvestorAnalysisResponse,
   savePastPerformanceFactorAnalysisResponse,
 } from '@/utils/analysis-reports/save-report-utils';
@@ -41,6 +42,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FairValue);
+      break;
+    case ReportType.FUTURE_RISK:
+      await saveFutureRiskResponse(ticker, llmResponse);
       break;
     case ReportType.FINAL_SUMMARY:
       await saveFinalSummaryResponse(ticker, llmResponse.finalSummary, llmResponse.metaDescription);

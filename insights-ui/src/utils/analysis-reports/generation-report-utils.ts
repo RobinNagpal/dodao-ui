@@ -255,7 +255,7 @@ function findNextReport(
 }
 
 /**
- * Updates the inProgressStep and lastInvocationTime
+ * Updates the inProgressStep
  */
 async function updateInProgressStep(generationRequest: TickerV1GenerationRequest, reportType: ReportType): Promise<void> {
   await prisma.tickerV1GenerationRequest.update({
@@ -264,7 +264,6 @@ async function updateInProgressStep(generationRequest: TickerV1GenerationRequest
     },
     data: {
       inProgressStep: reportType,
-      lastInvocationTime: new Date(),
     },
   });
 }
@@ -624,7 +623,7 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
     const nextReport = findNextReport(reportOrder, generationRequest, competitionData);
 
     if (nextReport) {
-      // Update the inProgressStep and lastInvocationTime
+      // Update the inProgressStep (lastInvocationTime will be set right before lambda invocation)
       await updateInProgressStep(generationRequest, nextReport.reportType);
 
       // Generate the report

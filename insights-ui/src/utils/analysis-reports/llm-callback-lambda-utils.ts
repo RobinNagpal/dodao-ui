@@ -24,6 +24,22 @@ export interface LLMResponseViaLambdaRequest<Input> {
   outputSchemaString: string;
   additionalData: Record<string, string>;
 }
+
+/**
+ * Updates the lastInvocationTime when lambda is actually invoked
+ */
+async function updateLastInvocationTime(generationRequestId: string): Promise<void> {
+  console.log('Updating lastInvocationTime for generationRequestId:', generationRequestId);
+  await prisma.tickerV1GenerationRequest.update({
+    where: {
+      id: generationRequestId,
+    },
+    data: {
+      lastInvocationTime: new Date(),
+    },
+  });
+}
+
 /**
  * Core function to get LLM response
  */
@@ -41,14 +57,14 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
       },
       body: JSON.stringify(request),
     };
-    console.log('Lambda URL:', baseUrl);
-    console.log('Calling lambda with request:', request);
+    console.log('calling llm lambda');
     const response = await fetch(baseUrl, postRequest);
 
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Lambda call failed with status ${response.status}: ${errorText}`);
     }
+    console.log('Lambda call succeeded');
   } catch (error) {
     console.error('Error calling lambda:', error);
     throw error;
@@ -149,7 +165,12 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
         symbol: symbol,
       },
     };
+
     await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
+    // Update lastInvocationTime right before invoking the lambda
+
+    console.log(`Updating lastInvocationTime for generationRequestIdL:${generationRequestId} for reportType: ${reportType} and ticker: ${symbol}`);
+    await updateLastInvocationTime(generationRequestId);
   } catch (e) {
     console.error('Error during prompt invocation:', e);
     await updateInvocationStatus(invocation.id, PromptInvocationStatus.Failed, {
