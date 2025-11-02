@@ -100,7 +100,7 @@ export function AnalysisFramework() {
         </div>
 
         {/* Visual Score System */}
-        <div className="text-center bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm rounded-xl p-8 border border-gray-600/40">
+        <div className="text-center w-full bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm rounded-xl p-8 border border-gray-600/40">
           <div className="mb-6">
             <h3 className="text-2xl font-bold text-white mb-3">
               Visual <span className="text-indigo-400">Score System</span>
@@ -110,7 +110,7 @@ export function AnalysisFramework() {
             </p>
           </div>
 
-          <div className="flex justify-center items-center space-x-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
             <div className="text-center">
               <div className="text-4xl font-bold text-cyan-400 mb-2">22/25</div>
               <div className="text-sm text-gray-400">Excellent</div>
