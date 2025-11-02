@@ -262,15 +262,18 @@ function findNextReport(
 }
 
 /**
- * Marks the generation request as completed when there are no reports to generate
+ * Marks the generation request as completed or failed when there are no more reports to generate
+ * If any reports have failed, we mark the status as failed
  */
 async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
+  const hasFailed = generationRequest.failedSteps.length > 0;
+
   await prisma.tickerV1GenerationRequest.update({
     where: {
       id: generationRequest.id,
     },
     data: {
-      status: GenerationRequestStatus.Completed,
+      status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
       completedAt: new Date(),
     },
   });
@@ -304,13 +307,15 @@ async function handleGenerationError(error: unknown, generationRequest: TickerV1
     });
 
   if (allReportsAttempted) {
-    // Update the request status to Failed if all reports have been attempted
+    // Update the request status based on whether any reports have failed
+    // If any reports have failed, mark the status as Failed
+    const hasFailed = generationRequest.failedSteps.length > 0;
     await prisma.tickerV1GenerationRequest.update({
       where: {
         id: generationRequest.id,
       },
       data: {
-        status: GenerationRequestStatus.Failed,
+        status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
         completedAt: new Date(),
       },
     });
