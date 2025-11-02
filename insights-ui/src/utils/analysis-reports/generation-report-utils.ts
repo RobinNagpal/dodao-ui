@@ -110,7 +110,7 @@ async function fetchCompetitionData(
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
   generationRequest: TickerV1GenerationRequest
 ): Promise<{ competitionAnalysisArray: CompetitionAnalysisArray } | null> {
-  if (!generationRequest.regenerateCompetition || generationRequest.completedSteps.includes(ReportType.COMPETITION)) {
+  if (!shouldRegenerateReport(generationRequest, ReportType.COMPETITION) || generationRequest.completedSteps.includes(ReportType.COMPETITION)) {
     return await prisma.tickerV1VsCompetition.findFirst({
       where: {
         spaceId,
@@ -133,7 +133,7 @@ function defineReportOrder(
   return [
     {
       reportType: ReportType.COMPETITION,
-      condition: generationRequest.regenerateCompetition || !competitionData || !competitionData.competitionAnalysisArray.length,
+      condition: shouldRegenerateReport(generationRequest, ReportType.COMPETITION) || !competitionData || !competitionData.competitionAnalysisArray.length,
       needsCompetitionData: false,
       generateFn: async () => {
         await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
@@ -148,13 +148,13 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.FINANCIAL_ANALYSIS,
-      condition: generationRequest.regenerateFinancialAnalysis,
+      condition: shouldRegenerateReport(generationRequest, ReportType.FINANCIAL_ANALYSIS),
       needsCompetitionData: false,
       generateFn: async () => await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.BUSINESS_AND_MOAT,
-      condition: generationRequest.regenerateBusinessAndMoat,
+      condition: shouldRegenerateReport(generationRequest, ReportType.BUSINESS_AND_MOAT),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -164,7 +164,7 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.PAST_PERFORMANCE,
-      condition: generationRequest.regeneratePastPerformance,
+      condition: shouldRegenerateReport(generationRequest, ReportType.PAST_PERFORMANCE),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -174,7 +174,7 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.FUTURE_GROWTH,
-      condition: generationRequest.regenerateFutureGrowth,
+      condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_GROWTH),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -184,19 +184,19 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.FAIR_VALUE,
-      condition: generationRequest.regenerateFairValue,
+      condition: shouldRegenerateReport(generationRequest, ReportType.FAIR_VALUE),
       needsCompetitionData: false,
       generateFn: async () => await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.FUTURE_RISK,
-      condition: generationRequest.regenerateFutureRisk,
+      condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_RISK),
       needsCompetitionData: false,
       generateFn: async () => await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.WARREN_BUFFETT,
-      condition: generationRequest.regenerateWarrenBuffett,
+      condition: shouldRegenerateReport(generationRequest, ReportType.WARREN_BUFFETT),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -206,7 +206,7 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.CHARLIE_MUNGER,
-      condition: generationRequest.regenerateCharlieMunger,
+      condition: shouldRegenerateReport(generationRequest, ReportType.CHARLIE_MUNGER),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -216,7 +216,7 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.BILL_ACKMAN,
-      condition: generationRequest.regenerateBillAckman,
+      condition: shouldRegenerateReport(generationRequest, ReportType.BILL_ACKMAN),
       needsCompetitionData: true,
       generateFn: async () => {
         if (competitionData) {
@@ -226,13 +226,13 @@ function defineReportOrder(
     },
     {
       reportType: ReportType.FINAL_SUMMARY,
-      condition: generationRequest.regenerateFinalSummary,
+      condition: shouldRegenerateReport(generationRequest, ReportType.FINAL_SUMMARY),
       needsCompetitionData: false,
       generateFn: async () => await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.CACHED_SCORE,
-      condition: generationRequest.regenerateCachedScore,
+      condition: shouldRegenerateReport(generationRequest, ReportType.CACHED_SCORE),
       needsCompetitionData: false,
       generateFn: async () => await generateCachedScoreAnalysis(tickerRecord, generationRequest.id),
     },
@@ -585,6 +585,41 @@ async function generateCachedScoreAnalysis(tickerRecord: TickerV1WithIndustryAnd
 }
 
 /**
+ * Helper function to check if a report should be regenerated
+ */
+function shouldRegenerateReport(request: TickerV1GenerationRequest, reportType: ReportType): boolean {
+  switch (reportType) {
+    case ReportType.COMPETITION:
+      return request.regenerateCompetition;
+    case ReportType.FINANCIAL_ANALYSIS:
+      return request.regenerateFinancialAnalysis;
+    case ReportType.BUSINESS_AND_MOAT:
+      return request.regenerateBusinessAndMoat;
+    case ReportType.PAST_PERFORMANCE:
+      return request.regeneratePastPerformance;
+    case ReportType.FUTURE_GROWTH:
+      return request.regenerateFutureGrowth;
+    case ReportType.FAIR_VALUE:
+      return request.regenerateFairValue;
+    case ReportType.FUTURE_RISK:
+      return request.regenerateFutureRisk;
+    case ReportType.WARREN_BUFFETT:
+      return request.regenerateWarrenBuffett;
+    case ReportType.CHARLIE_MUNGER:
+      return request.regenerateCharlieMunger;
+    case ReportType.BILL_ACKMAN:
+      return request.regenerateBillAckman;
+    case ReportType.FINAL_SUMMARY:
+      return request.regenerateFinalSummary;
+    case ReportType.CACHED_SCORE:
+      return request.regenerateCachedScore;
+    default:
+      console.error(`Unknown report type: ${reportType}`);
+      return false;
+  }
+}
+
+/**
  * Main function to trigger generation of a report
  */
 export async function triggerGenerationOfAReport(symbol: string, generationRequestId: string): Promise<void> {
@@ -614,11 +649,49 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
     // Define the order of reports to generate
     const reportOrder = defineReportOrder(spaceId, tickerRecord, generationRequest, competitionData);
 
+    // If competition report has failed, mark all dependent reports as failed
+    if (generationRequest.failedSteps.includes(ReportType.COMPETITION)) {
+      // Reports that depend on competition data
+      const dependentReports = [
+        ReportType.BUSINESS_AND_MOAT,
+        ReportType.PAST_PERFORMANCE,
+        ReportType.FUTURE_GROWTH,
+        ReportType.WARREN_BUFFETT,
+        ReportType.CHARLIE_MUNGER,
+        ReportType.BILL_ACKMAN,
+      ];
+
+      // Filter out reports that are already in failedSteps
+      const reportsToMarkAsFailed = dependentReports.filter(
+        (report) => !generationRequest.failedSteps.includes(report) && shouldRegenerateReport(generationRequest, report)
+      );
+
+      if (reportsToMarkAsFailed.length > 0) {
+        const updatedFailedSteps = [...generationRequest.failedSteps, ...reportsToMarkAsFailed];
+        await prisma.tickerV1GenerationRequest.update({
+          where: {
+            id: generationRequest.id,
+          },
+          data: {
+            failedSteps: updatedFailedSteps,
+          },
+        });
+
+        // Update the local copy of generationRequest
+        generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+          where: {
+            id: generationRequest.id,
+          },
+          include: { ticker: true },
+        });
+      }
+    }
+
     // If there are any failed steps, mark the final report as failed
     if (
       generationRequest.failedSteps.length > 0 &&
       !generationRequest.failedSteps.includes(ReportType.FINAL_SUMMARY) &&
-      generationRequest.regenerateFinalSummary
+      shouldRegenerateReport(generationRequest, ReportType.FINAL_SUMMARY)
     ) {
       const updatedFailedSteps = [...generationRequest.failedSteps, ReportType.FINAL_SUMMARY];
       await prisma.tickerV1GenerationRequest.update({

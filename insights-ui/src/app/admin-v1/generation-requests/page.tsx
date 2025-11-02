@@ -63,34 +63,34 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCachedScore: 'Score',
 };
 
-const FIELD_TO_STEP_MAP: Record<RegenerateField, string> = {
-  regenerateCompetition: 'competition',
-  regenerateFinancialAnalysis: 'financial-analysis',
-  regenerateBusinessAndMoat: 'business-and-moat',
-  regeneratePastPerformance: 'past-performance',
-  regenerateFutureGrowth: 'future-growth',
-  regenerateFairValue: 'fair-value',
-  regenerateFutureRisk: 'future-risk',
-  regenerateWarrenBuffett: 'investor-analysis-warren-buffett',
-  regenerateCharlieMunger: 'investor-analysis-charlie-munger',
-  regenerateBillAckman: 'investor-analysis-bill-ackman',
-  regenerateFinalSummary: 'final-summary',
-  regenerateCachedScore: 'cached-score',
+const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
+  regenerateCompetition: ReportType.COMPETITION,
+  regenerateFinancialAnalysis: ReportType.FINANCIAL_ANALYSIS,
+  regenerateBusinessAndMoat: ReportType.BUSINESS_AND_MOAT,
+  regeneratePastPerformance: ReportType.PAST_PERFORMANCE,
+  regenerateFutureGrowth: ReportType.FUTURE_GROWTH,
+  regenerateFairValue: ReportType.FAIR_VALUE,
+  regenerateFutureRisk: ReportType.FUTURE_RISK,
+  regenerateWarrenBuffett: ReportType.WARREN_BUFFETT,
+  regenerateCharlieMunger: ReportType.CHARLIE_MUNGER,
+  regenerateBillAckman: ReportType.BILL_ACKMAN,
+  regenerateFinalSummary: ReportType.FINAL_SUMMARY,
+  regenerateCachedScore: ReportType.CACHED_SCORE,
 };
 
 interface StatusDotProps {
   isEnabled: boolean;
-  stepName: string;
-  completedSteps: string[];
-  failedSteps: string[];
-  inProgressStep?: string | null;
+  stepName: ReportType;
+  completedSteps: ReportType[];
+  failedSteps: ReportType[];
+  inProgressStep?: ReportType | null;
 }
 
 function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgressStep }: StatusDotProps): JSX.Element {
   if (!isEnabled) return <div className="w-3 h-3 rounded-full bg-gray-400" title="Not enabled" />;
   if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
   if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
-  if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="Completed" />;
+  if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
   return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
 }
 
@@ -152,10 +152,10 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
           {rows.map((latestRequest: GenerationRequestWithFlags) => {
             const exchange: string = latestRequest.ticker.exchange;
             const symbol: string = latestRequest.ticker.symbol;
-            const completedSteps: string[] = latestRequest.completedSteps ?? [];
-            const failedSteps: string[] = latestRequest.failedSteps ?? [];
+            const completedSteps: ReportType[] = (latestRequest.completedSteps as ReportType[] | undefined) ?? [];
+            const failedSteps: ReportType[] = (latestRequest.failedSteps as ReportType[] | undefined) ?? [];
             const isFailed: boolean = latestRequest.status === GenerationRequestStatus.Failed;
-            const inProgressStep: string | null = latestRequest.inProgressStep ?? null;
+            const inProgressStep: ReportType | null = (latestRequest.inProgressStep as ReportType | undefined) ?? null;
 
             return (
               <tr key={latestRequest.id}>
