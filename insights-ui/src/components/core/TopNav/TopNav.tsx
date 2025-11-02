@@ -88,29 +88,27 @@ export default function TopNav(): JSX.Element {
 
           {/* Search Bar
               - Always visible on desktop
-              - On mobile, only visible for /stocks routes */}
-          <div className={`${isStocksRoute ? 'flex-1 min-w-0' : 'hidden'} lg:block lg:w-auto lg:min-w-[24rem]`}>
+              - On mobile, visible in the mobile menu for all routes */}
+          <div className="flex-1 min-w-0 lg:block lg:w-auto lg:min-w-[24rem]">
             <div className="max-w-full lg:max-w-none">
               <SearchBar placeholder="Search stocks..." variant="navbar" />
             </div>
           </div>
         </div>
 
-        {/* Right: mobile hamburger (hidden on /stocks), desktop menus hidden on /stocks but profile always visible on lg */}
-        {!isStocksRoute && (
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={(): void => setMobileMenuOpen(true)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-white"
-              aria-label="Open main menu"
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              <Bars3Icon aria-hidden="true" className="h-6 w-6" />
-            </button>
-          </div>
-        )}
+        {/* Right: mobile hamburger, desktop menus hidden on /stocks but profile always visible on lg */}
+        <div className="flex lg:hidden">
+          <button
+            type="button"
+            onClick={(): void => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md py-2.5 pl-4 pr-2.5 text-gray-300 hover:text-white"
+            aria-label="Open main menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            <Bars3Icon aria-hidden="true" className="h-6 w-6" />
+          </button>
+        </div>
 
         {/* Desktop right side */}
         <div className="hidden lg:flex lg:items-center lg:space-x-8">
@@ -123,6 +121,7 @@ export default function TopNav(): JSX.Element {
                   type="button"
                   onClick={(): void => setReportsDropdownOpen((prev) => !prev)}
                   onMouseEnter={(): void => setReportsDropdownOpen(true)}
+                  onTouchStart={(): void => setReportsDropdownOpen((prev) => !prev)}
                   className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
                   aria-expanded={reportsDropdownOpen}
                   aria-haspopup="true"
@@ -133,6 +132,7 @@ export default function TopNav(): JSX.Element {
                 {reportsDropdownOpen && (
                   <div
                     onMouseLeave={(): void => setReportsDropdownOpen(false)}
+                    onTouchStart={(e): void => e.stopPropagation()}
                     className="absolute left-0 z-20 mt-2 w-64 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
                     role="menu"
                   >
@@ -141,6 +141,7 @@ export default function TopNav(): JSX.Element {
                         key={item.name}
                         href={item.href}
                         className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                        onClick={(): void => setReportsDropdownOpen(false)}
                       >
                         <div className="font-semibold flex items-center">
                           {item.name}
@@ -159,6 +160,7 @@ export default function TopNav(): JSX.Element {
                   type="button"
                   onClick={(): void => setGenaiDropdownOpen((prev) => !prev)}
                   onMouseEnter={(): void => setGenaiDropdownOpen(true)}
+                  onTouchStart={(): void => setGenaiDropdownOpen((prev) => !prev)}
                   className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
                   aria-expanded={genaiDropdownOpen}
                   aria-haspopup="true"
@@ -169,6 +171,7 @@ export default function TopNav(): JSX.Element {
                 {genaiDropdownOpen && (
                   <div
                     onMouseLeave={(): void => setGenaiDropdownOpen(false)}
+                    onTouchStart={(e): void => e.stopPropagation()}
                     className="absolute left-0 z-20 mt-2 w-72 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
                     role="menu"
                   >
@@ -177,6 +180,7 @@ export default function TopNav(): JSX.Element {
                         key={item.name}
                         href={item.href}
                         className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
+                        onClick={(): void => setGenaiDropdownOpen(false)}
                       >
                         <div className="font-semibold">{item.name}</div>
                         <div className="text-xs text-gray-400 mt-1">{item.description}</div>
@@ -206,13 +210,13 @@ export default function TopNav(): JSX.Element {
         </div>
       </nav>
 
-      {/* Mobile Menu (not rendered on /stocks so only the search remains visible) */}
-      {!isStocksRoute && (
+      {/* Mobile Menu - Always rendered for all routes */}
+      {
         <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
           <div className="fixed inset-0 z-10" />
           <DialogPanel
             id="mobile-menu"
-            className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50"
+            className="fixed inset-y-0 right-0 z-10 w-[85%] overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50"
           >
             <div className="flex items-center justify-between">
               <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
@@ -231,11 +235,6 @@ export default function TopNav(): JSX.Element {
             </div>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
-                {/* Mobile Search Bar */}
-                <div className="py-4">
-                  <SearchBar placeholder="Search stocks..." variant="navbar" />
-                </div>
-
                 <div className="space-y-2 py-6">
                   {/* Mobile KoalaGains Insights */}
                   <div>
@@ -255,7 +254,10 @@ export default function TopNav(): JSX.Element {
                             key={item.name}
                             href={item.href}
                             className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
-                            onClick={(): void => setMobileMenuOpen(false)}
+                            onClick={(): void => {
+                              setMobileReportsOpen(false);
+                              setMobileMenuOpen(false);
+                            }}
                           >
                             <div className="flex items-center">
                               {item.name}
@@ -285,7 +287,10 @@ export default function TopNav(): JSX.Element {
                             key={item.name}
                             href={item.href}
                             className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
-                            onClick={(): void => setMobileMenuOpen(false)}
+                            onClick={(): void => {
+                              setMobileGenaiOpen(false);
+                              setMobileMenuOpen(false);
+                            }}
                           >
                             {item.name}
                           </Link>
@@ -316,7 +321,7 @@ export default function TopNav(): JSX.Element {
             </div>
           </DialogPanel>
         </Dialog>
-      )}
+      }
     </header>
   );
 }

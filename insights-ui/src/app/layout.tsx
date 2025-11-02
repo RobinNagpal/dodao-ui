@@ -1,10 +1,8 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import TopNav from '@/components/core/TopNav/TopNav';
 import { themeColors } from '@/util/theme-colors';
 import 'tailwindcss/tailwind.css';
 import './globals.scss';
 import type { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 import LogRocketComponent from './LogRocketComponent';
 import Providers from './providers/Providers';
