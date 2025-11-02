@@ -1,3 +1,4 @@
+import { prisma } from '@/prisma';
 import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
 import {
@@ -58,8 +59,30 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       throw new Error(`Unsupported report type: ${reportType}`);
   }
 
-  // Trigger generation of the next report
+  // If we have a generation request ID, update the generation request to mark this report as completed
   if (generationRequestId) {
+    // Get the current generation request
+    const generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+      where: { id: generationRequestId },
+    });
+
+    // Add the current report to completedSteps if it's not already there
+    const updatedCompletedSteps = [...generationRequest.completedSteps];
+    if (!updatedCompletedSteps.includes(reportType)) {
+      updatedCompletedSteps.push(reportType);
+    }
+
+    // Update the generation request
+    await prisma.tickerV1GenerationRequest.update({
+      where: { id: generationRequestId },
+      data: {
+        completedSteps: updatedCompletedSteps,
+        inProgressStep: null,
+        lastInvocationTime: null,
+      },
+    });
+
+    // Trigger generation of the next report
     await triggerGenerationOfAReport(ticker, generationRequestId);
   }
 
