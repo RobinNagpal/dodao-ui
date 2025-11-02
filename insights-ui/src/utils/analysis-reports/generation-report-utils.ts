@@ -712,6 +712,15 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
       });
     }
 
+    // Check if all reports that should be regenerated have been attempted
+    const allReportsAttempted = Object.entries(generationRequest)
+      .filter(([key, value]) => key.startsWith('regenerate') && value === true)
+      .every(([key]) => {
+        const reportType = key.replace('regenerate', '');
+        const reportTypeKey = Object.values(ReportType).find((type) => type.toUpperCase() === reportType.toUpperCase());
+        return reportTypeKey && (generationRequest.completedSteps.includes(reportTypeKey) || generationRequest.failedSteps.includes(reportTypeKey));
+      });
+
     // Find the next report to generate
     const nextReport = findNextReport(reportOrder, generationRequest, competitionData);
 
@@ -721,7 +730,9 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
     } else {
       console.log('No reports to generate. Marking as completed for ticker: ', symbol, '');
       // If no reports to generate, mark as completed
-      await markAsCompleted(generationRequest);
+      if (allReportsAttempted) {
+        await markAsCompleted(generationRequest);
+      }
     }
   } catch (error) {
     // Handle errors

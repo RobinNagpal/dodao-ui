@@ -1,7 +1,8 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
-import { GenerationRequestStatus } from '@/types/ticker-typesv1';
+import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-status-utils';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -36,6 +37,7 @@ export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationR
       subIndustryKey: string;
     };
   };
+  pendingSteps?: ReportType[];
 }
 
 export interface GenerationRequestsResponse {
@@ -58,7 +60,7 @@ export interface GenerationRequestsResponse {
 }
 
 async function getRequests(status: GenerationRequestStatus, skip: number = 0, take: number = 15): Promise<TickerV1GenerationRequestWithTicker[]> {
-  return prisma.tickerV1GenerationRequest.findMany({
+  const requests = await prisma.tickerV1GenerationRequest.findMany({
     where: {
       status: status,
     },
@@ -89,6 +91,12 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
       },
     },
   });
+
+  // Add pending steps to each request
+  return requests.map((request) => ({
+    ...request,
+    pendingSteps: calculatePendingSteps(request),
+  }));
 }
 
 async function getHandler(
