@@ -26,16 +26,17 @@ export interface LLMResponseViaLambdaRequest<Input> {
 }
 
 /**
- * Updates the lastInvocationTime when lambda is actually invoked
+ * Updates the lastInvocationTime and inProgressStep when lambda is actually invoked
  */
-async function updateLastInvocationTime(generationRequestId: string): Promise<void> {
-  console.log('Updating lastInvocationTime for generationRequestId:', generationRequestId);
+async function updateLastInvocationTime(generationRequestId: string, reportType: ReportType): Promise<void> {
+  console.log('Updating lastInvocationTime and inProgressStep for generationRequestId:', generationRequestId, 'reportType:', reportType);
   await prisma.tickerV1GenerationRequest.update({
     where: {
       id: generationRequestId,
     },
     data: {
       lastInvocationTime: new Date(),
+      inProgressStep: reportType,
     },
   });
 }
@@ -169,8 +170,10 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
     // Update lastInvocationTime right before invoking the lambda
 
-    console.log(`Updating lastInvocationTime for generationRequestIdL:${generationRequestId} for reportType: ${reportType} and ticker: ${symbol}`);
-    await updateLastInvocationTime(generationRequestId);
+    console.log(
+      `Updating lastInvocationTime and inProgressStep for generationRequestId:${generationRequestId} for reportType: ${reportType} and ticker: ${symbol}`
+    );
+    await updateLastInvocationTime(generationRequestId, reportType);
   } catch (e) {
     console.error('Error during prompt invocation:', e);
     await updateInvocationStatus(invocation.id, PromptInvocationStatus.Failed, {

@@ -262,20 +262,6 @@ function findNextReport(
 }
 
 /**
- * Updates the inProgressStep
- */
-async function updateInProgressStep(generationRequest: TickerV1GenerationRequest, reportType: ReportType): Promise<void> {
-  await prisma.tickerV1GenerationRequest.update({
-    where: {
-      id: generationRequest.id,
-    },
-    data: {
-      inProgressStep: reportType,
-    },
-  });
-}
-
-/**
  * Marks the generation request as completed when there are no reports to generate
  */
 async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
@@ -652,10 +638,7 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
     const nextReport = findNextReport(reportOrder, generationRequest, competitionData);
 
     if (nextReport) {
-      // Update the inProgressStep (lastInvocationTime will be set right before lambda invocation)
-      await updateInProgressStep(generationRequest, nextReport.reportType);
-
-      // Generate the report
+      // Generate the report (inProgressStep and lastInvocationTime will be set right before lambda invocation)
       await nextReport.generateFn();
     } else {
       console.log('No reports to generate. Marking as completed for ticker: ', symbol, '');
