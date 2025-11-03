@@ -1,7 +1,7 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { AnalysisTypeKey, INVESTOR_OPTIONS, InvestorKey, ReportType } from '@/types/ticker-typesv1';
+import { AnalysisTypeKey, INVESTOR_OPTIONS, InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -124,7 +124,7 @@ export const useGenerateReports = () => {
         await new Promise((r) => setTimeout(r, 1_000));
       }
 
-      const allInvestors: InvestorKey[] = ['WARREN_BUFFETT', 'CHARLIE_MUNGER', 'BILL_ACKMAN'];
+      const allInvestors: InvestorTypes[] = [InvestorTypes.WARREN_BUFFETT, InvestorTypes.CHARLIE_MUNGER, InvestorTypes.BILL_ACKMAN];
       for (const inv of allInvestors) {
         await generateInvestorAnalysis(inv, ticker, onReportGenerated);
         await new Promise((r) => setTimeout(r, 1_000));
@@ -153,11 +153,11 @@ export const useGenerateReports = () => {
       const perTicker = tickers.map(async (ticker) => {
         for (const reportType of selectedReportTypes) {
           if (reportType === ReportType.WARREN_BUFFETT) {
-            await generateInvestorAnalysis('WARREN_BUFFETT', ticker, onReportGenerated);
+            await generateInvestorAnalysis(InvestorTypes.WARREN_BUFFETT, ticker, onReportGenerated);
           } else if (reportType === ReportType.CHARLIE_MUNGER) {
-            await generateInvestorAnalysis('CHARLIE_MUNGER', ticker, onReportGenerated);
+            await generateInvestorAnalysis(InvestorTypes.CHARLIE_MUNGER, ticker, onReportGenerated);
           } else if (reportType === ReportType.BILL_ACKMAN) {
-            await generateInvestorAnalysis('BILL_ACKMAN', ticker, onReportGenerated);
+            await generateInvestorAnalysis(InvestorTypes.BILL_ACKMAN, ticker, onReportGenerated);
           } else {
             await generateAnalysis(reportType, ticker, onReportGenerated);
           }

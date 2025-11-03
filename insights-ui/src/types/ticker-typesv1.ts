@@ -129,6 +129,11 @@ export interface AnalysisTypeInfo {
   statusKey?: keyof AnalysisStatus;
 }
 
+export enum InvestorTypes {
+  WARREN_BUFFETT = 'WARREN_BUFFETT',
+  CHARLIE_MUNGER = 'CHARLIE_MUNGER',
+  BILL_ACKMAN = 'BILL_ACKMAN',
+}
 // Analysis type constants to avoid hardcoded strings
 export enum AnalysisTypeKey {
   FINANCIAL_ANALYSIS = 'financial-analysis',
@@ -194,9 +199,15 @@ export const CATEGORY_MAPPINGS = {
 
 // Investor mappings
 export const INVESTOR_MAPPINGS = {
-  WARREN_BUFFETT: 'Warren Buffett',
-  CHARLIE_MUNGER: 'Charlie Munger',
-  BILL_ACKMAN: 'Bill Ackman',
+  [InvestorTypes.WARREN_BUFFETT]: 'Warren Buffett',
+  [InvestorTypes.CHARLIE_MUNGER]: 'Charlie Munger',
+  [InvestorTypes.BILL_ACKMAN]: 'Bill Ackman',
+};
+
+export const FALLBACK_INVESTOR_MAPPINGS = {
+  [ReportType.WARREN_BUFFETT]: 'Warren Buffett',
+  [ReportType.CHARLIE_MUNGER]: 'Charlie Munger',
+  [ReportType.BILL_ACKMAN]: 'Bill Ackman',
 };
 
 export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, name]) => ({

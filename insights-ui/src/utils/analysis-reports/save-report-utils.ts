@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS, InvestorTypes, ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, FullTickerV1CategoryAnalysisResult, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
@@ -132,7 +132,7 @@ export async function saveFairValueFactorAnalysisResponse(
 /**
  * Saves investor analysis response
  */
-export async function saveInvestorAnalysisResponse(ticker: string, response: LLMInvestorAnalysisResponse, investorKey: string): Promise<void> {
+export async function saveInvestorAnalysisResponse(ticker: string, response: LLMInvestorAnalysisResponse, investorKey: InvestorTypes): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 

@@ -9,7 +9,14 @@ import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import {
+  CATEGORY_MAPPINGS,
+  CompetitionResponse,
+  EvaluationResult,
+  FALLBACK_INVESTOR_MAPPINGS,
+  INVESTOR_MAPPINGS,
+  TickerAnalysisCategory,
+} from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
@@ -443,11 +450,15 @@ function TickerSummaryInfo({
 
       {d.investorAnalysisResults.length > 0 && (
         <section id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Investor Reports Summaries</h2>
+          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Wisdom of Top Value Investors</h2>
           <div className="space-y-4">
             {d.investorAnalysisResults.map((result) => (
               <div key={result.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                <h3 className="font-semibold mb-2">{INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] || result.investorKey}</h3>
+                <h3 className="font-semibold mb-2">
+                  {INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] ||
+                    FALLBACK_INVESTOR_MAPPINGS[result.investorKey as keyof typeof FALLBACK_INVESTOR_MAPPINGS] ||
+                    result.investorKey}
+                </h3>
                 <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
               </div>
             ))}

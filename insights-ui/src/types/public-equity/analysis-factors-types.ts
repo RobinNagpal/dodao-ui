@@ -1,4 +1,4 @@
-import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { InvestorKey, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
 
@@ -36,7 +36,7 @@ export interface TickerAnalysisResponse {
 }
 
 export interface AnalysisRequest {
-  investorKey?: string;
+  investorKey?: InvestorTypes;
 }
 
 export interface LLMFactorAnalysisResponse {

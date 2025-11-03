@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { InvestorTypes, ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
@@ -51,9 +51,13 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       await saveFinalSummaryResponse(ticker, llmResponse.finalSummary, llmResponse.metaDescription);
       break;
     case ReportType.WARREN_BUFFETT:
+      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.WARREN_BUFFETT);
+      break;
     case ReportType.CHARLIE_MUNGER:
+      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.CHARLIE_MUNGER);
+      break;
     case ReportType.BILL_ACKMAN:
-      await saveInvestorAnalysisResponse(ticker, llmResponse, reportType);
+      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.BILL_ACKMAN);
       break;
     default:
       throw new Error(`Unsupported report type: ${reportType}`);
