@@ -6,6 +6,7 @@ import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -15,14 +16,17 @@ import React, { useState } from 'react';
 
 interface MissingReportsTableProps {
   rows: MissingReportsForTicker[];
+  selectedRows: Set<string>;
+  onSelectRow: (tickerId: string, isSelected: boolean) => void;
 }
 
-function MissingReportsTable({ rows }: MissingReportsTableProps): JSX.Element {
+function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReportsTableProps): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-700">
           <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Select</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">Ticker</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Industry</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Business & Moat</th>
@@ -43,9 +47,13 @@ function MissingReportsTable({ rows }: MissingReportsTableProps): JSX.Element {
           {rows.map((ticker: MissingReportsForTicker) => {
             const exchange: string = ticker.exchange;
             const symbol: string = ticker.symbol;
+            const isSelected = selectedRows.has(ticker.id);
 
             return (
               <tr key={ticker.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <Checkbox id={`select-${ticker.id}`} labelContent="" isChecked={isSelected} onChange={(checked) => onSelectRow(ticker.id, checked)} />
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
                     {symbol}
@@ -181,6 +189,7 @@ export default function MissingReportsPage(): JSX.Element {
   const [pagination, setPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 50 });
   const [accumulatedData, setAccumulatedData] = useState<MissingReportsForTicker[]>([]);
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
+  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
   const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
   const params = new URLSearchParams();
@@ -190,7 +199,7 @@ export default function MissingReportsPage(): JSX.Element {
 
   const { data, loading, reFetchData } = useFetchData<MissingReportsForTicker[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
-  const { generateMissingReports, isGenerating: hookGenerating } = useGenerateReports();
+  const { generateMissingReports, generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
 
   const isGenerating: boolean = localGenerating || hookGenerating;
 
@@ -214,6 +223,36 @@ export default function MissingReportsPage(): JSX.Element {
     setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
 
+  function handleSelectRow(tickerId: string, isSelected: boolean): void {
+    setSelectedRows((prev) => {
+      const newSet = new Set(prev);
+      if (isSelected) {
+        newSet.add(tickerId);
+      } else {
+        newSet.delete(tickerId);
+      }
+      return newSet;
+    });
+  }
+
+  function handleSelectAll(): void {
+    if (accumulatedData.length === 0) return;
+
+    const allIds = accumulatedData.map((ticker) => ticker.id);
+    setSelectedRows(new Set(allIds));
+  }
+
+  function handleSelectFirst50(): void {
+    if (accumulatedData.length === 0) return;
+
+    const first50Ids = accumulatedData.slice(0, 50).map((ticker) => ticker.id);
+    setSelectedRows(new Set(first50Ids));
+  }
+
+  function handleClearSelection(): void {
+    setSelectedRows(new Set());
+  }
+
   function getMissingReportTypes(ticker: MissingReportsForTicker): ReportType[] {
     const missingReports: ReportType[] = [];
 
@@ -229,31 +268,57 @@ export default function MissingReportsPage(): JSX.Element {
     if (ticker.isMissingCachedScoreRepot) missingReports.push(ReportType.CACHED_SCORE);
     if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
 
-    // Note: isMissingMetaDescriptionReport is not included as there is no corresponding ReportType
+    // If MetaDescription is missing, add FINAL_SUMMARY to regenerate it
+    // (only if it's not already in the list)
+    if (ticker.isMissingMetaDescriptionReport && !missingReports.includes(ReportType.FINAL_SUMMARY)) {
+      missingReports.push(ReportType.FINAL_SUMMARY);
+    }
 
     return missingReports;
   }
 
-  async function handleGenerateMissingReports(): Promise<void> {
-    if (accumulatedData.length === 0 || isGenerating) return;
+  async function handleGenerateAllForSelected(): Promise<void> {
+    if (selectedRows.size === 0 || isGenerating) return;
+
+    setLocalGenerating(true);
+    try {
+      const selectedTickers = accumulatedData.filter((ticker) => selectedRows.has(ticker.id)).map((ticker) => ticker.symbol);
+
+      await generateAllReportsInBackground(selectedTickers);
+      router.push('/admin-v1/generation-requests');
+    } catch (err) {
+      console.error('Error generating all reports for selected tickers:', err);
+    } finally {
+      setLocalGenerating(false);
+    }
+  }
+
+  async function handleGenerateMissingForSelected(): Promise<void> {
+    if (selectedRows.size === 0 || isGenerating) return;
 
     setLocalGenerating(true);
     try {
       const tickersWithReportTypes: { ticker: string; reportTypes: ReportType[] }[] = [];
-      const tickersWithManyMissingReports: string[] = [];
 
       for (const t of accumulatedData) {
-        const missingReportTypes: ReportType[] = getMissingReportTypes(t);
-        if (missingReportTypes.length > 0) {
-          tickersWithReportTypes.push({ ticker: t.symbol, reportTypes: missingReportTypes });
-          if (missingReportTypes.length >= 3) tickersWithManyMissingReports.push(t.symbol);
+        if (selectedRows.has(t.id)) {
+          const missingReportTypes: ReportType[] = getMissingReportTypes(t);
+          if (missingReportTypes.length > 0) {
+            tickersWithReportTypes.push({ ticker: t.symbol, reportTypes: missingReportTypes });
+          }
         }
       }
 
-      await generateMissingReports(tickersWithReportTypes, tickersWithManyMissingReports);
-      router.push('/admin-v1/generation-requests');
+      if (tickersWithReportTypes.length > 0) {
+        // Use the new approach without the "many missing reports" logic
+        const allTickers: string[] = tickersWithReportTypes.map((t) => t.ticker);
+        const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
+
+        await generateSpecificReportsInBackground(allTickers, allReportTypes);
+        router.push('/admin-v1/generation-requests');
+      }
     } catch (err) {
-      console.error('Error generating missing reports:', err);
+      console.error('Error generating missing reports for selected tickers:', err);
     } finally {
       setLocalGenerating(false);
     }
@@ -269,14 +334,6 @@ export default function MissingReportsPage(): JSX.Element {
         <h2 className="text-2xl font-bold">Missing Reports</h2>
 
         <div className="flex items-center gap-3">
-          <Button
-            onClick={handleGenerateMissingReports}
-            variant="contained"
-            className="flex items-center gap-2"
-            disabled={isGenerating || accumulatedData.length === 0}
-          >
-            {isGenerating ? 'Generating...' : 'Generate Missing Reports'}
-          </Button>
           <Button onClick={handleManualRefresh} variant="outlined" className="flex items-center gap-2">
             <ArrowPathIcon className="w-4 h-4" />
             Refresh
@@ -297,12 +354,51 @@ export default function MissingReportsPage(): JSX.Element {
               )}
             </div>
           </div>
+
+          {/* Selection controls */}
+          {accumulatedData.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-4">
+              <Button onClick={handleSelectAll} variant="outlined" className="text-sm" disabled={isGenerating}>
+                Select All
+              </Button>
+              <Button onClick={handleSelectFirst50} variant="outlined" className="text-sm" disabled={isGenerating}>
+                Select First 50
+              </Button>
+              <Button onClick={handleClearSelection} variant="outlined" className="text-sm" disabled={isGenerating || selectedRows.size === 0}>
+                Clear Selection
+              </Button>
+              <span className="ml-auto text-sm text-gray-400 self-center">{selectedRows.size} tickers selected</span>
+            </div>
+          )}
+
+          {/* Generation buttons */}
+          {selectedRows.size > 0 && (
+            <div className="flex flex-wrap gap-3 mb-4">
+              <Button
+                onClick={handleGenerateAllForSelected}
+                variant="contained"
+                className="flex items-center gap-2"
+                disabled={isGenerating || selectedRows.size === 0}
+              >
+                {isGenerating ? 'Generating...' : 'Generate All for Selected'}
+              </Button>
+              <Button
+                onClick={handleGenerateMissingForSelected}
+                variant="contained"
+                className="flex items-center gap-2"
+                disabled={isGenerating || selectedRows.size === 0}
+              >
+                {isGenerating ? 'Generating...' : 'Generate Missing for Selected'}
+              </Button>
+            </div>
+          )}
+
           {loading && accumulatedData.length === 0 ? (
             <div className="py-8">Loading missing reports...</div>
           ) : accumulatedData.length === 0 ? (
             <div className="py-4">No tickers with missing reports found.</div>
           ) : (
-            <MissingReportsTable rows={accumulatedData} />
+            <MissingReportsTable rows={accumulatedData} selectedRows={selectedRows} onSelectRow={handleSelectRow} />
           )}
         </div>
       </div>
