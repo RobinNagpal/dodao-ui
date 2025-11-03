@@ -19,6 +19,7 @@ import {
   prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
+import { areAllReportsAttempted, markAsCompleted, shouldRegenerateReport, updateInitialStatus } from '@/utils/analysis-reports/report-status-utils';
 import { saveCachedScoreAndAboutReport } from '@/utils/analysis-reports/save-report-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
@@ -31,75 +32,6 @@ interface ReportOrderItem {
   condition: boolean;
   needsCompetitionData: boolean;
   generateFn: () => Promise<void>;
-}
-
-/**
- * Handles in-progress steps and timeouts
- * Returns true if the function should exit early
- */
-async function handleInProgressStep(
-  generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }
-): Promise<{ isInProgressOrIsCompleted: boolean; updatedRequest: TickerV1GenerationRequest & { ticker: TickerV1 } }> {
-  if (generationRequest.status === GenerationRequestStatus.Completed) {
-    return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
-  }
-
-  if (!generationRequest.inProgressStep) {
-    return { isInProgressOrIsCompleted: false, updatedRequest: generationRequest };
-  }
-
-  // Check if it's been more than 5 minutes since the last invocation time
-  const lastInvocationTime = generationRequest.lastInvocationTime;
-  const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-
-  if (lastInvocationTime && lastInvocationTime < fiveMinutesAgo) {
-    // Add the step to failedSteps if it's been more than 5 minutes
-    const updatedFailedSteps = [...generationRequest.failedSteps, generationRequest.inProgressStep];
-
-    // Update the generation request
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        failedSteps: updatedFailedSteps,
-        inProgressStep: null,
-      },
-    });
-
-    // Refresh the generation request
-    const updatedRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
-      where: {
-        id: generationRequest.id,
-      },
-      include: {
-        ticker: true,
-      },
-    });
-
-    return { isInProgressOrIsCompleted: false, updatedRequest };
-  } else {
-    console.log(`Waiting for ${generationRequest.inProgressStep}  of ${generationRequest.ticker.symbol} to finish.... It was started at ${lastInvocationTime}`);
-    // If it's not been more than 5 minutes, return early
-    return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
-  }
-}
-
-/**
- * Updates the generation request status for first-time runs
- */
-async function updateInitialStatus(generationRequest: TickerV1GenerationRequest): Promise<void> {
-  if (generationRequest.status === GenerationRequestStatus.NotStarted) {
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        status: GenerationRequestStatus.InProgress,
-        startedAt: new Date(),
-      },
-    });
-  }
 }
 
 /**
@@ -262,24 +194,6 @@ function findNextReport(
 }
 
 /**
- * Marks the generation request as completed or failed when there are no more reports to generate
- * If any reports have failed, we mark the status as failed
- */
-async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
-  const hasFailed = generationRequest.failedSteps.length > 0;
-
-  await prisma.tickerV1GenerationRequest.update({
-    where: {
-      id: generationRequest.id,
-    },
-    data: {
-      status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
-      completedAt: new Date(),
-    },
-  });
-}
-
-/**
  * Handles errors during report generation
  */
 async function handleGenerationError(error: unknown, generationRequest: TickerV1GenerationRequest): Promise<void> {
@@ -298,27 +212,11 @@ async function handleGenerationError(error: unknown, generationRequest: TickerV1
   }
 
   // Check if all reports have been attempted
-  const allReportsAttempted = Object.entries(generationRequest)
-    .filter(([key, value]) => key.startsWith('regenerate') && value === true)
-    .every(([key]) => {
-      const reportType = key.replace('regenerate', '');
-      const reportTypeKey = Object.values(ReportType).find((type) => type.toUpperCase() === reportType.toUpperCase());
-      return reportTypeKey && (generationRequest.completedSteps.includes(reportTypeKey) || generationRequest.failedSteps.includes(reportTypeKey));
-    });
+  const allReportsAttempted = areAllReportsAttempted(generationRequest);
 
   if (allReportsAttempted) {
-    // Update the request status based on whether any reports have failed
-    // If any reports have failed, mark the status as Failed
-    const hasFailed = generationRequest.failedSteps.length > 0;
-    await prisma.tickerV1GenerationRequest.update({
-      where: {
-        id: generationRequest.id,
-      },
-      data: {
-        status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
-        completedAt: new Date(),
-      },
-    });
+    // Mark the request as completed or failed
+    await markAsCompleted(generationRequest);
   }
 
   throw error;
@@ -585,37 +483,54 @@ async function generateCachedScoreAnalysis(tickerRecord: TickerV1WithIndustryAnd
 }
 
 /**
- * Helper function to check if a report should be regenerated
+ * Handles in-progress steps and timeouts
+ * Returns true if the function should exit early
  */
-function shouldRegenerateReport(request: TickerV1GenerationRequest, reportType: ReportType): boolean {
-  switch (reportType) {
-    case ReportType.COMPETITION:
-      return request.regenerateCompetition;
-    case ReportType.FINANCIAL_ANALYSIS:
-      return request.regenerateFinancialAnalysis;
-    case ReportType.BUSINESS_AND_MOAT:
-      return request.regenerateBusinessAndMoat;
-    case ReportType.PAST_PERFORMANCE:
-      return request.regeneratePastPerformance;
-    case ReportType.FUTURE_GROWTH:
-      return request.regenerateFutureGrowth;
-    case ReportType.FAIR_VALUE:
-      return request.regenerateFairValue;
-    case ReportType.FUTURE_RISK:
-      return request.regenerateFutureRisk;
-    case ReportType.WARREN_BUFFETT:
-      return request.regenerateWarrenBuffett;
-    case ReportType.CHARLIE_MUNGER:
-      return request.regenerateCharlieMunger;
-    case ReportType.BILL_ACKMAN:
-      return request.regenerateBillAckman;
-    case ReportType.FINAL_SUMMARY:
-      return request.regenerateFinalSummary;
-    case ReportType.CACHED_SCORE:
-      return request.regenerateCachedScore;
-    default:
-      console.error(`Unknown report type: ${reportType}`);
-      return false;
+export async function handleInProgressStep(
+  generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }
+): Promise<{ isInProgressOrIsCompleted: boolean; updatedRequest: TickerV1GenerationRequest & { ticker: TickerV1 } }> {
+  if (generationRequest.status === GenerationRequestStatus.Completed) {
+    return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
+  }
+
+  if (!generationRequest.inProgressStep) {
+    return { isInProgressOrIsCompleted: false, updatedRequest: generationRequest };
+  }
+
+  // Check if it's been more than 5 minutes since the last invocation time
+  const lastInvocationTime = generationRequest.lastInvocationTime;
+  const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+  if (lastInvocationTime && lastInvocationTime < fiveMinutesAgo) {
+    // Add the step to failedSteps if it's been more than 5 minutes
+    const updatedFailedSteps = [...generationRequest.failedSteps, generationRequest.inProgressStep];
+
+    // Update the generation request
+    await prisma.tickerV1GenerationRequest.update({
+      where: {
+        id: generationRequest.id,
+      },
+      data: {
+        failedSteps: updatedFailedSteps,
+        inProgressStep: null,
+      },
+    });
+
+    // Refresh the generation request
+    const updatedRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+      where: {
+        id: generationRequest.id,
+      },
+      include: {
+        ticker: true,
+      },
+    });
+
+    return { isInProgressOrIsCompleted: false, updatedRequest };
+  } else {
+    console.log(`Waiting for ${generationRequest.inProgressStep}  of ${generationRequest.ticker.symbol} to finish.... It was started at ${lastInvocationTime}`);
+    // If it's not been more than 5 minutes, return early
+    return { isInProgressOrIsCompleted: true, updatedRequest: generationRequest };
   }
 }
 
@@ -713,13 +628,7 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
     }
 
     // Check if all reports that should be regenerated have been attempted
-    const allReportsAttempted = Object.entries(generationRequest)
-      .filter(([key, value]) => key.startsWith('regenerate') && value === true)
-      .every(([key]) => {
-        const reportType = key.replace('regenerate', '');
-        const reportTypeKey = Object.values(ReportType).find((type) => type.toUpperCase() === reportType.toUpperCase());
-        return reportTypeKey && (generationRequest.completedSteps.includes(reportTypeKey) || generationRequest.failedSteps.includes(reportTypeKey));
-      });
+    const allReportsAttempted = areAllReportsAttempted(generationRequest);
 
     // Find the next report to generate
     const nextReport = findNextReport(reportOrder, generationRequest, competitionData);

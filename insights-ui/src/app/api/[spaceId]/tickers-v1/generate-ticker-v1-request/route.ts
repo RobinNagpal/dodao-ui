@@ -3,7 +3,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1GenerationRequestWithTicker } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
-import { calculatePendingSteps } from '@/utils/analysis-reports/report-status-utils';
+import { calculatePendingSteps, markAsCompleted } from '@/utils/analysis-reports/report-status-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerV1GenerationRequest } from '@prisma/client';
@@ -39,7 +39,10 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   let inProgressRequests = await getInProgressRequests();
 
   for (const request of inProgressRequests) {
-    await triggerGenerationOfAReport(request.ticker.symbol, request.id);
+    const allStepsCompleted = calculatePendingSteps(request).length === 0;
+    if (allStepsCompleted) {
+      await markAsCompleted(request);
+    }
   }
 
   inProgressRequests = await getInProgressRequests();
