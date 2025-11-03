@@ -33,6 +33,10 @@ function MissingReportsTable({ rows }: MissingReportsTableProps): JSX.Element {
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Buffett</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Munger</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Ackman</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Cached Score</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Meta Description</th>
           </tr>
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -127,6 +131,42 @@ function MissingReportsTable({ rows }: MissingReportsTableProps): JSX.Element {
                     {!ticker.isMissingBillAckmanReport ? 'Yes' : 'No'}
                   </span>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      !ticker.isMissingFinalSummaryReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                    }`}
+                  >
+                    {!ticker.isMissingFinalSummaryReport ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      !ticker.isMissingCachedScoreRepot ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                    }`}
+                  >
+                    {!ticker.isMissingCachedScoreRepot ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      !ticker.isMissingCompetitionReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                    }`}
+                  >
+                    {!ticker.isMissingCompetitionReport ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      !ticker.isMissingMetaDescriptionReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                    }`}
+                  >
+                    {!ticker.isMissingMetaDescriptionReport ? 'Yes' : 'No'}
+                  </span>
+                </td>
               </tr>
             );
           })}
@@ -185,6 +225,11 @@ export default function MissingReportsPage(): JSX.Element {
     if (ticker.isMissingWarrenBuffettReport) missingReports.push(ReportType.WARREN_BUFFETT);
     if (ticker.isMissingCharlieMungerReport) missingReports.push(ReportType.CHARLIE_MUNGER);
     if (ticker.isMissingBillAckmanReport) missingReports.push(ReportType.BILL_ACKMAN);
+    if (ticker.isMissingFinalSummaryReport) missingReports.push(ReportType.FINAL_SUMMARY);
+    if (ticker.isMissingCachedScoreRepot) missingReports.push(ReportType.CACHED_SCORE);
+    if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
+
+    // Note: isMissingMetaDescriptionReport is not included as there is no corresponding ReportType
 
     return missingReports;
   }
