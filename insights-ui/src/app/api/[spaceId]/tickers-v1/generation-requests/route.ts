@@ -65,7 +65,7 @@ async function getRequests(status: GenerationRequestStatus, skip: number = 0, ta
       status: status,
     },
     orderBy: {
-      createdAt: 'desc',
+      updatedAt: 'desc',
     },
     skip,
     take,

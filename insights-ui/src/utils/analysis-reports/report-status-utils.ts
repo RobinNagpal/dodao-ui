@@ -63,6 +63,7 @@ export async function updateInitialStatus(generationRequest: TickerV1GenerationR
       data: {
         status: GenerationRequestStatus.InProgress,
         startedAt: new Date(),
+        updatedAt: new Date(),
       },
     });
   } else {
@@ -80,6 +81,7 @@ export async function markAsCompleted(generationRequest: TickerV1GenerationReque
     data: {
       status: hasFailed ? GenerationRequestStatus.Failed : GenerationRequestStatus.Completed,
       completedAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 }
