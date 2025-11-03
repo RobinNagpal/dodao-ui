@@ -3,11 +3,14 @@ import { fetchTickerRecordWithAnalysisData } from '@/utils/analysis-reports/get-
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
-import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
-import { LLMProvider, GeminiModel, GeminiModelType } from '@/types/llmConstants';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
+
+interface FinalSummaryResponse {
+  finalSummary: string;
+  metaDescription: string;
+}
 
 async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
   const { spaceId, ticker } = await params;
@@ -32,22 +35,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     throw new Error('Failed to get response from LLM');
   }
 
-  const finalSummary = result.response as string;
-
-  const metaDescriptionPrompt = generateMetaDescriptionPrompt(finalSummary);
-
-  const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(
-    metaDescriptionPrompt,
-    MetaDescriptionResponse,
-    GeminiModelType.GEMINI_2_5_PRO,
-    3,
-    1000
-  );
-
-  const metaDescription = metaDescriptionResult.metaDescription;
+  const response = result.response as FinalSummaryResponse;
 
   // Save the final summary response using the utility function
-  await saveFinalSummaryResponse(ticker.toLowerCase(), finalSummary, metaDescription);
+  await saveFinalSummaryResponse(ticker.toLowerCase(), response.finalSummary, response.metaDescription);
 
   return {
     success: true,

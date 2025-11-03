@@ -122,7 +122,7 @@ const getHandler = async (
       "isMissingCompetitionReport" = TRUE OR
       "isMissingFinalSummaryReport" = TRUE OR
       "isMissingCachedScoreRepot" = TRUE OR
-      "isMissingMetaDescriptionReport" = TRUE
+      "isMissingMetaDescriptionReport" = TRUE   
     ORDER BY symbol;
   `;
 
