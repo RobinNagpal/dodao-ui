@@ -86,10 +86,7 @@ export default function TopNav(): JSX.Element {
             <img alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" />
           </Link>
 
-          {/* Search Bar
-              - Always visible on desktop
-              - On mobile, visible in the mobile menu for all routes */}
-          <div className="flex-1 min-w-0 lg:block lg:w-auto lg:min-w-[24rem]">
+          <div className="hidden lg:block lg:w-auto lg:min-w-[24rem]">
             <div className="max-w-full lg:max-w-none">
               <SearchBar placeholder="Search stocks..." variant="navbar" />
             </div>
@@ -97,16 +94,16 @@ export default function TopNav(): JSX.Element {
         </div>
 
         {/* Right: mobile hamburger, desktop menus hidden on /stocks but profile always visible on lg */}
-        <div className="flex lg:hidden">
+        <div className="relative z-10 flex lg:hidden">
           <button
             type="button"
             onClick={(): void => setMobileMenuOpen(true)}
-            className="-m-2.5 inline-flex items-center justify-center rounded-md py-2.5 pl-4 pr-2.5 text-gray-300 hover:text-white"
+            className="inline-flex items-center justify-center rounded-md px-4 py-3 text-gray-300 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-indigo-500/50"
             aria-label="Open main menu"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
           >
-            <Bars3Icon aria-hidden="true" className="h-6 w-6" />
+            <Bars3Icon aria-hidden="true" className="h-6 w-7" />
           </button>
         </div>
 
@@ -234,6 +231,9 @@ export default function TopNav(): JSX.Element {
               </button>
             </div>
             <div className="mt-6 flow-root">
+              <div className="mb-4">
+                <SearchBar placeholder="Search stocks..." variant="navbar" />
+              </div>
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
                   {/* Mobile KoalaGains Insights */}
