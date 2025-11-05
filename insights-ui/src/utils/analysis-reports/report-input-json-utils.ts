@@ -1,6 +1,7 @@
 import { AnalysisCategoryFactor, TickerV1 } from '@prisma/client';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry, VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
+import { buildBaseAboutReport } from '@/utils/analysis-reports/save-report-utils';
 
 /**
  * Base input JSON for ticker analysis
@@ -72,6 +73,7 @@ export interface FinalSummaryInputJson extends BaseTickerInputJson {
     oneLineExplanation: string;
     result: string;
   }>;
+  baseInfo: string;
 }
 
 /**
@@ -257,6 +259,9 @@ export function prepareFinalSummaryInputJson(
         result: string;
       }>;
     }>;
+    vsCompetition?: {
+      competitionAnalysisArray: CompetitionAnalysisArray;
+    } | null;
   }
 ): FinalSummaryInputJson {
   const baseInputJson = prepareBaseTickerInputJson(tickerRecord);
@@ -275,10 +280,14 @@ export function prepareFinalSummaryInputJson(
     }))
   );
 
+  // Generate base info using buildBaseAboutReport
+  const baseInfo = buildBaseAboutReport(tickerRecord);
+
   return {
     ...baseInputJson,
     exchange: tickerRecord.exchange,
     categorySummaries,
     factorResults,
+    baseInfo,
   };
 }

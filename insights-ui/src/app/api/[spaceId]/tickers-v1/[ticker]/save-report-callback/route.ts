@@ -48,7 +48,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       await saveFutureRiskResponse(ticker, llmResponse);
       break;
     case ReportType.FINAL_SUMMARY:
-      await saveFinalSummaryResponse(ticker, llmResponse.finalSummary, llmResponse.metaDescription);
+      await saveFinalSummaryResponse(ticker, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);
       break;
     case ReportType.WARREN_BUFFETT:
       await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.WARREN_BUFFETT);
