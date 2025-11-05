@@ -147,7 +147,7 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
               </th>
             ))}
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Created At</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Updated At</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
@@ -207,7 +207,9 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
                     {latestRequest.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">{new Date(latestRequest.createdAt as unknown as string).toLocaleString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  {new Date(latestRequest.updatedAt || latestRequest.createdAt).toLocaleString()}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                   {isFailed && failedSteps.length > 0 && (
                     <button

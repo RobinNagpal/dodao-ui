@@ -2,9 +2,10 @@
 
 import SearchBar from '@/components/core/SearchBar';
 import { UserProfile } from '@/components/core/UserProfile/UserProfile';
-import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
+import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
+import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -138,72 +139,7 @@ export default function TopNav() {
           </div>
         </nav>
 
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <div className="fixed inset-0 z-50" />
-          <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-white/10">
-            <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
-                <span className="sr-only">KoalaGains</span>
-                {/* Mobile: app icon */}
-                <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" />
-              </Link>
-              <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-400">
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="size-6" />
-              </button>
-            </div>
-
-            <div className="mt-6 flow-root">
-              <div className="mb-4">
-                <SearchBar placeholder="Search stocks..." variant="navbar" />
-              </div>
-
-              <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
-                <div className="space-y-2 py-6">
-                  <div>
-                    <Disclosure as="div" className="-mx-3">
-                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
-                        KoalaGains Insights
-                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 space-y-2">
-                        {[...reportsDropdown].map((item) => (
-                          <DisclosureButton
-                            key={item.name}
-                            as={Link}
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                        ))}
-                      </DisclosurePanel>
-                    </Disclosure>
-
-                    <Disclosure as="div" className="-mx-3">
-                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
-                        Gen AI Adoption
-                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 space-y-2">
-                        {[...genaiDropdown].map((item) => (
-                          <DisclosureButton
-                            key={item.name}
-                            as={Link}
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                        ))}
-                      </DisclosurePanel>
-                    </Disclosure>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </DialogPanel>
-        </Dialog>
+        <MobileTopNav mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} reportsDropdown={reportsDropdown} genaiDropdown={genaiDropdown} />
       </header>
     </div>
   );

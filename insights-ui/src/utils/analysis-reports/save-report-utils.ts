@@ -42,6 +42,8 @@ export async function saveFactorAnalysisResponse(
       categoryKey: tickerAnalysisCategory,
       summary: response.overallSummary,
       overallAnalysisDetails: response.overallAnalysisDetails,
+      updatedAt: new Date(),
+      createdAt: new Date(),
     },
   });
 
@@ -73,6 +75,8 @@ export async function saveFactorAnalysisResponse(
           oneLineExplanation: factor.oneLineExplanation,
           detailedExplanation: factor.detailedExplanation,
           result: factor.result,
+          updatedAt: new Date(),
+          createdAt: new Date(),
         },
       });
     }
@@ -160,6 +164,8 @@ export async function saveInvestorAnalysisResponse(ticker: string, response: LLM
       verdict: response.verdict,
       willInvest: response.willInvest,
       topCompaniesToConsider: response.topCompaniesToConsider,
+      updatedAt: new Date(),
+      createdAt: new Date(),
     },
   });
 
@@ -206,6 +212,8 @@ export async function saveCompetitionAnalysisResponse(
       summary: response.summary,
       overallAnalysisDetails: response.overallAnalysisDetails,
       competitionAnalysisArray: response.competitionAnalysisArray,
+      updatedAt: new Date(),
+      createdAt: new Date(),
     },
   });
 
