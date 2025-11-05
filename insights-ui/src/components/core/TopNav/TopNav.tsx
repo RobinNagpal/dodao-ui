@@ -160,51 +160,45 @@ export default function TopNav() {
 
               <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
                 <div className="space-y-2 py-6">
-                  {!isStocksRoute && (
-                    <div>
-                      <Disclosure as="div" className="-mx-3">
-                        <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
-                          KoalaGains Insights
-                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                        </DisclosureButton>
-                        <DisclosurePanel className="mt-2 space-y-2">
-                          {[...reportsDropdown].map((item) => (
-                            <DisclosureButton
-                              key={item.name}
-                              as={Link}
-                              href={item.href}
-                              className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                            >
-                              {item.name}
-                            </DisclosureButton>
-                          ))}
-                        </DisclosurePanel>
-                      </Disclosure>
+                  <div>
+                    <Disclosure as="div" className="-mx-3">
+                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                        KoalaGains Insights
+                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 space-y-2">
+                        {[...reportsDropdown].map((item) => (
+                          <DisclosureButton
+                            key={item.name}
+                            as={Link}
+                            href={item.href}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                          >
+                            {item.name}
+                          </DisclosureButton>
+                        ))}
+                      </DisclosurePanel>
+                    </Disclosure>
 
-                      <Disclosure as="div" className="-mx-3">
-                        <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
-                          Gen AI Adoption
-                          <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
-                        </DisclosureButton>
-                        <DisclosurePanel className="mt-2 space-y-2">
-                          {[...genaiDropdown].map((item) => (
-                            <DisclosureButton
-                              key={item.name}
-                              as={Link}
-                              href={item.href}
-                              className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
-                            >
-                              {item.name}
-                            </DisclosureButton>
-                          ))}
-                        </DisclosurePanel>
-                      </Disclosure>
-                    </div>
-                  )}
-                </div>
-
-                <div className="py-6">
-                  <UserProfile isMobile={true} onMenuToggle={(): void => setMobileMenuOpen(false)} />
+                    <Disclosure as="div" className="-mx-3">
+                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                        Gen AI Adoption
+                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 space-y-2">
+                        {[...genaiDropdown].map((item) => (
+                          <DisclosureButton
+                            key={item.name}
+                            as={Link}
+                            href={item.href}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                          >
+                            {item.name}
+                          </DisclosureButton>
+                        ))}
+                      </DisclosurePanel>
+                    </Disclosure>
+                  </div>
                 </div>
               </div>
             </div>
