@@ -23,6 +23,7 @@ export interface MissingReportsForTicker extends TickerV1 {
 
   // NEW
   isMissingMetaDescriptionReport: boolean;
+  isMissingAboutReport: boolean;
 
   industry: {
     name: string;
@@ -92,11 +93,14 @@ const getHandler = async (
         -- Final summary present?
         (t.summary IS NULL OR btrim(t.summary) = '') AS "isMissingFinalSummaryReport",
 
-        -- Cached score/about present?
-        (t.cached_score IS NULL OR t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingCachedScoreRepot",
+        -- Cached score present?
+        (t.cached_score IS NULL) AS "isMissingCachedScoreRepot",
 
         -- NEW: meta description present?
-        (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport"
+        (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
+
+        -- NEW: about report present?
+        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport"
 
       FROM 
         tickers_v1 t
@@ -110,7 +114,7 @@ const getHandler = async (
     )
     SELECT * 
     FROM factor_counts
-    WHERE 
+    WHERE
       "businessAndMoatFactorResultsCount" < 1 OR
       "financialAnalysisFactorsResultsCount" < 1 OR
       "pastPerformanceFactorsResultsCount" < 1 OR
@@ -122,7 +126,8 @@ const getHandler = async (
       "isMissingCompetitionReport" = TRUE OR
       "isMissingFinalSummaryReport" = TRUE OR
       "isMissingCachedScoreRepot" = TRUE OR
-      "isMissingMetaDescriptionReport" = TRUE   
+      "isMissingMetaDescriptionReport" = TRUE OR
+      "isMissingAboutReport" = TRUE
     ORDER BY symbol;
   `;
 

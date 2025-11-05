@@ -60,7 +60,7 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateWarrenBuffett: 'Buffett',
   regenerateCharlieMunger: 'Munger',
   regenerateBillAckman: 'Ackman',
-  regenerateFinalSummary: 'Summary',
+  regenerateFinalSummary: 'Summary/Meta/About',
   regenerateCachedScore: 'Score',
 };
 
