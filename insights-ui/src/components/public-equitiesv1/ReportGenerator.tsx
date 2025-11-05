@@ -29,7 +29,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
   React.useEffect(() => {
-    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
+    // Initialize with all report types from both arrays to match the UI display
+    const allReportTypeKeys: ReportType[] = [
+      ...analysisTypes.map((analysis) => analysis.key as ReportType),
+      ...investorAnalysisTypes.map((investor) => investor.key as ReportType),
+    ];
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -76,7 +80,11 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
+    // Select all report types from both arrays to match the UI display
+    const allReportTypeKeys: ReportType[] = [
+      ...analysisTypes.map((analysis) => analysis.key as ReportType),
+      ...investorAnalysisTypes.map((investor) => investor.key as ReportType),
+    ];
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -195,14 +203,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                     const report = tickerReports[ticker];
 
                     // Extract the investor name from the ReportType enum value
-                    let investorName: string = '';
-                    if (investorKey === ReportType.WARREN_BUFFETT) {
-                      investorName = 'WARREN_BUFFETT';
-                    } else if (investorKey === ReportType.CHARLIE_MUNGER) {
-                      investorName = 'CHARLIE_MUNGER';
-                    } else if (investorKey === ReportType.BILL_ACKMAN) {
-                      investorName = 'BILL_ACKMAN';
-                    }
+                    const investorName = investorKey.replace('investor-', '');
 
                     const isCompleted: boolean = !!report?.analysisStatus.investorAnalysis[investorName as keyof typeof report.analysisStatus.investorAnalysis];
                     const isLoading: boolean = loadingStates[`${ticker}-${investorKey}`];

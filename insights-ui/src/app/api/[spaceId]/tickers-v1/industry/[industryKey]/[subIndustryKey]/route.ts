@@ -133,7 +133,7 @@ async function getHandler(
         },
         futureRisk: ticker.futureRisks.length > 0,
         finalSummary: !!ticker.summary && !!ticker.metaDescription && !!ticker.aboutReport && ticker.aboutReport.trim().length > 0,
-        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
+        cachedScore: ticker.categoryAnalysisResults.length > 0 && ticker.cachedScore === actualScore,
       };
 
       // Calculate missing/partial status
