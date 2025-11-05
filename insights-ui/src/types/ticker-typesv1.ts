@@ -124,7 +124,7 @@ export interface AnalysisStatus {
 }
 
 export interface AnalysisTypeInfo {
-  key: string;
+  key: ReportType;
   label: string;
   statusKey?: keyof AnalysisStatus;
 }
@@ -135,17 +135,6 @@ export enum InvestorTypes {
   BILL_ACKMAN = 'BILL_ACKMAN',
 }
 // Analysis type constants to avoid hardcoded strings
-export enum AnalysisTypeKey {
-  FINANCIAL_ANALYSIS = 'financial-analysis',
-  COMPETITION = 'competition',
-  BUSINESS_AND_MOAT = 'business-and-moat',
-  PAST_PERFORMANCE = 'past-performance',
-  FUTURE_GROWTH = 'future-growth',
-  FAIR_VALUE = 'fair-value',
-  FUTURE_RISK = 'future-risk',
-  FINAL_SUMMARY = 'final-summary',
-  CACHED_SCORE = 'cached-score',
-}
 
 // Combined enum for report types (both regular analysis and investor analysis)
 export enum ReportType {
@@ -158,7 +147,6 @@ export enum ReportType {
   FAIR_VALUE = 'fair-value',
   FUTURE_RISK = 'future-risk',
   FINAL_SUMMARY = 'final-summary',
-  CACHED_SCORE = 'cached-score',
 
   // Investor analysis types
   WARREN_BUFFETT = 'investor-WARREN_BUFFETT',
@@ -176,7 +164,9 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: ReportType.FAIR_VALUE, label: 'Fair Value', statusKey: 'fairValue' },
   { key: ReportType.FUTURE_RISK, label: 'Future Risk', statusKey: 'futureRisk' },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary', statusKey: 'finalSummary' },
-  { key: ReportType.CACHED_SCORE, label: 'Cached Score/About Report', statusKey: 'cachedScore' },
+  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett Analysis', statusKey: 'investorAnalysis' },
+  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger Analysis', statusKey: 'investorAnalysis' },
+  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman Analysis', statusKey: 'investorAnalysis' },
 ];
 
 // Types for ticker analysis categories
@@ -214,13 +204,6 @@ export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, nam
   key,
   name,
 }));
-
-// Common investor analysis types
-export const investorAnalysisTypes: AnalysisTypeInfo[] = [
-  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett Analysis' },
-  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger Analysis' },
-  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman Analysis' },
-];
 
 export enum EvaluationResult {
   Pass = 'Pass',

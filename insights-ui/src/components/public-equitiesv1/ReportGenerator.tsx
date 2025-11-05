@@ -1,20 +1,15 @@
-import { AnalysisStatus, analysisTypes, investorAnalysisTypes, useGenerateReports } from '@/hooks/useGenerateReports';
-import { TickerV1 } from '@/types/public-equity/analysis-factors-types';
+import { analysisTypes, useGenerateReports } from '@/hooks/useGenerateReports';
 import { ReportType } from '@/types/ticker-typesv1';
+import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-export interface TickerReportV1 {
-  ticker: TickerV1;
-  analysisStatus: AnalysisStatus;
-}
-
 interface ReportGeneratorProps {
   selectedTickers: string[];
-  tickerReports: Record<string, TickerReportV1>;
+  tickerReports: Record<string, TickerWithMissingReportInfo>;
   onReportGenerated: (ticker: string) => void;
 }
 
@@ -29,11 +24,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
   React.useEffect(() => {
-    // Initialize with all report types from both arrays to match the UI display
-    const allReportTypeKeys: ReportType[] = [
-      ...analysisTypes.map((analysis) => analysis.key as ReportType),
-      ...investorAnalysisTypes.map((investor) => investor.key as ReportType),
-    ];
+    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -80,11 +71,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleSelectAllReportTypes = (): void => {
-    // Select all report types from both arrays to match the UI display
-    const allReportTypeKeys: ReportType[] = [
-      ...analysisTypes.map((analysis) => analysis.key as ReportType),
-      ...investorAnalysisTypes.map((investor) => investor.key as ReportType),
-    ];
+    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
     setSelectedReportTypes(allReportTypeKeys);
   };
 
@@ -166,50 +153,12 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   </td>
                   {selectedTickers.map((ticker) => {
                     const report = tickerReports[ticker];
-                    const isCompleted: boolean = !!(analysis.statusKey && report?.analysisStatus[analysis.statusKey]);
+                    const isCompleted: boolean = !getMissingReportTypes(report).includes(analysisKey);
 
                     const isLoading: boolean = loadingStates[`${ticker}-${analysisKey}`];
 
                     return (
                       <td key={`${ticker}-${analysisKey}`} className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div className="flex flex-col items-center space-y-2">
-                          <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-
-            {investorAnalysisTypes.map((investor) => {
-              const investorKey = investor.key as ReportType;
-              const isSelected: boolean = selectedReportTypes.includes(investorKey);
-
-              return (
-                <tr key={investorKey}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => handleReportTypeToggle(investorKey)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                      />
-                      <span>{investor.label}</span>
-                    </div>
-                  </td>
-                  {selectedTickers.map((ticker) => {
-                    const report = tickerReports[ticker];
-
-                    // Extract the investor name from the ReportType enum value
-                    const investorName = investorKey.replace('investor-', '');
-
-                    const isCompleted: boolean = !!report?.analysisStatus.investorAnalysis[investorName as keyof typeof report.analysisStatus.investorAnalysis];
-                    const isLoading: boolean = loadingStates[`${ticker}-${investorKey}`];
-
-                    return (
-                      <td key={`${ticker}-${investorKey}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
                         </div>
@@ -243,7 +192,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             </div>
           </div>
           <div className="text-sm text-gray-300">
-            {selectedReportTypes.length} of {analysisTypes.length + investorAnalysisTypes.length} report types selected
+            {selectedReportTypes.length} of {analysisTypes.length} report types selected
           </div>
         </div>
 

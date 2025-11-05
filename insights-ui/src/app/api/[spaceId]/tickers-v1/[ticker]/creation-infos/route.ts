@@ -112,7 +112,6 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
       regenerateCharlieMunger: true,
       regenerateBillAckman: true,
       regenerateFinalSummary: true,
-      regenerateCachedScore: true,
     },
   });
 

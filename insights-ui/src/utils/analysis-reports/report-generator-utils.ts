@@ -1,6 +1,6 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { AnalysisTypeKey, InvestorKey } from '@/types/ticker-typesv1';
+import { InvestorKey, ReportType } from '@/types/ticker-typesv1';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Helper function to create a background generation request for a ticker
@@ -23,7 +23,6 @@ export const createBackgroundGenerationRequest = async (
     regenerateCharlieMunger: true,
     regenerateBillAckman: true,
     regenerateFinalSummary: true,
-    regenerateCachedScore: true,
   };
 
   await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
@@ -31,7 +30,7 @@ export const createBackgroundGenerationRequest = async (
 
 // Helper function to create a background generation request for a specific analysis type
 export const createSingleAnalysisBackgroundRequest = async (
-  analysisType: string,
+  reportType: ReportType,
   ticker: string,
   postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
@@ -51,38 +50,44 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateCharlieMunger: false,
     regenerateBillAckman: false,
     regenerateFinalSummary: false,
-    regenerateCachedScore: false,
   };
 
   // Set the specific analysis type to true using constants
-  switch (analysisType) {
-    case AnalysisTypeKey.COMPETITION:
+  switch (reportType) {
+    case ReportType.COMPETITION:
       payload.regenerateCompetition = true;
       break;
-    case AnalysisTypeKey.FINANCIAL_ANALYSIS:
+    case ReportType.FINANCIAL_ANALYSIS:
       payload.regenerateFinancialAnalysis = true;
       break;
-    case AnalysisTypeKey.BUSINESS_AND_MOAT:
+    case ReportType.BUSINESS_AND_MOAT:
       payload.regenerateBusinessAndMoat = true;
       break;
-    case AnalysisTypeKey.PAST_PERFORMANCE:
+    case ReportType.PAST_PERFORMANCE:
       payload.regeneratePastPerformance = true;
       break;
-    case AnalysisTypeKey.FUTURE_GROWTH:
+    case ReportType.FUTURE_GROWTH:
       payload.regenerateFutureGrowth = true;
       break;
-    case AnalysisTypeKey.FAIR_VALUE:
+    case ReportType.FAIR_VALUE:
       payload.regenerateFairValue = true;
       break;
-    case AnalysisTypeKey.FUTURE_RISK:
+    case ReportType.FUTURE_RISK:
       payload.regenerateFutureRisk = true;
       break;
-    case AnalysisTypeKey.FINAL_SUMMARY:
+    case ReportType.FINAL_SUMMARY:
       payload.regenerateFinalSummary = true;
       break;
-    case AnalysisTypeKey.CACHED_SCORE:
-      payload.regenerateCachedScore = true;
+    case ReportType.WARREN_BUFFETT:
+      payload.regenerateWarrenBuffett = true;
       break;
+    case ReportType.CHARLIE_MUNGER:
+      payload.regenerateCharlieMunger = true;
+      break;
+    case ReportType.BILL_ACKMAN:
+      payload.regenerateBillAckman = true;
+      break;
+
     default:
       // If it's not a recognized analysis type, do nothing
       break;
@@ -113,7 +118,6 @@ export const createSingleInvestorBackgroundRequest = async (
     regenerateCharlieMunger: false,
     regenerateBillAckman: false,
     regenerateFinalSummary: false,
-    regenerateCachedScore: false,
   };
 
   // Set the specific investor analysis to true

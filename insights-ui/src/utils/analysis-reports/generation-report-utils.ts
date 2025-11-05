@@ -162,12 +162,6 @@ function defineReportOrder(
       needsCompetitionData: false,
       generateFn: async () => await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
     },
-    {
-      reportType: ReportType.CACHED_SCORE,
-      condition: shouldRegenerateReport(generationRequest, ReportType.CACHED_SCORE),
-      needsCompetitionData: false,
-      generateFn: async () => await generateCachedScoreAnalysis(tickerRecord, generationRequest.id),
-    },
   ];
 }
 
@@ -457,28 +451,6 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
       requestFrom: 'ui',
     },
     reportType: ReportType.FINAL_SUMMARY,
-  });
-}
-
-/**
- * Generates cached score
- * This is a synchronous operation that doesn't require LLM
- */
-async function generateCachedScoreAnalysis(tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
-  // Call the utility function to save cached score
-  await saveCachedScore(tickerRecord.symbol);
-
-  // Update the generation request to mark this report as completed
-  await prisma.tickerV1GenerationRequest.update({
-    where: { id: generationRequestId },
-    data: {
-      completedSteps: [
-        ...((await prisma.tickerV1GenerationRequest.findUnique({ where: { id: generationRequestId } }))?.completedSteps || []),
-        ReportType.CACHED_SCORE,
-      ],
-      inProgressStep: null,
-      lastInvocationTime: null,
-    },
   });
 }
 
