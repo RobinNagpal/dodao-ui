@@ -432,9 +432,9 @@ function calculateTotalScore(
 }
 
 /**
- * Saves cached score and about report
+ * Saves cached score only (without about report)
  */
-export async function saveCachedScoreAndAboutReport(ticker: string): Promise<void> {
+export async function saveCachedScore(ticker: string): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
 
   // Get ticker from DB with all necessary data
@@ -462,13 +462,42 @@ export async function saveCachedScoreAndAboutReport(ticker: string): Promise<voi
   // Calculate the total score
   const totalScore = calculateTotalScore(tickerRecord);
 
-  // Generate aboutReport using LLM
-  const aboutReport = await generateAboutReport(tickerRecord);
-
-  // Update the ticker with the calculated score and about report
+  // Update the ticker with the calculated score only
   await prisma.tickerV1.update({
     data: {
       cachedScore: totalScore,
+    },
+    where: {
+      id: tickerRecord.id,
+    },
+  });
+
+  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+}
+
+/**
+ * Generates and saves about report only
+ */
+export async function saveAboutReport(ticker: string): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+
+  // Get ticker from DB with competition data needed for about report
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+    where: {
+      spaceId,
+      symbol: ticker.toUpperCase(),
+    },
+    include: {
+      vsCompetition: true,
+    },
+  });
+
+  // Generate aboutReport using LLM
+  const aboutReport = await generateAboutReport(tickerRecord);
+
+  // Update the ticker with the about report
+  await prisma.tickerV1.update({
+    data: {
       aboutReport: aboutReport,
     },
     where: {

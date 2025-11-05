@@ -513,6 +513,7 @@ export async function handleInProgressStep(
       data: {
         failedSteps: updatedFailedSteps,
         inProgressStep: null,
+        updatedAt: new Date(),
       },
     });
 

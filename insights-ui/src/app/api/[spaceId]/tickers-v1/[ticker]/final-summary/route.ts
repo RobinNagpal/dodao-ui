@@ -4,7 +4,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
-import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
+import { saveFinalSummaryResponse, saveAboutReport } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
 interface FinalSummaryResponse {
@@ -39,6 +39,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   // Save the final summary response using the utility function
   await saveFinalSummaryResponse(ticker.toLowerCase(), response.finalSummary, response.metaDescription);
+
+  // Save about report
+  await saveAboutReport(ticker.toLowerCase());
 
   return {
     success: true,
