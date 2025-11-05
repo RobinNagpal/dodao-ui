@@ -1,12 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Dialog, DialogPanel } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { UserProfile } from '@/components/core/UserProfile/UserProfile';
 import SearchBar from '@/components/core/SearchBar';
+import { UserProfile } from '@/components/core/UserProfile/UserProfile';
+import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 interface ReportItem {
   name: string;
@@ -39,45 +40,15 @@ const genaiDropdown: GenAIItem[] = [
   { name: 'GenAI in Business - Real Cases', href: '/genai-business', description: 'Real-world AI implementation cases' },
 ];
 
-const navigation: NavigationItem[] = [
-  { name: 'Blogs', href: '/blogs', newTab: true },
-  // { name: 'Platform Docs', href: 'https://docs.koalagains.com', newTab: true },
-];
-
-export default function TopNav(): JSX.Element {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [reportsDropdownOpen, setReportsDropdownOpen] = useState<boolean>(false);
-  const [genaiDropdownOpen, setGenaiDropdownOpen] = useState<boolean>(false);
-  const [mobileReportsOpen, setMobileReportsOpen] = useState<boolean>(false);
-  const [mobileGenaiOpen, setMobileGenaiOpen] = useState<boolean>(false);
-
-  const reportsDropdownRef = useRef<HTMLDivElement | null>(null);
-  const genaiDropdownRef = useRef<HTMLDivElement | null>(null);
-
+export default function TopNav() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname: string = usePathname();
   const isStocksRoute: boolean = pathname.startsWith('/stocks');
 
-  // Close menus when clicking outside
-  useEffect((): (() => void) => {
-    const handleClickOutside = (event: MouseEvent): void => {
-      if (reportsDropdownRef.current && !reportsDropdownRef.current.contains(event.target as Node)) {
-        setReportsDropdownOpen(false);
-      }
-      if (genaiDropdownRef.current && !genaiDropdownRef.current.contains(event.target as Node)) {
-        setGenaiDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return (): void => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
-    <header className="bg-gray-800 mt-2 overflow-x-clip">
-      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8">
-        {/* Left: logo + search */}
-        <div className="flex items-center space-x-3 sm:space-x-6 w-full lg:w-auto min-w-0">
+    <header className="bg-white dark:bg-gray-900">
+      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-6">
+        <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">
             <span className="sr-only">KoalaGains</span>
 
@@ -85,243 +56,169 @@ export default function TopNav(): JSX.Element {
             <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" />
             <img alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" />
           </Link>
-
-          <div className="hidden lg:block lg:w-auto lg:min-w-[24rem]">
+          <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
             <div className="max-w-full lg:max-w-none">
               <SearchBar placeholder="Search stocks..." variant="navbar" />
             </div>
           </div>
         </div>
-
-        {/* Right: mobile hamburger, desktop menus hidden on /stocks but profile always visible on lg */}
-        <div className="relative z-10 flex lg:hidden">
+        <div className="flex lg:hidden">
           <button
             type="button"
-            onClick={(): void => setMobileMenuOpen(true)}
-            className="inline-flex items-center justify-center rounded-md px-4 py-3 text-gray-300 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-indigo-500/50"
-            aria-label="Open main menu"
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
+            onClick={() => setMobileMenuOpen(true)}
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-400"
           >
-            <Bars3Icon aria-hidden="true" className="h-6 w-7" />
+            <span className="sr-only">Open main menu</span>
+            <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
         </div>
 
-        {/* Desktop right side */}
-        <div className="hidden lg:flex lg:items-center lg:space-x-8">
-          {/* Desktop menus (hidden on /stocks) */}
-          {!isStocksRoute && (
-            <>
-              {/* KoalaGains Insights Dropdown */}
-              <div className="relative" ref={reportsDropdownRef}>
-                <button
-                  type="button"
-                  onClick={(): void => setReportsDropdownOpen((prev) => !prev)}
-                  onMouseEnter={(): void => setReportsDropdownOpen(true)}
-                  onTouchStart={(): void => setReportsDropdownOpen((prev) => !prev)}
-                  className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                  aria-expanded={reportsDropdownOpen}
-                  aria-haspopup="true"
-                >
-                  KoalaGains Insights
-                  <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${reportsDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {reportsDropdownOpen && (
-                  <div
-                    onMouseLeave={(): void => setReportsDropdownOpen(false)}
-                    onTouchStart={(e): void => e.stopPropagation()}
-                    className="absolute left-0 z-20 mt-2 w-64 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
-                    role="menu"
+        <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
+          <div className="flex gap-6">
+            {!isStocksRoute && (
+              <PopoverGroup className="hidden lg:flex lg:gap-x-6">
+                <Popover className="relative">
+                  <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white">
+                    KoalaGains Insights
+                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400 dark:text-gray-500" />
+                  </PopoverButton>
+
+                  <PopoverPanel
+                    transition
+                    className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                   >
-                    {reportsDropdown.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
-                        onClick={(): void => setReportsDropdownOpen(false)}
-                      >
-                        <div className="font-semibold flex items-center">
-                          {item.name}
-                          {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
+                    <div className="p-4">
+                      {reportsDropdown.map((item) => (
+                        <div
+                          key={item.name}
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                        >
+                          <div className="flex-auto">
+                            <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white">
+                              {item.name}
+                              <span className="absolute inset-0" />
+                            </Link>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-400 mt-1">{item.description}</div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      ))}
+                    </div>
+                  </PopoverPanel>
+                </Popover>
+                <Popover className="relative">
+                  <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white">
+                    Gen AI Adoption
+                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400 dark:text-gray-500" />
+                  </PopoverButton>
 
-              {/* GenAI Adoption Dropdown */}
-              <div className="relative" ref={genaiDropdownRef}>
-                <button
-                  type="button"
-                  onClick={(): void => setGenaiDropdownOpen((prev) => !prev)}
-                  onMouseEnter={(): void => setGenaiDropdownOpen(true)}
-                  onTouchStart={(): void => setGenaiDropdownOpen((prev) => !prev)}
-                  className="flex items-center text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                  aria-expanded={genaiDropdownOpen}
-                  aria-haspopup="true"
-                >
-                  GenAI Adoption
-                  <ChevronDownIcon aria-hidden="true" className={`ml-1 h-4 w-4 transition-transform duration-200 ${genaiDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {genaiDropdownOpen && (
-                  <div
-                    onMouseLeave={(): void => setGenaiDropdownOpen(false)}
-                    onTouchStart={(e): void => e.stopPropagation()}
-                    className="absolute left-0 z-20 mt-2 w-72 origin-top-left rounded-md bg-gray-700 shadow-xl ring-1 ring-gray-600 focus:outline-none overflow-hidden"
-                    role="menu"
+                  <PopoverPanel
+                    transition
+                    className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                   >
-                    {genaiDropdown.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-3 text-sm text-gray-300 hover:bg-gray-600 hover:text-white transition-colors duration-150"
-                        onClick={(): void => setGenaiDropdownOpen(false)}
-                      >
-                        <div className="font-semibold">{item.name}</div>
-                        <div className="text-xs text-gray-400 mt-1">{item.description}</div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    <div className="p-4">
+                      {genaiDropdown.map((item) => (
+                        <div
+                          key={item.name}
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                        >
+                          <div className="flex-auto">
+                            <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white">
+                              {item.name}
+                              <span className="absolute inset-0" />
+                            </Link>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </PopoverPanel>
+                </Popover>
 
-              {/* Regular Navigation Items */}
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm/6 font-semibold text-color hover:text-indigo-400 transition-colors duration-200"
-                  target={item.newTab ? '_blank' : '_self'}
-                  rel={item.newTab ? 'noopener noreferrer' : undefined}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </>
-          )}
-
-          {/* User Menu (ALWAYS visible on large screens) */}
-          <UserProfile />
+                {/* <a href="#" className="text-sm/6 font-semibold text-gray-900 dark:text-white">
+            Company
+          </a>*/}
+              </PopoverGroup>
+            )}
+            <UserProfile />
+          </div>
         </div>
       </nav>
-
-      {/* Mobile Menu - Always rendered for all routes */}
-      {
-        <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-          <div className="fixed inset-0 z-10" />
-          <DialogPanel
-            id="mobile-menu"
-            className="fixed inset-y-0 right-0 z-10 w-[85%] overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/50"
-          >
-            <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
-                <span className="sr-only">KoalaGains</span>
-                {/* Mobile: app icon */}
-                <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" />
-              </Link>
-              <button
-                type="button"
-                onClick={(): void => setMobileMenuOpen(false)}
-                className="-m-2.5 rounded-md p-2.5 text-gray-300 hover:text-white"
-                aria-label="Close menu"
-              >
-                <XMarkIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
+      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+        <div className="fixed inset-0 z-50" />
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:sm:ring-gray-100/10">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
+              <span className="sr-only">KoalaGains</span>
+              {/* Mobile: app icon */}
+              <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" />
+            </Link>
+            <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-400">
+              <span className="sr-only">Close menu</span>
+              <XMarkIcon aria-hidden="true" className="size-6" />
+            </button>
+          </div>
+          <div className="mt-6 flow-root">
+            <div className="mb-4">
+              <SearchBar placeholder="Search stocks..." variant="navbar" />
             </div>
-            <div className="mt-6 flow-root">
-              <div className="mb-4">
-                <SearchBar placeholder="Search stocks..." variant="navbar" />
-              </div>
-              <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-2 py-6">
-                  {/* Mobile KoalaGains Insights */}
+            <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
+              <div className="space-y-2 py-6">
+                {!isStocksRoute && (
                   <div>
-                    <button
-                      onClick={(): void => setMobileReportsOpen((prev) => !prev)}
-                      className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
-                      aria-expanded={mobileReportsOpen}
-                      aria-controls="mobile-reports"
-                    >
-                      KoalaGains Insights
-                      <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileReportsOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    {mobileReportsOpen && (
-                      <div id="mobile-reports" className="ml-4 mt-2 space-y-2">
-                        {reportsDropdown.map((item) => (
-                          <Link
+                    <Disclosure as="div" className="-mx-3">
+                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                        KoalaGains Insights
+                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 space-y-2">
+                        {[...reportsDropdown].map((item) => (
+                          <DisclosureButton
                             key={item.name}
+                            as={Link}
                             href={item.href}
-                            className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
-                            onClick={(): void => {
-                              setMobileReportsOpen(false);
-                              setMobileMenuOpen(false);
-                            }}
-                          >
-                            <div className="flex items-center">
-                              {item.name}
-                              {item.isNew && <span className="ml-2 px-2 py-0.5 text-xs font-medium rounded-full bg-yellow-400 text-gray-900">NEW</span>}
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Mobile GenAI Adoption */}
-                  <div>
-                    <button
-                      onClick={(): void => setMobileGenaiOpen((prev) => !prev)}
-                      className="flex w-full items-center justify-between -mx-3 rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
-                      aria-expanded={mobileGenaiOpen}
-                      aria-controls="mobile-genai"
-                    >
-                      GenAI Adoption
-                      <ChevronDownIcon aria-hidden="true" className={`h-5 w-5 transition-transform duration-200 ${mobileGenaiOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    {mobileGenaiOpen && (
-                      <div id="mobile-genai" className="ml-4 mt-2 space-y-2">
-                        {genaiDropdown.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className="block -mx-3 rounded-lg px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-gray-300"
-                            onClick={(): void => {
-                              setMobileGenaiOpen(false);
-                              setMobileMenuOpen(false);
-                            }}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
                           >
                             {item.name}
-                          </Link>
+                          </DisclosureButton>
                         ))}
-                      </div>
-                    )}
+                      </DisclosurePanel>
+                    </Disclosure>
+                    <Disclosure as="div" className="-mx-3">
+                      <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                        Gen AI Adoption
+                        <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 space-y-2">
+                        {[...genaiDropdown].map((item) => (
+                          <DisclosureButton
+                            key={item.name}
+                            as={Link}
+                            href={item.href}
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                          >
+                            {item.name}
+                          </DisclosureButton>
+                        ))}
+                      </DisclosurePanel>
+                    </Disclosure>
                   </div>
-
-                  {/* Regular Mobile Navigation */}
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-300 hover:bg-gray-700"
-                      target={item.newTab ? '_blank' : '_self'}
-                      rel={item.newTab ? 'noopener noreferrer' : undefined}
-                      onClick={(): void => setMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="py-6">
-                  <UserProfile isMobile={true} onMenuToggle={(): void => setMobileMenuOpen(false)} />
-                </div>
+                )}
+                {/*
+                <a
+                  href="#"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                >
+                  Company
+                </a>
+*/}
+              </div>
+              <div className="py-6">
+                <UserProfile isMobile={true} onMenuToggle={(): void => setMobileMenuOpen(false)} />
               </div>
             </div>
-          </DialogPanel>
-        </Dialog>
-      }
+          </div>
+        </DialogPanel>
+      </Dialog>
     </header>
   );
 }
