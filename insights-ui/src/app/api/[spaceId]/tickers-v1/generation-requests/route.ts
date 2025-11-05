@@ -2,7 +2,7 @@ import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/report-status-utils';
+import { calculatePendingSteps } from '@/utils/analysis-reports/calculate-pending-steps';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 

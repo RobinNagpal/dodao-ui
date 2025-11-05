@@ -5,6 +5,7 @@ import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from 
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
+import { calculatePendingSteps } from '@/utils/analysis-reports/calculate-pending-steps';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -83,6 +84,7 @@ interface StatusDotProps {
   stepName: ReportType;
   completedSteps: ReportType[];
   failedSteps: ReportType[];
+  pendingSteps: ReportType[];
   inProgressStep?: ReportType | null;
 }
 
@@ -91,6 +93,7 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgres
   if (failedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-red-500" title="Failed" />;
   if (completedSteps.includes(stepName)) return <div className="w-3 h-3 rounded-full bg-green-500" title="Completed" />;
   if (inProgressStep && inProgressStep === stepName) return <div className="w-3 h-3 rounded-full bg-yellow-500 animate-pulse" title="In Progress" />;
+
   return <div className="w-3 h-3 rounded-full bg-blue-500" title="Pending" />;
 }
 
@@ -156,7 +159,7 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
             const failedSteps: ReportType[] = (latestRequest.failedSteps as ReportType[] | undefined) ?? [];
             const isFailed: boolean = latestRequest.status === GenerationRequestStatus.Failed;
             const inProgressStep: ReportType | null = (latestRequest.inProgressStep as ReportType | undefined) ?? null;
-
+            const pendingSteps: ReportType[] = calculatePendingSteps(latestRequest) || [];
             return (
               <tr key={latestRequest.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
@@ -183,6 +186,7 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
                           completedSteps={completedSteps}
                           failedSteps={failedSteps}
                           inProgressStep={inProgressStep}
+                          pendingSteps={pendingSteps}
                         />
                       </div>
                     </td>
