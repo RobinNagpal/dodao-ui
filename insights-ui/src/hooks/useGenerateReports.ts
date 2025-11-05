@@ -13,7 +13,7 @@ export interface ReportTypeInfo {
 }
 
 /** Analysis types (moved from utils) */
-export const analysisTypes: ReportTypeInfo[] = [
+export const reportTypes: ReportTypeInfo[] = [
   { key: ReportType.FINANCIAL_ANALYSIS, label: 'Financial Analysis', reportType: ReportType.FINANCIAL_ANALYSIS },
   { key: ReportType.COMPETITION, label: 'Competition', reportType: ReportType.COMPETITION },
   { key: ReportType.BUSINESS_AND_MOAT, label: 'Business & Moat', reportType: ReportType.BUSINESS_AND_MOAT },

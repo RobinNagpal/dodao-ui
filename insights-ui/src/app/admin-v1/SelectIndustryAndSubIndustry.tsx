@@ -146,7 +146,7 @@ export default function SelectIndustryAndSubIndustry({
         <SubIndustriesDropDown
           loadingSubIndustries={loadingSubIndustries}
           selectedItemId={selectedSubIndustry?.subIndustryKey}
-          items={subIndustryDropdownItems}
+          items={subIndustryDropdownItems || []}
           setSelectedItemId={(id) => selectSubIndustry(id)}
         />{' '}
       </div>

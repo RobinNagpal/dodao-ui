@@ -5,7 +5,7 @@ import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportTickersResponse } from '@/types/ticker-typesv1';
-import { getMissingReportCount } from '@/utils/analysis-reports/report-steps-statuses';
+import { getMissingReportCount, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -14,7 +14,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
 
-interface TickerSelectionPageProps<T> {
+interface TickerSelectionPageProps {
   /**
    * The API endpoint to fetch data for a single ticker
    * Example: (ticker) => `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`
@@ -24,7 +24,11 @@ interface TickerSelectionPageProps<T> {
   /**
    * The component to render when tickers are selected
    */
-  renderActionComponent: (props: { selectedTickers: string[]; tickerData: Record<string, T>; onDataUpdated: (ticker: string) => void }) => React.ReactNode;
+  renderActionComponent: (props: {
+    selectedTickers: string[];
+    tickerData: Record<string, TickerWithMissingReportInfo>;
+    onDataUpdated: (ticker: string) => void;
+  }) => React.ReactNode;
 
   /**
    * Button text for refreshing data
@@ -32,14 +36,13 @@ interface TickerSelectionPageProps<T> {
   refreshButtonText: string;
 }
 
-export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActionComponent, refreshButtonText }: TickerSelectionPageProps<T>): JSX.Element {
+export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionComponent, refreshButtonText }: TickerSelectionPageProps): JSX.Element {
   // Selection state
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
 
   // Ticker/data state
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
-  const [tickerData, setTickerData] = useState<Record<string, T>>({});
 
   // Filter state
   const [showMissingOnly, setShowMissingOnly] = useState<boolean>(false);
@@ -85,30 +88,7 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
   // Apply country filter
   tickers = filterTickersByCountries(tickers, selectedCountries);
 
-  // Data fetching helpers (on-demand only; no effects)
-  const fetchTickerData = async (ticker: string): Promise<void> => {
-    const url: string = fetchTickerDataUrl(ticker);
-    const resp: Response = await fetch(url, { cache: 'no-cache' });
-    if (!resp.ok) throw new Error(`Failed to fetch data for ${ticker}`);
-    const data = (await resp.json()) as T;
-    setTickerData((prev) => ({ ...prev, [ticker]: data }));
-  };
-
-  const fetchSelectedTickerData = async (): Promise<void> => {
-    for (const t of selectedTickers) {
-      // Intentionally sequential for simplicity; adjust if needed
-      // eslint-disable-next-line no-await-in-loop
-      await fetchTickerData(t);
-    }
-  };
-
   const updateSelectedTickers = async (tickers: string[]) => {
-    setSelectedTickers(tickers);
-    for (const t of tickers) {
-      if (!tickerData[t]) {
-        await fetchTickerData(t);
-      }
-    }
     setSelectedTickers(tickers);
   };
 
@@ -270,7 +250,7 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
                 <Button variant="outlined" onClick={() => setSelectedTickers([])}>
                   Clear Selection
                 </Button>
-                <Button variant="contained" primary onClick={fetchSelectedTickerData}>
+                <Button variant="contained" primary onClick={reFetchTickersForSubIndustry}>
                   {refreshButtonText}
                 </Button>
               </div>
@@ -281,9 +261,9 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
         {selectedTickers.length > 0 &&
           renderActionComponent({
             selectedTickers,
-            tickerData,
+            tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [t.symbol, t]) || []),
             onDataUpdated: (ticker: string) => {
-              void fetchTickerData(ticker);
+              void reFetchTickersForSubIndustry();
             },
           })}
       </div>
