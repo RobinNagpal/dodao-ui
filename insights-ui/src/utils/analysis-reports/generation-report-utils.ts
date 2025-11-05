@@ -20,7 +20,7 @@ import {
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { areAllReportsAttempted, markAsCompleted, shouldRegenerateReport, updateInitialStatus } from '@/utils/analysis-reports/report-status-utils';
-import { saveCachedScore } from '@/utils/analysis-reports/save-report-utils';
+import { saveAboutReport, saveCachedScore } from '@/utils/analysis-reports/save-report-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
 
@@ -438,6 +438,8 @@ async function generateInvestorAnalysis(
 }
 
 async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+  await saveAboutReport(tickerRecord.symbol);
+
   // Get ticker from DB with all related analysis data
   const tickerWithAnalysis = await fetchTickerRecordWithAnalysisData(tickerRecord.symbol);
 
