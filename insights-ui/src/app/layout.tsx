@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="antialiased text-color" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
+      <body className="antialiased text-color dark" style={{ ...themeColors, backgroundColor: 'var(--bg-color)' }}>
         <Providers>
           <TopNav />
           {children}
