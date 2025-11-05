@@ -18,23 +18,14 @@ function SubIndustriesDropDown(props: {
   items: StyledSelectItem[];
   setSelectedItemId: (id?: string | null) => '' | null | Promise<void>;
 }) {
-  console.log('SubIndustriesDropDown: ', props);
-  if (!props?.items?.length) return null;
-
   return (
-    <>
-      {props.loadingSubIndustries ? (
-        <div className="flex justify-center items-center h-full">Loading ...</div>
-      ) : (
-        <StyledSelect
-          label="Sub-Industry"
-          selectedItemId={props.selectedItemId}
-          items={props.items}
-          setSelectedItemId={props.setSelectedItemId}
-          className="w-full"
-        />
-      )}
-    </>
+    <StyledSelect
+      label="Sub-Industry"
+      selectedItemId={props.selectedItemId}
+      items={props.items || []}
+      setSelectedItemId={props.setSelectedItemId}
+      className="w-full"
+    />
   );
 }
 
@@ -44,24 +35,8 @@ function IndustriesDropdown(props: {
   items: StyledSelectItem[];
   setSelectedItemId: (id?: string | null) => '' | null | Promise<void>;
 }) {
-  console.log('IndustriesDropdown: ', props);
-
-  if (!props?.items?.length) return null;
-
   return (
-    <>
-      {props.loadingIndustries ? (
-        <div className="flex justify-center items-center h-full">Loading ...</div>
-      ) : (
-        <StyledSelect
-          label="Industry"
-          selectedItemId={props.selectedItemId}
-          items={props.items}
-          setSelectedItemId={props.setSelectedItemId}
-          className="w-full"
-        />
-      )}
-    </>
+    <StyledSelect label="Industry" selectedItemId={props.selectedItemId} items={props.items} setSelectedItemId={props.setSelectedItemId} className="w-full" />
   );
 }
 
@@ -148,7 +123,7 @@ export default function SelectIndustryAndSubIndustry({
           selectedItemId={selectedSubIndustry?.subIndustryKey}
           items={subIndustryDropdownItems || []}
           setSelectedItemId={(id) => selectSubIndustry(id)}
-        />{' '}
+        />
       </div>
       <div className="mt-2 p-2 border border-gray-300 rounded-lg">
         <p className="text-xs text-blue-700 dark:text-blue-300">

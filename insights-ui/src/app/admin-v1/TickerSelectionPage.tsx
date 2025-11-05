@@ -59,12 +59,13 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
   );
 
   const selectIndustry = async (industry: TickerV1Industry | null) => {
+    setSelectedTickers([]);
     setSelectedIndustry(industry);
     setSelectedSubIndustry(null);
   };
 
   const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    console.log('selectSubIndustry', subIndustry);
+    setSelectedTickers([]);
     setSelectedSubIndustry(subIndustry);
   };
 
