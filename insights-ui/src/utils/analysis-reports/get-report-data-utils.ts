@@ -52,6 +52,9 @@ export async function fetchTickerRecordWithAnalysisData(ticker: string): Promise
         result: string;
       }>;
     }>;
+    vsCompetition?: {
+      competitionAnalysisArray: CompetitionAnalysisArray;
+    } | null;
   }
 > {
   const spaceId = KoalaGainsSpaceId;
@@ -72,6 +75,7 @@ export async function fetchTickerRecordWithAnalysisData(ticker: string): Promise
           },
         },
       },
+      vsCompetition: true,
     },
   });
 }

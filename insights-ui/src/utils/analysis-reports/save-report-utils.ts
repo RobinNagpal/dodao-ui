@@ -260,10 +260,10 @@ export async function saveFutureRiskResponse(
 /**
  * Saves final summary response
  */
-export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string): Promise<void> {
+export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string, aboutReport: string): Promise<void> {
   const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
 
-  // Update the ticker's summary and meta description fields
+  // Update the ticker's summary, meta description, and about report fields
   await prisma.tickerV1.update({
     where: {
       id: tickerRecord.id,
@@ -271,6 +271,7 @@ export async function saveFinalSummaryResponse(ticker: string, finalSummary: str
     data: {
       summary: finalSummary,
       metaDescription: metaDescription,
+      aboutReport: aboutReport,
       updatedAt: new Date(),
     },
   });
@@ -338,7 +339,7 @@ function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competit
 /**
  * Builds the base aboutReport text
  */
-function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): string {
+export function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): string {
   const { comp1, comp2, comp3, totalCount } = getTopCompetitors(tickerRecord);
 
   // Get all category names (factors)
@@ -432,9 +433,9 @@ function calculateTotalScore(
 }
 
 /**
- * Saves cached score and about report
+ * Saves cached score only (without about report)
  */
-export async function saveCachedScoreAndAboutReport(ticker: string): Promise<void> {
+export async function saveCachedScore(ticker: string): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
 
   // Get ticker from DB with all necessary data
@@ -462,14 +463,11 @@ export async function saveCachedScoreAndAboutReport(ticker: string): Promise<voi
   // Calculate the total score
   const totalScore = calculateTotalScore(tickerRecord);
 
-  // Generate aboutReport using LLM
-  const aboutReport = await generateAboutReport(tickerRecord);
-
-  // Update the ticker with the calculated score and about report
+  // Update the ticker with the calculated score only
   await prisma.tickerV1.update({
     data: {
       cachedScore: totalScore,
-      aboutReport: aboutReport,
+      updatedAt: new Date(),
     },
     where: {
       id: tickerRecord.id,

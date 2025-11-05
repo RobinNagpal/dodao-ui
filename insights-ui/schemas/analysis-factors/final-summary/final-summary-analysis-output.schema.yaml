@@ -16,6 +16,12 @@ properties:
       A concise meta description for SEO purposes, summarizing the key points about
       the stock in 1-2 sentences. Should be under 160 characters and highlight the
       overall verdict and main factors.
+  aboutReport:
+    type: string
+    description: >-
+      A 2-3 sentence summary for the stock analysis report. Should be compelling,
+      SEO-friendly, and provide a unique introduction for investors.
 required:
   - finalSummary
   - metaDescription
+  - aboutReport

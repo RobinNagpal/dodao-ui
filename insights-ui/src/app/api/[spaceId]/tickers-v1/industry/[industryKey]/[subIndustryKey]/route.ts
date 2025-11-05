@@ -65,6 +65,7 @@ async function getHandler(
         updatedAt: true,
         createdAt: true,
         summary: true,
+        metaDescription: true,
         websiteUrl: true,
         spaceId: true,
         industryKey: true,
@@ -117,9 +118,6 @@ async function getHandler(
         })
         .reduce((partialSum: number, a) => partialSum + a, 0);
 
-      // Calculate aboutReport status
-      const hasAboutReport = !!ticker.aboutReport && ticker.aboutReport.trim().length > 0;
-
       // Calculate analysis status
       const analysisStatus: AnalysisStatus = {
         businessAndMoat: ticker.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
@@ -134,8 +132,8 @@ async function getHandler(
           BILL_ACKMAN: ticker.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
         },
         futureRisk: ticker.futureRisks.length > 0,
-        finalSummary: !!ticker.summary,
-        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore && hasAboutReport, // Only true if there's actual analysis AND scores match AND aboutReport exists
+        finalSummary: !!ticker.summary && !!ticker.metaDescription && !!ticker.aboutReport && ticker.aboutReport.trim().length > 0,
+        cachedScore: actualScore > 0 && ticker.cachedScore === actualScore, // Only true if there's actual analysis AND scores match
       };
 
       // Calculate missing/partial status

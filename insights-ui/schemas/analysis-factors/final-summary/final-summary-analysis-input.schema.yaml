@@ -67,6 +67,9 @@ properties:
         - factorAnalysisKey
         - oneLineExplanation
         - result
+  baseInfo:
+    type: string
+    description: 'Pre-formatted summary of the stock analysis report including competitor information and key metrics.'
 required:
   - name
   - symbol
@@ -75,6 +78,7 @@ required:
   - subIndustryKey
   - categorySummaries
   - factorResults
+  - baseInfo
   - industryDescription
   - subIndustryDescription
   - industryName

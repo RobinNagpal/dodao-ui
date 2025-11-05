@@ -39,6 +39,7 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Ackman</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Cached Score</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Meta Description</th>
           </tr>
@@ -159,6 +160,13 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                   <span
+                    className={`px-2 py-1 rounded-full text-xs ${!ticker.isMissingAboutReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
+                  >
+                    {!ticker.isMissingAboutReport ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
                     className={`px-2 py-1 rounded-full text-xs ${
                       !ticker.isMissingCompetitionReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
                     }`}
@@ -267,6 +275,12 @@ export default function MissingReportsPage(): JSX.Element {
     if (ticker.isMissingFinalSummaryReport) missingReports.push(ReportType.FINAL_SUMMARY);
     if (ticker.isMissingCachedScoreRepot) missingReports.push(ReportType.CACHED_SCORE);
     if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
+
+    // If AboutReport is missing, add FINAL_SUMMARY to regenerate it
+    // (only if it's not already in the list)
+    if (ticker.isMissingAboutReport && !missingReports.includes(ReportType.FINAL_SUMMARY)) {
+      missingReports.push(ReportType.FINAL_SUMMARY);
+    }
 
     // If MetaDescription is missing, add FINAL_SUMMARY to regenerate it
     // (only if it's not already in the list)
