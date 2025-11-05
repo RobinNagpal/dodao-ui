@@ -130,3 +130,23 @@ export function calculatePendingSteps(request: TickerV1GenerationRequest): Repor
 
   return pendingSteps;
 }
+
+export function getMissingReportCount(ticker: TickerWithMissingReportInfo) {
+  const missingReportCount = [
+    ticker.businessAndMoatFactorResultsCount === 0,
+    ticker.financialAnalysisFactorsResultsCount === 0,
+    ticker.pastPerformanceFactorsResultsCount === 0,
+    ticker.futureGrowthFactorsResultsCount === 0,
+    ticker.fairValueFactorsResultsCount === 0,
+    ticker.isMissingWarrenBuffettReport,
+    ticker.isMissingCharlieMungerReport,
+    ticker.isMissingBillAckmanReport,
+    ticker.isMissingFinalSummaryReport,
+    ticker.isMissingCompetitionReport,
+    ticker.isMissingMetaDescriptionReport,
+    ticker.isMissingAboutReport,
+  ].filter(Boolean).length;
+
+  const totalReportCount = 12; // Total number of possible reports
+  return { missingReportCount, totalReportCount };
+}

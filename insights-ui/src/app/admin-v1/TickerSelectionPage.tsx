@@ -5,6 +5,7 @@ import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportTickersResponse } from '@/types/ticker-typesv1';
+import { getMissingReportCount } from '@/utils/analysis-reports/report-steps-statuses';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -75,8 +76,9 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
 
   // Apply filters
   let tickers = allTickers.filter((ticker) => {
-    if (showMissingOnly && !ticker.isMissingAllAnalysis) return false;
-    if (showPartialOnly && !ticker.isPartial) return false;
+    const { missingReportCount, totalReportCount } = getMissingReportCount(ticker);
+    if (showMissingOnly && missingReportCount === totalReportCount) return false;
+    if (showPartialOnly && missingReportCount !== totalReportCount && missingReportCount > 0) return false;
     return true;
   });
 
@@ -221,8 +223,9 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
                   />
                 </div>
                 <Checkboxes
-                  items={tickers.map(
-                    (t): CheckboxItem => ({
+                  items={tickers.map((t): CheckboxItem => {
+                    const { missingReportCount, totalReportCount } = getMissingReportCount(t);
+                    return {
                       id: t.symbol,
                       name: `ticker-${t.symbol}`,
                       label: (
@@ -245,15 +248,15 @@ export default function TickerSelectionPage<T>({ fetchTickerDataUrl, renderActio
                                   minute: '2-digit',
                                 })}
                               </span>
-                              {t.isMissingAllAnalysis && <span className="text-red-400 text-xs">MISSING</span>}
-                              {t.isPartial && <span className="text-yellow-400 text-xs">PARTIAL</span>}
-                              {!t.isMissingAllAnalysis && !t.isPartial && <span className="text-green-400 text-xs">COMPLETE</span>}
+                              {missingReportCount === totalReportCount && <span className="text-red-400 text-xs">MISSING</span>}
+                              {missingReportCount > 0 && missingReportCount < totalReportCount && <span className="text-yellow-400 text-xs">PARTIAL</span>}
+                              {missingReportCount == 0 && <span className="text-green-400 text-xs">COMPLETE</span>}
                             </div>
                           </div>
                         </div>
                       ),
-                    })
-                  )}
+                    };
+                  })}
                   selectedItemIds={selectedTickers}
                   onChange={(ids: string[]) => updateSelectedTickers(ids)}
                 />
