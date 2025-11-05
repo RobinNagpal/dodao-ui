@@ -4,18 +4,17 @@ import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import LogRocket from 'logrocket';
 
-const PROJECT_ID = 'm3ahri/koalagains' as const;
-const MIN_CLICKS = 2 as const; // Require at least 2 clicks in the current session
-const STOCKS_PATH_PREFIX = '/stocks' as const;
-const TARIFF_PATH_PREFIX = '/industry-tariff-report' as const;
-const BLOCKED = new Set<string>(['CA', 'PK']);
-const PROD_HOST = 'koalagains.com' as const; // ✅ only allow this exact host
+const PROJECT_ID = 'm3ahri/koalagains';
+const MIN_CLICKS = 2; // Require at least 2 clicks in the current session
+const STOCKS_PATH_PREFIX = '/stocks';
+const TARIFF_PATH_PREFIX = '/industry-tariff-report';
+const PROD_HOST = 'koalagains.com'; // ✅ only allow this exact host
 
 // LocalStorage keys (lifetime analytics; not used for gating)
 const LS = {
   id: 'lr_anon_id',
   clicks: 'lr_click_count', // lifetime click counter (optional analytics)
-} as const;
+};
 type LocalKey = (typeof LS)[keyof typeof LS];
 
 // SessionStorage keys (session-scoped gating & guards)
@@ -23,7 +22,7 @@ const SS = {
   inited: 'lr_inited',
   identified: 'lr_identified',
   clicks: 'lr_clicks_session', // NEW: session click counter for gating
-} as const;
+};
 type SessionKey = (typeof SS)[keyof typeof SS];
 
 declare global {
@@ -214,9 +213,6 @@ export default function LogRocketComponent(): JSX.Element | null {
 
     try {
       const country: string | null = getCountryFromCookie();
-
-      // Blocked countries: do nothing (no init, no tracking)
-      if (country && BLOCKED.has(country)) return;
 
       // Connect only after MIN_CLICKS in the current session
       const cleanup: () => void = gateConnectionOnSessionClicks(country);
