@@ -10,7 +10,6 @@ export interface TickerWithMissingReportInfo extends TickerV1 {
 
   // existing flags
   isMissingFinalSummaryReport: boolean;
-  isMissingCachedScoreRepot: boolean; // keeping existing spelling
   isMissingCompetitionReport: boolean;
   isMissingBillAckmanReport: boolean;
   isMissingWarrenBuffettReport: boolean;

@@ -6,6 +6,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -38,7 +39,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Munger</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Ackman</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Cached Score</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Risk</th>
@@ -152,15 +152,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingCachedScoreRepot ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingCachedScoreRepot ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  <span
                     className={`px-2 py-1 rounded-full text-xs ${!ticker.isMissingAboutReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
                   >
                     {!ticker.isMissingAboutReport ? 'Yes' : 'No'}
@@ -208,6 +199,7 @@ export default function MissingReportsPage(): JSX.Element {
   const [accumulatedData, setAccumulatedData] = useState<TickerWithMissingReportInfo[]>([]);
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
 
   const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
   const params = new URLSearchParams();
@@ -271,9 +263,13 @@ export default function MissingReportsPage(): JSX.Element {
     setSelectedRows(new Set());
   }
 
-  async function handleGenerateAllForSelected(): Promise<void> {
+  function handleGenerateAllForSelected(): void {
     if (selectedRows.size === 0 || isGenerating) return;
+    setShowGenerateAllConfirmation(true);
+  }
 
+  async function handleGenerateAllConfirmed(): Promise<void> {
+    setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
       const selectedTickers = accumulatedData.filter((ticker) => selectedRows.has(ticker.id)).map((ticker) => ticker.symbol);
@@ -304,11 +300,10 @@ export default function MissingReportsPage(): JSX.Element {
       }
 
       if (tickersWithReportTypes.length > 0) {
-        // Use the new approach without the "many missing reports" logic
-        const allTickers: string[] = tickersWithReportTypes.map((t) => t.ticker);
-        const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
-
-        await generateSpecificReportsInBackground(allTickers, allReportTypes);
+        // Generate individual requests for each ticker with their specific missing reports
+        for (const { ticker, reportTypes } of tickersWithReportTypes) {
+          await generateSpecificReportsInBackground([ticker], reportTypes);
+        }
         router.push('/admin-v1/generation-requests');
       }
     } catch (err) {
@@ -396,6 +391,16 @@ export default function MissingReportsPage(): JSX.Element {
           )}
         </div>
       </div>
+
+      <ConfirmationModal
+        title="Generate All for Selected"
+        open={showGenerateAllConfirmation}
+        onClose={() => setShowGenerateAllConfirmation(false)}
+        onConfirm={handleGenerateAllConfirmed}
+        confirming={isGenerating}
+        confirmationText={`Are you sure you want to generate all reports for ${selectedRows.size} selected ticker(s)? This will regenerate all existing reports.`}
+        askForTextInput={false}
+      />
     </div>
   );
 }
