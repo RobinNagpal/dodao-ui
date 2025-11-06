@@ -300,11 +300,10 @@ export default function MissingReportsPage(): JSX.Element {
       }
 
       if (tickersWithReportTypes.length > 0) {
-        // Use the new approach without the "many missing reports" logic
-        const allTickers: string[] = tickersWithReportTypes.map((t) => t.ticker);
-        const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
-
-        await generateSpecificReportsInBackground(allTickers, allReportTypes);
+        // Generate individual requests for each ticker with their specific missing reports
+        for (const { ticker, reportTypes } of tickersWithReportTypes) {
+          await generateSpecificReportsInBackground([ticker], reportTypes);
+        }
         router.push('/admin-v1/generation-requests');
       }
     } catch (err) {
