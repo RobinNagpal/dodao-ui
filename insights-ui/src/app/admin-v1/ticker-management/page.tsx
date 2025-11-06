@@ -4,9 +4,10 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
-import SubIndustryCard from '@/components/stocks/SubIndustryCard';
+import SelectableSubIndustryCard from '@/components/stocks/SelectableSubIndustryCard';
+import MoveTickersModal from './MoveTickersModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { BasicTickersResponse } from '@/types/ticker-typesv1';
+import { BasicTickersResponse, BasicTickerInfo } from '@/types/ticker-typesv1';
 import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -21,7 +22,10 @@ import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
 export default function TickerManagementPage() {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);
   const [showEditTickerForm, setShowEditTickerForm] = useState<boolean>(false);
+  const [showMoveTickersModal, setShowMoveTickersModal] = useState<boolean>(false);
   const [selectedCountries, setSelectedCountries] = useState<CountryCode[]>([]);
+  const [selectionMode, setSelectionMode] = useState<boolean>(false);
+  const [selectedTickerIds, setSelectedTickerIds] = useState<string[]>([]);
 
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
@@ -39,11 +43,26 @@ export default function TickerManagementPage() {
   const selectIndustry = async (industry: TickerV1Industry | null) => {
     setSelectedIndustry(industry);
     setSelectedSubIndustry(null);
+    setSelectedTickerIds([]); // Clear selections when changing industry
   };
 
   const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
     console.log('selectSubIndustry', subIndustry);
     setSelectedSubIndustry(subIndustry);
+    setSelectedTickerIds([]); // Clear selections when changing sub-industry
+  };
+
+  const handleTickerSelectionChange = (tickerIds: string[]) => {
+    setSelectedTickerIds(tickerIds);
+  };
+
+  const handleMoveTickersClick = () => {
+    setShowMoveTickersModal(true);
+  };
+
+  const toggleSelectionMode = () => {
+    setSelectionMode(!selectionMode);
+    setSelectedTickerIds([]); // Clear selections when toggling mode
   };
 
   useEffect(() => {
@@ -80,14 +99,24 @@ export default function TickerManagementPage() {
             </div>
 
             <div className="pt-4 flex justify-between items-center">
-              <div></div>
               <div className="flex gap-2">
-                <Button variant="outlined" disabled={!filteredTickers?.length} onClick={() => setShowEditTickerForm(true)}>
-                  Edit Tickers
-                </Button>
-                <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
-                  Add New Ticker
-                </Button>
+                {filteredTickers && filteredTickers.length > 0 && (
+                  <Button variant={selectionMode ? 'contained' : 'outlined'} onClick={toggleSelectionMode}>
+                    {selectionMode ? 'Exit Selection' : 'Select Tickers'}
+                  </Button>
+                )}
+              </div>
+              <div className="flex gap-2">
+                {!selectionMode && (
+                  <>
+                    <Button variant="outlined" disabled={!filteredTickers?.length} onClick={() => setShowEditTickerForm(true)}>
+                      Edit Tickers
+                    </Button>
+                    <Button variant="contained" primary onClick={() => setShowAddTickerForm(true)}>
+                      Add New Ticker
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -122,14 +151,34 @@ export default function TickerManagementPage() {
         {selectedIndustry && selectedSubIndustry && !loadingTickers && (
           <Block title="Selected Tickers" className="dark:bg-gray-800">
             <Tooltip.Provider delayDuration={300}>
-              <SubIndustryCard
+              <SelectableSubIndustryCard
                 subIndustry={selectedSubIndustry.subIndustryKey}
                 subIndustryName={selectedSubIndustry?.name}
                 tickers={filteredTickers || []}
                 total={filteredTickers?.length || 0}
+                selectionMode={selectionMode}
+                selectedTickerIds={selectedTickerIds}
+                onSelectionChange={handleTickerSelectionChange}
+                onMoveClick={handleMoveTickersClick}
               />
             </Tooltip.Provider>
           </Block>
+        )}
+
+        {/* Move Tickers Modal */}
+        {showMoveTickersModal && selectedIndustry && selectedSubIndustry && (
+          <MoveTickersModal
+            isOpen={showMoveTickersModal}
+            onClose={() => setShowMoveTickersModal(false)}
+            onSuccess={() => {
+              reFetchTickersForSubIndustry();
+              setSelectedTickerIds([]);
+              setSelectionMode(false);
+            }}
+            selectedTickers={filteredTickers?.filter((t) => selectedTickerIds.includes(t.id)) || ([] as BasicTickerInfo[])}
+            currentIndustryKey={selectedIndustry.industryKey}
+            currentSubIndustryKey={selectedSubIndustry.subIndustryKey}
+          />
         )}
       </div>
     </PageWrapper>
