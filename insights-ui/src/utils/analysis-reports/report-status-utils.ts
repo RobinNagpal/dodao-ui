@@ -69,7 +69,7 @@ export async function updateInitialStatus(generationRequest: TickerV1GenerationR
   }
 }
 
-export async function markAskInProgress(generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }, reportToGenerate: ReportType): Promise<void> {
+export async function markAsInProgress(generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }, reportToGenerate: ReportType): Promise<void> {
   if (generationRequest.status === GenerationRequestStatus.NotStarted) {
     console.log('Starting generation request for', generationRequest.ticker.symbol);
     await prisma.tickerV1GenerationRequest.update({

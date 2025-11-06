@@ -89,7 +89,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   let processedCount = 0;
   const processedRequests: TickerV1GenerationRequestWithTicker[] = [];
 
-  // Loop through each request and call Python backend
+  // Loop through each request
   for (const request of [...inProgressRequests, ...notStartedRequests]) {
     try {
       console.log(`Processing request ${request.id} for ticker ${request.ticker.symbol}`);
