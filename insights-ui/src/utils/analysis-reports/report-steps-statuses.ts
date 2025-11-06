@@ -19,6 +19,7 @@ export interface TickerWithMissingReportInfo extends TickerV1 {
   // NEW
   isMissingMetaDescriptionReport: boolean;
   isMissingAboutReport: boolean;
+  isMissingFutureRiskReport: boolean;
 
   industry: {
     name: string;
@@ -44,6 +45,7 @@ export function getMissingReportTypes(ticker: TickerWithMissingReportInfo): Repo
   if (ticker.isMissingBillAckmanReport) missingReports.push(ReportType.BILL_ACKMAN);
   if (ticker.isMissingFinalSummaryReport) missingReports.push(ReportType.FINAL_SUMMARY);
   if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
+  if (ticker.isMissingFutureRiskReport) missingReports.push(ReportType.FUTURE_RISK);
 
   // If AboutReport is missing, add FINAL_SUMMARY to regenerate it
   // (only if it's not already in the list)
@@ -145,8 +147,9 @@ export function getMissingReportCount(ticker: TickerWithMissingReportInfo) {
     ticker.isMissingCompetitionReport,
     ticker.isMissingMetaDescriptionReport,
     ticker.isMissingAboutReport,
+    ticker.isMissingFutureRiskReport,
   ].filter(Boolean).length;
 
-  const totalReportCount = 12; // Total number of possible reports
+  const totalReportCount = 13; // Total number of possible reports
   return { missingReportCount, totalReportCount };
 }
