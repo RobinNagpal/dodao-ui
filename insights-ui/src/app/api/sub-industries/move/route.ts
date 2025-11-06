@@ -34,21 +34,21 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
     // 1) Sanity checks
     const [newIndustry, subIndustry, conflict] = await Promise.all([
       tx.tickerV1Industry.findUnique({ where: { industryKey: newIndustryKey } }),
-      tx.tickerV1SubIndustry.findUnique({ 
-        where: { 
-          industryKey_subIndustryKey: { 
-            industryKey: oldIndustryKey, 
-            subIndustryKey: subIndustryKey 
-          } 
-        } 
+      tx.tickerV1SubIndustry.findUnique({
+        where: {
+          industryKey_subIndustryKey: {
+            industryKey: oldIndustryKey,
+            subIndustryKey: subIndustryKey,
+          },
+        },
       }),
-      tx.tickerV1SubIndustry.findUnique({ 
-        where: { 
-          industryKey_subIndustryKey: { 
-            industryKey: newIndustryKey, 
-            subIndustryKey: subIndustryKey 
-          } 
-        } 
+      tx.tickerV1SubIndustry.findUnique({
+        where: {
+          industryKey_subIndustryKey: {
+            industryKey: newIndustryKey,
+            subIndustryKey: subIndustryKey,
+          },
+        },
       }),
     ]);
 

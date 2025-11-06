@@ -31,19 +31,15 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
   // Source selection
   const [sourceIndustryKey, setSourceIndustryKey] = useState<string | null>(null);
   const [sourceSubIndustryKey, setSourceSubIndustryKey] = useState<string | null>(null);
-  
+
   // Target selection
   const [targetIndustryKey, setTargetIndustryKey] = useState<string | null>(null);
-  
+
   const [formError, setFormError] = useState<string>('');
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
   // Fetch industries
-  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
-    `${getBaseUrl()}/api/industries`, 
-    {}, 
-    'Failed to load industries'
-  );
+  const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
 
   // Fetch sub-industries for source industry
   const { data: sourceSubIndustries = [], loading: loadingSourceSubIndustries } = useFetchData<TickerV1SubIndustry[]>(
@@ -114,22 +110,24 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
   };
 
   const industryItems: StyledSelectItem[] = useMemo<StyledSelectItem[]>(
-    () => (industries ?? [])
-      .filter((ind: TickerV1Industry) => !ind.archived)
-      .map((ind: TickerV1Industry) => ({
-        id: ind.industryKey,
-        label: ind.name,
-      })),
+    () =>
+      (industries ?? [])
+        .filter((ind: TickerV1Industry) => !ind.archived)
+        .map((ind: TickerV1Industry) => ({
+          id: ind.industryKey,
+          label: ind.name,
+        })),
     [industries]
   );
 
   const sourceSubIndustryItems: StyledSelectItem[] = useMemo<StyledSelectItem[]>(
-    () => sourceSubIndustries
-      .filter((sub) => !sub.archived)
-      .map((sub) => ({
-        id: sub.subIndustryKey,
-        label: sub.name,
-      })),
+    () =>
+      sourceSubIndustries
+        .filter((sub) => !sub.archived)
+        .map((sub) => ({
+          id: sub.subIndustryKey,
+          label: sub.name,
+        })),
     [sourceSubIndustries]
   );
 
@@ -148,12 +146,10 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
       <SingleSectionModal open={isOpen} onClose={onClose} title="Confirm Move Operation">
         <div className="space-y-4 text-left mt-3">
           <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-            <h3 className="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">
-              ⚠️ Important: This action will affect existing data
-            </h3>
+            <h3 className="text-lg font-medium text-yellow-800 dark:text-yellow-200 mb-2">⚠️ Important: This action will affect existing data</h3>
             <p className="text-yellow-700 dark:text-yellow-300 text-sm">
-              Moving a sub-industry will automatically update all related tickers and analysis factors to point to the new industry.
-              This operation uses database cascading updates and cannot be undone.
+              Moving a sub-industry will automatically update all related tickers and analysis factors to point to the new industry. This operation uses
+              database cascading updates and cannot be undone.
             </p>
           </div>
 
@@ -198,9 +194,7 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
     <SingleSectionModal open={isOpen} onClose={onClose} title="Move Sub-Industry">
       <form onSubmit={handlePreMove} className="space-y-4 text-left mt-3">
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-          <p className="text-blue-700 dark:text-blue-300 text-sm">
-            Select the sub-industry you want to move and its new parent industry.
-          </p>
+          <p className="text-blue-700 dark:text-blue-300 text-sm">Select the sub-industry you want to move and its new parent industry.</p>
         </div>
 
         {/* Source Industry Selection */}
@@ -223,7 +217,6 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
             selectedItemId={sourceSubIndustryKey}
             items={sourceSubIndustryItems}
             setSelectedItemId={setSourceSubIndustryKey}
-            disabled={!sourceIndustryKey}
             helpText={
               loadingSourceSubIndustries
                 ? 'Loading sub-industries…'
@@ -244,13 +237,8 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
             selectedItemId={targetIndustryKey}
             items={targetIndustryItems}
             setSelectedItemId={setTargetIndustryKey}
-            disabled={!sourceIndustryKey}
             helpText={
-              !sourceIndustryKey
-                ? 'Please select a source industry first'
-                : targetIndustryItems.length === 0
-                ? 'No other industries available'
-                : undefined
+              !sourceIndustryKey ? 'Please select a source industry first' : targetIndustryItems.length === 0 ? 'No other industries available' : undefined
             }
           />
         </div>
@@ -279,10 +267,7 @@ export default function MoveSubIndustryModal({ isOpen, onClose, onSuccess }: Mov
           <Button type="button" variant="outlined" onClick={onClose}>
             Cancel
           </Button>
-          <Button 
-            type="submit" 
-            disabled={loading || !sourceIndustryKey || !sourceSubIndustryKey || !targetIndustryKey}
-          >
+          <Button type="submit" disabled={loading || !sourceIndustryKey || !sourceSubIndustryKey || !targetIndustryKey}>
             Next: Review Move
           </Button>
         </div>

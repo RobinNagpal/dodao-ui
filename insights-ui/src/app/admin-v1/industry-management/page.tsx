@@ -117,10 +117,7 @@ export default function IndustryManagementPage(): JSX.Element {
             <Button variant="outlined" onClick={handleRefreshAll}>
               Refresh
             </Button>
-            <Button
-              variant="outlined"
-              onClick={(): void => setShowMoveSubIndustry(true)}
-            >
+            <Button variant="outlined" onClick={(): void => setShowMoveSubIndustry(true)}>
               Move Sub Industries
             </Button>
             <Button
@@ -173,11 +170,7 @@ export default function IndustryManagementPage(): JSX.Element {
         preselectedIndustryKey={selectedIndustry?.industryKey}
       />
 
-      <MoveSubIndustryModal
-        isOpen={showMoveSubIndustry}
-        onClose={(): void => setShowMoveSubIndustry(false)}
-        onSuccess={handleRefreshAll}
-      />
+      <MoveSubIndustryModal isOpen={showMoveSubIndustry} onClose={(): void => setShowMoveSubIndustry(false)} onSuccess={handleRefreshAll} />
 
       <DeleteConfirmationModal
         title={`Delete ${deleteKind === 'industry' ? 'Industry' : 'Sub-industry'}`}
