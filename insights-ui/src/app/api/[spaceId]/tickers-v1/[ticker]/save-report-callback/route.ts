@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { InvestorTypes, ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
+import { triggerGenerationOfAReportSimplified } from '@/utils/analysis-reports/generation-report-utils';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
   saveCompetitionAnalysisResponse,
@@ -87,7 +87,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     });
 
     // Trigger generation of the next report
-    await triggerGenerationOfAReport(ticker, generationRequestId);
+    await triggerGenerationOfAReportSimplified(ticker, generationRequestId);
   }
 
   return {

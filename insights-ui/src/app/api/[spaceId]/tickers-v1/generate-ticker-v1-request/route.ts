@@ -2,12 +2,12 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1GenerationRequestWithTicker } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
-import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
+import { triggerGenerationOfAReportSimplified } from '@/utils/analysis-reports/generation-report-utils';
 import { markAsCompleted } from '@/utils/analysis-reports/report-status-utils';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { NextRequest } from 'next/server';
 import { TickerV1GenerationRequest } from '@prisma/client';
+import { NextRequest } from 'next/server';
 
 interface GenerationRequestsResponse {
   inProgressRequests: (TickerV1GenerationRequest & { pendingSteps: ReportType[] })[];
@@ -89,11 +89,11 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   let processedCount = 0;
   const processedRequests: TickerV1GenerationRequestWithTicker[] = [];
 
-  // Loop through each request and call Python backend
+  // Loop through each request
   for (const request of [...inProgressRequests, ...notStartedRequests]) {
     try {
       console.log(`Processing request ${request.id} for ticker ${request.ticker.symbol}`);
-      await triggerGenerationOfAReport(request.ticker.symbol, request.id);
+      await triggerGenerationOfAReportSimplified(request.ticker.symbol, request.id);
 
       // Get the updated request to include in the response
       const updatedRequest = await prisma.tickerV1GenerationRequest.findUnique({
