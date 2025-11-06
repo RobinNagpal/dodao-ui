@@ -63,19 +63,25 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
 
         -- NEW: about report present?
-        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport"
+        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport",
 
-      FROM 
+        -- Future risk present?
+        NOT EXISTS (
+          SELECT 1 FROM ticker_v1_future_risks fr
+          WHERE fr.ticker_id = t.id AND fr.space_id = t.space_id
+        ) AS "isMissingFutureRiskReport"
+
+      FROM
         tickers_v1 t
-      LEFT JOIN 
-        ticker_v1_analysis_category_factor_results fr 
+      LEFT JOIN
+        ticker_v1_analysis_category_factor_results fr
           ON t.id = fr.ticker_id
-      WHERE 
+      WHERE
         t.space_id = ${spaceId}
-      GROUP BY 
+      GROUP BY
         t.id
     )
-    SELECT * 
+    SELECT *
     FROM factor_counts
     WHERE
       "businessAndMoatFactorResultsCount" < 1 OR
@@ -90,7 +96,8 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
       "isMissingFinalSummaryReport" = TRUE OR
       "isMissingCachedScoreRepot" = TRUE OR
       "isMissingMetaDescriptionReport" = TRUE OR
-      "isMissingAboutReport" = TRUE
+      "isMissingAboutReport" = TRUE OR
+      "isMissingFutureRiskReport" = TRUE
     ORDER BY symbol;
   `;
 
@@ -158,14 +165,20 @@ export async function getMissingReportsForTicker(spaceId: string, tickerId: stri
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
 
         -- NEW: about report present?
-        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport"
+        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport",
 
-      FROM 
+        -- Future risk present?
+        NOT EXISTS (
+          SELECT 1 FROM ticker_v1_future_risks fr
+          WHERE fr.ticker_id = t.id AND fr.space_id = t.space_id
+        ) AS "isMissingFutureRiskReport"
+
+      FROM
         tickers_v1 t
-      LEFT JOIN 
-        ticker_v1_analysis_category_factor_results fr 
+      LEFT JOIN
+        ticker_v1_analysis_category_factor_results fr
           ON t.id = fr.ticker_id
-      WHERE 
+      WHERE
         t.space_id = ${spaceId}
         AND t.id = ${tickerId}
       GROUP BY 

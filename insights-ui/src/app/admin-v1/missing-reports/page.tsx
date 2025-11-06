@@ -41,6 +41,7 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Cached Score</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
+            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Risk</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Meta Description</th>
           </tr>
         </thead>
@@ -172,6 +173,15 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
                     }`}
                   >
                     {!ticker.isMissingCompetitionReport ? 'Yes' : 'No'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      !ticker.isMissingFutureRiskReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
+                    }`}
+                  >
+                    {!ticker.isMissingFutureRiskReport ? 'Yes' : 'No'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
