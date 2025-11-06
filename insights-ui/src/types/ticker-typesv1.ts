@@ -1,4 +1,5 @@
 import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
+import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
@@ -30,45 +31,8 @@ export interface BasicTickersResponse {
   count: number;
 }
 
-// Analysis status for create reports
-export interface AnalysisStatus {
-  businessAndMoat: boolean;
-  financialAnalysis: boolean;
-  pastPerformance: boolean;
-  futureGrowth: boolean;
-  fairValue: boolean;
-  competition: boolean;
-  investorAnalysis: {
-    WARREN_BUFFETT: boolean;
-    CHARLIE_MUNGER: boolean;
-    BILL_ACKMAN: boolean;
-  };
-  futureRisk: boolean;
-  finalSummary: boolean;
-  cachedScore: boolean;
-}
-
-export interface ReportTickerInfo {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  cachedScore: number | null;
-  updatedAt: Date;
-  analysisStatus: AnalysisStatus;
-  isMissingAllAnalysis: boolean; // All analysis sections are empty
-  isPartial: boolean; // Some analysis sections are complete
-  // Additional fields needed for compatibility with ReportGenerator
-  spaceId: string;
-  industryKey: string;
-  subIndustryKey: string;
-  createdAt: Date;
-  websiteUrl: string | null;
-  summary: string | null;
-}
-
 export interface ReportTickersResponse {
-  tickers: ReportTickerInfo[];
+  tickers: TickerWithMissingReportInfo[];
   count: number;
   missingCount: number;
   partialCount: number;
@@ -105,28 +69,9 @@ export interface IndustryWithSubIndustriesAndCounts extends TickerV1Industry {
   tickerCount: number;
 }
 
-// Common types
-export interface AnalysisStatus {
-  businessAndMoat: boolean;
-  financialAnalysis: boolean;
-  pastPerformance: boolean;
-  futureGrowth: boolean;
-  fairValue: boolean;
-  competition: boolean;
-  investorAnalysis: {
-    WARREN_BUFFETT: boolean;
-    CHARLIE_MUNGER: boolean;
-    BILL_ACKMAN: boolean;
-  };
-  futureRisk: boolean;
-  finalSummary: boolean;
-  cachedScore: boolean;
-}
-
 export interface AnalysisTypeInfo {
-  key: string;
+  key: ReportType;
   label: string;
-  statusKey?: keyof AnalysisStatus;
 }
 
 export enum InvestorTypes {
@@ -135,17 +80,6 @@ export enum InvestorTypes {
   BILL_ACKMAN = 'BILL_ACKMAN',
 }
 // Analysis type constants to avoid hardcoded strings
-export enum AnalysisTypeKey {
-  FINANCIAL_ANALYSIS = 'financial-analysis',
-  COMPETITION = 'competition',
-  BUSINESS_AND_MOAT = 'business-and-moat',
-  PAST_PERFORMANCE = 'past-performance',
-  FUTURE_GROWTH = 'future-growth',
-  FAIR_VALUE = 'fair-value',
-  FUTURE_RISK = 'future-risk',
-  FINAL_SUMMARY = 'final-summary',
-  CACHED_SCORE = 'cached-score',
-}
 
 // Combined enum for report types (both regular analysis and investor analysis)
 export enum ReportType {
@@ -158,7 +92,6 @@ export enum ReportType {
   FAIR_VALUE = 'fair-value',
   FUTURE_RISK = 'future-risk',
   FINAL_SUMMARY = 'final-summary',
-  CACHED_SCORE = 'cached-score',
 
   // Investor analysis types
   WARREN_BUFFETT = 'investor-WARREN_BUFFETT',
@@ -168,15 +101,17 @@ export enum ReportType {
 
 // Common analysis types using constants
 export const analysisTypes: AnalysisTypeInfo[] = [
-  { key: ReportType.FINANCIAL_ANALYSIS, label: 'Financial Analysis', statusKey: 'financialAnalysis' },
-  { key: ReportType.COMPETITION, label: 'Competition', statusKey: 'competition' },
-  { key: ReportType.BUSINESS_AND_MOAT, label: 'Business & Moat', statusKey: 'businessAndMoat' },
-  { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance', statusKey: 'pastPerformance' },
-  { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', statusKey: 'futureGrowth' },
-  { key: ReportType.FAIR_VALUE, label: 'Fair Value', statusKey: 'fairValue' },
-  { key: ReportType.FUTURE_RISK, label: 'Future Risk', statusKey: 'futureRisk' },
-  { key: ReportType.FINAL_SUMMARY, label: 'Final Summary', statusKey: 'finalSummary' },
-  { key: ReportType.CACHED_SCORE, label: 'Cached Score/About Report', statusKey: 'cachedScore' },
+  { key: ReportType.FINANCIAL_ANALYSIS, label: 'Financial Analysis' },
+  { key: ReportType.COMPETITION, label: 'Competition' },
+  { key: ReportType.BUSINESS_AND_MOAT, label: 'Business & Moat' },
+  { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance' },
+  { key: ReportType.FUTURE_GROWTH, label: 'Future Growth' },
+  { key: ReportType.FAIR_VALUE, label: 'Fair Value' },
+  { key: ReportType.FUTURE_RISK, label: 'Future Risk' },
+  { key: ReportType.FINAL_SUMMARY, label: 'Final Summary' },
+  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett Analysis' },
+  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger Analysis' },
+  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman Analysis' },
 ];
 
 // Types for ticker analysis categories
@@ -214,13 +149,6 @@ export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, nam
   key,
   name,
 }));
-
-// Common investor analysis types
-export const investorAnalysisTypes: AnalysisTypeInfo[] = [
-  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett Analysis' },
-  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger Analysis' },
-  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman Analysis' },
-];
 
 export enum EvaluationResult {
   Pass = 'Pass',

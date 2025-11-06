@@ -1,7 +1,6 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import { MissingReportsForTicker } from '@/app/api/[spaceId]/tickers-v1/missing-reports/route';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
@@ -13,9 +12,10 @@ import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 
 interface MissingReportsTableProps {
-  rows: MissingReportsForTicker[];
+  rows: TickerWithMissingReportInfo[];
   selectedRows: Set<string>;
   onSelectRow: (tickerId: string, isSelected: boolean) => void;
 }
@@ -45,7 +45,7 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
           </tr>
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
-          {rows.map((ticker: MissingReportsForTicker) => {
+          {rows.map((ticker: TickerWithMissingReportInfo) => {
             const exchange: string = ticker.exchange;
             const symbol: string = ticker.symbol;
             const isSelected = selectedRows.has(ticker.id);
@@ -195,7 +195,7 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
 export default function MissingReportsPage(): JSX.Element {
   const router = useRouter();
   const [pagination, setPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 50 });
-  const [accumulatedData, setAccumulatedData] = useState<MissingReportsForTicker[]>([]);
+  const [accumulatedData, setAccumulatedData] = useState<TickerWithMissingReportInfo[]>([]);
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
@@ -205,7 +205,7 @@ export default function MissingReportsPage(): JSX.Element {
   params.append('take', pagination.take.toString());
   const apiUrl: string = `${baseUrl}?${params.toString()}`;
 
-  const { data, loading, reFetchData } = useFetchData<MissingReportsForTicker[]>(apiUrl, {}, 'Failed to fetch missing reports');
+  const { data, loading, reFetchData } = useFetchData<TickerWithMissingReportInfo[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
   const { generateMissingReports, generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
 
@@ -259,36 +259,6 @@ export default function MissingReportsPage(): JSX.Element {
 
   function handleClearSelection(): void {
     setSelectedRows(new Set());
-  }
-
-  function getMissingReportTypes(ticker: MissingReportsForTicker): ReportType[] {
-    const missingReports: ReportType[] = [];
-
-    if (ticker.businessAndMoatFactorResultsCount === 0) missingReports.push(ReportType.BUSINESS_AND_MOAT);
-    if (ticker.financialAnalysisFactorsResultsCount === 0) missingReports.push(ReportType.FINANCIAL_ANALYSIS);
-    if (ticker.pastPerformanceFactorsResultsCount === 0) missingReports.push(ReportType.PAST_PERFORMANCE);
-    if (ticker.futureGrowthFactorsResultsCount === 0) missingReports.push(ReportType.FUTURE_GROWTH);
-    if (ticker.fairValueFactorsResultsCount === 0) missingReports.push(ReportType.FAIR_VALUE);
-    if (ticker.isMissingWarrenBuffettReport) missingReports.push(ReportType.WARREN_BUFFETT);
-    if (ticker.isMissingCharlieMungerReport) missingReports.push(ReportType.CHARLIE_MUNGER);
-    if (ticker.isMissingBillAckmanReport) missingReports.push(ReportType.BILL_ACKMAN);
-    if (ticker.isMissingFinalSummaryReport) missingReports.push(ReportType.FINAL_SUMMARY);
-    if (ticker.isMissingCachedScoreRepot) missingReports.push(ReportType.CACHED_SCORE);
-    if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
-
-    // If AboutReport is missing, add FINAL_SUMMARY to regenerate it
-    // (only if it's not already in the list)
-    if (ticker.isMissingAboutReport && !missingReports.includes(ReportType.FINAL_SUMMARY)) {
-      missingReports.push(ReportType.FINAL_SUMMARY);
-    }
-
-    // If MetaDescription is missing, add FINAL_SUMMARY to regenerate it
-    // (only if it's not already in the list)
-    if (ticker.isMissingMetaDescriptionReport && !missingReports.includes(ReportType.FINAL_SUMMARY)) {
-      missingReports.push(ReportType.FINAL_SUMMARY);
-    }
-
-    return missingReports;
   }
 
   async function handleGenerateAllForSelected(): Promise<void> {

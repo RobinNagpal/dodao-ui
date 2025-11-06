@@ -380,33 +380,6 @@ export function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: 
 }
 
 /**
- * Generates aboutReport using LLM
- */
-async function generateAboutReport(tickerRecord: TickerV1 & { vsCompetition?: { competitionAnalysisArray: CompetitionAnalysis[] } | null }): Promise<string> {
-  const baseInfo = buildBaseAboutReport(tickerRecord);
-
-  const prompt = `You are an expert financial writer creating compelling, SEO-friendly introductions for detailed stock analysis reports. Your primary goal is to generate a unique 2-3 sentence summary for each stock to avoid duplicate content penalties from search engines.
-
-**Instructions:**
-1. Rewrite the "Base Information" below into a fresh and engaging summary for an investor.
-2. The summary MUST be between 2 and 3 sentences.
-3. Naturally incorporate all the provided.
-4. Vary the sentence structure and vocabulary significantly with each request to ensure uniqueness.
-5. The tone should be professional, insightful, and authoritative.
-
-**Base Information:**
-${baseInfo}`;
-
-  try {
-    const response = await getLlmResponse<{ aboutReport: string }>(prompt, AboutReportSchema, GeminiModelType.GEMINI_2_5_PRO);
-    return response.aboutReport;
-  } catch (error) {
-    console.error('Failed to generate aboutReport:', error);
-    return baseInfo;
-  }
-}
-
-/**
  * Calculates the total score based on category analysis results
  */
 function calculateTotalScore(

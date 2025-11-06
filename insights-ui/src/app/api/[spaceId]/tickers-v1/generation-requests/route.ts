@@ -2,7 +2,7 @@ import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/calculate-pending-steps';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
@@ -19,7 +19,6 @@ export interface GenerationRequestPayload {
   regenerateCharlieMunger: boolean;
   regenerateBillAckman: boolean;
   regenerateFinalSummary: boolean;
-  regenerateCachedScore: boolean;
 }
 
 export interface TickerV1GenerationRequestWithTicker extends TickerV1GenerationRequest {
@@ -237,7 +236,6 @@ async function postHandler(
           regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger || existingRequest.regenerateCharlieMunger,
           regenerateBillAckman: regenerateOptions.regenerateBillAckman || existingRequest.regenerateBillAckman,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
-          regenerateCachedScore: regenerateOptions.regenerateCachedScore || existingRequest.regenerateCachedScore,
           updatedAt: new Date(),
         },
       });
@@ -257,7 +255,6 @@ async function postHandler(
           regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger,
           regenerateBillAckman: regenerateOptions.regenerateBillAckman,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
-          regenerateCachedScore: regenerateOptions.regenerateCachedScore,
         },
       });
     }

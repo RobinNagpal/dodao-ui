@@ -1,7 +1,9 @@
 import { getIndustryMappings, getIndustryName, getSubIndustryName } from '@/lib/industryMappingUtils';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { AnalysisStatus, CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
+import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import {
   Prisma,
@@ -56,20 +58,15 @@ export interface SimilarTicker {
   cachedScore: number;
 }
 
-export interface TickerV1FullReportResponse extends TickerV1WithRelations {
+export interface TickerV1FullReportResponse extends TickerV1WithRelations, TickerWithMissingReportInfo {
   ticker: TickerV1;
   industryName: string;
   subIndustryName: string;
   similarTickers: SimilarTicker[];
   competitorTickers: CompetitorTicker[];
-  analysisStatus: AnalysisStatus;
 }
 
-export interface TickerV1FastResponse extends TickerV1WithRelations {
-  industry: TickerV1Industry;
-  subIndustry: TickerV1SubIndustry;
-  analysisStatus: AnalysisStatus;
-}
+export interface TickerV1FastResponse extends TickerV1WithRelations, TickerWithMissingReportInfo {}
 
 type SubIndustryWithIndustry = TickerV1SubIndustry & { industry: TickerV1Industry };
 
@@ -102,45 +99,6 @@ export async function getTickerWithAllDetailsForConditions(whereClause: Prisma.T
   }
 
   return tickerRecord;
-}
-
-export function getTickerV1AnalysisStatus(
-  tickerRecord: TickerV1 & {
-    categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
-    investorAnalysisResults: TickerV1InvestorAnalysisResult[];
-    futureRisks: TickerV1FutureRisk[];
-    vsCompetition?: TickerV1VsCompetition | null;
-  }
-): AnalysisStatus {
-  // Calculate the actual score based on categoryAnalysisResults
-  const actualScore = Object.entries(CATEGORY_MAPPINGS)
-    .map(([categoryKey]) => {
-      const report = tickerRecord.categoryAnalysisResults.find((r) => r.categoryKey === categoryKey);
-      const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === EvaluationResult.Pass ? 1 : 0)) || [];
-      return scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
-    })
-    .reduce((partialSum: number, a) => partialSum + a, 0);
-
-  return {
-    businessAndMoat: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat),
-    financialAnalysis: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis),
-    pastPerformance: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance),
-    futureGrowth: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FutureGrowth),
-    fairValue: tickerRecord.categoryAnalysisResults.some((r) => r.categoryKey === TickerAnalysisCategory.FairValue),
-    competition: !!tickerRecord.vsCompetition,
-    investorAnalysis: {
-      WARREN_BUFFETT: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'WARREN_BUFFETT'),
-      CHARLIE_MUNGER: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'CHARLIE_MUNGER'),
-      BILL_ACKMAN: tickerRecord.investorAnalysisResults.some((r) => r.investorKey === 'BILL_ACKMAN'),
-    },
-    futureRisk: tickerRecord.futureRisks.length > 0,
-    finalSummary: !!tickerRecord.summary,
-    cachedScore:
-      tickerRecord.categoryAnalysisResults.length > 0 &&
-      tickerRecord.cachedScore === actualScore &&
-      !!tickerRecord.aboutReport &&
-      tickerRecord.aboutReport.trim().length > 0, // Only true if there's actual analysis AND scores match AND aboutReport exists
-  };
 }
 
 export async function getCompetitorTickers(
@@ -214,8 +172,12 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
 
   const competitorTickers = await getCompetitorTickers(tickerRecord);
 
-  // Check analysis status for each category/analysis type
-  const analysisStatus = getTickerV1AnalysisStatus(tickerRecord);
+  // Get missing reports for this ticker
+  const missingReports = await getMissingReportsForTicker(tickerRecord.spaceId, tickerRecord.id);
+
+  if (!missingReports) {
+    throw new Error(`Failed to get missing reports for ticker ${tickerRecord.symbol}`);
+  }
 
   // Get industry and sub-industry mappings
   const mappings = await getIndustryMappings();
@@ -225,14 +187,14 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
   return {
     ticker: tickerRecord,
     ...tickerRecord,
-    websiteUrl: tickerRecord.websiteUrl || null,
-    summary: tickerRecord.summary || null,
+    ...missingReports,
     vsCompetition: tickerRecord.vsCompetition || undefined,
     industryName,
     subIndustryName,
     similarTickers,
     competitorTickers,
-    analysisStatus,
+    websiteUrl: tickerRecord.websiteUrl || null,
+    summary: tickerRecord.summary || null,
   };
 }
 

@@ -29,8 +29,6 @@ export function shouldRegenerateReport(request: TickerV1GenerationRequest, repor
       return request.regenerateBillAckman;
     case ReportType.FINAL_SUMMARY:
       return request.regenerateFinalSummary;
-    case ReportType.CACHED_SCORE:
-      return request.regenerateCachedScore;
     default:
       console.error(`Unknown report type: ${reportType}`);
       return false;

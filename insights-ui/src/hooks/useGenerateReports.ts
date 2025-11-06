@@ -1,53 +1,31 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { AnalysisTypeKey, INVESTOR_OPTIONS, InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
+import { InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
-/** Shared types (moved from utils) */
-export interface AnalysisStatus {
-  businessAndMoat: boolean;
-  financialAnalysis: boolean;
-  pastPerformance: boolean;
-  futureGrowth: boolean;
-  fairValue: boolean;
-  competition: boolean;
-  investorAnalysis: {
-    WARREN_BUFFETT: boolean;
-    CHARLIE_MUNGER: boolean;
-    BILL_ACKMAN: boolean;
-  };
-  futureRisk: boolean;
-  finalSummary: boolean;
-  cachedScore: boolean;
-}
-
-export interface AnalysisTypeInfo {
-  key: string;
+export interface ReportTypeInfo {
+  key: ReportType;
   label: string;
-  statusKey?: keyof AnalysisStatus;
+  reportType: ReportType;
 }
 
 /** Analysis types (moved from utils) */
-export const analysisTypes: AnalysisTypeInfo[] = [
-  { key: AnalysisTypeKey.FINANCIAL_ANALYSIS, label: 'Financial Analysis', statusKey: 'financialAnalysis' },
-  { key: AnalysisTypeKey.COMPETITION, label: 'Competition', statusKey: 'competition' },
-  { key: AnalysisTypeKey.BUSINESS_AND_MOAT, label: 'Business & Moat', statusKey: 'businessAndMoat' },
-  { key: AnalysisTypeKey.PAST_PERFORMANCE, label: 'Past Performance', statusKey: 'pastPerformance' },
-  { key: AnalysisTypeKey.FUTURE_GROWTH, label: 'Future Growth', statusKey: 'futureGrowth' },
-  { key: AnalysisTypeKey.FAIR_VALUE, label: 'Fair Value', statusKey: 'fairValue' },
-  { key: AnalysisTypeKey.FUTURE_RISK, label: 'Future Risk', statusKey: 'futureRisk' },
-  { key: AnalysisTypeKey.FINAL_SUMMARY, label: 'Final Summary/Meta/About', statusKey: 'finalSummary' },
-  { key: AnalysisTypeKey.CACHED_SCORE, label: 'Cached Score', statusKey: 'cachedScore' },
+export const reportTypes: ReportTypeInfo[] = [
+  { key: ReportType.FINANCIAL_ANALYSIS, label: 'Financial Analysis', reportType: ReportType.FINANCIAL_ANALYSIS },
+  { key: ReportType.COMPETITION, label: 'Competition', reportType: ReportType.COMPETITION },
+  { key: ReportType.BUSINESS_AND_MOAT, label: 'Business & Moat', reportType: ReportType.BUSINESS_AND_MOAT },
+  { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance', reportType: ReportType.PAST_PERFORMANCE },
+  { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', reportType: ReportType.FUTURE_GROWTH },
+  { key: ReportType.FAIR_VALUE, label: 'Fair Value', reportType: ReportType.FAIR_VALUE },
+  { key: ReportType.FUTURE_RISK, label: 'Future Risk', reportType: ReportType.FUTURE_RISK },
+  { key: ReportType.FINAL_SUMMARY, label: 'Final Summary/Meta/About', reportType: ReportType.FINAL_SUMMARY },
+  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett', reportType: ReportType.WARREN_BUFFETT },
+  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger', reportType: ReportType.CHARLIE_MUNGER },
+  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman', reportType: ReportType.BILL_ACKMAN },
 ];
-
-/** Investor analysis types (moved from utils) */
-export const investorAnalysisTypes: AnalysisTypeInfo[] = INVESTOR_OPTIONS.map((investor) => ({
-  key: investor.key,
-  label: `${investor.name} Analysis`,
-}));
 
 /**
  * Hook for generating reports with consolidated logic.
@@ -116,22 +94,15 @@ export const useGenerateReports = () => {
         ReportType.PAST_PERFORMANCE,
         ReportType.FUTURE_GROWTH,
         ReportType.FINAL_SUMMARY,
-        ReportType.CACHED_SCORE,
+        ReportType.WARREN_BUFFETT,
+        ReportType.CHARLIE_MUNGER,
+        ReportType.BILL_ACKMAN,
       ];
 
       for (const step of sequence) {
         await generateAnalysis(step, ticker, onReportGenerated);
         await new Promise((r) => setTimeout(r, 1_000));
       }
-
-      const allInvestors: InvestorTypes[] = [InvestorTypes.WARREN_BUFFETT, InvestorTypes.CHARLIE_MUNGER, InvestorTypes.BILL_ACKMAN];
-      for (const inv of allInvestors) {
-        await generateInvestorAnalysis(inv, ticker, onReportGenerated);
-        await new Promise((r) => setTimeout(r, 1_000));
-      }
-
-      // final score refresh
-      await generateAnalysis(ReportType.CACHED_SCORE, ticker, onReportGenerated);
     } finally {
       setIsGenerating(false);
     }
@@ -193,7 +164,6 @@ export const useGenerateReports = () => {
           regenerateCharlieMunger: false,
           regenerateBillAckman: false,
           regenerateFinalSummary: false,
-          regenerateCachedScore: false,
         };
 
         selectedReportTypes.forEach((rt) => {
@@ -205,7 +175,6 @@ export const useGenerateReports = () => {
           else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
           else if (rt === ReportType.FUTURE_RISK) payload.regenerateFutureRisk = true;
           else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
-          else if (rt === ReportType.CACHED_SCORE) payload.regenerateCachedScore = true;
           else if (rt === ReportType.WARREN_BUFFETT) payload.regenerateWarrenBuffett = true;
           else if (rt === ReportType.CHARLIE_MUNGER) payload.regenerateCharlieMunger = true;
           else if (rt === ReportType.BILL_ACKMAN) payload.regenerateBillAckman = true;
@@ -307,7 +276,6 @@ export const useGenerateReports = () => {
             regenerateCharlieMunger: false,
             regenerateBillAckman: false,
             regenerateFinalSummary: false,
-            regenerateCachedScore: false,
           };
 
           it.failedSteps.forEach((step) => {
@@ -319,7 +287,6 @@ export const useGenerateReports = () => {
             else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
             else if (step === ReportType.FUTURE_RISK) p.regenerateFutureRisk = true;
             else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
-            else if (step === ReportType.CACHED_SCORE) p.regenerateCachedScore = true;
             else if (step === ReportType.WARREN_BUFFETT) p.regenerateWarrenBuffett = true;
             else if (step === ReportType.CHARLIE_MUNGER) p.regenerateCharlieMunger = true;
             else if (step === ReportType.BILL_ACKMAN) p.regenerateBillAckman = true;

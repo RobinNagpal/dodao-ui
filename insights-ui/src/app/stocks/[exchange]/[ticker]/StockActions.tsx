@@ -3,12 +3,8 @@
 import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { KoalaGainsSession } from '@/types/auth';
-import { analysisTypes, investorAnalysisTypes, InvestorKey } from '@/types/ticker-typesv1';
-import {
-  createBackgroundGenerationRequest,
-  createSingleAnalysisBackgroundRequest,
-  createSingleInvestorBackgroundRequest,
-} from '@/utils/analysis-reports/report-generator-utils';
+import { analysisTypes, ReportType } from '@/types/ticker-typesv1';
+import { createBackgroundGenerationRequest, createSingleAnalysisBackgroundRequest } from '@/utils/analysis-reports/report-generator-utils';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useRouter } from 'next/navigation';
@@ -32,26 +28,18 @@ export default function StockActions({ tickerSymbol, children, session }: StockA
   // Create dropdown items for all report types
   const reportGenerationItems: EllipsisDropdownItem[] = [
     ...analysisTypes.map((analysisType) => ({
-      key: `generate-${analysisType.key}`,
+      key: analysisType.key,
       label: `Generate ${analysisType.label}`,
-    })),
-    ...investorAnalysisTypes.map((investorType) => ({
-      key: `generate-investor-${investorType.key}`,
-      label: `Generate ${investorType.label}`,
     })),
     { key: 'generate-all', label: 'Generate All Reports' },
   ];
 
   const handleSelect = async (key: string) => {
     try {
-      if (key.startsWith('generate-investor-')) {
-        const investorKey = key.replace('generate-investor-', '');
-        await createSingleInvestorBackgroundRequest(investorKey as InvestorKey, tickerSymbol, postRequest);
-      } else if (key.startsWith('generate-')) {
-        const analysisType = key.replace('generate-', '');
-        await createSingleAnalysisBackgroundRequest(analysisType, tickerSymbol, postRequest);
-      } else if (key === 'generate-all') {
+      if (key === 'generate-all') {
         await createBackgroundGenerationRequest(tickerSymbol, postRequest);
+      } else {
+        await createSingleAnalysisBackgroundRequest(key as ReportType, tickerSymbol, postRequest);
       }
 
       // Redirect to generation requests page after any generation is initiated

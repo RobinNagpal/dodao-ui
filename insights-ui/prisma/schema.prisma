@@ -756,7 +756,6 @@ model TickerV1GenerationRequest {
 
   // Final steps
   regenerateFinalSummary Boolean @default(false) @map("regenerate_final_summary")
-  regenerateCachedScore  Boolean @default(false) @map("regenerate_cached_score")
 
   // Request status
   status String @default("NotStarted") @map("status")

@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getTickerV1AnalysisStatus, TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
+import { TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
+import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -34,7 +35,18 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  return { ...tickerRecord, analysisStatus: getTickerV1AnalysisStatus(tickerRecord) };
+  // Get missing reports for this ticker
+  const missingReports = await getMissingReportsForTicker(spaceId, tickerRecord.id);
+
+  if (!missingReports) {
+    throw new Error(`Failed to get missing reports for ticker ${ticker}`);
+  }
+
+  // Combine the ticker record with missing reports data
+  return {
+    ...tickerRecord,
+    ...missingReports,
+  };
 }
 
 export const GET = withErrorHandlingV2<TickerV1FastResponse>(getHandler);

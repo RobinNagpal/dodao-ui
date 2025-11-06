@@ -69,7 +69,7 @@ async function postHandler(
         regenerateCharlieMunger: payload.regenerateCharlieMunger || existingRequest.regenerateCharlieMunger,
         regenerateBillAckman: payload.regenerateBillAckman || existingRequest.regenerateBillAckman,
         regenerateFinalSummary: payload.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
-        regenerateCachedScore: payload.regenerateCachedScore || existingRequest.regenerateCachedScore,
+
         updatedAt: new Date(),
       },
     });
@@ -91,7 +91,6 @@ async function postHandler(
         regenerateCharlieMunger: payload.regenerateCharlieMunger,
         regenerateBillAckman: payload.regenerateBillAckman,
         regenerateFinalSummary: payload.regenerateFinalSummary,
-        regenerateCachedScore: payload.regenerateCachedScore,
       },
     });
 
@@ -140,7 +139,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       regenerateCharlieMunger: false,
       regenerateBillAckman: false,
       regenerateFinalSummary: false,
-      regenerateCachedScore: false,
       status: GenerationRequestStatus.NotStarted,
       createdAt: new Date(),
       updatedAt: new Date(),

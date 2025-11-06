@@ -63,7 +63,6 @@ export default function RequestGenerator({ selectedTickers, tickerRequests, onRe
       regenerateCharlieMunger: true,
       regenerateBillAckman: true,
       regenerateFinalSummary: true,
-      regenerateCachedScore: true,
     };
 
     const result = await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);

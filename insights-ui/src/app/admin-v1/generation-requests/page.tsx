@@ -5,7 +5,7 @@ import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from 
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/calculate-pending-steps';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -28,7 +28,6 @@ type GenerationReportFields = keyof Pick<
   | 'regenerateCharlieMunger'
   | 'regenerateBillAckman'
   | 'regenerateFinalSummary'
-  | 'regenerateCachedScore'
 >;
 const REGENERATE_FIELDS = [
   'regenerateCompetition',
@@ -42,7 +41,6 @@ const REGENERATE_FIELDS = [
   'regenerateCharlieMunger',
   'regenerateBillAckman',
   'regenerateFinalSummary',
-  'regenerateCachedScore',
 ] as GenerationReportFields[];
 
 type RegenerateField = (typeof REGENERATE_FIELDS)[number];
@@ -61,7 +59,6 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCharlieMunger: 'Munger',
   regenerateBillAckman: 'Ackman',
   regenerateFinalSummary: 'Summary/Meta/About',
-  regenerateCachedScore: 'Score',
 };
 
 const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
@@ -76,7 +73,6 @@ const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
   regenerateCharlieMunger: ReportType.CHARLIE_MUNGER,
   regenerateBillAckman: ReportType.BILL_ACKMAN,
   regenerateFinalSummary: ReportType.FINAL_SUMMARY,
-  regenerateCachedScore: ReportType.CACHED_SCORE,
 };
 
 interface StatusDotProps {

@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerV1GenerationRequestWithTicker } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
-import { calculatePendingSteps } from '@/utils/analysis-reports/calculate-pending-steps';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { triggerGenerationOfAReport } from '@/utils/analysis-reports/generation-report-utils';
 import { markAsCompleted } from '@/utils/analysis-reports/report-status-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
