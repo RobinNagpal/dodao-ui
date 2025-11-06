@@ -48,22 +48,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
 
   inProgressRequests = await getInProgressRequests();
 
-  // If there are 10 or more InProgress requests, return nothing
-  if (inProgressRequests.length >= 10) {
-    return {
-      inProgressRequests: inProgressRequests.map((r) => {
-        return {
-          ...r,
-          pendingSteps: calculatePendingSteps(r),
-        };
-      }),
-      justStartedRequests: [],
-      requests: [],
-      processedCount: 0,
-      message: `Already have ${inProgressRequests.length} requests in progress. Skipping processing.`,
-    };
-  }
-
   // Calculate how many NotStarted requests we can fetch (max 10 total)
   const maxNotStartedRequests = 10 - inProgressRequests.length;
 
