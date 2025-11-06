@@ -6,6 +6,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
@@ -198,6 +199,7 @@ export default function MissingReportsPage(): JSX.Element {
   const [accumulatedData, setAccumulatedData] = useState<TickerWithMissingReportInfo[]>([]);
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
 
   const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
   const params = new URLSearchParams();
@@ -261,9 +263,13 @@ export default function MissingReportsPage(): JSX.Element {
     setSelectedRows(new Set());
   }
 
-  async function handleGenerateAllForSelected(): Promise<void> {
+  function handleGenerateAllForSelected(): void {
     if (selectedRows.size === 0 || isGenerating) return;
+    setShowGenerateAllConfirmation(true);
+  }
 
+  async function handleGenerateAllConfirmed(): Promise<void> {
+    setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
       const selectedTickers = accumulatedData.filter((ticker) => selectedRows.has(ticker.id)).map((ticker) => ticker.symbol);
@@ -386,6 +392,16 @@ export default function MissingReportsPage(): JSX.Element {
           )}
         </div>
       </div>
+
+      <ConfirmationModal
+        title="Generate All for Selected"
+        open={showGenerateAllConfirmation}
+        onClose={() => setShowGenerateAllConfirmation(false)}
+        onConfirm={handleGenerateAllConfirmed}
+        confirming={isGenerating}
+        confirmationText={`Are you sure you want to generate all reports for ${selectedRows.size} selected ticker(s)? This will regenerate all existing reports.`}
+        askForTextInput={false}
+      />
     </div>
   );
 }

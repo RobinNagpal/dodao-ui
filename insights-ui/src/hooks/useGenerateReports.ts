@@ -211,7 +211,6 @@ export const useGenerateReports = () => {
         regenerateCharlieMunger: true,
         regenerateBillAckman: true,
         regenerateFinalSummary: true,
-        regenerateCachedScore: true,
       }));
 
       await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
@@ -242,7 +241,6 @@ export const useGenerateReports = () => {
         regenerateCharlieMunger: true,
         regenerateBillAckman: true,
         regenerateFinalSummary: true,
-        regenerateCachedScore: true,
       }));
 
       await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, payloads);
