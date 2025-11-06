@@ -38,7 +38,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Munger</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Ackman</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
-            <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Cached Score</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
             <th className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Risk</th>
@@ -148,15 +147,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
                     }`}
                   >
                     {!ticker.isMissingFinalSummaryReport ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingCachedScoreRepot ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingCachedScoreRepot ? 'Yes' : 'No'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">

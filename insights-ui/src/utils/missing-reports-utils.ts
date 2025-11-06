@@ -8,7 +8,7 @@ import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-ste
 export async function getTickersWithMissingReports(spaceId: string): Promise<TickerWithMissingReportInfo[]> {
   const tickersWithMissingReports = await prisma.$queryRaw<TickerWithMissingReportInfo[]>`
     WITH factor_counts AS (
-      SELECT 
+      SELECT
         t.id,
         t.name,
         t.symbol,
@@ -22,7 +22,6 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         t.updated_at AS "updatedAt",
         t.created_by AS "createdBy",
         t.updated_by AS "updatedBy",
-        t.cached_score AS "cachedScore",
         t.meta_description AS "metaDescription",
         t.space_id AS "spaceId",
         t.stock_analyze_url AS "stockAnalyzeUrl",
@@ -55,9 +54,6 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
 
         -- Final summary present?
         (t.summary IS NULL OR btrim(t.summary) = '') AS "isMissingFinalSummaryReport",
-
-        -- Cached score present?
-        (t.cached_score IS NULL) AS "isMissingCachedScoreRepot",
 
         -- NEW: meta description present?
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
@@ -94,7 +90,6 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
       "isMissingCharlieMungerReport" = TRUE OR
       "isMissingCompetitionReport" = TRUE OR
       "isMissingFinalSummaryReport" = TRUE OR
-      "isMissingCachedScoreRepot" = TRUE OR
       "isMissingMetaDescriptionReport" = TRUE OR
       "isMissingAboutReport" = TRUE OR
       "isMissingFutureRiskReport" = TRUE
@@ -110,7 +105,7 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
 export async function getMissingReportsForTicker(spaceId: string, tickerId: string): Promise<TickerWithMissingReportInfo | null> {
   const tickersWithMissingReports = await prisma.$queryRaw<TickerWithMissingReportInfo[]>`
     WITH factor_counts AS (
-      SELECT 
+      SELECT
         t.id,
         t.name,
         t.symbol,
@@ -124,7 +119,6 @@ export async function getMissingReportsForTicker(spaceId: string, tickerId: stri
         t.updated_at AS "updatedAt",
         t.created_by AS "createdBy",
         t.updated_by AS "updatedBy",
-        t.cached_score AS "cachedScore",
         t.meta_description AS "metaDescription",
         t.space_id AS "spaceId",
         t.stock_analyze_url AS "stockAnalyzeUrl",
@@ -157,9 +151,6 @@ export async function getMissingReportsForTicker(spaceId: string, tickerId: stri
 
         -- Final summary present?
         (t.summary IS NULL OR btrim(t.summary) = '') AS "isMissingFinalSummaryReport",
-
-        -- Cached score present?
-        (t.cached_score IS NULL) AS "isMissingCachedScoreRepot",
 
         -- NEW: meta description present?
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
