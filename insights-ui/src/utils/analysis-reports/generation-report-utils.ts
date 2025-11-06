@@ -25,6 +25,56 @@ import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extrac
 import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
 
 /**
+ * Map of report dependencies where keys are all report types and values are the report types
+ * that a particular report depends on. This is determined from the input JSON requirements.
+ */
+export const reportDependencyMap: Record<ReportType, ReportType[]> = {
+  [ReportType.COMPETITION]: [],
+  [ReportType.FINANCIAL_ANALYSIS]: [],
+  [ReportType.BUSINESS_AND_MOAT]: [ReportType.COMPETITION],
+  [ReportType.PAST_PERFORMANCE]: [ReportType.COMPETITION],
+  [ReportType.FUTURE_GROWTH]: [ReportType.COMPETITION],
+  [ReportType.FAIR_VALUE]: [],
+  [ReportType.FUTURE_RISK]: [],
+  [ReportType.WARREN_BUFFETT]: [ReportType.COMPETITION],
+  [ReportType.CHARLIE_MUNGER]: [ReportType.COMPETITION],
+  [ReportType.BILL_ACKMAN]: [ReportType.COMPETITION],
+  [ReportType.FINAL_SUMMARY]: [
+    ReportType.FINANCIAL_ANALYSIS,
+    ReportType.COMPETITION,
+    ReportType.BUSINESS_AND_MOAT,
+    ReportType.PAST_PERFORMANCE,
+    ReportType.FUTURE_GROWTH,
+    ReportType.FAIR_VALUE,
+    ReportType.FUTURE_RISK,
+    ReportType.WARREN_BUFFETT,
+    ReportType.CHARLIE_MUNGER,
+    ReportType.BILL_ACKMAN
+  ]
+};
+
+/**
+ * The dependency-based report order array where independent reports are first
+ * and dependent reports follow.
+ */
+export const dependencyBasedReportOrder: ReportType[] = [
+  // Independent reports (no dependencies)
+  ReportType.COMPETITION,
+  ReportType.FINANCIAL_ANALYSIS,
+  ReportType.FAIR_VALUE,
+  ReportType.FUTURE_RISK,
+
+  // Dependent reports (with dependencies)
+  ReportType.BUSINESS_AND_MOAT,
+  ReportType.PAST_PERFORMANCE,
+  ReportType.FUTURE_GROWTH,
+  ReportType.WARREN_BUFFETT,
+  ReportType.CHARLIE_MUNGER,
+  ReportType.BILL_ACKMAN,
+  ReportType.FINAL_SUMMARY
+];
+
+/**
  * Type definition for a report in the generation order
  */
 interface ReportOrderItem {
@@ -54,7 +104,7 @@ async function fetchCompetitionData(
 }
 
 /**
- * Defines the order of reports to generate
+ * Defines the order of reports to generate using the original hardcoded order
  */
 function defineReportOrder(
   spaceId: string,
@@ -66,7 +116,7 @@ function defineReportOrder(
     {
       reportType: ReportType.COMPETITION,
       condition: shouldRegenerateReport(generationRequest, ReportType.COMPETITION) || !competitionData || !competitionData.competitionAnalysisArray.length,
-      needsCompetitionData: false,
+      needsCompetitionData: reportDependencyMap[ReportType.COMPETITION].includes(ReportType.COMPETITION),
       generateFn: async () => {
         await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
         // Refresh competition data for other analyses - this is a side effect that modifies the outer competitionData variable
@@ -81,13 +131,13 @@ function defineReportOrder(
     {
       reportType: ReportType.FINANCIAL_ANALYSIS,
       condition: shouldRegenerateReport(generationRequest, ReportType.FINANCIAL_ANALYSIS),
-      needsCompetitionData: false,
+      needsCompetitionData: reportDependencyMap[ReportType.FINANCIAL_ANALYSIS].includes(ReportType.COMPETITION),
       generateFn: async () => await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.BUSINESS_AND_MOAT,
       condition: shouldRegenerateReport(generationRequest, ReportType.BUSINESS_AND_MOAT),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.BUSINESS_AND_MOAT].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -97,7 +147,7 @@ function defineReportOrder(
     {
       reportType: ReportType.PAST_PERFORMANCE,
       condition: shouldRegenerateReport(generationRequest, ReportType.PAST_PERFORMANCE),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.PAST_PERFORMANCE].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -107,7 +157,7 @@ function defineReportOrder(
     {
       reportType: ReportType.FUTURE_GROWTH,
       condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_GROWTH),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.FUTURE_GROWTH].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -117,19 +167,19 @@ function defineReportOrder(
     {
       reportType: ReportType.FAIR_VALUE,
       condition: shouldRegenerateReport(generationRequest, ReportType.FAIR_VALUE),
-      needsCompetitionData: false,
+      needsCompetitionData: reportDependencyMap[ReportType.FAIR_VALUE].includes(ReportType.COMPETITION),
       generateFn: async () => await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.FUTURE_RISK,
       condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_RISK),
-      needsCompetitionData: false,
+      needsCompetitionData: reportDependencyMap[ReportType.FUTURE_RISK].includes(ReportType.COMPETITION),
       generateFn: async () => await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
     },
     {
       reportType: ReportType.WARREN_BUFFETT,
       condition: shouldRegenerateReport(generationRequest, ReportType.WARREN_BUFFETT),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.WARREN_BUFFETT].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.WARREN_BUFFETT, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -139,7 +189,7 @@ function defineReportOrder(
     {
       reportType: ReportType.CHARLIE_MUNGER,
       condition: shouldRegenerateReport(generationRequest, ReportType.CHARLIE_MUNGER),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.CHARLIE_MUNGER].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.CHARLIE_MUNGER, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -149,7 +199,7 @@ function defineReportOrder(
     {
       reportType: ReportType.BILL_ACKMAN,
       condition: shouldRegenerateReport(generationRequest, ReportType.BILL_ACKMAN),
-      needsCompetitionData: true,
+      needsCompetitionData: reportDependencyMap[ReportType.BILL_ACKMAN].includes(ReportType.COMPETITION),
       generateFn: async () => {
         if (competitionData) {
           await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.BILL_ACKMAN, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -159,10 +209,83 @@ function defineReportOrder(
     {
       reportType: ReportType.FINAL_SUMMARY,
       condition: shouldRegenerateReport(generationRequest, ReportType.FINAL_SUMMARY),
-      needsCompetitionData: false,
+      needsCompetitionData: reportDependencyMap[ReportType.FINAL_SUMMARY].includes(ReportType.COMPETITION),
       generateFn: async () => await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
     },
   ];
+}
+
+/**
+ * Defines the order of reports to generate using the dependency-based order
+ * where independent reports are first and dependent reports follow
+ */
+function defineDependencyBasedReportOrder(
+  spaceId: string,
+  tickerRecord: TickerV1WithIndustryAndSubIndustry,
+  generationRequest: TickerV1GenerationRequest,
+  competitionData: { competitionAnalysisArray: CompetitionAnalysisArray } | null
+): ReportOrderItem[] {
+  // Create a map of report types to their generate functions
+  const reportGenerateFunctions: Record<ReportType, () => Promise<void>> = {
+    [ReportType.COMPETITION]: async () => {
+      await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
+      // Refresh competition data for other analyses
+      competitionData = await prisma.tickerV1VsCompetition.findFirst({
+        where: {
+          spaceId,
+          tickerId: tickerRecord.id,
+        },
+      });
+    },
+    [ReportType.FINANCIAL_ANALYSIS]: async () => 
+      await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.BUSINESS_AND_MOAT]: async () => {
+      if (competitionData) {
+        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.PAST_PERFORMANCE]: async () => {
+      if (competitionData) {
+        await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.FUTURE_GROWTH]: async () => {
+      if (competitionData) {
+        await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.FAIR_VALUE]: async () => 
+      await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.FUTURE_RISK]: async () => 
+      await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.WARREN_BUFFETT]: async () => {
+      if (competitionData) {
+        await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.WARREN_BUFFETT, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.CHARLIE_MUNGER]: async () => {
+      if (competitionData) {
+        await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.CHARLIE_MUNGER, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.BILL_ACKMAN]: async () => {
+      if (competitionData) {
+        await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.BILL_ACKMAN, competitionData.competitionAnalysisArray, generationRequest.id);
+      }
+    },
+    [ReportType.FINAL_SUMMARY]: async () => 
+      await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
+  };
+
+  // Map the dependency-based report order to ReportOrderItem objects
+  return dependencyBasedReportOrder.map(reportType => ({
+    reportType,
+    condition: reportType === ReportType.COMPETITION 
+      ? shouldRegenerateReport(generationRequest, reportType) || !competitionData || !competitionData.competitionAnalysisArray.length
+      : shouldRegenerateReport(generationRequest, reportType),
+    needsCompetitionData: reportDependencyMap[reportType].includes(ReportType.COMPETITION),
+    generateFn: reportGenerateFunctions[reportType],
+  }));
 }
 
 /**
@@ -534,20 +657,16 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
   let competitionData = await fetchCompetitionData(spaceId, tickerRecord, generationRequest);
 
   try {
-    // Define the order of reports to generate
-    const reportOrder = defineReportOrder(spaceId, tickerRecord, generationRequest, competitionData);
+    // Define the order of reports to generate using the dependency-based order
+    // where independent reports are first and dependent reports follow
+    const reportOrder = defineDependencyBasedReportOrder(spaceId, tickerRecord, generationRequest, competitionData);
 
     // If competition report has failed, mark all dependent reports as failed
     if (generationRequest.failedSteps.includes(ReportType.COMPETITION)) {
-      // Reports that depend on competition data
-      const dependentReports = [
-        ReportType.BUSINESS_AND_MOAT,
-        ReportType.PAST_PERFORMANCE,
-        ReportType.FUTURE_GROWTH,
-        ReportType.WARREN_BUFFETT,
-        ReportType.CHARLIE_MUNGER,
-        ReportType.BILL_ACKMAN,
-      ];
+      // Get reports that depend on competition data from the dependency map
+      const dependentReports = Object.entries(reportDependencyMap)
+        .filter(([_, dependencies]) => dependencies.includes(ReportType.COMPETITION))
+        .map(([reportType]) => reportType as ReportType);
 
       // Filter out reports that are already in failedSteps
       const reportsToMarkAsFailed = dependentReports.filter(
