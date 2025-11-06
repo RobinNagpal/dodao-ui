@@ -13,14 +13,20 @@ import {
   prepareBaseTickerInputJson,
   prepareBusinessAndMoatInputJson,
   prepareFairValueInputJson,
-  prepareFinancialAnalysisInputJson,
   prepareFinalSummaryInputJson,
+  prepareFinancialAnalysisInputJson,
   prepareFutureGrowthInputJson,
   prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
-import { areAllReportsAttempted, markAsCompleted, shouldRegenerateReport, updateInitialStatus } from '@/utils/analysis-reports/report-status-utils';
-import { saveCachedScore } from '@/utils/analysis-reports/save-report-utils';
+import {
+  areAllReportsAttempted,
+  markAsCompleted,
+  markAskInProgress,
+  shouldRegenerateReport,
+  updateInitialStatus,
+} from '@/utils/analysis-reports/report-status-utils';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
 
@@ -49,8 +55,8 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
     ReportType.FUTURE_RISK,
     ReportType.WARREN_BUFFETT,
     ReportType.CHARLIE_MUNGER,
-    ReportType.BILL_ACKMAN
-  ]
+    ReportType.BILL_ACKMAN,
+  ],
 };
 
 /**
@@ -71,7 +77,7 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.WARREN_BUFFETT,
   ReportType.CHARLIE_MUNGER,
   ReportType.BILL_ACKMAN,
-  ReportType.FINAL_SUMMARY
+  ReportType.FINAL_SUMMARY,
 ];
 
 /**
@@ -104,118 +110,6 @@ async function fetchCompetitionData(
 }
 
 /**
- * Defines the order of reports to generate using the original hardcoded order
- */
-function defineReportOrder(
-  spaceId: string,
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  generationRequest: TickerV1GenerationRequest,
-  competitionData: { competitionAnalysisArray: CompetitionAnalysisArray } | null
-): ReportOrderItem[] {
-  return [
-    {
-      reportType: ReportType.COMPETITION,
-      condition: shouldRegenerateReport(generationRequest, ReportType.COMPETITION) || !competitionData || !competitionData.competitionAnalysisArray.length,
-      needsCompetitionData: reportDependencyMap[ReportType.COMPETITION].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
-        // Refresh competition data for other analyses - this is a side effect that modifies the outer competitionData variable
-        competitionData = await prisma.tickerV1VsCompetition.findFirst({
-          where: {
-            spaceId,
-            tickerId: tickerRecord.id,
-          },
-        });
-      },
-    },
-    {
-      reportType: ReportType.FINANCIAL_ANALYSIS,
-      condition: shouldRegenerateReport(generationRequest, ReportType.FINANCIAL_ANALYSIS),
-      needsCompetitionData: reportDependencyMap[ReportType.FINANCIAL_ANALYSIS].includes(ReportType.COMPETITION),
-      generateFn: async () => await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
-    },
-    {
-      reportType: ReportType.BUSINESS_AND_MOAT,
-      condition: shouldRegenerateReport(generationRequest, ReportType.BUSINESS_AND_MOAT),
-      needsCompetitionData: reportDependencyMap[ReportType.BUSINESS_AND_MOAT].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.PAST_PERFORMANCE,
-      condition: shouldRegenerateReport(generationRequest, ReportType.PAST_PERFORMANCE),
-      needsCompetitionData: reportDependencyMap[ReportType.PAST_PERFORMANCE].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.FUTURE_GROWTH,
-      condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_GROWTH),
-      needsCompetitionData: reportDependencyMap[ReportType.FUTURE_GROWTH].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.FAIR_VALUE,
-      condition: shouldRegenerateReport(generationRequest, ReportType.FAIR_VALUE),
-      needsCompetitionData: reportDependencyMap[ReportType.FAIR_VALUE].includes(ReportType.COMPETITION),
-      generateFn: async () => await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
-    },
-    {
-      reportType: ReportType.FUTURE_RISK,
-      condition: shouldRegenerateReport(generationRequest, ReportType.FUTURE_RISK),
-      needsCompetitionData: reportDependencyMap[ReportType.FUTURE_RISK].includes(ReportType.COMPETITION),
-      generateFn: async () => await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
-    },
-    {
-      reportType: ReportType.WARREN_BUFFETT,
-      condition: shouldRegenerateReport(generationRequest, ReportType.WARREN_BUFFETT),
-      needsCompetitionData: reportDependencyMap[ReportType.WARREN_BUFFETT].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.WARREN_BUFFETT, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.CHARLIE_MUNGER,
-      condition: shouldRegenerateReport(generationRequest, ReportType.CHARLIE_MUNGER),
-      needsCompetitionData: reportDependencyMap[ReportType.CHARLIE_MUNGER].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.CHARLIE_MUNGER, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.BILL_ACKMAN,
-      condition: shouldRegenerateReport(generationRequest, ReportType.BILL_ACKMAN),
-      needsCompetitionData: reportDependencyMap[ReportType.BILL_ACKMAN].includes(ReportType.COMPETITION),
-      generateFn: async () => {
-        if (competitionData) {
-          await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.BILL_ACKMAN, competitionData.competitionAnalysisArray, generationRequest.id);
-        }
-      },
-    },
-    {
-      reportType: ReportType.FINAL_SUMMARY,
-      condition: shouldRegenerateReport(generationRequest, ReportType.FINAL_SUMMARY),
-      needsCompetitionData: reportDependencyMap[ReportType.FINAL_SUMMARY].includes(ReportType.COMPETITION),
-      generateFn: async () => await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
-    },
-  ];
-}
-
-/**
  * Defines the order of reports to generate using the dependency-based order
  * where independent reports are first and dependent reports follow
  */
@@ -237,8 +131,7 @@ function defineDependencyBasedReportOrder(
         },
       });
     },
-    [ReportType.FINANCIAL_ANALYSIS]: async () => 
-      await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.FINANCIAL_ANALYSIS]: async () => await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id),
     [ReportType.BUSINESS_AND_MOAT]: async () => {
       if (competitionData) {
         await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -254,10 +147,8 @@ function defineDependencyBasedReportOrder(
         await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionData.competitionAnalysisArray, generationRequest.id);
       }
     },
-    [ReportType.FAIR_VALUE]: async () => 
-      await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
-    [ReportType.FUTURE_RISK]: async () => 
-      await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.FAIR_VALUE]: async () => await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.FUTURE_RISK]: async () => await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id),
     [ReportType.WARREN_BUFFETT]: async () => {
       if (competitionData) {
         await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.WARREN_BUFFETT, competitionData.competitionAnalysisArray, generationRequest.id);
@@ -273,16 +164,16 @@ function defineDependencyBasedReportOrder(
         await generateInvestorAnalysis(spaceId, tickerRecord, ReportType.BILL_ACKMAN, competitionData.competitionAnalysisArray, generationRequest.id);
       }
     },
-    [ReportType.FINAL_SUMMARY]: async () => 
-      await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
+    [ReportType.FINAL_SUMMARY]: async () => await generateFinalSummary(spaceId, tickerRecord, generationRequest.id),
   };
 
   // Map the dependency-based report order to ReportOrderItem objects
-  return dependencyBasedReportOrder.map(reportType => ({
+  return dependencyBasedReportOrder.map((reportType) => ({
     reportType,
-    condition: reportType === ReportType.COMPETITION 
-      ? shouldRegenerateReport(generationRequest, reportType) || !competitionData || !competitionData.competitionAnalysisArray.length
-      : shouldRegenerateReport(generationRequest, reportType),
+    condition:
+      reportType === ReportType.COMPETITION
+        ? shouldRegenerateReport(generationRequest, reportType) || !competitionData || !competitionData.competitionAnalysisArray.length
+        : shouldRegenerateReport(generationRequest, reportType),
     needsCompetitionData: reportDependencyMap[reportType].includes(ReportType.COMPETITION),
     generateFn: reportGenerateFunctions[reportType],
   }));
@@ -324,6 +215,7 @@ async function handleGenerationError(error: unknown, generationRequest: TickerV1
       data: {
         failedSteps: updatedFailedSteps,
         inProgressStep: null,
+        updatedAt: new Date(),
       },
     });
   }
@@ -738,5 +630,157 @@ export async function triggerGenerationOfAReport(symbol: string, generationReque
   } catch (error) {
     // Handle errors
     await handleGenerationError(error, generationRequest);
+  }
+}
+
+export async function triggerGenerationOfAReportSimplified(symbol: string, generationRequestId: string): Promise<void> {
+  let generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+    where: { id: generationRequestId },
+    include: { ticker: true },
+  });
+  // Get ticker from DB
+  const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordWithIndustryAndSubIndustry(symbol);
+  const spaceId = KoalaGainsSpaceId;
+
+  if (generationRequest.status === GenerationRequestStatus.Completed) {
+    console.log('Generation request is already completed - skipping ', symbol);
+    return;
+  }
+
+  const pendingSteps = calculatePendingSteps(generationRequest);
+  if (pendingSteps.length === 0) {
+    console.log(`No pending steps for ${symbol}. Marking as completed for ticker: `, symbol);
+    await markAsCompleted(generationRequest);
+    return;
+  }
+
+  if (generationRequest.status === GenerationRequestStatus.InProgress) {
+    const inProgressStep = generationRequest.inProgressStep;
+    const lastInvocationTime = generationRequest.lastInvocationTime;
+    if (!inProgressStep || !lastInvocationTime) {
+      console.log(`Generation request is in progress but has no inProgressStep or lastInvocationTime. Marking as failed for ticker: `, symbol);
+      await prisma.tickerV1GenerationRequest.update({
+        where: {
+          id: generationRequest.id,
+        },
+        data: {
+          status: GenerationRequestStatus.Failed,
+          completedAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      // Check if it's been more than 5 minutes since the last invocation time
+      const fiveMinutes = 5 * 60 * 1000;
+
+      if (Date.now() - lastInvocationTime.getTime() < fiveMinutes) {
+        console.log(`Waiting for ${inProgressStep}  of ${symbol} to finish.... It was started at ${lastInvocationTime}`);
+        return;
+      } else {
+        // Add the step to failedSteps if it's been more than 5 minutes
+        const failedSteps = generationRequest.failedSteps;
+        const failedStep = inProgressStep;
+
+        // Skip if already marked as failed
+        if (!failedSteps.includes(failedStep)) {
+          failedSteps.push(failedStep);
+        }
+
+        // Find all steps that directly depend on this failed step
+        Object.entries(reportDependencyMap).forEach(([reportType, dependencies]) => {
+          if (dependencies.includes(failedStep as ReportType) && !failedSteps.includes(reportType as ReportType)) {
+            // Add this dependent step to failed steps
+            failedSteps.push(reportType as ReportType);
+          }
+        });
+
+        // Update the generation request
+        generationRequest = await prisma.tickerV1GenerationRequest.update({
+          where: {
+            id: generationRequest.id,
+          },
+          data: {
+            failedSteps: Array.from(new Set(failedStep)), // Remove duplicates
+            inProgressStep: null,
+            updatedAt: new Date(),
+          },
+          include: { ticker: true },
+        });
+      }
+    }
+  }
+
+  console.log('Generating report for ', symbol);
+
+  //
+  const latestPendingSteps = calculatePendingSteps(generationRequest);
+
+  // get the first step that overlaps in dependencyBasedReportOrder and pendingSteps
+  const nextStep = dependencyBasedReportOrder.find((step) => latestPendingSteps.includes(step));
+
+  if (!nextStep) {
+    console.log('No pending steps for ', symbol);
+    await markAsCompleted(generationRequest);
+    return;
+  }
+
+  // Update initial status if needed
+  await markAskInProgress(generationRequest, nextStep);
+
+  if (nextStep === ReportType.COMPETITION) {
+    await generateCompetitionAnalysis(spaceId, tickerRecord, generationRequest.id);
+    return;
+  }
+
+  const competitionData = await prisma.tickerV1VsCompetition.findFirst({
+    where: {
+      spaceId,
+      tickerId: tickerRecord.id,
+    },
+  });
+
+  const competitionAnalysisArray = competitionData?.competitionAnalysisArray || [];
+
+  try {
+    switch (nextStep) {
+      case ReportType.FINANCIAL_ANALYSIS:
+        await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
+      case ReportType.FUTURE_RISK:
+        await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
+      case ReportType.FAIR_VALUE:
+        await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
+      case ReportType.BUSINESS_AND_MOAT:
+        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
+        break;
+      case ReportType.PAST_PERFORMANCE:
+        await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
+        break;
+      case ReportType.FUTURE_GROWTH:
+        await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
+        break;
+      case ReportType.BILL_ACKMAN:
+      case ReportType.CHARLIE_MUNGER:
+      case ReportType.WARREN_BUFFETT:
+        await generateInvestorAnalysis(spaceId, tickerRecord, nextStep as any, competitionAnalysisArray, generationRequest.id);
+        break;
+      case ReportType.FINAL_SUMMARY:
+        await generateFinalSummary(spaceId, tickerRecord, generationRequestId);
+        break;
+    }
+  } catch (error) {
+    // Handle errors
+    await prisma.tickerV1GenerationRequest.update({
+      where: {
+        id: generationRequest.id,
+      },
+      data: {
+        failedSteps: [...generationRequest.failedSteps, nextStep],
+        inProgressStep: null,
+        updatedAt: new Date(),
+      },
+    });
   }
 }

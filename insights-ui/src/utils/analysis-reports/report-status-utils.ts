@@ -69,6 +69,37 @@ export async function updateInitialStatus(generationRequest: TickerV1GenerationR
   }
 }
 
+export async function markAskInProgress(generationRequest: TickerV1GenerationRequest & { ticker: TickerV1 }, reportToGenerate: ReportType): Promise<void> {
+  if (generationRequest.status === GenerationRequestStatus.NotStarted) {
+    console.log('Starting generation request for', generationRequest.ticker.symbol);
+    await prisma.tickerV1GenerationRequest.update({
+      where: {
+        id: generationRequest.id,
+      },
+      data: {
+        inProgressStep: reportToGenerate,
+        lastInvocationTime: new Date(),
+        status: GenerationRequestStatus.InProgress,
+        startedAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+  } else {
+    await prisma.tickerV1GenerationRequest.update({
+      where: {
+        id: generationRequest.id,
+      },
+      data: {
+        inProgressStep: reportToGenerate,
+        lastInvocationTime: new Date(),
+        status: GenerationRequestStatus.InProgress,
+        startedAt: new Date(),
+        updatedAt: new Date(),
+      },
+    });
+  }
+}
+
 export async function markAsCompleted(generationRequest: TickerV1GenerationRequest): Promise<void> {
   const hasFailed = generationRequest.failedSteps.length > 0;
 
