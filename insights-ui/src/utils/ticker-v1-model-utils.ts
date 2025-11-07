@@ -48,6 +48,7 @@ export type TickerV1WithRelations = TickerV1 & {
   investorAnalysisResults: TickerV1InvestorAnalysisResult[];
   futureRisks: TickerV1FutureRisk[];
   vsCompetition?: TickerV1VsCompetition | null;
+  cachedScoreEntry?: TickerV1CachedScore | null;
 };
 
 export interface SimilarTicker {
@@ -55,7 +56,9 @@ export interface SimilarTicker {
   name: string;
   symbol: string;
   exchange: string;
-  cachedScore: number;
+  cachedScoreEntry: {
+    finalScore: number;
+  } | null;
 }
 
 export interface TickerV1FullReportResponse extends TickerV1WithRelations, TickerWithMissingReportInfo {
@@ -162,10 +165,16 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
       name: true,
       symbol: true,
       exchange: true,
-      cachedScore: true,
+      cachedScoreEntry: {
+        select: {
+          finalScore: true,
+        },
+      },
     },
     orderBy: {
-      cachedScore: 'desc',
+      cachedScoreEntry: {
+        finalScore: 'desc',
+      },
     },
     take: 3,
   });

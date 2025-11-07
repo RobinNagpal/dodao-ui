@@ -86,9 +86,14 @@ export default function IndustryStocksGrid({ dataPromise, industryName }: { data
     bySub[subKey].total += 1;
   }
 
-  // Sort each sub group by cachedScore desc (show all — no slicing here)
+  // Sort each sub group by finalScore desc (show all — no slicing here)
   for (const subKey of Object.keys(bySub)) {
-    bySub[subKey].tickers = bySub[subKey].tickers.slice().sort((a, b) => (b.cachedScore ?? 0) - (a.cachedScore ?? 0));
+    bySub[subKey].tickers = bySub[subKey].tickers.slice().sort((a, b) => {
+      // Handle both FilteredTicker (has totalScore) and TickerWithIndustryNames (has cachedScoreEntry)
+      const aScore = (a as any).totalScore ?? (a as any).cachedScoreEntry?.finalScore ?? 0;
+      const bScore = (b as any).totalScore ?? (b as any).cachedScoreEntry?.finalScore ?? 0;
+      return bScore - aScore;
+    });
   }
 
   // Build card specs w/ estimated heights for packing

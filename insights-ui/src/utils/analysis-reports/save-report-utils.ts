@@ -1,12 +1,10 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, EvaluationResult, INVESTOR_MAPPINGS, InvestorTypes, ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { bumpUpdatedAtAndInvalidateCache, FullTickerV1CategoryAnalysisResult, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
-import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
-import { GeminiModelType } from '@/types/llmConstants';
+import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
 import { z, ZodObject } from 'zod';
 import { TickerV1 } from '@prisma/client';
 
@@ -377,75 +375,4 @@ export function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: 
   const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${competitorsText}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${today}.`;
 
   return baseInfo;
-}
-
-/**
- * Calculates the total score based on category analysis results
- */
-function calculateTotalScore(
-  tickerRecord: TickerV1 & {
-    categoryAnalysisResults?: Array<{
-      categoryKey: string;
-      factorResults?: Array<{
-        result: string;
-      }>;
-    }>;
-  }
-): number {
-  return Object.entries(CATEGORY_MAPPINGS)
-    .map(([categoryKey]) => {
-      const report = (tickerRecord.categoryAnalysisResults || []).find((r) => r.categoryKey === categoryKey);
-
-      const scoresArray = report?.factorResults?.map((factorResult) => (factorResult.result === EvaluationResult.Pass ? 1 : 0)) || [];
-
-      const categoryScoreSum: number = scoresArray.reduce((partialSum: number, a) => partialSum + a, 0);
-
-      return categoryScoreSum;
-    })
-    .reduce((partialSum: number, a) => partialSum + a, 0);
-}
-
-/**
- * Saves cached score only (without about report)
- */
-export async function saveCachedScore(ticker: string): Promise<void> {
-  const spaceId = KoalaGainsSpaceId;
-
-  // Get ticker from DB with all necessary data
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-    where: {
-      spaceId,
-      symbol: ticker.toUpperCase(),
-    },
-    include: {
-      categoryAnalysisResults: {
-        include: {
-          factorResults: {
-            include: {
-              analysisCategoryFactor: true,
-            },
-          },
-        },
-      },
-      investorAnalysisResults: true,
-      futureRisks: true,
-      vsCompetition: true,
-    },
-  });
-
-  // Calculate the total score
-  const totalScore = calculateTotalScore(tickerRecord);
-
-  // Update the ticker with the calculated score only
-  await prisma.tickerV1.update({
-    data: {
-      cachedScore: totalScore,
-      updatedAt: new Date(),
-    },
-    where: {
-      id: tickerRecord.id,
-    },
-  });
-
-  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
 }

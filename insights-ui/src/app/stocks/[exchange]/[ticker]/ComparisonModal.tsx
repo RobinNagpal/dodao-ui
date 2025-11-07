@@ -68,7 +68,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.name,
         symbol: data.symbol,
         exchange: data.exchange,
-        cachedScore: data.cachedScore as number,
+        cachedScoreEntry: data.cachedScoreEntry,
         categoryResults,
       };
 
@@ -122,7 +122,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
         name: data.name,
         symbol: data.symbol,
         exchange: data.exchange,
-        cachedScore: data.cachedScore as number,
+        cachedScoreEntry: data.cachedScoreEntry,
         categoryResults,
       };
 
@@ -176,9 +176,13 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center">
                               <span
-                                className={ticker.cachedScore !== undefined ? getScoreColorClasses(Number(ticker.cachedScore)).textColorClass : 'text-gray-100'}
+                                className={
+                                  ticker.cachedScoreEntry?.finalScore !== undefined
+                                    ? getScoreColorClasses(ticker.cachedScoreEntry.finalScore).textColorClass
+                                    : 'text-gray-100'
+                                }
                               >
-                                {ticker.cachedScore !== undefined ? Number(ticker.cachedScore) : '-'}/25
+                                {ticker.cachedScoreEntry?.finalScore !== undefined ? ticker.cachedScoreEntry.finalScore : '-'}/25
                               </span>
                               <span className="font-medium ml-1 mr-1">{ticker.symbol}</span>
                               <span className="text-xs text-gray-400 truncate">{ticker.name}</span>

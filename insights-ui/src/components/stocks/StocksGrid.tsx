@@ -50,12 +50,17 @@ export default function StocksGrid({ dataPromise }: { dataPromise: Promise<Stock
     byMain[main][sub].total += 1;
   }
 
-  // Sort by cachedScore and take top 4 per sub-industry
+  // Sort by finalScore from cachedScoreEntry and take top 4 per sub-industry
   for (const main of Object.keys(byMain)) {
     for (const sub of Object.keys(byMain[main])) {
       byMain[main][sub].tickers = byMain[main][sub].tickers
         .slice()
-        .sort((a, b) => (b.cachedScore ?? 0) - (a.cachedScore ?? 0))
+        .sort((a, b) => {
+          // Handle both FilteredTicker (has totalScore) and TickerWithIndustryNames (has cachedScoreEntry)
+          const aScore = (a as any).totalScore ?? (a as any).cachedScoreEntry?.finalScore ?? 0;
+          const bScore = (b as any).totalScore ?? (b as any).cachedScoreEntry?.finalScore ?? 0;
+          return bScore - aScore;
+        })
         .slice(0, 4);
     }
   }

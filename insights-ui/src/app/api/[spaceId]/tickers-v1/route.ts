@@ -16,7 +16,6 @@ interface NewTickerRequest {
   subIndustryKey: string;
   websiteUrl?: string;
   summary?: string;
-  cachedScore?: number;
   stockAnalyzeUrl: string;
 }
 
@@ -75,6 +74,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const tickers = await prisma.tickerV1.findMany({
     where: whereClause,
+    include: {
+      cachedScoreEntry: true,
+    },
     orderBy: { symbol: 'asc' },
   });
 
@@ -146,7 +148,6 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
     const websiteUrl = normStr(raw.websiteUrl);
     const summary = normStr(raw.summary);
     const stockAnalyzeUrl = normStr(raw.stockAnalyzeUrl);
-    const cachedScore = Number.isFinite(raw.cachedScore as number) ? (raw.cachedScore as number) : 0;
 
     try {
       // Already exists?
@@ -173,7 +174,6 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
           subIndustryKey,
           websiteUrl,
           summary,
-          cachedScore,
           stockAnalyzeUrl,
           createdBy: 'ui-user',
           updatedBy: 'ui-user',

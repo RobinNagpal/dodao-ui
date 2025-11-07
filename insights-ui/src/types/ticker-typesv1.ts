@@ -21,9 +21,11 @@ export interface BasicTickerInfo {
   name: string;
   symbol: string;
   exchange: string;
-  cachedScore: number | null;
   websiteUrl: string | null;
   stockAnalyzeUrl: string;
+  cachedScoreEntry: {
+    finalScore: number;
+  } | null;
 }
 
 export interface BasicTickersResponse {

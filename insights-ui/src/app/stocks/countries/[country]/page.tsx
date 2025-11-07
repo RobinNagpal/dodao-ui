@@ -130,7 +130,12 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
   Object.keys(tickersByMainIndustry).forEach((mainIndustry) => {
     Object.keys(tickersByMainIndustry[mainIndustry]).forEach((subIndustry) => {
       tickersByMainIndustry[mainIndustry][subIndustry].tickers = tickersByMainIndustry[mainIndustry][subIndustry].tickers
-        .sort((a, b) => b.cachedScore - a.cachedScore)
+        .sort((a, b) => {
+          // Handle both FilteredTicker (has totalScore) and TickerWithIndustryNames (has cachedScoreEntry)
+          const aScore = (a as any).totalScore ?? (a as any).cachedScoreEntry?.finalScore ?? 0;
+          const bScore = (b as any).totalScore ?? (b as any).cachedScoreEntry?.finalScore ?? 0;
+          return bScore - aScore;
+        })
         .slice(0, 4);
     });
   });

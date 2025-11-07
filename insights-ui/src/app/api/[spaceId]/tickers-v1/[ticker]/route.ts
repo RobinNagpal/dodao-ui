@@ -32,6 +32,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       vsCompetition: true,
       industry: true,
       subIndustry: true,
+      cachedScoreEntry: true,
     },
   });
 

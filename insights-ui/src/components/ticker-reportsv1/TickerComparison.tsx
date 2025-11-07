@@ -10,7 +10,9 @@ export interface ComparisonTicker {
   name: string;
   symbol: string;
   exchange: string;
-  cachedScore?: number;
+  cachedScoreEntry?: {
+    finalScore: number;
+  } | null;
   categoryResults: {
     [key in TickerAnalysisCategory]: {
       factorResults: Array<{
@@ -103,8 +105,8 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
               <div key={ticker.symbol} className="px-2 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">
                 <div className="flex flex-col space-y-1">
                   <div className="flex items-center space-x-1">
-                    {ticker.cachedScore !== undefined ? (
-                      <span className={getScoreColorClasses(ticker.cachedScore).textColorClass}>{ticker.cachedScore}/25</span>
+                    {ticker.cachedScoreEntry?.finalScore !== undefined ? (
+                      <span className={getScoreColorClasses(ticker.cachedScoreEntry.finalScore).textColorClass}>{ticker.cachedScoreEntry.finalScore}/25</span>
                     ) : (
                       <span className="text-gray-400">-/25</span>
                     )}

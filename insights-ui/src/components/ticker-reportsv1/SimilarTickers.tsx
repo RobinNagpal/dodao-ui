@@ -21,7 +21,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
       <p className="text-gray-300 mb-4">Based on industry classification and performance score:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {similarTickers.map((similarTicker) => {
-          const scoreValue: number | '-' = (similarTicker as any).cachedScore ?? '-';
+          const scoreValue: number | '-' = similarTicker.cachedScoreEntry?.finalScore ?? '-';
           const { textColorClass } = typeof scoreValue === 'number' ? getScoreColorClasses(scoreValue) : { textColorClass: 'text-gray-400' };
 
           return (

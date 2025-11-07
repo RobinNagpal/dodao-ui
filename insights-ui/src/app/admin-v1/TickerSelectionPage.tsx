@@ -216,7 +216,9 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
                               <span className="font-medium">{t.symbol}</span>
                               <span className="text-gray-400">-</span>
                               <span className="text-gray-300">{t.name}</span>
-                              {t.cachedScore && <span className="text-blue-400 text-sm">Score: {t.cachedScore}/25</span>}
+                              {(t as any).cachedScoreEntry?.finalScore && (
+                                <span className="text-blue-400 text-sm">Score: {(t as any).cachedScoreEntry.finalScore}/25</span>
+                              )}
                             </div>
                             <div className="flex items-center gap-3 text-sm text-gray-400">
                               <span>
