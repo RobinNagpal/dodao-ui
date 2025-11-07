@@ -27,9 +27,13 @@ async function getHandler(
         name: true,
         symbol: true,
         exchange: true,
-        cachedScore: true,
         websiteUrl: true,
         stockAnalyzeUrl: true,
+        cachedScoreEntry: {
+          select: {
+            finalScore: true,
+          },
+        },
       },
       orderBy: {
         name: 'asc',
@@ -53,6 +57,7 @@ async function getHandler(
       include: {
         industry: true,
         subIndustry: true,
+        cachedScoreEntry: true,
       },
 
       orderBy: {

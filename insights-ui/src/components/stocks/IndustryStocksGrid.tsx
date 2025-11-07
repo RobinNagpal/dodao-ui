@@ -1,17 +1,18 @@
 // components/stocks/IndustryStocksGrid.tsx
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import type { TickerWithScore } from '@/types/ticker-typesv1';
+import { getTickerScore } from '@/types/ticker-typesv1';
 import { use } from 'react';
 
 export type IndustryStocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
+  tickers: TickerWithScore[];
   filtersApplied: boolean;
 };
 
 type GroupedSub = Record<
   string,
   {
-    tickers: TickerWithIndustryNames[];
+    tickers: TickerWithScore[];
     total: number;
     subIndustryName: string;
   }
@@ -21,7 +22,7 @@ type CardSpec = {
   key: string;
   subIndustry: string;
   subIndustryName: string;
-  tickers: TickerWithIndustryNames[];
+  tickers: TickerWithScore[];
   total: number;
   estH: number; // estimated height for packing
 };
@@ -86,9 +87,13 @@ export default function IndustryStocksGrid({ dataPromise, industryName }: { data
     bySub[subKey].total += 1;
   }
 
-  // Sort each sub group by cachedScore desc (show all — no slicing here)
+  // Sort each sub group by finalScore desc (show all — no slicing here)
   for (const subKey of Object.keys(bySub)) {
-    bySub[subKey].tickers = bySub[subKey].tickers.slice().sort((a, b) => (b.cachedScore ?? 0) - (a.cachedScore ?? 0));
+    bySub[subKey].tickers = bySub[subKey].tickers.slice().sort((a, b) => {
+      const aScore = getTickerScore(a);
+      const bScore = getTickerScore(b);
+      return bScore - aScore;
+    });
   }
 
   // Build card specs w/ estimated heights for packing

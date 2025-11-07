@@ -1,11 +1,11 @@
 import StockTickerItem from './StockTickerItem';
-import { TickerV1 } from '@prisma/client';
+import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
 
 type Variant = 'footer' | 'header-sub' | 'corner-badge';
 
 interface SubIndustryCardProps {
   subIndustry: string;
-  tickers: TickerV1[] | any[];
+  tickers: TickerWithScore[];
   subIndustryName?: string;
   total: number;
   variant?: Variant; // 'footer' | 'header-sub' | 'corner-badge'
@@ -30,7 +30,7 @@ export default function SubIndustryCard({ subIndustry, subIndustryName, tickers,
         {tickers.map((ticker) => (
           <li key={ticker.symbol} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
             <div className="min-w-0 w-full">
-              <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScore} />
+              <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={getTickerScore(ticker)} />
             </div>
           </li>
         ))}

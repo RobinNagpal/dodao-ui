@@ -505,7 +505,6 @@ model TickerV1 {
   updatedAt       DateTime @updatedAt @map("updated_at")
   createdBy       String?  @map("created_by")
   updatedBy       String?  @map("updated_by")
-  cachedScore     Int      @default(0) @map("cached_score")
   metaDescription String?  @map("meta_description")
   spaceId         String   @default("koala_gains") @map("space_id")
   stockAnalyzeUrl String   @map("stock_analyze_url")

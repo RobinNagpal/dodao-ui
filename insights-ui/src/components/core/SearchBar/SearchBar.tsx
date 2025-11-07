@@ -17,7 +17,9 @@ export interface SearchResult {
   subIndustryKey: string;
   websiteUrl?: string | null;
   summary?: string | null;
-  cachedScore: number;
+  cachedScoreEntry: {
+    finalScore: number;
+  } | null;
 }
 
 export interface SearchBarProps {
@@ -267,7 +269,7 @@ export default function SearchBar({
                     aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
-                      <StockTickerItem symbol={result.symbol} name={result.name} exchange={result.exchange} score={result.cachedScore} />
+                      <StockTickerItem symbol={result.symbol} name={result.name} exchange={result.exchange} score={result.cachedScoreEntry?.finalScore ?? 0} />
                     </div>
                   </div>
                 ))}

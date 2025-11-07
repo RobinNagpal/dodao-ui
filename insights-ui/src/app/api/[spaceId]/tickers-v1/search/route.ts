@@ -12,7 +12,9 @@ export interface SearchResult {
   subIndustryKey: string;
   websiteUrl?: string | null;
   summary?: string | null;
-  cachedScore: number;
+  cachedScoreEntry: {
+    finalScore: number;
+  } | null;
 }
 
 export interface SearchResponse {
@@ -94,7 +96,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       subIndustryKey: true,
       websiteUrl: true,
       summary: true,
-      cachedScore: true,
+      cachedScoreEntry: {
+        select: {
+          finalScore: true,
+        },
+      },
     },
     take: fetchLimit, // Get more results to sort properly
   });
@@ -152,8 +158,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (!aNameContains && bNameContains) return 1;
 
       // Priority 6: Higher cached score
-      if (b.cachedScore !== a.cachedScore) {
-        return b.cachedScore - a.cachedScore;
+      const aScore = a.cachedScoreEntry?.finalScore ?? 0;
+      const bScore = b.cachedScoreEntry?.finalScore ?? 0;
+      if (bScore !== aScore) {
+        return bScore - aScore;
       }
 
       // Priority 7: Alphabetical by symbol

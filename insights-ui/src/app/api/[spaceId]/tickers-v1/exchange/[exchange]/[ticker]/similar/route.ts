@@ -28,10 +28,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       name: true,
       symbol: true,
       exchange: true,
-      cachedScore: true,
+      cachedScoreEntry: {
+        select: {
+          finalScore: true,
+        },
+      },
     },
     orderBy: {
-      cachedScore: 'desc',
+      cachedScoreEntry: {
+        finalScore: 'desc',
+      },
     },
     take: 3,
   });

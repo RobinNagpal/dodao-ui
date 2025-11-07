@@ -99,7 +99,7 @@ export default function SelectableSubIndustryCard({
             {tickers.map((ticker) => (
               <li key={ticker.symbol} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
                 <div className="min-w-0 w-full">
-                  <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScore} />
+                  <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScoreEntry?.finalScore ?? 0} />
                 </div>
               </li>
             ))}
@@ -114,7 +114,7 @@ export default function SelectableSubIndustryCard({
                   name: `ticker-${ticker.id}`,
                   label: (
                     <div className="flex-grow cursor-pointer ml-2">
-                      <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScore} />
+                      <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScoreEntry?.finalScore ?? 0} />
                     </div>
                   ),
                 })
