@@ -15,6 +15,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 import IndustryTree, { type IndustryAction, type SubIndustryAction } from './IndustryTree';
 import UpsertIndustryModal from './UpsertIndustryModal';
 import UpsertSubIndustryModal from './UpsertSubIndustryModal';
+import MoveSubIndustryModal from './MoveSubIndustryModal';
 
 type DeleteKind = 'industry' | 'subIndustry';
 
@@ -22,6 +23,7 @@ export default function IndustryManagementPage(): JSX.Element {
   // Modal state
   const [showUpsertIndustry, setShowUpsertIndustry] = useState<boolean>(false);
   const [showUpsertSubIndustry, setShowUpsertSubIndustry] = useState<boolean>(false);
+  const [showMoveSubIndustry, setShowMoveSubIndustry] = useState<boolean>(false);
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
 
@@ -115,6 +117,9 @@ export default function IndustryManagementPage(): JSX.Element {
             <Button variant="outlined" onClick={handleRefreshAll}>
               Refresh
             </Button>
+            <Button variant="outlined" onClick={(): void => setShowMoveSubIndustry(true)}>
+              Move Sub Industries
+            </Button>
             <Button
               onClick={(): void => {
                 setSelectedIndustry(null);
@@ -164,6 +169,8 @@ export default function IndustryManagementPage(): JSX.Element {
         subIndustry={selectedSubIndustry ?? undefined}
         preselectedIndustryKey={selectedIndustry?.industryKey}
       />
+
+      <MoveSubIndustryModal isOpen={showMoveSubIndustry} onClose={(): void => setShowMoveSubIndustry(false)} onSuccess={handleRefreshAll} />
 
       <DeleteConfirmationModal
         title={`Delete ${deleteKind === 'industry' ? 'Industry' : 'Sub-industry'}`}
