@@ -1,11 +1,12 @@
 import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
-import { TickerV1, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { TickerV1, TickerV1Industry, TickerV1SubIndustry, TickerV1CachedScore } from '@prisma/client';
 
 export interface TickerWithIndustryNames extends TickerV1 {
   industryName: string;
   subIndustryName: string;
+  cachedScoreEntry?: TickerV1CachedScore | null;
 }
 
 export interface FilteredTicker extends TickerWithIndustryNames {
@@ -13,6 +14,17 @@ export interface FilteredTicker extends TickerWithIndustryNames {
     [key in TickerAnalysisCategory]?: number;
   };
   totalScore: number;
+}
+
+// Helper type for tickers that can have either totalScore or cachedScoreEntry
+export type TickerWithScore = TickerWithIndustryNames | FilteredTicker;
+
+// Helper function to get score from either type
+export function getTickerScore(ticker: TickerWithScore): number {
+  if ('totalScore' in ticker) {
+    return ticker.totalScore;
+  }
+  return ticker.cachedScoreEntry?.finalScore ?? 0;
 }
 
 // Basic ticker info for ticker management

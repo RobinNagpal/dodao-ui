@@ -1,11 +1,11 @@
 // components/stocks/StocksGrid.tsx
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import { use } from 'react';
 
 export type StocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
+  tickers: TickerWithScore[];
   filtersApplied: boolean;
 };
 
@@ -13,7 +13,7 @@ type Grouped = Record<
   string, // mainIndustry key
   Record<
     string, // subIndustry key
-    { tickers: TickerWithIndustryNames[]; total: number }
+    { tickers: TickerWithScore[]; total: number }
   >
 >;
 
@@ -50,15 +50,14 @@ export default function StocksGrid({ dataPromise }: { dataPromise: Promise<Stock
     byMain[main][sub].total += 1;
   }
 
-  // Sort by finalScore from cachedScoreEntry and take top 4 per sub-industry
+  // Sort by finalScore and take top 4 per sub-industry
   for (const main of Object.keys(byMain)) {
     for (const sub of Object.keys(byMain[main])) {
       byMain[main][sub].tickers = byMain[main][sub].tickers
         .slice()
         .sort((a, b) => {
-          // Handle both FilteredTicker (has totalScore) and TickerWithIndustryNames (has cachedScoreEntry)
-          const aScore = (a as any).totalScore ?? (a as any).cachedScoreEntry?.finalScore ?? 0;
-          const bScore = (b as any).totalScore ?? (b as any).cachedScoreEntry?.finalScore ?? 0;
+          const aScore = getTickerScore(a);
+          const bScore = getTickerScore(b);
           return bScore - aScore;
         })
         .slice(0, 4);

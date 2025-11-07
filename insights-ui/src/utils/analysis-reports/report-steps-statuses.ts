@@ -1,5 +1,5 @@
 import { ReportType } from '@/types/ticker-typesv1';
-import { TickerV1, TickerV1GenerationRequest } from '@prisma/client';
+import { TickerV1, TickerV1GenerationRequest, TickerV1CachedScore } from '@prisma/client';
 
 export interface TickerWithMissingReportInfo extends TickerV1 {
   businessAndMoatFactorResultsCount: number;
@@ -29,6 +29,8 @@ export interface TickerWithMissingReportInfo extends TickerV1 {
     name: string;
     subIndustryKey: string;
   };
+
+  cachedScoreEntry?: TickerV1CachedScore | null;
 }
 
 export function getMissingReportTypes(ticker: TickerWithMissingReportInfo): ReportType[] {

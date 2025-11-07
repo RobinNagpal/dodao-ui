@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames, FilteredTicker } from '@/types/ticker-typesv1';
+import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -65,7 +65,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
   // Check if any filters are applied (including search)
   const hasFilters = Object.keys(resolvedSearchParams).some((key) => key.includes('Threshold')) || resolvedSearchParams.search;
 
-  let tickers: TickerWithIndustryNames[] | FilteredTicker[] = [];
+  let tickers: TickerWithScore[] = [];
 
   if (hasFilters) {
     // Build URL with filter params for the filtered API
@@ -108,7 +108,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
   }
 
   // Group tickers by main industry first, then by sub-industry
-  const tickersByMainIndustry: Record<string, Record<string, { tickers: any[]; total: number }>> = {};
+  const tickersByMainIndustry: Record<string, Record<string, { tickers: TickerWithScore[]; total: number }>> = {};
 
   tickers.forEach((ticker) => {
     const mainIndustry = ticker.industryKey || 'Other';
@@ -131,9 +131,8 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
     Object.keys(tickersByMainIndustry[mainIndustry]).forEach((subIndustry) => {
       tickersByMainIndustry[mainIndustry][subIndustry].tickers = tickersByMainIndustry[mainIndustry][subIndustry].tickers
         .sort((a, b) => {
-          // Handle both FilteredTicker (has totalScore) and TickerWithIndustryNames (has cachedScoreEntry)
-          const aScore = (a as any).totalScore ?? (a as any).cachedScoreEntry?.finalScore ?? 0;
-          const bScore = (b as any).totalScore ?? (b as any).cachedScoreEntry?.finalScore ?? 0;
+          const aScore = getTickerScore(a);
+          const bScore = getTickerScore(b);
           return bScore - aScore;
         })
         .slice(0, 4);
