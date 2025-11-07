@@ -2,6 +2,8 @@ import SearchBar from '@/components/core/SearchBar';
 import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
+import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
+import { Suspense } from 'react';
 
 export function Hero() {
   return (
@@ -12,14 +14,14 @@ export function Hero() {
             <div className="text-center">
               {/* Logo */}
               <div className="flex justify-center mb-6 sm:mb-8">
-                <div className="relative w-20 h-20 sm:w-28 sm:h-28">
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                   <Image src={coverImage} alt="KoalaGains AI-powered platform" fill className="object-contain rounded-xl" priority />
                 </div>
               </div>
 
               {/* Stock Search Section */}
-              <div className="mb-10 sm:mb-12">
-                <div className="mb-4 sm:mb-6">
+              <div className="mb-8 sm:mb-10">
+                <div className="mb-2 sm:mb-4">
                   <h2 className="text-2xl font-semibold text-white mb-2 sm:mb-3">
                     Search Our <span className="text-indigo-400">5000+ Stock Analysis Reports</span>
                   </h2>
@@ -47,8 +49,27 @@ export function Hero() {
                 </div>
               </div>
 
+              {/* Top Industries Showcase */}
+              <Suspense
+                fallback={
+                  <div className="mb-8 sm:mb-10">
+                    <div className="animate-pulse">
+                      <div className="h-8 bg-gray-700 rounded w-64 mx-auto mb-4"></div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {[...Array(8)].map((_, i) => (
+                          <div key={i} className="h-32 bg-gray-700 rounded-lg"></div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                {/* @ts-expect-error Server Component */}
+                <TopIndustriesShowcase />
+              </Suspense>
+
               {/* Quick Features Overview (more compact + subtle colors) */}
-              <div className="mb-10 sm:mb-12">
+              <div className="mb-8 sm:mb-10">
                 <div className="text-center mb-4 sm:mb-6">
                   <h2 className="text-2xl font-bold text-white mb-2">
                     Why Choose <span className="text-indigo-400">KoalaGains</span>?

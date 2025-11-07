@@ -189,7 +189,7 @@ export default function SearchBar({
 
     // HERO variant — taller input + amber/yellow border (4px), same color palette
     return {
-      container: 'relative w-full max-w-3xl mx-auto mb-24 mt-12',
+      container: 'relative w-full max-w-3xl mx-auto mb-16 mt-8',
       input:
         'w-full h-14 pl-16 pr-36 text-base bg-gray-700/40 backdrop-blur-sm border-3 border-amber-400 rounded-2xl ' +
         'focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-white placeholder-gray-300 ' +

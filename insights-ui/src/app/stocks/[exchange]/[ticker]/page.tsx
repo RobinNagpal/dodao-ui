@@ -472,6 +472,15 @@ function TickerSummaryInfo({
 function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
 
+  // Question-based category mappings for better SEO
+  const CATEGORY_QUESTION_MAPPINGS = {
+    [TickerAnalysisCategory.BusinessAndMoat]: `Does ${d.name} Have a Strong Business Model and Competitive Moat?`,
+    [TickerAnalysisCategory.FinancialStatementAnalysis]: `How Strong Are ${d.name}'s Financial Statements?`,
+    [TickerAnalysisCategory.PastPerformance]: `How Has ${d.name} Performed Historically?`,
+    [TickerAnalysisCategory.FutureGrowth]: `What Are ${d.name}'s Future Growth Prospects?`,
+    [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
+  };
+
   return (
     <>
       <section id="detailed-analysis" className="mb-8">
@@ -483,7 +492,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
           return (
             <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
-                <h3 className="text-xl font-bold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                <h3 className="text-xl font-bold">{CATEGORY_QUESTION_MAPPINGS[categoryKey]}</h3>
                 <div
                   className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
                   style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
