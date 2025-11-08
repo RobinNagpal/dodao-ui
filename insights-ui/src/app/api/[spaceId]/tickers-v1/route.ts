@@ -1,8 +1,8 @@
 import { prisma } from '@/prisma';
+import { ExchangeId } from '@/utils/exchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getCountryFilterClause } from '@/utils/countryUtils';
 
@@ -22,10 +22,6 @@ interface NewTickerRequest {
 interface ErrorTicker {
   input: NewTickerRequest;
   reason: string;
-}
-
-interface BulkNewTickersRequest {
-  tickers: NewTickerRequest[];
 }
 
 interface BulkNewTickersResponse {
@@ -59,29 +55,58 @@ interface UpdateTickersResponse {
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
+
   const url = new URL(req.url);
   const industryKey = url.searchParams.get('industryKey');
   const subIndustryKey = url.searchParams.get('subIndustryKey');
   const country = url.searchParams.get('country') || undefined;
 
+  const exchangeFilter: { exchange: { in: ExchangeId[] } } | {} = getCountryFilterClause(country);
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
+    ...(industryKey ? { industryKey } : {}),
+    ...(subIndustryKey ? { subIndustryKey } : {}),
+    ...exchangeFilter,
   };
 
-  if (industryKey) whereClause.industryKey = industryKey;
-  if (subIndustryKey) whereClause.subIndustryKey = subIndustryKey;
-  Object.assign(whereClause, getCountryFilterClause(country));
-
+  // Single DB query: order so we can take the first 3 per subcategory in memory.
   const tickers = await prisma.tickerV1.findMany({
     where: whereClause,
     include: {
       cachedScoreEntry: true,
+      industry: true,
+      subIndustry: true,
     },
-    orderBy: { symbol: 'asc' },
+    orderBy: [
+      // group together by subcategory (use name for stable, human-friendly grouping)
+      { subIndustry: { name: 'asc' } },
+      // within each subcategory, highest final score first (nulls last naturally)
+      { cachedScoreEntry: { finalScore: 'desc' } },
+      // tiebreakers for stability
+      { name: 'asc' },
+      { symbol: 'asc' },
+    ],
   });
 
-  const mappings = await getIndustryMappings();
-  return tickers.map((t) => enhanceTickerWithIndustryNames(t, mappings));
+  // Take top 3 per subcategory
+  const countsBySub: Record<string, number> = {};
+  const topPerSub: typeof tickers = [];
+
+  for (const t of tickers) {
+    const key = t.subIndustryKey;
+    const count = countsBySub[key] ?? 0;
+    if (count < 4) {
+      topPerSub.push(t);
+      countsBySub[key] = count + 1;
+    }
+  }
+
+  // Attach friendly names while preserving the included relations
+  return topPerSub.map((t) => ({
+    ...t,
+    industryName: t.industry.name,
+    subIndustryName: t.subIndustry.name,
+  }));
 }
 
 /** ---------- Helpers ---------- */
