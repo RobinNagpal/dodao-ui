@@ -130,10 +130,7 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
   try {
-    console.log('Fetching top industries with tickers: ' + url);
-
     const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
-    console.log('Fetched top industries with tickers: ' + res);
     if (!res.ok) return [];
 
     const tickers: TickerWithIndustryNames[] = await res.json();
