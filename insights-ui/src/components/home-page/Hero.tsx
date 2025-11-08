@@ -53,42 +53,6 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
 
               {/* Top Industries Showcase */}
               <TopIndustriesShowcase industries={industries} />
-
-              {/* Quick Features Overview (more compact + subtle colors) */}
-              <div className="mb-8 sm:mb-10">
-                <div className="text-center mb-4 sm:mb-6">
-                  <h2 className="text-2xl font-bold text-white mb-2">
-                    Why Choose <span className="text-indigo-400">KoalaGains</span>?
-                  </h2>
-                  <p className="text-gray-300 text-base max-w-2xl mx-auto">Get detailed investment analysis powered by AI</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
-                  <div className="text-center bg-gray-700/30 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
-                    <div className="w-10 h-10 mx-auto mb-3 bg-gradient-to-r from-indigo-300 to-blue-500 rounded-lg flex items-center justify-center text-lg">
-                      📊
-                    </div>
-                    <h3 className="text-base font-semibold text-white mb-1.5">Stocks Analysis</h3>
-                    <p className="text-gray-300 text-sm">5-factor analysis framework covering all dimensions</p>
-                  </div>
-
-                  <div className="text-center bg-gray-700/30 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
-                    <div className="w-10 h-10 mx-auto mb-3 bg-gradient-to-r from-sky-300 to-cyan-500 rounded-lg flex items-center justify-center text-lg">
-                      🤖
-                    </div>
-                    <h3 className="text-base font-semibold text-white mb-1.5">AI-Powered Insights</h3>
-                    <p className="text-gray-300 text-sm">Automated AI workflows turn raw stock data into clear, actionable reports</p>
-                  </div>
-
-                  <div className="text-center bg-gray-700/30 backdrop-blur-sm rounded-lg p-4 border border-gray-600/30">
-                    <div className="w-10 h-10 mx-auto mb-3 bg-gradient-to-r from-violet-300 to-indigo-500 rounded-lg flex items-center justify-center text-lg">
-                      ⚡
-                    </div>
-                    <h3 className="text-base font-semibold text-white mb-1.5">Instant Reports</h3>
-                    <p className="text-gray-300 text-sm">Get detailed investment reports in minutes, not hours</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

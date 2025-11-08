@@ -20,11 +20,7 @@ export default function TopIndustriesShowcase({ industries }: TopIndustriesShowc
   }
 
   return (
-    <div className="mb-8 sm:mb-10">
-      <div className="text-center mb-6">
-        <p className="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto">Browse all industries and their companies</p>
-      </div>
-
+    <div className="mt-8 mb-8 sm:mb-10">
       {/* Industry header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-white">Explore Industries & Top Companies</h2>
