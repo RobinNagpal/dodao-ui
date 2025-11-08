@@ -1,10 +1,11 @@
 // app/stocks/page.tsx
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
-import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
-import StocksGrid from '@/components/stocks/StocksGrid';
 import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSession } from '@/types/auth';
@@ -17,7 +18,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { Suspense } from 'react';
-import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -81,27 +81,21 @@ export default async function StocksPage({ searchParams }: PageProps) {
     const sp = await searchParams;
 
     const filters = hasFiltersApplied(sp);
-    const base = getBaseUrl() || 'https://koalagains.com';
 
     let url = '';
     let tags: string[] = [];
 
     if (filters) {
       const qs = toSortedQueryString(sp);
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
+      url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
       tags = [TICKERS_TAG, 'tickers:US:filtered:' + qs.replace(/&/g, ',')];
     } else {
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+      url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
       tags = [TICKERS_TAG];
     }
 
     const res = await fetch(url, { next: { tags } });
-    let tickers: TickerWithIndustryNames[] = [];
-    try {
-      tickers = (await res.json()) as TickerWithIndustryNames[];
-    } catch {
-      tickers = [];
-    }
+    const tickers: TickerWithIndustryNames[] = (await res.json()) as TickerWithIndustryNames[];
 
     return { tickers, filtersApplied: filters };
   })();
@@ -135,7 +129,7 @@ export default async function StocksPage({ searchParams }: PageProps) {
 
       {/* Suspense shows skeletons while new filtered data streams in */}
       <Suspense fallback={<FilterLoadingFallback />}>
-        <StocksGrid dataPromise={dataPromise} />
+        <CompactSubIndustriesGrid dataPromise={dataPromise} />
       </Suspense>
     </PageWrapper>
   );

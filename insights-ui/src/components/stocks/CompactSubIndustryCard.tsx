@@ -1,25 +1,22 @@
 import Link from 'next/link';
 import React from 'react';
-import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
+import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
 import { getScoreColorClasses } from '@/utils/score-utils';
 
-interface CompactIndustryCardProps {
+interface CompactSubIndustryCardProps {
   industryKey: string;
-  industryName: string;
-  tickerCount: number;
-  topTickers?: TickerWithIndustryNames[];
+  subIndustryName: string;
+  tickers: TickerWithScore[];
 }
 
-export default function CompactIndustryCard({ industryKey, industryName, topTickers = [] }: CompactIndustryCardProps): React.JSX.Element {
-  const displayTickers = topTickers.slice(0, 3);
+export default function CompactSubIndustryCard({ industryKey, subIndustryName, tickers }: CompactSubIndustryCardProps): React.JSX.Element {
+  const displayTickers = tickers.slice(0, 3);
 
   return (
     <div className="bg-block-bg-color rounded-lg border border-color overflow-hidden">
       <Link href={`/stocks/industries/${encodeURIComponent(industryKey)}`} className="block px-3 py-1.5 bg-[#374151] hover:bg-[#2D3748] transition-colors">
-        <h3 className="text-sm font-semibold heading-color leading-snug mb-1 text-left flex justify-between items-start" title={industryName}>
-          {/* Wrap long headings instead of truncating */}
-          <span className="whitespace-normal break-words mr-2">{industryName}</span>
-          <span className="text-[#F59E0B] hover:text-[#F97316] transition-colors text-sm flex-shrink-0">→</span>
+        <h3 className="text-sm font-semibold heading-color leading-snug mb-1 text-left flex justify-between items-start" title={subIndustryName}>
+          <span className="whitespace-normal break-words mr-2">{subIndustryName}</span>
         </h3>
       </Link>
 
