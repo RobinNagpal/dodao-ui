@@ -129,28 +129,33 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
   const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
-  const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
-  if (!res.ok) return [];
+  try {
+    const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
+    if (!res.ok) return [];
 
-  const tickers: TickerWithIndustryNames[] = await res.json();
+    const tickers: TickerWithIndustryNames[] = await res.json();
 
-  const byIndustry = new Map<string, TickerWithIndustryNames[]>();
-  for (const ticker of tickers) {
-    const key = ticker.industryKey;
-    if (!byIndustry.has(key)) byIndustry.set(key, []);
-    byIndustry.get(key)!.push(ticker);
+    const byIndustry = new Map<string, TickerWithIndustryNames[]>();
+    for (const ticker of tickers) {
+      const key = ticker.industryKey;
+      if (!byIndustry.has(key)) byIndustry.set(key, []);
+      byIndustry.get(key)!.push(ticker);
+    }
+
+    const industries: IndustryWithTopTickers[] = Array.from(byIndustry.entries())
+      .map(([industryKey, industryTickers]) => ({
+        industryKey,
+        industryName: industryTickers[0]?.industryName || industryKey,
+        tickerCount: industryTickers.length,
+        topTickers: industryTickers.sort((t) => -(t.cachedScoreEntry?.finalScore || 0)),
+      }))
+      .sort((a, b) => b.tickerCount - a.tickerCount);
+
+    return industries;
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-
-  const industries: IndustryWithTopTickers[] = Array.from(byIndustry.entries())
-    .map(([industryKey, industryTickers]) => ({
-      industryKey,
-      industryName: industryTickers[0]?.industryName || industryKey,
-      tickerCount: industryTickers.length,
-      topTickers: industryTickers.sort((t) => -(t.cachedScoreEntry?.finalScore || 0)),
-    }))
-    .sort((a, b) => b.tickerCount - a.tickerCount);
-
-  return industries;
 }
 
 // Cache + tag BOTH data sources for 7 days
