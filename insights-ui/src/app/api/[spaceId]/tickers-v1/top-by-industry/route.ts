@@ -7,8 +7,6 @@ import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/indus
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getCountryFilterClause } from '@/utils/countryUtils';
 
-/** ---------- GET ---------- */
-
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
 
@@ -32,12 +30,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       subIndustry: true,
     },
     orderBy: [
-      // group together by industry (use name for stable, human-friendly grouping)
-      { industry: { name: 'asc' } },
       // within each industry, highest final score first (nulls last naturally)
       { cachedScoreEntry: { finalScore: 'desc' } },
       // tiebreakers for stability
-      { name: 'asc' },
       { symbol: 'asc' },
     ],
   });
