@@ -15,49 +15,53 @@ import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { unstable_cache } from 'next/cache';
+
+const WEEK = 60 * 60 * 24 * 7;
+
+async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
+  const base = getBaseUrl();
+  const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
+
+  // Also tag the underlying fetch so any manual tag revalidation hits this too
+  const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
+  if (!res.ok) return [];
+
+  const tickers: TickerWithIndustryNames[] = await res.json();
+
+  const byIndustry = new Map<string, TickerWithIndustryNames[]>();
+  for (const ticker of tickers) {
+    const key = ticker.industryKey;
+    if (!byIndustry.has(key)) byIndustry.set(key, []);
+    byIndustry.get(key)!.push(ticker);
+  }
+
+  const industries: IndustryWithTopTickers[] = Array.from(byIndustry.entries())
+    .map(([industryKey, industryTickers]) => ({
+      industryKey,
+      industryName: industryTickers[0]?.industryName || industryKey,
+      tickerCount: industryTickers.length,
+      topTickers: industryTickers,
+    }))
+    .sort((a, b) => b.tickerCount - a.tickerCount);
+
+  return industries;
+}
+
+// Cache + tag BOTH data sources for 7 days
+const getIndustriesCached = unstable_cache(async () => fetchTopIndustriesWithTickers(), ['home-page-industries'], {
+  revalidate: WEEK,
+  tags: ['home-page', TICKERS_TAG],
+});
+
+const getPostsCached = unstable_cache(async () => getPostsData(6), ['home-page-posts'], { revalidate: WEEK, tags: ['home-page'] });
 
 export default async function Home() {
-  const posts = await getPostsData(6);
-
-  async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
-    const base = getBaseUrl();
-    // Use the new tickers-v1-by-industry route
-    const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
-
-    const res = await fetch(url, { next: { tags: [TICKERS_TAG] } });
-    if (!res.ok) return [];
-
-    const tickers: TickerWithIndustryNames[] = await res.json();
-
-    // Group by industry
-    const byIndustry = new Map<string, TickerWithIndustryNames[]>();
-    for (const ticker of tickers) {
-      const key = ticker.industryKey;
-      if (!byIndustry.has(key)) {
-        byIndustry.set(key, []);
-      }
-      byIndustry.get(key)!.push(ticker);
-    }
-
-    // Convert to array and sort by ticker count, then take top industries
-    const industries: IndustryWithTopTickers[] = Array.from(byIndustry.entries())
-      .map(([industryKey, industryTickers]) => {
-        return {
-          industryKey,
-          industryName: industryTickers[0]?.industryName || industryKey,
-          tickerCount: industryTickers.length,
-          topTickers: industryTickers,
-        };
-      })
-      .sort((a, b) => b.tickerCount - a.tickerCount); // Show all industries in a compact format
-
-    return industries;
-  }
+  const [industries, posts] = await Promise.all([getIndustriesCached(), getPostsCached()]);
 
   return (
     <div style={{ ...themeColors }}>
-      <Hero industries={await fetchTopIndustriesWithTickers()} />
+      <Hero industries={industries} />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
       <ReportsNavBar />
