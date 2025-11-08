@@ -2,7 +2,6 @@ import SearchBar from '@/components/core/SearchBar';
 import TopIndustriesShowcase, { IndustryWithTopTickers } from '@/components/home-page/TopIndustriesShowcase';
 import coverImage from '@/images/koala.png';
 import Image from 'next/image';
-import Link from 'next/link';
 
 export interface HeroProps {
   industries: IndustryWithTopTickers[];

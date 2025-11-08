@@ -42,7 +42,7 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
       industryKey,
       industryName: industryTickers[0]?.industryName || industryKey,
       tickerCount: industryTickers.length,
-      topTickers: industryTickers,
+      topTickers: industryTickers.sort((t) => -(t.cachedScoreEntry?.finalScore || 0)),
     }))
     .sort((a, b) => b.tickerCount - a.tickerCount);
 
