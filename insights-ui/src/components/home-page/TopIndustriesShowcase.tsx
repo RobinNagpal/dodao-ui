@@ -26,9 +26,16 @@ export default function TopIndustriesShowcase({ industries }: TopIndustriesShowc
         <h2 className="text-xl font-bold text-white">Explore Industries & Top Companies</h2>
         <Link
           href="/stocks"
-          className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center"
+          aria-label="Browse all stock reports"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2
+                             text-sm sm:text-base font-semibold text-gray-900
+                             bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]
+                             hover:from-[#FBBF24] hover:to-[#F59E0B]
+                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500
+                             focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800
+                             shadow-md hover:shadow-lg transition-all"
         >
-          <span className="ml-1">View All Stocks →</span>
+          Browse all stock reports <span aria-hidden>→</span>
         </Link>
       </div>
 

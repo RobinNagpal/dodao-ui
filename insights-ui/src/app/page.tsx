@@ -15,6 +15,7 @@ import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { unstable_cache } from 'next/cache';
 
 const WEEK = 60 * 60 * 24 * 7;
