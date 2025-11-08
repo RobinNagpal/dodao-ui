@@ -1,11 +1,13 @@
 import SearchBar from '@/components/core/SearchBar';
+import TopIndustriesShowcase, { IndustryWithTopTickers } from '@/components/home-page/TopIndustriesShowcase';
 import coverImage from '@/images/koala.png';
 import Image from 'next/image';
 import Link from 'next/link';
-import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
-import { Suspense } from 'react';
 
-export function Hero() {
+export interface HeroProps {
+  industries: IndustryWithTopTickers[];
+}
+export function Hero({ industries }: HeroProps = { industries: [] }) {
   return (
     <section className="overflow-hidden bg-gray-800">
       <div>
@@ -50,23 +52,7 @@ export function Hero() {
               </div>
 
               {/* Top Industries Showcase */}
-              <Suspense
-                fallback={
-                  <div className="mb-8 sm:mb-10">
-                    <div className="animate-pulse">
-                      <div className="h-8 bg-gray-700 rounded w-64 mx-auto mb-4"></div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {[...Array(8)].map((_, i) => (
-                          <div key={i} className="h-32 bg-gray-700 rounded-lg"></div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                }
-              >
-                {/* @ts-expect-error Server Component */}
-                <TopIndustriesShowcase />
-              </Suspense>
+              <TopIndustriesShowcase industries={industries} />
 
               {/* Quick Features Overview (more compact + subtle colors) */}
               <div className="mb-8 sm:mb-10">
