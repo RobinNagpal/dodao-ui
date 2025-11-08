@@ -36,14 +36,6 @@ export const getExchangesByCountry = (country: string): readonly ExchangeId[] =>
 };
 
 /**
- * Check if an exchange belongs to a specific country
- */
-export const isExchangeInCountry = (exchange: string, country: string): boolean => {
-  const exchangeCountry = getCountryByExchange(exchange);
-  return exchangeCountry === country;
-};
-
-/**
  * Get Prisma where clause for filtering by country
  */
 export const getCountryFilterClause = (country: string | null | undefined): { exchange: { in: readonly ExchangeId[] } } | {} => {
