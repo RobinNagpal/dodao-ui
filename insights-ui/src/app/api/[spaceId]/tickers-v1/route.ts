@@ -3,7 +3,6 @@ import { ExchangeId } from '@/utils/exchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getCountryFilterClause } from '@/utils/countryUtils';
 
