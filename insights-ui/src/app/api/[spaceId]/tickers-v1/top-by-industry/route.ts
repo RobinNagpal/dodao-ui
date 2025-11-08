@@ -19,6 +19,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     spaceId,
     ...(industryKey ? { industryKey } : {}),
     ...exchangeFilter,
+    cachedScoreEntry: {
+      finalScore: {
+        gt: 10,
+      },
+    },
   };
 
   // Single DB query: order so we can take the first 4 per industry in memory.

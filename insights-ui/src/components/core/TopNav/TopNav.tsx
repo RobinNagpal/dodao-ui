@@ -39,6 +39,7 @@ export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   const isStocksRoute = pathname.startsWith('/stocks');
+  const isHomeRoute = pathname === '/';
 
   // Wrap the whole header in a parent with className="dark" to force dark mode here
   return (
@@ -53,11 +54,13 @@ export default function TopNav() {
               <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" />
               <img alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" />
             </Link>
-            <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
-              <div className="max-w-full lg:max-w-none">
-                <SearchBar placeholder="Search stocks..." variant="navbar" />
+            {!isHomeRoute && (
+              <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
+                <div className="max-w-full lg:max-w-none">
+                  <SearchBar placeholder="Search stocks..." variant="navbar" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="flex lg:hidden">
