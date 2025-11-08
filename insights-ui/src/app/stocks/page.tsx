@@ -23,8 +23,7 @@ import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filt
 
 export const metadata: Metadata = {
   title: 'US Stocks by Industry | KoalaGains',
-  description:
-    'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and NYSEAMERICAN. See top tickers with detailed reports and AI insights.',
+  description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and NYSEAMERICAN. See top tickers with detailed reports.',
   keywords: [
     'US stocks',
     'stocks by industry',
@@ -40,8 +39,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'US Stocks by Industry | KoalaGains',
-    description:
-      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
+    description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports.',
     url: 'https://koalagains.com/stocks',
     siteName: 'KoalaGains',
     type: 'website',
@@ -49,8 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'US Stocks by Industry | KoalaGains',
-    description:
-      'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports and AI insights.',
+    description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports.',
   },
   alternates: { canonical: 'https://koalagains.com/stocks' },
 };

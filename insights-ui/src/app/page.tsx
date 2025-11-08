@@ -16,7 +16,111 @@ import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
+
+export const metadata: Metadata = {
+  title: 'Global Stocks by Industry — Deep Value Insights | KoalaGains',
+  description:
+    'Get deep value-based investment insights across all major global exchanges and leading stocks. We deliver research once limited to select investors due to high costs—now free for retail investors worldwide.',
+  keywords: [
+    // Core intent
+    'global stocks',
+    'world stocks',
+    'stocks by industry',
+    'deep value investing',
+    'value investing',
+    'fundamental analysis',
+    'intrinsic value',
+    'AI stock insights',
+    'investment research',
+    'free investment research',
+    'retail investors',
+    'KoalaGains',
+
+    // Americas
+    'NYSE',
+    'NASDAQ',
+    'NYSE American',
+    'AMEX',
+    'TSX',
+    'TSX Venture',
+    'B3',
+    'BM&FBOVESPA',
+    'BMV',
+
+    // Europe
+    'London Stock Exchange',
+    'LSE',
+    'AIM',
+    'Euronext',
+    'Deutsche Börse',
+    'Xetra',
+    'Frankfurt Stock Exchange',
+    'SIX Swiss Exchange',
+    'Borsa Italiana',
+    'BME',
+    'Bolsa de Madrid',
+    'Nasdaq Nordic',
+    'OMX',
+    'Oslo Børs',
+    'WSE',
+    'Borsa Istanbul',
+
+    // Asia-Pacific
+    'Tokyo Stock Exchange',
+    'TSE',
+    'JPX',
+    'Hong Kong Stock Exchange',
+    'HKEX',
+    'Shanghai Stock Exchange',
+    'SSE',
+    'Shenzhen Stock Exchange',
+    'SZSE',
+    'NSE India',
+    'BSE',
+    'Singapore Exchange',
+    'SGX',
+    'Korea Exchange',
+    'KRX',
+    'ASX',
+    'NZX',
+    'TWSE',
+    'Bursa Malaysia',
+    'IDX',
+    'SET',
+    'PSE',
+    'HOSE',
+
+    // Middle East & Africa
+    'Saudi Exchange',
+    'Tadawul',
+    'Abu Dhabi Securities Exchange',
+    'ADX',
+    'Dubai Financial Market',
+    'DFM',
+    'Qatar Stock Exchange',
+    'QSE',
+    'Tel Aviv Stock Exchange',
+    'TASE',
+    'Johannesburg Stock Exchange',
+    'JSE',
+  ],
+  openGraph: {
+    title: 'Global Stocks by Industry — Deep Value Insights | KoalaGains',
+    description:
+      'Deep value-based insights for stocks across major exchanges worldwide (NYSE, NASDAQ, LSE, HKEX, TSE/JPX, SSE, SZSE, NSE India, BSE, ASX, TSX, SIX, Deutsche Börse/Xetra, Euronext, SGX, KRX, JSE, B3, and more). Research once reserved for select investors—now free for retail.',
+    url: 'https://koalagains.com',
+    siteName: 'KoalaGains',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Global Stocks by Industry — Deep Value Insights | KoalaGains',
+    description: 'Global deep value insights across all major exchanges—research once limited to select investors, now free for retail.',
+  },
+  alternates: { canonical: 'https://koalagains.com' },
+};
 
 const WEEK = 60 * 60 * 24 * 7;
 
