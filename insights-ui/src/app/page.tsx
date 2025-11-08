@@ -125,8 +125,7 @@ export const metadata: Metadata = {
 const WEEK = 60 * 60 * 24 * 7;
 
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
-  const base = getBaseUrl() || 'https://koalagains.com';
-  const url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
+  const url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
   try {
