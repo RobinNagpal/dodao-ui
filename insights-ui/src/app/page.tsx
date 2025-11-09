@@ -14,8 +14,8 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 
@@ -125,7 +125,7 @@ export const metadata: Metadata = {
 const WEEK = 60 * 60 * 24 * 7;
 
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
-  const baseUrl = getBaseUrl().includes('vercel.app') ? `https://koalagains.com` : getBaseUrl();
+  const baseUrl = getBaseUrlForServerSidePages();
   const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too

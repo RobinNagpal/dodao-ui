@@ -4,6 +4,7 @@ import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -113,7 +114,7 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
     const sp = await searchParams;
 
     const filters = hasFiltersApplied(sp);
-    const baseUrl = getBaseUrl().includes('vercel.app') ? `https://koalagains.com` : getBaseUrl();
+    const baseUrl = getBaseUrlForServerSidePages();
 
     let url = '';
     let tags: string[] = [];
