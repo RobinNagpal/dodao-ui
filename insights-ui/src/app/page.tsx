@@ -1,13 +1,13 @@
-import Contact from '@/components/home-page/Contact';
-import { Footer } from '@/components/home-page/Footer';
 import BlogsGrid from '@/components/blogs/BlogsGrid';
+import { AnalysisFramework } from '@/components/home-page/AnalysisFramework';
+import Contact from '@/components/home-page/Contact';
+import Crowdfunding from '@/components/home-page/Crowdfunding';
+import { Footer } from '@/components/home-page/Footer';
 import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
-import { ReportsNavBar } from '@/components/home-page/ReportsNavBar';
-import { AnalysisFramework } from '@/components/home-page/AnalysisFramework';
-import Crowdfunding from '@/components/home-page/Crowdfunding';
 import REIT from '@/components/home-page/Reit';
+import { ReportsNavBar } from '@/components/home-page/ReportsNavBar';
 import Tariff from '@/components/home-page/Tariff';
 import { IndustryWithTopTickers } from '@/components/home-page/TopIndustriesShowcase';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -125,7 +125,8 @@ export const metadata: Metadata = {
 const WEEK = 60 * 60 * 24 * 7;
 
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
-  const url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
+  const baseUrl = getBaseUrl().includes('vercel.app') ? `https://koalagains.com` : getBaseUrl();
+  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
   try {

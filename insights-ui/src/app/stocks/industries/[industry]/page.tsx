@@ -113,17 +113,17 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
     const sp = await searchParams;
 
     const filters = hasFiltersApplied(sp);
-    const base = getBaseUrl() || 'https://koalagains.com';
+    const baseUrl = getBaseUrl().includes('vercel.app') ? `https://koalagains.com` : getBaseUrl();
 
     let url = '';
     let tags: string[] = [];
 
     if (filters) {
       const qs = toSortedQueryString(sp);
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
       tags = [TICKERS_TAG, `tickers:US:filtered:${qs.replace(/&/g, ',')}`];
     } else {
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
       tags = [TICKERS_TAG];
     }
 

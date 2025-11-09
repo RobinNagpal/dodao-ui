@@ -32,7 +32,7 @@ export default function CompactSubIndustriesGrid({ dataPromise }: { dataPromise:
     byMain[main][sub].total += 1;
   }
 
-  // Sort by finalScore and take top 3 per sub-industry for display
+  // Sort by finalScore (API already limits to top 3 per sub-industry)
   for (const main of Object.keys(byMain)) {
     for (const sub of Object.keys(byMain[main])) {
       byMain[main][sub].tickers = byMain[main][sub].tickers
@@ -41,8 +41,7 @@ export default function CompactSubIndustriesGrid({ dataPromise }: { dataPromise:
           const aScore = getTickerScore(a);
           const bScore = getTickerScore(b);
           return bScore - aScore;
-        })
-        .slice(0, 3);
+        });
     }
   }
 

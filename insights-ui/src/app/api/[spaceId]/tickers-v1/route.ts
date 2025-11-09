@@ -60,6 +60,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const industryKey = url.searchParams.get('industryKey');
   const subIndustryKey = url.searchParams.get('subIndustryKey');
   const country = url.searchParams.get('country') || undefined;
+  const limitPerSubIndustry = url.searchParams.get('limitPerSubIndustry');
 
   const exchangeFilter: { exchange: { in: ExchangeId[] } } | {} = getCountryFilterClause(country);
   const whereClause: Prisma.TickerV1WhereInput = {
@@ -88,21 +89,28 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     ],
   });
 
-  // Take top 3 per subcategory
-  const countsBySub: Record<string, number> = {};
-  const topPerSub: typeof tickers = [];
+  // Take top N per subcategory if limitPerSubIndustry is set
+  let tickersToReturn = tickers;
 
-  for (const t of tickers) {
-    const key = t.subIndustryKey;
-    const count = countsBySub[key] ?? 0;
-    if (count < 4) {
-      topPerSub.push(t);
-      countsBySub[key] = count + 1;
+  if (limitPerSubIndustry) {
+    const limit = parseInt(limitPerSubIndustry, 10) || 3; // Default to 3 if parsing fails
+    const countsBySub: Record<string, number> = {};
+    const topPerSub: typeof tickers = [];
+
+    for (const t of tickers) {
+      const key = t.subIndustryKey;
+      const count = countsBySub[key] ?? 0;
+      if (count < limit) {
+        topPerSub.push(t);
+        countsBySub[key] = count + 1;
+      }
     }
+
+    tickersToReturn = topPerSub;
   }
 
   // Attach friendly names while preserving the included relations
-  return topPerSub.map((t) => ({
+  return tickersToReturn.map((t) => ({
     ...t,
     industryName: t.industry.name,
     subIndustryName: t.subIndustry.name,
