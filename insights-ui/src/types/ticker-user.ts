@@ -1,4 +1,4 @@
-import { UserTickerTag, UserList, FavouriteTicker, User, TickerV1 } from '@prisma/client';
+import { UserTickerTag, UserTickerList, FavouriteTicker, User, TickerV1 } from '@prisma/client';
 
 // UserTickerTag types
 export interface UserTickerTagResponse extends UserTickerTag {}
@@ -20,7 +20,7 @@ export interface UpdateUserTickerTagRequest {
 }
 
 // UserList types
-export interface UserListResponse extends UserList {}
+export interface UserListResponse extends UserTickerList {}
 
 export interface UserListsResponse {
   lists: UserListResponse[];

@@ -36,7 +36,6 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       userId: userId,
       spaceId: KoalaGainsSpaceId,
       createdBy: userId,
-      updatedBy: userId,
     },
   });
 
@@ -76,7 +75,6 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       name: body.name !== undefined ? body.name : undefined,
       description: body.description !== undefined ? body.description : undefined,
       colorHex: body.colorHex !== undefined ? body.colorHex : undefined,
-      updatedBy: userId,
     },
   });
 

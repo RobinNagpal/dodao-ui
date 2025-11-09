@@ -1,16 +1,15 @@
 import { prisma } from '@/prisma';
-import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { CreateUserListRequest, UpdateUserListRequest, UserListResponse, UserListsResponse } from '@/types/ticker-user';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { NextRequest } from 'next/server';
 
 // GET /api/user-lists - Get all lists for the logged-in user
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<UserListsResponse> {
   const { userId } = userContext;
 
-  const lists = await prisma.userList.findMany({
+  const lists = await prisma.userTickerList.findMany({
     where: {
       userId: userId,
       spaceId: KoalaGainsSpaceId,
@@ -28,14 +27,13 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   const { userId } = userContext;
   const body: CreateUserListRequest = await req.json();
 
-  const list = await prisma.userList.create({
+  const list = await prisma.userTickerList.create({
     data: {
       name: body.name,
       description: body.description,
       userId: userId,
       spaceId: KoalaGainsSpaceId,
       createdBy: userId,
-      updatedBy: userId,
     },
   });
 
@@ -53,7 +51,7 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
   }
 
   // Verify the list belongs to the user
-  const existingList = await prisma.userList.findFirst({
+  const existingList = await prisma.userTickerList.findFirst({
     where: {
       id: listId,
       userId: userId,
@@ -67,14 +65,13 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 
   const body: UpdateUserListRequest = await req.json();
 
-  const updatedList = await prisma.userList.update({
+  const updatedList = await prisma.userTickerList.update({
     where: {
       id: listId,
     },
     data: {
       name: body.name !== undefined ? body.name : undefined,
       description: body.description !== undefined ? body.description : undefined,
-      updatedBy: userId,
     },
   });
 
@@ -92,7 +89,7 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
   }
 
   // Verify the list belongs to the user
-  const existingList = await prisma.userList.findFirst({
+  const existingList = await prisma.userTickerList.findFirst({
     where: {
       id: listId,
       userId: userId,
@@ -104,7 +101,7 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
     throw new Error('List not found or you do not have permission to delete it');
   }
 
-  await prisma.userList.delete({
+  await prisma.userTickerList.delete({
     where: {
       id: listId,
     },
