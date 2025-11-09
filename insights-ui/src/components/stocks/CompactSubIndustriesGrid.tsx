@@ -46,7 +46,6 @@ export default function CompactSubIndustriesGrid({ dataPromise }: { dataPromise:
   return (
     <>
       {Object.entries(byMain).map(([mainIndustry, subIndustries]) => {
-        const totals = Object.values(subIndustries).reduce((sum, s) => sum + s.total, 0);
         const sampleTicker = Object.values(subIndustries)[0]?.tickers[0];
         const industryDisplayName = (sampleTicker?.industryName as string | undefined) || (sampleTicker?.industryKey as string | undefined) || mainIndustry;
 
@@ -59,7 +58,7 @@ export default function CompactSubIndustriesGrid({ dataPromise }: { dataPromise:
                 href={`/stocks/industries/${encodeURIComponent(mainIndustry)}`}
                 className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center"
               >
-                View All {totals} Companies
+                View All Companies
                 <span className="ml-1">→</span>
               </Link>
             </div>
