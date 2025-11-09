@@ -4,6 +4,7 @@ import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -113,17 +114,17 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
     const sp = await searchParams;
 
     const filters = hasFiltersApplied(sp);
-    const base = getBaseUrl() || 'https://koalagains.com';
+    const baseUrl = getBaseUrlForServerSidePages();
 
     let url = '';
     let tags: string[] = [];
 
     if (filters) {
       const qs = toSortedQueryString(sp);
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
       tags = [TICKERS_TAG, `tickers:US:filtered:${qs.replace(/&/g, ',')}`];
     } else {
-      url = `${base}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
       tags = [TICKERS_TAG];
     }
 

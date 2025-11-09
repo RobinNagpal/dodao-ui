@@ -11,6 +11,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -75,6 +76,7 @@ type PageProps = {
 
 export default async function StocksPage({ searchParams }: PageProps) {
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
+  const baseUrl = getBaseUrlForServerSidePages();
 
   // Build one promise that resolves to both the data and whether filters were applied.
   const dataPromise: Promise<StocksDataPayload> = (async () => {
@@ -87,10 +89,11 @@ export default async function StocksPage({ searchParams }: PageProps) {
 
     if (filters) {
       const qs = toSortedQueryString(sp);
-      url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
+
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
       tags = [TICKERS_TAG, 'tickers:US:filtered:' + qs.replace(/&/g, ',')];
     } else {
-      url = `https://koalagains.com/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
+      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1?country=US&limitPerSubIndustry=3`;
       tags = [TICKERS_TAG];
     }
 

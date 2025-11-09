@@ -20,11 +20,11 @@ import {
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import { getCountryByExchange } from '@/utils/countryUtils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
@@ -46,7 +46,7 @@ export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>
 
 /** For FULL_SSG prebuilds */
 type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
-const TICKERS_INDEX_URL: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
+const TICKERS_INDEX_URL: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
 /** Build nothing by default; prebuild all when FULL_SSG=1 */
 export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
@@ -70,7 +70,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 
 /** Data fetchers */
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
@@ -79,7 +79,7 @@ async function fetchTickerByExchange(exchange: string, ticker: string): Promise<
 }
 
 async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
@@ -113,7 +113,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
 export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
 
 async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
-  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition`;
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition`;
 
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
@@ -124,7 +124,7 @@ async function fetchCompetition(exchange: string, ticker: string): Promise<Compe
 }
 
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
-  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar`;
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar`;
 
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
@@ -134,7 +134,7 @@ async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTi
 }
 
 async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
-  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
   try {
     const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
