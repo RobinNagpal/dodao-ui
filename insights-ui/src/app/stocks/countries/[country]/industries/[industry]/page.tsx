@@ -5,7 +5,7 @@ import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { FilteredTicker, TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -125,7 +125,7 @@ export default async function CountryIndustryStocksPage(props: {
   // Check if any filters are applied
   const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
 
-  let tickers: FilteredTicker[] = [];
+  let tickers: TickerWithIndustryNames[] = [];
 
   if (hasFilters) {
     // Build URL with filter params for the filtered API
@@ -142,7 +142,7 @@ export default async function CountryIndustryStocksPage(props: {
     const allTickers = await response.json();
 
     // Filter by main industry
-    tickers = allTickers.filter((ticker: FilteredTicker) => ticker.industryKey === industryKey);
+    tickers = allTickers.filter((ticker: TickerWithIndustryNames) => ticker.industryKey === industryKey);
   } else {
     // Use regular tickers API when no filters are applied
     const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=${countryName}`;
@@ -174,7 +174,7 @@ export default async function CountryIndustryStocksPage(props: {
   ];
 
   // Group tickers by sub-industry for display
-  const tickersBySubIndustry: Record<string, FilteredTicker[]> = {};
+  const tickersBySubIndustry: Record<string, TickerWithIndustryNames[]> = {};
 
   tickers.forEach((ticker) => {
     const subIndustry = ticker.subIndustryKey || 'Other';

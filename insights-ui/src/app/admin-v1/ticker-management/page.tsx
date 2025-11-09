@@ -47,7 +47,6 @@ export default function TickerManagementPage() {
   };
 
   const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    console.log('selectSubIndustry', subIndustry);
     setSelectedSubIndustry(subIndustry);
     setSelectedTickerIds([]); // Clear selections when changing sub-industry
   };

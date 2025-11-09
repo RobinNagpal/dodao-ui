@@ -1,11 +1,11 @@
 // components/stocks/StocksGrid.tsx
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
+import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import { use } from 'react';
 
 export type StocksDataPayload = {
-  tickers: TickerWithScore[];
+  tickers: TickerWithIndustryNames[];
   filtersApplied: boolean;
 };
 
@@ -13,7 +13,7 @@ type Grouped = Record<
   string, // mainIndustry key
   Record<
     string, // subIndustry key
-    { tickers: TickerWithScore[]; total: number }
+    { tickers: TickerWithIndustryNames[]; total: number }
   >
 >;
 

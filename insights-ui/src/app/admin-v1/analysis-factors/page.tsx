@@ -21,7 +21,6 @@ const AnalysisFactorsPage = () => {
   };
 
   const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    console.log('selectSubIndustry', subIndustry);
     setSelectedSubIndustry(subIndustry);
   };
 

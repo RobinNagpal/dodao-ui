@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { FilteredTicker } from '@/types/ticker-typesv1';
+import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getCountryFilterClause } from '@/utils/countryUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerAnalysisCategory } from '@prisma/client';
@@ -23,7 +23,7 @@ function toInt(v?: string) {
   return Number.isNaN(n) ? undefined : n;
 }
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<FilteredTicker[]> {
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
   const { searchParams } = new URL(req.url);
 
@@ -99,7 +99,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  const filteredTickers: FilteredTicker[] = tickers.map((ticker) => {
+  const filteredTickers: TickerWithIndustryNames[] = tickers.map((ticker) => {
     const cached = ticker.cachedScoreEntry;
 
     const categoryScores: { [key in TickerAnalysisCategory]?: number } = {
@@ -144,8 +144,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
       if (aNameStarts !== bNameStarts) return aNameStarts ? -1 : 1;
 
-      if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
-
       return a.symbol.localeCompare(b.symbol);
     });
   }
@@ -153,4 +151,4 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   return filteredTickers;
 }
 
-export const GET = withErrorHandlingV2<FilteredTicker[]>(getHandler);
+export const GET = withErrorHandlingV2<TickerWithIndustryNames[]>(getHandler);

@@ -68,7 +68,6 @@ export default function SelectIndustryAndSubIndustry({
 
   useEffect(() => {
     if (selectedIndustry) {
-      console.log(`Sub-industries for ${selectedIndustry.name} are:`);
       refetchSubIndustries();
     }
   }, [selectedIndustry]);

@@ -16,7 +16,7 @@ import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkelet
 import IndustryStocksGrid, { type IndustryStocksDataPayload } from '@/components/stocks/IndustryStocksGrid';
 
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import type { TickerWithIndustryNames, FilteredTicker } from '@/types/ticker-typesv1';
+import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import type { TickerV1Industry } from '@prisma/client';
@@ -144,7 +144,7 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
       const isFiltered = first && typeof first === 'object' && 'categoryScores' in (first as Record<string, unknown>);
       if (isFiltered) {
         // Map FilteredTicker -> TickerWithIndustryNames
-        allTickers = raw as FilteredTicker[];
+        allTickers = raw as TickerWithIndustryNames[];
       } else {
         allTickers = raw as TickerWithIndustryNames[];
       }

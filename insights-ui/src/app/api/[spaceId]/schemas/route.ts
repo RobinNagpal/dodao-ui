@@ -7,8 +7,6 @@ import path from 'path';
 
 const SCHEMAS_DIR = path.join(process.cwd(), 'schemas');
 
-console.log(`SCHEMAS_DIR: ${SCHEMAS_DIR}`);
-
 async function getAllSchemas() {
   console.log(`SCHEMAS_DIR: ${SCHEMAS_DIR}`);
   // Find all .yaml files recursively in the schemas directory

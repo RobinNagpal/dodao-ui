@@ -1,4 +1,4 @@
-import { getTickerScore, TickerWithScore } from '@/types/ticker-typesv1';
+import { getTickerScore, TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';
@@ -6,7 +6,7 @@ import React from 'react';
 interface CompactSubIndustryCardProps {
   industryKey: string;
   subIndustryName: string;
-  tickers: TickerWithScore[];
+  tickers: TickerWithIndustryNames[];
 }
 
 export default function CompactSubIndustryCard({ industryKey, subIndustryName, tickers }: CompactSubIndustryCardProps): React.JSX.Element {

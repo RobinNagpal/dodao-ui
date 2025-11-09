@@ -1,11 +1,11 @@
 import StockTickerItem from './StockTickerItem';
-import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
+import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
 
 type Variant = 'footer' | 'header-sub' | 'corner-badge';
 
 interface SubIndustryCardProps {
   subIndustry: string;
-  tickers: TickerWithScore[];
+  tickers: TickerWithIndustryNames[];
   subIndustryName?: string;
   total: number;
   variant?: Variant; // 'footer' | 'header-sub' | 'corner-badge'
