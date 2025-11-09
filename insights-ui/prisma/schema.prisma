@@ -41,6 +41,11 @@ model User {
   accounts     Account[]
   sessions     Session[]
 
+  // User ticker related relations
+  tickerTags       UserTickerTag[]
+  tickerLists      UserTickerList[]
+  favouriteTickers FavouriteTicker[]
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -529,6 +534,9 @@ model TickerV1 {
   // Relation to stock analyzer scrapper info (one-to-one)
   stockAnalyzerScrapperInfo TickerV1StockAnalyzerScrapperInfo?
 
+  // Relation to favourite tickers
+  favouriteTickers FavouriteTicker[]
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -839,4 +847,74 @@ model TickerV1StockAnalyzerScrapperInfo {
 
   @@index([tickerId])
   @@map("ticker_v1_stock_analyzer_scrapper_info")
+}
+
+// --------------------------
+// User Ticker Tags and Lists Models
+// --------------------------
+
+model UserTickerTag {
+  id          String   @id @default(uuid())
+  name        String   @map("name")
+  description String?  @map("description")
+  colorHex    String   @map("color_hex")
+  userId      String   @map("user_id")
+  spaceId     String   @default("koala_gains") @map("space_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdBy   String   @map("created_by")
+
+  // Relation to User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relation to FavouriteTickers
+  favouriteTickers FavouriteTicker[]
+
+  @@unique([spaceId, userId, name])
+  @@index([userId])
+  @@map("user_ticker_tags")
+}
+
+model UserTickerList {
+  id          String   @id @default(uuid())
+  name        String   @map("name")
+  description String?  @map("description")
+  userId      String   @map("user_id")
+  spaceId     String   @default("koala_gains") @map("space_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdBy   String   @map("created_by")
+
+  // Relation to User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relation to FavouriteTickers
+  favouriteTickers FavouriteTicker[]
+
+  @@unique([spaceId, userId, name])
+  @@index([userId])
+  @@map("user_ticker_lists")
+}
+
+model FavouriteTicker {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tickerId  String   @map("ticker_id")
+  spaceId   String   @default("koala_gains") @map("space_id")
+  myNotes   String?  @map("my_notes")
+  myScore   Float?   @map("my_score")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+
+  // Relations
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticker TickerV1         @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+  tags   UserTickerTag[]
+  lists  UserTickerList[]
+
+  @@unique([spaceId, userId, tickerId])
+  @@index([userId])
+  @@index([tickerId])
+  @@map("favourite_tickers")
 }
