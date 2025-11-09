@@ -11,7 +11,7 @@ interface CompactIndustryCardProps {
 }
 
 export default function CompactIndustryCard({ industryKey, industryName, topTickers = [] }: CompactIndustryCardProps): React.JSX.Element {
-  const displayTickers = topTickers.slice(0, 3);
+  const displayTickers = topTickers?.sort((t1, t2) => (t2.cachedScoreEntry?.finalScore || 0) - (t1.cachedScoreEntry?.finalScore || 0)).slice(0, 3);
 
   return (
     <div className="bg-block-bg-color rounded-lg border border-color overflow-hidden">

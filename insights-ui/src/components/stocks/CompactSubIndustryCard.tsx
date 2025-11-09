@@ -1,7 +1,7 @@
+import { getTickerScore, TickerWithScore } from '@/types/ticker-typesv1';
+import { getScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';
-import { TickerWithScore, getTickerScore } from '@/types/ticker-typesv1';
-import { getScoreColorClasses } from '@/utils/score-utils';
 
 interface CompactSubIndustryCardProps {
   industryKey: string;
@@ -10,8 +10,7 @@ interface CompactSubIndustryCardProps {
 }
 
 export default function CompactSubIndustryCard({ industryKey, subIndustryName, tickers }: CompactSubIndustryCardProps): React.JSX.Element {
-  const displayTickers = tickers.slice(0, 3);
-
+  const sortedTickers = tickers.sort((t1, t2) => (t2.cachedScoreEntry?.finalScore || 0) - (t1.cachedScoreEntry?.finalScore || 0)).slice(0, 3);
   return (
     <div className="bg-block-bg-color rounded-lg border border-color overflow-hidden">
       <Link href={`/stocks/industries/${encodeURIComponent(industryKey)}`} className="block px-3 py-1.5 bg-[#374151] hover:bg-[#2D3748] transition-colors">
@@ -20,10 +19,10 @@ export default function CompactSubIndustryCard({ industryKey, subIndustryName, t
         </h3>
       </Link>
 
-      {displayTickers.length > 0 && (
+      {tickers.sort((t1, t2) => (t2.cachedScoreEntry?.finalScore || 0) - (t1.cachedScoreEntry?.finalScore || 0)).slice(0, 3).length > 0 && (
         <div className="px-3 py-1">
           <ul className="space-y-1">
-            {displayTickers.map((ticker) => {
+            {sortedTickers.map((ticker) => {
               const score = getTickerScore(ticker);
               const { textColorClass, bgColorClass } = getScoreColorClasses(score || 0);
 
