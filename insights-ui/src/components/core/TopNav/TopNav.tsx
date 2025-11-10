@@ -9,6 +9,7 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface ReportItem {
   name: string;
@@ -36,6 +37,7 @@ const genaiDropdown: GenAIItem[] = [
 ];
 
 export default function TopNav() {
+  const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   const isStocksRoute = pathname.startsWith('/stocks');
@@ -76,6 +78,11 @@ export default function TopNav() {
 
           <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
+              {isStocksRoute && session && (
+                <Link href="/favourites" className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+                  My Favourite Stocks
+                </Link>
+              )}
               {!isStocksRoute && (
                 <PopoverGroup className="hidden lg:flex lg:gap-x-6">
                   <Popover className="relative">

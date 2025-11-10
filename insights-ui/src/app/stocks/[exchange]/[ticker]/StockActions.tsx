@@ -50,7 +50,7 @@ export default function StockActions({ tickerSymbol, children, session }: StockA
   };
 
   return (
-    <div className="flex items-center space-x-2 z-10">
+    <div className="flex items-center gap-2 z-10">
       {children}
       <PrivateWrapper session={session}>
         <EllipsisDropdown items={reportGenerationItems} className="px-2 py-2 z-10" onSelect={handleSelect} />

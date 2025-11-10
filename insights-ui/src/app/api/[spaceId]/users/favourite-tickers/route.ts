@@ -16,14 +16,7 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       spaceId: KoalaGainsSpaceId,
     },
     include: {
-      ticker: {
-        select: {
-          id: true,
-          name: true,
-          symbol: true,
-          exchange: true,
-        },
-      },
+      ticker: true,
       tags: true,
       lists: true,
     },
@@ -39,6 +32,8 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickerResponse> {
   const { userId } = userContext;
   const body: CreateFavouriteTickerRequest = await req.json();
+
+  console.log('body', body);
 
   // Check if the ticker exists
   const ticker = await prisma.tickerV1.findUnique({
@@ -87,14 +82,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
           : undefined,
     },
     include: {
-      ticker: {
-        select: {
-          id: true,
-          name: true,
-          symbol: true,
-          exchange: true,
-        },
-      },
+      ticker: true,
       tags: true,
       lists: true,
     },
@@ -143,27 +131,20 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       tags:
         body.tagIds !== undefined
           ? {
-              disconnect: existingFavourite.tags.map((tag) => ({ id: tag.id })),
-              connect: body.tagIds.map((tagId) => ({ id: tagId })),
+              disconnect: existingFavourite.tags.map((tag: { id: string }) => ({ id: tag.id })),
+              connect: body.tagIds.map((tagId: string) => ({ id: tagId })),
             }
           : undefined,
       lists:
         body.listIds !== undefined
           ? {
-              disconnect: existingFavourite.lists.map((list) => ({ id: list.id })),
-              connect: body.listIds.map((listId) => ({ id: listId })),
+              disconnect: existingFavourite.lists.map((list: { id: string }) => ({ id: list.id })),
+              connect: body.listIds.map((listId: string) => ({ id: listId })),
             }
           : undefined,
     },
     include: {
-      ticker: {
-        select: {
-          id: true,
-          name: true,
-          symbol: true,
-          exchange: true,
-        },
-      },
+      ticker: true,
       tags: true,
       lists: true,
     },

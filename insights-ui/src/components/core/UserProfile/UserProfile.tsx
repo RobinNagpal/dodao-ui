@@ -116,6 +116,13 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 <div className="border-t border-gray-700 my-1"></div>
               </>
             )}
+            <Link
+              href="/favourites"
+              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+              onClick={onMenuToggle}
+            >
+              My Favourite Stocks
+            </Link>
             <button
               onClick={handleUserLogout}
               className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
@@ -186,6 +193,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                   <div className="border-t border-gray-700 my-1"></div>
                 </>
               )}
+              <Link href="/favourites" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                My Favourite Stocks
+              </Link>
               <button
                 className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                 id="user-menu-item-2"

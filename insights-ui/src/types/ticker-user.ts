@@ -37,15 +37,10 @@ export interface UpdateUserListRequest {
 }
 
 // FavouriteTicker types
-export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 'lists'> {
+export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 'lists' | 'ticker'> {
   tags: UserTickerTagResponse[];
   lists: UserListResponse[];
-  ticker: {
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-  };
+  ticker: TickerV1;
 }
 
 export interface FavouriteTickersResponse {
