@@ -1,5 +1,4 @@
 import { prisma } from '@/prisma';
-import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { CreateFavouriteTickerRequest, FavouriteTickerResponse, FavouriteTickersResponse, UpdateFavouriteTickerRequest } from '@/types/ticker-user';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
@@ -32,8 +31,6 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickerResponse> {
   const { userId } = userContext;
   const body: CreateFavouriteTickerRequest = await req.json();
-
-  console.log('body', body);
 
   // Check if the ticker exists
   const ticker = await prisma.tickerV1.findUnique({
