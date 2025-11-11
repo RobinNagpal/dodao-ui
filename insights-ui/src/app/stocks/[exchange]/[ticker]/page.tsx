@@ -4,9 +4,6 @@ import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import { KoalaGainsSession } from '@/types/auth';
-import { getServerSession } from 'next-auth';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
@@ -41,7 +38,7 @@ import { TickerRadarChart } from './TickerRadarChart';
 /**
  * Static-by-default with on-demand invalidation.
  */
-// export const dynamic = 'force-static';
+export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = false;
 
@@ -293,15 +290,13 @@ function FinancialInfoSkeleton(): JSX.Element {
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
 
-function BreadcrumbsFromData({ data, session }: { data: Promise<TickerV1FastResponse>; session?: KoalaGainsSession }): JSX.Element {
+function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
   const country: string | null = getCountryByExchange(d.exchange);
   const industryName: string = d.industry.name || d.industryKey;
   const subIndustryName: string = d.industry.name || d.subIndustryKey;
-
-  console.log('session123', session);
 
   const breadcrumbs: BreadcrumbsOjbect[] =
     country === 'US'
@@ -326,7 +321,7 @@ function BreadcrumbsFromData({ data, session }: { data: Promise<TickerV1FastResp
       breadcrumbs={breadcrumbs}
       rightButton={
         <StockActions tickerSymbol={d.symbol}>
-          <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} session={session} />
+          <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <TickerComparisonButton
             tickerSymbol={d.symbol}
             tickerName={d.name}
@@ -565,11 +560,6 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 }
 /** PAGE */
 export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
-  // Get session for authentication
-  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;  
-
-  console.log('session789', session);
-
   // Main ticker data (promise for selective Suspense usage)
   const tickerInfo = getTickerOrRedirect(params);
 
@@ -598,7 +588,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     <PageWrapper>
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData data={tickerInfo} session={session as KoalaGainsSession} />
+        <BreadcrumbsFromData data={tickerInfo} />
       </Suspense>
 
       <Suspense fallback={<SummaryInfoSkeleton />}>

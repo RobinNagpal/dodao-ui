@@ -141,22 +141,51 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 Description
               </Input>
               <div className="flex gap-2">
+                <Button onClick={handleCreateList} disabled={creating || !newListName.trim()} loading={creating} variant="contained" primary className="flex-1">
+                  Create List
+                </Button>
+                <Button onClick={handleCancelAdd} disabled={creating} variant="outlined" className="flex-1">
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Edit List Form - Show when editing */}
+          {editingList && (
+            <div className="bg-gray-800 p-4 rounded-lg space-y-4">
+              <h4 className="font-medium flex items-center justify-center gap-2">
+                <PencilIcon className="w-5 h-5" />
+                Edit List
+              </h4>
+              <Input
+                modelValue={editListName}
+                onUpdate={(value) => setEditListName(value?.toString() || '')}
+                placeholder="Enter list name"
+                className="text-white"
+              >
+                List Name *
+              </Input>
+              <Input
+                modelValue={editListDescription}
+                onUpdate={(value) => setEditListDescription(value?.toString() || '')}
+                placeholder="Enter description (optional)"
+                className="text-white"
+              >
+                Description
+              </Input>
+              <div className="flex gap-2">
                 <Button
-                  onClick={handleCreateList}
-                  disabled={creating || !newListName.trim()}
-                  loading={creating}
+                  onClick={handleUpdateList}
+                  disabled={updating || !editListName.trim()}
+                  loading={updating}
                   variant="contained"
                   primary
                   className="flex-1"
                 >
-                  Create List
+                  Update
                 </Button>
-                <Button
-                  onClick={handleCancelAdd}
-                  disabled={creating}
-                  variant="outlined"
-                  className="flex-1"
-                >
+                <Button onClick={handleCancelEdit} disabled={updating} variant="outlined" className="flex-1">
                   Cancel
                 </Button>
               </div>
@@ -167,13 +196,8 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
           <div>
             <div className="flex justify-between items-center mb-3">
               <h4 className="font-medium text-center">Your Lists ({lists.length})</h4>
-              {!showAddForm && (
-                <Button
-                  onClick={() => setShowAddForm(true)}
-                  variant="contained"
-                  primary
-                  className="flex items-center gap-2"
-                >
+              {!showAddForm && !editingList && (
+                <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
                   Add List
                 </Button>
@@ -185,71 +209,20 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
               ) : (
                 lists.map((list) => (
                   <div key={list.id} className="bg-gray-800 p-3 rounded-lg">
-                    {editingList?.id === list.id ? (
-                      // Edit form
-                      <div className="space-y-3">
-                        <Input
-                          modelValue={editListName}
-                          onUpdate={(value) => setEditListName(value?.toString() || '')}
-                          placeholder="Enter list name"
-                          className="text-white"
-                        >
-                          List Name *
-                        </Input>
-                        <Input
-                          modelValue={editListDescription}
-                          onUpdate={(value) => setEditListDescription(value?.toString() || '')}
-                          placeholder="Enter description (optional)"
-                          className="text-white"
-                        >
-                          Description
-                        </Input>
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={handleUpdateList}
-                            disabled={updating || !editListName.trim()}
-                            loading={updating}
-                            variant="contained"
-                            primary
-                            className="flex-1"
-                          >
-                            Update
-                          </Button>
-                          <Button
-                            onClick={handleCancelEdit}
-                            disabled={updating}
-                            variant="outlined"
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="font-medium">{list.name}</p>
+                        {list.description && <p className="text-sm text-gray-400">{list.description}</p>}
                       </div>
-                    ) : (
-                      // Display mode
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <p className="font-medium">{list.name}</p>
-                          {list.description && <p className="text-sm text-gray-400">{list.description}</p>}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() => handleEditList(list)}
-                            variant="text"
-                            className="text-blue-400 hover:text-blue-300 p-1"
-                          >
-                            <PencilIcon className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            onClick={() => handleDeleteList(list.id)}
-                            variant="text"
-                            className="text-red-400 hover:text-red-300 p-1"
-                          >
-                            <TrashIcon className="w-4 h-4" />
-                          </Button>
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <Button onClick={() => handleEditList(list)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
+                          <PencilIcon className="w-4 h-4" />
+                        </Button>
+                        <Button onClick={() => handleDeleteList(list.id)} variant="text" className="text-red-400 hover:text-red-300 p-1">
+                          <TrashIcon className="w-4 h-4" />
+                        </Button>
                       </div>
-                    )}
+                    </div>
                   </div>
                 ))
               )}
@@ -271,4 +244,3 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
     </>
   );
 }
-

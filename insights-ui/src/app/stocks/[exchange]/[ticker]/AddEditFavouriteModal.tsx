@@ -28,20 +28,12 @@ interface AddEditFavouriteModalProps {
   tickerId: string;
   tickerSymbol: string;
   tickerName: string;
-  existingFavourite?: FavouriteTickerResponse | null;
   onSuccess?: () => void;
 }
 
-export default function AddEditFavouriteModal({
-  isOpen,
-  onClose,
-  tickerId,
-  tickerSymbol,
-  tickerName,
-  existingFavourite,
-  onSuccess,
-}: AddEditFavouriteModalProps) {
+export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, tickerSymbol, tickerName, onSuccess }: AddEditFavouriteModalProps) {
   const [currentView, setCurrentView] = useState<ModalView>('main');
+  const [existingFavourite, setExistingFavourite] = useState<FavouriteTickerResponse | null>(null);
 
   // Form state
   const [myNotes, setMyNotes] = useState('');
@@ -54,20 +46,19 @@ export default function AddEditFavouriteModal({
     data: tagsData,
     loading: tagsLoading,
     reFetchData: refetchTags,
-  } = useFetchData<{ tags: UserTickerTagResponse[] }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`,
-    {},
-    'Failed to fetch tags'
-  );
+  } = useFetchData<{ tags: UserTickerTagResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`, {}, 'Failed to fetch tags');
 
   const {
     data: listsData,
     loading: listsLoading,
     reFetchData: refetchLists,
-  } = useFetchData<{ lists: UserListResponse[] }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`,
-    {},
-    'Failed to fetch lists'
+  } = useFetchData<{ lists: UserListResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`, {}, 'Failed to fetch lists');
+
+  // Fetch existing favourite for this ticker
+  const { data: favouritesData, reFetchData: refetchFavourites } = useFetchData<{ favouriteTickers: FavouriteTickerResponse[] }>(
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`,
+    { skipInitialFetch: !isOpen },
+    'Failed to fetch favourites'
   );
 
   // Post and Put hooks for favourites
@@ -85,7 +76,24 @@ export default function AddEditFavouriteModal({
   const availableLists = listsData?.lists || [];
   const loading = creating || updating;
 
-  // Load existing data
+  // Check if current ticker exists in favourites
+  useEffect(() => {
+    if (favouritesData?.favouriteTickers) {
+      const existing = favouritesData.favouriteTickers.find((f) => f.tickerId === tickerId);
+      setExistingFavourite(existing || null);
+    }
+  }, [favouritesData, tickerId]);
+
+  // Load existing data when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      // Fetch favourites data when modal opens
+      refetchFavourites();
+      setCurrentView('main');
+    }
+  }, [isOpen, refetchFavourites]);
+
+  // Update form when existing favourite changes
   useEffect(() => {
     if (isOpen) {
       if (existingFavourite) {
@@ -100,7 +108,6 @@ export default function AddEditFavouriteModal({
         setSelectedTagIds([]);
         setSelectedListIds([]);
       }
-      setCurrentView('main');
     }
   }, [isOpen, existingFavourite]);
 
@@ -166,7 +173,9 @@ export default function AddEditFavouriteModal({
 
       {/* My Notes */}
       <div className="space-y-2">
-        <label htmlFor="my-notes" className="block text-sm font-medium">My Notes (Optional)</label>
+        <label htmlFor="my-notes" className="block text-sm font-medium">
+          My Notes (Optional)
+        </label>
         <textarea
           id="my-notes"
           value={myNotes}
@@ -194,11 +203,7 @@ export default function AddEditFavouriteModal({
       <div>
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium">Tags</label>
-          <Button
-            onClick={() => setCurrentView('manage-tags')}
-            variant="text"
-            className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
-          >
+          <Button onClick={() => setCurrentView('manage-tags')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <TagIcon className="w-4 h-4" />
             Manage Tags
           </Button>
@@ -209,16 +214,8 @@ export default function AddEditFavouriteModal({
           ) : (
             availableTags.map((tag) => (
               <label key={tag.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
-                <input
-                  type="checkbox"
-                  checked={selectedTagIds.includes(tag.id)}
-                  onChange={() => toggleTag(tag.id)}
-                  className="w-4 h-4"
-                />
-                <span
-                  className="w-3 h-3 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: tag.colorHex }}
-                />
+                <input type="checkbox" checked={selectedTagIds.includes(tag.id)} onChange={() => toggleTag(tag.id)} className="w-4 h-4" />
+                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
                 <span className="text-sm">{tag.name}</span>
                 {tag.description && <span className="text-xs text-gray-500">- {tag.description}</span>}
               </label>
@@ -231,11 +228,7 @@ export default function AddEditFavouriteModal({
       <div>
         <div className="flex justify-between items-center mb-2">
           <label className="block text-sm font-medium">Lists</label>
-          <Button
-            onClick={() => setCurrentView('manage-lists')}
-            variant="text"
-            className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"
-          >
+          <Button onClick={() => setCurrentView('manage-lists')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <ListBulletIcon className="w-4 h-4" />
             Manage Lists
           </Button>
@@ -246,12 +239,7 @@ export default function AddEditFavouriteModal({
           ) : (
             availableLists.map((list) => (
               <label key={list.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
-                <input
-                  type="checkbox"
-                  checked={selectedListIds.includes(list.id)}
-                  onChange={() => toggleList(list.id)}
-                  className="w-4 h-4"
-                />
+                <input type="checkbox" checked={selectedListIds.includes(list.id)} onChange={() => toggleList(list.id)} className="w-4 h-4" />
                 <span className="text-sm">{list.name}</span>
                 {list.description && <span className="text-xs text-gray-500">- {list.description}</span>}
               </label>
@@ -290,13 +278,7 @@ export default function AddEditFavouriteModal({
         onListsChange={handleListsChange}
       />
 
-      <ManageTagsModal
-        isOpen={currentView === 'manage-tags'}
-        onClose={() => setCurrentView('main')}
-        tags={availableTags}
-        onTagsChange={handleTagsChange}
-      />
+      <ManageTagsModal isOpen={currentView === 'manage-tags'} onClose={() => setCurrentView('main')} tags={availableTags} onTagsChange={handleTagsChange} />
     </>
   );
 }
-

@@ -133,12 +133,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 <PlusIcon className="w-5 h-5" />
                 Create New Tag
               </h4>
-              <Input
-                modelValue={newTagName}
-                onUpdate={(value) => setNewTagName(value?.toString() || '')}
-                placeholder="Enter tag name"
-                className=" text-white"
-              >
+              <Input modelValue={newTagName} onUpdate={(value) => setNewTagName(value?.toString() || '')} placeholder="Enter tag name" className=" text-white">
                 Tag Name *
               </Input>
               <Input
@@ -150,7 +145,9 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 Description
               </Input>
               <div className="space-y-2">
-                <label htmlFor="tag-color" className="block text-sm font-medium">Color</label>
+                <label htmlFor="tag-color" className="block text-sm font-medium">
+                  Color
+                </label>
                 <div className="flex items-center gap-3">
                   <input
                     id="tag-color"
@@ -163,22 +160,54 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button
-                  onClick={handleCreateTag}
-                  disabled={creating || !newTagName.trim()}
-                  loading={creating}
-                  variant="contained"
-                  primary
-                  className="flex-1"
-                >
+                <Button onClick={handleCreateTag} disabled={creating || !newTagName.trim()} loading={creating} variant="contained" primary className="flex-1">
                   Create Tag
                 </Button>
-                <Button
-                  onClick={handleCancelAdd}
-                  disabled={creating}
-                  variant="outlined"
-                  className="flex-1"
-                >
+                <Button onClick={handleCancelAdd} disabled={creating} variant="outlined" className="flex-1">
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Edit Tag Form - Show when editing */}
+          {editingTag && (
+            <div className="bg-gray-800 p-4 rounded-lg space-y-4">
+              <h4 className="font-medium flex items-center justify-center gap-2">
+                <PencilIcon className="w-5 h-5" />
+                Edit Tag
+              </h4>
+              <Input modelValue={editTagName} onUpdate={(value) => setEditTagName(value?.toString() || '')} placeholder="Enter tag name" className="text-white">
+                Tag Name *
+              </Input>
+              <Input
+                modelValue={editTagDescription}
+                onUpdate={(value) => setEditTagDescription(value?.toString() || '')}
+                placeholder="Enter description (optional)"
+                className="text-white"
+              >
+                Description
+              </Input>
+              <div className="space-y-2">
+                <label htmlFor="edit-tag-color" className="block text-sm font-medium">
+                  Color
+                </label>
+                <div className="flex items-center gap-3">
+                  <input
+                    id="edit-tag-color"
+                    type="color"
+                    value={editTagColor}
+                    onChange={(e) => setEditTagColor(e.target.value)}
+                    className="w-16 h-10 bg-gray-700 border border-gray-600 rounded-md cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-400">{editTagColor}</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={handleUpdateTag} disabled={updating || !editTagName.trim()} loading={updating} variant="contained" primary className="flex-1">
+                  Update
+                </Button>
+                <Button onClick={handleCancelEdit} disabled={updating} variant="outlined" className="flex-1">
                   Cancel
                 </Button>
               </div>
@@ -189,13 +218,8 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
           <div>
             <div className="flex justify-between items-center mb-3">
               <h4 className="font-medium text-center">Your Tags ({tags.length})</h4>
-              {!showAddForm && (
-                <Button
-                  onClick={() => setShowAddForm(true)}
-                  variant="contained"
-                  primary
-                  className="flex items-center gap-2"
-                >
+              {!showAddForm && !editingTag && (
+                <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
                   Add Tag
                 </Button>
@@ -207,87 +231,23 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
               ) : (
                 tags.map((tag) => (
                   <div key={tag.id} className="bg-gray-800 p-3 rounded-lg">
-                    {editingTag?.id === tag.id ? (
-                      // Edit form
-                      <div className="space-y-3">
-                        <Input
-                          modelValue={editTagName}
-                          onUpdate={(value) => setEditTagName(value?.toString() || '')}
-                          placeholder="Enter tag name"
-                          className="text-white"
-                        >
-                          Tag Name *
-                        </Input>
-                        <Input
-                          modelValue={editTagDescription}
-                          onUpdate={(value) => setEditTagDescription(value?.toString() || '')}
-                          placeholder="Enter description (optional)"
-                          className="text-white"
-                        >
-                          Description
-                        </Input>
-                        <div className="space-y-2">
-                          <label htmlFor="edit-tag-color" className="block text-sm font-medium">Color</label>
-                          <div className="flex items-center gap-3">
-                            <input
-                              id="edit-tag-color"
-                              type="color"
-                              value={editTagColor}
-                              onChange={(e) => setEditTagColor(e.target.value)}
-                              className="w-16 h-10 bg-gray-700 border border-gray-600 rounded-md cursor-pointer"
-                            />
-                            <span className="text-sm text-gray-400">{editTagColor}</span>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={handleUpdateTag}
-                            disabled={updating || !editTagName.trim()}
-                            loading={updating}
-                            variant="contained"
-                            primary
-                            className="flex-1"
-                          >
-                            Update
-                          </Button>
-                          <Button
-                            onClick={handleCancelEdit}
-                            disabled={updating}
-                            variant="outlined"
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
+                        <div className="flex-1">
+                          <p className="font-medium">{tag.name}</p>
+                          {tag.description && <p className="text-sm text-gray-400">{tag.description}</p>}
                         </div>
                       </div>
-                    ) : (
-                      // Display mode
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 flex-1">
-                          <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                          <div className="flex-1">
-                            <p className="font-medium">{tag.name}</p>
-                            {tag.description && <p className="text-sm text-gray-400">{tag.description}</p>}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() => handleEditTag(tag)}
-                            variant="text"
-                            className="text-blue-400 hover:text-blue-300 p-1"
-                          >
-                            <PencilIcon className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            onClick={() => handleDeleteTag(tag.id)}
-                            variant="text"
-                            className="text-red-400 hover:text-red-300 p-1"
-                          >
-                            <TrashIcon className="w-4 h-4" />
-                          </Button>
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <Button onClick={() => handleEditTag(tag)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
+                          <PencilIcon className="w-4 h-4" />
+                        </Button>
+                        <Button onClick={() => handleDeleteTag(tag.id)} variant="text" className="text-red-400 hover:text-red-300 p-1">
+                          <TrashIcon className="w-4 h-4" />
+                        </Button>
                       </div>
-                    )}
+                    </div>
                   </div>
                 ))
               )}
@@ -309,4 +269,3 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
     </>
   );
 }
-
