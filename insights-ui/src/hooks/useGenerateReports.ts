@@ -315,63 +315,12 @@ export const useGenerateReports = () => {
     }
   };
 
-  /**
-   * Generate missing reports smartly:
-   * - If some tickers have many missing reports, send full-generation batch for them.
-   * - For the rest, send per-report-type batches.
-   * - If none have many missing reports, send one batch for all tickers and all types.
-   */
-  const generateMissingReports = async (
-    tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[],
-    tickersWithManyMissingReports?: TickerIdentifier[]
-  ): Promise<void> => {
-    if (tickersWithReportTypes.length === 0) return;
-
-    setIsGenerating(true);
-    try {
-      const allTickers: TickerIdentifier[] = tickersWithReportTypes.map((t) => t.ticker);
-      const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
-
-      if (tickersWithManyMissingReports && tickersWithManyMissingReports.length > 0) {
-        // Full regeneration for high-miss tickers
-        await generateAllReportsInBackground(tickersWithManyMissingReports);
-
-        // For remaining, group by report type
-        const remaining: TickerIdentifier[] = allTickers.filter(
-          (t) => !tickersWithManyMissingReports.some((tm) => tm.symbol === t.symbol && tm.exchange === t.exchange)
-        );
-
-        if (remaining.length > 0) {
-          const typeToTickers: Record<string, TickerIdentifier[]> = {};
-          tickersWithReportTypes
-            .filter((x) => remaining.some((r) => r.symbol === x.ticker.symbol && r.exchange === x.ticker.exchange))
-            .forEach(({ ticker, reportTypes }) => {
-              reportTypes.forEach((rt) => {
-                if (!typeToTickers[rt]) typeToTickers[rt] = [];
-                typeToTickers[rt].push({ symbol: ticker.symbol, exchange: ticker.exchange });
-              });
-            });
-
-          for (const [rt, tickers] of Object.entries(typeToTickers)) {
-            await generateSpecificReportsInBackground(tickers, [rt as ReportType]);
-          }
-        }
-      } else {
-        // Single batch for everything
-        await generateSpecificReportsInBackground(allTickers, allReportTypes);
-      }
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
   return {
     /** exports used by UI */
     generateAllReportsForTicker,
     generateReportsSynchronously,
     generateSpecificReportsInBackground,
     generateAllReportsInBackground,
-    generateMissingReports,
     createFullBackgroundGenerationRequests,
     createFailedPartsOnlyGenerationRequests,
 
