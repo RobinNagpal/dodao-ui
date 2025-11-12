@@ -1,4 +1,4 @@
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AnalysisRequest, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { InvestorKey, InvestorTypes, ReportType } from '@/types/ticker-typesv1';
@@ -53,29 +53,39 @@ export const useGenerateReports = () => {
     return postAnalysis(url, payload);
   };
 
-  const generateAnalysis = async (analysisType: ReportType, ticker: string, onReportGenerated?: (ticker: string) => void): Promise<void> => {
-    if (!ticker) return;
+  const generateAnalysis = async (
+    analysisType: ReportType,
+    ticker: TickerIdentifier,
+    onReportGenerated?: (ticker: TickerIdentifier) => void
+  ): Promise<void> => {
+    if (!ticker || !ticker.symbol || !ticker.exchange) return;
     try {
       const payload: AnalysisRequest = {};
-      // Extract symbol and exchange from ticker (format: SYMBOL-EXCHANGE)
-      const [symbol, exchange] = ticker.split('-');
-      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange}/${symbol}/${analysisType}`, payload);
+      const result = await postAnalysisTo(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/${analysisType}`,
+        payload
+      );
       if (result && onReportGenerated) onReportGenerated(ticker);
     } catch (err) {
-      console.error(`Error generating ${analysisType} for ${ticker}:`, err);
+      console.error(`Error generating ${analysisType} for ${ticker.symbol}-${ticker.exchange}:`, err);
     }
   };
 
-  const generateInvestorAnalysis = async (investorKey: InvestorKey, ticker: string, onReportGenerated?: (ticker: string) => void): Promise<void> => {
-    if (!ticker) return;
+  const generateInvestorAnalysis = async (
+    investorKey: InvestorKey,
+    ticker: TickerIdentifier,
+    onReportGenerated?: (ticker: TickerIdentifier) => void
+  ): Promise<void> => {
+    if (!ticker || !ticker.symbol || !ticker.exchange) return;
     try {
       const payload: AnalysisRequest = { investorKey };
-      // Extract symbol and exchange from ticker (format: SYMBOL-EXCHANGE)
-      const [symbol, exchange] = ticker.split('-');
-      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange}/${symbol}/investor-analysis`, payload);
+      const result = await postAnalysisTo(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/investor-analysis`,
+        payload
+      );
       if (result && onReportGenerated) onReportGenerated(ticker);
     } catch (err) {
-      console.error(`Error generating investor analysis for ${ticker} (${investorKey}):`, err);
+      console.error(`Error generating investor analysis for ${ticker.symbol}-${ticker.exchange} (${investorKey}):`, err);
     }
   };
 
@@ -84,8 +94,8 @@ export const useGenerateReports = () => {
   /**
    * Generate all reports for a single ticker (synchronously, respecting dependencies).
    */
-  const generateAllReportsForTicker = async (ticker: string, onReportGenerated?: (ticker: string) => void): Promise<void> => {
-    if (!ticker) return;
+  const generateAllReportsForTicker = async (ticker: TickerIdentifier, onReportGenerated?: (ticker: TickerIdentifier) => void): Promise<void> => {
+    if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
     setIsGenerating(true);
     try {
@@ -117,9 +127,9 @@ export const useGenerateReports = () => {
    * Each ticker processes its selected steps in sequence (to respect deps).
    */
   const generateReportsSynchronously = async (
-    tickers: string[],
+    tickers: TickerIdentifier[],
     selectedReportTypes: ReportType[],
-    onReportGenerated?: (ticker: string) => void
+    onReportGenerated?: (ticker: TickerIdentifier) => void
   ): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
@@ -149,14 +159,14 @@ export const useGenerateReports = () => {
    * Batch background generation for specific report types and tickers.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateSpecificReportsInBackground = async (tickers: string[], selectedReportTypes: ReportType[]): Promise<void> => {
+  const generateSpecificReportsInBackground = async (tickers: TickerIdentifier[], selectedReportTypes: ReportType[]): Promise<void> => {
     if (tickers.length === 0 || selectedReportTypes.length === 0) return;
 
     setIsGenerating(true);
     try {
       const payloads: GenerationRequestPayload[] = tickers.map((ticker) => {
         const payload: GenerationRequestPayload = {
-          ticker,
+          ticker: { symbol: ticker.symbol, exchange: ticker.exchange },
           regenerateCompetition: false,
           regenerateFinancialAnalysis: false,
           regenerateBusinessAndMoat: false,
@@ -197,13 +207,13 @@ export const useGenerateReports = () => {
    * Batch background generation for all report types for tickers with many missing reports.
    * Always sends a single POST with an array of payloads (batch), even when length === 1.
    */
-  const generateAllReportsInBackground = async (tickers: string[]): Promise<void> => {
+  const generateAllReportsInBackground = async (tickers: TickerIdentifier[]): Promise<void> => {
     if (tickers.length === 0) return;
 
     setIsGenerating(true);
     try {
       const payloads: GenerationRequestPayload[] = tickers.map((ticker) => ({
-        ticker,
+        ticker: { symbol: ticker.symbol, exchange: ticker.exchange },
         regenerateCompetition: true,
         regenerateFinancialAnalysis: true,
         regenerateBusinessAndMoat: true,
@@ -227,13 +237,13 @@ export const useGenerateReports = () => {
    * Batch generate "full" background requests for a list of tickers.
    * Replaces the old single-ticker helper. Always batched.
    */
-  const createFullBackgroundGenerationRequests = async (tickers: string[]): Promise<void> => {
+  const createFullBackgroundGenerationRequests = async (tickers: TickerIdentifier[]): Promise<void> => {
     if (tickers.length === 0) return;
 
     setIsGenerating(true);
     try {
       const payloads: GenerationRequestPayload[] = tickers.map((ticker) => ({
-        ticker,
+        ticker: { symbol: ticker.symbol, exchange: ticker.exchange },
         regenerateCompetition: true,
         regenerateFinancialAnalysis: true,
         regenerateBusinessAndMoat: true,
@@ -257,16 +267,16 @@ export const useGenerateReports = () => {
    * Batch create background requests where each item enables only its failed steps.
    * Accepts an array to keep this strictly batch-only even for a single ticker.
    */
-  const createFailedPartsOnlyGenerationRequests = async (items: { ticker: string; failedSteps: ReportType[] }[]): Promise<void> => {
+  const createFailedPartsOnlyGenerationRequests = async (items: { ticker: TickerIdentifier; failedSteps: ReportType[] }[]): Promise<void> => {
     if (items.length === 0) return;
 
     setIsGenerating(true);
     try {
       const payloads: GenerationRequestPayload[] = items
-        .filter((it) => it.ticker && (it.failedSteps?.length ?? 0) > 0)
+        .filter((it) => it.ticker && it.ticker.symbol && it.ticker.exchange && (it.failedSteps?.length ?? 0) > 0)
         .map((it) => {
           const p: GenerationRequestPayload = {
-            ticker: it.ticker,
+            ticker: { symbol: it.ticker.symbol, exchange: it.ticker.exchange },
             regenerateCompetition: false,
             regenerateFinancialAnalysis: false,
             regenerateBusinessAndMoat: false,
@@ -312,14 +322,14 @@ export const useGenerateReports = () => {
    * - If none have many missing reports, send one batch for all tickers and all types.
    */
   const generateMissingReports = async (
-    tickersWithReportTypes: { ticker: string; reportTypes: ReportType[] }[],
-    tickersWithManyMissingReports?: string[]
+    tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[],
+    tickersWithManyMissingReports?: TickerIdentifier[]
   ): Promise<void> => {
     if (tickersWithReportTypes.length === 0) return;
 
     setIsGenerating(true);
     try {
-      const allTickers: string[] = tickersWithReportTypes.map((t) => t.ticker);
+      const allTickers: TickerIdentifier[] = tickersWithReportTypes.map((t) => t.ticker);
       const allReportTypes: ReportType[] = Array.from(new Set(tickersWithReportTypes.flatMap((t) => t.reportTypes)));
 
       if (tickersWithManyMissingReports && tickersWithManyMissingReports.length > 0) {
@@ -327,16 +337,18 @@ export const useGenerateReports = () => {
         await generateAllReportsInBackground(tickersWithManyMissingReports);
 
         // For remaining, group by report type
-        const remaining: string[] = allTickers.filter((t) => !tickersWithManyMissingReports.includes(t));
+        const remaining: TickerIdentifier[] = allTickers.filter(
+          (t) => !tickersWithManyMissingReports.some((tm) => tm.symbol === t.symbol && tm.exchange === t.exchange)
+        );
 
         if (remaining.length > 0) {
-          const typeToTickers: Record<string, string[]> = {};
+          const typeToTickers: Record<string, TickerIdentifier[]> = {};
           tickersWithReportTypes
-            .filter((x) => remaining.includes(x.ticker))
+            .filter((x) => remaining.some((r) => r.symbol === x.ticker.symbol && r.exchange === x.ticker.exchange))
             .forEach(({ ticker, reportTypes }) => {
               reportTypes.forEach((rt) => {
                 if (!typeToTickers[rt]) typeToTickers[rt] = [];
-                typeToTickers[rt].push(ticker);
+                typeToTickers[rt].push({ symbol: ticker.symbol, exchange: ticker.exchange });
               });
             });
 

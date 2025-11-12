@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, PakistanExchanges } from '@/utils/countryExchangeUtils';
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry, TickerV1VsCompetition } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server';
 export interface NewTickerSubmission {
   name: string;
   symbol: string;
-  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
+  exchange: AllExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;

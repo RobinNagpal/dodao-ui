@@ -1,5 +1,6 @@
 'use client';
 
+import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import AdminNav from '@/app/admin-v1/AdminNav';
 import AdminCountryFilter, { filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import { CountryCode } from '@/utils/countryExchangeUtils';
@@ -18,9 +19,9 @@ import React, { useEffect, useState } from 'react';
 interface TickerSelectionPageProps {
   /** The component to render when tickers are selected */
   renderActionComponent: (props: {
-    selectedTickers: string[];
+    selectedTickers: TickerIdentifier[];
     tickerData: Record<string, TickerWithMissingReportInfo>;
-    onDataUpdated: (ticker: string) => void;
+    onDataUpdated: (ticker: TickerIdentifier) => void;
   }) => React.ReactNode;
 
   /**
@@ -34,8 +35,8 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
 
-  // Ticker/data state - now stores unique IDs (symbol-exchange)
-  const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
+  // Ticker/data state - stores TickerIdentifier objects
+  const [selectedTickers, setSelectedTickers] = useState<TickerIdentifier[]>([]);
 
   // Filter state
   const [showMissingOnly, setShowMissingOnly] = useState<boolean>(false);
@@ -82,7 +83,12 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
   // Apply country filter
   tickers = filterTickersByCountries(tickers, selectedCountries);
 
-  const updateSelectedTickers = async (tickers: string[]) => {
+  const updateSelectedTickers = async (tickerIds: string[]) => {
+    // Convert string IDs to TickerIdentifier objects
+    const tickers: TickerIdentifier[] = tickerIds.map((id) => {
+      const [symbol, exchange] = id.split('-');
+      return { symbol, exchange: exchange as TickerIdentifier['exchange'] };
+    });
     setSelectedTickers(tickers);
   };
 
@@ -189,9 +195,11 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                     ]}
                     selectedItemIds={selectedTickers.length === tickers.length ? ['select-all'] : []}
                     onChange={(ids: string[]) => {
-                      if (selectedTickers.length === tickers.length) updateSelectedTickers([]);
-                      else {
-                        updateSelectedTickers(tickers.map((t) => `${t.symbol}-${t.exchange}`));
+                      if (selectedTickers.length === tickers.length) {
+                        setSelectedTickers([]);
+                      } else {
+                        const tickerIds = tickers.map((t) => `${t.symbol}-${t.exchange}`);
+                        updateSelectedTickers(tickerIds);
                       }
                     }}
                   />
@@ -233,7 +241,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                       ),
                     };
                   })}
-                  selectedItemIds={selectedTickers}
+                  selectedItemIds={selectedTickers.map((t) => `${t.symbol}-${t.exchange}`)}
                   onChange={(uniqueIds: string[]) => {
                     updateSelectedTickers(uniqueIds);
                   }}
@@ -260,7 +268,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
           renderActionComponent({
             selectedTickers,
             tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.symbol}-${t.exchange}`, t]) || []),
-            onDataUpdated: (ticker: string) => {
+            onDataUpdated: (ticker: TickerIdentifier) => {
               void reFetchTickersForSubIndustry();
             },
           })}

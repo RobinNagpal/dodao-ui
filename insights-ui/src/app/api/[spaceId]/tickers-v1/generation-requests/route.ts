@@ -3,11 +3,17 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
+export interface TickerIdentifier {
+  symbol: string;
+  exchange: AllExchanges;
+}
+
 export interface GenerationRequestPayload {
-  ticker: string;
+  ticker: TickerIdentifier;
   regenerateCompetition: boolean;
   regenerateFinancialAnalysis: boolean;
   regenerateBusinessAndMoat: boolean;
@@ -190,27 +196,16 @@ async function postHandler(
   for (const payload of payloads) {
     const { ticker, ...regenerateOptions } = payload;
 
-    if (!ticker) {
-      throw new Error('Ticker is required for each generation request');
+    if (!ticker || !ticker.symbol || !ticker.exchange) {
+      throw new Error('Ticker with symbol and exchange is required for each generation request');
     }
 
     // Find the ticker to get its ID
-    // Handle both formats: "SYMBOL" (legacy) and "SYMBOL-EXCHANGE" (new)
-    let whereClause;
-    if (ticker.includes('-')) {
-      const [symbol, exchange] = ticker.split('-');
-      whereClause = {
-        spaceId,
-        symbol: symbol.toUpperCase(),
-        exchange: exchange.toUpperCase(),
-      };
-    } else {
-      // Legacy format - just symbol
-      whereClause = {
-        spaceId,
-        symbol: ticker.toUpperCase(),
-      };
-    }
+    const whereClause = {
+      spaceId,
+      symbol: ticker.symbol.toUpperCase(),
+      exchange: ticker.exchange.toUpperCase(),
+    };
 
     const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
       where: whereClause,

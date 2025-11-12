@@ -38,9 +38,11 @@ export enum PakistanExchanges {
   PSX = 'PSX',
 }
 
+export type AllExchanges = USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
+
 /** ---------- Constants ---------- */
 
-export const EXCHANGES: ReadonlyArray<USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges> = [
+export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   USExchanges.NASDAQ,
   USExchanges.NYSE,
   USExchanges.NYSEAMERICAN,
@@ -55,7 +57,7 @@ export const EXCHANGES: ReadonlyArray<USExchanges | CanadaExchanges | IndiaExcha
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
 
-export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, (USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges)[]> = {
+export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllExchanges[]> = {
   [SupportedCountries.US]: Object.values(USExchanges),
   [SupportedCountries.Canada]: Object.values(CanadaExchanges),
   [SupportedCountries.India]: Object.values(IndiaExchanges),
@@ -63,7 +65,7 @@ export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, (USExchanges | Can
   [SupportedCountries.Pakistan]: Object.values(PakistanExchanges),
 };
 
-export const EXCHANGE_TO_COUNTRY: Record<USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges, SupportedCountries> = {
+export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [USExchanges.NASDAQ]: SupportedCountries.US,
   [USExchanges.NYSE]: SupportedCountries.US,
   [USExchanges.NYSEAMERICAN]: SupportedCountries.US,
@@ -79,13 +81,16 @@ export const EXCHANGE_TO_COUNTRY: Record<USExchanges | CanadaExchanges | IndiaEx
 
 export type CountryCode = keyof typeof SupportedCountries;
 
+/** Get all supported countries as an array */
+export const ALL_SUPPORTED_COUNTRIES: SupportedCountries[] = Object.values(SupportedCountries);
+
 /** ---------- Exchange Utility Functions ---------- */
 
-export const isExchange = (val: string): val is USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges => {
+export const isExchange = (val: string): val is AllExchanges => {
   return (EXCHANGES as readonly string[]).includes(val);
 };
 
-export const toExchange = (val?: string | null): USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges => {
+export const toExchange = (val?: string | null): AllExchanges => {
   const normalized = (val ?? '').trim().toUpperCase();
   return isExchange(normalized) ? normalized : USExchanges.NASDAQ;
 };
@@ -95,7 +100,7 @@ export const toExchange = (val?: string | null): USExchanges | CanadaExchanges |
 /**
  * Get the country code for a given exchange
  */
-export const getCountryByExchange = (exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges): SupportedCountries => {
+export const getCountryByExchange = (exchange: AllExchanges): SupportedCountries => {
   const country = EXCHANGE_TO_COUNTRY[exchange];
   if (!country) {
     throw new Error(`Exchange ${exchange} not found in any country`);
@@ -106,7 +111,7 @@ export const getCountryByExchange = (exchange: USExchanges | CanadaExchanges | I
 /**
  * Get all exchanges for a given country
  */
-export const getExchangesByCountry = (country: SupportedCountries): (USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges)[] => {
+export const getExchangesByCountry = (country: SupportedCountries): AllExchanges[] => {
   const exchanges = COUNTRY_TO_EXCHANGES[country];
   if (!exchanges || exchanges.length === 0) {
     throw new Error(`No exchanges found for country ${country}`);
@@ -115,11 +120,18 @@ export const getExchangesByCountry = (country: SupportedCountries): (USExchanges
 };
 
 /**
+ * Safely convert a string to SupportedCountries, returns undefined if invalid
+ */
+export const toSupportedCountry = (countryParam: string | null | undefined): SupportedCountries | undefined => {
+  if (!countryParam) return undefined;
+  const normalized = countryParam.trim();
+  return Object.values(SupportedCountries).includes(normalized as SupportedCountries) ? (normalized as SupportedCountries) : undefined;
+};
+
+/**
  * Get Prisma where clause for filtering by country
  */
-export const getCountryFilterClause = (
-  country: SupportedCountries | null | undefined
-): { exchange: { in: (USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges)[] } } | {} => {
+export const getExchangeFilterClause = (country: SupportedCountries | null | undefined): { exchange: { in: AllExchanges[] } } | {} => {
   if (!country) return {};
 
   const exchanges = getExchangesByCountry(country);

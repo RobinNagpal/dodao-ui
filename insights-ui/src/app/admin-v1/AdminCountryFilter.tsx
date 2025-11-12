@@ -2,7 +2,7 @@
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import React from 'react';
-import { CountryCode, EXCHANGE_TO_COUNTRY } from '../../utils/countryExchangeUtils';
+import { CountryCode, EXCHANGE_TO_COUNTRY, ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '../../utils/countryExchangeUtils';
 
 export interface CountryFilterProps {
   selectedCountries: CountryCode[];
@@ -11,19 +11,9 @@ export interface CountryFilterProps {
 }
 
 // Map exchanges to countries - create string-based mapping from the enum mapping
-export const EXCHANGE_TO_COUNTRY_MAP: Record<string, CountryCode> = Object.fromEntries(
+export const EXCHANGE_TO_COUNTRY_MAP: Record<string, SupportedCountries> = Object.fromEntries(
   Object.entries(EXCHANGE_TO_COUNTRY).map(([exchange, country]) => [exchange, country])
 );
-
-export const COUNTRY_INFO: Record<CountryCode, { label: string; exchanges: string[] }> = {
-  US: { label: 'United States', exchanges: ['NASDAQ', 'NYSE', 'NYSEAMERICAN', 'OTCMKTS'] },
-  Canada: { label: 'Canada', exchanges: ['TSX', 'TSXV'] },
-  India: { label: 'India', exchanges: ['BSE', 'NSE'] },
-  UK: { label: 'United Kingdom', exchanges: ['LSE', 'AIM'] },
-  Pakistan: { label: 'Pakistan', exchanges: ['PSX'] },
-};
-
-export const ALL_COUNTRIES: CountryCode[] = ['US', 'Canada', 'India', 'UK', 'Pakistan'];
 
 export default function AdminCountryFilter({ selectedCountries, onCountriesChange, disabled = false }: CountryFilterProps) {
   const toggleCountry = (country: CountryCode) => {
@@ -35,14 +25,14 @@ export default function AdminCountryFilter({ selectedCountries, onCountriesChang
   };
 
   const selectAll = () => {
-    onCountriesChange(ALL_COUNTRIES);
+    onCountriesChange(ALL_SUPPORTED_COUNTRIES as CountryCode[]);
   };
 
   const clearAll = () => {
     onCountriesChange([]);
   };
 
-  const allSelected = selectedCountries.length === ALL_COUNTRIES.length;
+  const allSelected = selectedCountries.length === ALL_SUPPORTED_COUNTRIES.length;
   const noneSelected = selectedCountries.length === 0;
 
   return (
@@ -50,7 +40,7 @@ export default function AdminCountryFilter({ selectedCountries, onCountriesChang
       <span className="text-sm text-gray-300 mr-2">Countries:</span>
 
       {/* Country buttons */}
-      {ALL_COUNTRIES.map((country) => (
+      {ALL_SUPPORTED_COUNTRIES.map((country) => (
         <Button
           key={country}
           variant={selectedCountries.includes(country) ? 'contained' : 'outlined'}
@@ -59,7 +49,7 @@ export default function AdminCountryFilter({ selectedCountries, onCountriesChang
           disabled={disabled}
           className="text-xs"
         >
-          {COUNTRY_INFO[country].label}
+          {country}
         </Button>
       ))}
 
@@ -82,12 +72,12 @@ export default function AdminCountryFilter({ selectedCountries, onCountriesChang
 
 // Helper function to filter tickers by country
 export function filterTickersByCountries<T extends { exchange: string }>(tickers: T[], selectedCountries: CountryCode[]): T[] {
-  if (selectedCountries.length === 0 || selectedCountries.length === ALL_COUNTRIES.length) {
+  if (selectedCountries.length === 0 || selectedCountries.length === ALL_SUPPORTED_COUNTRIES.length) {
     return tickers; // Show all if none selected or all selected
   }
 
   return tickers.filter((ticker) => {
     const country = EXCHANGE_TO_COUNTRY_MAP[ticker.exchange];
-    return country && selectedCountries.includes(country);
+    return country && selectedCountries.includes(country as CountryCode);
   });
 }

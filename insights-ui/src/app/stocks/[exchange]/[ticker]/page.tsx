@@ -1,4 +1,5 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
+import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
@@ -320,7 +321,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
     <Breadcrumbs
       breadcrumbs={breadcrumbs}
       rightButton={
-        <StockActions tickerSymbol={d.symbol}>
+        <StockActions ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}>
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <TickerComparisonButton
             tickerSymbol={d.symbol}

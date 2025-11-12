@@ -1,14 +1,14 @@
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { InvestorKey, ReportType } from '@/types/ticker-typesv1';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Helper function to create a background generation request for a ticker
 export const createBackgroundGenerationRequest = async (
-  ticker: string,
+  ticker: TickerIdentifier,
   postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
-  if (!ticker) return;
+  if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
   const payload: GenerationRequestPayload = {
     ticker,
@@ -31,10 +31,10 @@ export const createBackgroundGenerationRequest = async (
 // Helper function to create a background generation request for a specific analysis type
 export const createSingleAnalysisBackgroundRequest = async (
   reportType: ReportType,
-  ticker: string,
+  ticker: TickerIdentifier,
   postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
 ): Promise<void> => {
-  if (!ticker) return;
+  if (!ticker || !ticker.symbol || !ticker.exchange) return;
 
   // Create a payload with all options set to false by default
   const payload: GenerationRequestPayload = {
@@ -90,49 +90,6 @@ export const createSingleAnalysisBackgroundRequest = async (
 
     default:
       // If it's not a recognized analysis type, do nothing
-      break;
-  }
-
-  await postRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/generation-requests`, [payload]);
-};
-
-// Helper function to create a background generation request for a specific investor analysis
-export const createSingleInvestorBackgroundRequest = async (
-  investorKey: InvestorKey,
-  ticker: string,
-  postRequest: (url: string, data: GenerationRequestPayload[]) => Promise<any>
-): Promise<void> => {
-  if (!ticker) return;
-
-  // Create a payload with all options set to false by default
-  const payload: GenerationRequestPayload = {
-    ticker,
-    regenerateCompetition: false,
-    regenerateFinancialAnalysis: false,
-    regenerateBusinessAndMoat: false,
-    regeneratePastPerformance: false,
-    regenerateFutureGrowth: false,
-    regenerateFairValue: false,
-    regenerateFutureRisk: false,
-    regenerateWarrenBuffett: false,
-    regenerateCharlieMunger: false,
-    regenerateBillAckman: false,
-    regenerateFinalSummary: false,
-  };
-
-  // Set the specific investor analysis to true
-  switch (investorKey) {
-    case 'WARREN_BUFFETT':
-      payload.regenerateWarrenBuffett = true;
-      break;
-    case 'CHARLIE_MUNGER':
-      payload.regenerateCharlieMunger = true;
-      break;
-    case 'BILL_ACKMAN':
-      payload.regenerateBillAckman = true;
-      break;
-    default:
-      // If it's not a recognized investor, do nothing
       break;
   }
 

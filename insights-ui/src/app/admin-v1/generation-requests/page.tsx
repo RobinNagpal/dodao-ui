@@ -1,7 +1,7 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import { GenerationRequestsResponse, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { GenerationRequestsResponse, TickerIdentifier, TickerV1GenerationRequestWithTicker } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { GenerationRequestStatus, ReportType } from '@/types/ticker-typesv1';
@@ -325,8 +325,11 @@ export default function GenerationRequestsPage(): JSX.Element {
   async function handleReloadFailedPartsOnly(): Promise<void> {
     if (!selectedRequest || !selectedRequest.failedSteps || selectedRequest.failedSteps.length === 0) return;
     try {
-      const tickerId = `${selectedRequest.ticker.symbol}-${selectedRequest.ticker.exchange}`;
-      await createFailedPartsOnlyGenerationRequests([{ ticker: tickerId, failedSteps: selectedRequest.failedSteps as ReportType[] }]);
+      const ticker: TickerIdentifier = {
+        symbol: selectedRequest.ticker.symbol,
+        exchange: selectedRequest.ticker.exchange as TickerIdentifier['exchange'],
+      };
+      await createFailedPartsOnlyGenerationRequests([{ ticker, failedSteps: selectedRequest.failedSteps as ReportType[] }]);
       handleCloseModal();
       reFetchData();
     } catch (err) {
@@ -337,8 +340,11 @@ export default function GenerationRequestsPage(): JSX.Element {
   async function handleReloadFullRequest(): Promise<void> {
     if (!selectedRequest) return;
     try {
-      const tickerId = `${selectedRequest.ticker.symbol}-${selectedRequest.ticker.exchange}`;
-      await createFullBackgroundGenerationRequests([tickerId]);
+      const ticker: TickerIdentifier = {
+        symbol: selectedRequest.ticker.symbol,
+        exchange: selectedRequest.ticker.exchange as TickerIdentifier['exchange'],
+      };
+      await createFullBackgroundGenerationRequests([ticker]);
       handleCloseModal();
       reFetchData();
     } catch (err) {

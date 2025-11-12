@@ -4,7 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
 import React, { useRef, useState } from 'react';
-import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange, PakistanExchanges, toExchange } from '@/utils/countryExchangeUtils';
+import { USExchanges, AllExchanges, isExchange, toExchange } from '@/utils/countryExchangeUtils';
 import TickerFields from './TickerFields';
 import RemoveRowButton from './RemoveRowButton';
 import type { NewTickerEntry, TickerFieldsValue } from './types';
@@ -52,7 +52,7 @@ interface AddTickersFormProps {
 type NewTickerSubmission = {
   name: string;
   symbol: string;
-  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
+  exchange: AllExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;
@@ -171,9 +171,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       setRowErrors(errMap);
 
       // Remove successfully added rows from the form; keep error rows
-      const addedSet = new Set(
-        (data.addedTickers || []).map((t) => buildKey(t.symbol, t.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges))
-      );
+      const addedSet = new Set((data.addedTickers || []).map((t) => buildKey(t.symbol, t.exchange as AllExchanges)));
       setEntries((prev) => prev.filter((t) => !addedSet.has(buildKey(t.symbol, t.exchange))));
 
       // If nothing errored and at least one added: reset to single blank and call onSuccess
@@ -435,7 +433,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <h3 className="text-lg font-semibold">Ticker Information</h3>
 
         {entries.map((entry, index) => {
-          const key = buildKey(entry.symbol, entry.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges);
+          const key = buildKey(entry.symbol, entry.exchange as AllExchanges);
           const inlineError = rowErrors[key];
 
           const coreValue: TickerFieldsValue = {
