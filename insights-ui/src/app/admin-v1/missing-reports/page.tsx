@@ -275,9 +275,7 @@ export default function MissingReportsPage(): JSX.Element {
     setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
-      const selectedTickers = accumulatedData
-        .filter((ticker) => selectedRows.has(ticker.id))
-        .map((ticker) => `${ticker.symbol}-${ticker.exchange}`);
+      const selectedTickers = accumulatedData.filter((ticker) => selectedRows.has(ticker.id)).map((ticker) => `${ticker.symbol}-${ticker.exchange}`);
 
       await generateAllReportsInBackground(selectedTickers);
       router.push('/admin-v1/generation-requests');

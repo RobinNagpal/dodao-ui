@@ -57,7 +57,9 @@ export const useGenerateReports = () => {
     if (!ticker) return;
     try {
       const payload: AnalysisRequest = {};
-      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/${analysisType}`, payload);
+      // Extract symbol and exchange from ticker (format: SYMBOL-EXCHANGE)
+      const [symbol, exchange] = ticker.split('-');
+      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange}/${symbol}/${analysisType}`, payload);
       if (result && onReportGenerated) onReportGenerated(ticker);
     } catch (err) {
       console.error(`Error generating ${analysisType} for ${ticker}:`, err);
@@ -68,7 +70,9 @@ export const useGenerateReports = () => {
     if (!ticker) return;
     try {
       const payload: AnalysisRequest = { investorKey };
-      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}/investor-analysis`, payload);
+      // Extract symbol and exchange from ticker (format: SYMBOL-EXCHANGE)
+      const [symbol, exchange] = ticker.split('-');
+      const result = await postAnalysisTo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange}/${symbol}/investor-analysis`, payload);
       if (result && onReportGenerated) onReportGenerated(ticker);
     } catch (err) {
       console.error(`Error generating investor analysis for ${ticker} (${investorKey}):`, err);

@@ -1,5 +1,5 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchTickerRecordWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
@@ -13,11 +13,14 @@ interface FinalSummaryResponse {
   aboutReport: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
-  const { spaceId, ticker } = await params;
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker, exchange } = await params;
 
   // Get ticker from DB with all related analysis data
-  const tickerRecord = await fetchTickerRecordWithAnalysisData(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Prepare input for the prompt
   const inputJson = prepareFinalSummaryInputJson(tickerRecord);

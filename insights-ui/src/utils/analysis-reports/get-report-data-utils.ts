@@ -101,6 +101,54 @@ export async function fetchTickerRecordWithAnalysisData(ticker: string): Promise
   });
 }
 
+/**
+ * Fetches ticker record with all related analysis data by symbol and exchange
+ */
+export async function fetchTickerRecordBySymbolAndExchangeWithAnalysisData(
+  symbol: string,
+  exchange: string
+): Promise<
+  TickerV1WithIndustryAndSubIndustry & {
+    categoryAnalysisResults: Array<{
+      categoryKey: string;
+      summary: string;
+      factorResults: Array<{
+        analysisCategoryFactor: {
+          factorAnalysisKey: string;
+        };
+        oneLineExplanation: string;
+        result: string;
+      }>;
+    }>;
+    vsCompetition?: {
+      competitionAnalysisArray: CompetitionAnalysisArray;
+    } | null;
+  }
+> {
+  const spaceId = KoalaGainsSpaceId;
+  return await prisma.tickerV1.findFirstOrThrow({
+    where: {
+      spaceId,
+      symbol: symbol.toUpperCase(),
+      exchange: exchange.toUpperCase(),
+    },
+    include: {
+      industry: true,
+      subIndustry: true,
+      categoryAnalysisResults: {
+        include: {
+          factorResults: {
+            include: {
+              analysisCategoryFactor: true,
+            },
+          },
+        },
+      },
+      vsCompetition: true,
+    },
+  });
+}
+
 export async function getCompetitionAnalysisArray(tickerRecord: TickerV1): Promise<CompetitionAnalysisArray> {
   const competitionData = await prisma.tickerV1VsCompetition.findFirstOrThrow({
     where: {
