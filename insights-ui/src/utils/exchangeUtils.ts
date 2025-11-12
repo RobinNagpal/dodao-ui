@@ -2,11 +2,11 @@ import { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledS
 
 /** ---------- Types ---------- */
 
-export type ExchangeId = 'NASDAQ' | 'NYSE' | 'NYSEAMERICAN' | 'TSX' | 'TSXV';
+export type ExchangeId = 'NASDAQ' | 'NYSE' | 'NYSEAMERICAN' | 'TSX' | 'TSXV' | 'BSE' | 'NSE' | 'LSE' | 'AIM';
 
 /** ---------- Constants ---------- */
 
-export const EXCHANGES: ReadonlyArray<ExchangeId> = ['NASDAQ', 'NYSE', 'NYSEAMERICAN', 'TSX', 'TSXV'] as const;
+export const EXCHANGES: ReadonlyArray<ExchangeId> = ['NASDAQ', 'NYSE', 'NYSEAMERICAN', 'TSX', 'TSXV', 'BSE', 'NSE', 'LSE', 'AIM'] as const;
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
 

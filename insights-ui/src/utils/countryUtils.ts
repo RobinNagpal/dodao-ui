@@ -2,12 +2,14 @@
 
 import { ExchangeId } from './exchangeUtils';
 
-export type CountryCode = 'US' | 'Canada';
+export type CountryCode = 'US' | 'Canada' | 'India' | 'United Kingdom';
 
 export const COUNTRY_TO_EXCHANGES: Record<CountryCode, readonly ExchangeId[]> = {
   US: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'],
   Canada: ['TSX', 'TSXV'],
-} as const;
+  India: ['BSE', 'NSE'],
+  'United Kingdom': ['LSE', 'AIM'],
+};
 
 export const EXCHANGE_TO_COUNTRY: Record<ExchangeId, CountryCode> = {
   NASDAQ: 'US',
@@ -15,7 +17,11 @@ export const EXCHANGE_TO_COUNTRY: Record<ExchangeId, CountryCode> = {
   NYSEAMERICAN: 'US',
   TSX: 'Canada',
   TSXV: 'Canada',
-} as const;
+  BSE: 'India',
+  NSE: 'India',
+  LSE: 'United Kingdom',
+  AIM: 'United Kingdom',
+};
 
 /** ---------- Country-Exchange Utility Functions ---------- */
 
