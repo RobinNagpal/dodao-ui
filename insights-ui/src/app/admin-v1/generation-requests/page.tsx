@@ -160,7 +160,10 @@ function RequestsTable({ rows, regenerateFields, onReloadRequest }: RequestsTabl
               <tr key={latestRequest.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
-                    {symbol}
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{symbol}</span>
+                      <span className="text-blue-400 text-xs">({exchange})</span>
+                    </div>
                     <div className="text-xs text-gray-400">{latestRequest.ticker.name}</div>
                   </Link>
                 </td>
@@ -322,7 +325,8 @@ export default function GenerationRequestsPage(): JSX.Element {
   async function handleReloadFailedPartsOnly(): Promise<void> {
     if (!selectedRequest || !selectedRequest.failedSteps || selectedRequest.failedSteps.length === 0) return;
     try {
-      await createFailedPartsOnlyGenerationRequests([{ ticker: selectedRequest.ticker.symbol, failedSteps: selectedRequest.failedSteps as ReportType[] }]);
+      const tickerId = `${selectedRequest.ticker.symbol}-${selectedRequest.ticker.exchange}`;
+      await createFailedPartsOnlyGenerationRequests([{ ticker: tickerId, failedSteps: selectedRequest.failedSteps as ReportType[] }]);
       handleCloseModal();
       reFetchData();
     } catch (err) {
@@ -333,7 +337,8 @@ export default function GenerationRequestsPage(): JSX.Element {
   async function handleReloadFullRequest(): Promise<void> {
     if (!selectedRequest) return;
     try {
-      await createFullBackgroundGenerationRequests([selectedRequest.ticker.symbol]);
+      const tickerId = `${selectedRequest.ticker.symbol}-${selectedRequest.ticker.exchange}`;
+      await createFullBackgroundGenerationRequests([tickerId]);
       handleCloseModal();
       reFetchData();
     } catch (err) {
@@ -510,7 +515,11 @@ export default function GenerationRequestsPage(): JSX.Element {
           {selectedRequest && (
             <>
               <p className="mb-4">
-                How would you like to reload the generation request for <strong>{selectedRequest.ticker.symbol}</strong>?
+                How would you like to reload the generation request for{' '}
+                <strong>
+                  {selectedRequest.ticker.symbol} <span className="text-blue-400">({selectedRequest.ticker.exchange})</span>
+                </strong>
+                ?
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
