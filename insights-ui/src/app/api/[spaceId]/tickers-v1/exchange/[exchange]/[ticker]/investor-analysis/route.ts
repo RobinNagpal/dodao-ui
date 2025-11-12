@@ -1,14 +1,17 @@
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { AnalysisRequest, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveInvestorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareInvestorAnalysisInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
-  const { spaceId, ticker } = await params;
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker, exchange } = await params;
   const body = await req.json();
   const { investorKey } = body as AnalysisRequest;
 
@@ -17,7 +20,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   }
 
   // Get ticker from DB
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Get competition analysis (required for investor analysis)
   const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
@@ -42,7 +45,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMInvestorAnalysisResponse;
 
   // Save the investor analysis response using the utility function
-  await saveInvestorAnalysisResponse(ticker.toLowerCase(), response, investorKey);
+  await saveInvestorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, investorKey);
 
   return {
     success: true,

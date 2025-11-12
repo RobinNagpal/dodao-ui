@@ -1,5 +1,9 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import {
+  fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
+  getCompetitionAnalysisArray,
+} from '@/utils/analysis-reports/get-report-data-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { savePastPerformanceFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { preparePastPerformanceInputJson } from '@/utils/analysis-reports/report-input-json-utils';
@@ -9,11 +13,14 @@ import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/publi
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
-  const { spaceId, ticker } = await params;
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker, exchange } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
@@ -47,7 +54,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFactorAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await savePastPerformanceFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.PastPerformance);
+  await savePastPerformanceFactorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, TickerAnalysisCategory.PastPerformance);
 
   return {
     success: true,

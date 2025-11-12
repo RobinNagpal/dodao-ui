@@ -1,5 +1,6 @@
 'use client';
 
+import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -58,7 +59,10 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow }: MissingReports
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky left-0 bg-gray-800 z-10 link-color">
                   <Link href={`/stocks/${exchange}/${symbol}`} target="_blank">
-                    {symbol}
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">{symbol}</span>
+                      <span className="text-blue-400 text-xs">({exchange})</span>
+                    </div>
                     <div className="text-xs text-gray-400">{ticker.name}</div>
                   </Link>
                 </td>
@@ -209,7 +213,7 @@ export default function MissingReportsPage(): JSX.Element {
 
   const { data, loading, reFetchData } = useFetchData<TickerWithMissingReportInfo[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
-  const { generateMissingReports, generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
+  const { generateAllReportsInBackground, generateSpecificReportsInBackground, isGenerating: hookGenerating } = useGenerateReports();
 
   const isGenerating: boolean = localGenerating || hookGenerating;
 
@@ -272,7 +276,9 @@ export default function MissingReportsPage(): JSX.Element {
     setShowGenerateAllConfirmation(false);
     setLocalGenerating(true);
     try {
-      const selectedTickers = accumulatedData.filter((ticker) => selectedRows.has(ticker.id)).map((ticker) => ticker.symbol);
+      const selectedTickers: TickerIdentifier[] = accumulatedData
+        .filter((ticker) => selectedRows.has(ticker.id))
+        .map((ticker) => ({ symbol: ticker.symbol, exchange: ticker.exchange as TickerIdentifier['exchange'] }));
 
       await generateAllReportsInBackground(selectedTickers);
       router.push('/admin-v1/generation-requests');
@@ -288,13 +294,16 @@ export default function MissingReportsPage(): JSX.Element {
 
     setLocalGenerating(true);
     try {
-      const tickersWithReportTypes: { ticker: string; reportTypes: ReportType[] }[] = [];
+      const tickersWithReportTypes: { ticker: TickerIdentifier; reportTypes: ReportType[] }[] = [];
 
       for (const t of accumulatedData) {
         if (selectedRows.has(t.id)) {
           const missingReportTypes: ReportType[] = getMissingReportTypes(t);
           if (missingReportTypes.length > 0) {
-            tickersWithReportTypes.push({ ticker: t.symbol, reportTypes: missingReportTypes });
+            tickersWithReportTypes.push({
+              ticker: { symbol: t.symbol, exchange: t.exchange as TickerIdentifier['exchange'] },
+              reportTypes: missingReportTypes,
+            });
           }
         }
       }

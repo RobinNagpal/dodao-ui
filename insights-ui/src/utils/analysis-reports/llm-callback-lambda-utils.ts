@@ -74,13 +74,14 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
   symbol: string;
+  exchange: string;
   generationRequestId: string;
   params: LLMResponseViaInvocationRequest<Input>;
   reportType: ReportType;
 }
 
 export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args: LLMResponseForPromptViaInvocationViaLambda<Input>): Promise<void> {
-  const { symbol, generationRequestId, params, reportType } = args;
+  const { symbol, exchange, generationRequestId, params, reportType } = args;
   const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
   // Validate required fields
@@ -153,7 +154,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
     const callbackBaseUrl = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || `https://koalagains.com`;
     const lambdaRequest: LLMResponseViaLambdaRequest<Input> = {
       invocationId: invocation.id,
-      callbackUrl: `${callbackBaseUrl}/api/${spaceId}/tickers-v1/${symbol}/save-report-callback`,
+      callbackUrl: `${callbackBaseUrl}/api/${spaceId}/tickers-v1/exchange/${exchange}/${symbol}/save-report-callback`,
       inputJson: inputJson,
       promptStringToSendToLLM: finalPrompt,
       inputSchemaString: JSON.stringify(inputSchemaObject),
@@ -163,7 +164,6 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
       additionalData: {
         reportType: reportType,
         generationRequestId: generationRequestId,
-        symbol: symbol,
       },
     };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
+import AdminCountryFilter, { filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
 import AddTickersForm from '@/components/public-equitiesv1/AddTickersForm';
 import EditTickersForm from '@/components/public-equitiesv1/EditTickersForm';
 import SelectableSubIndustryCard from '@/components/stocks/SelectableSubIndustryCard';
@@ -18,6 +18,7 @@ import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import React, { useEffect, useState } from 'react';
 import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
+import { CountryCode } from '@/utils/countryExchangeUtils';
 
 export default function TickerManagementPage() {
   const [showAddTickerForm, setShowAddTickerForm] = useState<boolean>(false);

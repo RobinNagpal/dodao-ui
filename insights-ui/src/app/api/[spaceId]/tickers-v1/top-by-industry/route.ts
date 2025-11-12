@@ -1,24 +1,21 @@
 import { prisma } from '@/prisma';
-import { ExchangeId } from '@/utils/exchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma, TickerV1 } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { getIndustryMappings, enhanceTickerWithIndustryNames } from '@/lib/industryMappingUtils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { getCountryFilterClause } from '@/utils/countryUtils';
+import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TickerWithIndustryNames[]> {
   const { spaceId } = await context.params;
 
   const url = new URL(req.url);
   const industryKey = url.searchParams.get('industryKey');
-  const country = url.searchParams.get('country') || undefined;
+  const country = toSupportedCountry(url.searchParams.get('country'));
 
-  const exchangeFilter: { exchange: { in: ExchangeId[] } } | {} = getCountryFilterClause(country);
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
     ...(industryKey ? { industryKey } : {}),
-    ...exchangeFilter,
+    ...getExchangeFilterClause(country),
     cachedScoreEntry: {
       finalScore: {
         gt: 10,

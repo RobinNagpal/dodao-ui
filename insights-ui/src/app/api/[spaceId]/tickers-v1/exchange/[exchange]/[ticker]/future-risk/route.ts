@@ -3,15 +3,18 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { LLMFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
-import { fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { saveFutureRiskResponse } from '@/utils/analysis-reports/save-report-utils';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
-  const { spaceId, ticker } = await params;
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker, exchange } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Prepare input for the prompt (uses future-risk-input.schema.yaml)
   const inputJson = prepareBaseTickerInputJson(tickerRecord);
@@ -33,7 +36,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFutureRiskResponse;
 
   // Save the analysis response using the utility function
-  await saveFutureRiskResponse(ticker.toLowerCase(), response);
+  await saveFutureRiskResponse(ticker.toLowerCase(), tickerRecord.exchange, response);
 
   return {
     success: true,

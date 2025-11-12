@@ -1,6 +1,10 @@
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
+import {
+  fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
+  getCompetitionAnalysisArray,
+} from '@/utils/analysis-reports/get-report-data-utils';
 import { saveFutureGrowthFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFutureGrowthInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -8,11 +12,14 @@ import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerAnalysisResponse> {
-  const { spaceId, ticker } = await params;
+async function postHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerAnalysisResponse> {
+  const { spaceId, ticker, exchange } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Get competition analysis (required for future growth analysis)
   const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
@@ -40,7 +47,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFactorAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await saveFutureGrowthFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.FutureGrowth);
+  await saveFutureGrowthFactorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, TickerAnalysisCategory.FutureGrowth);
 
   return {
     success: true,

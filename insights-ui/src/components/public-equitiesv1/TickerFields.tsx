@@ -1,6 +1,6 @@
 import * as React from 'react';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import { exchangeItems, toExchangeId } from '@/utils/exchangeUtils';
+import { exchangeItems, toExchange } from '@/utils/countryExchangeUtils';
 import type { TickerFieldsValue } from './types';
 
 export type TickerFieldsLayout = 'grid' | 'vertical';
@@ -47,7 +47,7 @@ export default function TickerFields({ value, onPatch, renderAfter, inlineError,
             selectedItemId={value.exchange}
             items={exchangeItems}
             setSelectedItemId={(id?: string | null): void => {
-              onPatch({ exchange: toExchangeId(id) });
+              onPatch({ exchange: toExchange(id) });
             }}
           />
         </div>

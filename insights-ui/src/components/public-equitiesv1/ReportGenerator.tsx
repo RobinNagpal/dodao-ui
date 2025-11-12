@@ -1,3 +1,4 @@
+import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import { reportTypes, useGenerateReports } from '@/hooks/useGenerateReports';
 import { ReportType } from '@/types/ticker-typesv1';
 import { getMissingReportTypes, TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
@@ -8,9 +9,9 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface ReportGeneratorProps {
-  selectedTickers: string[];
+  selectedTickers: TickerIdentifier[];
   tickerReports: Record<string, TickerWithMissingReportInfo>;
-  onReportGenerated: (ticker: string) => void;
+  onReportGenerated: (ticker: TickerIdentifier) => void;
 }
 
 export default function ReportGenerator({ selectedTickers, tickerReports, onReportGenerated }: ReportGeneratorProps): JSX.Element {
@@ -18,7 +19,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [loadingStates] = useState<Record<string, boolean>>({});
   const [isGeneratingAll, setIsGeneratingAll] = useState<boolean>(false);
   const [showGenerationModal, setShowGenerationModal] = useState<boolean>(false);
-  const [pendingTickers, setPendingTickers] = useState<string[]>([]);
+  const [pendingTickers, setPendingTickers] = useState<TickerIdentifier[]>([]);
 
   const [selectedReportTypes, setSelectedReportTypes] = useState<ReportType[]>([]);
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
@@ -31,8 +32,8 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const { generateAllReportsForTicker, generateReportsSynchronously, generateSpecificReportsInBackground, createFullBackgroundGenerationRequests } =
     useGenerateReports();
 
-  const handleGenerateAll = async (ticker: string): Promise<void> => {
-    if (!ticker) return;
+  const handleGenerateAll = async (ticker: TickerIdentifier): Promise<void> => {
+    if (!ticker || !ticker.symbol || !ticker.exchange) return;
     await generateAllReportsForTicker(ticker, onReportGenerated);
   };
 
@@ -95,7 +96,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
 
     setIsGeneratingAll(true);
     try {
-      await generateReportsSynchronously(pendingTickers, selectedReportTypes, onReportGenerated);
+      await generateReportsSynchronously(pendingTickers, selectedReportTypes, (ticker) => {
+        onReportGenerated(ticker);
+      });
     } finally {
       setIsGeneratingAll(false);
       setPendingTickers([]);
@@ -127,11 +130,20 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           <thead className="bg-gray-700">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Report Type</th>
-              {selectedTickers.map((ticker) => (
-                <th key={ticker} className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center">
-                  {ticker}
-                </th>
-              ))}
+              {selectedTickers.map((ticker, index) => {
+                const tickerKey = `${ticker.symbol}-${ticker.exchange}`;
+                return (
+                  <th
+                    key={`${ticker.symbol}-${ticker.exchange}-${index}`}
+                    className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center"
+                  >
+                    <div className="flex flex-col items-center">
+                      <span className="font-semibold">{ticker.symbol}</span>
+                      <span className="text-xs text-gray-400">({ticker.exchange})</span>
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -151,14 +163,15 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                       <span>{reportTypeInfo.label}</span>
                     </div>
                   </td>
-                  {selectedTickers.map((ticker) => {
-                    const report = tickerReports[ticker];
+                  {selectedTickers.map((ticker, tickerIndex) => {
+                    const tickerKey = `${ticker.symbol}-${ticker.exchange}`;
+                    const report = tickerReports[tickerKey];
                     const isCompleted: boolean = !getMissingReportTypes(report).includes(reportType);
 
-                    const isLoading: boolean = loadingStates[`${ticker}-${reportType}`];
+                    const isLoading: boolean = loadingStates[`${tickerKey}-${reportType}`];
 
                     return (
-                      <td key={`${ticker}-${reportType}`} className="px-6 py-4 whitespace-nowrap text-sm">
+                      <td key={`${tickerKey}-${reportType}-${tickerIndex}`} className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex flex-col items-center space-y-2">
                           <div className={`h-3 w-3 rounded-full ${isCompleted ? 'bg-green-500' : isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`} />
                         </div>

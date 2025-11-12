@@ -1,6 +1,6 @@
 'use client';
 
-import { GenerationRequestPayload } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
+import { GenerationRequestPayload, TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { KoalaGainsSession } from '@/types/auth';
 import { analysisTypes, ReportType } from '@/types/ticker-typesv1';
@@ -11,12 +11,12 @@ import { useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 interface StockActionsProps {
-  tickerSymbol: string;
+  ticker: TickerIdentifier;
   session?: KoalaGainsSession;
   children?: ReactNode;
 }
 
-export default function StockActions({ tickerSymbol, children, session }: StockActionsProps): JSX.Element {
+export default function StockActions({ ticker, children, session }: StockActionsProps): JSX.Element {
   const router = useRouter();
 
   // Post hook for background generation requests
@@ -37,9 +37,9 @@ export default function StockActions({ tickerSymbol, children, session }: StockA
   const handleSelect = async (key: string) => {
     try {
       if (key === 'generate-all') {
-        await createBackgroundGenerationRequest(tickerSymbol, postRequest);
+        await createBackgroundGenerationRequest(ticker, postRequest);
       } else {
-        await createSingleAnalysisBackgroundRequest(key as ReportType, tickerSymbol, postRequest);
+        await createSingleAnalysisBackgroundRequest(key as ReportType, ticker, postRequest);
       }
 
       // Redirect to generation requests page after any generation is initiated

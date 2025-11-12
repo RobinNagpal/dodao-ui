@@ -15,49 +15,52 @@ import {
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; ticker: string }> }) {
-  const { ticker } = await params;
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string; exchange: string; ticker: string }> }) {
+  const { spaceId, exchange, ticker } = await params;
 
   const { llmResponse, additionalData } = await req.json();
   const { reportType, generationRequestId } = additionalData;
   console.log('Got request to save report with the following info', {
     llmResponse,
     additionalData,
+    spaceId,
+    exchange,
+    ticker,
   });
   // Save the report based on the report type
   switch (reportType) {
     case ReportType.BUSINESS_AND_MOAT:
-      await saveBusinessAndMoatFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.BusinessAndMoat);
+      await saveBusinessAndMoatFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.BusinessAndMoat);
       break;
     case ReportType.PAST_PERFORMANCE:
-      await savePastPerformanceFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.PastPerformance);
+      await savePastPerformanceFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.PastPerformance);
       break;
     case ReportType.FUTURE_GROWTH:
-      await saveFutureGrowthFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FutureGrowth);
+      await saveFutureGrowthFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FutureGrowth);
       break;
     case ReportType.FINANCIAL_ANALYSIS:
-      await saveFinancialAnalysisFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FinancialStatementAnalysis);
+      await saveFinancialAnalysisFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FinancialStatementAnalysis);
       break;
     case ReportType.COMPETITION:
-      await saveCompetitionAnalysisResponse(ticker, llmResponse);
+      await saveCompetitionAnalysisResponse(ticker, exchange, llmResponse);
       break;
     case ReportType.FAIR_VALUE:
-      await saveFairValueFactorAnalysisResponse(ticker, llmResponse, TickerAnalysisCategory.FairValue);
+      await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FairValue);
       break;
     case ReportType.FUTURE_RISK:
-      await saveFutureRiskResponse(ticker, llmResponse);
+      await saveFutureRiskResponse(ticker, exchange, llmResponse);
       break;
     case ReportType.FINAL_SUMMARY:
-      await saveFinalSummaryResponse(ticker, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);
+      await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);
       break;
     case ReportType.WARREN_BUFFETT:
-      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.WARREN_BUFFETT);
+      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.WARREN_BUFFETT);
       break;
     case ReportType.CHARLIE_MUNGER:
-      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.CHARLIE_MUNGER);
+      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.CHARLIE_MUNGER);
       break;
     case ReportType.BILL_ACKMAN:
-      await saveInvestorAnalysisResponse(ticker, llmResponse, InvestorTypes.BILL_ACKMAN);
+      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.BILL_ACKMAN);
       break;
     default:
       throw new Error(`Unsupported report type: ${reportType}`);
@@ -87,7 +90,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     });
 
     // Trigger generation of the next report
-    await triggerGenerationOfAReportSimplified(ticker, generationRequestId);
+    await triggerGenerationOfAReportSimplified(ticker, exchange, generationRequestId);
   }
 
   return {

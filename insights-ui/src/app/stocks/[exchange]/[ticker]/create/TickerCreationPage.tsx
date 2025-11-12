@@ -4,7 +4,7 @@ import { NewTickerSubmission, TickerV1VsCompetitionWithRelations } from '@/app/a
 import TickerFields from '@/components/public-equitiesv1/TickerFields';
 import { TickerFieldsValue } from '@/components/public-equitiesv1/types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { isExchangeId, toExchangeId } from '@/utils/exchangeUtils';
+import { isExchange, toExchange } from '@/utils/countryExchangeUtils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -52,7 +52,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
 
   // Ticker form state used inside the modal (TickerFieldsValue = { exchange, name, symbol, websiteUrl })
   const [form, setForm] = React.useState<TickerFieldsValue>({
-    exchange: toExchangeId(exchange),
+    exchange: toExchange(exchange),
     name: '',
     symbol: symbol.toUpperCase(),
     websiteUrl: '',
@@ -74,7 +74,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
     if (!tickerToAdd) return;
 
     // Seed defaults from the chosen card, fall back to props if needed
-    const seededExchange = toExchangeId(tickerToAdd?.exchangeSymbol);
+    const seededExchange = toExchange(tickerToAdd?.exchangeSymbol);
     const seededName = tickerToAdd.companyName ?? '';
     const seededSymbol = tickerToAdd.companySymbol?.toUpperCase() || '';
 
@@ -114,7 +114,7 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
       alert('Please provide both Company Name and Symbol.');
       return;
     }
-    if (!form.exchange || !isExchangeId(form.exchange)) {
+    if (!form.exchange || !isExchange(form.exchange)) {
       alert('Please select a valid Exchange.');
       return;
     }

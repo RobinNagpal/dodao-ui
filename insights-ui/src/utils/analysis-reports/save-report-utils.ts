@@ -2,7 +2,11 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { fetchAnalysisFactors, fetchTickerRecordWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import {
+  fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
+  fetchTickerRecordWithIndustryAndSubIndustry,
+} from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
 import { z, ZodObject } from 'zod';
@@ -13,11 +17,12 @@ import { TickerV1 } from '@prisma/client';
  */
 export async function saveFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, tickerAnalysisCategory);
 
   // Store category analysis result (upsert)
@@ -93,50 +98,60 @@ export async function saveFactorAnalysisResponse(
 
 export async function saveBusinessAndMoatFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
 }
 
 export async function savePastPerformanceFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
 }
 
 export async function saveFutureGrowthFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
 }
 
 export async function saveFinancialAnalysisFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
 }
 
 export async function saveFairValueFactorAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: LLMFactorAnalysisResponse,
   tickerAnalysisCategory: TickerAnalysisCategory
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
 }
 
 /**
  * Saves investor analysis response
  */
-export async function saveInvestorAnalysisResponse(ticker: string, response: LLMInvestorAnalysisResponse, investorKey: InvestorTypes): Promise<void> {
+export async function saveInvestorAnalysisResponse(
+  ticker: string,
+  exchange: string,
+  response: LLMInvestorAnalysisResponse,
+  investorKey: InvestorTypes
+): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
   // Store investor analysis result (upsert)
   await prisma.tickerV1InvestorAnalysisResult.upsert({
@@ -175,6 +190,7 @@ export async function saveInvestorAnalysisResponse(ticker: string, response: LLM
  */
 export async function saveCompetitionAnalysisResponse(
   ticker: string,
+  exchange: string,
   response: {
     summary: string;
     overallAnalysisDetails: string;
@@ -188,7 +204,7 @@ export async function saveCompetitionAnalysisResponse(
   }
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
   // Store competition analysis result (upsert)
   await prisma.tickerV1VsCompetition.upsert({
@@ -223,13 +239,14 @@ export async function saveCompetitionAnalysisResponse(
  */
 export async function saveFutureRiskResponse(
   ticker: string,
+  exchange: string,
   response: {
     summary: string;
     detailedAnalysis: string;
   }
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
   // Store future risk analysis result (upsert)
   await prisma.tickerV1FutureRisk.upsert({
@@ -258,8 +275,14 @@ export async function saveFutureRiskResponse(
 /**
  * Saves final summary response
  */
-export async function saveFinalSummaryResponse(ticker: string, finalSummary: string, metaDescription: string, aboutReport: string): Promise<void> {
-  const tickerRecord = await fetchTickerRecordWithIndustryAndSubIndustry(ticker);
+export async function saveFinalSummaryResponse(
+  ticker: string,
+  exchange: string,
+  finalSummary: string,
+  metaDescription: string,
+  aboutReport: string
+): Promise<void> {
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
   // Update the ticker's summary, meta description, and about report fields
   await prisma.tickerV1.update({
@@ -276,11 +299,6 @@ export async function saveFinalSummaryResponse(ticker: string, finalSummary: str
 
   revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
 }
-
-// Zod schema for the aboutReport response
-const AboutReportSchema: ZodObject<{ aboutReport: z.ZodString }> = z.object({
-  aboutReport: z.string().describe('A 2-3 sentence summary for the stock analysis report'),
-});
 
 /**
  * Gets the top 3 competitors from the competition analysis
