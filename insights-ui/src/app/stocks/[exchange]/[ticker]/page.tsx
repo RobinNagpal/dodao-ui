@@ -20,7 +20,7 @@ import {
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { getCountryByExchange } from '@/utils/countryUtils';
+import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
@@ -294,7 +294,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
   const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
-  const country: string | null = getCountryByExchange(d.exchange);
+  const country: SupportedCountries = getCountryByExchange(d.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
   const industryName: string = d.industry.name || d.industryKey;
   const subIndustryName: string = d.industry.name || d.subIndustryKey;
 

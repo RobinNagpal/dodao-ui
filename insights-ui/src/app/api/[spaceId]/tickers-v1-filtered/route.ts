@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { getCountryFilterClause } from '@/utils/countryUtils';
+import { getCountryFilterClause, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerAnalysisCategory } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -45,8 +45,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     spaceId,
   };
 
-  // Country filter
-  Object.assign(whereClause, getCountryFilterClause(filters.country));
+  // Country filter - validate country parameter
+  const country =
+    filters.country && Object.values(SupportedCountries).includes(filters.country as SupportedCountries) ? (filters.country as SupportedCountries) : undefined;
+  Object.assign(whereClause, getCountryFilterClause(country));
 
   // Industry filter
   if (filters.industry) {

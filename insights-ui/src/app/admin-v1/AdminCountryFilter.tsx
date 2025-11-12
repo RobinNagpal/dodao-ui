@@ -2,8 +2,7 @@
 
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import React from 'react';
-
-export type CountryCode = 'US' | 'CA';
+import { CountryCode, EXCHANGE_TO_COUNTRY } from '../../utils/countryExchangeUtils';
 
 export interface CountryFilterProps {
   selectedCountries: CountryCode[];
@@ -11,21 +10,20 @@ export interface CountryFilterProps {
   disabled?: boolean;
 }
 
-// Map exchanges to countries
-export const EXCHANGE_TO_COUNTRY_MAP: Record<string, CountryCode> = {
-  NASDAQ: 'US',
-  NYSE: 'US',
-  NYSEAMERICAN: 'US',
-  TSX: 'CA',
-  TSXV: 'CA',
+// Map exchanges to countries - create string-based mapping from the enum mapping
+export const EXCHANGE_TO_COUNTRY_MAP: Record<string, CountryCode> = Object.fromEntries(
+  Object.entries(EXCHANGE_TO_COUNTRY).map(([exchange, country]) => [exchange, country])
+);
+
+export const COUNTRY_INFO: Record<CountryCode, { label: string; exchanges: string[] }> = {
+  US: { label: 'United States', exchanges: ['NASDAQ', 'NYSE', 'NYSEAMERICAN', 'OTCMKTS'] },
+  Canada: { label: 'Canada', exchanges: ['TSX', 'TSXV'] },
+  India: { label: 'India', exchanges: ['BSE', 'NSE'] },
+  UK: { label: 'United Kingdom', exchanges: ['LSE', 'AIM'] },
+  Pakistan: { label: 'Pakistan', exchanges: ['PSX'] },
 };
 
-export const COUNTRY_INFO = {
-  US: { label: 'United States', exchanges: ['NASDAQ', 'NYSE', 'NYSEAMERICAN'] },
-  CA: { label: 'Canada', exchanges: ['TSX', 'TSXV'] },
-} as const;
-
-export const ALL_COUNTRIES: CountryCode[] = ['US', 'CA'];
+export const ALL_COUNTRIES: CountryCode[] = ['US', 'Canada', 'India', 'UK', 'Pakistan'];
 
 export default function AdminCountryFilter({ selectedCountries, onCountriesChange, disabled = false }: CountryFilterProps) {
   const toggleCountry = (country: CountryCode) => {

@@ -127,11 +127,17 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
           <thead className="bg-gray-700">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Report Type</th>
-              {selectedTickers.map((ticker) => (
-                <th key={ticker} className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center">
-                  {ticker}
-                </th>
-              ))}
+              {selectedTickers.map((ticker) => {
+                const [symbol, exchange] = ticker.split('-');
+                return (
+                  <th key={ticker} className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center">
+                    <div className="flex flex-col items-center">
+                      <span className="font-semibold">{symbol}</span>
+                      <span className="text-xs text-gray-400">({exchange})</span>
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody className="bg-gray-800 divide-y divide-gray-700">

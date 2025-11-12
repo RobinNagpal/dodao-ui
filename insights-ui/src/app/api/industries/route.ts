@@ -6,7 +6,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { TickerV1Industry } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
-import { getExchangesByCountry } from '@/utils/countryUtils';
+import { getExchangesByCountry, SupportedCountries } from '@/utils/countryExchangeUtils';
 
 export interface CreateIndustryRequest {
   industryKey: string;
@@ -17,7 +17,9 @@ export interface CreateIndustryRequest {
 
 async function getHandler(request: NextRequest): Promise<IndustryWithSubIndustriesAndCounts[]> {
   const { searchParams } = new URL(request.url);
-  const country = searchParams.get('country');
+  const countryParam = searchParams.get('country');
+  const country =
+    countryParam && Object.values(SupportedCountries).includes(countryParam as SupportedCountries) ? (countryParam as SupportedCountries) : undefined;
 
   let industries: any[];
 

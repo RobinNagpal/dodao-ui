@@ -5,8 +5,8 @@ import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
   fetchTickerRecordWithAnalysisData,
-  fetchTickerRecordWithIndustryAndSubIndustry,
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
 import {
@@ -19,16 +19,10 @@ import {
   prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
-import {
-  areAllReportsAttempted,
-  markAsCompleted,
-  markAsInProgress,
-  shouldRegenerateReport,
-  updateInitialStatus,
-} from '@/utils/analysis-reports/report-status-utils';
+import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
-import { AnalysisCategoryFactor, TickerV1, TickerV1GenerationRequest } from '@prisma/client';
+import { AnalysisCategoryFactor } from '@prisma/client';
 
 /**
  * Map of report dependencies where keys are all report types and values are the report types
@@ -80,16 +74,6 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.FINAL_SUMMARY,
 ];
 
-/**
- * Type definition for a report in the generation order
- */
-interface ReportOrderItem {
-  reportType: ReportType;
-  condition: boolean;
-  needsCompetitionData: boolean;
-  generateFn: () => Promise<void>;
-}
-
 async function generateCompetitionAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Prepare input for the prompt
   const inputJson = prepareBaseTickerInputJson(tickerRecord);
@@ -97,6 +81,7 @@ async function generateCompetitionAnalysis(spaceId: string, tickerRecord: Ticker
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -126,6 +111,7 @@ async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -154,6 +140,7 @@ async function generateBusinessAndMoatAnalysis(
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -188,6 +175,7 @@ async function generatePastPerformanceAnalysis(
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -215,6 +203,7 @@ async function generateFutureGrowthAnalysis(
 
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -244,6 +233,7 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -264,6 +254,7 @@ async function generateFutureRiskAnalysis(spaceId: string, tickerRecord: TickerV
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -290,6 +281,7 @@ async function generateInvestorAnalysis(
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -313,6 +305,7 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     generationRequestId,
     params: {
       spaceId,
@@ -326,23 +319,23 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
   });
 }
 
-export async function triggerGenerationOfAReportSimplified(symbol: string, generationRequestId: string): Promise<void> {
+export async function triggerGenerationOfAReportSimplified(symbol: string, exchange: string, generationRequestId: string): Promise<void> {
   let generationRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
     where: { id: generationRequestId },
     include: { ticker: true },
   });
   // Get ticker from DB
-  const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordWithIndustryAndSubIndustry(symbol);
+  const tickerRecord: TickerV1WithIndustryAndSubIndustry = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(symbol, exchange);
   const spaceId = KoalaGainsSpaceId;
 
   if (generationRequest.status === GenerationRequestStatus.Completed) {
-    console.log('Generation request is already completed - skipping ', symbol);
+    console.log('Generation request is already completed - skipping ', symbol, ' on exchange ', exchange);
     return;
   }
 
   const pendingSteps = calculatePendingSteps(generationRequest);
   if (pendingSteps.length === 0) {
-    console.log(`No pending steps for ${symbol}. Marking as completed for ticker: `, symbol);
+    console.log(`No pending steps for ${symbol} on exchange ${exchange}. Marking as completed for ticker: `, symbol);
     await markAsCompleted(generationRequest);
     return;
   }

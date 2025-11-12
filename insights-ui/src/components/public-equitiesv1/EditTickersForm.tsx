@@ -5,7 +5,7 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
-import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
+import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange } from '@/utils/countryExchangeUtils';
 import TickerFields from './TickerFields';
 import type { EditableTickerEntry, TickerFieldsValue } from './types';
 
@@ -15,7 +15,7 @@ interface UpdateTickerRequest {
   id: string;
   name: string;
   symbol: string;
-  exchange: BasicTickerInfo['exchange']; // still ExchangeId on server-side
+  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
@@ -57,7 +57,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
       name: t.name,
       symbol: t.symbol.toUpperCase(),
       websiteUrl: t.websiteUrl || '',
-      exchange: t.exchange as ExchangeId, // `exchange` is already compatible with ExchangeId union
+      exchange: t.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges,
       stockAnalyzeUrl: t.stockAnalyzeUrl,
     }));
     setEntries(editableEntries);
@@ -72,7 +72,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
     for (let i = 0; i < entries.length; i++) {
       const t = entries[i];
 
-      if (!t.exchange || !isExchangeId(t.exchange)) {
+      if (!t.exchange || !isExchange(t.exchange)) {
         // eslint-disable-next-line no-alert
         alert(`Row ${i + 1}: Please select a valid Exchange.`);
         return;

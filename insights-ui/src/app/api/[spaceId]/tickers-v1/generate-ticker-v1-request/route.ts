@@ -27,6 +27,7 @@ async function getInProgressRequests() {
       ticker: {
         select: {
           symbol: true,
+          exchange: true,
         },
       },
     },
@@ -61,6 +62,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       ticker: {
         select: {
           symbol: true,
+          exchange: true,
         },
       },
     },
@@ -76,8 +78,8 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   // Loop through each request
   for (const request of [...inProgressRequests, ...notStartedRequests]) {
     try {
-      console.log(`Processing request ${request.id} for ticker ${request.ticker.symbol}`);
-      await triggerGenerationOfAReportSimplified(request.ticker.symbol, request.id);
+      console.log(`Processing request ${request.id} for ticker ${request.ticker.symbol} on exchange ${request.ticker.exchange}`);
+      await triggerGenerationOfAReportSimplified(request.ticker.symbol, request.ticker.exchange, request.id);
 
       // Get the updated request to include in the response
       const updatedRequest = await prisma.tickerV1GenerationRequest.findUnique({

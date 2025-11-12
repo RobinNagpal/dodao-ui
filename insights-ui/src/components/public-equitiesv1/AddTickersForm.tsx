@@ -4,7 +4,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
 import React, { useMemo, useRef, useState } from 'react';
-import { ExchangeId, isExchangeId } from '@/utils/exchangeUtils';
+import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange } from '@/utils/countryExchangeUtils';
 import TickerFields from './TickerFields';
 import RemoveRowButton from './RemoveRowButton';
 import type { NewTickerEntry, TickerFieldsValue } from './types';
@@ -52,7 +52,7 @@ interface AddTickersFormProps {
 type NewTickerSubmission = {
   name: string;
   symbol: string;
-  exchange: ExchangeId;
+  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;
@@ -110,7 +110,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         continue;
       }
 
-      if (!isExchangeId(exchangeRaw)) {
+      if (!isExchange(exchangeRaw)) {
         invalidCount++;
         continue;
       }
@@ -290,7 +290,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       const t = entries[i];
       const hasAny = t.name.trim().length > 0 || t.symbol.trim().length > 0 || t.websiteUrl.trim().length > 0 || t.stockAnalyzeUrl.trim().length > 0;
       if (!hasAny) continue;
-      if (!t.exchange || !isExchangeId(t.exchange)) {
+      if (!t.exchange || !isExchange(t.exchange)) {
         // eslint-disable-next-line no-alert
         alert(`Row ${i + 1}: Please select a valid Exchange.`);
         return;

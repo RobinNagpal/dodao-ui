@@ -1,7 +1,8 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
-import AdminCountryFilter, { CountryCode, filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
+import AdminCountryFilter, { filterTickersByCountries } from '@/app/admin-v1/AdminCountryFilter';
+import { CountryCode } from '@/utils/countryExchangeUtils';
 import SelectIndustryAndSubIndustry from '@/app/admin-v1/SelectIndustryAndSubIndustry';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportTickersResponse } from '@/types/ticker-typesv1';
@@ -15,15 +16,7 @@ import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
 
 interface TickerSelectionPageProps {
-  /**
-   * The API endpoint to fetch data for a single ticker
-   * Example: (ticker) => `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker}`
-   */
-  fetchTickerDataUrl: (ticker: string) => string;
-
-  /**
-   * The component to render when tickers are selected
-   */
+  /** The component to render when tickers are selected */
   renderActionComponent: (props: {
     selectedTickers: string[];
     tickerData: Record<string, TickerWithMissingReportInfo>;
@@ -36,12 +29,12 @@ interface TickerSelectionPageProps {
   refreshButtonText: string;
 }
 
-export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionComponent, refreshButtonText }: TickerSelectionPageProps): JSX.Element {
+export default function TickerSelectionPage({ renderActionComponent, refreshButtonText }: TickerSelectionPageProps): JSX.Element {
   // Selection state
   const [selectedIndustry, setSelectedIndustry] = useState<TickerV1Industry | null>(null);
   const [selectedSubIndustry, setSelectedSubIndustry] = useState<TickerV1SubIndustry | null>(null);
 
-  // Ticker/data state
+  // Ticker/data state - now stores unique IDs (symbol-exchange)
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
 
   // Filter state
@@ -198,7 +191,7 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
                     onChange={(ids: string[]) => {
                       if (selectedTickers.length === tickers.length) updateSelectedTickers([]);
                       else {
-                        updateSelectedTickers(tickers.map((t) => t.symbol));
+                        updateSelectedTickers(tickers.map((t) => `${t.symbol}-${t.exchange}`));
                       }
                     }}
                   />
@@ -206,14 +199,16 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
                 <Checkboxes
                   items={tickers.map((t): CheckboxItem => {
                     const { missingReportCount, totalReportCount } = getMissingReportCount(t);
+                    const uniqueId = `${t.symbol}-${t.exchange}`;
                     return {
-                      id: t.symbol,
-                      name: `ticker-${t.symbol}`,
+                      id: uniqueId,
+                      name: `ticker-${uniqueId}`,
                       label: (
                         <div className="flex-grow cursor-pointer">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <span className="font-medium">{t.symbol}</span>
+                              <span className="text-blue-400 text-sm">({t.exchange})</span>
                               <span className="text-gray-400">-</span>
                               <span className="text-gray-300">{t.name}</span>
                               {t.cachedScoreEntry?.finalScore && <span className="text-blue-400 text-sm">Score: {t.cachedScoreEntry.finalScore}/25</span>}
@@ -239,7 +234,9 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
                     };
                   })}
                   selectedItemIds={selectedTickers}
-                  onChange={(ids: string[]) => updateSelectedTickers(ids)}
+                  onChange={(uniqueIds: string[]) => {
+                    updateSelectedTickers(uniqueIds);
+                  }}
                 />
               </div>
             ) : (
@@ -262,7 +259,7 @@ export default function TickerSelectionPage({ fetchTickerDataUrl, renderActionCo
         {selectedTickers.length > 0 &&
           renderActionComponent({
             selectedTickers,
-            tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [t.symbol, t]) || []),
+            tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.symbol}-${t.exchange}`, t]) || []),
             onDataUpdated: (ticker: string) => {
               void reFetchTickersForSubIndustry();
             },

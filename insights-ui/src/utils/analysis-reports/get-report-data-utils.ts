@@ -22,6 +22,27 @@ export async function fetchTickerRecordWithIndustryAndSubIndustry(ticker: string
 }
 
 /**
+ * Fetches ticker record with industry and subIndustry information
+ */
+export async function fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(
+  symbol: string,
+  exchange: string
+): Promise<TickerV1WithIndustryAndSubIndustry> {
+  const spaceId = KoalaGainsSpaceId;
+  return await prisma.tickerV1.findFirstOrThrow({
+    where: {
+      spaceId: spaceId,
+      symbol: symbol.toUpperCase(),
+      exchange: exchange.toUpperCase(),
+    },
+    include: {
+      industry: true,
+      subIndustry: true,
+    },
+  });
+}
+
+/**
  * Fetches analysis factors for a specific category
  */
 export async function fetchAnalysisFactors(tickerRecord: TickerV1, tickerAnalysisCategory: TickerAnalysisCategory): Promise<AnalysisCategoryFactor[]> {

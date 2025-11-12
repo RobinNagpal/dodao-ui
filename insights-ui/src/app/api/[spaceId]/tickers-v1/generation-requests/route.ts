@@ -195,11 +195,25 @@ async function postHandler(
     }
 
     // Find the ticker to get its ID
-    const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
-      where: {
+    // Handle both formats: "SYMBOL" (legacy) and "SYMBOL-EXCHANGE" (new)
+    let whereClause;
+    if (ticker.includes('-')) {
+      const [symbol, exchange] = ticker.split('-');
+      whereClause = {
         spaceId,
-        symbol: ticker,
-      },
+        symbol: symbol.toUpperCase(),
+        exchange: exchange.toUpperCase(),
+      };
+    } else {
+      // Legacy format - just symbol
+      whereClause = {
+        spaceId,
+        symbol: ticker.toUpperCase(),
+      };
+    }
+
+    const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+      where: whereClause,
       select: {
         id: true,
       },
