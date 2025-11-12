@@ -45,7 +45,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as CompetitionAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await saveCompetitionAnalysisResponse(ticker.toLowerCase(), response);
+  await saveCompetitionAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response);
 
   return {
     success: true,

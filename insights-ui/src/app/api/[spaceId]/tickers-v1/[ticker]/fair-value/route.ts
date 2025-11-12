@@ -44,7 +44,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFactorAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await saveFairValueFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.FairValue);
+  await saveFairValueFactorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, TickerAnalysisCategory.FairValue);
 
   return {
     success: true,

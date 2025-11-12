@@ -39,7 +39,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as FinalSummaryResponse;
 
   // Save the final summary response using the utility function
-  await saveFinalSummaryResponse(ticker.toLowerCase(), response.finalSummary, response.metaDescription, response.aboutReport);
+  await saveFinalSummaryResponse(ticker.toLowerCase(), tickerRecord.exchange, response.finalSummary, response.metaDescription, response.aboutReport);
 
   return {
     success: true,

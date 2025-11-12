@@ -40,7 +40,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFactorAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await saveBusinessAndMoatFactorAnalysisResponse(ticker.toLowerCase(), response, TickerAnalysisCategory.BusinessAndMoat);
+  await saveBusinessAndMoatFactorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, TickerAnalysisCategory.BusinessAndMoat);
 
   return {
     success: true,

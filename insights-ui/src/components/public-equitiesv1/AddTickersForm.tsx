@@ -3,8 +3,8 @@ import Block from '@dodao/web-core/components/app/Block';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
-import React, { useMemo, useRef, useState } from 'react';
-import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange } from '@/utils/countryExchangeUtils';
+import React, { useRef, useState } from 'react';
+import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange, PakistanExchanges, toExchange } from '@/utils/countryExchangeUtils';
 import TickerFields from './TickerFields';
 import RemoveRowButton from './RemoveRowButton';
 import type { NewTickerEntry, TickerFieldsValue } from './types';
@@ -52,7 +52,7 @@ interface AddTickersFormProps {
 type NewTickerSubmission = {
   name: string;
   symbol: string;
-  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges;
+  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;
@@ -69,7 +69,7 @@ TSX,Shopify Inc.,SHOP,https://www.shopify.com,https://www.tradingview.com/symbol
 /** ---------- Component ---------- */
 
 export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKey, selectedSubIndustryKey }: AddTickersFormProps): JSX.Element {
-  const [entries, setEntries] = useState<NewTickerEntry[]>([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
+  const [entries, setEntries] = useState<NewTickerEntry[]>([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: USExchanges.NASDAQ }]);
 
   const [csvText, setCsvText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -79,11 +79,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
   const [rowErrors, setRowErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Keep row errors keyed by symbol|exchange for quick inline display
-  const addedKeys = useMemo(() => new Set(feedbackAdded.map((t) => buildKey(t.symbol, t.exchange))), [feedbackAdded]);
-
   /** ---------- CSV Utilities ---------- */
-
   const validateHeaders = (headers: string[]): string | null => {
     const lower = headers.map((x) => x.toLowerCase().trim());
     const mustHave: ReadonlyArray<'exchange' | 'name' | 'symbol'> = ['exchange', 'name', 'symbol'] as const;
@@ -134,7 +130,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       .map((t) => ({
         name: t.name.trim(),
         symbol: t.symbol.toUpperCase().trim(),
-        exchange: t.exchange,
+        exchange: toExchange(t.exchange),
         industryKey: selectedIndustryKey,
         subIndustryKey: selectedSubIndustryKey,
         websiteUrl: t.websiteUrl.trim(),
@@ -175,13 +171,15 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       setRowErrors(errMap);
 
       // Remove successfully added rows from the form; keep error rows
-      const addedSet = new Set((data.addedTickers || []).map((t) => buildKey(t.symbol, t.exchange)));
+      const addedSet = new Set(
+        (data.addedTickers || []).map((t) => buildKey(t.symbol, t.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges))
+      );
       setEntries((prev) => prev.filter((t) => !addedSet.has(buildKey(t.symbol, t.exchange))));
 
       // If nothing errored and at least one added: reset to single blank and call onSuccess
       const noErrors = (data.errorTickers || []).length === 0;
       if (noErrors && (data.addedTickers || []).length > 0) {
-        setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
+        setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: USExchanges.NASDAQ }]);
         onSuccess();
       }
     } catch (err: unknown) {
@@ -265,7 +263,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
   };
 
   const clearEntries = (): void => {
-    setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
+    setEntries([{ name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: USExchanges.NASDAQ }]);
     setCsvError('');
     setCsvText('');
     setFeedbackAdded([]);
@@ -308,7 +306,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
   /** ---------- Mutators ---------- */
 
   const addRow = (): void => {
-    setEntries((prev) => [...prev, { name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: 'NASDAQ' }]);
+    setEntries((prev) => [...prev, { name: '', symbol: '', websiteUrl: '', stockAnalyzeUrl: '', exchange: USExchanges.NASDAQ }]);
   };
 
   const removeRow = (index: number): void => {
@@ -437,7 +435,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <h3 className="text-lg font-semibold">Ticker Information</h3>
 
         {entries.map((entry, index) => {
-          const key = buildKey(entry.symbol, entry.exchange);
+          const key = buildKey(entry.symbol, entry.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges);
           const inlineError = rowErrors[key];
 
           const coreValue: TickerFieldsValue = {

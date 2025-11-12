@@ -33,7 +33,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMFutureRiskResponse;
 
   // Save the analysis response using the utility function
-  await saveFutureRiskResponse(ticker.toLowerCase(), response);
+  await saveFutureRiskResponse(ticker.toLowerCase(), tickerRecord.exchange, response);
 
   return {
     success: true,

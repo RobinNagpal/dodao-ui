@@ -5,7 +5,7 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
-import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange } from '@/utils/countryExchangeUtils';
+import { USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, isExchange, PakistanExchanges, toExchange } from '@/utils/countryExchangeUtils';
 import TickerFields from './TickerFields';
 import type { EditableTickerEntry, TickerFieldsValue } from './types';
 
@@ -15,7 +15,7 @@ interface UpdateTickerRequest {
   id: string;
   name: string;
   symbol: string;
-  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges;
+  exchange: USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
@@ -90,7 +90,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
         id: entry.id,
         name: entry.name,
         symbol: entry.symbol.toUpperCase(),
-        exchange: entry.exchange,
+        exchange: toExchange(entry.exchange),
         industryKey: selectedIndustryKey,
         subIndustryKey: selectedSubIndustryKey,
         websiteUrl: entry.websiteUrl,

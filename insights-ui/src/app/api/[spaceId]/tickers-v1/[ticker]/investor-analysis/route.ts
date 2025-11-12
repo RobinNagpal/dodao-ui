@@ -42,7 +42,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
   const response = result.response as LLMInvestorAnalysisResponse;
 
   // Save the investor analysis response using the utility function
-  await saveInvestorAnalysisResponse(ticker.toLowerCase(), response, investorKey);
+  await saveInvestorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, investorKey);
 
   return {
     success: true,
