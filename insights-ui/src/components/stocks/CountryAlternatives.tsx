@@ -12,6 +12,8 @@ export default function CountryAlternatives({ currentCountry = 'US', industryKey
   const countries = [
     { code: 'US', name: 'US', path: '' }, // US has no /countries/ prefix
     { code: 'Canada', name: 'Canadian', path: '/countries/Canada' },
+    { code: 'India', name: 'Indian', path: '/countries/India' },
+    { code: 'UK', name: 'UK', path: '/countries/UK' },
   ];
 
   // Filter out the current country
