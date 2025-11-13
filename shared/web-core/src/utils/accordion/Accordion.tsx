@@ -17,7 +17,7 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
       <div
         // Increased bottom margin (mb-6) and top padding (pt-3) for better spacing
         className={`rounded-md mb-6 py-3 cursor-pointer ${styles.accordionContainer} ${hasError ? styles.error : ''} ${isOpen ? styles.isOpened : ''}`}
-        onClick={(e) => !isOpen && onClick(e)}
+        onClick={onClick}
       >
         <div id={`accordion-${label}`}>
           <button
@@ -41,11 +41,12 @@ export default function Accordion({ isOpen, label, onClick, children, hasError =
         </div>
         <div
           style={{
-            maxHeight: isOpen ? '1000px' : '0',
+            maxHeight: isOpen ? '2000px' : '0',
             opacity: isOpen ? 1 : 0,
-            overflow: 'auto',
-            // When open, add padding on all sides; when closed, keep horizontal padding only
-            padding: isOpen ? '1.5rem' : '0 1.5rem',
+            overflow: isOpen ? 'auto' : 'hidden',
+            // When open, add padding on all sides; when closed, no padding
+            padding: isOpen ? '1.5rem' : '0',
+            transition: 'max-height 0.5s ease, opacity 0.3s ease, padding 0.3s ease',
           }}
           className={styles.accordionContent}
         >

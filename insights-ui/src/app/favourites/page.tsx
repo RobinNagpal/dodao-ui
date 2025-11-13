@@ -5,7 +5,7 @@ import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteCo
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsSession } from '@/types/auth';
-import { PencilIcon, TrashIcon, TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
+import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import { HeartIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
@@ -13,6 +13,7 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
+import FavouriteItem from '@/components/favourites/FavouriteItem';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
@@ -20,8 +21,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
-import { TickerAnalysisCategory, CATEGORY_MAPPINGS } from '@/types/ticker-typesv1';
-import { getScoreColorClasses } from '@/utils/score-utils';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 
 type ModalView = 'manage-lists' | 'manage-tags';
@@ -39,7 +39,6 @@ export default function FavouritesPage() {
   const [editingFavourite, setEditingFavourite] = useState<FavouriteTickerResponse | null>(null);
   const [deletingFavourite, setDeletingFavourite] = useState<FavouriteTickerResponse | null>(null);
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
-  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
   const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
   const [showBusinessAnalysis, setShowBusinessAnalysis] = useState(false);
 
@@ -177,15 +176,8 @@ export default function FavouritesPage() {
     });
   };
 
-  // Track when initial data has loaded
-  useEffect(() => {
-    if (favouritesData && !hasInitiallyLoaded) {
-      setHasInitiallyLoaded(true);
-    }
-  }, [favouritesData, hasInitiallyLoaded]);
-
-  // Show loading screen only for initial load
-  if (!hasInitiallyLoaded && favouritesLoading) {
+  // Show loading screen only when loading data
+  if (favouritesLoading) {
     return <FullPageLoader message="Loading your favourites..." />;
   }
 
@@ -207,11 +199,6 @@ export default function FavouritesPage() {
   const handleTagsChange = async () => {
     await refetchTags();
     await refetchFavourites(); // Refresh favourites in case they had relations to tags
-  };
-
-  const getBusinessAndMoatSummary = (favourite: FavouriteTickerResponse): string | null => {
-    const businessAndMoatResult = favourite.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat);
-    return businessAndMoatResult?.summary || null;
   };
 
   // Show loading or redirect if no session
@@ -275,99 +262,13 @@ export default function FavouritesPage() {
                   <Accordion key={list.id} isOpen={isOpen} label={label} onClick={() => toggleList(list.id)}>
                     <div className="space-y-3">
                       {listFavourites.map((favourite) => (
-                        <div key={favourite.id} className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-                          <div className="flex justify-between items-start mb-2">
-                            <div className="flex-1 flex items-center gap-2 flex-wrap">
-                              <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
-                                <h4 className="text-base font-bold">
-                                  {favourite.ticker.name} ({favourite.ticker.symbol})
-                                </h4>
-                              </Link>
-                              {favourite.ticker.cachedScoreEntry && (
-                                <>
-                                  {(() => {
-                                    const { textColorClass, bgColorClass } = getScoreColorClasses(favourite.ticker.cachedScoreEntry.finalScore);
-                                    return (
-                                      <span className={`${textColorClass} px-1.5 py-0.5 rounded-md ${bgColorClass} bg-opacity-15 font-semibold text-xs`}>
-                                        {favourite.ticker.cachedScoreEntry.finalScore}/25
-                                      </span>
-                                    );
-                                  })()}
-                                </>
-                              )}
-                              {favourite.myScore !== null && favourite.myScore !== undefined && (
-                                <span className="font-bold text-xs" style={{ color: 'var(--primary-color, #3B82F6)' }}>
-                                  My Score: {favourite.myScore % 1 === 0 ? favourite.myScore.toString() : favourite.myScore.toFixed(1)}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex gap-1">
-                              <button onClick={() => setEditingFavourite(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
-                                <PencilIcon className="w-4 h-4" />
-                              </button>
-                              <button onClick={() => setDeletingFavourite(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
-                                <TrashIcon className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Category Scores */}
-                          {favourite.ticker.cachedScoreEntry && (
-                            <div className="flex flex-wrap items-center gap-3 mb-2 text-xs">
-                              <div>
-                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.BusinessAndMoat]}:</span>{' '}
-                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.businessAndMoatScore}/5</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FinancialStatementAnalysis]}:</span>{' '}
-                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.financialStatementAnalysisScore}/5</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.PastPerformance]}:</span>{' '}
-                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.pastPerformanceScore}/5</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FutureGrowth]}:</span>{' '}
-                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.futureGrowthScore}/5</span>
-                              </div>
-                              <div>
-                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FairValue]}:</span>{' '}
-                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.fairValueScore}/5</span>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Business & Moat Details */}
-                          {showBusinessAnalysis && getBusinessAndMoatSummary(favourite) && (
-                            <div className="mb-2">
-                              <p className="text-xs font-medium text-gray-400 mb-1">Business & Moat Analysis:</p>
-                              <p className="text-xs text-gray-300 leading-relaxed">{getBusinessAndMoatSummary(favourite)}</p>
-                            </div>
-                          )}
-
-                          {/* My Notes */}
-                          {favourite.myNotes && (
-                            <div className="mb-2">
-                              <p className="text-xs text-gray-500 mb-1">My Notes:</p>
-                              <p className="text-xs text-gray-300 line-clamp-2">{favourite.myNotes}</p>
-                            </div>
-                          )}
-
-                          {/* Tags */}
-                          {favourite.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5">
-                              {favourite.tags.map((tag) => (
-                                <span
-                                  key={tag.id}
-                                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full text-white font-medium"
-                                  style={{ backgroundColor: tag.colorHex }}
-                                >
-                                  {tag.name}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                        <FavouriteItem
+                          key={favourite.id}
+                          favourite={favourite}
+                          showBusinessAnalysis={showBusinessAnalysis}
+                          onEdit={setEditingFavourite}
+                          onDelete={setDeletingFavourite}
+                        />
                       ))}
                     </div>
                   </Accordion>
@@ -385,99 +286,13 @@ export default function FavouritesPage() {
                 >
                   <div className="space-y-3">
                     {unlistedFavourites.map((favourite) => (
-                      <div key={favourite.id} className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-                        <div className="flex justify-between items-start mb-2">
-                          <div className="flex-1 flex items-center gap-2 flex-wrap">
-                            <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
-                              <h4 className="text-base font-bold">
-                                {favourite.ticker.name} ({favourite.ticker.symbol})
-                              </h4>
-                            </Link>
-                            {favourite.ticker.cachedScoreEntry && (
-                              <>
-                                {(() => {
-                                  const { textColorClass, bgColorClass } = getScoreColorClasses(favourite.ticker.cachedScoreEntry.finalScore);
-                                  return (
-                                    <span className={`${textColorClass} px-1.5 py-0.5 rounded-md ${bgColorClass} bg-opacity-15 font-semibold text-xs`}>
-                                      {favourite.ticker.cachedScoreEntry.finalScore}/25
-                                    </span>
-                                  );
-                                })()}
-                              </>
-                            )}
-                            {favourite.myScore !== null && favourite.myScore !== undefined && (
-                              <span className="font-bold text-xs" style={{ color: 'var(--primary-color, #3B82F6)' }}>
-                                My: {favourite.myScore % 1 === 0 ? favourite.myScore.toString() : favourite.myScore.toFixed(1)}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex gap-1">
-                            <button onClick={() => setEditingFavourite(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
-                              <PencilIcon className="w-4 h-4" />
-                            </button>
-                            <button onClick={() => setDeletingFavourite(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
-                              <TrashIcon className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Category Scores */}
-                        {favourite.ticker.cachedScoreEntry && (
-                          <div className="flex flex-wrap items-center gap-3 mb-2 text-xs">
-                            <div>
-                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.BusinessAndMoat]}:</span>{' '}
-                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.businessAndMoatScore}/5</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FinancialStatementAnalysis]}:</span>{' '}
-                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.financialStatementAnalysisScore}/5</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.PastPerformance]}:</span>{' '}
-                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.pastPerformanceScore}/5</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FutureGrowth]}:</span>{' '}
-                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.futureGrowthScore}/5</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FairValue]}:</span>{' '}
-                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.fairValueScore}/5</span>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Business & Moat Details */}
-                        {showBusinessAnalysis && getBusinessAndMoatSummary(favourite) && (
-                          <div className="mb-2">
-                            <p className="text-xs font-medium text-gray-400 mb-1">Business & Moat Analysis:</p>
-                            <p className="text-xs text-gray-300 leading-relaxed">{getBusinessAndMoatSummary(favourite)}</p>
-                          </div>
-                        )}
-
-                        {/* My Notes */}
-                        {favourite.myNotes && (
-                          <div className="mb-2">
-                            <p className="text-xs text-gray-500 mb-1">My Notes:</p>
-                            <p className="text-xs text-gray-300 line-clamp-2">{favourite.myNotes}</p>
-                          </div>
-                        )}
-
-                        {/* Tags */}
-                        {favourite.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5">
-                            {favourite.tags.map((tag) => (
-                              <span
-                                key={tag.id}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full text-white font-medium"
-                                style={{ backgroundColor: tag.colorHex }}
-                              >
-                                {tag.name}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                      <FavouriteItem
+                        key={favourite.id}
+                        favourite={favourite}
+                        showBusinessAnalysis={showBusinessAnalysis}
+                        onEdit={setEditingFavourite}
+                        onDelete={setDeletingFavourite}
+                      />
                     ))}
                   </div>
                 </Accordion>

@@ -165,22 +165,22 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
 
   const renderMainView = () => (
     <div className="p-6 space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold mb-2">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">
           {existingFavourite ? 'Edit' : 'Add'} {tickerName} ({tickerSymbol})
         </h3>
       </div>
 
       {/* My Notes */}
       <div className="space-y-2">
-        <label htmlFor="my-notes" className="block text-sm font-medium">
+        <label htmlFor="my-notes" className="block text-sm font-medium text-left">
           My Notes (Optional)
         </label>
         <textarea
           id="my-notes"
           value={myNotes}
           onChange={(e) => setMyNotes(e.target.value)}
-          rows={2}
+          rows={3}
           className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Add your notes about this stock..."
         />
@@ -200,24 +200,26 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       </Input>
 
       {/* Tags Selection */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium">Tags</label>
+      <div className="mt-4">
+        <div className="flex justify-between items-center mb-3">
+          <label className="block text-sm font-medium text-left">Tags</label>
           <Button onClick={() => setCurrentView('manage-tags')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <TagIcon className="w-4 h-4" />
             Manage Tags
           </Button>
         </div>
-        <div className="space-y-2 max-h-40 overflow-y-auto">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
           {availableTags.length === 0 ? (
-            <p className="text-gray-500 text-sm">No tags available. Create one to get started.</p>
+            <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             availableTags.map((tag) => (
               <label key={tag.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
                 <input type="checkbox" checked={selectedTagIds.includes(tag.id)} onChange={() => toggleTag(tag.id)} className="w-4 h-4" />
                 <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                <span className="text-sm">{tag.name}</span>
-                {tag.description && <span className="text-xs text-gray-500">- {tag.description}</span>}
+                <div className="flex flex-col">
+                  <span className="text-sm">{tag.name}</span>
+                  {tag.description && <span className="text-xs text-gray-400 mt-0.5">{tag.description}</span>}
+                </div>
               </label>
             ))
           )}
@@ -225,23 +227,25 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       </div>
 
       {/* Lists Selection */}
-      <div>
-        <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium">Lists</label>
+      <div className="mt-4">
+        <div className="flex justify-between items-center mb-3">
+          <label className="block text-sm font-medium text-left">Lists</label>
           <Button onClick={() => setCurrentView('manage-lists')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <ListBulletIcon className="w-4 h-4" />
             Manage Lists
           </Button>
         </div>
-        <div className="space-y-2 max-h-40 overflow-y-auto">
+        <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
           {availableLists.length === 0 ? (
-            <p className="text-gray-500 text-sm">No lists available. Create one to get started.</p>
+            <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             availableLists.map((list) => (
               <label key={list.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
                 <input type="checkbox" checked={selectedListIds.includes(list.id)} onChange={() => toggleList(list.id)} className="w-4 h-4" />
-                <span className="text-sm">{list.name}</span>
-                {list.description && <span className="text-xs text-gray-500">- {list.description}</span>}
+                <div className="flex flex-col">
+                  <span className="text-sm">{list.name}</span>
+                  {list.description && <span className="text-xs text-gray-400 mt-0.5">{list.description}</span>}
+                </div>
               </label>
             ))
           )}
@@ -249,7 +253,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-end gap-3 pt-4 border-t border-gray-700">
+      <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
         <Button onClick={onClose} disabled={loading} variant="outlined">
           Cancel
         </Button>

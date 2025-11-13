@@ -129,23 +129,23 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
           {/* Create New Tag Form - Only show when showAddForm is true */}
           {showAddForm && (
             <div className="bg-gray-800 p-4 rounded-lg space-y-4">
-              <h4 className="font-medium flex items-center justify-center gap-2">
+              <h4 className="font-medium flex items-center gap-2 text-left mb-2">
                 <PlusIcon className="w-5 h-5" />
                 Create New Tag
               </h4>
-              <Input modelValue={newTagName} onUpdate={(value) => setNewTagName(value?.toString() || '')} placeholder="Enter tag name" className=" text-white">
+              <Input modelValue={newTagName} onUpdate={(value) => setNewTagName(value?.toString() || '')} placeholder="Enter tag name" className="text-white">
                 Tag Name *
               </Input>
               <Input
                 modelValue={newTagDescription}
                 onUpdate={(value) => setNewTagDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className=" text-white"
+                className="text-white"
               >
                 Description
               </Input>
               <div className="space-y-2">
-                <label htmlFor="tag-color" className="block text-sm font-medium">
+                <label htmlFor="tag-color" className="block text-sm font-medium text-left">
                   Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -173,7 +173,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
           {/* Edit Tag Form - Show when editing */}
           {editingTag && (
             <div className="bg-gray-800 p-4 rounded-lg space-y-4">
-              <h4 className="font-medium flex items-center justify-center gap-2">
+              <h4 className="font-medium flex items-center gap-2 text-left mb-2">
                 <PencilIcon className="w-5 h-5" />
                 Edit Tag
               </h4>
@@ -189,7 +189,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 Description
               </Input>
               <div className="space-y-2">
-                <label htmlFor="edit-tag-color" className="block text-sm font-medium">
+                <label htmlFor="edit-tag-color" className="block text-sm font-medium text-left">
                   Color
                 </label>
                 <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
           {/* Existing Tags */}
           <div>
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-center">Your Tags ({tags.length})</h4>
+              <h4 className="font-medium text-left">Your Tags ({tags.length})</h4>
               {!showAddForm && !editingTag && (
                 <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
@@ -225,18 +225,18 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
                 </Button>
               )}
             </div>
-            <div className="space-y-2 max-h-80 overflow-y-auto">
+            <div className="space-y-1 max-h-80 overflow-y-auto bg-gray-900 rounded-md p-1">
               {tags.length === 0 ? (
-                <p className="text-gray-500 text-sm">No tags created yet.</p>
+                <p className="text-gray-500 text-sm p-2">No tags created yet.</p>
               ) : (
                 tags.map((tag) => (
-                  <div key={tag.id} className="bg-gray-800 p-3 rounded-lg">
+                  <div key={tag.id} className="bg-gray-800 p-3 rounded-lg hover:bg-gray-750">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1">
                         <span className="w-4 h-4 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
                         <div className="flex-1">
                           <p className="font-medium">{tag.name}</p>
-                          {tag.description && <p className="text-sm text-gray-400">{tag.description}</p>}
+                          {tag.description && <p className="text-sm text-gray-400 mt-0.5">{tag.description}</p>}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">

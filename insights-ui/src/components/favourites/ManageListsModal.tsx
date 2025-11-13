@@ -120,7 +120,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
           {/* Create New List Form - Only show when showAddForm is true */}
           {showAddForm && (
             <div className="bg-gray-800 p-4 rounded-lg space-y-4">
-              <h4 className="font-medium flex items-center justify-center gap-2">
+              <h4 className="font-medium flex items-center gap-2 text-left mb-2">
                 <PlusIcon className="w-5 h-5" />
                 Create New List
               </h4>
@@ -128,7 +128,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={newListName}
                 onUpdate={(value) => setNewListName(value?.toString() || '')}
                 placeholder="Enter list name"
-                className=" text-white"
+                className="text-white"
               >
                 List Name *
               </Input>
@@ -136,7 +136,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 modelValue={newListDescription}
                 onUpdate={(value) => setNewListDescription(value?.toString() || '')}
                 placeholder="Enter description (optional)"
-                className=" text-white"
+                className="text-white"
               >
                 Description
               </Input>
@@ -154,7 +154,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
           {/* Edit List Form - Show when editing */}
           {editingList && (
             <div className="bg-gray-800 p-4 rounded-lg space-y-4">
-              <h4 className="font-medium flex items-center justify-center gap-2">
+              <h4 className="font-medium flex items-center gap-2 text-left mb-2">
                 <PencilIcon className="w-5 h-5" />
                 Edit List
               </h4>
@@ -195,7 +195,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
           {/* Existing Lists */}
           <div>
             <div className="flex justify-between items-center mb-3">
-              <h4 className="font-medium text-center">Your Lists ({lists.length})</h4>
+              <h4 className="font-medium text-left">Your Lists ({lists.length})</h4>
               {!showAddForm && !editingList && (
                 <Button onClick={() => setShowAddForm(true)} variant="contained" primary className="flex items-center gap-2">
                   <PlusIcon className="w-4 h-4" />
@@ -203,16 +203,16 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
                 </Button>
               )}
             </div>
-            <div className="space-y-2 max-h-80 overflow-y-auto">
+            <div className="space-y-1 max-h-80 overflow-y-auto bg-gray-900 rounded-md p-1">
               {lists.length === 0 ? (
-                <p className="text-gray-500 text-sm">No lists created yet.</p>
+                <p className="text-gray-500 text-sm p-2">No lists created yet.</p>
               ) : (
                 lists.map((list) => (
-                  <div key={list.id} className="bg-gray-800 p-3 rounded-lg">
+                  <div key={list.id} className="bg-gray-800 p-3 rounded-lg hover:bg-gray-750">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <p className="font-medium">{list.name}</p>
-                        {list.description && <p className="text-sm text-gray-400">{list.description}</p>}
+                        {list.description && <p className="text-sm text-gray-400 mt-0.5">{list.description}</p>}
                       </div>
                       <div className="flex items-center gap-2">
                         <Button onClick={() => handleEditList(list)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
