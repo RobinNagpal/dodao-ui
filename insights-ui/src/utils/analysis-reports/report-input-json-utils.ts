@@ -9,6 +9,7 @@ import { buildBaseAboutReport } from '@/utils/analysis-reports/save-report-utils
 export interface BaseTickerInputJson {
   name: string;
   symbol: string;
+  exchange: string;
   industryKey: string;
   industryName: string;
   industryDescription: string;
@@ -83,6 +84,7 @@ export function prepareBaseTickerInputJson(tickerRecord: TickerV1WithIndustryAnd
   return {
     name: tickerRecord.name,
     symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
     industryKey: tickerRecord.industryKey,
     industryName: tickerRecord.industry.name,
     industryDescription: tickerRecord.industry.summary,

@@ -8,6 +8,9 @@ properties:
   symbol:
     type: string
     description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  exchange:
+    type: string
+    description: 'Exchange code, e.g. "NASDAQ" or "NYSE"'
   industryKey:
     type: string
     description: 'The broad industry the stock belongs to (e.g., REITS).'
@@ -79,6 +82,7 @@ properties:
 required:
   - name
   - symbol
+  - exchange
   - industryKey
   - subIndustryKey
   - investorKey
