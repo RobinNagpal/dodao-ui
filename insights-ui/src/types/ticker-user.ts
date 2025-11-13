@@ -1,4 +1,5 @@
-import { UserTickerTag, UserTickerList, FavouriteTicker, User, TickerV1 } from '@prisma/client';
+import { UserTickerTag, UserTickerList, FavouriteTicker, User, TickerV1, TickerV1CachedScore } from '@prisma/client';
+import { FullTickerV1CategoryAnalysisResult } from '@/utils/ticker-v1-model-utils';
 
 // UserTickerTag types
 export interface UserTickerTagResponse extends UserTickerTag {}
@@ -40,7 +41,10 @@ export interface UpdateUserListRequest {
 export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 'lists' | 'ticker'> {
   tags: UserTickerTagResponse[];
   lists: UserListResponse[];
-  ticker: TickerV1;
+  ticker: TickerV1 & {
+    cachedScoreEntry?: TickerV1CachedScore | null;
+    categoryAnalysisResults?: FullTickerV1CategoryAnalysisResult[];
+  };
 }
 
 export interface FavouriteTickersResponse {

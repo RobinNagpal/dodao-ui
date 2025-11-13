@@ -46,6 +46,7 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   USExchanges.NASDAQ,
   USExchanges.NYSE,
   USExchanges.NYSEAMERICAN,
+  USExchanges.OTCMKTS,
   CanadaExchanges.TSX,
   CanadaExchanges.TSXV,
   IndiaExchanges.BSE,
