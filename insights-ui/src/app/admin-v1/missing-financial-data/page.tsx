@@ -14,10 +14,8 @@ import { ArrowPathIcon, PencilIcon, CheckIcon, XMarkIcon } from '@heroicons/reac
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { TickerV1 } from '@prisma/client';
-
-interface UpdateStockAnalyzeUrlRequest {
-  stockAnalyzeUrl: string;
-}
+import { UpdateStockAnalyzeUrlRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/route';
+import { FetchFinancialDataRequest, FetchFinancialDataResponse } from '@/app/api/[spaceId]/tickers-v1/fetch-financial-data/route';
 
 interface EditableUrlCellProps {
   ticker: TickerWithMissingFinancialData;
@@ -164,16 +162,6 @@ function MissingFinancialDataTable({ rows, selectedRows, onSelectRow, onUrlUpdat
       </table>
     </div>
   );
-}
-
-interface FetchFinancialDataRequest {
-  tickerIds: string[];
-}
-
-interface FetchFinancialDataResponse {
-  success: boolean;
-  processed: number;
-  errors: Array<{ tickerId: string; error: string }>;
 }
 
 export default function MissingFinancialDataPage(): JSX.Element {

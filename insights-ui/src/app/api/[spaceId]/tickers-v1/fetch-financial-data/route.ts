@@ -4,11 +4,11 @@ import { fetchAndUpdateStockAnalyzerData } from '@/utils/stock-analyzer-scraper-
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
 
-interface FetchFinancialDataRequest {
+export interface FetchFinancialDataRequest {
   tickerIds: string[];
 }
 
-interface FetchFinancialDataResponse {
+export interface FetchFinancialDataResponse {
   success: boolean;
   processed: number;
   errors: Array<{ tickerId: string; error: string }>;

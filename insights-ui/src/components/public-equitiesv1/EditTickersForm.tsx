@@ -19,7 +19,7 @@ interface UpdateTickerRequest {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
-  stockAnalyzeUrl?: string | null;
+  stockAnalyzeUrl?: string;
 }
 
 interface UpdateTickersRequest {
@@ -78,9 +78,9 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
         alert(`Row ${i + 1}: Please select a valid Exchange.`);
         return;
       }
-      if (!t.name.trim() || !t.symbol.trim()) {
+      if (!t.name.trim() || !t.symbol.trim() || !t.stockAnalyzeUrl.trim()) {
         // eslint-disable-next-line no-alert
-        alert(`Row ${i + 1}: Please provide both Company Name and Symbol.`);
+        alert(`Row ${i + 1}: Please provide both Company Name, Symbol and StockAnalyze URL.`);
         return;
       }
     }
@@ -95,7 +95,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
         industryKey: selectedIndustryKey,
         subIndustryKey: selectedSubIndustryKey,
         websiteUrl: entry.websiteUrl,
-        stockAnalyzeUrl: entry.stockAnalyzeUrl || null,
+        stockAnalyzeUrl: entry.stockAnalyzeUrl,
       })),
     };
 

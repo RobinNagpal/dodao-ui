@@ -55,7 +55,7 @@ async function getHandler(
   return { ...tickerRecord, ...missingReports };
 }
 
-interface UpdateStockAnalyzeUrlRequest {
+export interface UpdateStockAnalyzeUrlRequest {
   stockAnalyzeUrl: string;
 }
 
