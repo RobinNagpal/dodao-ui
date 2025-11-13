@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 
 interface CountryAlternativesProps {
   currentCountry?: string;
@@ -7,14 +8,21 @@ interface CountryAlternativesProps {
   className?: string;
 }
 
+// Mapping for display names and paths for each country
+const COUNTRY_DISPLAY_CONFIG: Record<SupportedCountries, { name: string; path: string }> = {
+  [SupportedCountries.US]: { name: 'US', path: '' }, // US has no /countries/ prefix
+  [SupportedCountries.Canada]: { name: 'Canadian', path: '/countries/Canada' },
+  [SupportedCountries.India]: { name: 'Indian', path: '/countries/India' },
+  [SupportedCountries.UK]: { name: 'UK', path: '/countries/UK' },
+  [SupportedCountries.Pakistan]: { name: 'Pakistani', path: '/countries/Pakistan' },
+};
+
 export default function CountryAlternatives({ currentCountry = 'US', industryKey, className = '' }: CountryAlternativesProps) {
-  // Define available countries and their display names
-  const countries = [
-    { code: 'US', name: 'US', path: '' }, // US has no /countries/ prefix
-    { code: 'Canada', name: 'Canadian', path: '/countries/Canada' },
-    { code: 'India', name: 'Indian', path: '/countries/India' },
-    { code: 'UK', name: 'UK', path: '/countries/UK' },
-  ];
+  // Use countries from utils and map them to display config
+  const countries = ALL_SUPPORTED_COUNTRIES.map((code) => ({
+    code,
+    ...COUNTRY_DISPLAY_CONFIG[code],
+  }));
 
   // Filter out the current country
   const alternativeCountries = countries.filter((country) => country.code !== currentCountry);
