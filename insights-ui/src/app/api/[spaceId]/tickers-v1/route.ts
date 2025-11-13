@@ -37,7 +37,7 @@ interface UpdateTickerRequest {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
-  stockAnalyzeUrl: string;
+  stockAnalyzeUrl?: string | null;
 }
 
 interface UpdateTickersRequest {
@@ -277,7 +277,7 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ spaceId
         industryKey: industryKey.trim(),
         subIndustryKey: subIndustryKey.trim(),
         websiteUrl: normStr(websiteUrl),
-        stockAnalyzeUrl: normStr(stockAnalyzeUrl),
+        stockAnalyzeUrl: normStr(stockAnalyzeUrl) as string,
         updatedBy: 'ui-user',
         updatedAt: new Date(),
       },

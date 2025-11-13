@@ -11,6 +11,7 @@ import {
   RatiosQuarterlyData,
   DividendsData,
   DividendHistoryRow,
+  StockFundamentalsSummary,
 } from '@/types/prismaTypes';
 
 const LAMBDA_BASE_URL = process.env.STOCK_ANALYZER_LAMBDA_URL || '';
@@ -149,6 +150,14 @@ function isDataStale(lastUpdatedAt: Date | null, maxAgeInDays: number): boolean 
 }
 
 /**
+ * Check if summary field is empty (empty object {})
+ * Summary is the key indicator - if it's empty, the entire fetch likely failed
+ */
+function isEmptySummary(summary: StockFundamentalsSummary): boolean {
+  return Object.keys(summary).length === 0;
+}
+
+/**
  * Determine which data needs to be fetched based on existing data and age
  */
 function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | null): FetchConfig[] {
@@ -157,7 +166,14 @@ function determineDataToFetch(existingData: TickerV1StockAnalyzerScrapperInfo | 
     return FETCH_CONFIGS;
   }
 
-  // Check each config to see if data needs updating
+  // Check if summary is empty - if so, treat as missing and fetch all
+  // Summary is the key indicator of a successful fetch
+  if (isEmptySummary(existingData.summary as StockFundamentalsSummary)) {
+    console.log(`Found empty summary field, fetching all data`);
+    return FETCH_CONFIGS;
+  }
+
+  // Check each config to see if data needs updating based on age
   const configsToFetch: FetchConfig[] = [];
 
   for (const config of FETCH_CONFIGS) {

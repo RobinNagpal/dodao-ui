@@ -19,6 +19,7 @@ interface UpdateTickerRequest {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
+  stockAnalyzeUrl?: string | null;
 }
 
 interface UpdateTickersRequest {
@@ -94,6 +95,7 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
         industryKey: selectedIndustryKey,
         subIndustryKey: selectedSubIndustryKey,
         websiteUrl: entry.websiteUrl,
+        stockAnalyzeUrl: entry.stockAnalyzeUrl || null,
       })),
     };
 

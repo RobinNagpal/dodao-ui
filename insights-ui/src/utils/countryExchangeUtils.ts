@@ -137,3 +137,32 @@ export const getExchangeFilterClause = (country: SupportedCountries | null | und
   const exchanges = getExchangesByCountry(country);
   return { exchange: { in: exchanges } };
 };
+
+/**
+ * Get abbreviated country code for display (US, IND, CAN, UK, PAK)
+ */
+export const getCountryCodeForSearchBarDisplay = (country: SupportedCountries): string => {
+  const countryCodeMap: Record<SupportedCountries, string> = {
+    [SupportedCountries.US]: 'US',
+    [SupportedCountries.India]: 'IND',
+    [SupportedCountries.Canada]: 'CAN',
+    [SupportedCountries.UK]: 'UK',
+    [SupportedCountries.Pakistan]: 'PAK',
+  };
+  return countryCodeMap[country] || country;
+};
+
+/**
+ * Format exchange as "COUNTRY: EXCHANGE" (e.g., "US: NYSE", "IND: BSE")
+ */
+export const formatExchangeWithCountry = (exchange: string): string => {
+  try {
+    const normalizedExchange = toExchange(exchange);
+    const country = getCountryByExchange(normalizedExchange);
+    const countryCode = getCountryCodeForSearchBarDisplay(country);
+    return `${countryCode}: ${normalizedExchange}`;
+  } catch {
+    // Fallback to just the exchange if we can't determine the country
+    return exchange;
+  }
+};
