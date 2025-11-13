@@ -37,7 +37,7 @@ interface UpdateTickerRequest {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl?: string;
-  stockAnalyzeUrl: string;
+  stockAnalyzeUrl?: string;
 }
 
 interface UpdateTickersRequest {

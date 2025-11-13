@@ -2,6 +2,7 @@
 
 import StockTickerItem from '@/components/stocks/StockTickerItem';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import * as Tooltip from '@radix-ui/react-tooltip';
@@ -269,7 +270,13 @@ export default function SearchBar({
                     aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
-                      <StockTickerItem symbol={result.symbol} name={result.name} exchange={result.exchange} score={result.cachedScoreEntry?.finalScore ?? 0} />
+                      <StockTickerItem
+                        symbol={result.symbol}
+                        name={result.name}
+                        exchange={result.exchange}
+                        score={result.cachedScoreEntry?.finalScore ?? 0}
+                        displayExchange={formatExchangeWithCountry(result.exchange)}
+                      />
                     </div>
                   </div>
                 ))}

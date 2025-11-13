@@ -3,7 +3,9 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
 import { TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 async function getHandler(
@@ -53,4 +55,44 @@ async function getHandler(
   return { ...tickerRecord, ...missingReports };
 }
 
+export interface UpdateStockAnalyzeUrlRequest {
+  stockAnalyzeUrl: string;
+}
+
+async function putHandler(
+  req: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload,
+  context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
+): Promise<TickerV1> {
+  const { spaceId, ticker, exchange } = await context.params;
+  const body: UpdateStockAnalyzeUrlRequest = await req.json();
+  const { stockAnalyzeUrl } = body;
+
+  if (!stockAnalyzeUrl || typeof stockAnalyzeUrl !== 'string') {
+    throw new Error('stockAnalyzeUrl is required');
+  }
+
+  // Find the ticker
+  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+    where: {
+      spaceId: spaceId || KoalaGainsSpaceId,
+      symbol: ticker.toUpperCase(),
+      exchange: exchange.toUpperCase(),
+    },
+  });
+
+  // Update the stockAnalyzeUrl
+  const updatedTicker = await prisma.tickerV1.update({
+    where: { id: tickerRecord.id },
+    data: {
+      stockAnalyzeUrl: stockAnalyzeUrl.trim(),
+      updatedBy: 'ui-user',
+      updatedAt: new Date(),
+    },
+  });
+
+  return updatedTicker;
+}
+
 export const GET = withErrorHandlingV2<TickerV1FastResponse | null>(getHandler);
+export const PUT = withLoggedInAdmin<TickerV1>(putHandler);
