@@ -5,23 +5,31 @@ import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteCo
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsSession } from '@/types/auth';
-import { PencilIcon, TrashIcon, TagIcon, ListBulletIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon, TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import { HeartIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
-import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import Accordion from '@dodao/web-core/utils/accordion/Accordion';
+import { TickerAnalysisCategory, CATEGORY_MAPPINGS } from '@/types/ticker-typesv1';
+import { getScoreColorClasses } from '@/utils/score-utils';
+import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 
 type ModalView = 'manage-lists' | 'manage-tags';
+
+interface ListWithFavourites {
+  list: UserListResponse;
+  favourites: FavouriteTickerResponse[];
+}
 
 export default function FavouritesPage() {
   const { data: koalaSession } = useSession();
@@ -32,10 +40,43 @@ export default function FavouritesPage() {
   const [deletingFavourite, setDeletingFavourite] = useState<FavouriteTickerResponse | null>(null);
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false);
+  const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
+  const [showBusinessAnalysis, setShowBusinessAnalysis] = useState(false);
 
-  // Filters
-  const [selectedFilterListId, setSelectedFilterListId] = useState<string>('');
-  const [selectedFilterTagId, setSelectedFilterTagId] = useState<string>('');
+  // Load user preference from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('user_setting');
+        if (stored) {
+          const settings = JSON.parse(stored);
+          if (settings?.favourite_setting?.show_business_analysis !== undefined) {
+            setShowBusinessAnalysis(settings.favourite_setting.show_business_analysis);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user settings:', error);
+      }
+    }
+  }, []);
+
+  // Save user preference to localStorage
+  const handleToggleBusinessAnalysis = (enabled: boolean) => {
+    setShowBusinessAnalysis(enabled);
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('user_setting');
+        const settings = stored ? JSON.parse(stored) : {};
+        settings.favourite_setting = {
+          ...settings.favourite_setting,
+          show_business_analysis: enabled,
+        };
+        localStorage.setItem('user_setting', JSON.stringify(settings));
+      } catch (error) {
+        console.error('Error saving user settings:', error);
+      }
+    }
+  };
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -76,6 +117,66 @@ export default function FavouritesPage() {
   const lists = listsData?.lists || [];
   const tags = tagsData?.tags || [];
 
+  // Group favourites by list
+  const { listsWithFavourites, unlistedFavourites } = useMemo(() => {
+    // Sort lists alphabetically
+    const sortedLists = [...lists].sort((a, b) => a.name.localeCompare(b.name));
+
+    // Group favourites by list
+    const listsMap = new Map<string, ListWithFavourites>();
+    sortedLists.forEach((list) => {
+      listsMap.set(list.id, { list, favourites: [] });
+    });
+
+    const unlisted: FavouriteTickerResponse[] = [];
+
+    favourites.forEach((fav) => {
+      if (fav.lists.length === 0) {
+        unlisted.push(fav);
+      } else {
+        fav.lists.forEach((list) => {
+          const listData = listsMap.get(list.id);
+          if (listData) {
+            listData.favourites.push(fav);
+          }
+        });
+      }
+    });
+
+    // Sort favourites within each list by myScore descending
+    listsMap.forEach((listData) => {
+      listData.favourites.sort((a, b) => {
+        const scoreA = a.myScore ?? -Infinity;
+        const scoreB = b.myScore ?? -Infinity;
+        return scoreB - scoreA;
+      });
+    });
+
+    // Sort unlisted favourites by myScore descending
+    unlisted.sort((a, b) => {
+      const scoreA = a.myScore ?? -Infinity;
+      const scoreB = b.myScore ?? -Infinity;
+      return scoreB - scoreA;
+    });
+
+    return {
+      listsWithFavourites: Array.from(listsMap.values()).filter((l) => l.favourites.length > 0),
+      unlistedFavourites: unlisted,
+    };
+  }, [favourites, lists]);
+
+  const toggleList = (listId: string) => {
+    setOpenListIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(listId)) {
+        newSet.delete(listId);
+      } else {
+        newSet.add(listId);
+      }
+      return newSet;
+    });
+  };
+
   // Track when initial data has loaded
   useEffect(() => {
     if (favouritesData && !hasInitiallyLoaded) {
@@ -108,16 +209,10 @@ export default function FavouritesPage() {
     await refetchFavourites(); // Refresh favourites in case they had relations to tags
   };
 
-  // Filter favourites
-  const filteredFavourites = favourites.filter((fav) => {
-    if (selectedFilterListId && !fav.lists.some((l) => l.id === selectedFilterListId)) {
-      return false;
-    }
-    if (selectedFilterTagId && !fav.tags.some((t) => t.id === selectedFilterTagId)) {
-      return false;
-    }
-    return true;
-  });
+  const getBusinessAndMoatSummary = (favourite: FavouriteTickerResponse): string | null => {
+    const businessAndMoatResult = favourite.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat);
+    return businessAndMoatResult?.summary || null;
+  };
 
   // Show loading or redirect if no session
   if (!session) {
@@ -135,59 +230,31 @@ export default function FavouritesPage() {
                 My Favourites
               </h1>
               <p className="text-gray-400 mt-1">
-                {filteredFavourites.length} favourite {filteredFavourites.length === 1 ? 'stock' : 'stocks'}
+                {favourites.length} favourite {favourites.length === 1 ? 'stock' : 'stocks'} across{' '}
+                {listsWithFavourites.length + (unlistedFavourites.length > 0 ? 1 : 0)}{' '}
+                {listsWithFavourites.length + (unlistedFavourites.length > 0 ? 1 : 0) === 1 ? 'list' : 'lists'}
               </p>
             </div>
 
-            <div className="flex gap-2">
-              <Button onClick={() => setManageModalView('manage-lists')} variant="outlined" className="inline-flex items-center">
-                <ListBulletIcon className="w-4 h-4 mr-2" />
-                Manage Lists
-              </Button>
-              <Button onClick={() => setManageModalView('manage-tags')} variant="outlined" className="inline-flex items-center">
-                <TagIcon className="w-4 h-4 mr-2" />
-                Manage Tags
-              </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center mb-2">
+                <ToggleWithIcon label="Show Business Summary" enabled={showBusinessAnalysis} setEnabled={handleToggleBusinessAnalysis} onClickOnLabel={true} />
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={() => setManageModalView('manage-lists')} variant="outlined" className="inline-flex items-center">
+                  <ListBulletIcon className="w-4 h-4 mr-2" />
+                  Manage Lists
+                </Button>
+                <Button onClick={() => setManageModalView('manage-tags')} variant="outlined" className="inline-flex items-center">
+                  <TagIcon className="w-4 h-4 mr-2" />
+                  Manage Tags
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Filters */}
-          <div className="bg-gray-800 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <FunnelIcon className="w-5 h-5" />
-              <h2 className="text-lg font-semibold">Filters</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <StyledSelect
-                label="Filter by List"
-                selectedItemId={selectedFilterListId || null}
-                setSelectedItemId={(id) => setSelectedFilterListId(id || '')}
-                items={[{ id: '', label: 'All Lists' }, ...lists.map((list) => ({ id: list.id, label: list.name }))]}
-                showPleaseSelect={false}
-              />
-              <StyledSelect
-                label="Filter by Tag"
-                selectedItemId={selectedFilterTagId || null}
-                setSelectedItemId={(id) => setSelectedFilterTagId(id || '')}
-                items={[{ id: '', label: 'All Tags' }, ...tags.map((tag) => ({ id: tag.id, label: tag.name }))]}
-                showPleaseSelect={false}
-              />
-            </div>
-            {(selectedFilterListId || selectedFilterTagId) && (
-              <button
-                onClick={() => {
-                  setSelectedFilterListId('');
-                  setSelectedFilterTagId('');
-                }}
-                className="mt-3 text-sm text-blue-400 hover:text-blue-300"
-              >
-                Clear Filters
-              </button>
-            )}
-          </div>
-
-          {/* Favourites Grid */}
-          {filteredFavourites.length === 0 ? (
+          {/* Lists with Favourites */}
+          {favourites.length === 0 ? (
             <div className="bg-gray-800 rounded-lg p-8 text-center">
               <HeartIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No favourites yet</h3>
@@ -197,67 +264,224 @@ export default function FavouritesPage() {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredFavourites.map((favourite) => (
-                <div key={favourite.id} className="bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-colors">
-                  <div className="flex justify-between items-start mb-3">
-                    <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="flex-1 hover:text-blue-400">
-                      <h3 className="text-lg font-bold">{favourite.ticker.symbol}</h3>
-                      <p className="text-sm text-gray-400">{favourite.ticker.name}</p>
-                    </Link>
-                    <div className="flex gap-2">
-                      <button onClick={() => setEditingFavourite(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
-                        <PencilIcon className="w-5 h-5" />
-                      </button>
-                      <button onClick={() => setDeletingFavourite(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
-                        <TrashIcon className="w-5 h-5" />
-                      </button>
+            <div className="space-y-4">
+              {/* Lists with favourites */}
+              {listsWithFavourites.map(({ list, favourites: listFavourites }) => {
+                const isOpen = openListIds.has(list.id);
+                const tickerSymbols = listFavourites.map((f) => f.ticker.symbol).join(', ');
+                const label = isOpen ? list.name : `${list.name} (${tickerSymbols})`;
+
+                return (
+                  <Accordion key={list.id} isOpen={isOpen} label={label} onClick={() => toggleList(list.id)}>
+                    <div className="space-y-3">
+                      {listFavourites.map((favourite) => (
+                        <div key={favourite.id} className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="flex-1 flex items-center gap-2 flex-wrap">
+                              <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
+                                <h4 className="text-base font-bold">
+                                  {favourite.ticker.name} ({favourite.ticker.symbol})
+                                </h4>
+                              </Link>
+                              {favourite.ticker.cachedScoreEntry && (
+                                <>
+                                  {(() => {
+                                    const { textColorClass, bgColorClass } = getScoreColorClasses(favourite.ticker.cachedScoreEntry.finalScore);
+                                    return (
+                                      <span className={`${textColorClass} px-1.5 py-0.5 rounded-md ${bgColorClass} bg-opacity-15 font-semibold text-xs`}>
+                                        {favourite.ticker.cachedScoreEntry.finalScore}/25
+                                      </span>
+                                    );
+                                  })()}
+                                </>
+                              )}
+                              {favourite.myScore !== null && favourite.myScore !== undefined && (
+                                <span className="font-bold text-xs" style={{ color: 'var(--primary-color, #3B82F6)' }}>
+                                  My Score: {favourite.myScore % 1 === 0 ? favourite.myScore.toString() : favourite.myScore.toFixed(1)}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex gap-1">
+                              <button onClick={() => setEditingFavourite(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
+                                <PencilIcon className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => setDeletingFavourite(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
+                                <TrashIcon className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Category Scores */}
+                          {favourite.ticker.cachedScoreEntry && (
+                            <div className="flex flex-wrap items-center gap-3 mb-2 text-xs">
+                              <div>
+                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.BusinessAndMoat]}:</span>{' '}
+                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.businessAndMoatScore}/5</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FinancialStatementAnalysis]}:</span>{' '}
+                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.financialStatementAnalysisScore}/5</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.PastPerformance]}:</span>{' '}
+                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.pastPerformanceScore}/5</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FutureGrowth]}:</span>{' '}
+                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.futureGrowthScore}/5</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FairValue]}:</span>{' '}
+                                <span className="font-semibold">{favourite.ticker.cachedScoreEntry.fairValueScore}/5</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Business & Moat Details */}
+                          {showBusinessAnalysis && getBusinessAndMoatSummary(favourite) && (
+                            <div className="mb-2">
+                              <p className="text-xs font-medium text-gray-400 mb-1">Business & Moat Analysis:</p>
+                              <p className="text-xs text-gray-300 leading-relaxed">{getBusinessAndMoatSummary(favourite)}</p>
+                            </div>
+                          )}
+
+                          {/* My Notes */}
+                          {favourite.myNotes && (
+                            <div className="mb-2">
+                              <p className="text-xs text-gray-500 mb-1">My Notes:</p>
+                              <p className="text-xs text-gray-300 line-clamp-2">{favourite.myNotes}</p>
+                            </div>
+                          )}
+
+                          {/* Tags */}
+                          {favourite.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5">
+                              {favourite.tags.map((tag) => (
+                                <span
+                                  key={tag.id}
+                                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full text-white font-medium"
+                                  style={{ backgroundColor: tag.colorHex }}
+                                >
+                                  {tag.name}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
+                  </Accordion>
+                );
+              })}
+
+              {/* Unlisted Favourites */}
+              {unlistedFavourites.length > 0 && (
+                <Accordion
+                  isOpen={openListIds.has('unlisted')}
+                  label={
+                    openListIds.has('unlisted') ? 'Unlisted Favourites' : `Unlisted Favourites (${unlistedFavourites.map((f) => f.ticker.symbol).join(', ')})`
+                  }
+                  onClick={() => toggleList('unlisted')}
+                >
+                  <div className="space-y-3">
+                    {unlistedFavourites.map((favourite) => (
+                      <div key={favourite.id} className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+                        <div className="flex justify-between items-start mb-2">
+                          <div className="flex-1 flex items-center gap-2 flex-wrap">
+                            <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
+                              <h4 className="text-base font-bold">
+                                {favourite.ticker.name} ({favourite.ticker.symbol})
+                              </h4>
+                            </Link>
+                            {favourite.ticker.cachedScoreEntry && (
+                              <>
+                                {(() => {
+                                  const { textColorClass, bgColorClass } = getScoreColorClasses(favourite.ticker.cachedScoreEntry.finalScore);
+                                  return (
+                                    <span className={`${textColorClass} px-1.5 py-0.5 rounded-md ${bgColorClass} bg-opacity-15 font-semibold text-xs`}>
+                                      {favourite.ticker.cachedScoreEntry.finalScore}/25
+                                    </span>
+                                  );
+                                })()}
+                              </>
+                            )}
+                            {favourite.myScore !== null && favourite.myScore !== undefined && (
+                              <span className="font-bold text-xs" style={{ color: 'var(--primary-color, #3B82F6)' }}>
+                                My: {favourite.myScore % 1 === 0 ? favourite.myScore.toString() : favourite.myScore.toFixed(1)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex gap-1">
+                            <button onClick={() => setEditingFavourite(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
+                              <PencilIcon className="w-4 h-4" />
+                            </button>
+                            <button onClick={() => setDeletingFavourite(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
+                              <TrashIcon className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Category Scores */}
+                        {favourite.ticker.cachedScoreEntry && (
+                          <div className="flex flex-wrap items-center gap-3 mb-2 text-xs">
+                            <div>
+                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.BusinessAndMoat]}:</span>{' '}
+                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.businessAndMoatScore}/5</span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FinancialStatementAnalysis]}:</span>{' '}
+                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.financialStatementAnalysisScore}/5</span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.PastPerformance]}:</span>{' '}
+                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.pastPerformanceScore}/5</span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FutureGrowth]}:</span>{' '}
+                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.futureGrowthScore}/5</span>
+                            </div>
+                            <div>
+                              <span className="text-gray-500">{CATEGORY_MAPPINGS[TickerAnalysisCategory.FairValue]}:</span>{' '}
+                              <span className="font-semibold">{favourite.ticker.cachedScoreEntry.fairValueScore}/5</span>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Business & Moat Details */}
+                        {showBusinessAnalysis && getBusinessAndMoatSummary(favourite) && (
+                          <div className="mb-2">
+                            <p className="text-xs font-medium text-gray-400 mb-1">Business & Moat Analysis:</p>
+                            <p className="text-xs text-gray-300 leading-relaxed">{getBusinessAndMoatSummary(favourite)}</p>
+                          </div>
+                        )}
+
+                        {/* My Notes */}
+                        {favourite.myNotes && (
+                          <div className="mb-2">
+                            <p className="text-xs text-gray-500 mb-1">My Notes:</p>
+                            <p className="text-xs text-gray-300 line-clamp-2">{favourite.myNotes}</p>
+                          </div>
+                        )}
+
+                        {/* Tags */}
+                        {favourite.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {favourite.tags.map((tag) => (
+                              <span
+                                key={tag.id}
+                                className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full text-white font-medium"
+                                style={{ backgroundColor: tag.colorHex }}
+                              >
+                                {tag.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-
-                  {favourite.myScore !== null && favourite.myScore !== undefined && (
-                    <div className="mb-2">
-                      <span className="text-xs font-medium text-gray-400">My Score:</span>
-                      <span className="ml-2 text-sm font-bold" style={{ color: 'var(--primary-color, #3B82F6)' }}>
-                        {favourite.myScore.toFixed(1)}
-                      </span>
-                    </div>
-                  )}
-
-                  {favourite.myNotes && (
-                    <div className="mb-3">
-                      <p className="text-sm text-gray-300 line-clamp-2">{favourite.myNotes}</p>
-                    </div>
-                  )}
-
-                  {/* Tags */}
-                  {favourite.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {favourite.tags.map((tag) => (
-                        <span
-                          key={tag.id}
-                          className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full text-white"
-                          style={{ backgroundColor: tag.colorHex }}
-                        >
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Lists */}
-                  {favourite.lists.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {favourite.lists.map((list) => (
-                        <span key={list.id} className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-gray-700 text-gray-300">
-                          <ListBulletIcon className="w-3 h-3" />
-                          {list.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                </Accordion>
+              )}
             </div>
           )}
         </div>

@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
 // GET /api/favourite-tickers - Get all favourite tickers for the logged-in user
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickersResponse> {
@@ -15,7 +16,23 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       spaceId: KoalaGainsSpaceId,
     },
     include: {
-      ticker: true,
+      ticker: {
+        include: {
+          cachedScoreEntry: true,
+          categoryAnalysisResults: {
+            where: {
+              categoryKey: TickerAnalysisCategory.BusinessAndMoat,
+            },
+            include: {
+              factorResults: {
+                include: {
+                  analysisCategoryFactor: true,
+                },
+              },
+            },
+          },
+        },
+      },
       tags: true,
       lists: true,
     },
