@@ -1,7 +1,7 @@
 import { IndustriesResponse } from '@/types/api/ticker-industries';
 import Link from 'next/link';
 import React, { use } from 'react';
-import SubIndustryCard from './SubIndustryCard';
+import CompactSubIndustryCard from './CompactSubIndustryCard';
 
 interface CountryIndustriesGridProps {
   data?: IndustriesResponse | null;
@@ -35,18 +35,17 @@ export default function CountryIndustriesGrid({ data, dataPromise, countryName }
     <>
       {resolvedData.industries.map((industry) => {
         const industryDisplayName = industry.name;
-        const totalCompaniesInIndustry = industry.subIndustries.reduce((sum, sub) => sum + sub.tickerCount, 0);
 
         return (
-          <div key={industry.industryKey} className="mb-12">
+          <div key={industry.industryKey} className="mb-8">
             {/* Industry Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
               <Link
                 href={`/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(industry.industryKey)}`}
-                className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md flex items-center"
+                className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center"
               >
-                View All {totalCompaniesInIndustry} Companies
+                View All Companies
                 <span className="ml-1">→</span>
               </Link>
             </div>
@@ -54,12 +53,11 @@ export default function CountryIndustriesGrid({ data, dataPromise, countryName }
             {/* Sub-Industry Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
               {industry.subIndustries.map((subIndustry) => (
-                <SubIndustryCard
+                <CompactSubIndustryCard
                   key={subIndustry.subIndustryKey}
-                  subIndustry={subIndustry.subIndustryKey}
+                  industryKey={industry.industryKey}
                   subIndustryName={subIndustry.name}
                   tickers={subIndustry.topTickers}
-                  total={subIndustry.tickerCount}
                 />
               ))}
             </div>

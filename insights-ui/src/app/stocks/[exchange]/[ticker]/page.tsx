@@ -21,7 +21,7 @@ import {
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries, formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
@@ -384,6 +384,7 @@ function TickerSummaryInfo({
           {/* Left: summary */}
           <div className="lg:w/full lg:max-w-2xl lg:flex-auto min-h-[240px]">
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
+            <p className="text-sm font-medium text-gray-400 mt-4">{formatExchangeWithCountry(d.exchange)}</p>
           </div>
 
           {/* Right: Radar (Suspense retained only here) */}
