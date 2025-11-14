@@ -21,7 +21,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
-import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 
 type ModalView = 'manage-lists' | 'manage-tags';
@@ -176,6 +175,12 @@ export default function FavouritesPage() {
     });
   };
 
+  // Prevent double-click due to event bubbling in Accordion
+  const handleAccordionClick = (e: React.MouseEvent<HTMLElement>, listId: string) => {
+    e.stopPropagation();
+    toggleList(listId);
+  };
+
   // Show loading screen only when loading data
   if (favouritesLoading) {
     return <FullPageLoader message="Loading your favourites..." />;
@@ -259,7 +264,7 @@ export default function FavouritesPage() {
                 const label = isOpen ? list.name : `${list.name} (${tickerSymbols})`;
 
                 return (
-                  <Accordion key={list.id} isOpen={isOpen} label={label} onClick={() => toggleList(list.id)}>
+                  <Accordion key={list.id} isOpen={isOpen} label={label} onClick={(e) => handleAccordionClick(e, list.id)}>
                     <div className="space-y-3">
                       {listFavourites.map((favourite) => (
                         <FavouriteItem
@@ -282,7 +287,7 @@ export default function FavouritesPage() {
                   label={
                     openListIds.has('unlisted') ? 'Unlisted Favourites' : `Unlisted Favourites (${unlistedFavourites.map((f) => f.ticker.symbol).join(', ')})`
                   }
-                  onClick={() => toggleList('unlisted')}
+                  onClick={(e) => handleAccordionClick(e, 'unlisted')}
                 >
                   <div className="space-y-3">
                     {unlistedFavourites.map((favourite) => (

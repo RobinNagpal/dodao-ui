@@ -1,5 +1,4 @@
 import { IndustriesResponse } from '@/types/api/ticker-industries';
-import { getTickerScore } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import React, { use } from 'react';
 import CompactSubIndustryCard from './CompactSubIndustryCard';

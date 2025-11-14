@@ -32,6 +32,7 @@ async function getHandler(
     include: {
       industry: true,
       // Include all tickers for each sub-industry with filtering and ordering
+      // The where clause filters by country exchanges, so tickers.length gives us the country-specific count
       tickers: {
         where: tickerFilter,
         select: {
@@ -42,12 +43,6 @@ async function getHandler(
           cachedScoreEntry: true,
         },
         orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
-      },
-      // Get count of all tickers in this sub-industry
-      _count: {
-        select: {
-          tickers: true, // ✅ must be boolean; filtered counts aren't supported here
-        },
       },
     },
     orderBy: [{ industryKey: 'asc' }, { name: 'asc' }],
@@ -60,7 +55,7 @@ async function getHandler(
     // Skip sub-industries with no tickers (after filters)
     if (!subIndustry.tickers.length) continue;
 
-    const tickerCount = subIndustry._count.tickers; // ✅ strongly typed now
+    const tickerCount = subIndustry.tickers.length; // Use filtered tickers count (country-specific)
 
     // Convert tickers to include industry and sub-industry names
     const tickersWithNames: TickerMinimal[] = subIndustry.tickers.map((t) => ({

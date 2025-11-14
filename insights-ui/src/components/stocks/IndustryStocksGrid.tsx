@@ -56,6 +56,8 @@ export default function IndustryStocksGrid({
 
   const { subIndustries, filtersApplied } = resolvedData;
 
+  console.log(subIndustries);
+
   if (!subIndustries || subIndustries.flatMap((si) => si.tickers).length === 0) {
     return (
       <div className="text-center py-12">
@@ -78,7 +80,7 @@ export default function IndustryStocksGrid({
   const cards: CardSpec[] = resolvedData.subIndustries.map((subIndustry) => ({
     key: subIndustry.subIndustryKey,
     subIndustry: subIndustry.subIndustryKey,
-    subIndustryName: subIndustry.industryName,
+    subIndustryName: subIndustry.name,
     tickers: subIndustry.tickers,
     total: subIndustry.tickerCount,
     estH: estimateCardHeight(subIndustry.tickerCount),
