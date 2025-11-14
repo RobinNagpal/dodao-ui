@@ -180,6 +180,7 @@ jobs:
           echo "KOALA_AWS_SECRET_ACCESS_KEY=${{ secrets.KOALA_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
           echo "KOALA_AWS_ACCESS_KEY_ID=${{ secrets.KOALA_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> $GITHUB_ENV
 
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn
