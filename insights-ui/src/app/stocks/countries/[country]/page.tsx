@@ -1,8 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
-import CountryStocksPageLayout from '@/components/stocks/CountryStocksPageLayout';
+import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { KoalaGainsSession } from '@/types/auth';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { fetchStocksData } from '@/utils/stocks-data-utils';
@@ -26,27 +25,17 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
   const countryName = decodeURIComponent(params.country);
   const country = countryName as SupportedCountries;
 
-  // Create breadcrumbs with dynamic country name
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: `${countryName} Stocks`,
-      href: `/stocks/countries/${encodeURIComponent(countryName)}`,
-      current: true,
-    },
-  ];
-
   // Fetch data using the cached function (no filters on static pages)
   const data = await fetchStocksData(country, {});
 
   return (
-    <CountryStocksPageLayout
-      breadcrumbs={breadcrumbs}
+    <IndustryWithStocksPageLayout
       title={`${countryName} Stocks by Industry`}
       description={`Explore ${countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
       currentCountry={countryName}
       session={session}
     >
       <CountryIndustriesGrid data={data} countryName={countryName} />
-    </CountryStocksPageLayout>
+    </IndustryWithStocksPageLayout>
   );
 }

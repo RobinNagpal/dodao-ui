@@ -1,127 +1,48 @@
 import { Metadata } from 'next';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TickerV1Industry } from '@prisma/client';
-
-// ────────────────────────────────────────────────────────────────────────────────
-// Base metadata for US stocks page
-// ────────────────────────────────────────────────────────────────────────────────
-
-export const generateUSStocksMetadata = (): Metadata => {
-  return {
-    title: 'US Stocks by Industry | KoalaGains',
-    description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and NYSEAMERICAN. See top tickers with detailed reports.',
-    keywords: [
-      'US stocks',
-      'stocks by industry',
-      'NASDAQ',
-      'NYSE',
-      'AMEX',
-      'NYSEAMERICAN',
-      'stock analysis',
-      'AI stock insights',
-      'investment research',
-      'top performing stocks',
-      'KoalaGains',
-    ],
-    openGraph: {
-      title: 'US Stocks by Industry | KoalaGains',
-      description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports.',
-      url: 'https://koalagains.com/stocks',
-      siteName: 'KoalaGains',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'US Stocks by Industry | KoalaGains',
-      description: 'Discover US stocks grouped by industry and sub-industry across NASDAQ, NYSE, and AMEX. See top tickers with detailed reports.',
-    },
-    alternates: { canonical: 'https://koalagains.com/stocks' },
-  };
-};
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator
 // ────────────────────────────────────────────────────────────────────────────────
 
 export const generateCountryStocksMetadata = (countryName: string): Metadata => {
+  const isUS = countryName === 'US';
+  const url = isUS ? 'https://koalagains.com/stocks' : `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}`;
+
+  const description = `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`;
+
+  const keywords = [
+    `${countryName} stocks`,
+    'stocks by industry',
+    'stock analysis',
+    'AI stock insights',
+    'investment research',
+    'top performing stocks',
+    'KoalaGains',
+  ];
+
+  const openGraphDescription = `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`;
+
   return {
     title: `${countryName} Stocks by Industry | KoalaGains`,
-    description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
-    keywords: [
-      `${countryName} stocks`,
-      'stocks by industry',
-      'stock analysis',
-      'AI stock insights',
-      'investment research',
-      'top performing stocks',
-      'KoalaGains',
-    ],
+    description,
+    keywords,
     openGraph: {
       title: `${countryName} Stocks by Industry | KoalaGains`,
-      description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
-      url: `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}`,
+      description: openGraphDescription,
+      url,
       siteName: 'KoalaGains',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: `${countryName} Stocks by Industry | KoalaGains`,
-      description: `Discover ${countryName} stocks grouped by industry and sub-industry. See top tickers with detailed reports and AI insights.`,
+      description: openGraphDescription,
     },
     alternates: {
-      canonical: `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}`,
+      canonical: url,
     },
-  };
-};
-
-// ────────────────────────────────────────────────────────────────────────────────
-// Industry stocks metadata generator (US)
-// ────────────────────────────────────────────────────────────────────────────────
-
-export const generateIndustryStocksMetadata = async (industryKey: string): Promise<Metadata> => {
-  let industryName = industryKey;
-  let industrySummary = `Browse ${industryKey} stocks and sub-industries across US exchanges. View reports, metrics, and AI-driven insights.`;
-
-  try {
-    const res = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
-    const data = (await res.json()) as TickerV1Industry;
-    industryName = data.name ?? industryKey;
-    industrySummary = data.summary ?? industrySummary;
-  } catch {
-    // fallbacks already set
-  }
-
-  const base = `${getBaseUrlForServerSidePages()}/stocks/industries/${encodeURIComponent(industryKey)}`;
-  return {
-    title: `${industryName} Stocks | KoalaGains`,
-    description: industrySummary,
-    keywords: [
-      `${industryName} stocks`,
-      `${industryName} companies`,
-      `${industryName} sub-industries`,
-      'US stocks',
-      'NASDAQ',
-      'NYSE',
-      'AMEX',
-      'Stock analysis',
-      'Financial reports',
-      'Investment research',
-      'KoalaGains',
-    ],
-    openGraph: {
-      title: `${industryName} Stocks | KoalaGains`,
-      description: industrySummary,
-      url: base,
-      siteName: 'KoalaGains',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${industryName} Stocks | KoalaGains`,
-      description: industrySummary,
-    },
-    alternates: { canonical: base },
   };
 };
 
@@ -130,38 +51,47 @@ export const generateIndustryStocksMetadata = async (industryKey: string): Promi
 // ────────────────────────────────────────────────────────────────────────────────
 
 export const generateCountryIndustryStocksMetadata = async (countryName: string, industryKey: string): Promise<Metadata> => {
+  const isUS = countryName === 'US';
+
   // Fetch industry data to get name and summary
   let industryName = industryKey; // fallback to key
-  let industrySummary = `Browse ${industryKey} stocks and sub-industries across ${countryName} exchanges. View reports, metrics, and AI-driven insights to guide your investments.`; // fallback description
+  let industrySummary = `Browse ${industryKey} stocks and sub-industries across ${countryName} exchanges. View reports, metrics, and AI-driven insights to guide your investments.`;
 
   try {
-    const response = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`);
+    const response = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
     const industryData: TickerV1Industry = await response.json();
-    industryName = industryData.name;
-    industrySummary = industryData.summary;
+    industryName = industryData.name ?? industryKey;
+    industrySummary = industryData.summary ?? industrySummary;
   } catch (error) {
     console.log('Error fetching industry data for metadata:', error);
   }
 
-  const base = `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}/industries/${industryKey}`;
+  const base = isUS
+    ? `https://koalagains.com/stocks/industries/${encodeURIComponent(industryKey)}`
+    : `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}/industries/${industryKey}`;
+
+  const title = `${industryName} Stocks in ${countryName} | KoalaGains`;
+
+  const keywords = [
+    `${industryName} stocks`,
+    `${industryName} companies`,
+    `${industryName} sub-industries`,
+    `${countryName} stocks`,
+    'KoalaGains',
+    'Stock analysis',
+    'Financial reports',
+    'Investment research',
+  ];
+
   return {
-    title: `${industryName} Stocks in ${countryName} | KoalaGains`,
+    title,
     description: industrySummary,
     alternates: {
       canonical: base,
     },
-    keywords: [
-      `${industryName} stocks`,
-      `${industryName} companies`,
-      `${industryName} sub-industries`,
-      `${countryName} stocks`,
-      'KoalaGains',
-      'Stock analysis',
-      'Financial reports',
-      'Investment research',
-    ],
+    keywords,
     openGraph: {
-      title: `${industryName} Stocks in ${countryName} | KoalaGains`,
+      title,
       description: industrySummary,
       url: base,
       siteName: 'KoalaGains',
@@ -169,7 +99,7 @@ export const generateCountryIndustryStocksMetadata = async (countryName: string,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${industryName} Stocks in ${countryName} | KoalaGains`,
+      title,
       description: industrySummary,
     },
   };

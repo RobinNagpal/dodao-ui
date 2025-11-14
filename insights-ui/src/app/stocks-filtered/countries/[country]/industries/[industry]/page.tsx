@@ -1,15 +1,14 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import StocksPageLayout from '@/components/stocks/StocksPageLayout';
+import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import WithSuspenseIndustryStocksGrid from '@/components/stocks/WithSuspenseIndustryStocksGrid';
 import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1Industry } from '@prisma/client';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { TickerV1Industry } from '@prisma/client';
 
 // Dynamic page for filtered results
 export const dynamic = 'force-dynamic';
@@ -54,28 +53,19 @@ export default async function CountryIndustryStocksFilteredPage({ params, search
     // fallback will be handled below
   }
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: `${countryName} Stocks`, href: `/stocks/countries/${encodeURIComponent(countryName)}`, current: false },
-    {
-      name: industryData?.name || industryKey,
-      href: `/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(industryKey)}`,
-      current: true,
-    },
-  ];
-
   return (
-    <StocksPageLayout
-      breadcrumbs={breadcrumbs}
+    <IndustryWithStocksPageLayout
       title={`${industryData?.name || industryKey} Stocks in ${countryName}`}
       description={`Explore ${industryData?.name || industryKey} companies in ${countryName}. ${
         industryData?.summary || 'View detailed reports and AI-driven insights.'
       }`}
       currentCountry={countryName}
       industryKey={industryKey}
+      industryName={industryData?.name}
       session={session}
       showAppliedFilters={true}
     >
       <WithSuspenseIndustryStocksGrid dataPromise={dataPromise} industryName={industryData?.name || industryKey} />
-    </StocksPageLayout>
+    </IndustryWithStocksPageLayout>
   );
 }

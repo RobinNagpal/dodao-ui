@@ -1,9 +1,8 @@
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
-import StocksPageLayout from '@/components/stocks/StocksPageLayout';
+import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData } from '@/utils/stocks-data-utils';
-import { generateIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
-import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-static';
@@ -16,7 +15,7 @@ export const revalidate = 86400; // 24 hours
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
-  return generateIndustryStocksMetadata(industryKey);
+  return generateCountryIndustryStocksMetadata('US', industryKey);
 }
 
 export const viewport = commonViewport;
@@ -38,20 +37,15 @@ export default async function IndustryStocksPage({ params }: PageProps) {
   // Fetch data using the cached function (no filters on static pages)
   const data = await fetchIndustryStocksData(industryKey, SupportedCountries.US, {});
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: 'US Stocks', href: `/stocks`, current: false },
-    { name: data?.name || industryKey, href: `/stocks/industries/${encodeURIComponent(industryKey)}`, current: true },
-  ];
-
   return (
-    <StocksPageLayout
-      breadcrumbs={breadcrumbs}
+    <IndustryWithStocksPageLayout
       title={`${data?.name || industryKey} Stocks`}
       description={`Explore ${data?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
         data?.summary || 'View detailed reports and AI-driven insights.'
       }`}
       currentCountry="US"
       industryKey={industryKey}
+      industryName={data?.name}
     >
       {!data ? (
         <>
@@ -61,6 +55,6 @@ export default async function IndustryStocksPage({ params }: PageProps) {
       ) : (
         <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
       )}
-    </StocksPageLayout>
+    </IndustryWithStocksPageLayout>
   );
 }

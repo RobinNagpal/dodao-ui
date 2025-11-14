@@ -1,11 +1,10 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import StocksPageLayout from '@/components/stocks/StocksPageLayout';
+import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import WithSuspenseCompactSubIndustriesGrid from '@/components/stocks/WithSuspenseCompactSubIndustriesGrid';
 import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { generateUSStocksMetadata } from '@/utils/metadata-generators';
+import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
-import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { getServerSession } from 'next-auth';
 
 // Dynamic page for filtered results
@@ -13,9 +12,7 @@ export const dynamic = 'force-dynamic';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
-export const metadata = generateUSStocksMetadata();
-
-const breadcrumbs: BreadcrumbsOjbect[] = [{ name: 'US Stocks', href: `/stocks`, current: true }];
+export const metadata = generateCountryStocksMetadata('US');
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -33,8 +30,7 @@ export default async function StocksFilteredPage({ searchParams: searchParamsPro
   })();
 
   return (
-    <StocksPageLayout
-      breadcrumbs={breadcrumbs}
+    <IndustryWithStocksPageLayout
       title="US Stocks by Industry"
       description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
       currentCountry="US"
@@ -42,6 +38,6 @@ export default async function StocksFilteredPage({ searchParams: searchParamsPro
       showAppliedFilters={true}
     >
       <WithSuspenseCompactSubIndustriesGrid dataPromise={dataPromise} />
-    </StocksPageLayout>
+    </IndustryWithStocksPageLayout>
   );
 }

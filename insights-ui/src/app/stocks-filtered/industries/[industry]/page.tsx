@@ -1,9 +1,8 @@
-import StocksPageLayout from '@/components/stocks/StocksPageLayout';
+import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import WithSuspenseIndustryStocksGrid from '@/components/stocks/WithSuspenseIndustryStocksGrid';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
-import { generateIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
-import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { TickerV1Industry } from '@prisma/client';
 import type { Metadata } from 'next';
@@ -17,7 +16,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(props: { params: Promise<{ industry: string }> }): Promise<Metadata> {
   const { industry } = await props.params;
   const industryKey = decodeURIComponent(industry);
-  return generateIndustryStocksMetadata(industryKey);
+  return generateCountryIndustryStocksMetadata('US', industryKey);
 }
 
 export const viewport = commonViewport;
@@ -53,23 +52,18 @@ export default async function IndustryStocksFilteredPage({ params, searchParams 
     // fallback will be handled below
   }
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: 'US Stocks', href: `/stocks`, current: false },
-    { name: industryData?.name || industryKey, href: `/stocks/industries/${encodeURIComponent(industryKey)}`, current: true },
-  ];
-
   return (
-    <StocksPageLayout
-      breadcrumbs={breadcrumbs}
+    <IndustryWithStocksPageLayout
       title={`${industryData?.name || industryKey} Stocks`}
       description={`Explore ${industryData?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
         industryData?.summary || 'View detailed reports and AI-driven insights.'
       }`}
       currentCountry="US"
       industryKey={industryKey}
+      industryName={industryData?.name}
       showAppliedFilters={true}
     >
       <WithSuspenseIndustryStocksGrid dataPromise={dataPromise} industryName={industryData?.name || industryKey} />
-    </StocksPageLayout>
+    </IndustryWithStocksPageLayout>
   );
 }
