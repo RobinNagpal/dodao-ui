@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/20/solid';
 
@@ -63,10 +63,27 @@ interface FilterModalContentProps {
 function FilterModalContent({ initialSelected, onClose }: FilterModalContentProps): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const onApplyFilters = (selected: SelectedFiltersMap): void => {
     const nextParams: URLSearchParams = applySelectedFiltersToParams(searchParams, selected);
-    router.push(`?${nextParams.toString()}`);
+    const hasFilters = Object.keys(selected).length > 0 && Object.values(selected).some((v) => v && v.length > 0);
+
+    if (hasFilters) {
+      // Navigate to the filtered version of the current page
+      let filteredPath = pathname;
+
+      // Convert static page paths to filtered paths
+      if (!pathname.includes('/stocks-filtered')) {
+        filteredPath = pathname.replace('/stocks', '/stocks-filtered');
+      }
+
+      router.push(`${filteredPath}?${nextParams.toString()}`);
+    } else {
+      // If no filters, just update the query params
+      router.push(`${pathname}?${nextParams.toString()}`);
+    }
+
     onClose();
   };
 

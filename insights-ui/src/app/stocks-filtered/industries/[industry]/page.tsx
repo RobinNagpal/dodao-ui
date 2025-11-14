@@ -1,13 +1,14 @@
-import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import WithSuspenseIndustryStocksGrid from '@/components/stocks/WithSuspenseIndustryStocksGrid';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { fetchIndustryStocksData } from '@/utils/stocks-data-utils';
+import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import type { TickerV1Industry } from '@prisma/client';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours
+// Dynamic page for filtered results
+export const dynamic = 'force-dynamic';
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Metadata
@@ -25,36 +26,44 @@ export const viewport = commonViewport;
 
 type PageProps = {
   params: Promise<{ industry: string }>;
+  searchParams: Promise<SearchParams>;
 };
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Page
 
-export default async function IndustryStocksPage({ params }: PageProps) {
+export default async function IndustryStocksFilteredPage({ params, searchParams }: PageProps) {
+  // Resolve params now because we need the key for filtering inside the data promise
   const resolvedParams = await params;
   const industryKey = decodeURIComponent(resolvedParams.industry);
+  const resolvedSearchParams = await searchParams;
 
-  // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchIndustryStocksData(industryKey, SupportedCountries.US, {});
+  // Create a data promise for Suspense
+  const dataPromise = (async () => {
+    return fetchIndustryStocksData(industryKey, SupportedCountries.US, resolvedSearchParams);
+  })();
+
+  // Fetch industry data for display
+  let industryData: TickerV1Industry | null = null;
+  try {
+    const res = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
+    industryData = (await res.json()) as TickerV1Industry;
+  } catch {
+    // fallback will be handled below
+  }
 
   return (
     <IndustryWithStocksPageLayout
-      title={`${data?.name || industryKey} Stocks`}
-      description={`Explore ${data?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
-        data?.summary || 'View detailed reports and AI-driven insights.'
+      title={`${industryData?.name || industryKey} Stocks`}
+      description={`Explore ${industryData?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX). ${
+        industryData?.summary || 'View detailed reports and AI-driven insights.'
       }`}
       currentCountry="US"
       industryKey={industryKey}
-      industryName={data?.name}
+      industryName={industryData?.name}
+      showAppliedFilters={true}
     >
-      {!data ? (
-        <>
-          <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found.`}</p>
-          <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-        </>
-      ) : (
-        <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
-      )}
+      <WithSuspenseIndustryStocksGrid dataPromise={dataPromise} industryName={industryData?.name || industryKey} />
     </IndustryWithStocksPageLayout>
   );
 }

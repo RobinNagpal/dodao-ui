@@ -1,15 +1,14 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import WithSuspenseCompactSubIndustriesGrid from '@/components/stocks/WithSuspenseCompactSubIndustriesGrid';
 import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchStocksData } from '@/utils/stocks-data-utils';
+import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { getServerSession } from 'next-auth';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours
+// Dynamic page for filtered results
+export const dynamic = 'force-dynamic';
 
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -17,11 +16,18 @@ export const metadata = generateCountryStocksMetadata('US');
 
 // ────────────────────────────────────────────────────────────────────────────────
 
-export default async function StocksPage() {
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function StocksFilteredPage({ searchParams: searchParamsPromise }: PageProps) {
+  const searchParams = await searchParamsPromise;
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
-  // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchStocksData(SupportedCountries.US, {});
+  // Create a data promise for Suspense
+  const dataPromise = (async () => {
+    return fetchStocksData(SupportedCountries.US, searchParams);
+  })();
 
   return (
     <IndustryWithStocksPageLayout
@@ -29,8 +35,9 @@ export default async function StocksPage() {
       description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
       currentCountry="US"
       session={session}
+      showAppliedFilters={true}
     >
-      <CompactSubIndustriesGrid data={data} />
+      <WithSuspenseCompactSubIndustriesGrid dataPromise={dataPromise} />
     </IndustryWithStocksPageLayout>
   );
 }

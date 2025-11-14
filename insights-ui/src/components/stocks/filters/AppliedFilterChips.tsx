@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname, ReadonlyURLSearchParams } from 'next/navigation';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 
 import { getAppliedFilters, removeFilterFromParams, clearAllFilterParams, type AppliedFilter } from '@/utils/ticker-filter-utils';
@@ -15,6 +15,7 @@ interface AppliedFilterChipsProps {
 export default function AppliedFilterChips({ className = '', showClearAll = true }: AppliedFilterChipsProps): JSX.Element | null {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const currentFilters: AppliedFilter[] = useMemo<AppliedFilter[]>(() => getAppliedFilters(searchParams), [searchParams]);
 
@@ -22,12 +23,29 @@ export default function AppliedFilterChips({ className = '', showClearAll = true
 
   const handleRemove = (filter: AppliedFilter): void => {
     const nextParams: URLSearchParams = removeFilterFromParams(searchParams, filter);
-    router.push(`?${nextParams.toString()}`);
+
+    // Check if this is the last filter being removed
+    const remainingFilters = getAppliedFilters(nextParams as ReadonlyURLSearchParams);
+
+    if (remainingFilters.length === 0 && pathname.includes('/stocks-filtered')) {
+      // Navigate back to the static page when removing the last filter
+      const staticPath = pathname.replace('/stocks-filtered', '/stocks');
+      router.push(staticPath);
+    } else {
+      // Just update the query params
+      router.push(`${pathname}?${nextParams.toString()}`);
+    }
   };
 
   const handleClearAll = (): void => {
-    const nextParams: URLSearchParams = clearAllFilterParams(searchParams);
-    router.push(`?${nextParams.toString()}`);
+    // Navigate back to the static page when clearing all filters
+    if (pathname.includes('/stocks-filtered')) {
+      const staticPath = pathname.replace('/stocks-filtered', '/stocks');
+      router.push(staticPath);
+    } else {
+      const nextParams: URLSearchParams = clearAllFilterParams(searchParams);
+      router.push(`?${nextParams.toString()}`);
+    }
   };
 
   return (

@@ -1,12 +1,15 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
-import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import WithSuspenseCountryIndustriesGrid from '@/components/stocks/WithSuspenseCountryIndustriesGrid';
 import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchStocksData } from '@/utils/stocks-data-utils';
+import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { getServerSession } from 'next-auth';
 import type { Metadata } from 'next';
+
+// Dynamic page for filtered results
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -16,17 +19,21 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
 
 type PageProps = {
   params: Promise<{ country: string }>;
+  searchParams: Promise<SearchParams>;
 };
 
-export default async function CountryStocksPage({ params: paramsPromise }: PageProps) {
+export default async function CountryStocksFilteredPage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
   const params = await paramsPromise;
+  const searchParams = await searchParamsPromise;
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   const countryName = decodeURIComponent(params.country);
   const country = countryName as SupportedCountries;
 
-  // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchStocksData(country, {});
+  // Create a data promise for Suspense
+  const dataPromise = (async () => {
+    return fetchStocksData(country, searchParams);
+  })();
 
   return (
     <IndustryWithStocksPageLayout
@@ -34,8 +41,9 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
       description={`Explore ${countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
       currentCountry={countryName}
       session={session}
+      showAppliedFilters={true}
     >
-      <CountryIndustriesGrid data={data} countryName={countryName} />
+      <WithSuspenseCountryIndustriesGrid dataPromise={dataPromise} countryName={countryName} />
     </IndustryWithStocksPageLayout>
   );
 }
