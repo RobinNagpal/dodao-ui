@@ -25,14 +25,12 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
           // Include tickers for each sub-industry with filtering and ordering
           tickers: {
             where: whereClause,
-            include: {
-              cachedScoreEntry: true,
-            },
             select: {
               id: true,
               name: true,
               symbol: true,
               exchange: true,
+              cachedScoreEntry: true,
             },
             orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
           },
