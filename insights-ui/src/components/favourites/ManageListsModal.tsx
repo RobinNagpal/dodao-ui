@@ -116,7 +116,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
   return (
     <>
       <FullPageModal open={isOpen} onClose={onClose} title="Manage Lists" className="w-full max-w-2xl">
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 text-left">
           {/* Create New List Form - Only show when showAddForm is true */}
           {showAddForm && (
             <div className="bg-gray-800 p-4 rounded-lg space-y-4">

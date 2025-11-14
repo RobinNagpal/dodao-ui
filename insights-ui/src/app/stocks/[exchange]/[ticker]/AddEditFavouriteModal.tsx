@@ -11,6 +11,7 @@ import {
   CreateFavouriteTickerRequest,
   UpdateFavouriteTickerRequest,
 } from '@/types/ticker-user';
+import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -36,7 +37,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
   const [existingFavourite, setExistingFavourite] = useState<FavouriteTickerResponse | null>(null);
 
   // Form state
-  const [myNotes, setMyNotes] = useState('');
+  const [myNotes, setMyNotes] = useState<string>('');
   const [myScore, setMyScore] = useState<string>('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [selectedListIds, setSelectedListIds] = useState<string[]>([]);
@@ -111,8 +112,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
     }
   }, [isOpen, existingFavourite]);
 
-  const handleSave = async () => {
-    const scoreValue = myScore ? parseFloat(myScore) : undefined;
+  const handleSave = async (): Promise<void> => {
+    const scoreValue: number | undefined = myScore ? parseFloat(myScore) : undefined;
 
     if (existingFavourite) {
       // Update existing favourite
@@ -147,24 +148,24 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
     }
   };
 
-  const toggleTag = (tagId: string) => {
+  const toggleTag = (tagId: string): void => {
     setSelectedTagIds((prev) => (prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]));
   };
 
-  const toggleList = (listId: string) => {
+  const toggleList = (listId: string): void => {
     setSelectedListIds((prev) => (prev.includes(listId) ? prev.filter((id) => id !== listId) : [...prev, listId]));
   };
 
-  const handleTagsChange = () => {
+  const handleTagsChange = (): void => {
     refetchTags();
   };
 
-  const handleListsChange = () => {
+  const handleListsChange = (): void => {
     refetchLists();
   };
 
-  const renderMainView = () => (
-    <div className="p-6 space-y-6">
+  const renderMainView = (): JSX.Element => (
+    <div className="p-6 space-y-6 text-left">
       <div className="mb-4">
         <h3 className="text-lg font-semibold">
           {existingFavourite ? 'Edit' : 'Add'} {tickerName} ({tickerSymbol})
@@ -212,16 +213,28 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
           {availableTags.length === 0 ? (
             <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
-            availableTags.map((tag) => (
-              <label key={tag.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
-                <input type="checkbox" checked={selectedTagIds.includes(tag.id)} onChange={() => toggleTag(tag.id)} className="w-4 h-4" />
-                <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                <div className="flex flex-col">
-                  <span className="text-sm">{tag.name}</span>
-                  {tag.description && <span className="text-xs text-gray-400 mt-0.5">{tag.description}</span>}
-                </div>
-              </label>
-            ))
+            <div className="ml-2">
+              <Checkboxes
+                items={availableTags.map(
+                  (tag): CheckboxItem => ({
+                    id: tag.id,
+                    name: tag.name,
+                    label: (
+                      <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
+                        <div className="flex flex-col">
+                          <span className="text-sm">{tag.name}</span>
+                          {tag.description && <span className="text-xs text-gray-400 mt-0.5">{tag.description}</span>}
+                        </div>
+                      </div>
+                    ),
+                  })
+                )}
+                selectedItemIds={selectedTagIds}
+                onChange={(ids: string[]) => setSelectedTagIds(ids)}
+                className="bg-transparent"
+              />
+            </div>
           )}
         </div>
       </div>
@@ -239,15 +252,25 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
           {availableLists.length === 0 ? (
             <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
-            availableLists.map((list) => (
-              <label key={list.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-800 p-2 rounded">
-                <input type="checkbox" checked={selectedListIds.includes(list.id)} onChange={() => toggleList(list.id)} className="w-4 h-4" />
-                <div className="flex flex-col">
-                  <span className="text-sm">{list.name}</span>
-                  {list.description && <span className="text-xs text-gray-400 mt-0.5">{list.description}</span>}
-                </div>
-              </label>
-            ))
+            <div className="ml-2">
+              <Checkboxes
+                items={availableLists.map(
+                  (list): CheckboxItem => ({
+                    id: list.id,
+                    name: list.name,
+                    label: (
+                      <div className="flex flex-col">
+                        <span className="text-sm">{list.name}</span>
+                        {list.description && <span className="text-xs text-gray-400 mt-0.5">{list.description}</span>}
+                      </div>
+                    ),
+                  })
+                )}
+                selectedItemIds={selectedListIds}
+                onChange={(ids: string[]) => setSelectedListIds(ids)}
+                className="bg-transparent"
+              />
+            </div>
           )}
         </div>
       </div>
