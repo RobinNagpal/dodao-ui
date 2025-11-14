@@ -1,14 +1,12 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
-import WithSuspenseIndustryStocksGrid from '@/components/stocks/WithSuspenseIndustryStocksGrid';
+import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1Industry } from '@prisma/client';
 
 // Dynamic page for filtered results
 export const dynamic = 'force-dynamic';
@@ -29,43 +27,28 @@ type PageProps = {
 };
 
 export default async function CountryIndustryStocksFilteredPage({ params, searchParams }: PageProps) {
-  // Resolve params now because we need the key for filtering inside the data promise
   const resolvedParams = await params;
   const countryName = decodeURIComponent(resolvedParams.country);
   const industryKey = decodeURIComponent(resolvedParams.industry);
   const resolvedSearchParams = await searchParams;
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
-  // Convert countryName to SupportedCountries type
   const country = countryName as SupportedCountries;
 
-  // Create a data promise for Suspense
-  const dataPromise = (async () => {
-    return fetchIndustryStocksData(industryKey, country, resolvedSearchParams);
-  })();
-
-  // Try to get industry data for metadata and display
-  let industryData: TickerV1Industry | null = null;
-  try {
-    const res = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
-    industryData = (await res.json()) as TickerV1Industry;
-  } catch {
-    // fallback will be handled below
-  }
+  const data = await fetchIndustryStocksData(industryKey, country, resolvedSearchParams);
+  const industryName = data?.name || industryKey;
 
   return (
     <IndustryWithStocksPageLayout
-      title={`${industryData?.name || industryKey} Stocks in ${countryName}`}
-      description={`Explore ${industryData?.name || industryKey} companies in ${countryName}. ${
-        industryData?.summary || 'View detailed reports and AI-driven insights.'
-      }`}
+      title={`${industryName} Stocks in ${countryName}`}
+      description={`Explore ${industryName} companies in ${countryName}. ${data?.summary || 'View detailed reports and AI-driven insights.'}`}
       currentCountry={countryName}
       industryKey={industryKey}
-      industryName={industryData?.name}
+      industryName={data?.name}
       session={session}
       showAppliedFilters={true}
     >
-      <WithSuspenseIndustryStocksGrid dataPromise={dataPromise} industryName={industryData?.name || industryKey} />
+      <IndustryStocksGrid data={data} industryName={industryName} />
     </IndustryWithStocksPageLayout>
   );
 }

@@ -15,7 +15,7 @@ import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
+import { getStocksPageTag, getHomePagePostsTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 
@@ -131,7 +131,7 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
   try {
-    const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
+    const res = await fetch(url, { next: { tags: [getStocksPageTag(SupportedCountries.US)] } });
     if (!res.ok) return [];
 
     const resp: OnlyIndustriesResponse = await res.json();
@@ -144,12 +144,14 @@ async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]
 }
 
 // Cache + tag BOTH data sources for 7 days
+// Industries use stocks page tag so revalidateStocksPageTag() can invalidate it
 const getIndustriesCached = unstable_cache(async () => fetchTopIndustriesWithTickers(), ['home-page-industries'], {
   revalidate: WEEK,
-  tags: ['home-page', TICKERS_TAG],
+  tags: [getStocksPageTag(SupportedCountries.US)],
 });
 
-const getPostsCached = unstable_cache(async () => getPostsData(6), ['home-page-posts'], { revalidate: WEEK, tags: ['home-page'] });
+// Posts have their own tag for independent revalidation
+const getPostsCached = unstable_cache(async () => getPostsData(6), ['home-page-posts'], { revalidate: WEEK, tags: [getHomePagePostsTag()] });
 
 export default async function Home() {
   const [industries, posts] = await Promise.all([getIndustriesCached(), getPostsCached()]);

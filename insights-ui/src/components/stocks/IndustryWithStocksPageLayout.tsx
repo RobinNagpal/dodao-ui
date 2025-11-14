@@ -71,7 +71,7 @@ export default function IndustryWithStocksPageLayout({
           rightButton={
             <div className="flex">
               <FiltersButton />
-              <StocksGridPageActions session={session} />
+              <StocksGridPageActions session={session} currentCountry={currentCountry} industryKey={industryKey} />
             </div>
           }
         />

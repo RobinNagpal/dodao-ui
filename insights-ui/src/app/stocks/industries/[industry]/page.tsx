@@ -35,7 +35,7 @@ export default async function IndustryStocksPage({ params }: PageProps) {
   const industryKey = decodeURIComponent(resolvedParams.industry);
 
   // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchIndustryStocksData(industryKey, SupportedCountries.US, {});
+  const data = await fetchIndustryStocksData(industryKey, SupportedCountries.US);
 
   return (
     <IndustryWithStocksPageLayout

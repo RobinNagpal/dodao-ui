@@ -21,7 +21,7 @@ export default async function StocksPage() {
   const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchStocksData(SupportedCountries.US, {});
+  const data = await fetchStocksData(SupportedCountries.US);
 
   return (
     <IndustryWithStocksPageLayout
