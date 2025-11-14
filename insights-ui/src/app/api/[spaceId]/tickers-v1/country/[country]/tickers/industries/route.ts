@@ -110,7 +110,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   }
 
   // Check if any filters are applied
-  const filtersApplied = hasFiltersAppliedServer(country, cacheFilter, filters);
+  const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
 
   return {
     industries: formattedIndustries,

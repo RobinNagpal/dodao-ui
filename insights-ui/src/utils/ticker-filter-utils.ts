@@ -354,9 +354,13 @@ export function createTickerFilter(
 /**
  * Check if any filters are applied
  */
-export function hasFiltersAppliedServer(country: string | undefined, cacheFilter: Prisma.TickerV1CachedScoreWhereInput, filters: FilterParams): boolean {
-  const hasScoreFilters = Object.keys(cacheFilter).length > 0;
-  const hasSearchFilter = !!(filters[FilterParamKey.SEARCH] && filters[FilterParamKey.SEARCH].trim());
 
-  return !!country || hasScoreFilters || hasSearchFilter;
+export function hasFiltersAppliedServer(
+  cacheFilter: Prisma.TickerV1CachedScoreWhereInput, // not used or remove this param
+  filters: FilterParams
+): boolean {
+  const hasScoreFilters = Object.keys(cacheFilter).length > 0;
+  const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
+
+  return hasScoreFilters || hasSearchFilter;
 }

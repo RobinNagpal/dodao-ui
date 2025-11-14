@@ -77,7 +77,7 @@ async function getHandler(
   }
 
   // Check if any filters are applied
-  const filtersApplied = hasFiltersAppliedServer(country, cacheFilter, filters);
+  const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
   const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
     where: {
       industryKey,
