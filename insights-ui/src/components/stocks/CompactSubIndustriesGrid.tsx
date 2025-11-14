@@ -13,9 +13,15 @@ type Grouped = Record<
   >
 >;
 
-export default function CompactSubIndustriesGrid({ dataPromise }: { dataPromise: Promise<StocksDataPayload> }) {
-  const data = use(dataPromise);
-  const { tickers } = data;
+export default function CompactSubIndustriesGrid({ data, dataPromise }: { data?: StocksDataPayload | null; dataPromise?: Promise<StocksDataPayload> | null }) {
+  // Handle both direct data and promise-based data
+  const resolvedData = dataPromise ? use(dataPromise) : data;
+
+  if (!resolvedData) {
+    return null;
+  }
+
+  const { tickers } = resolvedData;
 
   if (!tickers || tickers.length === 0) {
     return null;

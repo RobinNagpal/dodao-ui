@@ -1,25 +1,24 @@
 // app/stocks/industry/[industry]/page.tsx
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
-import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
-import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import { hasFiltersApplied } from '@/components/stocks/filters/filter-utils';
+import FiltersButton from '@/components/stocks/filters/FiltersButton';
+
+import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
+import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import type { TickerV1Industry } from '@prisma/client';
+
+import type { Metadata } from 'next';
 
 import { Suspense } from 'react';
-import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
-import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
-
-import IndustryStocksGrid, { type IndustryStocksDataPayload } from '@/components/stocks/IndustryStocksGrid';
-
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
-import type { Metadata } from 'next';
-import type { TickerV1Industry } from '@prisma/client';
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Metadata
@@ -40,7 +39,7 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
     // fallbacks already set
   }
 
-  const base = `https://koalagains.com/stocks/industry/${encodeURIComponent(industryKey)}`;
+  const base = `${getBaseUrlForServerSidePages()}/stocks/industries/${encodeURIComponent(industryKey)}`;
   return {
     title: `${industryName} Stocks | KoalaGains`,
     description: industrySummary,
@@ -82,8 +81,6 @@ export const viewport = {
 // ────────────────────────────────────────────────────────────────────────────────
 // Types
 
-type SearchParams = { [key: string]: string | string[] | undefined };
-
 type PageProps = {
   params: Promise<{ industry: string }>;
   searchParams: Promise<SearchParams>;
@@ -96,8 +93,12 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
   // Resolve params now because we need the key for filtering inside the data promise
   const resolvedParams = await params;
   const industryKey = decodeURIComponent(resolvedParams.industry);
+  const resolvedSearchParams = await searchParams;
 
-  // Fetch industry display name for header (not part of Suspense)
+  // Check if filters are applied
+  const filters = hasFiltersApplied(resolvedSearchParams);
+
+  // Fetch industry display name for header
   let industryName = industryKey;
   let industrySummary: string | undefined;
   try {
@@ -109,56 +110,19 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
     // Fallbacks remain
   }
 
-  // Build data promise used by Suspense grid
-  const dataPromise: Promise<IndustryStocksDataPayload> = (async () => {
-    const sp = await searchParams;
+  // Create a data promise for Suspense when filters are applied
+  const dataPromise = filters
+    ? (async () => {
+        return fetchIndustryStocksData(industryKey, SupportedCountries.US, resolvedSearchParams);
+      })()
+    : null;
 
-    const filters = hasFiltersApplied(sp);
-    const baseUrl = getBaseUrlForServerSidePages();
-
-    let url = '';
-    let tags: string[] = [];
-
-    if (filters) {
-      const qs = toSortedQueryString(sp);
-      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${qs}`;
-      tags = [TICKERS_TAG, `tickers:US:filtered:${qs.replace(/&/g, ',')}`];
-    } else {
-      url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1?country=US`;
-      tags = [TICKERS_TAG];
-    }
-
-    const res = await fetch(url, { next: { tags } });
-
-    let raw: unknown;
-    try {
-      raw = await res.json();
-    } catch {
-      raw = [];
-    }
-
-    // Normalize to TickerWithIndustryNames[]
-    let allTickers: TickerWithIndustryNames[] = [];
-    if (Array.isArray(raw)) {
-      const first = raw[0];
-      const isFiltered = first && typeof first === 'object' && 'categoryScores' in (first as Record<string, unknown>);
-      if (isFiltered) {
-        // Map FilteredTicker -> TickerWithIndustryNames
-        allTickers = raw as TickerWithIndustryNames[];
-      } else {
-        allTickers = raw as TickerWithIndustryNames[];
-      }
-    }
-
-    // Restrict to this industry
-    const tickers = allTickers.filter((t) => t.industryKey === industryKey);
-
-    return { tickers, filtersApplied: filters };
-  })();
+  // Fetch data using the cached function when no filters are applied
+  const data = !filters ? await fetchIndustryStocksData(industryKey, SupportedCountries.US, resolvedSearchParams) : null;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'US Stocks', href: `/stocks`, current: false },
-    { name: industryName, href: `/stocks/industry/${encodeURIComponent(industryKey)}`, current: true },
+    { name: industryName, href: `/stocks/industries/${encodeURIComponent(industryKey)}`, current: true },
   ];
 
   return (
@@ -187,10 +151,15 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
         </p>
       </div>
 
-      {/* Suspense shows skeletons while the (filtered) data streams in */}
-      <Suspense fallback={<FilterLoadingFallback />}>
-        <IndustryStocksGrid dataPromise={dataPromise} industryName={industryName} />
-      </Suspense>
+      {filters ? (
+        // Use Suspense when filters are applied
+        <Suspense fallback={<FilterLoadingFallback />}>
+          <IndustryStocksGrid dataPromise={dataPromise} industryName={industryName} />
+        </Suspense>
+      ) : (
+        // Use cached data when no filters are applied
+        <IndustryStocksGrid data={data} industryName={industryName} />
+      )}
     </PageWrapper>
   );
 }

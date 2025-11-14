@@ -192,4 +192,5 @@ export const toSortedQueryString = (sp: SearchParams): string => {
   return usp.toString();
 };
 
-export const hasFiltersApplied = (sp: SearchParams): boolean => Object.keys(sp).some((k) => k.includes('Threshold')) || Boolean(toScalar(sp['search']));
+export const hasFiltersApplied = (sp: SearchParams): boolean =>
+  (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) || Boolean(toScalar(sp?.['search']));

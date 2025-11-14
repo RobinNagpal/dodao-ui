@@ -54,8 +54,23 @@ function packIntoColumns<T extends { estH: number }>(items: T[], cols: number): 
   return buckets.map((b) => b.items);
 }
 
-export default function IndustryStocksGrid({ dataPromise, industryName }: { dataPromise: Promise<IndustryStocksDataPayload>; industryName?: string }) {
-  const { tickers, filtersApplied } = use(dataPromise);
+export default function IndustryStocksGrid({
+  data,
+  dataPromise,
+  industryName,
+}: {
+  data?: IndustryStocksDataPayload | null;
+  dataPromise?: Promise<IndustryStocksDataPayload> | null;
+  industryName?: string;
+}) {
+  // Handle both direct data and promise-based data
+  const resolvedData = dataPromise ? use(dataPromise) : data;
+
+  if (!resolvedData) {
+    return null;
+  }
+
+  const { tickers, filtersApplied } = resolvedData;
 
   if (!tickers || tickers.length === 0) {
     return (
