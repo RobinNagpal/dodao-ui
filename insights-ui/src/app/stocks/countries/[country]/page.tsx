@@ -1,16 +1,20 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import { hasFiltersApplied } from '@/components/stocks/filters/filter-utils';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
+import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
-import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
+import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
+import { KoalaGainsSession } from '@/types/auth';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
@@ -47,11 +51,18 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
   };
 }
 
-export default async function CountryStocksPage(props: { params: Promise<{ country: string }>; searchParams: Promise<{ [key: string]: string | undefined }> }) {
-  const params = await props.params;
-  const resolvedSearchParams = await props.searchParams;
+type PageProps = {
+  params: Promise<{ country: string }>;
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function CountryStocksPage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
+  const params = await paramsPromise;
+  const searchParams = await searchParamsPromise;
+  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   const countryName = decodeURIComponent(params.country);
+  const country = countryName as SupportedCountries;
 
   // Create breadcrumbs with dynamic country name
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -62,82 +73,17 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
     },
   ];
 
-  // Check if any filters are applied (including search)
-  const hasFilters = Object.keys(resolvedSearchParams).some((key) => key.includes('Threshold')) || resolvedSearchParams.search;
+  const filters = hasFiltersApplied(searchParams);
 
-  let tickers: TickerWithIndustryNames[] = [];
+  // Create a data promise for Suspense when filters are applied
+  const dataPromise = filters
+    ? (async () => {
+        return fetchStocksData(country, searchParams);
+      })()
+    : null;
 
-  if (hasFilters) {
-    // Build URL with filter params for the filtered API
-    const urlParams = new URLSearchParams();
-    Object.entries(resolvedSearchParams).forEach(([key, value]) => {
-      if (value && key !== 'page') urlParams.set(key, value);
-    });
-
-    // Add country filter
-    urlParams.set('country', countryName);
-
-    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
-    const response = await fetch(apiUrl);
-    try {
-      tickers = await response.json();
-    } catch (e) {
-      console.log('Error fetching filtered tickers: ', e);
-    }
-  } else {
-    // Use regular tickers API when no filters are applied
-    const response = await fetch(`${getBaseUrl() || 'https://koalagains.com'}/api/${KoalaGainsSpaceId}/tickers-v1?country=${countryName}`, {
-      cache: 'no-cache',
-    });
-    try {
-      tickers = await response.json();
-    } catch (e) {
-      console.log('Error fetching tickers: ', e);
-    }
-  }
-
-  if (!tickers) {
-    return (
-      <PageWrapper className="px-4 sm:px-6">
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
-        <div className="text-center py-12">
-          <p className="text-[#E5E7EB] text-lg">No {countryName} stocks found.</p>
-        </div>
-      </PageWrapper>
-    );
-  }
-
-  // Group tickers by main industry first, then by sub-industry
-  const tickersByMainIndustry: Record<string, Record<string, { tickers: TickerWithIndustryNames[]; total: number }>> = {};
-
-  tickers.forEach((ticker) => {
-    const mainIndustry = ticker.industryKey || 'Other';
-    const subIndustry = ticker.subIndustryKey || 'Other';
-
-    if (!tickersByMainIndustry[mainIndustry]) {
-      tickersByMainIndustry[mainIndustry] = {};
-    }
-
-    if (!tickersByMainIndustry[mainIndustry][subIndustry]) {
-      tickersByMainIndustry[mainIndustry][subIndustry] = { tickers: [], total: 0 };
-    }
-
-    tickersByMainIndustry[mainIndustry][subIndustry].tickers.push(ticker);
-    tickersByMainIndustry[mainIndustry][subIndustry].total++;
-  });
-
-  // Sort tickers by score and take top 4 for display in each sub-industry
-  Object.keys(tickersByMainIndustry).forEach((mainIndustry) => {
-    Object.keys(tickersByMainIndustry[mainIndustry]).forEach((subIndustry) => {
-      tickersByMainIndustry[mainIndustry][subIndustry].tickers = tickersByMainIndustry[mainIndustry][subIndustry].tickers
-        .sort((a, b) => {
-          const aScore = getTickerScore(a);
-          const bScore = getTickerScore(b);
-          return bScore - aScore;
-        })
-        .slice(0, 4);
-    });
-  });
+  // Fetch data using the cached function when no filters are applied
+  const data = !filters ? await fetchStocksData(country, searchParams) : null;
 
   return (
     <Tooltip.Provider delayDuration={300}>
@@ -148,7 +94,7 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
             rightButton={
               <div className="flex">
                 <FiltersButton />
-                <StocksGridPageActions />
+                <StocksGridPageActions session={session} />
               </div>
             }
           />
@@ -166,61 +112,14 @@ export default async function CountryStocksPage(props: { params: Promise<{ count
           </p>
         </div>
 
-        {/* Main Industries */}
-        {Object.keys(tickersByMainIndustry).length === 0 ? (
-          <div className="text-center py-12">
-            {hasFilters ? (
-              <>
-                <p className="text-[#E5E7EB] text-lg">No {countryName} stocks match the current filters.</p>
-                <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-              </>
-            ) : (
-              <>
-                <p className="text-[#E5E7EB] text-lg">No {countryName} stocks found.</p>
-                <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
-              </>
-            )}
-          </div>
+        {filters ? (
+          // Use Suspense when filters are applied
+          <Suspense fallback={<FilterLoadingFallback />}>
+            <CountryIndustriesGrid dataPromise={dataPromise} countryName={countryName} />
+          </Suspense>
         ) : (
-          Object.entries(tickersByMainIndustry).map(([mainIndustry, subIndustries]) => {
-            const totalCompaniesInIndustry = Object.values(subIndustries).reduce((sum, sub) => sum + sub.total, 0);
-            // Use the industryName from the first ticker in this industry, fallback to industryKey
-            const sampleTicker = Object.values(subIndustries)[0]?.tickers[0];
-            const industryDisplayName = sampleTicker?.industryName || sampleTicker?.industryKey || mainIndustry;
-
-            return (
-              <div key={mainIndustry} className="mb-12">
-                {/* Industry Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-white">{industryDisplayName}</h2>
-                  <Link
-                    href={`/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(mainIndustry)}`}
-                    className="text-md bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-4 py-2 rounded-lg shadow-md flex items-center"
-                  >
-                    View All {totalCompaniesInIndustry} Companies
-                    <span className="ml-1">→</span>
-                  </Link>
-                </div>
-
-                {/* Sub-Industry Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                  {Object.entries(subIndustries).map(([subIndustry, { tickers: subIndustryTickers, total }]) => {
-                    // Get subIndustryName from the first ticker in this sub-industry
-                    const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
-                    return (
-                      <SubIndustryCard
-                        key={subIndustry}
-                        subIndustry={subIndustry}
-                        subIndustryName={subIndustryName}
-                        tickers={subIndustryTickers}
-                        total={total}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })
+          // Use cached data when no filters are applied
+          <CountryIndustriesGrid data={data} countryName={countryName} />
         )}
       </PageWrapper>
     </Tooltip.Provider>

@@ -1,17 +1,22 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
-import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
-import FiltersButton from '@/components/stocks/filters/FiltersButton';
-import SubIndustryCard from '@/components/stocks/SubIndustryCard';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
+import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
+import { hasFiltersApplied } from '@/components/stocks/filters/filter-utils';
+import FiltersButton from '@/components/stocks/filters/FiltersButton';
+import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
+import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { KoalaGainsSession } from '@/types/auth';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry } from '@prisma/client';
-import * as Tooltip from '@radix-ui/react-tooltip';
 import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { Suspense } from 'react';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -70,211 +75,100 @@ export const viewport = {
   maximumScale: 1,
 };
 
-type CardSpec = {
-  key: string;
-  subIndustry: string;
-  subIndustryName: string;
-  tickers: any[];
-  total: number;
-  estH: number; // estimated height in px
+type PageProps = {
+  params: Promise<{ country: string; industry: string }>;
+  searchParams: Promise<SearchParams>;
 };
 
-// tune these to your actual CSS
-const CARD_HEADER_PX = 41; // header, padding, badge, etc.
-const ROW_PX = 36; // per <li> row (StockTickerItem + paddings)
+export default async function CountryIndustryStocksPage({ params, searchParams }: PageProps) {
+  // Resolve params now because we need the key for filtering inside the data promise
+  const resolvedParams = await params;
+  const countryName = decodeURIComponent(resolvedParams.country);
+  const industryKey = decodeURIComponent(resolvedParams.industry);
+  const resolvedSearchParams = await searchParams;
+  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
-function estimateCardHeight(rowCount: number) {
-  return CARD_HEADER_PX + rowCount * ROW_PX;
-}
+  // Convert countryName to SupportedCountries type
+  const country = countryName as SupportedCountries;
 
-/** First row: seed one per column (preserve order).
- *  Then always place the next card into the column with the minimum height. */
-function packIntoColumns<T extends { estH: number }>(items: T[], cols: number): T[][] {
-  const buckets: { items: T[]; h: number }[] = Array.from({ length: cols }, () => ({ items: [], h: 0 }));
+  // Check if filters are applied
+  const filters = hasFiltersApplied(resolvedSearchParams);
 
-  items.forEach((item, i) => {
-    if (i < cols) {
-      buckets[i].items.push(item);
-      buckets[i].h += item.estH;
-    } else {
-      let min = 0;
-      for (let c = 1; c < cols; c++) if (buckets[c].h < buckets[min].h) min = c;
-      buckets[min].items.push(item);
-      buckets[min].h += item.estH;
-    }
-  });
+  // Create a data promise for Suspense when filters are applied
+  const dataPromise = filters
+    ? (async () => {
+        return fetchIndustryStocksData(industryKey, country, resolvedSearchParams);
+      })()
+    : null;
 
-  return buckets.map((b) => b.items);
-}
+  // Fetch data using the cached function when no filters are applied
+  const data = !filters ? await fetchIndustryStocksData(industryKey, country, resolvedSearchParams) : null;
 
-export default async function CountryIndustryStocksPage(props: {
-  params: Promise<{ country: string; industry: string }>;
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
-  const countryName = decodeURIComponent(params.country);
-  const industryKey = decodeURIComponent(params.industry);
-
-  const industry = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`);
-  const industryData: TickerV1Industry = await industry.json();
-
-  // We'll get the industry name from the API response
-  const industryName = industryData.name; // fallback to key
-
-  // Check if any filters are applied
-  const hasFilters = Object.keys(searchParams).some((key) => key.includes('Threshold'));
-
-  let tickers: TickerWithIndustryNames[] = [];
-
-  if (hasFilters) {
-    // Build URL with filter params for the filtered API
-    const urlParams = new URLSearchParams();
-    Object.entries(searchParams).forEach(([key, value]) => {
-      if (value && key !== 'page') urlParams.set(key, value);
-    });
-
-    // Add country and industry filters
-    urlParams.set('country', countryName);
-
-    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1-filtered?${urlParams.toString()}`;
-    const response = await fetch(apiUrl);
-    const allTickers = await response.json();
-
-    // Filter by main industry
-    tickers = allTickers.filter((ticker: TickerWithIndustryNames) => ticker.industryKey === industryKey);
-  } else {
-    // Use regular tickers API when no filters are applied
-    const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1?country=${countryName}`;
-    const response = await fetch(apiUrl);
-    const regularTickers: TickerWithIndustryNames[] = await response.json(); // This now returns TickerWithIndustryNames[]
-
-    // Filter by main industry (already have industry names from API)
-    tickers = regularTickers
-      .filter((ticker) => ticker.industryKey === industryKey)
-      .map((ticker: TickerWithIndustryNames) => ({
-        ...ticker,
-        categoryScores: {}, // Empty for unfiltered case
-        totalScore: 0, // Will be calculated if needed
-      }));
+  // Try to get industry data for metadata and display
+  let industryData: TickerV1Industry | null = null;
+  try {
+    const res = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
+    industryData = (await res.json()) as TickerV1Industry;
+  } catch {
+    // fallback will be handled below
   }
 
-  // Now create breadcrumbs with the correct country and industry names
   const breadcrumbs: BreadcrumbsOjbect[] = [
+    { name: `${countryName} Stocks`, href: `/stocks/countries/${encodeURIComponent(countryName)}`, current: false },
     {
-      name: `${countryName} Stocks`,
-      href: `/stocks/countries/${encodeURIComponent(countryName)}`,
-      current: false,
-    },
-    {
-      name: industryName,
+      name: data?.name || industryData?.name || industryKey,
       href: `/stocks/countries/${encodeURIComponent(countryName)}/industries/${encodeURIComponent(industryKey)}`,
       current: true,
     },
   ];
 
-  // Group tickers by sub-industry for display
-  const tickersBySubIndustry: Record<string, TickerWithIndustryNames[]> = {};
-
-  tickers.forEach((ticker) => {
-    const subIndustry = ticker.subIndustryKey || 'Other';
-    if (!tickersBySubIndustry[subIndustry]) {
-      tickersBySubIndustry[subIndustry] = [];
-    }
-    tickersBySubIndustry[subIndustry].push(ticker);
-  });
-
-  // Sort tickers by score within each sub-industry
-  Object.keys(tickersBySubIndustry).forEach((subIndustry) => {
-    tickersBySubIndustry[subIndustry].sort();
-  });
-
   return (
-    <Tooltip.Provider delayDuration={300}>
-      <PageWrapper>
-        <div className="overflow-x-auto">
-          <Breadcrumbs
-            breadcrumbs={breadcrumbs}
-            rightButton={
-              <div className="flex">
-                <FiltersButton />
-                <StocksGridPageActions />
-              </div>
-            }
-          />
+    <PageWrapper>
+      <div className="overflow-x-auto">
+        <Breadcrumbs
+          breadcrumbs={breadcrumbs}
+          rightButton={
+            <div className="flex">
+              <FiltersButton />
+              <StocksGridPageActions session={session} />
+            </div>
+          }
+        />
+      </div>
+
+      <AppliedFilterChips />
+
+      <div className="w-full mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
+          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">
+            {data?.name || industryData?.name || industryKey} Stocks in {countryName}
+          </h1>
+          <CountryAlternatives currentCountry={countryName} industryKey={industryKey} className="flex-shrink-0" />
         </div>
-        <AppliedFilterChips />
-        <div className="w-full mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-            <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">
-              {industryName} Stocks in {countryName}
-            </h1>
-            <CountryAlternatives currentCountry={countryName} industryKey={industryKey} className="flex-shrink-0" />
-          </div>
-          <p className="text-[#E5E7EB] text-md mb-4">
-            Explore {industryName} companies in {countryName}. {industryData.summary}
-          </p>
-        </div>
-        {Object.keys(tickersBySubIndustry).length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-[#E5E7EB] text-lg">
-              No {industryName} stocks in {countryName} match the current filters.
-            </p>
-            <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
-          </div>
-        ) : (
-          (() => {
-            // Build card specs with estimated heights
-            const cards: CardSpec[] = Object.entries(tickersBySubIndustry).map(([subIndustry, subIndustryTickers]) => {
-              const subIndustryName = subIndustryTickers[0]?.subIndustryName || subIndustry;
-              const total = subIndustryTickers.length;
-              return {
-                key: subIndustry,
-                subIndustry,
-                subIndustryName,
-                tickers: subIndustryTickers,
-                total,
-                estH: estimateCardHeight(total),
-              };
-            });
+        <p className="text-[#E5E7EB] text-md mb-4">
+          Explore {data?.name || industryData?.name || industryKey} companies in {countryName}.{' '}
+          {data?.summary || industryData?.summary || 'View detailed reports and AI-driven insights.'}
+        </p>
+      </div>
 
-            const cols1 = [cards];
-            const cols2 = packIntoColumns(cards, 2);
-            const cols3 = packIntoColumns(cards, 3);
-
-            const renderCard = (c: CardSpec) => (
-              <SubIndustryCard key={c.key} subIndustry={c.subIndustry} subIndustryName={c.subIndustryName} tickers={c.tickers} total={c.total} />
-            );
-
-            return (
-              <>
-                {/* Mobile: 1 column */}
-                <div className="grid grid-cols-1 gap-6 mb-10 md:hidden">
-                  <div className="flex flex-col gap-6">{cols1[0].map(renderCard)}</div>
-                </div>
-
-                {/* Tablet: 2 columns */}
-                <div className="hidden md:grid lg:hidden grid-cols-2 gap-6 mb-10">
-                  {cols2.map((col, i) => (
-                    <div key={`md-col-${i}`} className="flex flex-col gap-6">
-                      {col.map(renderCard)}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Desktop: 3 columns */}
-                <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                  {cols3.map((col, i) => (
-                    <div key={`lg-col-${i}`} className="flex flex-col gap-6">
-                      {col.map(renderCard)}
-                    </div>
-                  ))}
-                </div>
-              </>
-            );
-          })()
-        )}
-      </PageWrapper>
-    </Tooltip.Provider>
+      {!data && !dataPromise ? (
+        <>
+          <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found in ${countryName}.`}</p>
+          <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+        </>
+      ) : (
+        <>
+          {filters ? (
+            // Use Suspense when filters are applied
+            <Suspense fallback={<FilterLoadingFallback />}>
+              <IndustryStocksGrid dataPromise={dataPromise} industryName={data?.name || industryData?.name || industryKey} />
+            </Suspense>
+          ) : (
+            // Use cached data when no filters are applied
+            <IndustryStocksGrid data={data} industryName={data?.name || industryData?.name || industryKey} />
+          )}
+        </>
+      )}
+    </PageWrapper>
   );
 }
