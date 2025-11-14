@@ -2,7 +2,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
-import { hasFiltersApplied } from '@/components/stocks/filters/filter-utils';
+import { hasFiltersApplied } from '@/utils/ticker-filter-utils';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';

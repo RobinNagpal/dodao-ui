@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
-import { createCacheFilter, createTickerFilter, hasFiltersApplied, parseFilterParams } from '@/utils/ticker-filter-utils';
+import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -77,7 +77,7 @@ async function getHandler(
   }
 
   // Check if any filters are applied
-  const filtersApplied = hasFiltersApplied(country, cacheFilter, filters);
+  const filtersApplied = hasFiltersAppliedServer(country, cacheFilter, filters);
   const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
     where: {
       industryKey,

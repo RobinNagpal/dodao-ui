@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 
-import { getAppliedFilters, removeFilterFromParams, clearAllFilterParams, type AppliedFilter } from './filter-utils';
+import { getAppliedFilters, removeFilterFromParams, clearAllFilterParams, type AppliedFilter } from '@/utils/ticker-filter-utils';
 
 interface AppliedFilterChipsProps {
   className?: string;

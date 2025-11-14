@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import StocksGridPageActions from '@/app/stocks/StocksGridPageActions';
 import AppliedFilterChips from '@/components/stocks/filters/AppliedFilterChips';
-import { hasFiltersApplied } from '@/components/stocks/filters/filter-utils';
+import { hasFiltersApplied } from '@/utils/ticker-filter-utils';
 import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';

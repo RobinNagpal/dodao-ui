@@ -1,4 +1,4 @@
-import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
+import { hasFiltersApplied, toSortedQueryString } from '@/utils/ticker-filter-utils';
 import { IndustriesResponse, SubIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';

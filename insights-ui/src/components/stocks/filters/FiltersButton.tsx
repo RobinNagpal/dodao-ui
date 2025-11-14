@@ -12,9 +12,10 @@ import {
   getAppliedFilters,
   buildInitialSelected,
   applySelectedFiltersToParams,
+  FilterParamKey,
   type AppliedFilter,
   type SelectedFiltersMap,
-} from './filter-utils';
+} from '@/utils/ticker-filter-utils';
 
 interface FiltersButtonProps {
   className?: string;
@@ -71,11 +72,11 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
 
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(() => ({ ...initialSelected }));
 
-  const handleCategoryChange = (categoryKey: string, threshold: string): void => {
+  const handleCategoryChange = (category: (typeof CATEGORY_OPTIONS)[number], threshold: string): void => {
     setSelectedFilters(
       (prev: SelectedFiltersMap): SelectedFiltersMap => ({
         ...prev,
-        [`${categoryKey.toLowerCase()}Threshold`]: threshold,
+        [category.paramKey]: threshold,
       })
     );
   };
@@ -84,7 +85,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
     setSelectedFilters(
       (prev: SelectedFiltersMap): SelectedFiltersMap => ({
         ...prev,
-        totalThreshold: threshold,
+        [FilterParamKey.TOTAL]: threshold,
       })
     );
   };
@@ -114,8 +115,8 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                       type="radio"
                       name={category.key}
                       value={threshold.value}
-                      checked={selectedFilters[`${category.key.toLowerCase()}Threshold`] === threshold.value}
-                      onChange={() => handleCategoryChange(category.key, threshold.value)}
+                      checked={selectedFilters[category.paramKey] === threshold.value}
+                      onChange={() => handleCategoryChange(category, threshold.value)}
                       className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
                     />
                     <span className="text-[#E5E7EB] text-sm">{threshold.label}</span>
@@ -135,7 +136,7 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                     type="radio"
                     name="totalScore"
                     value={threshold.value}
-                    checked={selectedFilters['totalThreshold'] === threshold.value}
+                    checked={selectedFilters[FilterParamKey.TOTAL] === threshold.value}
                     onChange={() => handleTotalChange(threshold.value)}
                     className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
                   />
