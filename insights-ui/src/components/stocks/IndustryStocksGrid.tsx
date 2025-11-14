@@ -56,8 +56,6 @@ export default function IndustryStocksGrid({
 
   const { subIndustries, filtersApplied } = resolvedData;
 
-  console.log(subIndustries);
-
   if (!subIndustries || subIndustries.flatMap((si) => si.tickers).length === 0) {
     return (
       <div className="text-center py-12">
