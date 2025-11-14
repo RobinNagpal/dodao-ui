@@ -21,7 +21,15 @@ import {
 } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
-import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries, formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
+import {
+  getCountryByExchange,
+  USExchanges,
+  CanadaExchanges,
+  IndiaExchanges,
+  UKExchanges,
+  SupportedCountries,
+  formatExchangeWithCountry,
+} from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
