@@ -7,15 +7,27 @@ import BusinessAnalysis from './BusinessAnalysis';
 import FavouriteNotes from './FavouriteNotes';
 import FavouriteTags from './FavouriteTags';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 
 interface FavouriteItemProps {
   favourite: FavouriteTickerResponse;
   showBusinessAnalysis: boolean;
   onEdit: (favourite: FavouriteTickerResponse) => void;
   onDelete: (favourite: FavouriteTickerResponse) => void;
+  selectable?: boolean;
+  isSelected?: boolean;
+  onSelectChange?: (favourite: FavouriteTickerResponse, selected: boolean) => void;
 }
 
-export default function FavouriteItem({ favourite, showBusinessAnalysis, onEdit, onDelete }: FavouriteItemProps) {
+export default function FavouriteItem({
+  favourite,
+  showBusinessAnalysis,
+  onEdit,
+  onDelete,
+  selectable = false,
+  isSelected = false,
+  onSelectChange,
+}: FavouriteItemProps) {
   const getBusinessAndMoatSummary = (favourite: FavouriteTickerResponse): string | null => {
     const businessAndMoatResult = favourite.ticker.categoryAnalysisResults?.find((r) => r.categoryKey === TickerAnalysisCategory.BusinessAndMoat);
     const summary = businessAndMoatResult?.overallAnalysisDetails;
@@ -26,6 +38,22 @@ export default function FavouriteItem({ favourite, showBusinessAnalysis, onEdit,
     <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
       <div className="flex justify-between items-start mb-2">
         <div className="flex-1 flex items-center gap-2 flex-wrap">
+          {selectable && (
+            <div className="mr-1" onClick={(e) => e.stopPropagation()}>
+              <Checkboxes
+                items={[
+                  {
+                    id: favourite.id,
+                    name: `favourite-${favourite.id}`,
+                    label: '',
+                  },
+                ]}
+                selectedItemIds={isSelected ? [favourite.id] : []}
+                onChange={(ids) => onSelectChange?.(favourite, ids.includes(favourite.id))}
+                className="bg-transparent"
+              />
+            </div>
+          )}
           <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
             <h4 className="text-base font-bold">
               {favourite.ticker.name} ({favourite.ticker.symbol})

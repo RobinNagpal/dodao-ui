@@ -13,6 +13,8 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
+import BulkAddTagsModal from '@/components/favourites/BulkAddTagsModal';
+import BulkAddListsModal from '@/components/favourites/BulkAddListsModal';
 import FavouriteItem from '@/components/favourites/FavouriteItem';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -23,7 +25,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import ToggleWithIcon from '@dodao/web-core/components/core/toggles/ToggleWithIcon';
 
-type ModalView = 'manage-lists' | 'manage-tags';
+type ModalView = 'manage-lists' | 'manage-tags' | 'bulk-add-tags' | 'bulk-add-lists';
 
 interface ListWithFavourites {
   list: UserListResponse;
@@ -40,6 +42,10 @@ export default function FavouritesPage() {
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
   const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
   const [showBusinessAnalysis, setShowBusinessAnalysis] = useState(false);
+
+  // Multi-select state
+  const [selectedFavourites, setSelectedFavourites] = useState<Set<string>>(new Set());
+  const [bulkActionMode, setBulkActionMode] = useState<boolean>(false);
 
   // Load user preference from localStorage
   useEffect(() => {
@@ -206,6 +212,42 @@ export default function FavouritesPage() {
     await refetchFavourites(); // Refresh favourites in case they had relations to tags
   };
 
+  // Handle selection of a favourite
+  const handleFavouriteSelection = (favourite: FavouriteTickerResponse, selected: boolean): void => {
+    setSelectedFavourites((prev) => {
+      const newSet = new Set(prev);
+      if (selected) {
+        newSet.add(favourite.id);
+      } else {
+        newSet.delete(favourite.id);
+      }
+      return newSet;
+    });
+  };
+
+  // Toggle bulk action mode
+  const toggleBulkActionMode = (): void => {
+    const newMode = !bulkActionMode;
+    setBulkActionMode(newMode);
+
+    // Clear selections when exiting bulk action mode
+    if (!newMode) {
+      setSelectedFavourites(new Set());
+    }
+  };
+
+  // Select all favourites in the current view
+  const selectAllFavourites = (): void => {
+    const allIds = new Set<string>();
+    favourites.forEach((fav) => allIds.add(fav.id));
+    setSelectedFavourites(allIds);
+  };
+
+  // Deselect all favourites
+  const deselectAllFavourites = (): void => {
+    setSelectedFavourites(new Set());
+  };
+
   // Show loading or redirect if no session
   if (!session) {
     return null; // Will redirect in useEffect
@@ -233,14 +275,33 @@ export default function FavouritesPage() {
                 <ToggleWithIcon label="Show Business Summary" enabled={showBusinessAnalysis} setEnabled={handleToggleBusinessAnalysis} onClickOnLabel={true} />
               </div>
               <div className="flex gap-2">
-                <Button onClick={() => setManageModalView('manage-lists')} variant="outlined" className="inline-flex items-center">
-                  <ListBulletIcon className="w-4 h-4 mr-2" />
-                  Manage Lists
-                </Button>
-                <Button onClick={() => setManageModalView('manage-tags')} variant="outlined" className="inline-flex items-center">
-                  <TagIcon className="w-4 h-4 mr-2" />
-                  Manage Tags
-                </Button>
+                {bulkActionMode ? (
+                  <>
+                    <Button onClick={toggleBulkActionMode} variant="outlined" className="inline-flex items-center">
+                      Cancel Selection
+                    </Button>
+                    <Button onClick={selectAllFavourites} variant="outlined" className="inline-flex items-center">
+                      Select All
+                    </Button>
+                    <Button onClick={deselectAllFavourites} variant="outlined" className="inline-flex items-center" disabled={selectedFavourites.size === 0}>
+                      Deselect All
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button onClick={toggleBulkActionMode} variant="outlined" className="inline-flex items-center">
+                      Select Multiple
+                    </Button>
+                    <Button onClick={() => setManageModalView('manage-lists')} variant="outlined" className="inline-flex items-center">
+                      <ListBulletIcon className="w-4 h-4 mr-2" />
+                      Manage Lists
+                    </Button>
+                    <Button onClick={() => setManageModalView('manage-tags')} variant="outlined" className="inline-flex items-center">
+                      <TagIcon className="w-4 h-4 mr-2" />
+                      Manage Tags
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -273,6 +334,9 @@ export default function FavouritesPage() {
                           showBusinessAnalysis={showBusinessAnalysis}
                           onEdit={setEditingFavourite}
                           onDelete={setDeletingFavourite}
+                          selectable={bulkActionMode}
+                          isSelected={selectedFavourites.has(favourite.id)}
+                          onSelectChange={handleFavouriteSelection}
                         />
                       ))}
                     </div>
@@ -297,6 +361,9 @@ export default function FavouritesPage() {
                         showBusinessAnalysis={showBusinessAnalysis}
                         onEdit={setEditingFavourite}
                         onDelete={setDeletingFavourite}
+                        selectable={bulkActionMode}
+                        isSelected={selectedFavourites.has(favourite.id)}
+                        onSelectChange={handleFavouriteSelection}
                       />
                     ))}
                   </div>
@@ -343,6 +410,52 @@ export default function FavouritesPage() {
         />
 
         <ManageTagsModal isOpen={manageModalView === 'manage-tags'} onClose={() => setManageModalView(null)} tags={tags} onTagsChange={handleTagsChange} />
+
+        {/* Bulk Action Modals */}
+        <BulkAddTagsModal
+          isOpen={manageModalView === 'bulk-add-tags'}
+          onClose={() => setManageModalView(null)}
+          tags={tags}
+          selectedFavouriteIds={selectedFavourites}
+          onSuccess={async () => {
+            await refetchFavourites();
+            setManageModalView(null);
+            setBulkActionMode(false);
+          }}
+        />
+
+        <BulkAddListsModal
+          isOpen={manageModalView === 'bulk-add-lists'}
+          onClose={() => setManageModalView(null)}
+          lists={lists}
+          selectedFavouriteIds={selectedFavourites}
+          onSuccess={async () => {
+            await refetchFavourites();
+            setManageModalView(null);
+            setBulkActionMode(false);
+          }}
+        />
+
+        {/* Bulk Action Bar - Fixed at bottom when items are selected */}
+        {bulkActionMode && selectedFavourites.size > 0 && (
+          <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 p-4 shadow-lg z-50">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <div className="text-white">
+                <span className="font-medium">{selectedFavourites.size}</span> {selectedFavourites.size === 1 ? 'item' : 'items'} selected
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={() => setManageModalView('bulk-add-tags')} variant="contained" primary className="inline-flex items-center">
+                  <TagIcon className="w-4 h-4 mr-2" />
+                  Add Tags
+                </Button>
+                <Button onClick={() => setManageModalView('bulk-add-lists')} variant="contained" primary className="inline-flex items-center">
+                  <ListBulletIcon className="w-4 h-4 mr-2" />
+                  Add to Lists
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </PageWrapper>
   );
