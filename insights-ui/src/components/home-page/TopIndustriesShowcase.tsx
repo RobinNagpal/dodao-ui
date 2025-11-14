@@ -1,14 +1,6 @@
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import Link from 'next/link';
-import React from 'react';
 import CompactIndustryCard from '@/components/stocks/CompactIndustryCard';
-
-export interface IndustryWithTopTickers {
-  industryKey: string;
-  industryName: string;
-  tickerCount: number;
-  topTickers: TickerWithIndustryNames[];
-}
+import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
+import React from 'react';
 
 export interface TopIndustriesShowcaseProps {
   industries: IndustryWithTopTickers[];
@@ -32,7 +24,7 @@ export default function TopIndustriesShowcase({ industries }: TopIndustriesShowc
           <CompactIndustryCard
             key={industry.industryKey}
             industryKey={industry.industryKey}
-            industryName={industry.industryName}
+            industryName={industry.name}
             tickerCount={industry.tickerCount}
             topTickers={industry.topTickers}
           />

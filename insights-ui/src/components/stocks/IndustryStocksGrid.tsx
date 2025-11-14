@@ -1,28 +1,12 @@
-// components/stocks/IndustryStocksGrid.tsx
 import SubIndustryCard from '@/components/stocks/SubIndustryCard';
-import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { getTickerScore } from '@/types/ticker-typesv1';
+import { SubIndustriesResponse, TickerMinimal } from '@/types/api/ticker-industries';
 import { use } from 'react';
-
-export type IndustryStocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
-  filtersApplied: boolean;
-};
-
-type GroupedSub = Record<
-  string,
-  {
-    tickers: TickerWithIndustryNames[];
-    total: number;
-    subIndustryName: string;
-  }
->;
 
 type CardSpec = {
   key: string;
   subIndustry: string;
   subIndustryName: string;
-  tickers: TickerWithIndustryNames[];
+  tickers: TickerMinimal[];
   total: number;
   estH: number; // estimated height for packing
 };
@@ -59,8 +43,8 @@ export default function IndustryStocksGrid({
   dataPromise,
   industryName,
 }: {
-  data?: IndustryStocksDataPayload | null;
-  dataPromise?: Promise<IndustryStocksDataPayload> | null;
+  data?: SubIndustriesResponse | null;
+  dataPromise?: Promise<SubIndustriesResponse | null> | null;
   industryName?: string;
 }) {
   // Handle both direct data and promise-based data
@@ -70,9 +54,9 @@ export default function IndustryStocksGrid({
     return null;
   }
 
-  const { tickers, filtersApplied } = resolvedData;
+  const { subIndustries, filtersApplied } = resolvedData;
 
-  if (!tickers || tickers.length === 0) {
+  if (!subIndustries || subIndustries.flatMap((si) => si.tickers).length === 0) {
     return (
       <div className="text-center py-12">
         {filtersApplied ? (
@@ -90,35 +74,14 @@ export default function IndustryStocksGrid({
     );
   }
 
-  // Group by sub-industry
-  const bySub: GroupedSub = {};
-  for (const t of tickers) {
-    const subKey = t.subIndustryKey || 'Other';
-    const subName = (t.subIndustryName as string | undefined) || subKey;
-    if (!bySub[subKey]) {
-      bySub[subKey] = { tickers: [], total: 0, subIndustryName: subName };
-    }
-    bySub[subKey].tickers.push(t);
-    bySub[subKey].total += 1;
-  }
-
-  // Sort each sub group by finalScore desc (show all — no slicing here)
-  for (const subKey of Object.keys(bySub)) {
-    bySub[subKey].tickers = bySub[subKey].tickers.slice().sort((a, b) => {
-      const aScore = getTickerScore(a);
-      const bScore = getTickerScore(b);
-      return bScore - aScore;
-    });
-  }
-
   // Build card specs w/ estimated heights for packing
-  const cards: CardSpec[] = Object.entries(bySub).map(([subIndustry, group]) => ({
-    key: subIndustry,
-    subIndustry,
-    subIndustryName: group.subIndustryName,
-    tickers: group.tickers,
-    total: group.total,
-    estH: estimateCardHeight(group.total),
+  const cards: CardSpec[] = resolvedData.subIndustries.map((subIndustry) => ({
+    key: subIndustry.subIndustryKey,
+    subIndustry: subIndustry.subIndustryKey,
+    subIndustryName: subIndustry.industryName,
+    tickers: subIndustry.tickers,
+    total: subIndustry.tickerCount,
+    estH: estimateCardHeight(subIndustry.tickerCount),
   }));
 
   const cols1 = [cards];

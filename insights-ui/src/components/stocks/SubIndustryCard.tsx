@@ -1,11 +1,12 @@
+import { TickerMinimal } from '@/types/api/ticker-industries';
+import { getTickerScore } from '@/types/ticker-typesv1';
 import StockTickerItem from './StockTickerItem';
-import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
 
 type Variant = 'footer' | 'header-sub' | 'corner-badge';
 
 interface SubIndustryCardProps {
   subIndustry: string;
-  tickers: TickerWithIndustryNames[];
+  tickers: TickerMinimal[];
   subIndustryName?: string;
   total: number;
   variant?: Variant; // 'footer' | 'header-sub' | 'corner-badge'

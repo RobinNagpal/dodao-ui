@@ -9,13 +9,17 @@ import FiltersButton from '@/components/stocks/filters/FiltersButton';
 import { FilterLoadingFallback } from '@/components/stocks/SubIndustryCardSkeleton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSession } from '@/types/auth';
-import { CountryCode, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { Suspense } from 'react';
+
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 hours
 
 // ────────────────────────────────────────────────────────────────────────────────
 

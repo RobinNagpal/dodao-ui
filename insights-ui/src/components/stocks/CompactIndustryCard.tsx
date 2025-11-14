@@ -1,3 +1,4 @@
+import { TickerMinimal } from '@/types/api/ticker-industries';
 import Link from 'next/link';
 import React from 'react';
 import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
@@ -7,7 +8,7 @@ interface CompactIndustryCardProps {
   industryKey: string;
   industryName: string;
   tickerCount: number;
-  topTickers?: TickerWithIndustryNames[];
+  topTickers?: TickerMinimal[];
 }
 
 export default function CompactIndustryCard({ industryKey, industryName, topTickers = [] }: CompactIndustryCardProps): React.JSX.Element {

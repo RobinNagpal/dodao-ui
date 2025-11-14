@@ -1,6 +1,7 @@
 import SearchBar from '@/components/core/SearchBar';
-import TopIndustriesShowcase, { IndustryWithTopTickers } from '@/components/home-page/TopIndustriesShowcase';
+import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
 import coverImage from '@/images/koala.png';
+import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
 import Image from 'next/image';
 import Link from 'next/link';
 

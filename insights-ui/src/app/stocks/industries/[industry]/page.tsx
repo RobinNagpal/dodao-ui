@@ -20,6 +20,10 @@ import type { Metadata } from 'next';
 
 import { Suspense } from 'react';
 
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 hours
+
 // ────────────────────────────────────────────────────────────────────────────────
 // Metadata
 
@@ -98,18 +102,6 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
   // Check if filters are applied
   const filters = hasFiltersApplied(resolvedSearchParams);
 
-  // Fetch industry display name for header
-  let industryName = industryKey;
-  let industrySummary: string | undefined;
-  try {
-    const res = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
-    const data = (await res.json()) as TickerV1Industry;
-    industryName = data.name ?? industryKey;
-    industrySummary = data.summary ?? undefined;
-  } catch {
-    // Fallbacks remain
-  }
-
   // Create a data promise for Suspense when filters are applied
   const dataPromise = filters
     ? (async () => {
@@ -122,7 +114,7 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'US Stocks', href: `/stocks`, current: false },
-    { name: industryName, href: `/stocks/industries/${encodeURIComponent(industryKey)}`, current: true },
+    { name: data?.name || industryKey, href: `/stocks/industries/${encodeURIComponent(industryKey)}`, current: true },
   ];
 
   return (
@@ -143,22 +135,31 @@ export default async function IndustryStocksPage({ params, searchParams }: PageP
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{industryName} Stocks</h1>
+          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{data?.name || industryKey} Stocks</h1>
           <CountryAlternatives currentCountry="US" industryKey={industryKey} className="flex-shrink-0" />
         </div>
         <p className="text-[#E5E7EB] text-md mb-4">
-          Explore {industryName} companies listed on US exchanges (NASDAQ, NYSE, AMEX). {industrySummary}
+          Explore {data?.name || industryKey} companies listed on US exchanges (NASDAQ, NYSE, AMEX).{' '}
+          {data?.summary || 'View detailed reports and AI-driven insights.'}{' '}
         </p>
       </div>
-
-      {filters ? (
-        // Use Suspense when filters are applied
-        <Suspense fallback={<FilterLoadingFallback />}>
-          <IndustryStocksGrid dataPromise={dataPromise} industryName={industryName} />
-        </Suspense>
+      {!data && !dataPromise ? (
+        <>
+          <p className="text-[#E5E7EB] text-lg">{`No ${industryKey} stocks found.`}</p>
+          <p className="text-[#E5E7EB] text-sm mt-2">Please try again later.</p>
+        </>
       ) : (
-        // Use cached data when no filters are applied
-        <IndustryStocksGrid data={data} industryName={industryName} />
+        <>
+          {filters ? (
+            // Use Suspense when filters are applied
+            <Suspense fallback={<FilterLoadingFallback />}>
+              <IndustryStocksGrid dataPromise={dataPromise} industryName={data?.name || industryKey} />
+            </Suspense>
+          ) : (
+            // Use cached data when no filters are applied
+            <IndustryStocksGrid data={data} industryName={data?.name || industryKey} />
+          )}
+        </>
       )}
     </PageWrapper>
   );

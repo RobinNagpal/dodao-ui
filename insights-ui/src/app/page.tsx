@@ -9,11 +9,11 @@ import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
 import REIT from '@/components/home-page/Reit';
 import { ReportsNavBar } from '@/components/home-page/ReportsNavBar';
 import Tariff from '@/components/home-page/Tariff';
-import { IndustryWithTopTickers } from '@/components/home-page/TopIndustriesShowcase';
+import { IndustryWithTopTickers, OnlyIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
 import { getPostsData } from '@/util/blog-utils';
 import { themeColors } from '@/util/theme-colors';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
@@ -126,32 +126,17 @@ const WEEK = 60 * 60 * 24 * 7;
 
 async function fetchTopIndustriesWithTickers(): Promise<IndustryWithTopTickers[]> {
   const baseUrl = getBaseUrlForServerSidePages();
-  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/top-by-industry?country=US`;
+
+  const url = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/only-industries`;
 
   // Also tag the underlying fetch so any manual tag revalidation hits this too
   try {
     const res = await fetch(url, { next: { tags: ['home-page', TICKERS_TAG] } });
     if (!res.ok) return [];
 
-    const tickers: TickerWithIndustryNames[] = await res.json();
+    const resp: OnlyIndustriesResponse = await res.json();
 
-    const byIndustry = new Map<string, TickerWithIndustryNames[]>();
-    for (const ticker of tickers) {
-      const key = ticker.industryKey;
-      if (!byIndustry.has(key)) byIndustry.set(key, []);
-      byIndustry.get(key)!.push(ticker);
-    }
-
-    const industries: IndustryWithTopTickers[] = Array.from(byIndustry.entries())
-      .map(([industryKey, industryTickers]) => ({
-        industryKey,
-        industryName: industryTickers[0]?.industryName || industryKey,
-        tickerCount: industryTickers.length,
-        topTickers: industryTickers.sort((t) => -(t.cachedScoreEntry?.finalScore || 0)),
-      }))
-      .sort((a, b) => b.tickerCount - a.tickerCount);
-
-    return industries;
+    return resp.industries;
   } catch (e) {
     console.error(e);
     throw e;

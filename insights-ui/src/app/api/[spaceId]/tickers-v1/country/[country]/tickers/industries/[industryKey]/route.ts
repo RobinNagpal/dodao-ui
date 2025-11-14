@@ -1,24 +1,9 @@
 import { prisma } from '@/prisma';
-import {
-  IndustryWithSubIndustriesAndCounts,
-  SubIndustryWithCount,
-  TickerWithIndustryNames, // ⬅️ use the extended ticker type
-} from '@/types/ticker-typesv1';
+import { SubIndustriesResponse, SubIndustryWithAllTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { TickerV1 } from '@prisma/client';
-import { NextRequest } from 'next/server';
 import { createCacheFilter, createTickerFilter, hasFiltersApplied, parseFilterParams } from '@/utils/ticker-filter-utils';
-
-interface SubIndustryWithAllTickers extends SubIndustryWithCount {
-  tickers: TickerV1[];
-  industryName: string;
-}
-
-interface SubIndustriesResponse {
-  subIndustries: SubIndustryWithAllTickers[];
-  filtersApplied: boolean;
-}
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 
 async function getHandler(
   req: NextRequest,
@@ -49,7 +34,11 @@ async function getHandler(
       // Include all tickers for each sub-industry with filtering and ordering
       tickers: {
         where: tickerFilter,
-        include: {
+        select: {
+          id: true,
+          name: true,
+          symbol: true,
+          exchange: true,
           cachedScoreEntry: true,
         },
         orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
@@ -74,7 +63,7 @@ async function getHandler(
     const tickerCount = subIndustry._count.tickers; // ✅ strongly typed now
 
     // Convert tickers to include industry and sub-industry names
-    const tickersWithNames: TickerV1[] = subIndustry.tickers.map((t) => ({
+    const tickersWithNames: TickerMinimal[] = subIndustry.tickers.map((t) => ({
       ...t,
     }));
 
@@ -89,8 +78,14 @@ async function getHandler(
 
   // Check if any filters are applied
   const filtersApplied = hasFiltersApplied(country, cacheFilter, filters);
+  const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
+    where: {
+      industryKey,
+    },
+  });
 
   return {
+    ...industry,
     subIndustries: formattedSubIndustries,
     filtersApplied,
   };

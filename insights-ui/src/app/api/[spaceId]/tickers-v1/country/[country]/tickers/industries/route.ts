@@ -1,23 +1,9 @@
 import { prisma } from '@/prisma';
-import { IndustryWithSubIndustriesAndCounts, SubIndustryWithCount } from '@/types/ticker-typesv1';
+import { IndustriesResponse, IndustryWithSubIndustriesAndTopTickers, SubIndustryWithTopTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { createCacheFilter, createTickerFilter, hasFiltersApplied, parseFilterParams } from '@/utils/ticker-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-
-interface IndustryWithSubIndustriesAndTopTickers extends IndustryWithSubIndustriesAndCounts {
-  subIndustries: SubIndustryWithTopTickers[];
-}
-
-interface SubIndustryWithTopTickers extends SubIndustryWithCount {
-  topTickers: TickerV1[];
-}
-
-interface IndustriesResponse {
-  industries: IndustryWithSubIndustriesAndTopTickers[];
-  filtersApplied: boolean;
-}
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; country: string }> }): Promise<IndustriesResponse> {
   const { spaceId, country: countryParam } = await context.params;
@@ -43,13 +29,23 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
           // Include tickers for each sub-industry with filtering and ordering
           tickers: {
             where: tickerFilter,
-            include: {
+            // we only need minimal fields, no relation data
+            select: {
+              id: true,
+              name: true,
+              symbol: true,
+              exchange: true,
               cachedScoreEntry: true,
             },
-            orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
+            orderBy: [
+              // order by related cachedScoreEntry even if we don't select it
+              { cachedScoreEntry: { finalScore: 'desc' } },
+              { name: 'asc' },
+              { symbol: 'asc' },
+            ],
             take: 3,
           },
-          // Get count of all tickers in this sub-industry
+          // Get count of all tickers in this sub-industry (unfiltered)
           _count: {
             select: {
               tickers: true,
@@ -65,7 +61,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   // Transform the data to match the expected response format
   const formattedIndustries: IndustryWithSubIndustriesAndTopTickers[] = [];
-  const allTopTickers: TickerV1[] = [];
+  const allTopTickers: TickerMinimal[] = [];
 
   for (const industry of industries) {
     // Skip industries with no sub-industries or no tickers
@@ -80,15 +76,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (!subIndustry.tickers.length) continue;
 
       industryHasTickers = true;
-      const tickerCount = (subIndustry as any)._count.tickers;
+      const tickerCount = subIndustry._count.tickers;
       totalTickerCount += tickerCount;
 
-      // Convert tickers to TickerWithIndustryNames
-      const topTickers: TickerV1[] = subIndustry.tickers.map((t) => ({
-        ...t,
-        industryName: industry.name,
-        subIndustryName: subIndustry.name,
-      }));
+      // Convert tickers to TickerMinimal with industry/sub-industry names
+      const topTickers: TickerMinimal[] = subIndustry.tickers;
 
       // Add to the flattened list
       allTopTickers.push(...topTickers);

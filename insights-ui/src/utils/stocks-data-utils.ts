@@ -1,30 +1,20 @@
 import { hasFiltersApplied, toSortedQueryString } from '@/components/stocks/filters/filter-utils';
+import { IndustriesResponse, SubIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import type { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { CountryCode, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getCacheTagForIndustry, TICKERS_TAG } from '@/utils/ticker-v1-cache-utils';
 
 // Types shared with the grid components
 export type SearchParams = { [key: string]: string | string[] | undefined };
 
-export type StocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
-  filtersApplied: boolean;
-};
-
-export type IndustryStocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
-  filtersApplied: boolean;
-};
-
 // Cache constants
-const TWO_DAYS = 60 * 60 * 24 * 2;
+export const TWO_DAYS = 60 * 60 * 24 * 2;
 
 /**
  * Fetches stocks data for the main stocks page
  */
-export async function fetchStocksData(country: SupportedCountries = SupportedCountries.US, searchParams: SearchParams): Promise<StocksDataPayload> {
+export async function fetchStocksData(country: SupportedCountries = SupportedCountries.US, searchParams: SearchParams): Promise<IndustriesResponse> {
   const baseUrl = getBaseUrlForServerSidePages();
   const filters = hasFiltersApplied(searchParams);
 
@@ -45,31 +35,12 @@ export async function fetchStocksData(country: SupportedCountries = SupportedCou
 
   try {
     const res = await fetch(url, { next: { tags, revalidate: TWO_DAYS } });
-    if (!res.ok) return { tickers: [], filtersApplied: filters };
+    if (!res.ok) return { industries: [], filtersApplied: filters };
 
-    const data = await res.json();
-
-    // Extract all tickers from all industries and sub-industries
-    const tickers: TickerWithIndustryNames[] = [];
-
-    if (data.industries) {
-      for (const industry of data.industries) {
-        for (const subIndustry of industry.subIndustries) {
-          for (const ticker of subIndustry.topTickers) {
-            tickers.push({
-              ...ticker,
-              industryName: industry.name,
-              subIndustryName: subIndustry.name,
-            });
-          }
-        }
-      }
-    }
-
-    return { tickers, filtersApplied: data.filtersApplied || filters };
+    return (await res.json()) as IndustriesResponse;
   } catch (e) {
     console.error(e);
-    return { tickers: [], filtersApplied: filters };
+    return { industries: [], filtersApplied: filters };
   }
 }
 
@@ -80,7 +51,7 @@ export async function fetchIndustryStocksData(
   industryKey: string,
   country: SupportedCountries = SupportedCountries.US,
   searchParams: SearchParams
-): Promise<IndustryStocksDataPayload> {
+): Promise<SubIndustriesResponse | null> {
   const baseUrl = getBaseUrlForServerSidePages();
   const filters = hasFiltersApplied(searchParams);
 
@@ -98,28 +69,11 @@ export async function fetchIndustryStocksData(
 
   try {
     const res = await fetch(url, { next: { tags, revalidate: TWO_DAYS } });
-    if (!res.ok) return { tickers: [], filtersApplied: filters };
+    if (!res.ok) return null;
 
-    const data = await res.json();
-
-    // Extract all tickers from all sub-industries
-    const tickers: TickerWithIndustryNames[] = [];
-
-    if (data.subIndustries) {
-      for (const subIndustry of data.subIndustries) {
-        for (const ticker of subIndustry.tickers) {
-          tickers.push({
-            ...ticker,
-            industryName: subIndustry.industryName,
-            subIndustryName: subIndustry.name,
-          });
-        }
-      }
-    }
-
-    return { tickers, filtersApplied: data.filtersApplied || filters };
+    return (await res.json()) as SubIndustriesResponse;
   } catch (e) {
     console.error(e);
-    return { tickers: [], filtersApplied: filters };
+    return null;
   }
 }
