@@ -32,7 +32,7 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
   const country = countryName as SupportedCountries;
 
   // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchIndustryStocksData(industryKey, country, {});
+  const data = await fetchIndustryStocksData(industryKey, country);
 
   return (
     <IndustryWithStocksPageLayout
