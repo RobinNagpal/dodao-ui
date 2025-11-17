@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,10 +14,9 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import type { BusinessSubject } from '@prisma/client';
 import type { UpdateCaseStudyRequest } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
-import AdminLoading from '@/components/admin/AdminLoading';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getSubjectDisplayName } from '@/utils/subject-utils';
 
 interface Module {
@@ -76,8 +74,6 @@ const subjectOptions = (['HR', 'ECONOMICS', 'MARKETING', 'FINANCE', 'OPERATIONS'
 export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
@@ -88,6 +84,14 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
 
   // Fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudy>(`/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+
+  const { renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading case study...',
+    loadingSubtitle: 'Preparing edit form...',
+    additionalLoadingConditions: [loadingCaseStudy],
+  });
 
   const { putData, loading: updating } = usePutData({
     successMessage: 'Case study updated successfully!',
@@ -232,13 +236,8 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
     }
   };
 
-  if (!session || session.role !== 'Admin') {
-    return null;
-  }
-
-  if (loadingCaseStudy) {
-    return <AdminLoading text="Loading case study..." subtitle="Preparing edit form..." />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">

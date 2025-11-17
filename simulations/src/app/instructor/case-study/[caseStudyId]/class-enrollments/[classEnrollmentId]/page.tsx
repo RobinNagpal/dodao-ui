@@ -1,20 +1,17 @@
 'use client';
 
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import StudentTable from '@/components/instructor/StudentTable';
 import BackButton from '@/components/navigation/BackButton';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { AttemptDetail, ExerciseProgress, ModuleTableData, StudentTableData } from '@/types';
 import type { CaseStudyWithRelationsForInstructor, ClassEnrollmentResponse, DeleteResponse } from '@/types/api';
-import { SimulationSession } from '@/types/user';
-import { logoutUser } from '@/utils/auth-utils';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GraduationCap } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -29,10 +26,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const resolvedParams = React.use(params);
   const { caseStudyId, classEnrollmentId } = resolvedParams;
 
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
   const router = useRouter();
-
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
   const [showDeleteAttemptConfirm, setShowDeleteAttemptConfirm] = useState<boolean>(false);
@@ -58,7 +52,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   // Fetch case study structure (modules, exercises)
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study details'
   );
 
@@ -69,9 +63,17 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     reFetchData: refetchStudentsData,
   } = useFetchData<ClassEnrollmentResponse>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments?student-details=true`,
-    { skipInitialFetch: !caseStudyId || !classEnrollmentId || !session },
+    { skipInitialFetch: !caseStudyId || !classEnrollmentId },
     'Failed to load students data'
   );
+
+  const { renderAuthGuard } = useAuthGuard({
+    allowedRoles: ['Instructor', 'Admin'],
+    loadingType: 'instructor',
+    loadingText: 'Loading Student Progress',
+    loadingSubtitle: 'Preparing enrollment progress table...',
+    additionalLoadingConditions: [loadingCaseStudy || loadingStudentsData],
+  });
 
   const { deleteData: clearAttempts, loading: clearingAttempts } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Student attempts cleared successfully!',
@@ -291,14 +293,8 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     router.push(`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`);
   };
 
-  if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
-    logoutUser();
-    return <div>You are not authorized to access this page</div>;
-  }
-
-  if (loadingCaseStudy || loadingStudentsData) {
-    return <InstructorLoading text="Loading Student Progress" subtitle="Preparing enrollment progress table..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">

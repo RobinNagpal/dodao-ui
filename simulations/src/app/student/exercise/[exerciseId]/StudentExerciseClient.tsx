@@ -6,16 +6,14 @@ import { AttemptsList } from '@/components/student/case-study/AttemptsList';
 import { ExerciseDetailsCard } from '@/components/student/case-study/ExerciseDetailsCard';
 import PromptComposer from '@/components/student/case-study/PromptComposer';
 import { NavigationData } from '@/components/student/case-study/types';
-import StudentLoading from '@/components/student/StudentLoading';
 import StudentProgressStepper from '@/components/student/StudentProgressStepper';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { calculateNavigationData } from '@/lib/navigation-utils';
 import { CaseStudyWithRelationsForStudents, ExerciseWithAttemptsResponse } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { CaseStudyModule, ExerciseAttempt } from '@prisma/client';
 import { Bot } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -36,23 +34,29 @@ interface StudentExerciseClientProps {
  * -----------------------------
  */
 export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
   const router = useRouter();
 
   // Fetch exercise data with attempts
   const { data: exerciseData, loading: loadingExercise } = useFetchData<ExerciseWithAttemptsResponse>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/case-study-modules/${moduleId}/exercises/${exerciseId}`,
-    { skipInitialFetch: !exerciseId || !session || !caseStudyId || !moduleId },
+    { skipInitialFetch: !exerciseId || !caseStudyId || !moduleId },
     'Failed to load exercise data'
   );
 
   // Fetch case study data for navigation and progress
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study data'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any',
+    loadingType: 'student',
+    loadingText: 'Loading AI Exercise',
+    loadingSubtitle: 'Preparing your interactive learning experience...',
+    additionalLoadingConditions: [loadingExercise || loadingCaseStudy],
+  });
 
   // Local attempts (source of truth for freshest state)
   const [localAttempts, setLocalAttempts] = useState<ExerciseAttempt[] | null>(null);
@@ -98,9 +102,8 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
     );
   };
 
-  if (loadingExercise || loadingCaseStudy) {
-    return <StudentLoading text="Loading AI Exercise" subtitle="Preparing your interactive learning experience..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

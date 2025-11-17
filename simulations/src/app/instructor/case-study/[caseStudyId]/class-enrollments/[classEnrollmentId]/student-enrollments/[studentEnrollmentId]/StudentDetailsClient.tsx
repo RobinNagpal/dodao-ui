@@ -1,12 +1,10 @@
 'use client';
 
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import BackButton from '@/components/navigation/BackButton';
-
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CaseStudyWithRelationsForInstructor, StudentDetailResponse } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import {
   Activity,
@@ -24,7 +22,6 @@ import {
   Target,
   TrendingUp,
 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -43,22 +40,28 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
   const [showAttemptModal, setShowAttemptModal] = useState(false);
 
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   // API hook to fetch case study structure (modules, exercises)
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyResponse>(
     `/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study details'
   );
 
   // API hook to fetch student-specific data (attempts, enrollment info)
   const { data: studentDetails, loading: loadingStudentDetails } = useFetchData<StudentDetailResponse>(
     `/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
-    { skipInitialFetch: !studentEnrollmentId || !session || !caseStudyId || !classEnrollmentId },
+    { skipInitialFetch: !studentEnrollmentId || !caseStudyId || !classEnrollmentId },
     'Failed to load student details'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: ['Instructor', 'Admin'],
+    loadingType: 'instructor',
+    loadingText: 'Loading Student Details',
+    loadingSubtitle: 'Preparing detailed analysis...',
+    additionalLoadingConditions: [loadingCaseStudy || loadingStudentDetails],
+  });
 
   // Get attempt details from the main response (no need for separate API call)
   const attemptDetails = selectedAttemptId ? studentDetails?.attempts.find((attempt) => attempt.id === selectedAttemptId) || null : null;
@@ -160,9 +163,8 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
     }
   };
 
-  if (!session || loadingCaseStudy || loadingStudentDetails) {
-    return <InstructorLoading text="Loading Student Details" subtitle="Preparing detailed analysis..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
