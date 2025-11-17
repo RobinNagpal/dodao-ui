@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/react';
 function deleteAllCookies() {
   // Only run in browser environment
   if (typeof document === 'undefined') return;
-  
+
   document.cookie.split(';').forEach((cookie) => {
     const eqPos = cookie.indexOf('=');
     const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
@@ -14,7 +14,7 @@ function deleteAllCookies() {
 export function deleteSimulationSessionInfo() {
   // Only run in browser environment
   if (typeof window === 'undefined') return;
-  
+
   deleteAllCookies();
   window?.localStorage?.clear();
 }
@@ -22,9 +22,9 @@ export function deleteSimulationSessionInfo() {
 export async function logoutUser() {
   // Only run in browser environment
   if (typeof window === 'undefined') return;
-  
+
   deleteSimulationSessionInfo();
-  
+
   try {
     if (window?.location?.pathname !== '/login') {
       await signOut({

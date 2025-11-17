@@ -44,13 +44,7 @@ interface UseAuthGuardReturn {
  * Automatically renders appropriate loading components based on user type
  */
 export function useAuthGuard(options: UseAuthGuardOptions): UseAuthGuardReturn {
-  const {
-    loadingType,
-    loadingText,
-    loadingSubtitle,
-    additionalLoadingConditions = [],
-    ...authCheckOptions
-  } = options;
+  const { loadingType, loadingText, loadingSubtitle, additionalLoadingConditions = [], ...authCheckOptions } = options;
 
   const { session, status, isAuthorized } = useAuthCheck(authCheckOptions);
 
@@ -113,4 +107,3 @@ export function useAuthGuard(options: UseAuthGuardOptions): UseAuthGuardReturn {
     isLoading,
   };
 }
-

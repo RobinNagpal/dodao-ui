@@ -15,6 +15,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { CaseStudyModule, ExerciseAttempt } from '@prisma/client';
 import { Bot } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 
 /**
@@ -33,7 +34,7 @@ interface StudentExerciseClientProps {
  * Parent: StudentExerciseClient (orchestrates data fetching + navigation + state distribution)
  * -----------------------------
  */
-export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps) {
+export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyId }: StudentExerciseClientProps): ReactElement | null {
   const router = useRouter();
 
   // Fetch exercise data with attempts
@@ -103,7 +104,7 @@ export default function StudentExerciseClient({ exerciseId, moduleId, caseStudyI
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

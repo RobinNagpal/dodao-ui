@@ -66,4 +66,3 @@ export function useAuthCheck(options: UseAuthCheckOptions = {}): UseAuthCheckRet
     isAuthorized,
   };
 }
-

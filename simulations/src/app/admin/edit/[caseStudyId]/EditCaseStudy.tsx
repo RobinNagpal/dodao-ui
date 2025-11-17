@@ -18,6 +18,7 @@ import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { getSubjectDisplayName } from '@/utils/subject-utils';
+import type { ReactElement } from 'react';
 
 interface Module {
   id?: string;
@@ -71,7 +72,7 @@ const subjectOptions = (['HR', 'ECONOMICS', 'MARKETING', 'FINANCE', 'OPERATIONS'
   label: getSubjectDisplayName(subject),
 }));
 
-export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps) {
+export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClientProps): ReactElement | null {
   const router = useRouter();
   const { showNotification } = useNotificationContext();
 
@@ -237,7 +238,7 @@ export default function EditCaseStudyClient({ caseStudyId }: EditCaseStudyClient
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">

@@ -9,6 +9,7 @@ import MarkdownEditor from '@/components/markdown/MarkdownEditor';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CaseStudyWithRelationsForStudents } from '@/types/api';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import type { ReactElement } from 'react';
 
 interface FinalSubmissionClientProps {
   caseStudyId: string;
@@ -27,7 +28,7 @@ interface CreateFinalSubmissionRequest {
   studentEmail: string;
 }
 
-export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionClientProps) {
+export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionClientProps): ReactElement | null {
   const [finalContent, setFinalContent] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -95,7 +96,7 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

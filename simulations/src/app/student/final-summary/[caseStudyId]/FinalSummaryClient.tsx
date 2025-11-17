@@ -1,28 +1,36 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { FileText, Download } from 'lucide-react';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { FileText, Download, Eye, Sparkles, CheckCircle, Bot } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import BackButton from '@/components/navigation/BackButton';
-import StudentLoading from '@/components/student/StudentLoading';
-import { SimulationSession } from '@/types/user';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { FinalSummaryResponse } from '@/types/api';
+import type { ReactElement } from 'react';
 
 interface FinalSummaryClientProps {
   caseStudyId: string;
 }
 
-export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientProps) {
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
-
+export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientProps): ReactElement | null {
   const { data: summaryData, loading: loadingSummary } = useFetchData<FinalSummaryResponse>(
     `/api/student/final-summary/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load final summary'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any',
+    loadingType: 'student',
+    loadingText: 'Loading Final Summary',
+    loadingSubtitle: 'Preparing your case study summary...',
+    additionalLoadingConditions: [loadingSummary],
+  });
 
   const handleDownloadPdf = () => {
     if (!summaryData || !session) return;
@@ -86,9 +94,8 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     }
   };
 
-  if (!session || loadingSummary) {
-    return <StudentLoading text="Loading Final Summary" subtitle="Preparing your case study summary..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   if (!summaryData || summaryData.modules.length === 0) {
     return (

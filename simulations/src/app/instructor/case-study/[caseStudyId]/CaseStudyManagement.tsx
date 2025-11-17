@@ -15,13 +15,14 @@ import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForInstructo
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { GraduationCap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
 }
 
-export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
+export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps): ReactElement | null {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const router = useRouter();
 
@@ -62,7 +63,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   const modules = caseStudy?.modules || [];
 

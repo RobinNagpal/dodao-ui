@@ -23,6 +23,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 
 interface StudentDetailsClientProps {
@@ -34,7 +35,7 @@ interface StudentDetailsClientProps {
 // Case study structure from case study API
 type CaseStudyResponse = CaseStudyWithRelationsForInstructor;
 
-export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, studentEnrollmentId }: StudentDetailsClientProps) {
+export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, studentEnrollmentId }: StudentDetailsClientProps): ReactElement | null {
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
@@ -164,7 +165,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">

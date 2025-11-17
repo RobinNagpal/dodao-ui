@@ -21,13 +21,14 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, GraduationCap, Shield } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 interface CaseStudyViewClientProps {
   caseStudyId: string;
 }
 
-export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps) {
+export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps): ReactElement | null {
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -118,7 +119,7 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">

@@ -16,6 +16,7 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, BotIcon, Check, Clock, Lock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 
 interface StudentCaseStudyClientProps {
@@ -27,7 +28,7 @@ interface UpdateInstructionStatusRequest {
   moduleId?: string;
 }
 
-export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps) {
+export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps): ReactElement | null {
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [selectedModule, setSelectedModule] = useState<any>(null);
@@ -204,7 +205,7 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const loadingGuard = renderAuthGuard();
-  if (loadingGuard) return loadingGuard;
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   const modules = caseStudy?.modules || [];
 
