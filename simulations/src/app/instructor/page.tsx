@@ -2,22 +2,16 @@
 
 import SubjectFilter from '@/components/common/SubjectFilter';
 import CaseStudiesContent from '@/components/instructor/CaseStudiesContent';
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import { getAssignedSubjectsWithCounts } from '@/components/instructor/SubjectUtils';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { BusinessSubject, CaseStudy } from '@/types';
-import { SimulationSession } from '@/types/user';
-import { logoutUser } from '@/utils/auth-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { GraduationCap } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function InstructorDashboard() {
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
-
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudy[]>([]);
 
@@ -27,6 +21,14 @@ export default function InstructorDashboard() {
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudy[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load assigned case studies');
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: ['Instructor', 'Admin'],
+    loadingType: 'instructor',
+    loadingText: 'Loading Dashboard',
+    loadingSubtitle: 'Preparing your instructor console...',
+    additionalLoadingConditions: [loadingCaseStudies || assignedCaseStudies === undefined],
+  });
 
   // Filter case studies based on selected subject
   useEffect(() => {
@@ -41,14 +43,8 @@ export default function InstructorDashboard() {
 
   const assignedSubjectsWithCounts = getAssignedSubjectsWithCounts(assignedCaseStudies);
 
-  if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
-    logoutUser();
-    return <div>You are not authorized to access this page</div>;
-  }
-
-  if (loadingCaseStudies || assignedCaseStudies === undefined) {
-    return <InstructorLoading text="Loading Dashboard" subtitle="Preparing your instructor console..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">

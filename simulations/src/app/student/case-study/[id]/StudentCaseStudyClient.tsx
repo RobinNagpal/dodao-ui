@@ -5,20 +5,18 @@ import StudentNavbar from '@/components/navigation/StudentNavbar';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import InstructionRequiredModal from '@/components/student/InstructionRequiredModal';
-import StudentLoading from '@/components/student/StudentLoading';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { CaseStudyWithRelationsForStudents } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, BotIcon, Check, Clock, Lock } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface StudentCaseStudyClientProps {
   caseStudyId: string;
@@ -40,8 +38,6 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     moduleId?: string;
   } | null>(null);
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const {
     data: caseStudy,
@@ -49,9 +45,17 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     reFetchData: refetchCaseStudy,
   } = useFetchData<CaseStudyWithRelationsForStudents>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any',
+    loadingType: 'student',
+    loadingText: 'Loading case study...',
+    loadingSubtitle: 'Preparing your learning experience',
+    additionalLoadingConditions: [loadingCaseStudy],
+  });
 
   const { putData: updateInstructionStatus, loading: updatingStatus } = usePutData<{ success: boolean; message: string }, UpdateInstructionStatusRequest>({
     successMessage: 'Instructions marked as read!',
@@ -199,9 +203,8 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     }
   };
 
-  if (loadingCaseStudy) {
-    return <StudentLoading text="Loading case study..." subtitle="Preparing your learning experience" variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   const modules = caseStudy?.modules || [];
 

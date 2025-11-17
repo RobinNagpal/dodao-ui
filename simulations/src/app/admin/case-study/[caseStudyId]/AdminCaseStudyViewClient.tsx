@@ -1,6 +1,5 @@
 'use client';
 
-import AdminLoading from '@/components/admin/AdminLoading';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
 import BackButton from '@/components/navigation/BackButton';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
@@ -10,9 +9,9 @@ import ViewModuleModal from '@/components/shared/ViewModuleModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
@@ -21,7 +20,6 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, GraduationCap, Shield } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -39,8 +37,6 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
   const [deleteId, setDeleteId] = useState<string>('');
 
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   // API hook to fetch case study data
   const {
@@ -48,6 +44,14 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     loading: loadingCaseStudy,
     reFetchData,
   } = useFetchData<CaseStudyWithRelationsForStudents>(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+
+  const { renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading case study...',
+    loadingSubtitle: 'Preparing case study details...',
+    additionalLoadingConditions: [loadingCaseStudy],
+  });
 
   const {
     data,
@@ -113,13 +117,8 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     }
   };
 
-  if (!session || session.role !== 'Admin') {
-    return null;
-  }
-
-  if (loadingCaseStudy) {
-    return <AdminLoading text="Loading case study..." subtitle="Preparing case study details..." />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
