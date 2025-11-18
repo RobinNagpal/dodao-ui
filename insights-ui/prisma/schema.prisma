@@ -897,15 +897,17 @@ model UserTickerList {
 }
 
 model FavouriteTicker {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  tickerId  String   @map("ticker_id")
-  spaceId   String   @default("koala_gains") @map("space_id")
-  myNotes   String?  @map("my_notes")
-  myScore   Float?   @map("my_score")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  createdBy String   @map("created_by")
+  id                   String   @id @default(uuid())
+  userId               String   @map("user_id")
+  tickerId             String   @map("ticker_id")
+  spaceId              String   @default("koala_gains") @map("space_id")
+  myNotes              String?  @map("my_notes")
+  myScore              Float?   @map("my_score")
+  competitorsConsidered String[] @default([]) @map("competitors_considered")
+  betterAlternatives   String[] @default([]) @map("better_alternatives")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+  createdBy            String   @map("created_by")
 
   // Relations
   user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
