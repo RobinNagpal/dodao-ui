@@ -10,7 +10,7 @@ export default function FavouriteTags({ tags }: FavouriteTagsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1.5 mt-3">
       {tags.map((tag) => (
         <span
           key={tag.id}
