@@ -131,10 +131,9 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Report Type</th>
               {selectedTickers.map((ticker, index) => {
-                const tickerKey = `${ticker.symbol}-${ticker.exchange}`;
                 return (
                   <th
-                    key={`${ticker.symbol}-${ticker.exchange}-${index}`}
+                    key={`${ticker.exchange}-${ticker.symbol}-${index}`}
                     className="px-6 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider align-top text-center"
                   >
                     <div className="flex flex-col items-center">
@@ -164,7 +163,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                     </div>
                   </td>
                   {selectedTickers.map((ticker, tickerIndex) => {
-                    const tickerKey = `${ticker.symbol}-${ticker.exchange}`;
+                    const tickerKey = `${ticker.exchange}-${ticker.symbol}`;
                     const report = tickerReports[tickerKey];
                     const isCompleted: boolean = !getMissingReportTypes(report).includes(reportType);
 

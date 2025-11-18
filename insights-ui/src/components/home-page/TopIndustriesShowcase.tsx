@@ -12,7 +12,7 @@ export default function TopIndustriesShowcase({ industries }: TopIndustriesShowc
   }
 
   return (
-    <div className="mt-12 mb-12 sm:mb-10">
+    <div className="mt-10 mb-12 sm:mb-10">
       {/* Header: title centered, CTA responsive below */}
       <div className="mb-4">
         <h2 className="text-xl font-bold text-white text-center">Explore Industries &amp; Top US Companies</h2>

@@ -72,7 +72,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (!subIndustry.tickers.length) continue;
 
       industryHasTickers = true;
-      
+
       // Get the actual count of tickers for this sub-industry with country filtering
       const tickerCount = await prisma.tickerV1.count({
         where: {
@@ -81,7 +81,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
           subIndustryKey: subIndustry.subIndustryKey,
         },
       });
-      
+
       totalTickerCount += tickerCount;
 
       // Convert tickers to TickerMinimal with industry/sub-industry names

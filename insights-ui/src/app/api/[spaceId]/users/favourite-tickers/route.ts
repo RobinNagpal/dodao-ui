@@ -243,7 +243,154 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
   return { success: true };
 }
 
+// Bulk update tags for multiple favourite tickers
+async function bulkUpdateTagsHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<{ success: boolean }> {
+  const { userId } = userContext;
+  const body: { favouriteIds: string[]; tagIds: string[]; mode: 'add' | 'replace' } = await req.json();
+
+  const { favouriteIds, tagIds, mode } = body;
+
+  if (!favouriteIds || favouriteIds.length === 0) {
+    throw new Error('Favourite IDs are required');
+  }
+
+  if (!tagIds || tagIds.length === 0) {
+    throw new Error('Tag IDs are required');
+  }
+
+  // Verify all favourites belong to the user
+  const existingFavourites = await prisma.favouriteTicker.findMany({
+    where: {
+      id: { in: favouriteIds },
+      userId: userId,
+      spaceId: KoalaGainsSpaceId,
+    },
+    include: {
+      tags: true,
+    },
+  });
+
+  if (existingFavourites.length !== favouriteIds.length) {
+    throw new Error('Some favourites not found or you do not have permission to update them');
+  }
+
+  // Update tags for each favourite
+  for (const favourite of existingFavourites) {
+    if (mode === 'replace') {
+      // Disconnect all existing tags and connect new ones
+      await prisma.favouriteTicker.update({
+        where: {
+          id: favourite.id,
+        },
+        data: {
+          tags: {
+            set: tagIds.map((tagId) => ({ id: tagId })),
+          },
+        },
+      });
+    } else if (mode === 'add') {
+      // Add new tags to existing ones (avoid duplicates)
+      const existingTagIds = favourite.tags.map((tag) => tag.id);
+      const newTagIds = tagIds.filter((tagId) => !existingTagIds.includes(tagId));
+
+      if (newTagIds.length > 0) {
+        await prisma.favouriteTicker.update({
+          where: {
+            id: favourite.id,
+          },
+          data: {
+            tags: {
+              connect: newTagIds.map((tagId) => ({ id: tagId })),
+            },
+          },
+        });
+      }
+    }
+  }
+
+  return { success: true };
+}
+
+// Bulk update lists for multiple favourite tickers
+async function bulkUpdateListsHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<{ success: boolean }> {
+  const { userId } = userContext;
+  const body: { favouriteIds: string[]; listIds: string[]; mode: 'add' | 'replace' } = await req.json();
+
+  const { favouriteIds, listIds, mode } = body;
+
+  if (!favouriteIds || favouriteIds.length === 0) {
+    throw new Error('Favourite IDs are required');
+  }
+
+  if (!listIds || listIds.length === 0) {
+    throw new Error('List IDs are required');
+  }
+
+  // Verify all favourites belong to the user
+  const existingFavourites = await prisma.favouriteTicker.findMany({
+    where: {
+      id: { in: favouriteIds },
+      userId: userId,
+      spaceId: KoalaGainsSpaceId,
+    },
+    include: {
+      lists: true,
+    },
+  });
+
+  if (existingFavourites.length !== favouriteIds.length) {
+    throw new Error('Some favourites not found or you do not have permission to update them');
+  }
+
+  // Update lists for each favourite
+  for (const favourite of existingFavourites) {
+    if (mode === 'replace') {
+      // Disconnect all existing lists and connect new ones
+      await prisma.favouriteTicker.update({
+        where: {
+          id: favourite.id,
+        },
+        data: {
+          lists: {
+            set: listIds.map((listId) => ({ id: listId })),
+          },
+        },
+      });
+    } else if (mode === 'add') {
+      // Add new lists to existing ones (avoid duplicates)
+      const existingListIds = favourite.lists.map((list) => list.id);
+      const newListIds = listIds.filter((listId) => !existingListIds.includes(listId));
+
+      if (newListIds.length > 0) {
+        await prisma.favouriteTicker.update({
+          where: {
+            id: favourite.id,
+          },
+          data: {
+            lists: {
+              connect: newListIds.map((listId) => ({ id: listId })),
+            },
+          },
+        });
+      }
+    }
+  }
+
+  return { success: true };
+}
+
 export const GET = withLoggedInUser<FavouriteTickersResponse>(getHandler);
 export const POST = withLoggedInUser<FavouriteTickerResponse>(postHandler);
-export const PUT = withLoggedInUser<FavouriteTickerResponse>(putHandler);
+export const PUT = withLoggedInUser<any>(async (req: NextRequest, userContext: DoDaoJwtTokenPayload) => {
+  const { searchParams } = new URL(req.url);
+  const action = searchParams.get('action');
+
+  if (action === 'bulk-update-tags') {
+    return bulkUpdateTagsHandler(req, userContext);
+  } else if (action === 'bulk-update-lists') {
+    return bulkUpdateListsHandler(req, userContext);
+  } else {
+    return putHandler(req, userContext);
+  }
+});
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);

@@ -1,5 +1,6 @@
 import SearchBar from '@/components/core/SearchBar';
 import TopIndustriesShowcase from '@/components/home-page/TopIndustriesShowcase';
+import CountryAlternatives from '@/components/stocks/CountryAlternatives';
 import coverImage from '@/images/koala.png';
 import { IndustryWithTopTickers } from '@/types/api/ticker-industries';
 import Image from 'next/image';
@@ -16,7 +17,7 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
         <div className="w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
           <div className="py-2 sm:py-4 lg:py-8">
             {/* Stock Search Section */}
-            <div className="mb-8 sm:mb-10">
+            <div className="mb-8 sm:mb-8">
               <div className="mb-2 sm:mb-4 flex w-full justify-center">
                 <div className="flex items-start sm:items-center gap-3 sm:gap-4 justify-center sm:justify-start">
                   <div className="relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 shrink-0">
@@ -48,8 +49,11 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
                                focus-visible:ring-offset-2 focus-visible:ring-offset-gray-800
                                shadow-md hover:shadow-lg transition-all"
                 >
-                  Browse all stock reports <span aria-hidden>→</span>
+                  Browse all US stock reports <span aria-hidden>→</span>
                 </Link>
+              </div>
+              <div className="flex justify-center mt-4">
+                <CountryAlternatives currentCountry="US" className="justify-center" />
               </div>
             </div>
 
