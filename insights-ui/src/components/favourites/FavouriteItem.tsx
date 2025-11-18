@@ -6,6 +6,7 @@ import CategoryScores from './CategoryScores';
 import BusinessAnalysis from './BusinessAnalysis';
 import FavouriteNotes from './FavouriteNotes';
 import FavouriteTags from './FavouriteTags';
+import CompetitorsAlternatives from './CompetitorsAlternatives';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 
@@ -95,6 +96,9 @@ export default function FavouriteItem({
 
       {/* My Notes */}
       <FavouriteNotes notes={favourite.myNotes} />
+
+      {/* Competitors and Alternatives */}
+      <CompetitorsAlternatives competitorsConsidered={favourite.competitorsConsidered} betterAlternatives={favourite.betterAlternatives} />
 
       {/* Tags */}
       <FavouriteTags tags={favourite.tags} />

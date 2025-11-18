@@ -10,6 +10,7 @@ import {
   UserTickerTagResponse,
   CreateFavouriteTickerRequest,
   UpdateFavouriteTickerRequest,
+  TickerBasicsWithFinalScore,
 } from '@/types/ticker-user';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -19,6 +20,8 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
 import ManageTagsModal from '@/components/favourites/ManageTagsModal';
+import SearchBar, { SearchResult } from '@/components/core/SearchBar/SearchBar';
+import TickerBadge from '@/components/favourites/TickerBadge';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 type ModalView = 'main' | 'manage-lists' | 'manage-tags';
@@ -41,6 +44,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
   const [myScore, setMyScore] = useState<string>('');
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [selectedListIds, setSelectedListIds] = useState<string[]>([]);
+  const [competitorsConsidered, setCompetitorsConsidered] = useState<TickerBasicsWithFinalScore[]>([]);
+  const [betterAlternatives, setBetterAlternatives] = useState<TickerBasicsWithFinalScore[]>([]);
 
   // Fetch tags and lists
   const {
@@ -102,12 +107,33 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         setMyScore(existingFavourite.myScore?.toString() || '');
         setSelectedTagIds(existingFavourite.tags.map((t) => t.id));
         setSelectedListIds(existingFavourite.lists.map((l) => l.id));
+        // Load existing competitors and alternatives
+        setCompetitorsConsidered(
+          existingFavourite.competitorsConsidered?.map((c) => ({
+            id: c.id,
+            symbol: c.symbol,
+            name: c.name,
+            exchange: c.exchange,
+            cachedScoreEntry: c.cachedScoreEntry,
+          })) || []
+        );
+        setBetterAlternatives(
+          existingFavourite.betterAlternatives?.map((a) => ({
+            id: a.id,
+            symbol: a.symbol,
+            name: a.name,
+            exchange: a.exchange,
+            cachedScoreEntry: a.cachedScoreEntry,
+          })) || []
+        );
       } else {
         // Reset form for new favourite
         setMyNotes('');
         setMyScore('');
         setSelectedTagIds([]);
         setSelectedListIds([]);
+        setCompetitorsConsidered([]);
+        setBetterAlternatives([]);
       }
     }
   }, [isOpen, existingFavourite]);
@@ -122,6 +148,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         myScore: scoreValue,
         tagIds: selectedTagIds,
         listIds: selectedListIds,
+        competitorsConsidered: competitorsConsidered.map((c) => c.id),
+        betterAlternatives: betterAlternatives.map((b) => b.id),
       };
 
       const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${existingFavourite.id}`, updateData);
@@ -138,6 +166,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         myScore: scoreValue,
         tagIds: selectedTagIds.length > 0 ? selectedTagIds : undefined,
         listIds: selectedListIds.length > 0 ? selectedListIds : undefined,
+        competitorsConsidered: competitorsConsidered.length > 0 ? competitorsConsidered.map((c) => c.id) : undefined,
+        betterAlternatives: betterAlternatives.length > 0 ? betterAlternatives.map((b) => b.id) : undefined,
       };
 
       const result = await createFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, createData);
@@ -148,12 +178,38 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
     }
   };
 
-  const toggleTag = (tagId: string): void => {
-    setSelectedTagIds((prev) => (prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]));
+  const handleAddCompetitor = (result: SearchResult): void => {
+    if (!competitorsConsidered.some((c) => c.id === result.id) && result.id !== tickerId) {
+      const competitor: TickerBasicsWithFinalScore = {
+        id: result.id,
+        symbol: result.symbol,
+        name: result.name,
+        exchange: result.exchange,
+        cachedScoreEntry: result.cachedScoreEntry,
+      };
+      setCompetitorsConsidered((prev) => [...prev, competitor]);
+    }
   };
 
-  const toggleList = (listId: string): void => {
-    setSelectedListIds((prev) => (prev.includes(listId) ? prev.filter((id) => id !== listId) : [...prev, listId]));
+  const handleRemoveCompetitor = (tickerId: string): void => {
+    setCompetitorsConsidered((prev) => prev.filter((c) => c.id !== tickerId));
+  };
+
+  const handleAddBetterAlternative = (result: SearchResult): void => {
+    if (!betterAlternatives.some((b) => b.id === result.id) && result.id !== tickerId) {
+      const alternative: TickerBasicsWithFinalScore = {
+        id: result.id,
+        symbol: result.symbol,
+        name: result.name,
+        exchange: result.exchange,
+        cachedScoreEntry: result.cachedScoreEntry,
+      };
+      setBetterAlternatives((prev) => [...prev, alternative]);
+    }
+  };
+
+  const handleRemoveBetterAlternative = (tickerId: string): void => {
+    setBetterAlternatives((prev) => prev.filter((b) => b.id !== tickerId));
   };
 
   const handleTagsChange = (): void => {
@@ -165,13 +221,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
   };
 
   const renderMainView = (): JSX.Element => (
-    <div className="p-6 space-y-6 text-left">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">
-          {existingFavourite ? 'Edit' : 'Add'} {tickerName} ({tickerSymbol})
-        </h3>
-      </div>
-
+    <div className="px-6 py-4 space-y-6 text-left">
       {/* My Notes */}
       <div className="space-y-2">
         <label htmlFor="my-notes" className="block text-sm font-medium text-left">
@@ -181,24 +231,85 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
           id="my-notes"
           value={myNotes}
           onChange={(e) => setMyNotes(e.target.value)}
-          rows={3}
+          rows={2}
           className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Add your notes about this stock..."
         />
       </div>
 
       {/* My Score */}
-      <Input
-        modelValue={myScore}
-        onUpdate={(value) => setMyScore(value?.toString() || '')}
-        number={true}
-        min={0}
-        max={25}
-        placeholder="Enter a score between 0 and 25"
-        className="bg-gray-800 border-gray-700 text-white"
-      >
-        My Score (Optional, 0-25)
-      </Input>
+      <div className="flex items-center gap-3">
+        <label className="text-sm font-medium whitespace-nowrap">My Score (0-25):</label>
+        <div className="flex-1 max-w-xs">
+          <Input
+            modelValue={myScore}
+            onUpdate={(value) => setMyScore(value?.toString() || '')}
+            number={true}
+            min={0}
+            max={25}
+            placeholder="0-25"
+            className="bg-gray-800 border-gray-700 text-white w-full"
+          />
+        </div>
+      </div>
+
+      {/* Competitors Considered */}
+      <div className="mt-2">
+        <label className="block text-sm font-medium text-left mb-3">Competitors Considered</label>
+        <div className="space-y-3">
+          {/* Search bar for adding competitors */}
+          <div className="relative">
+            <SearchBar variant="navbar" placeholder="Search for competitor stocks..." onResultClick={handleAddCompetitor} className="w-full" />
+          </div>
+
+          {/* Selected competitors */}
+          {competitorsConsidered.length > 0 && (
+            <div className="bg-gray-900 rounded-md p-3">
+              <div className="text-sm text-gray-400 mb-2">Selected competitors:</div>
+              <div className="flex flex-wrap gap-2">
+                {competitorsConsidered.map((competitor) => (
+                  <TickerBadge
+                    key={competitor.id}
+                    ticker={competitor}
+                    showScore={true}
+                    showName={true}
+                    onRemove={() => handleRemoveCompetitor(competitor.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Better Alternatives */}
+      <div className="mt-4">
+        <label className="block text-sm font-medium text-left mb-3">Better Alternatives</label>
+        <div className="space-y-3">
+          {/* Search bar for adding alternatives */}
+          <div className="relative">
+            <SearchBar variant="navbar" placeholder="Search for better alternative stocks..." onResultClick={handleAddBetterAlternative} className="w-full" />
+          </div>
+
+          {/* Selected alternatives */}
+          {betterAlternatives.length > 0 && (
+            <div className="bg-gray-900 rounded-md p-3">
+              <div className="text-sm text-gray-400 mb-2">Selected alternatives:</div>
+              <div className="flex flex-wrap gap-2">
+                {betterAlternatives.map((alternative) => (
+                  <TickerBadge
+                    key={alternative.id}
+                    ticker={alternative}
+                    showScore={true}
+                    showName={true}
+                    onRemove={() => handleRemoveBetterAlternative(alternative.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Tags Selection */}
       <div className="mt-4">
@@ -222,10 +333,10 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
                     label: (
                       <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                        <div className="flex flex-col">
-                          <span className="text-sm">{tag.name}</span>
-                          {tag.description && <span className="text-xs text-gray-400 mt-0.5">{tag.description}</span>}
-                        </div>
+                        <span className="text-sm">
+                          {tag.name}
+                          {tag.description ? ` - ${tag.description}` : ''}
+                        </span>
                       </div>
                     ),
                   })
@@ -259,10 +370,10 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
                     id: list.id,
                     name: list.name,
                     label: (
-                      <div className="flex flex-col">
-                        <span className="text-sm">{list.name}</span>
-                        {list.description && <span className="text-xs text-gray-400 mt-0.5">{list.description}</span>}
-                      </div>
+                      <span className="text-sm">
+                        {list.name}
+                        {list.description ? ` - ${list.description}` : ''}
+                      </span>
                     ),
                   })
                 )}
@@ -292,7 +403,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       <FullPageModal
         open={isOpen && currentView === 'main'}
         onClose={onClose}
-        title={existingFavourite ? 'Edit Favourite' : 'Add to Favourites'}
+        title={existingFavourite ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
         className="w-full max-w-2xl"
       >
         {renderMainView()}

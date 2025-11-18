@@ -41,7 +41,47 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
     },
   });
 
-  return { favouriteTickers: favouriteTickers as unknown as FavouriteTickerResponse[] };
+  // Fetch competitor and alternative ticker details
+  const enhancedFavouriteTickers = await Promise.all(
+    favouriteTickers.map(async (fav) => {
+      // Type assertion for fields that exist but aren't in Prisma types
+      const favWithFields = fav as typeof fav & { competitorsConsidered: string[]; betterAlternatives: string[] };
+
+      const competitors =
+        favWithFields.competitorsConsidered.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: favWithFields.competitorsConsidered },
+                spaceId: KoalaGainsSpaceId,
+              },
+              include: {
+                cachedScoreEntry: true,
+              },
+            })
+          : [];
+
+      const alternatives =
+        favWithFields.betterAlternatives.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: favWithFields.betterAlternatives },
+                spaceId: KoalaGainsSpaceId,
+              },
+              include: {
+                cachedScoreEntry: true,
+              },
+            })
+          : [];
+
+      return {
+        ...fav,
+        competitorsConsidered: competitors,
+        betterAlternatives: alternatives,
+      };
+    })
+  );
+
+  return { favouriteTickers: enhancedFavouriteTickers as unknown as FavouriteTickerResponse[] };
 }
 
 // POST /api/favourite-tickers - Add a ticker to favourites
@@ -81,6 +121,8 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       spaceId: KoalaGainsSpaceId,
       myNotes: body.myNotes,
       myScore: body.myScore,
+      competitorsConsidered: body.competitorsConsidered || [],
+      betterAlternatives: body.betterAlternatives || [],
       createdBy: userId,
       tags:
         body.tagIds && body.tagIds.length > 0
@@ -142,6 +184,8 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
     data: {
       myNotes: body.myNotes !== undefined ? body.myNotes : undefined,
       myScore: body.myScore !== undefined ? body.myScore : undefined,
+      competitorsConsidered: body.competitorsConsidered !== undefined ? body.competitorsConsidered : undefined,
+      betterAlternatives: body.betterAlternatives !== undefined ? body.betterAlternatives : undefined,
       tags:
         body.tagIds !== undefined
           ? {

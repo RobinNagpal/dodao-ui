@@ -38,13 +38,23 @@ export interface UpdateUserListRequest {
 }
 
 // FavouriteTicker types
-export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 'lists' | 'ticker'> {
+export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 'lists' | 'ticker' | 'competitorsConsidered' | 'betterAlternatives'> {
   tags: UserTickerTagResponse[];
   lists: UserListResponse[];
   ticker: TickerV1 & {
     cachedScoreEntry?: TickerV1CachedScore | null;
     categoryAnalysisResults?: FullTickerV1CategoryAnalysisResult[];
   };
+  competitorsConsidered: Array<
+    TickerV1 & {
+      cachedScoreEntry?: TickerV1CachedScore | null;
+    }
+  >;
+  betterAlternatives: Array<
+    TickerV1 & {
+      cachedScoreEntry?: TickerV1CachedScore | null;
+    }
+  >;
 }
 
 export interface FavouriteTickersResponse {
@@ -57,6 +67,8 @@ export interface CreateFavouriteTickerRequest {
   listIds?: string[];
   myNotes?: string;
   myScore?: number;
+  competitorsConsidered?: string[];
+  betterAlternatives?: string[];
 }
 
 export interface UpdateFavouriteTickerRequest {
@@ -64,4 +76,17 @@ export interface UpdateFavouriteTickerRequest {
   listIds?: string[];
   myNotes?: string;
   myScore?: number;
+  competitorsConsidered?: string[];
+  betterAlternatives?: string[];
+}
+
+// Reusable interface for ticker information with basic fields and final score
+export interface TickerBasicsWithFinalScore {
+  id: string;
+  symbol: string;
+  name: string;
+  exchange: string;
+  cachedScoreEntry?: {
+    finalScore: number;
+  } | null;
 }
