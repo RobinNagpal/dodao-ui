@@ -7,9 +7,10 @@ interface StockTickerItemProps {
   exchange: string;
   score: number;
   displayExchange?: string; // Optional formatted exchange (e.g., "US: NYSE")
+  industry?: string; // Optional industry name
 }
 
-export default function StockTickerItem({ symbol, name, exchange, score, displayExchange }: StockTickerItemProps) {
+export default function StockTickerItem({ symbol, name, exchange, score, displayExchange, industry }: StockTickerItemProps) {
   const { textColorClass, bgColorClass, scoreLabel } = getScoreColorClasses(score || 0);
 
   return (
@@ -20,7 +21,8 @@ export default function StockTickerItem({ symbol, name, exchange, score, display
         </p>
         <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm shrink-0">{symbol}</p>
         <p className="text-sm font-medium text-break break-words text-white truncate min-w-0 flex-1">{name}</p>
-        {displayExchange && <p className="text-xs font-medium text-gray-400 whitespace-nowrap shrink-0 ml-2">{displayExchange}</p>}
+        {industry && <p className="text-xs font-medium text-gray-400 whitespace-nowrap shrink-0 ml-2">{industry}</p>}
+        {displayExchange && !industry && <p className="text-xs font-medium text-gray-400 whitespace-nowrap shrink-0 ml-2">{displayExchange}</p>}
       </div>
     </Link>
   );
