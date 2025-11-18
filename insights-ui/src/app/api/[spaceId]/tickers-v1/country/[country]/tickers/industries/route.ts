@@ -45,12 +45,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
             ],
             take: 3,
           },
-          // Get count of all tickers in this sub-industry (unfiltered)
-          _count: {
-            select: {
-              tickers: true,
-            },
-          },
         },
       },
     },
@@ -78,7 +72,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (!subIndustry.tickers.length) continue;
 
       industryHasTickers = true;
-      const tickerCount = subIndustry._count.tickers;
+      
+      // Get the actual count of tickers for this sub-industry with country filtering
+      const tickerCount = await prisma.tickerV1.count({
+        where: {
+          ...tickerFilter,
+          industryKey: industry.industryKey,
+          subIndustryKey: subIndustry.subIndustryKey,
+        },
+      });
+      
       totalTickerCount += tickerCount;
 
       // Convert tickers to TickerMinimal with industry/sub-industry names

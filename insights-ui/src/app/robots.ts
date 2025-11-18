@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         // Let Google crawl but we ALSO noindex via meta/header as above
-        disallow: ['/public-equities', '/api'],
+        disallow: ['/public-equities', '/api', '/_next/'],
       },
     ],
     sitemap: 'https://koalagains.com/sitemap.xml',

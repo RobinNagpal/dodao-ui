@@ -2,7 +2,7 @@ import { hasFiltersApplied, toSortedQueryString } from '@/utils/ticker-filter-ut
 import { IndustriesResponse, SubIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+// import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getIndustryPageTag, getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
@@ -17,7 +17,7 @@ export async function fetchStocksData(country: SupportedCountries = SupportedCou
   const filters = hasFiltersApplied(searchParams);
 
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`;
-  const url = filters ? `${baseUrlPath}?${toSortedQueryString(searchParams)}` : baseUrlPath;
+  const url = filters ? `${baseUrlPath}?${toSortedQueryString(searchParams, country)}` : baseUrlPath;
   const tags = filters ? [] : [getStocksPageTag(country)];
 
   try {
@@ -43,7 +43,7 @@ export async function fetchIndustryStocksData(
   const filters = hasFiltersApplied(searchParams);
 
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries/${industryKey}`;
-  const url = filters ? `${baseUrlPath}?${toSortedQueryString(searchParams)}` : baseUrlPath;
+  const url = filters ? `${baseUrlPath}?${toSortedQueryString(searchParams, country)}` : baseUrlPath;
   const tags = filters ? [] : [getIndustryPageTag(country, industryKey)];
 
   try {
