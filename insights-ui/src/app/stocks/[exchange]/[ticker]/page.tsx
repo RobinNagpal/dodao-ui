@@ -43,6 +43,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -80,7 +81,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 
 /** Data fetchers */
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
@@ -89,7 +90,7 @@ async function fetchTickerByExchange(exchange: string, ticker: string): Promise<
 }
 
 async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
+  const url: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;

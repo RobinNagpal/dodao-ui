@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getIndustryPageTag, getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Types shared with the grid components
 export type SearchParams = { [key: string]: string | string[] | undefined };
@@ -12,7 +13,7 @@ export type SearchParams = { [key: string]: string | string[] | undefined };
  * Fetches stocks data for the main stocks page
  */
 export async function fetchStocksData(country: SupportedCountries = SupportedCountries.US, searchParams: SearchParams = {}): Promise<IndustriesResponse> {
-  const baseUrl = getBaseUrlForServerSidePages();
+  const baseUrl = getBaseUrl();
   const filters = hasFiltersApplied(searchParams);
 
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`;
@@ -38,7 +39,7 @@ export async function fetchIndustryStocksData(
   country: SupportedCountries = SupportedCountries.US,
   searchParams: SearchParams = {}
 ): Promise<SubIndustriesResponse | null> {
-  const baseUrl = getBaseUrlForServerSidePages();
+  const baseUrl = getBaseUrl();
   const filters = hasFiltersApplied(searchParams);
 
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries/${industryKey}`;
