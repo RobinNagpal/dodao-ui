@@ -22,14 +22,9 @@ export default function AllStocksGridForCountry({ stocks, stocksPromise, country
     );
   }
 
-  // Sort stocks by score descending, then by name
+  // Sort stocks alphabetically by symbol
   const sortedStocks = resolvedStocks.sort((a, b) => {
-    const scoreA = getTickerScore(a);
-    const scoreB = getTickerScore(b);
-    if (scoreB !== scoreA) {
-      return scoreB - scoreA;
-    }
-    return a.name.localeCompare(b.name);
+    return a.symbol.toLowerCase().localeCompare(b.symbol.toLowerCase());
   });
 
   return (
