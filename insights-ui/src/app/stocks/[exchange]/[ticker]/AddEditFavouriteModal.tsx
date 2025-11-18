@@ -108,20 +108,24 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         setSelectedTagIds(existingFavourite.tags.map((t) => t.id));
         setSelectedListIds(existingFavourite.lists.map((l) => l.id));
         // Load existing competitors and alternatives
-        setCompetitorsConsidered(existingFavourite.competitorsConsidered?.map(c => ({
-          id: c.id,
-          symbol: c.symbol,
-          name: c.name,
-          exchange: c.exchange,
-          cachedScoreEntry: c.cachedScoreEntry,
-        })) || []);
-        setBetterAlternatives(existingFavourite.betterAlternatives?.map(a => ({
-          id: a.id,
-          symbol: a.symbol,
-          name: a.name,
-          exchange: a.exchange,
-          cachedScoreEntry: a.cachedScoreEntry,
-        })) || []);
+        setCompetitorsConsidered(
+          existingFavourite.competitorsConsidered?.map((c) => ({
+            id: c.id,
+            symbol: c.symbol,
+            name: c.name,
+            exchange: c.exchange,
+            cachedScoreEntry: c.cachedScoreEntry,
+          })) || []
+        );
+        setBetterAlternatives(
+          existingFavourite.betterAlternatives?.map((a) => ({
+            id: a.id,
+            symbol: a.symbol,
+            name: a.name,
+            exchange: a.exchange,
+            cachedScoreEntry: a.cachedScoreEntry,
+          })) || []
+        );
       } else {
         // Reset form for new favourite
         setMyNotes('');
@@ -144,8 +148,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         myScore: scoreValue,
         tagIds: selectedTagIds,
         listIds: selectedListIds,
-        competitorsConsidered: competitorsConsidered.map(c => c.id),
-        betterAlternatives: betterAlternatives.map(b => b.id),
+        competitorsConsidered: competitorsConsidered.map((c) => c.id),
+        betterAlternatives: betterAlternatives.map((b) => b.id),
       };
 
       const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${existingFavourite.id}`, updateData);
@@ -162,8 +166,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         myScore: scoreValue,
         tagIds: selectedTagIds.length > 0 ? selectedTagIds : undefined,
         listIds: selectedListIds.length > 0 ? selectedListIds : undefined,
-        competitorsConsidered: competitorsConsidered.length > 0 ? competitorsConsidered.map(c => c.id) : undefined,
-        betterAlternatives: betterAlternatives.length > 0 ? betterAlternatives.map(b => b.id) : undefined,
+        competitorsConsidered: competitorsConsidered.length > 0 ? competitorsConsidered.map((c) => c.id) : undefined,
+        betterAlternatives: betterAlternatives.length > 0 ? betterAlternatives.map((b) => b.id) : undefined,
       };
 
       const result = await createFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, createData);
@@ -175,7 +179,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
   };
 
   const handleAddCompetitor = (result: SearchResult): void => {
-    if (!competitorsConsidered.some(c => c.id === result.id) && result.id !== tickerId) {
+    if (!competitorsConsidered.some((c) => c.id === result.id) && result.id !== tickerId) {
       const competitor: TickerBasicsWithFinalScore = {
         id: result.id,
         symbol: result.symbol,
@@ -183,16 +187,16 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         exchange: result.exchange,
         cachedScoreEntry: result.cachedScoreEntry,
       };
-      setCompetitorsConsidered(prev => [...prev, competitor]);
+      setCompetitorsConsidered((prev) => [...prev, competitor]);
     }
   };
 
   const handleRemoveCompetitor = (tickerId: string): void => {
-    setCompetitorsConsidered(prev => prev.filter(c => c.id !== tickerId));
+    setCompetitorsConsidered((prev) => prev.filter((c) => c.id !== tickerId));
   };
 
   const handleAddBetterAlternative = (result: SearchResult): void => {
-    if (!betterAlternatives.some(b => b.id === result.id) && result.id !== tickerId) {
+    if (!betterAlternatives.some((b) => b.id === result.id) && result.id !== tickerId) {
       const alternative: TickerBasicsWithFinalScore = {
         id: result.id,
         symbol: result.symbol,
@@ -200,12 +204,12 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         exchange: result.exchange,
         cachedScoreEntry: result.cachedScoreEntry,
       };
-      setBetterAlternatives(prev => [...prev, alternative]);
+      setBetterAlternatives((prev) => [...prev, alternative]);
     }
   };
 
   const handleRemoveBetterAlternative = (tickerId: string): void => {
-    setBetterAlternatives(prev => prev.filter(b => b.id !== tickerId));
+    setBetterAlternatives((prev) => prev.filter((b) => b.id !== tickerId));
   };
 
   const handleTagsChange = (): void => {
@@ -218,7 +222,6 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
 
   const renderMainView = (): JSX.Element => (
     <div className="px-6 py-4 space-y-6 text-left">
-
       {/* My Notes */}
       <div className="space-y-2">
         <label htmlFor="my-notes" className="block text-sm font-medium text-left">
@@ -256,12 +259,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         <div className="space-y-3">
           {/* Search bar for adding competitors */}
           <div className="relative">
-            <SearchBar
-              variant="navbar"
-              placeholder="Search for competitor stocks..."
-              onResultClick={handleAddCompetitor}
-              className="w-full"
-            />
+            <SearchBar variant="navbar" placeholder="Search for competitor stocks..." onResultClick={handleAddCompetitor} className="w-full" />
           </div>
 
           {/* Selected competitors */}
@@ -290,12 +288,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         <div className="space-y-3">
           {/* Search bar for adding alternatives */}
           <div className="relative">
-            <SearchBar
-              variant="navbar"
-              placeholder="Search for better alternative stocks..."
-              onResultClick={handleAddBetterAlternative}
-              className="w-full"
-            />
+            <SearchBar variant="navbar" placeholder="Search for better alternative stocks..." onResultClick={handleAddBetterAlternative} className="w-full" />
           </div>
 
           {/* Selected alternatives */}
@@ -341,7 +334,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
                       <div className="flex items-center gap-2">
                         <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
                         <span className="text-sm">
-                          {tag.name}{tag.description ? ` - ${tag.description}` : ''}
+                          {tag.name}
+                          {tag.description ? ` - ${tag.description}` : ''}
                         </span>
                       </div>
                     ),
@@ -377,7 +371,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
                     name: list.name,
                     label: (
                       <span className="text-sm">
-                        {list.name}{list.description ? ` - ${list.description}` : ''}
+                        {list.name}
+                        {list.description ? ` - ${list.description}` : ''}
                       </span>
                     ),
                   })
@@ -394,7 +389,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
         <Button onClick={onClose} disabled={loading} variant="outlined">
-          Cancel  
+          Cancel
         </Button>
         <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
           {existingFavourite ? 'Update' : 'Add to'} Favourites

@@ -45,12 +45,16 @@ export interface FavouriteTickerResponse extends Omit<FavouriteTicker, 'tags' | 
     cachedScoreEntry?: TickerV1CachedScore | null;
     categoryAnalysisResults?: FullTickerV1CategoryAnalysisResult[];
   };
-  competitorsConsidered: Array<TickerV1 & {
-    cachedScoreEntry?: TickerV1CachedScore | null;
-  }>;
-  betterAlternatives: Array<TickerV1 & {
-    cachedScoreEntry?: TickerV1CachedScore | null;
-  }>;
+  competitorsConsidered: Array<
+    TickerV1 & {
+      cachedScoreEntry?: TickerV1CachedScore | null;
+    }
+  >;
+  betterAlternatives: Array<
+    TickerV1 & {
+      cachedScoreEntry?: TickerV1CachedScore | null;
+    }
+  >;
 }
 
 export interface FavouriteTickersResponse {

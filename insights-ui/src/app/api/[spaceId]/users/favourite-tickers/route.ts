@@ -47,29 +47,31 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
       // Type assertion for fields that exist but aren't in Prisma types
       const favWithFields = fav as typeof fav & { competitorsConsidered: string[]; betterAlternatives: string[] };
 
-      const competitors = favWithFields.competitorsConsidered.length > 0
-        ? await prisma.tickerV1.findMany({
-            where: {
-              id: { in: favWithFields.competitorsConsidered },
-              spaceId: KoalaGainsSpaceId,
-            },
-            include: {
-              cachedScoreEntry: true,
-            },
-          })
-        : [];
+      const competitors =
+        favWithFields.competitorsConsidered.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: favWithFields.competitorsConsidered },
+                spaceId: KoalaGainsSpaceId,
+              },
+              include: {
+                cachedScoreEntry: true,
+              },
+            })
+          : [];
 
-      const alternatives = favWithFields.betterAlternatives.length > 0
-        ? await prisma.tickerV1.findMany({
-            where: {
-              id: { in: favWithFields.betterAlternatives },
-              spaceId: KoalaGainsSpaceId,
-            },
-            include: {
-              cachedScoreEntry: true,
-            },
-          })
-        : [];
+      const alternatives =
+        favWithFields.betterAlternatives.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: favWithFields.betterAlternatives },
+                spaceId: KoalaGainsSpaceId,
+              },
+              include: {
+                cachedScoreEntry: true,
+              },
+            })
+          : [];
 
       return {
         ...fav,

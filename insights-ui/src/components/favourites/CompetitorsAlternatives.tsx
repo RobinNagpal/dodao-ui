@@ -18,13 +18,7 @@ export default function CompetitorsAlternatives({ competitorsConsidered, betterA
           <h5 className="text-xs font-semibold text-gray-400 tracking-wider mb-2">Competitors Considered</h5>
           <div className="flex flex-wrap gap-2">
             {competitorsConsidered.map((ticker) => (
-              <TickerBadge
-                key={ticker.id}
-                ticker={ticker}
-                showScore={true}
-                showName={true}
-                linkToStock={true}
-              />
+              <TickerBadge key={ticker.id} ticker={ticker} showScore={true} showName={true} linkToStock={true} />
             ))}
           </div>
         </div>
@@ -35,13 +29,7 @@ export default function CompetitorsAlternatives({ competitorsConsidered, betterA
           <h5 className="text-xs font-semibold text-gray-400 tracking-wider mb-2">Better Alternatives</h5>
           <div className="flex flex-wrap gap-2">
             {betterAlternatives.map((ticker) => (
-              <TickerBadge
-                key={ticker.id}
-                ticker={ticker}
-                showScore={true}
-                showName={true}
-                linkToStock={true}
-              />
+              <TickerBadge key={ticker.id} ticker={ticker} showScore={true} showName={true} linkToStock={true} />
             ))}
           </div>
         </div>

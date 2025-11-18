@@ -1,4 +1,3 @@
-
 interface FavouriteNotesProps {
   notes: string | null | undefined;
 }

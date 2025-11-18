@@ -3,6 +3,7 @@
 import StockTickerItem from '@/components/stocks/StockTickerItem';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
+import { getScoreColorClasses } from '@/utils/score-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import * as Tooltip from '@radix-ui/react-tooltip';
@@ -209,6 +210,22 @@ export default function SearchBar({
 
   const styles = getVariantStyles();
 
+  // Helper to render ticker item content without Link wrapper when onResultClick is provided
+  const renderTickerItem = (result: SearchResult): JSX.Element => {
+    const { textColorClass, bgColorClass } = getScoreColorClasses(result.cachedScoreEntry?.finalScore ?? 0);
+
+    return (
+      <div className="flex gap-1.5 items-center min-w-0">
+        <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[45px] text-right shrink-0`}>
+          <span className="font-mono tabular-nums text-right text-xs">{result.cachedScoreEntry?.finalScore ?? 0}/25</span>
+        </p>
+        <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm shrink-0">{result.symbol}</p>
+        <p className="text-sm font-medium text-break break-words text-white truncate min-w-0 flex-1">{result.name}</p>
+        <p className="text-xs font-medium text-gray-400 whitespace-nowrap shrink-0 ml-2">{formatExchangeWithCountry(result.exchange)}</p>
+      </div>
+    );
+  };
+
   return (
     <div ref={searchRef} className={`${styles.container} ${className}`}>
       <div className="relative">
@@ -270,13 +287,17 @@ export default function SearchBar({
                     aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
-                      <StockTickerItem
-                        symbol={result.symbol}
-                        name={result.name}
-                        exchange={result.exchange}
-                        score={result.cachedScoreEntry?.finalScore ?? 0}
-                        displayExchange={formatExchangeWithCountry(result.exchange)}
-                      />
+                      {onResultClick ? (
+                        renderTickerItem(result)
+                      ) : (
+                        <StockTickerItem
+                          symbol={result.symbol}
+                          name={result.name}
+                          exchange={result.exchange}
+                          score={result.cachedScoreEntry?.finalScore ?? 0}
+                          displayExchange={formatExchangeWithCountry(result.exchange)}
+                        />
+                      )}
                     </div>
                   </div>
                 ))}
