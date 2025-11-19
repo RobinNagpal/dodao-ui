@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import LogRocketComponent from './LogRocketComponent';
 import Providers from './providers/Providers';
+import ClarityComponent from './ClarityComponent';
 
 export const metadata: Metadata = {
   title: 'KoalaGains',
@@ -82,6 +83,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <Script id="amazon-connect-chat" src="/scripts/amazon-koala-chat.js" strategy="afterInteractive" />
 
         <LogRocketComponent />
+        <ClarityComponent />
       </body>
     </html>
   );
