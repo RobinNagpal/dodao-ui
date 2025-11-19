@@ -53,9 +53,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  console.log(`industries: `, industries.flatMap((i) => i.subIndustries.flatMap((si) => si.tickers)).length);
-  console.log(`spaceId:`, spaceId, `country:`, country, `exchangeFilter:`, exchangeFilter);
-
   // Get all ticker counts grouped by industry and sub-industry in a single query
   // Use only spaceId and exchangeFilter (country-specific) but exclude user filters
   const tickerCounts = await prisma.tickerV1.groupBy({
@@ -68,7 +65,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       id: true,
     },
   });
-  console.log(`tickerCounts:`, tickerCounts);
 
   // Create a lookup map for quick access: "industryKey:subIndustryKey" -> count
   const countMap = new Map<string, number>();
