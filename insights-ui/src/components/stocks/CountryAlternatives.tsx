@@ -34,7 +34,7 @@ export default function CountryAlternatives({ currentCountry = 'US', industryKey
   return (
     <div className={`flex items-center space-x-3 ${className}`}>
       <GlobeAltIcon className="h-4 w-4 text-gray-400" />
-      <div className="flex items-center space-x-2 text-sm">
+      <div className={`flex items-center space-x-2 ${className}`}>
         <span className="text-gray-400">Also view:</span>
         {alternativeCountries.map((country, index) => {
           const href = industryKey ? `/stocks${country.path}/industries/${industryKey}` : `/stocks${country.path}`;

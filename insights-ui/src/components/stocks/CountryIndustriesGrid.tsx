@@ -13,10 +13,18 @@ export default function CountryIndustriesGrid({ data, dataPromise, countryName }
   // Handle both direct data and promise-based data
   const resolvedData = dataPromise ? use(dataPromise) : data;
 
-  if (!resolvedData || resolvedData.industries.length === 0) {
+  if (!resolvedData) {
+    return null;
+  }
+
+  // Filter industries that have at least one sub-industry with tickers to display
+  const industriesWithTickers = resolvedData.industries.filter((industry) => industry.subIndustries.some((subIndustry) => subIndustry.topTickers.length > 0));
+
+  // Show empty state if no industries have displayable tickers
+  if (industriesWithTickers.length === 0) {
     return (
       <div className="text-center py-12">
-        {resolvedData?.filtersApplied ? (
+        {resolvedData.filtersApplied ? (
           <>
             <p className="text-[#E5E7EB] text-lg">No {countryName} stocks match the current filters.</p>
             <p className="text-[#E5E7EB] text-sm mt-2">Try adjusting your filter criteria to see more results.</p>
@@ -33,7 +41,7 @@ export default function CountryIndustriesGrid({ data, dataPromise, countryName }
 
   return (
     <>
-      {resolvedData.industries.map((industry) => {
+      {industriesWithTickers.map((industry) => {
         const industryDisplayName = industry.name;
         const totalCompanies = industry.tickerCount;
 
@@ -53,14 +61,16 @@ export default function CountryIndustriesGrid({ data, dataPromise, countryName }
 
             {/* Sub-Industry Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-              {industry.subIndustries.map((subIndustry) => (
-                <CompactSubIndustryCard
-                  key={subIndustry.subIndustryKey}
-                  industryKey={industry.industryKey}
-                  subIndustryName={subIndustry.name}
-                  tickers={subIndustry.topTickers}
-                />
-              ))}
+              {industry.subIndustries
+                .filter((subIndustry) => subIndustry.topTickers.length > 0)
+                .map((subIndustry) => (
+                  <CompactSubIndustryCard
+                    key={subIndustry.subIndustryKey}
+                    industryKey={industry.industryKey}
+                    subIndustryName={subIndustry.name}
+                    tickers={subIndustry.topTickers}
+                  />
+                ))}
             </div>
           </div>
         );
