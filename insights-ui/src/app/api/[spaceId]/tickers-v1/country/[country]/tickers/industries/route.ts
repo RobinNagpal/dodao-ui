@@ -45,12 +45,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
             ],
             take: 3,
           },
-          // Get count of all tickers in this sub-industry (unfiltered)
-          _count: {
-            select: {
-              tickers: true,
-            },
-          },
         },
       },
     },
@@ -60,6 +54,22 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   });
 
   console.log(`industries: `, industries.flatMap((i) => i.subIndustries.flatMap((si) => si.tickers)).length);
+
+  // Get all ticker counts grouped by industry and sub-industry in a single query
+  const tickerCounts = await prisma.tickerV1.groupBy({
+    by: ['industryKey', 'subIndustryKey'],
+    where: tickerFilter,
+    _count: {
+      id: true,
+    },
+  });
+
+  // Create a lookup map for quick access: "industryKey:subIndustryKey" -> count
+  const countMap = new Map<string, number>();
+  for (const item of tickerCounts) {
+    const key = `${item.industryKey}:${item.subIndustryKey}`;
+    countMap.set(key, item._count.id);
+  }
 
   // Transform the data to match the expected response format
   const formattedIndustries: IndustryWithSubIndustriesAndTopTickers[] = [];
@@ -78,7 +88,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (!subIndustry.tickers.length) continue;
 
       industryHasTickers = true;
-      const tickerCount = subIndustry._count.tickers;
+
+      // Get the count from our pre-computed map
+      const countKey = `${industry.industryKey}:${subIndustry.subIndustryKey}`;
+      const tickerCount = countMap.get(countKey) || 0;
+
       totalTickerCount += tickerCount;
 
       // Convert tickers to TickerMinimal with industry/sub-industry names

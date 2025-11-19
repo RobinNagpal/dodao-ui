@@ -32,7 +32,7 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
     }
 
     const favouriteIds = Array.from(selectedFavouriteIds);
-    const result = await updateFavouriteLists(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers/bulk-update-lists`, {
+    const result = await updateFavouriteLists(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, {
       favouriteIds,
       listIds: selectedListIds,
       mode,
@@ -85,10 +85,10 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
                       id: list.id,
                       name: list.name,
                       label: (
-                        <div className="flex flex-col">
-                          <span className="text-sm">{list.name}</span>
-                          {list.description && <span className="text-xs text-gray-400 mt-0.5">{list.description}</span>}
-                        </div>
+                        <span className="text-sm">
+                          {list.name}
+                          {list.description ? ` - ${list.description}` : ''}
+                        </span>
                       ),
                     })
                   )}

@@ -250,7 +250,7 @@ export function applySelectedFiltersToParams(searchParams: ReadonlyURLSearchPara
 
 const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
 
-export const toSortedQueryString = (sp: SearchParams): string => {
+export const toSortedQueryString = (sp: SearchParams, country?: string): string => {
   const usp = new URLSearchParams();
   Object.keys(sp)
     .sort()
@@ -259,7 +259,10 @@ export const toSortedQueryString = (sp: SearchParams): string => {
       const v = toScalar(sp[k]);
       if (v) usp.set(k, v);
     });
-  usp.set('country', 'US');
+  // Include country in query string for proper caching differentiation
+  if (country) {
+    usp.set('country', country);
+  }
   return usp.toString();
 };
 

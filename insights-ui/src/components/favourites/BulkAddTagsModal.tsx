@@ -32,7 +32,7 @@ export default function BulkAddTagsModal({ isOpen, onClose, tags, selectedFavour
     }
 
     const favouriteIds = Array.from(selectedFavouriteIds);
-    const result = await updateFavouriteTags(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers/bulk-update-tags`, {
+    const result = await updateFavouriteTags(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, {
       favouriteIds,
       tagIds: selectedTagIds,
       mode,
@@ -87,10 +87,10 @@ export default function BulkAddTagsModal({ isOpen, onClose, tags, selectedFavour
                       label: (
                         <div className="flex items-center gap-2">
                           <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                          <div className="flex flex-col">
-                            <span className="text-sm">{tag.name}</span>
-                            {tag.description && <span className="text-xs text-gray-400 mt-0.5">{tag.description}</span>}
-                          </div>
+                          <span className="text-sm">
+                            {tag.name}
+                            {tag.description ? ` - ${tag.description}` : ''}
+                          </span>
                         </div>
                       ),
                     })

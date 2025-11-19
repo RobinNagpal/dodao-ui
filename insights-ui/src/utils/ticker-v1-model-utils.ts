@@ -245,7 +245,13 @@ export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryTy
   }
 
   // Calculate final score (sum of all category scores)
-  const finalScore = businessAndMoatExisting + financialStatementAnalysisExisting + pastPerformanceExisting + futureGrowthExisting + fairValueExisting;
+  // Use the new categoryScore for the category being updated, existing scores for others
+  const finalScore =
+    (categoryType === TickerAnalysisCategory.BusinessAndMoat ? categoryScore : businessAndMoatExisting) +
+    (categoryType === TickerAnalysisCategory.FinancialStatementAnalysis ? categoryScore : financialStatementAnalysisExisting) +
+    (categoryType === TickerAnalysisCategory.PastPerformance ? categoryScore : pastPerformanceExisting) +
+    (categoryType === TickerAnalysisCategory.FutureGrowth ? categoryScore : futureGrowthExisting) +
+    (categoryType === TickerAnalysisCategory.FairValue ? categoryScore : fairValueExisting);
   scoreUpdates.finalScore = finalScore;
 
   // Update or create cached score record

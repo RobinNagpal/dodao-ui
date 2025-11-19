@@ -21,6 +21,7 @@ export default function CompactSubIndustriesGrid({
     <>
       {resolvedData.industries.map((industry) => {
         const industryDisplayName = industry.name;
+        const totalCompanies = industry.tickerCount;
 
         return (
           <div key={industry.industryKey} className="mb-8">
@@ -31,7 +32,7 @@ export default function CompactSubIndustriesGrid({
                 href={`/stocks/industries/${encodeURIComponent(industry.industryKey)}`}
                 className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center"
               >
-                View All Companies
+                View All {totalCompanies} Companies
                 <span className="ml-1">→</span>
               </Link>
             </div>

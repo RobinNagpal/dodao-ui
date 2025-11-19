@@ -97,7 +97,7 @@ export default function SelectableSubIndustryCard({
           // Regular display mode (original behavior)
           <ul className="divide-y divide-color">
             {tickers.map((ticker) => (
-              <li key={ticker.symbol} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
+              <li key={`${ticker.exchange}-${ticker.symbol}`} className="px-3 sm:px-4 py-1.5 hover:bg-[#2D3748] transition-colors">
                 <div className="min-w-0 w-full">
                   <StockTickerItem symbol={ticker.symbol} name={ticker.name} exchange={ticker.exchange} score={ticker.cachedScoreEntry?.finalScore ?? 0} />
                 </div>
