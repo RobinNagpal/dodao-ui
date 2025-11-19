@@ -32,7 +32,7 @@ export default function BulkAddTagsModal({ isOpen, onClose, tags, selectedFavour
     }
 
     const favouriteIds = Array.from(selectedFavouriteIds);
-    const result = await updateFavouriteTags(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?action=bulk-update-tags`, {
+    const result = await updateFavouriteTags(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, {
       favouriteIds,
       tagIds: selectedTagIds,
       mode,

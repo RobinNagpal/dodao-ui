@@ -32,7 +32,7 @@ export default function BulkAddListsModal({ isOpen, onClose, lists, selectedFavo
     }
 
     const favouriteIds = Array.from(selectedFavouriteIds);
-    const result = await updateFavouriteLists(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?action=bulk-update-lists`, {
+    const result = await updateFavouriteLists(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, {
       favouriteIds,
       listIds: selectedListIds,
       mode,

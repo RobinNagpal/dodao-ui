@@ -147,68 +147,184 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
   return favouriteTicker as unknown as FavouriteTickerResponse;
 }
 
-// PUT /api/favourite-tickers?id={favouriteId} - Update a favourite ticker
-async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickerResponse> {
+// PUT /api/favourite-tickers?id={favouriteId} - Update a favourite ticker (single or bulk)
+async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickerResponse | { success: boolean }> {
   const { userId } = userContext;
-  const { searchParams } = new URL(req.url);
-  const favouriteId = searchParams.get('id');
+  const body = await req.json();
 
-  if (!favouriteId) {
-    throw new Error('Favourite ID is required');
+  // Check if this is a bulk update
+  if (body.favouriteIds && Array.isArray(body.favouriteIds)) {
+    const { favouriteIds, mode } = body;
+
+    if (!favouriteIds || favouriteIds.length === 0) {
+      throw new Error('Favourite IDs are required');
+    }
+
+    // Verify all favourites belong to the user
+    const existingFavourites = await prisma.favouriteTicker.findMany({
+      where: {
+        id: { in: favouriteIds },
+        userId: userId,
+        spaceId: KoalaGainsSpaceId,
+      },
+      include: {
+        tags: true,
+        lists: true,
+      },
+    });
+
+    if (existingFavourites.length !== favouriteIds.length) {
+      throw new Error('Some favourites not found or you do not have permission to update them');
+    }
+
+    // Determine if updating tags or lists
+    if (body.tagIds && Array.isArray(body.tagIds)) {
+      // Bulk update tags
+      const { tagIds } = body;
+
+      if (tagIds.length === 0) {
+        throw new Error('Tag IDs are required');
+      }
+
+      for (const favourite of existingFavourites) {
+        if (mode === 'replace') {
+          // Disconnect all existing tags and connect new ones
+          await prisma.favouriteTicker.update({
+            where: {
+              id: favourite.id,
+            },
+            data: {
+              tags: {
+                set: tagIds.map((tagId: string) => ({ id: tagId })),
+              },
+            },
+          });
+        } else if (mode === 'add') {
+          // Add new tags to existing ones (avoid duplicates)
+          const existingTagIds = favourite.tags.map((tag) => tag.id);
+          const newTagIds = tagIds.filter((tagId: string) => !existingTagIds.includes(tagId));
+
+          if (newTagIds.length > 0) {
+            await prisma.favouriteTicker.update({
+              where: {
+                id: favourite.id,
+              },
+              data: {
+                tags: {
+                  connect: newTagIds.map((tagId: string) => ({ id: tagId })),
+                },
+              },
+            });
+          }
+        }
+      }
+    } else if (body.listIds && Array.isArray(body.listIds)) {
+      // Bulk update lists
+      const { listIds } = body;
+
+      if (listIds.length === 0) {
+        throw new Error('List IDs are required');
+      }
+
+      for (const favourite of existingFavourites) {
+        if (mode === 'replace') {
+          // Disconnect all existing lists and connect new ones
+          await prisma.favouriteTicker.update({
+            where: {
+              id: favourite.id,
+            },
+            data: {
+              lists: {
+                set: listIds.map((listId: string) => ({ id: listId })),
+              },
+            },
+          });
+        } else if (mode === 'add') {
+          // Add new lists to existing ones (avoid duplicates)
+          const existingListIds = favourite.lists.map((list) => list.id);
+          const newListIds = listIds.filter((listId: string) => !existingListIds.includes(listId));
+
+          if (newListIds.length > 0) {
+            await prisma.favouriteTicker.update({
+              where: {
+                id: favourite.id,
+              },
+              data: {
+                lists: {
+                  connect: newListIds.map((listId: string) => ({ id: listId })),
+                },
+              },
+            });
+          }
+        }
+      }
+    } else {
+      throw new Error('Either tagIds or listIds must be provided for bulk update');
+    }
+
+    return { success: true };
+  } else {
+    // Single update
+    const { searchParams } = new URL(req.url);
+    const favouriteId = searchParams.get('id');
+
+    if (!favouriteId) {
+      throw new Error('Favourite ID is required');
+    }
+
+    // Verify the favourite belongs to the user
+    const existingFavourite = await prisma.favouriteTicker.findFirst({
+      where: {
+        id: favouriteId,
+        userId: userId,
+        spaceId: KoalaGainsSpaceId,
+      },
+      include: {
+        tags: true,
+        lists: true,
+      },
+    });
+
+    if (!existingFavourite) {
+      throw new Error('Favourite not found or you do not have permission to update it');
+    }
+
+    const updateBody: UpdateFavouriteTickerRequest = body;
+
+    // Update the favourite ticker
+    const updatedFavourite = await prisma.favouriteTicker.update({
+      where: {
+        id: favouriteId,
+      },
+      data: {
+        myNotes: updateBody.myNotes !== undefined ? updateBody.myNotes : undefined,
+        myScore: updateBody.myScore !== undefined ? updateBody.myScore : undefined,
+        competitorsConsidered: updateBody.competitorsConsidered !== undefined ? updateBody.competitorsConsidered : undefined,
+        betterAlternatives: updateBody.betterAlternatives !== undefined ? updateBody.betterAlternatives : undefined,
+        tags:
+          updateBody.tagIds !== undefined
+            ? {
+                disconnect: existingFavourite.tags.map((tag: { id: string }) => ({ id: tag.id })),
+                connect: updateBody.tagIds.map((tagId: string) => ({ id: tagId })),
+              }
+            : undefined,
+        lists:
+          updateBody.listIds !== undefined
+            ? {
+                disconnect: existingFavourite.lists.map((list: { id: string }) => ({ id: list.id })),
+                connect: updateBody.listIds.map((listId: string) => ({ id: listId })),
+              }
+            : undefined,
+      },
+      include: {
+        ticker: true,
+        tags: true,
+        lists: true,
+      },
+    });
+
+    return updatedFavourite as unknown as FavouriteTickerResponse;
   }
-
-  // Verify the favourite belongs to the user
-  const existingFavourite = await prisma.favouriteTicker.findFirst({
-    where: {
-      id: favouriteId,
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      tags: true,
-      lists: true,
-    },
-  });
-
-  if (!existingFavourite) {
-    throw new Error('Favourite not found or you do not have permission to update it');
-  }
-
-  const body: UpdateFavouriteTickerRequest = await req.json();
-
-  // Update the favourite ticker
-  const updatedFavourite = await prisma.favouriteTicker.update({
-    where: {
-      id: favouriteId,
-    },
-    data: {
-      myNotes: body.myNotes !== undefined ? body.myNotes : undefined,
-      myScore: body.myScore !== undefined ? body.myScore : undefined,
-      competitorsConsidered: body.competitorsConsidered !== undefined ? body.competitorsConsidered : undefined,
-      betterAlternatives: body.betterAlternatives !== undefined ? body.betterAlternatives : undefined,
-      tags:
-        body.tagIds !== undefined
-          ? {
-              disconnect: existingFavourite.tags.map((tag: { id: string }) => ({ id: tag.id })),
-              connect: body.tagIds.map((tagId: string) => ({ id: tagId })),
-            }
-          : undefined,
-      lists:
-        body.listIds !== undefined
-          ? {
-              disconnect: existingFavourite.lists.map((list: { id: string }) => ({ id: list.id })),
-              connect: body.listIds.map((listId: string) => ({ id: listId })),
-            }
-          : undefined,
-    },
-    include: {
-      ticker: true,
-      tags: true,
-      lists: true,
-    },
-  });
-
-  return updatedFavourite as unknown as FavouriteTickerResponse;
 }
 
 // DELETE /api/favourite-tickers?id={favouriteId} - Remove a ticker from favourites
@@ -243,154 +359,7 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
   return { success: true };
 }
 
-// Bulk update tags for multiple favourite tickers
-async function bulkUpdateTagsHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<{ success: boolean }> {
-  const { userId } = userContext;
-  const body: { favouriteIds: string[]; tagIds: string[]; mode: 'add' | 'replace' } = await req.json();
-
-  const { favouriteIds, tagIds, mode } = body;
-
-  if (!favouriteIds || favouriteIds.length === 0) {
-    throw new Error('Favourite IDs are required');
-  }
-
-  if (!tagIds || tagIds.length === 0) {
-    throw new Error('Tag IDs are required');
-  }
-
-  // Verify all favourites belong to the user
-  const existingFavourites = await prisma.favouriteTicker.findMany({
-    where: {
-      id: { in: favouriteIds },
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      tags: true,
-    },
-  });
-
-  if (existingFavourites.length !== favouriteIds.length) {
-    throw new Error('Some favourites not found or you do not have permission to update them');
-  }
-
-  // Update tags for each favourite
-  for (const favourite of existingFavourites) {
-    if (mode === 'replace') {
-      // Disconnect all existing tags and connect new ones
-      await prisma.favouriteTicker.update({
-        where: {
-          id: favourite.id,
-        },
-        data: {
-          tags: {
-            set: tagIds.map((tagId) => ({ id: tagId })),
-          },
-        },
-      });
-    } else if (mode === 'add') {
-      // Add new tags to existing ones (avoid duplicates)
-      const existingTagIds = favourite.tags.map((tag) => tag.id);
-      const newTagIds = tagIds.filter((tagId) => !existingTagIds.includes(tagId));
-
-      if (newTagIds.length > 0) {
-        await prisma.favouriteTicker.update({
-          where: {
-            id: favourite.id,
-          },
-          data: {
-            tags: {
-              connect: newTagIds.map((tagId) => ({ id: tagId })),
-            },
-          },
-        });
-      }
-    }
-  }
-
-  return { success: true };
-}
-
-// Bulk update lists for multiple favourite tickers
-async function bulkUpdateListsHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<{ success: boolean }> {
-  const { userId } = userContext;
-  const body: { favouriteIds: string[]; listIds: string[]; mode: 'add' | 'replace' } = await req.json();
-
-  const { favouriteIds, listIds, mode } = body;
-
-  if (!favouriteIds || favouriteIds.length === 0) {
-    throw new Error('Favourite IDs are required');
-  }
-
-  if (!listIds || listIds.length === 0) {
-    throw new Error('List IDs are required');
-  }
-
-  // Verify all favourites belong to the user
-  const existingFavourites = await prisma.favouriteTicker.findMany({
-    where: {
-      id: { in: favouriteIds },
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      lists: true,
-    },
-  });
-
-  if (existingFavourites.length !== favouriteIds.length) {
-    throw new Error('Some favourites not found or you do not have permission to update them');
-  }
-
-  // Update lists for each favourite
-  for (const favourite of existingFavourites) {
-    if (mode === 'replace') {
-      // Disconnect all existing lists and connect new ones
-      await prisma.favouriteTicker.update({
-        where: {
-          id: favourite.id,
-        },
-        data: {
-          lists: {
-            set: listIds.map((listId) => ({ id: listId })),
-          },
-        },
-      });
-    } else if (mode === 'add') {
-      // Add new lists to existing ones (avoid duplicates)
-      const existingListIds = favourite.lists.map((list) => list.id);
-      const newListIds = listIds.filter((listId) => !existingListIds.includes(listId));
-
-      if (newListIds.length > 0) {
-        await prisma.favouriteTicker.update({
-          where: {
-            id: favourite.id,
-          },
-          data: {
-            lists: {
-              connect: newListIds.map((listId) => ({ id: listId })),
-            },
-          },
-        });
-      }
-    }
-  }
-
-  return { success: true };
-}
-
 export const GET = withLoggedInUser<FavouriteTickersResponse>(getHandler);
 export const POST = withLoggedInUser<FavouriteTickerResponse>(postHandler);
-export const PUT = withLoggedInUser<any>(async (req: NextRequest, userContext: DoDaoJwtTokenPayload) => {
-  const { searchParams } = new URL(req.url);
-  const action = searchParams.get('action');
-
-  if (action === 'bulk-update-tags') {
-    return bulkUpdateTagsHandler(req, userContext);
-  } else if (action === 'bulk-update-lists') {
-    return bulkUpdateListsHandler(req, userContext);
-  } else {
-    return putHandler(req, userContext);
-  }
-});
+export const PUT = withLoggedInUser<FavouriteTickerResponse | { success: boolean }>(putHandler);
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);
