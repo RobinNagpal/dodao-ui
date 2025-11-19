@@ -24,6 +24,7 @@
     "@langchain/core": "^0.3.63",
     "@langchain/google-genai": "^0.2.15",
     "@langchain/openai": "^0.5.6",
+    "@microsoft/clarity": "^1.0.0",
     "@monaco-editor/react": "^4.7.0",
     "@next-auth/prisma-adapter": "1.0.7",
     "@react-icons/all-files": "^4.1.0",

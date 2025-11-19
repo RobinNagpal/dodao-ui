@@ -8,7 +8,7 @@ const PROJECT_ID = 'm3ahri/koalagains';
 const MIN_CLICKS = 2; // Require at least 2 clicks in the current session
 const STOCKS_PATH_PREFIX = '/stocks';
 const TARIFF_PATH_PREFIX = '/industry-tariff-report';
-const PROD_HOST = 'koalagains.com'; // ✅ only allow this exact host
+export const PROD_HOST = 'koalagains.com'; // ✅ only allow this exact host
 
 // LocalStorage keys (lifetime analytics; not used for gating)
 const LS = {
