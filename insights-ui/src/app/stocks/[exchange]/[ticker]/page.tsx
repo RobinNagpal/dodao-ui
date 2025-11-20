@@ -58,6 +58,9 @@ export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>
 type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
 const TICKERS_INDEX_URL: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
+/** Cache revalidation constants */
+const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+
 /** Build nothing by default; prebuild all when FULL_SSG=1 */
 export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
   if (process.env.FULL_SSG !== '1') return [];
@@ -81,7 +84,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 /** Data fetchers */
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerByExchange returned empty payload');
@@ -125,7 +128,7 @@ export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
 async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
 
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
 
   const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
@@ -136,7 +139,7 @@ async function fetchCompetition(exchange: string, ticker: string): Promise<Compe
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
 
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
 
   const arr = (await res.json()) as SimilarTicker[];
@@ -147,7 +150,7 @@ async function fetchFinancialInfo(exchange: string, ticker: string): Promise<Fin
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
     if (!res.ok) {
       console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
       return null;

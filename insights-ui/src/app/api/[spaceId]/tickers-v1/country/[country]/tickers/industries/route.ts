@@ -53,12 +53,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     },
   });
 
-  console.log(`industries: `, industries.flatMap((i) => i.subIndustries.flatMap((si) => si.tickers)).length);
-
   // Get all ticker counts grouped by industry and sub-industry in a single query
+  // Use only spaceId and exchangeFilter (country-specific) but exclude user filters
   const tickerCounts = await prisma.tickerV1.groupBy({
     by: ['industryKey', 'subIndustryKey'],
-    where: tickerFilter,
+    where: {
+      spaceId,
+      ...exchangeFilter,
+    },
     _count: {
       id: true,
     },
@@ -76,41 +78,40 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const allTopTickers: TickerMinimal[] = [];
 
   for (const industry of industries) {
-    // Skip industries with no sub-industries or no tickers
+    // Skip industries with no sub-industries
     if (!industry.subIndustries.length) continue;
 
-    let industryHasTickers = false;
     const formattedSubIndustries: SubIndustryWithTopTickers[] = [];
     let totalTickerCount = 0;
 
     for (const subIndustry of industry.subIndustries) {
-      // Skip sub-industries with no tickers
-      if (!subIndustry.tickers.length) continue;
-
-      industryHasTickers = true;
-
-      // Get the count from our pre-computed map
+      // Get the count from our pre-computed map (counts for country, no user filters)
       const countKey = `${industry.industryKey}:${subIndustry.subIndustryKey}`;
       const tickerCount = countMap.get(countKey) || 0;
 
+      // Skip sub-industries that have no tickers for this country at all
+      if (tickerCount === 0) continue;
+
       totalTickerCount += tickerCount;
 
-      // Convert tickers to TickerMinimal with industry/sub-industry names
+      // Convert tickers to TickerMinimal (these are filtered tickers)
       const topTickers: TickerMinimal[] = subIndustry.tickers;
 
-      // Add to the flattened list
-      allTopTickers.push(...topTickers);
+      // Add to the flattened list (only if there are filtered tickers)
+      if (topTickers.length > 0) {
+        allTopTickers.push(...topTickers);
+      }
 
-      // Add formatted sub-industry
+      // Add formatted sub-industry (with unfiltered count but filtered top tickers)
       formattedSubIndustries.push({
         ...subIndustry,
-        tickerCount,
-        topTickers,
+        tickerCount, // Total count for country (unfiltered)
+        topTickers, // Top 3 filtered tickers (may be empty if filters eliminate all)
       });
     }
 
-    // Skip industries with no tickers
-    if (!industryHasTickers) continue;
+    // Skip industries with no tickers for this country
+    if (totalTickerCount === 0) continue;
 
     // Sort sub-industries by name
     formattedSubIndustries.sort((a, b) => a.name.localeCompare(b.name));
