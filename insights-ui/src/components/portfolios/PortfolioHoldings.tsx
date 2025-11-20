@@ -69,10 +69,7 @@ export default function PortfolioHoldings({
 
           {/* Competitors and Alternatives */}
           {ticker.competitorsConsidered && ticker.betterAlternatives && (
-            <CompetitorsAlternatives
-              competitorsConsidered={ticker.competitorsConsidered}
-              betterAlternatives={ticker.betterAlternatives}
-            />
+            <CompetitorsAlternatives competitorsConsidered={ticker.competitorsConsidered} betterAlternatives={ticker.betterAlternatives} />
           )}
 
           {/* Tags */}
@@ -101,7 +98,12 @@ export default function PortfolioHoldings({
         <div className="text-center py-12">
           <div className="w-16 h-16 text-gray-600 mx-auto mb-4">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1}
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
             </svg>
           </div>
           <h3 className="text-xl font-semibold mb-2">No holdings yet</h3>
@@ -121,9 +123,7 @@ export default function PortfolioHoldings({
 
             return (
               <Accordion key={list.id} isOpen={isOpen} label={label} onClick={(e) => handleAccordionClick(e, list.id)}>
-                <div className="space-y-3">
-                  {tickers.map(renderTickerCard)}
-                </div>
+                <div className="space-y-3">{tickers.map(renderTickerCard)}</div>
               </Accordion>
             );
           })}
@@ -132,14 +132,10 @@ export default function PortfolioHoldings({
           {unlistedTickers.length > 0 && (
             <Accordion
               isOpen={openListIds.has('unlisted')}
-              label={
-                openListIds.has('unlisted') ? 'Unlisted Holdings' : `Unlisted Holdings (${unlistedTickers.map((t) => t.ticker?.symbol).join(', ')})`
-              }
+              label={openListIds.has('unlisted') ? 'Unlisted Holdings' : `Unlisted Holdings (${unlistedTickers.map((t) => t.ticker?.symbol).join(', ')})`}
               onClick={(e) => handleAccordionClick(e, 'unlisted')}
             >
-              <div className="space-y-3">
-                {unlistedTickers.map(renderTickerCard)}
-              </div>
+              <div className="space-y-3">{unlistedTickers.map(renderTickerCard)}</div>
             </Accordion>
           )}
         </div>

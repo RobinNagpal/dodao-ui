@@ -88,12 +88,7 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
   };
 
   return (
-    <FullPageModal
-      open={isOpen}
-      onClose={onClose}
-      title={portfolio ? 'Edit Portfolio' : 'Create New Portfolio'}
-      className="w-full max-w-2xl"
-    >
+    <FullPageModal open={isOpen} onClose={onClose} title={portfolio ? 'Edit Portfolio' : 'Create New Portfolio'} className="w-full max-w-2xl">
       <div className="px-6 py-4 space-y-6 text-left">
         {/* Portfolio Name */}
         <div className="space-y-2">
@@ -144,7 +139,13 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
           <Button onClick={onClose} disabled={loading} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} disabled={loading || !name.trim() || !summary.trim() || !detailedDescription.trim()} loading={loading} variant="contained" primary>
+          <Button
+            onClick={handleSave}
+            disabled={loading || !name.trim() || !summary.trim() || !detailedDescription.trim()}
+            loading={loading}
+            variant="contained"
+            primary
+          >
             {portfolio ? 'Update Portfolio' : 'Create Portfolio'}
           </Button>
         </div>

@@ -39,7 +39,7 @@ export default function PortfoliosPage() {
     loading: portfoliosLoading,
     reFetchData: refetchPortfolios,
   } = useFetchData<{ portfolios: Portfolio[] }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios`,
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios`,
     { skipInitialFetch: !session },
     'Failed to fetch portfolios'
   );
@@ -59,7 +59,7 @@ export default function PortfoliosPage() {
   const handleDelete = async () => {
     if (!deletingPortfolio) return;
 
-    const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios?id=${deletingPortfolio.id}`);
+    const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios?id=${deletingPortfolio.id}`);
     if (result) {
       await refetchPortfolios();
       setDeletingPortfolio(null);
@@ -116,18 +116,10 @@ export default function PortfoliosPage() {
                       <p className="text-gray-300 text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
                     </div>
                     <div className="flex items-center gap-1 ml-2">
-                      <Button
-                        onClick={() => setEditingPortfolio(portfolio)}
-                        variant="text"
-                        className="text-blue-400 hover:text-blue-300 p-1"
-                      >
+                      <Button onClick={() => setEditingPortfolio(portfolio)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
                         <PencilIcon className="w-4 h-4" />
                       </Button>
-                      <Button
-                        onClick={() => setDeletingPortfolio(portfolio)}
-                        variant="text"
-                        className="text-red-400 hover:text-red-300 p-1"
-                      >
+                      <Button onClick={() => setDeletingPortfolio(portfolio)} variant="text" className="text-red-400 hover:text-red-300 p-1">
                         <TrashIcon className="w-4 h-4" />
                       </Button>
                     </div>
@@ -149,19 +141,14 @@ export default function PortfoliosPage() {
                             </div>
                           ))}
                           {portfolio.portfolioTickers.length > 3 && (
-                            <div className="text-sm text-gray-500">
-                              +{portfolio.portfolioTickers.length - 3} more holdings
-                            </div>
+                            <div className="text-sm text-gray-500">+{portfolio.portfolioTickers.length - 3} more holdings</div>
                           )}
                         </div>
                       </div>
                     )}
 
                     <div className="pt-3 border-t border-gray-700">
-                      <Link
-                        href={`/portfolios/${portfolio.id}`}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
-                      >
+                      <Link href={`/portfolios/${portfolio.id}`} className="text-blue-400 hover:text-blue-300 text-sm font-medium">
                         View Details →
                       </Link>
                     </div>
@@ -173,11 +160,7 @@ export default function PortfoliosPage() {
         </div>
 
         {/* Create Portfolio Modal */}
-        <AddEditPortfolioModal
-          isOpen={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onSuccess={handlePortfolioSuccess}
-        />
+        <AddEditPortfolioModal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} onSuccess={handlePortfolioSuccess} />
 
         {/* Edit Portfolio Modal */}
         {editingPortfolio && (

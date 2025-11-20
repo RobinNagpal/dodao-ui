@@ -6,7 +6,11 @@ import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 
 // GET /api/[spaceId]/portfolios/[id]/tickers - Get all tickers in a portfolio
-async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<{ portfolioTickers: PortfolioTicker[] }> {
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: { id: string } }
+): Promise<{ portfolioTickers: PortfolioTicker[] }> {
   const { userId } = userContext;
   const { id } = params;
 
@@ -44,28 +48,30 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     },
   });
 
-    // Populate competitors and alternatives as full ticker objects
+  // Populate competitors and alternatives as full ticker objects
   const populatedPortfolioTickers = await Promise.all(
     portfolioTickers.map(async (pt) => {
       const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
 
-      const competitors = ptWithFields.competitors && ptWithFields.competitors.length > 0
-        ? await prisma.tickerV1.findMany({
-            where: {
-              id: { in: ptWithFields.competitors },
-              spaceId: KoalaGainsSpaceId,
-            },
-          })
-        : [];
+      const competitors =
+        ptWithFields.competitors && ptWithFields.competitors.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: ptWithFields.competitors },
+                spaceId: KoalaGainsSpaceId,
+              },
+            })
+          : [];
 
-      const alternatives = ptWithFields.alternatives && ptWithFields.alternatives.length > 0
-        ? await prisma.tickerV1.findMany({
-            where: {
-              id: { in: ptWithFields.alternatives },
-              spaceId: KoalaGainsSpaceId,
-            },
-          })
-        : [];
+      const alternatives =
+        ptWithFields.alternatives && ptWithFields.alternatives.length > 0
+          ? await prisma.tickerV1.findMany({
+              where: {
+                id: { in: ptWithFields.alternatives },
+                spaceId: KoalaGainsSpaceId,
+              },
+            })
+          : [];
 
       return {
         ...pt,
@@ -124,16 +130,18 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
       spaceId: KoalaGainsSpaceId,
       createdBy: userId,
       // Handle tags and lists if provided
-      ...(body.tagIds && body.tagIds.length > 0 && {
-        tags: {
-          connect: body.tagIds.map(id => ({ id })),
-        },
-      }),
-      ...(body.listIds && body.listIds.length > 0 && {
-        lists: {
-          connect: body.listIds.map(id => ({ id })),
-        },
-      }),
+      ...(body.tagIds &&
+        body.tagIds.length > 0 && {
+          tags: {
+            connect: body.tagIds.map((id) => ({ id })),
+          },
+        }),
+      ...(body.listIds &&
+        body.listIds.length > 0 && {
+          lists: {
+            connect: body.listIds.map((id) => ({ id })),
+          },
+        }),
     },
     include: {
       ticker: {
@@ -190,12 +198,12 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
       // Handle tags and lists updates
       ...(body.tagIds !== undefined && {
         tags: {
-          set: body.tagIds.map(id => ({ id })),
+          set: body.tagIds.map((id) => ({ id })),
         },
       }),
       ...(body.listIds !== undefined && {
         lists: {
-          set: body.listIds.map(id => ({ id })),
+          set: body.listIds.map((id) => ({ id })),
         },
       }),
     },

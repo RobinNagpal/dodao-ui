@@ -6,7 +6,7 @@ import PortfolioHoldings from '@/components/portfolios/PortfolioHoldings';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PlusIcon, PencilIcon, TrashIcon, ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilIcon, ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -46,7 +46,7 @@ export default function PortfolioDetailPage() {
     loading: portfolioLoading,
     reFetchData: refetchPortfolio,
   } = useFetchData<{ portfolio: Portfolio }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}`,
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios/${portfolioId}`,
     { skipInitialFetch: !session || !portfolioId },
     'Failed to fetch portfolio'
   );
@@ -57,7 +57,7 @@ export default function PortfolioDetailPage() {
     loading: tickersLoading,
     reFetchData: refetchTickers,
   } = useFetchData<{ portfolioTickers: PortfolioTicker[] }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers`,
+    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios/${portfolioId}/tickers`,
     { skipInitialFetch: !session || !portfolioId },
     'Failed to fetch portfolio tickers'
   );
@@ -120,7 +120,7 @@ export default function PortfolioDetailPage() {
   const handleDeleteTicker = async () => {
     if (!deletingTicker) return;
 
-    const result = await deleteTicker(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${deletingTicker.id}`);
+    const result = await deleteTicker(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios/${portfolioId}/tickers?id=${deletingTicker.id}`);
     if (result) {
       await refetchTickers();
       setDeletingTicker(null);
@@ -218,9 +218,7 @@ export default function PortfolioDetailPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">Unallocated</span>
-                  <span className={`font-medium ${100 - totalAllocation < 0 ? 'text-red-400' : 'text-gray-300'}`}>
-                    {(100 - totalAllocation).toFixed(1)}%
-                  </span>
+                  <span className={`font-medium ${100 - totalAllocation < 0 ? 'text-red-400' : 'text-gray-300'}`}>{(100 - totalAllocation).toFixed(1)}%</span>
                 </div>
               </div>
             </div>

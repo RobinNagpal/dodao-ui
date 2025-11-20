@@ -75,33 +75,41 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
 
       if (portfolioTicker) {
         // Load existing portfolio ticker data
-        setSelectedTicker(portfolioTicker.ticker ? {
-          id: portfolioTicker.ticker.id,
-          symbol: portfolioTicker.ticker.symbol || '',
-          name: portfolioTicker.ticker.companyName || '',
-          exchange: portfolioTicker.ticker.tickerKey?.split(':')[0] || '',
-          cachedScoreEntry: null, // We'll need to fetch this separately if needed
-        } : null);
+        setSelectedTicker(
+          portfolioTicker.ticker
+            ? {
+                id: portfolioTicker.ticker.id,
+                symbol: portfolioTicker.ticker.symbol || '',
+                name: portfolioTicker.ticker.name || '',
+                exchange: portfolioTicker.ticker.exchange || '',
+                cachedScoreEntry: null, // We'll need to fetch this separately if needed
+              }
+            : null
+        );
         setAllocation(portfolioTicker.allocation.toString());
         setDetailedDescription(portfolioTicker.detailedDescription || '');
         setSelectedTagIds(portfolioTicker.tags?.map((t: any) => t.id) || []);
         setSelectedListIds(portfolioTicker.lists?.map((l: any) => l.id) || []);
 
         // Load competitors and alternatives
-        setCompetitorsConsidered(portfolioTicker.competitors?.map((c: any) => ({
-          id: c,
-          symbol: c,
-          name: c,
-          exchange: '',
-          cachedScoreEntry: null,
-        })) || []);
-        setBetterAlternatives(portfolioTicker.alternatives?.map((a: any) => ({
-          id: a,
-          symbol: a,
-          name: a,
-          exchange: '',
-          cachedScoreEntry: null,
-        })) || []);
+        setCompetitorsConsidered(
+          portfolioTicker.competitors?.map((c: any) => ({
+            id: c,
+            symbol: c,
+            name: c,
+            exchange: '',
+            cachedScoreEntry: null,
+          })) || []
+        );
+        setBetterAlternatives(
+          portfolioTicker.alternatives?.map((a: any) => ({
+            id: a,
+            symbol: a,
+            name: a,
+            exchange: '',
+            cachedScoreEntry: null,
+          })) || []
+        );
       } else {
         // Reset form for new ticker
         setSelectedTicker(null);
@@ -138,7 +146,10 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
         listIds: selectedListIds,
       };
 
-      const result = await updatePortfolioTicker(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`, updateData);
+      const result = await updatePortfolioTicker(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`,
+        updateData
+      );
       if (result) {
         onSuccess?.();
         onClose();
@@ -220,9 +231,7 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
     <div className="px-6 py-4 space-y-6 text-left">
       {/* Ticker Selection */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-left">
-          Select Ticker *
-        </label>
+        <label className="block text-sm font-medium text-left">Select Ticker *</label>
         {!selectedTicker ? (
           <div className="relative">
             <SearchBar variant="navbar" placeholder="Search for a ticker to add..." onResultClick={handleTickerSelect} className="w-full" />
@@ -230,12 +239,7 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
         ) : (
           <div className="bg-gray-900 rounded-md p-3">
             <div className="flex items-center justify-between">
-              <TickerBadge
-                ticker={selectedTicker}
-                showScore={true}
-                showName={true}
-                onRemove={() => setSelectedTicker(null)}
-              />
+              <TickerBadge ticker={selectedTicker} showScore={true} showName={true} onRemove={() => setSelectedTicker(null)} />
             </div>
           </div>
         )}
@@ -284,13 +288,7 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
             <div className="text-sm text-gray-400 mb-2">Selected competitors:</div>
             <div className="flex flex-wrap gap-2">
               {competitorsConsidered.map((competitor) => (
-                <TickerBadge
-                  key={competitor.id}
-                  ticker={competitor}
-                  showScore={true}
-                  showName={true}
-                  onRemove={() => handleRemoveCompetitor(competitor.id)}
-                />
+                <TickerBadge key={competitor.id} ticker={competitor} showScore={true} showName={true} onRemove={() => handleRemoveCompetitor(competitor.id)} />
               ))}
             </div>
           </div>
@@ -337,19 +335,21 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
           ) : (
             <div className="ml-2">
               <Checkboxes
-                items={availableTags.map((tag: any): CheckboxItem => ({
-                  id: tag.id,
-                  name: tag.name,
-                  label: (
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
-                      <span className="text-sm">
-                        {tag.name}
-                        {tag.description ? ` - ${tag.description}` : ''}
-                      </span>
-                    </div>
-                  ),
-                }))}
+                items={availableTags.map(
+                  (tag: any): CheckboxItem => ({
+                    id: tag.id,
+                    name: tag.name,
+                    label: (
+                      <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: tag.colorHex }} />
+                        <span className="text-sm">
+                          {tag.name}
+                          {tag.description ? ` - ${tag.description}` : ''}
+                        </span>
+                      </div>
+                    ),
+                  })
+                )}
                 selectedItemIds={selectedTagIds}
                 onChange={(ids: string[]) => setSelectedTagIds(ids)}
                 className="bg-transparent"
@@ -374,16 +374,18 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
           ) : (
             <div className="ml-2">
               <Checkboxes
-                items={availableLists.map((list: any): CheckboxItem => ({
-                  id: list.id,
-                  name: list.name,
-                  label: (
-                    <span className="text-sm">
-                      {list.name}
-                      {list.description ? ` - ${list.description}` : ''}
-                    </span>
-                  ),
-                }))}
+                items={availableLists.map(
+                  (list: any): CheckboxItem => ({
+                    id: list.id,
+                    name: list.name,
+                    label: (
+                      <span className="text-sm">
+                        {list.name}
+                        {list.description ? ` - ${list.description}` : ''}
+                      </span>
+                    ),
+                  })
+                )}
                 selectedItemIds={selectedListIds}
                 onChange={(ids: string[]) => setSelectedListIds(ids)}
                 className="bg-transparent"

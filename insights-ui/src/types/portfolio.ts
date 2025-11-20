@@ -1,3 +1,12 @@
+import {
+  Portfolio as PrismaPortfolio,
+  PortfolioTicker as PrismaPortfolioTicker,
+  TickerV1,
+  TickerV1CachedScore,
+  UserTickerTag,
+  UserTickerList,
+} from '@prisma/client';
+
 export interface CreatePortfolioManagerProfileRequest {
   headline: string;
   summary: string;
@@ -10,17 +19,7 @@ export interface UpdatePortfolioManagerProfileRequest {
   detailedDescription?: string;
 }
 
-export interface Portfolio {
-  id: string;
-  portfolioManagerProfileId: string;
-  name: string;
-  summary: string;
-  detailedDescription: string;
-  spaceId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  updatedBy: string | null;
+export interface Portfolio extends PrismaPortfolio {
   portfolioTickers?: PortfolioTicker[];
 }
 
@@ -36,58 +35,17 @@ export interface UpdatePortfolioRequest {
   detailedDescription?: string;
 }
 
-export interface PortfolioTicker {
-  id: string;
-  portfolioId: string;
-  tickerId: string;
-  allocation: number;
-  detailedDescription: string | null;
-  competitors: string[];
-  alternatives: string[];
-  spaceId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  updatedBy: string | null;
-  ticker?: {
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    websiteUrl?: string | null;
-    summary?: string | null;
-    cachedScoreEntry?: {
-      finalScore: number;
-    } | null;
+export interface PortfolioTicker extends PrismaPortfolioTicker {
+  ticker?: TickerV1 & {
+    cachedScoreEntry?: TickerV1CachedScore | null;
   };
-  tags?: any[]; // UserTickerTag types
-  lists?: any[]; // UserTickerList types
-  competitorsConsidered?: Array<{
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    websiteUrl?: string | null;
-    summary?: string | null;
-  }>;
-  betterAlternatives?: Array<{
-    id: string;
-    name: string;
-    symbol: string;
-    exchange: string;
-    industryKey: string;
-    subIndustryKey: string;
-    websiteUrl?: string | null;
-    summary?: string | null;
-  }>;
+  tags?: UserTickerTag[];
+  lists?: UserTickerList[];
+  competitorsConsidered?: TickerV1[];
+  betterAlternatives?: TickerV1[];
 }
 
 export interface CreatePortfolioTickerRequest {
-  portfolioId: string;
   tickerId: string;
   allocation: number;
   detailedDescription?: string;

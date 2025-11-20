@@ -133,8 +133,7 @@ export default function PortfolioManagerPage() {
           <p className="mt-2 text-gray-400">
             {existingProfile
               ? 'Update your portfolio manager profile to showcase your investment philosophy and track record.'
-              : 'Create your portfolio manager profile to showcase your investment philosophy and track record.'
-            }
+              : 'Create your portfolio manager profile to showcase your investment philosophy and track record.'}
           </p>
         </div>
 
@@ -147,11 +146,7 @@ export default function PortfolioManagerPage() {
                   <h2 className="text-2xl font-bold text-white">{existingProfile.headline}</h2>
                   <p className="mt-2 text-gray-300">{existingProfile.summary}</p>
                 </div>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  variant="outlined"
-                  className="px-4 py-2"
-                >
+                <Button onClick={() => setIsEditing(true)} variant="outlined" className="px-4 py-2">
                   Update Profile
                 </Button>
               </div>
@@ -167,9 +162,7 @@ export default function PortfolioManagerPage() {
             // Edit/Create form
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-white">
-                  {existingProfile ? 'Update Profile' : 'Create Portfolio Manager Profile'}
-                </h2>
+                <h2 className="text-2xl font-bold text-white">{existingProfile ? 'Update Profile' : 'Create Portfolio Manager Profile'}</h2>
                 {existingProfile && (
                   <Button
                     type="button"
@@ -198,9 +191,7 @@ export default function PortfolioManagerPage() {
                   className="mt-1"
                   required
                 />
-                <p className="mt-1 text-sm text-gray-400">
-                  A brief professional title that describes your investment approach
-                </p>
+                <p className="mt-1 text-sm text-gray-400">A brief professional title that describes your investment approach</p>
               </div>
 
               <div>
@@ -216,9 +207,7 @@ export default function PortfolioManagerPage() {
                   rows={4}
                   required
                 />
-                <p className="mt-1 text-sm text-gray-400">
-                  A concise summary of your investment approach and philosophy
-                </p>
+                <p className="mt-1 text-sm text-gray-400">A concise summary of your investment approach and philosophy</p>
               </div>
 
               <div>
@@ -232,33 +221,17 @@ export default function PortfolioManagerPage() {
                   maxHeight={500}
                   info="Use markdown formatting to structure your content. Include your investment experience, notable achievements, and market outlook."
                 />
-                </div>
+              </div>
 
               <div className="flex gap-4 pt-4">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  primary
-                  disabled={isCreating || isUpdating}
-                  className="px-6 py-2"
-                >
-                  {isCreating || isUpdating
-                    ? 'Saving...'
-                    : existingProfile
-                      ? 'Update Profile'
-                      : 'Create Profile'
-                  }
+                <Button type="submit" variant="contained" primary disabled={isCreating || isUpdating} className="px-6 py-2">
+                  {isCreating || isUpdating ? 'Saving...' : existingProfile ? 'Update Profile' : 'Create Profile'}
                 </Button>
 
                 {(headline !== (existingProfile?.headline || '') ||
                   summary !== (existingProfile?.summary || '') ||
                   detailedDescription !== (existingProfile?.detailedDescription || '')) && (
-                  <Button
-                    type="button"
-                    variant="outlined"
-                    onClick={handleCancel}
-                    className="px-6 py-2"
-                  >
+                  <Button type="button" variant="outlined" onClick={handleCancel} className="px-6 py-2">
                     Cancel
                   </Button>
                 )}
@@ -266,7 +239,6 @@ export default function PortfolioManagerPage() {
             </form>
           )}
         </div>
-
       </div>
     </PageWrapper>
   );
