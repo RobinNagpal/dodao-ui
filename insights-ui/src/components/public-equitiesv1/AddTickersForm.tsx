@@ -5,6 +5,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Papa from 'papaparse';
 import React, { useRef, useState } from 'react';
 import { USExchanges, AllExchanges, isExchange, toExchange } from '@/utils/countryExchangeUtils';
+import { validateStockAnalyzeUrlsBatch } from '@/utils/stockAnalyzeUrlValidation';
 import TickerFields from './TickerFields';
 import RemoveRowButton from './RemoveRowButton';
 import type { NewTickerEntry, TickerFieldsValue } from './types';
@@ -138,6 +139,21 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       }));
 
     if (!filtered.length) return;
+
+    // Clear previous errors
+    setCsvError('');
+
+    // Validate stockAnalyzeUrl format before submitting
+    const validationErrors = validateStockAnalyzeUrlsBatch(filtered);
+    if (validationErrors.size > 0) {
+      const errorMap: Record<string, string> = {};
+      for (const [key, error] of validationErrors) {
+        errorMap[key] = error;
+      }
+      setRowErrors(errorMap);
+      setCsvError(`Invalid stockAnalyzeUrl format(s) detected. Please check the error messages below each ticker entry and correct them.`);
+      return;
+    }
 
     setLoading(true);
     setFeedbackAdded([]);

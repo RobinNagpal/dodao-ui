@@ -6,6 +6,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BasicTickerInfo } from '@/types/ticker-typesv1';
 import React, { useEffect, useState } from 'react';
 import { AllExchanges, isExchange, toExchange } from '@/utils/countryExchangeUtils';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import TickerFields from './TickerFields';
 import type { EditableTickerEntry, TickerFieldsValue } from './types';
 
@@ -81,6 +82,14 @@ export default function EditTickersForm({ onSuccess, onCancel, tickers, selected
       if (!t.name.trim() || !t.symbol.trim() || !t.stockAnalyzeUrl.trim()) {
         // eslint-disable-next-line no-alert
         alert(`Row ${i + 1}: Please provide both Company Name, Symbol and StockAnalyze URL.`);
+        return;
+      }
+
+      // Validate stockAnalyzeUrl format
+      const stockAnalyzeValidationError = validateStockAnalyzeUrl(t.symbol, t.exchange, t.stockAnalyzeUrl.trim());
+      if (stockAnalyzeValidationError) {
+        // eslint-disable-next-line no-alert
+        alert(`Row ${i + 1}: Invalid StockAnalyze URL format: ${stockAnalyzeValidationError}`);
         return;
       }
     }
