@@ -79,9 +79,43 @@ export default function TopNav() {
           <div className="hidden lg:flex lg:flex-1 gap-x-2 lg:justify-end">
             <div className="flex gap-6 items-center">
               {isStocksRoute && session && (
-                <Link href="/favourites" className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
-                  My Favourite Stocks
-                </Link>
+                <PopoverGroup className="flex gap-x-6">
+                  <Link href="/favourites" className="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+                    My Favourite Stocks
+                  </Link>
+                  <Popover className="relative">
+                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white">
+                      My Portfolios
+                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400 dark:text-gray-500" />
+                    </PopoverButton>
+
+                    <PopoverPanel
+                      transition
+                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                    >
+                      <div className="p-3">
+                        <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5">
+                          <div className="flex-auto">
+                            <Link href="/portfolios/manager" className="block font-semibold text-gray-900 dark:text-white">
+                              Portfolio Manager Profile
+                              <span className="absolute inset-0" />
+                            </Link>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">Manage your portfolio profile</p>
+                          </div>
+                        </div>
+                        <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5">
+                          <div className="flex-auto">
+                            <Link href="/portfolios" className="block font-semibold text-gray-900 dark:text-white">
+                              My Portfolios
+                              <span className="absolute inset-0" />
+                            </Link>
+                            <p className="mt-1 text-gray-600 dark:text-gray-400">View and manage your portfolios</p>
+                          </div>
+                        </div>
+                      </div>
+                    </PopoverPanel>
+                  </Popover>
+                </PopoverGroup>
               )}
               {!isStocksRoute && (
                 <PopoverGroup className="hidden lg:flex lg:gap-x-6">
@@ -93,9 +127,9 @@ export default function TopNav() {
 
                     <PopoverPanel
                       transition
-                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                     >
-                      <div className="p-4">
+                      <div className="p-3">
                         {reportsDropdown.map((item) => (
                           <div
                             key={item.name}
@@ -122,9 +156,9 @@ export default function TopNav() {
 
                     <PopoverPanel
                       transition
-                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                     >
-                      <div className="p-4">
+                      <div className="p-3">
                         {genaiDropdown.map((item) => (
                           <div
                             key={item.name}

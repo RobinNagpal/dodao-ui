@@ -123,6 +123,22 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             >
               My Favourite Stocks
             </Link>
+            <div className="border-t border-gray-700 my-1"></div>
+            <Link
+              href="/portfolios/manager"
+              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+              onClick={onMenuToggle}
+            >
+              Portfolio Manager Profile
+            </Link>
+            <Link
+              href="/portfolios"
+              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+              onClick={onMenuToggle}
+            >
+              My Portfolios
+            </Link>
+            <div className="border-t border-gray-700 my-1"></div>
             <button
               onClick={handleUserLogout}
               className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
@@ -196,6 +212,14 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               <Link href="/favourites" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
                 My Favourite Stocks
               </Link>
+              <div className="border-t border-gray-700 my-1"></div>
+              <Link href="/portfolios/manager" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                Portfolio Manager
+              </Link>
+              <Link href="/portfolios" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                My Portfolios
+              </Link>
+              <div className="border-t border-gray-700 my-1"></div>
               <button
                 className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                 id="user-menu-item-2"
