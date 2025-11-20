@@ -5,6 +5,7 @@ import TickerFields from '@/components/public-equitiesv1/TickerFields';
 import { TickerFieldsValue } from '@/components/public-equitiesv1/types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { isExchange, toExchange } from '@/utils/countryExchangeUtils';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenModal';
@@ -136,6 +137,13 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
     }
     if (!isValidHttpUrl(form.stockAnalyzeUrl)) {
       alert('StockAnalyze URL must be a valid http(s) URL.');
+      return;
+    }
+
+    // Validate stockAnalyzeUrl format
+    const stockAnalyzeValidationError = validateStockAnalyzeUrl(form.symbol, form.exchange, form.stockAnalyzeUrl.trim());
+    if (stockAnalyzeValidationError) {
+      alert(`Invalid StockAnalyze URL format: ${stockAnalyzeValidationError}`);
       return;
     }
 

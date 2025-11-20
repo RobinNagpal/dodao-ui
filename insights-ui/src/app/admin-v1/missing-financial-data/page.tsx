@@ -3,6 +3,7 @@
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerWithMissingFinancialData } from '@/utils/missing-financial-data-utils';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
@@ -16,6 +17,7 @@ import React, { useState } from 'react';
 import { TickerV1 } from '@prisma/client';
 import { UpdateStockAnalyzeUrlRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/route';
 import { FetchFinancialDataRequest, FetchFinancialDataResponse } from '@/app/api/[spaceId]/tickers-v1/fetch-financial-data/route';
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 
 interface EditableUrlCellProps {
   ticker: TickerWithMissingFinancialData;
@@ -26,6 +28,7 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedUrl, setEditedUrl] = useState<string>(ticker.stockAnalyzeUrl || '');
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<string>('');
 
   const { putData: updateUrl, loading: updatingUrl } = usePutData<TickerV1, UpdateStockAnalyzeUrlRequest>({
     successMessage: 'Stock Analyze URL updated successfully!',
@@ -35,20 +38,34 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
   const handleEdit = (): void => {
     setIsEditing(true);
     setEditedUrl(ticker.stockAnalyzeUrl || '');
+    setValidationError('');
   };
 
   const handleCancel = (): void => {
     setIsEditing(false);
     setEditedUrl(ticker.stockAnalyzeUrl || '');
+    setValidationError('');
   };
 
   const handleSave = async (): Promise<void> => {
     if (isUpdating || updatingUrl) return;
 
+    const trimmedUrl = editedUrl.trim();
+
+    // Validate URL format if provided
+    if (trimmedUrl) {
+      const validationError = validateStockAnalyzeUrl(ticker.symbol, ticker.exchange as AllExchanges, trimmedUrl);
+      if (validationError) {
+        setValidationError(validationError);
+        return;
+      }
+    }
+
+    setValidationError('');
     setIsUpdating(true);
     try {
       const result = await updateUrl(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}`, {
-        stockAnalyzeUrl: editedUrl.trim(),
+        stockAnalyzeUrl: trimmedUrl,
       });
 
       if (result) {
@@ -64,21 +81,31 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
 
   if (isEditing) {
     return (
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          value={editedUrl}
-          onChange={(e) => setEditedUrl(e.target.value)}
-          className="flex-1 px-2 py-1 text-sm bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:border-blue-500"
-          disabled={isUpdating || updatingUrl}
-          autoFocus
-        />
-        <button onClick={handleSave} disabled={isUpdating || updatingUrl} className="p-1 text-green-400 hover:text-green-300 disabled:opacity-50" title="Save">
-          <CheckIcon className="w-4 h-4" />
-        </button>
-        <button onClick={handleCancel} disabled={isUpdating || updatingUrl} className="p-1 text-red-400 hover:text-red-300 disabled:opacity-50" title="Cancel">
-          <XMarkIcon className="w-4 h-4" />
-        </button>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={editedUrl}
+            onChange={(e) => {
+              setEditedUrl(e.target.value);
+              setValidationError(''); // Clear validation error on change
+            }}
+            className={`flex-1 px-2 py-1 text-sm bg-gray-700 text-gray-200 border rounded focus:outline-none focus:ring-2 ${
+              validationError
+                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500'
+            }`}
+            disabled={isUpdating || updatingUrl}
+            autoFocus
+          />
+          <button onClick={handleSave} disabled={isUpdating || updatingUrl} className="p-1 text-green-400 hover:text-green-300 disabled:opacity-50" title="Save">
+            <CheckIcon className="w-4 h-4" />
+          </button>
+          <button onClick={handleCancel} disabled={isUpdating || updatingUrl} className="p-1 text-red-400 hover:text-red-300 disabled:opacity-50" title="Cancel">
+            <XMarkIcon className="w-4 h-4" />
+          </button>
+        </div>
+        {validationError && <p className="text-sm text-red-400">❌ {validationError}</p>}
       </div>
     );
   }
