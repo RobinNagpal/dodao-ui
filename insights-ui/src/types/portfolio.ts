@@ -20,7 +20,7 @@ export interface Portfolio {
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
-  updatedBy?: string;
+  updatedBy: string | null;
   portfolioTickers?: PortfolioTicker[];
 }
 
@@ -41,17 +41,49 @@ export interface PortfolioTicker {
   portfolioId: string;
   tickerId: string;
   allocation: number;
-  detailedDescription?: string;
+  detailedDescription: string | null;
   competitors: string[];
   alternatives: string[];
   spaceId: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;
-  updatedBy?: string;
-  ticker?: any; // TickerV1 type
+  updatedBy: string | null;
+  ticker?: {
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+    industryKey: string;
+    subIndustryKey: string;
+    websiteUrl?: string | null;
+    summary?: string | null;
+    cachedScoreEntry?: {
+      finalScore: number;
+    } | null;
+  };
   tags?: any[]; // UserTickerTag types
   lists?: any[]; // UserTickerList types
+  competitorsConsidered?: Array<{
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+    industryKey: string;
+    subIndustryKey: string;
+    websiteUrl?: string | null;
+    summary?: string | null;
+  }>;
+  betterAlternatives?: Array<{
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+    industryKey: string;
+    subIndustryKey: string;
+    websiteUrl?: string | null;
+    summary?: string | null;
+  }>;
 }
 
 export interface CreatePortfolioTickerRequest {

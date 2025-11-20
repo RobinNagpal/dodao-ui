@@ -138,10 +138,10 @@ export default function PortfolioManagerPage() {
           </p>
         </div>
 
-        <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="bg-gray-800 rounded-lg shadow-lg">
           {existingProfile && !isEditing ? (
             // Display mode for existing profile
-            <div className="space-y-6">
+            <div className="bg-gray-900 space-y-6 p-3 rounded-lg">
               <div className="flex justify-between items-start">
                 <div>
                   <h2 className="text-2xl font-bold text-white">{existingProfile.headline}</h2>
@@ -232,7 +232,7 @@ export default function PortfolioManagerPage() {
                   maxHeight={500}
                   info="Use markdown formatting to structure your content. Include your investment experience, notable achievements, and market outlook."
                 />
-              </div>
+                </div>
 
               <div className="flex gap-4 pt-4">
                 <Button
