@@ -3,7 +3,7 @@ import { AllExchanges, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges
 /** ---------- URL Pattern Mappings ---------- */
 
 /**
- * Maps exchanges to their URL path segments on stockanalysis.com
+ * Maps exchanges to their URL path segments
  */
 const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
   // US Exchanges
@@ -37,6 +37,7 @@ const STOCK_ANALYZE_BASE_URL = process.env.NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL ||
 
 /**
  * Generates the expected stockAnalyzeUrl for a given symbol and exchange
+ * accepts both uppercase and lowercase symbols
  */
 export const generateExpectedStockAnalyzeUrl = (symbol: string, exchange: AllExchanges): string => {
   const segment = EXCHANGE_TO_URL_SEGMENT[exchange];
@@ -52,39 +53,59 @@ export const generateExpectedStockAnalyzeUrl = (symbol: string, exchange: AllExc
 };
 
 /**
+ * Generates all acceptable variations of the stockAnalyzeUrl for a given symbol and exchange
+ * accepts both uppercase and lowercase symbols
+ */
+export const generateExpectedStockAnalyzeUrlVariations = (symbol: string, exchange: AllExchanges): string[] => {
+  const segment = EXCHANGE_TO_URL_SEGMENT[exchange];
+  const upperSymbol = symbol.toUpperCase().trim();
+  const lowerSymbol = symbol.toLowerCase().trim();
+
+  const variations: string[] = [];
+
+  if (segment === 'stocks') {
+    // US format: /stocks/{symbol}/
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/stocks/${upperSymbol}/`);
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/stocks/${lowerSymbol}/`);
+    // Also include versions without trailing slash
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/stocks/${upperSymbol}`);
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/stocks/${lowerSymbol}`);
+  } else {
+    // Other format: /quote/{segment}/{symbol}/
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/quote/${segment}/${upperSymbol}/`);
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/quote/${segment}/${lowerSymbol}/`);
+    // Also include versions without trailing slash
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/quote/${segment}/${upperSymbol}`);
+    variations.push(`${STOCK_ANALYZE_BASE_URL}/quote/${segment}/${lowerSymbol}`);
+  }
+
+  return variations;
+};
+
+/**
  * Validates if the provided stockAnalyzeUrl matches the expected format for the given symbol and exchange
  * @param symbol - The stock symbol (will be normalized to uppercase)
  * @param exchange - The exchange
  * @param stockAnalyzeUrl - The URL to validate (optional - if empty, validation passes)
  * @returns null if valid, error message string if invalid
  */
-export const validateStockAnalyzeUrl = (
-  symbol: string,
-  exchange: AllExchanges,
-  stockAnalyzeUrl: string | null | undefined
-): string | null => {
+export const validateStockAnalyzeUrl = (symbol: string, exchange: AllExchanges, stockAnalyzeUrl: string | null | undefined): string | null => {
   // If no URL provided, it's valid (optional field)
   if (!stockAnalyzeUrl || stockAnalyzeUrl.trim().length === 0) {
     return null;
   }
 
   const trimmedUrl = stockAnalyzeUrl.trim();
-  const expectedUrl = generateExpectedStockAnalyzeUrl(symbol, exchange);
+  const expectedVariations = generateExpectedStockAnalyzeUrlVariations(symbol, exchange);
 
-  // Check if the URL matches exactly (case sensitive for URLs)
-  if (trimmedUrl === expectedUrl) {
+  // Check if the URL matches any of the acceptable variations
+  if (expectedVariations.includes(trimmedUrl)) {
     return null;
   }
 
-  // Also allow trailing slash variations
-  const withTrailingSlash = expectedUrl.endsWith('/') ? expectedUrl : expectedUrl + '/';
-  const withoutTrailingSlash = expectedUrl.endsWith('/') ? expectedUrl.slice(0, -1) : expectedUrl;
-
-  if (trimmedUrl === withTrailingSlash || trimmedUrl === withoutTrailingSlash) {
-    return null;
-  }
-
-  return `Invalid stockAnalyzeUrl format. Expected: ${expectedUrl}`;
+  // If no match, show the primary expected format (uppercase)
+  const primaryExpectedUrl = generateExpectedStockAnalyzeUrl(symbol, exchange);
+  return `Invalid stockAnalyzeUrl format. Expected: ${primaryExpectedUrl}`;
 };
 
 /**

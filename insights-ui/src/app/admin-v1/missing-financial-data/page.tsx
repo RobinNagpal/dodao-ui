@@ -91,17 +91,25 @@ function EditableUrlCell({ ticker, onUpdate }: EditableUrlCellProps): JSX.Elemen
               setValidationError(''); // Clear validation error on change
             }}
             className={`flex-1 px-2 py-1 text-sm bg-gray-700 text-gray-200 border rounded focus:outline-none focus:ring-2 ${
-              validationError
-                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500'
+              validationError ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-blue-500 focus:ring-blue-500'
             }`}
             disabled={isUpdating || updatingUrl}
             autoFocus
           />
-          <button onClick={handleSave} disabled={isUpdating || updatingUrl} className="p-1 text-green-400 hover:text-green-300 disabled:opacity-50" title="Save">
+          <button
+            onClick={handleSave}
+            disabled={isUpdating || updatingUrl}
+            className="p-1 text-green-400 hover:text-green-300 disabled:opacity-50"
+            title="Save"
+          >
             <CheckIcon className="w-4 h-4" />
           </button>
-          <button onClick={handleCancel} disabled={isUpdating || updatingUrl} className="p-1 text-red-400 hover:text-red-300 disabled:opacity-50" title="Cancel">
+          <button
+            onClick={handleCancel}
+            disabled={isUpdating || updatingUrl}
+            className="p-1 text-red-400 hover:text-red-300 disabled:opacity-50"
+            title="Cancel"
+          >
             <XMarkIcon className="w-4 h-4" />
           </button>
         </div>
