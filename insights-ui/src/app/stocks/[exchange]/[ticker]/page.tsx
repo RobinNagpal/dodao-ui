@@ -38,7 +38,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
-import { unstable_noStore as noStore, unstable_cache } from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
@@ -58,8 +58,8 @@ export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>
 type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
 const TICKERS_INDEX_URL: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
 
-/** Cache duration constants */
-const WEEK = 60 * 60 * 24 * 7; // 7 days in seconds
+/** Cache revalidation constants */
+const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 /** Build nothing by default; prebuild all when FULL_SSG=1 */
 export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
@@ -84,12 +84,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 /** Data fetchers */
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
-  const res: Response = await fetch(url, {
-    next: {
-      tags: [tickerAndExchangeTag(ticker, exchange)],
-      revalidate: WEEK, // Cache for 7 days
-    },
-  });
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerByExchange returned empty payload');
@@ -130,90 +125,43 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
 /** Competition + Similar fetchers (promise-based for Suspense) */
 export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
 
-// Cached competition fetcher
-const getCachedCompetition = unstable_cache(
-  async (exchange: string, ticker: string): Promise<CompetitionResponse> => {
-    const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-
-    const res: Response = await fetch(url, {
-      next: {
-        tags: [tickerAndExchangeTag(ticker, exchange)],
-        revalidate: WEEK, // Cache for 7 days
-      },
-    });
-    if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
-
-    const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
-    return json;
-  },
-  ['competition'], // Cache key prefix
-  {
-    revalidate: WEEK, // 7 days
-  }
-);
-
 async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
-  return getCachedCompetition(exchange, ticker);
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
+
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
+
+  const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
+
+  return json;
 }
-
-// Cached similar tickers fetcher
-const getCachedSimilar = unstable_cache(
-  async (exchange: string, ticker: string): Promise<SimilarTicker[]> => {
-    const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
-
-    const res: Response = await fetch(url, {
-      next: {
-        tags: [tickerAndExchangeTag(ticker, exchange)],
-        revalidate: WEEK, // Cache for 7 days
-      },
-    });
-    if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
-
-    const arr = (await res.json()) as SimilarTicker[];
-    return arr;
-  },
-  ['similar-tickers'], // Cache key prefix
-  {
-    revalidate: WEEK, // 7 days
-  }
-);
 
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
-  return getCachedSimilar(exchange, ticker);
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
+
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
+
+  const arr = (await res.json()) as SimilarTicker[];
+  return arr;
 }
 
-// Cached financial info fetcher
-const getCachedFinancialInfo = unstable_cache(
-  async (exchange: string, ticker: string): Promise<FinancialInfoResponse | null> => {
-    const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
+async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
-    try {
-      const res: Response = await fetch(url, {
-        next: {
-          tags: [tickerAndExchangeTag(ticker, exchange)],
-          revalidate: WEEK, // Cache for 7 days
-        },
-      });
-      if (!res.ok) {
-        console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
-        return null;
-      }
-
-      const wrapper = (await res.json()) as { financialInfo: FinancialInfoResponse | null };
-      return wrapper.financialInfo;
-    } catch (error) {
-      console.error(`fetchFinancialInfo error for ${ticker}:`, error);
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
       return null;
     }
-  },
-  ['financial-info'], // Cache key prefix
-  {
-    revalidate: WEEK, // 7 days
-  }
-);
 
-async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
-  return getCachedFinancialInfo(exchange, ticker);
+    const wrapper = (await res.json()) as { financialInfo: FinancialInfoResponse | null };
+    return wrapper.financialInfo;
+  } catch (error) {
+    console.error(`fetchFinancialInfo error for ${ticker}:`, error);
+    return null;
+  }
 }
 
 /** Metadata */
