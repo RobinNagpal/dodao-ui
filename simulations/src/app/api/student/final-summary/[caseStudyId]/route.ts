@@ -1,56 +1,96 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { FinalSummaryResponse } from '@/types/api';
 
-interface FinalSummaryResponse {
-  id: string;
-  response: string | null;
-  status: string | null;
-  error: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// GET /api/student/final-summary/[caseStudyId] - Get existing final summary for student
+// GET /api/student/final-summary/[caseStudyId] - Get final summary data for student
 async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ caseStudyId: string }> }
-): Promise<FinalSummaryResponse | null> {
+): Promise<FinalSummaryResponse> {
   const { caseStudyId } = await params;
 
-  // Find the enrollment student record
-  const enrollmentStudent = await prisma.enrollmentStudent.findFirst({
+  // Get comprehensive case study data
+  const caseStudy = await prisma.caseStudy.findFirstOrThrow({
     where: {
-      assignedStudentId: userContext.userId,
-      enrollment: {
-        caseStudyId: caseStudyId,
-        archive: false,
-      },
+      id: caseStudyId,
       archive: false,
     },
     include: {
-      finalSummary: true,
+      enrollments: {
+        where: {
+          archive: false,
+        },
+        include: {
+          students: {
+            where: {
+              assignedStudentId: userContext.userId,
+              archive: false,
+            },
+          },
+        },
+      },
+      modules: {
+        where: {
+          archive: false,
+        },
+        include: {
+          exercises: {
+            where: {
+              archive: false,
+            },
+            include: {
+              attempts: {
+                where: {
+                  createdById: userContext.userId,
+                  status: 'completed',
+                  selectedForSummary: true,
+                  archive: false,
+                },
+                orderBy: {
+                  attemptNumber: 'asc',
+                },
+                take: 1, // Only get the first selected attempt
+              },
+            },
+            orderBy: {
+              orderNumber: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          orderNumber: 'asc',
+        },
+      },
     },
   });
 
-  if (!enrollmentStudent) {
-    throw new Error('Student not enrolled in this case study');
-  }
-
-  if (!enrollmentStudent.finalSummary) {
-    return null;
-  }
+  // Build the summary data - only include exercises with selected attempts
+  const modules = caseStudy.modules
+    .map((module) => ({
+      title: module.title,
+      shortDescription: module.shortDescription,
+      details: module.details,
+      exercises: module.exercises
+        .filter((exercise) => exercise.attempts.length > 0) // Only include exercises with selected attempts
+        .map((exercise) => ({
+          title: exercise.title,
+          details: exercise.details,
+          selectedAttempt: exercise.attempts[0] || null, // Get the first (and should be only) selected attempt
+        })),
+    }))
+    .filter((module) => module.exercises.length > 0); // Only include modules with exercises that have selected attempts
 
   return {
-    id: enrollmentStudent.finalSummary.id,
-    response: enrollmentStudent.finalSummary.response,
-    status: enrollmentStudent.finalSummary.status,
-    error: enrollmentStudent.finalSummary.error,
-    createdAt: enrollmentStudent.finalSummary.createdAt.toISOString(),
-    updatedAt: enrollmentStudent.finalSummary.updatedAt.toISOString(),
+    caseStudy: {
+      title: caseStudy.title,
+      shortDescription: caseStudy.shortDescription,
+      details: caseStudy.details,
+    },
+    modules,
   };
 }
 
-export const GET = withLoggedInUser<FinalSummaryResponse | null>(getHandler);
+export const GET = withLoggedInUser<FinalSummaryResponse>(getHandler);

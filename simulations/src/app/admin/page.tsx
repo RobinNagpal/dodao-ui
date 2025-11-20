@@ -1,25 +1,19 @@
 'use client';
 
-import AdminLoading from '@/components/admin/AdminLoading';
 import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 import UsersTab from '@/components/admin/UsersTab';
 import AdminNavbar from '@/components/navigation/AdminNavbar';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { BusinessSubject } from '@/types';
 import { CaseStudyWithRelationsForAdmin } from '@/types/api';
-import { SimulationSession } from '@/types/user';
-import { logoutUser } from '@/utils/auth-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { BookOpen, Shield, UserCog, Users } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function AdminDashboard() {
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
-
   const [activeTab, setActiveTab] = useState<'case-studies' | 'enrollments' | 'users'>('case-studies');
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForAdmin[]>([]);
@@ -30,6 +24,14 @@ export default function AdminDashboard() {
     loading: loadingCaseStudies,
     reFetchData: refetchCaseStudies,
   } = useFetchData<CaseStudyWithRelationsForAdmin[]>(`${getBaseUrl()}/api/case-studies`, {}, 'Failed to load case studies');
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading admin dashboard...',
+    loadingSubtitle: 'Preparing your workspace...',
+    additionalLoadingConditions: [loadingCaseStudies || caseStudies === undefined],
+  });
 
   // Filter case studies based on selected subject
   useEffect(() => {
@@ -42,13 +44,8 @@ export default function AdminDashboard() {
     }
   }, [selectedSubject, caseStudies]);
 
-  if (!session || session.role !== 'Admin') {
-    logoutUser();
-    return <div>You are not authorized to access this page</div>;
-  }
-  if (loadingCaseStudies || caseStudies === undefined) {
-    return <AdminLoading text="Loading admin dashboard..." subtitle="Preparing your workspace..." />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
