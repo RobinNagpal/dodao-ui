@@ -36,7 +36,7 @@ export default function FavouriteItem({
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+    <div className="bg-gray-900 rounded-lg p-3 border border-gray-700">
       <div className="flex justify-between items-start mb-2">
         <div className="flex-1 flex items-center gap-2 flex-wrap">
           {selectable && (
