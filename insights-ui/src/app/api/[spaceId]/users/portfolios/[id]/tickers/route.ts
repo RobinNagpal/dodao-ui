@@ -60,6 +60,9 @@ async function getHandler(
                 id: { in: ptWithFields.competitors },
                 spaceId: KoalaGainsSpaceId,
               },
+              include: {
+                cachedScoreEntry: true,
+              },
             })
           : [];
 
@@ -69,6 +72,9 @@ async function getHandler(
               where: {
                 id: { in: ptWithFields.alternatives },
                 spaceId: KoalaGainsSpaceId,
+              },
+              include: {
+                cachedScoreEntry: true,
               },
             })
           : [];

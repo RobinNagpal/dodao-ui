@@ -5,7 +5,8 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import { useState, useEffect } from 'react';
 import { PortfolioTicker, CreatePortfolioTickerRequest, UpdatePortfolioTickerRequest } from '@/types/portfolio';
-import { TickerBasicsWithFinalScore } from '@/types/ticker-user';
+import { TickerBasicsWithFinalScore, UserTickerTagResponse, UserListResponse } from '@/types/ticker-user';
+import { TickerV1 } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
@@ -45,13 +46,13 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
     data: tagsData,
     loading: tagsLoading,
     reFetchData: refetchTags,
-  } = useFetchData<{ tags: any[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`, {}, 'Failed to fetch tags');
+  } = useFetchData<{ tags: UserTickerTagResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`, {}, 'Failed to fetch tags');
 
   const {
     data: listsData,
     loading: listsLoading,
     reFetchData: refetchLists,
-  } = useFetchData<{ lists: any[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`, {}, 'Failed to fetch lists');
+  } = useFetchData<{ lists: UserListResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`, {}, 'Failed to fetch lists');
 
   // Post and Put hooks for portfolio tickers
   const { postData: createPortfolioTicker, loading: creating } = usePostData<PortfolioTicker, CreatePortfolioTickerRequest>({
@@ -88,27 +89,33 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
         );
         setAllocation(portfolioTicker.allocation.toString());
         setDetailedDescription(portfolioTicker.detailedDescription || '');
-        setSelectedTagIds(portfolioTicker.tags?.map((t: any) => t.id) || []);
-        setSelectedListIds(portfolioTicker.lists?.map((l: any) => l.id) || []);
+        setSelectedTagIds(portfolioTicker.tags?.map((t) => t.id) || []);
+        setSelectedListIds(portfolioTicker.lists?.map((l) => l.id) || []);
 
-        // Load competitors and alternatives
+        // Load competitors and alternatives (already populated as full ticker objects by the API)
         setCompetitorsConsidered(
-          portfolioTicker.competitors?.map((c: any) => ({
-            id: c,
-            symbol: c,
-            name: c,
-            exchange: '',
-            cachedScoreEntry: null,
-          })) || []
+          portfolioTicker.competitorsConsidered?.map((c) => {
+            const tickerWithScore = c as TickerV1 & { cachedScoreEntry?: { finalScore: number } | null };
+            return {
+              id: tickerWithScore.id,
+              symbol: tickerWithScore.symbol,
+              name: tickerWithScore.name,
+              exchange: tickerWithScore.exchange,
+              cachedScoreEntry: tickerWithScore.cachedScoreEntry,
+            } as TickerBasicsWithFinalScore;
+          }) || []
         );
         setBetterAlternatives(
-          portfolioTicker.alternatives?.map((a: any) => ({
-            id: a,
-            symbol: a,
-            name: a,
-            exchange: '',
-            cachedScoreEntry: null,
-          })) || []
+          portfolioTicker.betterAlternatives?.map((a) => {
+            const tickerWithScore = a as TickerV1 & { cachedScoreEntry?: { finalScore: number } | null };
+            return {
+              id: tickerWithScore.id,
+              symbol: tickerWithScore.symbol,
+              name: tickerWithScore.name,
+              exchange: tickerWithScore.exchange,
+              cachedScoreEntry: tickerWithScore.cachedScoreEntry,
+            } as TickerBasicsWithFinalScore;
+          }) || []
         );
       } else {
         // Reset form for new ticker
@@ -336,7 +343,7 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
             <div className="ml-2">
               <Checkboxes
                 items={availableTags.map(
-                  (tag: any): CheckboxItem => ({
+                  (tag: UserTickerTagResponse): CheckboxItem => ({
                     id: tag.id,
                     name: tag.name,
                     label: (
@@ -375,7 +382,7 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
             <div className="ml-2">
               <Checkboxes
                 items={availableLists.map(
-                  (list: any): CheckboxItem => ({
+                  (list: UserListResponse): CheckboxItem => ({
                     id: list.id,
                     name: list.name,
                     label: (
