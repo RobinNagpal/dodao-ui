@@ -5,13 +5,14 @@ import Link from 'next/link';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { PortfolioTicker } from '@/types/portfolio';
+import { UserTickerList } from '@prisma/client';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import FavouriteTags from '@/components/favourites/FavouriteTags';
 import CompetitorsAlternatives from '@/components/favourites/CompetitorsAlternatives';
 
 interface PortfolioHoldingsProps {
   portfolioTickers: PortfolioTicker[];
-  listsWithTickers: { list: any; tickers: PortfolioTicker[] }[];
+  listsWithTickers: { list: UserTickerList; tickers: PortfolioTicker[] }[];
   unlistedTickers: PortfolioTicker[];
   openListIds: Set<string>;
   handleAccordionClick: (e: React.MouseEvent<HTMLElement>, listId: string) => void;

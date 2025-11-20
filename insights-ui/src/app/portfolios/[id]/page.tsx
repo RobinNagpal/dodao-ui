@@ -5,6 +5,7 @@ import AddEditPortfolioTickerModal from '@/components/portfolios/AddEditPortfoli
 import PortfolioHoldings from '@/components/portfolios/PortfolioHoldings';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
+import { UserTickerList } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PlusIcon, PencilIcon, ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -72,14 +73,14 @@ export default function PortfolioDetailPage() {
 
   // Group portfolio tickers by list - moved before early returns to fix hook order
   const { listsWithTickers, unlistedTickers } = useMemo(() => {
-    const listsMap = new Map<string, { list: any; tickers: PortfolioTicker[] }>();
+    const listsMap = new Map<string, { list: UserTickerList; tickers: PortfolioTicker[] }>();
 
     // Initialize lists map (we'll need to fetch lists separately or get them from tickers)
     const unlisted: PortfolioTicker[] = [];
 
     portfolioTickers.forEach((ticker) => {
       if (ticker.lists && ticker.lists.length > 0) {
-        ticker.lists.forEach((list: any) => {
+        ticker.lists.forEach((list: UserTickerList) => {
           if (!listsMap.has(list.id)) {
             listsMap.set(list.id, { list, tickers: [] });
           }
