@@ -46,6 +46,9 @@ model User {
   tickerLists      UserTickerList[]
   favouriteTickers FavouriteTicker[]
 
+  // Portfolio related relations
+  portfolioManagerProfile PortfolioManagerProfile?
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -537,6 +540,9 @@ model TickerV1 {
   // Relation to favourite tickers
   favouriteTickers FavouriteTicker[]
 
+  // Relation to portfolio tickers
+  portfolioTickers PortfolioTicker[]
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -870,6 +876,9 @@ model UserTickerTag {
   // Relation to FavouriteTickers
   favouriteTickers FavouriteTicker[]
 
+  // Relation to PortfolioTickers
+  portfolioTickers PortfolioTicker[]
+
   @@unique([spaceId, userId, name])
   @@index([userId])
   @@map("user_ticker_tags")
@@ -890,6 +899,9 @@ model UserTickerList {
 
   // Relation to FavouriteTickers
   favouriteTickers FavouriteTicker[]
+
+  // Relation to PortfolioTickers
+  portfolioTickers PortfolioTicker[]
 
   @@unique([spaceId, userId, name])
   @@index([userId])
@@ -919,4 +931,75 @@ model FavouriteTicker {
   @@index([userId])
   @@index([tickerId])
   @@map("favourite_tickers")
+}
+
+// --------------------------
+// Portfolio Models
+// --------------------------
+
+model PortfolioManagerProfile {
+  id                  String   @id @default(uuid())
+  userId              String   @unique @map("user_id")
+  headline            String   @map("headline")
+  summary             String   @map("summary")
+  detailedDescription String   @map("detailed_description")
+  spaceId             String   @default("koala_gains") @map("space_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  createdBy           String   @map("created_by")
+  updatedBy           String?  @map("updated_by")
+
+  // Relations
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolios Portfolio[]
+
+  @@unique([spaceId, userId])
+  @@index([userId])
+  @@map("portfolio_manager_profiles")
+}
+
+model Portfolio {
+  id                         String   @id @default(uuid())
+  portfolioManagerProfileId  String   @map("portfolio_manager_profile_id")
+  name                       String   @map("name")
+  summary                    String   @map("summary")
+  detailedDescription        String   @map("detailed_description")
+  spaceId                    String   @default("koala_gains") @map("space_id")
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @updatedAt @map("updated_at")
+  createdBy                  String   @map("created_by")
+  updatedBy                  String?  @map("updated_by")
+
+  // Relations
+  portfolioManagerProfile PortfolioManagerProfile @relation(fields: [portfolioManagerProfileId], references: [id], onDelete: Cascade)
+  portfolioTickers        PortfolioTicker[]
+
+  @@index([portfolioManagerProfileId])
+  @@map("portfolios")
+}
+
+model PortfolioTicker {
+  id                 String   @id @default(uuid())
+  portfolioId        String   @map("portfolio_id")
+  tickerId           String   @map("ticker_id")
+  allocation         Float    @map("allocation") // Percentage of portfolio (0-100)
+  detailedDescription String? @map("detailed_description")
+  competitors        String[] @default([]) @map("competitors") // Ticker symbols/IDs
+  alternatives       String[] @default([]) @map("alternatives") // Ticker symbols/IDs
+  spaceId            String   @default("koala_gains") @map("space_id")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  createdBy          String   @map("created_by")
+  updatedBy          String?  @map("updated_by")
+
+  // Relations
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  ticker    TickerV1  @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+  tags      UserTickerTag[]
+  lists     UserTickerList[]
+
+  @@unique([spaceId, portfolioId, tickerId]) // Prevent duplicate tickers in same portfolio
+  @@index([portfolioId])
+  @@index([tickerId])
+  @@map("portfolio_tickers")
 }
