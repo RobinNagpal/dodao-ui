@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { KoalaGainsSession } from '@/types/auth';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -14,7 +13,6 @@ interface IndustryWithStocksPageLayoutProps {
   currentCountry: string;
   industryKey?: string;
   industryName?: string;
-  session?: KoalaGainsSession | undefined;
   showAppliedFilters?: boolean;
   children: ReactNode;
 }
@@ -57,7 +55,6 @@ export default function IndustryWithStocksPageLayout({
   currentCountry,
   industryKey,
   industryName,
-  session,
   showAppliedFilters = false,
   children,
 }: IndustryWithStocksPageLayoutProps) {
@@ -71,7 +68,7 @@ export default function IndustryWithStocksPageLayout({
           rightButton={
             <div className="flex">
               <FiltersButton />
-              <StocksGridPageActions session={session} currentCountry={currentCountry} industryKey={industryKey} />
+              <StocksGridPageActions currentCountry={currentCountry} industryKey={industryKey} />
             </div>
           }
         />

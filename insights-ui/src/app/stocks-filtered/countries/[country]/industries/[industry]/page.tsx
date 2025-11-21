@@ -1,12 +1,9 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
-import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
 import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
 
 // Dynamic page for filtered results
 export const dynamic = 'force-dynamic';
@@ -31,7 +28,6 @@ export default async function CountryIndustryStocksFilteredPage({ params, search
   const countryName = decodeURIComponent(resolvedParams.country);
   const industryKey = decodeURIComponent(resolvedParams.industry);
   const resolvedSearchParams = await searchParams;
-  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   const country = countryName as SupportedCountries;
 
@@ -45,7 +41,6 @@ export default async function CountryIndustryStocksFilteredPage({ params, search
       currentCountry={countryName}
       industryKey={industryKey}
       industryName={data?.name}
-      session={session}
       showAppliedFilters={true}
     >
       <IndustryStocksGrid data={data} industryName={industryName} />
