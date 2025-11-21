@@ -165,7 +165,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
                   {selectedTickers.map((ticker, tickerIndex) => {
                     const tickerKey = `${ticker.exchange}-${ticker.symbol}`;
                     const report = tickerReports[tickerKey];
-                    const isCompleted: boolean = !getMissingReportTypes(report).includes(reportType);
+                    const isCompleted: boolean = report ? !getMissingReportTypes(report).includes(reportType) : false;
 
                     const isLoading: boolean = loadingStates[`${tickerKey}-${reportType}`];
 

@@ -10,12 +10,8 @@ const getHandler = async (
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<TickerWithMissingFinancialData[]> => {
   const { spaceId } = await params;
-  const { searchParams } = new URL(req.url);
-  const skip = parseInt(searchParams.get('skip') || '0', 10);
-  const take = parseInt(searchParams.get('take') || '50', 10);
 
-  const allTickers = await getTickersWithMissingFinancialData(spaceId);
-  return allTickers.slice(skip, skip + take);
+  return await getTickersWithMissingFinancialData(spaceId);
 };
 
 export const GET = withLoggedInAdmin<TickerWithMissingFinancialData[]>(getHandler);

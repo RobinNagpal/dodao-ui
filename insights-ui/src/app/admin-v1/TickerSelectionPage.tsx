@@ -72,6 +72,8 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
   // Convenience derived data
   const allTickers = tickerInfos?.tickers || [];
 
+  const tickerData = Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.exchange}-${t.symbol}`, t]) || []);
+
   // Apply filters
   let tickers = allTickers.filter((ticker) => {
     const { missingReportCount, totalReportCount } = getMissingReportCount(ticker);
@@ -230,6 +232,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                                   year: 'numeric',
                                   hour: '2-digit',
                                   minute: '2-digit',
+                                  timeZone: 'UTC',
                                 })}
                               </span>
                               {missingReportCount === totalReportCount && <span className="text-red-400 text-xs">MISSING</span>}
@@ -267,7 +270,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
         {selectedTickers.length > 0 &&
           renderActionComponent({
             selectedTickers,
-            tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.symbol}-${t.exchange}`, t]) || []),
+            tickerData,
             onDataUpdated: (ticker: TickerIdentifier) => {
               void reFetchTickersForSubIndustry();
             },

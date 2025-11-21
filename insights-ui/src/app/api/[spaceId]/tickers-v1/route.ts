@@ -3,7 +3,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { AllExchanges, getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 
 /** ---------- Types ---------- */
 
@@ -180,6 +181,18 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
     const summary = normStr(raw.summary);
     const stockAnalyzeUrl = normStr(raw.stockAnalyzeUrl);
 
+    // Validate stockAnalyzeUrl format if provided
+    if (stockAnalyzeUrl) {
+      const validationError = validateStockAnalyzeUrl(symbol, exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl);
+      if (validationError) {
+        errorTickers.push({
+          input: raw,
+          reason: `Invalid stockAnalyzeUrl format: ${validationError}`,
+        });
+        continue;
+      }
+    }
+
     try {
       // Already exists?
       const existing = await prisma.tickerV1.findFirst({
@@ -266,6 +279,14 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ spaceId
     });
     if (duplicateTicker) {
       throw new Error(`Ticker ${symbol} already exists on ${exchange}`);
+    }
+
+    // Validate stockAnalyzeUrl format if provided
+    if (stockAnalyzeUrl && stockAnalyzeUrl.trim()) {
+      const validationError = validateStockAnalyzeUrl(symbol.toUpperCase(), exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl.trim());
+      if (validationError) {
+        throw new Error(`Invalid stockAnalyzeUrl format for ticker ${symbol}: ${validationError}`);
+      }
     }
 
     const updated = await prisma.tickerV1.update({

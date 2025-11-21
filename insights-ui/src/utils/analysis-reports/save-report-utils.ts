@@ -2,14 +2,9 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import {
-  fetchAnalysisFactors,
-  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  fetchTickerRecordWithIndustryAndSubIndustry,
-} from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
-import { z, ZodObject } from 'zod';
 import { TickerV1 } from '@prisma/client';
 
 /**

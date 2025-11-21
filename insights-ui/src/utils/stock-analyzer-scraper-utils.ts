@@ -315,6 +315,11 @@ export async function ensureStockAnalyzerDataIsFresh(ticker: TickerV1): Promise<
  * Extract and format comprehensive financial data for LLM analysis (fair value and financial analysis)
  */
 export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
+  // Check if summary is empty, indicating scraper failure
+  if (isEmptySummary(scraperInfo.summary as StockFundamentalsSummary)) {
+    throw new Error('Scraper data is invalid: summary is empty, likely due to invalid stockAnalyzeUrl or scraper failure');
+  }
+
   // Helper function to get latest annual data
   const getLatestAnnual = (data: IncomeAnnualData | BalanceAnnualData | CashFlowAnnualData | RatiosAnnualData | null) => {
     if (!data?.periods || data.periods.length === 0) return null;
@@ -385,6 +390,11 @@ export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyz
  * Extract and format financial data for past performance analysis (last 5 annual periods only)
  */
 export function extractFinancialDataForPastPerformance(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
+  // Check if summary is empty, indicating scraper failure
+  if (isEmptySummary(scraperInfo.summary as StockFundamentalsSummary)) {
+    throw new Error('Scraper data is invalid: summary is empty, likely due to invalid stockAnalyzeUrl or scraper failure');
+  }
+
   // Helper function to get last 5 annual periods
   const getLast5Annuals = (data: IncomeAnnualData | BalanceAnnualData | CashFlowAnnualData | RatiosAnnualData | null) => {
     if (!data?.periods || data.periods.length === 0) return [];

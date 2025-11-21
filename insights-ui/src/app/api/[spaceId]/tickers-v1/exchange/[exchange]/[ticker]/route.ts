@@ -7,6 +7,8 @@ import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 
 async function getHandler(
   req: NextRequest,
@@ -70,6 +72,12 @@ async function putHandler(
 
   if (!stockAnalyzeUrl || typeof stockAnalyzeUrl !== 'string') {
     throw new Error('stockAnalyzeUrl is required');
+  }
+
+  // Validate stockAnalyzeUrl format
+  const validationError = validateStockAnalyzeUrl(ticker.toUpperCase(), exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl.trim());
+  if (validationError) {
+    throw new Error(`Invalid stockAnalyzeUrl format: ${validationError}`);
   }
 
   // Find the ticker

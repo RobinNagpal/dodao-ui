@@ -3,6 +3,7 @@ import { AllExchanges } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1, TickerV1Industry, TickerV1SubIndustry, TickerV1VsCompetition } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 
 export interface NewTickerSubmission {
   name: string;
@@ -72,6 +73,14 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
 
   if (!body.exchange || !body.name || !body.industryKey || !body.subIndustryKey || !body.websiteUrl) {
     throw new Error('exchange, name, industryKey, subIndustryKey, and websiteUrl are required');
+  }
+
+  // Validate stockAnalyzeUrl format if provided
+  if (body.stockAnalyzeUrl && body.stockAnalyzeUrl.trim()) {
+    const validationError = validateStockAnalyzeUrl(ticker.toUpperCase(), body.exchange, body.stockAnalyzeUrl.trim());
+    if (validationError) {
+      throw new Error(`Invalid stockAnalyzeUrl format: ${validationError}`);
+    }
   }
 
   const currentTicker = await prisma.tickerV1.findFirst({
