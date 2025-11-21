@@ -5,11 +5,9 @@ import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, InvestorTypes, TickerAnalysisCate
 import {
   fetchAnalysisFactors,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  fetchTickerRecordWithIndustryAndSubIndustry,
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
-import { z, ZodObject } from 'zod';
 import { TickerV1 } from '@prisma/client';
 
 /**

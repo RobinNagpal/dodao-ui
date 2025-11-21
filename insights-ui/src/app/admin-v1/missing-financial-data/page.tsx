@@ -223,7 +223,12 @@ export default function MissingFinancialDataPage(): JSX.Element {
       if (pagination.skip === 0) {
         setAccumulatedData(data);
       } else {
-        setAccumulatedData((prev) => [...prev, ...data]);
+        setAccumulatedData((prev) => {
+          const combined = [...prev, ...data];
+          // Deduplicate by ticker ID to prevent duplicate keys
+          const uniqueMap = new Map(combined.map((ticker) => [ticker.id, ticker]));
+          return Array.from(uniqueMap.values());
+        });
       }
     }
   }, [data, pagination.skip]);

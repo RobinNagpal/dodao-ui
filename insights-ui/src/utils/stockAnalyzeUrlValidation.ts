@@ -10,7 +10,7 @@ const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
   [USExchanges.NASDAQ]: 'stocks',
   [USExchanges.NYSE]: 'stocks',
   [USExchanges.NYSEAMERICAN]: 'stocks',
-  [USExchanges.OTCMKTS]: 'stocks',
+  [USExchanges.OTCMKTS]: 'otc',
 
   // Canada Exchanges
   [CanadaExchanges.TSX]: 'tsx',
