@@ -144,8 +144,8 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
     if (existingFavourite) {
       // Update existing favourite
       const updateData: UpdateFavouriteTickerRequest = {
-        myNotes: myNotes || undefined,
-        myScore: scoreValue,
+        myNotes: myNotes === '' ? null : myNotes || undefined,
+        myScore: myScore === '' ? null : scoreValue,
         tagIds: selectedTagIds,
         listIds: selectedListIds,
         competitorsConsidered: competitorsConsidered.map((c) => c.id),

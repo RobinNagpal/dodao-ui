@@ -42,6 +42,7 @@ export default function FavouritesPage() {
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
   const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
   const [showBusinessAnalysis, setShowBusinessAnalysis] = useState(false);
+  const [activeListIdBeforeEdit, setActiveListIdBeforeEdit] = useState<string | null>(null);
 
   // Multi-select state
   const [selectedFavourites, setSelectedFavourites] = useState<Set<string>>(new Set());
@@ -332,7 +333,10 @@ export default function FavouritesPage() {
                           key={favourite.id}
                           favourite={favourite}
                           showBusinessAnalysis={showBusinessAnalysis}
-                          onEdit={setEditingFavourite}
+                          onEdit={(fav) => {
+                            setActiveListIdBeforeEdit(list.id);
+                            setEditingFavourite(fav);
+                          }}
                           onDelete={setDeletingFavourite}
                           selectable={bulkActionMode}
                           isSelected={selectedFavourites.has(favourite.id)}
@@ -359,7 +363,10 @@ export default function FavouritesPage() {
                         key={favourite.id}
                         favourite={favourite}
                         showBusinessAnalysis={showBusinessAnalysis}
-                        onEdit={setEditingFavourite}
+                        onEdit={(fav) => {
+                          setActiveListIdBeforeEdit('unlisted');
+                          setEditingFavourite(fav);
+                        }}
                         onDelete={setDeletingFavourite}
                         selectable={bulkActionMode}
                         isSelected={selectedFavourites.has(favourite.id)}
@@ -377,13 +384,29 @@ export default function FavouritesPage() {
         {editingFavourite && (
           <AddEditFavouriteModal
             isOpen={!!editingFavourite}
-            onClose={() => setEditingFavourite(null)}
+            onClose={() => {
+              setEditingFavourite(null);
+              setActiveListIdBeforeEdit(null);
+            }}
             tickerId={editingFavourite.tickerId}
             tickerSymbol={editingFavourite.ticker.symbol}
             tickerName={editingFavourite.ticker.name}
             onSuccess={async () => {
+              // Preserve the open accordion state before refetching
+              const listIdToKeepOpen = activeListIdBeforeEdit;
               await refetchFavourites();
+
+              // Restore the accordion state after refetch
+              if (listIdToKeepOpen) {
+                setOpenListIds((prev) => {
+                  const newSet = new Set(prev);
+                  newSet.add(listIdToKeepOpen);
+                  return newSet;
+                });
+              }
+
               setEditingFavourite(null);
+              setActiveListIdBeforeEdit(null);
             }}
           />
         )}

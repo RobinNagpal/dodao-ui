@@ -65,8 +65,8 @@ export interface CreateFavouriteTickerRequest {
   tickerId: string;
   tagIds?: string[];
   listIds?: string[];
-  myNotes?: string;
-  myScore?: number;
+  myNotes?: string | null;
+  myScore?: number | null;
   competitorsConsidered?: string[];
   betterAlternatives?: string[];
 }
@@ -74,8 +74,8 @@ export interface CreateFavouriteTickerRequest {
 export interface UpdateFavouriteTickerRequest {
   tagIds?: string[];
   listIds?: string[];
-  myNotes?: string;
-  myScore?: number;
+  myNotes?: string | null;
+  myScore?: number | null;
   competitorsConsidered?: string[];
   betterAlternatives?: string[];
 }

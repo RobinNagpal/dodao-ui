@@ -88,7 +88,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
 
     const result = await updateTag(`/api/${KoalaGainsSpaceId}/users/user-ticker-tags?id=${editingTag.id}`, {
       name: editTagName.trim(),
-      description: editTagDescription.trim() || undefined,
+      description: editTagDescription.trim(),
       colorHex: editTagColor,
     });
 
