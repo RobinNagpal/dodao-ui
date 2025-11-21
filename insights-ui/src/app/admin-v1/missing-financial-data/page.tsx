@@ -200,8 +200,6 @@ function MissingFinancialDataTable({ rows, selectedRows, onSelectRow, onUrlUpdat
 }
 
 export default function MissingFinancialDataPage(): JSX.Element {
-  const [pagination, setPagination] = useState<{ skip: number; take: number }>({ skip: 0, take: 50 });
-  const [accumulatedData, setAccumulatedData] = useState<TickerWithMissingFinancialData[]>([]);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [showFetchConfirmation, setShowFetchConfirmation] = useState<boolean>(false);
 
@@ -210,37 +208,12 @@ export default function MissingFinancialDataPage(): JSX.Element {
     errorMessage: 'Failed to fetch financial data',
   });
 
-  const baseUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-financial-data`;
-  const params = new URLSearchParams();
-  params.append('skip', pagination.skip.toString());
-  params.append('take', pagination.take.toString());
-  const apiUrl: string = `${baseUrl}?${params.toString()}`;
+  const apiUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-financial-data`;
 
   const { data, loading, reFetchData } = useFetchData<TickerWithMissingFinancialData[]>(apiUrl, {}, 'Failed to fetch missing financial data');
 
-  React.useEffect(() => {
-    if (data) {
-      if (pagination.skip === 0) {
-        setAccumulatedData(data);
-      } else {
-        setAccumulatedData((prev) => {
-          const combined = [...prev, ...data];
-          // Deduplicate by ticker ID to prevent duplicate keys
-          const uniqueMap = new Map(combined.map((ticker) => [ticker.id, ticker]));
-          return Array.from(uniqueMap.values());
-        });
-      }
-    }
-  }, [data, pagination.skip]);
-
   function handleManualRefresh(): void {
-    setPagination({ skip: 0, take: 50 });
-    setAccumulatedData([]);
     reFetchData();
-  }
-
-  function handleLoadMore(): void {
-    setPagination((prev) => ({ skip: prev.skip + prev.take, take: prev.take }));
   }
 
   function handleSelectRow(tickerId: string, isSelected: boolean): void {
@@ -256,16 +229,16 @@ export default function MissingFinancialDataPage(): JSX.Element {
   }
 
   function handleSelectAll(): void {
-    if (accumulatedData.length === 0) return;
+    if (!data || data.length === 0) return;
 
-    const allIds = accumulatedData.map((ticker) => ticker.id);
+    const allIds = data.map((ticker) => ticker.id);
     setSelectedRows(new Set(allIds));
   }
 
   function handleSelectFirst50(): void {
-    if (accumulatedData.length === 0) return;
+    if (!data || data.length === 0) return;
 
-    const first50Ids = accumulatedData.slice(0, 50).map((ticker) => ticker.id);
+    const first50Ids = data.slice(0, 50).map((ticker) => ticker.id);
     setSelectedRows(new Set(first50Ids));
   }
 
@@ -300,8 +273,6 @@ export default function MissingFinancialDataPage(): JSX.Element {
     handleManualRefresh();
   }
 
-  const hasMore: boolean = !!data && data.length === pagination.take;
-
   return (
     <div className="mt-12 px-4 text-color">
       <AdminNav />
@@ -322,17 +293,12 @@ export default function MissingFinancialDataPage(): JSX.Element {
           <div className="flex items-baseline justify-between mb-2">
             <h3 className="text-xl font-semibold">Tickers with Missing Financial Data</h3>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-400">Showing {accumulatedData.length} tickers</span>
-              {hasMore && (
-                <Button onClick={handleLoadMore} variant="text" className="text-blue-400 hover:text-blue-300">
-                  Show More
-                </Button>
-              )}
+              <span className="text-sm text-gray-400">Showing {data?.length || 0} tickers</span>
             </div>
           </div>
 
           {/* Selection controls */}
-          {accumulatedData.length > 0 && (
+          {data && data.length > 0 && (
             <div className="flex flex-wrap gap-3 mb-4">
               <Button onClick={handleSelectAll} variant="outlined" className="text-sm" disabled={fetchingFinancialData}>
                 Select All
@@ -361,12 +327,12 @@ export default function MissingFinancialDataPage(): JSX.Element {
             </div>
           )}
 
-          {loading && accumulatedData.length === 0 ? (
+          {loading && (!data || data.length === 0) ? (
             <div className="py-8">Loading missing financial data...</div>
-          ) : accumulatedData.length === 0 ? (
+          ) : !data || data.length === 0 ? (
             <div className="py-4">No tickers with missing financial data found.</div>
           ) : (
-            <MissingFinancialDataTable rows={accumulatedData} selectedRows={selectedRows} onSelectRow={handleSelectRow} onUrlUpdate={handleUrlUpdate} />
+            <MissingFinancialDataTable rows={data} selectedRows={selectedRows} onSelectRow={handleSelectRow} onUrlUpdate={handleUrlUpdate} />
           )}
         </div>
       </div>
