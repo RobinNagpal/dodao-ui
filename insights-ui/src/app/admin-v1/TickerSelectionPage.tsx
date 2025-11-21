@@ -14,7 +14,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 interface TickerSelectionPageProps {
   /** The component to render when tickers are selected */
@@ -71,6 +71,11 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
 
   // Convenience derived data
   const allTickers = tickerInfos?.tickers || [];
+
+  // Memoize tickerData to prevent unnecessary re-renders
+  const tickerData = useMemo(() => {
+    return Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.exchange}-${t.symbol}`, t]) || []);
+  }, [tickerInfos?.tickers]);
 
   // Apply filters
   let tickers = allTickers.filter((ticker) => {
@@ -230,6 +235,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
                                   year: 'numeric',
                                   hour: '2-digit',
                                   minute: '2-digit',
+                                  timeZone: 'UTC',
                                 })}
                               </span>
                               {missingReportCount === totalReportCount && <span className="text-red-400 text-xs">MISSING</span>}
@@ -267,7 +273,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
         {selectedTickers.length > 0 &&
           renderActionComponent({
             selectedTickers,
-            tickerData: Object.fromEntries(tickerInfos?.tickers?.map((t) => [`${t.symbol}-${t.exchange}`, t]) || []),
+            tickerData,
             onDataUpdated: (ticker: TickerIdentifier) => {
               void reFetchTickersForSubIndustry();
             },

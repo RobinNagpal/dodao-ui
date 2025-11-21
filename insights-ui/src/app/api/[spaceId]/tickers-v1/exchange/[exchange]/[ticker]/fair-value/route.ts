@@ -22,7 +22,14 @@ async function postHandler(
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
   // Extract comprehensive financial data for analysis
-  const financialData = extractFinancialDataForAnalysis(scraperInfo);
+  // This will throw an error if scraper data is invalid (empty summary)
+  let financialData;
+  try {
+    financialData = extractFinancialDataForAnalysis(scraperInfo);
+  } catch (error) {
+    console.error(`Scraper data validation failed for ${ticker}-${exchange}:`, error);
+    throw new Error(`Financial data extraction failed: ${(error as Error).message}`);
+  }
 
   // Get analysis factors for FairValue category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);

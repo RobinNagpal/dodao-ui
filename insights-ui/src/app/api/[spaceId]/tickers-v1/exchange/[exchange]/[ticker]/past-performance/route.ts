@@ -29,7 +29,14 @@ async function postHandler(
   const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Extract comprehensive financial data for past performance analysis (last 5 annuals only)
-  const financialData = extractFinancialDataForPastPerformance(scraperInfo);
+  // This will throw an error if scraper data is invalid (empty summary)
+  let financialData;
+  try {
+    financialData = extractFinancialDataForPastPerformance(scraperInfo);
+  } catch (error) {
+    console.error(`Scraper data validation failed for ${ticker}-${exchange}:`, error);
+    throw new Error(`Financial data extraction failed: ${(error as Error).message}`);
+  }
 
   // Get analysis factors for PastPerformance category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);

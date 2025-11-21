@@ -25,7 +25,14 @@ async function postHandler(
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FinancialStatementAnalysis);
 
   // Extract comprehensive financial data for analysis
-  const financialData = extractFinancialDataForAnalysis(scraperInfo);
+  // This will throw an error if scraper data is invalid (empty summary)
+  let financialData;
+  try {
+    financialData = extractFinancialDataForAnalysis(scraperInfo);
+  } catch (error) {
+    console.error(`Scraper data validation failed for ${ticker}-${exchange}:`, error);
+    throw new Error(`Financial data extraction failed: ${(error as Error).message}`);
+  }
 
   // Prepare input for the prompt
   const inputJson = prepareFinancialAnalysisInputJson(tickerRecord, analysisFactors, financialData);
