@@ -299,7 +299,6 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   });
 
   console.log(`Updated scraper info for ticker ${ticker.symbol}`);
-  revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
   return scraperInfo;
 }
 
