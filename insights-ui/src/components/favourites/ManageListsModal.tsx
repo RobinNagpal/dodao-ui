@@ -82,7 +82,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
 
     const result = await updateList(`/api/${KoalaGainsSpaceId}/users/user-lists?id=${editingList.id}`, {
       name: editListName.trim(),
-      description: editListDescription.trim() || undefined,
+      description: editListDescription.trim(),
     });
 
     if (result) {

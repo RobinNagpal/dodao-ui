@@ -53,7 +53,7 @@ export function Hero({ industries }: HeroProps = { industries: [] }) {
                 </Link>
               </div>
               <div className="flex justify-center mt-4">
-                <CountryAlternatives currentCountry="US" className="justify-center text-md" />
+                <CountryAlternatives currentCountry="US" className="justify-center text-md" enhanced={true} />
               </div>
             </div>
 
