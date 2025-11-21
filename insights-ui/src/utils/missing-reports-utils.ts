@@ -3,10 +3,19 @@ import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 
 /**
- * Gets tickers with missing reports for a given space
+ * Extended interface to include financial data status
  */
-export async function getTickersWithMissingReports(spaceId: string): Promise<TickerWithMissingReportInfo[]> {
-  const tickersWithMissingReports = await prisma.$queryRaw<TickerWithMissingReportInfo[]>`
+export interface TickerWithMissingReportInfoExtended extends TickerWithMissingReportInfo {
+  // Financial data status
+  isMissingFinancialData: boolean;
+}
+
+/**
+ * Gets tickers with missing reports OR missing financial data for a given space
+ * Excludes tickers with pending generation requests (NotStarted or InProgress)
+ */
+export async function getTickersWithMissingReports(spaceId: string): Promise<TickerWithMissingReportInfoExtended[]> {
+  const tickersWithMissingReports = await prisma.$queryRaw<TickerWithMissingReportInfoExtended[]>`
     WITH factor_counts AS (
       SELECT
         t.id,
@@ -26,6 +35,7 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         t.space_id AS "spaceId",
         t.stock_analyze_url AS "stockAnalyzeUrl",
 
+        -- Factor counts for reports
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.BusinessAndMoat})::int AS "businessAndMoatFactorResultsCount",
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FinancialStatementAnalysis})::int AS "financialAnalysisFactorsResultsCount",
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.PastPerformance})::int AS "pastPerformanceFactorsResultsCount",
@@ -55,31 +65,45 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         -- Final summary present?
         (t.summary IS NULL OR btrim(t.summary) = '') AS "isMissingFinalSummaryReport",
 
-        -- NEW: meta description present?
+        -- Meta description present?
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
 
-        -- NEW: about report present?
+        -- About report present?
         (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport",
 
         -- Future risk present?
         NOT EXISTS (
           SELECT 1 FROM ticker_v1_future_risks fr
           WHERE fr.ticker_id = t.id AND fr.space_id = t.space_id
-        ) AS "isMissingFutureRiskReport"
+        ) AS "isMissingFutureRiskReport",
+
+        -- Financial data status (missing if no scrapper info OR empty summary)
+        (
+          sasi.ticker_id IS NULL OR 
+          (sasi.summary = '{}'::jsonb OR sasi.summary::text = '{}')
+        ) AS "isMissingFinancialData"
 
       FROM
         tickers_v1 t
       LEFT JOIN
-        ticker_v1_analysis_category_factor_results fr
-          ON t.id = fr.ticker_id
+        ticker_v1_analysis_category_factor_results fr ON t.id = fr.ticker_id
+      LEFT JOIN
+        ticker_v1_stock_analyzer_scrapper_info sasi ON t.id = sasi.ticker_id
       WHERE
         t.space_id = ${spaceId}
+        -- Exclude tickers with pending generation requests
+        AND NOT EXISTS (
+          SELECT 1 FROM ticker_v1_generation_requests gr 
+          WHERE gr.ticker_id = t.id 
+          AND gr.status IN ('NotStarted', 'InProgress')
+        )
       GROUP BY
-        t.id
+        t.id, sasi.ticker_id, sasi.summary
     )
     SELECT *
     FROM factor_counts
     WHERE
+      -- Has missing reports
       "businessAndMoatFactorResultsCount" < 1 OR
       "financialAnalysisFactorsResultsCount" < 1 OR
       "pastPerformanceFactorsResultsCount" < 1 OR
@@ -92,7 +116,9 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
       "isMissingFinalSummaryReport" = TRUE OR
       "isMissingMetaDescriptionReport" = TRUE OR
       "isMissingAboutReport" = TRUE OR
-      "isMissingFutureRiskReport" = TRUE
+      "isMissingFutureRiskReport" = TRUE OR
+      -- OR has missing financial data
+      "isMissingFinancialData" = TRUE
     ORDER BY symbol;
   `;
 
