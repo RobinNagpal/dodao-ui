@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { TickerV1, TickerV1StockAnalyzerScrapperInfo, Prisma } from '@prisma/client';
-import { revalidateTickerAndExchangeTag } from './ticker-v1-cache-utils';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import {
   IncomeAnnualData,
   IncomeQuarterlyData,
