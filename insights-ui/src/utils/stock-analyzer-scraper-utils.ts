@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { TickerV1, TickerV1StockAnalyzerScrapperInfo, Prisma } from '@prisma/client';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import {
   IncomeAnnualData,
   IncomeQuarterlyData,
@@ -298,6 +299,7 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   });
 
   console.log(`Updated scraper info for ticker ${ticker.symbol}`);
+  revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
   return scraperInfo;
 }
 

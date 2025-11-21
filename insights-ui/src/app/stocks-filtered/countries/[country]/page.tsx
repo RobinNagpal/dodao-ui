@@ -1,13 +1,10 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import WithSuspenseCountryIndustriesGrid from '@/components/stocks/WithSuspenseCountryIndustriesGrid';
 import AllStocksGridForCountry from '@/components/stocks/AllStocksGridForCountry';
-import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { fetchStocksData, type SearchParams } from '@/utils/stocks-data-utils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { getServerSession } from 'next-auth';
 import type { Metadata } from 'next';
 
 // Dynamic page for filtered results
@@ -27,7 +24,6 @@ type PageProps = {
 export default async function CountryStocksFilteredPage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
   const params = await paramsPromise;
   const searchParams = await searchParamsPromise;
-  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   const countryName = decodeURIComponent(params.country);
   const country = countryName as SupportedCountries;
@@ -58,7 +54,6 @@ export default async function CountryStocksFilteredPage({ params: paramsPromise,
         title={`${countryName} Stocks`}
         description={`Explore top 100 performing ${countryName} stocks with detailed financial reports and AI-driven analysis.`}
         currentCountry={countryName}
-        session={session}
         showAppliedFilters={true}
       >
         <AllStocksGridForCountry stocksPromise={dataPromise} countryName={countryName} />
@@ -76,7 +71,6 @@ export default async function CountryStocksFilteredPage({ params: paramsPromise,
       title={`${countryName} Stocks by Industry`}
       description={`Explore ${countryName} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
       currentCountry={countryName}
-      session={session}
       showAppliedFilters={true}
     >
       <WithSuspenseCountryIndustriesGrid dataPromise={dataPromise} countryName={countryName} />

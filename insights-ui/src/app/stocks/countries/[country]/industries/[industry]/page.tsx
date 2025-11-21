@@ -1,12 +1,9 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
-import { KoalaGainsSession } from '@/types/auth';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { fetchIndustryStocksData } from '@/utils/stocks-data-utils';
 import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
 import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -26,7 +23,6 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
   const countryName = decodeURIComponent(resolvedParams.country);
   const industryKey = decodeURIComponent(resolvedParams.industry);
-  const session = (await getServerSession(authOptions)) as KoalaGainsSession | undefined;
 
   // Convert countryName to SupportedCountries type
   const country = countryName as SupportedCountries;
@@ -41,7 +37,6 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
       currentCountry={countryName}
       industryKey={industryKey}
       industryName={data?.name}
-      session={session}
     >
       {!data ? (
         <>
