@@ -54,26 +54,8 @@ export const revalidate = false;
 /** Route params (strict) */
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
 
-/** For FULL_SSG prebuilds */
-type TickerListItem = Readonly<{ symbol: string; exchange: string }>;
-const TICKERS_INDEX_URL: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1` as const;
-
 /** Cache revalidation constants */
 const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
-/** Build nothing by default; prebuild all when FULL_SSG=1 */
-export async function generateStaticParams(): Promise<{ exchange: string; ticker: string }[]> {
-  if (process.env.FULL_SSG !== '1') return [];
-  const res: Response = await fetch(`${TICKERS_INDEX_URL}`, {
-    next: { revalidate: 60 * 60, tags: ['ticker-list'] },
-  });
-  if (!res.ok) return [];
-  const list: ReadonlyArray<TickerListItem> = (await res.json()) as ReadonlyArray<TickerListItem>;
-  return list.map((t: TickerListItem) => ({
-    exchange: t.exchange.toUpperCase(),
-    ticker: t.symbol.toUpperCase(),
-  }));
-}
 
 /** Helpers */
 function truncateForMeta(text: string, maxLength: number = 155): string {
