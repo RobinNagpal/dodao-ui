@@ -56,12 +56,12 @@ export default function AddEditPortfolioProfileModal({
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
 
   // Post and Put hooks for portfolio manager profiles
-  const { postData: createProfile, loading: creatingProfile } = usePostData<any, CreatePortfolioManagerProfileRequest>({
+  const { postData: createProfile, loading: creatingProfile } = usePostData<PortfolioManagerProfile, CreatePortfolioManagerProfileRequest>({
     successMessage: 'Portfolio manager profile created successfully!',
     errorMessage: 'Failed to create portfolio manager profile.',
   });
 
-  const { putData: updateProfile, loading: updatingProfile } = usePutData<any, UpdatePortfolioManagerProfileRequest>({
+  const { putData: updateProfile, loading: updatingProfile } = usePutData<PortfolioManagerProfile, UpdatePortfolioManagerProfileRequest>({
     successMessage: 'Portfolio manager profile updated successfully!',
     errorMessage: 'Failed to update portfolio manager profile.',
   });
