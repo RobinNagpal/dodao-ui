@@ -111,7 +111,9 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
     let any: TickerV1FastResponse;
     try {
       any = await fetchTickerAnyExchange(ticker);
-    } catch {
+    } catch (fallbackError) {
+      console.error(`fetchTickerAnyExchange failed for ${ticker} on exchange ${exchange}`);
+      console.error(fallbackError);
       notFound();
     }
     const canonicalExchange: string = any.exchange.toUpperCase();
