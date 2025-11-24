@@ -43,11 +43,11 @@ export enum PakistanExchanges {
 }
 
 export enum JapanExchanges {
-  TSE = 'TSE', 
+  TSE = 'TSE',
 }
 
 export enum TaiwanExchanges {
-  TWSE = 'TWSE', 
+  TWSE = 'TWSE',
 }
 
 export enum HongKongExchanges {
@@ -58,7 +58,16 @@ export enum KoreaExchanges {
   KRX = 'KRX',
 }
 
-export type AllExchanges = USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges | JapanExchanges | TaiwanExchanges | HongKongExchanges | KoreaExchanges;
+export type AllExchanges =
+  | USExchanges
+  | CanadaExchanges
+  | IndiaExchanges
+  | UKExchanges
+  | PakistanExchanges
+  | JapanExchanges
+  | TaiwanExchanges
+  | HongKongExchanges
+  | KoreaExchanges;
 
 /** ---------- Constants ---------- */
 

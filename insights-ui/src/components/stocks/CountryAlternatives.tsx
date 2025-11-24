@@ -16,6 +16,10 @@ const COUNTRY_DISPLAY_CONFIG: Record<SupportedCountries, { name: string; path: s
   [SupportedCountries.India]: { name: 'Indian', path: '/countries/India' },
   [SupportedCountries.UK]: { name: 'UK', path: '/countries/UK' },
   [SupportedCountries.Pakistan]: { name: 'Pakistani', path: '/countries/Pakistan' },
+  [SupportedCountries.Japan]: { name: 'Japanese', path: '/countries/Japan' },
+  [SupportedCountries.Taiwan]: { name: 'Taiwanese', path: '/countries/Taiwan' },
+  [SupportedCountries.HongKong]: { name: 'Hong Kongese', path: '/countries/HongKong' },
+  [SupportedCountries.Korea]: { name: 'Korean', path: '/countries/Korea' },
 };
 
 export default function CountryAlternatives({ currentCountry = 'US', industryKey, className = '', enhanced = false }: CountryAlternativesProps) {
