@@ -1,8 +1,11 @@
 import IndustryStocksGrid from '@/components/stocks/IndustryStocksGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import { SubIndustriesResponse } from '@/types/api/ticker-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { fetchIndustryStocksData } from '@/utils/stocks-data-utils';
-import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
+import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
+import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-static';
@@ -17,6 +20,8 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   const industryKey = decodeURIComponent(industry);
   return generateCountryIndustryStocksMetadata('US', industryKey);
 }
+
+const WEEK = 60 * 60 * 24 * 7;
 
 export const viewport = commonViewport;
 
@@ -34,8 +39,14 @@ export default async function IndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
   const industryKey = decodeURIComponent(resolvedParams.industry);
 
-  // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchIndustryStocksData(industryKey, SupportedCountries.US);
+  const baseUrl = getBaseUrl();
+  const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries/${industryKey}`;
+
+  const res = await fetch(baseUrlPath, {
+    next: { revalidate: WEEK, tags: [getIndustryPageTag(SupportedCountries.US, industryKey)] },
+  });
+
+  const data = (await res.json()) as SubIndustriesResponse | null;
 
   return (
     <IndustryWithStocksPageLayout

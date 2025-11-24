@@ -266,7 +266,7 @@ export const toSortedQueryString = (sp: SearchParams, country?: string): string 
   return usp.toString();
 };
 
-export const hasFiltersApplied = (sp: SearchParams): boolean =>
+export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) || Boolean(toScalar(sp?.[FilterParamKey.SEARCH]));
 
 /** ----- Server-side Helpers ----- */

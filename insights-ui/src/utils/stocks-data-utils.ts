@@ -12,7 +12,7 @@ export type SearchParams = { [key: string]: string | string[] | undefined };
 /**
  * Fetches stocks data for the main stocks page
  */
-export async function fetchStocksData(country: SupportedCountries = SupportedCountries.US, searchParams: SearchParams = {}): Promise<IndustriesResponse> {
+export async function fetchStocksData(country: SupportedCountries, searchParams: SearchParams): Promise<IndustriesResponse> {
   const baseUrl = getBaseUrl();
   const filters = hasFiltersApplied(searchParams);
 
@@ -36,8 +36,8 @@ export async function fetchStocksData(country: SupportedCountries = SupportedCou
  */
 export async function fetchIndustryStocksData(
   industryKey: string,
-  country: SupportedCountries = SupportedCountries.US,
-  searchParams: SearchParams = {}
+  country: SupportedCountries,
+  searchParams: SearchParams
 ): Promise<SubIndustriesResponse | null> {
   const baseUrl = getBaseUrl();
   const filters = hasFiltersApplied(searchParams);

@@ -1,11 +1,14 @@
 import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
 import AllStocksGridForCountry from '@/components/stocks/AllStocksGridForCountry';
+import { IndustriesResponse } from '@/types/api/ticker-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchStocksData } from '@/utils/stocks-data-utils';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -17,14 +20,20 @@ type PageProps = {
   params: Promise<{ country: string }>;
 };
 
+const WEEK = 60 * 60 * 24 * 7;
+
 export default async function CountryStocksPage({ params: paramsPromise }: PageProps) {
   const params = await paramsPromise;
-
+  const baseUrl = getBaseUrl();
   const countryName = decodeURIComponent(params.country);
   const country = countryName as SupportedCountries;
 
   // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchStocksData(country);
+  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`, {
+    next: { revalidate: WEEK, tags: [getStocksPageTag(SupportedCountries.US)] },
+  });
+
+  const data = (await res.json()) as IndustriesResponse;
 
   // For Pakistan, show all stocks in a flat list instead of organized by industries
   if (country === SupportedCountries.Pakistan) {

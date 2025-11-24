@@ -1,8 +1,11 @@
 import CompactSubIndustriesGrid from '@/components/stocks/CompactSubIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
+import { IndustriesResponse } from '@/types/api/ticker-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
-import { fetchStocksData } from '@/utils/stocks-data-utils';
+import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
@@ -10,13 +13,19 @@ export const revalidate = 86400; // 24 hours
 
 // ────────────────────────────────────────────────────────────────────────────────
 
+const WEEK = 60 * 60 * 24 * 7;
 export const metadata = generateCountryStocksMetadata('US');
 
 // ────────────────────────────────────────────────────────────────────────────────
 
 export default async function StocksPage() {
+  const baseUrl = getBaseUrl();
   // Fetch data using the cached function (no filters on static pages)
-  const data = await fetchStocksData(SupportedCountries.US);
+  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`, {
+    next: { revalidate: WEEK, tags: [getStocksPageTag(SupportedCountries.US)] },
+  });
+
+  const data = (await res.json()) as IndustriesResponse;
 
   return (
     <IndustryWithStocksPageLayout
