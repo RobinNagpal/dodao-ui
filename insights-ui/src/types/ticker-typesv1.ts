@@ -1,5 +1,5 @@
 import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
-import { TickerMinimal } from '@/types/api/ticker-industries';
+import { MinimalTickerWithOnlyFinalScore, TickerMinimal } from '@/types/api/ticker-industries';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { TickerV1, TickerV1CachedScore, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
@@ -11,7 +11,7 @@ export interface TickerWithIndustryNames extends TickerV1WithIndustryAndSubIndus
 }
 
 // Helper function to get score from either type
-export function getTickerScore(ticker: TickerWithIndustryNames | TickerMinimal): number {
+export function getTickerScore(ticker: TickerWithIndustryNames | TickerMinimal | MinimalTickerWithOnlyFinalScore): number {
   return ticker.cachedScoreEntry?.finalScore ?? 0;
 }
 

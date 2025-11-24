@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { IndustryWithTopTickers, OnlyIndustriesResponse, TickerMinimal } from '@/types/api/ticker-industries';
+import { IndustryWithTopTickers, MinimalTickerWithOnlyFinalScore, OnlyIndustriesResponse, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
@@ -30,7 +30,11 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
               name: true,
               symbol: true,
               exchange: true,
-              cachedScoreEntry: true,
+              cachedScoreEntry: {
+                select: {
+                  finalScore: true,
+                },
+              },
             },
             orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
           },
@@ -57,7 +61,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
     let industryHasTickers = false;
     let totalTickerCount = 0;
-    const allIndustryTickers: TickerMinimal[] = [];
+    const allIndustryTickers: MinimalTickerWithOnlyFinalScore[] = [];
 
     // Collect all tickers from all sub-industries
     for (const subIndustry of industry.subIndustries) {
@@ -69,7 +73,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       totalTickerCount += tickerCount;
 
       // Convert tickers to TickerMinimal with industry and subindustry names
-      const tickers: TickerMinimal[] = subIndustry.tickers.map((t) => ({
+      const tickers: MinimalTickerWithOnlyFinalScore[] = subIndustry.tickers.map((t) => ({
         ...t,
         industryName: industry.name,
         subIndustryName: subIndustry.name,

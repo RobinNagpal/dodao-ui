@@ -1,14 +1,14 @@
-import { TickerMinimal } from '@/types/api/ticker-industries';
+import { MinimalTickerWithOnlyFinalScore } from '@/types/api/ticker-industries';
+import { getTickerScore } from '@/types/ticker-typesv1';
+import { getScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';
-import { TickerWithIndustryNames, getTickerScore } from '@/types/ticker-typesv1';
-import { getScoreColorClasses } from '@/utils/score-utils';
 
 interface CompactIndustryCardProps {
   industryKey: string;
   industryName: string;
   tickerCount: number;
-  topTickers?: TickerMinimal[];
+  topTickers?: MinimalTickerWithOnlyFinalScore[];
 }
 
 export default function CompactIndustryCard({ industryKey, industryName, topTickers = [] }: CompactIndustryCardProps): React.JSX.Element {

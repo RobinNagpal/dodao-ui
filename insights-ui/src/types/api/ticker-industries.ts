@@ -23,9 +23,15 @@ export interface IndustriesResponse {
   filtersApplied: boolean;
 }
 
+export interface MinimalTickerWithOnlyFinalScore extends Omit<TickerMinimal, 'cachedScoreEntry'> {
+  cachedScoreEntry: {
+    finalScore: number;
+  } | null;
+}
+
 // Define new types for the response
 export interface IndustryWithTopTickers extends TickerV1Industry {
-  topTickers: TickerMinimal[];
+  topTickers: MinimalTickerWithOnlyFinalScore[];
   tickerCount: number;
 }
 
