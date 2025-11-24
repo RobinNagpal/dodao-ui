@@ -1,8 +1,9 @@
-import { IndustryWithSubIndustriesAndCounts, SubIndustryWithCount, type TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { SubIndustryWithCount } from '@/types/ticker-typesv1';
 import { TickerV1CachedScore, TickerV1Industry } from '@prisma/client';
 
-export interface IndustryWithSubIndustriesAndTopTickers extends IndustryWithSubIndustriesAndCounts {
-  subIndustries: SubIndustryWithTopTickers[];
+export interface IndustryWithSubIndustriesAndTopTickers extends TickerV1Industry {
+  subIndustries: MinSubIndustryWithTopTickers[];
+  tickerCount: number;
 }
 
 export interface TickerMinimal {
@@ -13,7 +14,7 @@ export interface TickerMinimal {
   cachedScoreEntry: TickerV1CachedScore | null;
 }
 
-export interface SubIndustryWithTopTickers extends SubIndustryWithCount {
+export interface MinSubIndustryWithTopTickers extends Omit<SubIndustryWithCount, 'summary'> {
   topTickers: TickerMinimal[];
 }
 
@@ -21,11 +22,6 @@ export interface IndustriesResponse {
   industries: IndustryWithSubIndustriesAndTopTickers[];
   filtersApplied: boolean;
 }
-
-export type IndustryStocksDataPayload = {
-  tickers: TickerWithIndustryNames[];
-  filtersApplied: boolean;
-};
 
 // Define new types for the response
 export interface IndustryWithTopTickers extends TickerV1Industry {

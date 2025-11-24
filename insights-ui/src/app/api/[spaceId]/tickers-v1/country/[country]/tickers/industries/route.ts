@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { IndustriesResponse, IndustryWithSubIndustriesAndTopTickers, SubIndustryWithTopTickers, TickerMinimal } from '@/types/api/ticker-industries';
+import { IndustriesResponse, IndustryWithSubIndustriesAndTopTickers, MinSubIndustryWithTopTickers, TickerMinimal } from '@/types/api/ticker-industries';
 import { getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { createCacheFilter, createTickerFilter, hasFiltersAppliedServer, parseFilterParams } from '@/utils/ticker-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -25,11 +25,16 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const industries = await prisma.tickerV1Industry.findMany({
     include: {
       subIndustries: {
-        include: {
-          // Include tickers for each sub-industry with filtering and ordering
+        select: {
+          // only the fields you actually want from TickerV1SubIndustry
+          industryKey: true,
+          subIndustryKey: true,
+          name: true,
+          archived: true, // optional, remove if you don't need it
+
+          // relation: you can still nest the tickers selection here
           tickers: {
             where: tickerFilter,
-            // we only need minimal fields, no relation data
             select: {
               id: true,
               name: true,
@@ -37,12 +42,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
               exchange: true,
               cachedScoreEntry: true,
             },
-            orderBy: [
-              // order by related cachedScoreEntry even if we don't select it
-              { cachedScoreEntry: { finalScore: 'desc' } },
-              { name: 'asc' },
-              { symbol: 'asc' },
-            ],
+            orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
             take: 3,
           },
         },
@@ -81,7 +81,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     // Skip industries with no sub-industries
     if (!industry.subIndustries.length) continue;
 
-    const formattedSubIndustries: SubIndustryWithTopTickers[] = [];
+    const formattedSubIndustries: MinSubIndustryWithTopTickers[] = [];
     let totalTickerCount = 0;
 
     for (const subIndustry of industry.subIndustries) {
