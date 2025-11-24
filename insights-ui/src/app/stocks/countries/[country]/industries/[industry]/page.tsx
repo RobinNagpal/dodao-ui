@@ -3,9 +3,9 @@ import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocks
 import { SubIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { generateCountryIndustryStocksMetadata, commonViewport } from '@/utils/metadata-generators';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
@@ -32,7 +32,7 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
   // Convert countryName to SupportedCountries type
   const country = countryName as SupportedCountries;
 
-  const baseUrl = getBaseUrl();
+  const baseUrl = getBaseUrlForServerSidePages();
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries/${industryKey}`;
 
   const res = await fetch(baseUrlPath, {

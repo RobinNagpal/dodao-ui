@@ -3,9 +3,9 @@ import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocks
 import { IndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
@@ -19,7 +19,7 @@ export const metadata = generateCountryStocksMetadata('US');
 // ────────────────────────────────────────────────────────────────────────────────
 
 export default async function StocksPage() {
-  const baseUrl = getBaseUrl();
+  const baseUrl = getBaseUrlForServerSidePages();
   // Fetch data using the cached function (no filters on static pages)
   const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`, {
     next: { revalidate: WEEK, tags: [getStocksPageTag(SupportedCountries.US)] },

@@ -1,14 +1,14 @@
+import AllStocksGridForCountry from '@/components/stocks/AllStocksGridForCountry';
 import CountryIndustriesGrid from '@/components/stocks/CountryIndustriesGrid';
 import IndustryWithStocksPageLayout from '@/components/stocks/IndustryWithStocksPageLayout';
-import AllStocksGridForCountry from '@/components/stocks/AllStocksGridForCountry';
 import { IndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -24,7 +24,7 @@ const WEEK = 60 * 60 * 24 * 7;
 
 export default async function CountryStocksPage({ params: paramsPromise }: PageProps) {
   const params = await paramsPromise;
-  const baseUrl = getBaseUrl();
+  const baseUrl = getBaseUrlForServerSidePages();
   const countryName = decodeURIComponent(params.country);
   const country = countryName as SupportedCountries;
 
