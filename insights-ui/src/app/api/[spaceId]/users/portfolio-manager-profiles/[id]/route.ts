@@ -1,17 +1,16 @@
 import { prisma } from '@/prisma';
-import { PortfolioManagerProfile } from '@prisma/client';
+import { PortfolioManagerProfile, Portfolio, PortfolioTicker, User } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser, withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { UpdatePortfolioManagerProfileRequest } from '@/types/portfolio';
+import { UpdatePortfolioManagerProfileRequest, PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 
 // GET /api/[spaceId]/users/portfolio-manager-profiles/[id] - Get a portfolio manager profile by ID (for public viewing)
 async function getHandler(
   req: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
-): Promise<{ portfolioManagerProfile: (PortfolioManagerProfile & { user: { id: string; name: string | null; email: string | null }; portfolios: any[] }) | null }> {
+): Promise<{ portfolioManagerProfile: PortfolioManagerProfilewithPortfoliosAndUser | null }> {
   const { id } = await params;
 
   const portfolioManagerProfile = await prisma.portfolioManagerProfile.findFirstOrThrow({
@@ -20,22 +19,10 @@ async function getHandler(
       spaceId: KoalaGainsSpaceId,
     },
     include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-        },
-      },
+      user: true,
       portfolios: {
         include: {
-          portfolioTickers: {
-            include: {
-              ticker: true,
-              tags: true,
-              lists: true,
-            },
-          },
+          portfolioTickers: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -43,11 +30,6 @@ async function getHandler(
       },
     },
   });
-
-  // If profile is not public, only the owner can view it
-  if (!portfolioManagerProfile.isPublic && portfolioManagerProfile.userId !== userContext.userId) {
-    throw new Error('Portfolio manager profile not found or access denied');
-  }
 
   return { portfolioManagerProfile };
 }
@@ -114,6 +96,6 @@ async function deleteHandler(
   return { success: true };
 }
 
-export const GET = withLoggedInUser<{ portfolioManagerProfile: (PortfolioManagerProfile & { user: { id: string; name: string | null; email: string | null }; portfolios: any[] }) | null }>(getHandler);
+export const GET = withErrorHandlingV2<{ portfolioManagerProfile: PortfolioManagerProfilewithPortfoliosAndUser | null }>(getHandler);
 export const PUT = withLoggedInUser<PortfolioManagerProfile>(putHandler);
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);

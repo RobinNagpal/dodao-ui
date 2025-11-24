@@ -13,6 +13,7 @@ import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
 import AddEditPortfolioProfileModal from '@/components/portfolios/AddEditPortfolioProfileModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 interface User {
   id: string;
@@ -22,23 +23,8 @@ interface User {
   role: UserRole;
 }
 
-interface PortfolioManagerProfile {
-  id: string;
-  headline: string;
-  summary: string;
-  detailedDescription: string;
-  country: string | null;
-  managerType: string | null;
-  isPublic: boolean;
-  profileImageUrl: string | null;
-}
-
 interface UsersResponse {
   users: User[];
-}
-
-interface PortfolioProfileResponse {
-  portfolioManagerProfile: PortfolioManagerProfile | null;
 }
 
 interface DeleteProfileResponse {
@@ -53,8 +39,6 @@ export default function Page() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [portfolioProfileUser, setPortfolioProfileUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
-  const [fetchProfileKey, setFetchProfileKey] = useState<string>('');
-
   const {
     data: usersResponse,
     loading: loadingUsers,
@@ -66,20 +50,10 @@ export default function Page() {
     errorMessage: 'Failed to delete user',
   });
 
-  const {
-    data: portfolioProfileResponse,
-    loading: loadingPortfolioProfile,
-  } = useFetchData<PortfolioProfileResponse>(
-    fetchProfileKey ? `${getBaseUrl()}/api/${'koala_gains'}/users/portfolio-manager-profiles/by-user/${fetchProfileKey}` : '',
-    {},
-    'Failed to load portfolio manager profile'
-  );
-
   const { deleteData: deletePortfolioProfile, loading: deletingPortfolioProfile } = useDeleteData<DeleteProfileResponse, never>({
     successMessage: 'Portfolio manager profile deleted successfully!',
     errorMessage: 'Failed to delete portfolio manager profile',
   });
-
 
   const handleEditUser = (user: User): void => {
     setSelectedUser(user);
@@ -88,7 +62,6 @@ export default function Page() {
 
   const handlePortfolioProfile = (user: User): void => {
     setPortfolioProfileUser(user);
-    setFetchProfileKey(user.id);
     setShowPortfolioProfileModal(true);
   };
 
@@ -112,16 +85,12 @@ export default function Page() {
     await refetchUsers();
   };
 
-  const handleDeleteProfile = async (): Promise<void> => {
-    const profile = portfolioProfileResponse?.portfolioManagerProfile;
-    if (!profile) return;
-
+  const handleDeleteProfile = async (profileId: string): Promise<void> => {
     try {
-      await deletePortfolioProfile(`${getBaseUrl()}/api/${'koala_gains'}/users/portfolio-manager-profiles/${profile.id}`);
+      await deletePortfolioProfile(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/${profileId}`);
       await handleUserSuccess();
       setShowPortfolioProfileModal(false);
       setPortfolioProfileUser(null);
-      setFetchProfileKey('');
     } catch (error) {
       console.error('Error deleting portfolio manager profile:', error);
     }
@@ -210,14 +179,9 @@ export default function Page() {
           onClose={() => {
             setShowPortfolioProfileModal(false);
             setPortfolioProfileUser(null);
-            setFetchProfileKey('');
           }}
-          onSuccess={() => {
-            handleUserSuccess();
-            setFetchProfileKey('');
-          }}
-          onDelete={portfolioProfileResponse?.portfolioManagerProfile ? handleDeleteProfile : undefined}
-          portfolioManagerProfile={portfolioProfileResponse?.portfolioManagerProfile || null}
+          onSuccess={handleUserSuccess}
+          onDelete={(profileId: string) => handleDeleteProfile(profileId)}
           isAdmin={true}
           userId={portfolioProfileUser.id}
         />

@@ -11,10 +11,10 @@ async function getHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ userId: string }> }
-): Promise<PortfolioManagerProfile> {
+): Promise<PortfolioManagerProfile | null> {
   const { userId: targetUserId } = await params;
 
-  const portfolioManagerProfile = await prisma.portfolioManagerProfile.findFirstOrThrow({
+  const portfolioManagerProfile = await prisma.portfolioManagerProfile.findFirst({
     where: {
       userId: targetUserId,
       spaceId: KoalaGainsSpaceId,
@@ -34,12 +34,16 @@ async function postHandler(
   const body: CreatePortfolioManagerProfileRequest = await req.json();
 
   // Check if profile already exists for this user
-  const existingProfile = await prisma.portfolioManagerProfile.findFirstOrThrow({
+  const existingProfile = await prisma.portfolioManagerProfile.findFirst({
     where: {
       userId: targetUserId,
       spaceId: KoalaGainsSpaceId,
     },
   });
+
+  if (existingProfile) {
+    throw new Error('Portfolio manager profile already exists for this user');
+  }
 
   // Create the profile
   const portfolioManagerProfile = await prisma.portfolioManagerProfile.create({
@@ -60,5 +64,5 @@ async function postHandler(
   return portfolioManagerProfile;
 }
 
-export const GET = withLoggedInUser<PortfolioManagerProfile>(getHandler);
+export const GET = withLoggedInUser<PortfolioManagerProfile | null>(getHandler);
 export const POST = withLoggedInUser<PortfolioManagerProfile>(postHandler);

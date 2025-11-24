@@ -2,11 +2,11 @@
 
 import AddEditPortfolioProfileModal from '@/components/portfolios/AddEditPortfolioProfileModal';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
-import { Portfolio } from '@/types/portfolio';
+import { Portfolio, PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PlusIcon, PencilIcon, TrashIcon, FolderIcon, UserIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon, FolderIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import Button from '@dodao/web-core/components/core/buttons/Button';
@@ -16,60 +16,29 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { PortfolioManagerType } from '@/types/portfolio-manager';
-
-interface PortfolioManagerProfile {
-  id: string;
-  userId: string;
-  headline: string;
-  summary: string;
-  detailedDescription: string;
-  country: string | null;
-  managerType: PortfolioManagerType | null;
-  isPublic: boolean;
-  profileImageUrl: string | null;
-  spaceId: string;
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
-  updatedBy: string | null;
-  user: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  portfolios: Portfolio[];
-}
+import { PortfolioManagerProfile } from '@prisma/client';
+import { KoalaGainsSession } from '@/types/auth';
 
 export default function PortfolioManagerProfilePage() {
-  const { data: session, status } = useSession();
+  const { data: koalaSession } = useSession();
+  const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
   const router = useRouter();
   const params = useParams();
   const portfolioManagerId = params.id as string;
 
-  const [editingProfile, setEditingProfile] = useState<PortfolioManagerProfile | null>(null);
+  const [editingProfile, setEditingProfile] = useState<PortfolioManagerProfilewithPortfoliosAndUser | null>(null);
   const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(null);
   const [deletingPortfolio, setDeletingPortfolio] = useState<Portfolio | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (status === 'loading') return;
-
-    if (!session) {
-      router.push('/login');
-    }
-  }, [session, status, router]);
-
   // Fetch portfolio manager profile
-  // TODO: Create API endpoint for fetching portfolio manager profile by ID
   const {
     data: profileData,
     loading: profileLoading,
     reFetchData: refetchProfile,
-  } = useFetchData<{ portfolioManagerProfile: PortfolioManagerProfile }>(
+  } = useFetchData<{ portfolioManagerProfile: PortfolioManagerProfilewithPortfoliosAndUser }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/${portfolioManagerId}`,
-    { skipInitialFetch: !session || !portfolioManagerId },
+    { skipInitialFetch: !portfolioManagerId },
     'Failed to fetch portfolio manager profile'
   );
 
@@ -82,7 +51,7 @@ export default function PortfolioManagerProfilePage() {
   const portfolios = profile?.portfolios || [];
 
   // Show loading or redirect if no session
-  if (!session || profileLoading) {
+  if (profileLoading) {
     return <FullPageLoader message="Loading portfolio manager profile..." />;
   }
 
@@ -117,11 +86,7 @@ export default function PortfolioManagerProfilePage() {
             <div className="flex items-start gap-6">
               <div className="flex-shrink-0">
                 {profile?.profileImageUrl ? (
-                  <img
-                    src={profile.profileImageUrl}
-                    alt={`${profile.user.name}'s profile`}
-                    className="w-20 h-20 rounded-full object-cover"
-                  />
+                  <img src={profile.profileImageUrl} alt={`${profile.user.name}'s profile`} className="w-20 h-20 rounded-full object-cover" />
                 ) : (
                   <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center">
                     <UserIcon className="w-10 h-10 text-gray-400" />
@@ -135,10 +100,12 @@ export default function PortfolioManagerProfilePage() {
                     <h1 className="text-3xl font-bold text-white mb-2">{profile?.user.name}</h1>
                     <p className="text-xl text-blue-400 mb-2">{profile?.headline}</p>
                   </div>
-                  <Button onClick={() => setEditingProfile(profile!)} variant="outlined" className="flex items-center gap-2 ml-4">
-                    <PencilIcon className="w-4 h-4" />
-                    Edit Profile
-                  </Button>
+                  {session?.userId === profile?.userId && (
+                    <Button onClick={() => setEditingProfile(profile!)} variant="outlined" className="flex items-center gap-2 ml-4">
+                      <PencilIcon className="w-4 h-4" />
+                      Edit Profile
+                    </Button>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-4">
@@ -190,7 +157,7 @@ export default function PortfolioManagerProfilePage() {
             <div className="bg-gray-800 rounded-lg p-8 text-center">
               <FolderIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No portfolios yet</h3>
-              <p className="text-gray-400 mb-4">This portfolio manager hasn't published any portfolios yet.</p>
+              <p className="text-gray-400 mb-4">This portfolio manager hasnt published any portfolios yet.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -222,7 +189,7 @@ export default function PortfolioManagerProfilePage() {
                         <div className="space-y-1">
                           {portfolio.portfolioTickers.slice(0, 3).map((ticker) => (
                             <div key={ticker.id} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-300">{ticker.ticker?.symbol || 'Unknown'}</span>
+                              <span className="text-gray-300">{ticker.tickerId || 'Unknown'}</span>
                               <span className="text-gray-400">{ticker.allocation}%</span>
                             </div>
                           ))}
@@ -234,7 +201,10 @@ export default function PortfolioManagerProfilePage() {
                     )}
 
                     <div className="pt-3 border-t border-gray-700">
-                      <Link href={`/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`} className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+                      <Link
+                        href={`/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`}
+                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                      >
                         View Details →
                       </Link>
                     </div>
@@ -250,7 +220,7 @@ export default function PortfolioManagerProfilePage() {
           <AddEditPortfolioProfileModal
             isOpen={!!editingProfile}
             onClose={() => setEditingProfile(null)}
-            portfolioManagerProfile={editingProfile}
+            portfolioManagerProfile={editingProfile as PortfolioManagerProfile}
             onSuccess={handlePortfolioSuccess}
             isAdmin={false} // Users cannot see admin fields
           />

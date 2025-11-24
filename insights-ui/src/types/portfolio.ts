@@ -1,10 +1,12 @@
 import {
   Portfolio as PrismaPortfolio,
   PortfolioTicker as PrismaPortfolioTicker,
+  PortfolioManagerProfile,
   TickerV1,
   TickerV1CachedScore,
   UserTickerTag,
   UserTickerList,
+  User,
 } from '@prisma/client';
 import { PortfolioManagerType } from './portfolio-manager';
 
@@ -72,3 +74,10 @@ export interface UpdatePortfolioTickerRequest {
   tagIds?: string[];
   listIds?: string[];
 }
+
+export type PortfolioManagerProfilewithPortfoliosAndUser = PortfolioManagerProfile & {
+  user: User;
+  portfolios: (PrismaPortfolio & {
+    portfolioTickers: PrismaPortfolioTicker[];
+  })[];
+};

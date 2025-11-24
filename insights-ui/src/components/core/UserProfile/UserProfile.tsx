@@ -3,6 +3,7 @@
 import { KoalaGainsSession } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -17,10 +18,14 @@ interface UserProfileProps {
 export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps): JSX.Element {
   const { data: koalaSession } = useSession();
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
-  const [portfolioProfileId, setPortfolioProfileId] = useState<string | null>(null);
-  const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
+
+  const { data: portfolioProfile, loading: isLoadingProfile } = useFetchData<{ id: string }>(
+    session?.userId ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/by-user/${session.userId}` : '',
+    { skipInitialFetch: !session?.userId },
+    'Failed to fetch portfolio profile'
+  );
 
   const toggleUserMenu = (): void => {
     setUserMenuOpen((prev) => !prev);
@@ -75,34 +80,6 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
     }
   }, [koalaSession, isMobile, onMenuToggle]);
 
-  // Check if user has portfolio manager profile
-  useEffect(() => {
-    const fetchPortfolioProfile = async () => {
-      if (session?.userId) {
-        setIsLoadingProfile(true);
-        try {
-          console.log('fetching portfolio profile for user', session.userId);
-          const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/by-user/${session.userId}`);
-          if (response.ok) {
-            const profile = await response.json();
-            setPortfolioProfileId(profile.id);
-          } else {
-            setPortfolioProfileId(null);
-          }
-        } catch (error) {
-          setPortfolioProfileId(null);
-        } finally {
-          setIsLoadingProfile(false);
-        }
-      } else {
-        setPortfolioProfileId(null);
-        setIsLoadingProfile(false);
-      }
-    };
-
-    fetchPortfolioProfile();
-  }, [session?.userId]);
-
   if (isMobile) {
     return (
       <>
@@ -156,9 +133,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               My Favourite Stocks
             </Link>
             <div className="border-t border-gray-700 my-1"></div>
-            {portfolioProfileId && (
+            {portfolioProfile?.id && (
               <Link
-                href={`/portfolio-managers/${portfolioProfileId}`}
+                href={`/portfolio-managers/${portfolioProfile.id}`}
                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
                 onClick={onMenuToggle}
               >
@@ -240,8 +217,11 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 My Favourite Stocks
               </Link>
               <div className="border-t border-gray-700 my-1"></div>
-              {portfolioProfileId && (
-                <Link href={`/portfolio-managers/${portfolioProfileId}`} className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+              {portfolioProfile?.id && (
+                <Link
+                  href={`/portfolio-managers/${portfolioProfile.id}`}
+                  className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                >
                   My Portfolio Profile
                 </Link>
               )}

@@ -239,14 +239,14 @@ export default function PortfolioDetailPage() {
         </div>
 
         {/* Edit Portfolio Modal */}
-        {editingPortfolio && (
+        {/* {editingPortfolio && (
           <AddEditPortfolioModal
             isOpen={!!editingPortfolio}
             onClose={() => setEditingPortfolio(null)}
             portfolio={editingPortfolio}
             onSuccess={handlePortfolioSuccess}
           />
-        )}
+        )} */}
 
         {/* Add/Edit Ticker Modal */}
         <AddEditPortfolioTickerModal
