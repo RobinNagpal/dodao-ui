@@ -30,7 +30,14 @@ interface AddEditPortfolioTickerModalProps {
   portfolioManagerId?: string; // Optional, for using new API routes
 }
 
-export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolioId, portfolioTicker, onSuccess, portfolioManagerId }: AddEditPortfolioTickerModalProps) {
+export default function AddEditPortfolioTickerModal({
+  isOpen,
+  onClose,
+  portfolioId,
+  portfolioTicker,
+  onSuccess,
+  portfolioManagerId,
+}: AddEditPortfolioTickerModalProps) {
   const [currentView, setCurrentView] = useState<ModalView>('main');
 
   // Form state

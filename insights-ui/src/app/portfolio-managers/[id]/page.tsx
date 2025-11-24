@@ -147,7 +147,7 @@ export default function PortfolioManagerProfilePage() {
               <p className="text-gray-400 mb-4">
                 {session?.userId === profile?.userId
                   ? 'Start building your investment portfolio to showcase your expertise.'
-                  : 'This portfolio manager hasn\'t published any portfolios yet.'}
+                  : "This portfolio manager hasn't published any portfolios yet."}
               </p>
               {session?.userId === profile?.userId && (
                 <Button onClick={() => setShowCreatePortfolioModal(true)} variant="contained" primary className="inline-flex items-center gap-2">
@@ -189,7 +189,11 @@ export default function PortfolioManagerProfilePage() {
                         </span>
                         {portfolio.portfolioTickers && portfolio.portfolioTickers.length > 0 && (
                           <span className="text-gray-500">
-                            Top: {portfolio.portfolioTickers.slice(0, 3).map((t) => t.tickerId).join(', ')}
+                            Top:{' '}
+                            {portfolio.portfolioTickers
+                              .slice(0, 3)
+                              .map((t) => t.tickerId)
+                              .join(', ')}
                           </span>
                         )}
                       </div>
@@ -199,10 +203,7 @@ export default function PortfolioManagerProfilePage() {
 
                 {portfolios.length > 3 && (
                   <div className="mt-4 pt-4 border-t border-gray-700 text-center">
-                    <Link
-                      href={`/portfolio-managers/${portfolioManagerId}/portfolios`}
-                      className="text-blue-400 hover:text-blue-300 text-sm font-medium"
-                    >
+                    <Link href={`/portfolio-managers/${portfolioManagerId}/portfolios`} className="text-blue-400 hover:text-blue-300 text-sm font-medium">
                       View all {portfolios.length} portfolios →
                     </Link>
                   </div>

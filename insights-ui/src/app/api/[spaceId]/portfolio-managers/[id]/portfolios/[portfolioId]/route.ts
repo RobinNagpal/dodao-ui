@@ -7,10 +7,7 @@ import { Portfolio } from '@/types/portfolio';
 import { UpdatePortfolioRequest } from '@/types/portfolio';
 
 // GET /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId] - Get a specific portfolio (public)
-async function getHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string; portfolioId: string }> }
-): Promise<{ portfolio: Portfolio }> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string; portfolioId: string }> }): Promise<{ portfolio: Portfolio }> {
   const { id: profileId, portfolioId } = await params;
 
   const portfolio = await prisma.portfolio.findFirstOrThrow({
@@ -180,4 +177,3 @@ async function deleteHandler(
 export const GET = withErrorHandlingV2<{ portfolio: Portfolio }>(getHandler);
 export const PUT = withLoggedInUser<Portfolio>(putHandler);
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);
-

@@ -17,10 +17,7 @@ interface PortfolioManagerProfileWithUser extends PortfolioManagerProfile {
 }
 
 // GET /api/[spaceId]/portfolio-managers/country/[country] - Get portfolio managers by country
-async function getHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ country: string }> }
-): Promise<{ profiles: PortfolioManagerProfileWithUser[] }> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ country: string }> }): Promise<{ profiles: PortfolioManagerProfileWithUser[] }> {
   const { country } = await params;
   const { searchParams } = new URL(req.url);
   const managerType = searchParams.get('managerType');
@@ -56,4 +53,3 @@ async function getHandler(
 }
 
 export const GET = withErrorHandlingV2<{ profiles: PortfolioManagerProfileWithUser[] }>(getHandler);
-

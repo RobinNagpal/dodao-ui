@@ -13,10 +13,7 @@ interface PortfolioWithTickers extends Portfolio {
 }
 
 // GET /api/[spaceId]/portfolio-managers/[id]/portfolios - Get all portfolios for a portfolio manager profile
-async function getHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-): Promise<{ portfolios: PortfolioWithTickers[] }> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<{ portfolios: PortfolioWithTickers[] }> {
   const { id } = await params;
 
   // Verify the profile exists
@@ -53,4 +50,3 @@ async function getHandler(
 }
 
 export const GET = withErrorHandlingV2<{ portfolios: PortfolioWithTickers[] }>(getHandler);
-

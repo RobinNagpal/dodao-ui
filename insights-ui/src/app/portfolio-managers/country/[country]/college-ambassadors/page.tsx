@@ -28,10 +28,7 @@ export default function CollegeAmbassadorsPage() {
   const country = params.country as string;
 
   // Fetch portfolio managers with CollegeAmbassador type
-  const {
-    data: profilesData,
-    loading: profilesLoading,
-  } = useFetchData<{ profiles: PortfolioManagerProfileWithUser[] }>(
+  const { data: profilesData, loading: profilesLoading } = useFetchData<{ profiles: PortfolioManagerProfileWithUser[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.CollegeAmbassador}`,
     { skipInitialFetch: !country },
     'Failed to fetch college ambassadors'
@@ -124,4 +121,3 @@ export default function CollegeAmbassadorsPage() {
     </PageWrapper>
   );
 }
-

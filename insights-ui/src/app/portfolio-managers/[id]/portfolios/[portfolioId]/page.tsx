@@ -65,7 +65,7 @@ export default function PortfolioDetailPage() {
 
   const portfolio = portfolioData?.portfolio;
   const portfolioTickers = portfolio?.portfolioTickers || [];
-  
+
   // Check if current user is the owner
   const isOwner = session?.userId && portfolio?.portfolioManagerProfile?.userId === session.userId;
 
@@ -113,7 +113,7 @@ export default function PortfolioDetailPage() {
         <div className="max-w-7xl mx-auto py-8">
           <div className="bg-gray-800 rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Portfolio not found</h2>
-            <p className="text-gray-400">The portfolio you're looking for doesn't exist.</p>
+            <p className="text-gray-400">The portfolio you’re looking for doesn’t exist.</p>
           </div>
         </div>
       </PageWrapper>
@@ -133,9 +133,7 @@ export default function PortfolioDetailPage() {
   };
 
   const handleDeletePortfolio = async () => {
-    const result = await deletePortfolio(
-      `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`
-    );
+    const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`);
     if (result) {
       router.push(`/portfolio-managers/${portfolioManagerId}`);
     }
@@ -340,4 +338,3 @@ export default function PortfolioDetailPage() {
     </PageWrapper>
   );
 }
-

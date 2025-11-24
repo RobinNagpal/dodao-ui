@@ -30,20 +30,14 @@ export default function PortfolioManagerPortfoliosPage() {
   const portfolioManagerId = params.id as string;
 
   // Fetch portfolio manager profile
-  const {
-    data: profileData,
-    loading: profileLoading,
-  } = useFetchData<PortfolioManagerProfileResponse>(
+  const { data: profileData, loading: profileLoading } = useFetchData<PortfolioManagerProfileResponse>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/${portfolioManagerId}`,
     { skipInitialFetch: !portfolioManagerId },
     'Failed to fetch portfolio manager profile'
   );
 
   // Fetch portfolios
-  const {
-    data: portfoliosData,
-    loading: portfoliosLoading,
-  } = useFetchData<{ portfolios: PortfolioWithTickers[] }>(
+  const { data: portfoliosData, loading: portfoliosLoading } = useFetchData<{ portfolios: PortfolioWithTickers[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios`,
     { skipInitialFetch: !portfolioManagerId },
     'Failed to fetch portfolios'
@@ -62,7 +56,7 @@ export default function PortfolioManagerPortfoliosPage() {
         <div className="max-w-7xl mx-auto py-8">
           <div className="bg-gray-800 rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Profile not found</h2>
-            <p className="text-gray-400">The portfolio manager profile you're looking for doesn't exist.</p>
+            <p className="text-gray-400">The portfolio manager profile you’re looking for doesn’t exist.</p>
           </div>
         </div>
       </PageWrapper>
@@ -132,7 +126,7 @@ export default function PortfolioManagerPortfoliosPage() {
             <div className="bg-gray-800 rounded-lg p-8 text-center">
               <FolderIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No portfolios yet</h3>
-              <p className="text-gray-400">This portfolio manager hasn't published any portfolios yet.</p>
+              <p className="text-gray-400">This portfolio manager hasn’t published any portfolios yet.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -159,7 +153,9 @@ export default function PortfolioManagerPortfoliosPage() {
 
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-gray-400">Total Allocation:</span>
-                        <span className={`font-medium ${totalAllocation > 100 ? 'text-red-400' : totalAllocation < 100 ? 'text-yellow-400' : 'text-green-400'}`}>
+                        <span
+                          className={`font-medium ${totalAllocation > 100 ? 'text-red-400' : totalAllocation < 100 ? 'text-yellow-400' : 'text-green-400'}`}
+                        >
                           {totalAllocation.toFixed(1)}%
                         </span>
                       </div>
@@ -195,4 +191,3 @@ export default function PortfolioManagerPortfoliosPage() {
     </PageWrapper>
   );
 }
-

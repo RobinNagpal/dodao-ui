@@ -6,11 +6,7 @@ import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 
 // POST /api/[spaceId]/portfolio-managers/[id]/portfolios/create - Create a new portfolio for a profile (owner only)
-async function postHandler(
-  req: NextRequest,
-  userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
-): Promise<Portfolio> {
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<Portfolio> {
   const { id: profileId } = await params;
   const { userId } = userContext;
   const body: CreatePortfolioRequest = await req.json();
@@ -56,4 +52,3 @@ async function postHandler(
 }
 
 export const POST = withLoggedInUser<Portfolio>(postHandler);
-

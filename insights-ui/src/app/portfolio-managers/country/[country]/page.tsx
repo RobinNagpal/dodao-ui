@@ -28,10 +28,7 @@ export default function CountryPortfolioManagersPage() {
   const country = params.country as string;
 
   // Fetch portfolio managers with MostFamous type
-  const {
-    data: profilesData,
-    loading: profilesLoading,
-  } = useFetchData<{ profiles: PortfolioManagerProfileWithUser[] }>(
+  const { data: profilesData, loading: profilesLoading } = useFetchData<{ profiles: PortfolioManagerProfileWithUser[] }>(
     `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.MostFamous}`,
     { skipInitialFetch: !country },
     'Failed to fetch portfolio managers'
@@ -117,4 +114,3 @@ export default function CountryPortfolioManagersPage() {
     </PageWrapper>
   );
 }
-

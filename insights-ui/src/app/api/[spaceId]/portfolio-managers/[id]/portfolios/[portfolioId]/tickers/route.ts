@@ -194,4 +194,3 @@ async function deleteHandler(
 export const POST = withLoggedInUser<PortfolioTicker>(postHandler);
 export const PUT = withLoggedInUser<PortfolioTicker>(putHandler);
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);
-
