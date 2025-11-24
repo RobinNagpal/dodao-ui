@@ -1,4 +1,4 @@
-import { AllExchanges, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, PakistanExchanges } from './countryExchangeUtils';
+import { AllExchanges, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, PakistanExchanges, JapanExchanges, TaiwanExchanges, HongKongExchanges, KoreaExchanges } from './countryExchangeUtils';
 
 /** ---------- URL Pattern Mappings ---------- */
 
@@ -26,6 +26,18 @@ const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
   // India Exchanges
   [IndiaExchanges.BSE]: 'bom', // BSE maps to 'bom'
   [IndiaExchanges.NSE]: 'nse',
+
+  // Japan Exchanges
+  [JapanExchanges.TSE]: 'tyo',
+
+  // Taiwan Exchanges 
+  [TaiwanExchanges.TWSE]: 'tpe',
+
+  // Hong Kong Exchanges
+  [HongKongExchanges.HKEX]: 'hkg',
+
+  // Korea Exchanges
+  [KoreaExchanges.KRX]: 'krx',
 } as const;
 
 /**

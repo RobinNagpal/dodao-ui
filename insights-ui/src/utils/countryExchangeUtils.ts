@@ -10,6 +10,10 @@ export enum SupportedCountries {
   India = 'India',
   UK = 'UK',
   Pakistan = 'Pakistan',
+  Japan = 'Japan',
+  Taiwan = 'Taiwan',
+  HongKong = 'HongKong',
+  Korea = 'Korea',
 }
 
 export enum USExchanges {
@@ -38,7 +42,23 @@ export enum PakistanExchanges {
   PSX = 'PSX',
 }
 
-export type AllExchanges = USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges;
+export enum JapanExchanges {
+  TSE = 'TSE', 
+}
+
+export enum TaiwanExchanges {
+  TWSE = 'TWSE', 
+}
+
+export enum HongKongExchanges {
+  HKEX = 'HKEX',
+}
+
+export enum KoreaExchanges {
+  KRX = 'KRX',
+}
+
+export type AllExchanges = USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges | PakistanExchanges | JapanExchanges | TaiwanExchanges | HongKongExchanges | KoreaExchanges;
 
 /** ---------- Constants ---------- */
 
@@ -54,6 +74,10 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   UKExchanges.LSE,
   UKExchanges.AIM,
   PakistanExchanges.PSX,
+  JapanExchanges.TSE,
+  TaiwanExchanges.TWSE,
+  HongKongExchanges.HKEX,
+  KoreaExchanges.KRX,
 ] as const;
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
@@ -64,6 +88,10 @@ export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllExchanges[]> = 
   [SupportedCountries.India]: Object.values(IndiaExchanges),
   [SupportedCountries.UK]: Object.values(UKExchanges),
   [SupportedCountries.Pakistan]: Object.values(PakistanExchanges),
+  [SupportedCountries.Japan]: Object.values(JapanExchanges),
+  [SupportedCountries.Taiwan]: Object.values(TaiwanExchanges),
+  [SupportedCountries.HongKong]: Object.values(HongKongExchanges),
+  [SupportedCountries.Korea]: Object.values(KoreaExchanges),
 };
 
 export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
@@ -78,6 +106,10 @@ export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [UKExchanges.LSE]: SupportedCountries.UK,
   [UKExchanges.AIM]: SupportedCountries.UK,
   [PakistanExchanges.PSX]: SupportedCountries.Pakistan,
+  [JapanExchanges.TSE]: SupportedCountries.Japan,
+  [TaiwanExchanges.TWSE]: SupportedCountries.Taiwan,
+  [HongKongExchanges.HKEX]: SupportedCountries.HongKong,
+  [KoreaExchanges.KRX]: SupportedCountries.Korea,
 };
 
 export type CountryCode = keyof typeof SupportedCountries;
@@ -149,6 +181,10 @@ export const getCountryCodeForSearchBarDisplay = (country: SupportedCountries): 
     [SupportedCountries.Canada]: 'CAN',
     [SupportedCountries.UK]: 'UK',
     [SupportedCountries.Pakistan]: 'PAK',
+    [SupportedCountries.Japan]: 'JPN',
+    [SupportedCountries.Taiwan]: 'TWN',
+    [SupportedCountries.HongKong]: 'HKG',
+    [SupportedCountries.Korea]: 'KOR',
   };
   return countryCodeMap[country] || country;
 };
