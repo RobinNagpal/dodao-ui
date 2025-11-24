@@ -2,15 +2,16 @@
 
 import AdminNav from '@/app/admin-v1/AdminNav';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import UserRow from './UserRow';
 import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
+import AddEditPortfolioProfileModal from '@/components/portfolios/AddEditPortfolioProfileModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 interface User {
@@ -21,16 +22,38 @@ interface User {
   role: UserRole;
 }
 
+interface PortfolioManagerProfile {
+  id: string;
+  headline: string;
+  summary: string;
+  detailedDescription: string;
+  country: string | null;
+  managerType: string | null;
+  isPublic: boolean;
+  profileImageUrl: string | null;
+}
+
 interface UsersResponse {
   users: User[];
+}
+
+interface PortfolioProfileResponse {
+  portfolioManagerProfile: PortfolioManagerProfile | null;
+}
+
+interface DeleteProfileResponse {
+  success: boolean;
 }
 
 export default function Page() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showPortfolioProfileModal, setShowPortfolioProfileModal] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [portfolioProfileUser, setPortfolioProfileUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
+  const [fetchProfileKey, setFetchProfileKey] = useState<string>('');
 
   const {
     data: usersResponse,
@@ -43,9 +66,30 @@ export default function Page() {
     errorMessage: 'Failed to delete user',
   });
 
+  const {
+    data: portfolioProfileResponse,
+    loading: loadingPortfolioProfile,
+  } = useFetchData<PortfolioProfileResponse>(
+    fetchProfileKey ? `${getBaseUrl()}/api/${'koala_gains'}/users/portfolio-manager-profiles/by-user/${fetchProfileKey}` : '',
+    {},
+    'Failed to load portfolio manager profile'
+  );
+
+  const { deleteData: deletePortfolioProfile, loading: deletingPortfolioProfile } = useDeleteData<DeleteProfileResponse, never>({
+    successMessage: 'Portfolio manager profile deleted successfully!',
+    errorMessage: 'Failed to delete portfolio manager profile',
+  });
+
+
   const handleEditUser = (user: User): void => {
     setSelectedUser(user);
     setShowEditModal(true);
+  };
+
+  const handlePortfolioProfile = (user: User): void => {
+    setPortfolioProfileUser(user);
+    setFetchProfileKey(user.id);
+    setShowPortfolioProfileModal(true);
   };
 
   const handleDeleteUser = (userId: string): void => {
@@ -66,6 +110,21 @@ export default function Page() {
 
   const handleUserSuccess = async (): Promise<void> => {
     await refetchUsers();
+  };
+
+  const handleDeleteProfile = async (): Promise<void> => {
+    const profile = portfolioProfileResponse?.portfolioManagerProfile;
+    if (!profile) return;
+
+    try {
+      await deletePortfolioProfile(`${getBaseUrl()}/api/${'koala_gains'}/users/portfolio-manager-profiles/${profile.id}`);
+      await handleUserSuccess();
+      setShowPortfolioProfileModal(false);
+      setPortfolioProfileUser(null);
+      setFetchProfileKey('');
+    } catch (error) {
+      console.error('Error deleting portfolio manager profile:', error);
+    }
   };
 
   const users = usersResponse?.users || [];
@@ -122,7 +181,7 @@ export default function Page() {
                 </thead>
                 <tbody className="divide-y divide-emerald-50">
                   {users.map((user) => (
-                    <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} />
+                    <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onPortfolioProfile={handlePortfolioProfile} />
                   ))}
                 </tbody>
               </table>
@@ -142,6 +201,25 @@ export default function Page() {
           }}
           onSuccess={handleUserSuccess}
           user={selectedUser}
+        />
+      )}
+
+      {portfolioProfileUser && (
+        <AddEditPortfolioProfileModal
+          isOpen={showPortfolioProfileModal}
+          onClose={() => {
+            setShowPortfolioProfileModal(false);
+            setPortfolioProfileUser(null);
+            setFetchProfileKey('');
+          }}
+          onSuccess={() => {
+            handleUserSuccess();
+            setFetchProfileKey('');
+          }}
+          onDelete={portfolioProfileResponse?.portfolioManagerProfile ? handleDeleteProfile : undefined}
+          portfolioManagerProfile={portfolioProfileResponse?.portfolioManagerProfile || null}
+          isAdmin={true}
+          userId={portfolioProfileUser.id}
         />
       )}
 

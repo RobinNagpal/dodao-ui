@@ -1,5 +1,5 @@
 import { UserRole } from '@prisma/client';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, User } from 'lucide-react';
 
 interface UserRowProps {
   user: {
@@ -11,9 +11,10 @@ interface UserRowProps {
   };
   onEdit: (user: UserRowProps['user']) => void;
   onDelete: (userId: string) => void;
+  onPortfolioProfile: (user: UserRowProps['user']) => void;
 }
 
-export default function UserRow({ user, onEdit, onDelete }: UserRowProps): JSX.Element {
+export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: UserRowProps): JSX.Element {
   return (
     <tr key={user.id} className="hover:bg-emerald-50/50 transition-colors">
       <td className="px-6 py-4">
@@ -35,6 +36,13 @@ export default function UserRow({ user, onEdit, onDelete }: UserRowProps): JSX.E
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <div className="flex space-x-3">
+          <button
+            onClick={() => onPortfolioProfile(user)}
+            className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors flex items-center"
+          >
+            <User className="h-4 w-4 mr-1" />
+            Portfolio
+          </button>
           <button
             onClick={() => onEdit(user)}
             className="text-emerald-600 hover:text-emerald-800 font-medium hover:underline transition-colors flex items-center"

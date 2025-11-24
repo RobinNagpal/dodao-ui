@@ -24,7 +24,8 @@ export default function PortfolioDetailPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
-  const portfolioId = params.id as string;
+  const portfolioManagerId = params.id as string;
+  const portfolioId = params.portfolioId as string;
 
   const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(null);
   const [editingTicker, setEditingTicker] = useState<PortfolioTicker | null>(null);
@@ -112,9 +113,9 @@ export default function PortfolioDetailPage() {
     return <FullPageLoader message="Loading portfolio details..." />;
   }
 
-  // If portfolio not found, redirect to portfolios list
+  // If portfolio not found, redirect to portfolio manager page
   if (!portfolioId) {
-    router.push('/portfolios');
+    router.push(`/portfolio-managers/${portfolioManagerId}`);
     return null;
   }
 
@@ -160,7 +161,7 @@ export default function PortfolioDetailPage() {
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <Link href="/portfolios" className="text-blue-400 hover:text-blue-300">
+              <Link href={`/portfolio-managers/${portfolioManagerId}`} className="text-blue-400 hover:text-blue-300">
                 <ArrowLeftIcon className="w-6 h-6" />
               </Link>
               <div>

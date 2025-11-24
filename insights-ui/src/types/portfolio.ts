@@ -6,17 +6,26 @@ import {
   UserTickerTag,
   UserTickerList,
 } from '@prisma/client';
+import { PortfolioManagerType } from './portfolio-manager';
 
 export interface CreatePortfolioManagerProfileRequest {
   headline: string;
   summary: string;
   detailedDescription: string;
+  country: string;
+  managerType: PortfolioManagerType;
+  isPublic?: boolean;
+  profileImageUrl?: string;
 }
 
 export interface UpdatePortfolioManagerProfileRequest {
   headline?: string;
   summary?: string;
   detailedDescription?: string;
+  country?: string;
+  managerType?: PortfolioManagerType;
+  isPublic?: boolean;
+  profileImageUrl?: string;
 }
 
 export interface Portfolio extends PrismaPortfolio {
