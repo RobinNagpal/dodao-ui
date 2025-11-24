@@ -78,10 +78,18 @@ export default function IndustryWithStocksPageLayout({
 
       <div className="w-full mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-          <h1 className="text-2xl font-bold text-white mb-2 sm:mb-0">{title}</h1>
-          <CountryAlternatives currentCountry={currentCountry} industryKey={industryKey} className="flex-shrink-0 text-sm" />
+          <h1 className="text-2xl font-bold text-white mb-4 sm:mb-0">{title}</h1>
         </div>
         <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+        <div className="mt-2 mb-2">
+          <CountryAlternatives 
+            currentCountry={currentCountry} 
+            industryKey={industryKey} 
+            className="flex-shrink-0 text-sm" 
+            enhanced={true}
+            compact={true}
+          />
+        </div>
       </div>
 
       {children}
