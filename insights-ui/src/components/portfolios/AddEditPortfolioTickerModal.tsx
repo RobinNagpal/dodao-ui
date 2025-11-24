@@ -27,9 +27,10 @@ interface AddEditPortfolioTickerModalProps {
   portfolioId: string;
   portfolioTicker?: PortfolioTicker | null;
   onSuccess?: () => void;
+  portfolioManagerId?: string; // Optional, for using new API routes
 }
 
-export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolioId, portfolioTicker, onSuccess }: AddEditPortfolioTickerModalProps) {
+export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolioId, portfolioTicker, onSuccess, portfolioManagerId }: AddEditPortfolioTickerModalProps) {
   const [currentView, setCurrentView] = useState<ModalView>('main');
 
   // Form state
@@ -153,10 +154,12 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
         listIds: selectedListIds,
       };
 
-      const result = await updatePortfolioTicker(
-        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`,
-        updateData
-      );
+      // Use new API route if portfolioManagerId is provided
+      const apiUrl = portfolioManagerId
+        ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`
+        : `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`;
+
+      const result = await updatePortfolioTicker(apiUrl, updateData);
       if (result) {
         onSuccess?.();
         onClose();
@@ -173,7 +176,12 @@ export default function AddEditPortfolioTickerModal({ isOpen, onClose, portfolio
         listIds: selectedListIds.length > 0 ? selectedListIds : undefined,
       };
 
-      const result = await createPortfolioTicker(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers`, createData);
+      // Use new API route if portfolioManagerId is provided
+      const apiUrl = portfolioManagerId
+        ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers`
+        : `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers`;
+
+      const result = await createPortfolioTicker(apiUrl, createData);
       if (result) {
         onSuccess?.();
         onClose();

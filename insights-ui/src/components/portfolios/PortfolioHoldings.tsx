@@ -16,8 +16,8 @@ interface PortfolioHoldingsProps {
   unlistedTickers: PortfolioTicker[];
   openListIds: Set<string>;
   handleAccordionClick: (e: React.MouseEvent<HTMLElement>, listId: string) => void;
-  setEditingTicker: (ticker: PortfolioTicker) => void;
-  setDeletingTicker: (ticker: PortfolioTicker) => void;
+  setEditingTicker: (ticker: PortfolioTicker | null) => void;
+  setDeletingTicker: (ticker: PortfolioTicker | null) => void;
   setShowAddTickerModal: (show: boolean) => void;
 }
 
@@ -77,14 +77,21 @@ export default function PortfolioHoldings({
           <FavouriteTags tags={ticker.tags || []} />
         </div>
 
-        <div className="flex gap-1">
-          <button onClick={() => setEditingTicker(ticker)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
-            <PencilIcon className="w-4 h-4" />
-          </button>
-          <button onClick={() => setDeletingTicker(ticker)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
-            <TrashIcon className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Only show edit/delete buttons if handlers are provided */}
+        {(setEditingTicker !== (() => {}) || setDeletingTicker !== (() => {})) && (
+          <div className="flex gap-1">
+            {setEditingTicker !== (() => {}) && (
+              <button onClick={() => setEditingTicker(ticker)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
+                <PencilIcon className="w-4 h-4" />
+              </button>
+            )}
+            {setDeletingTicker !== (() => {}) && (
+              <button onClick={() => setDeletingTicker(ticker)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
+                <TrashIcon className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

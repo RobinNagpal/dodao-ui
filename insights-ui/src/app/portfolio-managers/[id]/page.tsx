@@ -1,13 +1,12 @@
 'use client';
 
 import AddEditPortfolioProfileModal from '@/components/portfolios/AddEditPortfolioProfileModal';
-import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
-import { Portfolio, PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
+import AddEditPortfolioModal from '@/components/portfolios/AddEditPortfolioModal';
+import { PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PencilIcon, TrashIcon, FolderIcon, UserIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, FolderIcon, UserIcon, PlusIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -27,9 +26,7 @@ export default function PortfolioManagerProfilePage() {
   const portfolioManagerId = params.id as string;
 
   const [editingProfile, setEditingProfile] = useState<PortfolioManagerProfilewithPortfoliosAndUser | null>(null);
-  const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(null);
-  const [deletingPortfolio, setDeletingPortfolio] = useState<Portfolio | null>(null);
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreatePortfolioModal, setShowCreatePortfolioModal] = useState(false);
 
   // Fetch portfolio manager profile
   const {
@@ -41,11 +38,6 @@ export default function PortfolioManagerProfilePage() {
     { skipInitialFetch: !portfolioManagerId },
     'Failed to fetch portfolio manager profile'
   );
-
-  const { deleteData: deletePortfolio, loading: isDeleting } = useDeleteData({
-    successMessage: 'Portfolio deleted successfully!',
-    errorMessage: 'Failed to delete portfolio.',
-  });
 
   const profile = profileData?.portfolioManagerProfile;
   const portfolios = profile?.portfolios || [];
@@ -61,20 +53,10 @@ export default function PortfolioManagerProfilePage() {
     return null;
   }
 
-  const handleDelete = async () => {
-    if (!deletingPortfolio) return;
-
-    const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolios?id=${deletingPortfolio.id}`);
-    if (result) {
-      await refetchProfile();
-      setDeletingPortfolio(null);
-    }
-  };
-
   const handlePortfolioSuccess = async () => {
     await refetchProfile();
     setEditingProfile(null);
-    setShowCreateModal(false);
+    setShowCreatePortfolioModal(false);
   };
 
   return (
@@ -145,72 +127,87 @@ export default function PortfolioManagerProfilePage() {
                 Portfolios
               </h2>
               <p className="text-gray-400 mt-1">
-                {portfolios.length} portfolio{portfolios.length !== 1 ? 's' : ''} • Total holdings across all portfolios
+                {portfolios.length} portfolio{portfolios.length !== 1 ? 's' : ''} published
               </p>
             </div>
 
-            {/* Users cannot create portfolios - only admins can */}
+            {session?.userId === profile?.userId && (
+              <Button onClick={() => setShowCreatePortfolioModal(true)} variant="contained" primary className="flex items-center gap-2">
+                <PlusIcon className="w-4 h-4" />
+                Create Portfolio
+              </Button>
+            )}
           </div>
 
-          {/* Portfolios Grid/List */}
+          {/* Portfolios Preview */}
           {portfolios.length === 0 ? (
             <div className="bg-gray-800 rounded-lg p-8 text-center">
               <FolderIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No portfolios yet</h3>
-              <p className="text-gray-400 mb-4">This portfolio manager hasnt published any portfolios yet.</p>
+              <p className="text-gray-400 mb-4">
+                {session?.userId === profile?.userId
+                  ? 'Start building your investment portfolio to showcase your expertise.'
+                  : 'This portfolio manager hasn\'t published any portfolios yet.'}
+              </p>
+              {session?.userId === profile?.userId && (
+                <Button onClick={() => setShowCreatePortfolioModal(true)} variant="contained" primary className="inline-flex items-center gap-2">
+                  <PlusIcon className="w-4 h-4" />
+                  Create Your First Portfolio
+                </Button>
+              )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {portfolios.map((portfolio) => (
-                <div key={portfolio.id} className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-colors">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-white mb-2">{portfolio.name}</h3>
-                      <p className="text-gray-300 text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
-                    </div>
-                    <div className="flex items-center gap-1 ml-2">
-                      <Button onClick={() => setEditingPortfolio(portfolio)} variant="text" className="text-blue-400 hover:text-blue-300 p-1">
-                        <PencilIcon className="w-4 h-4" />
-                      </Button>
-                      <Button onClick={() => setDeletingPortfolio(portfolio)} variant="text" className="text-red-400 hover:text-red-300 p-1">
-                        <TrashIcon className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
+            <div>
+              <div className="bg-gray-800 rounded-lg p-6 mb-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-white">Latest Portfolios</h3>
+                  <Link
+                    href={`/portfolio-managers/${portfolioManagerId}/portfolios`}
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center gap-1"
+                  >
+                    See All Portfolios →
+                  </Link>
+                </div>
 
-                  <div className="space-y-3">
-                    <div className="text-sm text-gray-400">
-                      <span className="font-medium text-white">{portfolio.portfolioTickers?.length || 0}</span> holdings
-                    </div>
-
-                    {portfolio.portfolioTickers && portfolio.portfolioTickers.length > 0 && (
-                      <div className="space-y-2">
-                        <div className="text-sm font-medium text-gray-300">Top Holdings:</div>
-                        <div className="space-y-1">
-                          {portfolio.portfolioTickers.slice(0, 3).map((ticker) => (
-                            <div key={ticker.id} className="flex justify-between items-center text-sm">
-                              <span className="text-gray-300">{ticker.tickerId || 'Unknown'}</span>
-                              <span className="text-gray-400">{ticker.allocation}%</span>
-                            </div>
-                          ))}
-                          {portfolio.portfolioTickers.length > 3 && (
-                            <div className="text-sm text-gray-500">+{portfolio.portfolioTickers.length - 3} more holdings</div>
-                          )}
+                <div className="space-y-3">
+                  {portfolios.slice(0, 3).map((portfolio) => (
+                    <Link
+                      key={portfolio.id}
+                      href={`/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`}
+                      className="block bg-gray-900 rounded-lg p-4 hover:bg-gray-850 transition-colors"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1">
+                          <h4 className="text-base font-semibold text-white mb-1">{portfolio.name}</h4>
+                          <p className="text-gray-400 text-sm line-clamp-1">{portfolio.summary}</p>
                         </div>
                       </div>
-                    )}
 
-                    <div className="pt-3 border-t border-gray-700">
-                      <Link
-                        href={`/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
-                      >
-                        View Details →
-                      </Link>
-                    </div>
-                  </div>
+                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                        <span>
+                          <span className="font-medium text-white">{portfolio.portfolioTickers?.length || 0}</span> holdings
+                        </span>
+                        {portfolio.portfolioTickers && portfolio.portfolioTickers.length > 0 && (
+                          <span className="text-gray-500">
+                            Top: {portfolio.portfolioTickers.slice(0, 3).map((t) => t.tickerId).join(', ')}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              ))}
+
+                {portfolios.length > 3 && (
+                  <div className="mt-4 pt-4 border-t border-gray-700 text-center">
+                    <Link
+                      href={`/portfolio-managers/${portfolioManagerId}/portfolios`}
+                      className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                    >
+                      View all {portfolios.length} portfolios →
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -226,16 +223,13 @@ export default function PortfolioManagerProfilePage() {
           />
         )}
 
-        {/* Delete Confirmation Modal */}
-        {deletingPortfolio && (
-          <DeleteConfirmationModal
-            open={!!deletingPortfolio}
-            onClose={() => setDeletingPortfolio(null)}
-            onDelete={handleDelete}
-            deleting={isDeleting}
-            title={`Delete "${deletingPortfolio.name}"?`}
-            deleteButtonText="Delete Portfolio"
-            confirmationText="DELETE"
+        {/* Create Portfolio Modal */}
+        {showCreatePortfolioModal && (
+          <AddEditPortfolioModal
+            isOpen={showCreatePortfolioModal}
+            onClose={() => setShowCreatePortfolioModal(false)}
+            onSuccess={handlePortfolioSuccess}
+            portfolioManagerId={portfolioManagerId}
           />
         )}
       </div>
