@@ -8,13 +8,14 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 
 interface PageProps {
   params: Promise<{ id: string }>;
-  searchParams: { updatedAt?: string };
+  searchParams: Promise<{ updatedAt?: string }>;
 }
 
 const WEEK = 60 * 60 * 24 * 7;
 
-export default async function PortfolioManagerProfilePage({ params: paramsPromise, searchParams }: PageProps) {
+export default async function PortfolioManagerProfilePage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
   const params = await paramsPromise;
+  const searchParams = await searchParamsPromise;
   const portfolioManagerId = params.id;
 
   // Fetch portfolio manager profile on server

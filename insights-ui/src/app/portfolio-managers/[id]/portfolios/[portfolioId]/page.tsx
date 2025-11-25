@@ -19,13 +19,14 @@ interface PortfolioWithProfile extends Portfolio {
 
 interface PageProps {
   params: Promise<{ id: string; portfolioId: string }>;
-  searchParams: { updatedAt?: string };
+  searchParams: Promise<{ updatedAt?: string }>;
 }
 
 const WEEK = 60 * 60 * 24 * 7;
 
-export default async function PortfolioDetailPage({ params: paramsPromise, searchParams }: PageProps) {
+export default async function PortfolioDetailPage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
   const params = await paramsPromise;
+  const searchParams = await searchParamsPromise;
   const portfolioManagerId = params.id;
   const portfolioId = params.portfolioId;
 
