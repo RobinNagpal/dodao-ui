@@ -7,12 +7,11 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { notFound } from 'next/navigation';
 
 interface PortfolioManagerPortfoliosPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-export default async function PortfolioManagerPortfoliosPage({ params }: PortfolioManagerPortfoliosPageProps) {
+export default async function PortfolioManagerPortfoliosPage({ params: paramsPromise }: PortfolioManagerPortfoliosPageProps) {
+  const params = await paramsPromise;
   const portfolioManagerId = params.id;
 
   // Fetch portfolio manager profile with portfolios and tickers in single API call

@@ -7,12 +7,11 @@ import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-m
 import ProfileGrid from '@/components/portfolios/ProfileGrid';
 
 interface CollegeAmbassadorsPageProps {
-  params: {
-    country: string;
-  };
+  params: Promise<{ country: string }>;
 }
 
-export default async function CollegeAmbassadorsPage({ params }: CollegeAmbassadorsPageProps) {
+export default async function CollegeAmbassadorsPage({ params: paramsPromise }: CollegeAmbassadorsPageProps) {
+  const params = await paramsPromise;
   const country = params.country;
 
   // Fetch portfolio managers with CollegeAmbassador type

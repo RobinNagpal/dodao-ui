@@ -7,12 +7,11 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import ProfileGrid from '@/components/portfolios/ProfileGrid';
 
 interface CountryPortfolioManagersPageProps {
-  params: {
-    country: string;
-  };
+  params: Promise<{ country: string }>;
 }
 
-export default async function CountryPortfolioManagersPage({ params }: CountryPortfolioManagersPageProps) {
+export default async function CountryPortfolioManagersPage({ params: paramsPromise }: CountryPortfolioManagersPageProps) {
+  const params = await paramsPromise;
   const country = params.country;
 
   // Fetch portfolio managers with MostFamous type
