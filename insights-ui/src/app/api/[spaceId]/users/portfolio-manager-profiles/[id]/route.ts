@@ -22,7 +22,15 @@ async function getHandler(
       user: true,
       portfolios: {
         include: {
-          portfolioTickers: true,
+          portfolioTickers: {
+            include: {
+              ticker: {
+                include: {
+                  cachedScoreEntry: true,
+                },
+              },
+            },
+          },
         },
         orderBy: {
           createdAt: 'desc',

@@ -3,6 +3,8 @@
 import AddEditPortfolioModal from '@/components/portfolios/AddEditPortfolioModal';
 import AddEditPortfolioTickerModal from '@/components/portfolios/AddEditPortfolioTickerModal';
 import PortfolioHoldings from '@/components/portfolios/PortfolioHoldings';
+import PortfolioStats from '@/components/portfolios/PortfolioStats';
+import PortfolioDetails from '@/components/portfolios/PortfolioDetails';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
 import { UserTickerList, PortfolioManagerProfile, User } from '@prisma/client';
@@ -167,31 +169,6 @@ export default function PortfolioDetailPage() {
     <PageWrapper>
       <div className="max-w-7xl mx-auto">
         <div className="py-6">
-          {/* Profile Header */}
-          <div className="bg-gray-800 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-4">
-              <div className="flex-shrink-0">
-                {portfolio.portfolioManagerProfile?.profileImageUrl ? (
-                  <img
-                    src={portfolio.portfolioManagerProfile.profileImageUrl}
-                    alt={`${portfolio.portfolioManagerProfile.user.name}'s profile`}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
-                    <UserIcon className="w-6 h-6 text-gray-400" />
-                  </div>
-                )}
-              </div>
-              <div>
-                <Link href={`/portfolio-managers/${portfolioManagerId}`} className="text-blue-400 hover:text-blue-300 font-medium">
-                  {portfolio.portfolioManagerProfile?.user.name}
-                </Link>
-                <p className="text-sm text-gray-400">{portfolio.portfolioManagerProfile?.headline}</p>
-              </div>
-            </div>
-          </div>
-
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
@@ -226,48 +203,10 @@ export default function PortfolioDetailPage() {
           {/* Portfolio Details */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <div className="lg:col-span-2">
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h2 className="text-xl font-semibold text-white mb-4">Portfolio Summary</h2>
-                <p className="text-gray-300 mb-4">{portfolio.summary}</p>
-
-                <h3 className="text-lg font-medium text-white mb-3">Detailed Description</h3>
-                <div className="text-gray-300 prose prose-invert max-w-none">
-                  {portfolio.detailedDescription ? (
-                    <div dangerouslySetInnerHTML={{ __html: portfolio.detailedDescription.replace(/\n/g, '<br>') }} />
-                  ) : (
-                    <p className="text-gray-500 italic">No detailed description provided.</p>
-                  )}
-                </div>
-              </div>
+              <PortfolioDetails portfolio={portfolio} />
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-white mb-4">Portfolio Stats</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Total Holdings</span>
-                  <span className="text-white font-medium">{portfolioTickers.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Total Allocation</span>
-                  <span className={`font-medium ${totalAllocation > 100 ? 'text-red-400' : totalAllocation < 100 ? 'text-yellow-400' : 'text-green-400'}`}>
-                    {totalAllocation.toFixed(1)}%
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Unallocated</span>
-                  <span className={`font-medium ${100 - totalAllocation < 0 ? 'text-red-400' : 'text-gray-300'}`}>{(100 - totalAllocation).toFixed(1)}%</span>
-                </div>
-              </div>
-
-              {isOwner && (
-                <div className="mt-6 pt-6 border-t border-gray-700">
-                  <Button onClick={() => setDeletingPortfolio(true)} variant="text" className="text-red-400 hover:text-red-300 w-full">
-                    Delete Portfolio
-                  </Button>
-                </div>
-              )}
-            </div>
+            <PortfolioStats portfolioTickers={portfolioTickers} isOwner={isOwner as boolean} onDeletePortfolio={() => setDeletingPortfolio(true)} />
           </div>
 
           {/* Portfolio Holdings */}

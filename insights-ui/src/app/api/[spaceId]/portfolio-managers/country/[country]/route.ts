@@ -1,16 +1,11 @@
 import { prisma } from '@/prisma';
-import { PortfolioManagerProfile } from '@prisma/client';
+import { PortfolioManagerProfile, User } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-interface PortfolioManagerProfileWithUser extends PortfolioManagerProfile {
-  user: {
-    id: string;
-    name: string | null;
-    email: string | null;
-    username: string;
-  };
+export interface PortfolioManagerProfileWithUser extends PortfolioManagerProfile {
+  user: User;
   _count: {
     portfolios: number;
   };
@@ -30,14 +25,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ coun
       ...(managerType && { managerType }),
     },
     include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          username: true,
-        },
-      },
+      user: true,
       _count: {
         select: {
           portfolios: true,

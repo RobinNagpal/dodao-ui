@@ -75,9 +75,11 @@ export interface UpdatePortfolioTickerRequest {
   listIds?: string[];
 }
 
+export type PortfolioWithTickers = PrismaPortfolio & {
+  portfolioTickers: PortfolioTicker[];
+};
+
 export type PortfolioManagerProfilewithPortfoliosAndUser = PortfolioManagerProfile & {
   user: User;
-  portfolios: (PrismaPortfolio & {
-    portfolioTickers: PrismaPortfolioTicker[];
-  })[];
+  portfolios: PortfolioWithTickers[];
 };

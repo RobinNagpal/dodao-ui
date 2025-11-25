@@ -17,11 +17,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       spaceId: KoalaGainsSpaceId,
     },
     include: {
-      portfolioManagerProfile: {
-        include: {
-          user: true,
-        },
-      },
       portfolioTickers: {
         include: {
           ticker: {
@@ -40,45 +35,49 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   });
 
   // Populate competitors and alternatives as full ticker objects
+  // First, collect all unique ticker IDs from competitors and alternatives
+  const allTickerIds = new Set<string>();
+  portfolio.portfolioTickers.forEach((pt) => {
+    const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
+    if (ptWithFields.competitors) {
+      ptWithFields.competitors.forEach((id) => allTickerIds.add(id));
+    }
+    if (ptWithFields.alternatives) {
+      ptWithFields.alternatives.forEach((id) => allTickerIds.add(id));
+    }
+  });
+
+  // Batch fetch all competitor and alternative tickers in one query
+  const tickerMap = new Map<string, any>();
+  if (allTickerIds.size > 0) {
+    const tickers = await prisma.tickerV1.findMany({
+      where: {
+        id: { in: Array.from(allTickerIds) },
+        spaceId: KoalaGainsSpaceId,
+      },
+      include: {
+        cachedScoreEntry: true,
+      },
+    });
+    tickers.forEach((ticker) => tickerMap.set(ticker.id, ticker));
+  }
+
+  // Now map the portfolio tickers with resolved competitors and alternatives
   const portfolioWithCompetitors = {
     ...portfolio,
-    portfolioTickers: await Promise.all(
-      portfolio.portfolioTickers.map(async (pt) => {
-        const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
+    portfolioTickers: portfolio.portfolioTickers.map((pt) => {
+      const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
 
-        const competitors =
-          ptWithFields.competitors && ptWithFields.competitors.length > 0
-            ? await prisma.tickerV1.findMany({
-                where: {
-                  id: { in: ptWithFields.competitors },
-                  spaceId: KoalaGainsSpaceId,
-                },
-                include: {
-                  cachedScoreEntry: true,
-                },
-              })
-            : [];
+      const competitors = ptWithFields.competitors ? ptWithFields.competitors.map((id) => tickerMap.get(id)).filter(Boolean) : [];
 
-        const alternatives =
-          ptWithFields.alternatives && ptWithFields.alternatives.length > 0
-            ? await prisma.tickerV1.findMany({
-                where: {
-                  id: { in: ptWithFields.alternatives },
-                  spaceId: KoalaGainsSpaceId,
-                },
-                include: {
-                  cachedScoreEntry: true,
-                },
-              })
-            : [];
+      const alternatives = ptWithFields.alternatives ? ptWithFields.alternatives.map((id) => tickerMap.get(id)).filter(Boolean) : [];
 
-        return {
-          ...pt,
-          competitorsConsidered: competitors,
-          betterAlternatives: alternatives,
-        };
-      })
-    ),
+      return {
+        ...pt,
+        competitorsConsidered: competitors,
+        betterAlternatives: alternatives,
+      };
+    }),
   };
 
   return { portfolio: portfolioWithCompetitors };
