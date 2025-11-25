@@ -31,6 +31,9 @@ export interface UpdatePortfolioManagerProfileRequest {
 }
 
 export interface Portfolio extends PrismaPortfolio {
+  portfolioManagerProfile?: PortfolioManagerProfile & {
+    user: User;
+  };
   portfolioTickers?: PortfolioTicker[];
 }
 

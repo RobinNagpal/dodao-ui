@@ -4,7 +4,10 @@ import { UserIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/country/[country]/route';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getPortfolioManagersByCountryTag } from '@/utils/ticker-v1-cache-utils';
 import ProfileGrid from '@/components/portfolios/ProfileGrid';
+
+const WEEK = 60 * 60 * 24 * 7;
 
 interface CountryPortfolioManagersPageProps {
   params: Promise<{ country: string }>;
@@ -17,12 +20,8 @@ export default async function CountryPortfolioManagersPage({ params: paramsPromi
   // Fetch portfolio managers with MostFamous type
   const response = await fetch(
     `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.MostFamous}`,
-    { cache: 'no-store' }
+    { next: { revalidate: WEEK, tags: [getPortfolioManagersByCountryTag(country)] } }
   );
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch portfolio managers');
-  }
 
   const profilesData: { profiles: PortfolioManagerProfileWithUser[] } = await response.json();
   const profiles = profilesData.profiles || [];

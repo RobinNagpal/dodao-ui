@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 
 // POST /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId]/tickers - Add a ticker to a portfolio (owner only)
 async function postHandler(
@@ -79,6 +80,9 @@ async function postHandler(
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return portfolioTicker;
 }
 
@@ -147,6 +151,9 @@ async function putHandler(
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return updatedPortfolioTicker;
 }
 
@@ -187,6 +194,9 @@ async function deleteHandler(
       id: tickerId,
     },
   });
+
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
 
   return { success: true };
 }

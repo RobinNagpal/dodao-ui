@@ -1,32 +1,21 @@
-import { FolderIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { FolderIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import TickerBadge from '@/components/favourites/TickerBadge';
 import { PortfolioWithTickers } from '@/types/portfolio';
 
 interface PortfolioCardsProps {
   portfolios: PortfolioWithTickers[];
   portfolioManagerId: string;
-  isOwner?: boolean;
-  onCreatePortfolio?: () => void;
 }
 
-export default function PortfolioCards({ portfolios, portfolioManagerId, isOwner = false, onCreatePortfolio }: PortfolioCardsProps) {
+export default function PortfolioCards({ portfolios, portfolioManagerId }: PortfolioCardsProps) {
   const totalHoldings = portfolios.reduce((sum, p) => sum + (p.portfolioTickers?.length || 0), 0);
 
   const renderEmptyState = () => (
     <div className="bg-gray-800 rounded-lg p-8 text-center">
       <FolderIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
       <h3 className="text-xl font-semibold mb-2">No portfolios yet</h3>
-      <p className="text-gray-400 mb-4">
-        {isOwner ? 'Start building your investment portfolio to showcase your expertise.' : "This portfolio manager hasn't published any portfolios yet."}
-      </p>
-      {isOwner && onCreatePortfolio && (
-        <Button onClick={onCreatePortfolio} variant="contained" primary className="inline-flex items-center gap-2">
-          <PlusIcon className="w-4 h-4" />
-          Create Your First Portfolio
-        </Button>
-      )}
+      <p className="text-gray-400 mb-4">This portfolio manager hasn’t published any portfolios yet.</p>
     </div>
   );
 
@@ -113,13 +102,6 @@ export default function PortfolioCards({ portfolios, portfolioManagerId, isOwner
             {portfolios.length} portfolio{portfolios.length !== 1 ? 's' : ''} • {totalHoldings} total holdings
           </p>
         </div>
-
-        {isOwner && onCreatePortfolio && (
-          <Button onClick={onCreatePortfolio} variant="contained" primary className="flex items-center gap-2">
-            <PlusIcon className="w-4 h-4" />
-            Create Portfolio
-          </Button>
-        )}
       </div>
 
       {/* Portfolio Content */}

@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { CreatePortfolioManagerProfileRequest } from '@/types/portfolio';
+import { revalidatePortfolioManagersByCountryTag } from '@/utils/ticker-v1-cache-utils';
 
 // GET /api/[spaceId]/users/portfolio-manager-profiles/by-user/[userId] - Get portfolio manager profile by user ID (admin only + to check if user has a profile)
 async function getHandler(
@@ -60,6 +61,11 @@ async function postHandler(
       createdBy: userContext.userId,
     },
   });
+
+  // Revalidate the portfolio managers by country cache
+  if (body.country) {
+    revalidatePortfolioManagersByCountryTag(body.country);
+  }
 
   return portfolioManagerProfile;
 }

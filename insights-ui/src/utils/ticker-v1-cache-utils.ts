@@ -17,6 +17,16 @@ export const getIndustryPageTag = (country: SupportedCountries, industryKey: str
 
 export const revalidateIndustryPageTag = (country: SupportedCountries, industryKey: string) => revalidateTag(getIndustryPageTag(country, industryKey));
 
+/** Portfolio profile cache tags */
+export const getPortfolioProfileTag = (portfolioManagerId: string) => `koalagains:portfolio-profile:${portfolioManagerId}`;
+
+export const revalidatePortfolioProfileTag = (portfolioManagerId: string) => revalidateTag(getPortfolioProfileTag(portfolioManagerId));
+
+/** Portfolio managers by country cache tags */
+export const getPortfolioManagersByCountryTag = (country: string) => `koalagains:portfolio-managers:country:${country}`;
+
+export const revalidatePortfolioManagersByCountryTag = (country: string) => revalidateTag(getPortfolioManagersByCountryTag(country));
+
 /** Home page cache tags */
 export const getHomePagePostsTag = () => 'koalagains:home-page:posts';
 

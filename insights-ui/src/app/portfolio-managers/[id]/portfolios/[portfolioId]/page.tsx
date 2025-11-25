@@ -1,113 +1,41 @@
-'use client';
-
-import AddEditPortfolioModal from '@/components/portfolios/AddEditPortfolioModal';
-import AddEditPortfolioTickerModal from '@/components/portfolios/AddEditPortfolioTickerModal';
-import PortfolioHoldings from '@/components/portfolios/PortfolioHoldings';
 import PortfolioStats from '@/components/portfolios/PortfolioStats';
 import PortfolioDetails from '@/components/portfolios/PortfolioDetails';
-import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
+import PortfolioDetailActions from '../../../../../components/portfolios/PortfolioDetailActions';
+import PortfolioHoldingsActions from '../../../../../components/portfolios/PortfolioHoldingsActions';
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
 import { UserTickerList, PortfolioManagerProfile, User } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getPortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PortfolioWithProfile extends Portfolio {
   portfolioManagerProfile: PortfolioManagerProfile & {
     user: User;
   };
 }
-import { PlusIcon, PencilIcon, ArrowLeftIcon, FolderIcon, UserIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { useState, useEffect, useMemo } from 'react';
-import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { KoalaGainsSession } from '@/types/auth';
 
-export default function PortfolioDetailPage() {
-  const { data: koalaSession } = useSession();
-  const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
-  const router = useRouter();
-  const params = useParams();
-  const portfolioManagerId = params.id as string;
-  const portfolioId = params.portfolioId as string;
+interface PageProps {
+  params: Promise<{ id: string; portfolioId: string }>;
+  searchParams: { updatedAt?: string };
+}
 
-  const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(null);
-  const [editingTicker, setEditingTicker] = useState<PortfolioTicker | null>(null);
-  const [deletingTicker, setDeletingTicker] = useState<PortfolioTicker | null>(null);
-  const [deletingPortfolio, setDeletingPortfolio] = useState<boolean>(false);
-  const [showAddTickerModal, setShowAddTickerModal] = useState(false);
-  const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
+const WEEK = 60 * 60 * 24 * 7;
 
-  // Fetch portfolio details
-  const {
-    data: portfolioData,
-    loading: portfolioLoading,
-    reFetchData: refetchPortfolio,
-  } = useFetchData<{ portfolio: PortfolioWithProfile }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`,
-    { skipInitialFetch: !portfolioManagerId || !portfolioId },
-    'Failed to fetch portfolio'
-  );
+export default async function PortfolioDetailPage({ params: paramsPromise, searchParams }: PageProps) {
+  const params = await paramsPromise;
+  const portfolioManagerId = params.id;
+  const portfolioId = params.portfolioId;
 
-  const { deleteData: deleteTicker, loading: isDeletingTicker } = useDeleteData({
-    successMessage: 'Ticker removed from portfolio successfully!',
-    errorMessage: 'Failed to remove ticker from portfolio.',
+  // Fetch portfolio details on server
+  const res = await fetch(`${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`, {
+    next: { revalidate: WEEK, tags: [getPortfolioProfileTag(portfolioManagerId)] },
   });
 
-  const { deleteData: deletePortfolio, loading: isDeletingPortfolio } = useDeleteData({
-    successMessage: 'Portfolio deleted successfully!',
-    errorMessage: 'Failed to delete portfolio.',
-  });
-
-  const portfolio = portfolioData?.portfolio;
-  const portfolioTickers = portfolio?.portfolioTickers || [];
-
-  // Check if current user is the owner
-  const isOwner = session?.userId && portfolio?.portfolioManagerProfile?.userId === session.userId;
-
-  // Group portfolio tickers by list
-  const { listsWithTickers, unlistedTickers } = useMemo(() => {
-    const listsMap = new Map<string, { list: UserTickerList; tickers: PortfolioTicker[] }>();
-    const unlisted: PortfolioTicker[] = [];
-
-    portfolioTickers.forEach((ticker) => {
-      if (ticker.lists && ticker.lists.length > 0) {
-        ticker.lists.forEach((list: UserTickerList) => {
-          if (!listsMap.has(list.id)) {
-            listsMap.set(list.id, { list, tickers: [] });
-          }
-          listsMap.get(list.id)!.tickers.push(ticker);
-        });
-      } else {
-        unlisted.push(ticker);
-      }
-    });
-
-    // Sort tickers within each list by allocation descending
-    listsMap.forEach((listData) => {
-      listData.tickers.sort((a, b) => b.allocation - a.allocation);
-    });
-
-    // Sort unlisted tickers by allocation descending
-    unlisted.sort((a, b) => b.allocation - a.allocation);
-
-    return {
-      listsWithTickers: Array.from(listsMap.values()).sort((a, b) => a.list.name.localeCompare(b.list.name)),
-      unlistedTickers: unlisted,
-    };
-  }, [portfolioTickers]);
-
-  const totalAllocation = portfolioTickers.reduce((sum, ticker) => sum + ticker.allocation, 0);
-
-  if (portfolioLoading) {
-    return <FullPageLoader message="Loading portfolio details..." />;
-  }
+  const data = await res.json();
+  const portfolio = data.portfolio as PortfolioWithProfile | null;
 
   if (!portfolio) {
     return (
@@ -122,48 +50,37 @@ export default function PortfolioDetailPage() {
     );
   }
 
-  const handleDeleteTicker = async () => {
-    if (!deletingTicker) return;
+  const portfolioTickers = portfolio.portfolioTickers || [];
 
-    const result = await deleteTicker(
-      `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers?id=${deletingTicker.id}`
-    );
-    if (result) {
-      await refetchPortfolio();
-      setDeletingTicker(null);
+  // Group portfolio tickers by list
+  const listsMap = new Map<string, { list: UserTickerList; tickers: PortfolioTicker[] }>();
+  const unlisted: PortfolioTicker[] = [];
+
+  portfolioTickers.forEach((ticker) => {
+    if (ticker.lists && ticker.lists.length > 0) {
+      ticker.lists.forEach((list: UserTickerList) => {
+        if (!listsMap.has(list.id)) {
+          listsMap.set(list.id, { list, tickers: [] });
+        }
+        listsMap.get(list.id)!.tickers.push(ticker);
+      });
+    } else {
+      unlisted.push(ticker);
     }
-  };
+  });
 
-  const handleDeletePortfolio = async () => {
-    const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`);
-    if (result) {
-      router.push(`/portfolio-managers/${portfolioManagerId}`);
-    }
-  };
+  // Sort tickers within each list by allocation descending
+  listsMap.forEach((listData) => {
+    listData.tickers.sort((a, b) => b.allocation - a.allocation);
+  });
 
-  const handlePortfolioSuccess = async () => {
-    await refetchPortfolio();
-    setEditingPortfolio(null);
-  };
+  // Sort unlisted tickers by allocation descending
+  unlisted.sort((a, b) => b.allocation - a.allocation);
 
-  const handleTickerSuccess = async () => {
-    await refetchPortfolio();
-    setEditingTicker(null);
-    setShowAddTickerModal(false);
-  };
+  const listsWithTickers = Array.from(listsMap.values()).sort((a, b) => a.list.name.localeCompare(b.list.name));
+  const unlistedTickers = unlisted;
 
-  const handleAccordionClick = (e: React.MouseEvent<HTMLElement>, listId: string) => {
-    e.stopPropagation();
-    setOpenListIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(listId)) {
-        newSet.delete(listId);
-      } else {
-        newSet.add(listId);
-      }
-      return newSet;
-    });
-  };
+  const totalAllocation = portfolioTickers.reduce((sum, ticker) => sum + ticker.allocation, 0);
 
   return (
     <PageWrapper>
@@ -186,18 +103,7 @@ export default function PortfolioDetailPage() {
               </div>
             </div>
 
-            {isOwner && (
-              <div className="flex gap-2">
-                <Button onClick={() => setEditingPortfolio(portfolio)} variant="outlined" className="flex items-center gap-2">
-                  <PencilIcon className="w-4 h-4" />
-                  Edit Portfolio
-                </Button>
-                <Button onClick={() => setShowAddTickerModal(true)} variant="contained" primary className="flex items-center gap-2">
-                  <PlusIcon className="w-4 h-4" />
-                  Add Holding
-                </Button>
-              </div>
-            )}
+            <PortfolioDetailActions portfolio={portfolio} portfolioManagerId={portfolioManagerId} portfolioId={portfolioId} />
           </div>
 
           {/* Portfolio Details */}
@@ -206,73 +112,19 @@ export default function PortfolioDetailPage() {
               <PortfolioDetails portfolio={portfolio} />
             </div>
 
-            <PortfolioStats portfolioTickers={portfolioTickers} isOwner={isOwner as boolean} onDeletePortfolio={() => setDeletingPortfolio(true)} />
+            <PortfolioStats portfolioTickers={portfolioTickers} />
           </div>
 
           {/* Portfolio Holdings */}
-          <PortfolioHoldings
+          <PortfolioHoldingsActions
             portfolioTickers={portfolioTickers}
             listsWithTickers={listsWithTickers}
             unlistedTickers={unlistedTickers}
-            openListIds={openListIds}
-            handleAccordionClick={handleAccordionClick}
-            setEditingTicker={isOwner ? setEditingTicker : () => {}}
-            setDeletingTicker={isOwner ? setDeletingTicker : () => {}}
-            setShowAddTickerModal={isOwner ? setShowAddTickerModal : () => {}}
+            portfolioManagerId={portfolioManagerId}
+            portfolioId={portfolioId}
+            portfolioManagerUserId={portfolio.portfolioManagerProfile.user.id}
           />
         </div>
-
-        {/* Edit Portfolio Modal */}
-        {isOwner && editingPortfolio && (
-          <AddEditPortfolioModal
-            isOpen={!!editingPortfolio}
-            onClose={() => setEditingPortfolio(null)}
-            portfolio={editingPortfolio}
-            onSuccess={handlePortfolioSuccess}
-            portfolioManagerId={portfolioManagerId}
-          />
-        )}
-
-        {/* Add/Edit Ticker Modal */}
-        {isOwner && (
-          <AddEditPortfolioTickerModal
-            isOpen={showAddTickerModal || !!editingTicker}
-            onClose={() => {
-              setShowAddTickerModal(false);
-              setEditingTicker(null);
-            }}
-            portfolioId={portfolioId}
-            portfolioTicker={editingTicker}
-            onSuccess={handleTickerSuccess}
-            portfolioManagerId={portfolioManagerId}
-          />
-        )}
-
-        {/* Delete Ticker Confirmation Modal */}
-        {isOwner && deletingTicker && (
-          <DeleteConfirmationModal
-            open={!!deletingTicker}
-            onClose={() => setDeletingTicker(null)}
-            onDelete={handleDeleteTicker}
-            deleting={isDeletingTicker}
-            title={`Remove ${deletingTicker.ticker?.symbol || 'ticker'} from portfolio?`}
-            deleteButtonText="Remove Holding"
-            confirmationText="REMOVE"
-          />
-        )}
-
-        {/* Delete Portfolio Confirmation Modal */}
-        {isOwner && deletingPortfolio && (
-          <DeleteConfirmationModal
-            open={deletingPortfolio}
-            onClose={() => setDeletingPortfolio(false)}
-            onDelete={handleDeletePortfolio}
-            deleting={isDeletingPortfolio}
-            title={`Delete "${portfolio.name}"?`}
-            deleteButtonText="Delete Portfolio"
-            confirmationText="DELETE"
-          />
-        )}
       </div>
     </PageWrapper>
   );

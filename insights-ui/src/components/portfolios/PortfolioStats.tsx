@@ -1,13 +1,10 @@
 import { PortfolioTicker } from '@/types/portfolio';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 
 interface PortfolioStatsProps {
   portfolioTickers: PortfolioTicker[];
-  isOwner: boolean;
-  onDeletePortfolio: () => void;
 }
 
-export default function PortfolioStats({ portfolioTickers, isOwner, onDeletePortfolio }: PortfolioStatsProps) {
+export default function PortfolioStats({ portfolioTickers }: PortfolioStatsProps) {
   const totalAllocation = portfolioTickers.reduce((sum, ticker) => sum + ticker.allocation, 0);
 
   return (
@@ -29,14 +26,6 @@ export default function PortfolioStats({ portfolioTickers, isOwner, onDeletePort
           <span className={`font-medium ${100 - totalAllocation < 0 ? 'text-red-400' : 'text-gray-300'}`}>{(100 - totalAllocation).toFixed(1)}%</span>
         </div>
       </div>
-
-      {isOwner && (
-        <div className="mt-6 pt-6 border-t border-gray-700">
-          <Button onClick={onDeletePortfolio} variant="text" className="text-red-400 hover:text-red-300 w-full">
-            Delete Portfolio
-          </Button>
-        </div>
-      )}
     </div>
   );
 }

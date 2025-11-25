@@ -5,6 +5,8 @@ import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpe
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Portfolio } from '@/types/portfolio';
 import { UpdatePortfolioRequest } from '@/types/portfolio';
+import { TickerV1, TickerV1CachedScore } from '@prisma/client';
+import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 
 // GET /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId] - Get a specific portfolio (public)
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string; portfolioId: string }> }): Promise<{ portfolio: Portfolio }> {
@@ -17,6 +19,11 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
       spaceId: KoalaGainsSpaceId,
     },
     include: {
+      portfolioManagerProfile: {
+        include: {
+          user: true,
+        },
+      },
       portfolioTickers: {
         include: {
           ticker: {
@@ -48,7 +55,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
   });
 
   // Batch fetch all competitor and alternative tickers in one query
-  const tickerMap = new Map<string, any>();
+  const tickerMap = new Map<string, TickerV1 & { cachedScoreEntry?: TickerV1CachedScore | null }>();
   if (allTickerIds.size > 0) {
     const tickers = await prisma.tickerV1.findMany({
       where: {
@@ -68,9 +75,17 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
     portfolioTickers: portfolio.portfolioTickers.map((pt) => {
       const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
 
-      const competitors = ptWithFields.competitors ? ptWithFields.competitors.map((id) => tickerMap.get(id)).filter(Boolean) : [];
+      const competitors = ptWithFields.competitors
+        ? ptWithFields.competitors
+            .map((id) => tickerMap.get(id))
+            .filter((ticker): ticker is TickerV1 & { cachedScoreEntry?: TickerV1CachedScore | null } => ticker !== undefined)
+        : [];
 
-      const alternatives = ptWithFields.alternatives ? ptWithFields.alternatives.map((id) => tickerMap.get(id)).filter(Boolean) : [];
+      const alternatives = ptWithFields.alternatives
+        ? ptWithFields.alternatives
+            .map((id) => tickerMap.get(id))
+            .filter((ticker): ticker is TickerV1 & { cachedScoreEntry?: TickerV1CachedScore | null } => ticker !== undefined)
+        : [];
 
       return {
         ...pt,
@@ -135,6 +150,9 @@ async function putHandler(
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return updatedPortfolio;
 }
 
@@ -169,6 +187,9 @@ async function deleteHandler(
       id: portfolioId,
     },
   });
+
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
 
   return { success: true };
 }

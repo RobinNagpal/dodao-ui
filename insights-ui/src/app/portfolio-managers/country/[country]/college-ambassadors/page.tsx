@@ -3,8 +3,11 @@ import { PortfolioManagerType } from '@/types/portfolio-manager';
 import { AcademicCapIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getPortfolioManagersByCountryTag } from '@/utils/ticker-v1-cache-utils';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/country/[country]/route';
 import ProfileGrid from '@/components/portfolios/ProfileGrid';
+
+const WEEK = 60 * 60 * 24 * 7;
 
 interface CollegeAmbassadorsPageProps {
   params: Promise<{ country: string }>;
@@ -17,12 +20,8 @@ export default async function CollegeAmbassadorsPage({ params: paramsPromise }: 
   // Fetch portfolio managers with CollegeAmbassador type
   const response = await fetch(
     `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.CollegeAmbassador}`,
-    { cache: 'no-store' }
+    { next: { revalidate: WEEK, tags: [getPortfolioManagersByCountryTag(country)] } }
   );
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch college ambassadors');
-  }
 
   const profilesData: { profiles: PortfolioManagerProfileWithUser[] } = await response.json();
   const profiles = profilesData.profiles || [];

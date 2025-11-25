@@ -1,15 +1,13 @@
-import { PortfolioManagerProfile, User } from '@prisma/client';
-import { UserIcon, PencilIcon } from '@heroicons/react/24/outline';
-import Button from '@dodao/web-core/components/core/buttons/Button';
+import { UserIcon } from '@heroicons/react/24/outline';
+import PortfolioManagerActions from '@/components/portfolios/PortfolioManagerActions';
+import { PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 
 interface ProfileHeaderProps {
-  profile: (PortfolioManagerProfile & { user: User }) | null;
-  isOwner?: boolean;
-  onEditClick?: () => void;
-  showEditButton?: boolean;
+  profile: PortfolioManagerProfilewithPortfoliosAndUser | null;
+  portfolioManagerId?: string;
 }
 
-export default function ProfileHeader({ profile, isOwner = false, onEditClick, showEditButton = true }: ProfileHeaderProps) {
+export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHeaderProps) {
   if (!profile) return null;
 
   return (
@@ -29,14 +27,11 @@ export default function ProfileHeader({ profile, isOwner = false, onEditClick, s
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <h1 className="text-3xl font-bold text-white mb-2">{profile.user.name}</h1>
-              <p className="text-xl text-blue-400 mb-2">{profile.headline}</p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xl text-blue-400">{profile.headline}</p>
+                {portfolioManagerId && <PortfolioManagerActions profile={profile} portfolioManagerId={portfolioManagerId} />}
+              </div>
             </div>
-            {isOwner && showEditButton && onEditClick && (
-              <Button onClick={onEditClick} variant="outlined" className="flex items-center gap-2 ml-4">
-                <PencilIcon className="w-4 h-4" />
-                Edit Profile
-              </Button>
-            )}
           </div>
 
           <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-4">
@@ -54,7 +49,7 @@ export default function ProfileHeader({ profile, isOwner = false, onEditClick, s
 
           <p className="text-gray-300 mb-4">{profile.summary}</p>
 
-          {profile.detailedDescription && showEditButton && (
+          {profile.detailedDescription && (
             <div className="text-gray-300 prose prose-invert max-w-none">
               <p>{profile.detailedDescription}</p>
             </div>
