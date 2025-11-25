@@ -29,8 +29,8 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
   const country = countryName as SupportedCountries;
 
   // Fetch data using the cached function (no filters on static pages)
-  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries`, {
-    next: { revalidate: WEEK, tags: [getStocksPageTag(SupportedCountries.US)] },
+  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${country}/tickers/industries`, {
+    next: { revalidate: WEEK, tags: [getStocksPageTag(country)] },
   });
 
   const data = (await res.json()) as IndustriesResponse;
