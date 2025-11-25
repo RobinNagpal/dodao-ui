@@ -66,7 +66,7 @@ export default function CountryAlternatives({
       </div>
       <div className={`flex flex-wrap gap-2 sm:ml-2 ${centerContent ? 'justify-center mx-auto sm:mx-0' : ''}`}>
         {alternativeCountries
-          .filter((c) => COUNTRY_DISPLAY_CONFIG[c.code].isActive || industryKey)
+          .filter((c) => COUNTRY_DISPLAY_CONFIG[c.code].isActive)
           .map((country, index) => {
             const href = industryKey ? `/stocks${country.path}/industries/${industryKey}` : `/stocks${country.path}`;
 

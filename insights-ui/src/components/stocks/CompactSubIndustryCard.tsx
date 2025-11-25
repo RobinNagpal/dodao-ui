@@ -28,7 +28,7 @@ export default function CompactSubIndustryCard({ industryKey, subIndustryName, t
               const { textColorClass, bgColorClass } = getScoreColorClasses(score || 0);
 
               return (
-                <li key={ticker.symbol}>
+                <li key={ticker.id}>
                   <Link
                     href={`/stocks/${ticker.exchange}/${ticker.symbol}`}
                     className="flex items-center gap-1.5 py-1 hover:bg-[#2D3748] transition-colors rounded px-1 -mx-1"
