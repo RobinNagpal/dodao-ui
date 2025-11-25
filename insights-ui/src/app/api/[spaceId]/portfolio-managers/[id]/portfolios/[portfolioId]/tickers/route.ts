@@ -4,102 +4,23 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 
-// GET /api/[spaceId]/portfolios/[id]/tickers - Get all tickers in a portfolio
-async function getHandler(
+// POST /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId]/tickers - Add a ticker to a portfolio (owner only)
+async function postHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: { id: string } }
-): Promise<{ portfolioTickers: PortfolioTicker[] }> {
+  { params }: { params: Promise<{ id: string; portfolioId: string }> }
+): Promise<PortfolioTicker> {
+  const { id: profileId, portfolioId } = await params;
   const { userId } = userContext;
-  const { id } = params;
-
-  // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirst({
-    where: {
-      id: id,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (!portfolio || portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Portfolio not found or access denied');
-  }
-
-  const portfolioTickers = await prisma.portfolioTicker.findMany({
-    where: {
-      portfolioId: id,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      ticker: {
-        include: {
-          cachedScoreEntry: true,
-        },
-      },
-      tags: true,
-      lists: true,
-    },
-    orderBy: {
-      allocation: 'desc',
-    },
-  });
-
-  // Populate competitors and alternatives as full ticker objects
-  const populatedPortfolioTickers = await Promise.all(
-    portfolioTickers.map(async (pt) => {
-      const ptWithFields = pt as typeof pt & { competitors: string[]; alternatives: string[] };
-
-      const competitors =
-        ptWithFields.competitors && ptWithFields.competitors.length > 0
-          ? await prisma.tickerV1.findMany({
-              where: {
-                id: { in: ptWithFields.competitors },
-                spaceId: KoalaGainsSpaceId,
-              },
-              include: {
-                cachedScoreEntry: true,
-              },
-            })
-          : [];
-
-      const alternatives =
-        ptWithFields.alternatives && ptWithFields.alternatives.length > 0
-          ? await prisma.tickerV1.findMany({
-              where: {
-                id: { in: ptWithFields.alternatives },
-                spaceId: KoalaGainsSpaceId,
-              },
-              include: {
-                cachedScoreEntry: true,
-              },
-            })
-          : [];
-
-      return {
-        ...pt,
-        competitorsConsidered: competitors,
-        betterAlternatives: alternatives,
-      };
-    })
-  );
-
-  return { portfolioTickers: populatedPortfolioTickers };
-}
-
-// POST /api/[spaceId]/portfolios/[id]/tickers - Add a ticker to a portfolio
-async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<PortfolioTicker> {
-  const { userId } = userContext;
-  const { id } = params;
   const body: CreatePortfolioTickerRequest = await req.json();
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirst({
+  const portfolio = await prisma.portfolio.findFirstOrThrow({
     where: {
-      id: id,
+      id: portfolioId,
+      portfolioManagerProfileId: profileId,
       spaceId: KoalaGainsSpaceId,
     },
     include: {
@@ -107,14 +28,14 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
     },
   });
 
-  if (!portfolio || portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Portfolio not found or access denied');
+  if (portfolio.portfolioManagerProfile.userId !== userId) {
+    throw new Error('Access denied: You do not own this portfolio');
   }
 
   // Check if ticker already exists in portfolio
   const existingTicker = await prisma.portfolioTicker.findFirst({
     where: {
-      portfolioId: id,
+      portfolioId: portfolioId,
       tickerId: body.tickerId,
       spaceId: KoalaGainsSpaceId,
     },
@@ -127,7 +48,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
   // Create the portfolio ticker
   const portfolioTicker = await prisma.portfolioTicker.create({
     data: {
-      portfolioId: id,
+      portfolioId: portfolioId,
       tickerId: body.tickerId,
       allocation: body.allocation,
       detailedDescription: body.detailedDescription || undefined,
@@ -135,7 +56,6 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
       alternatives: body.alternatives || [],
       spaceId: KoalaGainsSpaceId,
       createdBy: userId,
-      // Handle tags and lists if provided
       ...(body.tagIds &&
         body.tagIds.length > 0 && {
           tags: {
@@ -160,13 +80,20 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return portfolioTicker;
 }
 
-// PUT /api/[spaceId]/portfolios/[id]/tickers?id={tickerId} - Update a portfolio ticker
-async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<PortfolioTicker> {
+// PUT /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId]/tickers?id={tickerId} - Update a portfolio ticker (owner only)
+async function putHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string; portfolioId: string }> }
+): Promise<PortfolioTicker> {
+  const { id: profileId, portfolioId } = await params;
   const { userId } = userContext;
-  const { id } = params;
   const body: UpdatePortfolioTickerRequest = await req.json();
   const { searchParams } = new URL(req.url);
   const tickerId = searchParams.get('id');
@@ -176,9 +103,10 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
   }
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirst({
+  const portfolio = await prisma.portfolio.findFirstOrThrow({
     where: {
-      id: id,
+      id: portfolioId,
+      portfolioManagerProfileId: profileId,
       spaceId: KoalaGainsSpaceId,
     },
     include: {
@@ -186,8 +114,8 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     },
   });
 
-  if (!portfolio || portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Portfolio not found or access denied');
+  if (portfolio.portfolioManagerProfile.userId !== userId) {
+    throw new Error('Access denied: You do not own this portfolio');
   }
 
   // Update the portfolio ticker
@@ -201,7 +129,6 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
       competitors: body.competitors !== undefined ? body.competitors : undefined,
       alternatives: body.alternatives !== undefined ? body.alternatives : undefined,
       updatedBy: userId,
-      // Handle tags and lists updates
       ...(body.tagIds !== undefined && {
         tags: {
           set: body.tagIds.map((id) => ({ id })),
@@ -224,13 +151,20 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return updatedPortfolioTicker;
 }
 
-// DELETE /api/[spaceId]/portfolios/[id]/tickers?id={tickerId} - Remove a ticker from portfolio
-async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: { id: string } }): Promise<{ success: boolean }> {
+// DELETE /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId]/tickers?id={tickerId} - Remove a ticker from portfolio (owner only)
+async function deleteHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string; portfolioId: string }> }
+): Promise<{ success: boolean }> {
+  const { id: profileId, portfolioId } = await params;
   const { userId } = userContext;
-  const { id } = params;
   const { searchParams } = new URL(req.url);
   const tickerId = searchParams.get('id');
 
@@ -239,9 +173,10 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
   }
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirst({
+  const portfolio = await prisma.portfolio.findFirstOrThrow({
     where: {
-      id: id,
+      id: portfolioId,
+      portfolioManagerProfileId: profileId,
       spaceId: KoalaGainsSpaceId,
     },
     include: {
@@ -249,8 +184,8 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
     },
   });
 
-  if (!portfolio || portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Portfolio not found or access denied');
+  if (portfolio.portfolioManagerProfile.userId !== userId) {
+    throw new Error('Access denied: You do not own this portfolio');
   }
 
   // Delete the portfolio ticker
@@ -260,10 +195,12 @@ async function deleteHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload
     },
   });
 
+  // Revalidate the portfolio manager profile cache
+  revalidatePortfolioProfileTag(profileId);
+
   return { success: true };
 }
 
-export const GET = withLoggedInUser<{ portfolioTickers: PortfolioTicker[] }>(getHandler);
 export const POST = withLoggedInUser<PortfolioTicker>(postHandler);
 export const PUT = withLoggedInUser<PortfolioTicker>(putHandler);
 export const DELETE = withLoggedInUser<{ success: boolean }>(deleteHandler);

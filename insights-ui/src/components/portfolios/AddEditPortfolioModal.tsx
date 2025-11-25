@@ -15,9 +15,10 @@ interface AddEditPortfolioModalProps {
   onClose: () => void;
   portfolio?: Portfolio | null;
   onSuccess?: () => void;
+  portfolioManagerId?: string; // Optional for creating new portfolios
 }
 
-export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSuccess }: AddEditPortfolioModalProps) {
+export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSuccess, portfolioManagerId }: AddEditPortfolioModalProps) {
   // Form state
   const [name, setName] = useState<string>('');
   const [summary, setSummary] = useState<string>('');
@@ -59,27 +60,40 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
     }
 
     if (portfolio) {
-      // Update existing portfolio
+      // Update existing portfolio - need portfolioManagerId
+      if (!portfolioManagerId) {
+        alert('Portfolio manager ID is required for updating');
+        return;
+      }
+
       const updateData: UpdatePortfolioRequest = {
         name: name.trim(),
         summary: summary.trim(),
         detailedDescription: detailedDescription.trim(),
       };
 
-      const result = await updatePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios?id=${portfolio.id}`, updateData);
+      const result = await updatePortfolio(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`,
+        updateData
+      );
       if (result) {
         onSuccess?.();
         onClose();
       }
     } else {
       // Create new portfolio
+      if (!portfolioManagerId) {
+        alert('Portfolio manager ID is required for creating');
+        return;
+      }
+
       const createData: CreatePortfolioRequest = {
         name: name.trim(),
         summary: summary.trim(),
         detailedDescription: detailedDescription.trim(),
       };
 
-      const result = await createPortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios`, createData);
+      const result = await createPortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/create`, createData);
       if (result) {
         onSuccess?.();
         onClose();

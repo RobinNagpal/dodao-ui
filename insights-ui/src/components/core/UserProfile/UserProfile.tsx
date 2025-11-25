@@ -1,6 +1,9 @@
 'use client';
 
 import { KoalaGainsSession } from '@/types/auth';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { signOut, useSession } from 'next-auth/react';
 
@@ -17,6 +20,12 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
   const [userMenuOpen, setUserMenuOpen] = useState<boolean>(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
+
+  const { data: portfolioProfile, loading: isLoadingProfile } = useFetchData<{ id: string }>(
+    session?.userId ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/portfolio-manager-profiles/by-user/${session.userId}` : '',
+    { skipInitialFetch: !session?.userId },
+    'Failed to fetch portfolio profile'
+  );
 
   const toggleUserMenu = (): void => {
     setUserMenuOpen((prev) => !prev);
@@ -124,20 +133,15 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               My Favourite Stocks
             </Link>
             <div className="border-t border-gray-700 my-1"></div>
-            <Link
-              href="/portfolios/manager"
-              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-              onClick={onMenuToggle}
-            >
-              Portfolio Manager Profile
-            </Link>
-            <Link
-              href="/portfolios"
-              className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
-              onClick={onMenuToggle}
-            >
-              My Portfolios
-            </Link>
+            {portfolioProfile?.id && (
+              <Link
+                href={`/portfolio-managers/${portfolioProfile.id}`}
+                className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                onClick={onMenuToggle}
+              >
+                My Portfolio Profile
+              </Link>
+            )}
             <div className="border-t border-gray-700 my-1"></div>
             <button
               onClick={handleUserLogout}
@@ -213,12 +217,14 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 My Favourite Stocks
               </Link>
               <div className="border-t border-gray-700 my-1"></div>
-              <Link href="/portfolios/manager" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
-                Portfolio Manager
-              </Link>
-              <Link href="/portfolios" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
-                My Portfolios
-              </Link>
+              {portfolioProfile?.id && (
+                <Link
+                  href={`/portfolio-managers/${portfolioProfile.id}`}
+                  className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
+                >
+                  My Portfolio Profile
+                </Link>
+              )}
               <div className="border-t border-gray-700 my-1"></div>
               <button
                 className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"

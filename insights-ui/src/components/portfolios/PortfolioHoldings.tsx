@@ -1,8 +1,7 @@
 'use client';
 
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ReactNode } from 'react';
 import Link from 'next/link';
-import Button from '@dodao/web-core/components/core/buttons/Button';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import { PortfolioTicker } from '@/types/portfolio';
 import { UserTickerList } from '@prisma/client';
@@ -16,9 +15,7 @@ interface PortfolioHoldingsProps {
   unlistedTickers: PortfolioTicker[];
   openListIds: Set<string>;
   handleAccordionClick: (e: React.MouseEvent<HTMLElement>, listId: string) => void;
-  setEditingTicker: (ticker: PortfolioTicker) => void;
-  setDeletingTicker: (ticker: PortfolioTicker) => void;
-  setShowAddTickerModal: (show: boolean) => void;
+  renderTickerActions?: (ticker: PortfolioTicker) => ReactNode;
 }
 
 export default function PortfolioHoldings({
@@ -27,9 +24,7 @@ export default function PortfolioHoldings({
   unlistedTickers,
   openListIds,
   handleAccordionClick,
-  setEditingTicker,
-  setDeletingTicker,
-  setShowAddTickerModal,
+  renderTickerActions,
 }: PortfolioHoldingsProps) {
   const renderTickerCard = (ticker: PortfolioTicker) => (
     <div key={ticker.id} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
@@ -77,14 +72,8 @@ export default function PortfolioHoldings({
           <FavouriteTags tags={ticker.tags || []} />
         </div>
 
-        <div className="flex gap-1">
-          <button onClick={() => setEditingTicker(ticker)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
-            <PencilIcon className="w-4 h-4" />
-          </button>
-          <button onClick={() => setDeletingTicker(ticker)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
-            <TrashIcon className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Render ticker actions if provided */}
+        {renderTickerActions && renderTickerActions(ticker)}
       </div>
     </div>
   );
@@ -109,10 +98,6 @@ export default function PortfolioHoldings({
           </div>
           <h3 className="text-xl font-semibold mb-2">No holdings yet</h3>
           <p className="text-gray-400 mb-4">Start building your portfolio by adding your first holding.</p>
-          <Button onClick={() => setShowAddTickerModal(true)} variant="contained" primary className="inline-flex items-center gap-2">
-            <PlusIcon className="w-4 h-4" />
-            Add First Holding
-          </Button>
         </div>
       ) : (
         <div className="space-y-4">
