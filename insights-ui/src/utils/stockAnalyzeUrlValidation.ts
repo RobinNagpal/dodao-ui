@@ -48,7 +48,9 @@ const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
   [HongKongExchanges.HKEX]: 'hkg',
 
   // Korea Exchanges
-  [KoreaExchanges.KRX]: 'krx',
+  [KoreaExchanges.KOSPI]: 'krx',
+  [KoreaExchanges.KOSDAQ]: 'kosdaq',
+  [KoreaExchanges.KONEX]: 'xkon',
 } as const;
 
 /**

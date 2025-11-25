@@ -55,7 +55,9 @@ export enum HongKongExchanges {
 }
 
 export enum KoreaExchanges {
-  KRX = 'KRX',
+  KOSPI = 'KOSPI',
+  KOSDAQ = 'KOSDAQ',
+  KONEX = 'KONEX',
 }
 
 export type AllExchanges =
@@ -86,7 +88,9 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   JapanExchanges.TSE,
   TaiwanExchanges.TWSE,
   HongKongExchanges.HKEX,
-  KoreaExchanges.KRX,
+  KoreaExchanges.KOSPI,
+  KoreaExchanges.KOSDAQ,
+  KoreaExchanges.KONEX,
 ] as const;
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
@@ -118,7 +122,9 @@ export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [JapanExchanges.TSE]: SupportedCountries.Japan,
   [TaiwanExchanges.TWSE]: SupportedCountries.Taiwan,
   [HongKongExchanges.HKEX]: SupportedCountries.HongKong,
-  [KoreaExchanges.KRX]: SupportedCountries.Korea,
+  [KoreaExchanges.KOSPI]: SupportedCountries.Korea,
+  [KoreaExchanges.KOSDAQ]: SupportedCountries.Korea,
+  [KoreaExchanges.KONEX]: SupportedCountries.Korea,
 };
 
 export type CountryCode = keyof typeof SupportedCountries;
