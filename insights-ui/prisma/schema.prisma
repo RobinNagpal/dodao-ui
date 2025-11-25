@@ -790,6 +790,7 @@ model TickerV1GenerationRequest {
 
   @@index([tickerId])
   @@index([status])
+  @@index([tickerId, status]) // NEW: speeds up NOT EXISTS on ticker_id + status
   @@map("ticker_v1_generation_requests")
 }
 
@@ -909,17 +910,17 @@ model UserTickerList {
 }
 
 model FavouriteTicker {
-  id                   String   @id @default(uuid())
-  userId               String   @map("user_id")
-  tickerId             String   @map("ticker_id")
-  spaceId              String   @default("koala_gains") @map("space_id")
-  myNotes              String?  @map("my_notes")
-  myScore              Float?   @map("my_score")
+  id                    String   @id @default(uuid())
+  userId                String   @map("user_id")
+  tickerId              String   @map("ticker_id")
+  spaceId               String   @default("koala_gains") @map("space_id")
+  myNotes               String?  @map("my_notes")
+  myScore               Float?   @map("my_score")
   competitorsConsidered String[] @default([]) @map("competitors_considered")
-  betterAlternatives   String[] @default([]) @map("better_alternatives")
-  createdAt            DateTime @default(now()) @map("created_at")
-  updatedAt            DateTime @updatedAt @map("updated_at")
-  createdBy            String   @map("created_by")
+  betterAlternatives    String[] @default([]) @map("better_alternatives")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  createdBy             String   @map("created_by")
 
   // Relations
   user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -954,7 +955,7 @@ model PortfolioManagerProfile {
   updatedBy           String?  @map("updated_by")
 
   // Relations
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   portfolios Portfolio[]
 
   @@unique([spaceId, userId])
@@ -963,16 +964,16 @@ model PortfolioManagerProfile {
 }
 
 model Portfolio {
-  id                         String   @id @default(uuid())
-  portfolioManagerProfileId  String   @map("portfolio_manager_profile_id")
-  name                       String   @map("name")
-  summary                    String   @map("summary")
-  detailedDescription        String   @map("detailed_description")
-  spaceId                    String   @default("koala_gains") @map("space_id")
-  createdAt                  DateTime @default(now()) @map("created_at")
-  updatedAt                  DateTime @updatedAt @map("updated_at")
-  createdBy                  String   @map("created_by")
-  updatedBy                  String?  @map("updated_by")
+  id                        String   @id @default(uuid())
+  portfolioManagerProfileId String   @map("portfolio_manager_profile_id")
+  name                      String   @map("name")
+  summary                   String   @map("summary")
+  detailedDescription       String   @map("detailed_description")
+  spaceId                   String   @default("koala_gains") @map("space_id")
+  createdAt                 DateTime @default(now()) @map("created_at")
+  updatedAt                 DateTime @updatedAt @map("updated_at")
+  createdBy                 String   @map("created_by")
+  updatedBy                 String?  @map("updated_by")
 
   // Relations
   portfolioManagerProfile PortfolioManagerProfile @relation(fields: [portfolioManagerProfileId], references: [id], onDelete: Cascade)
@@ -983,22 +984,22 @@ model Portfolio {
 }
 
 model PortfolioTicker {
-  id                 String   @id @default(uuid())
-  portfolioId        String   @map("portfolio_id")
-  tickerId           String   @map("ticker_id")
-  allocation         Float    @map("allocation") // Percentage of portfolio (0-100)
-  detailedDescription String? @map("detailed_description")
-  competitors        String[] @default([]) @map("competitors") // Ticker symbols/IDs
-  alternatives       String[] @default([]) @map("alternatives") // Ticker symbols/IDs
-  spaceId            String   @default("koala_gains") @map("space_id")
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
-  createdBy          String   @map("created_by")
-  updatedBy          String?  @map("updated_by")
+  id                  String   @id @default(uuid())
+  portfolioId         String   @map("portfolio_id")
+  tickerId            String   @map("ticker_id")
+  allocation          Float    @map("allocation") // Percentage of portfolio (0-100)
+  detailedDescription String?  @map("detailed_description")
+  competitors         String[] @default([]) @map("competitors") // Ticker symbols/IDs
+  alternatives        String[] @default([]) @map("alternatives") // Ticker symbols/IDs
+  spaceId             String   @default("koala_gains") @map("space_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  createdBy           String   @map("created_by")
+  updatedBy           String?  @map("updated_by")
 
   // Relations
-  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
-  ticker    TickerV1  @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+  portfolio Portfolio        @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  ticker    TickerV1         @relation(fields: [tickerId], references: [id], onDelete: Cascade)
   tags      UserTickerTag[]
   lists     UserTickerList[]
 
