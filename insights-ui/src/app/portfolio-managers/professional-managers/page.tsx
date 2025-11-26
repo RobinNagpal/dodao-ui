@@ -1,9 +1,9 @@
-import { PortfolioManagerType } from '@/types/portfolio-manager';
-import { BriefcaseIcon } from '@heroicons/react/24/outline';
+import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import PortfolioManagersPageComponent from '@/components/portfolios/PortfolioManagersPageComponent';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
+import { PortfolioManagerType } from '@/types/portfolio-manager';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { BriefcaseIcon } from '@heroicons/react/24/outline';
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -11,7 +11,7 @@ export default async function ProfessionalManagersPage() {
   const managerType = PortfolioManagerType.ProfessionalManager;
 
   // Fetch portfolio managers by type
-  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/type/${managerType}`, {
+  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/type/${managerType}`, {
     next: { revalidate: WEEK },
   });
 
