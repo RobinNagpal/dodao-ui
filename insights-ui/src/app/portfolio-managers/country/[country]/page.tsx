@@ -19,7 +19,7 @@ export default async function CountryPortfolioManagersPage({ params: paramsPromi
 
   // Fetch portfolio managers with MostFamous type
   const response = await fetch(
-    `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.MostFamous}`,
+    `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/country/${country}?managerType=${PortfolioManagerType.TopRanked}`,
     { next: { revalidate: WEEK, tags: [getPortfolioManagersByCountryTag(country)] } }
   );
 
