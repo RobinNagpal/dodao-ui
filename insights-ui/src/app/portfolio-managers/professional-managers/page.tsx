@@ -1,22 +1,28 @@
-import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
+import { PortfolioManagerType } from '@/types/portfolio-manager';
+import { BriefcaseIcon } from '@heroicons/react/24/outline';
 import PortfolioManagersPageComponent from '@/components/portfolios/PortfolioManagersPageComponent';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PortfolioManagerType } from '@/types/portfolio-manager';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { BriefcaseIcon } from '@heroicons/react/24/outline';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 
 const WEEK = 60 * 60 * 24 * 7;
 
 export default async function ProfessionalManagersPage() {
   const managerType = PortfolioManagerType.ProfessionalManager;
 
+  let profiles: PortfolioManagerProfileWithUser[] = [];
   // Fetch portfolio managers by type
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/type/${managerType}`, {
-    next: { revalidate: WEEK },
-  });
 
-  const profilesData: { profiles: PortfolioManagerProfileWithUser[] } = await response.json();
-  const profiles = profilesData.profiles || [];
+  try {
+    const response = await fetch(`${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/type/${managerType}`, {
+      next: { revalidate: WEEK },
+    });
+
+    const profilesData: { profiles: PortfolioManagerProfileWithUser[] } = await response.json();
+    profiles = profilesData.profiles || [];
+  } catch (e: any | undefined | null) {
+    console.error(`Error fetching college ambassadors: ${e?.message} \n ${e?.stack}`);
+  }
 
   return (
     <PortfolioManagersPageComponent
