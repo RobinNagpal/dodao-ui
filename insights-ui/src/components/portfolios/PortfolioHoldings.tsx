@@ -8,6 +8,7 @@ import { UserTickerList } from '@prisma/client';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import FavouriteTags from '@/components/favourites/FavouriteTags';
 import CompetitorsAlternatives from '@/components/favourites/CompetitorsAlternatives';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface PortfolioHoldingsProps {
   portfolioTickers: PortfolioTicker[];
@@ -59,7 +60,7 @@ export default function PortfolioHoldings({
 
           {ticker.detailedDescription && (
             <div className="mb-3">
-              <p className="text-sm text-gray-300">{ticker.detailedDescription}</p>
+              <div className="text-sm text-gray-300 markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(ticker.detailedDescription) }} />
             </div>
           )}
 

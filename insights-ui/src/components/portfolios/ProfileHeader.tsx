@@ -1,6 +1,7 @@
 import { UserIcon } from '@heroicons/react/24/outline';
 import PortfolioManagerActions from '@/components/portfolios/PortfolioManagerActions';
 import { PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface ProfileHeaderProps {
   profile: PortfolioManagerProfilewithPortfoliosAndUser | null;
@@ -50,9 +51,7 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
           <p className="text-gray-300 mb-4">{profile.summary}</p>
 
           {profile.detailedDescription && (
-            <div className="text-gray-300 prose prose-invert max-w-none">
-              <p>{profile.detailedDescription}</p>
-            </div>
+            <div className="text-gray-300 markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(profile.detailedDescription) }} />
           )}
         </div>
       </div>

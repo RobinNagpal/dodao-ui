@@ -3,6 +3,7 @@
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
 import { useState, useEffect } from 'react';
 import { Portfolio, CreatePortfolioRequest, UpdatePortfolioRequest } from '@/types/portfolio';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -135,16 +136,13 @@ export default function AddEditPortfolioModal({ isOpen, onClose, portfolio, onSu
 
         {/* Detailed Description */}
         <div className="space-y-2">
-          <label htmlFor="portfolio-description" className="block text-sm font-medium text-left">
-            Detailed Description *
-          </label>
-          <textarea
-            id="portfolio-description"
-            value={detailedDescription}
-            onChange={(e) => setDetailedDescription(e.target.value)}
-            rows={6}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <MarkdownEditor
+            label="Detailed Description *"
+            objectId={portfolio?.id || portfolioManagerId || ''}
+            modelValue={detailedDescription}
+            onUpdate={setDetailedDescription}
             placeholder="Provide detailed information about your portfolio, holdings, and investment approach..."
+            maxHeight={200}
           />
         </div>
 
