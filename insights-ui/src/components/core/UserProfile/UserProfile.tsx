@@ -135,7 +135,7 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
             <div className="border-t border-gray-700 my-1"></div>
             {portfolioProfile?.id && (
               <Link
-                href={`/portfolio-managers/${portfolioProfile.id}`}
+                href={`/portfolio-managers/profile-details/${portfolioProfile.id}`}
                 className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
                 onClick={onMenuToggle}
               >
@@ -219,7 +219,7 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
               <div className="border-t border-gray-700 my-1"></div>
               {portfolioProfile?.id && (
                 <Link
-                  href={`/portfolio-managers/${portfolioProfile.id}`}
+                  href={`/portfolio-managers/profile-details/${portfolioProfile.id}`}
                   className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                 >
                   My Portfolio Profile

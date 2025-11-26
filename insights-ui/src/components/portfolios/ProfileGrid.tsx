@@ -27,7 +27,11 @@ export default function ProfileGrid({ profiles, emptyStateConfig, showCollegeAmb
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {profiles.map((profile) => (
-        <Link key={profile.id} href={`/portfolio-managers/${profile.id}`} className="bg-gray-900 rounded-lg p-6 hover:bg-gray-750 transition-colors block">
+        <Link
+          key={profile.id}
+          href={`/portfolio-managers/profile-details/${profile.id}`}
+          className="bg-gray-900 rounded-lg p-6 hover:bg-gray-750 transition-colors block"
+        >
           <div className="flex items-start gap-4 mb-4">
             <div className="flex-shrink-0">
               {profile.profileImageUrl ? (
