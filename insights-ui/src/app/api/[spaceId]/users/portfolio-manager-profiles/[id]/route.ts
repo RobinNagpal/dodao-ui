@@ -5,7 +5,7 @@ import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withLoggedInUser, withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { UpdatePortfolioManagerProfileRequest, PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
-import { revalidatePortfolioProfileTag, revalidatePortfolioManagersByCountryTag } from '@/utils/ticker-v1-cache-utils';
+import { revalidatePortfolioProfileTag, revalidatePortfolioManagersByCountryTag, revalidatePortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
 
 // GET /api/[spaceId]/users/portfolio-manager-profiles/[id] - Get a portfolio manager profile by ID (for public viewing)
 async function getHandler(
@@ -108,6 +108,10 @@ async function deleteHandler(
       id: id,
     },
   });
+
+  if (existingProfile.managerType) {
+    revalidatePortfolioManagersByTypeTag(existingProfile.managerType);
+  }
 
   return { success: true };
 }
