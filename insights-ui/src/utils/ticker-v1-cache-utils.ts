@@ -27,6 +27,11 @@ export const getPortfolioManagersByCountryTag = (country: string) => `koalagains
 
 export const revalidatePortfolioManagersByCountryTag = (country: string) => revalidateTag(getPortfolioManagersByCountryTag(country));
 
+/** Portfolio managers by type cache tags */
+export const getPortfolioManagersByTypeTag = (type: string) => `koalagains:portfolio-managers:type:${type}`;
+
+export const revalidatePortfolioManagersByTypeTag = (type: string) => revalidateTag(getPortfolioManagersByTypeTag(type));
+
 /** Home page cache tags */
 export const getHomePagePostsTag = () => 'koalagains:home-page:posts';
 

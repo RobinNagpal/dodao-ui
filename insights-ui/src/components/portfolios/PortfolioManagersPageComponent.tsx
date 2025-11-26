@@ -3,6 +3,7 @@ import { ComponentType } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import ProfileGrid from '@/components/portfolios/ProfileGrid';
+import PortfolioManagersPageActions from '@/components/portfolios/PortfolioManagersPageActions';
 
 interface PortfolioManagersPageComponentProps {
   profiles: PortfolioManagerProfileWithUser[];
@@ -32,6 +33,9 @@ export default function PortfolioManagersPageComponent({
             <div className="flex items-center gap-3 mb-2">
               {Icon && <Icon className="w-8 h-8 text-blue-500" />}
               <h1 className="text-3xl font-bold text-white">{title}</h1>
+              <div className="ml-auto">
+                <PortfolioManagersPageActions managerType={managerType} />
+              </div>
             </div>
             <p className="text-gray-400">
               {profiles.length} portfolio manager{profiles.length !== 1 ? 's' : ''} found

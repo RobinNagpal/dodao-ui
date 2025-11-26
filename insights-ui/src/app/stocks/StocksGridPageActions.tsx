@@ -4,7 +4,7 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { revalidateStocksPageCache, revalidateIndustryPageCache } from './cache-actions';
+import { revalidateStocksPageCache, revalidateIndustryPageCache } from '@/utils/cache-actions';
 
 export interface StocksGridPageActionsProps {
   currentCountry?: string;

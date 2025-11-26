@@ -4,6 +4,7 @@ import PortfolioManagersPageComponent from '@/components/portfolios/PortfolioMan
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
+import { getPortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -15,7 +16,7 @@ export default async function TopRankedPortfolioManagersPage() {
 
   try {
     const response = await fetch(`${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/portfolio-managers/type/${managerType}`, {
-      next: { revalidate: WEEK },
+      next: { revalidate: WEEK, tags: [getPortfolioManagersByTypeTag(managerType)] },
     });
 
     const profilesData: { profiles: PortfolioManagerProfileWithUser[] } = await response.json();
