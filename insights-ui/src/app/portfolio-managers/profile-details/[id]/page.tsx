@@ -57,7 +57,7 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
           {hasMorePortfolios && (
             <div className="mt-8 text-center">
               <a
-                href={`/portfolio-managers/${portfolioManagerId}/portfolios`}
+                href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios`}
                 className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 inline-block"
               >
                 View All Portfolios ({portfolios.length})

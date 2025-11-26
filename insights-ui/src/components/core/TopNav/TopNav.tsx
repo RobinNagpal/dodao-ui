@@ -29,6 +29,7 @@ const reportsDropdown: ReportItem[] = [
   { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
   { name: 'All Reports', href: '/reports', description: 'Browse all available reports', isNew: false },
+  { name: 'Professional Managers', href: '/portfolio-managers/professional-managers', description: 'Professional Managers', isNew: false },
 ];
 
 const genaiDropdown: GenAIItem[] = [

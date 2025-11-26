@@ -62,7 +62,7 @@ export default function PortfolioDetailActions({ portfolio, portfolioManagerId, 
   const handleDeletePortfolio = async () => {
     const result = await deletePortfolio(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}`);
     if (result) {
-      router.push(`/portfolio-managers/${portfolioManagerId}`);
+      router.push(`/portfolio-managers/profile-details/${portfolioManagerId}`);
     }
   };
 

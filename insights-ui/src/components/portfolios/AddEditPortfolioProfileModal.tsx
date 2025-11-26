@@ -13,6 +13,7 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PortfolioManagerProfile } from '@prisma/client';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
 
 interface AddEditPortfolioProfileModalProps {
   isOpen: boolean;
@@ -188,16 +189,13 @@ export default function AddEditPortfolioProfileModal({
 
             {/* Profile Detailed Description */}
             <div className="space-y-2">
-              <label htmlFor="profile-description" className="block text-sm font-medium text-left">
-                Detailed Description *
-              </label>
-              <textarea
-                id="profile-description"
-                value={profileDetailedDescription}
-                onChange={(e) => setProfileDetailedDescription(e.target.value)}
-                rows={6}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <MarkdownEditor
+                label="Detailed Description *"
+                objectId={currentProfile?.id || userId || ''}
+                modelValue={profileDetailedDescription}
+                onUpdate={setProfileDetailedDescription}
                 placeholder="Detailed professional background and investment philosophy..."
+                maxHeight={200}
               />
             </div>
 

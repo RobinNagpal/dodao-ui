@@ -26,7 +26,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
     return (
       <Link
         key={portfolio.id}
-        href={`/portfolio-managers/${portfolioManagerId}/portfolios/${portfolio.id}`}
+        href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios/${portfolio.id}`}
         className="bg-gray-900 rounded-lg p-6 hover:bg-gray-750 transition-colors block"
       >
         <div className="mb-4">

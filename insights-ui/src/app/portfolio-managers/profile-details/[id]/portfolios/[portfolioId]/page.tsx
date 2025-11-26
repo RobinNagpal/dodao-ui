@@ -1,7 +1,7 @@
 import PortfolioStats from '@/components/portfolios/PortfolioStats';
 import PortfolioDetails from '@/components/portfolios/PortfolioDetails';
-import PortfolioDetailActions from '../../../../../components/portfolios/PortfolioDetailActions';
-import PortfolioHoldingsActions from '../../../../../components/portfolios/PortfolioHoldingsActions';
+import PortfolioDetailActions from '@/components/portfolios/PortfolioDetailActions';
+import PortfolioHoldingsActions from '@/components/portfolios/PortfolioHoldingsActions';
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
 import { UserTickerList, PortfolioManagerProfile, User } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -26,7 +26,6 @@ const WEEK = 60 * 60 * 24 * 7;
 
 export default async function PortfolioDetailPage({ params: paramsPromise, searchParams: searchParamsPromise }: PageProps) {
   const params = await paramsPromise;
-  const searchParams = await searchParamsPromise;
   const portfolioManagerId = params.id;
   const portfolioId = params.portfolioId;
 
@@ -90,7 +89,7 @@ export default async function PortfolioDetailPage({ params: paramsPromise, searc
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <Link href={`/portfolio-managers/${portfolioManagerId}/portfolios`} className="text-blue-400 hover:text-blue-300">
+              <Link href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios`} className="text-blue-400 hover:text-blue-300">
                 <ArrowLeftIcon className="w-6 h-6" />
               </Link>
               <div>

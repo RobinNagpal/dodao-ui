@@ -3,6 +3,7 @@
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
+import MarkdownEditor from '../Markdown/MarkdownEditor';
 import { useState, useEffect } from 'react';
 import { PortfolioTicker, CreatePortfolioTickerRequest, UpdatePortfolioTickerRequest } from '@/types/portfolio';
 import { TickerBasicsWithFinalScore, UserTickerTagResponse, UserListResponse } from '@/types/ticker-user';
@@ -285,16 +286,13 @@ export default function AddEditPortfolioTickerModal({
 
       {/* Detailed Description */}
       <div className="space-y-2">
-        <label htmlFor="ticker-description" className="block text-sm font-medium text-left">
-          Detailed Description (Optional)
-        </label>
-        <textarea
-          id="ticker-description"
-          value={detailedDescription}
-          onChange={(e) => setDetailedDescription(e.target.value)}
-          rows={3}
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <MarkdownEditor
+          label="Detailed Description (Optional)"
+          objectId={portfolioTicker?.id || portfolioId || ''}
+          modelValue={detailedDescription}
+          onUpdate={setDetailedDescription}
           placeholder="Add notes about this holding..."
+          maxHeight={150}
         />
       </div>
 
