@@ -7,6 +7,7 @@ import { Portfolio } from '@/types/portfolio';
 import { UpdatePortfolioRequest } from '@/types/portfolio';
 import { TickerV1, TickerV1CachedScore } from '@prisma/client';
 import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
+import { verifyPortfolioOwnership } from '@/utils/portfolio-utils';
 
 // GET /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId] - Get a specific portfolio (public)
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string; portfolioId: string }> }): Promise<{ portfolio: Portfolio }> {
@@ -109,20 +110,7 @@ async function putHandler(
   const body: UpdatePortfolioRequest = await req.json();
 
   // Verify the portfolio belongs to the user
-  const existingPortfolio = await prisma.portfolio.findFirstOrThrow({
-    where: {
-      id: portfolioId,
-      portfolioManagerProfileId: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (existingPortfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Access denied: You do not own this portfolio');
-  }
+  const existingPortfolio = await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Update the portfolio
   const updatedPortfolio = await prisma.portfolio.update({
@@ -166,20 +154,7 @@ async function deleteHandler(
   const { userId } = userContext;
 
   // Verify the portfolio belongs to the user
-  const existingPortfolio = await prisma.portfolio.findFirstOrThrow({
-    where: {
-      id: portfolioId,
-      portfolioManagerProfileId: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (existingPortfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Access denied: You do not own this portfolio');
-  }
+  await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Delete the portfolio (cascade will delete portfolio tickers)
   await prisma.portfolio.delete({

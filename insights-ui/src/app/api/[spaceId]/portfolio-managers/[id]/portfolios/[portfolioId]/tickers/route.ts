@@ -5,6 +5,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
+import { verifyPortfolioOwnership } from '@/utils/portfolio-utils';
 
 // POST /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId]/tickers - Add a ticker to a portfolio (owner only)
 async function postHandler(
@@ -17,20 +18,7 @@ async function postHandler(
   const body: CreatePortfolioTickerRequest = await req.json();
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirstOrThrow({
-    where: {
-      id: portfolioId,
-      portfolioManagerProfileId: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Access denied: You do not own this portfolio');
-  }
+  await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Check if ticker already exists in portfolio
   const existingTicker = await prisma.portfolioTicker.findFirst({
@@ -95,28 +83,14 @@ async function putHandler(
   const { id: profileId, portfolioId } = await params;
   const { userId } = userContext;
   const body: UpdatePortfolioTickerRequest = await req.json();
-  const { searchParams } = new URL(req.url);
-  const tickerId = searchParams.get('id');
+  const tickerId = req.nextUrl.searchParams.get('id');
 
   if (!tickerId) {
     throw new Error('Ticker ID is required');
   }
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirstOrThrow({
-    where: {
-      id: portfolioId,
-      portfolioManagerProfileId: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Access denied: You do not own this portfolio');
-  }
+  await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Update the portfolio ticker
   const updatedPortfolioTicker = await prisma.portfolioTicker.update({
@@ -165,28 +139,14 @@ async function deleteHandler(
 ): Promise<{ success: boolean }> {
   const { id: profileId, portfolioId } = await params;
   const { userId } = userContext;
-  const { searchParams } = new URL(req.url);
-  const tickerId = searchParams.get('id');
+  const tickerId = req.nextUrl.searchParams.get('id');
 
   if (!tickerId) {
     throw new Error('Ticker ID is required');
   }
 
   // Verify the portfolio belongs to the user
-  const portfolio = await prisma.portfolio.findFirstOrThrow({
-    where: {
-      id: portfolioId,
-      portfolioManagerProfileId: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: true,
-    },
-  });
-
-  if (portfolio.portfolioManagerProfile.userId !== userId) {
-    throw new Error('Access denied: You do not own this portfolio');
-  }
+  await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Delete the portfolio ticker
   await prisma.portfolioTicker.delete({

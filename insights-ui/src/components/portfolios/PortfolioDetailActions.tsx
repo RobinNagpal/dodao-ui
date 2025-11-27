@@ -23,14 +23,8 @@ export default function PortfolioDetailActions({ portfolio, portfolioManagerId, 
   const isOwner = useIsOwner(portfolio.portfolioManagerProfile?.userId);
   const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(null);
   const [editingTicker, setEditingTicker] = useState<PortfolioTicker | null>(null);
-  const [deletingTicker, setDeletingTicker] = useState<PortfolioTicker | null>(null);
   const [deletingPortfolio, setDeletingPortfolio] = useState<boolean>(false);
   const [showAddTickerModal, setShowAddTickerModal] = useState(false);
-
-  const { deleteData: deleteTicker, loading: isDeletingTicker } = useDeleteData({
-    successMessage: 'Ticker removed from portfolio successfully!',
-    errorMessage: 'Failed to remove ticker from portfolio.',
-  });
 
   const { deleteData: deletePortfolio, loading: isDeletingPortfolio } = useDeleteData({
     successMessage: 'Portfolio deleted successfully!',
@@ -45,18 +39,6 @@ export default function PortfolioDetailActions({ portfolio, portfolioManagerId, 
     const url = new URL(window.location.href);
     url.searchParams.set('updatedAt', Date.now().toString());
     router.push(url.toString());
-  };
-
-  const handleDeleteTicker = async () => {
-    if (!deletingTicker) return;
-
-    const result = await deleteTicker(
-      `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers?id=${deletingTicker.id}`
-    );
-    if (result) {
-      setDeletingTicker(null);
-      handleSuccess();
-    }
   };
 
   const handleDeletePortfolio = async () => {
@@ -123,19 +105,6 @@ export default function PortfolioDetailActions({ portfolio, portfolioManagerId, 
         portfolioManagerId={portfolioManagerId}
       />
 
-      {/* Delete Ticker Confirmation Modal */}
-      {deletingTicker && (
-        <DeleteConfirmationModal
-          open={!!deletingTicker}
-          onClose={() => setDeletingTicker(null)}
-          onDelete={handleDeleteTicker}
-          deleting={isDeletingTicker}
-          title={`Remove ${deletingTicker.ticker?.symbol || 'ticker'} from portfolio?`}
-          deleteButtonText="Remove Holding"
-          confirmationText="REMOVE"
-        />
-      )}
-
       {/* Delete Portfolio Confirmation Modal */}
       {deletingPortfolio && (
         <DeleteConfirmationModal
@@ -156,7 +125,6 @@ export default function PortfolioDetailActions({ portfolio, portfolioManagerId, 
 export function usePortfolioTickerActions(portfolioManagerId: string, portfolioId: string) {
   const router = useRouter();
   const [editingTicker, setEditingTicker] = useState<PortfolioTicker | null>(null);
-  const [deletingTicker, setDeletingTicker] = useState<PortfolioTicker | null>(null);
   const [showAddTickerModal, setShowAddTickerModal] = useState(false);
 
   const handleSuccess = () => {
@@ -168,8 +136,6 @@ export function usePortfolioTickerActions(portfolioManagerId: string, portfolioI
   return {
     editingTicker,
     setEditingTicker,
-    deletingTicker,
-    setDeletingTicker,
     showAddTickerModal,
     setShowAddTickerModal,
     handleSuccess,
