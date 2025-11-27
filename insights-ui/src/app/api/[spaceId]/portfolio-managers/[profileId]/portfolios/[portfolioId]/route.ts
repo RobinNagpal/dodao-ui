@@ -10,8 +10,8 @@ import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 import { verifyPortfolioOwnership } from '@/utils/portfolio-utils';
 
 // GET /api/[spaceId]/portfolio-managers/[id]/portfolios/[portfolioId] - Get a specific portfolio (public)
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: string; portfolioId: string }> }): Promise<{ portfolio: Portfolio }> {
-  const { id: profileId, portfolioId } = await params;
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ profileId: string; portfolioId: string }> }): Promise<{ portfolio: Portfolio }> {
+  const { profileId, portfolioId } = await params;
 
   const portfolio = await prisma.portfolio.findFirstOrThrow({
     where: {
@@ -103,14 +103,14 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ id: 
 async function putHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string; portfolioId: string }> }
+  { params }: { params: Promise<{ profileId: string; portfolioId: string }> }
 ): Promise<Portfolio> {
-  const { id: profileId, portfolioId } = await params;
+  const { profileId, portfolioId } = await params;
   const { userId } = userContext;
   const body: UpdatePortfolioRequest = await req.json();
 
   // Verify the portfolio belongs to the user
-  const existingPortfolio = await verifyPortfolioOwnership(profileId, portfolioId, userId);
+  await verifyPortfolioOwnership(profileId, portfolioId, userId);
 
   // Update the portfolio
   const updatedPortfolio = await prisma.portfolio.update({
@@ -148,9 +148,9 @@ async function putHandler(
 async function deleteHandler(
   req: NextRequest,
   userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string; portfolioId: string }> }
+  { params }: { params: Promise<{ profileId: string; portfolioId: string }> }
 ): Promise<{ success: boolean }> {
-  const { id: profileId, portfolioId } = await params;
+  const { profileId, portfolioId } = await params;
   const { userId } = userContext;
 
   // Verify the portfolio belongs to the user

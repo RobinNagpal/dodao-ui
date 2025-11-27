@@ -48,7 +48,7 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps): JSX.Elemen
 
   return (
     <div className="overflow-hidden bg-gray-800 rounded-xl">
-      <div className="mx-auto max-w-md px-6 py-8 sm:py-10">
+      <div className="mx-auto max-w-md px-6">
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">

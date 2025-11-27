@@ -5,24 +5,16 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
+import { verifyProfileOwnership } from '@/utils/portfolio-utils';
 
 // POST /api/[spaceId]/portfolio-managers/[id]/portfolios/create - Create a new portfolio for a profile (owner only)
-async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<Portfolio> {
-  const { id: profileId } = await params;
+async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ profileId: string }> }): Promise<Portfolio> {
+  const { profileId } = await params;
   const { userId } = userContext;
   const body: CreatePortfolioRequest = await req.json();
 
-  // Verify the profile belongs to the user
-  const profile = await prisma.portfolioManagerProfile.findFirstOrThrow({
-    where: {
-      id: profileId,
-      spaceId: KoalaGainsSpaceId,
-    },
-  });
-
-  if (profile.userId !== userId) {
-    throw new Error('Access denied: You do not own this profile');
-  }
+  // Verify the profile belongs to the user (or user is admin)
+  await verifyProfileOwnership(profileId, userId);
 
   // Create the portfolio
   const portfolio = await prisma.portfolio.create({
