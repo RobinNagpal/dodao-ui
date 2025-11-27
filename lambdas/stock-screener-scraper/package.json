@@ -1,0 +1,32 @@
+{
+  "name": "stock-screener-scraper",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "tsc",
+    "lint": "eslint src --ext .ts",
+    "lint-fix": "eslint src --ext .ts --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,json}' --write",
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,json}'",
+    "test:local": "npx tsx src/test-local.ts"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "puppeteer": "^22.0.0",
+    "puppeteer-core": "^22.0.0",
+    "@sparticuz/chromium": "^122.0.0",
+    "typescript": "5.0.4",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "18.16.3",
+    "eslint": "8.39.0",
+    "postcss": "8.4.35",
+    "prettier": "^2.8.8",
+    "serverless": "^4.21.0",
+    "tsx": "^4.20.6",
+    "typescript": "5.0.4"
+  }
+}
+
