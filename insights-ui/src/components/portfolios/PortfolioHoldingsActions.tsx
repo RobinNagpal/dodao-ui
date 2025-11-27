@@ -55,7 +55,7 @@ export default function PortfolioHoldingsActions({
     if (!deletingTicker) return;
 
     const result = await deleteTicker(
-      `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers?id=${deletingTicker.id}`
+      `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers/${deletingTicker.id}`
     );
     if (result) {
       setDeletingTicker(null);

@@ -28,7 +28,7 @@ interface AddEditPortfolioTickerModalProps {
   portfolioId: string;
   portfolioTicker?: PortfolioTicker | null;
   onSuccess?: () => void;
-  portfolioManagerId?: string; // Optional, for using new API routes
+  portfolioManagerId: string;
 }
 
 export default function AddEditPortfolioTickerModal({
@@ -92,7 +92,7 @@ export default function AddEditPortfolioTickerModal({
                 symbol: portfolioTicker.ticker.symbol || '',
                 name: portfolioTicker.ticker.name || '',
                 exchange: portfolioTicker.ticker.exchange || '',
-                cachedScoreEntry: null, // We'll need to fetch this separately if needed
+                cachedScoreEntry: portfolioTicker.ticker.cachedScoreEntry,
               }
             : null
         );
@@ -162,12 +162,10 @@ export default function AddEditPortfolioTickerModal({
         listIds: selectedListIds,
       };
 
-      // Use new API route if portfolioManagerId is provided
-      const apiUrl = portfolioManagerId
-        ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`
-        : `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers?id=${portfolioTicker.id}`;
-
-      const result = await updatePortfolioTicker(apiUrl, updateData);
+      const result = await updatePortfolioTicker(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers/${portfolioTicker.id}`,
+        updateData
+      );
       if (result) {
         onSuccess?.();
         onClose();
@@ -184,12 +182,10 @@ export default function AddEditPortfolioTickerModal({
         listIds: selectedListIds.length > 0 ? selectedListIds : undefined,
       };
 
-      // Use new API route if portfolioManagerId is provided
-      const apiUrl = portfolioManagerId
-        ? `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers`
-        : `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolios/${portfolioId}/tickers`;
-
-      const result = await createPortfolioTicker(apiUrl, createData);
+      const result = await createPortfolioTicker(
+        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/portfolio-managers/${portfolioManagerId}/portfolios/${portfolioId}/tickers`,
+        createData
+      );
       if (result) {
         onSuccess?.();
         onClose();
