@@ -1,4 +1,16 @@
-import puppeteer, { Browser, Page } from "puppeteer";
+import { Browser, Page } from "puppeteer-core";
+
+// Conditionally import puppeteer based on environment
+const isLambda = !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+let puppeteer: any;
+let chromium: any;
+
+if (isLambda) {
+  puppeteer = require("puppeteer-core");
+  chromium = require("@sparticuz/chromium");
+} else {
+  puppeteer = require("puppeteer");
+}
 
 export interface ScreenedStock {
   symbol: string;
@@ -30,28 +42,45 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function scrapeScreener(
   filters: ScreenerFilters = {}
 ): Promise<ScreenerResult> {
-  const { marketCapMin = "Over 1B", priceChange1DMin = "Over 1%", limit = 15 } = filters;
-  
+  const {
+    marketCapMin = "Over 1B",
+    priceChange1DMin = "Over 1%",
+    limit = 15,
+  } = filters;
+
   const errors: Array<{ where: string; message: string }> = [];
   let browser: Browser | null = null;
 
   try {
+    // Detect if running in Lambda
+    const isLambda = !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+
     // Launch browser
-    browser = await puppeteer.launch({
+    const launchOptions: any = {
+      args: isLambda
+        ? chromium.args
+        : [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-accelerated-2d-canvas",
+            "--disable-gpu",
+            "--window-size=1920,1080",
+          ],
       headless: true,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--disable-gpu",
-        "--window-size=1920,1080",
-      ],
-    });
+    };
+
+    // Add Lambda-specific options
+    if (isLambda) {
+      launchOptions.defaultViewport = chromium.defaultViewport;
+      launchOptions.executablePath = await chromium.executablePath();
+    }
+
+    browser = await puppeteer.launch(launchOptions);
 
     const page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 1080 });
-    
+
     // Set user agent to avoid bot detection
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -59,7 +88,10 @@ export async function scrapeScreener(
 
     // Navigate to screener
     console.log("Navigating to screener...");
-    await page.goto(SCREENER_URL, { waitUntil: "networkidle2", timeout: 30000 });
+    await page.goto(SCREENER_URL, {
+      waitUntil: "networkidle2",
+      timeout: 30000,
+    });
 
     // Wait for the table to load
     await page.waitForSelector("table", { timeout: 10000 });
@@ -67,9 +99,17 @@ export async function scrapeScreener(
 
     // Apply Market Cap filter
     console.log("Applying Market Cap filter...");
-    const marketCapApplied = await applyFilter(page, "Market Cap", marketCapMin, errors);
+    const marketCapApplied = await applyFilter(
+      page,
+      "Market Cap",
+      marketCapMin,
+      errors
+    );
     if (!marketCapApplied) {
-      errors.push({ where: "applyMarketCapFilter", message: "Failed to apply Market Cap filter" });
+      errors.push({
+        where: "applyMarketCapFilter",
+        message: "Failed to apply Market Cap filter",
+      });
     }
 
     // Wait for the filter to apply
@@ -77,9 +117,17 @@ export async function scrapeScreener(
 
     // Apply Price Change 1D filter
     console.log("Applying Price Change 1D filter...");
-    const priceChangeApplied = await applyFilter(page, "Price Change 1D", priceChange1DMin, errors);
+    const priceChangeApplied = await applyFilter(
+      page,
+      "Price Change 1D",
+      priceChange1DMin,
+      errors
+    );
     if (!priceChangeApplied) {
-      errors.push({ where: "applyPriceChangeFilter", message: "Failed to apply Price Change 1D filter" });
+      errors.push({
+        where: "applyPriceChangeFilter",
+        message: "Failed to apply Price Change 1D filter",
+      });
     }
 
     // Wait for results to update
@@ -89,7 +137,10 @@ export async function scrapeScreener(
     console.log("Sorting by % Change (highest first)...");
     const sorted = await sortByPercentChange(page, errors);
     if (!sorted) {
-      errors.push({ where: "sortByPercentChange", message: "Failed to sort by % Change" });
+      errors.push({
+        where: "sortByPercentChange",
+        message: "Failed to sort by % Change",
+      });
     }
 
     // Wait for sort to apply
@@ -98,9 +149,11 @@ export async function scrapeScreener(
     // Extract stock data
     console.log("Extracting stock data...");
     const result = await extractStockData(page, limit);
-    
-    console.log(`Found ${result.totalMatched} total, returning ${result.stocks.length} stocks`);
-    
+
+    console.log(
+      `Found ${result.totalMatched} total, returning ${result.stocks.length} stocks`
+    );
+
     return {
       stocks: result.stocks,
       totalMatched: result.totalMatched,
@@ -128,19 +181,20 @@ async function applyFilter(
 ): Promise<boolean> {
   try {
     // Step 1: Find and click the filter search box
-    const searchBoxSelector = 'input[placeholder*="Search"][placeholder*="filters"]';
+    const searchBoxSelector =
+      'input[placeholder*="Search"][placeholder*="filters"]';
     await page.waitForSelector(searchBoxSelector, { timeout: 5000 });
-    
+
     // Clear and type the filter name
     await page.click(searchBoxSelector, { clickCount: 3 }); // Select all
     await page.type(searchBoxSelector, filterName, { delay: 30 });
-    
+
     await delay(500);
 
     // Step 2: Click the filter button that matches our filter name
     // We need to find a button with the exact filter name
     const filterClicked = await page.evaluate((name: string) => {
-      const buttons = document.querySelectorAll('button');
+      const buttons = document.querySelectorAll("button");
       for (const btn of Array.from(buttons)) {
         const text = btn.textContent?.trim();
         if (text === name) {
@@ -162,10 +216,10 @@ async function applyFilter(
     // The dropdown is in a new section that appeared after adding the filter
     const anyClicked = await page.evaluate(() => {
       // Find the most recently added filter's dropdown
-      const buttons = document.querySelectorAll('button');
+      const buttons = document.querySelectorAll("button");
       for (const btn of Array.from(buttons)) {
         const text = btn.textContent?.trim();
-        if (text === 'Any') {
+        if (text === "Any") {
           btn.click();
           return true;
         }
@@ -174,7 +228,10 @@ async function applyFilter(
     });
 
     if (!anyClicked) {
-      errors.push({ where: `applyFilter:${filterName}`, message: "Could not find 'Any' dropdown" });
+      errors.push({
+        where: `applyFilter:${filterName}`,
+        message: "Could not find 'Any' dropdown",
+      });
       return false;
     }
 
@@ -183,7 +240,7 @@ async function applyFilter(
     // Step 4: Select the filter value from the dropdown
     const valueClicked = await page.evaluate((value: string) => {
       // Look for buttons in the dropdown menu
-      const buttons = document.querySelectorAll('button');
+      const buttons = document.querySelectorAll("button");
       for (const btn of Array.from(buttons)) {
         const text = btn.textContent?.trim();
         if (text === value) {
@@ -195,7 +252,10 @@ async function applyFilter(
     }, filterValue);
 
     if (!valueClicked) {
-      errors.push({ where: `applyFilter:${filterName}`, message: `Could not select value: ${filterValue}` });
+      errors.push({
+        where: `applyFilter:${filterName}`,
+        message: `Could not select value: ${filterValue}`,
+      });
       return false;
     }
 
@@ -203,7 +263,7 @@ async function applyFilter(
 
     // Clear the search box by pressing Escape
     await page.keyboard.press("Escape");
-    
+
     return true;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -223,17 +283,17 @@ async function sortByPercentChange(
     // Find and click the "% Change" column header in the table
     // The header text might be "% Change" or similar
     const headerClicked = await page.evaluate(() => {
-      const table = document.querySelector('table');
+      const table = document.querySelector("table");
       if (!table) return false;
 
       // Look for table header cells
-      const headers = table.querySelectorAll('th');
+      const headers = table.querySelectorAll("th");
       for (const th of Array.from(headers)) {
         const text = th.textContent?.trim() || "";
         // Match "% Change" or "Change" column
-        if (text.includes('% Change') || text === '% Change') {
+        if (text.includes("% Change") || text === "% Change") {
           // Click the header to sort
-          const clickable = th.querySelector('button, a, span') || th;
+          const clickable = th.querySelector("button, a, span") || th;
           (clickable as HTMLElement).click();
           return true;
         }
@@ -242,7 +302,10 @@ async function sortByPercentChange(
     });
 
     if (!headerClicked) {
-      errors.push({ where: "sortByPercentChange", message: "Could not find % Change column header" });
+      errors.push({
+        where: "sortByPercentChange",
+        message: "Could not find % Change column header",
+      });
       return false;
     }
 
@@ -263,7 +326,7 @@ async function extractStockData(
 ): Promise<{ stocks: ScreenedStock[]; totalMatched: number }> {
   // Get total matched count from heading like "922 Stocks"
   const totalMatched = await page.evaluate(() => {
-    const heading = document.querySelector('h2');
+    const heading = document.querySelector("h2");
     if (!heading) return 0;
     const text = heading.textContent || "";
     const match = text.match(/(\d[\d,]*)\s*Stocks?/i);
@@ -273,16 +336,16 @@ async function extractStockData(
   // Extract table rows - handle the specific table structure
   // The table has columns: Symbol, Company Name, Market Cap, % Change (and possibly more)
   const stocks = await page.evaluate((maxRows: number) => {
-    const table = document.querySelector('table');
+    const table = document.querySelector("table");
     if (!table) return [];
-    
-    const rows = table.querySelectorAll('tbody tr');
+
+    const rows = table.querySelectorAll("tbody tr");
     const results: ScreenedStock[] = [];
 
     for (let i = 0; i < Math.min(rows.length, maxRows); i++) {
       const row = rows[i];
-      const cells = row.querySelectorAll('td');
-      
+      const cells = row.querySelectorAll("td");
+
       if (cells.length >= 4) {
         // Extract data from cells
         // The structure based on the filtered view:

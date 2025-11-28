@@ -4,8 +4,10 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
-  timeout: 60
-  memorySize: 1024
+  timeout: 30
+  memorySize: 3008
+  environment:
+    NODE_ENV: production
 
 functions:
   api:
@@ -18,10 +20,10 @@ functions:
           path: /screener
           method: OPTIONS
 
-plugins:
-  - serverless-plugin-typescript
-
-custom:
-  serverlessPluginTypescript:
-    tsConfigFileLocation: './tsconfig.json'
-
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    external:
+      - "@sparticuz/chromium"
