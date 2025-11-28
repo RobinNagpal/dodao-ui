@@ -395,7 +395,8 @@ export default function FavouritesPage() {
             tags={tags}
             onManageLists={() => setManageModalView('manage-lists')}
             onManageTags={() => setManageModalView('manage-tags')}
-            onSuccess={async () => {
+            favouriteTicker={editingFavourite}
+            onUpsert={async () => {
               // Preserve the open accordion state before refetching
               const listIdToKeepOpen = activeListIdBeforeEdit;
               await refetchFavourites();
