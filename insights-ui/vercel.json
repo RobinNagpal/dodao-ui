@@ -3,6 +3,10 @@
     {
       "path": "/api/koala_gains/tickers-v1/generate-ticker-v1-request",
       "schedule": "*/3 * * * *"
+    },
+    {
+      "path": "/api/koala_gains/tickers-v1/generate-top-gainers",
+      "schedule": "0 5 * * *"
     }
   ],
   "headers": [
