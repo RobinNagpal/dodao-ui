@@ -543,6 +543,10 @@ model TickerV1 {
   // Relation to portfolio tickers
   portfolioTickers PortfolioTicker[]
 
+  // Relation to daily market movements
+  dailyTopGainers DailyTopGainer[] @relation("DailyTopGainerTickers")
+  dailyTopLosers  DailyTopLoser[]  @relation("DailyTopLoserTickers")
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -1007,4 +1011,62 @@ model PortfolioTicker {
   @@index([portfolioId])
   @@index([tickerId])
   @@map("portfolio_tickers")
+}
+
+// --------------------------
+// Daily Market Movement Models
+// --------------------------
+
+model DailyTopGainer {
+  id                  String   @id @default(uuid())
+  name                String   @map("name")
+  symbol              String   @map("symbol")
+  percentageChange    Float    @map("percentage_change")
+  title               String?  @map("title")
+  metaDescription     String?  @map("meta_description")
+  oneLineExplanation  String?  @map("one_line_explanation")
+  detailedExplanation String?  @map("detailed_explanation")
+  status              String   @default("NotStarted") @map("status")
+  tickerId            String   @map("ticker_id")
+  spaceId             String   @default("koala_gains") @map("space_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  createdBy           String?  @map("created_by")
+  updatedBy           String?  @map("updated_by")
+
+  // Relations
+  ticker TickerV1 @relation("DailyTopGainerTickers", fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, symbol, createdAt])
+  @@index([spaceId, createdAt])
+  @@index([symbol])
+  @@index([tickerId])
+  @@map("daily_top_gainers")
+}
+
+model DailyTopLoser {
+  id                  String   @id @default(uuid())
+  name                String   @map("name")
+  symbol              String   @map("symbol")
+  percentageChange    Float    @map("percentage_change")
+  title               String?  @map("title")
+  metaDescription     String?  @map("meta_description")
+  oneLineExplanation  String?  @map("one_line_explanation")
+  detailedExplanation String?  @map("detailed_explanation")
+  status              String   @default("NotStarted") @map("status")
+  tickerId            String   @map("ticker_id")
+  spaceId             String   @default("koala_gains") @map("space_id")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  createdBy           String?  @map("created_by")
+  updatedBy           String?  @map("updated_by")
+
+  // Relations
+  ticker TickerV1 @relation("DailyTopLoserTickers", fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, symbol, createdAt])
+  @@index([spaceId, createdAt])
+  @@index([symbol])
+  @@index([tickerId])
+  @@map("daily_top_losers")
 }
