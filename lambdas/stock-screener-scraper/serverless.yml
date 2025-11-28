@@ -1,0 +1,29 @@
+service: stock-screener-scraper
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  timeout: 30
+  memorySize: 3008
+  environment:
+    NODE_ENV: production
+
+functions:
+  api:
+    handler: src/handler.api
+    events:
+      - httpApi:
+          path: /screener
+          method: POST
+      - httpApi:
+          path: /screener
+          method: OPTIONS
+
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    external:
+      - "@sparticuz/chromium"

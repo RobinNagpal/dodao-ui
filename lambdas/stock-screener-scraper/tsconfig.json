@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "ES2020",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM"],
+    "esModuleInterop": true,
+    "rootDir": "./",
+    "module": "CommonJS",
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "scripts/**/*"],
+  "exclude": ["node_modules", ".build"]
+}
+
