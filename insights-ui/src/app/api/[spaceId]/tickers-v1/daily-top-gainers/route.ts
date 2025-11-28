@@ -1,12 +1,9 @@
 import { prisma } from '@/prisma';
+import { TopGainerWithTicker } from '@/types/top-gainers';
 import { getExchangesByCountry, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DailyTopGainer, Prisma, TickerV1 } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
-
-export interface TopGainerWithTicker extends DailyTopGainer {
-  ticker: TickerV1;
-}
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<TopGainerWithTicker[]> {
   const { spaceId } = await context.params;

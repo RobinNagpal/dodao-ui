@@ -5,7 +5,7 @@
       "schedule": "*/3 * * * *"
     },
     {
-      "path": "/api/koala_gains/tickers-v1/generate-top-gainers",
+      "path": "/api/koala_gains/tickers-v1/generate-daily-top-gainers",
       "schedule": "0 5 * * *"
     }
   ],
@@ -16,7 +16,10 @@
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, dodao-auth-token" }
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, dodao-auth-token"
+        }
       ]
     },
     {
