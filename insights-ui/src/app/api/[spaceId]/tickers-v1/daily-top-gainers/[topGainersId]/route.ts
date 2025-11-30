@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { TopGainerWithTicker } from '@/types/top-gainers';
+import { TopGainerWithTicker } from '@/types/daily-stock-movers';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
