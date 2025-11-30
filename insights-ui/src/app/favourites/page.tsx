@@ -8,7 +8,7 @@ import { KoalaGainsSession } from '@/types/auth';
 import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 import { HeartIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import ManageListsModal from '@/components/favourites/ManageListsModal';
@@ -42,7 +42,6 @@ export default function FavouritesPage() {
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
   const [openListIds, setOpenListIds] = useState<Set<string>>(new Set());
   const [showBusinessAnalysis, setShowBusinessAnalysis] = useState(false);
-  const [activeListIdBeforeEdit, setActiveListIdBeforeEdit] = useState<string | null>(null);
 
   // Multi-select state
   const [selectedFavourites, setSelectedFavourites] = useState<Set<string>>(new Set());
@@ -333,11 +332,14 @@ export default function FavouritesPage() {
                           key={favourite.id}
                           favourite={favourite}
                           showBusinessAnalysis={showBusinessAnalysis}
-                          onEdit={(fav) => {
-                            setActiveListIdBeforeEdit(list.id);
+                          onEdit={(e: React.MouseEvent, fav) => {
+                            e.stopPropagation();
                             setEditingFavourite(fav);
                           }}
-                          onDelete={setDeletingFavourite}
+                          onDelete={(e: React.MouseEvent, fav) => {
+                            e.stopPropagation();
+                            setDeletingFavourite(fav);
+                          }}
                           selectable={bulkActionMode}
                           isSelected={selectedFavourites.has(favourite.id)}
                           onSelectChange={handleFavouriteSelection}
@@ -363,11 +365,14 @@ export default function FavouritesPage() {
                         key={favourite.id}
                         favourite={favourite}
                         showBusinessAnalysis={showBusinessAnalysis}
-                        onEdit={(fav) => {
-                          setActiveListIdBeforeEdit('unlisted');
+                        onEdit={(e: React.MouseEvent, fav) => {
+                          e.stopPropagation();
                           setEditingFavourite(fav);
                         }}
-                        onDelete={setDeletingFavourite}
+                        onDelete={(e: React.MouseEvent, fav) => {
+                          e.stopPropagation();
+                          setDeletingFavourite(fav);
+                        }}
                         selectable={bulkActionMode}
                         isSelected={selectedFavourites.has(favourite.id)}
                         onSelectChange={handleFavouriteSelection}
@@ -386,7 +391,6 @@ export default function FavouritesPage() {
             isOpen={!!editingFavourite}
             onClose={() => {
               setEditingFavourite(null);
-              setActiveListIdBeforeEdit(null);
             }}
             tickerId={editingFavourite.tickerId}
             tickerSymbol={editingFavourite.ticker.symbol}
@@ -397,21 +401,8 @@ export default function FavouritesPage() {
             onManageTags={() => setManageModalView('manage-tags')}
             favouriteTicker={editingFavourite}
             onUpsert={async () => {
-              // Preserve the open accordion state before refetching
-              const listIdToKeepOpen = activeListIdBeforeEdit;
               await refetchFavourites();
-
-              // Restore the accordion state after refetch
-              if (listIdToKeepOpen) {
-                setOpenListIds((prev) => {
-                  const newSet = new Set(prev);
-                  newSet.add(listIdToKeepOpen);
-                  return newSet;
-                });
-              }
-
               setEditingFavourite(null);
-              setActiveListIdBeforeEdit(null);
             }}
           />
         )}
