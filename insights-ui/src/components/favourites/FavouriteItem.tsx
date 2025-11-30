@@ -2,6 +2,7 @@ import { FavouriteTickerResponse } from '@/types/ticker-user';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { getScoreColorClasses } from '@/utils/score-utils';
+import React from 'react';
 import CategoryScores from './CategoryScores';
 import BusinessAnalysis from './BusinessAnalysis';
 import FavouriteNotes from './FavouriteNotes';
@@ -13,8 +14,8 @@ import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkb
 interface FavouriteItemProps {
   favourite: FavouriteTickerResponse;
   showBusinessAnalysis: boolean;
-  onEdit: (favourite: FavouriteTickerResponse) => void;
-  onDelete: (favourite: FavouriteTickerResponse) => void;
+  onEdit: (e: React.MouseEvent, favourite: FavouriteTickerResponse) => void;
+  onDelete: (e: React.MouseEvent, favourite: FavouriteTickerResponse) => void;
   selectable?: boolean;
   isSelected?: boolean;
   onSelectChange?: (favourite: FavouriteTickerResponse, selected: boolean) => void;
@@ -79,10 +80,10 @@ export default function FavouriteItem({
           )}
         </div>
         <div className="flex gap-1">
-          <button onClick={() => onEdit(favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
+          <button onClick={(e) => onEdit(e, favourite)} className="text-blue-400 hover:text-blue-300 p-1" title="Edit">
             <PencilIcon className="w-4 h-4" />
           </button>
-          <button onClick={() => onDelete(favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
+          <button onClick={(e) => onDelete(e, favourite)} className="text-red-400 hover:text-red-300 p-1" title="Delete">
             <TrashIcon className="w-4 h-4" />
           </button>
         </div>

@@ -1,30 +1,25 @@
 'use client';
 
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import Button from '@dodao/web-core/components/core/buttons/Button';
-import Input from '@dodao/web-core/components/core/input/Input';
-import { useState, useEffect } from 'react';
-import {
-  FavouriteTickerResponse,
-  UserListResponse,
-  UserTickerTagResponse,
-  CreateFavouriteTickerRequest,
-  UpdateFavouriteTickerRequest,
-  TickerBasicsWithFinalScore,
-} from '@/types/ticker-user';
-import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TagIcon, ListBulletIcon } from '@heroicons/react/24/outline';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import ManageListsModal from '@/components/favourites/ManageListsModal';
-import ManageTagsModal from '@/components/favourites/ManageTagsModal';
 import SearchBar, { SearchResult } from '@/components/core/SearchBar/SearchBar';
 import TickerBadge from '@/components/favourites/TickerBadge';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import {
+  CreateFavouriteTickerRequest,
+  FavouriteTickerResponse,
+  TickerBasicsWithFinalScore,
+  UpdateFavouriteTickerRequest,
+  UserListResponse,
+  UserTickerTagResponse,
+} from '@/types/ticker-user';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
+import Input from '@dodao/web-core/components/core/input/Input';
+import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-
-type ModalView = 'main' | 'manage-lists' | 'manage-tags';
+import { ListBulletIcon, TagIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
 
 interface AddEditFavouriteModalProps {
   isOpen: boolean;
@@ -33,12 +28,28 @@ interface AddEditFavouriteModalProps {
   tickerSymbol: string;
   tickerName: string;
   onSuccess?: () => void;
+  lists: UserListResponse[];
+  tags: UserTickerTagResponse[];
+  onManageLists: () => void;
+  onManageTags: () => void;
+  favouriteTicker: FavouriteTickerResponse | null;
+  onUpsert: () => void;
 }
 
-export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, tickerSymbol, tickerName, onSuccess }: AddEditFavouriteModalProps) {
-  const [currentView, setCurrentView] = useState<ModalView>('main');
-  const [existingFavourite, setExistingFavourite] = useState<FavouriteTickerResponse | null>(null);
-
+export default function AddEditFavouriteModal({
+  isOpen,
+  onClose,
+  tickerId,
+  tickerSymbol,
+  tickerName,
+  onSuccess,
+  lists,
+  tags,
+  onManageLists,
+  onManageTags,
+  favouriteTicker,
+  onUpsert,
+}: AddEditFavouriteModalProps) {
   // Form state
   const [myNotes, setMyNotes] = useState<string>('');
   const [myScore, setMyScore] = useState<string>('');
@@ -46,26 +57,6 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
   const [selectedListIds, setSelectedListIds] = useState<string[]>([]);
   const [competitorsConsidered, setCompetitorsConsidered] = useState<TickerBasicsWithFinalScore[]>([]);
   const [betterAlternatives, setBetterAlternatives] = useState<TickerBasicsWithFinalScore[]>([]);
-
-  // Fetch tags and lists
-  const {
-    data: tagsData,
-    loading: tagsLoading,
-    reFetchData: refetchTags,
-  } = useFetchData<{ tags: UserTickerTagResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-ticker-tags`, {}, 'Failed to fetch tags');
-
-  const {
-    data: listsData,
-    loading: listsLoading,
-    reFetchData: refetchLists,
-  } = useFetchData<{ lists: UserListResponse[] }>(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/user-lists`, {}, 'Failed to fetch lists');
-
-  // Fetch existing favourite for this ticker
-  const { data: favouritesData, reFetchData: refetchFavourites } = useFetchData<{ favouriteTickers: FavouriteTickerResponse[] }>(
-    `${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`,
-    { skipInitialFetch: !isOpen },
-    'Failed to fetch favourites'
-  );
 
   // Post and Put hooks for favourites
   const { postData: createFavourite, loading: creating } = usePostData<FavouriteTickerResponse, CreateFavouriteTickerRequest>({
@@ -78,38 +69,19 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
     errorMessage: 'Failed to update favourite.',
   });
 
-  const availableTags = tagsData?.tags || [];
-  const availableLists = listsData?.lists || [];
   const loading = creating || updating;
 
-  // Check if current ticker exists in favourites
-  useEffect(() => {
-    if (favouritesData?.favouriteTickers) {
-      const existing = favouritesData.favouriteTickers.find((f) => f.tickerId === tickerId);
-      setExistingFavourite(existing || null);
-    }
-  }, [favouritesData, tickerId]);
-
-  // Load existing data when modal opens
+  // Update form when favourite ticker changes
   useEffect(() => {
     if (isOpen) {
-      // Fetch favourites data when modal opens
-      refetchFavourites();
-      setCurrentView('main');
-    }
-  }, [isOpen, refetchFavourites]);
-
-  // Update form when existing favourite changes
-  useEffect(() => {
-    if (isOpen) {
-      if (existingFavourite) {
-        setMyNotes(existingFavourite.myNotes || '');
-        setMyScore(existingFavourite.myScore?.toString() || '');
-        setSelectedTagIds(existingFavourite.tags.map((t) => t.id));
-        setSelectedListIds(existingFavourite.lists.map((l) => l.id));
+      if (favouriteTicker) {
+        setMyNotes(favouriteTicker.myNotes || '');
+        setMyScore(favouriteTicker.myScore?.toString() || '');
+        setSelectedTagIds(favouriteTicker.tags.map((t) => t.id));
+        setSelectedListIds(favouriteTicker.lists.map((l) => l.id));
         // Load existing competitors and alternatives
         setCompetitorsConsidered(
-          existingFavourite.competitorsConsidered?.map((c) => ({
+          favouriteTicker.competitorsConsidered?.map((c) => ({
             id: c.id,
             symbol: c.symbol,
             name: c.name,
@@ -118,7 +90,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
           })) || []
         );
         setBetterAlternatives(
-          existingFavourite.betterAlternatives?.map((a) => ({
+          favouriteTicker.betterAlternatives?.map((a) => ({
             id: a.id,
             symbol: a.symbol,
             name: a.name,
@@ -136,12 +108,12 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         setBetterAlternatives([]);
       }
     }
-  }, [isOpen, existingFavourite]);
+  }, [isOpen, favouriteTicker]);
 
   const handleSave = async (): Promise<void> => {
     const scoreValue: number | undefined = myScore ? parseFloat(myScore) : undefined;
 
-    if (existingFavourite) {
+    if (favouriteTicker) {
       // Update existing favourite
       const updateData: UpdateFavouriteTickerRequest = {
         myNotes: myNotes === '' ? null : myNotes || undefined,
@@ -152,14 +124,14 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
         betterAlternatives: betterAlternatives.map((b) => b.id),
       };
 
-      const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${existingFavourite.id}`, updateData);
+      const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${favouriteTicker.id}`, updateData);
       if (result) {
+        onUpsert();
         onSuccess?.();
         onClose();
       }
     } else {
       // Create new favourite
-      console.log('tickerId', tickerId);
       const createData: CreateFavouriteTickerRequest = {
         tickerId,
         myNotes: myNotes || undefined,
@@ -172,6 +144,7 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
 
       const result = await createFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers`, createData);
       if (result) {
+        onUpsert();
         onSuccess?.();
         onClose();
       }
@@ -210,14 +183,6 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
 
   const handleRemoveBetterAlternative = (tickerId: string): void => {
     setBetterAlternatives((prev) => prev.filter((b) => b.id !== tickerId));
-  };
-
-  const handleTagsChange = (): void => {
-    refetchTags();
-  };
-
-  const handleListsChange = (): void => {
-    refetchLists();
   };
 
   const renderMainView = (): JSX.Element => (
@@ -315,18 +280,18 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       <div className="mt-4">
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Tags</label>
-          <Button onClick={() => setCurrentView('manage-tags')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+          <Button onClick={onManageTags} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <TagIcon className="w-4 h-4" />
             Manage Tags
           </Button>
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
-          {availableTags.length === 0 ? (
+          {tags.length === 0 ? (
             <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
-                items={availableTags.map(
+                items={tags.map(
                   (tag): CheckboxItem => ({
                     id: tag.id,
                     name: tag.name,
@@ -354,18 +319,18 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
       <div className="mt-4">
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Lists</label>
-          <Button onClick={() => setCurrentView('manage-lists')} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+          <Button onClick={onManageLists} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
             <ListBulletIcon className="w-4 h-4" />
             Manage Lists
           </Button>
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
-          {availableLists.length === 0 ? (
+          {lists.length === 0 ? (
             <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
               <Checkboxes
-                items={availableLists.map(
+                items={lists.map(
                   (list): CheckboxItem => ({
                     id: list.id,
                     name: list.name,
@@ -392,31 +357,20 @@ export default function AddEditFavouriteModal({ isOpen, onClose, tickerId, ticke
           Cancel
         </Button>
         <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
-          {existingFavourite ? 'Update' : 'Add to'} Favourites
+          {favouriteTicker ? 'Update' : 'Add to'} Favourites
         </Button>
       </div>
     </div>
   );
 
   return (
-    <>
-      <FullPageModal
-        open={isOpen && currentView === 'main'}
-        onClose={onClose}
-        title={existingFavourite ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
-        className="w-full max-w-2xl"
-      >
-        {renderMainView()}
-      </FullPageModal>
-
-      <ManageListsModal
-        isOpen={currentView === 'manage-lists'}
-        onClose={() => setCurrentView('main')}
-        lists={availableLists}
-        onListsChange={handleListsChange}
-      />
-
-      <ManageTagsModal isOpen={currentView === 'manage-tags'} onClose={() => setCurrentView('main')} tags={availableTags} onTagsChange={handleTagsChange} />
-    </>
+    <FullPageModal
+      open={isOpen}
+      onClose={onClose}
+      title={favouriteTicker ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
+      className="w-full max-w-2xl"
+    >
+      {renderMainView()}
+    </FullPageModal>
   );
 }
