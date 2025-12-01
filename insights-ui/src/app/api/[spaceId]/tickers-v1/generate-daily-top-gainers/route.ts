@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { GenerateStockMoversResponse } from '@/types/daily-stock-movers';
-import { DailyMoverType, processDailyMover } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType, processDailyMover, convertInProgressToFailed } from '@/utils/daily-movers-generation-utils';
 import { fetchTopGainers } from '@/utils/screener-api-utils';
 import { processAndSaveStockMovers } from '@/utils/stock-movers-processing-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -8,6 +8,9 @@ import { NextRequest } from 'next/server';
 
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<GenerateStockMoversResponse> {
   const { spaceId } = await params;
+
+  // Convert any stale InProgress records to Failed first
+  await convertInProgressToFailed();
 
   // Fetch fresh data from screener API
   const data = await fetchTopGainers();

@@ -4,6 +4,55 @@ import { DailyMoverInputJson, StockDataInScreenerResponse } from '@/types/daily-
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
 
+/**
+ * Converts InProgress daily movers that are older than 8 hours to Failed status
+ */
+export async function convertInProgressToFailed(): Promise<void> {
+  const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000); // 8 hours in milliseconds
+
+  // Fail stale gainers
+  const staleGainers = await prisma.dailyTopGainer.findMany({
+    where: {
+      status: GenerationRequestStatus.InProgress,
+      OR: [{ createdAt: { lt: eightHoursAgo } }, { updatedAt: { lt: eightHoursAgo } }],
+    },
+  });
+
+  if (staleGainers.length > 0) {
+    await prisma.dailyTopGainer.updateMany({
+      where: {
+        id: { in: staleGainers.map((g) => g.id) },
+      },
+      data: {
+        status: GenerationRequestStatus.Failed,
+        updatedAt: new Date(),
+      },
+    });
+    console.log(`Failed ${staleGainers.length} stale gainer records`);
+  }
+
+  // Fail stale losers
+  const staleLosers = await prisma.dailyTopLoser.findMany({
+    where: {
+      status: GenerationRequestStatus.InProgress,
+      OR: [{ createdAt: { lt: eightHoursAgo } }, { updatedAt: { lt: eightHoursAgo } }],
+    },
+  });
+
+  if (staleLosers.length > 0) {
+    await prisma.dailyTopLoser.updateMany({
+      where: {
+        id: { in: staleLosers.map((l) => l.id) },
+      },
+      data: {
+        status: GenerationRequestStatus.Failed,
+        updatedAt: new Date(),
+      },
+    });
+    console.log(`Failed ${staleLosers.length} stale loser records`);
+  }
+}
+
 export enum DailyMoverType {
   GAINER = 'gainer',
   LOSER = 'loser',

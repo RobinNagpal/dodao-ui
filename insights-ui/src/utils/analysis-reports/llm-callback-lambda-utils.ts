@@ -162,7 +162,7 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
       callbackUrl = `${callbackBaseUrl}/api/${spaceId}/tickers-v1/exchange/${exchange}/${symbol}/save-report-callback`;
     } else {
       // For daily movers without exchange
-      callbackUrl = `${callbackBaseUrl}/api/${spaceId}/tickers-v1/daily-movers/${generationRequestId}/save-callback`;
+      callbackUrl = `${callbackBaseUrl}/api/${spaceId}/tickers-v1/daily-movers/${generationRequestId}/save-daily-mover`;
     }
 
     const additionalData: Record<string, string> = {
