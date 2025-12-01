@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry } from '@prisma/client';
+import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
+import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator
@@ -102,6 +104,128 @@ export const generateCountryIndustryStocksMetadata = async (countryName: string,
       title,
       description: industrySummary,
     },
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Daily stock movers list metadata generator
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateDailyMoversListMetadata = (country: string, type: DailyMoverType): Metadata => {
+  const countryUpper = country.toUpperCase();
+  const isGainer = type === DailyMoverType.GAINER;
+
+  const title = isGainer ? `Daily Top Gainers in ${countryUpper} | KoalaGains` : `Daily Top Losers in ${countryUpper} | KoalaGains`;
+
+  const description = isGainer
+    ? `Discover today's top-performing stocks in ${countryUpper} with the highest percentage gains. Comprehensive analysis and insights on the best performing stocks in ${countryUpper} markets.`
+    : `Track today's worst-performing stocks in ${countryUpper} with the highest percentage losses. Comprehensive analysis and insights on the declining stocks in ${countryUpper} markets.`;
+
+  const canonicalUrl = isGainer ? `https://koalagains.com/daily-top-gainers/country/${country}` : `https://koalagains.com/daily-top-losers/country/${country}`;
+
+  const keywords = isGainer
+    ? [
+        `${countryUpper} top gainers`,
+        `${countryUpper} best performing stocks`,
+        `${countryUpper} stocks up today`,
+        'daily top gainers',
+        'stock gainers',
+        'market gainers',
+        'best stocks today',
+        'top performing stocks',
+        'stock market analysis',
+        'KoalaGains',
+      ]
+    : [
+        `${countryUpper} top losers`,
+        `${countryUpper} worst performing stocks`,
+        `${countryUpper} stocks down today`,
+        'daily top losers',
+        'stock losers',
+        'market losers',
+        'worst stocks today',
+        'declining stocks',
+        'stock market analysis',
+        'KoalaGains',
+      ];
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    keywords,
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Daily stock mover details metadata generator
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoserWithTicker, type: DailyMoverType, moverId: string): Metadata => {
+  const isGainer = type === DailyMoverType.GAINER;
+  const typeLabel = isGainer ? 'Gainer' : 'Loser';
+  const changeVerb = isGainer ? 'gained' : 'lost';
+  const changeDirection = isGainer ? 'up' : 'down';
+  const absPercentage = Math.abs(mover.percentageChange).toFixed(2);
+
+  const title = mover.title || `${mover.name} (${mover.symbol}) - Top ${typeLabel} Analysis`;
+  const description =
+    mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`;
+
+  const canonicalUrl = `https://koalagains.com/daily-top-${type}s/details/${moverId}`;
+
+  const keywords = [
+    mover.name,
+    `${mover.symbol} stock`,
+    `${mover.symbol} analysis`,
+    `${mover.name} stock analysis`,
+    `${mover.name} ${mover.symbol}`,
+    `${mover.symbol} ${changeDirection} ${absPercentage}%`,
+    `${mover.name} ${changeVerb} ${absPercentage}%`,
+    `top ${type}`,
+    `stock ${type}`,
+    isGainer ? 'best performing stocks' : 'worst performing stocks',
+    `daily top ${type}s`,
+    'stock movers',
+    `market ${type}s`,
+    'stock market analysis',
+    `${mover.ticker.exchange} stocks`,
+    'KoalaGains',
+  ];
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'KoalaGains',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    keywords,
   };
 };
 
