@@ -78,7 +78,7 @@ export async function scrapeScreener(
 
     browser = await puppeteer.launch(launchOptions);
 
-    const page = await browser.newPage();
+    const page = await browser!.newPage();
     await page.setViewport({ width: 1920, height: 1080 });
 
     // Set user agent to avoid bot detection
@@ -133,9 +133,15 @@ export async function scrapeScreener(
     // Wait for results to update
     await delay(2000);
 
-    // Sort by % Change column (click the header to sort by highest gainers)
-    console.log("Sorting by % Change (highest first)...");
-    const sorted = await sortByPercentChange(page, errors);
+    // Determine if we need to sort for losers (Under filters) or gainers (Over filters)
+    const isUnderFilter = priceChange1DMin.toLowerCase().startsWith("under");
+    
+    // Sort by % Change column
+    // - For "Over" filters: click once to sort highest first (top gainers)
+    // - For "Under" filters: click twice to sort lowest first (top losers)
+    const sortLabel = isUnderFilter ? "lowest first (losers)" : "highest first (gainers)";
+    console.log(`Sorting by % Change (${sortLabel})...`);
+    const sorted = await sortByPercentChange(page, errors, isUnderFilter);
     if (!sorted) {
       errors.push({
         where: "sortByPercentChange",
@@ -273,40 +279,60 @@ async function applyFilter(
 }
 
 /**
- * Sort the table by % Change column (highest first)
+ * Sort the table by % Change column
+ * @param sortForLosers - If true, click twice to sort lowest first (for "Under" filters)
  */
 async function sortByPercentChange(
   page: Page,
-  errors: Array<{ where: string; message: string }>
+  errors: Array<{ where: string; message: string }>,
+  sortForLosers: boolean = false
 ): Promise<boolean> {
   try {
     // Find and click the "% Change" column header in the table
     // The header text might be "% Change" or similar
-    const headerClicked = await page.evaluate(() => {
-      const table = document.querySelector("table");
-      if (!table) return false;
+    const clickHeader = async () => {
+      return await page.evaluate(() => {
+        const table = document.querySelector("table");
+        if (!table) return false;
 
-      // Look for table header cells
-      const headers = table.querySelectorAll("th");
-      for (const th of Array.from(headers)) {
-        const text = th.textContent?.trim() || "";
-        // Match "% Change" or "Change" column
-        if (text.includes("% Change") || text === "% Change") {
-          // Click the header to sort
-          const clickable = th.querySelector("button, a, span") || th;
-          (clickable as HTMLElement).click();
-          return true;
+        // Look for table header cells
+        const headers = table.querySelectorAll("th");
+        for (const th of Array.from(headers)) {
+          const text = th.textContent?.trim() || "";
+          // Match "% Change" or "Change" column
+          if (text.includes("% Change") || text === "% Change") {
+            // Click the header to sort
+            const clickable = th.querySelector("button, a, span") || th;
+            (clickable as HTMLElement).click();
+            return true;
+          }
         }
-      }
-      return false;
-    });
+        return false;
+      });
+    };
 
-    if (!headerClicked) {
+    // First click - sorts by highest first (descending)
+    const firstClick = await clickHeader();
+    if (!firstClick) {
       errors.push({
         where: "sortByPercentChange",
         message: "Could not find % Change column header",
       });
       return false;
+    }
+
+    // For "Under" filters, we need to click again to sort lowest first (ascending)
+    if (sortForLosers) {
+      await delay(1000); // Wait for first sort to complete
+      console.log("Clicking again to sort lowest first...");
+      const secondClick = await clickHeader();
+      if (!secondClick) {
+        errors.push({
+          where: "sortByPercentChange",
+          message: "Could not click % Change header second time",
+        });
+        return false;
+      }
     }
 
     return true;
