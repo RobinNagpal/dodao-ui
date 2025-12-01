@@ -1,6 +1,7 @@
 /**
  * Local test script for the stock screener scraper
  * Run with: npx tsx src/test-local.ts
+ * Run with losers: npx tsx src/test-local.ts --losers
  */
 
 import { scrapeScreener, ScreenerFilters } from "./puppeteer/screener";
@@ -8,12 +9,23 @@ import { scrapeScreener, ScreenerFilters } from "./puppeteer/screener";
 async function main() {
   console.log("🚀 Starting Stock Screener Scraper Test...\n");
 
-  const filters: ScreenerFilters = {
-    marketCapMin: "Over 1B",
-    priceChange1DMin: "Over 1%",
-    limit: 15,
-  };
+  // Check for --losers flag to test "Under" filter
+  const testLosers = process.argv.includes("--losers");
 
+  const filters: ScreenerFilters = testLosers
+    ? {
+        marketCapMin: "Over 1B",
+        priceChange1DMin: "Under -1%",
+        limit: 15,
+      }
+    : {
+        marketCapMin: "Over 1B",
+        priceChange1DMin: "Over 1%",
+        limit: 15,
+      };
+
+  const mode = testLosers ? "TOP LOSERS 📉" : "TOP GAINERS 📈";
+  console.log(`📊 Mode: ${mode}`);
   console.log("📊 Filters:", JSON.stringify(filters, null, 2));
   console.log("\n⏳ Scraping screeners...\n");
 
