@@ -1,14 +1,13 @@
 import { prisma } from '@/prisma';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { GenerateStockMoversResponse, SavedStock, ScreenerResponse } from '@/types/daily-stock-movers';
+import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 import { USExchanges } from '@/utils/countryExchangeUtils';
-
-type StockMoverType = 'gainer' | 'loser';
 
 /**
  * Processes stocks from screener API and saves them to the database
  */
-export async function processAndSaveStockMovers(data: ScreenerResponse, spaceId: string, type: StockMoverType): Promise<GenerateStockMoversResponse> {
+export async function processAndSaveStockMovers(data: ScreenerResponse, spaceId: string, type: DailyMoverType): Promise<GenerateStockMoversResponse> {
   if (!data.stocks || data.stocks.length === 0) {
     return {
       message: 'No stocks found',

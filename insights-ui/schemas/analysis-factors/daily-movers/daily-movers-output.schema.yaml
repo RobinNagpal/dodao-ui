@@ -1,0 +1,21 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  title:
+    type: string
+    description: 'A compelling title for the daily mover article (max 60 characters for SEO).'
+  metaDescription:
+    type: string
+    description: 'SEO-optimized meta description (max 160 characters).'
+  oneLineExplanation:
+    type: string
+    description: 'A concise one-line explanation of why the stock moved today.'
+  detailedExplanation:
+    type: string
+    description: 'A detailed explanation (6-7 paragraphs) analyzing the reasons behind the stock movement, market context, and potential implications.'
+required:
+  - title
+  - metaDescription
+  - oneLineExplanation
+  - detailedExplanation

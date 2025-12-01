@@ -12,6 +12,7 @@ import {
 } from '@/util/get-llm-response';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
+import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 
 export interface LLMResponseViaLambdaRequest<Input> {
   invocationId: string;
@@ -27,6 +28,7 @@ export interface LLMResponseViaLambdaRequest<Input> {
 
 /**
  * Updates the lastInvocationTime and inProgressStep when lambda is actually invoked
+ * Only used for ticker V1 generation requests
  */
 async function updateLastInvocationTime(generationRequestId: string, reportType: ReportType): Promise<void> {
   console.log('Updating lastInvocationTime and inProgressStep for generationRequestId:', generationRequestId, 'reportType:', reportType);
@@ -74,14 +76,15 @@ export async function callLambdaForLLMResponseViaCallback<Input>(request: LLMRes
 
 export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
   symbol: string;
-  exchange: string;
+  exchange?: string;
   generationRequestId: string;
   params: LLMResponseViaInvocationRequest<Input>;
-  reportType: ReportType;
+  reportType?: ReportType;
+  moverType?: DailyMoverType;
 }
 
 export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args: LLMResponseForPromptViaInvocationViaLambda<Input>): Promise<void> {
-  const { symbol, exchange, generationRequestId, params, reportType } = args;
+  const { symbol, exchange, generationRequestId, params, reportType, moverType } = args;
   const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
   // Validate required fields
@@ -152,28 +155,49 @@ export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args:
 
     // Get LLM response
     const callbackBaseUrl = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || `https://koalagains.com`;
+
+    // Determine callback URL based on whether exchange is provided
+    let callbackUrl: string;
+    if (exchange) {
+      callbackUrl = `${callbackBaseUrl}/api/${spaceId}/tickers-v1/exchange/${exchange}/${symbol}/save-report-callback`;
+    } else {
+      // For daily movers without exchange
+      callbackUrl = `${callbackBaseUrl}/api/${spaceId}/tickers-v1/daily-movers/${generationRequestId}/save-callback`;
+    }
+
+    const additionalData: Record<string, string> = {
+      generationRequestId: generationRequestId,
+    };
+
+    if (reportType) {
+      additionalData.reportType = reportType;
+    }
+
+    if (moverType) {
+      additionalData.moverType = moverType;
+    }
+
     const lambdaRequest: LLMResponseViaLambdaRequest<Input> = {
       invocationId: invocation.id,
-      callbackUrl: `${callbackBaseUrl}/api/${spaceId}/tickers-v1/exchange/${exchange}/${symbol}/save-report-callback`,
+      callbackUrl,
       inputJson: inputJson,
       promptStringToSendToLLM: finalPrompt,
       inputSchemaString: JSON.stringify(inputSchemaObject),
       llmProvider: llmProvider,
       model: model,
       outputSchemaString: JSON.stringify(outputSchema),
-      additionalData: {
-        reportType: reportType,
-        generationRequestId: generationRequestId,
-      },
+      additionalData,
     };
 
     await callLambdaForLLMResponseViaCallback<Input>(lambdaRequest);
-    // Update lastInvocationTime right before invoking the lambda
 
-    console.log(
-      `Updating lastInvocationTime and inProgressStep for generationRequestId:${generationRequestId} for reportType: ${reportType} and ticker: ${symbol}`
-    );
-    await updateLastInvocationTime(generationRequestId, reportType);
+    // Update lastInvocationTime only for ticker V1 generation requests (when reportType is provided)
+    if (reportType) {
+      console.log(
+        `Updating lastInvocationTime and inProgressStep for generationRequestId:${generationRequestId} for reportType: ${reportType} and ticker: ${symbol}`
+      );
+      await updateLastInvocationTime(generationRequestId, reportType);
+    }
   } catch (e) {
     console.error('Error during prompt invocation:', e);
     await updateInvocationStatus(invocation.id, PromptInvocationStatus.Failed, {

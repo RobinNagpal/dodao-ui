@@ -5,7 +5,6 @@ const SCREENER_API_URL = process.env.SCREENER_API_URL;
 interface ScreenerFilters {
   marketCapMin?: string;
   priceChange1DMin?: string;
-  priceChange1DMax?: string;
   limit?: number;
 }
 
@@ -49,7 +48,7 @@ export async function fetchTopGainers(limit: number = 15): Promise<ScreenerRespo
 export async function fetchTopLosers(limit: number = 15): Promise<ScreenerResponse> {
   return callScreenerAPI({
     marketCapMin: 'Over 1B',
-    priceChange1DMax: 'Under -1%',
+    priceChange1DMin: 'Under -1%',
     limit,
   });
 }
