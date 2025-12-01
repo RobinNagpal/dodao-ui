@@ -39,3 +39,18 @@ export interface TopGainerWithTicker extends DailyTopGainer {
 export interface TopLoserWithTicker extends DailyTopLoser {
   ticker: TickerV1;
 }
+
+// Input JSON for daily movers LLM
+export interface DailyMoverInputJson {
+  name: string;
+  symbol: string;
+  percentageChange: string;
+}
+
+// LLM Response for daily movers
+export interface DailyMoverLLMResponse {
+  title: string;
+  metaDescription: string;
+  oneLineExplanation: string;
+  detailedExplanation: string;
+}

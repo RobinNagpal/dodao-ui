@@ -1,0 +1,17 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company (e.g., Progressive Corporation).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company (e.g., PGR).'
+  percentageChange:
+    type: string
+    description: 'The 1-day percentage price change including the sign, e.g. "+8.4%" or "-5.2%".'
+required:
+  - name
+  - symbol
+  - percentageChange
