@@ -1,146 +1,14 @@
-import { fetchTariffReportsWithUpdatedAt, getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
-import { fetchTariffReports, TariffIndustryDefinition, getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
+import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
+import { getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getPostsData } from '@/util/blog-utils';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
-import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-
-interface Industry {
-  industryKey: string;
-  name: string;
-}
 
 interface SiteMapUrl {
   url: string;
   changefreq: string;
   priority?: number;
   lastmod?: string;
-}
-
-// Fetch all project IDs
-async function getAllProjects(): Promise<string[]> {
-  const response = await fetch(`${getBaseUrl()}/api/crowd-funding/projects`);
-  const data = await response.json();
-  return data.projectIds || [];
-}
-
-// Fetch all industries
-async function getAllIndustries(): Promise<Industry[]> {
-  const response = await fetch(`${getBaseUrl()}/api/industries`);
-  const industries = await response.json();
-  return industries || [];
-}
-
-// Fetch all industries for a specific country
-async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
-  const response = await fetch(`${getBaseUrl()}/api/industries?country=${country}`);
-  const industries = await response.json();
-  return industries || [];
-}
-
-// Fetch all tickers
-async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; updatedAt: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
-  const tickers = await response.json();
-  return tickers || [];
-}
-
-// Generate sitemap URLs
-async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
-  const projectIds = await getAllProjects();
-  const urls: SiteMapUrl[] = [];
-
-  urls.push({
-    url: '/crowd-funding',
-    changefreq: 'daily',
-    priority: 0.8,
-  });
-
-  if (projectIds.length === 0) {
-    console.warn('No projects found for the sitemap.');
-    return urls; // Return at least the home page URL
-  }
-
-  for (const projectId of projectIds) {
-    const lastmod = (crowdFundingLastmod as Record<string, string>)[projectId] || undefined;
-    urls.push({
-      url: `/crowd-funding/projects/${projectId}`,
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod,
-    });
-
-    for (const reportType of REPORT_TYPES_TO_DISPLAY) {
-      urls.push({
-        url: `/crowd-funding/projects/${projectId}/reports/${reportType}`,
-        changefreq: 'weekly',
-        priority: 0.6,
-        lastmod,
-      });
-    }
-  }
-
-  return urls;
-}
-
-async function generateTickerUrls(): Promise<SiteMapUrl[]> {
-  const urls: SiteMapUrl[] = [];
-
-  // Add main stocks page
-  urls.push(
-    {
-      url: '/stocks',
-      changefreq: 'daily',
-      priority: 0.8,
-    },
-    { url: '/stocks/comparison', changefreq: 'weekly', priority: 0.7 },
-    { url: '/stocks/countries/Canada', changefreq: 'weekly', priority: 0.7 }
-  );
-
-  // Add industry pages - /stocks/industries/{industry}
-  const industries = await getAllIndustries();
-  for (const industry of industries) {
-    urls.push({
-      url: `/stocks/industries/${industry.industryKey}`,
-      changefreq: 'weekly',
-      priority: 0.7,
-    });
-  }
-
-  // Add country-specific industry pages for Canada - /stocks/countries/Canada/industries/{industry}
-  const canadaIndustries = await getAllIndustriesByCountry('Canada');
-  for (const industry of canadaIndustries) {
-    urls.push({
-      url: `/stocks/countries/Canada/industries/${industry.industryKey}`,
-      changefreq: 'weekly',
-      priority: 0.7,
-    });
-  }
-
-  // Fetch all tickers and add individual ticker pages - /stocks/{exchange}/{ticker}
-  const tickers = await getAllTickers();
-
-  // Use a Set to avoid duplicates (in case same ticker exists on multiple exchanges)
-  const addedUrls = new Set<string>();
-
-  for (const ticker of tickers) {
-    const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
-
-    if (!addedUrls.has(tickerUrl)) {
-      urls.push({
-        url: tickerUrl,
-        changefreq: 'weekly',
-        priority: 0.6,
-        lastmod: ticker.updatedAt ? new Date(ticker.updatedAt).toISOString().split('T')[0] : undefined,
-      });
-      addedUrls.add(tickerUrl);
-    }
-  }
-
-  return urls;
 }
 
 async function generateBlogUrls(): Promise<SiteMapUrl[]> {
@@ -261,15 +129,11 @@ async function generateSitemapUrls(): Promise<SiteMapUrl[]> {
   );
 
   // Add all URL collections
-  const [crowdFundingUrls, tickerUrls, blogUrls, tariffReportUrls] = await Promise.all([
-    generateCrowdFundingUrls(),
-    generateTickerUrls(),
+  const [blogUrls, tariffReportUrls] = await Promise.all([
     generateBlogUrls(),
     generateTariffReportUrls(), // Add tariff report URLs
   ]);
 
-  urls.push(...crowdFundingUrls);
-  urls.push(...tickerUrls);
   urls.push(...blogUrls);
   urls.push(...tariffReportUrls); // Include the tariff report URLs
 
