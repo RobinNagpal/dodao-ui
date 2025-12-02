@@ -28,7 +28,6 @@ const reportsDropdown: ReportItem[] = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis', isNew: false },
   { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
-  { name: 'All Reports', href: '/reports', description: 'Browse all available reports', isNew: false },
   { name: 'Daily Top Gainers', href: '/daily-top-gainers/country/US', description: 'Top performing stocks today', isNew: true },
   { name: 'Daily Top Losers', href: '/daily-top-losers/country/US', description: 'Biggest stock declines today', isNew: true },
   { name: 'Professional Managers', href: '/portfolio-managers/professional-managers', description: 'Professional Managers', isNew: false },
@@ -91,9 +90,12 @@ export default function TopNav() {
               {!isStocksRoute && (
                 <PopoverGroup className="hidden lg:flex lg:gap-x-6">
                   <Popover className="relative">
-                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white">
+                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
                       KoalaGains Insights
-                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400 dark:text-gray-500" />
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
+                      />
                     </PopoverButton>
 
                     <PopoverPanel
@@ -120,9 +122,12 @@ export default function TopNav() {
                   </Popover>
 
                   <Popover className="relative">
-                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white">
+                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
                       Gen AI Adoption
-                      <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400 dark:text-gray-500" />
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
+                      />
                     </PopoverButton>
 
                     <PopoverPanel
