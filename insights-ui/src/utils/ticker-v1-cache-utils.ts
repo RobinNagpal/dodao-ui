@@ -1,5 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import { SupportedCountries } from './countryExchangeUtils';
+import { DailyMoverType } from './daily-movers-generation-utils';
 
 /** Cache tag helpers for per-ticker revalidation */
 const TICKER_EXCHANGE_TAG_PREFIX = 'ticker_exchange:' as const;
@@ -36,3 +37,12 @@ export const revalidatePortfolioManagersByTypeTag = (type: string) => revalidate
 export const getHomePagePostsTag = () => 'koalagains:home-page:posts';
 
 export const revalidateHomePagePostsTag = () => revalidateTag(getHomePagePostsTag());
+
+/** Daily movers cache tags */
+export const getDailyMoversByCountryTag = (country: string, type: DailyMoverType) => `koalagains:daily-movers:${country}:${type}s`;
+
+export const revalidateDailyMoversByCountryTag = (country: string, type: DailyMoverType) => revalidateTag(getDailyMoversByCountryTag(country, type));
+
+export const getDailyMoverDetailsTag = (moverId: string) => `koalagains:daily-mover-details:${moverId}`;
+
+export const revalidateDailyMoverDetailsTag = (moverId: string) => revalidateTag(getDailyMoverDetailsTag(moverId));

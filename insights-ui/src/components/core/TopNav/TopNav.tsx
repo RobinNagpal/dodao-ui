@@ -29,6 +29,8 @@ const reportsDropdown: ReportItem[] = [
   { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
   { name: 'All Reports', href: '/reports', description: 'Browse all available reports', isNew: false },
+  { name: 'Daily Top Gainers', href: '/daily-top-gainers/country/US', description: 'Top performing stocks today', isNew: true },
+  { name: 'Daily Top Losers', href: '/daily-top-losers/country/US', description: 'Biggest stock declines today', isNew: true },
   { name: 'Professional Managers', href: '/portfolio-managers/professional-managers', description: 'Professional Managers', isNew: false },
 ];
 

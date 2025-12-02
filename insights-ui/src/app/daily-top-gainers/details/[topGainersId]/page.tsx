@@ -1,20 +1,56 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TopGainerWithTicker } from '@/types/daily-stock-movers';
+import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import StockMoverDetails from '@/components/daily-stock-movers/StockMoverDetails';
+import { Metadata } from 'next';
+import { generateStockMoverMetadata } from '@/utils/metadata-generators';
+import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PageProps {
   params: Promise<{ topGainersId: string }>;
 }
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { topGainersId } = await params;
+
+  try {
+    const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-gainers/${topGainersId}`, {
+      next: {
+        revalidate: 604800,
+        tags: [getDailyMoverDetailsTag(topGainersId)],
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        title: 'Top Gainer Details',
+        description: 'Daily top gainer stock analysis and insights',
+      };
+    }
+
+    const topGainer: TopGainerWithTicker = await response.json();
+    return generateStockMoverMetadata(topGainer, DailyMoverType.GAINER, topGainersId);
+  } catch (error) {
+    console.error('Error generating metadata for top gainer:', error);
+    return {
+      title: 'Top Gainer Details',
+      description: 'Daily top gainer stock analysis and insights',
+    };
+  }
+}
+
 export default async function TopGainerDetailsPage({ params }: PageProps) {
   const { topGainersId } = await params;
 
-  // Fetch top gainer details from the API
+  // Fetch top gainer details from the API with cache tag
   const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-gainers/${topGainersId}`, {
-    cache: 'no-cache',
+    next: {
+      revalidate: 604800, // 7 days in seconds
+      tags: [getDailyMoverDetailsTag(topGainersId)],
+    },
   });
 
   if (!response.ok) {
@@ -36,7 +72,7 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
 
   return (
     <PageWrapper>
-      <StockMoverDetails mover={topGainer} type="gainers" />
+      <StockMoverDetails mover={topGainer} type={DailyMoverType.GAINER} />
     </PageWrapper>
   );
 }
