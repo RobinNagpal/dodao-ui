@@ -9,10 +9,28 @@ const JSON_HEADERS = {
   "Access-Control-Allow-Credentials": "true",
 } as const;
 
+export enum DailyMoverType {
+  GAINER = 'gainer',
+  LOSER = 'loser',
+}
+
 interface RequestBody {
   marketCapMin?: string; // e.g., "Over 1B", "Over 10B"
   priceChange1DMin?: string; // e.g., "Over 1%", "Over 2%"
   limit?: number; // Number of stocks to return (default 15)
+  callbackUrl?: string; // URL to call back with results
+  moverType?: DailyMoverType; // Type of mover for callback
+  spaceId?: string; // Space ID for callback
+}
+
+interface CallbackPayload {
+  filters: ScreenerFilters;
+  totalMatched: number;
+  count: number;
+  stocks: ScreenerResult["stocks"];
+  errors: ScreenerResult["errors"];
+  moverType: DailyMoverType;
+  spaceId: string;
 }
 
 /* --------------------------------- helpers ---------------------------------- */
@@ -20,7 +38,7 @@ interface RequestBody {
 function parseBodyOr400(
   event: APIGatewayProxyEvent
 ):
-  | { ok: true; filters: ScreenerFilters }
+  | { ok: true; filters: ScreenerFilters; callbackUrl?: string; moverType?: DailyMoverType; spaceId?: string }
   | { ok: false; res: APIGatewayProxyResult } {
   try {
     const body: RequestBody = event.body ? JSON.parse(event.body) : {};
@@ -31,7 +49,13 @@ function parseBodyOr400(
       limit: body.limit || 15,
     };
 
-    return { ok: true, filters };
+    return { 
+      ok: true, 
+      filters, 
+      callbackUrl: body.callbackUrl,
+      moverType: body.moverType,
+      spaceId: body.spaceId,
+    };
   } catch {
     return {
       ok: false,
@@ -77,6 +101,53 @@ export const handleOptions = async (): Promise<APIGatewayProxyResult> => {
   };
 };
 
+/* ------------------------------ async handler with callback ------------------------------ */
+
+/**
+ * Processes screener scraping in background and calls back with results
+ */
+async function processAndCallback(
+  filters: ScreenerFilters,
+  callbackUrl: string,
+  moverType: DailyMoverType,
+  spaceId: string
+): Promise<void> {
+  try {
+    console.log(`[Screener] Starting background scraping for ${moverType}...`);
+    
+    // Scrape the data
+    const result = await scrapeScreener(filters);
+    
+    console.log(`[Screener] Scraping complete. Found ${result.stocks.length} stocks. Calling back to ${callbackUrl}`);
+    
+    // Prepare callback payload
+    const payload: CallbackPayload = {
+      filters,
+      totalMatched: result.totalMatched,
+      count: result.stocks.length,
+      stocks: result.stocks,
+      errors: result.errors,
+      moverType,
+      spaceId,
+    };
+    
+    // Call the callback URL with results
+    const response = await fetch(callbackUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    
+    if (!response.ok) {
+      console.error(`[Screener] Callback failed with status: ${response.status}`);
+    } else {
+      console.log(`[Screener] Callback successful for ${moverType}`);
+    }
+  } catch (error) {
+    console.error(`[Screener] Error in background processing:`, error);
+  }
+}
+
 /* ----------------------------- main handler ------------------------------ */
 
 export const fetchScreenedStocks = async (
@@ -86,9 +157,32 @@ export const fetchScreenedStocks = async (
     const parsed = parseBodyOr400(event);
     if (!parsed.ok) return parsed.res;
     
-    const { filters } = parsed;
+    const { filters, callbackUrl, moverType, spaceId } = parsed;
+    
+    // If callback URL is provided, return immediately and process in background
+    if (callbackUrl && moverType && spaceId) {
+      console.log(`[Screener] Async mode: Returning immediately, will callback to ${callbackUrl}`);
+      
+      // Start background processing (don't await)
+      processAndCallback(filters, callbackUrl, moverType, spaceId).catch((err) => {
+        console.error(`[Screener] Background processing error:`, err);
+      });
+      
+      // Return immediate acknowledgment
+      return {
+        statusCode: 202,
+        headers: JSON_HEADERS,
+        body: JSON.stringify({
+          message: "Request accepted. Processing in background.",
+          filters,
+          moverType,
+          spaceId,
+        }),
+      };
+    }
+    
+    // Synchronous mode (original behavior for backwards compatibility)
     const result = await scrapeScreener(filters);
-
     return okResponse({ filters, result });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -147,4 +241,3 @@ export const api = async (
       };
   }
 };
-

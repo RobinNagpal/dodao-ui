@@ -107,7 +107,7 @@ export async function processDailyMover(spaceId: string, stock: StockDataInScree
     console.log(`Processing ${type} ${stock.symbol} with ID ${moverId}`);
 
     // Update status to InProgress
-    if (type === 'gainer') {
+    if (type === DailyMoverType.GAINER) {
       await prisma.dailyTopGainer.update({
         where: { id: moverId },
         data: {
@@ -131,7 +131,7 @@ export async function processDailyMover(spaceId: string, stock: StockDataInScree
     console.error(`Error processing ${type} ${stock.symbol}:`, error);
 
     // Update status to Failed
-    if (type === 'gainer') {
+    if (type === DailyMoverType.GAINER) {
       await prisma.dailyTopGainer.update({
         where: { id: moverId },
         data: {
@@ -174,7 +174,7 @@ export async function saveDailyMoverResponse(
     updatedAt: new Date(),
   };
 
-  if (type === 'gainer') {
+  if (type === DailyMoverType.GAINER) {
     await prisma.dailyTopGainer.update({
       where: { id: moverId },
       data: updateData,

@@ -31,7 +31,7 @@ export interface ScreenerFilters {
   limit?: number; // Number of stocks to return (default 15)
 }
 
-const SCREENER_URL = "https://www.macrotrends.net/stocks/charts/AAPL/apple";
+const SCREENER_URL = "https://stockanalysis.com/stocks/screener/";
 
 // Helper to wait for a specified time
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

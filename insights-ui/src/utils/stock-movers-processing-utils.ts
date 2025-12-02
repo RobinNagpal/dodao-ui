@@ -67,7 +67,7 @@ export async function processAndSaveStockMovers(data: ScreenerResponse, spaceId:
     });
 
   // Bulk insert based on type
-  if (type === 'gainer') {
+  if (type === DailyMoverType.GAINER) {
     await prisma.dailyTopGainer.createMany({
       data: stockMoversData,
       skipDuplicates: true,
@@ -90,7 +90,7 @@ export async function processAndSaveStockMovers(data: ScreenerResponse, spaceId:
     };
   });
 
-  const typeName = type === 'gainer' ? 'gainers' : 'losers';
+  const typeName = type === DailyMoverType.GAINER ? 'gainers' : 'losers';
   return {
     message: `Top ${typeName} processed successfully`,
     totalFromAPI: data.count,
