@@ -1,4 +1,5 @@
 import { DailyTopGainer, DailyTopLoser, TickerV1 } from '@prisma/client';
+import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 
 // Common types for both gainers and losers
 export interface StockDataInScreenerResponse {
@@ -53,4 +54,12 @@ export interface DailyMoverLLMResponse {
   metaDescription: string;
   oneLineExplanation: string;
   detailedExplanation: string;
+}
+
+// Trigger response for daily movers generation endpoints
+export interface TriggerDailyMoverResponse {
+  message: string;
+  status: 'triggered';
+  moverType: DailyMoverType;
+  callbackUrl: string;
 }

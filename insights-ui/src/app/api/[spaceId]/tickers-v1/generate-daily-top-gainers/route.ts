@@ -2,17 +2,11 @@ import { triggerTopGainersAsync } from '@/utils/screener-api-utils';
 import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { TriggerDailyMoverResponse } from '@/types/daily-stock-movers';
 
 const KOALA_GAINS_BASE_URL = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || `https://koalagains.com`;
 
-interface TriggerResponse {
-  message: string;
-  status: 'triggered';
-  moverType: DailyMoverType;
-  callbackUrl: string;
-}
-
-async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<TriggerResponse> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ spaceId: string }> }): Promise<TriggerDailyMoverResponse> {
   const { spaceId } = await params;
 
   // Build the callback URL for this space
@@ -31,4 +25,4 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
   };
 }
 
-export const GET = withErrorHandlingV2<TriggerResponse>(getHandler);
+export const GET = withErrorHandlingV2<TriggerDailyMoverResponse>(getHandler);
