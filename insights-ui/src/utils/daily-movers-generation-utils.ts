@@ -3,6 +3,7 @@ import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { DailyMoverInputJson, StockDataInScreenerResponse } from '@/types/daily-stock-movers';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
+import { revalidateDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 
 /**
  * Converts InProgress daily movers that are older than 8 hours to Failed status
@@ -185,6 +186,9 @@ export async function saveDailyMoverResponse(
       data: updateData,
     });
   }
+
+  // Invalidate cache for this individual mover
+  revalidateDailyMoverDetailsTag(moverId);
 
   console.log(`Successfully saved ${type} response for ID ${moverId}`);
 }

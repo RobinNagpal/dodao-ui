@@ -4,6 +4,8 @@ import { DailyMoverType, processDailyMover, convertInProgressToFailed } from '@/
 import { processAndSaveStockMovers } from '@/utils/stock-movers-processing-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+import { revalidateDailyMoversByCountryTag } from '@/utils/ticker-v1-cache-utils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
 interface ScreenerCallbackPayload {
   filters: Record<string, any>;
@@ -64,6 +66,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   // Save the fresh data to database
   const saveResult = await processAndSaveStockMovers(screenerResponse, effectiveSpaceId, type);
+
+  // Invalidate country-level cache for US (since we only process US exchanges)
+  if (saveResult.savedCount > 0) {
+    revalidateDailyMoversByCountryTag(SupportedCountries.US, type);
+  }
 
   // Get all saved movers in one query
   const savedSymbols = saveResult.savedStocks.map((stock) => stock.symbol);
