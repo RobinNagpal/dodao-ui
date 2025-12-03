@@ -6,4 +6,4 @@ Allow: /
 Host: https://koalagains.com
 
 # Sitemaps
-Sitemap: https://koalagains.com/sitemap.xml
+Sitemap: https://koalagains.com/sitemap_index.xml
