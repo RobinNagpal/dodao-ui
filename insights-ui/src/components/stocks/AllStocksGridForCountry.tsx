@@ -34,7 +34,7 @@ export default function AllStocksGridForCountry({ stocks, stocksPromise, country
         const displayExchange = formatExchangeWithCountry(stock.exchange);
 
         return (
-          <div key={stock.id} className="bg-block-bg-color rounded-lg border border-color p-3 hover:bg-[#2D3748] transition-colors">
+          <div key={stock.id} className="bg-gray-900 rounded-lg border border-color p-3 hover:bg-[#2D3748] transition-colors">
             <StockTickerItem
               symbol={stock.symbol}
               name={stock.name}

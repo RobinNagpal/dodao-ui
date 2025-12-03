@@ -26,14 +26,14 @@ const services = [
   {
     name: 'Daily Top Gainers',
     description: 'Track the best performing stocks of the day across US markets.',
-    href: '/daily-top-gainers/country/US',
+    href: '/daily-top-movers/top-gainers/country/US',
     icon: ArrowTrendingUpIcon,
     color: 'from-green-500 to-emerald-600',
   },
   {
     name: 'Daily Top Losers',
     description: 'Monitor market downturns and identify potential recovery opportunities.',
-    href: '/daily-top-losers/country/US',
+    href: '/daily-top-movers/top-losers/country/US',
     icon: ArrowTrendingDownIcon,
     color: 'from-red-500 to-rose-600',
   },
