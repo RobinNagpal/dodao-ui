@@ -11,7 +11,7 @@ interface StockMoverDetailsProps {
 
 export default function StockMoverDetails({ mover, type }: StockMoverDetailsProps) {
   const country = getCountryByExchange(toExchange(mover.ticker.exchange));
-  const backLink = type === DailyMoverType.GAINER ? `/daily-top-gainers/country/${country}` : `/daily-top-losers/country/${country}`;
+  const backLink = type === DailyMoverType.GAINER ? `/daily-top-movers/top-gainers/country/${country}` : `/daily-top-movers/top-losers/country/${country}`;
   const backText = type === DailyMoverType.GAINER ? 'Back to Top Gainers' : 'Back to Top Losers';
   const changeColorClass = type === DailyMoverType.GAINER ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
 
