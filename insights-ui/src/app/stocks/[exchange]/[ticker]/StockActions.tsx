@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation';
 import React, { ReactNode, useState } from 'react';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { GeneratePromptRequest, GeneratePromptResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/generate-prompt/route';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 
 interface StockActionsProps {
   ticker: TickerIdentifier;
@@ -27,6 +29,9 @@ export default function StockActions({ ticker, children, session }: StockActions
   const [selectedPromptType, setSelectedPromptType] = useState<ReportType | null>(null);
   const [generatedPrompt, setGeneratedPrompt] = useState<string>('');
   const [copied, setCopied] = useState(false);
+  const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
+  const [importedJson, setImportedJson] = useState<string>('');
+  const [jsonContent, setJsonContent] = useState<any>(null);
 
   // Post hook for background generation requests
   const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
@@ -46,9 +51,18 @@ export default function StockActions({ ticker, children, session }: StockActions
     { key: 'import-prompt', label: 'Import Prompt' },
   ];
 
-  // Create modal items for all report types
+  // Filter out future risk and investor analysis types
+  const filteredAnalysisTypes = analysisTypes.filter(
+    (type) =>
+      type.key !== ReportType.FUTURE_RISK &&
+      type.key !== ReportType.WARREN_BUFFETT &&
+      type.key !== ReportType.CHARLIE_MUNGER &&
+      type.key !== ReportType.BILL_ACKMAN
+  );
+
+  // Create modal items for filtered report types
   const reportGenerationItems: EllipsisDropdownItem[] = [
-    ...analysisTypes.map((analysisType) => ({
+    ...filteredAnalysisTypes.map((analysisType) => ({
       key: analysisType.key,
       label: `Generate ${analysisType.label}`,
     })),
@@ -80,6 +94,10 @@ export default function StockActions({ ticker, children, session }: StockActions
   };
 
   const handlePromptModalSelect = async (key: string) => {
+    // Reset JSON content when switching prompt types
+    setJsonContent(null);
+    setImportedJson('');
+    
     const result = await postPromptData(`${getBaseUrl()}/api/koala_gains/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/generate-prompt`, {
       reportType: key as ReportType,
     });
@@ -87,6 +105,48 @@ export default function StockActions({ ticker, children, session }: StockActions
     if (result) {
       setSelectedPromptType(key as ReportType);
       setGeneratedPrompt(result.prompt);
+    }
+  };
+
+  const handleJsonSave = (jsonString: string) => {
+    try {
+      const parsedJson = JSON.parse(jsonString);
+      setJsonContent(parsedJson);
+      setImportedJson(jsonString);
+      setIsJsonModalOpen(false);
+    } catch (error) {
+      console.error('Invalid JSON:', error);
+    }
+  };
+
+  const handleSaveReport = async () => {
+    if (!jsonContent || !selectedPromptType) return;
+
+    try {
+      const response = await fetch(`${getBaseUrl()}/api/koala_gains/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/save-json-report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          llmResponse: jsonContent,
+          reportType: selectedPromptType,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Report saved successfully!');
+        setJsonContent(null);
+        setImportedJson('');
+        setIsPromptModalOpen(false);
+        setSelectedPromptType(null);
+        setGeneratedPrompt('');
+      } else {
+        throw new Error('Failed to save report');
+      }
+    } catch (error) {
+      console.error('Error saving report:', error);
+      alert('Failed to save report. Please try again.');
     }
   };
 
@@ -99,7 +159,7 @@ export default function StockActions({ ticker, children, session }: StockActions
         </PrivateWrapper>
       </div>
 
-      <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Report" fullWidth={false}>
+      <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generate Report">
         <div className="p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {reportGenerationItems.map((item) => (
@@ -122,16 +182,18 @@ export default function StockActions({ ticker, children, session }: StockActions
           setIsPromptModalOpen(false);
           setSelectedPromptType(null);
           setGeneratedPrompt('');
+          setJsonContent(null);
+          setImportedJson('');
         }}
-        title={selectedPromptType ? `Prompt for ${analysisTypes.find((t) => t.key === selectedPromptType)?.label}` : 'Import Prompt'}
-        fullWidth={true}
+        title={selectedPromptType ? `Prompt for ${filteredAnalysisTypes.find((t) => t.key === selectedPromptType)?.label}` : 'Import Prompt'}
       >
-        <div className="p-4">
+        <PageWrapper>
+        <div className="px-4">
           {!selectedPromptType ? (
             <div>
               <h3 className="text-lg font-semibold mb-4 text-white">Select Report Type</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {analysisTypes.map((item) => (
+                {filteredAnalysisTypes.map((item) => (
                   <button
                     key={item.key}
                     onClick={() => handlePromptModalSelect(item.key)}
@@ -149,35 +211,83 @@ export default function StockActions({ ticker, children, session }: StockActions
                   onClick={() => {
                     setSelectedPromptType(null);
                     setGeneratedPrompt('');
+                    setJsonContent(null);
+                    setImportedJson('');
                   }}
                   className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm text-white"
                 >
                   ← Back to Selection
                 </button>
-                <button
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.writeText(generatedPrompt);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 2000);
-                    } catch (error) {
-                      console.error('Failed to copy prompt:', error);
-                    }
-                  }}
-                  className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${
-                    copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'
-                  }`}
-                >
-                  {copied ? 'Copied!' : 'Copy Prompt'}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(generatedPrompt);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      } catch (error) {
+                        console.error('Failed to copy prompt:', error);
+                      }
+                    }}
+                    className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${
+                      copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'
+                    }`}
+                  >
+                    {copied ? 'Copied!' : 'Copy Prompt'}
+                  </button>
+                  <button
+                    onClick={() => setIsJsonModalOpen(true)}
+                    className="px-3 py-1 bg-purple-600 hover:bg-purple-500 rounded text-sm text-white transition-colors duration-200"
+                  >
+                    Import JSON
+                  </button>
+                </div>
               </div>
               <div className="rounded-lg p-2 overflow-y-auto">
-                <div className="markdown markdown-body text-left" dangerouslySetInnerHTML={{ __html: parseMarkdown(generatedPrompt || 'Loading prompt...') }} />
+                {jsonContent ? (
+                  <div>
+                    <div className="mb-4 p-3 bg-green-900 border border-green-600 rounded">
+                      <p className="text-green-200 text-sm">✓ JSON content imported successfully!</p>
+                    </div>
+                    <div className="bg-gray-900 border border-gray-600 rounded p-4 mb-4">
+                      <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-auto max-h-96">
+                        {JSON.stringify(jsonContent, null, 2)}
+                      </pre>
+                    </div>
+                    <div className="mt-4 flex justify-center gap-3">
+                      <button
+                        onClick={() => {
+                          setJsonContent(null);
+                          setImportedJson('');
+                        }}
+                        className="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded text-white font-medium"
+                      >
+                        Clear JSON
+                      </button>
+                      <button
+                        onClick={handleSaveReport}
+                        className="px-4 py-2 bg-green-600 hover:bg-green-500 rounded text-white font-medium"
+                      >
+                        Save Report
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="markdown markdown-body text-left" dangerouslySetInnerHTML={{ __html: parseMarkdown(generatedPrompt || 'Loading prompt...') }} />
+                )}
               </div>
             </div>
           )}
         </div>
+        </PageWrapper>
       </FullPageModal>
+
+      <RawJsonEditModal
+        open={isJsonModalOpen}
+        onClose={() => setIsJsonModalOpen(false)}
+        title="Import JSON Report"
+        onSave={handleJsonSave}
+      />
     </>
   );
 }
