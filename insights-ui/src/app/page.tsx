@@ -1,14 +1,10 @@
 import BlogsGrid from '@/components/blogs/BlogsGrid';
-import { AnalysisFramework } from '@/components/home-page/AnalysisFramework';
 import Contact from '@/components/home-page/Contact';
-import Crowdfunding from '@/components/home-page/Crowdfunding';
 import { Footer } from '@/components/home-page/Footer';
 import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
-import REIT from '@/components/home-page/Reit';
-import { ReportsNavBar } from '@/components/home-page/ReportsNavBar';
-import Tariff from '@/components/home-page/Tariff';
+import ServiceNavigation from '@/components/home-page/ServiceNavigation';
 import { IndustryWithTopTickers, OnlyIndustriesResponse } from '@/types/api/ticker-industries';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getPostsData } from '@/util/blog-utils';
@@ -159,13 +155,9 @@ export default async function Home() {
   return (
     <div style={{ ...themeColors }}>
       <Hero industries={industries} />
+      <ServiceNavigation />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
-      <ReportsNavBar />
-      <AnalysisFramework />
-      <Crowdfunding />
-      <REIT />
-      <Tariff />
       <BlogsGrid posts={posts} showViewAllButton={true} />
       <Contact />
       <Footer />

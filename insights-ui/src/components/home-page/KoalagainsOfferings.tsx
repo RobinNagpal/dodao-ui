@@ -24,7 +24,7 @@ const koalaGainsServices = [
     name: 'KoalaGains Simulations',
     description: 'Hands-on simulations showing how Gen AI and AI agents operate in realistic industry scenarios.',
     icon: ChartPieIcon,
-    href: '#platform',
+    href: '/genai-simulation',
     cta: 'Learn More',
     color: 'from-indigo-300 to-violet-500', // subtle, neutral gradient
     highlight: 'Platform',
@@ -38,19 +38,19 @@ export default function KoalagainsOfferings() {
         <div className=" w-full mx-auto max-w-7xl sm:px-2 lg:px-8 px-6 relative isolate pt-2 lg:pt-2">
           <div className="bg-gray-800 pt-12 sm:pt-16">
             <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-bold tracking-tight text-white">
                 AI Solutions for the
                 <span className="text-indigo-400"> Future</span>
               </h1>
             </div>
-            <p className="mt-6 text-lg leading-7 text-gray-300 max-w-3xl mx-auto">
+            <p className="mt-4 text-lg leading-7 text-gray-300 max-w-3xl mx-auto text-center">
               KoalaGains: AI-powered investment insights and data reports—crowdfunding, REIT, tariff analysis and more, in minutes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mx-auto mt-8">
             {koalaGainsServices.map((service, index) => (
-              <div key={service.name} className="relative group transition-all duration-500 z-10">
+              <Link key={service.name} href={service.href} className="group relative transition-all duration-500 z-10">
                 <div className="flex justify-center mb-3">
                   <span
                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r ${service.color} text-white shadow-lg`}
@@ -69,23 +69,23 @@ export default function KoalagainsOfferings() {
                   </div>
 
                   <div className="text-center">
-                    <h3 className="text-lg font-semibold text-white mb-3">{service.name}</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-indigo-400 transition-colors">{service.name}</h3>
 
                     <p className="text-gray-300 text-sm mb-6 leading-relaxed min-h-[3rem]">{service.description}</p>
 
-                    <button className="inline-flex items-center justify-center text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors duration-200 group/link">
-                      {service.cta}
-                      <svg className="ml-1 h-4 w-4 group-hover/link:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                    <div className="flex items-center justify-center text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                      <span className="text-sm font-medium">{service.cta}</span>
+                      <svg className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
                         <path
                           fillRule="evenodd"
-                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4-293a1 1 0 010-1.414z"
+                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                           clipRule="evenodd"
                         />
                       </svg>
-                    </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
