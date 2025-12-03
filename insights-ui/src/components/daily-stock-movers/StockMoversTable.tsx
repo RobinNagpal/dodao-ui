@@ -16,7 +16,7 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
   const description = isGainer
     ? `Discover the ${country.toUpperCase()} stocks with the highest percentage gains today. Track market winners and identify emerging opportunities with real-time performance data and AI-powered analysis.`
     : `Track the ${country.toUpperCase()} stocks with the largest percentage declines today. Monitor market losers and understand downward trends with comprehensive performance data and AI-driven insights.`;
-  const detailsPath = isGainer ? '/daily-top-gainers/details' : '/daily-top-losers/details';
+  const detailsPath = isGainer ? '/daily-top-movers/top-gainers/details' : '/daily-top-movers/top-losers/details';
   const changeColorClass = isGainer ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400';
 
   return (

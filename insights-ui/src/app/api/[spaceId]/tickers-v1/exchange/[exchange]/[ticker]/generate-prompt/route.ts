@@ -31,8 +31,6 @@ async function handler(request: NextRequest, { params }: RouteParams): Promise<G
 
   const result = await generatePromptForReportType(ticker, exchange, reportType);
 
-  console.log(result);
-
   return {
     prompt: result.prompt,
     reportType: result.reportType,
