@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://koalagains.com
-
-# Sitemaps
-Sitemap: https://koalagains.com/sitemap_index.xml

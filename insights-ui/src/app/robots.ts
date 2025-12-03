@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/public-equities', '/api', '/_next/'],
       },
     ],
-    sitemap: 'https://koalagains.com/sitemap.xml',
+    sitemap: 'https://koalagains.com/sitemap_index.xml',
   };
 }
