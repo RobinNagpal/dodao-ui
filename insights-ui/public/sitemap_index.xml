@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://koalagains.com/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/stocks/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/blogs/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/daily-top-movers/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/industry-tariff-report/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/crowd-funding/sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>

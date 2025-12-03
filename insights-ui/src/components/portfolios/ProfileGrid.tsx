@@ -1,4 +1,4 @@
-import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/country/[country]/route';
+import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import { UserIcon, FolderIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
