@@ -59,7 +59,7 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
             <p className="text-muted-foreground text-lg">Top loser not found</p>
-            <Link href="/daily-top-losers" className="mt-4 inline-block text-primary hover:underline">
+            <Link href="/daily-top-movers/top-losers" className="mt-4 inline-block text-primary hover:underline">
               Back to Top Losers
             </Link>
           </div>

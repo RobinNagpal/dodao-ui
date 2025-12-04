@@ -121,7 +121,9 @@ export const generateDailyMoversListMetadata = (country: string, type: DailyMove
     ? `Discover today's top-performing stocks in ${countryUpper} with the highest percentage gains. Comprehensive analysis and insights on the best performing stocks in ${countryUpper} markets.`
     : `Track today's worst-performing stocks in ${countryUpper} with the highest percentage losses. Comprehensive analysis and insights on the declining stocks in ${countryUpper} markets.`;
 
-  const canonicalUrl = isGainer ? `https://koalagains.com/daily-top-gainers/country/${country}` : `https://koalagains.com/daily-top-losers/country/${country}`;
+  const canonicalUrl = isGainer
+    ? `https://koalagains.com/daily-top-movers/top-gainers/country/${country}`
+    : `https://koalagains.com/daily-top-movers/top-losers/country/${country}`;
 
   const keywords = isGainer
     ? [
@@ -186,7 +188,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
   const description =
     mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`;
 
-  const canonicalUrl = `https://koalagains.com/daily-top-${type}s/details/${moverId}`;
+  const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${type}s/details/${moverId}`;
 
   const keywords = [
     mover.name,
