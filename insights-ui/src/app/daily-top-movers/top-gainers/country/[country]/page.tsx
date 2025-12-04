@@ -4,8 +4,9 @@ import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import StockMoversTable from '@/components/daily-stock-movers/StockMoversTable';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
-import { generateDailyMoversListMetadata } from '@/utils/metadata-generators';
+import { generateDailyMoversListMetadata, generateCountryMoversBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoversByCountryTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PageProps {
@@ -30,8 +31,25 @@ export default async function DailyTopGainersPage({ params }: PageProps) {
 
   const topGainers: TopGainerWithTicker[] = await response.json();
 
+  // Generate structured data
+  const breadcrumbSchema = generateCountryMoversBreadcrumbSchema(country, DailyMoverType.GAINER);
+
+  const breadcrumbs = [
+    { name: `Top Performing Stocks in ${country.toUpperCase()} Today`, href: `/daily-top-movers/top-gainers/country/${country}`, current: true },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+
       <StockMoversTable movers={topGainers} type={DailyMoverType.GAINER} country={country} />
     </PageWrapper>
   );

@@ -5,8 +5,9 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import StockMoverDetails from '@/components/daily-stock-movers/StockMoverDetails';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
-import { generateStockMoverMetadata } from '@/utils/metadata-generators';
+import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PageProps {
@@ -70,8 +71,27 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
 
   const topGainer: TopGainerWithTicker = await response.json();
 
+  // Generate structured data
+  const articleSchema = generateStockMoverArticleSchema(topGainer, DailyMoverType.GAINER, topGainersId);
+  const breadcrumbSchema = generateStockMoverBreadcrumbSchema(topGainer, DailyMoverType.GAINER, topGainersId);
+
+  const breadcrumbs = [
+    { name: 'Daily Top Gainers', href: '/daily-top-movers/top-gainers', current: false },
+    { name: topGainer.ticker.name, href: `/daily-top-movers/top-gainers/details/${topGainersId}`, current: true },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+        }}
+      />
+
       <StockMoverDetails mover={topGainer} type={DailyMoverType.GAINER} />
     </PageWrapper>
   );

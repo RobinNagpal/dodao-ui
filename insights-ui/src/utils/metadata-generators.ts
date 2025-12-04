@@ -190,6 +190,8 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
 
   const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${type}s/details/${moverId}`;
 
+  const createdIso = new Date(mover.createdAt).toISOString();
+
   const keywords = [
     mover.name,
     `${mover.symbol} stock`,
@@ -221,13 +223,153 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
+      publishedTime: createdIso,
+      modifiedTime: createdIso,
+      authors: ['KoalaGains'],
+      section: 'Stock Market Analysis',
+      tags: keywords,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      site: '@koalagains',
+      creator: '@koalagains',
     },
     keywords,
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// JSON-LD Structured Data Generators
+// ────────────────────────────────────────────────────────────────────────────────
+
+// Generate Article/NewsArticle schema for stock mover details
+export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | TopLoserWithTicker, type: DailyMoverType, moverId: string) => {
+  const isGainer = type === DailyMoverType.GAINER;
+  const typeLabel = isGainer ? 'Gainer' : 'Loser';
+  const absPercentage = Math.abs(mover.percentageChange).toFixed(2);
+
+  const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${type}s/details/${moverId}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: mover.title || `${mover.ticker.name} (${mover.ticker.symbol}) - Top ${typeLabel} Analysis`,
+    description:
+      mover.metaDescription ||
+      mover.oneLineExplanation ||
+      `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}% - Comprehensive analysis and insights`,
+    image: ['https://koalagains.com/koalagain_logo.png'],
+    datePublished: mover.createdAt,
+    dateModified: mover.createdAt,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: 'Stock Market Analysis',
+    keywords: [
+      mover.ticker.name,
+      `${mover.ticker.symbol} stock`,
+      `${mover.ticker.symbol} analysis`,
+      `${mover.ticker.name} stock analysis`,
+      `${mover.ticker.name} ${mover.ticker.symbol}`,
+      `${mover.ticker.symbol} ${isGainer ? 'up' : 'down'} ${absPercentage}%`,
+      `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}%`,
+      `top ${type}`,
+      `stock ${type}`,
+      isGainer ? 'best performing stocks' : 'worst performing stocks',
+      `daily top ${type}s`,
+      'stock movers',
+      `market ${type}s`,
+      'stock market analysis',
+      `${mover.ticker.exchange} stocks`,
+      'KoalaGains',
+      'investment analysis',
+      'market insights',
+    ].join(', '),
+    about: {
+      '@type': 'Corporation',
+      name: mover.ticker.name,
+      tickerSymbol: mover.ticker.symbol,
+      exchange: mover.ticker.exchange,
+    },
+  };
+};
+
+export const generateStockMoverBreadcrumbSchema = (mover: TopGainerWithTicker | TopLoserWithTicker, type: DailyMoverType, moverId: string) => {
+  const isGainer = type === DailyMoverType.GAINER;
+  const slug = isGainer ? 'gainers' : 'losers';
+  const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${slug}/details/${moverId}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://koalagains.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: isGainer ? 'Daily Top Gainers' : 'Daily Top Losers',
+        item: `https://koalagains.com/daily-top-movers/top-${slug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: `${mover.ticker.name} (${mover.ticker.symbol})`,
+        item: canonicalUrl,
+      },
+    ],
+  };
+};
+
+export const generateCountryMoversBreadcrumbSchema = (country: string, type: DailyMoverType) => {
+  const isGainer = type === DailyMoverType.GAINER;
+  const slug = isGainer ? 'gainers' : 'losers';
+  const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${slug}/country/${country}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://koalagains.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: isGainer ? `Top Performing Stocks in ${country.toUpperCase()} Today` : `Worst Performing Stocks in ${country.toUpperCase()} Today`,
+        item: canonicalUrl,
+      },
+    ],
   };
 };
 

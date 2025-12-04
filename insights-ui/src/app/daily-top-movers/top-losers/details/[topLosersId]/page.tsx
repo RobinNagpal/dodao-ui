@@ -5,8 +5,9 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import StockMoverDetails from '@/components/daily-stock-movers/StockMoverDetails';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
-import { generateStockMoverMetadata } from '@/utils/metadata-generators';
+import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 
 interface PageProps {
@@ -70,8 +71,27 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
 
   const topLoser: TopLoserWithTicker = await response.json();
 
+  // Generate structured data
+  const articleSchema = generateStockMoverArticleSchema(topLoser, DailyMoverType.LOSER, topLosersId);
+  const breadcrumbSchema = generateStockMoverBreadcrumbSchema(topLoser, DailyMoverType.LOSER, topLosersId);
+
+  const breadcrumbs = [
+    { name: 'Daily Top Losers', href: '/daily-top-movers/top-losers', current: false },
+    { name: topLoser.ticker.name, href: `/daily-top-movers/top-losers/details/${topLosersId}`, current: true },
+  ];
+
   return (
     <PageWrapper>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+        }}
+      />
+
       <StockMoverDetails mover={topLoser} type={DailyMoverType.LOSER} />
     </PageWrapper>
   );
