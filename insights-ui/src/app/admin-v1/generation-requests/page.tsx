@@ -23,10 +23,6 @@ type GenerationReportFields = keyof Pick<
   | 'regeneratePastPerformance'
   | 'regenerateFutureGrowth'
   | 'regenerateFairValue'
-  | 'regenerateFutureRisk'
-  | 'regenerateWarrenBuffett'
-  | 'regenerateCharlieMunger'
-  | 'regenerateBillAckman'
   | 'regenerateFinalSummary'
 >;
 const REGENERATE_FIELDS = [
@@ -36,10 +32,6 @@ const REGENERATE_FIELDS = [
   'regeneratePastPerformance',
   'regenerateFutureGrowth',
   'regenerateFairValue',
-  'regenerateFutureRisk',
-  'regenerateWarrenBuffett',
-  'regenerateCharlieMunger',
-  'regenerateBillAckman',
   'regenerateFinalSummary',
 ] as GenerationReportFields[];
 
@@ -54,10 +46,6 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regeneratePastPerformance: 'Past Perf.',
   regenerateFutureGrowth: 'Future Growth',
   regenerateFairValue: 'Fair Value',
-  regenerateFutureRisk: 'Future Risk',
-  regenerateWarrenBuffett: 'Buffett',
-  regenerateCharlieMunger: 'Munger',
-  regenerateBillAckman: 'Ackman',
   regenerateFinalSummary: 'Summary/Meta/About',
 };
 
@@ -68,10 +56,6 @@ const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
   regeneratePastPerformance: ReportType.PAST_PERFORMANCE,
   regenerateFutureGrowth: ReportType.FUTURE_GROWTH,
   regenerateFairValue: ReportType.FAIR_VALUE,
-  regenerateFutureRisk: ReportType.FUTURE_RISK,
-  regenerateWarrenBuffett: ReportType.WARREN_BUFFETT,
-  regenerateCharlieMunger: ReportType.CHARLIE_MUNGER,
-  regenerateBillAckman: ReportType.BILL_ACKMAN,
   regenerateFinalSummary: ReportType.FINAL_SUMMARY,
 };
 
