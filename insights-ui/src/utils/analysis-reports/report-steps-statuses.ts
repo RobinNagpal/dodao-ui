@@ -11,14 +11,10 @@ export interface TickerWithMissingReportInfo extends TickerV1 {
   // existing flags
   isMissingFinalSummaryReport: boolean;
   isMissingCompetitionReport: boolean;
-  isMissingBillAckmanReport: boolean;
-  isMissingWarrenBuffettReport: boolean;
-  isMissingCharlieMungerReport: boolean;
 
   // NEW
   isMissingMetaDescriptionReport: boolean;
   isMissingAboutReport: boolean;
-  isMissingFutureRiskReport: boolean;
 
   industry: {
     name: string;
@@ -41,12 +37,8 @@ export function getMissingReportTypes(ticker: TickerWithMissingReportInfo): Repo
   if (ticker.pastPerformanceFactorsResultsCount === 0) missingReports.push(ReportType.PAST_PERFORMANCE);
   if (ticker.futureGrowthFactorsResultsCount === 0) missingReports.push(ReportType.FUTURE_GROWTH);
   if (ticker.fairValueFactorsResultsCount === 0) missingReports.push(ReportType.FAIR_VALUE);
-  if (ticker.isMissingWarrenBuffettReport) missingReports.push(ReportType.WARREN_BUFFETT);
-  if (ticker.isMissingCharlieMungerReport) missingReports.push(ReportType.CHARLIE_MUNGER);
-  if (ticker.isMissingBillAckmanReport) missingReports.push(ReportType.BILL_ACKMAN);
   if (ticker.isMissingFinalSummaryReport) missingReports.push(ReportType.FINAL_SUMMARY);
   if (ticker.isMissingCompetitionReport) missingReports.push(ReportType.COMPETITION);
-  if (ticker.isMissingFutureRiskReport) missingReports.push(ReportType.FUTURE_RISK);
 
   // If AboutReport is missing, add FINAL_SUMMARY to regenerate it
   // (only if it's not already in the list)
@@ -141,16 +133,12 @@ export function getMissingReportCount(ticker: TickerWithMissingReportInfo) {
     ticker.pastPerformanceFactorsResultsCount === 0,
     ticker.futureGrowthFactorsResultsCount === 0,
     ticker.fairValueFactorsResultsCount === 0,
-    ticker.isMissingWarrenBuffettReport,
-    ticker.isMissingCharlieMungerReport,
-    ticker.isMissingBillAckmanReport,
     ticker.isMissingFinalSummaryReport,
     ticker.isMissingCompetitionReport,
     ticker.isMissingMetaDescriptionReport,
     ticker.isMissingAboutReport,
-    ticker.isMissingFutureRiskReport,
   ].filter(Boolean).length;
 
-  const totalReportCount = 13; // Total number of possible reports
+  const totalReportCount = 9; // Total number of possible reports
   return { missingReportCount, totalReportCount };
 }

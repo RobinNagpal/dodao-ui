@@ -177,13 +177,9 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Past Performance</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Growth</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Fair Value</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Buffett</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Munger</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Ackman</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Final Summary</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">About Report</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Competition</th>
-            <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Future Risk</th>
             <th className="px-3 py-3 text-xs font-medium text-gray-300 uppercase tracking-wider">Meta Description</th>
           </tr>
         </thead>
@@ -277,33 +273,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
                   <span
                     className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingWarrenBuffettReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingWarrenBuffettReport ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingCharlieMungerReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingCharlieMungerReport ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingBillAckmanReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingBillAckmanReport ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
                       !ticker.isMissingFinalSummaryReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
                     }`}
                   >
@@ -324,15 +293,6 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
                     }`}
                   >
                     {!ticker.isMissingCompetitionReport ? 'Yes' : 'No'}
-                  </span>
-                </td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs ${
-                      !ticker.isMissingFutureRiskReport ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                    }`}
-                  >
-                    {!ticker.isMissingFutureRiskReport ? 'Yes' : 'No'}
                   </span>
                 </td>
                 <td className="px-3 py-4 whitespace-nowrap text-sm text-center">
