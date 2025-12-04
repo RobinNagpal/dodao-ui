@@ -7,7 +7,7 @@ import { saveCompetitionAnalysisResponse } from '@/utils/analysis-reports/save-r
 import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
-interface CompetitionAnalysisResponse {
+export interface CompetitionAnalysisResponse {
   summary: string;
   overallAnalysisDetails: string;
   competitionAnalysisArray: Array<{
