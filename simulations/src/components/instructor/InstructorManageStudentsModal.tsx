@@ -6,9 +6,12 @@ import { X, UserCheck, Plus, Users, Mail, Trash2, CheckCircle, AlertCircle } fro
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
+import InstructorBulkAddStudentsModal from './InstructorBulkAddStudentsModal';
 
 export interface AddStudentEnrollmentRequest {
-  studentEmail: string;
+  studentEmail?: string;
+  studentName?: string;
+  students?: Array<{ name?: string; email: string }>;
 }
 
 interface InstructorManageStudentsModalProps {
@@ -20,14 +23,16 @@ interface InstructorManageStudentsModalProps {
 }
 
 export default function InstructorManageStudentsModal({ isOpen, onClose, enrollmentId, enrollmentTitle, caseStudyId }: InstructorManageStudentsModalProps) {
+  const [newStudentName, setNewStudentName] = useState('');
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [showBulkModal, setShowBulkModal] = useState(false);
 
   const {
     data: enrolledStudentsData,
     loading: loadingStudents,
     reFetchData: refetchStudents,
-  } = useFetchData<{ students: Array<{ email: string; studentEnrollmentId: string }> }>(
+  } = useFetchData<{ students: Array<{ email: string; name?: string; studentEnrollmentId: string }> }>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`,
     { skipInitialFetch: !enrollmentId },
     'Failed to load enrolled students'
@@ -39,6 +44,11 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
   const { postData: addStudent, loading: addingStudent } = usePostData<{ message: string }, AddStudentEnrollmentRequest>({
     successMessage: 'Student added successfully!',
     errorMessage: 'Failed to add student',
+  });
+
+  const { postData: addStudentsBatch, loading: addingStudentsBatch } = usePostData<{ message: string }, AddStudentEnrollmentRequest>({
+    successMessage: 'Students processed successfully!',
+    errorMessage: 'Failed to add students',
   });
 
   const { deleteData: removeStudent, loading: removingStudent } = useDeleteData<{ message: string }, AddStudentEnrollmentRequest>({
@@ -53,7 +63,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
   }, [isOpen, enrollmentId, refetchStudents]);
 
   const handleAddStudent = async () => {
-    // Reset error
     setEmailError('');
 
     if (!newStudentEmail.trim()) {
@@ -61,7 +70,6 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
       return;
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newStudentEmail)) {
       setEmailError('Please enter a valid email address');
@@ -70,11 +78,13 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
 
     const payload: AddStudentEnrollmentRequest = {
       studentEmail: newStudentEmail.trim(),
+      studentName: newStudentName.trim() || undefined,
     };
 
     try {
       const result = await addStudent(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`, payload);
       if (result) {
+        setNewStudentName('');
         setNewStudentEmail('');
         setEmailError('');
         await refetchStudents();
@@ -82,6 +92,17 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
     } catch (error) {
       console.error('Error adding student:', error);
       setEmailError('Failed to add student');
+    }
+  };
+
+  const handleBulkAddStudents = async (students: Array<{ name?: string; email: string }>) => {
+    const payload: AddStudentEnrollmentRequest = { students };
+
+    const result = await addStudentsBatch(`${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`, payload);
+
+    if (result) {
+      setShowBulkModal(false);
+      await refetchStudents();
     }
   };
 
@@ -105,7 +126,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
       <div className="bg-white/95 backdrop-blur-lg rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-gray-200/50">
         {/* Enhanced Header */}
         <div className="bg-blue-100/50 backdrop-blur-lg p-6 border-b border-gray-200/50">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center gap-3">
             <div className="flex items-center space-x-3">
               <div className="bg-gradient-to-br from-purple-100 to-indigo-100 p-2 rounded-xl">
                 <Users className="h-6 w-6 text-purple-600" />
@@ -115,16 +136,35 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
                 <p className="text-gray-600">{enrollmentTitle}</p>
               </div>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
-              <X className="h-6 w-6" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowBulkModal(true)}
+                className="flex items-center space-x-2 border-2 border-blue-200 text-blue-700 px-4 py-2 rounded-xl transition-all duration-200 hover:bg-blue-50 font-medium"
+              >
+                <Users className="h-4 w-4" />
+                <span>Add Multiple</span>
+              </button>
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
+                <X className="h-6 w-6" />
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="p-8 overflow-y-auto max-h-[60vh]">
           {/* Enhanced Add Student Section */}
-          <div className="mb-8">
-            <div className="flex space-x-3">
+          <div className="mb-8 space-y-3">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-3 md:space-y-0">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  value={newStudentName}
+                  onChange={(e) => setNewStudentName(e.target.value)}
+                  placeholder="Student name"
+                  className="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-200 border-gray-200 focus:border-green-500 bg-white"
+                  disabled={addingStudent}
+                />
+              </div>
               <div className="flex-1">
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -132,7 +172,7 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
                     type="email"
                     value={newStudentEmail}
                     onChange={(e) => setNewStudentEmail(e.target.value)}
-                    placeholder="Enter student email address"
+                    placeholder="student@email.com"
                     className={`w-full pl-10 pr-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-200 ${
                       emailError ? 'border-red-500 bg-red-50' : 'border-gray-200 focus:border-green-500 bg-white'
                     }`}
@@ -205,8 +245,11 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
                         <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-2 rounded-xl">
                           <UserCheck className="h-5 w-5 text-green-600" />
                         </div>
-                        <div>
-                          <span className="text-gray-900 font-medium">{student.email}</span>
+                        <div className="flex flex-col">
+                          <div className="flex items-center flex-wrap gap-2">
+                            <span className="text-gray-900 font-medium">{student.name || student.email}</span>
+                            {student.name && <span className="text-sm text-gray-600">{student.email}</span>}
+                          </div>
                           <div className="flex items-center space-x-1 mt-1">
                             <CheckCircle className="h-3 w-3 text-green-500" />
                             <span className="text-xs text-green-600 font-medium">Enrolled</span>
@@ -229,6 +272,14 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
           </div>
         </div>
       </div>
+
+      {/* Bulk Add Students Modal */}
+      <InstructorBulkAddStudentsModal
+        isOpen={showBulkModal}
+        onClose={() => setShowBulkModal(false)}
+        onSubmit={handleBulkAddStudents}
+        loading={addingStudentsBatch}
+      />
     </div>
   );
 }

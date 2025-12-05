@@ -11,6 +11,7 @@ import { UserRole } from '@prisma/client';
 interface SimpleResponse {
   students: Array<{
     email: string;
+    name?: string | null;
     studentEnrollmentId: string;
   }>;
 }
@@ -60,6 +61,7 @@ async function getHandler(
       select: {
         id: true,
         email: true,
+        name: true,
       },
     });
 
@@ -68,6 +70,7 @@ async function getHandler(
         const user = users.find((u) => u.id === enrollmentStudent.assignedStudentId);
         return {
           email: user?.email || '',
+          name: user?.name || '',
           studentEnrollmentId: enrollmentStudent.id,
         };
       })
@@ -159,11 +162,8 @@ async function postHandler(
 ): Promise<{ message: string }> {
   const { caseStudyId, classEnrollmentId } = await params;
   const body = (await req.json()) as AddStudentEnrollmentRequest;
-  const { studentEmail } = body;
-
-  if (!studentEmail) {
-    throw new Error('Student email is required');
-  }
+  const { studentEmail, studentName, students } = body;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Verify user has access to this enrollment
   const enrollment = await verifyEnrollmentAccess({
@@ -172,32 +172,75 @@ async function postHandler(
     caseStudyId,
   });
 
-  // Check if the student user exists, create if not
-  const currentStudent = await getOrCreateUser(studentEmail, UserRole.Student);
+  const addStudentToEnrollment = async (email: string, name?: string, throwOnDuplicate = true): Promise<'added' | 'duplicate'> => {
+    const currentStudent = await getOrCreateUser(email, UserRole.Student, name);
 
-  // Check if student is already enrolled
-  const existingEnrollment = await prisma.enrollmentStudent.findFirst({
-    where: {
-      enrollmentId: enrollment.id,
-      assignedStudentId: currentStudent.id,
-      archive: false,
-    },
-  });
+    const existingEnrollment = await prisma.enrollmentStudent.findFirst({
+      where: {
+        enrollmentId: enrollment.id,
+        assignedStudentId: currentStudent.id,
+        archive: false,
+      },
+    });
 
-  if (existingEnrollment) {
-    throw new Error('Student is already enrolled in this class');
+    if (existingEnrollment) {
+      if (throwOnDuplicate) {
+        throw new Error('Student is already enrolled in this class');
+      }
+      return 'duplicate';
+    }
+
+    await prisma.enrollmentStudent.create({
+      data: {
+        enrollmentId: enrollment.id,
+        assignedStudentId: currentStudent.id,
+        createdById: userContext.userId,
+        updatedById: userContext.userId,
+        archive: false,
+      },
+    });
+
+    return 'added';
+  };
+
+  // Bulk add flow
+  if (Array.isArray(students) && students.length > 0) {
+    let added = 0;
+    let duplicates = 0;
+    const invalid: string[] = [];
+
+    for (let i = 0; i < students.length; i++) {
+      const entry = students[i];
+      const email = entry?.email?.trim();
+      const name = entry?.name?.trim();
+
+      if (!email || !emailRegex.test(email)) {
+        invalid.push(`Row ${i + 1}: invalid or missing email`);
+        continue;
+      }
+
+      const result = await addStudentToEnrollment(email, name, false);
+      if (result === 'added') added += 1;
+      if (result === 'duplicate') duplicates += 1;
+    }
+
+    const parts = [`Added ${added} student${added === 1 ? '' : 's'}`];
+    if (duplicates > 0) parts.push(`skipped ${duplicates} duplicate${duplicates === 1 ? '' : 's'}`);
+    if (invalid.length > 0) parts.push(`${invalid.length} invalid row${invalid.length === 1 ? '' : 's'}`);
+
+    return { message: parts.join('; ') || 'No students processed' };
   }
 
-  // Add the student
-  await prisma.enrollmentStudent.create({
-    data: {
-      enrollmentId: enrollment.id,
-      assignedStudentId: currentStudent.id,
-      createdById: userContext.userId,
-      updatedById: userContext.userId,
-      archive: false,
-    },
-  });
+  // Single add flow
+  if (!studentEmail) {
+    throw new Error('Student email is required');
+  }
+
+  if (!emailRegex.test(studentEmail)) {
+    throw new Error('Invalid student email');
+  }
+
+  await addStudentToEnrollment(studentEmail, studentName);
 
   return { message: 'Student successfully added to the class enrollment' };
 }
