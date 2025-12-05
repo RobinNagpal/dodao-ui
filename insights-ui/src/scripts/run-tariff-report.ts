@@ -6,6 +6,7 @@ import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-rep
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
 import { getAndWriteEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import { getAllCountriesTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/09-all-countries-tariffs';
 import {
   getNegativeImpactsOfEvaluatedAreas,
   getPositiveImpactsOfEvaluatedAreas,
@@ -74,6 +75,10 @@ export async function doIt(
       if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
       break;
 
+    case ReportType.ALL_COUNTRIES_TARIFF_UPDATES:
+      await getAllCountriesTariffUpdatesForIndustryAndSaveToFile(industryId, date, headings);
+      break;
+
     case ReportType.INDUSTRY_AREA_SECTION:
       await getAndWriteIndustryAreaSectionToJsonFile(industryId, headings);
       const industryAreaSection = await readIndustryAreaSectionFromFile(industryId);
@@ -133,12 +138,12 @@ export async function doIt(
   }
 }
 
-const industry = getTariffIndustryDefinitionById(TariffIndustryId.tiresAndRubber);
+const industry = getTariffIndustryDefinitionById(TariffIndustryId.metalGlassPlasticContainers);
 
 // Example usage:
-doIt(ReportType.HEADINGS, industry, {
+doIt(ReportType.ALL_COUNTRIES_TARIFF_UPDATES, industry, {
   headingIndex: 1,
-  subHeadingIndex: 0,
+  subHeadingIndex: 1,
 })
   .then(() => {
     console.log('Tariff updates generated successfully.');
