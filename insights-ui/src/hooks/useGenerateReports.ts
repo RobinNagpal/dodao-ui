@@ -20,11 +20,7 @@ export const reportTypes: ReportTypeInfo[] = [
   { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance', reportType: ReportType.PAST_PERFORMANCE },
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', reportType: ReportType.FUTURE_GROWTH },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value', reportType: ReportType.FAIR_VALUE },
-  { key: ReportType.FUTURE_RISK, label: 'Future Risk', reportType: ReportType.FUTURE_RISK },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary/Meta/About', reportType: ReportType.FINAL_SUMMARY },
-  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett', reportType: ReportType.WARREN_BUFFETT },
-  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger', reportType: ReportType.CHARLIE_MUNGER },
-  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman', reportType: ReportType.BILL_ACKMAN },
 ];
 
 /**
@@ -104,13 +100,9 @@ export const useGenerateReports = () => {
         ReportType.COMPETITION, // must precede subsequent steps
         ReportType.BUSINESS_AND_MOAT,
         ReportType.FAIR_VALUE,
-        ReportType.FUTURE_RISK,
         ReportType.PAST_PERFORMANCE,
         ReportType.FUTURE_GROWTH,
         ReportType.FINAL_SUMMARY,
-        ReportType.WARREN_BUFFETT,
-        ReportType.CHARLIE_MUNGER,
-        ReportType.BILL_ACKMAN,
       ];
 
       for (const step of sequence) {
@@ -137,15 +129,7 @@ export const useGenerateReports = () => {
     try {
       const perTicker = tickers.map(async (ticker) => {
         for (const reportType of selectedReportTypes) {
-          if (reportType === ReportType.WARREN_BUFFETT) {
-            await generateInvestorAnalysis(InvestorTypes.WARREN_BUFFETT, ticker, onReportGenerated);
-          } else if (reportType === ReportType.CHARLIE_MUNGER) {
-            await generateInvestorAnalysis(InvestorTypes.CHARLIE_MUNGER, ticker, onReportGenerated);
-          } else if (reportType === ReportType.BILL_ACKMAN) {
-            await generateInvestorAnalysis(InvestorTypes.BILL_ACKMAN, ticker, onReportGenerated);
-          } else {
-            await generateAnalysis(reportType, ticker, onReportGenerated);
-          }
+          await generateAnalysis(reportType, ticker, onReportGenerated);
           await new Promise((r) => setTimeout(r, 1_000));
         }
       });
@@ -187,11 +171,7 @@ export const useGenerateReports = () => {
           else if (rt === ReportType.PAST_PERFORMANCE) payload.regeneratePastPerformance = true;
           else if (rt === ReportType.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
           else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
-          else if (rt === ReportType.FUTURE_RISK) payload.regenerateFutureRisk = true;
           else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
-          else if (rt === ReportType.WARREN_BUFFETT) payload.regenerateWarrenBuffett = true;
-          else if (rt === ReportType.CHARLIE_MUNGER) payload.regenerateCharlieMunger = true;
-          else if (rt === ReportType.BILL_ACKMAN) payload.regenerateBillAckman = true;
         });
 
         return payload;
@@ -220,10 +200,10 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: true,
-        regenerateWarrenBuffett: true,
-        regenerateCharlieMunger: true,
-        regenerateBillAckman: true,
+        regenerateFutureRisk: false,
+        regenerateWarrenBuffett: false,
+        regenerateCharlieMunger: false,
+        regenerateBillAckman: false,
         regenerateFinalSummary: true,
       }));
 
@@ -250,10 +230,10 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: true,
-        regenerateWarrenBuffett: true,
-        regenerateCharlieMunger: true,
-        regenerateBillAckman: true,
+        regenerateFutureRisk: false,
+        regenerateWarrenBuffett: false,
+        regenerateCharlieMunger: false,
+        regenerateBillAckman: false,
         regenerateFinalSummary: true,
       }));
 

@@ -42,20 +42,6 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FutureGrowth})::int AS "futureGrowthFactorsResultsCount",
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FairValue})::int AS "fairValueFactorsResultsCount",
 
-        -- Investor analysis flags
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'BILL_ACKMAN'::text
-        ) AS "isMissingBillAckmanReport",
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'WARREN_BUFFETT'::text
-        ) AS "isMissingWarrenBuffettReport",
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'CHARLIE_MUNGER'::text
-        ) AS "isMissingCharlieMungerReport",
-
         -- Competition present?
         NOT EXISTS (
           SELECT 1 FROM ticker_v1_vs_competition vc
@@ -71,15 +57,9 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
         -- About report present?
         (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport",
 
-        -- Future risk present?
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_future_risks fr
-          WHERE fr.ticker_id = t.id AND fr.space_id = t.space_id
-        ) AS "isMissingFutureRiskReport",
-
         -- Financial data status (missing if no scrapper info OR empty summary)
         (
-          sasi.ticker_id IS NULL OR 
+          sasi.ticker_id IS NULL OR
           (sasi.summary = '{}'::jsonb OR sasi.summary::text = '{}')
         ) AS "isMissingFinancialData"
 
@@ -109,14 +89,10 @@ export async function getTickersWithMissingReports(spaceId: string): Promise<Tic
       "pastPerformanceFactorsResultsCount" < 1 OR
       "futureGrowthFactorsResultsCount" < 1 OR
       "fairValueFactorsResultsCount" < 1 OR
-      "isMissingBillAckmanReport" = TRUE OR
-      "isMissingWarrenBuffettReport" = TRUE OR
-      "isMissingCharlieMungerReport" = TRUE OR
       "isMissingCompetitionReport" = TRUE OR
       "isMissingFinalSummaryReport" = TRUE OR
       "isMissingMetaDescriptionReport" = TRUE OR
       "isMissingAboutReport" = TRUE OR
-      "isMissingFutureRiskReport" = TRUE OR
       -- OR has missing financial data
       "isMissingFinancialData" = TRUE
     ORDER BY symbol;
@@ -155,20 +131,6 @@ export async function getMissingReportsForTicker(spaceId: string, tickerId: stri
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FutureGrowth})::int AS "futureGrowthFactorsResultsCount",
         COUNT(*) FILTER (WHERE fr.category_key::text = ${TickerAnalysisCategory.FairValue})::int AS "fairValueFactorsResultsCount",
 
-        -- Investor analysis flags
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'BILL_ACKMAN'::text
-        ) AS "isMissingBillAckmanReport",
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'WARREN_BUFFETT'::text
-        ) AS "isMissingWarrenBuffettReport",
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_investor_analysis_results iar 
-          WHERE iar.ticker_id = t.id AND iar.investor_key = 'CHARLIE_MUNGER'::text
-        ) AS "isMissingCharlieMungerReport",
-
         -- Competition present?
         NOT EXISTS (
           SELECT 1 FROM ticker_v1_vs_competition vc
@@ -182,13 +144,7 @@ export async function getMissingReportsForTicker(spaceId: string, tickerId: stri
         (t.meta_description IS NULL OR btrim(t.meta_description) = '') AS "isMissingMetaDescriptionReport",
 
         -- NEW: about report present?
-        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport",
-
-        -- Future risk present?
-        NOT EXISTS (
-          SELECT 1 FROM ticker_v1_future_risks fr
-          WHERE fr.ticker_id = t.id AND fr.space_id = t.space_id
-        ) AS "isMissingFutureRiskReport"
+        (t.about_report IS NULL OR btrim(t.about_report) = '') AS "isMissingAboutReport"
 
       FROM
         tickers_v1 t

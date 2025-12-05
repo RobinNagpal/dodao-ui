@@ -7,7 +7,7 @@ import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
-interface FinalSummaryResponse {
+export interface FinalSummaryResponse {
   finalSummary: string;
   metaDescription: string;
   aboutReport: string;
