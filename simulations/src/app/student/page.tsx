@@ -1,18 +1,16 @@
 'use client';
 
 import StudentNavbar from '@/components/navigation/StudentNavbar';
-import StudentLoading from '@/components/student/StudentLoading';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { BusinessSubject } from '@/types';
 import type { CaseStudyWithRelationsForStudents } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowRight, BookOpen, BotIcon, Brain, CheckCircle2, GraduationCap, Sparkles, Target, TrendingUp, User } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -20,16 +18,20 @@ export default function StudentDashboard() {
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForStudents[]>([]);
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
-
-  console.log(`session:`, session);
 
   const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelationsForStudents[]>(
     `${getBaseUrl()}/api/case-studies`,
     { skipInitialFetch: false },
     'Failed to load enrolled case studies'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any',
+    loadingType: 'student',
+    loadingText: 'Loading your dashboard...',
+    loadingSubtitle: 'Preparing your personalized learning experience',
+    additionalLoadingConditions: [loadingCaseStudies],
+  });
 
   useEffect(() => {
     if (enrolledCaseStudies) {
@@ -59,13 +61,8 @@ export default function StudentDashboard() {
 
   const enrolledSubjectsWithCounts = getEnrolledSubjectsWithCounts();
 
-  if (!session) {
-    return <div>You do not have access to this page.</div>;
-  }
-
-  if (loadingCaseStudies) {
-    return <StudentLoading text="Loading your dashboard..." subtitle="Preparing your personalized learning experience" variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

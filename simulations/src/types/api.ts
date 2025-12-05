@@ -222,3 +222,23 @@ export interface StudentNavigationData {
   isFirstExercise: boolean;
   isNextExerciseInDifferentModule: boolean;
 }
+
+export interface FinalSummaryResponse {
+  caseStudy: {
+    title: string;
+    shortDescription: string;
+    details: string;
+  };
+  modules: Array<{
+    title: string;
+    shortDescription: string;
+    details: string;
+    exercises: Array<{
+      title: string;
+      details: string;
+      selectedAttempt: {
+        promptResponse: string | null;
+      } | null;
+    }>;
+  }>;
+}
