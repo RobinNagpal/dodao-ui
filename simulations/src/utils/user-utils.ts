@@ -30,7 +30,7 @@ export async function createNewUser(input: CreateUserInput): Promise<User> {
   return user;
 }
 
-export async function getOrCreateUser(email: string, role: UserRole): Promise<User> {
+export async function getOrCreateUser(email: string, role: UserRole, name?: string): Promise<User> {
   const user = await prisma.user.findFirst({
     where: {
       email: email,
@@ -42,8 +42,15 @@ export async function getOrCreateUser(email: string, role: UserRole): Promise<Us
   }
 
   if (user) {
+    // Populate name for legacy users if available
+    if (!user.name && name) {
+      return prisma.user.update({
+        where: { id: user.id },
+        data: { name },
+      });
+    }
     return user;
   } else {
-    return createNewUser({ email, role });
+    return createNewUser({ email, name, role });
   }
 }
