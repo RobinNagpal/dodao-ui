@@ -4,30 +4,27 @@ import AnalyticsTab from '@/components/instructor/case-study-tabs/AnalyticsTab';
 import OverviewTab from '@/components/instructor/case-study-tabs/OverviewTab';
 import StudentsTab from '@/components/instructor/case-study-tabs/StudentsTab';
 import TabNavigation, { TabType } from '@/components/instructor/case-study-tabs/TabNavigation';
-import InstructorLoading from '@/components/instructor/InstructorLoading';
 import BackButton from '@/components/navigation/BackButton';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForInstructor } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { GraduationCap } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
 }
 
-export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps) {
+export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps): ReactElement | null {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
@@ -38,9 +35,17 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
   // API hook to fetch case study data
   const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin>(
     `/api/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: ['Instructor', 'Admin'],
+    loadingType: 'instructor',
+    loadingText: 'Loading Case Study',
+    loadingSubtitle: 'Preparing management console...',
+    additionalLoadingConditions: [loadingCaseStudy],
+  });
 
   const handleModuleClick = (module: CaseStudyModule) => {
     setSelectedModule(module as CaseStudyModule);
@@ -57,13 +62,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
     }
   };
 
-  if (!session || (session.role !== 'Instructor' && session.role !== 'Admin')) {
-    return null;
-  }
-
-  if (loadingCaseStudy) {
-    return <InstructorLoading text="Loading Case Study" subtitle="Preparing management console..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   const modules = caseStudy?.modules || [];
 

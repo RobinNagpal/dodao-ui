@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import StudentLoading from '@/components/student/StudentLoading';
 import { FileText, Send, CheckCircle, Brain, Sparkles, Target, BookOpen, Save } from 'lucide-react';
 import MarkdownEditor from '@/components/markdown/MarkdownEditor';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CaseStudyWithRelationsForStudents } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
+import type { ReactElement } from 'react';
 
 interface FinalSubmissionClientProps {
   caseStudyId: string;
@@ -29,17 +28,15 @@ interface CreateFinalSubmissionRequest {
   studentEmail: string;
 }
 
-export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionClientProps) {
+export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionClientProps): ReactElement | null {
   const [finalContent, setFinalContent] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const router = useRouter();
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
 
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
     `/api/student/case-studies/${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load case study details'
   );
 
@@ -49,9 +46,17 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     reFetchData: refetchSubmission,
   } = useFetchData<FinalSubmissionData>(
     `/api/student/final-submission?caseStudyId=${caseStudyId}`,
-    { skipInitialFetch: !caseStudyId || !session },
+    { skipInitialFetch: !caseStudyId },
     'Failed to load existing submission'
   );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any',
+    loadingType: 'student',
+    loadingText: 'Loading Final Submission',
+    loadingSubtitle: 'Preparing your submission workspace...',
+    additionalLoadingConditions: [loadingCaseStudy || loadingSubmission],
+  });
 
   const { postData: submitFinalSubmission, loading: submittingSubmission } = usePostData<FinalSubmissionData, CreateFinalSubmissionRequest>({
     successMessage: 'Final submission saved successfully!',
@@ -90,9 +95,8 @@ export default function FinalSubmissionClient({ caseStudyId }: FinalSubmissionCl
     router.push('/student');
   };
 
-  if (!session || loadingCaseStudy || loadingSubmission) {
-    return <StudentLoading text="Loading Final Submission" subtitle="Preparing your submission workspace..." variant="enhanced" />;
-  }
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard as ReactElement;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

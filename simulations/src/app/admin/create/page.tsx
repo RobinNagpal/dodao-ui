@@ -8,13 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { CaseStudyWithRelationsForStudents, CreateCaseStudyRequest } from '@/types/api';
-import { SimulationSession } from '@/types/user';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { BusinessSubject } from '@prisma/client';
 import { BookOpen, Plus, Shield, Sparkles, Target, Trash2, X } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
@@ -52,10 +51,15 @@ const subjectOptions: SubjectOption[] = [
 ];
 
 export default function CreateCaseStudyPage() {
-  const { data: simSession } = useSession();
-  const session: SimulationSession | null = simSession as SimulationSession | null;
   const router = useRouter();
   const { showNotification } = useNotificationContext();
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading create page...',
+    loadingSubtitle: 'Checking authorization...',
+  });
 
   const [title, setTitle] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
@@ -210,6 +214,9 @@ export default function CreateCaseStudyPage() {
       console.error('Error creating case study:', error);
     }
   };
+
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
