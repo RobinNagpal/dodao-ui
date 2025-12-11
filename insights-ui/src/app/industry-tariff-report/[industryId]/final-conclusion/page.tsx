@@ -3,7 +3,7 @@ import FinalConclusionActions from '@/components/industry-tariff/section-actions
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 

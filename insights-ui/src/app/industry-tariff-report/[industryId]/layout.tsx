@@ -7,7 +7,7 @@ import { getLastModifiedDateForIndustry } from '@/scripts/industry-tariff-report
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type React from 'react';
 
 export default async function IndustryTariffReportLayout({

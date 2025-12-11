@@ -6,7 +6,7 @@ import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tar
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getPreviousNextIndices } from '@/util/getPreviousNextIndices';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import Link from 'next/link';

@@ -4,7 +4,7 @@ import IndustryAreasActions from '@/components/industry-tariff/section-actions/I
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
