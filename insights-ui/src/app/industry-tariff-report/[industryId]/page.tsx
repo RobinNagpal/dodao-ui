@@ -67,10 +67,10 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function IndustryTariffReportPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
-  const definition = getTariffIndustryDefinitionById(industryId);
+  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },

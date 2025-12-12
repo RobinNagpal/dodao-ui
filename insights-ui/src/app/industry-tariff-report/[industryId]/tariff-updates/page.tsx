@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -85,7 +85,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const definition = getTariffIndustryDefinitionById(industryId);
+  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;

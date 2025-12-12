@@ -10,13 +10,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type React from 'react';
 
-export default async function IndustryTariffReportLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ industryId: TariffIndustryId }>;
-}) {
+export default async function IndustryTariffReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
@@ -30,7 +24,7 @@ export default async function IndustryTariffReportLayout({
   // Fetch last modified date for the industry
   let lastModified = '';
   try {
-    lastModified = await getLastModifiedDateForIndustry(industryId);
+    lastModified = await getLastModifiedDateForIndustry(industryId as TariffIndustryId);
   } catch (error) {
     lastModified = new Date().toISOString().split('T')[0];
   }
@@ -85,12 +79,12 @@ export default async function IndustryTariffReportLayout({
         <div className="mx-auto">
           {/* Mobile navigation toggle - only visible on small screens */}
           <div className="block lg:hidden fixed bottom-6 left-6 z-50">
-            <MobileNavToggle report={report} industryId={industryId} lastModified={lastModified} />
+            <MobileNavToggle report={report} industryId={industryId as TariffIndustryId} lastModified={lastModified} />
           </div>
 
           {/* Collapsible Layout for Desktop */}
           <div className="hidden lg:block">
-            <CollapsibleLayout report={report} industryId={industryId} lastModified={lastModified}>
+            <CollapsibleLayout report={report} industryId={industryId as TariffIndustryId} lastModified={lastModified}>
               {children}
             </CollapsibleLayout>
           </div>
