@@ -4,14 +4,14 @@ import { useMemo, type JSX } from 'react';
 import type { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { Building2, Tag } from 'lucide-react';
 import EllipsisDropdown, { type EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
-import type { IndustryAnalysisWithSubAnalyses } from './page';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export type IndustryAnalysisAction = 'addSub' | 'edit' | 'delete';
 export type SubIndustryAnalysisAction = 'edit' | 'delete';
 
 export interface IndustryAnalysisTreeProps {
-  industryAnalyses: IndustryAnalysisWithSubAnalyses[];
-  onIndustryAnalysisAction: (action: IndustryAnalysisAction, industryAnalysis: IndustryAnalysisWithSubAnalyses) => void;
+  industryAnalyses: IndustryAnalysisWithRelations[];
+  onIndustryAnalysisAction: (action: IndustryAnalysisAction, industryAnalysis: IndustryAnalysisWithRelations) => void;
   onSubIndustryAnalysisAction: (action: SubIndustryAnalysisAction, sub: IndustryBuildingBlockAnalysis) => void;
 }
 
@@ -20,7 +20,7 @@ export default function IndustryAnalysisTree({
   onIndustryAnalysisAction,
   onSubIndustryAnalysisAction,
 }: IndustryAnalysisTreeProps): JSX.Element {
-  const sortedIndustryAnalyses: IndustryAnalysisWithSubAnalyses[] = useMemo(
+  const sortedIndustryAnalyses: IndustryAnalysisWithRelations[] = useMemo(
     () => [...industryAnalyses].sort((a, b) => a.name.localeCompare(b.name)),
     [industryAnalyses]
   );

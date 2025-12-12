@@ -10,15 +10,15 @@ import { TickerV1IndustryAnalysis, TickerV1Industry } from '@prisma/client';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
-import type { IndustryAnalysisWithSubAnalyses } from './page';
-import type { IndustryAnalysisUpdateRequest } from '../../api/industry-analysis/[id]/route';
+import type { IndustryAnalysisUpdateRequest } from '../../api/industry-analysis/[industryKey]/route';
 import type { CreateIndustryAnalysisRequest } from '../../api/industry-analysis/route';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 interface UpsertIndustryAnalysisModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  industryAnalysis?: IndustryAnalysisWithSubAnalyses;
+  industryAnalysis?: IndustryAnalysisWithRelations;
 }
 
 export default function UpsertIndustryAnalysisModal({ isOpen, onClose, onSuccess, industryAnalysis }: UpsertIndustryAnalysisModalProps): JSX.Element {
@@ -74,7 +74,7 @@ export default function UpsertIndustryAnalysisModal({ isOpen, onClose, onSuccess
 
     try {
       if (isEditMode) {
-        await putData(`/api/industry-analysis/${industryAnalysis!.id}`, {
+        await putData(`/api/industry-analysis/${industryAnalysis!.industryKey}`, {
           name,
           industryKey,
           metaDescription: metaDescription || undefined,

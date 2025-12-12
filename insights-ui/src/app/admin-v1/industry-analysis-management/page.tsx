@@ -6,10 +6,11 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import type { TickerV1IndustryAnalysis, IndustryBuildingBlockAnalysis } from '@prisma/client';
+import type { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DeleteConfirmationModal from '../industry-management/DeleteConfirmationModal';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 import IndustryAnalysisTree, { type IndustryAnalysisAction, type SubIndustryAnalysisAction } from './IndustryAnalysisTree';
 import UpsertIndustryAnalysisModal from './UpsertIndustryAnalysisModal';
@@ -17,19 +18,11 @@ import UpsertSubIndustryAnalysisModal from './UpsertSubIndustryAnalysisModal';
 
 type DeleteKind = 'industryAnalysis' | 'buildingBlockAnalysis';
 
-export interface IndustryAnalysisWithSubAnalyses extends TickerV1IndustryAnalysis {
-  subIndustryAnalyses: IndustryBuildingBlockAnalysis[];
-  industry: {
-    name: string;
-    industryKey: string;
-  };
-}
-
 export default function IndustryAnalysisManagementPage(): JSX.Element {
   // Modal state
   const [showUpsertIndustryAnalysis, setShowUpsertIndustryAnalysis] = useState<boolean>(false);
   const [showUpsertSubIndustryAnalysis, setShowUpsertSubIndustryAnalysis] = useState<boolean>(false);
-  const [selectedIndustryAnalysis, setSelectedIndustryAnalysis] = useState<IndustryAnalysisWithSubAnalyses | null>(null);
+  const [selectedIndustryAnalysis, setSelectedIndustryAnalysis] = useState<IndustryAnalysisWithRelations | null>(null);
   const [selectedSubIndustryAnalysis, setSelectedSubIndustryAnalysis] = useState<IndustryBuildingBlockAnalysis | null>(null);
 
   // Delete confirm state
@@ -42,7 +35,7 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
     data: industryAnalyses,
     loading: loadingIndustryAnalyses,
     reFetchData: refetchIndustryAnalyses,
-  } = useFetchData<IndustryAnalysisWithSubAnalyses[]>(`${getBaseUrl()}/api/industry-analysis`, {}, 'Failed to load industry analyses');
+  } = useFetchData<IndustryAnalysisWithRelations[]>(`${getBaseUrl()}/api/industry-analysis`, {}, 'Failed to load industry analyses');
 
   // Delete hooks
   const { deleteData: deleteIndustryAnalysis, loading: deletingIndustryAnalysis } = useDeleteData<{ success: boolean }, never>({
@@ -55,7 +48,7 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
   });
 
   // Handlers triggered from the tree view
-  const onIndustryAnalysisAction = (action: IndustryAnalysisAction, industryAnalysis: IndustryAnalysisWithSubAnalyses): void => {
+  const onIndustryAnalysisAction = (action: IndustryAnalysisAction, industryAnalysis: IndustryAnalysisWithRelations): void => {
     switch (action) {
       case 'addSub':
         setSelectedIndustryAnalysis(industryAnalysis);
@@ -68,7 +61,7 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
         break;
       case 'delete':
         setDeleteKind('industryAnalysis');
-        setDeleteId(industryAnalysis.id);
+        setDeleteId(industryAnalysis.industryKey);
         setDeleteOpen(true);
         break;
     }
@@ -82,7 +75,7 @@ export default function IndustryAnalysisManagementPage(): JSX.Element {
         break;
       case 'delete':
         setDeleteKind('buildingBlockAnalysis');
-        setDeleteId(sub.id);
+        setDeleteId(sub.buildingBlockKey);
         setDeleteOpen(true);
         break;
     }

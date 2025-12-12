@@ -4,6 +4,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
+import type { SubIndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export interface SubIndustryAnalysisUpdateRequest {
   name?: string;
@@ -13,19 +14,14 @@ export interface SubIndustryAnalysisUpdateRequest {
   details?: string;
 }
 
-async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<IndustryBuildingBlockAnalysis> {
-  const { id } = await params;
+async function getHandler(request: NextRequest, { params }: { params: Promise<{ buildingBlockKey: string }> }): Promise<SubIndustryAnalysisWithRelations> {
+  const { buildingBlockKey } = await params;
   return prisma.industryBuildingBlockAnalysis.findUniqueOrThrow({
     where: {
-      id,
+      buildingBlockKey,
     },
     include: {
-      industryAnalysis: {
-        select: {
-          name: true,
-          id: true,
-        },
-      },
+      industryAnalysis: true,
     },
   });
 }
@@ -33,13 +29,13 @@ async function getHandler(request: NextRequest, { params }: { params: Promise<{ 
 async function putHandler(
   request: NextRequest,
   _userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ buildingBlockKey: string }> }
 ): Promise<IndustryBuildingBlockAnalysis> {
-  const { id } = await params;
+  const { buildingBlockKey } = await params;
   const body: SubIndustryAnalysisUpdateRequest = await request.json();
 
   const updated = await prisma.industryBuildingBlockAnalysis.update({
-    where: { id },
+    where: { buildingBlockKey },
     data: {
       ...(body.name && { name: body.name }),
       ...(body.buildingBlockKey && { buildingBlockKey: body.buildingBlockKey }),
@@ -55,17 +51,17 @@ async function putHandler(
 async function deleteHandler(
   _request: NextRequest,
   _userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ buildingBlockKey: string }> }
 ): Promise<{ success: boolean }> {
-  const { id } = await params;
+  const { buildingBlockKey } = await params;
 
   await prisma.industryBuildingBlockAnalysis.delete({
-    where: { id },
+    where: { buildingBlockKey },
   });
 
   return { success: true };
 }
 
-export const GET = withErrorHandlingV2<IndustryBuildingBlockAnalysis>(getHandler);
+export const GET = withErrorHandlingV2<SubIndustryAnalysisWithRelations>(getHandler);
 export const PUT = withLoggedInAdmin<IndustryBuildingBlockAnalysis>(putHandler);
 export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);

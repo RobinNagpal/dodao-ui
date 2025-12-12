@@ -4,6 +4,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
+import type { SubIndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export interface CreateSubIndustryAnalysisRequest {
   name: string;
@@ -13,7 +14,7 @@ export interface CreateSubIndustryAnalysisRequest {
   details?: string;
 }
 
-async function getHandler(req: NextRequest): Promise<IndustryBuildingBlockAnalysis[]> {
+async function getHandler(req: NextRequest): Promise<SubIndustryAnalysisWithRelations[]> {
   const { searchParams } = new URL(req.url);
   const industryAnalysisId = searchParams.get('industryAnalysisId');
 
@@ -22,12 +23,7 @@ async function getHandler(req: NextRequest): Promise<IndustryBuildingBlockAnalys
       ...(industryAnalysisId ? { tickerV1IndustryAnalysisId: industryAnalysisId } : {}),
     },
     include: {
-      industryAnalysis: {
-        select: {
-          name: true,
-          id: true,
-        },
-      },
+      industryAnalysis: true,
     },
   });
   return subIndustryAnalyses;
@@ -54,5 +50,5 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   return subIndustryAnalysis;
 }
 
-export const GET = withErrorHandlingV2<IndustryBuildingBlockAnalysis[]>(getHandler);
+export const GET = withErrorHandlingV2<SubIndustryAnalysisWithRelations[]>(getHandler);
 export const POST = withLoggedInAdmin<IndustryBuildingBlockAnalysis>(postHandler);

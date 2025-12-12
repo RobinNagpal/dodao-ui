@@ -1079,7 +1079,7 @@ model DailyTopLoser {
 model TickerV1IndustryAnalysis {
   id             String   @id @default(uuid())
   name           String   @map("name")
-  industryKey    String   @map("industry_key")
+  industryKey    String   @unique @map("industry_key")
   metaDescription String?  @map("meta_description")
   details        String?   @map("details")
   createdAt      DateTime @default(now()) @map("created_at")
@@ -1098,7 +1098,7 @@ model TickerV1IndustryAnalysis {
 model IndustryBuildingBlockAnalysis {
   id                         String   @id @default(uuid())
   name                       String   @map("name")
-  buildingBlockKey     String   @map("building_block_key")
+  buildingBlockKey     String   @unique @map("building_block_key")
   tickerV1IndustryAnalysisId String   @map("ticker_v1_industry_analysis_id")
   metaDescription            String?  @map("meta_description")
   details                    String?   @map("details")

@@ -1,9 +1,10 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { TickerV1IndustryAnalysis, IndustryBuildingBlockAnalysis } from '@prisma/client';
+import { TickerV1IndustryAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export interface CreateIndustryAnalysisRequest {
   name: string;
@@ -12,24 +13,11 @@ export interface CreateIndustryAnalysisRequest {
   details?: string;
 }
 
-export interface IndustryAnalysisWithSubAnalyses extends TickerV1IndustryAnalysis {
-  subIndustryAnalyses: IndustryBuildingBlockAnalysis[];
-  industry: {
-    name: string;
-    industryKey: string;
-  };
-}
-
-async function getHandler(_request: NextRequest): Promise<IndustryAnalysisWithSubAnalyses[]> {
+async function getHandler(_request: NextRequest): Promise<IndustryAnalysisWithRelations[]> {
   const industryAnalyses = await prisma.tickerV1IndustryAnalysis.findMany({
     include: {
       subIndustryAnalyses: true,
-      industry: {
-        select: {
-          name: true,
-          industryKey: true,
-        },
-      },
+      industry: true,
     },
     orderBy: { name: 'asc' },
   });
@@ -57,5 +45,5 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   return industryAnalysis;
 }
 
-export const GET = withErrorHandlingV2<IndustryAnalysisWithSubAnalyses[]>(getHandler);
+export const GET = withErrorHandlingV2<IndustryAnalysisWithRelations[]>(getHandler);
 export const POST = withLoggedInAdmin<TickerV1IndustryAnalysis>(postHandler);

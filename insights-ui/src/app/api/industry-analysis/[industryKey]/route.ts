@@ -4,6 +4,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { TickerV1IndustryAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export interface IndustryAnalysisUpdateRequest {
   name?: string;
@@ -12,20 +13,15 @@ export interface IndustryAnalysisUpdateRequest {
   details?: string;
 }
 
-async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<TickerV1IndustryAnalysis> {
-  const { id } = await params;
+async function getHandler(request: NextRequest, { params }: { params: Promise<{ industryKey: string }> }): Promise<IndustryAnalysisWithRelations> {
+  const { industryKey } = await params;
   return prisma.tickerV1IndustryAnalysis.findUniqueOrThrow({
     where: {
-      id,
+      industryKey,
     },
     include: {
       subIndustryAnalyses: true,
-      industry: {
-        select: {
-          name: true,
-          industryKey: true,
-        },
-      },
+      industry: true,
     },
   });
 }
@@ -33,13 +29,13 @@ async function getHandler(request: NextRequest, { params }: { params: Promise<{ 
 async function putHandler(
   request: NextRequest,
   _userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ industryKey: string }> }
 ): Promise<TickerV1IndustryAnalysis> {
-  const { id } = await params;
+  const { industryKey } = await params;
   const body: IndustryAnalysisUpdateRequest = await request.json();
 
   const updated = await prisma.tickerV1IndustryAnalysis.update({
-    where: { id },
+    where: { industryKey },
     data: {
       ...(body.name && { name: body.name }),
       ...(body.industryKey && { industryKey: body.industryKey }),
@@ -54,17 +50,17 @@ async function putHandler(
 async function deleteHandler(
   _request: NextRequest,
   _userContext: DoDaoJwtTokenPayload,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ industryKey: string }> }
 ): Promise<{ success: boolean }> {
-  const { id } = await params;
+  const { industryKey } = await params;
 
   await prisma.tickerV1IndustryAnalysis.delete({
-    where: { id },
+    where: { industryKey },
   });
 
   return { success: true };
 }
 
-export const GET = withErrorHandlingV2<TickerV1IndustryAnalysis>(getHandler);
+export const GET = withErrorHandlingV2<IndustryAnalysisWithRelations>(getHandler);
 export const PUT = withLoggedInAdmin<TickerV1IndustryAnalysis>(putHandler);
 export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);

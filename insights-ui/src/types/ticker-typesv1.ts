@@ -2,7 +2,7 @@ import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
 import { MinimalTickerWithOnlyFinalScore, TickerMinimal } from '@/types/api/ticker-industries';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
-import { TickerV1, TickerV1CachedScore, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { IndustryBuildingBlockAnalysis, TickerV1, TickerV1CachedScore, TickerV1Industry, TickerV1IndustryAnalysis, TickerV1SubIndustry } from '@prisma/client';
 
 export interface TickerWithIndustryNames extends TickerV1WithIndustryAndSubIndustry {
   industryName: string;
@@ -69,6 +69,15 @@ export interface IndustryWithSubIndustriesAndCounts extends TickerV1Industry {
   subIndustries: SubIndustryWithCount[];
   /** Sum of all tickers in this industry's sub-industries */
   tickerCount: number;
+}
+
+export interface IndustryAnalysisWithRelations extends TickerV1IndustryAnalysis {
+  subIndustryAnalyses: IndustryBuildingBlockAnalysis[];
+  industry: TickerV1Industry;
+}
+
+export interface SubIndustryAnalysisWithRelations extends IndustryBuildingBlockAnalysis {
+  industryAnalysis: TickerV1IndustryAnalysis;
 }
 
 export interface AnalysisTypeInfo {

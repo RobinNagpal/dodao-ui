@@ -10,9 +10,9 @@ import { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
-import type { IndustryAnalysisWithSubAnalyses } from './page';
-import type { SubIndustryAnalysisUpdateRequest } from '../../api/sub-industry-analysis/[id]/route';
+import type { SubIndustryAnalysisUpdateRequest } from '../../api/sub-industry-analysis/[buildingBlockKey]/route';
 import type { CreateSubIndustryAnalysisRequest } from '../../api/sub-industry-analysis/route';
+import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 interface UpsertSubIndustryAnalysisModalProps {
   isOpen: boolean;
@@ -37,7 +37,7 @@ export default function UpsertSubIndustryAnalysisModal({
   const [formError, setFormError] = useState<string>('');
   const isEditMode: boolean = !!subIndustryAnalysis;
 
-  const { data: industryAnalyses, loading: loadingIndustryAnalyses } = useFetchData<IndustryAnalysisWithSubAnalyses[]>(
+  const { data: industryAnalyses, loading: loadingIndustryAnalyses } = useFetchData<IndustryAnalysisWithRelations[]>(
     `${getBaseUrl()}/api/industry-analysis`,
     {},
     'Failed to load industry analyses'
@@ -91,7 +91,7 @@ export default function UpsertSubIndustryAnalysisModal({
 
     try {
       if (isEditMode) {
-        await putData(`/api/sub-industry-analysis/${subIndustryAnalysis!.id}`, {
+        await putData(`/api/sub-industry-analysis/${subIndustryAnalysis!.buildingBlockKey}`, {
           name,
           buildingBlockKey,
           tickerV1IndustryAnalysisId: industryAnalysisId,
@@ -123,7 +123,7 @@ export default function UpsertSubIndustryAnalysisModal({
 
   const industryAnalysisItems: StyledSelectItem[] = useMemo<StyledSelectItem[]>(
     () =>
-      (industryAnalyses ?? []).map((indAnalysis: IndustryAnalysisWithSubAnalyses) => ({
+      (industryAnalyses ?? []).map((indAnalysis: IndustryAnalysisWithRelations) => ({
         id: indAnalysis.id,
         label: `${indAnalysis.name} (${indAnalysis.industry.name})`,
       })),
