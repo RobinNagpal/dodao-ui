@@ -1,4 +1,4 @@
-import { AnalysisCategoryFactor, TickerV1 } from '@prisma/client';
+import { AnalysisCategoryFactor } from '@prisma/client';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry, VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
 import { buildBaseAboutReport } from '@/utils/analysis-reports/save-report-utils';
@@ -42,6 +42,18 @@ export interface FinancialDataInputJson {
   cashFlow: string;
   ratios: string;
   dividends: string;
+}
+
+export interface PriorCategoryAnalysisInput {
+  categoryKey: TickerAnalysisCategory;
+  overallAnalysisDetails: string;
+  factorResults: Array<{
+    factorAnalysisKey: string;
+    factorAnalysisTitle: string;
+    oneLineExplanation: string;
+    detailedExplanation: string;
+    result: string;
+  }>;
 }
 
 /**
@@ -201,31 +213,58 @@ export function prepareFinancialAnalysisInputJson(
   };
 }
 
+type CategoryAnalysisResultFromDb = {
+  categoryKey: string;
+  summary: string;
+  overallAnalysisDetails: string;
+  factorResults: Array<{
+    analysisCategoryFactor: {
+      factorAnalysisKey: string;
+      factorAnalysisTitle?: string | null;
+    };
+    oneLineExplanation: string;
+    detailedExplanation: string;
+    result: string;
+  }>;
+};
+
+function preparePriorCategoryAnalyses(categoryAnalysisResults: CategoryAnalysisResultFromDb[]): PriorCategoryAnalysisInput[] {
+  const allowedCategories = new Set<TickerAnalysisCategory>([
+    TickerAnalysisCategory.BusinessAndMoat,
+    TickerAnalysisCategory.FinancialStatementAnalysis,
+    TickerAnalysisCategory.PastPerformance,
+    TickerAnalysisCategory.FutureGrowth,
+  ]);
+
+  return categoryAnalysisResults
+    .filter((result) => allowedCategories.has(result.categoryKey as TickerAnalysisCategory))
+    .map((result) => ({
+      categoryKey: result.categoryKey as TickerAnalysisCategory,
+      overallAnalysisDetails: result.overallAnalysisDetails || '',
+      factorResults: result.factorResults.map((factorResult) => ({
+        factorAnalysisKey: factorResult.analysisCategoryFactor.factorAnalysisKey,
+        factorAnalysisTitle: factorResult.analysisCategoryFactor.factorAnalysisTitle || factorResult.analysisCategoryFactor.factorAnalysisKey,
+        oneLineExplanation: factorResult.oneLineExplanation,
+        detailedExplanation: factorResult.detailedExplanation || '',
+        result: factorResult.result,
+      })),
+    }));
+}
+
 /**
  * Prepares input JSON for fair value analysis
  */
 export function prepareFairValueInputJson(
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  analysisFactors: AnalysisCategoryFactor[],
-  financialData: {
-    marketSummary: any;
-    incomeStatement: any;
-    balanceSheet: any;
-    cashFlow: any;
-    ratios: any;
-    dividends: any;
-  }
-): FactorAnalysisInputJson & FinancialDataInputJson {
+  tickerRecord: TickerV1WithIndustryAndSubIndustry & {
+    categoryAnalysisResults: CategoryAnalysisResultFromDb[];
+  },
+  analysisFactors: AnalysisCategoryFactor[]
+): FactorAnalysisInputJson & { priorCategoryAnalyses: PriorCategoryAnalysisInput[] } {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.FairValue,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
-    marketSummary: JSON.stringify(financialData.marketSummary),
-    incomeStatement: JSON.stringify(financialData.incomeStatement),
-    balanceSheet: JSON.stringify(financialData.balanceSheet),
-    cashFlow: JSON.stringify(financialData.cashFlow),
-    ratios: JSON.stringify(financialData.ratios),
-    dividends: JSON.stringify(financialData.dividends),
+    priorCategoryAnalyses: preparePriorCategoryAnalyses(tickerRecord.categoryAnalysisResults || []),
   };
 }
 

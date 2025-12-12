@@ -3,7 +3,7 @@ import TariffUpdatesActions from '@/components/industry-tariff/section-actions/T
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -85,7 +85,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
     return <div>Report not found</div>;
   }
 
-  const definition = getTariffIndustryDefinitionById(industryId);
+  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;

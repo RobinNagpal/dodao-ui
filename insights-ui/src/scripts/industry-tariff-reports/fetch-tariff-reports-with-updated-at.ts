@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
   getS3KeyForIndustryTariffs,
@@ -7,20 +8,24 @@ import {
 import { TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getJsonWithLastModifiedFromS3 } from '@/scripts/report-file-utils';
 
-// Cache for centralized last modified dates
-let lastModifiedDatesCache: Record<string, string> | null = null;
+// Cache wrapper: caches the centralized S3 read for 1 day
+const readLastModifiedDatesCached = unstable_cache(
+  async () => {
+    return (await readLastModifiedDatesFromS3()) ?? {};
+  },
+  ['tariff:last-modified-dates:v1'],
+  {
+    revalidate: 60 * 60 * 24, // 1 day
+  }
+);
 
 /**
  * Get last modified dates for all tariff industries from centralized file
  * This is used by sitemap generation for better performance
  */
 export async function getTariffReportsLastModifiedDates(): Promise<Record<string, string>> {
-  if (lastModifiedDatesCache) {
-    return lastModifiedDatesCache;
-  }
-
   // Try to read from centralized file first
-  let lastModifiedDates = await readLastModifiedDatesFromS3();
+  let lastModifiedDates = await readLastModifiedDatesCached();
 
   if (!lastModifiedDates || Object.keys(lastModifiedDates).length === 0) {
     console.log('Centralized last modified dates file not found or empty. Creating it from tariff-updates files...');
@@ -37,9 +42,10 @@ export async function getTariffReportsLastModifiedDates(): Promise<Record<string
     // Create the centralized file
     await writeLastModifiedDatesToS3(lastModifiedDates);
     console.log('Created centralized last modified dates file.');
+
+    return lastModifiedDates;
   }
 
-  lastModifiedDatesCache = lastModifiedDates;
   return lastModifiedDates;
 }
 

@@ -1,6 +1,6 @@
 $schema: 'http://json-schema.org/draft-07/schema#'
 type: object
-additionalProperties: true
+additionalProperties: false
 properties:
   name:
     type: string
@@ -56,31 +56,46 @@ properties:
         - factorAnalysisTitle
         - factorAnalysisDescription
 
-  # Market Snapshot - comprehensive market data
-  # Market Snapshot - comprehensive market data
-  marketSummary:
-    type: string
-    description: 'Complete market summary data from stock analyzer'
-
-  # Financial Statements - last 4 quarters + latest annual
-  incomeStatement:
-    type: string
-    description: 'Income statement data including meta, last 4 quarters, and latest annual'
-  balanceSheet:
-    type: string
-    description: 'Balance sheet data including meta, last 4 quarters, and latest annual'
-
-  cashFlow:
-    type: string
-    description: 'Cash flow statement data including meta, last 4 quarters, and latest annual'
-
-  ratios:
-    type: string
-    description: 'Financial ratios data including meta, latest annual, and last 4 quarters'
-
-  dividends:
-    type: string
-    description: 'Dividend data including meta, summary, and last 4 payments'
+  priorCategoryAnalyses:
+    type: array
+    description: 'Summaries and factor-level explanations from other category analyses for this ticker.'
+    items:
+      type: object
+      properties:
+        categoryKey:
+          type: string
+          enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth']
+          description: 'Source category for the included analysis.'
+        overallAnalysisDetails:
+          type: string
+          description: 'Detailed write-up for the category.'
+        factorResults:
+          type: array
+          description: 'Factor-level results with explanations and verdicts.'
+          items:
+            type: object
+            properties:
+              factorAnalysisKey:
+                type: string
+              factorAnalysisTitle:
+                type: string
+              oneLineExplanation:
+                type: string
+              detailedExplanation:
+                type: string
+              result:
+                type: string
+                enum: ['Pass', 'Fail']
+            required:
+              - factorAnalysisKey
+              - factorAnalysisTitle
+              - oneLineExplanation
+              - detailedExplanation
+              - result
+      required:
+        - categoryKey
+        - overallAnalysisDetails
+        - factorResults
 
 required:
   - name
@@ -90,13 +105,8 @@ required:
   - subIndustryKey
   - categoryKey
   - factorAnalysisArray
+  - priorCategoryAnalyses
   - industryDescription
   - subIndustryDescription
   - industryName
   - subIndustryName
-  - marketSummary
-  - incomeStatement
-  - balanceSheet
-  - cashFlow
-  - ratios
-  - dividends

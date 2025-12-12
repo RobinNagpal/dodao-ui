@@ -6,7 +6,7 @@ import { getAllHeadingSubheadingCombinations, TariffIndustryId } from '@/scripts
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 
 // Define types for tracking API call status
 type ApiCallStatus = 'pending' | 'loading' | 'completed';

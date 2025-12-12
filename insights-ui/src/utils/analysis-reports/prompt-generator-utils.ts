@@ -4,6 +4,7 @@ import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors
 import { ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
   fetchTickerRecordWithAnalysisData,
 } from '@/utils/analysis-reports/get-report-data-utils';
@@ -83,10 +84,9 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       break;
 
     case ReportType.FAIR_VALUE:
-      const scraperInfoFair = await ensureStockAnalyzerDataIsFresh(tickerRecord);
-      const financialDataFair = extractFinancialDataForAnalysis(scraperInfoFair);
+      const tickerV1WithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(symbol, exchange);
       const analysisFactorsFair: AnalysisCategoryFactor[] = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
-      inputJson = prepareFairValueInputJson(tickerRecord, analysisFactorsFair, financialDataFair);
+      inputJson = prepareFairValueInputJson(tickerV1WithAnalysis, analysisFactorsFair);
       promptKey = 'US/public-equities-v1/fair-value';
       break;
 

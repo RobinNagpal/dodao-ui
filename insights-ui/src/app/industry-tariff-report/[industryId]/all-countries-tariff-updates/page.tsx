@@ -5,7 +5,7 @@ import { renderSection } from '@/components/industry-tariff/renderers/SectionRen
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import React from 'react';
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function AllCountriesTariffUpdatesPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function AllCountriesTariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -86,7 +86,7 @@ export default async function AllCountriesTariffUpdatesPage({ params }: { params
     return <div>Report not found</div>;
   }
 
-  const definition = getTariffIndustryDefinitionById(industryId);
+  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   // Check if SEO data exists for this page
   const seoDetails = report.reportSeoDetails?.allCountriesTariffUpdatesSeoDetails;

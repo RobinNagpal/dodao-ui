@@ -6,16 +6,12 @@ import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tar
 import { EvaluateIndustryContent, IndustryArea, IndustrySubArea, IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getPreviousNextIndices } from '@/util/getPreviousNextIndices';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ industryId: TariffIndustryId; headingAndSubheadingIndex: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ industryId: string; headingAndSubheadingIndex: string }> }): Promise<Metadata> {
   const { industryId, headingAndSubheadingIndex } = await params;
   const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
 
@@ -42,7 +38,7 @@ export async function generateMetadata({
   // Get industry area information
   const area: IndustryArea | undefined = report?.industryAreas?.areas?.[headingIndex];
   const subArea: IndustrySubArea | undefined = area?.subAreas?.[subHeadingIndex];
-  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
+  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId as TariffIndustryId) + subHeadingIndex;
   const evaluateIndustryArea = report?.evaluateIndustryAreas?.[indexInArray];
 
   // Get the SEO details specific to this industry area
@@ -97,7 +93,7 @@ export default async function EvaluateIndustryAreaPage({ params }: { params: Pro
   const headingIndex = Number.parseInt(headingString, 10);
   const subHeadingIndex = Number.parseInt(subHeadingString, 10);
 
-  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId) + subHeadingIndex;
+  const indexInArray = headingIndex * getNumberOfSubHeadings(industryId as TariffIndustryId) + subHeadingIndex;
 
   // Fetch the report data
   const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {

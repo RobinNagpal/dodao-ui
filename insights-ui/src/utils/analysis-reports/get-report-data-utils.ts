@@ -112,11 +112,13 @@ export async function fetchTickerRecordBySymbolAndExchangeWithAnalysisData(
     categoryAnalysisResults: Array<{
       categoryKey: string;
       summary: string;
+      overallAnalysisDetails: string;
       factorResults: Array<{
         analysisCategoryFactor: {
           factorAnalysisKey: string;
         };
         oneLineExplanation: string;
+        detailedExplanation: string;
         result: string;
       }>;
     }>;

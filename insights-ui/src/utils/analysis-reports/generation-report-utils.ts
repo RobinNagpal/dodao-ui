@@ -5,6 +5,7 @@ import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
+  fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
   fetchTickerRecordWithAnalysisData,
 } from '@/utils/analysis-reports/get-report-data-utils';
@@ -218,17 +219,14 @@ async function generateFutureGrowthAnalysis(
 }
 
 async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
-  // Ensure stock analyzer data is fresh
-  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
-
-  // Extract comprehensive financial data for analysis
-  const financialData = extractFinancialDataForAnalysis(scraperInfo);
+  // Fetch existing category analyses to feed into Fair Value
+  const tickerWithAnalysisData = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
 
   // Get analysis factors for FairValue category
   const analysisFactors: AnalysisCategoryFactor[] = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
 
   // Prepare input for the prompt
-  const inputJson = prepareFairValueInputJson(tickerRecord, analysisFactors, financialData);
+  const inputJson = prepareFairValueInputJson(tickerWithAnalysisData, analysisFactors);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({

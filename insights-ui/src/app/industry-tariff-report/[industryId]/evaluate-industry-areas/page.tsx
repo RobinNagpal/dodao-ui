@@ -1,12 +1,12 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { getNumberOfSubHeadings, getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { tariffReportTag } from '@/utils/tariff-report-cache-utils';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export async function generateMetadata({ params }: { params: Promise<{ industryId: TariffIndustryId }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: { params: Promise<{ industryI
   };
 }
 
-export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: TariffIndustryId }> }) {
+export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
   const { industryId } = await params;
 
   // Fetch the report data
@@ -81,7 +81,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
 
   const { industryAreas } = report;
 
-  const definition = getTariffIndustryDefinitionById(industryId);
+  const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
   if (!industryAreas?.areas || industryAreas?.areas?.length === 0) {
     return <div>No industry area headings found</div>;
@@ -117,7 +117,7 @@ export default async function EvaluateIndustryAreasPage({ params }: { params: Pr
             <h2 className="text-2xl font-semibold mb-6 pb-3 border-b border-gray-700 heading-color px-6">{heading.title}</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
               {heading.subAreas.map((subHeading, subIndex) => {
-                const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
+                const indexInArray = index * getNumberOfSubHeadings(industryId as TariffIndustryId) + subIndex;
                 const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
 
                 if (!evaluated) {

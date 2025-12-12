@@ -1,8 +1,7 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveFairValueFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFairValueInputJson } from '@/utils/analysis-reports/report-input-json-utils';
-import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
@@ -16,19 +15,13 @@ async function postHandler(
   const { spaceId, ticker, exchange } = await params;
 
   // Get ticker from DB
-  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
-
-  // Ensure stock analyzer data is fresh
-  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
-
-  // Extract comprehensive financial data for analysis
-  const financialData = extractFinancialDataForAnalysis(scraperInfo);
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(ticker.toUpperCase(), exchange.toUpperCase());
 
   // Get analysis factors for FairValue category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
 
   // Prepare input for the prompt
-  const inputJson = prepareFairValueInputJson(tickerRecord, analysisFactors, financialData);
+  const inputJson = prepareFairValueInputJson(tickerRecord, analysisFactors);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -47,7 +40,7 @@ async function postHandler(
   const response = result.response as LLMFactorAnalysisResponse;
 
   // Save the analysis response using the utility function
-  await saveFairValueFactorAnalysisResponse(ticker.toLowerCase(), tickerRecord.exchange, response, TickerAnalysisCategory.FairValue);
+  await saveFairValueFactorAnalysisResponse(ticker.toLowerCase(), exchange, response, TickerAnalysisCategory.FairValue);
 
   return {
     success: true,
