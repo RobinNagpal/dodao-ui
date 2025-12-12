@@ -1089,16 +1089,16 @@ model TickerV1IndustryAnalysis {
   industry TickerV1Industry @relation(fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
 
   // Backrefs
-  subIndustryAnalyses TickerV1SubIndustryAnalysis[]
+  subIndustryAnalyses IndustryBuildingBlockAnalysis[]
 
   @@index([industryKey])
   @@map("ticker_v1_industry_analysis")
 }
 
-model TickerV1SubIndustryAnalysis {
+model IndustryBuildingBlockAnalysis {
   id                         String   @id @default(uuid())
   name                       String   @map("name")
-  subIndustryAnalysisKey     String   @map("sub_industry_analysis_key")
+  buildingBlockKey     String   @map("building_block_key")
   tickerV1IndustryAnalysisId String   @map("ticker_v1_industry_analysis_id")
   metaDescription            String?  @map("meta_description")
   details                    String?   @map("details")
@@ -1109,5 +1109,5 @@ model TickerV1SubIndustryAnalysis {
   industryAnalysis TickerV1IndustryAnalysis @relation(fields: [tickerV1IndustryAnalysisId], references: [id], onDelete: Cascade)
 
   @@index([tickerV1IndustryAnalysisId])
-  @@map("ticker_v1_sub_industry_analysis")
+  @@map("industry_building_block_analysis")
 }

@@ -16,6 +16,7 @@ export default function AdminNav() {
         <AdminNavLink href="/admin-v1/missing-reports" label="Missing Reports" />
         <AdminNavLink href="/admin-v1/analysis-factors" label="Analysis Factors" />
         <AdminNavLink href="/admin-v1/industry-management" label="Industry Management" />
+        <AdminNavLink href="/admin-v1/industry-analysis-management" label="Industry Analysis" />
         <AdminNavLink href="/admin-v1/ticker-management" label="Ticker Management" />
         <AdminNavLink href="/admin-v1/users" label="Users" />
       </div>
