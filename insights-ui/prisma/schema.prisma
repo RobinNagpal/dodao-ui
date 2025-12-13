@@ -477,6 +477,7 @@ model TickerV1Industry {
   subIndustries          TickerV1SubIndustry[]
   tickers                TickerV1[]               @relation("IndustryTickers")
   AnalysisCategoryFactor AnalysisCategoryFactor[]
+  industryAnalyses       TickerV1IndustryAnalysis[]
 
   @@index([industryKey])
 }
@@ -1069,4 +1070,44 @@ model DailyTopLoser {
   @@index([symbol])
   @@index([tickerId])
   @@map("daily_top_losers")
+}
+
+// --------------------------
+// Industry Analysis Models
+// --------------------------
+
+model TickerV1IndustryAnalysis {
+  id             String   @id @default(uuid())
+  name           String   @map("name")
+  industryKey    String   @unique @map("industry_key")
+  metaDescription String?  @map("meta_description")
+  details        String?   @map("details")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  industry TickerV1Industry @relation(fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
+
+  // Backrefs
+  subIndustryAnalyses IndustryBuildingBlockAnalysis[]
+
+  @@index([industryKey])
+  @@map("ticker_v1_industry_analysis")
+}
+
+model IndustryBuildingBlockAnalysis {
+  id                         String   @id @default(uuid())
+  name                       String   @map("name")
+  buildingBlockKey     String   @unique @map("building_block_key")
+  tickerV1IndustryAnalysisId String   @map("ticker_v1_industry_analysis_id")
+  metaDescription            String?  @map("meta_description")
+  details                    String?   @map("details")
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  industryAnalysis TickerV1IndustryAnalysis @relation(fields: [tickerV1IndustryAnalysisId], references: [id], onDelete: Cascade)
+
+  @@index([tickerV1IndustryAnalysisId])
+  @@map("industry_building_block_analysis")
 }
