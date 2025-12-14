@@ -17,7 +17,7 @@ export default function AnalysisDisplay({ title, details, breadcrumbs }: Analysi
         <Breadcrumbs breadcrumbs={breadcrumbs} />
 
         {/* Title */}
-        <h1 className="text-4xl font-bold text-white mb-8">{title}</h1>
+        <h1 className="text-4xl font-bold text-white mb-2">{title}</h1>
 
         {/* Content */}
         {details ? (

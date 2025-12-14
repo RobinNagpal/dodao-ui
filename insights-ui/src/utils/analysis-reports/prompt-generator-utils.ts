@@ -23,6 +23,83 @@ import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-respon
 import path from 'path';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
+// JSON schema to append to factor-based analysis prompts
+const FACTOR_ANALYSIS_JSON_SCHEMA = `
+
+return output in json
+output schema:
+type: object
+additionalProperties: false
+properties:
+  overallSummary:
+    type: string
+    description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
+  overallAnalysisDetails:
+    type: string
+    description: 'In 3-4 Paragraphs discuss in detail about the category being discusses. Explain the most important things that are needed to understand that particular stock for that category. More details are shared in the prompt'
+  factors:
+    type: array
+    description: 'Array of factor-level analyses.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Must match the key from the input factorAnalysisArray.'
+        oneLineExplanation:
+          type: string
+          description: '1–2 sentence quick takeaway that gives the key insight from this factor'
+        detailedExplanation:
+          type: string
+          description: '1–2 paragraphs of investor-focused analysis for this factor. Directly analyze the company's performance based on this factor using available data and reasoning. The explanation must clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+          description: 'The final judgment for this factor. Be conservative — only companies with strong fundamentals should get "Pass". A "Fail" should come with clear reasoning in the detailedExplanation.'
+      required:
+        - factorAnalysisKey
+        - oneLineExplanation
+        - detailedExplanation
+        - result
+required:
+  - overallSummary
+  - overallAnalysisDetails
+  - factors
+`;
+
+// JSON schema to append to final summary prompt
+const FINAL_SUMMARY_JSON_SCHEMA = `
+
+return output in json
+output schema:
+type: object
+additionalProperties: false
+properties:
+  finalSummary:
+    type: string
+    description: >-
+      The final stock summary text. It must be 6–7 short lines, each line a clear
+      sentence. The first line should give the overall verdict (Positive, Negative,
+      or Mixed). The following lines should briefly justify the verdict using the
+      provided categorySummaries and supporting factor one-line explanations. The
+      style should be clear, concise, and suitable for retail investors.
+  metaDescription:
+    type: string
+    description: >-
+      A concise meta description for SEO purposes, summarizing the key points about
+      the stock in 1-2 sentences. Should be under 160 characters and highlight the
+      overall verdict and main factors.
+  aboutReport:
+    type: string
+    description: >-
+      A 2-3 sentence summary for the stock analysis report. Should be compelling,
+      SEO-friendly, and provide a unique introduction for investors.
+required:
+  - finalSummary
+  - metaDescription
+  - aboutReport
+`;
+
 export interface GeneratedPromptResult {
   prompt: string;
   inputJson: any;
@@ -140,7 +217,20 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
 
   // Compile template to generate final prompt
   const templateContent = prompt.activePromptVersion.promptTemplate;
-  const finalPrompt = compileTemplate(templateContent, inputJson || {});
+  let finalPrompt = compileTemplate(templateContent, inputJson || {});
+
+  // Append JSON schema instructions based on report type
+  if (
+    reportType === ReportType.FINANCIAL_ANALYSIS ||
+    reportType === ReportType.BUSINESS_AND_MOAT ||
+    reportType === ReportType.PAST_PERFORMANCE ||
+    reportType === ReportType.FUTURE_GROWTH ||
+    reportType === ReportType.FAIR_VALUE
+  ) {
+    finalPrompt += FACTOR_ANALYSIS_JSON_SCHEMA;
+  } else if (reportType === ReportType.FINAL_SUMMARY) {
+    finalPrompt += FINAL_SUMMARY_JSON_SCHEMA;
+  }
 
   return {
     prompt: finalPrompt,
