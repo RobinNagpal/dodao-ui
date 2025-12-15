@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import { getPortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -25,14 +26,19 @@ export default async function TopRankedPortfolioManagersPage() {
     console.error(`Error fetching college ambassadors: ${e?.message} \n ${e?.stack}`);
   }
 
+  const breadcrumbs = [{ name: 'Top Ranked Portfolio Managers', href: '/portfolio-managers/top-ranked', current: true }];
+
   return (
-    <PortfolioManagersPageComponent
-      profiles={profiles}
-      managerType={managerType}
-      title="Top Ranked Portfolio Managers"
-      icon={TrophyIcon}
-      emptyStateTitle="No top ranked portfolio managers found"
-      emptyStateDescription="There are no top ranked portfolio managers yet."
-    />
+    <>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <PortfolioManagersPageComponent
+        profiles={profiles}
+        managerType={managerType}
+        title="Top Ranked Portfolio Managers"
+        icon={TrophyIcon}
+        emptyStateTitle="No top ranked portfolio managers found"
+        emptyStateDescription="There are no top ranked portfolio managers yet."
+      />
+    </>
   );
 }

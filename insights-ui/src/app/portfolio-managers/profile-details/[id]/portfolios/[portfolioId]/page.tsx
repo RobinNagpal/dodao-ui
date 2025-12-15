@@ -5,11 +5,12 @@ import PortfolioHoldingsActions from '@/components/portfolios/PortfolioHoldingsA
 import { Portfolio, PortfolioTicker } from '@/types/portfolio';
 import { UserTickerList, PortfolioManagerProfile, User } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ArrowLeftIcon, FolderIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { FolderIcon } from '@heroicons/react/24/outline';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getPortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getListingPageByManagerType } from '@/utils/portfolio-manager-utils';
 
 interface PortfolioWithProfile extends Portfolio {
   portfolioManagerProfile: PortfolioManagerProfile & {
@@ -80,39 +81,42 @@ export default async function PortfolioDetailPage({ params: paramsPromise, searc
   const listsWithTickers = Array.from(listsMap.values()).sort((a, b) => a.list.name.localeCompare(b.list.name));
   const unlistedTickers = unlisted;
 
-  const totalAllocation = portfolioTickers.reduce((sum, ticker) => sum + ticker.allocation, 0);
+  const listingPage = getListingPageByManagerType(portfolio.portfolioManagerProfile.managerType);
+  const breadcrumbs = [
+    listingPage,
+    {
+      name: portfolio.portfolioManagerProfile.user.name || 'Portfolio Manager',
+      href: `/portfolio-managers/profile-details/${portfolioManagerId}`,
+      current: false,
+    },
+    { name: portfolio.name || 'Portfolio', href: `/portfolio-managers/profile-details/${portfolioManagerId}/portfolios/${portfolioId}`, current: true },
+  ];
 
   return (
     <PageWrapper>
       <div className="max-w-7xl mx-auto">
-        <div className="py-6">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <div className="pt-2 pb-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <Link href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios`} className="text-blue-400 hover:text-blue-300">
-                <ArrowLeftIcon className="w-6 h-6" />
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                  <FolderIcon className="w-8 h-8 text-blue-500" />
-                  {portfolio.name}
-                </h1>
-                <p className="text-gray-400 mt-1">
-                  {portfolioTickers.length} holdings • Total Allocation: {totalAllocation.toFixed(1)}%
-                </p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                <FolderIcon className="w-8 h-8 text-blue-500" />
               </div>
+              <h1 className="text-3xl font-bold text-white">{portfolio.name}</h1>
             </div>
 
             <PortfolioDetailActions portfolio={portfolio} portfolioManagerId={portfolioManagerId} portfolioId={portfolioId} />
           </div>
 
-          {/* Portfolio Details */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div className="lg:col-span-2">
-              <PortfolioDetails portfolio={portfolio} />
-            </div>
-
+          {/* Stats Cards */}
+          <div>
             <PortfolioStats portfolioTickers={portfolioTickers} />
+          </div>
+
+          {/* Portfolio Details */}
+          <div className="mb-6">
+            <PortfolioDetails portfolio={portfolio} />
           </div>
 
           {/* Portfolio Holdings */}

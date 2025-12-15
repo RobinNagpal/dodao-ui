@@ -4,6 +4,7 @@ import { useMemo, type JSX } from 'react';
 import type { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { Building2, Tag } from 'lucide-react';
 import EllipsisDropdown, { type EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import Link from 'next/link';
 import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 
 export type IndustryAnalysisAction = 'addSub' | 'edit' | 'delete';
@@ -60,7 +61,13 @@ export default function IndustryAnalysisTree({
                 <div className="flex items-center gap-2">
                   <div className="flex flex-col">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-base font-medium text-gray-100">{indAnalysis.name}</span>
+                      <Link
+                        href={`/stocks/industries/${indAnalysis.industry.industryKey}/analysis`}
+                        target="_blank"
+                        className="hover:text-gray-100 link-color text-gray-100"
+                      >
+                        <span className="truncate text-base font-medium">{indAnalysis.name}</span>
+                      </Link>
                       <EllipsisDropdown
                         items={industryAnalysisMenu}
                         onSelect={(key): void => onIndustryAnalysisAction(key as IndustryAnalysisAction, indAnalysis)}
@@ -88,7 +95,13 @@ export default function IndustryAnalysisTree({
                         <div className="flex items-center gap-2">
                           <div className="flex flex-col">
                             <div className="flex items-center gap-2">
-                              <span className="truncate text-sm text-gray-100">{subAnalysis.name}</span>
+                              <Link
+                                href={`/stocks/industries/${indAnalysis.industry.industryKey}/analysis/building-blocks/${subAnalysis.buildingBlockKey}`}
+                                target="_blank"
+                                className="hover:text-gray-100 link-color text-gray-100"
+                              >
+                                <span className="truncate text-sm">{subAnalysis.name}</span>
+                              </Link>
                               <span className="truncate text-xs text-gray-400 ml-1">( {subAnalysis.buildingBlockKey} )</span>
                               <EllipsisDropdown
                                 items={subAnalysisMenu}

@@ -5,6 +5,8 @@ import PortfolioCards from '@/components/portfolios/PortfolioCards';
 import { PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getPortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getListingPageByManagerType } from '@/utils/portfolio-manager-utils';
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -27,10 +29,18 @@ export default async function PortfolioManagerPortfoliosPage({ params: paramsPro
   // Extract portfolios from the profile data (already includes tickers)
   const portfolios = profile.portfolios || [];
 
+  const listingPage = getListingPageByManagerType(profile.managerType);
+  const breadcrumbs = [
+    listingPage,
+    { name: profile.user.name || 'Portfolio Manager', href: `/portfolio-managers/profile-details/${portfolioManagerId}`, current: false },
+    { name: 'All Portfolios', href: `/portfolio-managers/profile-details/${portfolioManagerId}/portfolios`, current: true },
+  ];
+
   return (
     <PageWrapper>
       <div className="max-w-7xl mx-auto">
-        <div className="py-6">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <div className="pb-6">
           {/* Profile Header */}
           <ProfileHeader profile={profile} />
 
