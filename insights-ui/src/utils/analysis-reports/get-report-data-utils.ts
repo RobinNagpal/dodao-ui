@@ -161,3 +161,52 @@ export async function getCompetitionAnalysisArray(tickerRecord: TickerV1): Promi
 
   return competitionData.competitionAnalysisArray;
 }
+
+/**
+ * Fetches business moat analysis data for a ticker
+ */
+export async function fetchBusinessMoatAnalysisData(
+  spaceId: string,
+  tickerId: string
+): Promise<{
+  overallSummary: string;
+  overallAnalysisDetails: string;
+  factorResults: Array<{
+    analysisCategoryFactor: {
+      factorAnalysisKey: string;
+      factorAnalysisTitle: string | null;
+    };
+    oneLineExplanation: string;
+    detailedExplanation: string;
+  }>;
+}> {
+  const businessMoatData = await prisma.tickerV1CategoryAnalysisResult.findFirst({
+    where: {
+      spaceId,
+      tickerId,
+      categoryKey: TickerAnalysisCategory.BusinessAndMoat,
+    },
+    include: {
+      factorResults: {
+        include: {
+          analysisCategoryFactor: {
+            select: {
+              factorAnalysisKey: true,
+              factorAnalysisTitle: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!businessMoatData) {
+    throw new Error(`Business & Moat analysis not found for ticker ID: ${tickerId}`);
+  }
+
+  return {
+    overallSummary: businessMoatData.summary,
+    overallAnalysisDetails: businessMoatData.overallAnalysisDetails,
+    factorResults: businessMoatData.factorResults,
+  };
+}

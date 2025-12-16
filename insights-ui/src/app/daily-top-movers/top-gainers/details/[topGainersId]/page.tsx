@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
 import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
+import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
 
 interface PageProps {
   params: Promise<{ topGainersId: string }>;
@@ -75,8 +76,11 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
   const articleSchema = generateStockMoverArticleSchema(topGainer, DailyMoverType.GAINER, topGainersId);
   const breadcrumbSchema = generateStockMoverBreadcrumbSchema(topGainer, DailyMoverType.GAINER, topGainersId);
 
+  // Get country from ticker exchange
+  const country = getCountryByExchange(toExchange(topGainer.ticker.exchange));
+
   const breadcrumbs = [
-    { name: 'Daily Top Gainers', href: '/daily-top-movers/top-gainers', current: false },
+    { name: 'Daily Top Gainers', href: `/daily-top-movers/top-gainers/country/${country}`, current: false },
     { name: topGainer.ticker.name, href: `/daily-top-movers/top-gainers/details/${topGainersId}`, current: true },
   ];
 

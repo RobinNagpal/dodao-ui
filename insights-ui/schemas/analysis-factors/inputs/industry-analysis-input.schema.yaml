@@ -1,0 +1,32 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  industryName:
+    type: string
+    description: 'The full name of the industry sector (e.g., Real Estate, Healthcare, Technology).'
+  industrySummary:
+    type: string
+    description: 'A brief summary or description of the industry sector. This provides context about what the sector encompasses.'
+
+  subIndustries:
+    type: array
+    description: 'Array of sub-industries that fall under this industry sector. The LLM will use these as context to create a comprehensive, investor-friendly categorization.'
+    items:
+      type: object
+      properties:
+        subIndustryName:
+          type: string
+          description: 'The readable name of the sub-industry (e.g., Residential REITs, Office REITs).'
+        subIndustrySummary:
+          type: string
+          description: 'A brief summary explaining what this sub-industry covers and what types of businesses fall into it.'
+      required:
+        - subIndustryName
+        - subIndustrySummary
+    minItems: 1
+
+required:
+  - industryName
+  - industrySummary
+  - subIndustries

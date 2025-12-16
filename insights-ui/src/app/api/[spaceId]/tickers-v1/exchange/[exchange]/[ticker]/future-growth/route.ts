@@ -2,8 +2,8 @@ import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import {
   fetchAnalysisFactors,
+  fetchBusinessMoatAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  getCompetitionAnalysisArray,
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveFutureGrowthFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFutureGrowthInputJson } from '@/utils/analysis-reports/report-input-json-utils';
@@ -21,14 +21,14 @@ async function postHandler(
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
-  // Get competition analysis (required for future growth analysis)
-  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
-
   // Get analysis factors for FutureGrowth category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
 
-  // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
+  // Get business moat analysis (required for future growth analysis)
+  const businessMoatData = await fetchBusinessMoatAnalysisData(spaceId, tickerRecord.id);
+
+  // Prepare input for the prompt (uses future-growth-input.schema.yaml)
+  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, businessMoatData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

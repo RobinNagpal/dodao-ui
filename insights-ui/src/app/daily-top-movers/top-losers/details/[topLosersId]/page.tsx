@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
 import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
+import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
 
 interface PageProps {
   params: Promise<{ topLosersId: string }>;
@@ -75,8 +76,11 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
   const articleSchema = generateStockMoverArticleSchema(topLoser, DailyMoverType.LOSER, topLosersId);
   const breadcrumbSchema = generateStockMoverBreadcrumbSchema(topLoser, DailyMoverType.LOSER, topLosersId);
 
+  // Get country from ticker exchange
+  const country = getCountryByExchange(toExchange(topLoser.ticker.exchange));
+
   const breadcrumbs = [
-    { name: 'Daily Top Losers', href: '/daily-top-movers/top-losers', current: false },
+    { name: 'Daily Top Losers', href: `/daily-top-movers/top-losers/country/${country}`, current: false },
     { name: topLoser.ticker.name, href: `/daily-top-movers/top-losers/details/${topLosersId}`, current: true },
   ];
 
