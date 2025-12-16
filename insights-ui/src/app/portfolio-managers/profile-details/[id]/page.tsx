@@ -5,6 +5,8 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { getPortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { getListingPageByManagerType } from '@/utils/portfolio-manager-utils';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -43,10 +45,17 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
   const limitedPortfolios = portfolios.slice(0, 3); // Only show latest 3 portfolios
   const hasMorePortfolios = portfolios.length > 3;
 
+  const listingPage = getListingPageByManagerType(profile.managerType);
+  const breadcrumbs = [
+    listingPage,
+    { name: profile.user.name || 'Portfolio Manager', href: `/portfolio-managers/profile-details/${portfolioManagerId}`, current: true },
+  ];
+
   return (
     <PageWrapper>
       <div className="max-w-7xl mx-auto">
-        <div className="py-6">
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <div className="pb-6">
           {/* Profile Header */}
           <ProfileHeader profile={profile} portfolioManagerId={portfolioManagerId} />
 

@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import { getPortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 const WEEK = 60 * 60 * 24 * 7;
 
@@ -23,15 +24,20 @@ export default async function CollegeAmbassadorsPage() {
   } catch (e: any | undefined | null) {
     console.error(`Error fetching college ambassadors: ${e?.message} \n ${e?.stack}`);
   }
+  const breadcrumbs = [{ name: 'College Ambassadors', href: '/portfolio-managers/college-ambassadors', current: true }];
+
   return (
-    <PortfolioManagersPageComponent
-      profiles={profiles}
-      managerType={managerType}
-      title="College Ambassadors"
-      icon={AcademicCapIcon}
-      emptyStateTitle="No college ambassadors found"
-      emptyStateDescription="There are no college ambassadors yet."
-      showCollegeAmbassadorBadge={true}
-    />
+    <>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <PortfolioManagersPageComponent
+        profiles={profiles}
+        managerType={managerType}
+        title="College Ambassadors"
+        icon={AcademicCapIcon}
+        emptyStateTitle="No college ambassadors found"
+        emptyStateDescription="There are no college ambassadors yet."
+        showCollegeAmbassadorBadge={true}
+      />
+    </>
   );
 }

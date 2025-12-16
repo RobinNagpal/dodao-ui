@@ -27,10 +27,10 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
       <Link
         key={portfolio.id}
         href={`/portfolio-managers/profile-details/${portfolioManagerId}/portfolios/${portfolio.id}`}
-        className="bg-gray-900 rounded-lg p-6 hover:bg-gray-750 transition-colors block"
+        className=" bg-gray-900 rounded-lg p-6 transition-all block border border-gray-800 hover:border-blue-500"
       >
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-white mb-2">{portfolio.name}</h3>
+          <h3 className="text-xl font-semibold text-blue-400 group-hover:text-blue-300 transition-colors mb-2">{portfolio.name}</h3>
           <p className="text-gray-300 text-sm mb-3 line-clamp-2">{portfolio.summary}</p>
         </div>
 
@@ -78,7 +78,7 @@ export default function PortfolioCards({ portfolios, portfolioManagerId }: Portf
           )}
 
           <div className="pt-3 border-t border-gray-700">
-            <span className="text-blue-400 hover:text-blue-300 text-sm font-medium">View Details →</span>
+            <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">View Details →</span>
           </div>
         </div>
       </Link>

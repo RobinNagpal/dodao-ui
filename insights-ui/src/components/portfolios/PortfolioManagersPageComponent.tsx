@@ -25,35 +25,33 @@ export default function PortfolioManagersPageComponent({
   showCollegeAmbassadorBadge = false,
 }: PortfolioManagersPageComponentProps) {
   return (
-    <PageWrapper>
-      <div className="max-w-7xl mx-auto">
-        <div className="py-6">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-2">
-              {Icon && <Icon className="w-8 h-8 text-blue-500" />}
-              <h1 className="text-3xl font-bold text-white">{title}</h1>
-              <div className="ml-auto">
-                <PortfolioManagersPageActions managerType={managerType} />
-              </div>
+    <div className="max-w-7xl mx-auto">
+      <div className="pt-2 pb-6">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            {Icon && <Icon className="w-8 h-8 text-blue-500" />}
+            <h1 className="text-3xl font-bold text-white">{title}</h1>
+            <div className="ml-auto">
+              <PortfolioManagersPageActions managerType={managerType} />
             </div>
-            <p className="text-gray-400">
-              {profiles.length} portfolio manager{profiles.length !== 1 ? 's' : ''} found
-            </p>
           </div>
-
-          {/* Portfolio Managers Grid */}
-          <ProfileGrid
-            profiles={profiles}
-            emptyStateConfig={{
-              icon: Icon || (() => null),
-              title: emptyStateTitle,
-              description: emptyStateDescription,
-            }}
-            showCollegeAmbassadorBadge={showCollegeAmbassadorBadge}
-          />
+          <p className="text-gray-400 text-base ml-11">
+            Discover {profiles.length} professional portfolio manager{profiles.length !== 1 ? 's' : ''} and explore their profiles and portfolios
+          </p>
         </div>
+
+        {/* Portfolio Managers Grid */}
+        <ProfileGrid
+          profiles={profiles}
+          emptyStateConfig={{
+            icon: Icon || (() => null),
+            title: emptyStateTitle,
+            description: emptyStateDescription,
+          }}
+          showCollegeAmbassadorBadge={showCollegeAmbassadorBadge}
+        />
       </div>
-    </PageWrapper>
+    </div>
   );
 }
