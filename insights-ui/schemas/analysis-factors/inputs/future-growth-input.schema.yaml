@@ -1,0 +1,101 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the company or REIT being analyzed (e.g., AvalonBay Communities Inc.).'
+  symbol:
+    type: string
+    description: 'The stock ticker symbol of the company or REIT (e.g., AVB).'
+  exchange:
+    type: string
+    description: 'Exchange code, e.g. "NASDAQ" or "NYSE"'
+  industryKey:
+    type: string
+    description: 'The broad industry the stock belongs to (e.g., REITS).'
+  industryName:
+    type: string
+    description: 'Name of the industry'
+  industryDescription:
+    type: string
+    description: 'A few lines explaining the industry'
+  subIndustryKey:
+    type: string
+    description: 'The specific sub-industry of the stock (e.g., OFFICE_REITS).'
+  subIndustryName:
+    type: string
+    description: 'Name of the sub-industry'
+  subIndustryDescription:
+    type: string
+    description: 'A few lines explaining the sub-industry'
+  categoryKey:
+    type: string
+    enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
+    description: 'The category being analyzed.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factors to analyze for this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short, 1–2 sentence plain-English explanation of what this factor represents and why it matters to investors.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Optional comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+  businessMoatOverallSummary:
+    type: string
+    description: '3–5 sentence final summary from Business & Moat analysis, highlighting the most important strengths and weaknesses.'
+  businessMoatOverallAnalysisDetails:
+    type: string
+    description: '3-4 Paragraphs of detailed Business & Moat analysis explaining the most important aspects of the company.'
+  businessMoatFactors:
+    type: array
+    description: 'Array of Business & Moat factor-level analysis results.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor from Business & Moat analysis.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor from Business & Moat analysis.'
+        oneLineExplanation:
+          type: string
+          description: '1–2 sentence quick takeaway from the Business & Moat analysis for this factor.'
+        detailedExplanation:
+          type: string
+          description: '1–2 paragraphs of investor-focused analysis for this factor from Business & Moat analysis.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - oneLineExplanation
+        - detailedExplanation
+required:
+  - name
+  - symbol
+  - exchange
+  - industryKey
+  - subIndustryKey
+  - categoryKey
+  - factorAnalysisArray
+  - industryDescription
+  - subIndustryDescription
+  - industryName
+  - subIndustryName
+  - businessMoatOverallSummary
+  - businessMoatOverallAnalysisDetails
+  - businessMoatFactors

@@ -5,6 +5,7 @@ import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
+  fetchBusinessMoatAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
   fetchTickerRecordWithAnalysisData,
@@ -34,7 +35,7 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.FINANCIAL_ANALYSIS]: [],
   [ReportType.BUSINESS_AND_MOAT]: [ReportType.COMPETITION],
   [ReportType.PAST_PERFORMANCE]: [ReportType.COMPETITION],
-  [ReportType.FUTURE_GROWTH]: [ReportType.COMPETITION],
+  [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
   [ReportType.FAIR_VALUE]: [],
   [ReportType.FUTURE_RISK]: [],
   [ReportType.WARREN_BUFFETT]: [ReportType.COMPETITION],
@@ -190,17 +191,15 @@ async function generatePastPerformanceAnalysis(
   });
 }
 
-async function generateFutureGrowthAnalysis(
-  spaceId: string,
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  competitionAnalysisArray: CompetitionAnalysisArray,
-  generationRequestId: string
-): Promise<void> {
+async function generateFutureGrowthAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Get analysis factors for FutureGrowth category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
 
+  // Fetch business moat analysis data
+  const businessMoatData = await fetchBusinessMoatAnalysisData(spaceId, tickerRecord.id);
+
   // Prepare input for the prompt
-  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
+  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, businessMoatData);
 
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,
@@ -443,7 +442,7 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
         break;
       case ReportType.FUTURE_GROWTH:
-        await generateFutureGrowthAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
+        await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
       case ReportType.BILL_ACKMAN:
       case ReportType.CHARLIE_MUNGER:

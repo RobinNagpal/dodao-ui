@@ -4,6 +4,7 @@ import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors
 import { ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
+  fetchBusinessMoatAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
   fetchTickerRecordWithAnalysisData,
@@ -156,7 +157,8 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
 
     case ReportType.FUTURE_GROWTH:
       const analysisFactorsGrowth = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
-      inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactorsGrowth, competitionAnalysisArray);
+      const businessMoatData = await fetchBusinessMoatAnalysisData(spaceId, tickerRecord.id);
+      inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactorsGrowth, businessMoatData);
       promptKey = 'US/public-equities-v1/future-growth';
       break;
 

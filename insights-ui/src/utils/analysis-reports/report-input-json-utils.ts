@@ -175,13 +175,40 @@ export function preparePastPerformanceInputJson(
 export function prepareFutureGrowthInputJson(
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
   analysisFactors: AnalysisCategoryFactor[],
-  competitionAnalysisArray: CompetitionAnalysisArray
-): FactorAnalysisInputJson {
+  businessMoatData: {
+    overallSummary: string;
+    overallAnalysisDetails: string;
+    factorResults: Array<{
+      analysisCategoryFactor: {
+        factorAnalysisKey: string;
+        factorAnalysisTitle?: string | null;
+      };
+      oneLineExplanation: string;
+      detailedExplanation: string;
+    }>;
+  }
+): FactorAnalysisInputJson & {
+  businessMoatOverallSummary: string;
+  businessMoatOverallAnalysisDetails: string;
+  businessMoatFactors: Array<{
+    factorAnalysisKey: string;
+    factorAnalysisTitle: string;
+    oneLineExplanation: string;
+    detailedExplanation: string;
+  }>;
+} {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.FutureGrowth,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
-    competitionAnalysisArray,
+    businessMoatOverallSummary: businessMoatData.overallSummary,
+    businessMoatOverallAnalysisDetails: businessMoatData.overallAnalysisDetails,
+    businessMoatFactors: businessMoatData.factorResults.map((factorResult) => ({
+      factorAnalysisKey: factorResult.analysisCategoryFactor.factorAnalysisKey,
+      factorAnalysisTitle: factorResult.analysisCategoryFactor.factorAnalysisTitle || factorResult.analysisCategoryFactor.factorAnalysisKey,
+      oneLineExplanation: factorResult.oneLineExplanation,
+      detailedExplanation: factorResult.detailedExplanation || '',
+    })),
   };
 }
 
