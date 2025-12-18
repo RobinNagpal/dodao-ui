@@ -79,10 +79,18 @@ async function getHandler(
     },
   });
 
+  // Check if industry analysis exists
+  const industryAnalysis = await prisma.tickerV1IndustryAnalysis.findUnique({
+    where: {
+      industryKey,
+    },
+  });
+
   return {
     ...industry,
     subIndustries: formattedSubIndustries,
     filtersApplied,
+    hasAnalysis: !!industryAnalysis,
   };
 }
 

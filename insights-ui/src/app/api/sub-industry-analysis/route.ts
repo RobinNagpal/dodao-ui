@@ -5,6 +5,7 @@ import { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
 import type { SubIndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
+import { revalidateBuildingBlockAnalysisTag } from '@/utils/ticker-v1-cache-utils';
 
 export interface CreateSubIndustryAnalysisRequest {
   name: string;
@@ -45,7 +46,15 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       metaDescription,
       details,
     },
+    include: {
+      industryAnalysis: true,
+    },
   });
+
+  // Revalidate building block analysis page
+  if (subIndustryAnalysis.industryAnalysis?.industryKey) {
+    revalidateBuildingBlockAnalysisTag(subIndustryAnalysis.industryAnalysis.industryKey, buildingBlockKey);
+  }
 
   return subIndustryAnalysis;
 }

@@ -45,6 +45,7 @@ export default async function IndustryStocksFilteredPage({ params, searchParams 
       currentCountry="US"
       industryKey={industryKey}
       industryName={data?.name}
+      hasAnalysis={data?.hasAnalysis}
       showAppliedFilters={true}
     >
       <IndustryStocksGrid data={data} industryName={industryName} />

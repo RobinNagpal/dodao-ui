@@ -5,6 +5,7 @@ import { IndustryBuildingBlockAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 import type { SubIndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
+import { revalidateBuildingBlockAnalysisTag } from '@/utils/ticker-v1-cache-utils';
 
 export interface SubIndustryAnalysisUpdateRequest {
   name?: string;
@@ -43,7 +44,15 @@ async function putHandler(
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),
       ...(body.details !== undefined && { details: body.details }),
     },
+    include: {
+      industryAnalysis: true,
+    },
   });
+
+  // Revalidate building block analysis page
+  if (updated.industryAnalysis?.industryKey) {
+    revalidateBuildingBlockAnalysisTag(updated.industryAnalysis.industryKey, buildingBlockKey);
+  }
 
   return updated;
 }
@@ -55,9 +64,20 @@ async function deleteHandler(
 ): Promise<{ success: boolean }> {
   const { buildingBlockKey } = await params;
 
+  // Get the building block with its industry analysis before deleting
+  const buildingBlock = await prisma.industryBuildingBlockAnalysis.findUnique({
+    where: { buildingBlockKey },
+    include: { industryAnalysis: true },
+  });
+
   await prisma.industryBuildingBlockAnalysis.delete({
     where: { buildingBlockKey },
   });
+
+  // Revalidate building block analysis page
+  if (buildingBlock?.industryAnalysis?.industryKey) {
+    revalidateBuildingBlockAnalysisTag(buildingBlock.industryAnalysis.industryKey, buildingBlockKey);
+  }
 
   return { success: true };
 }
