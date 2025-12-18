@@ -25,7 +25,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   const [showSpecificGenerationModal, setShowSpecificGenerationModal] = useState<boolean>(false);
 
   React.useEffect(() => {
-    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
+    const allReportTypeKeys: ReportType[] = reportTypes.map((rt) => rt.key);
     setSelectedReportTypes(allReportTypeKeys);
   }, []);
 
@@ -72,7 +72,7 @@ export default function ReportGenerator({ selectedTickers, tickerReports, onRepo
   };
 
   const handleSelectAllReportTypes = (): void => {
-    const allReportTypeKeys: ReportType[] = Object.values(ReportType);
+    const allReportTypeKeys: ReportType[] = reportTypes.map((rt) => rt.key);
     setSelectedReportTypes(allReportTypeKeys);
   };
 

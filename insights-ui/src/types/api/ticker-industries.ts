@@ -47,4 +47,5 @@ export interface SubIndustryWithAllTickers extends SubIndustryWithCount {
 export interface SubIndustriesResponse extends Omit<TickerV1Industry, 'subIndustries'> {
   subIndustries: SubIndustryWithAllTickers[];
   filtersApplied: boolean;
+  hasAnalysis: boolean;
 }

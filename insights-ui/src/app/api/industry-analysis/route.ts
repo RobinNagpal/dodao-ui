@@ -5,6 +5,8 @@ import { TickerV1IndustryAnalysis } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
 import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
+import { revalidateIndustryPageTag, revalidateIndustryAnalysisTag } from '@/utils/ticker-v1-cache-utils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
 export interface CreateIndustryAnalysisRequest {
   name: string;
@@ -41,6 +43,14 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       details,
     },
   });
+
+  // Revalidate industry pages for all supported countries
+  Object.values(SupportedCountries).forEach((country) => {
+    revalidateIndustryPageTag(country, industryKey);
+  });
+
+  // Revalidate industry analysis page
+  revalidateIndustryAnalysisTag(industryKey);
 
   return industryAnalysis;
 }

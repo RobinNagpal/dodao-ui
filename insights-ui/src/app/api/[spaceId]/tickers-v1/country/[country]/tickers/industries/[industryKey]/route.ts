@@ -77,12 +77,20 @@ async function getHandler(
     where: {
       industryKey,
     },
+    include: {
+      _count: {
+        select: {
+          industryAnalyses: true,
+        },
+      },
+    },
   });
 
   return {
     ...industry,
     subIndustries: formattedSubIndustries,
     filtersApplied,
+    hasAnalysis: industry._count.industryAnalyses > 0,
   };
 }
 

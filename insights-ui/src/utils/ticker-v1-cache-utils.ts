@@ -18,6 +18,18 @@ export const getIndustryPageTag = (country: SupportedCountries, industryKey: str
 
 export const revalidateIndustryPageTag = (country: SupportedCountries, industryKey: string) => revalidateTag(getIndustryPageTag(country, industryKey));
 
+/** Industry analysis cache tags */
+export const getIndustryAnalysisTag = (industryKey: string) => `koalagains:industry-analysis:${industryKey}`;
+
+export const revalidateIndustryAnalysisTag = (industryKey: string) => revalidateTag(getIndustryAnalysisTag(industryKey));
+
+/** Building block analysis cache tags */
+export const getBuildingBlockAnalysisTag = (industryKey: string, buildingBlockKey: string) =>
+  `koalagains:building-block-analysis:${industryKey}:${buildingBlockKey}`;
+
+export const revalidateBuildingBlockAnalysisTag = (industryKey: string, buildingBlockKey: string) =>
+  revalidateTag(getBuildingBlockAnalysisTag(industryKey, buildingBlockKey));
+
 /** Portfolio profile cache tags */
 export const getPortfolioProfileTag = (portfolioManagerId: string) => `koalagains:portfolio-profile:${portfolioManagerId}`;
 

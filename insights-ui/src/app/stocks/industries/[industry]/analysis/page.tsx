@@ -1,6 +1,7 @@
 import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
 import AnalysisDisplay from '@/components/analysis/AnalysisDisplay';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getIndustryAnalysisTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -32,11 +33,15 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   }
 }
 
+const WEEK = 60 * 60 * 24 * 7;
+
 async function fetchIndustryAnalysis(industryKey: string): Promise<IndustryAnalysisWithRelations> {
   const baseUrl = getBaseUrlForServerSidePages();
 
   // Get the specific industry analysis by industryKey
-  const res = await fetch(`${baseUrl}/api/industry-analysis/${encodeURIComponent(industryKey)}`);
+  const res = await fetch(`${baseUrl}/api/industry-analysis/${encodeURIComponent(industryKey)}`, {
+    next: { revalidate: WEEK, tags: [getIndustryAnalysisTag(industryKey)] },
+  });
 
   return await res.json();
 }

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -14,6 +15,7 @@ interface IndustryWithStocksPageLayoutProps {
   industryKey?: string;
   industryName?: string;
   showAppliedFilters?: boolean;
+  hasAnalysis?: boolean;
   children: ReactNode;
 }
 
@@ -56,6 +58,7 @@ export default function IndustryWithStocksPageLayout({
   industryKey,
   industryName,
   showAppliedFilters = false,
+  hasAnalysis = false,
   children,
 }: IndustryWithStocksPageLayoutProps) {
   const breadcrumbs = buildBreadcrumbs(currentCountry, industryKey, industryName);
@@ -77,8 +80,13 @@ export default function IndustryWithStocksPageLayout({
       {showAppliedFilters && <AppliedFilterChips showClearAll={true} />}
 
       <div className="w-full mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
-          <h1 className="text-2xl font-bold text-white mb-4 sm:mb-0">{title}</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <h1 className="text-2xl font-bold text-white">{title}</h1>
+          {industryKey && hasAnalysis && (
+            <Link href={`/stocks/industries/${encodeURIComponent(industryKey)}/analysis`} className="link-color hover:underline text-sm whitespace-nowrap">
+              View Industry Analysis →
+            </Link>
+          )}
         </div>
         <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
         <div className="mt-2 mb-2">

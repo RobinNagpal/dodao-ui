@@ -48,6 +48,7 @@ export default async function CountryIndustryStocksPage({ params }: PageProps) {
       currentCountry={countryName}
       industryKey={industryKey}
       industryName={data?.name}
+      hasAnalysis={data?.hasAnalysis}
     >
       {!data ? (
         <>
