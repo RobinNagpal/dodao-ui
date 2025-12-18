@@ -77,12 +77,12 @@ async function getHandler(
     where: {
       industryKey,
     },
-  });
-
-  // Check if industry analysis exists
-  const industryAnalysis = await prisma.tickerV1IndustryAnalysis.findUnique({
-    where: {
-      industryKey,
+    include: {
+      _count: {
+        select: {
+          industryAnalyses: true,
+        },
+      },
     },
   });
 
@@ -90,7 +90,7 @@ async function getHandler(
     ...industry,
     subIndustries: formattedSubIndustries,
     filtersApplied,
-    hasAnalysis: !!industryAnalysis,
+    hasAnalysis: industry._count.industryAnalyses > 0,
   };
 }
 

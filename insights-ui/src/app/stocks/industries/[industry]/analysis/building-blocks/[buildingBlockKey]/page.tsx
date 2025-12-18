@@ -33,12 +33,14 @@ export async function generateMetadata(props: { params: Promise<{ industry: stri
   }
 }
 
+const WEEK = 60 * 60 * 24 * 7;
+
 async function fetchBuildingBlockAnalysis(industryKey: string, buildingBlockKey: string): Promise<SubIndustryAnalysisWithRelations> {
   const baseUrl = getBaseUrlForServerSidePages();
 
   // Get the specific building block analysis by buildingBlockKey
   const res = await fetch(`${baseUrl}/api/sub-industry-analysis/${encodeURIComponent(buildingBlockKey)}`, {
-    next: { tags: [getBuildingBlockAnalysisTag(industryKey, buildingBlockKey)] },
+    next: { revalidate: WEEK, tags: [getBuildingBlockAnalysisTag(industryKey, buildingBlockKey)] },
   });
 
   return await res.json();
@@ -48,7 +50,7 @@ async function getIndustryName(industryKey: string): Promise<string> {
   const baseUrl = getBaseUrlForServerSidePages();
 
   const res = await fetch(`${baseUrl}/api/industry-analysis/${encodeURIComponent(industryKey)}`, {
-    next: { tags: [getIndustryAnalysisTag(industryKey)] },
+    next: { revalidate: WEEK, tags: [getIndustryAnalysisTag(industryKey)] },
   });
 
   const analysis: IndustryAnalysisWithRelations = await res.json();
