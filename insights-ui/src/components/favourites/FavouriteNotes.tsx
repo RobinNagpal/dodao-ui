@@ -1,3 +1,5 @@
+import { parseMarkdown } from '@/util/parse-markdown';
+
 interface FavouriteNotesProps {
   notes: string | null | undefined;
 }
@@ -9,8 +11,9 @@ export default function FavouriteNotes({ notes }: FavouriteNotesProps) {
 
   return (
     <div className="mb-2">
+      <h2 className="text-md font-medium text-gray-400 mb-1">Notes:</h2>
       <p className="text-xs text-gray-500">
-        My Notes: <span className="text-gray-300">{notes}</span>
+        <div className="markdown markdown-body text-sm" dangerouslySetInnerHTML={{ __html: parseMarkdown(notes ?? 'No notes added.') }} />
       </p>
     </div>
   );

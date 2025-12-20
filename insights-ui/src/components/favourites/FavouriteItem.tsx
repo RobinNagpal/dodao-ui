@@ -56,7 +56,13 @@ export default function FavouriteItem({
               />
             </div>
           )}
-          <Link href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`} className="hover:text-blue-400">
+          <Link
+            href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`}
+            className="hover:text-blue-400"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
             <h4 className="text-base font-bold">
               {favourite.ticker.name} ({favourite.ticker.symbol})
             </h4>
@@ -99,6 +105,7 @@ export default function FavouriteItem({
       <FavouriteNotes notes={favourite.myNotes} />
 
       {/* Competitors and Alternatives */}
+
       <CompetitorsAlternatives competitorsConsidered={favourite.competitorsConsidered} betterAlternatives={favourite.betterAlternatives} />
 
       {/* Tags */}
