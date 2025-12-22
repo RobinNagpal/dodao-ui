@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { TickerV1Notes } from '@prisma/client';
+import { revalidatePortfolioProfileIfExists } from '@/utils/cache-actions';
 
 export type TickerNotesResponse = {
   tickerNotes: TickerV1Notes[];
@@ -77,6 +78,9 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       createdBy: userId,
     },
   });
+
+  // Revalidate portfolio profile if user has one
+  await revalidatePortfolioProfileIfExists(userId);
 
   return tickerNote;
 }
