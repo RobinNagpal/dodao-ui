@@ -4,11 +4,13 @@ import {
   PortfolioManagerProfile,
   TickerV1,
   TickerV1CachedScore,
+  TickerV1Industry,
   UserTickerTag,
   UserTickerList,
   User,
 } from '@prisma/client';
 import { PortfolioManagerType } from './portfolio-manager';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 
 export interface CreatePortfolioManagerProfileRequest {
   headline: string;
@@ -82,7 +84,16 @@ export type PortfolioWithTickers = PrismaPortfolio & {
   portfolioTickers: PortfolioTicker[];
 };
 
+export interface IndustryByCountry {
+  industry: TickerV1Industry;
+  country: SupportedCountries;
+  favoriteCount: number;
+  notesCount: number;
+  totalCount: number;
+}
+
 export type PortfolioManagerProfilewithPortfoliosAndUser = PortfolioManagerProfile & {
   user: User;
   portfolios: PortfolioWithTickers[];
+  industriesByCountry?: IndustryByCountry[];
 };

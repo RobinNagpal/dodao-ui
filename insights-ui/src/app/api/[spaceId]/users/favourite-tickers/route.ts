@@ -5,6 +5,7 @@ import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { revalidatePortfolioProfileIfExists } from '@/utils/cache-actions';
 
 // GET /api/favourite-tickers - Get all favourite tickers for the logged-in user
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<FavouriteTickersResponse> {
@@ -143,6 +144,9 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       lists: true,
     },
   });
+
+  // Revalidate portfolio profile if user has one
+  await revalidatePortfolioProfileIfExists(userId);
 
   return favouriteTicker as unknown as FavouriteTickerResponse;
 }

@@ -1,8 +1,14 @@
 'use server';
 
-import { revalidateStocksPageTag, revalidateIndustryPageTag, revalidatePortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
+import {
+  revalidateStocksPageTag,
+  revalidateIndustryPageTag,
+  revalidatePortfolioManagersByTypeTag,
+  revalidatePortfolioProfileTag,
+} from '@/utils/ticker-v1-cache-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
+import { prisma } from '@/prisma';
 
 export async function revalidateStocksPageCache(country: string) {
   revalidateStocksPageTag(country as SupportedCountries);
@@ -17,4 +23,15 @@ export async function revalidateIndustryPageCache(country: string, industryKey: 
 export async function revalidatePortfolioManagersByTypeCache(type: PortfolioManagerType) {
   revalidatePortfolioManagersByTypeTag(type);
   return { success: true, message: `Revalidated portfolio managers cache for type ${type}` };
+}
+
+export async function revalidatePortfolioProfileIfExists(userId: string) {
+  const profile = await prisma.portfolioManagerProfile.findFirst({
+    where: { userId },
+    select: { id: true },
+  });
+
+  if (profile) {
+    revalidatePortfolioProfileTag(profile.id);
+  }
 }

@@ -45,6 +45,7 @@ model User {
   tickerTags       UserTickerTag[]
   tickerLists      UserTickerList[]
   favouriteTickers FavouriteTicker[]
+  tickerNotes      TickerV1Notes[]
 
   // Portfolio related relations
   portfolioManagerProfile PortfolioManagerProfile?
@@ -548,6 +549,9 @@ model TickerV1 {
   dailyTopGainers DailyTopGainer[] @relation("DailyTopGainerTickers")
   dailyTopLosers  DailyTopLoser[]  @relation("DailyTopLoserTickers")
 
+  // Relation to ticker notes
+  tickerNotes TickerV1Notes[]
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -939,6 +943,27 @@ model FavouriteTicker {
   @@map("favourite_tickers")
 }
 
+model TickerV1Notes {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  tickerId  String   @map("ticker_id")
+  notes     String   @map("notes")
+  score     Float?   @map("score")
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String   @map("created_by")
+
+  // Relations
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticker TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, userId, tickerId])
+  @@index([userId])
+  @@index([tickerId])
+  @@map("ticker_v1_notes")
+}
+
 // --------------------------
 // Portfolio Models
 // --------------------------
@@ -1109,5 +1134,6 @@ model IndustryBuildingBlockAnalysis {
   industryAnalysis TickerV1IndustryAnalysis @relation(fields: [tickerV1IndustryAnalysisId], references: [id], onDelete: Cascade)
 
   @@index([tickerV1IndustryAnalysisId])
+  @@index([buildingBlockKey])
   @@map("industry_building_block_analysis")
 }

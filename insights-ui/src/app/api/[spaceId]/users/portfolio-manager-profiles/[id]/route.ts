@@ -4,8 +4,9 @@ import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withLoggedInUser, withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { UpdatePortfolioManagerProfileRequest, PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
+import { UpdatePortfolioManagerProfileRequest, PortfolioManagerProfilewithPortfoliosAndUser, IndustryByCountry } from '@/types/portfolio';
 import { revalidatePortfolioProfileTag, revalidatePortfolioManagersByCountryTag, revalidatePortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
+import { getCountryByExchange, toExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 
 // GET /api/[spaceId]/users/portfolio-manager-profiles/[id] - Get a portfolio manager profile by ID (for public viewing)
 async function getHandler(
@@ -39,6 +40,114 @@ async function getHandler(
       },
     },
   });
+
+  // Fetch industries by country for favorites and notes
+  const userId = portfolioManagerProfile.userId;
+
+  // Get all distinct ticker IDs from favorites and notes
+  const [favorites, notes] = await Promise.all([
+    prisma.favouriteTicker.findMany({
+      where: {
+        userId: userId,
+        spaceId: KoalaGainsSpaceId,
+      },
+      select: {
+        tickerId: true,
+      },
+    }),
+    prisma.tickerV1Notes.findMany({
+      where: {
+        userId: userId,
+        spaceId: KoalaGainsSpaceId,
+      },
+      select: {
+        tickerId: true,
+      },
+    }),
+  ]);
+
+  // Combine unique ticker IDs
+  const tickerIds = new Set([...favorites.map((f) => f.tickerId), ...notes.map((n) => n.tickerId)]);
+
+  if (tickerIds.size > 0) {
+    // Fetch tickers with their industries
+    const tickers = await prisma.tickerV1.findMany({
+      where: {
+        id: {
+          in: Array.from(tickerIds),
+        },
+      },
+      select: {
+        id: true,
+        exchange: true,
+        industryKey: true,
+        industry: true,
+      },
+    });
+
+    // Group by industry + country
+    const industryMap = new Map<
+      string,
+      {
+        industry: any;
+        country: SupportedCountries;
+        favoriteCount: number;
+        notesCount: number;
+      }
+    >();
+
+    const favoriteTickerIds = new Set(favorites.map((f) => f.tickerId));
+    const notesTickerIds = new Set(notes.map((n) => n.tickerId));
+
+    tickers.forEach((ticker) => {
+      if (!ticker.industry) return;
+
+      const exchange = toExchange(ticker.exchange);
+      const country = getCountryByExchange(exchange);
+      const key = `${ticker.industryKey}-${country}`;
+
+      const existing = industryMap.get(key);
+      const isFavorite = favoriteTickerIds.has(ticker.id);
+      const hasNotes = notesTickerIds.has(ticker.id);
+
+      if (existing) {
+        if (isFavorite) existing.favoriteCount++;
+        if (hasNotes) existing.notesCount++;
+      } else {
+        industryMap.set(key, {
+          industry: ticker.industry,
+          country,
+          favoriteCount: isFavorite ? 1 : 0,
+          notesCount: hasNotes ? 1 : 0,
+        });
+      }
+    });
+
+    // Convert to array and add totalCount
+    const industriesByCountry: IndustryByCountry[] = Array.from(industryMap.values())
+      .map((item) => ({
+        industry: item.industry,
+        country: item.country,
+        favoriteCount: item.favoriteCount,
+        notesCount: item.notesCount,
+        totalCount: item.favoriteCount + item.notesCount,
+      }))
+      .sort((a, b) => {
+        // Sort by industry name, then by country
+        const nameA = a.industry?.industryName || '';
+        const nameB = b.industry?.industryName || '';
+        const nameCompare = nameA.localeCompare(nameB);
+        if (nameCompare !== 0) return nameCompare;
+        return a.country.localeCompare(b.country);
+      });
+
+    return {
+      portfolioManagerProfile: {
+        ...portfolioManagerProfile,
+        industriesByCountry,
+      },
+    };
+  }
 
   return { portfolioManagerProfile };
 }

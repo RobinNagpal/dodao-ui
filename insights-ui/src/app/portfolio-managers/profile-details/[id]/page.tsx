@@ -1,5 +1,6 @@
 import ProfileHeader from '@/components/portfolios/ProfileHeader';
 import PortfolioCards from '@/components/portfolios/PortfolioCards';
+import IndustryAnalysisSection from '@/components/portfolios/IndustryAnalysisSection';
 import { PortfolioManagerProfilewithPortfoliosAndUser } from '@/types/portfolio';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -44,6 +45,7 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
   const portfolios = profile.portfolios || [];
   const limitedPortfolios = portfolios.slice(0, 3); // Only show latest 3 portfolios
   const hasMorePortfolios = portfolios.length > 3;
+  const industriesByCountry = profile.industriesByCountry || [];
 
   const listingPage = getListingPageByManagerType(profile.managerType);
   const breadcrumbs = [
@@ -58,6 +60,9 @@ export default async function PortfolioManagerProfilePage({ params: paramsPromis
         <div className="pb-6">
           {/* Profile Header */}
           <ProfileHeader profile={profile} portfolioManagerId={portfolioManagerId} />
+
+          {/* Industry Analysis Section */}
+          <IndustryAnalysisSection industriesByCountry={industriesByCountry} portfolioManagerId={portfolioManagerId} />
 
           {/* Portfolios Section */}
           <PortfolioCards portfolios={limitedPortfolios} portfolioManagerId={portfolioManagerId} />
