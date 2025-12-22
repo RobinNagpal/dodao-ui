@@ -8,7 +8,8 @@ import { TickerV1Notes } from '@prisma/client';
 import { useState } from 'react';
 import AddEditNotesModal from '@/app/stocks/[exchange]/[ticker]/AddEditNotesModal';
 import AddEditFavouriteModal from '@/app/stocks/[exchange]/[ticker]/AddEditFavouriteModal';
-import { ExpandedFavouriteTicker } from '@/types/api/ticker-industries';
+import { ExpandedFavouriteTicker, TickerMinimal } from '@/types/api/ticker-industries';
+import { FavouriteTickerResponse } from '@/types/ticker-user';
 
 interface StockTickerItemProps {
   symbol: string;
@@ -95,10 +96,10 @@ export default function StockTickerItem({ symbol, name, exchange, score, display
                 name,
                 exchange,
                 cachedScoreEntry: null,
-              } as any,
+              } as TickerMinimal,
               competitorsConsidered: favouriteTicker.competitorsConsidered || [],
               betterAlternatives: favouriteTicker.betterAlternatives || [],
-            } as any
+            } as FavouriteTickerResponse
           }
           onUpsert={() => {}}
           viewOnly={true}

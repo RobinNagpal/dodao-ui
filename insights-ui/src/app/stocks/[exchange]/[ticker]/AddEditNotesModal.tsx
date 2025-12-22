@@ -142,7 +142,7 @@ export default function AddEditNotesModal({
           <div className="flex-1 max-w-xs">
             <Input
               modelValue={score}
-              onUpdate={(value) => setNotes(value?.toString() || '')}
+              onUpdate={(value) => setScore(value?.toString() || '')}
               number={true}
               min={0}
               max={25}
