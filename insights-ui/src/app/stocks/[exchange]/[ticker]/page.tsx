@@ -5,6 +5,7 @@ import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
+import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
@@ -318,6 +319,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
       rightButton={
         <StockActions ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}>
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
+          <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <TickerComparisonButton
             tickerSymbol={d.symbol}
             tickerName={d.name}
