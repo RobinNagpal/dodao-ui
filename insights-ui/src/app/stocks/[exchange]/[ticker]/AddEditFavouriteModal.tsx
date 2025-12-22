@@ -34,6 +34,7 @@ interface AddEditFavouriteModalProps {
   onManageTags: () => void;
   favouriteTicker: FavouriteTickerResponse | null;
   onUpsert: () => void;
+  viewOnly?: boolean;
 }
 
 export default function AddEditFavouriteModal({
@@ -49,6 +50,7 @@ export default function AddEditFavouriteModal({
   onManageTags,
   favouriteTicker,
   onUpsert,
+  viewOnly = false,
 }: AddEditFavouriteModalProps) {
   // Form state
   const [myNotes, setMyNotes] = useState<string>('');
@@ -77,8 +79,8 @@ export default function AddEditFavouriteModal({
       if (favouriteTicker) {
         setMyNotes(favouriteTicker.myNotes || '');
         setMyScore(favouriteTicker.myScore?.toString() || '');
-        setSelectedTagIds(favouriteTicker.tags.map((t) => t.id));
-        setSelectedListIds(favouriteTicker.lists.map((l) => l.id));
+        setSelectedTagIds(favouriteTicker.tags?.map((t) => t.id) || []);
+        setSelectedListIds(favouriteTicker.lists?.map((l) => l.id) || []);
         // Load existing competitors and alternatives
         setCompetitorsConsidered(
           favouriteTicker.competitorsConsidered?.map((c) => ({
@@ -190,7 +192,7 @@ export default function AddEditFavouriteModal({
       {/* My Notes */}
       <div className="space-y-2">
         <label htmlFor="my-notes" className="block text-sm font-medium text-left">
-          My Notes (Optional)
+          My Notes {!viewOnly && '(Optional)'}
         </label>
         <textarea
           id="my-notes"
@@ -199,6 +201,7 @@ export default function AddEditFavouriteModal({
           rows={2}
           className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Add your notes about this stock..."
+          disabled={viewOnly}
         />
       </div>
 
@@ -214,6 +217,7 @@ export default function AddEditFavouriteModal({
             max={25}
             placeholder="0-25"
             className="bg-gray-800 border-gray-700 text-white w-full"
+            disabled={viewOnly}
           />
         </div>
       </div>
@@ -223,9 +227,11 @@ export default function AddEditFavouriteModal({
         <label className="block text-sm font-medium text-left mb-3">Competitors Considered</label>
         <div className="space-y-3">
           {/* Search bar for adding competitors */}
-          <div className="relative">
-            <SearchBar variant="navbar" placeholder="Search for competitor stocks..." onResultClick={handleAddCompetitor} className="w-full" />
-          </div>
+          {!viewOnly && (
+            <div className="relative">
+              <SearchBar variant="navbar" placeholder="Search for competitor stocks..." onResultClick={handleAddCompetitor} className="w-full" />
+            </div>
+          )}
 
           {/* Selected competitors */}
           {competitorsConsidered.length > 0 && (
@@ -238,7 +244,7 @@ export default function AddEditFavouriteModal({
                     ticker={competitor}
                     showScore={true}
                     showName={true}
-                    onRemove={() => handleRemoveCompetitor(competitor.id)}
+                    onRemove={viewOnly ? undefined : () => handleRemoveCompetitor(competitor.id)}
                   />
                 ))}
               </div>
@@ -252,9 +258,11 @@ export default function AddEditFavouriteModal({
         <label className="block text-sm font-medium text-left mb-3">Better Alternatives</label>
         <div className="space-y-3">
           {/* Search bar for adding alternatives */}
-          <div className="relative">
-            <SearchBar variant="navbar" placeholder="Search for better alternative stocks..." onResultClick={handleAddBetterAlternative} className="w-full" />
-          </div>
+          {!viewOnly && (
+            <div className="relative">
+              <SearchBar variant="navbar" placeholder="Search for better alternative stocks..." onResultClick={handleAddBetterAlternative} className="w-full" />
+            </div>
+          )}
 
           {/* Selected alternatives */}
           {betterAlternatives.length > 0 && (
@@ -267,7 +275,7 @@ export default function AddEditFavouriteModal({
                     ticker={alternative}
                     showScore={true}
                     showName={true}
-                    onRemove={() => handleRemoveBetterAlternative(alternative.id)}
+                    onRemove={viewOnly ? undefined : () => handleRemoveBetterAlternative(alternative.id)}
                   />
                 ))}
               </div>
@@ -280,13 +288,17 @@ export default function AddEditFavouriteModal({
       <div className="mt-4">
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Tags</label>
-          <Button onClick={onManageTags} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
-            <TagIcon className="w-4 h-4" />
-            Manage Tags
-          </Button>
+          {!viewOnly && (
+            <Button onClick={onManageTags} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+              <TagIcon className="w-4 h-4" />
+              Manage Tags
+            </Button>
+          )}
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
-          {tags.length === 0 ? (
+          {viewOnly && selectedTagIds.length === 0 ? (
+            <p className="text-gray-500 text-sm p-2">No tags selected.</p>
+          ) : tags.length === 0 && !viewOnly ? (
             <p className="text-gray-500 text-sm p-2">No tags available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
@@ -307,25 +319,28 @@ export default function AddEditFavouriteModal({
                   })
                 )}
                 selectedItemIds={selectedTagIds}
-                onChange={(ids: string[]) => setSelectedTagIds(ids)}
+                onChange={viewOnly ? () => {} : (ids: string[]) => setSelectedTagIds(ids)}
                 className="bg-transparent"
               />
             </div>
           )}
         </div>
       </div>
-
       {/* Lists Selection */}
       <div className="mt-4">
         <div className="flex justify-between items-center mb-3">
           <label className="block text-sm font-medium text-left">Lists</label>
-          <Button onClick={onManageLists} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
-            <ListBulletIcon className="w-4 h-4" />
-            Manage Lists
-          </Button>
+          {!viewOnly && (
+            <Button onClick={onManageLists} variant="text" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1">
+              <ListBulletIcon className="w-4 h-4" />
+              Manage Lists
+            </Button>
+          )}
         </div>
         <div className="space-y-1 max-h-40 overflow-y-auto bg-gray-900 rounded-md p-1">
-          {lists.length === 0 ? (
+          {viewOnly && selectedListIds.length === 0 ? (
+            <p className="text-gray-500 text-sm p-2">No lists selected.</p>
+          ) : lists.length === 0 && !viewOnly ? (
             <p className="text-gray-500 text-sm p-2">No lists available. Create one to get started.</p>
           ) : (
             <div className="ml-2">
@@ -343,22 +358,29 @@ export default function AddEditFavouriteModal({
                   })
                 )}
                 selectedItemIds={selectedListIds}
-                onChange={(ids: string[]) => setSelectedListIds(ids)}
+                onChange={viewOnly ? () => {} : (ids: string[]) => setSelectedListIds(ids)}
                 className="bg-transparent"
               />
             </div>
           )}
         </div>
       </div>
-
       {/* Action Buttons */}
       <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
-        <Button onClick={onClose} disabled={loading} variant="outlined">
-          Cancel
-        </Button>
-        <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
-          {favouriteTicker ? 'Update' : 'Add to'} Favourites
-        </Button>
+        {viewOnly ? (
+          <Button onClick={onClose} variant="contained" primary>
+            Close
+          </Button>
+        ) : (
+          <>
+            <Button onClick={onClose} disabled={loading} variant="outlined">
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
+              {favouriteTicker ? 'Update' : 'Add to'} Favourites
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -367,7 +389,7 @@ export default function AddEditFavouriteModal({
     <FullPageModal
       open={isOpen}
       onClose={onClose}
-      title={favouriteTicker ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
+      title={viewOnly ? `Favourite: ${tickerName} (${tickerSymbol})` : favouriteTicker ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
       className="w-full max-w-2xl"
     >
       {renderMainView()}

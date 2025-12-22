@@ -11,6 +11,7 @@ import { CreateTickerNoteRequest, UpdateTickerNoteRequest } from '@/app/api/[spa
 import { TickerV1Notes } from '@prisma/client';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface AddEditNotesModalProps {
   isOpen: boolean;
@@ -21,9 +22,20 @@ interface AddEditNotesModalProps {
   onSuccess?: () => void;
   existingNote: TickerV1Notes | null;
   onUpsert: () => void;
+  viewOnly?: boolean;
 }
 
-export default function AddEditNotesModal({ isOpen, onClose, tickerId, tickerSymbol, tickerName, onSuccess, existingNote, onUpsert }: AddEditNotesModalProps) {
+export default function AddEditNotesModal({
+  isOpen,
+  onClose,
+  tickerId,
+  tickerSymbol,
+  tickerName,
+  onSuccess,
+  existingNote,
+  onUpsert,
+  viewOnly = false,
+}: AddEditNotesModalProps) {
   // Form state
   const [notes, setNotes] = useState<string>('');
   const [score, setScore] = useState<string>('');
@@ -96,25 +108,32 @@ export default function AddEditNotesModal({ isOpen, onClose, tickerId, tickerSym
     <FullPageModal
       open={isOpen}
       onClose={onClose}
-      title={existingNote ? 'Edit Note' : `Add Note for ${tickerName} (${tickerSymbol})`}
+      title={viewOnly ? `Notes for ${tickerName} (${tickerSymbol})` : existingNote ? 'Edit Note' : `Add Note for ${tickerName} (${tickerSymbol})`}
       className="w-full max-w-2xl"
     >
       <div className="px-6 py-4 space-y-6 text-left">
         {/* Notes */}
         <div className="space-y-2">
-          <MarkdownEditor
-            id="notes"
-            objectId={tickerId}
-            modelValue={notes}
-            onUpdate={(value) => setNotes(value)}
-            label={
-              <>
-                Notes <span className="text-red-500">*</span>
-              </>
-            }
-            placeholder="Add your notes about this stock..."
-            maxHeight={300}
-          />
+          {viewOnly ? (
+            <div>
+              <label className="text-sm font-medium block mb-2">Notes:</label>
+              <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(notes) }} />
+            </div>
+          ) : (
+            <MarkdownEditor
+              id="notes"
+              objectId={tickerId}
+              modelValue={notes}
+              onUpdate={(value) => setNotes(value)}
+              label={
+                <>
+                  Notes <span className="text-red-500">*</span>
+                </>
+              }
+              placeholder="Add your notes about this stock..."
+              maxHeight={300}
+            />
+          )}
         </div>
 
         {/* Score */}
@@ -123,24 +142,33 @@ export default function AddEditNotesModal({ isOpen, onClose, tickerId, tickerSym
           <div className="flex-1 max-w-xs">
             <Input
               modelValue={score}
-              onUpdate={(value) => setScore(value?.toString() || '')}
+              onUpdate={(value) => setNotes(value?.toString() || '')}
               number={true}
               min={0}
               max={25}
               placeholder="0-25"
               className="bg-gray-800 border-gray-700 text-white w-full"
+              disabled={viewOnly}
             />
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
-          <Button onClick={onClose} disabled={loading} variant="outlined">
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={loading || !notes.trim()} loading={loading} variant="contained" primary>
-            {existingNote ? 'Update' : 'Save'} Note
-          </Button>
+          {viewOnly ? (
+            <Button onClick={onClose} variant="contained" primary>
+              Close
+            </Button>
+          ) : (
+            <>
+              <Button onClick={onClose} disabled={loading} variant="outlined">
+                Cancel
+              </Button>
+              <Button onClick={handleSave} disabled={loading || !notes.trim()} loading={loading} variant="contained" primary>
+                {existingNote ? 'Update' : 'Save'} Note
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </FullPageModal>

@@ -1,5 +1,5 @@
 import { SubIndustryWithCount } from '@/types/ticker-typesv1';
-import { TickerV1CachedScore, TickerV1Industry } from '@prisma/client';
+import { FavouriteTicker, TickerV1CachedScore, TickerV1Industry, TickerV1Notes, UserTickerTag, UserTickerList } from '@prisma/client';
 
 export interface IndustryWithSubIndustriesAndTopTickers extends TickerV1Industry {
   subIndustries: MinSubIndustryWithTopTickers[];
@@ -12,6 +12,16 @@ export interface TickerMinimal {
   symbol: string;
   exchange: string;
   cachedScoreEntry: TickerV1CachedScore | null;
+  favouriteTicker?: ExpandedFavouriteTicker | null;
+  tickerNotes?: TickerV1Notes | null;
+}
+
+// Extended FavouriteTicker for industries endpoint (without nested ticker, as ticker data is at parent level)
+export interface ExpandedFavouriteTicker extends Omit<FavouriteTicker, 'competitorsConsidered' | 'betterAlternatives' | 'tags' | 'lists'> {
+  tags: UserTickerTag[];
+  lists: UserTickerList[];
+  competitorsConsidered: TickerMinimal[];
+  betterAlternatives: TickerMinimal[];
 }
 
 export interface MinSubIndustryWithTopTickers extends Omit<SubIndustryWithCount, 'summary'> {
