@@ -44,6 +44,13 @@ export interface FinancialDataInputJson {
   dividends: string;
 }
 
+/**
+ * KPIs data input JSON (for business & moat and future growth)
+ */
+export interface KpisDataInputJson {
+  kpis: string;
+}
+
 export interface PriorCategoryAnalysisInput {
   categoryKey: TickerAnalysisCategory;
   overallAnalysisDetails: string;
@@ -129,13 +136,18 @@ export function prepareFactorAnalysisArray(analysisFactors: AnalysisCategoryFact
 export function prepareBusinessAndMoatInputJson(
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
   analysisFactors: AnalysisCategoryFactor[],
-  competitionAnalysisArray: CompetitionAnalysisArray
-): FactorAnalysisInputJson {
+  competitionAnalysisArray: CompetitionAnalysisArray,
+  kpisData: {
+    annual: { meta: any; periods: any[] };
+    quarterly: { meta: any; periods: any[] };
+  }
+): FactorAnalysisInputJson & KpisDataInputJson {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.BusinessAndMoat,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
     competitionAnalysisArray,
+    kpis: JSON.stringify(kpisData),
   };
 }
 
@@ -186,17 +198,22 @@ export function prepareFutureGrowthInputJson(
       oneLineExplanation: string;
       detailedExplanation: string;
     }>;
+  },
+  kpisData: {
+    annual: { meta: any; periods: any[] };
+    quarterly: { meta: any; periods: any[] };
   }
-): FactorAnalysisInputJson & {
-  businessMoatOverallSummary: string;
-  businessMoatOverallAnalysisDetails: string;
-  businessMoatFactors: Array<{
-    factorAnalysisKey: string;
-    factorAnalysisTitle: string;
-    oneLineExplanation: string;
-    detailedExplanation: string;
-  }>;
-} {
+): FactorAnalysisInputJson &
+  KpisDataInputJson & {
+    businessMoatOverallSummary: string;
+    businessMoatOverallAnalysisDetails: string;
+    businessMoatFactors: Array<{
+      factorAnalysisKey: string;
+      factorAnalysisTitle: string;
+      oneLineExplanation: string;
+      detailedExplanation: string;
+    }>;
+  } {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.FutureGrowth,
@@ -209,6 +226,7 @@ export function prepareFutureGrowthInputJson(
       oneLineExplanation: factorResult.oneLineExplanation,
       detailedExplanation: factorResult.detailedExplanation || '',
     })),
+    kpis: JSON.stringify(kpisData),
   };
 }
 

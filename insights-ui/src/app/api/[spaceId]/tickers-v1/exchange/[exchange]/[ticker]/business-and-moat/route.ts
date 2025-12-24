@@ -9,6 +9,7 @@ import {
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
+import { ensureStockAnalyzerDataIsFresh, extractKpisDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -21,14 +22,20 @@ async function postHandler(
   // Get ticker from DB
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker.toUpperCase(), exchange.toUpperCase());
 
+  // Ensure stock analyzer data is fresh
+  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
+
   // Get competition analysis (required for business and moat analysis)
   const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
 
   // Get analysis factors for BusinessAndMoat category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
+  // Extract KPIs data for analysis
+  const kpisData = extractKpisDataForAnalysis(scraperInfo);
+
   // Prepare input for the prompt
-  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, kpisData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

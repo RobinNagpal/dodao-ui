@@ -23,7 +23,7 @@ import {
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
-import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
+import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance, extractKpisDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
 /**
@@ -133,11 +133,17 @@ async function generateBusinessAndMoatAnalysis(
   competitionAnalysisArray: CompetitionAnalysisArray,
   generationRequestId: string
 ): Promise<void> {
+  // Ensure stock analyzer data is fresh
+  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
+
   // Get analysis factors for BusinessAndMoat category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
+  // Extract KPIs data for analysis
+  const kpisData = extractKpisDataForAnalysis(scraperInfo);
+
   // Prepare input for the prompt
-  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray);
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, kpisData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
@@ -192,14 +198,20 @@ async function generatePastPerformanceAnalysis(
 }
 
 async function generateFutureGrowthAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+  // Ensure stock analyzer data is fresh
+  const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
+
   // Get analysis factors for FutureGrowth category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
 
   // Fetch business moat analysis data
   const businessMoatData = await fetchBusinessMoatAnalysisData(spaceId, tickerRecord.id);
 
+  // Extract KPIs data for analysis
+  const kpisData = extractKpisDataForAnalysis(scraperInfo);
+
   // Prepare input for the prompt
-  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, businessMoatData);
+  const inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactors, businessMoatData, kpisData);
 
   await getLLMResponseForPromptViaInvocationViaLambda({
     symbol: tickerRecord.symbol,

@@ -74,6 +74,10 @@ properties:
       required:
         - companyName
         - detailedComparison
+  # KPIs data - key performance indicators for business analysis (annual + quarterly)
+  kpis:
+    type: string
+    description: 'Key performance indicators data including annual (TTM + fiscal years) and quarterly periods with revenue breakdown, geographic segments, gross profit breakdown, and company-specific KPIs'
 required:
   - name
   - symbol
@@ -87,3 +91,4 @@ required:
   - subIndustryDescription
   - industryName
   - subIndustryName
+  - kpis

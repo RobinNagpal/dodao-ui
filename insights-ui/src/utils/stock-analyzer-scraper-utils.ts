@@ -10,6 +10,8 @@ import {
   CashFlowQuarterlyData,
   RatiosAnnualData,
   RatiosQuarterlyData,
+  KpisAnnualData,
+  KpisQuarterlyData,
   DividendsData,
   DividendHistoryRow,
   StockFundamentalsSummary,
@@ -107,6 +109,20 @@ const FETCH_CONFIGS: FetchConfig[] = [
     view: 'normal',
     field: 'ratiosQuarter',
     lastUpdatedField: 'lastUpdatedAtRatiosQuarter',
+    maxAgeInDays: 30,
+  },
+  {
+    endpoint: '/kpis/annual',
+    view: 'strict',
+    field: 'kpisAnnual',
+    lastUpdatedField: 'lastUpdatedAtKpisAnnual',
+    maxAgeInDays: 90,
+  },
+  {
+    endpoint: '/kpis/quarterly',
+    view: 'strict',
+    field: 'kpisQuarter',
+    lastUpdatedField: 'lastUpdatedAtKpisQuarter',
     maxAgeInDays: 30,
   },
 ];
@@ -251,6 +267,11 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
     lastUpdatedAtRatiosAnnual: currentTimestamp,
     ratiosQuarter: {},
     lastUpdatedAtRatiosQuarter: currentTimestamp,
+    // KPIs are optional, so we set them to null for backward compatibility
+    kpisAnnual: {},
+    lastUpdatedAtKpisAnnual: currentTimestamp,
+    kpisQuarter: {},
+    lastUpdatedAtKpisQuarter: currentTimestamp,
     errors: allErrors,
   };
 
@@ -312,7 +333,7 @@ export async function ensureStockAnalyzerDataIsFresh(ticker: TickerV1): Promise<
 }
 
 /**
- * Extract and format comprehensive financial data for LLM analysis (fair value and financial analysis)
+ * Extract and format comprehensive financial data for financial statement analysis
  */
 export function extractFinancialDataForAnalysis(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
   // Check if summary is empty, indicating scraper failure
@@ -481,5 +502,42 @@ export function extractFinancialDataForPastPerformance(scraperInfo: TickerV1Stoc
           last5Annuals: getLast5AnnualDividends(scraperInfo.dividends),
         }
       : { meta: {}, summary: {}, last5Annuals: [] },
+  };
+}
+
+/**
+ * Extract and format KPIs data for business & moat and future growth analysis
+ * Returns all available periods (TTM + fiscal years for annual, quarters for quarterly)
+ */
+export function extractKpisDataForAnalysis(scraperInfo: TickerV1StockAnalyzerScrapperInfo) {
+  // Check if summary is empty, indicating scraper failure
+  if (isEmptySummary(scraperInfo.summary as StockFundamentalsSummary)) {
+    throw new Error('Scraper data is invalid: summary is empty, likely due to invalid stockAnalyzeUrl or scraper failure');
+  }
+
+  // Get all available annual periods (TTM + FY periods)
+  const getAnnualPeriods = (data: KpisAnnualData | null | undefined) => {
+    if (!data?.periods || data.periods.length === 0) return [];
+    return data.periods;
+  };
+
+  // Get all available quarterly periods
+  const getQuarterlyPeriods = (data: KpisQuarterlyData | null | undefined) => {
+    if (!data?.periods || data.periods.length === 0) return [];
+    return data.periods;
+  };
+
+  const kpisAnnual = (scraperInfo as any).kpisAnnual as KpisAnnualData | null | undefined;
+  const kpisQuarter = (scraperInfo as any).kpisQuarter as KpisQuarterlyData | null | undefined;
+
+  return {
+    annual: {
+      meta: kpisAnnual?.meta || {},
+      periods: getAnnualPeriods(kpisAnnual),
+    },
+    quarterly: {
+      meta: kpisQuarter?.meta || {},
+      periods: getQuarterlyPeriods(kpisQuarter),
+    },
   };
 }
