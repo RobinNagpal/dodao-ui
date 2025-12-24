@@ -5,10 +5,13 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CreateTickerNoteRequest, UpdateTickerNoteRequest } from '@/app/api/[spaceId]/users/ticker-notes/route';
+import { CreateTickerNoteRequest } from '@/app/api/[spaceId]/users/ticker-notes/route';
+import { UpdateTickerNoteRequest } from '@/app/api/[spaceId]/users/ticker-notes/[noteId]/route';
 import { TickerV1Notes } from '@prisma/client';
+import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -39,6 +42,7 @@ export default function AddEditNotesModal({
   // Form state
   const [notes, setNotes] = useState<string>('');
   const [score, setScore] = useState<string>('');
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   // Post and Put hooks for notes
   const { postData: createNote, loading: creating } = usePostData<TickerV1Notes, CreateTickerNoteRequest>({
@@ -51,7 +55,12 @@ export default function AddEditNotesModal({
     errorMessage: 'Failed to update note.',
   });
 
-  const loading = creating || updating;
+  const { deleteData, loading: deleting } = useDeleteData<{ success: boolean }, void>({
+    successMessage: 'Note deleted!',
+    errorMessage: 'Failed to delete note.',
+  });
+
+  const loading = creating || updating || deleting;
 
   // Update form when existing note changes
   useEffect(() => {
@@ -81,7 +90,7 @@ export default function AddEditNotesModal({
         score: score === '' ? null : scoreValue,
       };
 
-      const result = await updateNote(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/ticker-notes?id=${existingNote.id}`, updateData);
+      const result = await updateNote(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/ticker-notes/${existingNote.id}`, updateData);
       if (result) {
         onUpsert();
         onSuccess?.();
@@ -101,6 +110,18 @@ export default function AddEditNotesModal({
         onSuccess?.();
         onClose();
       }
+    }
+  };
+
+  const handleDelete = async (): Promise<void> => {
+    if (!existingNote) return;
+
+    const result = await deleteData(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/ticker-notes/${existingNote.id}`);
+    if (result) {
+      setShowDeleteConfirmation(false);
+      onUpsert();
+      onSuccess?.();
+      onClose();
     }
   };
 
@@ -154,23 +175,51 @@ export default function AddEditNotesModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
+        <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">
           {viewOnly ? (
-            <Button onClick={onClose} variant="contained" primary>
-              Close
-            </Button>
+            <div />
           ) : (
-            <>
-              <Button onClick={onClose} disabled={loading} variant="outlined">
-                Cancel
-              </Button>
-              <Button onClick={handleSave} disabled={loading || !notes.trim()} loading={loading} variant="contained" primary>
-                {existingNote ? 'Update' : 'Save'} Note
-              </Button>
-            </>
+            <div>
+              {existingNote && (
+                <Button
+                  onClick={() => setShowDeleteConfirmation(true)}
+                  disabled={loading}
+                  variant="outlined"
+                  className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
+                >
+                  Delete Note
+                </Button>
+              )}
+            </div>
           )}
+          <div className="flex gap-3">
+            {viewOnly ? (
+              <Button onClick={onClose} variant="contained" primary>
+                Close
+              </Button>
+            ) : (
+              <>
+                <Button onClick={onClose} disabled={loading} variant="outlined">
+                  Cancel
+                </Button>
+                <Button onClick={handleSave} disabled={loading || !notes.trim()} loading={loading} variant="contained" primary>
+                  {existingNote ? 'Update' : 'Save'} Note
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        open={showDeleteConfirmation}
+        onClose={() => setShowDeleteConfirmation(false)}
+        onDelete={handleDelete}
+        deleting={deleting}
+        title="Delete Note"
+        deleteButtonText="Delete Note"
+        confirmationText="Delete Note"
+      />
     </FullPageModal>
   );
 }
