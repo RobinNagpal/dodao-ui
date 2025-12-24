@@ -43,6 +43,16 @@ import {
   scrapeRatiosQuarterlyRaw,
   scrapeRatiosQuarterlyStrict,
 } from "./cheerio/ratios-quarterly";
+import {
+  scrapeKpisAnnual,
+  scrapeKpisAnnualRaw,
+  scrapeKpisAnnualStrict,
+} from "./cheerio/kpis-annual";
+import {
+  scrapeKpisQuarterly,
+  scrapeKpisQuarterlyRaw,
+  scrapeKpisQuarterlyStrict,
+} from "./cheerio/kpis-quarterly";
 
 // If you have this in your file already, keep it; router can call it for legacy route:
 export declare const scrapeTickerInfoStrict: (
@@ -127,6 +137,8 @@ function buildSubUrls(root: string) {
     dividendsUrl: joinUrl(root, "dividend/"),
     ratiosAnnualUrl: joinUrl(root, "financials/ratios/"),
     ratiosQuarterlyUrl: joinUrl(root, "financials/ratios/?p=quarterly"),
+    kpisAnnualUrl: joinUrl(root, "financials/metrics/"),
+    kpisQuarterlyUrl: joinUrl(root, "financials/metrics/?p=quarterly"),
   };
 }
 
@@ -139,6 +151,7 @@ function okResponse(params: {
     | "balance-sheet"
     | "cashflow"
     | "ratios"
+    | "kpis"
     | "all";
   period?: "annual" | "quarterly";
   view: View;
@@ -491,6 +504,70 @@ export const fetchRatiosQuarterly = async (event: APIGatewayProxyEvent) => {
   }
 };
 
+export const fetchKpisAnnual = async (event: APIGatewayProxyEvent) => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { kpisAnnualUrl } = buildSubUrls(url);
+    const res = await byView(view, {
+      normal: () => scrapeKpisAnnual(kpisAnnualUrl),
+      raw: () => scrapeKpisAnnualRaw(kpisAnnualUrl),
+      strict: () => scrapeKpisAnnualStrict(kpisAnnualUrl),
+    });
+    return okResponse({
+      url,
+      section: "kpis",
+      period: "annual",
+      view,
+      data: (res as any).kpisAnnual,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchKpisAnnual error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+export const fetchKpisQuarterly = async (event: APIGatewayProxyEvent) => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const { kpisQuarterlyUrl } = buildSubUrls(url);
+    const res = await byView(view, {
+      normal: () => scrapeKpisQuarterly(kpisQuarterlyUrl),
+      raw: () => scrapeKpisQuarterlyRaw(kpisQuarterlyUrl),
+      strict: () => scrapeKpisQuarterlyStrict(kpisQuarterlyUrl),
+    });
+    return okResponse({
+      url,
+      section: "kpis",
+      period: "quarterly",
+      view,
+      data: (res as any).kpisQuarterly,
+      errors: (res as any).errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchKpisQuarterly error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
 /* Helper to aggregate error arrays safely */
 function collectErrors(
   ...maybeArrays: Array<unknown[] | undefined | null>
@@ -733,6 +810,12 @@ export const api = async (
 
     case "/ratios/quarterly":
       return fetchRatiosQuarterly(event);
+
+    case "/kpis/annual":
+      return fetchKpisAnnual(event);
+
+    case "/kpis/quarterly":
+      return fetchKpisQuarterly(event);
 
     case "/financials/annual":
       return fetchAllAnnual(event);

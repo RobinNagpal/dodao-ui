@@ -111,6 +111,18 @@ const MAP: Record<string, Mapping> = {
     includeView: true,
   },
 
+  // KPIs
+  fetchKpisAnnual: {
+    method: "POST",
+    path: "/kpis/annual",
+    includeView: true,
+  },
+  fetchKpisQuarterly: {
+    method: "POST",
+    path: "/kpis/quarterly",
+    includeView: true,
+  },
+
   // Aggregates
   fetchFinancialsAnnual: {
     method: "POST",

@@ -21,6 +21,8 @@ ORIGIN ?= http://localhost:3000
         invoke-fetchCashflowQuarterly \
         invoke-fetchRatiosAnnual \
         invoke-fetchRatiosQuarterly \
+        invoke-fetchKpisAnnual \
+        invoke-fetchKpisQuarterly \
         invoke-fetchFinancialsAnnual \
         invoke-fetchFinancialsQuarterly \
         invoke-scrapeTickerInfo \
@@ -85,6 +87,12 @@ invoke-fetchRatiosAnnual:
 invoke-fetchRatiosQuarterly:
 	$(call INVOKE_INLINE,fetchRatiosQuarterly)
 
+invoke-fetchKpisAnnual:
+	$(call INVOKE_INLINE,fetchKpisAnnual)
+
+invoke-fetchKpisQuarterly:
+	$(call INVOKE_INLINE,fetchKpisQuarterly)
+
 invoke-fetchFinancialsAnnual:
 	$(call INVOKE_INLINE,fetchFinancialsAnnual)
 
@@ -111,6 +119,8 @@ invoke-all: \
 	invoke-fetchCashflowQuarterly \
 	invoke-fetchRatiosAnnual \
 	invoke-fetchRatiosQuarterly \
+	invoke-fetchKpisAnnual \
+	invoke-fetchKpisQuarterly \
 	invoke-fetchFinancialsAnnual \
 	invoke-fetchFinancialsQuarterly \
 	invoke-scrapeTickerInfo \
