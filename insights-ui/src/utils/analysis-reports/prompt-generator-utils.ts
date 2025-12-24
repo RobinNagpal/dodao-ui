@@ -19,7 +19,12 @@ import {
   prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
-import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
+import {
+  ensureStockAnalyzerDataIsFresh,
+  extractFinancialDataForAnalysis,
+  extractFinancialDataForPastPerformance,
+  extractKpisDataForAnalysis,
+} from '@/utils/stock-analyzer-scraper-utils';
 import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
 import { AnalysisCategoryFactor } from '@prisma/client';
@@ -142,8 +147,10 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       break;
 
     case ReportType.BUSINESS_AND_MOAT:
+      const scraperInfoBusiness = await ensureStockAnalyzerDataIsFresh(tickerRecord);
       const analysisFactorsBusiness = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
-      inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactorsBusiness, competitionAnalysisArray);
+      const kpisDataBusiness = extractKpisDataForAnalysis(scraperInfoBusiness);
+      inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactorsBusiness, competitionAnalysisArray, kpisDataBusiness);
       promptKey = 'US/public-equities-v1/business-moat';
       break;
 
@@ -156,9 +163,11 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       break;
 
     case ReportType.FUTURE_GROWTH:
+      const scraperInfoGrowth = await ensureStockAnalyzerDataIsFresh(tickerRecord);
       const analysisFactorsGrowth = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FutureGrowth);
       const businessMoatData = await fetchBusinessMoatAnalysisData(spaceId, tickerRecord.id);
-      inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactorsGrowth, businessMoatData);
+      const kpisDataGrowth = extractKpisDataForAnalysis(scraperInfoGrowth);
+      inputJson = prepareFutureGrowthInputJson(tickerRecord, analysisFactorsGrowth, businessMoatData, kpisDataGrowth);
       promptKey = 'US/public-equities-v1/future-growth';
       break;
 

@@ -23,7 +23,12 @@ import {
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';
 import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
-import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForAnalysis, extractFinancialDataForPastPerformance, extractKpisDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
+import {
+  ensureStockAnalyzerDataIsFresh,
+  extractFinancialDataForAnalysis,
+  extractFinancialDataForPastPerformance,
+  extractKpisDataForAnalysis,
+} from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
 /**
