@@ -20,6 +20,8 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ListBulletIcon, TagIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
+import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
+import { parseMarkdown } from '@/util/parse-markdown';
 
 interface AddEditFavouriteModalProps {
   isOpen: boolean;
@@ -191,18 +193,26 @@ export default function AddEditFavouriteModal({
     <div className="px-6 py-4 space-y-6 text-left">
       {/* My Notes */}
       <div className="space-y-2">
-        <label htmlFor="my-notes" className="block text-sm font-medium text-left">
-          My Notes {!viewOnly && '(Optional)'}
-        </label>
-        <textarea
-          id="my-notes"
-          value={myNotes}
-          onChange={(e) => setMyNotes(e.target.value)}
-          rows={2}
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Add your notes about this stock..."
-          disabled={viewOnly}
-        />
+        {viewOnly ? (
+          <div>
+            <label className="text-sm font-medium block mb-2">My Notes:</label>
+            {myNotes ? (
+              <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(myNotes) }} />
+            ) : (
+              <p className="text-gray-500 text-sm">No notes added.</p>
+            )}
+          </div>
+        ) : (
+          <MarkdownEditor
+            id="my-notes"
+            objectId={tickerId}
+            modelValue={myNotes}
+            onUpdate={(value) => setMyNotes(value)}
+            label="My Notes (Optional)"
+            placeholder="Add your notes about this stock..."
+            maxHeight={200}
+          />
+        )}
       </div>
 
       {/* My Score */}
