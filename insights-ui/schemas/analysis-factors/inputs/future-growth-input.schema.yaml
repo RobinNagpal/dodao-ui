@@ -84,6 +84,10 @@ properties:
         - factorAnalysisTitle
         - oneLineExplanation
         - detailedExplanation
+  # KPIs data - key performance indicators for growth analysis (annual + quarterly)
+  kpis:
+    type: string
+    description: 'Key performance indicators data including annual (TTM + fiscal years) and quarterly periods with revenue breakdown, geographic segments, gross profit breakdown, and company-specific KPIs'
 required:
   - name
   - symbol
@@ -99,3 +103,4 @@ required:
   - businessMoatOverallSummary
   - businessMoatOverallAnalysisDetails
   - businessMoatFactors
+  - kpis

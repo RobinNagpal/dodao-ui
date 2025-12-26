@@ -28,21 +28,23 @@ It’s deployed behind **API Gateway (HTTP API v2)** and uses **one Lambda funct
 > Replace `<API_BASE>` with your API Gateway base URL. Example:  
 > `https://mxko5gs3s2.execute-api.us-east-1.amazonaws.com`
 
-| Path | Section | Period | Body shape |
-|---|---|---|---|
-| `/fetch-stock-info` | legacy combined (if implemented) | n/a | `{ "url": "<ticker-root>" }` |
-| `/summary` | summary | n/a | `{ "url": "<ticker-root>", "view": "<normal|raw|strict>" }` |
-| `/dividends` | dividends | n/a | same as above |
-| `/income-statement/annual` | income-statement | annual | same as above |
-| `/income-statement/quarterly` | income-statement | quarterly | same as above |
-| `/balance-sheet/annual` | balance-sheet | annual | same as above |
-| `/balance-sheet/quarterly` | balance-sheet | quarterly | same as above |
-| `/cashflow/annual` | cashflow | annual | same as above |
-| `/cashflow/quarterly` | cashflow | quarterly | same as above |
-| `/ratios/annual` | ratios | annual | same as above |
-| `/ratios/quarterly` | ratios | quarterly | same as above |
-| `/financials/annual` | all (summary+income+balance+cashflow+ratios+dividends) | annual | same as above |
-| `/financials/quarterly` | all (summary+income+balance+cashflow+ratios+dividends) | quarterly | same as above |
+| Path                          | Section                                                     | Period    | Body shape                                  |
+| ----------------------------- | ----------------------------------------------------------- | --------- | ------------------------------------------- | --- | ----------- |
+| `/fetch-stock-info`           | legacy combined (if implemented)                            | n/a       | `{ "url": "<ticker-root>" }`                |
+| `/summary`                    | summary                                                     | n/a       | `{ "url": "<ticker-root>", "view": "<normal | raw | strict>" }` |
+| `/dividends`                  | dividends                                                   | n/a       | same as above                               |
+| `/income-statement/annual`    | income-statement                                            | annual    | same as above                               |
+| `/income-statement/quarterly` | income-statement                                            | quarterly | same as above                               |
+| `/balance-sheet/annual`       | balance-sheet                                               | annual    | same as above                               |
+| `/balance-sheet/quarterly`    | balance-sheet                                               | quarterly | same as above                               |
+| `/cashflow/annual`            | cashflow                                                    | annual    | same as above                               |
+| `/cashflow/quarterly`         | cashflow                                                    | quarterly | same as above                               |
+| `/ratios/annual`              | ratios                                                      | annual    | same as above                               |
+| `/ratios/quarterly`           | ratios                                                      | quarterly | same as above                               |
+| `/kpis/annual`                | kpis                                                        | annual    | same as above                               |
+| `/kpis/quarterly`             | kpis                                                        | quarterly | same as above                               |
+| `/financials/annual`          | all (summary+income+balance+cashflow+ratios+kpis+dividends) | annual    | same as above                               |
+| `/financials/quarterly`       | all (summary+income+balance+cashflow+ratios+kpis+dividends) | quarterly | same as above                               |
 
 **Ticker root examples**
 
@@ -56,12 +58,14 @@ The router will construct the sub-URLs it needs (e.g., `financials/`, `financial
 ## Quick start
 
 ### Deploy
+
 ```bash
 yarn serverless deploy
 # outputs: endpoint ANY - https://<id>.execute-api.us-east-1.amazonaws.com/{proxy+}
 ```
 
 ### Call an endpoint (cURL)
+
 ```bash
 API_BASE="https://mxko5gs3s2.execute-api.us-east-1.amazonaws.com"
 curl -X POST "$API_BASE/summary" \
@@ -70,6 +74,7 @@ curl -X POST "$API_BASE/summary" \
 ```
 
 ### Call an endpoint (VS Code REST Client)
+
 ```http
 ### Summary
 POST https://mxko5gs3s2.execute-api.us-east-1.amazonaws.com/summary
@@ -87,10 +92,11 @@ Content-Type: application/json
 
 ## Local development
 
-- **Makefile** provides `invoke-*` targets that all hit the single `api` function via Serverless’ local invoke.  
+- **Makefile** provides `invoke-*` targets that all hit the single `api` function via Serverless’ local invoke.
 - **scripts/generate-events.ts** crafts an HTTP API v2 event with the correct `rawPath` so your in-Lambda router picks the right handler.
 
 Examples:
+
 ```bash
 # Print config
 make print-config
@@ -108,6 +114,7 @@ make invoke-all TICKER_URL=https://stock-analyze.xyz/stocks/msft/
 ## Request/Response details
 
 **Request body**
+
 ```json
 {
   "url": "https://stock-analyze.xyz/stocks/amzn/",
@@ -116,18 +123,22 @@ make invoke-all TICKER_URL=https://stock-analyze.xyz/stocks/msft/
 ```
 
 **Response (shape varies by route)**
+
 ```json
 {
   "tickerUrl": "https://stock-analyze.xyz/stocks/amzn/",
   "section": "income-statement",
   "period": "annual",
   "view": "strict",
-  "data": { /* parsed table(s) */ },
-  "errors": []   // any non-fatal scrape errors
+  "data": {
+    /* parsed table(s) */
+  },
+  "errors": [] // any non-fatal scrape errors
 }
 ```
 
 **Views**
+
 - `normal`: parsed & lightly cleaned data.
 - `raw`: raw DOM extraction (closer to source).
 - `strict` (default): strict parsing with additional validation; safer for consumers, may be more selective.

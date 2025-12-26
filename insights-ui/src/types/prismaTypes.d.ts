@@ -147,6 +147,25 @@ export interface RatiosQuarterlyData {
   periods: RatiosQuarterlyPeriod[];
 }
 
+// KPIs Types
+export interface KpisAnnualPeriod extends BaseFinancialPeriod {
+  fiscalYear: string;
+}
+
+export interface KpisQuarterlyPeriod extends BaseFinancialPeriod {
+  fiscalQuarter: string;
+}
+
+export interface KpisAnnualData {
+  meta: FinancialMeta;
+  periods: KpisAnnualPeriod[];
+}
+
+export interface KpisQuarterlyData {
+  meta: FinancialMeta;
+  periods: KpisQuarterlyPeriod[];
+}
+
 export type TopCompaniesToConsider = CompetitionAnalysisType;
 
 declare global {
@@ -164,5 +183,7 @@ declare global {
     type CashFlowQuarterlyData = CashFlowQuarterlyData;
     type RatiosAnnualData = RatiosAnnualData;
     type RatiosQuarterlyData = RatiosQuarterlyData;
+    type KpisAnnualData = KpisAnnualData;
+    type KpisQuarterlyData = KpisQuarterlyData;
   }
 }

@@ -848,6 +848,14 @@ model TickerV1StockAnalyzerScrapperInfo {
   ratiosQuarter              Json     @map("ratios_quarter")
   lastUpdatedAtRatiosQuarter DateTime @map("last_updated_at_ratios_quarter")
 
+  // KPIs data
+  /// [KpisAnnualData]
+  kpisAnnual               Json?     @map("kpis_annual")
+  lastUpdatedAtKpisAnnual  DateTime? @map("last_updated_at_kpis_annual")
+  /// [KpisQuarterlyData]
+  kpisQuarter              Json?     @map("kpis_quarter")
+  lastUpdatedAtKpisQuarter DateTime? @map("last_updated_at_kpis_quarter")
+
   // Errors array
   errors Json[] @default([]) @map("errors")
 
