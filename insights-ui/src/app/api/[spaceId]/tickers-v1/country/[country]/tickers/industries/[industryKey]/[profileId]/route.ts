@@ -46,6 +46,12 @@ async function getHandler(
         where: tickerFilter,
         include: {
           cachedScoreEntry: true,
+          financialInfo: {
+            select: {
+              marketCap: true,
+              pe: true,
+            },
+          },
           // Include user-specific data with full relations
           favouriteTickers: {
             where: { userId },
