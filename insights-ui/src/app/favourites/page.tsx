@@ -195,7 +195,7 @@ export default function FavouritesPage() {
   const handleDelete = async () => {
     if (!deletingFavourite) return;
 
-    const result = await deleteFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${deletingFavourite.id}`);
+    const result = await deleteFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers/${deletingFavourite.id}`);
     if (result) {
       await refetchFavourites();
       setDeletingFavourite(null);
