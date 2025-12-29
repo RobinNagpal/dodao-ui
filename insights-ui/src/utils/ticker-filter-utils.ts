@@ -9,6 +9,8 @@ export enum FilterType {
   CATEGORY = 'category',
   TOTAL = 'total',
   SEARCH = 'search',
+  MARKET_CAP = 'marketCap',
+  PE_RATIO = 'peRatio',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -20,6 +22,8 @@ export enum FilterParamKey {
   FAIR_VALUE = 'fairValueThreshold',
   TOTAL = 'totalThreshold',
   SEARCH = 'search',
+  MARKET_CAP = 'marketCap',
+  PE_RATIO = 'peRatio',
 }
 
 // Type for search parameters
@@ -64,8 +68,22 @@ export interface AppliedSearchFilter extends AppliedFilterBase {
   searchQuery: string;
 }
 
+// Interface for market cap filters
+export interface AppliedMarketCapFilter extends AppliedFilterBase {
+  type: FilterType.MARKET_CAP;
+  minValue?: number;
+  maxValue?: number;
+}
+
+// Interface for PE ratio filters
+export interface AppliedPERatioFilter extends AppliedFilterBase {
+  type: FilterType.PE_RATIO;
+  minValue?: number;
+  maxValue?: number;
+}
+
 // Union type for all filter types
-export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter;
+export type AppliedFilter = AppliedCategoryFilter | AppliedTotalFilter | AppliedSearchFilter | AppliedMarketCapFilter | AppliedPERatioFilter;
 
 // Type for selected filters map
 export type SelectedFiltersMap = Record<string, string>;
@@ -79,6 +97,8 @@ export interface FilterParams {
   [FilterParamKey.FAIR_VALUE]?: string;
   [FilterParamKey.TOTAL]?: string;
   [FilterParamKey.SEARCH]?: string;
+  [FilterParamKey.MARKET_CAP]?: string;
+  [FilterParamKey.PE_RATIO]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -131,6 +151,26 @@ export const TOTAL_SCORE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: '≥ 21', value: '21' },
 ] as const;
 
+// Market Cap options (in billions USD)
+export const MARKET_CAP_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Micro Cap (< $300M)', value: '0-300000000' },
+  { label: 'Small Cap ($300M - $2B)', value: '300000000-2000000000' },
+  { label: 'Mid Cap ($2B - $10B)', value: '2000000000-10000000000' },
+  { label: 'Large Cap ($10B - $200B)', value: '10000000000-200000000000' },
+  { label: 'Mega Cap (> $200B)', value: '200000000000-' },
+] as const;
+
+// PE Ratio options
+export const PE_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Low (< 15)', value: '0-15' },
+  { label: 'Moderate (15 - 25)', value: '15-25' },
+  { label: 'High (25 - 50)', value: '25-50' },
+  { label: 'Very High (> 50)', value: '50-' },
+  { label: 'Negative / No Earnings', value: 'negative' },
+] as const;
+
 /** ----- Client-side Helpers ----- */
 
 /**
@@ -147,6 +187,19 @@ export function buildInitialSelected(filters: ReadonlyArray<AppliedFilter>): Sel
       }
     } else if (filter.type === FilterType.TOTAL) {
       initial[FilterParamKey.TOTAL] = String(filter.threshold);
+    } else if (filter.type === FilterType.MARKET_CAP) {
+      const min = filter.minValue !== undefined ? filter.minValue : '';
+      const max = filter.maxValue !== undefined ? filter.maxValue : '';
+      initial[FilterParamKey.MARKET_CAP] = `${min}-${max}`;
+    } else if (filter.type === FilterType.PE_RATIO) {
+      const value = filter.label.includes('Negative') ? 'negative' : '';
+      if (!value) {
+        const min = filter.minValue !== undefined ? filter.minValue : '';
+        const max = filter.maxValue !== undefined ? filter.maxValue : '';
+        initial[FilterParamKey.PE_RATIO] = `${min}-${max}`;
+      } else {
+        initial[FilterParamKey.PE_RATIO] = value;
+      }
     }
   }
   return initial;
@@ -200,7 +253,86 @@ export function getAppliedFilters(searchParams: ReadonlyURLSearchParams): Applie
     }
   }
 
+  // Market Cap
+  const marketCapRaw: string | null = searchParams.get(FilterParamKey.MARKET_CAP);
+  if (marketCapRaw != null && marketCapRaw.trim().length > 0) {
+    const [minStr, maxStr] = marketCapRaw.split('-');
+    const minValue = minStr ? parseFloat(minStr) : undefined;
+    const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+
+    // Find matching label from options
+    const matchingOption = MARKET_CAP_OPTIONS.find((opt) => opt.value === marketCapRaw);
+    const label = matchingOption ? matchingOption.label : `Market Cap: ${formatMarketCap(minValue, maxValue)}`;
+
+    filters.push({
+      type: FilterType.MARKET_CAP,
+      minValue,
+      maxValue,
+      label,
+    });
+  }
+
+  // PE Ratio
+  const peRatioRaw: string | null = searchParams.get(FilterParamKey.PE_RATIO);
+  if (peRatioRaw != null && peRatioRaw.trim().length > 0) {
+    if (peRatioRaw === 'negative') {
+      filters.push({
+        type: FilterType.PE_RATIO,
+        label: 'PE Ratio: Negative / No Earnings',
+      });
+    } else {
+      const [minStr, maxStr] = peRatioRaw.split('-');
+      const minValue = minStr ? parseFloat(minStr) : undefined;
+      const maxValue = maxStr ? parseFloat(maxStr) : undefined;
+
+      // Find matching label from options
+      const matchingOption = PE_RATIO_OPTIONS.find((opt) => opt.value === peRatioRaw);
+      const label = matchingOption ? matchingOption.label : `PE Ratio: ${formatPERatio(minValue, maxValue)}`;
+
+      filters.push({
+        type: FilterType.PE_RATIO,
+        minValue,
+        maxValue,
+        label,
+      });
+    }
+  }
+
   return filters;
+}
+
+/**
+ * Helper function to format market cap for display
+ */
+function formatMarketCap(min?: number, max?: number): string {
+  const formatValue = (val: number): string => {
+    if (val >= 1e9) return `$${(val / 1e9).toFixed(1)}B`;
+    if (val >= 1e6) return `$${(val / 1e6).toFixed(1)}M`;
+    return `$${val}`;
+  };
+
+  if (min !== undefined && max !== undefined) {
+    return `${formatValue(min)} - ${formatValue(max)}`;
+  } else if (min !== undefined) {
+    return `> ${formatValue(min)}`;
+  } else if (max !== undefined) {
+    return `< ${formatValue(max)}`;
+  }
+  return 'Any';
+}
+
+/**
+ * Helper function to format PE ratio for display
+ */
+function formatPERatio(min?: number, max?: number): string {
+  if (min !== undefined && max !== undefined) {
+    return `${min} - ${max}`;
+  } else if (min !== undefined) {
+    return `> ${min}`;
+  } else if (max !== undefined) {
+    return `< ${max}`;
+  }
+  return 'Any';
 }
 
 /**
@@ -213,6 +345,8 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   }
   params.delete(FilterParamKey.TOTAL);
   params.delete(FilterParamKey.SEARCH);
+  params.delete(FilterParamKey.MARKET_CAP);
+  params.delete(FilterParamKey.PE_RATIO);
   return params;
 }
 
@@ -230,6 +364,10 @@ export function removeFilterFromParams(searchParams: ReadonlyURLSearchParams, fi
     params.delete(FilterParamKey.TOTAL);
   } else if (filterToRemove.type === FilterType.SEARCH) {
     params.delete(FilterParamKey.SEARCH);
+  } else if (filterToRemove.type === FilterType.MARKET_CAP) {
+    params.delete(FilterParamKey.MARKET_CAP);
+  } else if (filterToRemove.type === FilterType.PE_RATIO) {
+    params.delete(FilterParamKey.PE_RATIO);
   }
   return params;
 }
@@ -267,7 +405,10 @@ export const toSortedQueryString = (sp: SearchParams, country?: string): string 
 };
 
 export const hasFiltersApplied = (sp?: SearchParams): boolean =>
-  (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) || Boolean(toScalar(sp?.[FilterParamKey.SEARCH]));
+  (sp && Object.keys(sp).some((k) => k.includes('Threshold'))) ||
+  Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
+  Boolean(toScalar(sp?.[FilterParamKey.MARKET_CAP])) ||
+  Boolean(toScalar(sp?.[FilterParamKey.PE_RATIO]));
 
 /** ----- Server-side Helpers ----- */
 
@@ -294,6 +435,8 @@ export function parseFilterParams(req: NextRequest): FilterParams {
     [FilterParamKey.FAIR_VALUE]: searchParams.get(FilterParamKey.FAIR_VALUE) || undefined,
     [FilterParamKey.TOTAL]: searchParams.get(FilterParamKey.TOTAL) || undefined,
     [FilterParamKey.SEARCH]: searchParams.get(FilterParamKey.SEARCH) || undefined,
+    [FilterParamKey.MARKET_CAP]: searchParams.get(FilterParamKey.MARKET_CAP) || undefined,
+    [FilterParamKey.PE_RATIO]: searchParams.get(FilterParamKey.PE_RATIO) || undefined,
   };
 }
 
@@ -351,7 +494,59 @@ export function createTickerFilter(
     tickerFilter.cachedScoreEntry = { is: cacheFilter };
   }
 
+  // Apply financial info filters (Market Cap and PE Ratio)
+  const financialFilter = createFinancialInfoFilter(filters);
+  if (Object.keys(financialFilter).length > 0) {
+    tickerFilter.financialInfo = { is: financialFilter };
+  }
+
   return tickerFilter;
+}
+
+/**
+ * Create a financial info filter for market cap and PE ratio
+ */
+export function createFinancialInfoFilter(filters: FilterParams): Prisma.TickerV1FinancialInfoWhereInput {
+  const financialFilter: Prisma.TickerV1FinancialInfoWhereInput = {};
+
+  // Market Cap filter
+  const marketCapParam = filters[FilterParamKey.MARKET_CAP];
+  if (marketCapParam && marketCapParam.trim()) {
+    const [minStr, maxStr] = marketCapParam.split('-');
+    const min = minStr ? parseFloat(minStr) : undefined;
+    const max = maxStr ? parseFloat(maxStr) : undefined;
+
+    if (min !== undefined && max !== undefined) {
+      financialFilter.marketCap = { gte: min, lte: max };
+    } else if (min !== undefined) {
+      financialFilter.marketCap = { gte: min };
+    } else if (max !== undefined) {
+      financialFilter.marketCap = { lte: max };
+    }
+  }
+
+  // PE Ratio filter
+  const peRatioParam = filters[FilterParamKey.PE_RATIO];
+  if (peRatioParam && peRatioParam.trim()) {
+    if (peRatioParam === 'negative') {
+      // Filter for negative or null PE ratios
+      financialFilter.OR = [{ pe: { lt: 0 } }, { pe: null }];
+    } else {
+      const [minStr, maxStr] = peRatioParam.split('-');
+      const min = minStr ? parseFloat(minStr) : undefined;
+      const max = maxStr ? parseFloat(maxStr) : undefined;
+
+      if (min !== undefined && max !== undefined) {
+        financialFilter.pe = { gte: min, lte: max };
+      } else if (min !== undefined) {
+        financialFilter.pe = { gte: min };
+      } else if (max !== undefined) {
+        financialFilter.pe = { lte: max };
+      }
+    }
+  }
+
+  return financialFilter;
 }
 
 /**
@@ -364,6 +559,8 @@ export function hasFiltersAppliedServer(
 ): boolean {
   const hasScoreFilters = Object.keys(cacheFilter).length > 0;
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
+  const hasMarketCapFilter = !!filters[FilterParamKey.MARKET_CAP]?.trim();
+  const hasPERatioFilter = !!filters[FilterParamKey.PE_RATIO]?.trim();
 
-  return hasScoreFilters || hasSearchFilter;
+  return hasScoreFilters || hasSearchFilter || hasMarketCapFilter || hasPERatioFilter;
 }

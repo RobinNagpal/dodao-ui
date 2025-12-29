@@ -41,6 +41,12 @@ async function getHandler(
           symbol: true,
           exchange: true,
           cachedScoreEntry: true,
+          financialInfo: {
+            select: {
+              marketCap: true,
+              pe: true,
+            },
+          },
         },
         orderBy: [{ cachedScoreEntry: { finalScore: 'desc' } }, { name: 'asc' }, { symbol: 'asc' }],
       },

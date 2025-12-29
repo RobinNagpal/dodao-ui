@@ -9,6 +9,8 @@ import {
   CATEGORY_OPTIONS,
   CATEGORY_THRESHOLD_OPTIONS,
   TOTAL_SCORE_OPTIONS,
+  MARKET_CAP_OPTIONS,
+  PE_RATIO_OPTIONS,
   getAppliedFilters,
   buildInitialSelected,
   applySelectedFiltersToParams,
@@ -107,6 +109,32 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
     );
   };
 
+  const handleMarketCapChange = (value: string): void => {
+    setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
+      if (!value) {
+        const { [FilterParamKey.MARKET_CAP]: _, ...rest } = prev;
+        return rest;
+      }
+      return {
+        ...prev,
+        [FilterParamKey.MARKET_CAP]: value,
+      };
+    });
+  };
+
+  const handlePERatioChange = (value: string): void => {
+    setSelectedFilters((prev: SelectedFiltersMap): SelectedFiltersMap => {
+      if (!value) {
+        const { [FilterParamKey.PE_RATIO]: _, ...rest } = prev;
+        return rest;
+      }
+      return {
+        ...prev,
+        [FilterParamKey.PE_RATIO]: value,
+      };
+    });
+  };
+
   const handleClearAll = (): void => {
     setSelectedFilters({});
   };
@@ -161,6 +189,50 @@ function FilterModalContent({ initialSelected, onClose }: FilterModalContentProp
                 </label>
               ))}
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Financial Filters Section */}
+      <div>
+        <h3 className="text-[#E5E7EB] text-sm mb-3">Financial Metrics</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Market Cap Dropdown */}
+          <div className="bg-[#374151] rounded-lg p-4">
+            <label htmlFor="marketCap" className="block text-white mb-2 text-sm">
+              Market Cap
+            </label>
+            <select
+              id="marketCap"
+              value={selectedFilters[FilterParamKey.MARKET_CAP] || ''}
+              onChange={(e) => handleMarketCapChange(e.target.value)}
+              className="w-full bg-[#4B5563] text-white border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+            >
+              {MARKET_CAP_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* PE Ratio Dropdown */}
+          <div className="bg-[#374151] rounded-lg p-4">
+            <label htmlFor="peRatio" className="block text-white mb-2 text-sm">
+              PE Ratio
+            </label>
+            <select
+              id="peRatio"
+              value={selectedFilters[FilterParamKey.PE_RATIO] || ''}
+              onChange={(e) => handlePERatioChange(e.target.value)}
+              className="w-full bg-[#4B5563] text-white border border-[#6B7280] rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-[#4F46E5] focus:border-transparent"
+            >
+              {PE_RATIO_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
