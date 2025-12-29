@@ -5,6 +5,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { prisma } from '@/prisma';
 import { FavouriteTickerResponse, UpdateFavouriteTickerRequest } from '@/types/ticker-user';
 import { revalidatePortfolioProfileIfExists } from '@/utils/cache-actions';
+import { verifyUserRecordOwnership } from '@/utils/user-record-verification-utils';
 
 // PUT /api/favourite-tickers/[favouriteId] - Update a single favourite ticker
 async function putHandler(
@@ -15,26 +16,17 @@ async function putHandler(
   const { userId } = userContext;
   const { favouriteId } = await params;
 
-  if (!favouriteId) {
-    throw new Error('Favourite ID is required');
-  }
-
   // Verify the favourite belongs to the user
-  const existingFavourite = await prisma.favouriteTicker.findFirst({
-    where: {
-      id: favouriteId,
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
+  const existingFavourite = await verifyUserRecordOwnership(
+    prisma.favouriteTicker,
+    favouriteId,
+    userId,
+    'Favourite not found or you do not have permission to update it',
+    {
       tags: true,
       lists: true,
-    },
-  });
-
-  if (!existingFavourite) {
-    throw new Error('Favourite not found or you do not have permission to update it');
-  }
+    }
+  );
 
   const updateBody: UpdateFavouriteTickerRequest = await req.json();
 
@@ -121,22 +113,8 @@ async function deleteHandler(
   const { userId } = userContext;
   const { favouriteId } = await params;
 
-  if (!favouriteId) {
-    throw new Error('Favourite ID is required');
-  }
-
   // Verify the favourite belongs to the user
-  const existingFavourite = await prisma.favouriteTicker.findFirst({
-    where: {
-      id: favouriteId,
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-  });
-
-  if (!existingFavourite) {
-    throw new Error('Favourite not found or you do not have permission to delete it');
-  }
+  await verifyUserRecordOwnership(prisma.favouriteTicker, favouriteId, userId, 'Favourite not found or you do not have permission to delete it');
 
   await prisma.favouriteTicker.delete({
     where: {

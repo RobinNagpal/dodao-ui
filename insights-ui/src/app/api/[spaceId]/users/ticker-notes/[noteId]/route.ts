@@ -1,10 +1,10 @@
 import { NextRequest } from 'next/server';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { TickerV1Notes } from '@prisma/client';
 import { revalidatePortfolioProfileIfExists } from '@/utils/cache-actions';
+import { verifyUserRecordOwnership } from '@/utils/user-record-verification-utils';
 
 export type UpdateTickerNoteRequest = {
   notes?: string;
@@ -16,22 +16,8 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
   const { userId } = userContext;
   const { noteId } = await params;
 
-  if (!noteId) {
-    throw new Error('Note ID is required');
-  }
-
   // Verify the note belongs to the user
-  const existingNote = await prisma.tickerV1Notes.findFirst({
-    where: {
-      id: noteId,
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-  });
-
-  if (!existingNote) {
-    throw new Error('Note not found or you do not have permission to update it');
-  }
+  await verifyUserRecordOwnership(prisma.tickerV1Notes, noteId, userId, 'Note not found or you do not have permission to update it');
 
   const updateBody: UpdateTickerNoteRequest = await req.json();
 
@@ -58,22 +44,8 @@ async function deleteHandler(
   const { userId } = userContext;
   const { noteId } = await params;
 
-  if (!noteId) {
-    throw new Error('Note ID is required');
-  }
-
   // Verify the note belongs to the user
-  const existingNote = await prisma.tickerV1Notes.findFirst({
-    where: {
-      id: noteId,
-      userId: userId,
-      spaceId: KoalaGainsSpaceId,
-    },
-  });
-
-  if (!existingNote) {
-    throw new Error('Note not found or you do not have permission to delete it');
-  }
+  await verifyUserRecordOwnership(prisma.tickerV1Notes, noteId, userId, 'Note not found or you do not have permission to delete it');
 
   await prisma.tickerV1Notes.delete({
     where: {
