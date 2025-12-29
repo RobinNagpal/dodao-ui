@@ -185,7 +185,7 @@ export default function AddEditNotesModal({
                   onClick={() => setShowDeleteConfirmation(true)}
                   disabled={loading}
                   variant="outlined"
-                  className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
+                  className="text-red-500 border-red-500 hover:text-red-500 hover:border-red-600"
                 >
                   Delete Note
                 </Button>
@@ -216,9 +216,9 @@ export default function AddEditNotesModal({
         onClose={() => setShowDeleteConfirmation(false)}
         onDelete={handleDelete}
         deleting={deleting}
-        title="Delete Note"
+        title={`Delete note for ${tickerSymbol}?`}
         deleteButtonText="Delete Note"
-        confirmationText="Delete Note"
+        confirmationText="DELETE"
       />
     </FullPageModal>
   );

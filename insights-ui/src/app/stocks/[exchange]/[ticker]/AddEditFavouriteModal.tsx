@@ -17,11 +17,13 @@ import Input from '@dodao/web-core/components/core/input/Input';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ListBulletIcon, TagIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { parseMarkdown } from '@/util/parse-markdown';
+import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
 
 interface AddEditFavouriteModalProps {
   isOpen: boolean;
@@ -61,6 +63,7 @@ export default function AddEditFavouriteModal({
   const [selectedListIds, setSelectedListIds] = useState<string[]>([]);
   const [competitorsConsidered, setCompetitorsConsidered] = useState<TickerBasicsWithFinalScore[]>([]);
   const [betterAlternatives, setBetterAlternatives] = useState<TickerBasicsWithFinalScore[]>([]);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   // Post and Put hooks for favourites
   const { postData: createFavourite, loading: creating } = usePostData<FavouriteTickerResponse, CreateFavouriteTickerRequest>({
@@ -73,7 +76,12 @@ export default function AddEditFavouriteModal({
     errorMessage: 'Failed to update favourite.',
   });
 
-  const loading = creating || updating;
+  const { deleteData, loading: deleting } = useDeleteData<{ success: boolean }, void>({
+    successMessage: 'Favourite deleted!',
+    errorMessage: 'Failed to delete favourite.',
+  });
+
+  const loading = creating || updating || deleting;
 
   // Update form when favourite ticker changes
   useEffect(() => {
@@ -128,7 +136,7 @@ export default function AddEditFavouriteModal({
         betterAlternatives: betterAlternatives.map((b) => b.id),
       };
 
-      const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers?id=${favouriteTicker.id}`, updateData);
+      const result = await updateFavourite(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers/${favouriteTicker.id}`, updateData);
       if (result) {
         onUpsert();
         onSuccess?.();
@@ -152,6 +160,18 @@ export default function AddEditFavouriteModal({
         onSuccess?.();
         onClose();
       }
+    }
+  };
+
+  const handleDelete = async (): Promise<void> => {
+    if (!favouriteTicker) return;
+
+    const result = await deleteData(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/favourite-tickers/${favouriteTicker.id}`);
+    if (result) {
+      setShowDeleteConfirmation(false);
+      onUpsert();
+      onSuccess?.();
+      onClose();
     }
   };
 
@@ -376,21 +396,39 @@ export default function AddEditFavouriteModal({
         </div>
       </div>
       {/* Action Buttons */}
-      <div className="flex justify-end gap-3 pt-5 mt-2 border-t border-gray-700">
+      <div className="flex justify-between gap-3 pt-5 mt-2 border-t border-gray-700">
         {viewOnly ? (
-          <Button onClick={onClose} variant="contained" primary>
-            Close
-          </Button>
+          <div />
         ) : (
-          <>
-            <Button onClick={onClose} disabled={loading} variant="outlined">
-              Cancel
-            </Button>
-            <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
-              {favouriteTicker ? 'Update' : 'Add to'} Favourites
-            </Button>
-          </>
+          <div>
+            {favouriteTicker && (
+              <Button
+                onClick={() => setShowDeleteConfirmation(true)}
+                disabled={loading}
+                variant="outlined"
+                className="text-red-500 border-red-500 hover:text-red-500 hover:border-red-600"
+              >
+                Delete Favourite
+              </Button>
+            )}
+          </div>
         )}
+        <div className="flex gap-3">
+          {viewOnly ? (
+            <Button onClick={onClose} variant="contained" primary>
+              Close
+            </Button>
+          ) : (
+            <>
+              <Button onClick={onClose} disabled={loading} variant="outlined">
+                Cancel
+              </Button>
+              <Button onClick={handleSave} disabled={loading} loading={loading} variant="contained" primary>
+                {favouriteTicker ? 'Update' : 'Add to'} Favourites
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -403,6 +441,16 @@ export default function AddEditFavouriteModal({
       className="w-full max-w-2xl"
     >
       {renderMainView()}
+
+      <DeleteConfirmationModal
+        open={showDeleteConfirmation}
+        onClose={() => setShowDeleteConfirmation(false)}
+        onDelete={handleDelete}
+        deleting={deleting}
+        title={`Delete ${tickerSymbol} from favourites?`}
+        deleteButtonText="Delete Favourite"
+        confirmationText="DELETE"
+      />
     </FullPageModal>
   );
 }
