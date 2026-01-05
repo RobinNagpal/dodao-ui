@@ -1,0 +1,40 @@
+service: remotion-automated
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  timeout: 30
+  memorySize: 3008
+  httpApi:
+    cors: true
+  environment:
+    NODE_OPTIONS: "--enable-source-maps"
+    NODE_ENV: production
+
+package:
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "node_modules/@remotion/**"
+    - "node_modules/remotion/**"
+    - "node_modules/@aws-sdk/**"
+    - "node_modules/edge-tts-universal/**"
+
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: node20
+    platform: node
+    external: []
+
+functions:
+  # Single router function handles all routes/methods
+  api:
+    handler: src/handler.api
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
