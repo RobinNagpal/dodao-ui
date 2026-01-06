@@ -20,7 +20,7 @@ export const calculateDeckMetadata: CalculateMetadataFunction<{
 
       const secs = durationInSeconds ?? 0;
       return Math.max(1, Math.ceil(secs * fps) + paddingFrames);
-    }),
+    })
   );
 
   const durationInFrames = durationsInFrames.reduce((a, b) => a + b, 0);

@@ -20,12 +20,18 @@ export class S3Helper {
 
   /**
    * Upload a file to S3
+   * @param bucket - S3 bucket name
+   * @param key - S3 object key
+   * @param filePath - Local file path
+   * @param contentType - MIME type
+   * @param returnPresignedUrl - If true, returns a presigned URL instead of public URL
    */
   async uploadFile(
     bucket: string,
     key: string,
     filePath: string,
-    contentType?: string
+    contentType?: string,
+    returnPresignedUrl: boolean = false
   ): Promise<string> {
     const fileContent = fs.readFileSync(filePath);
 
@@ -38,6 +44,10 @@ export class S3Helper {
       })
     );
 
+    if (returnPresignedUrl) {
+      // Return presigned URL valid for 1 hour (enough for rendering)
+      return this.getPresignedUrl(bucket, key, 3600);
+    }
     return this.getS3Url(bucket, key);
   }
 

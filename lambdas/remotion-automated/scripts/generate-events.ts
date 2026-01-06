@@ -59,6 +59,16 @@ const MAP: Record<string, Mapping> = {
     },
   },
 
+  // Get render status
+  renderStatus: {
+    method: "POST",
+    path: "/render-status",
+    body: {
+      renderId: "test-render-id",
+      bucketName: "test-bucket",
+    },
+  },
+
   // Health check
   health: {
     method: "GET",

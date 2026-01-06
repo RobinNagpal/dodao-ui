@@ -1,25 +1,50 @@
-service: remotion-automated
+service: remotion-video-api-v2
 
 provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  timeout: 30
+  timeout: 30 # HTTP API max timeout is 30 seconds (async operations happen on Remotion Lambda)
   memorySize: 3008
   httpApi:
     cors: true
   environment:
     NODE_OPTIONS: "--enable-source-maps"
     NODE_ENV: production
+    REMOTION_APP_REGION: ${env:REMOTION_APP_REGION}
+    REMOTION_APP_FUNCTION_NAME: ${env:REMOTION_APP_FUNCTION_NAME}
+    REMOTION_APP_SERVE_URL: ${env:REMOTION_APP_SERVE_URL}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::remotionlambda-*
+            - arn:aws:s3:::remotionlambda-*/*
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource:
+            - arn:aws:lambda:*:*:function:remotion-*
 
 package:
   individually: true
   patterns:
     - "!node_modules/**"
-    - "node_modules/@remotion/**"
-    - "node_modules/remotion/**"
+    # Only include @remotion/lambda (light client for calling Remotion Lambda)
+    - "node_modules/@remotion/lambda/**"
+    - "node_modules/@remotion/lambda-client/**"
     - "node_modules/@aws-sdk/**"
     - "node_modules/edge-tts-universal/**"
+    - "node_modules/music-metadata/**"
+    - "node_modules/strtok3/**"
+    - "node_modules/token-types/**"
+    - "node_modules/peek-readable/**"
 
 build:
   esbuild:
@@ -28,7 +53,11 @@ build:
     sourcemap: true
     target: node20
     platform: node
-    external: []
+    format: cjs
+    external:
+      # Mark @remotion/lambda as external - loaded from node_modules at runtime
+      - "@remotion/lambda"
+      - "@remotion/lambda-client"
 
 functions:
   # Single router function handles all routes/methods

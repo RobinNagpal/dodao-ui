@@ -42,10 +42,11 @@ export async function generateAudioToS3(
   const localPath = path.join(tmpDir, `${slideId}.mp3`);
   fs.writeFileSync(localPath, audioBuffer);
 
-  // Upload to S3
+  // Upload to S3 and get presigned URL for Remotion Lambda to access
   const s3Helper = new S3Helper();
-  const s3Key = `${keyPrefix}audio/${slideId}.mp3`;
-  const audioUrl = await s3Helper.uploadFile(bucket, s3Key, localPath, "audio/mpeg");
+  const s3Key = `${keyPrefix}audios/${slideId}.mp3`;
+  // Use presigned URL so Remotion Lambda can download the audio file
+  const audioUrl = await s3Helper.uploadFile(bucket, s3Key, localPath, "audio/mpeg", true);
 
   // Estimate duration (rough approximation based on narration length)
   // For more accurate duration, you'd need to parse the audio file
@@ -53,7 +54,7 @@ export async function generateAudioToS3(
   const words = narration.split(/\s+/).length;
   const duration = (words / wordsPerMinute) * 60;
 
-  console.log(`Audio generated for slide ${slideId}: ${audioUrl}`);
+  console.log(`Audio generated for slide ${slideId}: ${audioUrl.substring(0, 80)}...`);
 
   return { audioUrl, duration, localPath };
 }

@@ -1,0 +1,16 @@
+{
+  "clips": [
+    {
+      "s3Url": "s3://remotionlambda-useast1-ele686axd8/renders/uqcb7ev68a/test-videos/test-title-001.mp4"
+    },
+    {
+      "s3Url": "s3://remotionlambda-useast1-ele686axd8/renders/3mw9ulu2bd/test-videos/test-bullets-002.mp4"
+    },
+    {
+      "s3Url": "s3://remotionlambda-useast1-ele686axd8/renders/e7o86xztzs/test-videos/test-paragraphs-003.mp4"
+    }
+  ],
+  "outputKey": "merged/final-output.mp4",
+  "paddingSeconds": 1
+}
+

@@ -8,7 +8,7 @@ ORIGIN ?= http://localhost:3000
 # ==============
 # Phony targets
 # ==============
-.PHONY: help print-config install test-single-slide test-concatenate invoke-generate-slide invoke-concatenate invoke-options deploy deploy-prod
+.PHONY: help print-config install test-single-slide test-concatenate invoke-generate-slide invoke-concatenate invoke-render-status invoke-options deploy deploy-prod
 
 help:
 	@echo ""
@@ -18,6 +18,7 @@ help:
 	@echo "  make test-single-slide    Run local single slide test"
 	@echo "  make test-concatenate     Run local concatenation test"
 	@echo "  make invoke-generate-slide  Invoke generate-slide via serverless local"
+	@echo "  make invoke-render-status   Invoke render-status via serverless local"
 	@echo "  make invoke-concatenate   Invoke concatenate-videos via serverless local"
 	@echo "  make invoke-options       Test OPTIONS preflight"
 	@echo "  make deploy               Deploy to AWS (dev stage)"
@@ -51,6 +52,9 @@ endef
 # Invoke endpoints
 invoke-generate-slide:
 	$(call INVOKE_INLINE,generateSlide)
+
+invoke-render-status:
+	$(call INVOKE_INLINE,renderStatus)
 
 invoke-concatenate:
 	$(call INVOKE_INLINE,concatenateVideos)

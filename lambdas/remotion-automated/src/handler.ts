@@ -5,9 +5,12 @@ import type {
   GenerateSlideVideoResponse,
   ConcatenateVideosRequest,
   ConcatenateVideosResponse,
+  GetRenderStatusRequest,
+  GetRenderStatusResponse,
 } from "./api/types";
 import { renderSingleSlide } from "./api/render-single-slide";
-import { concatenateVideos as concatenateVideosService } from "./api/concatenate-videos";
+import { concatenateVideosRemotion } from "./api/concatenate-videos-remotion";
+import { getRenderStatus as getRenderStatusService } from "./api/get-render-status";
 
 /* --------------------------- shared types & headers -------------------------- */
 
@@ -127,6 +130,21 @@ export const concatenateVideos = async (
     };
   }
 
+  if (
+    !request.renderIds ||
+    !Array.isArray(request.renderIds) ||
+    request.renderIds.length !== request.videoUrls.length
+  ) {
+    return {
+      statusCode: 400,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        success: false,
+        error: "Missing or invalid renderIds array (must match videoUrls length)",
+      }),
+    };
+  }
+
   if (!request.outputBucket || !request.outputKey) {
     return {
       statusCode: 400,
@@ -139,7 +157,8 @@ export const concatenateVideos = async (
   }
 
   try {
-    const response: ConcatenateVideosResponse = await concatenateVideosService(request);
+    // Use Remotion Lambda for concatenation (async)
+    const response: ConcatenateVideosResponse = await concatenateVideosRemotion(request);
 
     return {
       statusCode: response.success ? 200 : 500,
@@ -148,6 +167,53 @@ export const concatenateVideos = async (
     };
   } catch (error) {
     console.error("Error in concatenateVideos:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        success: false,
+        error: error instanceof Error ? error.message : String(error),
+      }),
+    };
+  }
+};
+
+/**
+ * Handler: Get render status
+ * POST /render-status
+ */
+export const getRenderStatus = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  console.log("Get Render Status request received");
+
+  const parsed = parseBodyOr400(event);
+  if (!parsed.ok) return parsed.res;
+
+  const request: GetRenderStatusRequest = parsed.body;
+
+  // Validate request
+  if (!request.renderId || !request.bucketName) {
+    return {
+      statusCode: 400,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        success: false,
+        error: "Missing required fields: renderId, bucketName",
+      }),
+    };
+  }
+
+  try {
+    const response: GetRenderStatusResponse = await getRenderStatusService(request);
+
+    return {
+      statusCode: response.success ? 200 : 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify(response),
+    };
+  } catch (error) {
+    console.error("Error in getRenderStatus:", error);
     return {
       statusCode: 500,
       headers: JSON_HEADERS,
@@ -201,6 +267,8 @@ export const api = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyR
         return generateSlide(event);
       case "/concatenate-videos":
         return concatenateVideos(event);
+      case "/render-status":
+        return getRenderStatus(event);
     }
   }
 
