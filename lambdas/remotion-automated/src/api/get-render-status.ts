@@ -1,23 +1,6 @@
 // Get Render Status Service
 import { getRenderProgress } from "@remotion/lambda";
-
-export interface GetRenderStatusRequest {
-  renderId: string;
-  bucketName: string;
-}
-
-export interface GetRenderStatusResponse {
-  success: boolean;
-  renderId: string;
-  done: boolean;
-  overallProgress: number; // 0-1
-  outputFile?: string; // S3 key when done
-  outputUrl?: string; // Full S3 URL when done
-  errors?: string[];
-  currentStep?: string;
-  estimatedTimeRemaining?: number; // seconds
-  error?: string;
-}
+import type { GetRenderStatusRequest, GetRenderStatusResponse } from "./types";
 
 /**
  * Get the status of a Remotion Lambda render

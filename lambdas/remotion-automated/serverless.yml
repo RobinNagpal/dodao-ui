@@ -14,6 +14,7 @@ provider:
     REMOTION_APP_REGION: ${env:REMOTION_APP_REGION}
     REMOTION_APP_FUNCTION_NAME: ${env:REMOTION_APP_FUNCTION_NAME}
     REMOTION_APP_SERVE_URL: ${env:REMOTION_APP_SERVE_URL}
+    GOOGLE_API_KEY: ${env:GOOGLE_API_KEY}
   iam:
     role:
       statements:
@@ -23,6 +24,7 @@ provider:
             - s3:PutObject
             - s3:DeleteObject
             - s3:ListBucket
+            - s3:HeadObject
           Resource:
             - arn:aws:s3:::remotionlambda-*
             - arn:aws:s3:::remotionlambda-*/*
@@ -40,6 +42,7 @@ package:
     - "node_modules/@remotion/lambda/**"
     - "node_modules/@remotion/lambda-client/**"
     - "node_modules/@aws-sdk/**"
+    - "node_modules/@google/generative-ai/**"
     - "node_modules/edge-tts-universal/**"
     - "node_modules/music-metadata/**"
     - "node_modules/strtok3/**"

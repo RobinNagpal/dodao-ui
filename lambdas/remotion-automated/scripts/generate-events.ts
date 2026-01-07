@@ -31,7 +31,9 @@ function parseArgs(): Args {
 type Mapping = { method: HttpMethod; path: string; body?: any };
 
 const MAP: Record<string, Mapping> = {
-  // Generate single slide
+  // === Legacy Endpoints ===
+
+  // Generate single slide (legacy)
   generateSlide: {
     method: "POST",
     path: "/generate-slide",
@@ -43,7 +45,7 @@ const MAP: Record<string, Mapping> = {
         bullets: ["Point one", "Point two", "Point three"],
         narration: "This is a test narration for the slide.",
       },
-      outputBucket: "test-bucket",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
       outputPrefix: "test/",
     },
   },
@@ -54,7 +56,8 @@ const MAP: Record<string, Mapping> = {
     path: "/concatenate-videos",
     body: {
       videoUrls: ["test/videos/test-001.mp4", "test/videos/test-002.mp4"],
-      outputBucket: "test-bucket",
+      renderIds: ["render-id-001", "render-id-002"],
+      outputBucket: "remotionlambda-useast1-ele686axd8",
       outputKey: "test/final/concatenated.mp4",
     },
   },
@@ -65,7 +68,120 @@ const MAP: Record<string, Mapping> = {
     path: "/render-status",
     body: {
       renderId: "test-render-id",
-      bucketName: "test-bucket",
+      bucketName: "remotionlambda-useast1-ele686axd8",
+    },
+  },
+
+  // === New Endpoints ===
+
+  // Save preferences
+  savePreferences: {
+    method: "POST",
+    path: "/save-preferences",
+    body: {
+      presentationId: "test-presentation-001",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+      voice: "en-US-JennyNeural",
+      slides: [
+        {
+          slideNumber: "01",
+          slide: {
+            id: "001",
+            type: "title",
+            title: "Welcome to Our Presentation",
+            subtitle: "An Introduction to Testing",
+            narration:
+              "Welcome to our presentation. Today we will explore the world of automated testing and video generation.",
+          },
+        },
+        {
+          slideNumber: "02",
+          slide: {
+            id: "002",
+            type: "bullets",
+            title: "Key Points",
+            bullets: [
+              "First important point about our topic",
+              "Second crucial aspect to consider",
+              "Third element that ties everything together",
+            ],
+            bulletAccents: ["important point", "crucial aspect", "ties everything together"],
+            narration:
+              "Let's discuss the key points. First, we have an important point about our topic. Second, there's a crucial aspect to consider. And third, an element that ties everything together.",
+          },
+        },
+      ],
+    },
+  },
+
+  // Generate from prompt (AI generation)
+  generateFromPrompt: {
+    method: "POST",
+    path: "/generate-from-prompt",
+    body: {
+      presentationId: "ai-generated-001",
+      prompt:
+        "Create a presentation about the benefits of remote work. Include statistics, productivity tips, and work-life balance aspects.",
+      numberOfSlides: 5,
+      additionalInstructions: "Make it engaging and use data from recent studies.",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+      voice: "en-US-JennyNeural",
+    },
+  },
+
+  // Generate slide image
+  generateSlideImage: {
+    method: "POST",
+    path: "/generate-slide-image",
+    body: {
+      presentationId: "test-presentation-001",
+      slideNumber: "01",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+    },
+  },
+
+  // Generate slide audio
+  generateSlideAudio: {
+    method: "POST",
+    path: "/generate-slide-audio",
+    body: {
+      presentationId: "test-presentation-001",
+      slideNumber: "01",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+      voice: "en-US-JennyNeural",
+    },
+  },
+
+  // Generate slide video only (requires existing audio)
+  generateSlideVideo: {
+    method: "POST",
+    path: "/generate-slide-video",
+    body: {
+      presentationId: "test-presentation-001",
+      slideNumber: "01",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+    },
+  },
+
+  // Generate slide all (audio + image + video)
+  generateSlideAll: {
+    method: "POST",
+    path: "/generate-slide-all",
+    body: {
+      presentationId: "test-presentation-001",
+      slideNumber: "01",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
+      voice: "en-US-JennyNeural",
+    },
+  },
+
+  // Get presentation status
+  presentationStatus: {
+    method: "POST",
+    path: "/presentation-status",
+    body: {
+      presentationId: "test-presentation-001",
+      outputBucket: "remotionlambda-useast1-ele686axd8",
     },
   },
 
