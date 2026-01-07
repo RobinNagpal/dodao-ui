@@ -1,0 +1,11 @@
+node_modules
+.git
+.env
+*.log
+.DS_Store
+README.md
+deploy.sh
+test-payload.json
+src/
+tsconfig.json
+

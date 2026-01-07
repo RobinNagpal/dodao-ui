@@ -1,0 +1,11 @@
+{
+  "clips": [
+    {
+      "s3Url": "your-s3-url-1"
+    },
+    {
+      "s3Url": "your-s3-url-2"
+    }
+  ],
+  "outputKey": "your-output-key.mp4"
+}
