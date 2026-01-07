@@ -78,57 +78,13 @@ function extractS3Key(s3Url: string): string {
   return s3Url;
 }
 
-/**
- * Add padding to a video clip using FFmpeg
- */
-function addPaddingToVideo(inputPath: string, outputPath: string, paddingSeconds: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    console.log(`Adding ${paddingSeconds}s padding to ${inputPath}...`);
-    
-    // Create a black frame with the same dimensions as the video
-    // We'll use tpad filter to add padding at the end
-    const args = [
-      '-i', inputPath,
-      '-vf', `tpad=stop_mode=clone:stop_duration=${paddingSeconds}`,
-      '-af', `apad=pad_dur=${paddingSeconds}`,
-      '-c:v', 'libx264',
-      '-preset', 'fast',
-      '-c:a', 'aac',
-      '-y',
-      outputPath
-    ];
-
-    const ffmpeg = spawn('ffmpeg', args);
-    
-    let stderr = '';
-    
-    ffmpeg.stderr.on('data', (data) => {
-      stderr += data.toString();
-      console.log(`FFmpeg: ${data.toString()}`);
-    });
-
-    ffmpeg.on('close', (code) => {
-      if (code === 0) {
-        console.log(`Successfully added padding to ${inputPath}`);
-        resolve();
-      } else {
-        console.error(`FFmpeg error: ${stderr}`);
-        reject(new Error(`FFmpeg exited with code ${code}: ${stderr}`));
-      }
-    });
-
-    ffmpeg.on('error', (err) => {
-      reject(err);
-    });
-  });
-}
 
 /**
- * Merge multiple video clips using FFmpeg concat demuxer
+ * Merge multiple video clips using FFmpeg concat demuxer with stream copy
  */
-function mergeVideos(inputPaths: string[], outputPath: string): Promise<void> {
+function mergeVideosWithStreamCopy(inputPaths: string[], outputPath: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    console.log(`Merging ${inputPaths.length} videos...`);
+    console.log(`Merging ${inputPaths.length} videos with stream copy (no re-encoding)...`);
     
     // Create concat file
     const concatFilePath = path.join(TMP_DIR, 'concat.txt');
@@ -137,16 +93,13 @@ function mergeVideos(inputPaths: string[], outputPath: string): Promise<void> {
     
     console.log(`Concat file content:\n${concatContent}`);
 
-    // Use concat demuxer for fast concatenation without re-encoding
-    // But we need to re-encode to ensure compatibility
+    // Try stream copy first for maximum speed
     const args = [
       '-f', 'concat',
       '-safe', '0',
       '-i', concatFilePath,
-      '-c:v', 'libx264',
-      '-preset', 'fast',
-      '-c:a', 'aac',
-      '-strict', 'experimental',
+      '-c', 'copy',  // Stream copy - no re-encoding!
+      '-avoid_negative_ts', 'make_zero',
       '-y',
       outputPath
     ];
@@ -169,7 +122,67 @@ function mergeVideos(inputPaths: string[], outputPath: string): Promise<void> {
       }
 
       if (code === 0) {
-        console.log('Successfully merged videos');
+        console.log('Successfully merged videos with stream copy');
+        resolve();
+      } else {
+        console.error(`Stream copy failed: ${stderr}`);
+        console.log('Falling back to re-encoding...');
+        // Fall back to re-encoding
+        mergeVideosWithReencoding(inputPaths, outputPath).then(resolve).catch(reject);
+      }
+    });
+
+    ffmpeg.on('error', (err) => {
+      reject(err);
+    });
+  });
+}
+
+/**
+ * Merge multiple video clips using FFmpeg with re-encoding (fallback)
+ */
+function mergeVideosWithReencoding(inputPaths: string[], outputPath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    console.log(`Merging ${inputPaths.length} videos with re-encoding...`);
+    
+    // Create concat file
+    const concatFilePath = path.join(TMP_DIR, 'concat.txt');
+    const concatContent = inputPaths.map(p => `file '${p}'`).join('\n');
+    fs.writeFileSync(concatFilePath, concatContent);
+
+    // Re-encode with fast settings
+    const args = [
+      '-f', 'concat',
+      '-safe', '0',
+      '-i', concatFilePath,
+      '-c:v', 'libx264',
+      '-preset', 'ultrafast',
+      '-crf', '23',
+      '-c:a', 'aac',
+      '-b:a', '128k',
+      '-y',
+      outputPath
+    ];
+
+    const ffmpeg = spawn('ffmpeg', args);
+    
+    let stderr = '';
+    
+    ffmpeg.stderr.on('data', (data) => {
+      stderr += data.toString();
+      console.log(`FFmpeg: ${data.toString()}`);
+    });
+
+    ffmpeg.on('close', (code) => {
+      // Clean up concat file
+      try {
+        fs.unlinkSync(concatFilePath);
+      } catch (e) {
+        console.warn('Failed to clean up concat file:', e);
+      }
+
+      if (code === 0) {
+        console.log('Successfully merged videos with re-encoding');
         resolve();
       } else {
         console.error(`FFmpeg error: ${stderr}`);
@@ -187,10 +200,10 @@ function mergeVideos(inputPaths: string[], outputPath: string): Promise<void> {
  * Main Lambda handler
  */
 export async function handler(event: MergeRequest): Promise<MergeResponse> {
+  const startTime = Date.now();
   console.log('Received event:', JSON.stringify(event, null, 2));
   
   const clips = event.clips || [];
-  const paddingSeconds = event.paddingSeconds || 1;
   const outputKey = event.outputKey || `merged/output-${Date.now()}.mp4`;
 
   if (!clips || clips.length === 0) {
@@ -218,27 +231,21 @@ export async function handler(event: MergeRequest): Promise<MergeResponse> {
       tempFiles.push(localPath);
     }
 
-    // Step 2: Add padding to each clip
-    const paddedPaths: string[] = [];
-    for (let i = 0; i < downloadedPaths.length; i++) {
-      const inputPath = downloadedPaths[i];
-      const paddedPath = path.join(TMP_DIR, `padded-${i}.mp4`);
-      
-      await addPaddingToVideo(inputPath, paddedPath, paddingSeconds);
-      paddedPaths.push(paddedPath);
-      tempFiles.push(paddedPath);
-    }
+    // Step 2: Use downloaded videos directly (no padding needed - Remotion clips have built-in padding)
+    console.log('Using videos directly for maximum speed - no padding processing needed!');
+    const videoPaths = downloadedPaths;
 
     // Step 3: Merge all padded clips
     const mergedPath = path.join(TMP_DIR, 'merged-output.mp4');
     tempFiles.push(mergedPath);
     
-    await mergeVideos(paddedPaths, mergedPath);
+    await mergeVideosWithStreamCopy(videoPaths, mergedPath);
 
     // Step 4: Upload merged video to S3
     const s3Url = await uploadToS3(mergedPath, outputKey);
 
-    console.log('Video merge completed successfully');
+    const duration = Date.now() - startTime;
+    console.log(`Video merge completed successfully in ${duration}ms`);
 
     const result: MergeResult = {
       success: true,

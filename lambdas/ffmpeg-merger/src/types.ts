@@ -6,7 +6,6 @@ export interface VideoClip {
 export interface MergeRequest {
   clips: VideoClip[];
   outputKey?: string;
-  paddingSeconds?: number;
 }
 
 export interface MergeResponse {
