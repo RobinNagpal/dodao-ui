@@ -55,10 +55,7 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
   }
 
   if (videoClips.length === 0) {
-    return NextResponse.json(
-      { error: 'No videos found. Please generate slide videos first.' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'No videos found. Please generate slide videos first.' }, { status: 400 });
   }
 
   if (missingVideos.length > 0) {
@@ -91,33 +88,23 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
     const response = await lambdaClient.send(command);
 
     // Parse response
-    const responsePayload = response.Payload
-      ? JSON.parse(Buffer.from(response.Payload).toString())
-      : null;
+    const responsePayload = response.Payload ? JSON.parse(Buffer.from(response.Payload).toString()) : null;
 
     if (response.FunctionError) {
       console.error('FFmpeg Lambda error:', responsePayload);
-      return NextResponse.json(
-        { error: responsePayload?.errorMessage || 'FFmpeg Lambda execution failed' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: responsePayload?.errorMessage || 'FFmpeg Lambda execution failed' }, { status: 500 });
     }
 
     // Parse the body from Lambda response
     let result;
     if (responsePayload?.body) {
-      result = typeof responsePayload.body === 'string' 
-        ? JSON.parse(responsePayload.body) 
-        : responsePayload.body;
+      result = typeof responsePayload.body === 'string' ? JSON.parse(responsePayload.body) : responsePayload.body;
     } else {
       result = responsePayload;
     }
 
     if (!result?.success) {
-      return NextResponse.json(
-        { error: result?.error || 'Failed to merge videos' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: result?.error || 'Failed to merge videos' }, { status: 500 });
     }
 
     return NextResponse.json({
@@ -129,12 +116,8 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
     });
   } catch (error: any) {
     console.error('Failed to invoke FFmpeg Lambda:', error);
-    return NextResponse.json(
-      { error: `Failed to invoke FFmpeg Lambda: ${error.message}` },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: `Failed to invoke FFmpeg Lambda: ${error.message}` }, { status: 500 });
   }
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);
-

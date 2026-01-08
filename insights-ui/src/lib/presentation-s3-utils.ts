@@ -4,6 +4,8 @@ import {
   PutObjectCommand,
   ListObjectsV2Command,
   HeadObjectCommand,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { PresentationPreferences, PresentationSummary, SlideStatus, Slide } from '@/types/presentation/presentation-types';
@@ -62,10 +64,7 @@ export async function getJsonFromS3<T>(key: string): Promise<T | null> {
       })
     );
 
-    const body =
-      response.Body instanceof Readable
-        ? await streamToString(response.Body)
-        : await new Response(response.Body as ReadableStream).text();
+    const body = response.Body instanceof Readable ? await streamToString(response.Body) : await new Response(response.Body as ReadableStream).text();
 
     return JSON.parse(body) as T;
   } catch (error: any) {
@@ -89,6 +88,179 @@ export async function putJsonToS3(key: string, data: any): Promise<string> {
     })
   );
   return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
+}
+
+/**
+ * Upload file to S3 (for images)
+ */
+export async function uploadFileToS3(key: string, body: Buffer, contentType: string): Promise<string> {
+  await s3Client.send(
+    new PutObjectCommand({
+      Bucket: BUCKET_NAME,
+      Key: key,
+      Body: body,
+      ContentType: contentType,
+      ACL: 'public-read', // Make images public so Remotion Lambda can access them
+    })
+  );
+  return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
+}
+
+/**
+ * Delete a single object from S3
+ */
+export async function deleteFromS3(key: string): Promise<boolean> {
+  try {
+    await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: key,
+      })
+    );
+    return true;
+  } catch (error) {
+    console.error(`Failed to delete ${key}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Delete all objects with a given prefix from S3
+ */
+export async function deleteAllWithPrefix(prefix: string): Promise<boolean> {
+  try {
+    // First, list all objects with the prefix
+    const listResponse = await s3Client.send(
+      new ListObjectsV2Command({
+        Bucket: BUCKET_NAME,
+        Prefix: prefix,
+      })
+    );
+
+    if (!listResponse.Contents || listResponse.Contents.length === 0) {
+      return true; // Nothing to delete
+    }
+
+    // Delete all objects
+    const objectsToDelete = listResponse.Contents.map((obj) => ({ Key: obj.Key! }));
+
+    await s3Client.send(
+      new DeleteObjectsCommand({
+        Bucket: BUCKET_NAME,
+        Delete: {
+          Objects: objectsToDelete,
+          Quiet: true,
+        },
+      })
+    );
+
+    return true;
+  } catch (error) {
+    console.error(`Failed to delete objects with prefix ${prefix}:`, error);
+    return false;
+  }
+}
+
+/**
+ * Delete entire presentation from S3
+ */
+export async function deletePresentation(presentationId: string): Promise<boolean> {
+  const prefix = `${PRESENTATIONS_PREFIX}/${presentationId}/`;
+  return deleteAllWithPrefix(prefix);
+}
+
+/**
+ * Delete a slide from presentation (removes from preferences and deletes artifacts)
+ */
+export async function deleteSlideFromPresentation(presentationId: string, slideNumber: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    // First, get the current preferences
+    const preferences = await getPresentationPreferences(presentationId);
+    if (!preferences) {
+      return { success: false, error: 'Presentation not found' };
+    }
+
+    // Remove the slide from preferences
+    const updatedSlides = preferences.slides.filter((s) => s.slideNumber !== slideNumber);
+
+    if (updatedSlides.length === preferences.slides.length) {
+      return { success: false, error: 'Slide not found' };
+    }
+
+    // Renumber remaining slides
+    const renumberedSlides = updatedSlides.map((s, index) => ({
+      ...s,
+      slideNumber: String(index + 1).padStart(2, '0'),
+    }));
+
+    // Save updated preferences
+    const updatedPreferences = {
+      ...preferences,
+      slides: renumberedSlides,
+    };
+    await savePresentationPreferences(updatedPreferences);
+
+    // Delete slide artifacts
+    const slidePrefix = `${PRESENTATIONS_PREFIX}/${presentationId}/output/${slideNumber}-slide/`;
+    await deleteAllWithPrefix(slidePrefix);
+
+    return { success: true };
+  } catch (error: any) {
+    console.error(`Failed to delete slide ${slideNumber}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Add a new slide to presentation
+ */
+export async function addSlideToPresentation(presentationId: string, slide: any): Promise<{ success: boolean; slideNumber?: string; error?: string }> {
+  try {
+    console.log('Getting preferences for:', presentationId);
+    const preferences = await getPresentationPreferences(presentationId);
+    if (!preferences) {
+      console.log('Presentation not found:', presentationId);
+      return { success: false, error: 'Presentation not found' };
+    }
+
+    console.log('Current preferences slides count:', preferences.slides.length);
+
+    const newSlideNumber = String(preferences.slides.length + 1).padStart(2, '0');
+    const newSlide = {
+      slideNumber: newSlideNumber,
+      slide: {
+        ...slide,
+        id: slide.id || `slide-${preferences.slides.length + 1}`,
+      },
+    };
+
+    // Create updated preferences with new slide and updated timestamp
+    const updatedPreferences = {
+      ...preferences,
+      slides: [...preferences.slides, newSlide],
+      updatedAt: new Date().toISOString(),
+    };
+
+    console.log('Saving updated preferences with', updatedPreferences.slides.length, 'slides');
+
+    const savedUrl = await savePresentationPreferences(updatedPreferences);
+    console.log('Preferences saved to:', savedUrl);
+
+    // Verify the save by reading back (helps with debugging)
+    const verifyPrefs = await getPresentationPreferences(presentationId);
+    console.log('Verification - slides count after save:', verifyPrefs?.slides.length);
+
+    if (!verifyPrefs || verifyPrefs.slides.length !== updatedPreferences.slides.length) {
+      console.error('Verification failed - slide count mismatch');
+      return { success: false, error: 'Failed to verify slide was saved' };
+    }
+
+    console.log('Slide added successfully:', newSlideNumber);
+    return { success: true, slideNumber: newSlideNumber };
+  } catch (error: any) {
+    console.error('Error adding slide:', error);
+    return { success: false, error: error.message };
+  }
 }
 
 /**
@@ -139,14 +311,22 @@ export async function listPresentations(): Promise<PresentationSummary[]> {
  */
 export async function getPresentationPreferences(presentationId: string): Promise<PresentationPreferences | null> {
   const key = `${PRESENTATIONS_PREFIX}/${presentationId}/inputs/slide-and-script-preferences.json`;
-  return getJsonFromS3<PresentationPreferences>(key);
+  console.log('Getting presentation preferences from key:', key);
+  const result = await getJsonFromS3<PresentationPreferences>(key);
+  console.log('Got preferences:', result);
+  return result;
 }
 
 /**
  * Save presentation preferences
  */
 export async function savePresentationPreferences(preferences: PresentationPreferences): Promise<string> {
-  const key = `${PRESENTATIONS_PREFIX}/${preferences.presentationId}/inputs/slide-and-script-preferences.json`;
+  // Extract the actual presentation ID from the preferences.presentationId
+  // preferences.presentationId is like "presentations/hassaan-test"
+  // We need to extract "hassaan-test"
+  const presentationId = preferences.presentationId.replace(`${PRESENTATIONS_PREFIX}/`, '');
+  const key = `${PRESENTATIONS_PREFIX}/${presentationId}/inputs/slide-and-script-preferences.json`;
+  console.log('Saving presentation preferences to key:', key, 'with data:', preferences);
   return putJsonToS3(key, preferences);
 }
 
@@ -261,10 +441,7 @@ interface SlideRenderMetadata {
 /**
  * Get render metadata for a slide
  */
-export async function getRenderMetadata(
-  presentationId: string,
-  slideNumber: string
-): Promise<SlideRenderMetadata | null> {
+export async function getRenderMetadata(presentationId: string, slideNumber: string): Promise<SlideRenderMetadata | null> {
   const key = `${PRESENTATIONS_PREFIX}/${presentationId}/output/${slideNumber}-slide/render-metadata.json`;
   return getJsonFromS3<SlideRenderMetadata>(key);
 }
@@ -339,7 +516,7 @@ async function checkAndUpdateRenderStatus(
     // If render is complete, update the metadata
     if (result.done) {
       const metadataKey = `${PRESENTATIONS_PREFIX}/${presentationId}/output/${slideNumber}-slide/render-metadata.json`;
-      const currentMetadata = await getJsonFromS3<SlideRenderMetadata>(metadataKey) || {};
+      const currentMetadata = (await getJsonFromS3<SlideRenderMetadata>(metadataKey)) || {};
 
       // Update the render info
       const updatedRenderInfo: RenderInfo = {
@@ -368,4 +545,3 @@ async function checkAndUpdateRenderStatus(
     return null;
   }
 }
-

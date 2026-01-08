@@ -161,4 +161,3 @@ export const AVAILABLE_VOICES = [
 ];
 
 export const DEFAULT_VOICE = 'en-US-JennyNeural';
-

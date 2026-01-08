@@ -16,14 +16,7 @@ export interface SlideContentModalProps {
 
 const SLIDE_TYPES: SlideType[] = ['title', 'bullets', 'paragraphs', 'image'];
 
-export default function SlideContentModal({
-  open,
-  onClose,
-  slide,
-  slideNumber,
-  onSave,
-  readOnly = false,
-}: SlideContentModalProps) {
+export default function SlideContentModal({ open, onClose, slide, slideNumber, onSave, readOnly = false }: SlideContentModalProps) {
   const [editedSlide, setEditedSlide] = useState<Slide | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -86,20 +79,14 @@ export default function SlideContentModal({
             className="flex-1 px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
           />
           {isEditing && (
-            <button
-              onClick={() => handleRemoveArrayItem(field, index)}
-              className="px-3 py-2 text-red-500 hover:bg-red-100 rounded-md"
-            >
+            <button onClick={() => handleRemoveArrayItem(field, index)} className="px-3 py-2 text-red-500 hover:bg-red-100 rounded-md">
               ×
             </button>
           )}
         </div>
       ))}
       {isEditing && (
-        <button
-          onClick={() => handleAddArrayItem(field)}
-          className="text-sm text-blue-500 hover:underline"
-        >
+        <button onClick={() => handleAddArrayItem(field)} className="text-sm text-blue-500 hover:underline">
           + Add item
         </button>
       )}
@@ -112,11 +99,7 @@ export default function SlideContentModal({
         {/* Edit Toggle */}
         {!readOnly && (
           <div className="mb-4 flex justify-end">
-            <Button
-              onClick={() => setIsEditing(!isEditing)}
-              variant="outlined"
-              size="sm"
-            >
+            <Button onClick={() => setIsEditing(!isEditing)} variant="outlined" size="sm">
               {isEditing ? 'Cancel Edit' : 'Edit'}
             </Button>
           </div>
@@ -166,12 +149,10 @@ export default function SlideContentModal({
         )}
 
         {/* Bullets (for bullets and image types) */}
-        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') &&
-          renderArrayField('bullets', 'Bullets', (editedSlide as any).bullets || [])}
+        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') && renderArrayField('bullets', 'Bullets', (editedSlide as any).bullets || [])}
 
         {/* Paragraphs (for paragraphs type) */}
-        {editedSlide.type === 'paragraphs' &&
-          renderArrayField('paragraphs', 'Paragraphs', (editedSlide as any).paragraphs || [])}
+        {editedSlide.type === 'paragraphs' && renderArrayField('paragraphs', 'Paragraphs', (editedSlide as any).paragraphs || [])}
 
         {/* Image URL (for image type) */}
         {editedSlide.type === 'image' && (
@@ -214,4 +195,3 @@ export default function SlideContentModal({
     </FullPageModal>
   );
 }
-

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPresentationStatus, getPresentationPreferences, getBucketName } from '@/lib/presentation-s3-utils';
+import { getPresentationStatus, getPresentationPreferences, getBucketName, deletePresentation } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { PresentationStatus, PresentationPreferences } from '@/types/presentation/presentation-types';
 
@@ -70,10 +70,7 @@ async function getHandler(
 /**
  * PUT /api/presentations/[presentationId] - Update presentation preferences
  */
-async function putHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ presentationId: string }> }
-): Promise<any> {
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<any> {
   const { presentationId } = await params;
   const body = await req.json();
   const { voice, slides } = body;
@@ -115,6 +112,27 @@ async function putHandler(
   });
 }
 
+/**
+ * DELETE /api/presentations/[presentationId] - Delete entire presentation
+ */
+async function deleteHandler(
+  req: NextRequest,
+  { params }: { params: Promise<{ presentationId: string }> }
+): Promise<{ success: boolean; presentationId: string }> {
+  const { presentationId } = await params;
+
+  const deleted = await deletePresentation(presentationId);
+
+  if (!deleted) {
+    return NextResponse.json({ error: 'Failed to delete presentation' }, { status: 500 }) as any;
+  }
+
+  return {
+    success: true,
+    presentationId,
+  };
+}
+
 export const GET = withErrorHandlingV2<any>(getHandler);
 export const PUT = withErrorHandlingV2<any>(putHandler);
-
+export const DELETE = withErrorHandlingV2<any>(deleteHandler);

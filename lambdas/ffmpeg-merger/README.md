@@ -30,7 +30,6 @@ bash setup-api.sh
     {"s3Url": "s3://bucket/video2.mp4"}
   ],
   "outputKey": "merged/output.mp4",
-  "paddingSeconds": 1
 }
 ```
 

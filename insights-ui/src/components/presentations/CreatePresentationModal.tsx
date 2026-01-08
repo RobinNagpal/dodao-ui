@@ -2,6 +2,8 @@
 
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState } from 'react';
 import { AVAILABLE_VOICES, DEFAULT_VOICE } from '@/types/presentation/presentation-types';
 
@@ -17,7 +19,6 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
   const [mode, setMode] = useState<CreateMode>('prompt');
   const [presentationId, setPresentationId] = useState('');
   const [voice, setVoice] = useState(DEFAULT_VOICE);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Prompt mode fields
@@ -48,6 +49,11 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
   );
 
   const [jsonError, setJsonError] = useState('');
+
+  const { postData: createPresentation, loading } = usePostData<any, any>({
+    successMessage: 'Presentation created successfully!',
+    errorMessage: 'Failed to create presentation',
+  });
 
   const validateJson = (value: string): boolean => {
     try {
@@ -81,51 +87,34 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
       return;
     }
 
-    setLoading(true);
     setError('');
 
-    try {
-      let body: any = {
-        mode,
-        presentationId,
-        voice,
-      };
+    let body: any = {
+      mode,
+      presentationId,
+      voice,
+    };
 
-      if (mode === 'prompt') {
-        if (!prompt.trim()) {
-          setError('Prompt is required');
-          setLoading(false);
-          return;
-        }
-        body.prompt = prompt;
-        body.numberOfSlides = numberOfSlides;
-        body.additionalInstructions = additionalInstructions || undefined;
-      } else {
-        if (!validateJson(jsonContent)) {
-          setLoading(false);
-          return;
-        }
-        body.slides = JSON.parse(jsonContent);
+    if (mode === 'prompt') {
+      if (!prompt.trim()) {
+        setError('Prompt is required');
+        return;
       }
-
-      const response = await fetch('/api/presentations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to create presentation');
+      body.prompt = prompt;
+      body.numberOfSlides = numberOfSlides;
+      body.additionalInstructions = additionalInstructions || undefined;
+    } else {
+      if (!validateJson(jsonContent)) {
+        return;
       }
+      body.slides = JSON.parse(jsonContent);
+    }
 
+    const result = await createPresentation(`${getBaseUrl()}/api/presentations`, body);
+
+    if (result) {
       onSuccess(presentationId);
       onClose();
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -139,9 +128,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
             <button
               onClick={() => setMode('prompt')}
               className={`flex-1 px-4 py-3 rounded-lg border-2 transition-colors ${
-                mode === 'prompt'
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
-                  : 'border-gray-300 hover:border-gray-400'
+                mode === 'prompt' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 hover:border-gray-400'
               }`}
             >
               <div className="font-medium">AI Prompt</div>
@@ -150,9 +137,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
             <button
               onClick={() => setMode('json')}
               className={`flex-1 px-4 py-3 rounded-lg border-2 transition-colors ${
-                mode === 'json'
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900'
-                  : 'border-gray-300 hover:border-gray-400'
+                mode === 'json' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 hover:border-gray-400'
               }`}
             >
               <div className="font-medium">JSON Input</div>
@@ -176,11 +161,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
         {/* Voice Selection */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1">Voice</label>
-          <select
-            value={voice}
-            onChange={(e) => setVoice(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
-          >
+          <select value={voice} onChange={(e) => setVoice(e.target.value)} className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600">
             {AVAILABLE_VOICES.map((v) => (
               <option key={v.id} value={v.id}>
                 {v.name}
@@ -243,11 +224,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
         )}
 
         {/* Error Display */}
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md">
-            {error}
-          </div>
-        )}
+        {error && <div className="mb-4 p-3 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md">{error}</div>}
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-4 border-t">
@@ -262,4 +239,3 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
     </FullPageModal>
   );
 }
-

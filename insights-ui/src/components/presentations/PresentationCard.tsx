@@ -14,10 +14,7 @@ const PresentationCard: React.FC<PresentationCardProps> = ({ presentation }) => 
 
   return (
     <Card>
-      <Link
-        href={`/generate-ppt/${presentationId}`}
-        className="block p-4 h-full w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-      >
+      <Link href={`/generate-ppt/${presentationId}`} className="block p-4 h-full w-full hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-semibold text-color truncate" title={presentationId}>
@@ -35,15 +32,11 @@ const PresentationCard: React.FC<PresentationCardProps> = ({ presentation }) => 
           </div>
 
           <div className="flex-1">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {slideCount ? `${slideCount} slides` : 'No slides yet'}
-            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{slideCount ? `${slideCount} slides` : 'No slides yet'}</p>
           </div>
 
           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <span className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-              View Details →
-            </span>
+            <span className="text-sm text-blue-600 dark:text-blue-400 hover:underline">View Details →</span>
           </div>
         </div>
       </Link>
@@ -52,4 +45,3 @@ const PresentationCard: React.FC<PresentationCardProps> = ({ presentation }) => 
 };
 
 export default PresentationCard;
-

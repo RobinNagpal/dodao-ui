@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3 } from '@/lib/presentation-s3-utils';
+import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3, deleteSlideFromPresentation, uploadFileToS3 } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77esof.execute-api.us-east-1.amazonaws.com';
@@ -16,7 +16,7 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
   const { presentationId, slideNumber } = await params;
   const { searchParams } = new URL(req.url);
   const action = searchParams.get('action') || 'all';
-  
+
   const body = await req.json().catch(() => ({}));
   const voice = body.voice || 'en-US-JennyNeural';
   const outputBucket = getBucketName();
@@ -54,13 +54,11 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
   const result = await response.json();
 
   if (!response.ok) {
-    return NextResponse.json(
-      { error: result.error || `Failed to generate ${action}` },
-      { status: response.status }
-    );
+    return NextResponse.json({ error: result.error || `Failed to generate ${action}` }, { status: response.status });
   }
 
   // Store audio URL in render metadata if it was returned
+  // Use direct S3 URL (not presigned) so it doesn't expire
   if (result.audioUrl && (action === 'audio' || action === 'all')) {
     try {
       const metadataKey = `${getPresentationsPrefix()}/${presentationId}/output/${slideNumber}-slide/render-metadata.json`;
@@ -68,10 +66,11 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
       // Get existing metadata
       const existingMetadata = await getJsonFromS3(metadataKey).catch(() => ({}));
 
-      // Update with audio URL
+      // Use direct S3 URL for storage - audioUrl from Lambda is now a direct URL
+      // that won't expire (audioPresignedUrl is for immediate Remotion use only)
       const updatedMetadata = {
-        ...existingMetadata,
-        audioUrl: result.audioUrl,
+        ...(existingMetadata && typeof existingMetadata === 'object' ? existingMetadata : {}),
+        audioUrl: result.audioUrl, // Direct S3 URL
       };
 
       await putJsonToS3(metadataKey, updatedMetadata);
@@ -86,9 +85,34 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
     action,
     presentationId,
     slideNumber,
-    ...result,
+    ...(result && typeof result === 'object' ? result : {}),
+  });
+}
+
+/**
+ * DELETE /api/presentations/[presentationId]/slides/[slideNumber]
+ * Delete a slide from the presentation
+ */
+async function deleteHandler(req: NextRequest, { params }: SlideParams): Promise<any> {
+  const { presentationId, slideNumber } = await params;
+
+  console.log('Deleting slide:', presentationId, slideNumber);
+
+  const result = await deleteSlideFromPresentation(presentationId, slideNumber);
+
+  console.log('Delete result:', result);
+
+  if (!result.success) {
+    return NextResponse.json({ error: result.error || 'Failed to delete slide' }, { status: 400 });
+  }
+
+  return NextResponse.json({
+    success: true,
+    presentationId,
+    slideNumber,
+    message: 'Slide deleted successfully',
   });
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);
-
+export const DELETE = withErrorHandlingV2<any>(deleteHandler);

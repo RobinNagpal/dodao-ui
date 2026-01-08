@@ -58,7 +58,7 @@ async function postHandler(req: NextRequest): Promise<any> {
     });
 
     const result = await response.json();
-    
+
     if (!response.ok) {
       return NextResponse.json({ error: result.error || 'Failed to save preferences' }, { status: response.status });
     }
@@ -73,7 +73,7 @@ async function postHandler(req: NextRequest): Promise<any> {
   } else if (mode === 'prompt') {
     // Prompt mode - generate from AI
     const { prompt, numberOfSlides = 5, additionalInstructions } = body;
-    
+
     if (!prompt) {
       return NextResponse.json({ error: 'prompt is required for prompt mode' }, { status: 400 });
     }
@@ -93,7 +93,7 @@ async function postHandler(req: NextRequest): Promise<any> {
     });
 
     const result = await response.json();
-    
+
     if (!response.ok) {
       return NextResponse.json({ error: result.error || 'Failed to generate from prompt' }, { status: response.status });
     }
@@ -111,4 +111,3 @@ async function postHandler(req: NextRequest): Promise<any> {
 
 export const GET = withErrorHandlingV2<{ presentations: PresentationSummary[] }>(getHandler);
 export const POST = withErrorHandlingV2<any>(postHandler);
-

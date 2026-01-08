@@ -1,31 +1,39 @@
 'use client';
 
 import React, { useEffect, useState, use } from 'react';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
+import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import SlideRow from '@/components/presentations/SlideRow';
 import SlideContentModal from '@/components/presentations/SlideContentModal';
-import {
-  PresentationStatus,
-  PresentationPreferences,
-  Slide,
-  SlideStatus,
-} from '@/types/presentation/presentation-types';
+import AddSlideModal from '@/components/presentations/AddSlideModal';
+import { PresentationStatus, PresentationPreferences, Slide } from '@/types/presentation/presentation-types';
 
 interface PresentationDetailPageProps {
   params: Promise<{ presentationId: string }>;
+}
+
+interface PresentationData {
+  presentationId: string;
+  status: PresentationStatus;
+  preferences: PresentationPreferences | null;
 }
 
 export default function PresentationDetailPage({ params }: PresentationDetailPageProps) {
   const { presentationId } = use(params);
   const router = useRouter();
 
-  const [status, setStatus] = useState<PresentationStatus | null>(null);
-  const [preferences, setPreferences] = useState<PresentationPreferences | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [generatingFinal, setGeneratingFinal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showAddSlideModal, setShowAddSlideModal] = useState(false);
 
   // Modal state
   const [selectedSlide, setSelectedSlide] = useState<{
@@ -33,43 +41,57 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
     slideNumber: string;
   } | null>(null);
 
-  const fetchPresentationData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  // Fetch presentation data
+  const { data, loading, reFetchData } = useFetchData<PresentationData>(
+    `${getBaseUrl()}/api/presentations/${presentationId}`,
+    {},
+    'Failed to fetch presentation'
+  );
 
-      const response = await fetch(`/api/presentations/${presentationId}`);
-      const data = await response.json();
+  const status = data?.status;
+  const preferences = data?.preferences;
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to fetch presentation');
-      }
+  // Post hook for generating final video
+  const { postData: generateFinalVideoApi } = usePostData<any, any>({
+    successMessage: 'Final video generation started!',
+    errorMessage: 'Failed to generate final video',
+  });
 
-      setStatus(data.status);
-      setPreferences(data.preferences);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  // State for adding slides
+  const [addingSlide, setAddingSlide] = useState(false);
+
+  // Delete hook for presentation
+  const { deleteData: deletePresentationApi, loading: deletingPresentation } = useDeleteData({
+    successMessage: 'Presentation deleted successfully!',
+    errorMessage: 'Failed to delete presentation',
+  });
+
+  // Put hook for updating slides
+  const { postData: updatePreferences } = usePostData<any, any>({
+    successMessage: 'Slide updated successfully!',
+    errorMessage: 'Failed to update slide',
+  });
+
+  const handleRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+    reFetchData();
   };
 
   useEffect(() => {
-    fetchPresentationData();
-  }, [presentationId]);
+    if (refreshKey > 0) {
+      reFetchData();
+    }
+  }, [refreshKey, reFetchData]);
 
   const handleSlideUpdate = async (updatedSlide: Slide) => {
     if (!preferences || !selectedSlide) return;
 
     try {
       // Update the slide in preferences
-      const updatedSlides = preferences.slides.map((sp) =>
-        sp.slideNumber === selectedSlide.slideNumber
-          ? { ...sp, slide: updatedSlide }
-          : sp
-      );
+      const updatedSlides = preferences.slides.map((sp) => (sp.slideNumber === selectedSlide.slideNumber ? { ...sp, slide: updatedSlide } : sp));
 
-      const response = await fetch(`/api/presentations/${presentationId}`, {
+      // Use fetch with PUT method since usePutData is not working as expected here
+      const response = await fetch(`${getBaseUrl()}/api/presentations/${presentationId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -83,8 +105,8 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
         throw new Error(data.error || 'Failed to update slide');
       }
 
-      // Refresh data
-      fetchPresentationData();
+      setSelectedSlide(null);
+      handleRefresh();
     } catch (err: any) {
       setError(err.message);
     }
@@ -95,19 +117,11 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
       setGeneratingFinal(true);
       setError(null);
 
-      const response = await fetch(`/api/presentations/${presentationId}/final-video`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const result = await generateFinalVideoApi(`${getBaseUrl()}/api/presentations/${presentationId}/final-video`, {});
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate final video');
+      if (result) {
+        handleRefresh();
       }
-
-      // Refresh to get updated status
-      fetchPresentationData();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -115,7 +129,51 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
     }
   };
 
+  const handleDeletePresentation = async () => {
+    const result = await deletePresentationApi(`${getBaseUrl()}/api/presentations/${presentationId}`);
+    if (result) {
+      router.push('/generate-ppt');
+    }
+  };
+
+  const handleAddSlide = async (slide: any) => {
+    try {
+      setAddingSlide(true);
+      setError(null);
+
+      console.log('Adding slide:', slide);
+
+      const response = await fetch(`${getBaseUrl()}/api/presentations/${presentationId}/slides`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slide }),
+      });
+
+      const responseData = await response.json();
+      console.log('Add slide response:', response.status, responseData);
+
+      if (!response.ok) {
+        throw new Error(responseData.error || 'Failed to add slide');
+      }
+
+      // Wait for the data to be refetched before continuing
+      // This ensures the UI shows the new slide
+      await reFetchData();
+      console.log('Data refetched after adding slide');
+    } catch (err: any) {
+      console.error('Error adding slide:', err);
+      setError(err.message);
+    } finally {
+      setAddingSlide(false);
+    }
+  };
+
   const allVideosReady = status?.slides?.every((s) => s.hasVideo) ?? false;
+
+  const dropdownActions: EllipsisDropdownItem[] = [
+    { key: 'add-slide', label: 'Add New Slide' },
+    { key: 'delete-ppt', label: 'Delete Presentation' },
+  ];
 
   return (
     <PageWrapper>
@@ -123,21 +181,27 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <button
-              onClick={() => router.push('/generate-ppt')}
-              className="text-sm text-blue-500 hover:underline mb-2 flex items-center gap-1"
-            >
-              ← Back to Presentations
-            </button>
             <h1 className="text-3xl font-bold text-color">{presentationId}</h1>
-            <p className="mt-1 text-gray-600 dark:text-gray-400">
-              {status?.slides?.length || 0} slides
-            </p>
+            <p className="mt-1 text-gray-600 dark:text-gray-400">{status?.slides?.length || 0} slides</p>
           </div>
-          <div className="flex gap-3">
-            <Button onClick={fetchPresentationData} variant="outlined" disabled={loading}>
+          <div className="flex gap-3 items-center">
+            <Button onClick={handleRefresh} variant="outlined" disabled={loading}>
               Refresh
             </Button>
+            <Button onClick={() => setShowAddSlideModal(true)} variant="outlined" disabled={loading}>
+              + Add Slide
+            </Button>
+            <EllipsisDropdown
+              items={dropdownActions}
+              className="px-2 py-2"
+              onSelect={(key) => {
+                if (key === 'add-slide') {
+                  setShowAddSlideModal(true);
+                } else if (key === 'delete-ppt') {
+                  setShowDeleteModal(true);
+                }
+              }}
+            />
           </div>
         </div>
 
@@ -163,9 +227,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📝</div>
             <h2 className="text-xl font-semibold mb-2">Presentation Not Found</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              This presentation doesn't have any content yet.
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">This presentation doesnt have any content yet.</p>
             <Button onClick={() => router.push('/generate-ppt')} variant="outlined">
               Go Back
             </Button>
@@ -188,7 +250,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                       slideNumber: slideStatus.slideNumber,
                     })
                   }
-                  onRefresh={fetchPresentationData}
+                  onRefresh={handleRefresh}
                 />
               ))}
             </div>
@@ -205,21 +267,11 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                       </video>
                     </div>
                     <div className="flex justify-center gap-3">
-                      <a
-                        href={status.finalVideoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline"
-                      >
+                      <a href={status.finalVideoUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
                         Download Video
                       </a>
                       <span className="text-gray-400">•</span>
-                      <Button
-                        onClick={handleGenerateFinalVideo}
-                        variant="outlined"
-                        loading={generatingFinal}
-                        disabled={generatingFinal || !allVideosReady}
-                      >
+                      <Button onClick={handleGenerateFinalVideo} variant="outlined" loading={generatingFinal} disabled={generatingFinal || !allVideosReady}>
                         Regenerate
                       </Button>
                     </div>
@@ -242,8 +294,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                     </Button>
                     {!allVideosReady && (
                       <p className="mt-2 text-sm text-yellow-600 dark:text-yellow-400">
-                        {status.slides.filter((s) => !s.hasVideo).length} slide(s) still need
-                        videos
+                        {status.slides.filter((s) => !s.hasVideo).length} slide(s) still need videos
                       </p>
                     )}
                   </div>
@@ -263,8 +314,31 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
             onSave={handleSlideUpdate}
           />
         )}
+
+        {/* Add Slide Modal */}
+        <AddSlideModal
+          open={showAddSlideModal}
+          onClose={() => setShowAddSlideModal(false)}
+          onSuccess={() => {
+            setShowAddSlideModal(false);
+            // Data is already refreshed in handleAddSlide, no need to refresh again
+          }}
+          presentationId={presentationId}
+          loading={addingSlide}
+          onAdd={handleAddSlide}
+        />
+
+        {/* Delete Presentation Modal */}
+        <DeleteConfirmationModal
+          title={`Delete "${presentationId}"?`}
+          open={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={handleDeletePresentation}
+          deleting={deletingPresentation}
+          deleteButtonText="Delete Presentation"
+          confirmationText="DELETE"
+        />
       </div>
     </PageWrapper>
   );
 }
-

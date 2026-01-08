@@ -31,10 +31,7 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
   const result = await response.json();
 
   if (!response.ok) {
-    return NextResponse.json(
-      { error: result.error || 'Failed to get render status' },
-      { status: response.status }
-    );
+    return NextResponse.json({ error: result.error || 'Failed to get render status' }, { status: response.status });
   }
 
   return NextResponse.json({
@@ -44,4 +41,3 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
 }
 
 export const POST = withErrorHandlingV2<any>(postHandler);
-
