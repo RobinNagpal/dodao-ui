@@ -5,6 +5,8 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import React, { useState, useEffect } from 'react';
 import { Slide, SlideType } from '@/types/presentation/presentation-types';
 
+type ArrayField = 'bullets' | 'paragraphs';
+
 export interface SlideContentModalProps {
   open: boolean;
   onClose: () => void;
@@ -33,29 +35,58 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
     setEditedSlide((prev) => (prev ? { ...prev, [field]: value } : null));
   };
 
-  const handleArrayChange = (field: string, index: number, value: string) => {
+  const handleArrayChange = (field: ArrayField, index: number, value: string) => {
     setEditedSlide((prev) => {
       if (!prev) return null;
-      const arr = [...((prev as any)[field] || [])];
-      arr[index] = value;
-      return { ...prev, [field]: arr };
+
+      // Type-safe handling for array fields
+      if (field === 'bullets' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bullets || [])];
+        arr[index] = value;
+        return { ...prev, bullets: arr };
+      } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphs || [])];
+        arr[index] = value;
+        return { ...prev, paragraphs: arr };
+      }
+
+      return prev;
     });
   };
 
-  const handleAddArrayItem = (field: string) => {
+  const handleAddArrayItem = (field: ArrayField) => {
     setEditedSlide((prev) => {
       if (!prev) return null;
-      const arr = [...((prev as any)[field] || []), ''];
-      return { ...prev, [field]: arr };
+
+      // Type-safe handling for array fields
+      if (field === 'bullets' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bullets || []), ''];
+        return { ...prev, bullets: arr };
+      } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphs || []), ''];
+        return { ...prev, paragraphs: arr };
+      }
+
+      return prev;
     });
   };
 
-  const handleRemoveArrayItem = (field: string, index: number) => {
+  const handleRemoveArrayItem = (field: ArrayField, index: number) => {
     setEditedSlide((prev) => {
       if (!prev) return null;
-      const arr = [...((prev as any)[field] || [])];
-      arr.splice(index, 1);
-      return { ...prev, [field]: arr };
+
+      // Type-safe handling for array fields
+      if (field === 'bullets' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bullets || [])];
+        arr.splice(index, 1);
+        return { ...prev, bullets: arr };
+      } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphs || [])];
+        arr.splice(index, 1);
+        return { ...prev, paragraphs: arr };
+      }
+
+      return prev;
     });
   };
 
@@ -66,7 +97,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
     }
   };
 
-  const renderArrayField = (field: string, label: string, items: string[]) => (
+  const renderArrayField = (field: ArrayField, label: string, items: string[]) => (
     <div className="mb-4">
       <label className="block text-sm font-medium mb-1">{label}</label>
       {items.map((item, index) => (
@@ -140,7 +171,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             <label className="block text-sm font-medium mb-1">Subtitle</label>
             <input
               type="text"
-              value={(editedSlide as any).subtitle || ''}
+              value={editedSlide.subtitle || ''}
               onChange={(e) => handleFieldChange('subtitle', e.target.value)}
               disabled={!isEditing}
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
@@ -149,10 +180,10 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
         )}
 
         {/* Bullets (for bullets and image types) */}
-        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') && renderArrayField('bullets', 'Bullets', (editedSlide as any).bullets || [])}
+        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') && renderArrayField('bullets', 'Bullets', editedSlide.bullets || [])}
 
         {/* Paragraphs (for paragraphs type) */}
-        {editedSlide.type === 'paragraphs' && renderArrayField('paragraphs', 'Paragraphs', (editedSlide as any).paragraphs || [])}
+        {editedSlide.type === 'paragraphs' && renderArrayField('paragraphs', 'Paragraphs', editedSlide.paragraphs || [])}
 
         {/* Image URL (for image type) */}
         {editedSlide.type === 'image' && (
@@ -160,7 +191,7 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
             <label className="block text-sm font-medium mb-1">Image URL</label>
             <input
               type="text"
-              value={(editedSlide as any).imageUrl || ''}
+              value={editedSlide.imageUrl || ''}
               onChange={(e) => handleFieldChange('imageUrl', e.target.value)}
               disabled={!isEditing}
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"

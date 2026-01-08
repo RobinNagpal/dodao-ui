@@ -61,9 +61,9 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<U
       imageUrl,
       message: 'Image uploaded successfully',
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to upload image:', error);
-    throw new Error(error.message || 'Failed to upload image');
+    throw new Error(error instanceof Error ? error.message : 'Failed to upload image');
   }
 }
 

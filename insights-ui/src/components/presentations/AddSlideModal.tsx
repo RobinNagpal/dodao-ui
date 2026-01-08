@@ -3,7 +3,7 @@
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import React, { useState } from 'react';
-import { SlideType } from '@/types/presentation/presentation-types';
+import { SlideType, Slide } from '@/types/presentation/presentation-types';
 
 export interface AddSlideModalProps {
   open: boolean;
@@ -11,7 +11,7 @@ export interface AddSlideModalProps {
   onSuccess: () => void;
   presentationId: string;
   loading?: boolean;
-  onAdd: (slide: any) => Promise<void>;
+  onAdd: (slide: Slide) => Promise<void>;
 }
 
 const SLIDE_TYPES: { value: SlideType; label: string }[] = [
@@ -79,28 +79,49 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
     setError('');
 
     try {
-      const slide: any = {
-        type,
+      let slide: Slide;
+
+      // Create base slide properties
+      const baseSlide = {
+        id: `slide-${Date.now()}`, // Generate a unique ID
         title: title.trim(),
         narration: narration.trim(),
       };
 
       if (type === 'title') {
-        slide.subtitle = subtitle.trim();
-      } else if (type === 'bullets' || type === 'image') {
-        slide.bullets = bullets.filter((b) => b.trim()).map((b) => b.trim());
-        if (type === 'image') {
-          slide.imageUrl = imageUrl.trim();
-        }
+        slide = {
+          ...baseSlide,
+          type: 'title',
+          subtitle: subtitle.trim() || undefined,
+        };
+      } else if (type === 'bullets') {
+        slide = {
+          ...baseSlide,
+          type: 'bullets',
+          bullets: bullets.filter((b) => b.trim()).map((b) => b.trim()),
+        };
+      } else if (type === 'image') {
+        slide = {
+          ...baseSlide,
+          type: 'image',
+          bullets: bullets.filter((b) => b.trim()).map((b) => b.trim()),
+          imageUrl: imageUrl.trim(),
+        };
       } else if (type === 'paragraphs') {
-        slide.paragraphs = paragraphs.filter((p) => p.trim()).map((p) => p.trim());
+        slide = {
+          ...baseSlide,
+          type: 'paragraphs',
+          paragraphs: paragraphs.filter((p) => p.trim()).map((p) => p.trim()),
+        };
+      } else {
+        throw new Error('Invalid slide type');
       }
 
       await onAdd(slide);
       resetForm();
       onSuccess();
-    } catch (err: any) {
-      setError(err.message || 'Failed to add slide');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to add slide');
     } finally {
       setSubmitting(false);
     }

@@ -1,17 +1,25 @@
 import { NextRequest } from 'next/server';
 import { getPresentationStatus, getPresentationPreferences, getBucketName, deletePresentation } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PresentationDetailResponse, UpdatePresentationResponse, DeletePresentationResponse } from '@/types/presentation/presentation-types';
+import {
+  PresentationDetailResponse,
+  UpdatePresentationResponse,
+  DeletePresentationResponse,
+  SlidePreference,
+  Slide,
+} from '@/types/presentation/presentation-types';
 
 const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
+
+interface UpdatePresentationRequestBody {
+  voice?: string;
+  slides: Slide[];
+}
 
 /**
  * GET /api/presentations/[presentationId] - Get presentation details and status
  */
-async function getHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ presentationId: string }> }
-): Promise<PresentationDetailResponse> {
+async function getHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<PresentationDetailResponse> {
   const { presentationId } = await params;
 
   if (!REMOTION_LAMBDA_URL) {
@@ -76,7 +84,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
   }
 
   const { presentationId } = await params;
-  const body = await req.json();
+  const body: UpdatePresentationRequestBody = await req.json();
   const { voice, slides } = body;
 
   if (!slides || !Array.isArray(slides)) {
@@ -86,9 +94,9 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
   const outputBucket = getBucketName();
 
   // Format slides with slide numbers
-  const formattedSlides = slides.map((slideData: any, index: number) => ({
-    slideNumber: slideData.slideNumber || String(index + 1).padStart(2, '0'),
-    slide: slideData.slide || slideData,
+  const formattedSlides: SlidePreference[] = slides.map((slide: Slide, index: number) => ({
+    slideNumber: String(index + 1).padStart(2, '0'),
+    slide,
   }));
 
   // Call Remotion Lambda to save preferences
@@ -119,10 +127,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
 /**
  * DELETE /api/presentations/[presentationId] - Delete entire presentation
  */
-async function deleteHandler(
-  req: NextRequest,
-  { params }: { params: Promise<{ presentationId: string }> }
-): Promise<DeletePresentationResponse> {
+async function deleteHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<DeletePresentationResponse> {
   const { presentationId } = await params;
 
   const deleted = await deletePresentation(presentationId);

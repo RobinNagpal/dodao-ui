@@ -1,7 +1,14 @@
 import { NextRequest } from 'next/server';
 import { listPresentations, getBucketName } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PresentationSummary, DEFAULT_VOICE, PresentationsListResponse, CreatePresentationResponse } from '@/types/presentation/presentation-types';
+import {
+  PresentationSummary,
+  DEFAULT_VOICE,
+  PresentationsListResponse,
+  CreatePresentationResponse,
+  Slide,
+  SlidePreference,
+} from '@/types/presentation/presentation-types';
 
 const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
@@ -41,7 +48,7 @@ async function postHandler(req: NextRequest): Promise<CreatePresentationResponse
     }
 
     // Format slides with slide numbers
-    const formattedSlides = slides.map((slide: any, index: number) => ({
+    const formattedSlides: SlidePreference[] = slides.map((slide: Slide, index: number) => ({
       slideNumber: String(index + 1).padStart(2, '0'),
       slide: {
         ...slide,

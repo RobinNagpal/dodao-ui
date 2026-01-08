@@ -14,7 +14,15 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import SlideRow from '@/components/presentations/SlideRow';
 import SlideContentModal from '@/components/presentations/SlideContentModal';
 import AddSlideModal from '@/components/presentations/AddSlideModal';
-import { PresentationStatus, PresentationPreferences, Slide, SlidePreference, GenerateFinalVideoResponse, AddSlideResponse, UpdatePresentationResponse } from '@/types/presentation/presentation-types';
+import {
+  PresentationStatus,
+  PresentationPreferences,
+  Slide,
+  SlidePreference,
+  GenerateFinalVideoResponse,
+  AddSlideResponse,
+  UpdatePresentationResponse,
+} from '@/types/presentation/presentation-types';
 
 interface PresentationDetailPageProps {
   params: Promise<{ presentationId: string }>;
