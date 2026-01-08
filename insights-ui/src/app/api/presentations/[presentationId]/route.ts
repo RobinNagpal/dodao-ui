@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { getPresentationStatus, getPresentationPreferences, getBucketName, deletePresentation } from '@/lib/presentation-s3-utils';
+import { getPresentationStatus, getPresentationPreferences, getBucketName, deletePresentation, callRemotionLambda } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import {
   PresentationDetailResponse,
@@ -8,8 +8,6 @@ import {
   SlidePreference,
   Slide,
 } from '@/types/presentation/presentation-types';
-
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 interface UpdatePresentationRequestBody {
   voice?: string;
@@ -22,42 +20,31 @@ interface UpdatePresentationRequestBody {
 async function getHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<PresentationDetailResponse> {
   const { presentationId } = await params;
 
-  if (!REMOTION_LAMBDA_URL) {
-    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
-  }
-
   // Get status from our S3 utils
   const status = await getPresentationStatus(presentationId);
   const preferences = await getPresentationPreferences(presentationId);
 
   // Also get status from Remotion Lambda for more detailed render info
   try {
-    const response = await fetch(`${REMOTION_LAMBDA_URL}/presentation-status`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        presentationId: `presentations/${presentationId}`,
-        outputBucket: getBucketName(),
-      }),
+    const remotionStatus = await callRemotionLambda('/presentation-status', {
+      presentationId: `presentations/${presentationId}`,
+      outputBucket: getBucketName(),
     });
 
-    if (response.ok) {
-      const remotionStatus = await response.json();
-      // Merge remotion status into our status
-      if (remotionStatus.slides) {
-        for (const rs of remotionStatus.slides) {
-          const localSlide = status.slides.find((s) => s.slideNumber === rs.slideNumber);
-          if (localSlide) {
-            localSlide.hasImage = localSlide.hasImage || rs.hasImage;
-            localSlide.hasAudio = localSlide.hasAudio || rs.hasAudio;
-            localSlide.hasVideo = localSlide.hasVideo || rs.hasVideo;
-            localSlide.imageStatus = rs.imageStatus || localSlide.imageStatus;
-            localSlide.imageUrl = rs.imageUrl || localSlide.imageUrl;
-            localSlide.imageRenderId = rs.imageRenderId || localSlide.imageRenderId;
-            localSlide.videoStatus = rs.videoStatus || localSlide.videoStatus;
-            localSlide.videoUrl = rs.videoUrl || localSlide.videoUrl;
-            localSlide.videoRenderId = rs.videoRenderId || localSlide.videoRenderId;
-          }
+    // Merge remotion status into our status
+    if (remotionStatus.slides) {
+      for (const rs of remotionStatus.slides) {
+        const localSlide = status.slides.find((s) => s.slideNumber === rs.slideNumber);
+        if (localSlide) {
+          localSlide.hasImage = localSlide.hasImage || rs.hasImage;
+          localSlide.hasAudio = localSlide.hasAudio || rs.hasAudio;
+          localSlide.hasVideo = localSlide.hasVideo || rs.hasVideo;
+          localSlide.imageStatus = rs.imageStatus || localSlide.imageStatus;
+          localSlide.imageUrl = rs.imageUrl || localSlide.imageUrl;
+          localSlide.imageRenderId = rs.imageRenderId || localSlide.imageRenderId;
+          localSlide.videoStatus = rs.videoStatus || localSlide.videoStatus;
+          localSlide.videoUrl = rs.videoUrl || localSlide.videoUrl;
+          localSlide.videoRenderId = rs.videoRenderId || localSlide.videoRenderId;
         }
       }
     }
@@ -79,10 +66,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ pres
  * PUT /api/presentations/[presentationId] - Update presentation preferences
  */
 async function putHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<UpdatePresentationResponse> {
-  if (!REMOTION_LAMBDA_URL) {
-    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
-  }
-
   const { presentationId } = await params;
   const body: UpdatePresentationRequestBody = await req.json();
   const { voice, slides } = body;
@@ -100,22 +83,12 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
   }));
 
   // Call Remotion Lambda to save preferences
-  const response = await fetch(`${REMOTION_LAMBDA_URL}/save-preferences`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      presentationId: `presentations/${presentationId}`,
-      outputBucket,
-      voice: voice || 'en-US-JennyNeural',
-      slides: formattedSlides,
-    }),
+  const result = await callRemotionLambda('/save-preferences', {
+    presentationId: `presentations/${presentationId}`,
+    outputBucket,
+    voice: voice || 'en-US-JennyNeural',
+    slides: formattedSlides,
   });
-
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.error || 'Failed to update preferences');
-  }
 
   return {
     success: true,

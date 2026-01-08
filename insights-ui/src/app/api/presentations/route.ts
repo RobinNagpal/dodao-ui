@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { listPresentations, getBucketName } from '@/lib/presentation-s3-utils';
+import { listPresentations, getBucketName, callRemotionLambda } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import {
   PresentationSummary,
@@ -9,8 +9,6 @@ import {
   Slide,
   SlidePreference,
 } from '@/types/presentation/presentation-types';
-
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 /**
  * GET /api/presentations - List all presentations
@@ -27,10 +25,6 @@ async function getHandler(): Promise<{ presentations: PresentationSummary[] }> {
  * 2. Prompt mode: { mode: 'prompt', presentationId, prompt, numberOfSlides, additionalInstructions?, voice? }
  */
 async function postHandler(req: NextRequest): Promise<CreatePresentationResponse> {
-  if (!REMOTION_LAMBDA_URL) {
-    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
-  }
-
   const body = await req.json();
   const { mode, presentationId, voice = DEFAULT_VOICE } = body;
 
@@ -57,22 +51,12 @@ async function postHandler(req: NextRequest): Promise<CreatePresentationResponse
     }));
 
     // Call Remotion Lambda to save preferences
-    const response = await fetch(`${REMOTION_LAMBDA_URL}/save-preferences`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        presentationId: `presentations/${presentationId}`,
-        outputBucket,
-        voice,
-        slides: formattedSlides,
-      }),
+    const result = await callRemotionLambda('/save-preferences', {
+      presentationId: `presentations/${presentationId}`,
+      outputBucket,
+      voice,
+      slides: formattedSlides,
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Failed to save preferences');
-    }
 
     return {
       success: true,
@@ -90,24 +74,14 @@ async function postHandler(req: NextRequest): Promise<CreatePresentationResponse
     }
 
     // Call Remotion Lambda to generate from prompt
-    const response = await fetch(`${REMOTION_LAMBDA_URL}/generate-from-prompt`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        presentationId: `presentations/${presentationId}`,
-        prompt,
-        numberOfSlides,
-        additionalInstructions,
-        outputBucket,
-        voice,
-      }),
+    const result = await callRemotionLambda('/generate-from-prompt', {
+      presentationId: `presentations/${presentationId}`,
+      prompt,
+      numberOfSlides,
+      additionalInstructions,
+      outputBucket,
+      voice,
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Failed to generate from prompt');
-    }
 
     return {
       success: true,

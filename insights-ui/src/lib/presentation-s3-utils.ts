@@ -27,6 +27,29 @@ const s3Client = new S3Client({
 
 export const PRESENTATIONS_PREFIX = 'presentations';
 
+/**
+ * Call Remotion Lambda API endpoint
+ */
+export async function callRemotionLambda(endpoint: string, payload: any): Promise<any> {
+  if (!REMOTION_LAMBDA_URL) {
+    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
+  }
+
+  const response = await fetch(`${REMOTION_LAMBDA_URL}${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || `Failed to call ${endpoint}`);
+  }
+
+  return result;
+}
+
 async function streamToString(stream: Readable): Promise<string> {
   const chunks: Buffer[] = [];
   for await (const chunk of stream) {
@@ -531,21 +554,10 @@ async function checkAndUpdateRenderStatus(
   }
 
   try {
-    const response = await fetch(`${REMOTION_LAMBDA_URL}/render-status`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        renderId,
-        bucketName: BUCKET_NAME,
-      }),
+    const result = await callRemotionLambda('/render-status', {
+      renderId,
+      bucketName: BUCKET_NAME,
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      console.error(`Failed to check render status for ${renderId}:`, result.error);
-      return null;
-    }
 
     // If render is complete, update the metadata
     if (result.done) {

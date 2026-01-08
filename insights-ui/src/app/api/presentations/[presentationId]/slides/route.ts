@@ -14,8 +14,6 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<AddSli
   const body = await req.json();
   const { slide } = body;
 
-  console.log('Add slide request:', presentationId, slide);
-
   if (!slide) {
     throw new Error('slide object is required');
   }
@@ -25,8 +23,6 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<AddSli
   }
 
   const result = await addSlideToPresentation(presentationId, slide);
-
-  console.log('Add slide result:', result);
 
   if (!result.success) {
     throw new Error(result.error || 'Failed to add slide');

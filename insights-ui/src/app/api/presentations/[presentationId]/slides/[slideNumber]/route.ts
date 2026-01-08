@@ -1,9 +1,7 @@
 import { NextRequest } from 'next/server';
-import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3, deleteSlideFromPresentation, uploadFileToS3 } from '@/lib/presentation-s3-utils';
+import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3, deleteSlideFromPresentation, callRemotionLambda } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { GenerateArtifactResponse, DeleteSlideResponse } from '@/types/presentation/presentation-types';
-
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 type SlideParams = { params: Promise<{ presentationId: string; slideNumber: string }> };
 
@@ -14,11 +12,7 @@ type SlideParams = { params: Promise<{ presentationId: string; slideNumber: stri
  * - action: 'audio' | 'image' | 'video' | 'all'
  */
 async function postHandler(req: NextRequest, { params }: SlideParams): Promise<GenerateArtifactResponse> {
-  if (!REMOTION_LAMBDA_URL) {
-    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
-  }
-
-  const { presentationId, slideNumber } = await params;
+const { presentationId, slideNumber } = await params;
   const { searchParams } = new URL(req.url);
   const action = searchParams.get('action') || 'all';
 
@@ -50,17 +44,7 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<G
       break;
   }
 
-  const response = await fetch(`${REMOTION_LAMBDA_URL}${endpoint}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(basePayload),
-  });
-
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.error || `Failed to generate ${action}`);
-  }
+  const result = await callRemotionLambda(endpoint, basePayload);
 
   // Store audio URL in render metadata if it was returned
   // Use direct S3 URL (not presigned) so it doesn't expire
@@ -100,12 +84,7 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<G
  */
 async function deleteHandler(req: NextRequest, { params }: SlideParams): Promise<DeleteSlideResponse> {
   const { presentationId, slideNumber } = await params;
-
-  console.log('Deleting slide:', presentationId, slideNumber);
-
   const result = await deleteSlideFromPresentation(presentationId, slideNumber);
-
-  console.log('Delete result:', result);
 
   if (!result.success) {
     throw new Error(result.error || 'Failed to delete slide');
