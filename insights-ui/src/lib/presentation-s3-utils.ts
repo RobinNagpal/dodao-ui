@@ -14,14 +14,14 @@ import { PresentationPreferences, PresentationSummary, SlideStatus, Slide } from
 const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 // Use specific credentials for this functionality
-const REGION = process.env.HASSAAN_AWS_REGION || 'us-east-1';
-const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'remotionlambda-useast1-ele686axd8';
+const REGION = process.env.PPT_GENERATION_AWS_REGION;
+const BUCKET_NAME = process.env.PPT_GENERATION_S3_BUCKET_NAME;
 
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: process.env.HASSAAN_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.HASSAAN_AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.PPT_GENERATION_AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.PPT_GENERATION_AWS_SECRET_ACCESS_KEY!,
   },
 });
 
@@ -51,11 +51,11 @@ export async function callRemotionLambda(endpoint: string, payload: any): Promis
 }
 
 async function streamToString(stream: Readable): Promise<string> {
-  const chunks: Buffer[] = [];
+  let result = '';
   for await (const chunk of stream) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    result += Buffer.isBuffer(chunk) ? chunk.toString('utf-8') : Buffer.from(chunk).toString('utf-8');
   }
-  return Buffer.concat(chunks).toString('utf-8');
+  return result;
 }
 
 /**
@@ -345,8 +345,8 @@ export async function getPresentationPreferences(presentationId: string): Promis
  */
 export async function savePresentationPreferences(preferences: PresentationPreferences): Promise<string> {
   // Extract the actual presentation ID from the preferences.presentationId
-  // preferences.presentationId is like "presentations/hassaan-test"
-  // We need to extract "hassaan-test"
+  // preferences.presentationId is like "presentations/presentation-id"
+  // We need to extract "presentation-id"
   const presentationId = preferences.presentationId.replace(`${PRESENTATIONS_PREFIX}/`, '');
   const key = `${PRESENTATIONS_PREFIX}/${presentationId}/inputs/slide-and-script-preferences.json`;
   console.log('Saving presentation preferences to key:', key, 'with data:', preferences);
@@ -529,6 +529,9 @@ export function getCacheBustingVideoUrl(key: string, lastModified?: number): str
  * Get bucket name
  */
 export function getBucketName(): string {
+  if (!BUCKET_NAME) {
+    throw new Error('PPT_GENERATION_S3_BUCKET_NAME environment variable is not configured');
+  }
   return BUCKET_NAME;
 }
 

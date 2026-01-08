@@ -6,13 +6,13 @@ import { GenerateFinalVideoResponse } from '@/types/presentation/presentation-ty
 
 // FFmpeg Lambda configuration
 const FFMPEG_LAMBDA_NAME = process.env.FFMPEG_LAMBDA_NAME;
-const REGION = process.env.HASSAAN_AWS_REGION;
+const REGION = process.env.PPT_GENERATION_AWS_REGION;
 
 const lambdaClient = new LambdaClient({
   region: REGION,
   credentials: {
-    accessKeyId: process.env.HASSAAN_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.HASSAAN_AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.PPT_GENERATION_AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.PPT_GENERATION_AWS_SECRET_ACCESS_KEY!,
   },
 });
 

@@ -1,5 +1,12 @@
 import { NextRequest } from 'next/server';
-import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3, deleteSlideFromPresentation, callRemotionLambda } from '@/lib/presentation-s3-utils';
+import {
+  getBucketName,
+  getPresentationsPrefix,
+  getJsonFromS3,
+  putJsonToS3,
+  deleteSlideFromPresentation,
+  callRemotionLambda,
+} from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { GenerateArtifactResponse, DeleteSlideResponse } from '@/types/presentation/presentation-types';
 
@@ -12,7 +19,7 @@ type SlideParams = { params: Promise<{ presentationId: string; slideNumber: stri
  * - action: 'audio' | 'image' | 'video' | 'all'
  */
 async function postHandler(req: NextRequest, { params }: SlideParams): Promise<GenerateArtifactResponse> {
-const { presentationId, slideNumber } = await params;
+  const { presentationId, slideNumber } = await params;
   const { searchParams } = new URL(req.url);
   const action = searchParams.get('action') || 'all';
 
