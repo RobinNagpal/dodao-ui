@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 import { getPresentationStatus, getBucketName, getPresentationsPrefix } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { GenerateFinalVideoResponse } from '@/types/presentation/presentation-types';
 
 // FFmpeg Lambda configuration
-const FFMPEG_LAMBDA_NAME = 'ffmpeg-video-merger';
-const REGION = process.env.HASSAAN_AWS_REGION || 'us-east-1';
+const FFMPEG_LAMBDA_NAME = process.env.FFMPEG_LAMBDA_NAME;
+const REGION = process.env.HASSAAN_AWS_REGION;
 
 const lambdaClient = new LambdaClient({
   region: REGION,
@@ -21,14 +22,14 @@ type Params = { params: Promise<{ presentationId: string }> };
  * POST /api/presentations/[presentationId]/final-video
  * Generate final video by concatenating all slide videos using FFmpeg Lambda
  */
-async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
+async function postHandler(req: NextRequest, { params }: Params): Promise<GenerateFinalVideoResponse> {
   const { presentationId } = await params;
 
   // Get presentation status to find all video URLs
   const status = await getPresentationStatus(presentationId);
 
   if (!status.hasPreferences) {
-    return NextResponse.json({ error: 'Presentation not found' }, { status: 404 });
+    throw new Error('Presentation not found');
   }
 
   // Collect all video URLs that are completed
@@ -55,17 +56,11 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
   }
 
   if (videoClips.length === 0) {
-    return NextResponse.json({ error: 'No videos found. Please generate slide videos first.' }, { status: 400 });
+    throw new Error('No videos found. Please generate slide videos first.');
   }
 
   if (missingVideos.length > 0) {
-    return NextResponse.json(
-      {
-        error: `Videos missing for slides: ${missingVideos.join(', ')}. Generate all slide videos first.`,
-        missingSlides: missingVideos,
-      },
-      { status: 400 }
-    );
+    throw new Error(`Videos missing for slides: ${missingVideos.join(', ')}. Generate all slide videos first.`);
   }
 
   // Prepare FFmpeg Lambda payload
@@ -92,7 +87,7 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
 
     if (response.FunctionError) {
       console.error('FFmpeg Lambda error:', responsePayload);
-      return NextResponse.json({ error: responsePayload?.errorMessage || 'FFmpeg Lambda execution failed' }, { status: 500 });
+      throw new Error(responsePayload?.errorMessage || 'FFmpeg Lambda execution failed');
     }
 
     // Parse the body from Lambda response
@@ -104,20 +99,20 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<any> {
     }
 
     if (!result?.success) {
-      return NextResponse.json({ error: result?.error || 'Failed to merge videos' }, { status: 500 });
+      throw new Error(result?.error || 'Failed to merge videos');
     }
 
-    return NextResponse.json({
+    return {
       success: true,
       presentationId,
       outputKey,
       outputUrl: result.s3Url || `https://${getBucketName()}.s3.${REGION}.amazonaws.com/${outputKey}`,
       videoCount: videoClips.length,
-    });
-  } catch (error: any) {
+    };
+  } catch (error: unknown) {
     console.error('Failed to invoke FFmpeg Lambda:', error);
-    return NextResponse.json({ error: `Failed to invoke FFmpeg Lambda: ${error.message}` }, { status: 500 });
+    throw new Error(`Failed to invoke FFmpeg Lambda: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
-export const POST = withErrorHandlingV2<any>(postHandler);
+export const POST = withErrorHandlingV2<GenerateFinalVideoResponse>(postHandler);

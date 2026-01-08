@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getPresentationStatus, getPresentationPreferences, getBucketName, deletePresentation } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PresentationStatus, PresentationPreferences } from '@/types/presentation/presentation-types';
+import { PresentationDetailResponse, UpdatePresentationResponse, DeletePresentationResponse } from '@/types/presentation/presentation-types';
 
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77esof.execute-api.us-east-1.amazonaws.com';
+const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 /**
  * GET /api/presentations/[presentationId] - Get presentation details and status
@@ -11,12 +11,12 @@ const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77es
 async function getHandler(
   req: NextRequest,
   { params }: { params: Promise<{ presentationId: string }> }
-): Promise<{
-  presentationId: string;
-  status: PresentationStatus;
-  preferences: PresentationPreferences | null;
-}> {
+): Promise<PresentationDetailResponse> {
   const { presentationId } = await params;
+
+  if (!REMOTION_LAMBDA_URL) {
+    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
+  }
 
   // Get status from our S3 utils
   const status = await getPresentationStatus(presentationId);
@@ -70,13 +70,17 @@ async function getHandler(
 /**
  * PUT /api/presentations/[presentationId] - Update presentation preferences
  */
-async function putHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<any> {
+async function putHandler(req: NextRequest, { params }: { params: Promise<{ presentationId: string }> }): Promise<UpdatePresentationResponse> {
+  if (!REMOTION_LAMBDA_URL) {
+    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
+  }
+
   const { presentationId } = await params;
   const body = await req.json();
   const { voice, slides } = body;
 
   if (!slides || !Array.isArray(slides)) {
-    return NextResponse.json({ error: 'slides array is required' }, { status: 400 });
+    throw new Error('slides array is required');
   }
 
   const outputBucket = getBucketName();
@@ -102,14 +106,14 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
   const result = await response.json();
 
   if (!response.ok) {
-    return NextResponse.json({ error: result.error || 'Failed to update preferences' }, { status: response.status });
+    throw new Error(result.error || 'Failed to update preferences');
   }
 
-  return NextResponse.json({
+  return {
     success: true,
     presentationId,
     ...result,
-  });
+  };
 }
 
 /**
@@ -118,13 +122,13 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
 async function deleteHandler(
   req: NextRequest,
   { params }: { params: Promise<{ presentationId: string }> }
-): Promise<{ success: boolean; presentationId: string }> {
+): Promise<DeletePresentationResponse> {
   const { presentationId } = await params;
 
   const deleted = await deletePresentation(presentationId);
 
   if (!deleted) {
-    return NextResponse.json({ error: 'Failed to delete presentation' }, { status: 500 }) as any;
+    throw new Error('Failed to delete presentation');
   }
 
   return {
@@ -133,6 +137,6 @@ async function deleteHandler(
   };
 }
 
-export const GET = withErrorHandlingV2<any>(getHandler);
-export const PUT = withErrorHandlingV2<any>(putHandler);
-export const DELETE = withErrorHandlingV2<any>(deleteHandler);
+export const GET = withErrorHandlingV2<PresentationDetailResponse>(getHandler);
+export const PUT = withErrorHandlingV2<UpdatePresentationResponse>(putHandler);
+export const DELETE = withErrorHandlingV2<DeletePresentationResponse>(deleteHandler);

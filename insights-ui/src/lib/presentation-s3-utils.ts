@@ -11,7 +11,7 @@ import { Readable } from 'stream';
 import { PresentationPreferences, PresentationSummary, SlideStatus, Slide } from '@/types/presentation/presentation-types';
 
 // Remotion Lambda URL
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77esof.execute-api.us-east-1.amazonaws.com';
+const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 // Use specific credentials for this functionality
 const REGION = process.env.HASSAAN_AWS_REGION || 'us-east-1';
@@ -340,6 +340,7 @@ export async function getPresentationStatus(presentationId: string): Promise<{
   slides: SlideStatus[];
   hasFinalVideo: boolean;
   finalVideoUrl?: string;
+  finalVideoLastModified?: number;
 }> {
   const basePath = `${PRESENTATIONS_PREFIX}/${presentationId}`;
 
@@ -355,6 +356,22 @@ export async function getPresentationStatus(presentationId: string): Promise<{
     objectExists(generatedContentKey),
     objectExists(finalVideoKey),
   ]);
+
+  // Get final video last modified timestamp
+  let finalVideoLastModified: number | undefined;
+  if (hasFinalVideo) {
+    try {
+      const headResponse = await s3Client.send(
+        new HeadObjectCommand({
+          Bucket: BUCKET_NAME,
+          Key: finalVideoKey,
+        })
+      );
+      finalVideoLastModified = headResponse.LastModified?.getTime();
+    } catch (error) {
+      console.warn('Failed to get final video last modified timestamp:', error);
+    }
+  }
 
   const slides: SlideStatus[] = [];
 
@@ -420,7 +437,8 @@ export async function getPresentationStatus(presentationId: string): Promise<{
     hasGeneratedContent,
     slides,
     hasFinalVideo,
-    finalVideoUrl: hasFinalVideo ? getPresignedUrl(finalVideoKey) : undefined,
+    finalVideoUrl: hasFinalVideo ? getCacheBustingVideoUrl(finalVideoKey, finalVideoLastModified) : undefined,
+    finalVideoLastModified,
   };
 }
 
@@ -474,6 +492,17 @@ export function getPresignedUrl(key: string): string {
 }
 
 /**
+ * Generate a cache-busting URL for videos to prevent browser caching
+ */
+export function getCacheBustingVideoUrl(key: string, lastModified?: number): string {
+  const baseUrl = `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
+  if (lastModified) {
+    return `${baseUrl}?t=${lastModified}`;
+  }
+  return baseUrl;
+}
+
+/**
  * Get bucket name
  */
 export function getBucketName(): string {
@@ -496,6 +525,11 @@ async function checkAndUpdateRenderStatus(
   renderId: string,
   renderType: 'image' | 'video'
 ): Promise<RenderInfo | null> {
+  if (!REMOTION_LAMBDA_URL) {
+    console.error('REMOTION_LAMBDA_URL environment variable is not configured');
+    return null;
+  }
+
   try {
     const response = await fetch(`${REMOTION_LAMBDA_URL}/render-status`, {
       method: 'POST',

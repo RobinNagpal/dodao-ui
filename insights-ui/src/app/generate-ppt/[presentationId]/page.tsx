@@ -9,11 +9,12 @@ import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/componen
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import SlideRow from '@/components/presentations/SlideRow';
 import SlideContentModal from '@/components/presentations/SlideContentModal';
 import AddSlideModal from '@/components/presentations/AddSlideModal';
-import { PresentationStatus, PresentationPreferences, Slide } from '@/types/presentation/presentation-types';
+import { PresentationStatus, PresentationPreferences, Slide, SlidePreference, GenerateFinalVideoResponse, AddSlideResponse, UpdatePresentationResponse } from '@/types/presentation/presentation-types';
 
 interface PresentationDetailPageProps {
   params: Promise<{ presentationId: string }>;
@@ -52,9 +53,21 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
   const preferences = data?.preferences;
 
   // Post hook for generating final video
-  const { postData: generateFinalVideoApi } = usePostData<any, any>({
+  const { postData: generateFinalVideoApi } = usePostData<GenerateFinalVideoResponse, Record<string, never>>({
     successMessage: 'Final video generation started!',
     errorMessage: 'Failed to generate final video',
+  });
+
+  // Post hook for adding slides
+  const { postData: addSlideApi } = usePostData<AddSlideResponse, { slide: Slide }>({
+    successMessage: 'Slide added successfully!',
+    errorMessage: 'Failed to add slide',
+  });
+
+  // Put hook for updating slides
+  const { putData: updateSlideApi } = usePutData<UpdatePresentationResponse, { voice: string; slides: SlidePreference[] }>({
+    successMessage: 'Slide updated successfully!',
+    errorMessage: 'Failed to update slide',
   });
 
   // State for adding slides
@@ -64,12 +77,6 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
   const { deleteData: deletePresentationApi, loading: deletingPresentation } = useDeleteData({
     successMessage: 'Presentation deleted successfully!',
     errorMessage: 'Failed to delete presentation',
-  });
-
-  // Put hook for updating slides
-  const { postData: updatePreferences } = usePostData<any, any>({
-    successMessage: 'Slide updated successfully!',
-    errorMessage: 'Failed to update slide',
   });
 
   const handleRefresh = () => {
@@ -86,29 +93,17 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
   const handleSlideUpdate = async (updatedSlide: Slide) => {
     if (!preferences || !selectedSlide) return;
 
-    try {
-      // Update the slide in preferences
-      const updatedSlides = preferences.slides.map((sp) => (sp.slideNumber === selectedSlide.slideNumber ? { ...sp, slide: updatedSlide } : sp));
+    // Update the slide in preferences
+    const updatedSlides = preferences.slides.map((sp) => (sp.slideNumber === selectedSlide.slideNumber ? { ...sp, slide: updatedSlide } : sp));
 
-      // Use fetch with PUT method since usePutData is not working as expected here
-      const response = await fetch(`${getBaseUrl()}/api/presentations/${presentationId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          voice: preferences.voice,
-          slides: updatedSlides,
-        }),
-      });
+    const result = await updateSlideApi(`${getBaseUrl()}/api/presentations/${presentationId}`, {
+      voice: preferences.voice,
+      slides: updatedSlides,
+    });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Failed to update slide');
-      }
-
+    if (result) {
       setSelectedSlide(null);
       handleRefresh();
-    } catch (err: any) {
-      setError(err.message);
     }
   };
 
@@ -122,8 +117,8 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
       if (result) {
         handleRefresh();
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setGeneratingFinal(false);
     }
@@ -136,36 +131,22 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
     }
   };
 
-  const handleAddSlide = async (slide: any) => {
-    try {
-      setAddingSlide(true);
-      setError(null);
+  const handleAddSlide = async (slide: Slide) => {
+    setAddingSlide(true);
+    setError(null);
 
-      console.log('Adding slide:', slide);
+    console.log('Adding slide:', slide);
 
-      const response = await fetch(`${getBaseUrl()}/api/presentations/${presentationId}/slides`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slide }),
-      });
+    const result = await addSlideApi(`${getBaseUrl()}/api/presentations/${presentationId}/slides`, { slide });
 
-      const responseData = await response.json();
-      console.log('Add slide response:', response.status, responseData);
-
-      if (!response.ok) {
-        throw new Error(responseData.error || 'Failed to add slide');
-      }
-
+    if (result) {
       // Wait for the data to be refetched before continuing
       // This ensures the UI shows the new slide
       await reFetchData();
       console.log('Data refetched after adding slide');
-    } catch (err: any) {
-      console.error('Error adding slide:', err);
-      setError(err.message);
-    } finally {
-      setAddingSlide(false);
     }
+
+    setAddingSlide(false);
   };
 
   const allVideosReady = status?.slides?.every((s) => s.hasVideo) ?? false;
@@ -262,7 +243,11 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
                 {status.hasFinalVideo && status.finalVideoUrl ? (
                   <div>
                     <div className="mb-4">
-                      <video controls className="w-full max-w-2xl mx-auto rounded-lg">
+                      <video
+                        key={status.finalVideoLastModified} // Force remount when video is updated
+                        controls
+                        className="w-full max-w-2xl mx-auto rounded-lg"
+                      >
                         <source src={status.finalVideoUrl} type="video/mp4" />
                       </video>
                     </div>

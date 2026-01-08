@@ -221,11 +221,11 @@ Generate TTS audio for a slide.
 
 ### 5. POST /generate-slide-video
 
-Generate video **ONLY** for a slide. **Requires existing audio** - does NOT regenerate audio.
+Generate video **ONLY** for a slide. **Requires existing audio AND image** - does NOT regenerate audio or image.
 
 Use this when:
-- Audio already exists and you don't want to regenerate it
-- You only want to regenerate the video (e.g., after changing slide content but not narration)
+- Audio and image already exist and you don't want to regenerate them
+- You only want to regenerate the video (e.g., after changing video settings but not content)
 
 **Request:**
 ```json
@@ -255,15 +255,24 @@ Use this when:
 **Lambda Action:**
 1. Loads slide from preferences
 2. **Checks if audio exists** - throws error if not found
-3. Uses existing audio file
-4. Renders video via Remotion Lambda (async)
-5. Saves video render metadata
+3. **Checks if image exists** - throws error if not found
+4. Uses existing audio and image files
+5. Renders video via Remotion Lambda (async) using stored image
+6. Saves video render metadata
 
 **Error if audio missing:**
 ```json
 {
   "success": false,
   "error": "Audio not found for slide 01. Please generate audio first using /generate-slide-audio or use /generate-slide-all"
+}
+```
+
+**Error if image missing:**
+```json
+{
+  "success": false,
+  "error": "Image not found for slide 01. Please generate image first using /generate-slide-image or use /generate-slide-all"
 }
 ```
 
@@ -310,7 +319,7 @@ Use this when:
 2. Saves slide text JSON
 3. **Generates audio** (TTS) - always regenerates
 4. **Generates image** (PNG screenshot) - always regenerates
-5. **Renders video** via Remotion Lambda (async)
+5. **Renders video** via Remotion Lambda (async) using the generated image
 6. Saves render metadata for both image and video
 
 ---
@@ -475,7 +484,7 @@ Health check endpoint.
     "POST /generate-from-prompt",
     "POST /generate-slide-image",
     "POST /generate-slide-audio",
-    "POST /generate-slide-video (video only, requires audio)",
+            "POST /generate-slide-video (video only, requires audio + image)",
     "POST /generate-slide-all (audio + image + video)",
     "POST /presentation-status"
   ]
@@ -515,7 +524,7 @@ Health check endpoint.
 When **only slide content changes** (not narration):
 1. `POST /save-preferences` - Update slide content
 2. `POST /generate-slide-image` - Regenerate image
-3. `POST /generate-slide-video` - Regenerate video (uses existing audio)
+3. `POST /generate-slide-video` - Regenerate video (uses existing audio and new image)
 
 When **narration changes**:
 1. `POST /save-preferences` - Update slide content + narration

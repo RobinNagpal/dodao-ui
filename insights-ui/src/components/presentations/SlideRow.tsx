@@ -7,7 +7,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState, useEffect, useRef } from 'react';
-import { SlideStatus } from '@/types/presentation/presentation-types';
+import { SlideStatus, GenerateArtifactResponse, RenderStatusResponse, UploadImageResponse } from '@/types/presentation/presentation-types';
 
 interface SlideRowProps {
   slideStatus: SlideStatus;
@@ -25,12 +25,16 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { postData: generateArtifactApi, loading: generatingArtifact } = usePostData<any, any>({
+  const { postData: generateArtifactApi, loading: generatingArtifact } = usePostData<GenerateArtifactResponse, Record<string, never>>({
     errorMessage: 'Failed to generate artifact',
   });
 
-  const { postData: checkRenderStatus } = usePostData<any, any>({
+  const { postData: checkRenderStatus } = usePostData<RenderStatusResponse, { renderId: string }>({
     errorMessage: 'Failed to check render status',
+  });
+
+  const { postData: uploadImageApi } = usePostData<UploadImageResponse, FormData>({
+    errorMessage: 'Failed to upload image',
   });
 
   const { deleteData: deleteSlideApi, loading: deletingSlide } = useDeleteData({
@@ -82,8 +86,8 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
       }
 
       onRefresh();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setLoading(null);
     }
@@ -100,20 +104,15 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch(`${getBaseUrl()}/api/presentations/${presentationId}/slides/${slideStatus.slideNumber}/upload-image`, {
-        method: 'POST',
-        body: formData,
-      });
+      const result = await uploadImageApi(`${getBaseUrl()}/api/presentations/${presentationId}/slides/${slideStatus.slideNumber}/upload-image`, formData);
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to upload image');
+      if (!result) {
+        throw new Error('Failed to upload image');
       }
 
       onRefresh();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
       setUploadingImage(false);
       if (fileInputRef.current) {

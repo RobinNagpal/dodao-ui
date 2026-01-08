@@ -109,31 +109,40 @@ export async function generateSlideAudio(
     // Save to temporary local file (needed for duration parsing)
     const tmpDir = path.join(getTempDir(), "audio");
     ensureDir(tmpDir);
-    const localPath = path.join(tmpDir, `${presentationId}-${formattedSlideNumber}.mp3`);
+    // Replace slashes in presentationId to create valid filename
+    const safePresId = presentationId.replace(/\//g, "-");
+    const localPath = path.join(tmpDir, `${safePresId}-${formattedSlideNumber}.mp3`);
     fs.writeFileSync(localPath, audioBuffer);
 
     // Step 3: Upload audio to S3 with proper path
+    // Return direct S3 URL for storage (not presigned URL that expires)
+    // Make audio public so it can be played in UI without authentication
     const audioUrl = await storage.uploadFile(
       outputBucket,
       slidePaths.audio,
       localPath,
       "audio/mpeg",
-      true // Return presigned URL for Remotion Lambda
+      false, // Return direct S3 URL for storage
+      true  // Make public for UI playback
     );
+
+    // Also generate a presigned URL for immediate Remotion Lambda use
+    const audioPresignedUrl = await storage.getPresignedUrl(outputBucket, slidePaths.audio, 3600);
 
     // Estimate duration
     const wordsPerMinute = 150;
     const words = narration.split(/\s+/).length;
     const duration = (words / wordsPerMinute) * 60;
 
-    console.log(`Audio generated: ${audioUrl.substring(0, 80)}...`);
+    console.log(`Audio generated: ${audioUrl}`);
 
     return {
       success: true,
       presentationId,
       slideNumber: formattedSlideNumber,
       audioScriptUrl,
-      audioUrl,
+      audioUrl, // Direct S3 URL for storage
+      audioPresignedUrl, // Presigned URL for immediate Remotion use
       duration,
     };
   } catch (error) {

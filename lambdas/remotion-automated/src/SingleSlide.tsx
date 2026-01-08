@@ -7,7 +7,8 @@ import { SlideView } from "./SlideView";
 export const SingleSlide: React.FC<{
   slide: Slide;
   audioUrl?: string; // Can be relative path like "audio/001.mp3" or URL
-}> = ({ slide, audioUrl }) => {
+  preGeneratedImageUrl?: string; // URL to pre-generated slide image
+}> = ({ slide, audioUrl, preGeneratedImageUrl }) => {
   // If audioUrl is a relative path (from public folder), use staticFile
   // If it's a full URL (http:// or https://), use it directly
   const audioSrc = audioUrl
@@ -18,7 +19,7 @@ export const SingleSlide: React.FC<{
 
   return (
     <AbsoluteFill>
-      <SlideView slide={slide} index={0} total={1} />
+      <SlideView slide={slide} index={0} total={1} preGeneratedImageUrl={preGeneratedImageUrl} />
       {audioSrc && <Audio src={audioSrc} />}
     </AbsoluteFill>
   );

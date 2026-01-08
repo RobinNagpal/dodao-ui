@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { listPresentations, savePresentationPreferences, getBucketName } from '@/lib/presentation-s3-utils';
+import { NextRequest } from 'next/server';
+import { listPresentations, getBucketName } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PresentationSummary, SavePreferencesRequest, DEFAULT_VOICE } from '@/types/presentation/presentation-types';
+import { PresentationSummary, DEFAULT_VOICE, PresentationsListResponse, CreatePresentationResponse } from '@/types/presentation/presentation-types';
 
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77esof.execute-api.us-east-1.amazonaws.com';
+const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 /**
  * GET /api/presentations - List all presentations
@@ -19,12 +19,16 @@ async function getHandler(): Promise<{ presentations: PresentationSummary[] }> {
  * 1. JSON mode: { mode: 'json', presentationId, voice?, slides }
  * 2. Prompt mode: { mode: 'prompt', presentationId, prompt, numberOfSlides, additionalInstructions?, voice? }
  */
-async function postHandler(req: NextRequest): Promise<any> {
+async function postHandler(req: NextRequest): Promise<CreatePresentationResponse> {
+  if (!REMOTION_LAMBDA_URL) {
+    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
+  }
+
   const body = await req.json();
   const { mode, presentationId, voice = DEFAULT_VOICE } = body;
 
   if (!presentationId) {
-    return NextResponse.json({ error: 'presentationId is required' }, { status: 400 });
+    throw new Error('presentationId is required');
   }
 
   const outputBucket = getBucketName();
@@ -33,7 +37,7 @@ async function postHandler(req: NextRequest): Promise<any> {
     // Direct JSON mode - save preferences
     const { slides } = body;
     if (!slides || !Array.isArray(slides) || slides.length === 0) {
-      return NextResponse.json({ error: 'slides array is required' }, { status: 400 });
+      throw new Error('slides array is required');
     }
 
     // Format slides with slide numbers
@@ -60,22 +64,22 @@ async function postHandler(req: NextRequest): Promise<any> {
     const result = await response.json();
 
     if (!response.ok) {
-      return NextResponse.json({ error: result.error || 'Failed to save preferences' }, { status: response.status });
+      throw new Error(result.error || 'Failed to save preferences');
     }
 
-    return NextResponse.json({
+    return {
       success: true,
       presentationId,
       mode: 'json',
       slideCount: formattedSlides.length,
       ...result,
-    });
+    };
   } else if (mode === 'prompt') {
     // Prompt mode - generate from AI
     const { prompt, numberOfSlides = 5, additionalInstructions } = body;
 
     if (!prompt) {
-      return NextResponse.json({ error: 'prompt is required for prompt mode' }, { status: 400 });
+      throw new Error('prompt is required for prompt mode');
     }
 
     // Call Remotion Lambda to generate from prompt
@@ -95,19 +99,19 @@ async function postHandler(req: NextRequest): Promise<any> {
     const result = await response.json();
 
     if (!response.ok) {
-      return NextResponse.json({ error: result.error || 'Failed to generate from prompt' }, { status: response.status });
+      throw new Error(result.error || 'Failed to generate from prompt');
     }
 
-    return NextResponse.json({
+    return {
       success: true,
       presentationId,
       mode: 'prompt',
       ...result,
-    });
+    };
   } else {
-    return NextResponse.json({ error: 'Invalid mode. Use "json" or "prompt"' }, { status: 400 });
+    throw new Error('Invalid mode. Use "json" or "prompt"');
   }
 }
 
-export const GET = withErrorHandlingV2<{ presentations: PresentationSummary[] }>(getHandler);
-export const POST = withErrorHandlingV2<any>(postHandler);
+export const GET = withErrorHandlingV2<PresentationsListResponse>(getHandler);
+export const POST = withErrorHandlingV2<CreatePresentationResponse>(postHandler);

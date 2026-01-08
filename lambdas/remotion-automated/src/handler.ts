@@ -20,7 +20,7 @@ import type {
   SlideAndScriptPreferences,
   SlidePreference,
 } from "./api/types";
-import { renderSingleSlide, renderSlideVideoOnly, renderSlideAll } from "./api/render-single-slide";
+import { renderSingleSlide, renderSlideVideoOnly, renderSlideAll, renderSlideWithPaths } from "./api/render-single-slide";
 import { concatenateVideosRemotion } from "./api/concatenate-videos-remotion";
 import { getRenderStatus as getRenderStatusService } from "./api/get-render-status";
 import { StorageService, getPresentationPaths, formatSlideNumber } from "./api/storage-service";

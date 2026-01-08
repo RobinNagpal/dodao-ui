@@ -12,6 +12,7 @@ type SingleSlideProps = {
   slide: Slide;
   audioUrl?: string;
   durationInFrames?: number; // Dynamic duration passed from API
+  preGeneratedImageUrl?: string; // URL to pre-generated slide image
 };
 
 // Calculate metadata for SingleSlide - uses durationInFrames from props
@@ -62,6 +63,7 @@ export const RemotionRoot: React.FC = () => {
           slide: SLIDES[0], // Default slide
           audioUrl: undefined,
           durationInFrames: 30, // Default duration
+          preGeneratedImageUrl: undefined,
         }}
         calculateMetadata={calculateSingleSlideMetadata}
       />

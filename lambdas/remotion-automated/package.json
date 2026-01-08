@@ -8,9 +8,6 @@
     "lint-fix": "eslint src --ext .ts --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,json}'",
-    "test:single-slide": "npx tsx scripts/test-single-slide.ts",
-    "test:concatenate": "npx tsx scripts/test-concatenate.ts",
-    "test:workflow": "npx tsx scripts/test-async-workflow.ts",
     "setup:remotion": "npx tsx scripts/setup-remotion-lambda.ts",
     "deploy": "npx serverless deploy",
     "deploy:prod": "npx serverless deploy --stage prod"

@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getBucketName, getPresentationsPrefix, getJsonFromS3, putJsonToS3, deleteSlideFromPresentation, uploadFileToS3 } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { GenerateArtifactResponse, DeleteSlideResponse } from '@/types/presentation/presentation-types';
 
-const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL || 'https://8tpy77esof.execute-api.us-east-1.amazonaws.com';
+const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
 
 type SlideParams = { params: Promise<{ presentationId: string; slideNumber: string }> };
 
@@ -12,7 +13,11 @@ type SlideParams = { params: Promise<{ presentationId: string; slideNumber: stri
  * Query params:
  * - action: 'audio' | 'image' | 'video' | 'all'
  */
-async function postHandler(req: NextRequest, { params }: SlideParams): Promise<any> {
+async function postHandler(req: NextRequest, { params }: SlideParams): Promise<GenerateArtifactResponse> {
+  if (!REMOTION_LAMBDA_URL) {
+    throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
+  }
+
   const { presentationId, slideNumber } = await params;
   const { searchParams } = new URL(req.url);
   const action = searchParams.get('action') || 'all';
@@ -54,7 +59,7 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
   const result = await response.json();
 
   if (!response.ok) {
-    return NextResponse.json({ error: result.error || `Failed to generate ${action}` }, { status: response.status });
+    throw new Error(result.error || `Failed to generate ${action}`);
   }
 
   // Store audio URL in render metadata if it was returned
@@ -80,20 +85,20 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
     }
   }
 
-  return NextResponse.json({
+  return {
     success: true,
     action,
     presentationId,
     slideNumber,
     ...(result && typeof result === 'object' ? result : {}),
-  });
+  };
 }
 
 /**
  * DELETE /api/presentations/[presentationId]/slides/[slideNumber]
  * Delete a slide from the presentation
  */
-async function deleteHandler(req: NextRequest, { params }: SlideParams): Promise<any> {
+async function deleteHandler(req: NextRequest, { params }: SlideParams): Promise<DeleteSlideResponse> {
   const { presentationId, slideNumber } = await params;
 
   console.log('Deleting slide:', presentationId, slideNumber);
@@ -103,16 +108,16 @@ async function deleteHandler(req: NextRequest, { params }: SlideParams): Promise
   console.log('Delete result:', result);
 
   if (!result.success) {
-    return NextResponse.json({ error: result.error || 'Failed to delete slide' }, { status: 400 });
+    throw new Error(result.error || 'Failed to delete slide');
   }
 
-  return NextResponse.json({
+  return {
     success: true,
     presentationId,
     slideNumber,
     message: 'Slide deleted successfully',
-  });
+  };
 }
 
-export const POST = withErrorHandlingV2<any>(postHandler);
-export const DELETE = withErrorHandlingV2<any>(deleteHandler);
+export const POST = withErrorHandlingV2<GenerateArtifactResponse>(postHandler);
+export const DELETE = withErrorHandlingV2<DeleteSlideResponse>(deleteHandler);

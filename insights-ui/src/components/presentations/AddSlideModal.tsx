@@ -3,7 +3,7 @@
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import React, { useState } from 'react';
-import { SlideType, AVAILABLE_VOICES, DEFAULT_VOICE } from '@/types/presentation/presentation-types';
+import { SlideType } from '@/types/presentation/presentation-types';
 
 export interface AddSlideModalProps {
   open: boolean;

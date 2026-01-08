@@ -1,29 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { getPresentationsPrefix, uploadFileToS3, getJsonFromS3, putJsonToS3, getBucketName } from '@/lib/presentation-s3-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { UploadImageResponse } from '@/types/presentation/presentation-types';
 
 type SlideParams = { params: Promise<{ presentationId: string; slideNumber: string }> };
-
-const REGION = process.env.HASSAAN_AWS_REGION || 'us-east-1';
 
 /**
  * POST /api/presentations/[presentationId]/slides/[slideNumber]/upload-image
  * Upload a custom image for a slide
  */
-async function postHandler(req: NextRequest, { params }: SlideParams): Promise<any> {
+async function postHandler(req: NextRequest, { params }: SlideParams): Promise<UploadImageResponse> {
   const { presentationId, slideNumber } = await params;
 
   const formData = await req.formData();
   const file = formData.get('image') as File | null;
 
   if (!file) {
-    return NextResponse.json({ error: 'No image file provided' }, { status: 400 });
+    throw new Error('No image file provided');
   }
 
   // Validate file type
   const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif'];
   if (!validTypes.includes(file.type)) {
-    return NextResponse.json({ error: 'Invalid file type. Supported: PNG, JPEG, WebP, GIF' }, { status: 400 });
+    throw new Error('Invalid file type. Supported: PNG, JPEG, WebP, GIF');
   }
 
   // Convert file to buffer
@@ -55,17 +54,17 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<a
 
     await putJsonToS3(metadataKey, updatedMetadata);
 
-    return NextResponse.json({
+    return {
       success: true,
       presentationId,
       slideNumber,
       imageUrl,
       message: 'Image uploaded successfully',
-    });
+    };
   } catch (error: any) {
     console.error('Failed to upload image:', error);
-    return NextResponse.json({ error: error.message || 'Failed to upload image' }, { status: 500 });
+    throw new Error(error.message || 'Failed to upload image');
   }
 }
 
-export const POST = withErrorHandlingV2<any>(postHandler);
+export const POST = withErrorHandlingV2<UploadImageResponse>(postHandler);

@@ -127,7 +127,8 @@ export class StorageService {
     key: string,
     filePath: string,
     contentType?: string,
-    returnPresignedUrl: boolean = false
+    returnPresignedUrl: boolean = false,
+    makePublic: boolean = false
   ): Promise<string> {
     const fileContent = fs.readFileSync(filePath);
     const ext = path.extname(filePath).toLowerCase();
@@ -143,13 +144,20 @@ export class StorageService {
       ".txt": "text/plain",
     };
 
+    const commandInput: any = {
+      Bucket: bucket,
+      Key: key,
+      Body: fileContent,
+      ContentType: contentType || contentTypes[ext] || "application/octet-stream",
+    };
+
+    // Make public if requested
+    if (makePublic) {
+      commandInput.ACL = "public-read";
+    }
+
     await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: fileContent,
-        ContentType: contentType || contentTypes[ext] || "application/octet-stream",
-      })
+      new PutObjectCommand(commandInput)
     );
 
     if (returnPresignedUrl) {

@@ -5,7 +5,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React, { useState } from 'react';
-import { AVAILABLE_VOICES, DEFAULT_VOICE } from '@/types/presentation/presentation-types';
+import { AVAILABLE_VOICES, DEFAULT_VOICE, CreatePresentationResponse, CreatePresentationRequest } from '@/types/presentation/presentation-types';
 
 export interface CreatePresentationModalProps {
   open: boolean;
@@ -50,7 +50,7 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
 
   const [jsonError, setJsonError] = useState('');
 
-  const { postData: createPresentation, loading } = usePostData<any, any>({
+  const { postData: createPresentation, loading } = usePostData<CreatePresentationResponse, CreatePresentationRequest>({
     successMessage: 'Presentation created successfully!',
     errorMessage: 'Failed to create presentation',
   });
@@ -89,25 +89,31 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
 
     setError('');
 
-    let body: any = {
-      mode,
-      presentationId,
-      voice,
-    };
+    let body: CreatePresentationRequest;
 
     if (mode === 'prompt') {
       if (!prompt.trim()) {
         setError('Prompt is required');
         return;
       }
-      body.prompt = prompt;
-      body.numberOfSlides = numberOfSlides;
-      body.additionalInstructions = additionalInstructions || undefined;
+      body = {
+        mode: 'prompt',
+        presentationId,
+        voice,
+        prompt,
+        numberOfSlides,
+        additionalInstructions: additionalInstructions || undefined,
+      };
     } else {
       if (!validateJson(jsonContent)) {
         return;
       }
-      body.slides = JSON.parse(jsonContent);
+      body = {
+        mode: 'json',
+        presentationId,
+        voice,
+        slides: JSON.parse(jsonContent),
+      };
     }
 
     const result = await createPresentation(`${getBaseUrl()}/api/presentations`, body);

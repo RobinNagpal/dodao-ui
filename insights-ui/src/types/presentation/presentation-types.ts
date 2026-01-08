@@ -1,4 +1,3 @@
-// Slide types matching API.md specification
 export type SlideType = 'title' | 'bullets' | 'paragraphs' | 'image';
 
 export interface BaseSlide {
@@ -99,6 +98,7 @@ export interface PresentationStatus {
   slides: SlideStatus[];
   hasFinalVideo?: boolean;
   finalVideoUrl?: string;
+  finalVideoLastModified?: number;
 }
 
 // Presentation summary for listing
@@ -150,6 +150,113 @@ export interface ConcatenateVideosRequest {
 export interface FFmpegMergeRequest {
   clips: { s3Url: string; s3Key?: string }[];
   outputKey: string;
+}
+
+// API Request types
+export interface CreatePresentationJsonRequest {
+  mode: 'json';
+  presentationId: string;
+  voice: string;
+  slides: Slide[];
+}
+
+export interface CreatePresentationPromptRequest {
+  mode: 'prompt';
+  presentationId: string;
+  voice: string;
+  prompt: string;
+  numberOfSlides: number;
+  additionalInstructions?: string;
+}
+
+export type CreatePresentationRequest = CreatePresentationJsonRequest | CreatePresentationPromptRequest;
+
+// API Response types
+export interface PresentationsListResponse {
+  presentations: PresentationSummary[];
+}
+
+export interface CreatePresentationJsonResponse {
+  success: true;
+  presentationId: string;
+  mode: 'json';
+  slideCount: number;
+  [key: string]: any; // For additional properties from lambda
+}
+
+export interface CreatePresentationPromptResponse {
+  success: true;
+  presentationId: string;
+  mode: 'prompt';
+  [key: string]: any; // For additional properties from lambda
+}
+
+export type CreatePresentationResponse = CreatePresentationJsonResponse | CreatePresentationPromptResponse;
+
+// API Response types for presentation detail operations
+export interface PresentationDetailResponse {
+  presentationId: string;
+  status: PresentationStatus;
+  preferences: PresentationPreferences | null;
+}
+
+export interface UpdatePresentationResponse {
+  success: true;
+  presentationId: string;
+  [key: string]: any; // For additional properties from lambda
+}
+
+export interface DeletePresentationResponse {
+  success: boolean;
+  presentationId: string;
+}
+
+export interface GenerateFinalVideoResponse {
+  success: true;
+  presentationId: string;
+  outputKey: string;
+  outputUrl: string;
+  videoCount: number;
+  [key: string]: any; // For additional properties
+}
+
+export interface RenderStatusResponse {
+  presentationId: string;
+  done?: boolean;
+  overallProgress?: number;
+  outputUrl?: string;
+  outputFile?: string;
+  [key: string]: any; // For additional properties from lambda
+}
+
+export interface GenerateArtifactResponse {
+  success: true;
+  action: string;
+  presentationId: string;
+  slideNumber: string;
+  [key: string]: any; // For additional properties from lambda
+}
+
+export interface AddSlideResponse {
+  success: true;
+  presentationId: string;
+  slideNumber: string;
+  message: string;
+}
+
+export interface DeleteSlideResponse {
+  success: true;
+  presentationId: string;
+  slideNumber: string;
+  message: string;
+}
+
+export interface UploadImageResponse {
+  success: true;
+  presentationId: string;
+  slideNumber: string;
+  imageUrl: string;
+  message: string;
 }
 
 // Available voices
