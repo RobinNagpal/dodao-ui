@@ -3,6 +3,7 @@
 ## S3 File Structure
 
 **Direct Storage (text, audio script, audio, metadata):**
+
 ```
 {presentation-id}/
 ├── inputs/
@@ -21,6 +22,7 @@
 ```
 
 **Remotion Renders (images & videos are stored by Remotion with render ID prefix):**
+
 ```
 renders/
 ├── {image-render-id}/
@@ -32,6 +34,7 @@ renders/
 ```
 
 **render-metadata.json Structure:**
+
 ```json
 {
   "slideNumber": "01",
@@ -63,11 +66,12 @@ renders/
 Save slide content and narration manually (without AI).
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
   "outputBucket": "remotionlambda-useast1-xxx",
-  "voice": "en-US-JennyNeural",
+  "voice": "Ruth",
   "slides": [
     {
       "slideNumber": "01",
@@ -95,6 +99,7 @@ Save slide content and narration manually (without AI).
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -113,6 +118,7 @@ Save slide content and narration manually (without AI).
 Generate slides from a text prompt using Gemini AI.
 
 **Request:**
+
 ```json
 {
   "presentationId": "ai-pres-001",
@@ -120,11 +126,12 @@ Generate slides from a text prompt using Gemini AI.
   "numberOfSlides": 5,
   "additionalInstructions": "Include statistics",
   "outputBucket": "remotionlambda-useast1-xxx",
-  "voice": "en-US-JennyNeural"
+  "voice": "Ruth"
 }
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -142,6 +149,7 @@ Generate slides from a text prompt using Gemini AI.
 ```
 
 **Lambda Action:**
+
 1. Saves prompt to `{presentationId}/inputs/prompt.txt`
 2. Calls Gemini API to generate slides
 3. Saves to `{presentationId}/middle/generated-slide-content-all.json`
@@ -154,6 +162,7 @@ Generate slides from a text prompt using Gemini AI.
 Generate PNG screenshot of a slide.
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
@@ -163,6 +172,7 @@ Generate PNG screenshot of a slide.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -175,6 +185,7 @@ Generate PNG screenshot of a slide.
 ```
 
 **Lambda Action:**
+
 1. Loads slide from preferences
 2. Saves slide JSON to `{presentationId}/output/{slideNumber}-slide/generated-slide-text.json`
 3. Renders still image via Remotion Lambda
@@ -190,16 +201,18 @@ Generate PNG screenshot of a slide.
 Generate TTS audio for a slide.
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
   "slideNumber": "01",
   "outputBucket": "remotionlambda-useast1-xxx",
-  "voice": "en-US-JennyNeural"
+  "voice": "Ruth"
 }
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -212,6 +225,7 @@ Generate TTS audio for a slide.
 ```
 
 **Lambda Action:**
+
 1. Loads narration from preferences
 2. Saves script to `{presentationId}/output/{slideNumber}-slide/generated-slide-audio-script.txt`
 3. Generates audio via Edge TTS
@@ -224,10 +238,12 @@ Generate TTS audio for a slide.
 Generate video **ONLY** for a slide. **Requires existing audio AND image** - does NOT regenerate audio or image.
 
 Use this when:
+
 - Audio and image already exist and you don't want to regenerate them
 - You only want to regenerate the video (e.g., after changing video settings but not content)
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
@@ -237,6 +253,7 @@ Use this when:
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -253,6 +270,7 @@ Use this when:
 ```
 
 **Lambda Action:**
+
 1. Loads slide from preferences
 2. **Checks if audio exists** - throws error if not found
 3. **Checks if image exists** - throws error if not found
@@ -261,6 +279,7 @@ Use this when:
 6. Saves video render metadata
 
 **Error if audio missing:**
+
 ```json
 {
   "success": false,
@@ -269,6 +288,7 @@ Use this when:
 ```
 
 **Error if image missing:**
+
 ```json
 {
   "success": false,
@@ -283,21 +303,24 @@ Use this when:
 Generate **ALL** artifacts for a slide: audio + image + video. **Regenerates everything** even if they exist.
 
 Use this when:
+
 - Starting fresh for a slide
 - Content AND narration have changed
 - You want to regenerate everything
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
   "slideNumber": "01",
   "outputBucket": "remotionlambda-useast1-xxx",
-  "voice": "en-US-JennyNeural"
+  "voice": "Ruth"
 }
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -315,6 +338,7 @@ Use this when:
 ```
 
 **Lambda Action:**
+
 1. Loads slide from preferences
 2. Saves slide text JSON
 3. **Generates audio** (TTS) - always regenerates
@@ -329,6 +353,7 @@ Use this when:
 Get status of all artifacts for a presentation.
 
 **Request:**
+
 ```json
 {
   "presentationId": "my-presentation-001",
@@ -337,6 +362,7 @@ Get status of all artifacts for a presentation.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -381,6 +407,7 @@ Get status of all artifacts for a presentation.
 Check Remotion render progress.
 
 **Request:**
+
 ```json
 {
   "renderId": "xyz789",
@@ -389,6 +416,7 @@ Check Remotion render progress.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -408,6 +436,7 @@ Check Remotion render progress.
 Concatenate multiple slide videos into one.
 
 **Request:**
+
 ```json
 {
   "videoUrls": [
@@ -422,6 +451,7 @@ Concatenate multiple slide videos into one.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -440,6 +470,7 @@ Concatenate multiple slide videos into one.
 Original endpoint - still works for backward compatibility.
 
 **Request:**
+
 ```json
 {
   "slide": {
@@ -455,6 +486,7 @@ Original endpoint - still works for backward compatibility.
 ```
 
 Or with new path structure:
+
 ```json
 {
   "slide": { ... },
@@ -471,6 +503,7 @@ Or with new path structure:
 Health check endpoint.
 
 **Response:**
+
 ```json
 {
   "status": "healthy",
@@ -484,7 +517,7 @@ Health check endpoint.
     "POST /generate-from-prompt",
     "POST /generate-slide-image",
     "POST /generate-slide-audio",
-            "POST /generate-slide-video (video only, requires audio + image)",
+    "POST /generate-slide-video (video only, requires audio + image)",
     "POST /generate-slide-all (audio + image + video)",
     "POST /presentation-status"
   ]
@@ -522,11 +555,13 @@ Health check endpoint.
 ### Update Content Workflow
 
 When **only slide content changes** (not narration):
+
 1. `POST /save-preferences` - Update slide content
 2. `POST /generate-slide-image` - Regenerate image
 3. `POST /generate-slide-video` - Regenerate video (uses existing audio and new image)
 
 When **narration changes**:
+
 1. `POST /save-preferences` - Update slide content + narration
 2. `POST /generate-slide-all` - Regenerate everything (audio + image + video)
 
@@ -545,20 +580,19 @@ GOOGLE_API_KEY=your-gemini-api-key
 
 ## Slide Types
 
-| Type | Required Fields | Optional Fields |
-|------|----------------|-----------------|
-| `title` | title, narration | subtitle |
-| `bullets` | title, bullets, narration | titleAccent, bulletAccents |
-| `paragraphs` | title, paragraphs, narration | titleAccent, paragraphAccents, footer |
-| `image` | title, bullets, imageUrl, narration | titleAccent, bulletAccents |
+| Type         | Required Fields                     | Optional Fields                       |
+| ------------ | ----------------------------------- | ------------------------------------- |
+| `title`      | title, narration                    | subtitle                              |
+| `bullets`    | title, bullets, narration           | titleAccent, bulletAccents            |
+| `paragraphs` | title, paragraphs, narration        | titleAccent, paragraphAccents, footer |
+| `image`      | title, bullets, imageUrl, narration | titleAccent, bulletAccents            |
 
 ---
 
 ## Available Voices
 
-- `en-US-JennyNeural` (default, female)
+- `Ruth` (default, female)
 - `en-US-GuyNeural` (male)
 - `en-US-AriaNeural` (female)
 - `en-GB-SoniaNeural` (British female)
 - [Full list](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support)
-

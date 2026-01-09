@@ -10,6 +10,7 @@ AWS Lambda service for automated video generation using **Remotion Lambda** (off
 ## Architecture
 
 This service uses **Remotion Lambda** - Remotion's official AWS Lambda solution:
+
 - Remotion render functions deployed via `@remotion/lambda`
 - Your React components bundled and deployed to S3
 - API Lambda orchestrates rendering via Remotion Lambda
@@ -25,6 +26,7 @@ npm install
 ### 2. Configure AWS credentials
 
 Ensure your AWS credentials are configured:
+
 ```bash
 aws configure
 ```
@@ -36,6 +38,7 @@ npm run setup:remotion
 ```
 
 This will:
+
 - Create an S3 bucket for Remotion
 - Deploy Remotion Lambda render function
 - Bundle and deploy your React components to S3
@@ -71,6 +74,7 @@ npm run deploy:prod
 ## Lambda Names
 
 After deployment:
+
 - **API Lambda**: `remotion-video-api-dev-api` (or `-prod-api`)
 - **Remotion Render Lambda**: Created by Remotion (shown in setup output)
 
@@ -93,7 +97,7 @@ Generate a video from a single slide with text-to-speech narration.
   },
   "outputBucket": "your-s3-bucket",
   "outputPrefix": "videos/project-123/",
-  "voice": "en-US-JennyNeural"
+  "voice": "Ruth"
 }
 ```
 
@@ -176,11 +180,21 @@ The `slide.type` field supports:
 
 ## TTS Voices
 
-Default voice is `en-US-JennyNeural`. Other available voices:
+Uses **AWS Polly** with the **Generative Engine** for natural-sounding speech.
 
-- `en-US-GuyNeural`
-- `en-US-AriaNeural`
-- `en-GB-SoniaNeural`
-- `en-AU-NatashaNeural`
+Default voice is `Ruth`. Available English (US) generative voices:
 
-See [Edge TTS voices](https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support) for full list.
+| Voice ID   | Description         |
+| ---------- | ------------------- |
+| `Ruth`     | US Female (default) |
+| `Danielle` | US Female           |
+| `Joanna`   | US Female           |
+| `Salli`    | US Female           |
+| `Matthew`  | US Male             |
+| `Stephen`  | US Male             |
+
+Voice can be specified as just the voice ID (e.g., `"Ruth"`) which uses the generative engine by default.
+
+For other engines, use format `"VoiceId:engine"` (e.g., `"Joanna:neural"`).
+
+See [AWS Polly Voices](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for full list of available voices and languages.

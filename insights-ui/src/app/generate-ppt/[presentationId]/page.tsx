@@ -18,7 +18,6 @@ import {
   PresentationStatus,
   PresentationPreferences,
   Slide,
-  SlidePreference,
   GenerateFinalVideoResponse,
   AddSlideResponse,
   UpdatePresentationResponse,
@@ -73,7 +72,7 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
   });
 
   // Put hook for updating slides
-  const { putData: updateSlideApi } = usePutData<UpdatePresentationResponse, { voice: string; slides: SlidePreference[] }>({
+  const { putData: updateSlideApi } = usePutData<UpdatePresentationResponse, { voice: string; slides: Slide[] }>({
     successMessage: 'Slide updated successfully!',
     errorMessage: 'Failed to update slide',
   });
@@ -101,8 +100,9 @@ export default function PresentationDetailPage({ params }: PresentationDetailPag
   const handleSlideUpdate = async (updatedSlide: Slide) => {
     if (!preferences || !selectedSlide) return;
 
-    // Update the slide in preferences
-    const updatedSlides = preferences.slides.map((sp) => (sp.slideNumber === selectedSlide.slideNumber ? { ...sp, slide: updatedSlide } : sp));
+    // Update the slide in preferences and extract just the Slide objects
+    // The API expects Slide[] and will re-wrap them with slideNumber
+    const updatedSlides = preferences.slides.map((sp) => (sp.slideNumber === selectedSlide.slideNumber ? updatedSlide : sp.slide));
 
     const result = await updateSlideApi(`${getBaseUrl()}/api/presentations/${presentationId}`, {
       voice: preferences.voice,

@@ -5,7 +5,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import React, { useState, useEffect } from 'react';
 import { Slide, SlideType } from '@/types/presentation/presentation-types';
 
-type ArrayField = 'bullets' | 'paragraphs';
+type ArrayField = 'bullets' | 'paragraphs' | 'bulletAccents' | 'paragraphAccents';
 
 export interface SlideContentModalProps {
   open: boolean;
@@ -44,10 +44,18 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
         const arr = [...(prev.bullets || [])];
         arr[index] = value;
         return { ...prev, bullets: arr };
+      } else if (field === 'bulletAccents' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bulletAccents || [])];
+        arr[index] = value;
+        return { ...prev, bulletAccents: arr };
       } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
         const arr = [...(prev.paragraphs || [])];
         arr[index] = value;
         return { ...prev, paragraphs: arr };
+      } else if (field === 'paragraphAccents' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphAccents || [])];
+        arr[index] = value;
+        return { ...prev, paragraphAccents: arr };
       }
 
       return prev;
@@ -62,9 +70,15 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
       if (field === 'bullets' && (prev.type === 'bullets' || prev.type === 'image')) {
         const arr = [...(prev.bullets || []), ''];
         return { ...prev, bullets: arr };
+      } else if (field === 'bulletAccents' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bulletAccents || []), ''];
+        return { ...prev, bulletAccents: arr };
       } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
         const arr = [...(prev.paragraphs || []), ''];
         return { ...prev, paragraphs: arr };
+      } else if (field === 'paragraphAccents' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphAccents || []), ''];
+        return { ...prev, paragraphAccents: arr };
       }
 
       return prev;
@@ -80,10 +94,18 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
         const arr = [...(prev.bullets || [])];
         arr.splice(index, 1);
         return { ...prev, bullets: arr };
+      } else if (field === 'bulletAccents' && (prev.type === 'bullets' || prev.type === 'image')) {
+        const arr = [...(prev.bulletAccents || [])];
+        arr.splice(index, 1);
+        return { ...prev, bulletAccents: arr };
       } else if (field === 'paragraphs' && prev.type === 'paragraphs') {
         const arr = [...(prev.paragraphs || [])];
         arr.splice(index, 1);
         return { ...prev, paragraphs: arr };
+      } else if (field === 'paragraphAccents' && prev.type === 'paragraphs') {
+        const arr = [...(prev.paragraphAccents || [])];
+        arr.splice(index, 1);
+        return { ...prev, paragraphAccents: arr };
       }
 
       return prev;
@@ -165,6 +187,22 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
           />
         </div>
 
+        {/* Title Accent (for non-title slides) */}
+        {editedSlide.type !== 'title' && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Title Accent</label>
+            <input
+              type="text"
+              value={'titleAccent' in editedSlide ? editedSlide.titleAccent || '' : ''}
+              onChange={(e) => handleFieldChange('titleAccent', e.target.value)}
+              disabled={!isEditing}
+              placeholder="Text from title to highlight in accent color"
+              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 disabled:opacity-60"
+            />
+            <p className="text-xs text-gray-500 mt-1">Enter text that appears in the title to highlight it in blue</p>
+          </div>
+        )}
+
         {/* Subtitle (for title type) */}
         {editedSlide.type === 'title' && (
           <div className="mb-4">
@@ -180,10 +218,22 @@ export default function SlideContentModal({ open, onClose, slide, slideNumber, o
         )}
 
         {/* Bullets (for bullets and image types) */}
-        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') && renderArrayField('bullets', 'Bullets', editedSlide.bullets || [])}
+        {(editedSlide.type === 'bullets' || editedSlide.type === 'image') && (
+          <>
+            {renderArrayField('bullets', 'Bullets', editedSlide.bullets || [])}
+            {renderArrayField('bulletAccents', 'Bullet Accents (optional)', editedSlide.bulletAccents || [])}
+            <p className="text-xs text-gray-500 mb-4">Enter text from each bullet to highlight in blue (one per bullet)</p>
+          </>
+        )}
 
         {/* Paragraphs (for paragraphs type) */}
-        {editedSlide.type === 'paragraphs' && renderArrayField('paragraphs', 'Paragraphs', editedSlide.paragraphs || [])}
+        {editedSlide.type === 'paragraphs' && (
+          <>
+            {renderArrayField('paragraphs', 'Paragraphs', editedSlide.paragraphs || [])}
+            {renderArrayField('paragraphAccents', 'Paragraph Accents (optional)', editedSlide.paragraphAccents || [])}
+            <p className="text-xs text-gray-500 mb-4">Enter text from each paragraph to highlight/underline (one per paragraph)</p>
+          </>
+        )}
 
         {/* Image URL (for image type) */}
         {editedSlide.type === 'image' && (

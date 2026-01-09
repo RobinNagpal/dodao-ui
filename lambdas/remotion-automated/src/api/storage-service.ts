@@ -5,6 +5,8 @@ import {
   GetObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import fs from "node:fs";
@@ -156,9 +158,7 @@ export class StorageService {
       commandInput.ACL = "public-read";
     }
 
-    await this.s3Client.send(
-      new PutObjectCommand(commandInput)
-    );
+    await this.s3Client.send(new PutObjectCommand(commandInput));
 
     if (returnPresignedUrl) {
       return this.getPresignedUrl(bucket, key, 3600);
@@ -191,9 +191,7 @@ export class StorageService {
    */
   async downloadJson<T>(bucket: string, key: string): Promise<T | null> {
     try {
-      const response = await this.s3Client.send(
-        new GetObjectCommand({ Bucket: bucket, Key: key })
-      );
+      const response = await this.s3Client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
       const bodyString = await response.Body?.transformToString();
       if (!bodyString) return null;
       return JSON.parse(bodyString) as T;
@@ -207,9 +205,7 @@ export class StorageService {
    */
   async downloadText(bucket: string, key: string): Promise<string | null> {
     try {
-      const response = await this.s3Client.send(
-        new GetObjectCommand({ Bucket: bucket, Key: key })
-      );
+      const response = await this.s3Client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
       return (await response.Body?.transformToString()) || null;
     } catch {
       return null;
@@ -220,9 +216,7 @@ export class StorageService {
    * Download file from S3 to local path
    */
   async downloadFile(bucket: string, key: string, localPath: string): Promise<void> {
-    const response = await this.s3Client.send(
-      new GetObjectCommand({ Bucket: bucket, Key: key })
-    );
+    const response = await this.s3Client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
 
     const dir = path.dirname(localPath);
     if (!fs.existsSync(dir)) {
@@ -245,6 +239,98 @@ export class StorageService {
       new ListObjectsV2Command({ Bucket: bucket, Prefix: prefix })
     );
     return (response.Contents || []).map((obj) => obj.Key || "").filter(Boolean);
+  }
+
+  /**
+   * Delete a single object from S3
+   */
+  async deleteObject(bucket: string, key: string): Promise<boolean> {
+    try {
+      await this.s3Client.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+      return true;
+    } catch (error) {
+      console.error(`Failed to delete ${key}:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Delete all objects with a given prefix from S3
+   */
+  async deleteObjectsWithPrefix(bucket: string, prefix: string): Promise<boolean> {
+    try {
+      // First, list all objects with the prefix
+      const objects = await this.listObjects(bucket, prefix);
+
+      if (objects.length === 0) {
+        return true; // Nothing to delete
+      }
+
+      console.log(`Deleting ${objects.length} objects with prefix: ${prefix}`);
+
+      // Delete in batches of 1000 (S3 limit)
+      const batchSize = 1000;
+      for (let i = 0; i < objects.length; i += batchSize) {
+        const batch = objects.slice(i, i + batchSize);
+        const objectsToDelete = batch.map((key) => ({ Key: key }));
+
+        await this.s3Client.send(
+          new DeleteObjectsCommand({
+            Bucket: bucket,
+            Delete: {
+              Objects: objectsToDelete,
+              Quiet: true,
+            },
+          })
+        );
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Failed to delete objects with prefix ${prefix}:`, error);
+      return false;
+    }
+  }
+
+  /**
+   * Delete Remotion render folder by render ID
+   * Remotion stores outputs at: renders/{renderId}/...
+   */
+  async deleteRenderFolder(bucket: string, renderId: string): Promise<boolean> {
+    if (!renderId) {
+      console.warn("No renderId provided for deletion");
+      return false;
+    }
+    const prefix = `renders/${renderId}/`;
+    console.log(`Cleaning up old render folder: ${prefix}`);
+    return this.deleteObjectsWithPrefix(bucket, prefix);
+  }
+
+  /**
+   * Delete old render folder if renderId changed (for cleanup during regeneration)
+   * Returns true if cleanup was performed or not needed
+   */
+  async cleanupOldRender(
+    bucket: string,
+    presentationId: string,
+    slideNumber: string,
+    renderType: "image" | "video"
+  ): Promise<{ cleaned: boolean; oldRenderId?: string }> {
+    try {
+      const metadata = await this.loadRenderMetadata(bucket, presentationId, slideNumber);
+      const oldRenderInfo = renderType === "image" ? metadata?.image : metadata?.video;
+
+      if (oldRenderInfo?.renderId) {
+        console.log(`Found old ${renderType} render to cleanup: ${oldRenderInfo.renderId}`);
+        await this.deleteRenderFolder(bucket, oldRenderInfo.renderId);
+        return { cleaned: true, oldRenderId: oldRenderInfo.renderId };
+      }
+
+      return { cleaned: false };
+    } catch (error) {
+      console.error(`Error cleaning up old ${renderType} render:`, error);
+      return { cleaned: false };
+    }
   }
 
   // ==================== Presentation-specific operations ====================
@@ -463,4 +549,3 @@ export class StorageService {
     return Array.from(slideNumbers).sort();
   }
 }
-

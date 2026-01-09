@@ -24,10 +24,13 @@ const SLIDE_TYPES: { value: SlideType; label: string }[] = [
 export default function AddSlideModal({ open, onClose, onSuccess, presentationId, loading = false, onAdd }: AddSlideModalProps) {
   const [type, setType] = useState<SlideType>('bullets');
   const [title, setTitle] = useState('');
+  const [titleAccent, setTitleAccent] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [narration, setNarration] = useState('');
   const [bullets, setBullets] = useState<string[]>(['']);
+  const [bulletAccents, setBulletAccents] = useState<string[]>(['']);
   const [paragraphs, setParagraphs] = useState<string[]>(['']);
+  const [paragraphAccents, setParagraphAccents] = useState<string[]>(['']);
   const [imageUrl, setImageUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -35,10 +38,13 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
   const resetForm = () => {
     setType('bullets');
     setTitle('');
+    setTitleAccent('');
     setSubtitle('');
     setNarration('');
     setBullets(['']);
+    setBulletAccents(['']);
     setParagraphs(['']);
+    setParagraphAccents(['']);
     setImageUrl('');
     setError('');
   };
@@ -99,6 +105,8 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
           ...baseSlide,
           type: 'bullets',
           bullets: bullets.filter((b) => b.trim()).map((b) => b.trim()),
+          titleAccent: titleAccent.trim() || undefined,
+          bulletAccents: bulletAccents.filter((b) => b.trim()).length > 0 ? bulletAccents.map((b) => b.trim()) : undefined,
         };
       } else if (type === 'image') {
         slide = {
@@ -106,12 +114,16 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
           type: 'image',
           bullets: bullets.filter((b) => b.trim()).map((b) => b.trim()),
           imageUrl: imageUrl.trim(),
+          titleAccent: titleAccent.trim() || undefined,
+          bulletAccents: bulletAccents.filter((b) => b.trim()).length > 0 ? bulletAccents.map((b) => b.trim()) : undefined,
         };
       } else if (type === 'paragraphs') {
         slide = {
           ...baseSlide,
           type: 'paragraphs',
           paragraphs: paragraphs.filter((p) => p.trim()).map((p) => p.trim()),
+          titleAccent: titleAccent.trim() || undefined,
+          paragraphAccents: paragraphAccents.filter((p) => p.trim()).length > 0 ? paragraphAccents.map((p) => p.trim()) : undefined,
         };
       } else {
         throw new Error('Invalid slide type');
@@ -187,6 +199,21 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
           />
         </div>
 
+        {/* Title Accent (for non-title slides) */}
+        {type !== 'title' && (
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-1">Title Accent</label>
+            <input
+              type="text"
+              value={titleAccent}
+              onChange={(e) => setTitleAccent(e.target.value)}
+              placeholder="Text from title to highlight in accent color"
+              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600"
+            />
+            <p className="text-xs text-gray-500 mt-1">Enter text that appears in the title to highlight it in blue</p>
+          </div>
+        )}
+
         {/* Subtitle (for title type) */}
         {type === 'title' && (
           <div className="mb-4">
@@ -202,10 +229,26 @@ export default function AddSlideModal({ open, onClose, onSuccess, presentationId
         )}
 
         {/* Bullets (for bullets and image types) */}
-        {(type === 'bullets' || type === 'image') && <div className="mb-4">{renderArrayField(bullets, setBullets, 'Bullet Points', 'Enter bullet point')}</div>}
+        {(type === 'bullets' || type === 'image') && (
+          <>
+            <div className="mb-4">{renderArrayField(bullets, setBullets, 'Bullet Points', 'Enter bullet point')}</div>
+            <div className="mb-4">
+              {renderArrayField(bulletAccents, setBulletAccents, 'Bullet Accents (optional)', 'Text to highlight in this bullet')}
+              <p className="text-xs text-gray-500 mt-1">Enter text from each bullet to highlight in blue (one per bullet, leave empty for no accent)</p>
+            </div>
+          </>
+        )}
 
         {/* Paragraphs (for paragraphs type) */}
-        {type === 'paragraphs' && <div className="mb-4">{renderArrayField(paragraphs, setParagraphs, 'Paragraphs', 'Enter paragraph text')}</div>}
+        {type === 'paragraphs' && (
+          <>
+            <div className="mb-4">{renderArrayField(paragraphs, setParagraphs, 'Paragraphs', 'Enter paragraph text')}</div>
+            <div className="mb-4">
+              {renderArrayField(paragraphAccents, setParagraphAccents, 'Paragraph Accents (optional)', 'Text to highlight/underline in this paragraph')}
+              <p className="text-xs text-gray-500 mt-1">Enter text from each paragraph to highlight (one per paragraph, leave empty for no accent)</p>
+            </div>
+          </>
+        )}
 
         {/* Image URL (for image type) */}
         {type === 'image' && (

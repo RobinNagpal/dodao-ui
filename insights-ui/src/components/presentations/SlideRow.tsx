@@ -195,7 +195,6 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
             <span className="text-sm font-medium">Content</span>
             {getStatusBadge(!!slideStatus.slide)}
           </div>
-          <div className="text-xs text-gray-500 mb-2 truncate h-6">{slideStatus.slide?.title || 'No title'}</div>
           <Button onClick={onViewContent} variant="outlined" size="sm" className="w-full">
             View / Edit
           </Button>

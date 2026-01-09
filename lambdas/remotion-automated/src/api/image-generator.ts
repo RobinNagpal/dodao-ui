@@ -26,10 +26,28 @@ export async function generateSlideImage(
     const paths = getPresentationPaths(presentationId, outputBucket);
     const slidePaths = paths.output(formattedSlideNumber);
 
-    console.log(`Generating image for presentation ${presentationId}, slide ${formattedSlideNumber}...`);
+    console.log(
+      `Generating image for presentation ${presentationId}, slide ${formattedSlideNumber}...`
+    );
+
+    // Step 0: Cleanup old render folder if exists (important for regeneration)
+    const cleanupResult = await storage.cleanupOldRender(
+      outputBucket,
+      presentationId,
+      formattedSlideNumber,
+      "image"
+    );
+    if (cleanupResult.cleaned) {
+      console.log(`Cleaned up old image render folder: ${cleanupResult.oldRenderId}`);
+    }
 
     // Step 1: Save slide text JSON
-    const textUrl = await storage.saveSlideText(outputBucket, presentationId, formattedSlideNumber, slide);
+    const textUrl = await storage.saveSlideText(
+      outputBucket,
+      presentationId,
+      formattedSlideNumber,
+      slide
+    );
     console.log(`Saved slide text: ${textUrl}`);
 
     // Step 2: Render still image using Remotion Lambda

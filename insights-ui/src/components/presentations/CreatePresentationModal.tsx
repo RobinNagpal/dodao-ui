@@ -26,21 +26,41 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
   const [numberOfSlides, setNumberOfSlides] = useState(5);
   const [additionalInstructions, setAdditionalInstructions] = useState('');
 
-  // JSON mode fields
+  // JSON mode fields - example showing all slide types with their fields
   const [jsonContent, setJsonContent] = useState(
     JSON.stringify(
       [
         {
           type: 'title',
           title: 'Welcome to My Presentation',
-          subtitle: 'An Introduction',
-          narration: 'Welcome to our presentation. Let me introduce the topic.',
+          subtitle: 'An Introduction (optional)',
+          narration: 'Text that will be converted to speech for this slide.',
         },
         {
           type: 'bullets',
-          title: 'Key Points',
-          bullets: ['First point', 'Second point', 'Third point'],
+          title: 'Key Points to Cover',
+          titleAccent: 'Key Points',
+          bullets: ['First important point', 'Second important point', 'Third important point'],
+          bulletAccents: ['important', 'important', 'important'],
           narration: 'Here are the key points we will cover today.',
+        },
+        {
+          type: 'paragraphs',
+          title: 'Detailed Explanation',
+          titleAccent: 'Explanation',
+          paragraphs: ['First paragraph with detailed content.', 'Second paragraph with more details.'],
+          paragraphAccents: ['detailed', 'more details'],
+          footer: 'Optional footer text or URL',
+          narration: 'Let me explain this in detail.',
+        },
+        {
+          type: 'image',
+          title: 'Visual Representation',
+          titleAccent: 'Visual',
+          bullets: ['Point about the image', 'Another observation'],
+          bulletAccents: ['image', 'observation'],
+          imageUrl: 'https://example.com/image.png',
+          narration: 'As you can see in this image...',
         },
       ],
       null,
@@ -222,10 +242,32 @@ export default function CreatePresentationModal({ open, onClose, onSuccess }: Cr
             <textarea
               value={jsonContent}
               onChange={(e) => handleJsonChange(e.target.value)}
-              rows={12}
+              rows={16}
               className="w-full px-3 py-2 border rounded-md font-mono text-sm dark:bg-gray-800 dark:border-gray-600"
             />
             {jsonError && <p className="mt-1 text-sm text-red-500">{jsonError}</p>}
+
+            {/* Field Reference */}
+            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-md text-xs">
+              <p className="font-medium mb-2">Slide Types & Fields Reference:</p>
+              <div className="space-y-2 text-gray-600 dark:text-gray-400">
+                <div>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">title:</span> title, subtitle?, narration
+                </div>
+                <div>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">bullets:</span> title, titleAccent?, bullets[], bulletAccents[]?, narration
+                </div>
+                <div>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">paragraphs:</span> title, titleAccent?, paragraphs[], paragraphAccents[]?,
+                  footer?, narration
+                </div>
+                <div>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">image:</span> title, titleAccent?, bullets[], bulletAccents[]?, imageUrl,
+                  narration
+                </div>
+                <p className="mt-2 italic">Accent fields highlight matching text in blue. Use &quot;?&quot; fields optionally.</p>
+              </div>
+            </div>
           </div>
         )}
 

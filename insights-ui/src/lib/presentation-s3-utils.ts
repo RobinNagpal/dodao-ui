@@ -185,9 +185,87 @@ export async function deleteAllWithPrefix(prefix: string): Promise<boolean> {
 }
 
 /**
- * Delete entire presentation from S3
+ * Delete Remotion render folder by render ID
+ * Remotion stores outputs at: renders/{renderId}/...
+ */
+export async function deleteRenderFolder(renderId: string): Promise<boolean> {
+  if (!renderId || renderId === 'uploaded') {
+    // Skip if no renderId or if it was an uploaded image (not a render)
+    return true;
+  }
+  const prefix = `renders/${renderId}/`;
+  console.log(`Deleting render folder: ${prefix}`);
+  return deleteAllWithPrefix(prefix);
+}
+
+/**
+ * Get all render IDs for a slide from its render metadata
+ */
+export async function getSlideRenderIds(presentationId: string, slideNumber: string): Promise<{ imageRenderId?: string; videoRenderId?: string }> {
+  const metadata = await getRenderMetadata(presentationId, slideNumber);
+  return {
+    imageRenderId: metadata?.image?.renderId,
+    videoRenderId: metadata?.video?.renderId,
+  };
+}
+
+/**
+ * Delete all render folders for a slide
+ */
+export async function deleteSlideRenderFolders(presentationId: string, slideNumber: string): Promise<void> {
+  const renderIds = await getSlideRenderIds(presentationId, slideNumber);
+
+  const deletePromises: Promise<boolean>[] = [];
+
+  if (renderIds.imageRenderId) {
+    console.log(`Deleting image render folder for slide ${slideNumber}: ${renderIds.imageRenderId}`);
+    deletePromises.push(deleteRenderFolder(renderIds.imageRenderId));
+  }
+
+  if (renderIds.videoRenderId) {
+    console.log(`Deleting video render folder for slide ${slideNumber}: ${renderIds.videoRenderId}`);
+    deletePromises.push(deleteRenderFolder(renderIds.videoRenderId));
+  }
+
+  await Promise.all(deletePromises);
+}
+
+/**
+ * Delete all render folders for an entire presentation
+ */
+export async function deletePresentationRenderFolders(presentationId: string): Promise<void> {
+  // Get all slides for this presentation
+  const preferences = await getPresentationPreferences(presentationId);
+  if (!preferences?.slides) {
+    return;
+  }
+
+  // Collect all render IDs from all slides
+  const allRenderIds: string[] = [];
+
+  for (const slidePreference of preferences.slides) {
+    const renderIds = await getSlideRenderIds(presentationId, slidePreference.slideNumber);
+    if (renderIds.imageRenderId && renderIds.imageRenderId !== 'uploaded') {
+      allRenderIds.push(renderIds.imageRenderId);
+    }
+    if (renderIds.videoRenderId) {
+      allRenderIds.push(renderIds.videoRenderId);
+    }
+  }
+
+  // Delete all render folders in parallel
+  console.log(`Deleting ${allRenderIds.length} render folders for presentation ${presentationId}`);
+  await Promise.all(allRenderIds.map((id) => deleteRenderFolder(id)));
+}
+
+/**
+ * Delete entire presentation from S3 including render folders
  */
 export async function deletePresentation(presentationId: string): Promise<boolean> {
+  // First, delete all render folders associated with this presentation
+  await deletePresentationRenderFolders(presentationId);
+
+  // Then delete the main presentation folder
   const prefix = `${PRESENTATIONS_PREFIX}/${presentationId}/`;
   return deleteAllWithPrefix(prefix);
 }
@@ -223,7 +301,10 @@ export async function deleteSlideFromPresentation(presentationId: string, slideN
     };
     await savePresentationPreferences(updatedPreferences);
 
-    // Delete slide artifacts
+    // Delete render folders for this slide (image and video renders in renders/ folder)
+    await deleteSlideRenderFolders(presentationId, slideNumber);
+
+    // Delete slide artifacts (files in the presentation folder)
     const slidePrefix = `${PRESENTATIONS_PREFIX}/${presentationId}/output/${slideNumber}-slide/`;
     await deleteAllWithPrefix(slidePrefix);
 

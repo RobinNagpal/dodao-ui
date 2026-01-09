@@ -81,7 +81,7 @@ const MAP: Record<string, Mapping> = {
     body: {
       presentationId: "test-presentation-001",
       outputBucket: "remotionlambda-useast1-ele686axd8",
-      voice: "en-US-JennyNeural",
+      voice: "Ruth",
       slides: [
         {
           slideNumber: "01",
@@ -125,7 +125,7 @@ const MAP: Record<string, Mapping> = {
       numberOfSlides: 5,
       additionalInstructions: "Make it engaging and use data from recent studies.",
       outputBucket: "remotionlambda-useast1-ele686axd8",
-      voice: "en-US-JennyNeural",
+      voice: "Ruth",
     },
   },
 
@@ -148,7 +148,7 @@ const MAP: Record<string, Mapping> = {
       presentationId: "test-presentation-001",
       slideNumber: "01",
       outputBucket: "remotionlambda-useast1-ele686axd8",
-      voice: "en-US-JennyNeural",
+      voice: "Ruth",
     },
   },
 
@@ -171,7 +171,7 @@ const MAP: Record<string, Mapping> = {
       presentationId: "test-presentation-001",
       slideNumber: "01",
       outputBucket: "remotionlambda-useast1-ele686axd8",
-      voice: "en-US-JennyNeural",
+      voice: "Ruth",
     },
   },
 
