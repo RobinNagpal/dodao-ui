@@ -212,9 +212,6 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
               <audio controls className="w-full h-8 mb-2">
                 <source src={slideStatus.audioUrl} type="audio/mpeg" />
               </audio>
-              <div className="text-xs text-gray-500 truncate" title={slideStatus.audioUrl}>
-                URL: {slideStatus.audioUrl}
-              </div>
             </div>
           ) : (
             <div className="h-8 mb-2 flex items-center text-xs text-gray-500">No audio</div>

@@ -24,7 +24,7 @@ async function postHandler(req: NextRequest, { params }: SlideParams): Promise<G
   const action = searchParams.get('action') || 'all';
 
   const body = await req.json().catch(() => ({}));
-  const voice = body.voice || 'en-US-JennyNeural';
+  const voice = body.voice || 'Ruth';
   const outputBucket = getBucketName();
 
   const basePayload = {

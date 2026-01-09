@@ -17,7 +17,7 @@ export async function renderSingleSlide(
   slide: SlideInput,
   outputBucket: string,
   outputPrefix: string = "",
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse> {
   try {
     console.log(`Starting render for slide ${slide.id}...`);
@@ -277,7 +277,7 @@ export async function renderSlideAll(
   slideNumber: string,
   slide: SlideInput,
   outputBucket: string,
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse & { imageUrl?: string }> {
   try {
     const region = process.env.REMOTION_APP_REGION || "us-east-1";
@@ -447,7 +447,7 @@ export async function renderSlideWithPaths(
   slideNumber: string,
   slide: SlideInput,
   outputBucket: string,
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse> {
   // Delegate to renderSlideAll for backward compatibility
   return renderSlideAll(presentationId, slideNumber, slide, outputBucket, voice);

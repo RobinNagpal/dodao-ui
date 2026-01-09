@@ -259,12 +259,14 @@ export interface UploadImageResponse {
   message: string;
 }
 
-// Available voices
+// Available voices - AWS Polly Generative Engine (English US)
 export const AVAILABLE_VOICES = [
-  { id: 'en-US-JennyNeural', name: 'Jenny (US Female)', default: true },
-  { id: 'en-US-GuyNeural', name: 'Guy (US Male)' },
-  { id: 'en-US-AriaNeural', name: 'Aria (US Female)' },
-  { id: 'en-GB-SoniaNeural', name: 'Sonia (British Female)' },
+  { id: 'Ruth', name: 'Ruth (US Female)', default: true },
+  { id: 'Danielle', name: 'Danielle (US Female)' },
+  { id: 'Joanna', name: 'Joanna (US Female)' },
+  { id: 'Salli', name: 'Salli (US Female)' },
+  { id: 'Matthew', name: 'Matthew (US Male)' },
+  { id: 'Stephen', name: 'Stephen (US Male)' },
 ];
 
-export const DEFAULT_VOICE = 'en-US-JennyNeural';
+export const DEFAULT_VOICE = 'Ruth';

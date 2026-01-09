@@ -86,7 +86,7 @@ async function putHandler(req: NextRequest, { params }: { params: Promise<{ pres
   const result = await callRemotionLambda('/save-preferences', {
     presentationId: `presentations/${presentationId}`,
     outputBucket,
-    voice: voice || 'en-US-JennyNeural',
+    voice: voice || 'Ruth',
     slides: formattedSlides,
   });
 

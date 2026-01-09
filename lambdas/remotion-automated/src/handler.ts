@@ -12,15 +12,17 @@ import type {
   GenerateFromPromptRequest,
   GenerateFromPromptResponse,
   GenerateSlideImageRequest,
-  GenerateSlideImageResponse,
   GenerateSlideAudioRequest,
-  GenerateSlideAudioResponse,
   GetPresentationStatusRequest,
   GetPresentationStatusResponse,
   SlideAndScriptPreferences,
-  SlidePreference,
 } from "./api/types";
-import { renderSingleSlide, renderSlideVideoOnly, renderSlideAll, renderSlideWithPaths } from "./api/render-single-slide";
+import {
+  renderSingleSlide,
+  renderSlideVideoOnly,
+  renderSlideAll,
+  renderSlideWithPaths,
+} from "./api/render-single-slide";
 import { concatenateVideosRemotion } from "./api/concatenate-videos-remotion";
 import { getRenderStatus as getRenderStatusService } from "./api/get-render-status";
 import { StorageService, getPresentationPaths, formatSlideNumber } from "./api/storage-service";
@@ -578,7 +580,7 @@ export const generateSlideAudioHandler = async (
       formattedSlideNumber,
       slidePreference.slide.narration,
       request.outputBucket,
-      request.voice || preferences.voice || "en-US-JennyNeural"
+      request.voice || preferences.voice || "Ruth"
     );
 
     return {
@@ -602,7 +604,7 @@ export const generateSlideAudioHandler = async (
 /**
  * Handler: Generate slide video ONLY (requires existing audio)
  * POST /generate-slide-video
- * 
+ *
  * Use this when audio already exists - does NOT regenerate audio.
  * Throws error if audio is not found.
  */
@@ -696,7 +698,7 @@ export const generateSlideVideoHandler = async (
 /**
  * Handler: Generate ALL slide artifacts (audio + image + video)
  * POST /generate-slide-all
- * 
+ *
  * Regenerates everything even if they exist.
  */
 export const generateSlideAllHandler = async (
@@ -767,7 +769,7 @@ export const generateSlideAllHandler = async (
       formattedSlideNumber,
       slidePreference.slide,
       request.outputBucket,
-      request.voice || preferences.voice || "en-US-JennyNeural"
+      request.voice || preferences.voice || "Ruth"
     );
 
     return {
@@ -827,23 +829,27 @@ export const getPresentationStatus = async (
     ]);
 
     // Get slide numbers
-    const slideNumbers = await storage.getSlideNumbers(request.outputBucket, request.presentationId);
+    const slideNumbers = await storage.getSlideNumbers(
+      request.outputBucket,
+      request.presentationId
+    );
 
     // Check status of each slide
     const slideStatuses = await Promise.all(
       slideNumbers.map(async (slideNumber) => {
         const slidePaths = paths.output(slideNumber);
-        const [hasText, hasAudioScript, hasAudio, renderMetadata] =
-          await Promise.all([
-            storage.objectExists(request.outputBucket, slidePaths.text),
-            storage.objectExists(request.outputBucket, slidePaths.audioScript),
-            storage.objectExists(request.outputBucket, slidePaths.audio),
-            storage.loadRenderMetadata(request.outputBucket, request.presentationId, slideNumber),
-          ]);
+        const [hasText, hasAudioScript, hasAudio, renderMetadata] = await Promise.all([
+          storage.objectExists(request.outputBucket, slidePaths.text),
+          storage.objectExists(request.outputBucket, slidePaths.audioScript),
+          storage.objectExists(request.outputBucket, slidePaths.audio),
+          storage.loadRenderMetadata(request.outputBucket, request.presentationId, slideNumber),
+        ]);
 
         // Image and video exist if they have completed render status with URL
-        const hasImage = renderMetadata?.image?.status === "completed" && !!renderMetadata.image.url;
-        const hasVideo = renderMetadata?.video?.status === "completed" && !!renderMetadata.video.url;
+        const hasImage =
+          renderMetadata?.image?.status === "completed" && !!renderMetadata.image.url;
+        const hasVideo =
+          renderMetadata?.video?.status === "completed" && !!renderMetadata.video.url;
 
         return {
           slideNumber,

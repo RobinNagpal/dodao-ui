@@ -34,6 +34,10 @@ provider:
             - lambda:InvokeFunction
           Resource:
             - arn:aws:lambda:*:*:function:remotion-*
+        - Effect: Allow
+          Action:
+            - polly:SynthesizeSpeech
+          Resource: "*"
 
 package:
   individually: true
@@ -44,7 +48,6 @@ package:
     - "node_modules/@remotion/lambda-client/**"
     - "node_modules/@aws-sdk/**"
     - "node_modules/@google/generative-ai/**"
-    - "node_modules/edge-tts-universal/**"
     - "node_modules/music-metadata/**"
     - "node_modules/strtok3/**"
     - "node_modules/token-types/**"
