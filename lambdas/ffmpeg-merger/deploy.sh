@@ -117,7 +117,7 @@ else
             --no-cli-pager
         
         # Create and attach S3 access policy using inline JSON
-        S3_POLICY="{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::${S3_BUCKET_NAME}/*\",\"arn:aws:s3:::${S3_BUCKET_NAME}\"]}]}"
+        S3_POLICY="{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:PutObjectAcl\",\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::${S3_BUCKET_NAME}/*\",\"arn:aws:s3:::${S3_BUCKET_NAME}\"]}]}"
         
         aws iam put-role-policy \
             --role-name $ROLE_NAME \
@@ -141,6 +141,20 @@ else
         --region $AWS_REGION \
         --no-cli-pager
 fi
+
+# Update IAM role policy on every deployment
+echo ""
+echo "Step 8: Updating IAM role S3 permissions..."
+ROLE_NAME="ffmpeg-merger-lambda-role"
+S3_POLICY="{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:PutObjectAcl\",\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::${S3_BUCKET_NAME}\",\"arn:aws:s3:::${S3_BUCKET_NAME}/*\"]}]}"
+
+aws iam put-role-policy \
+    --role-name $ROLE_NAME \
+    --policy-name S3Access \
+    --policy-document "$S3_POLICY" \
+    --no-cli-pager
+
+echo "IAM permissions updated successfully!"
 
 echo ""
 echo "=========================================="

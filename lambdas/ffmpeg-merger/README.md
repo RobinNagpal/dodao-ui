@@ -11,14 +11,9 @@ npm install
 # 2. Build
 npm run build
 
-# 3. Deploy (first time)
+# 3. Deploy
 bash deploy.sh
 
-# 4. Update test-payload.json with your video URLs, then test
-bash invoke-lambda.sh
-
-# 5. (Optional) Create HTTP API
-bash setup-api.sh
 ```
 
 ## Request Format
@@ -30,7 +25,6 @@ bash setup-api.sh
     {"s3Url": "s3://bucket/video2.mp4"}
   ],
   "outputKey": "merged/output.mp4",
-  "paddingSeconds": 1
 }
 ```
 

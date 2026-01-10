@@ -382,7 +382,31 @@ export const SlideView: React.FC<{
   slide: Slide;
   index: number;
   total: number;
-}> = React.memo(({ slide, index, total }) => {
+  preGeneratedImageUrl?: string;
+}> = React.memo(({ slide, index, total, preGeneratedImageUrl }) => {
+  // If we have a pre-generated image URL, use it instead of rendering the slide content
+  if (preGeneratedImageUrl) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "relative",
+        }}
+      >
+        <Img
+          src={preGeneratedImageUrl}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Otherwise, render the slide content normally
   switch (slide.type) {
     case "title":
       return <TitleSlideView slide={slide} />;

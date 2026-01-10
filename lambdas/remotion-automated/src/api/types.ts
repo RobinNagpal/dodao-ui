@@ -196,7 +196,8 @@ export interface GenerateSlideAudioResponse {
   presentationId: string;
   slideNumber: string;
   audioScriptUrl: string;
-  audioUrl: string;
+  audioUrl: string; // Direct S3 URL for storage/display
+  audioPresignedUrl?: string; // Presigned URL for immediate Remotion Lambda use
   duration: number;
   error?: string;
 }

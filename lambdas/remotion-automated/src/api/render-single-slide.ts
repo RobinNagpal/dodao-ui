@@ -17,7 +17,7 @@ export async function renderSingleSlide(
   slide: SlideInput,
   outputBucket: string,
   outputPrefix: string = "",
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse> {
   try {
     console.log(`Starting render for slide ${slide.id}...`);
@@ -54,7 +54,10 @@ export async function renderSingleSlide(
     const videoKey = `${outputPrefix}${slide.id}.mp4`;
 
     // Calculate framesPerLambda to limit concurrency
-    const optimalFramesPerLambda = Math.max(60, Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS));
+    const optimalFramesPerLambda = Math.max(
+      60,
+      Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS)
+    );
 
     console.log(
       `Using framesPerLambda: ${optimalFramesPerLambda} for ${durationInFrames} frames (max ${MAX_CONCURRENT_LAMBDAS} concurrent lambdas)`
@@ -137,7 +140,9 @@ export async function renderSlideVideoOnly(
     const paths = getPresentationPaths(presentationId, outputBucket);
     const slidePaths = paths.output(formattedSlideNumber);
 
-    console.log(`Starting VIDEO ONLY render for presentation ${presentationId}, slide ${formattedSlideNumber}...`);
+    console.log(
+      `Starting VIDEO ONLY render for presentation ${presentationId}, slide ${formattedSlideNumber}...`
+    );
 
     // Step 1: Check if audio exists
     const audioExists = await storage.objectExists(outputBucket, slidePaths.audio);
@@ -150,15 +155,38 @@ export async function renderSlideVideoOnly(
 
     console.log(`Audio found at: ${slidePaths.audio}`);
 
-    // Step 2: Download audio to temp file for duration parsing
+    // Step 2: Check if image exists (check both uploaded and generated)
+    const renderMetadata = await storage.loadRenderMetadata(
+      outputBucket,
+      presentationId,
+      formattedSlideNumber
+    );
+    const hasCompletedImage =
+      renderMetadata?.image?.status === "completed" && !!renderMetadata.image.url;
+
+    if (!hasCompletedImage) {
+      throw new Error(
+        `Image not found for slide ${formattedSlideNumber}. ` +
+          `Please generate image first using /generate-slide-image, upload an image, or use /generate-slide-all`
+      );
+    }
+
+    // Get the image URL - could be uploaded or Remotion-generated
+    const imageUrl = renderMetadata.image?.url;
+    const isUploadedImage = (renderMetadata.image as any)?.isUploaded === true;
+    console.log(`Image found (${isUploadedImage ? "uploaded" : "generated"}): ${imageUrl}`);
+
+    // Step 3: Download audio to temp file for duration parsing
     const tmpDir = require("os").tmpdir();
-    const localAudioPath = `${tmpDir}/${presentationId}-${formattedSlideNumber}.mp3`;
+    // Use safe filename by replacing slashes
+    const safePresId = presentationId.replace(/\//g, "-");
+    const localAudioPath = `${tmpDir}/${safePresId}-${formattedSlideNumber}.mp3`;
     await storage.downloadFile(outputBucket, slidePaths.audio, localAudioPath);
 
-    // Get presigned URL for Remotion Lambda to access
+    // Generate FRESH presigned URL for Remotion Lambda to access audio
     const audioUrl = await storage.getPresignedUrl(outputBucket, slidePaths.audio, 3600);
 
-    // Step 3: Get accurate audio duration
+    // Step 4: Get accurate audio duration
     const metadata = await mm.parseFile(localAudioPath);
     const audioDuration = metadata.format.duration ?? 0;
     const fps = 30;
@@ -166,14 +194,26 @@ export async function renderSlideVideoOnly(
 
     console.log(`Audio duration: ${audioDuration}s, frames: ${durationInFrames}`);
 
-    // Step 4: Render video using Remotion Lambda
+    // Step 4.5: Cleanup old video render folder if exists
+    const cleanupResult = await storage.cleanupOldRender(
+      outputBucket,
+      presentationId,
+      formattedSlideNumber,
+      "video"
+    );
+    if (cleanupResult.cleaned) {
+      console.log(`Cleaned up old video render folder: ${cleanupResult.oldRenderId}`);
+    }
+
+    // Step 5: Render video using Remotion Lambda
     console.log(`Rendering video for slide ${formattedSlideNumber} on Remotion Lambda...`);
 
-    const optimalFramesPerLambda = Math.max(60, Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS));
-
-    console.log(
-      `Using framesPerLambda: ${optimalFramesPerLambda} for ${durationInFrames} frames`
+    const optimalFramesPerLambda = Math.max(
+      60,
+      Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS)
     );
+
+    console.log(`Using framesPerLambda: ${optimalFramesPerLambda} for ${durationInFrames} frames`);
 
     const videoKey = slidePaths.video;
 
@@ -186,6 +226,7 @@ export async function renderSlideVideoOnly(
         slide,
         audioUrl,
         durationInFrames,
+        preGeneratedImageUrl: renderMetadata.image?.url, // Use pre-generated image
       },
       codec: "h264",
       imageFormat: "jpeg",
@@ -204,7 +245,7 @@ export async function renderSlideVideoOnly(
 
     console.log(`Actual video URL will be: ${videoUrl}`);
 
-    // Step 5: Save video render metadata
+    // Step 6: Save video render metadata
     const renderMetadataUrl = await storage.updateVideoRenderMetadata(
       bucketName,
       presentationId,
@@ -258,7 +299,7 @@ export async function renderSlideAll(
   slideNumber: string,
   slide: SlideInput,
   outputBucket: string,
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse & { imageUrl?: string }> {
   try {
     const region = process.env.REMOTION_APP_REGION || "us-east-1";
@@ -274,7 +315,9 @@ export async function renderSlideAll(
     const paths = getPresentationPaths(presentationId, outputBucket);
     const slidePaths = paths.output(formattedSlideNumber);
 
-    console.log(`Starting FULL render (audio + image + video) for presentation ${presentationId}, slide ${formattedSlideNumber}...`);
+    console.log(
+      `Starting FULL render (audio + image + video) for presentation ${presentationId}, slide ${formattedSlideNumber}...`
+    );
 
     // Step 1: Save slide text JSON
     await storage.saveSlideText(outputBucket, presentationId, formattedSlideNumber, slide);
@@ -312,7 +355,9 @@ export async function renderSlideAll(
 
     // Step 4: Get accurate audio duration
     const tmpDir = require("os").tmpdir();
-    const localAudioPath = `${tmpDir}/${presentationId}-${formattedSlideNumber}.mp3`;
+    // Use safe filename by replacing slashes
+    const safePresId = presentationId.replace(/\//g, "-");
+    const localAudioPath = `${tmpDir}/${safePresId}-${formattedSlideNumber}.mp3`;
     await storage.downloadFile(outputBucket, slidePaths.audio, localAudioPath);
 
     const metadata = await mm.parseFile(localAudioPath);
@@ -322,11 +367,34 @@ export async function renderSlideAll(
 
     console.log(`Audio duration: ${audioDuration}s, frames: ${durationInFrames}`);
 
-    // Step 5: Render video
+    // Step 4.5: Cleanup old video render folder if exists (image cleanup happens in generateSlideImage)
+    const videoCleanupResult = await storage.cleanupOldRender(
+      outputBucket,
+      presentationId,
+      formattedSlideNumber,
+      "video"
+    );
+    if (videoCleanupResult.cleaned) {
+      console.log(`Cleaned up old video render folder: ${videoCleanupResult.oldRenderId}`);
+    }
+
+    // Step 5: Render video (using pre-generated image)
     console.log(`Rendering video...`);
-    const optimalFramesPerLambda = Math.max(60, Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS));
+    const optimalFramesPerLambda = Math.max(
+      60,
+      Math.ceil(durationInFrames / MAX_CONCURRENT_LAMBDAS)
+    );
 
     const videoKey = slidePaths.video;
+
+    // Get the image URL from the image generation result
+    const preGeneratedImageUrl = imageResult.success ? imageResult.imageUrl : undefined;
+
+    // Use presigned URL for Remotion Lambda to access audio
+    // audioResult.audioPresignedUrl is already a fresh presigned URL from audio generation
+    const audioUrlForRemotion =
+      audioResult.audioPresignedUrl ||
+      (await storage.getPresignedUrl(outputBucket, slidePaths.audio, 3600));
 
     const { renderId, bucketName } = await renderMediaOnLambda({
       region: region as any,
@@ -335,8 +403,9 @@ export async function renderSlideAll(
       composition: "SingleSlide",
       inputProps: {
         slide,
-        audioUrl: audioResult.audioUrl,
+        audioUrl: audioUrlForRemotion, // Use presigned URL for Remotion
         durationInFrames,
+        preGeneratedImageUrl, // Use pre-generated image
       },
       codec: "h264",
       imageFormat: "jpeg",
@@ -366,6 +435,22 @@ export async function renderSlideAll(
         startedAt: new Date().toISOString(),
       }
     );
+
+    // Also save audio URL to render metadata for UI playback
+    const currentMetadata = await storage.loadRenderMetadata(
+      bucketName,
+      presentationId,
+      formattedSlideNumber
+    );
+    if (currentMetadata) {
+      (currentMetadata as any).audioUrl = audioResult.audioUrl;
+      await storage.saveRenderMetadata(
+        bucketName,
+        presentationId,
+        formattedSlideNumber,
+        currentMetadata
+      );
+    }
 
     console.log(`Slide ${formattedSlideNumber} FULL render initiated!`);
     console.log(`- Audio: ${audioResult.audioUrl.substring(0, 50)}...`);
@@ -411,7 +496,7 @@ export async function renderSlideWithPaths(
   slideNumber: string,
   slide: SlideInput,
   outputBucket: string,
-  voice: string = "en-US-JennyNeural"
+  voice: string = "Ruth"
 ): Promise<GenerateSlideVideoResponse> {
   // Delegate to renderSlideAll for backward compatibility
   return renderSlideAll(presentationId, slideNumber, slide, outputBucket, voice);
