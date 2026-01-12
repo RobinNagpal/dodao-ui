@@ -4,7 +4,13 @@ import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withLoggedInUser, withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { UpdatePortfolioManagerProfileRequest, PortfolioManagerProfilewithPortfoliosAndUser, IndustryByCountry } from '@/types/portfolio';
+import {
+  UpdatePortfolioManagerProfileRequest,
+  PortfolioManagerProfilewithPortfoliosAndUser,
+  IndustryByCountry,
+  FavouriteWithFullDetails,
+  NoteWithFullDetails,
+} from '@/types/portfolio';
 import { revalidatePortfolioProfileTag, revalidatePortfolioManagersByCountryTag, revalidatePortfolioManagersByTypeTag } from '@/utils/ticker-v1-cache-utils';
 import { getCountryByExchange, toExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 
@@ -44,15 +50,21 @@ async function getHandler(
   // Fetch industries by country for favorites and notes
   const userId = portfolioManagerProfile.userId;
 
-  // Get all distinct ticker IDs from favorites and notes
+  // Get all favorites and notes with full ticker details
   const [favorites, notes] = await Promise.all([
     prisma.favouriteTicker.findMany({
       where: {
         userId: userId,
         spaceId: KoalaGainsSpaceId,
       },
-      select: {
-        tickerId: true,
+      include: {
+        ticker: {
+          include: {
+            industry: true,
+            subIndustry: true,
+            cachedScoreEntry: true,
+          },
+        },
       },
     }),
     prisma.tickerV1Notes.findMany({
@@ -60,31 +72,22 @@ async function getHandler(
         userId: userId,
         spaceId: KoalaGainsSpaceId,
       },
-      select: {
-        tickerId: true,
+      include: {
+        ticker: {
+          include: {
+            industry: true,
+            subIndustry: true,
+            cachedScoreEntry: true,
+          },
+        },
       },
     }),
   ]);
 
-  // Combine unique ticker IDs
+  // Combine unique ticker IDs for industry grouping
   const tickerIds = new Set([...favorites.map((f) => f.tickerId), ...notes.map((n) => n.tickerId)]);
 
   if (tickerIds.size > 0) {
-    // Fetch tickers with their industries
-    const tickers = await prisma.tickerV1.findMany({
-      where: {
-        id: {
-          in: Array.from(tickerIds),
-        },
-      },
-      select: {
-        id: true,
-        exchange: true,
-        industryKey: true,
-        industry: true,
-      },
-    });
-
     // Group by industry + country
     const industryMap = new Map<
       string,
@@ -99,7 +102,11 @@ async function getHandler(
     const favoriteTickerIds = new Set(favorites.map((f) => f.tickerId));
     const notesTickerIds = new Set(notes.map((n) => n.tickerId));
 
-    tickers.forEach((ticker) => {
+    // Use the already fetched tickers from favorites and notes
+    const allTickers = [...favorites.map((f) => f.ticker), ...notes.map((n) => n.ticker)];
+    const uniqueTickers = new Map(allTickers.map((t) => [t.id, t]));
+
+    uniqueTickers.forEach((ticker) => {
       if (!ticker.industry) return;
 
       const exchange = toExchange(ticker.exchange);
@@ -145,11 +152,19 @@ async function getHandler(
       portfolioManagerProfile: {
         ...portfolioManagerProfile,
         industriesByCountry,
+        allFavorites: favorites as FavouriteWithFullDetails[],
+        allNotes: notes as NoteWithFullDetails[],
       },
     };
   }
 
-  return { portfolioManagerProfile };
+  return {
+    portfolioManagerProfile: {
+      ...portfolioManagerProfile,
+      allFavorites: [],
+      allNotes: [],
+    },
+  };
 }
 
 // PUT /api/[spaceId]/users/portfolio-manager-profiles/[id] - Update a portfolio manager profile by ID (both admin and user can update)

@@ -101,6 +101,8 @@ async function putHandler(
     betterAlternatives: alternatives,
   };
 
+  await revalidatePortfolioProfileIfExists(userId);
+
   return enhancedFavourite as unknown as FavouriteTickerResponse;
 }
 

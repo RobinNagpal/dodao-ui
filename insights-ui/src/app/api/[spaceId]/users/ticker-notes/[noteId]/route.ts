@@ -32,6 +32,8 @@ async function putHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, {
     },
   });
 
+  await revalidatePortfolioProfileIfExists(userId);
+
   return updatedNote;
 }
 
