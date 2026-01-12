@@ -68,7 +68,11 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
+  if (!res.ok) {
+    const error = new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
+    (error as any).status = res.status; // Attach status for error handling
+    throw error;
+  }
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerByExchange returned empty payload');
   return data;
@@ -77,7 +81,11 @@ async function fetchTickerByExchange(exchange: string, ticker: string): Promise<
 async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
   const res: Response = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
+  if (!res.ok) {
+    const error = new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
+    (error as any).status = res.status; // Attach status for error handling
+    throw error;
+  }
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
   if (!data) throw new Error('fetchTickerAnyExchange returned empty payload');
   return data;
@@ -95,9 +103,18 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
     try {
       any = await fetchTickerAnyExchange(ticker);
     } catch (fallbackError) {
+      const status = (fallbackError as any)?.status;
       console.error(`fetchTickerAnyExchange failed for ${ticker} on exchange ${exchange}`);
       console.error(fallbackError);
-      notFound();
+
+      // Only call notFound() for 404 (ticker genuinely doesn't exist)
+      // For 500/503 (DB down, server errors), throw to show error.tsx
+      if (status === 404) {
+        notFound(); // Safe - ticker doesn't exist, won't change later
+      }
+
+      // For server errors, throw - will show error.tsx, not cached
+      throw new Error(`Service temporarily unavailable for ${ticker}`);
     }
     const canonicalExchange: string = any.exchange.toUpperCase();
     if (canonicalExchange !== exchange) {
