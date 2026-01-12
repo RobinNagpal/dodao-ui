@@ -158,6 +158,7 @@ export default function StockTable({ items, type }: StockTableProps) {
                       }}
                       showScore={true}
                       showName={true}
+                      showFullName={true}
                       linkToStock={true}
                     />
                   </td>
