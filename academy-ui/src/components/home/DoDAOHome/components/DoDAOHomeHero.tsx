@@ -1,6 +1,4 @@
-
 export default function DoDAOHomeHero() {
-
   return (
     <div className="relative isolate overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900">
       <div className="absolute inset-0 overflow-hidden">
@@ -22,12 +20,7 @@ export default function DoDAOHomeHero() {
             <span className="inline-flex items-center">
               <span className="h-2 w-2 bg-green-400 rounded-full mr-2"></span>
               Latest Product Launch:{' '}
-              <a
-                href="https://koalagains.com/"
-                target="_blank"
-                className="font-semibold text-white ml-1"
-                rel="noreferrer"
-              >
+              <a href="https://koalagains.com/" target="_blank" className="font-semibold text-white ml-1" rel="noreferrer">
                 KoalaGains <span aria-hidden="true">&rarr;</span>
               </a>
             </span>
@@ -46,9 +39,7 @@ export default function DoDAOHomeHero() {
 
           <div className="mt-10 flex justify-center">
             <div className="inline-flex rounded-md p-1 bg-white/10 backdrop-blur-sm">
-              <div className="px-4 py-2 text-sm font-medium rounded-md bg-indigo-600 text-white">
-                Our Services & Products
-              </div>
+              <div className="px-4 py-2 text-sm font-medium rounded-md bg-indigo-600 text-white">Our Services & Products</div>
             </div>
           </div>
 
@@ -72,12 +63,8 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-blue-400 text-sm font-medium">AI Agent</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  AI Agent Development
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Custom AI agents that automate workflows and solve complex business problems.
-                </p>
+                <h3 className="text-lg font-semibold text-white mb-2">AI Agent Development</h3>
+                <p className="text-sm text-gray-300">Custom AI agents that automate workflows and solve complex business problems.</p>
                 <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,12 +92,8 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-purple-400 text-sm font-medium">Education</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  AI Agent Training
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Comprehensive bootcamps teaching teams to build production-ready AI Agents.
-                </p>
+                <h3 className="text-lg font-semibold text-white mb-2">AI Agent Training</h3>
+                <p className="text-sm text-gray-300">Comprehensive bootcamps teaching teams to build production-ready AI Agents.</p>
                 <div className="mt-4 inline-flex items-center text-purple-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,12 +116,8 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  DeFi Development & Tools
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.
-                </p>
+                <h3 className="text-lg font-semibold text-white mb-2">DeFi Development & Tools</h3>
+                <p className="text-sm text-gray-300">Advanced tooling, dashboards, and smart contracts for leading DeFi protocols.</p>
                 <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,12 +144,8 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-blue-400 text-sm font-medium">AI Agent</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  KoalaGains Platform
-                </h3>
-                <p className="text-sm text-gray-300">
-                  AI-powered investment analysis platform for detailed financial insights and reports.
-                </p>
+                <h3 className="text-lg font-semibold text-white mb-2">KoalaGains Platform</h3>
+                <p className="text-sm text-gray-300">AI-powered investment analysis platform for detailed financial insights and reports.</p>
                 <div className="mt-4 inline-flex items-center text-blue-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,9 +173,7 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-violet-400 text-sm font-medium">Education</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Tidbits Hub
-                </h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Tidbits Hub</h3>
                 <p className="text-sm text-gray-300">
                   Quickly learn complex topics in 5–10 minute interactive bites, complete with videos, quizzes, and demos.
                 </p>
@@ -226,12 +199,8 @@ export default function DoDAOHomeHero() {
                   </div>
                   <span className="text-indigo-400 text-sm font-medium">DeFi Tool</span>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  DeFi Alerts
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.
-                </p>
+                <h3 className="text-lg font-semibold text-white mb-2">DeFi Alerts</h3>
+                <p className="text-sm text-gray-300">Get real-time DeFi alerts for yields, position health, and market changes with custom thresholds.</p>
                 <div className="mt-4 inline-flex items-center text-indigo-400 text-sm font-medium">
                   Explore More
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,10 +213,7 @@ export default function DoDAOHomeHero() {
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <div className="-mt-4">
-              <a
-                href="/contact"
-                className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm"
-              >
+              <a href="/contact" className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm">
                 Contact Us
               </a>
             </div>

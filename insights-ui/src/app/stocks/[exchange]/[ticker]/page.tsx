@@ -257,19 +257,23 @@ function DetailsInfoSkeleton(): JSX.Element {
 
 function CompetitionSkeleton(): JSX.Element {
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8" style={{ minHeight: '320px' }}>
       <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
+      <div className="h-16 w-full rounded bg-gray-800 animate-pulse mb-4" />
+      <div className="space-y-3">
+        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
+        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
+        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
+      </div>
     </div>
   );
 }
 
 function SimilarSkeleton(): JSX.Element {
   return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8" style={{ minHeight: '230px' }}>
       <div className="h-6 w-64 rounded bg-gray-800 animate-pulse mb-4" />
+      <div className="h-4 w-96 rounded bg-gray-800 animate-pulse mb-4" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <SectionCardSkeleton />
         <SectionCardSkeleton />
@@ -402,11 +406,11 @@ function TickerSummaryInfo({
           </div>
 
           {/* Right: Radar (Suspense retained only here) */}
-          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
+          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16" style={{ minHeight: '450px' }}>
             <div className="lg:absolute lg:top-4 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
-              <div className="w-full max-w-lg mx-auto relative">
-                <div className="absolute top-20 right-0 flex space-x-2">
-                  <div className="text-2xl font-bold -z-10" style={{ color: 'var(--primary-color, blue)' }}>
+              <div className="w-full max-w-lg mx-auto relative" style={{ minHeight: '400px', contain: 'layout size' }}>
+                <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+                  <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
                     {score.toFixed(0)}%
                   </div>
                   <SpiderChartFlyoutMenu />
@@ -421,9 +425,11 @@ function TickerSummaryInfo({
 
         {/* Financial Information - after radar chart */}
         {financialData && (
-          <Suspense fallback={<FinancialInfoSkeleton />}>
-            <FinancialInfo data={financialData} />
-          </Suspense>
+          <div style={{ minHeight: '120px' }}>
+            <Suspense fallback={<FinancialInfoSkeleton />}>
+              <FinancialInfo data={financialData} />
+            </Suspense>
+          </div>
         )}
       </section>
       <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
@@ -611,14 +617,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         <TickerSummaryInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} />
       </Suspense>
 
-      <div className="mx-auto max-w-7xl py-2">
-        <section className="mb-8">
+      <div className="mx-auto max-w-7xl py-2" style={{ minHeight: '600px', contain: 'layout' }}>
+        <section className="mb-8" style={{ minHeight: '300px' }}>
           <Suspense fallback={<CompetitionSkeleton />}>
             <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
           </Suspense>
         </section>
 
-        <section className="mb-8">
+        <section className="mb-8" style={{ minHeight: '250px' }}>
           <Suspense fallback={<SimilarSkeleton />}>
             <SimilarTickers dataPromise={similarPromise} />
           </Suspense>

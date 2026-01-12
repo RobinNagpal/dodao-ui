@@ -110,24 +110,22 @@ export async function getCompetitorTickers(
   }
 ): Promise<CompetitorTicker[]> {
   // Process competition analysis to check which competitors exist in our system
-  const competitorTickers: CompetitorTicker[] = [];
-  if (tickerRecord.vsCompetition?.competitionAnalysisArray) {
-    for (const competition of tickerRecord.vsCompetition.competitionAnalysisArray) {
-      const competitorInfo: CompetitorTicker = {
-        companyName: competition.companyName,
-        companySymbol: competition.companySymbol,
-        exchangeSymbol: competition.exchangeSymbol,
-        exchangeName: competition.exchangeName,
-        detailedComparison: competition.detailedComparison,
-        existsInSystem: false,
-      };
+  if (!tickerRecord.vsCompetition?.competitionAnalysisArray?.length) {
+    return [];
+  }
 
-      // Check if this competitor exists in our system (only by symbol, ignoring exchange name due to LLM inconsistencies)
-      if (competition.companySymbol) {
-        const existingTicker = await prisma.tickerV1.findFirst({
+  const competitionArray = tickerRecord.vsCompetition.competitionAnalysisArray;
+
+  // Collect all symbols to query in a single batch (instead of N+1 queries)
+  const symbolsToCheck = competitionArray.map((c) => c.companySymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);
+
+  // Single batch query for all competitor tickers
+  const existingTickers =
+    symbolsToCheck.length > 0
+      ? await prisma.tickerV1.findMany({
           where: {
             spaceId: KoalaGainsSpaceId,
-            symbol: competition.companySymbol.toUpperCase(),
+            symbol: { in: symbolsToCheck },
           },
           select: {
             id: true,
@@ -135,18 +133,27 @@ export async function getCompetitorTickers(
             symbol: true,
             exchange: true,
           },
-        });
+        })
+      : [];
 
-        if (existingTicker) {
-          competitorInfo.existsInSystem = true;
-          competitorInfo.tickerData = existingTicker;
-        }
-      }
+  // Create a map for O(1) lookup
+  const tickerMap = new Map(existingTickers.map((t) => [t.symbol.toUpperCase(), t]));
 
-      competitorTickers.push(competitorInfo);
-    }
-  }
-  return competitorTickers;
+  // Build competitor list using the pre-fetched data
+  return competitionArray.map((competition) => {
+    const symbolUpper = competition.companySymbol?.toUpperCase();
+    const existingTicker = symbolUpper ? tickerMap.get(symbolUpper) : undefined;
+
+    return {
+      companyName: competition.companyName,
+      companySymbol: competition.companySymbol,
+      exchangeSymbol: competition.exchangeSymbol,
+      exchangeName: competition.exchangeName,
+      detailedComparison: competition.detailedComparison,
+      existsInSystem: !!existingTicker,
+      tickerData: existingTicker,
+    };
+  });
 }
 
 export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelations): Promise<TickerV1FullReportResponse> {
