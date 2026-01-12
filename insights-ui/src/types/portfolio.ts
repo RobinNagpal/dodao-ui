@@ -8,9 +8,12 @@ import {
   UserTickerTag,
   UserTickerList,
   User,
+  FavouriteTicker,
+  TickerV1Notes,
 } from '@prisma/client';
 import { PortfolioManagerType } from './portfolio-manager';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { TickerV1WithIndustryAndSubIndustry } from './ticker-typesv1';
 
 export interface CreatePortfolioManagerProfileRequest {
   headline: string;
@@ -92,8 +95,25 @@ export interface IndustryByCountry {
   totalCount: number;
 }
 
+// Ticker with industry, sub-industry and cached score for display in tables
+export type TickerWithFullDetails = TickerV1WithIndustryAndSubIndustry & {
+  cachedScoreEntry?: TickerV1CachedScore | null;
+};
+
+// Favourite with full ticker details for portfolio manager profile
+export interface FavouriteWithFullDetails extends FavouriteTicker {
+  ticker: TickerWithFullDetails;
+}
+
+// Note with full ticker details for portfolio manager profile
+export interface NoteWithFullDetails extends TickerV1Notes {
+  ticker: TickerWithFullDetails;
+}
+
 export type PortfolioManagerProfilewithPortfoliosAndUser = PortfolioManagerProfile & {
   user: User;
   portfolios: PortfolioWithTickers[];
   industriesByCountry?: IndustryByCountry[];
+  allFavorites?: FavouriteWithFullDetails[];
+  allNotes?: NoteWithFullDetails[];
 };
