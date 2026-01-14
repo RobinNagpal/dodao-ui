@@ -1153,15 +1153,31 @@ model IndustryBuildingBlockAnalysis {
 // Detailed Reports Model
 // --------------------------
 
-model DetailedReportCategory {
+model AnalysisTemplate {
   id          String   @id @default(uuid())
   name        String   @map("name")
   description String?  @map("description")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  analysisTypes AnalysisType[]
+  categories            DetailedReportCategory[]
+  tickerDetailedReports TickerV1DetailedReport[]
 
+  @@map("analysis_templates")
+}
+
+model DetailedReportCategory {
+  id                 String   @id @default(uuid())
+  analysisTemplateId String   @map("analysis_template_id")
+  name               String   @map("name")
+  description        String?  @map("description")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id])
+  analysisTypes    AnalysisType[]
+
+  @@index([analysisTemplateId])
   @@map("detailed_report_categories")
 }
 
@@ -1176,25 +1192,28 @@ model AnalysisType {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  category               DetailedReportCategory      @relation(fields: [categoryId], references: [id])
-  tickerDetailedReports  TickerV1DetailedReport[]
+  category              DetailedReportCategory   @relation(fields: [categoryId], references: [id])
+  tickerDetailedReports TickerV1DetailedReport[]
 
   @@index([categoryId])
   @@map("analysis_types")
 }
 
 model TickerV1DetailedReport {
-  id             String   @id @default(uuid())
-  tickerId       String   @map("ticker_id")
-  analysisTypeId String   @map("analysis_type_id")
-  output         String   @map("output")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  id                 String   @id @default(uuid())
+  tickerId           String   @map("ticker_id")
+  analysisTemplateId String   @map("analysis_template_id")
+  analysisTypeId     String   @map("analysis_type_id")
+  output             String   @map("output")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 
-  ticker       TickerV1     @relation(fields: [tickerId], references: [id])
-  analysisType AnalysisType @relation(fields: [analysisTypeId], references: [id])
+  ticker           TickerV1         @relation(fields: [tickerId], references: [id])
+  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id])
+  analysisType     AnalysisType     @relation(fields: [analysisTypeId], references: [id])
 
   @@index([tickerId])
+  @@index([analysisTemplateId])
   @@index([analysisTypeId])
   @@map("ticker_v1_detailed_reports")
 }
