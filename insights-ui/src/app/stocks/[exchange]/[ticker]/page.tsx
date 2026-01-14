@@ -406,7 +406,7 @@ function TickerSummaryInfo({
           </div>
 
           {/* Right: Radar (Suspense retained only here) */}
-          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16" style={{ minHeight: '450px' }}>
+          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16" style={{ minHeight: '250px' }}>
             <div className="lg:absolute lg:top-4 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
               <div className="w-full max-w-lg mx-auto relative" style={{ minHeight: '400px', contain: 'layout size' }}>
                 <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
@@ -617,14 +617,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         <TickerSummaryInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} />
       </Suspense>
 
-      <div className="mx-auto max-w-7xl py-2" style={{ minHeight: '600px', contain: 'layout' }}>
+      <div className="mx-auto max-w-7xl" style={{ minHeight: '600px', contain: 'layout' }}>
         <section className="mb-8" style={{ minHeight: '300px' }}>
           <Suspense fallback={<CompetitionSkeleton />}>
             <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
           </Suspense>
         </section>
 
-        <section className="mb-8" style={{ minHeight: '250px' }}>
+        <section className="mb-6" style={{ minHeight: '250px' }}>
           <Suspense fallback={<SimilarSkeleton />}>
             <SimilarTickers dataPromise={similarPromise} />
           </Suspense>

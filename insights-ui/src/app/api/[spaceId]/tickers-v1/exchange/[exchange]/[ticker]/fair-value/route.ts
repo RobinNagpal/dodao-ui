@@ -29,7 +29,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/fair-value',
     llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-    model: GeminiModel.GEMINI_2_5_PRO,
+    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
     requestFrom: 'ui',
   });
 

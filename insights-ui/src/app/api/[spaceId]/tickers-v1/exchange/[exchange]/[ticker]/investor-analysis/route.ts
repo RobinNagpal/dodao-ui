@@ -34,7 +34,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/investor-analysis',
     llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_2_5_PRO,
+    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
     requestFrom: 'ui',
   });
 
