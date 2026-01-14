@@ -406,7 +406,7 @@ function TickerSummaryInfo({
           </div>
 
           {/* Right: Radar (Suspense retained only here) */}
-          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16" style={{ minHeight: '250px' }}>
+          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
             <div className="lg:absolute lg:top-4 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
               <div className="w-full max-w-lg mx-auto relative" style={{ minHeight: '400px', contain: 'layout size' }}>
                 <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
