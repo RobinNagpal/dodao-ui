@@ -5,11 +5,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { PromptInvocation, PromptInvocationStatus } from "@prisma/client";
 import Ajv, { ErrorObject } from "ajv";
 
-import {
-  GeminiModel,
-  KoalaGainsSpaceId,
-  LLMProvider,
-} from "./koalaGainsConstants";
+import { GeminiModel, LLMProvider } from "./koalaGainsConstants";
 import { getGroundedResponse } from "./llm-grounding-utils";
 
 export interface ValidationResult {
