@@ -552,6 +552,9 @@ model TickerV1 {
   // Relation to ticker notes
   tickerNotes TickerV1Notes[]
 
+  // Relation to detailed reports
+  tickerDetailedReports TickerV1DetailedReport[]
+
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
   @@index([industryKey])
@@ -1144,4 +1147,54 @@ model IndustryBuildingBlockAnalysis {
   @@index([tickerV1IndustryAnalysisId])
   @@index([buildingBlockKey])
   @@map("industry_building_block_analysis")
+}
+
+// --------------------------
+// Detailed Reports Model
+// --------------------------
+
+model DetailedReportCategory {
+  id          String   @id @default(uuid())
+  name        String   @map("name")
+  description String?  @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  analysisTypes AnalysisType[]
+
+  @@map("detailed_report_categories")
+}
+
+model AnalysisType {
+  id                 String   @id @default(uuid())
+  categoryId         String   @map("category_id")
+  name               String   @map("name")
+  oneLineSummary     String   @map("one_line_summary")
+  description        String   @map("description")
+  promptInstructions String   @map("prompt_instructions")
+  outputSchema       String?  @map("output_schema")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  category               DetailedReportCategory      @relation(fields: [categoryId], references: [id])
+  tickerDetailedReports  TickerV1DetailedReport[]
+
+  @@index([categoryId])
+  @@map("analysis_types")
+}
+
+model TickerV1DetailedReport {
+  id             String   @id @default(uuid())
+  tickerId       String   @map("ticker_id")
+  analysisTypeId String   @map("analysis_type_id")
+  output         String   @map("output")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  ticker       TickerV1     @relation(fields: [tickerId], references: [id])
+  analysisType AnalysisType @relation(fields: [analysisTypeId], references: [id])
+
+  @@index([tickerId])
+  @@index([analysisTypeId])
+  @@map("ticker_v1_detailed_reports")
 }
