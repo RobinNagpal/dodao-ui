@@ -71,6 +71,9 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       console.error('[withErrorHandlingV2] Error name:', (error as any).name);
       console.error('[withErrorHandlingV2] Error message:', (error as any).message);
 
+      // Check for Prisma "not found" error (P2025)
+      const isPrismaNotFound = (error as any)?.code === 'P2025' || (error as any)?.name === 'NotFoundError';
+
       const errorData = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
       const message = `${errorData}. Error occurred while processing the request ${requestInfo}`;
       console.log('[withErrorHandlingV2] Logging error to system');
@@ -78,8 +81,11 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
       await logErrorRequest(error as Error, req);
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
-      console.log('[withErrorHandlingV2] Returning user-friendly error message with status 500:', userMessage);
-      return NextResponse.json({ error: userMessage }, { status: 500 });
+
+      // Return 404 for "not found" errors, 500 for everything else
+      const statusCode = isPrismaNotFound ? 404 : 500;
+      console.log(`[withErrorHandlingV2] Returning user-friendly error message with status ${statusCode}:`, userMessage);
+      return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
   };
 }
