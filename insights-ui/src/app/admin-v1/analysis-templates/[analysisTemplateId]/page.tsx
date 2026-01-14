@@ -76,33 +76,38 @@ interface AnalysisType {
 
 export default function AnalysisTemplateDetailPage() {
   const params = useParams() as { analysisTemplateId: string };
-  
+
   const [categoriesJson, setCategoriesJson] = useState<string>('[\n  {\n    "name": "Category Name",\n    "description": "Category Description"\n  }\n]');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
-  const [analysisTypes, setAnalysisTypes] = useState<AnalysisTypeFormData[]>([{
-    name: '',
-    oneLineSummary: '',
-    description: '',
-    promptInstructions: '',
-    outputSchema: ''
-  }]);
-  const [analysisTypesJson, setAnalysisTypesJson] = useState<string>('[\n  {\n    "name": "Analysis Type Name",\n    "oneLineSummary": "Brief summary of what this analysis does",\n    "description": "Detailed description of the analysis type",\n    "promptInstructions": "Instructions for the AI prompt",\n    "outputSchema": {\n      "type": "object",\n      "properties": {\n        "result": {\n          "type": "string"\n        }\n      }\n    }\n  }\n]');
+  const [analysisTypes, setAnalysisTypes] = useState<AnalysisTypeFormData[]>([
+    {
+      name: '',
+      oneLineSummary: '',
+      description: '',
+      promptInstructions: '',
+      outputSchema: '',
+    },
+  ]);
+  const [analysisTypesJson, setAnalysisTypesJson] = useState<string>(
+    '[\n  {\n    "name": "Analysis Type Name",\n    "oneLineSummary": "Brief summary of what this analysis does",\n    "description": "Detailed description of the analysis type",\n    "promptInstructions": "Instructions for the AI prompt",\n    "outputSchema": {\n      "type": "object",\n      "properties": {\n        "result": {\n          "type": "string"\n        }\n      }\n    }\n  }\n]'
+  );
   const [useJsonForAnalysisTypes, setUseJsonForAnalysisTypes] = useState(false);
   const [showCategoriesJsonModal, setShowCategoriesJsonModal] = useState(false);
   const [showAnalysisTypesJsonModal, setShowAnalysisTypesJsonModal] = useState(false);
   const [showAnalysisTypesFormJsonModal, setShowAnalysisTypesFormJsonModal] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number>(-1);
 
-  const { data: template, loading: templateLoading, reFetchData: refetchTemplate } = useFetchData<AnalysisTemplate>(
+  const {
+    data: template,
+    loading: templateLoading,
+    reFetchData: refetchTemplate,
+  } = useFetchData<AnalysisTemplate>(
     `${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}`,
     { cache: 'no-cache' },
     'Failed to fetch analysis template'
   );
 
-  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<
-    Category[],
-    { categories: CategoryFormData[] }
-  >({
+  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<Category[], { categories: CategoryFormData[] }>({
     successMessage: 'Categories created successfully!',
     errorMessage: 'Failed to create categories.',
   });
@@ -126,13 +131,16 @@ export default function AnalysisTemplateDetailPage() {
   };
 
   const addAnalysisTypeRow = () => {
-    setAnalysisTypes([...analysisTypes, {
-      name: '',
-      oneLineSummary: '',
-      description: '',
-      promptInstructions: '',
-      outputSchema: ''
-    }]);
+    setAnalysisTypes([
+      ...analysisTypes,
+      {
+        name: '',
+        oneLineSummary: '',
+        description: '',
+        promptInstructions: '',
+        outputSchema: '',
+      },
+    ]);
   };
 
   const updateAnalysisType = (index: number, field: keyof AnalysisTypeFormData, value: string) => {
@@ -155,8 +163,8 @@ export default function AnalysisTemplateDetailPage() {
         return;
       }
 
-      const validCategories = parsedCategories.filter((cat: any) =>
-        cat && typeof cat === 'object' && cat.name && typeof cat.name === 'string' && cat.name.trim()
+      const validCategories = parsedCategories.filter(
+        (cat: any) => cat && typeof cat === 'object' && cat.name && typeof cat.name === 'string' && cat.name.trim()
       );
 
       if (validCategories.length === 0) {
@@ -165,7 +173,7 @@ export default function AnalysisTemplateDetailPage() {
       }
 
       await createCategories(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/categories`, {
-        categories: validCategories
+        categories: validCategories,
       });
 
       // Refetch template to update the list
@@ -190,8 +198,8 @@ export default function AnalysisTemplateDetailPage() {
           return;
         }
 
-        const validAnalysisTypes = parsedAnalysisTypes.filter((type: any) =>
-          type && typeof type === 'object' && type.name && typeof type.name === 'string' && type.name.trim()
+        const validAnalysisTypes = parsedAnalysisTypes.filter(
+          (type: any) => type && typeof type === 'object' && type.name && typeof type.name === 'string' && type.name.trim()
         );
 
         if (validAnalysisTypes.length === 0) {
@@ -202,46 +210,48 @@ export default function AnalysisTemplateDetailPage() {
         // Convert outputSchema to string if it's an object
         const processedAnalysisTypes = validAnalysisTypes.map((type: any) => ({
           ...type,
-          outputSchema: type.outputSchema ? 
-            (typeof type.outputSchema === 'string' ? type.outputSchema : JSON.stringify(type.outputSchema)) 
-            : undefined
+          outputSchema: type.outputSchema ? (typeof type.outputSchema === 'string' ? type.outputSchema : JSON.stringify(type.outputSchema)) : undefined,
         }));
 
         await createAnalysisTypes(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/analysis-types`, {
           categoryId: selectedCategoryId,
-          analysisTypes: processedAnalysisTypes
+          analysisTypes: processedAnalysisTypes,
         });
 
         // Refetch template to update the list
         refetchTemplate();
 
         // Reset to default
-        setAnalysisTypesJson('[\n  {\n    "name": "Analysis Type Name",\n    "oneLineSummary": "Brief summary of what this analysis does",\n    "description": "Detailed description of the analysis type",\n    "promptInstructions": "Instructions for the AI prompt",\n    "outputSchema": {\n      "type": "object",\n      "properties": {\n        "result": {\n          "type": "string"\n        }\n      }\n    }\n  }\n]');
+        setAnalysisTypesJson(
+          '[\n  {\n    "name": "Analysis Type Name",\n    "oneLineSummary": "Brief summary of what this analysis does",\n    "description": "Detailed description of the analysis type",\n    "promptInstructions": "Instructions for the AI prompt",\n    "outputSchema": {\n      "type": "object",\n      "properties": {\n        "result": {\n          "type": "string"\n        }\n      }\n    }\n  }\n]'
+        );
         setSelectedCategoryId('');
       } catch (error) {
         alert('Invalid JSON format: ' + (error instanceof Error ? error.message : 'Unknown error'));
       }
     } else {
       // Handle form input
-      const validAnalysisTypes = analysisTypes.filter(type => type.name.trim());
+      const validAnalysisTypes = analysisTypes.filter((type) => type.name.trim());
       if (validAnalysisTypes.length === 0) return;
 
       await createAnalysisTypes(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/analysis-types`, {
         categoryId: selectedCategoryId,
-        analysisTypes: validAnalysisTypes
+        analysisTypes: validAnalysisTypes,
       });
 
       // Refetch template to update the list
       refetchTemplate();
 
       // Reset form
-      setAnalysisTypes([{
-        name: '',
-        oneLineSummary: '',
-        description: '',
-        promptInstructions: '',
-        outputSchema: ''
-      }]);
+      setAnalysisTypes([
+        {
+          name: '',
+          oneLineSummary: '',
+          description: '',
+          promptInstructions: '',
+          outputSchema: '',
+        },
+      ]);
       setSelectedCategoryId('');
     }
   };
@@ -259,10 +269,11 @@ export default function AnalysisTemplateDetailPage() {
     setEditingIndex(-1);
   };
 
-  const categoryOptions = template?.categories?.map(cat => ({
-    id: cat.id,
-    label: cat.name
-  })) || [];
+  const categoryOptions =
+    template?.categories?.map((cat) => ({
+      id: cat.id,
+      label: cat.name,
+    })) || [];
 
   if (templateLoading) {
     return (
@@ -288,26 +299,20 @@ export default function AnalysisTemplateDetailPage() {
             ← Back to Templates
           </Link>
           <h1 className="text-3xl heading-color mb-2">{template.name}</h1>
-          {template.description && (
-            <p className="text-gray-600">{template.description}</p>
-          )}
+          {template.description && <p className="text-gray-600">{template.description}</p>}
         </div>
 
         {/* Categories Section */}
         <div className="mb-12">
           <h2 className="text-2xl heading-color mb-4">Add Categories</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Add multiple categories at once using JSON format. Each category should have a "name" field (required) and optional "description" field.
+            Add multiple categories at once using JSON format. Each category should have a name field (required) and optional description field.
           </p>
 
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
               <label className="text-sm font-medium">Categories JSON *</label>
-              <IconButton
-                iconName={IconTypes.Edit}
-                onClick={() => setShowCategoriesJsonModal(true)}
-                tooltip="Edit JSON"
-              />
+              <IconButton iconName={IconTypes.Edit} onClick={() => setShowCategoriesJsonModal(true)} tooltip="Edit JSON" />
             </div>
             <div className="block-bg-color w-full py-4 px-2 border rounded max-h-[300px] overflow-y-auto">
               <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto">
@@ -323,11 +328,7 @@ export default function AnalysisTemplateDetailPage() {
           </div>
 
           <div className="flex gap-4">
-            <Button
-              onClick={handleCreateCategories}
-              primary
-              loading={createCategoriesLoading}
-            >
+            <Button onClick={handleCreateCategories} primary loading={createCategoriesLoading}>
               Create Categories
             </Button>
           </div>
@@ -350,14 +351,14 @@ export default function AnalysisTemplateDetailPage() {
             <div className="flex gap-4">
               <Button
                 onClick={() => setUseJsonForAnalysisTypes(false)}
-                variant={!useJsonForAnalysisTypes ? "contained" : "outlined"}
+                variant={!useJsonForAnalysisTypes ? 'contained' : 'outlined'}
                 primary={!useJsonForAnalysisTypes}
               >
                 Form Input
               </Button>
               <Button
                 onClick={() => setUseJsonForAnalysisTypes(true)}
-                variant={useJsonForAnalysisTypes ? "contained" : "outlined"}
+                variant={useJsonForAnalysisTypes ? 'contained' : 'outlined'}
                 primary={useJsonForAnalysisTypes}
               >
                 JSON Input
@@ -374,11 +375,7 @@ export default function AnalysisTemplateDetailPage() {
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
                   <label className="text-sm font-medium">Analysis Types JSON *</label>
-                  <IconButton
-                    iconName={IconTypes.Edit}
-                    onClick={() => setShowAnalysisTypesFormJsonModal(true)}
-                    tooltip="Edit JSON"
-                  />
+                  <IconButton iconName={IconTypes.Edit} onClick={() => setShowAnalysisTypesFormJsonModal(true)} tooltip="Edit JSON" />
                 </div>
                 <div className="block-bg-color w-full py-4 px-2 border rounded max-h-[400px] overflow-y-auto">
                   <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto">
@@ -397,70 +394,58 @@ export default function AnalysisTemplateDetailPage() {
             // Form Input Mode
             <div className="space-y-6">
               {analysisTypes.map((analysisType, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <Input
-                    modelValue={analysisType.name}
-                    onUpdate={(val) => updateAnalysisType(index, 'name', val as string)}
-                    placeholder="Analysis type name"
-                  >
-                    Name *
-                  </Input>
-                  <Input
-                    modelValue={analysisType.oneLineSummary}
-                    onUpdate={(val) => updateAnalysisType(index, 'oneLineSummary', val as string)}
-                    placeholder="One line summary"
-                  >
-                    One Line Summary *
-                  </Input>
-                </div>
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <Input modelValue={analysisType.name} onUpdate={(val) => updateAnalysisType(index, 'name', val as string)} placeholder="Analysis type name">
+                      Name *
+                    </Input>
+                    <Input
+                      modelValue={analysisType.oneLineSummary}
+                      onUpdate={(val) => updateAnalysisType(index, 'oneLineSummary', val as string)}
+                      placeholder="One line summary"
+                    >
+                      One Line Summary *
+                    </Input>
+                  </div>
 
-                <div className="mb-4">
-                  <TextareaAutosize
-                    label="Description *"
-                    modelValue={analysisType.description}
-                    onUpdate={(val) => updateAnalysisType(index, 'description', val as string)}
-                    placeholder="Detailed description"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <TextareaAutosize
-                    label="Prompt Instructions *"
-                    modelValue={analysisType.promptInstructions}
-                    onUpdate={(val) => updateAnalysisType(index, 'promptInstructions', val as string)}
-                    placeholder="Instructions for the prompt"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <label className="text-sm font-medium">Output Schema (JSON)</label>
-                    <IconButton
-                      iconName={IconTypes.Edit}
-                      onClick={() => openAnalysisTypesJsonModal(index)}
-                      tooltip="Edit JSON"
+                  <div className="mb-4">
+                    <TextareaAutosize
+                      label="Description *"
+                      modelValue={analysisType.description}
+                      onUpdate={(val) => updateAnalysisType(index, 'description', val as string)}
+                      placeholder="Detailed description"
                     />
                   </div>
-                  <div className="block-bg-color w-full py-2 px-2 border rounded">
-                    {analysisType.outputSchema ? (
-                      <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto max-h-[100px] overflow-y-auto">
-                        {JSON.stringify(JSON.parse(analysisType.outputSchema), null, 2)}
-                      </pre>
-                    ) : (
-                      <pre className="text-xs text-gray-500">Click edit icon to add JSON schema</pre>
-                    )}
-                  </div>
-                </div>
 
-                <Button
-                  onClick={() => removeAnalysisTypeRow(index)}
-                  variant="outlined"
-                  disabled={analysisTypes.length === 1}
-                >
-                  Remove This Analysis Type
-                </Button>
-              </div>
+                  <div className="mb-4">
+                    <TextareaAutosize
+                      label="Prompt Instructions *"
+                      modelValue={analysisType.promptInstructions}
+                      onUpdate={(val) => updateAnalysisType(index, 'promptInstructions', val as string)}
+                      placeholder="Instructions for the prompt"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="text-sm font-medium">Output Schema (JSON)</label>
+                      <IconButton iconName={IconTypes.Edit} onClick={() => openAnalysisTypesJsonModal(index)} tooltip="Edit JSON" />
+                    </div>
+                    <div className="block-bg-color w-full py-2 px-2 border rounded">
+                      {analysisType.outputSchema ? (
+                        <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto max-h-[100px] overflow-y-auto">
+                          {JSON.stringify(JSON.parse(analysisType.outputSchema), null, 2)}
+                        </pre>
+                      ) : (
+                        <pre className="text-xs text-gray-500">Click edit icon to add JSON schema</pre>
+                      )}
+                    </div>
+                  </div>
+
+                  <Button onClick={() => removeAnalysisTypeRow(index)} variant="outlined" disabled={analysisTypes.length === 1}>
+                    Remove This Analysis Type
+                  </Button>
+                </div>
               ))}
             </div>
           )}
@@ -475,7 +460,7 @@ export default function AnalysisTemplateDetailPage() {
               onClick={handleCreateAnalysisTypes}
               primary
               loading={createAnalysisTypesLoading}
-              disabled={!selectedCategoryId || (useJsonForAnalysisTypes ? false : analysisTypes.every(type => !type.name.trim()))}
+              disabled={!selectedCategoryId || (useJsonForAnalysisTypes ? false : analysisTypes.every((type) => !type.name.trim()))}
             >
               Create Analysis Types
             </Button>
@@ -490,9 +475,7 @@ export default function AnalysisTemplateDetailPage() {
               {template.categories.map((category) => (
                 <div key={category.id} className="border border-gray-200 rounded-lg p-4">
                   <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-                  {category.description && (
-                    <p className="text-gray-600 mb-4">{category.description}</p>
-                  )}
+                  {category.description && <p className="text-gray-600 mb-4">{category.description}</p>}
                   <div className="ml-4">
                     <h4 className="font-medium mb-2">Analysis Types:</h4>
                     {category.analysisTypes.length > 0 ? (
