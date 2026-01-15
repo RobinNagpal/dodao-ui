@@ -2,7 +2,6 @@ import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import {
   fetchAnalysisFactors,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  getCompetitionAnalysisArray,
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { savePastPerformanceFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
@@ -25,17 +24,14 @@ async function postHandler(
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
-  // Get competition analysis (required for past performance analysis)
-  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
-
   // Extract comprehensive financial data for past performance analysis (last 5 annuals only)
   const financialData = extractFinancialDataForPastPerformance(scraperInfo);
 
   // Get analysis factors for PastPerformance category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
 
-  // Prepare input for the prompt (uses past-performance-future-growth-input.schema.yaml)
-  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, financialData);
+  // Prepare input for the prompt
+  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, financialData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({

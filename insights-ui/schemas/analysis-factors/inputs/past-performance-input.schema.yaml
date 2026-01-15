@@ -55,26 +55,6 @@ properties:
         - factorAnalysisKey
         - factorAnalysisTitle
         - factorAnalysisDescription
-  competitionAnalysisArray:
-    type: array
-    description: 'Array of competitor information from VsCompetition output, used to benchmark the target company.'
-    items:
-      type: object
-      properties:
-        companyName:
-          type: string
-        companySymbol:
-          type: string
-        exchangeSymbol:
-          type: string
-        exchangeName:
-          type: string
-        detailedComparison:
-          type: string
-      required:
-        - companyName
-        - detailedComparison
-
   # Market Snapshot - comprehensive market data
   marketSummary:
     type: string
@@ -108,7 +88,6 @@ required:
   - subIndustryKey
   - categoryKey
   - factorAnalysisArray
-  - competitionAnalysisArray
   - industryDescription
   - subIndustryDescription
   - industryName

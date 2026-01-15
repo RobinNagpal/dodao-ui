@@ -37,11 +37,11 @@ import { AnalysisCategoryFactor } from '@prisma/client';
  */
 export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.COMPETITION]: [],
+  [ReportType.BUSINESS_AND_MOAT]: [],
   [ReportType.FINANCIAL_ANALYSIS]: [],
-  [ReportType.BUSINESS_AND_MOAT]: [ReportType.COMPETITION],
-  [ReportType.PAST_PERFORMANCE]: [ReportType.COMPETITION],
+  [ReportType.PAST_PERFORMANCE]: [],
   [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
-  [ReportType.FAIR_VALUE]: [],
+  [ReportType.FAIR_VALUE]: [ReportType.BUSINESS_AND_MOAT, ReportType.FINANCIAL_ANALYSIS, ReportType.PAST_PERFORMANCE, ReportType.FUTURE_GROWTH],
   [ReportType.FUTURE_RISK]: [],
   [ReportType.WARREN_BUFFETT]: [ReportType.COMPETITION],
   [ReportType.CHARLIE_MUNGER]: [ReportType.COMPETITION],
@@ -67,14 +67,14 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
 export const dependencyBasedReportOrder: ReportType[] = [
   // Independent reports (no dependencies)
   ReportType.COMPETITION,
+  ReportType.BUSINESS_AND_MOAT,
   ReportType.FINANCIAL_ANALYSIS,
-  ReportType.FAIR_VALUE,
+  ReportType.PAST_PERFORMANCE,
   ReportType.FUTURE_RISK,
 
   // Dependent reports (with dependencies)
-  ReportType.BUSINESS_AND_MOAT,
-  ReportType.PAST_PERFORMANCE,
   ReportType.FUTURE_GROWTH,
+  ReportType.FAIR_VALUE,
   ReportType.WARREN_BUFFETT,
   ReportType.CHARLIE_MUNGER,
   ReportType.BILL_ACKMAN,
@@ -132,12 +132,7 @@ async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1
   });
 }
 
-async function generateBusinessAndMoatAnalysis(
-  spaceId: string,
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  competitionAnalysisArray: CompetitionAnalysisArray,
-  generationRequestId: string
-): Promise<void> {
+async function generateBusinessAndMoatAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -148,7 +143,7 @@ async function generateBusinessAndMoatAnalysis(
   const kpisData = extractKpisDataForAnalysis(scraperInfo);
 
   // Prepare input for the prompt
-  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, kpisData);
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, kpisData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
@@ -167,12 +162,7 @@ async function generateBusinessAndMoatAnalysis(
   });
 }
 
-async function generatePastPerformanceAnalysis(
-  spaceId: string,
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  competitionAnalysisArray: CompetitionAnalysisArray,
-  generationRequestId: string
-): Promise<void> {
+async function generatePastPerformanceAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
@@ -183,7 +173,7 @@ async function generatePastPerformanceAnalysis(
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
 
   // Prepare input for the prompt
-  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, financialData);
+  const inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactors, financialData);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({
@@ -443,23 +433,23 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
 
   try {
     switch (nextStep) {
+      case ReportType.BUSINESS_AND_MOAT:
+        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
       case ReportType.FINANCIAL_ANALYSIS:
         await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-      case ReportType.FUTURE_RISK:
-        await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
+        case ReportType.PAST_PERFORMANCE:
+        await generatePastPerformanceAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-      case ReportType.FAIR_VALUE:
+        case ReportType.FUTURE_GROWTH:
+        await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
+        case ReportType.FAIR_VALUE:
         await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-      case ReportType.BUSINESS_AND_MOAT:
-        await generateBusinessAndMoatAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
-        break;
-      case ReportType.PAST_PERFORMANCE:
-        await generatePastPerformanceAnalysis(spaceId, tickerRecord, competitionAnalysisArray, generationRequest.id);
-        break;
-      case ReportType.FUTURE_GROWTH:
-        await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id);
+      case ReportType.FUTURE_RISK:
+        await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
       case ReportType.BILL_ACKMAN:
       case ReportType.CHARLIE_MUNGER:
