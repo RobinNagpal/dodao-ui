@@ -1187,7 +1187,7 @@ model AnalysisType {
   name               String   @map("name")
   oneLineSummary     String   @map("one_line_summary")
   description        String   @map("description")
-  promptInstructions String   @map("prompt_instructions")
+  promptInstructions String?  @map("prompt_instructions")
   outputSchema       String?  @map("output_schema")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
