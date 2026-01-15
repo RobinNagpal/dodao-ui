@@ -191,7 +191,7 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       break;
 
     case ReportType.FINAL_SUMMARY:
-      const tickerWithAnalysis = await fetchTickerRecordWithAnalysisData(tickerRecord.symbol);
+      const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(symbol, exchange);
       inputJson = prepareFinalSummaryInputJson(tickerWithAnalysis);
       promptKey = 'US/public-equities-v1/final-summary';
       break;

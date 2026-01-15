@@ -311,7 +311,7 @@ async function generateInvestorAnalysis(
 
 async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Get ticker from DB with all related analysis data
-  const tickerWithAnalysis = await fetchTickerRecordWithAnalysisData(tickerRecord.symbol);
+  const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
 
   // Prepare input for the prompt
   const inputJson = prepareFinalSummaryInputJson(tickerWithAnalysis);
