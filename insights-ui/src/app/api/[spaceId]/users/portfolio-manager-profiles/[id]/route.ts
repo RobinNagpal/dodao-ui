@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { PortfolioManagerProfile, Portfolio, PortfolioTicker, User } from '@prisma/client';
+import { PortfolioManagerProfile, Portfolio, PortfolioTicker, User, TickerV1CachedScore } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
 import { withLoggedInUser, withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -65,6 +65,8 @@ async function getHandler(
             cachedScoreEntry: true,
           },
         },
+        tags: true,
+        lists: true,
       },
     }),
     prisma.tickerV1Notes.findMany({
@@ -84,8 +86,58 @@ async function getHandler(
     }),
   ]);
 
+  // Process favorites to include competitors and better alternatives
+  const processedFavorites = await Promise.all(
+    favorites.map(async (favorite) => {
+      let competitorsConsidered: Array<{
+        id: string;
+        symbol: string;
+        name: string;
+        exchange: string;
+        cachedScoreEntry: TickerV1CachedScore | null;
+      }> = [];
+      let betterAlternatives: Array<{
+        id: string;
+        symbol: string;
+        name: string;
+        exchange: string;
+        cachedScoreEntry: TickerV1CachedScore | null;
+      }> = [];
+
+      if (favorite.competitorsConsidered?.length > 0) {
+        const competitors = await prisma.tickerV1.findMany({
+          where: {
+            id: { in: favorite.competitorsConsidered },
+          },
+          include: {
+            cachedScoreEntry: true,
+          },
+        });
+        competitorsConsidered = competitors;
+      }
+
+      if (favorite.betterAlternatives?.length > 0) {
+        const alternatives = await prisma.tickerV1.findMany({
+          where: {
+            id: { in: favorite.betterAlternatives },
+          },
+          include: {
+            cachedScoreEntry: true,
+          },
+        });
+        betterAlternatives = alternatives;
+      }
+
+      return {
+        ...favorite,
+        competitorsConsidered,
+        betterAlternatives,
+      };
+    })
+  );
+
   // Combine unique ticker IDs for industry grouping
-  const tickerIds = new Set([...favorites.map((f) => f.tickerId), ...notes.map((n) => n.tickerId)]);
+  const tickerIds = new Set([...processedFavorites.map((f) => f.tickerId), ...notes.map((n) => n.tickerId)]);
 
   if (tickerIds.size > 0) {
     // Group by industry + country
@@ -99,11 +151,11 @@ async function getHandler(
       }
     >();
 
-    const favoriteTickerIds = new Set(favorites.map((f) => f.tickerId));
+    const favoriteTickerIds = new Set(processedFavorites.map((f) => f.tickerId));
     const notesTickerIds = new Set(notes.map((n) => n.tickerId));
 
     // Use the already fetched tickers from favorites and notes
-    const allTickers = [...favorites.map((f) => f.ticker), ...notes.map((n) => n.ticker)];
+    const allTickers = [...processedFavorites.map((f) => f.ticker), ...notes.map((n) => n.ticker)];
     const uniqueTickers = new Map(allTickers.map((t) => [t.id, t]));
 
     uniqueTickers.forEach((ticker) => {
@@ -152,7 +204,7 @@ async function getHandler(
       portfolioManagerProfile: {
         ...portfolioManagerProfile,
         industriesByCountry,
-        allFavorites: favorites as FavouriteWithFullDetails[],
+        allFavorites: processedFavorites as FavouriteWithFullDetails[],
         allNotes: notes as NoteWithFullDetails[],
       },
     };

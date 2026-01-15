@@ -1,11 +1,15 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import { ChevronUpDownIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { DocumentTextIcon as DocumentTextSolid } from '@heroicons/react/24/solid';
+import { TickerV1Notes } from '@prisma/client';
 import { FavouriteWithFullDetails, NoteWithFullDetails } from '@/types/portfolio';
 import { getScoreColorClasses } from '@/utils/score-utils';
 import TickerBadge from '@/components/favourites/TickerBadge';
+import FavouriteTags from '@/components/favourites/FavouriteTags';
+import AddEditNotesModal from '@/app/stocks/[exchange]/[ticker]/AddEditNotesModal';
+import AddEditFavouriteModal from '@/app/stocks/[exchange]/[ticker]/AddEditFavouriteModal';
 
 type SortField = 'score' | 'myScore' | 'industry' | 'industryAndScore' | 'industryAndMyScore';
 type SortDirection = 'asc' | 'desc';
@@ -32,12 +36,33 @@ export default function StockTable({ items, type }: StockTableProps) {
   const [sortField, setSortField] = useState<SortField>('industry');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
+  // Modal states
+  const [notesModalOpen, setNotesModalOpen] = useState(false);
+  const [favouritesModalOpen, setFavouritesModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<FavouriteWithFullDetails | NoteWithFullDetails | null>(null);
+
   // Helper to get my score from either favorites or notes
   const getMyScore = (item: FavouriteWithFullDetails | NoteWithFullDetails): number | null => {
     if (type === 'favorites') {
       return (item as FavouriteWithFullDetails).myScore ?? null;
     }
     return (item as NoteWithFullDetails).score ?? null;
+  };
+
+  // Helper to determine if details icon should be shown
+  const shouldShowDetailsIcon = (item: FavouriteWithFullDetails | NoteWithFullDetails): boolean => {
+    if (type === 'notes') {
+      // For notes, always show the icon
+      return true;
+    } else {
+      // For favorites, show only if myNotes, competitorsConsidered, or betterAlternatives exist
+      const favouriteItem = item as FavouriteWithFullDetails;
+      return !!(
+        favouriteItem.myNotes ||
+        (favouriteItem.competitorsConsidered && favouriteItem.competitorsConsidered.length > 0) ||
+        (favouriteItem.betterAlternatives && favouriteItem.betterAlternatives.length > 0)
+      );
+    }
   };
 
   // Sorted items
@@ -136,6 +161,8 @@ export default function StockTable({ items, type }: StockTableProps) {
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">My Score</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Industry</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Sub Industry</th>
+              {type === 'favorites' && <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Tags</th>}
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Details</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
@@ -177,6 +204,31 @@ export default function StockTable({ items, type }: StockTableProps) {
                   <td className="px-4 py-4">
                     <span className="text-sm text-gray-400">{item.ticker.subIndustry?.name ?? '—'}</span>
                   </td>
+                  {type === 'favorites' && (
+                    <td className="px-4 py-4">
+                      <FavouriteTags tags={(item as FavouriteWithFullDetails).tags || []} showEmptyState={true} />
+                    </td>
+                  )}
+                  <td className="px-4 py-4">
+                    {shouldShowDetailsIcon(item) ? (
+                      <button
+                        onClick={() => {
+                          setSelectedItem(item);
+                          if (type === 'notes') {
+                            setNotesModalOpen(true);
+                          } else {
+                            setFavouritesModalOpen(true);
+                          }
+                        }}
+                        className="text-gray-400 hover:text-blue-400 transition-colors p-1 rounded"
+                        title={type === 'notes' ? 'View Notes' : 'View Favourite Details'}
+                      >
+                        <DocumentTextSolid className="w-5 h-5" />
+                      </button>
+                    ) : (
+                      <span className="text-gray-500 text-sm">—</span>
+                    )}
+                  </td>
                 </tr>
               );
             })}
@@ -190,6 +242,44 @@ export default function StockTable({ items, type }: StockTableProps) {
           Showing {items.length} {type === 'favorites' ? 'favorite' : 'noted'} stock{items.length !== 1 ? 's' : ''}
         </p>
       </div>
+
+      {/* Modals */}
+      {selectedItem && type === 'notes' && (
+        <AddEditNotesModal
+          isOpen={notesModalOpen}
+          onClose={() => {
+            setNotesModalOpen(false);
+            setSelectedItem(null);
+          }}
+          tickerId={selectedItem.ticker.id}
+          tickerSymbol={selectedItem.ticker.symbol}
+          tickerName={selectedItem.ticker.name}
+          existingNote={selectedItem as TickerV1Notes} // NoteWithFullDetails extends TickerV1Notes
+          onUpsert={() => {}}
+          viewOnly={true}
+        />
+      )}
+
+      {selectedItem && type === 'favorites' && (
+        <AddEditFavouriteModal
+          isOpen={favouritesModalOpen}
+          onClose={() => {
+            setFavouritesModalOpen(false);
+            setSelectedItem(null);
+          }}
+          tickerId={selectedItem.ticker.id}
+          tickerSymbol={selectedItem.ticker.symbol}
+          tickerName={selectedItem.ticker.name}
+          onSuccess={() => {}}
+          lists={(selectedItem as FavouriteWithFullDetails).lists || []}
+          tags={(selectedItem as FavouriteWithFullDetails).tags || []}
+          onManageLists={() => {}}
+          onManageTags={() => {}}
+          favouriteTicker={selectedItem as FavouriteWithFullDetails}
+          onUpsert={() => {}}
+          viewOnly={true}
+        />
+      )}
     </div>
   );
 }

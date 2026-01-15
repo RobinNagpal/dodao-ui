@@ -36,6 +36,7 @@ export default function PortfolioManagerActions({ profile, portfolioManagerId }:
   const actions: EllipsisDropdownItem[] = [
     { key: 'edit-profile', label: 'Edit Profile' },
     { key: 'create-portfolio', label: 'Create Portfolio' },
+    { key: 'revalidate-profile-tag', label: 'Invalidate Cache' },
   ];
 
   return (
@@ -43,7 +44,7 @@ export default function PortfolioManagerActions({ profile, portfolioManagerId }:
       <EllipsisDropdown
         items={actions}
         className="px-2 py-2"
-        onSelect={(key) => {
+        onSelect={async (key) => {
           if (key === 'edit-profile') {
             setEditingProfile(profile);
             return;
@@ -51,6 +52,14 @@ export default function PortfolioManagerActions({ profile, portfolioManagerId }:
 
           if (key === 'create-portfolio') {
             setShowCreatePortfolioModal(true);
+            return;
+          }
+
+          if (key === 'revalidate-profile-tag') {
+            // Import the cache action dynamically to avoid server action issues
+            const { revalidatePortfolioProfileCache } = await import('@/utils/cache-actions');
+            await revalidatePortfolioProfileCache(portfolioManagerId);
+            router.refresh();
             return;
           }
         }}

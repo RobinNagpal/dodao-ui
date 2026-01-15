@@ -2,10 +2,14 @@ import { UserTickerTagResponse } from '@/types/ticker-user';
 
 interface FavouriteTagsProps {
   tags: UserTickerTagResponse[];
+  showEmptyState?: boolean;
 }
 
-export default function FavouriteTags({ tags }: FavouriteTagsProps) {
+export default function FavouriteTags({ tags, showEmptyState = false }: FavouriteTagsProps) {
   if (tags.length === 0) {
+    if (showEmptyState) {
+      return <span className="text-gray-500 text-sm">—</span>;
+    }
     return null;
   }
 

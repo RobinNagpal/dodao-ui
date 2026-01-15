@@ -5,6 +5,7 @@ import { ChartBarIcon } from '@heroicons/react/24/outline';
 import { IndustryByCountry, FavouriteWithFullDetails, NoteWithFullDetails } from '@/types/portfolio';
 import IndustryAnalysisGrid from './IndustryAnalysisGrid';
 import StockTable from './StockTable';
+import FavoritesByLists from './FavoritesByLists';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 type ViewType = 'industry' | 'favorites' | 'notes';
@@ -67,7 +68,7 @@ export default function AnalysisTabsSection({ industriesByCountry, allFavorites,
       {/* Content */}
       <div>
         {viewType === 'industry' && <IndustryAnalysisGrid industriesByCountry={industriesByCountry} portfolioManagerId={portfolioManagerId} />}
-        {viewType === 'favorites' && <StockTable items={allFavorites} type="favorites" />}
+        {viewType === 'favorites' && <FavoritesByLists allFavorites={allFavorites} />}
         {viewType === 'notes' && <StockTable items={allNotes} type="notes" />}
       </div>
     </div>
