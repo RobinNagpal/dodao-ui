@@ -1,15 +1,12 @@
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import {
-  fetchAnalysisFactors,
-  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-} from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { ensureStockAnalyzerDataIsFresh, extractFinancialDataForPastPerformance } from '@/utils/stock-analyzer-scraper-utils';
 import { savePastPerformanceFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { preparePastPerformanceInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { getDefaultGeminiModel, LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
 async function postHandler(
@@ -39,7 +36,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/past-performance',
     llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

@@ -105,12 +105,16 @@ export interface FavouriteWithFullDetails extends Omit<FavouriteTicker, 'competi
   ticker: TickerWithFullDetails;
   tags: UserTickerTag[];
   lists: UserTickerList[];
-  competitorsConsidered: Array<TickerV1 & {
-    cachedScoreEntry: TickerV1CachedScore | null;
-  }>;
-  betterAlternatives: Array<TickerV1 & {
-    cachedScoreEntry: TickerV1CachedScore | null;
-  }>;
+  competitorsConsidered: Array<
+    TickerV1 & {
+      cachedScoreEntry: TickerV1CachedScore | null;
+    }
+  >;
+  betterAlternatives: Array<
+    TickerV1 & {
+      cachedScoreEntry: TickerV1CachedScore | null;
+    }
+  >;
 }
 
 // Note with full ticker details for portfolio manager profile

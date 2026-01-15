@@ -111,11 +111,7 @@ export default function TopNav() {
                                 className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
-                                  <Link 
-                                    href={item.href} 
-                                    className="block font-semibold text-gray-900 dark:text-white"
-                                    onClick={() => close()}
-                                  >
+                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
@@ -151,11 +147,7 @@ export default function TopNav() {
                                 className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
-                                  <Link 
-                                    href={item.href} 
-                                    className="block font-semibold text-gray-900 dark:text-white"
-                                    onClick={() => close()}
-                                  >
+                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>

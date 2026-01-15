@@ -150,7 +150,7 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       const scraperInfoBusiness = await ensureStockAnalyzerDataIsFresh(tickerRecord);
       const analysisFactorsBusiness = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
       const kpisDataBusiness = extractKpisDataForAnalysis(scraperInfoBusiness);
-      inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactorsBusiness, competitionAnalysisArray, kpisDataBusiness);
+      inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactorsBusiness, kpisDataBusiness);
       promptKey = 'US/public-equities-v1/business-moat';
       break;
 
@@ -158,7 +158,7 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       const scraperInfoPast = await ensureStockAnalyzerDataIsFresh(tickerRecord);
       const financialDataPast = extractFinancialDataForPastPerformance(scraperInfoPast);
       const analysisFactorsPast = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.PastPerformance);
-      inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactorsPast, competitionAnalysisArray, financialDataPast);
+      inputJson = preparePastPerformanceInputJson(tickerRecord, analysisFactorsPast, financialDataPast);
       promptKey = 'US/public-equities-v1/past-performance';
       break;
 

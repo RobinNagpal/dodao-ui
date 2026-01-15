@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { getDefaultGeminiModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
@@ -95,7 +95,7 @@ async function generateCompetitionAnalysis(spaceId: string, tickerRecord: Ticker
       inputJson,
       promptKey: 'US/public-equities-v1/competition',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.COMPETITION,
@@ -125,7 +125,7 @@ async function generateFinancialAnalysis(spaceId: string, tickerRecord: TickerV1
       inputJson,
       promptKey: 'US/public-equities-v1/financial-statements',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.FINANCIAL_ANALYSIS,
@@ -155,7 +155,7 @@ async function generateBusinessAndMoatAnalysis(spaceId: string, tickerRecord: Ti
       inputJson,
       promptKey: 'US/public-equities-v1/business-moat',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.BUSINESS_AND_MOAT,
@@ -185,7 +185,7 @@ async function generatePastPerformanceAnalysis(spaceId: string, tickerRecord: Ti
       inputJson,
       promptKey: 'US/public-equities-v1/past-performance',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.PAST_PERFORMANCE,
@@ -217,7 +217,7 @@ async function generateFutureGrowthAnalysis(spaceId: string, tickerRecord: Ticke
       inputJson,
       promptKey: 'US/public-equities-v1/future-growth',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.FUTURE_GROWTH,
@@ -244,7 +244,7 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
       inputJson,
       promptKey: 'US/public-equities-v1/fair-value',
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.FAIR_VALUE,
@@ -265,7 +265,7 @@ async function generateFutureRiskAnalysis(spaceId: string, tickerRecord: TickerV
       inputJson,
       promptKey: 'US/public-equities-v1/future-risk',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.FUTURE_RISK,
@@ -292,7 +292,7 @@ async function generateInvestorAnalysis(
       inputJson,
       promptKey: 'US/public-equities-v1/investor-analysis',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: investorKey,
@@ -316,7 +316,7 @@ async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithI
       inputJson,
       promptKey: 'US/public-equities-v1/final-summary',
       llmProvider: LLMProvider.GEMINI,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     },
     reportType: ReportType.FINAL_SUMMARY,
@@ -439,13 +439,13 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
       case ReportType.FINANCIAL_ANALYSIS:
         await generateFinancialAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-        case ReportType.PAST_PERFORMANCE:
+      case ReportType.PAST_PERFORMANCE:
         await generatePastPerformanceAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-        case ReportType.FUTURE_GROWTH:
+      case ReportType.FUTURE_GROWTH:
         await generateFutureGrowthAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
-        case ReportType.FAIR_VALUE:
+      case ReportType.FAIR_VALUE:
         await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
       case ReportType.FUTURE_RISK:

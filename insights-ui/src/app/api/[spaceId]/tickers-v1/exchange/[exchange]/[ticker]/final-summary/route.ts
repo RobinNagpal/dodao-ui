@@ -3,7 +3,7 @@ import { fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/an
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { getDefaultGeminiModel, LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
@@ -31,7 +31,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/final-summary',
     llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

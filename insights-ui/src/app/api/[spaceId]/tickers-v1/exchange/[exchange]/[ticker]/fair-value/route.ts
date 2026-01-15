@@ -5,7 +5,7 @@ import { prepareFairValueInputJson } from '@/utils/analysis-reports/report-input
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { getDefaultGeminiModel, LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
 async function postHandler(
@@ -29,7 +29,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/fair-value',
     llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 
