@@ -6,6 +6,11 @@ import { getLLMResponse } from '@/util/get-llm-response';
 import { getGroundedResponse } from '@/util/llm-grounding-utils';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
+// Type for text analysis response
+interface TextAnalysisResponse {
+  analysis: string;
+}
+
 export interface GenerateAnalysisTypeResponse {
   success: boolean;
   analysisTypeId: string;
@@ -64,7 +69,6 @@ Stock Information:
 
 You need to give very specific information for this stock on this analysis type.
 Analysis Type: ${analysisType.name}
-Summary: ${analysisType.oneLineSummary}
 Description: ${analysisType.description}
 `;
 
@@ -74,36 +78,8 @@ Description: ${analysisType.description}
       fullPrompt += `\nPlease provide the analysis based on the following instructions:\n\n${analysisType.promptInstructions}`;
     }
 
-    let analysisOutput: string;
-
-    if (analysisType.outputSchema) {
-      // Use structured output if schema is provided
-      try {
-        const schema = JSON.parse(analysisType.outputSchema);
-
-        // Generate a unique invocation ID for tracking
-        const invocationId = `ticker-analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-        // Use Gemini with grounding for better analysis
-        const response = await getLLMResponse({
-          invocationId,
-          llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-          modelName: GeminiModel.GEMINI_3_PRO_PREVIEW,
-          prompt: fullPrompt,
-          outputSchema: schema,
-          maxRetries: 2,
-          isTestInvocation: true,
-        });
-
-        analysisOutput = JSON.stringify(response);
-      } catch (schemaError) {
-        console.error('Error with structured output, falling back to text output:', schemaError);
-        analysisOutput = await generateTextAnalysis(fullPrompt);
-      }
-    } else {
-      // Use simple text output
-      analysisOutput = await generateTextAnalysis(fullPrompt);
-    }
+    // Generate analysis using text output
+    const analysisOutput = await generateTextAnalysis(fullPrompt);
 
     // Save result to database
     await prisma.tickerV1DetailedReport.create({
@@ -131,7 +107,7 @@ Description: ${analysisType.description}
 async function generateTextAnalysis(prompt: string): Promise<string> {
   try {
     // Use Gemini with grounding for comprehensive analysis
-    const response = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
+    const response = await getGroundedResponse(prompt, GeminiModel.GEMINI_3_PRO_PREVIEW);
     return response;
   } catch (error) {
     console.error('Error with grounded response, falling back to simple text:', error);
@@ -152,7 +128,7 @@ async function generateTextAnalysis(prompt: string): Promise<string> {
         required: ['analysis'],
       };
 
-      const response = await getLLMResponse({
+      const response = await getLLMResponse<TextAnalysisResponse>({
         invocationId,
         llmProvider: LLMProvider.GEMINI,
         modelName: GeminiModel.GEMINI_3_PRO_PREVIEW,
@@ -162,7 +138,7 @@ async function generateTextAnalysis(prompt: string): Promise<string> {
         isTestInvocation: true,
       });
 
-      return (response as any).analysis || 'Analysis completed but no content returned.';
+      return response.analysis || 'Analysis completed but no content returned.';
     } catch (fallbackError) {
       throw new Error(`Failed to generate text analysis: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown error'}`);
     }

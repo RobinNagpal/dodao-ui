@@ -1174,7 +1174,7 @@ model DetailedReportCategory {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id])
+  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   analysisTypes    AnalysisType[]
 
   @@index([analysisTemplateId])
@@ -1185,14 +1185,12 @@ model AnalysisType {
   id                 String   @id @default(uuid())
   categoryId         String   @map("category_id")
   name               String   @map("name")
-  oneLineSummary     String   @map("one_line_summary")
   description        String   @map("description")
   promptInstructions String?  @map("prompt_instructions")
-  outputSchema       String?  @map("output_schema")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  category              DetailedReportCategory   @relation(fields: [categoryId], references: [id])
+  category              DetailedReportCategory   @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   tickerDetailedReports TickerV1DetailedReport[]
 
   @@index([categoryId])
@@ -1208,9 +1206,9 @@ model TickerV1DetailedReport {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  ticker           TickerV1         @relation(fields: [tickerId], references: [id])
-  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id])
-  analysisType     AnalysisType     @relation(fields: [analysisTypeId], references: [id])
+  ticker           TickerV1         @relation(fields: [tickerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisType     AnalysisType     @relation(fields: [analysisTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@index([tickerId])
   @@index([analysisTemplateId])

@@ -95,7 +95,6 @@ export default async function TickerAnalysisPage({ params }: TickerAnalysisPageP
                     <div key={analysis.id} className="bg-gray-800 p-4 rounded-md">
                       <div className="mb-4">
                         <h4 className="text-lg font-semibold mb-2">{analysis.analysisType.name}</h4>
-                        <p className="text-sm text-gray-400 mb-2">{analysis.analysisType.oneLineSummary}</p>
                         <p className="text-xs text-gray-500">Generated on {new Date(analysis.createdAt).toLocaleDateString()}</p>
                       </div>
                       <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(analysis.output) }} />

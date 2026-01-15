@@ -6,10 +6,8 @@ export interface CreateAnalysisTypesRequest {
   categoryId: string;
   analysisTypes: {
     name: string;
-    oneLineSummary: string;
     description: string;
     promptInstructions: string;
-    outputSchema?: string;
   }[];
 }
 
@@ -23,10 +21,8 @@ async function postHandler(req: Request, context: { params: Promise<{ analysisTe
         data: {
           categoryId: body.categoryId,
           name: analysisType.name,
-          oneLineSummary: analysisType.oneLineSummary,
           description: analysisType.description,
           promptInstructions: analysisType.promptInstructions,
-          outputSchema: analysisType.outputSchema,
         },
       })
     )
