@@ -14,72 +14,17 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-
-/** ---------- Types ---------- */
-
-/** ---------- Types ---------- */
-
-interface CategoryFormData {
-  name: string;
-  description: string;
-}
-
-interface AnalysisTypeFormData {
-  name: string;
-  oneLineSummary: string;
-  description: string;
-  promptInstructions: string;
-  outputSchema: string;
-}
-
-interface AnalysisTemplate {
-  id: string;
-  name: string;
-  description: string | null;
-  categories: Array<{
-    id: string;
-    name: string;
-    description: string | null;
-    analysisTypes: Array<{
-      id: string;
-      name: string;
-      oneLineSummary: string;
-      description: string;
-      promptInstructions: string;
-      outputSchema: string | null;
-    }>;
-  }>;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  description: string | null;
-  analysisTypes: Array<{
-    id: string;
-    name: string;
-    oneLineSummary: string;
-    description: string;
-    promptInstructions: string;
-    outputSchema: string | null;
-  }>;
-}
-
-interface AnalysisType {
-  id: string;
-  name: string;
-  oneLineSummary: string;
-  description: string;
-  promptInstructions: string;
-  outputSchema: string | null;
-}
+import { AnalysisTemplateWithRelations } from '../../../api/admin-v1/detailed-reports/route';
+import { CreateCategoriesRequest, DetailedReportCategoryWithTypes } from '../../../api/admin-v1/detailed-reports/[analysisTemplateId]/categories/route';
+import { CreateAnalysisTypesRequest } from '../../../api/admin-v1/detailed-reports/[analysisTemplateId]/analysis-types/route';
+import { AnalysisType } from '@prisma/client';
 
 export default function AnalysisTemplateDetailPage() {
   const params = useParams() as { analysisTemplateId: string };
 
   const [categoriesJson, setCategoriesJson] = useState<string>('[\n  {\n    "name": "Category Name",\n    "description": "Category Description"\n  }\n]');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
-  const [analysisTypes, setAnalysisTypes] = useState<AnalysisTypeFormData[]>([
+  const [analysisTypes, setAnalysisTypes] = useState<CreateAnalysisTypesRequest['analysisTypes']>([
     {
       name: '',
       oneLineSummary: '',
@@ -101,21 +46,18 @@ export default function AnalysisTemplateDetailPage() {
     data: template,
     loading: templateLoading,
     reFetchData: refetchTemplate,
-  } = useFetchData<AnalysisTemplate>(
+  } = useFetchData<AnalysisTemplateWithRelations>(
     `${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}`,
     { cache: 'no-cache' },
     'Failed to fetch analysis template'
   );
 
-  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<Category[], { categories: CategoryFormData[] }>({
+  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<DetailedReportCategoryWithTypes[], CreateCategoriesRequest>({
     successMessage: 'Categories created successfully!',
     errorMessage: 'Failed to create categories.',
   });
 
-  const { postData: createAnalysisTypes, loading: createAnalysisTypesLoading } = usePostData<
-    AnalysisType[],
-    { categoryId: string; analysisTypes: AnalysisTypeFormData[] }
-  >({
+  const { postData: createAnalysisTypes, loading: createAnalysisTypesLoading } = usePostData<AnalysisType[], CreateAnalysisTypesRequest>({
     successMessage: 'Analysis types created successfully!',
     errorMessage: 'Failed to create analysis types.',
   });
@@ -143,7 +85,7 @@ export default function AnalysisTemplateDetailPage() {
     ]);
   };
 
-  const updateAnalysisType = (index: number, field: keyof AnalysisTypeFormData, value: string) => {
+  const updateAnalysisType = (index: number, field: keyof CreateAnalysisTypesRequest['analysisTypes'][0], value: string) => {
     const updatedAnalysisTypes = [...analysisTypes];
     updatedAnalysisTypes[index][field] = value;
     setAnalysisTypes(updatedAnalysisTypes);

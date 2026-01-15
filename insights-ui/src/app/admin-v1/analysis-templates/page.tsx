@@ -11,36 +11,11 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Link from 'next/link';
 import AdminNav from '../AdminNav';
-
-/** ---------- Types ---------- */
-
-interface CreateTemplateFormData {
-  name: string;
-  description?: string;
-}
-
-interface AnalysisTemplate {
-  id: string;
-  name: string;
-  description: string | null;
-  categories: Array<{
-    id: string;
-    name: string;
-    description: string | null;
-    analysisTypes: Array<{
-      id: string;
-      name: string;
-      oneLineSummary: string;
-      description: string;
-      promptInstructions: string;
-      outputSchema: string | null;
-    }>;
-  }>;
-}
+import { CreateAnalysisTemplateRequest, AnalysisTemplateWithRelations } from '../../api/admin-v1/detailed-reports/route';
 
 export default function DetailedReportsAdminPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [formData, setFormData] = useState<CreateTemplateFormData>({
+  const [formData, setFormData] = useState<CreateAnalysisTemplateRequest>({
     name: '',
     description: '',
   });
@@ -49,9 +24,13 @@ export default function DetailedReportsAdminPage() {
     data: templates,
     loading: templatesLoading,
     reFetchData: refetchTemplates,
-  } = useFetchData<AnalysisTemplate[]>(`${getBaseUrl()}/api/admin-v1/detailed-reports`, { cache: 'no-cache' }, 'Failed to fetch analysis templates');
+  } = useFetchData<AnalysisTemplateWithRelations[]>(
+    `${getBaseUrl()}/api/admin-v1/detailed-reports`,
+    { cache: 'no-cache' },
+    'Failed to fetch analysis templates'
+  );
 
-  const { postData: createTemplate, loading: createTemplateLoading } = usePostData<AnalysisTemplate, CreateTemplateFormData>({
+  const { postData: createTemplate, loading: createTemplateLoading } = usePostData<AnalysisTemplateWithRelations, CreateAnalysisTemplateRequest>({
     successMessage: 'Analysis template created successfully!',
     errorMessage: 'Failed to create analysis template.',
   });

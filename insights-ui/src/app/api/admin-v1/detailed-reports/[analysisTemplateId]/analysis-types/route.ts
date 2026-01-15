@@ -2,9 +2,7 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { AnalysisType } from '@prisma/client';
 
-/** ---------- Types ---------- */
-
-interface CreateAnalysisTypesRequest {
+export interface CreateAnalysisTypesRequest {
   categoryId: string;
   analysisTypes: {
     name: string;
@@ -14,8 +12,6 @@ interface CreateAnalysisTypesRequest {
     outputSchema?: string;
   }[];
 }
-
-/** ---------- POST ---------- */
 
 async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<AnalysisType[]> {
   const { analysisTemplateId } = await context.params;

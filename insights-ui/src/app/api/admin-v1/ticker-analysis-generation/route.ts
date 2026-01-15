@@ -4,31 +4,24 @@ import { getLLMResponse } from '@/util/get-llm-response';
 import { getGroundedResponse } from '@/util/llm-grounding-utils';
 import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 import { NextRequest } from 'next/server';
+import { AnalysisTemplate, TickerV1, DetailedReportCategory } from '@prisma/client';
 
 /** ---------- Types ---------- */
 
-interface GenerateAnalysisRequest {
+export interface GenerateAnalysisRequest {
   tickerId: string;
   analysisTemplateId: string;
   categoryId: string;
 }
 
-interface GeneratedAnalysis {
+export interface GeneratedAnalysis {
   id: string;
   tickerId: string;
   analysisTemplateId: string;
   categoryId: string;
-  ticker: {
-    name: string;
-    symbol: string;
-    exchange: string;
-  };
-  analysisTemplate: {
-    name: string;
-  };
-  category: {
-    name: string;
-  };
+  ticker: Pick<TickerV1, 'name' | 'symbol' | 'exchange'>;
+  analysisTemplate: Pick<AnalysisTemplate, 'name'>;
+  category: Pick<DetailedReportCategory, 'name'>;
   createdAt: string;
 }
 
@@ -43,30 +36,12 @@ interface TickerAnalysisResult {
 async function getHandler(): Promise<GeneratedAnalysis[]> {
   // Get unique combinations of ticker + analysis template + category that have been generated
   const generatedAnalyses = await prisma.tickerV1DetailedReport.findMany({
-    select: {
-      tickerId: true,
-      analysisTemplateId: true,
-      createdAt: true,
-      ticker: {
-        select: {
-          name: true,
-          symbol: true,
-          exchange: true,
-        },
-      },
-      analysisTemplate: {
-        select: {
-          name: true,
-        },
-      },
+    include: {
+      ticker: true,
+      analysisTemplate: true,
       analysisType: {
-        select: {
-          categoryId: true,
-          category: {
-            select: {
-              name: true,
-            },
-          },
+        include: {
+          category: true,
         },
       },
     },
@@ -111,16 +86,6 @@ async function postHandler(req: NextRequest): Promise<GeneratedAnalysis> {
   // Get ticker details
   const ticker = await prisma.tickerV1.findFirstOrThrow({
     where: { id: tickerId },
-    select: {
-      id: true,
-      name: true,
-      symbol: true,
-      exchange: true,
-      summary: true,
-      websiteUrl: true,
-      industryKey: true,
-      subIndustryKey: true,
-    },
   });
 
   // Get analysis template and category with analysis types

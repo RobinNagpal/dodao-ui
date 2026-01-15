@@ -1,32 +1,20 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisTemplate } from '@prisma/client';
+import { AnalysisTemplate, DetailedReportCategory, AnalysisType } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-/** ---------- Types ---------- */
-
-interface CreateAnalysisTemplateRequest {
+export interface CreateAnalysisTemplateRequest {
   name: string;
   description?: string;
 }
 
-interface AnalysisTemplateWithRelations extends AnalysisTemplate {
-  categories: Array<{
-    id: string;
-    name: string;
-    description: string | null;
-    analysisTypes: Array<{
-      id: string;
-      name: string;
-      oneLineSummary: string;
-      description: string;
-      promptInstructions: string;
-      outputSchema: string | null;
-    }>;
-  }>;
-}
-
-/** ---------- GET ---------- */
+export type AnalysisTemplateWithRelations = AnalysisTemplate & {
+  categories: Array<
+    DetailedReportCategory & {
+      analysisTypes: AnalysisType[];
+    }
+  >;
+};
 
 async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
   const templates = await prisma.analysisTemplate.findMany({
@@ -43,8 +31,6 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
   });
   return templates;
 }
-
-/** ---------- POST ---------- */
 
 async function postHandler(req: NextRequest): Promise<AnalysisTemplateWithRelations> {
   const body: CreateAnalysisTemplateRequest = await req.json();

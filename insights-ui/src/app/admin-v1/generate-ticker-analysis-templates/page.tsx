@@ -4,94 +4,21 @@ import React, { useState } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
-import SearchBar from '@/components/core/SearchBar/SearchBar';
+import SearchBar, { SearchResult } from '@/components/core/SearchBar/SearchBar';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Link from 'next/link';
 import AdminNav from '../AdminNav';
-
-/** ---------- Types ---------- */
-
-interface SearchResult {
-  id: string;
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
-  websiteUrl?: string | null;
-  summary?: string | null;
-  cachedScoreEntry: {
-    finalScore: number;
-  } | null;
-}
-
-interface AnalysisTemplate {
-  id: string;
-  name: string;
-  description: string | null;
-  categories: Array<{
-    id: string;
-    name: string;
-    description: string | null;
-    analysisTypes: Array<{
-      id: string;
-      name: string;
-      oneLineSummary: string;
-      description: string;
-      promptInstructions: string;
-      outputSchema: string | null;
-    }>;
-  }>;
-}
-
-interface Category {
-  id: string;
-  name: string;
-  description: string | null;
-  analysisTypes: Array<{
-    id: string;
-    name: string;
-    oneLineSummary: string;
-    description: string;
-    promptInstructions: string;
-    outputSchema: string | null;
-  }>;
-}
-
-interface GenerateAnalysisRequest {
-  tickerId: string;
-  analysisTemplateId: string;
-  categoryId: string;
-}
-
-interface GeneratedAnalysis {
-  id: string;
-  tickerId: string;
-  analysisTemplateId: string;
-  categoryId: string;
-  ticker: {
-    name: string;
-    symbol: string;
-    exchange: string;
-  };
-  analysisTemplate: {
-    name: string;
-  };
-  category: {
-    name: string;
-  };
-  createdAt: string;
-}
+import { GenerateAnalysisRequest, GeneratedAnalysis } from '../../api/admin-v1/ticker-analysis-generation/route';
+import { AnalysisTemplateWithRelations } from '../../api/admin-v1/detailed-reports/route';
 
 export default function GenerateTickerAnalysisTemplatesPage() {
   const [selectedTicker, setSelectedTicker] = useState<SearchResult | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>('');
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
 
-  const { data: templates, loading: templatesLoading } = useFetchData<AnalysisTemplate[]>(
+  const { data: templates, loading: templatesLoading } = useFetchData<AnalysisTemplateWithRelations[]>(
     `${getBaseUrl()}/api/admin-v1/detailed-reports`,
     { cache: 'no-cache' },
     'Failed to fetch analysis templates'

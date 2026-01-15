@@ -1,28 +1,17 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DetailedReportCategory } from '@prisma/client';
+import { DetailedReportCategory, AnalysisType } from '@prisma/client';
 
-/** ---------- Types ---------- */
-
-interface CreateCategoriesRequest {
+export interface CreateCategoriesRequest {
   categories: {
     name: string;
     description?: string;
   }[];
 }
 
-interface DetailedReportCategoryWithTypes extends DetailedReportCategory {
-  analysisTypes: Array<{
-    id: string;
-    name: string;
-    oneLineSummary: string;
-    description: string;
-    promptInstructions: string;
-    outputSchema: string | null;
-  }>;
-}
-
-/** ---------- POST ---------- */
+export type DetailedReportCategoryWithTypes = DetailedReportCategory & {
+  analysisTypes: AnalysisType[];
+};
 
 async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<DetailedReportCategoryWithTypes[]> {
   const { analysisTemplateId } = await context.params;
