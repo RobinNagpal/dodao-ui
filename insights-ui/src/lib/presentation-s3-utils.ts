@@ -1,14 +1,14 @@
+import { PresentationPreferences, PresentationSummary, SlideStatus } from '@/types/presentation/presentation-types';
 import {
-  S3Client,
-  GetObjectCommand,
-  PutObjectCommand,
-  ListObjectsV2Command,
-  HeadObjectCommand,
   DeleteObjectCommand,
   DeleteObjectsCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client,
 } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
-import { PresentationPreferences, PresentationSummary, SlideStatus, Slide } from '@/types/presentation/presentation-types';
 
 // Remotion Lambda URL
 const REMOTION_LAMBDA_URL = process.env.REMOTION_LAMBDA_URL;
@@ -20,8 +20,8 @@ const BUCKET_NAME = process.env.PPT_GENERATION_S3_BUCKET_NAME;
 const s3Client = new S3Client({
   region: REGION,
   credentials: {
-    accessKeyId: process.env.PPT_GENERATION_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.PPT_GENERATION_AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
 
@@ -35,19 +35,23 @@ export async function callRemotionLambda(endpoint: string, payload: any): Promis
     throw new Error('REMOTION_LAMBDA_URL environment variable is not configured');
   }
 
-  const response = await fetch(`${REMOTION_LAMBDA_URL}${endpoint}`, {
+  // When using Lambda Function URLs directly, we need to ensure the path is properly formatted
+  // The Lambda function expects the path to start with a slash
+  const formattedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
+  const response = await fetch(`${REMOTION_LAMBDA_URL}${formattedEndpoint}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 
-  const result = await response.json();
-
   if (!response.ok) {
-    throw new Error(result.error || `Failed to call ${endpoint}`);
+    console.error('Remotion Lambda error response:', response.status, await response.text());
+    throw new Error(`Remotion Lambda returned status ${response.status}`);
   }
 
-  return result;
+  console.log('Remotion Lambda response:', response);
+  return await response.json();
 }
 
 async function streamToString(stream: Readable): Promise<string> {

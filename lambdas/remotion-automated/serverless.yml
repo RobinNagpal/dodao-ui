@@ -52,6 +52,10 @@ package:
     - "node_modules/strtok3/**"
     - "node_modules/token-types/**"
     - "node_modules/peek-readable/**"
+    - "node_modules/react"
+    - "node_modules/tailwindcss"
+    - "node_modules/react-dom"
+    - "node_modules/winston"
 
 build:
   esbuild:
