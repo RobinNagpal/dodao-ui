@@ -1,7 +1,7 @@
-FROM public.ecr.aws/lambda/nodejs:20
+FROM node:20-alpine
 
-# curl is already present as curl-minimal on this base image
-RUN dnf install -y tar xz && dnf clean all
+# Install required packages
+RUN apk add --no-cache curl tar xz
 
 # Download FFmpeg from GitHub Releases (CDN) and extract into a stable folder
 RUN curl -L --retry 10 --retry-delay 2 \
@@ -18,4 +18,10 @@ COPY package*.json ./
 RUN npm install --production
 
 COPY dist/ ./dist/
-CMD ["dist/index.handler"]
+COPY lambda.js .
+
+# Expose the port that our HTTP server will listen on
+EXPOSE 8080
+
+# Use node to run our lambda wrapper
+CMD ["node", "lambda.js"]

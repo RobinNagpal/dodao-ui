@@ -6,13 +6,12 @@ import { GenerateFinalVideoResponse } from '@/types/presentation/presentation-ty
 
 // FFmpeg Lambda configuration
 const FFMPEG_LAMBDA_NAME = process.env.FFMPEG_LAMBDA_NAME;
-const REGION = process.env.PPT_GENERATION_AWS_REGION;
 
 const lambdaClient = new LambdaClient({
-  region: REGION,
+  region: process.env.DEFAULT_REGION,
   credentials: {
-    accessKeyId: process.env.PPT_GENERATION_AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.PPT_GENERATION_AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
 
@@ -106,7 +105,7 @@ async function postHandler(req: NextRequest, { params }: Params): Promise<Genera
       success: true,
       presentationId,
       outputKey,
-      outputUrl: result.s3Url || `https://${getBucketName()}.s3.${REGION}.amazonaws.com/${outputKey}`,
+      outputUrl: result.s3Url || `https://${getBucketName()}.s3.${process.env.DEFAUT_REGION!}.amazonaws.com/${outputKey}`,
       videoCount: videoClips.length,
     };
   } catch (error: unknown) {
