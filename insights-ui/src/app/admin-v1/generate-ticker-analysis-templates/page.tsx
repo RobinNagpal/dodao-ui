@@ -9,17 +9,22 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import AdminNav from '../AdminNav';
-import { GeneratedAnalysis } from '../../api/admin-v1/ticker-analysis-generation/route';
-import { AnalysisTemplateWithRelations } from '../../api/admin-v1/detailed-reports/route';
+import { GeneratedAnalysis } from '../../api/analysis-templates/detailed-reports/route';
+import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 import { GenerateAnalysisTypeResponse } from '../../api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/[analysisTemplateId]/[categoryId]/[analysisTypeId]/route';
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getAnalysisResultColorClasses } from '@/utils/score-utils';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import DeleteConfirmationModal from '../industry-management/DeleteConfirmationModal';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 
 interface AnalysisTypeStatus {
   analysisTypeId: string;
   analysisTypeName: string;
   status: ProcessingStatus;
   output?: string;
+  result?: string;
   error?: string;
 }
 
@@ -30,9 +35,11 @@ export default function GenerateTickerAnalysisTemplatesPage() {
   const [analysisTypesStatus, setAnalysisTypesStatus] = useState<AnalysisTypeStatus[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentGeneratingIndex, setCurrentGeneratingIndex] = useState(-1);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [analysisToDelete, setAnalysisToDelete] = useState<GeneratedAnalysis | null>(null);
 
   const { data: templates, loading: templatesLoading } = useFetchData<AnalysisTemplateWithRelations[]>(
-    `${getBaseUrl()}/api/admin-v1/detailed-reports`,
+    `${getBaseUrl()}/api/analysis-templates`,
     { cache: 'no-cache' },
     'Failed to fetch analysis templates'
   );
@@ -41,17 +48,40 @@ export default function GenerateTickerAnalysisTemplatesPage() {
     data: generatedAnalyses,
     loading: generatedAnalysesLoading,
     reFetchData: refetchGeneratedAnalyses,
-  } = useFetchData<GeneratedAnalysis[]>(`${getBaseUrl()}/api/admin-v1/ticker-analysis-generation`, { cache: 'no-cache' }, 'Failed to fetch generated analyses');
+  } = useFetchData<GeneratedAnalysis[]>(`${getBaseUrl()}/api/analysis-templates/detailed-reports`, { cache: 'no-cache' }, 'Failed to fetch generated analyses');
 
   const { postData: generateSingleAnalysis } = usePostData<GenerateAnalysisTypeResponse, {}>({
     successMessage: '',
     errorMessage: '',
   });
 
+  const { deleteData, loading } = useDeleteData({
+    successMessage: 'Analysis deleted successfully',
+    errorMessage: 'Failed to delete analysis',
+  });
+
   const handleTickerSelect = (ticker: SearchResult) => {
     setSelectedTicker(ticker);
     // Reset analysis types status when ticker changes
     setAnalysisTypesStatus([]);
+  };
+
+  const handleDeleteClick = (analysis: GeneratedAnalysis) => {
+    setAnalysisToDelete(analysis);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!analysisToDelete) return;
+
+    const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${analysisToDelete.ticker.exchange}/${analysisToDelete.ticker.symbol}/${
+      analysisToDelete.analysisTemplateId
+    }/${analysisToDelete.categoryId}`;
+
+    await deleteData(url);
+    setDeleteModalOpen(false);
+    setAnalysisToDelete(null);
+    refetchGeneratedAnalyses();
   };
 
   // Update analysis types status when template or category changes
@@ -106,6 +136,7 @@ export default function GenerateTickerAnalysisTemplatesPage() {
                       ...item,
                       status: ProcessingStatus.Completed,
                       output: response.output,
+                      result: response.result,
                     }
                   : item
               )
@@ -152,8 +183,6 @@ export default function GenerateTickerAnalysisTemplatesPage() {
 
   return (
     <div className="mt-12 px-4 text-color max-w-7xl mx-auto">
-      <AdminNav />
-
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Generate Ticker Analysis</h1>
         <Link href="/admin-v1/analysis-templates" className="text-blue-600 hover:underline">
@@ -220,36 +249,47 @@ export default function GenerateTickerAnalysisTemplatesPage() {
             <div className="bg-gray-700 rounded-lg border border-gray-600 p-4">
               <h3 className="text-lg font-semibold mb-4 text-white">Analysis Types to Generate</h3>
               <div className="space-y-3">
-                {analysisTypesStatus.map((analysisType, index) => (
-                  <div key={analysisType.analysisTypeId} className="flex items-center justify-between p-3 bg-gray-800 border border-gray-600 rounded-lg">
-                    <div className="flex-1">
-                      <span className="font-medium text-white">{analysisType.analysisTypeName}</span>
-                      {analysisType.error && <div className="text-sm text-red-400 mt-1">{analysisType.error}</div>}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {isGenerating && currentGeneratingIndex === index && <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>}
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          analysisType.status === ProcessingStatus.InProgress
-                            ? 'bg-blue-900 text-blue-200'
+                {analysisTypesStatus.map((analysisType, index) => {
+                  const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(analysisType.result);
+
+                  return (
+                    <div key={analysisType.analysisTypeId} className="flex items-center justify-between p-3 bg-gray-800 border border-gray-600 rounded-lg">
+                      <div className="flex-1">
+                        <span className="font-medium text-white">{analysisType.analysisTypeName}</span>
+                        {analysisType.error && <div className="text-sm text-red-400 mt-1">{analysisType.error}</div>}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {isGenerating && currentGeneratingIndex === index && (
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                        )}
+
+                        {analysisType.result && analysisType.status === ProcessingStatus.Completed && (
+                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${bgColorClass} bg-opacity-20 ${textColorClass}`}>{displayLabel}</span>
+                        )}
+
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs ${
+                            analysisType.status === ProcessingStatus.InProgress
+                              ? 'bg-blue-900 text-blue-200'
+                              : analysisType.status === ProcessingStatus.NotStarted
+                              ? 'bg-gray-600 text-gray-300'
+                              : analysisType.status === ProcessingStatus.Failed
+                              ? 'bg-red-900 text-red-200'
+                              : 'bg-green-900 text-green-200'
+                          }`}
+                        >
+                          {analysisType.status === ProcessingStatus.InProgress
+                            ? 'Processing...'
                             : analysisType.status === ProcessingStatus.NotStarted
-                            ? 'bg-gray-600 text-gray-300'
+                            ? 'Not Started'
                             : analysisType.status === ProcessingStatus.Failed
-                            ? 'bg-red-900 text-red-200'
-                            : 'bg-green-900 text-green-200'
-                        }`}
-                      >
-                        {analysisType.status === ProcessingStatus.InProgress
-                          ? 'Processing...'
-                          : analysisType.status === ProcessingStatus.NotStarted
-                          ? 'Not Started'
-                          : analysisType.status === ProcessingStatus.Failed
-                          ? 'Failed'
-                          : 'Completed'}
-                      </span>
+                            ? 'Failed'
+                            : 'Completed'}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
@@ -272,6 +312,7 @@ export default function GenerateTickerAnalysisTemplatesPage() {
                       ...item,
                       status: ProcessingStatus.NotStarted,
                       output: undefined,
+                      result: undefined,
                       error: undefined,
                     }))
                   );
@@ -315,12 +356,21 @@ export default function GenerateTickerAnalysisTemplatesPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{analysis.category.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{new Date(analysis.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <Link
-                        href={`/stocks/${analysis.ticker.exchange}/${analysis.ticker.symbol}/${analysis.analysisTemplateId}`}
-                        className="text-blue-400 hover:text-blue-300"
-                      >
-                        View Details
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/stocks/${analysis.ticker.exchange}/${analysis.ticker.symbol}/${analysis.analysisTemplateId}`}
+                          className="text-blue-400 hover:text-blue-300"
+                        >
+                          View Details
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteClick(analysis)}
+                          className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-900/20 transition-colors"
+                          title="Delete analysis"
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -334,6 +384,20 @@ export default function GenerateTickerAnalysisTemplatesPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        title="Delete Analysis"
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setAnalysisToDelete(null);
+        }}
+        onDelete={handleConfirmDelete}
+        deleting={loading}
+        deleteButtonText="Delete Analysis"
+        confirmationText="DELETE"
+      />
     </div>
   );
 }

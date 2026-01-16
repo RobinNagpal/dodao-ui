@@ -1203,6 +1203,7 @@ model TickerV1DetailedReport {
   analysisTemplateId String   @map("analysis_template_id")
   analysisTypeId     String   @map("analysis_type_id")
   output             String   @map("output")
+  result             String   @map("result")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
