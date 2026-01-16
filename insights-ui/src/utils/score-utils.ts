@@ -10,6 +10,8 @@ export enum AnalysisResult {
   FAIR = 'fair',
   GOOD = 'good',
   EXCELLENT = 'excellent',
+  UNKNOWN = 'unknown',
+  NOT_APPLICABLE = 'not_applicable',
 }
 
 /**
@@ -42,6 +44,16 @@ export function getAnalysisResultColorClasses(result: string | null | undefined)
       textColorClass = 'text-green-500';
       bgColorClass = 'bg-green-500';
       displayLabel = 'Excellent';
+      break;
+    case AnalysisResult.UNKNOWN:
+      textColorClass = 'text-gray-400';
+      bgColorClass = 'bg-gray-400';
+      displayLabel = 'Unknown';
+      break;
+    case AnalysisResult.NOT_APPLICABLE:
+      textColorClass = 'text-slate-500';
+      bgColorClass = 'bg-slate-500';
+      displayLabel = 'Not Applicable';
       break;
   }
 
