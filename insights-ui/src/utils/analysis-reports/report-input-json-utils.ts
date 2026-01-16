@@ -136,7 +136,6 @@ export function prepareFactorAnalysisArray(analysisFactors: AnalysisCategoryFact
 export function prepareBusinessAndMoatInputJson(
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
   analysisFactors: AnalysisCategoryFactor[],
-  competitionAnalysisArray: CompetitionAnalysisArray,
   kpisData: {
     annual: { meta: any; periods: any[] };
     quarterly: { meta: any; periods: any[] };
@@ -146,7 +145,6 @@ export function prepareBusinessAndMoatInputJson(
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.BusinessAndMoat,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
-    competitionAnalysisArray,
     kpis: JSON.stringify(kpisData),
   };
 }
@@ -157,7 +155,6 @@ export function prepareBusinessAndMoatInputJson(
 export function preparePastPerformanceInputJson(
   tickerRecord: TickerV1WithIndustryAndSubIndustry,
   analysisFactors: AnalysisCategoryFactor[],
-  competitionAnalysisArray: CompetitionAnalysisArray,
   financialData: {
     marketSummary: any;
     incomeStatement: any;
@@ -171,7 +168,6 @@ export function preparePastPerformanceInputJson(
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.PastPerformance,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
-    competitionAnalysisArray,
     marketSummary: JSON.stringify(financialData.marketSummary),
     incomeStatement: JSON.stringify(financialData.incomeStatement),
     balanceSheet: JSON.stringify(financialData.balanceSheet),

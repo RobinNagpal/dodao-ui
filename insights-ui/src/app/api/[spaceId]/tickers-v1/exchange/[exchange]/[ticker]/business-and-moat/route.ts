@@ -1,12 +1,8 @@
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { getDefaultGeminiModel, GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
-import {
-  fetchAnalysisFactors,
-  fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  getCompetitionAnalysisArray,
-} from '@/utils/analysis-reports/get-report-data-utils';
+import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { saveBusinessAndMoatFactorAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareBusinessAndMoatInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { ensureStockAnalyzerDataIsFresh, extractKpisDataForAnalysis } from '@/utils/stock-analyzer-scraper-utils';
@@ -25,9 +21,6 @@ async function postHandler(
   // Ensure stock analyzer data is fresh
   const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
 
-  // Get competition analysis (required for business and moat analysis)
-  const competitionAnalysisArray = await getCompetitionAnalysisArray(tickerRecord);
-
   // Get analysis factors for BusinessAndMoat category
   const analysisFactors = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.BusinessAndMoat);
 
@@ -35,7 +28,7 @@ async function postHandler(
   const kpisData = extractKpisDataForAnalysis(scraperInfo);
 
   // Prepare input for the prompt
-  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, competitionAnalysisArray, kpisData);
+  const inputJson = prepareBusinessAndMoatInputJson(tickerRecord, analysisFactors, kpisData);
 
   // Call the LLM
   const result = await getLLMResponseForPromptViaInvocation({
@@ -43,7 +36,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/business-moat',
     llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

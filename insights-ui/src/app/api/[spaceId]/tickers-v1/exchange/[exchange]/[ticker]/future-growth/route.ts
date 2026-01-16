@@ -11,7 +11,7 @@ import { ensureStockAnalyzerDataIsFresh, extractKpisDataForAnalysis } from '@/ut
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { getDefaultGeminiModel, LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 async function postHandler(
   req: NextRequest,
@@ -43,7 +43,7 @@ async function postHandler(
     inputJson,
     promptKey: 'US/public-equities-v1/future-growth',
     llmProvider: LLMProvider.GEMINI,
-    model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

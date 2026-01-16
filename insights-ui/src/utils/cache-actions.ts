@@ -35,3 +35,8 @@ export async function revalidatePortfolioProfileIfExists(userId: string) {
     revalidatePortfolioProfileTag(profile.id);
   }
 }
+
+export async function revalidatePortfolioProfileCache(portfolioManagerId: string) {
+  revalidatePortfolioProfileTag(portfolioManagerId);
+  return { success: true, message: `Revalidated portfolio profile cache for ${portfolioManagerId}` };
+}

@@ -90,67 +90,75 @@ export default function TopNav() {
               {!isStocksRoute && (
                 <PopoverGroup className="hidden lg:flex lg:gap-x-6">
                   <Popover className="relative">
-                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
-                      KoalaGains Insights
-                      <ChevronDownIcon
-                        aria-hidden="true"
-                        className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
-                      />
-                    </PopoverButton>
+                    {({ close }) => (
+                      <>
+                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
+                          KoalaGains Insights
+                          <ChevronDownIcon
+                            aria-hidden="true"
+                            className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
+                          />
+                        </PopoverButton>
 
-                    <PopoverPanel
-                      transition
-                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
-                    >
-                      <div className="p-3">
-                        {reportsDropdown.map((item) => (
-                          <div
-                            key={item.name}
-                            className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
-                          >
-                            <div className="flex-auto">
-                              <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white">
-                                {item.name}
-                                <span className="absolute inset-0" />
-                              </Link>
-                              <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
-                            </div>
+                        <PopoverPanel
+                          transition
+                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                        >
+                          <div className="p-3">
+                            {reportsDropdown.map((item) => (
+                              <div
+                                key={item.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                              >
+                                <div className="flex-auto">
+                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
+                                    {item.name}
+                                    <span className="absolute inset-0" />
+                                  </Link>
+                                  <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </PopoverPanel>
+                        </PopoverPanel>
+                      </>
+                    )}
                   </Popover>
 
                   <Popover className="relative">
-                    <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
-                      Gen AI Adoption
-                      <ChevronDownIcon
-                        aria-hidden="true"
-                        className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
-                      />
-                    </PopoverButton>
+                    {({ close }) => (
+                      <>
+                        <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 dark:text-white data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400">
+                          Gen AI Adoption
+                          <ChevronDownIcon
+                            aria-hidden="true"
+                            className="size-5 flex-none text-gray-400 dark:text-gray-500 data-[open]:text-indigo-600 dark:data-[open]:text-indigo-400"
+                          />
+                        </PopoverButton>
 
-                    <PopoverPanel
-                      transition
-                      className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
-                    >
-                      <div className="p-3">
-                        {genaiDropdown.map((item) => (
-                          <div
-                            key={item.name}
-                            className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
-                          >
-                            <div className="flex-auto">
-                              <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white">
-                                {item.name}
-                                <span className="absolute inset-0" />
-                              </Link>
-                              <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
-                            </div>
+                        <PopoverPanel
+                          transition
+                          className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                        >
+                          <div className="p-3">
+                            {genaiDropdown.map((item) => (
+                              <div
+                                key={item.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                              >
+                                <div className="flex-auto">
+                                  <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
+                                    {item.name}
+                                    <span className="absolute inset-0" />
+                                  </Link>
+                                  <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </PopoverPanel>
+                        </PopoverPanel>
+                      </>
+                    )}
                   </Popover>
                 </PopoverGroup>
               )}

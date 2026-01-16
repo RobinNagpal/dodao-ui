@@ -101,8 +101,20 @@ export type TickerWithFullDetails = TickerV1WithIndustryAndSubIndustry & {
 };
 
 // Favourite with full ticker details for portfolio manager profile
-export interface FavouriteWithFullDetails extends FavouriteTicker {
+export interface FavouriteWithFullDetails extends Omit<FavouriteTicker, 'competitorsConsidered' | 'betterAlternatives'> {
   ticker: TickerWithFullDetails;
+  tags: UserTickerTag[];
+  lists: UserTickerList[];
+  competitorsConsidered: Array<
+    TickerV1 & {
+      cachedScoreEntry: TickerV1CachedScore | null;
+    }
+  >;
+  betterAlternatives: Array<
+    TickerV1 & {
+      cachedScoreEntry: TickerV1CachedScore | null;
+    }
+  >;
 }
 
 // Note with full ticker details for portfolio manager profile
