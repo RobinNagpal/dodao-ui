@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry } from '@prisma/client';
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator

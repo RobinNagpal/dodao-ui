@@ -6,11 +6,11 @@
     },
     {
       "path": "/api/koala_gains/tickers-v1/generate-daily-top-gainers",
-      "schedule": "0 5 * * *"
+      "schedule": "0 5 * * 2-6"
     },
     {
       "path": "/api/koala_gains/tickers-v1/generate-daily-top-losers",
-      "schedule": "0 5 * * *"
+      "schedule": "0 5 * * 2-6"
     }
   ],
   "headers": [

@@ -1,6 +1,6 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TopGainerWithTicker } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import StockMoversTable from '@/components/daily-stock-movers/StockMoversTable';

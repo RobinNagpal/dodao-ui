@@ -12,7 +12,7 @@ import {
 } from '@/util/get-llm-response';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 
 export interface LLMResponseViaLambdaRequest<Input> {
   invocationId: string;

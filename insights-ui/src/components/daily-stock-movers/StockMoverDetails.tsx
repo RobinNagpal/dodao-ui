@@ -1,6 +1,6 @@
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import { parseMarkdown } from '@/util/parse-markdown';
 import Link from 'next/link';
 

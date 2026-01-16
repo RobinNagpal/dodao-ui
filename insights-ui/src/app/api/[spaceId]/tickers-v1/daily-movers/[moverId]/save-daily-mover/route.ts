@@ -1,5 +1,6 @@
 import { DailyMoverLLMResponse } from '@/types/daily-stock-movers';
-import { DailyMoverType, saveDailyMoverResponse } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
+import { saveDailyMoverResponse } from '@/utils/daily-movers-generation-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 

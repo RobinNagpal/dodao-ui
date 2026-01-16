@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { GenerateStockMoversResponse, SavedStock, ScreenerResponse } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import { USExchanges } from '@/utils/countryExchangeUtils';
 
 /**

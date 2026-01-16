@@ -1,5 +1,5 @@
 import { ScreenerResponse } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 
 const SCREENER_API_URL = process.env.SCREENER_API_URL;
 

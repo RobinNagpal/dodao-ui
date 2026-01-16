@@ -4,6 +4,7 @@ import { DailyMoverInputJson, StockDataInScreenerResponse } from '@/types/daily-
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
 import { revalidateDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 
 /**
  * Converts InProgress daily movers that are older than 8 hours to Failed status
@@ -52,11 +53,6 @@ export async function convertInProgressToFailed(): Promise<void> {
     });
     console.log(`Failed ${staleLosers.length} stale loser records`);
   }
-}
-
-export enum DailyMoverType {
-  GAINER = 'gainer',
-  LOSER = 'loser',
 }
 
 /**
