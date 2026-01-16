@@ -9,7 +9,7 @@ import { AnalysisResult } from '@/utils/score-utils';
 // Type for text analysis response
 interface TextAnalysisResponse {
   analysis: string;
-  result: 'poor' | 'fair' | 'good' | 'excellent';
+  result: 'poor' | 'fair' | 'good' | 'excellent' | 'unknown' | 'not_applicable';
 }
 
 export interface GenerateAnalysisTypeResponse {
@@ -65,6 +65,8 @@ async function postHandler(
   try {
     // Prepare the context for the analysis (simplified without unnecessary fields)
     const tickerContext = `
+Provide stock specific information relevant to this Analysis Type, then decide the result (poor/fair/good/excellent). Use unknown if you can’t determine from available info; use not_applicable if it doesn’t apply to this business.
+
 Stock Information:
 - Company Name: ${tickerRecord.name}
 - Symbol: ${tickerRecord.symbol}
@@ -80,8 +82,6 @@ Description: ${analysisType.description}
     if (analysisType.promptInstructions) {
       fullPrompt += `\nPlease provide the analysis based on the following instructions:\n\n${analysisType.promptInstructions}`;
     }
-
-    fullPrompt += `\n\nIMPORTANT: Also provide an overall assessment result as one of: "poor", "fair", "good", or "excellent".`;
 
     // Generate analysis using structured output
     const analysisResponse = await generateTextAnalysis(fullPrompt);
@@ -127,7 +127,7 @@ async function generateTextAnalysis(prompt: string): Promise<TextAnalysisRespons
         result: {
           type: 'string',
           description: 'Overall assessment result',
-          enum: ['poor', 'fair', 'good', 'excellent'],
+          enum: ['poor', 'fair', 'good', 'excellent', 'unknown', 'not_applicable'],
         },
       },
       required: ['analysis', 'result'],
