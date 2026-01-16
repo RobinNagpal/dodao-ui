@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { ScreenerResponse, StockDataInScreenerResponse } from '@/types/daily-stock-movers';
-import { DailyMoverType, processDailyMover, convertInProgressToFailed } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
+import { processDailyMover, convertInProgressToFailed } from '@/utils/daily-movers-generation-utils';
 import { processAndSaveStockMovers } from '@/utils/stock-movers-processing-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';

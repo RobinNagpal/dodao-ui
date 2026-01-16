@@ -1,8 +1,11 @@
+'use client';
+
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
-import { toExchange } from '@/utils/countryExchangeUtils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import Link from 'next/link';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import DateSelector from './DateSelector';
+import { useState, useMemo } from 'react';
 
 interface StockMoversTableProps {
   movers: (TopGainerWithTicker | TopLoserWithTicker)[];
@@ -11,6 +14,33 @@ interface StockMoversTableProps {
 }
 
 export default function StockMoversTable({ movers, type, country }: StockMoversTableProps) {
+  // Extract unique dates from movers and sort them
+  const availableDates = useMemo(() => {
+    const dateSet = new Set<string>();
+    movers.forEach((mover) => {
+      const dateStr = new Date(mover.createdAt).toISOString().split('T')[0];
+      dateSet.add(dateStr);
+    });
+    return Array.from(dateSet)
+      .sort((a, b) => b.localeCompare(a))
+      .map((dateStr) => new Date(dateStr + 'T00:00:00'));
+  }, [movers]);
+
+  // Get min and max dates
+  const minDate = availableDates.length > 0 ? availableDates[availableDates.length - 1] : new Date();
+  const maxDate = availableDates.length > 0 ? availableDates[0] : new Date();
+
+  // Set initial selected date to the latest available date
+  const [selectedDate, setSelectedDate] = useState<Date>(maxDate);
+
+  // Filter movers by selected date
+  const filteredMovers = useMemo(() => {
+    const selectedDateStr = selectedDate.toISOString().split('T')[0];
+    return movers.filter((mover) => {
+      const moverDateStr = new Date(mover.createdAt).toISOString().split('T')[0];
+      return moverDateStr === selectedDateStr;
+    });
+  }, [movers, selectedDate]);
   const isGainer = type === DailyMoverType.GAINER;
   const title = isGainer ? `Top Performing Stocks in ${country.toUpperCase()} Today` : `Worst Performing Stocks in ${country.toUpperCase()} Today`;
   const description = isGainer
@@ -21,12 +51,16 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <div className="mb-8">
+      <div className="mb-4">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-color">{title}</h1>
         <p className="text-muted-foreground mt-2">{description}</p>
       </div>
 
-      {movers.length === 0 ? (
+      {availableDates.length > 0 && (
+        <DateSelector selectedDate={selectedDate} availableDates={availableDates} minDate={minDate} maxDate={maxDate} onChange={setSelectedDate} />
+      )}
+
+      {filteredMovers.length === 0 ? (
         <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
           <p className="text-muted-foreground text-lg">No {type === DailyMoverType.GAINER ? 'gainers' : 'losers'} found</p>
         </div>
@@ -44,11 +78,11 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
                     <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
                   </PrivateWrapper>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Details</th>
                 </tr>
               </thead>
               <tbody className="divide-y border-color">
-                {movers.map((mover) => (
+                {filteredMovers.map((mover) => (
                   <tr key={mover.id} className="bg-gray-900 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-semibold text-color">{mover.ticker.symbol}</div>

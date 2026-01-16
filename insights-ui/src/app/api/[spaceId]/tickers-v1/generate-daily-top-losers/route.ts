@@ -1,5 +1,5 @@
 import { triggerTopLosersAsync } from '@/utils/screener-api-utils';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TriggerDailyMoverResponse } from '@/types/daily-stock-movers';

@@ -1,18 +1,40 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TopLoserWithTicker } from '@/types/daily-stock-movers';
-import { DailyMoverType } from '@/utils/daily-movers-generation-utils';
+import { TopLoserWithRelated } from '@/types/daily-stock-movers';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import StockMoverDetails from '@/components/daily-stock-movers/StockMoverDetails';
+import RelatedDailyMovers from '@/components/daily-stock-movers/RelatedDailyMovers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
 import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
+import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
+import type { SimilarTicker } from '@/utils/ticker-v1-model-utils';
 
 interface PageProps {
   params: Promise<{ topLosersId: string }>;
+}
+
+async function fetchSimilarTickers(exchange: string, ticker: string, moverId: string): Promise<SimilarTicker[]> {
+  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
+
+  const res = await fetch(url, {
+    next: {
+      revalidate: 604800, // 7 days
+      tags: [getDailyMoverDetailsTag(moverId)],
+    },
+  });
+
+  if (!res.ok) {
+    console.error(`fetchSimilarTickers failed (${res.status}): ${url}`);
+    return [];
+  }
+
+  const arr = (await res.json()) as SimilarTicker[];
+  return arr;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -33,8 +55,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       };
     }
 
-    const topLoser: TopLoserWithTicker = await response.json();
-    return generateStockMoverMetadata(topLoser, DailyMoverType.LOSER, topLosersId);
+    const data: TopLoserWithRelated = await response.json();
+    return generateStockMoverMetadata(data.mover, DailyMoverType.LOSER, topLosersId);
   } catch (error) {
     console.error('Error generating metadata for top loser:', error);
     return {
@@ -70,7 +92,10 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
     );
   }
 
-  const topLoser: TopLoserWithTicker = await response.json();
+  const { mover: topLoser, relatedMovers } = await response.json();
+
+  // Fetch similar tickers
+  const similarTickersPromise = fetchSimilarTickers(topLoser.ticker.exchange, topLoser.ticker.symbol, topLosersId);
 
   // Generate structured data
   const articleSchema = generateStockMoverArticleSchema(topLoser, DailyMoverType.LOSER, topLosersId);
@@ -97,6 +122,11 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
       />
 
       <StockMoverDetails mover={topLoser} type={DailyMoverType.LOSER} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <RelatedDailyMovers movers={relatedMovers} type={DailyMoverType.LOSER} />
+        <SimilarTickers dataPromise={similarTickersPromise} />
+      </div>
     </PageWrapper>
   );
 }

@@ -1,6 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import { SupportedCountries } from './countryExchangeUtils';
-import { DailyMoverType } from './daily-movers-generation-utils';
+import { DailyMoverType } from '@/types/daily-mover-constants';
 
 /** Cache tag helpers for per-ticker revalidation */
 const TICKER_EXCHANGE_TAG_PREFIX = 'ticker_exchange:' as const;
