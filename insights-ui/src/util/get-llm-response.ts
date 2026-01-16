@@ -30,6 +30,7 @@ export interface LLMResponseOptions {
   outputSchema: object;
   maxRetries?: number;
   isTestInvocation?: boolean;
+  skipInvocationTracking?: boolean;
 }
 
 export interface LLMResponseViaInvocationRequest<Input> {
@@ -229,6 +230,7 @@ export async function getLLMResponse<Output>({
   outputSchema,
   maxRetries = 1,
   isTestInvocation,
+  skipInvocationTracking = false,
 }: LLMResponseOptions): Promise<Output> {
   let lastResult: unknown | null = null;
 
@@ -257,11 +259,13 @@ export async function getLLMResponse<Output>({
       console.log('Response from llm:', result);
       lastResult = result;
 
-      // Update invocation status
-      await updateInvocationStatus(invocationId, PromptInvocationStatus.Completed, { outputJson: JSON.stringify(result) }, isTestInvocation);
+      // Update invocation status (skip if tracking is disabled)
+      if (!skipInvocationTracking) {
+        await updateInvocationStatus(invocationId, PromptInvocationStatus.Completed, { outputJson: JSON.stringify(result) }, isTestInvocation);
+      }
 
-      // If test invocation, return early
-      if (isTestInvocation) {
+      // If test invocation or skip tracking, return early
+      if (isTestInvocation || skipInvocationTracking) {
         return result;
       }
 
@@ -280,9 +284,9 @@ export async function getLLMResponse<Output>({
         continue;
       }
 
-      if (lastResult !== null) {
+      if (lastResult !== null && !skipInvocationTracking) {
         await updateInvocationStatus(invocationId, PromptInvocationStatus.Failed, { outputJson: JSON.stringify(lastResult) }, isTestInvocation);
-      } else {
+      } else if (lastResult === null) {
         console.error('Last attempt failed, no result to save.');
         throw new Error(`Unexpected failure in getLLMResponse: ${err instanceof Error ? err.message : String(err)}`);
       }

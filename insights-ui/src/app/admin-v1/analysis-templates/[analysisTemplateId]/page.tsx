@@ -8,16 +8,19 @@ import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaA
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useParams } from 'next/navigation';
-import { AnalysisTemplateWithRelations } from '../../../api/admin-v1/detailed-reports/route';
-import { CreateCategoriesRequest, DetailedReportCategoryWithTypes } from '../../../api/admin-v1/detailed-reports/[analysisTemplateId]/categories/route';
-import { CreateAnalysisTypesRequest } from '../../../api/admin-v1/detailed-reports/[analysisTemplateId]/analysis-types/route';
+import { AnalysisTemplateWithRelations } from '../../../api/analysis-templates/route';
+import { CreateCategoriesRequest, DetailedReportCategoryWithTypes } from '../../../api/analysis-templates/[analysisTemplateId]/categories/route';
+import { CreateAnalysisTypesRequest } from '../../../api/analysis-templates/[analysisTemplateId]/analysis-types/route';
 import { AnalysisType } from '@prisma/client';
+import DeleteConfirmationModal from '../../industry-management/DeleteConfirmationModal';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 export default function AnalysisTemplateDetailPage() {
   const params = useParams() as { analysisTemplateId: string };
@@ -37,13 +40,14 @@ export default function AnalysisTemplateDetailPage() {
   const [useJsonForAnalysisTypes, setUseJsonForAnalysisTypes] = useState(false);
   const [showCategoriesJsonModal, setShowCategoriesJsonModal] = useState(false);
   const [showAnalysisTypesFormJsonModal, setShowAnalysisTypesFormJsonModal] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<{ id: string; name: string } | null>(null);
 
   const {
     data: template,
     loading: templateLoading,
     reFetchData: refetchTemplate,
   } = useFetchData<AnalysisTemplateWithRelations>(
-    `${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}`,
+    `${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}`,
     { cache: 'no-cache' },
     'Failed to fetch analysis template'
   );
@@ -56,6 +60,16 @@ export default function AnalysisTemplateDetailPage() {
   const { postData: createAnalysisTypes, loading: createAnalysisTypesLoading } = usePostData<AnalysisType[], CreateAnalysisTypesRequest>({
     successMessage: 'Analysis types created successfully!',
     errorMessage: 'Failed to create analysis types.',
+  });
+
+  const { deleteData: deleteCategory, loading: deleteCategoryLoading } = useDeleteData({
+    successMessage: 'Category deleted successfully!',
+    errorMessage: 'Failed to delete category.',
+  });
+
+  const { deleteData: deleteAnalysisType, loading: deleteAnalysisTypeLoading } = useDeleteData({
+    successMessage: 'Analysis type deleted successfully!',
+    errorMessage: 'Failed to delete analysis type.',
   });
 
   const handleCategoriesJsonSave = (json: string) => {
@@ -108,7 +122,7 @@ export default function AnalysisTemplateDetailPage() {
         return;
       }
 
-      await createCategories(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/categories`, {
+      await createCategories(`${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}/categories`, {
         categories: validCategories,
       });
 
@@ -120,6 +134,19 @@ export default function AnalysisTemplateDetailPage() {
     } catch (error) {
       alert('Invalid JSON format: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
+  };
+
+  const handleDeleteCategory = async () => {
+    if (!categoryToDelete) return;
+
+    await deleteCategory(`${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}/categories/${categoryToDelete.id}`);
+    refetchTemplate();
+    setCategoryToDelete(null);
+  };
+
+  const handleDeleteAnalysisType = async (analysisTypeId: string) => {
+    await deleteAnalysisType(`${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}/analysis-types/${analysisTypeId}`);
+    refetchTemplate();
   };
 
   const handleCreateAnalysisTypes = async () => {
@@ -145,7 +172,7 @@ export default function AnalysisTemplateDetailPage() {
 
         const processedAnalysisTypes = validAnalysisTypes;
 
-        await createAnalysisTypes(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/analysis-types`, {
+        await createAnalysisTypes(`${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}/analysis-types`, {
           categoryId: selectedCategoryId,
           analysisTypes: processedAnalysisTypes,
         });
@@ -166,7 +193,7 @@ export default function AnalysisTemplateDetailPage() {
       const validAnalysisTypes = analysisTypes.filter((type) => type.name.trim());
       if (validAnalysisTypes.length === 0) return;
 
-      await createAnalysisTypes(`${getBaseUrl()}/api/admin-v1/detailed-reports/${params.analysisTemplateId}/analysis-types`, {
+      await createAnalysisTypes(`${getBaseUrl()}/api/analysis-templates/${params.analysisTemplateId}/analysis-types`, {
         categoryId: selectedCategoryId,
         analysisTypes: validAnalysisTypes,
       });
@@ -359,15 +386,28 @@ export default function AnalysisTemplateDetailPage() {
             <div className="space-y-4">
               {template.categories.map((category) => (
                 <div key={category.id} className="border border-gray-200 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-                  {category.description && <p className="text-gray-600 mb-4">{category.description}</p>}
-                  <div className="ml-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <h3 className="text-lg font-semibold">{category.name}</h3>
+                      {category.description && <p className="text-gray-600 mt-1">{category.description}</p>}
+                    </div>
+                    <Button onClick={() => setCategoryToDelete({ id: category.id, name: category.name })} variant="outlined" loading={deleteCategoryLoading}>
+                      <TrashIcon className="w-4 h-4 mr-1" />
+                    </Button>
+                  </div>
+                  <div className="ml-4 mt-4">
                     <h4 className="font-medium mb-2">Analysis Types:</h4>
                     {category.analysisTypes.length > 0 ? (
-                      <ul className="list-disc list-inside space-y-1">
+                      <ul className="space-y-2">
                         {category.analysisTypes.map((type) => (
-                          <li key={type.id} className="text-sm">
-                            <strong>{type.name}</strong>
+                          <li key={type.id} className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
+                            <div>
+                              <strong>{type.name}</strong>
+                              {type.description && <p className="text-gray-600 text-xs mt-1">{type.description}</p>}
+                            </div>
+                            <Button onClick={() => handleDeleteAnalysisType(type.id)} variant="outlined" size="sm" loading={deleteAnalysisTypeLoading}>
+                              Delete
+                            </Button>
                           </li>
                         ))}
                       </ul>
@@ -403,6 +443,17 @@ export default function AnalysisTemplateDetailPage() {
           title="Edit Analysis Types JSON"
           sampleJson={analysisTypesJson}
           onSave={handleAnalysisTypesJsonSave}
+        />
+      )}
+
+      {/* Category Delete Confirmation Modal */}
+      {categoryToDelete && (
+        <DeleteConfirmationModal
+          open={!!categoryToDelete}
+          onClose={() => setCategoryToDelete(null)}
+          onDelete={handleDeleteCategory}
+          title="Delete Category"
+          confirmationText="DELETE"
         />
       )}
     </PageWrapper>

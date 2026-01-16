@@ -3,18 +3,20 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { getLLMResponse } from '@/util/get-llm-response';
-import { getGroundedResponse } from '@/util/llm-grounding-utils';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { LLMProvider, GeminiModel, getDefaultGeminiModel } from '@/types/llmConstants';
+import { AnalysisResult } from '@/utils/score-utils';
 
 // Type for text analysis response
 interface TextAnalysisResponse {
   analysis: string;
+  result: 'poor' | 'fair' | 'good' | 'excellent';
 }
 
 export interface GenerateAnalysisTypeResponse {
   success: boolean;
   analysisTypeId: string;
   output: string;
+  result: string;
 }
 
 async function postHandler(
@@ -56,6 +58,7 @@ async function postHandler(
       success: true,
       analysisTypeId: analysisTypeId,
       output: existingAnalysis.output,
+      result: existingAnalysis.result,
     };
   }
 
@@ -78,8 +81,10 @@ Description: ${analysisType.description}
       fullPrompt += `\nPlease provide the analysis based on the following instructions:\n\n${analysisType.promptInstructions}`;
     }
 
-    // Generate analysis using text output
-    const analysisOutput = await generateTextAnalysis(fullPrompt);
+    fullPrompt += `\n\nIMPORTANT: Also provide an overall assessment result as one of: "poor", "fair", "good", or "excellent".`;
+
+    // Generate analysis using structured output
+    const analysisResponse = await generateTextAnalysis(fullPrompt);
 
     // Save result to database
     await prisma.tickerV1DetailedReport.create({
@@ -87,14 +92,16 @@ Description: ${analysisType.description}
         tickerId: tickerRecord.id,
         analysisTemplateId: analysisTemplateId,
         analysisTypeId: analysisTypeId,
-        output: analysisOutput,
+        output: analysisResponse.analysis,
+        result: analysisResponse.result,
       },
     });
 
     return {
       success: true,
       analysisTypeId: analysisTypeId,
-      output: analysisOutput,
+      output: analysisResponse.analysis,
+      result: analysisResponse.result,
     };
   } catch (error) {
     console.error(`Error generating analysis for type ${analysisType.name}:`, error);
@@ -104,44 +111,45 @@ Description: ${analysisType.description}
 
 /** ---------- Helper Functions ---------- */
 
-async function generateTextAnalysis(prompt: string): Promise<string> {
+async function generateTextAnalysis(prompt: string): Promise<TextAnalysisResponse> {
   try {
-    // Use Gemini with grounding for comprehensive analysis
-    const response = await getGroundedResponse(prompt, GeminiModel.GEMINI_3_PRO_PREVIEW);
-    return response;
-  } catch (error) {
-    console.error('Error with grounded response, falling back to simple text:', error);
+    // Fallback to regular Gemini with structured output
+    const invocationId = `ticker-text-analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    try {
-      // Fallback to regular Gemini without grounding
-      const invocationId = `ticker-text-analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-      // Simple text schema for unstructured output
-      const textSchema = {
-        type: 'object',
-        properties: {
-          analysis: {
-            type: 'string',
-            description: 'The detailed analysis text',
-          },
+    // Schema for analysis with result
+    const textSchema = {
+      type: 'object',
+      properties: {
+        analysis: {
+          type: 'string',
+          description: 'The detailed analysis text in markdown format',
         },
-        required: ['analysis'],
-      };
+        result: {
+          type: 'string',
+          description: 'Overall assessment result',
+          enum: ['poor', 'fair', 'good', 'excellent'],
+        },
+      },
+      required: ['analysis', 'result'],
+    };
 
-      const response = await getLLMResponse<TextAnalysisResponse>({
-        invocationId,
-        llmProvider: LLMProvider.GEMINI,
-        modelName: GeminiModel.GEMINI_3_PRO_PREVIEW,
-        prompt,
-        outputSchema: textSchema,
-        maxRetries: 2,
-        isTestInvocation: true,
-      });
+    const response = await getLLMResponse<TextAnalysisResponse>({
+      invocationId,
+      llmProvider: LLMProvider.GEMINI,
+      modelName: getDefaultGeminiModel(),
+      prompt,
+      outputSchema: textSchema,
+      maxRetries: 2,
+      skipInvocationTracking: true,
+    });
 
-      return response.analysis || 'Analysis completed but no content returned.';
-    } catch (fallbackError) {
-      throw new Error(`Failed to generate text analysis: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown error'}`);
-    }
+    return {
+      analysis: response.analysis || 'Analysis completed but no content returned.',
+      result: response.result || 'fair',
+    };
+  } catch (error) {
+    console.error('Error generating analysis:', error);
+    throw new Error(`Failed to generate text analysis: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 

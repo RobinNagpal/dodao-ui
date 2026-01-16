@@ -10,8 +10,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import Link from 'next/link';
-import AdminNav from '../AdminNav';
-import { CreateAnalysisTemplateRequest, AnalysisTemplateWithRelations } from '../../api/admin-v1/detailed-reports/route';
+import { CreateAnalysisTemplateRequest, AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 
 export default function DetailedReportsAdminPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -24,11 +23,7 @@ export default function DetailedReportsAdminPage() {
     data: templates,
     loading: templatesLoading,
     reFetchData: refetchTemplates,
-  } = useFetchData<AnalysisTemplateWithRelations[]>(
-    `${getBaseUrl()}/api/admin-v1/detailed-reports`,
-    { cache: 'no-cache' },
-    'Failed to fetch analysis templates'
-  );
+  } = useFetchData<AnalysisTemplateWithRelations[]>(`${getBaseUrl()}/api/analysis-templates`, { cache: 'no-cache' }, 'Failed to fetch analysis templates');
 
   const { postData: createTemplate, loading: createTemplateLoading } = usePostData<AnalysisTemplateWithRelations, CreateAnalysisTemplateRequest>({
     successMessage: 'Analysis template created successfully!',
@@ -41,7 +36,7 @@ export default function DetailedReportsAdminPage() {
       return;
     }
 
-    await createTemplate(`${getBaseUrl()}/api/admin-v1/detailed-reports`, formData);
+    await createTemplate(`${getBaseUrl()}/api/analysis-templates`, formData);
 
     // Refetch templates and reset form
     refetchTemplates();
@@ -56,7 +51,6 @@ export default function DetailedReportsAdminPage() {
 
   return (
     <PageWrapper>
-      <AdminNav />
       <div className="text-color">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl heading-color">Analysis Templates</h1>

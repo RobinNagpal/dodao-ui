@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TickerAnalysisData } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/[analysisTemplateId]/route';
+import { getAnalysisResultColorClasses } from '@/utils/score-utils';
 
 interface TickerAnalysisPageProps {
   params: Promise<{
@@ -91,15 +92,24 @@ export default async function TickerAnalysisPage({ params }: TickerAnalysisPageP
               <section key={categoryName} className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
                 <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{categoryName}</h3>
                 <div className="space-y-6">
-                  {categoryAnalyses.map((analysis) => (
-                    <div key={analysis.id} className="bg-gray-800 p-4 rounded-md">
-                      <div className="mb-4">
-                        <h4 className="text-lg font-semibold mb-2">{analysis.analysisType.name}</h4>
-                        <p className="text-xs text-gray-500">Generated on {new Date(analysis.createdAt).toLocaleDateString()}</p>
+                  {categoryAnalyses.map((analysis) => {
+                    const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(analysis.result);
+
+                    return (
+                      <div key={analysis.id} className="bg-gray-800 p-4 rounded-md">
+                        <div className="mb-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="text-lg font-semibold">{analysis.analysisType.name}</h4>
+                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${bgColorClass} bg-opacity-20 ${textColorClass}`}>
+                              {displayLabel}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-500">Generated on {new Date(analysis.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(analysis.output) }} />
                       </div>
-                      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(analysis.output) }} />
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             ))}
