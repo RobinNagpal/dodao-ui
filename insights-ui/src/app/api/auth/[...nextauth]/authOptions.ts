@@ -5,10 +5,14 @@ import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient, User as KoalaGainsUser } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import jwt from 'jsonwebtoken';
 import { AuthOptions } from 'next-auth';
 
-const p = new PrismaClient();
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const p = new PrismaClient({ adapter });
 
 export const prismaAdapter = PrismaAdapter(p);
 
