@@ -3,6 +3,7 @@ import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
+import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { User as KoalaGainsUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
@@ -11,10 +12,35 @@ import { prisma } from '@/prisma';
 
 export const prismaAdapter = PrismaAdapter(prisma);
 
+// Type-safe adapters for insights-ui Prisma schema
+const userAdapter: PrismaUserAdapter = {
+  findUnique: async (args: any) => {
+    return prisma.user.findUnique(args);
+  },
+  findFirst: async (args: any) => {
+    return prisma.user.findFirst(args);
+  },
+  upsert: async (args: any) => {
+    return prisma.user.upsert(args);
+  },
+  create: async (args: any) => {
+    return prisma.user.create(args);
+  },
+};
+
+const verificationTokenAdapter: PrismaVerificationTokenAdapter = {
+  delete: async (args: any) => {
+    return prisma.verificationToken.delete(args);
+  },
+  findFirstOrThrow: async (args: any) => {
+    return prisma.verificationToken.findFirstOrThrow(args);
+  },
+};
+
 export const authOptions: AuthOptions = getAuthOptions(
   {
-    user: prisma.user,
-    verificationToken: prisma.verificationToken,
+    user: userAdapter,
+    verificationToken: verificationTokenAdapter,
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {
