@@ -3,27 +3,23 @@ import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
+import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient, User as KoalaGainsUser } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { User as KoalaGainsUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { AuthOptions } from 'next-auth';
+import { prisma } from '@/prisma';
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
-const p = new PrismaClient({ adapter });
-
-export const prismaAdapter = PrismaAdapter(p);
+export const prismaAdapter = PrismaAdapter(prisma);
 
 export const authOptions: AuthOptions = getAuthOptions(
   {
-    user: p.user,
-    verificationToken: p.verificationToken,
+    user: prisma.user as unknown as PrismaUserAdapter,
+    verificationToken: prisma.verificationToken as unknown as PrismaVerificationTokenAdapter,
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {
-        const user = (await p.user.findFirst({ where: { email } })) as User;
+        const user = (await prisma.user.findFirst({ where: { email } })) as User;
         console.log('getUserByEmail', user);
         return user as any;
       },
@@ -40,7 +36,7 @@ export const authOptions: AuthOptions = getAuthOptions(
         if (token.sub) {
           console.log(`[authOptions] Session callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: KoalaGainsUser | null = await p.user.findUnique({
+            const dbUser: KoalaGainsUser | null = await prisma.user.findUnique({
               where: { id: token.sub },
             });
 
@@ -77,7 +73,7 @@ export const authOptions: AuthOptions = getAuthOptions(
         return {
           userId: userInfo.id,
           ...session,
-          user: user?.email ? await p.user.findFirst({ where: { email: user.email } }) : undefined,
+          user: user?.email ? await prisma.user.findFirst({ where: { email: user.email } }) : undefined,
           ...userInfo,
           dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
         };
@@ -90,7 +86,7 @@ export const authOptions: AuthOptions = getAuthOptions(
         if (token.sub) {
           console.log(`[authOptions] JWT callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: KoalaGainsUser | null = await p.user.findUnique({
+            const dbUser: KoalaGainsUser | null = await prisma.user.findUnique({
               where: { id: token.sub },
             });
 
