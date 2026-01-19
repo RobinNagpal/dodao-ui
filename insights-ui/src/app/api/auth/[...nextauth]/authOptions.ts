@@ -3,7 +3,6 @@ import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
-import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { User as KoalaGainsUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
@@ -14,8 +13,8 @@ export const prismaAdapter = PrismaAdapter(prisma);
 
 export const authOptions: AuthOptions = getAuthOptions(
   {
-    user: prisma.user as unknown as PrismaUserAdapter,
-    verificationToken: prisma.verificationToken as unknown as PrismaVerificationTokenAdapter,
+    user: prisma.user,
+    verificationToken: prisma.verificationToken,
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {
