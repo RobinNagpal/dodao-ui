@@ -123,11 +123,11 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                   Analysis Templates
                 </Link>
                 <Link
-                  href="/admin-v1/generate-ticker-analysis-templates"
+                  href="/admin-v1/analysis-template-report"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
                   onClick={onMenuToggle}
                 >
-                  Ticker Analysis
+                  Analysis Template Report
                 </Link>
                 <div className="border-t border-gray-700 my-1"></div>
               </>
@@ -218,10 +218,10 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                     Analysis Templates
                   </Link>
                   <Link
-                    href="/admin-v1/generate-ticker-analysis-templates"
+                    href="/admin-v1/analysis-template-report"
                     className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                   >
-                    Ticker Analysis
+                    Analysis Template Report
                   </Link>
                   <div className="border-t border-gray-700 my-1"></div>
                 </>

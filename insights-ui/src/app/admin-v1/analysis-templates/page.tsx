@@ -64,7 +64,8 @@ export default function DetailedReportsAdminPage() {
 
                   <div className="mb-4">
                     <div className="text-sm text-gray-500">
-                      {template.categories.length} categories, {template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)} analysis parameters
+                      {template.categories.length} categories, {template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)} analysis
+                      parameters
                     </div>
                   </div>
 

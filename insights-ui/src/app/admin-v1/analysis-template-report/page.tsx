@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
-import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
@@ -12,6 +11,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 import { TickerV1 } from '@prisma/client';
 import SearchBar, { SearchResult } from '@/components/core/SearchBar/SearchBar';
+import Link from 'next/link';
 
 interface AnalysisTemplateReport {
   id: string;
@@ -44,18 +44,22 @@ export default function AnalysisTemplateReportPage() {
     data: reports,
     loading: reportsLoading,
     reFetchData: refetchReports,
-  } = useFetchData<AnalysisTemplateReport[]>(`${getBaseUrl()}/api/analysis-template-reports`, { cache: 'no-cache' }, 'Failed to fetch analysis template reports');
+  } = useFetchData<AnalysisTemplateReport[]>(
+    `${getBaseUrl()}/api/analysis-template-reports`,
+    { cache: 'no-cache' },
+    'Failed to fetch analysis template reports'
+  );
 
-  const {
-    data: templates,
-    loading: templatesLoading,
-  } = useFetchData<AnalysisTemplateWithRelations[]>(`${getBaseUrl()}/api/analysis-templates`, { cache: 'no-cache' }, 'Failed to fetch analysis templates');
+  const { data: templates, loading: templatesLoading } = useFetchData<AnalysisTemplateWithRelations[]>(
+    `${getBaseUrl()}/api/analysis-templates`,
+    { cache: 'no-cache' },
+    'Failed to fetch analysis templates'
+  );
 
   const { postData: createReport, loading: createReportLoading } = usePostData<AnalysisTemplateReport, CreateAnalysisTemplateReportRequest>({
     successMessage: 'Analysis template report created successfully!',
     errorMessage: 'Failed to create analysis template report.',
   });
-
 
   const handleTickerSelect = (result: SearchResult) => {
     // Convert SearchResult to a simplified ticker format for our use
@@ -96,7 +100,7 @@ export default function AnalysisTemplateReportPage() {
       };
     }
 
-    const selectedTemplate = templates?.find(t => t.id === selectedTemplateId);
+    const selectedTemplate = templates?.find((t) => t.id === selectedTemplateId);
     if (!selectedTemplate) {
       alert('Selected template not found');
       return;
@@ -123,10 +127,11 @@ export default function AnalysisTemplateReportPage() {
     setPromptKey('');
   };
 
-  const templateOptions = templates?.map(template => ({
-    id: template.id,
-    label: template.name,
-  })) || [];
+  const templateOptions =
+    templates?.map((template) => ({
+      id: template.id,
+      label: template.name,
+    })) || [];
 
   return (
     <PageWrapper>
@@ -138,9 +143,7 @@ export default function AnalysisTemplateReportPage() {
           </Button>
         </div>
 
-        <p className="text-gray-600 mb-8">
-          Create and manage analysis reports for tickers or companies using analysis templates.
-        </p>
+        <p className="text-gray-600 mb-8">Create and manage analysis reports for tickers or companies using analysis templates.</p>
 
         {/* Reports List */}
         <div>
@@ -154,20 +157,19 @@ export default function AnalysisTemplateReportPage() {
                   <p className="text-gray-600 mb-4">Prompt: {report.promptKey}</p>
 
                   <div className="mb-4">
-                    <div className="text-sm text-gray-500">
-                      Created: {new Date(report.createdAt).toLocaleDateString()}
-                    </div>
+                    <div className="text-sm text-gray-500">Created: {new Date(report.createdAt).toLocaleDateString()}</div>
                     <div className="text-sm text-blue-600 mt-1">
-                      {report.inputObj.tickerSymbol ?
-                        `Ticker: ${report.inputObj.tickerSymbol} (${report.inputObj.exchange})` :
-                        `Company: ${report.inputObj.companyName}`
-                      }
+                      {report.inputObj.tickerSymbol
+                        ? `Ticker: ${report.inputObj.tickerSymbol} (${report.inputObj.exchange})`
+                        : `Company: ${report.inputObj.companyName}`}
                     </div>
                   </div>
 
-                  <Button variant="contained" primary className="w-full">
-                    Generate Analysis
-                  </Button>
+                  <Link href={`/admin-v1/analysis-template-report/${report.id}/generate`} className="w-full">
+                    <Button variant="contained" primary className="w-full">
+                      Generate Analysis
+                    </Button>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -222,11 +224,7 @@ export default function AnalysisTemplateReportPage() {
 
               {/* Prompt Key */}
               <div className="mb-6">
-                <Input
-                  modelValue={promptKey}
-                  onUpdate={(val) => setPromptKey(val as string)}
-                  placeholder="Enter prompt key"
-                >
+                <Input modelValue={promptKey} onUpdate={(val) => setPromptKey(val as string)} placeholder="Enter prompt key">
                   Prompt Key *
                 </Input>
               </div>
@@ -237,22 +235,16 @@ export default function AnalysisTemplateReportPage() {
                   <label className="block text-sm font-medium mb-2">Select Ticker</label>
 
                   {/* Ticker Search using SearchBar component */}
-                  <SearchBar
-                    placeholder="Search for a ticker..."
-                    onResultClick={handleTickerSelect}
-                    variant="navbar"
-                  />
+                  <SearchBar placeholder="Search for a ticker..." onResultClick={handleTickerSelect} variant="navbar" />
 
                   {/* Selected Ticker Display */}
                   {selectedTicker && (
                     <div className="border border-gray-200 rounded p-3 mt-4">
                       <p className="font-medium">{selectedTicker.name}</p>
-                      <p className="text-sm text-gray-600">{selectedTicker.symbol} - {selectedTicker.exchange}</p>
-                      <Button
-                        onClick={() => setSelectedTicker(null)}
-                        variant="outlined"
-                        className="mt-2"
-                      >
+                      <p className="text-sm text-gray-600">
+                        {selectedTicker.symbol} - {selectedTicker.exchange}
+                      </p>
+                      <Button onClick={() => setSelectedTicker(null)} variant="outlined" className="mt-2">
                         Clear Selection
                       </Button>
                     </div>
@@ -260,11 +252,7 @@ export default function AnalysisTemplateReportPage() {
                 </div>
               ) : (
                 <div className="mb-6">
-                  <Input
-                    modelValue={companyName}
-                    onUpdate={(val) => setCompanyName(val as string)}
-                    placeholder="Enter company name"
-                  >
+                  <Input modelValue={companyName} onUpdate={(val) => setCompanyName(val as string)} placeholder="Enter company name">
                     Company Name *
                   </Input>
                 </div>

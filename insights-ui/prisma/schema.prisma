@@ -1227,6 +1227,7 @@ model AnalysisTemplateParameterReport {
   analysisTemplateParameter AnalysisTemplateParameter @relation(fields: [analysisTemplateParameterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   analysisTemplateReport    AnalysisTemplateReport    @relation(fields: [analysisTemplateReportId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
+  @@unique([analysisTemplateReportId, analysisTemplateParameterId])
   @@index([analysisTemplateParameterId])
   @@index([analysisTemplateReportId])
   @@map("analysis_template_parameter_reports")
