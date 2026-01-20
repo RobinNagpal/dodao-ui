@@ -12,7 +12,7 @@ import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '.prisma/client';
-import { getGroundedResponse } from './llm-grounding-utils';
+import { getGroundedResponse, GroundedResponse } from './llm-grounding-utils';
 
 // Type definitions
 export type RequestSource = 'ui' | 'langflow';
@@ -243,10 +243,15 @@ export async function getLLMResponse<Output>({
         console.log('Using Gemini with grounding - performing search first...');
 
         // Step 1: Get grounded response from Gemini with Google Search
-        const groundedResponse = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
+        const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
+
+        // Log the sources for debugging/transparency
+        if (groundedResponse.sources.length > 0) {
+          console.log('Grounding sources found:', groundedResponse.sources);
+        }
 
         // Step 2: Convert the grounded response to structured output
-        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;
+        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
         console.log('✅ Grounded response obtained, now converting to structured output');
       }
 

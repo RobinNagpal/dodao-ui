@@ -357,6 +357,7 @@ model Prompt {
   activePromptVersionId String?            @unique @map("active_prompt_version_id")
   activePromptVersion   PromptVersion?     @relation("ActivePromptVersion", fields: [activePromptVersionId], references: [id])
   PromptInvocation      PromptInvocation[]
+  analysisTemplates     AnalysisTemplate[]
 
   @@unique([spaceId, key])
   @@map("prompts")
@@ -1157,9 +1158,12 @@ model AnalysisTemplate {
   id          String   @id @default(uuid())
   name        String   @map("name")
   description String?  @map("description")
+  promptId    String?  @map("prompt_id")
+  promptKey   String?  @map("prompt_key")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
+  prompt               Prompt?               @relation(fields: [promptId], references: [id])
   categories            DetailedReportCategory[]
   tickerDetailedReports TickerV1DetailedReport[]
 
@@ -1204,6 +1208,8 @@ model TickerV1DetailedReport {
   analysisTypeId     String   @map("analysis_type_id")
   output             String   @map("output")
   result             String   @map("result")
+  /// [SourceLink]
+  sourceLinks        Json?    @map("source_links") 
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
