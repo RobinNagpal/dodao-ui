@@ -354,10 +354,10 @@ model Prompt {
   notes               String?         @map("notes")
   promptVersions      PromptVersion[]
 
-  activePromptVersionId String?            @unique @map("active_prompt_version_id")
-  activePromptVersion   PromptVersion?     @relation("ActivePromptVersion", fields: [activePromptVersionId], references: [id])
-  PromptInvocation      PromptInvocation[]
-  analysisTemplates     AnalysisTemplate[]
+  activePromptVersionId   String?                  @unique @map("active_prompt_version_id")
+  activePromptVersion     PromptVersion?           @relation("ActivePromptVersion", fields: [activePromptVersionId], references: [id])
+  PromptInvocation        PromptInvocation[]
+  analysisTemplateReports AnalysisTemplateReport[]
 
   @@unique([spaceId, key])
   @@map("prompts")
@@ -477,7 +477,7 @@ model TickerV1Industry {
   archived    Boolean @default(false) @map("archived")
 
   subIndustries          TickerV1SubIndustry[]
-  tickers                TickerV1[]               @relation("IndustryTickers")
+  tickers                TickerV1[]                 @relation("IndustryTickers")
   AnalysisCategoryFactor AnalysisCategoryFactor[]
   industryAnalyses       TickerV1IndustryAnalysis[]
 
@@ -552,9 +552,6 @@ model TickerV1 {
 
   // Relation to ticker notes
   tickerNotes TickerV1Notes[]
-
-  // Relation to detailed reports
-  tickerDetailedReports TickerV1DetailedReport[]
 
   @@unique([spaceId, symbol, exchange])
   // 🔎 simple FK indexes (good practice; Postgres doesn't auto-index FKs)
@@ -1114,13 +1111,13 @@ model DailyTopLoser {
 // --------------------------
 
 model TickerV1IndustryAnalysis {
-  id             String   @id @default(uuid())
-  name           String   @map("name")
-  industryKey    String   @unique @map("industry_key")
+  id              String   @id @default(uuid())
+  name            String   @map("name")
+  industryKey     String   @unique @map("industry_key")
   metaDescription String?  @map("meta_description")
-  details        String?   @map("details")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  details         String?  @map("details")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   // Relations
   industry TickerV1Industry @relation(fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
@@ -1135,10 +1132,10 @@ model TickerV1IndustryAnalysis {
 model IndustryBuildingBlockAnalysis {
   id                         String   @id @default(uuid())
   name                       String   @map("name")
-  buildingBlockKey     String   @unique @map("building_block_key")
+  buildingBlockKey           String   @unique @map("building_block_key")
   tickerV1IndustryAnalysisId String   @map("ticker_v1_industry_analysis_id")
   metaDescription            String?  @map("meta_description")
-  details                    String?   @map("details")
+  details                    String?  @map("details")
   createdAt                  DateTime @default(now()) @map("created_at")
   updatedAt                  DateTime @updatedAt @map("updated_at")
 
@@ -1158,19 +1155,16 @@ model AnalysisTemplate {
   id          String   @id @default(uuid())
   name        String   @map("name")
   description String?  @map("description")
-  promptId    String?  @map("prompt_id")
-  promptKey   String?  @map("prompt_key")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  prompt               Prompt?               @relation(fields: [promptId], references: [id])
-  categories            DetailedReportCategory[]
-  tickerDetailedReports TickerV1DetailedReport[]
+  categories              AnalysisTemplateCategory[]
+  analysisTemplateReports AnalysisTemplateReport[]
 
   @@map("analysis_templates")
 }
 
-model DetailedReportCategory {
+model AnalysisTemplateCategory {
   id                 String   @id @default(uuid())
   analysisTemplateId String   @map("analysis_template_id")
   name               String   @map("name")
@@ -1178,14 +1172,14 @@ model DetailedReportCategory {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  analysisTypes    AnalysisType[]
+  analysisTemplate   AnalysisTemplate            @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisParameters AnalysisTemplateParameter[]
 
   @@index([analysisTemplateId])
-  @@map("detailed_report_categories")
+  @@map("analysis_template_categories")
 }
 
-model AnalysisType {
+model AnalysisTemplateParameter {
   id                 String   @id @default(uuid())
   categoryId         String   @map("category_id")
   name               String   @map("name")
@@ -1194,31 +1188,46 @@ model AnalysisType {
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  category              DetailedReportCategory   @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  tickerDetailedReports TickerV1DetailedReport[]
+  category                AnalysisTemplateCategory          @relation(fields: [categoryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisTemplateReports AnalysisTemplateParameterReport[]
 
   @@index([categoryId])
-  @@map("analysis_types")
+  @@map("analysis_template_parameters")
 }
 
-model TickerV1DetailedReport {
+model AnalysisTemplateReport {
   id                 String   @id @default(uuid())
-  tickerId           String   @map("ticker_id")
   analysisTemplateId String   @map("analysis_template_id")
-  analysisTypeId     String   @map("analysis_type_id")
-  output             String   @map("output")
-  result             String   @map("result")
-  /// [SourceLink]
-  sourceLinks        Json?    @map("source_links") 
+  promptId           String   @map("prompt_id")
+  promptKey          String   @map("prompt_key")
+  inputObj           Json     @map("input_obj")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")
 
-  ticker           TickerV1         @relation(fields: [tickerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  analysisTemplate AnalysisTemplate @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  analysisType     AnalysisType     @relation(fields: [analysisTypeId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisTemplate AnalysisTemplate                  @relation(fields: [analysisTemplateId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  prompt           Prompt                            @relation(fields: [promptId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  parameterReports AnalysisTemplateParameterReport[]
 
-  @@index([tickerId])
   @@index([analysisTemplateId])
-  @@index([analysisTypeId])
-  @@map("ticker_v1_detailed_reports")
+  @@index([promptId])
+  @@map("analysis_template_reports")
+}
+
+model AnalysisTemplateParameterReport {
+  id                          String   @id @default(uuid())
+  analysisTemplateParameterId String   @map("analysis_template_parameter_id")
+  analysisTemplateReportId    String   @map("analysis_template_report_id")
+  output                      String   @map("output")
+  result                      String   @map("result")
+  /// [SourceLink]
+  sourceLinks                 Json?    @map("source_links")
+  createdAt                   DateTime @default(now()) @map("created_at")
+  updatedAt                   DateTime @updatedAt @map("updated_at")
+
+  analysisTemplateParameter AnalysisTemplateParameter @relation(fields: [analysisTemplateParameterId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  analysisTemplateReport    AnalysisTemplateReport    @relation(fields: [analysisTemplateReportId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@index([analysisTemplateParameterId])
+  @@index([analysisTemplateReportId])
+  @@map("analysis_template_parameter_reports")
 }
