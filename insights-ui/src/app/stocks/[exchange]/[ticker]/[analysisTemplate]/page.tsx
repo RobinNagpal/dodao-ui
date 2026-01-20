@@ -5,6 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TickerAnalysisData } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/[analysisTemplateId]/route';
 import { getAnalysisResultColorClasses } from '@/utils/score-utils';
+import { SourceLink } from '@/types/prismaTypes';
 
 interface TickerAnalysisPageProps {
   params: Promise<{
@@ -107,6 +108,30 @@ export default async function TickerAnalysisPage({ params }: TickerAnalysisPageP
                           <p className="text-xs text-gray-500">Generated on {new Date(analysis.createdAt).toLocaleDateString()}</p>
                         </div>
                         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(analysis.output) }} />
+
+                        {/* Source Links from Grounding */}
+                        {analysis.sourceLinks && analysis.sourceLinks.length > 0 && (
+                          <div className="mt-4 pt-4 border-t border-gray-600">
+                            <h5 className="text-sm font-semibold text-gray-300 mb-3">Sources:</h5>
+                            <div className="space-y-2">
+                              {analysis.sourceLinks.map((source: SourceLink, index: number) => (
+                                <div key={index} className="flex items-start gap-2">
+                                  <span className="text-xs text-gray-500 mt-0.5">{index + 1}.</span>
+                                  <a
+                                    href={source.uri}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-sm text-blue-400 hover:text-blue-300 underline hover:no-underline break-all"
+                                    title={source.uri}
+                                  >
+                                    {source.title || source.uri}
+                                  </a>
+                                </div>
+                              ))}
+                            </div>
+                            <p className="text-xs text-gray-500 mt-2 italic">Information sourced from web search results</p>
+                          </div>
+                        )}
                       </div>
                     );
                   })}

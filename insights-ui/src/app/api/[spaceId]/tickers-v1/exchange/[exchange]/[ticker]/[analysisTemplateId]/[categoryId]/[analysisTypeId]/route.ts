@@ -2,13 +2,22 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { getLLMResponse } from '@/util/get-llm-response';
-import { LLMProvider, GeminiModel, getDefaultGeminiModel } from '@/types/llmConstants';
-import { AnalysisResult } from '@/utils/score-utils';
+import { getLLMResponseForPromptViaInvocation, LLMResponseObject } from '@/util/get-llm-response';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
-// Type for text analysis response
-interface TextAnalysisResponse {
-  analysis: string;
+// Input interface for analysis
+interface AnalysisInput {
+  tickerName: string;
+  tickerSymbol: string;
+  exchange: string;
+  analysisTypeName: string;
+  analysisTypeDescription: string;
+  categoryName: string;
+}
+
+// Output interface for analysis
+interface AnalysisOutput {
+  output: string;
   result: 'poor' | 'fair' | 'good' | 'excellent' | 'unknown' | 'not_applicable';
 }
 
@@ -37,12 +46,40 @@ async function postHandler(
     },
   });
 
-  // Get the analysis type
-  const analysisType = await prisma.analysisType.findFirstOrThrow({
+  // Get the analysis template with prompt info and category/analysis type details
+  const analysisTemplate = await prisma.analysisTemplate.findFirstOrThrow({
     where: {
-      id: analysisTypeId,
+      id: analysisTemplateId,
+    },
+    include: {
+      categories: {
+        where: {
+          id: categoryId,
+        },
+        include: {
+          analysisTypes: {
+            where: {
+              id: analysisTypeId,
+            },
+          },
+        },
+      },
     },
   });
+
+  const category = analysisTemplate.categories[0];
+  if (!category) {
+    throw new Error('Category not found');
+  }
+
+  const analysisType = category.analysisTypes[0];
+  if (!analysisType) {
+    throw new Error('Analysis type not found');
+  }
+
+  if (!analysisTemplate.promptKey) {
+    throw new Error('Analysis template does not have a prompt key configured');
+  }
 
   // Check if analysis already exists
   const existingAnalysis = await prisma.tickerV1DetailedReport.findFirst({
@@ -63,28 +100,28 @@ async function postHandler(
   }
 
   try {
-    // Prepare the context for the analysis (simplified without unnecessary fields)
-    const tickerContext = `
-Provide stock specific information relevant to this Analysis Type, then decide the result (poor/fair/good/excellent). Use unknown if you can’t determine from available info; use not_applicable if it doesn’t apply to this business.
+    // Prepare input JSON for the prompt
+    const inputJson: AnalysisInput = {
+      tickerName: tickerRecord.name,
+      tickerSymbol: tickerRecord.symbol,
+      exchange: tickerRecord.exchange,
+      analysisTypeName: analysisType.name,
+      analysisTypeDescription: analysisType.description,
+      categoryName: category.name,
+    };
 
-Stock Information:
-- Company Name: ${tickerRecord.name}
-- Symbol: ${tickerRecord.symbol}
-- Exchange: ${tickerRecord.exchange}
+    // Use grounding with Gemini 2.5 Pro
+    const llmResponse: LLMResponseObject<AnalysisInput, AnalysisOutput> = await getLLMResponseForPromptViaInvocation({
+      spaceId: spaceId || KoalaGainsSpaceId,
+      inputJson,
+      promptKey: analysisTemplate.promptKey,
+      llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
+      model: GeminiModel.GEMINI_2_5_PRO_GROUNDING,
+      requestFrom: 'ui',
+    });
 
-You need to give very specific information for this stock on this analysis type.
-Analysis Type: ${analysisType.name}
-Description: ${analysisType.description}
-`;
-
-    // Build the full prompt, only add promptInstructions if it exists
-    let fullPrompt = tickerContext;
-    if (analysisType.promptInstructions) {
-      fullPrompt += `\nPlease provide the analysis based on the following instructions:\n\n${analysisType.promptInstructions}`;
-    }
-
-    // Generate analysis using structured output
-    const analysisResponse = await generateTextAnalysis(fullPrompt);
+    // Get source links from grounding response
+    const sourceLinks = llmResponse.sourceLinks && llmResponse.sourceLinks.length > 0 ? llmResponse.sourceLinks : undefined;
 
     // Save result to database
     await prisma.tickerV1DetailedReport.create({
@@ -92,64 +129,21 @@ Description: ${analysisType.description}
         tickerId: tickerRecord.id,
         analysisTemplateId: analysisTemplateId,
         analysisTypeId: analysisTypeId,
-        output: analysisResponse.analysis,
-        result: analysisResponse.result,
+        output: llmResponse.response.output,
+        result: llmResponse.response.result,
+        sourceLinks: sourceLinks,
       },
     });
 
     return {
       success: true,
       analysisTypeId: analysisTypeId,
-      output: analysisResponse.analysis,
-      result: analysisResponse.result,
+      output: llmResponse.response.output,
+      result: llmResponse.response.result,
     };
   } catch (error) {
     console.error(`Error generating analysis for type ${analysisType.name}:`, error);
     throw new Error(`Failed to generate analysis: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
-
-/** ---------- Helper Functions ---------- */
-
-async function generateTextAnalysis(prompt: string): Promise<TextAnalysisResponse> {
-  try {
-    // Fallback to regular Gemini with structured output
-    const invocationId = `ticker-text-analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-    // Schema for analysis with result
-    const textSchema = {
-      type: 'object',
-      properties: {
-        analysis: {
-          type: 'string',
-          description: 'The detailed analysis text in markdown format',
-        },
-        result: {
-          type: 'string',
-          description: 'Overall assessment result',
-          enum: ['poor', 'fair', 'good', 'excellent', 'unknown', 'not_applicable'],
-        },
-      },
-      required: ['analysis', 'result'],
-    };
-
-    const response = await getLLMResponse<TextAnalysisResponse>({
-      invocationId,
-      llmProvider: LLMProvider.GEMINI,
-      modelName: getDefaultGeminiModel(),
-      prompt,
-      outputSchema: textSchema,
-      maxRetries: 2,
-      skipInvocationTracking: true,
-    });
-
-    return {
-      analysis: response.analysis || 'Analysis completed but no content returned.',
-      result: response.result || 'fair',
-    };
-  } catch (error) {
-    console.error('Error generating analysis:', error);
-    throw new Error(`Failed to generate text analysis: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 

@@ -11,7 +11,7 @@ import {
   validateData,
 } from '@/util/get-llm-response';
 import path from 'path';
-import { PromptInvocationStatus } from '.prisma/client';
+import { PromptInvocationStatus } from '@prisma/client';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 
 export interface LLMResponseViaLambdaRequest<Input> {

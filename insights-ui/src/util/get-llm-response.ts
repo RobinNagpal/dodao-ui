@@ -11,7 +11,7 @@ import fs from 'fs';
 import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
-import { PromptInvocationStatus } from '.prisma/client';
+import { PromptInvocationStatus } from '@prisma/client';
 import { getGroundedResponse, GroundedResponse } from './llm-grounding-utils';
 
 // Type definitions
@@ -30,7 +30,6 @@ export interface LLMResponseOptions {
   outputSchema: object;
   maxRetries?: number;
   isTestInvocation?: boolean;
-  skipInvocationTracking?: boolean;
 }
 
 export interface LLMResponseViaInvocationRequest<Input> {
@@ -65,6 +64,7 @@ export interface LLMResponseObject<Input, Output> {
   prompt: string;
   response: Output;
   invocationId: string;
+  sourceLinks?: Array<{ uri: string; title?: string }>;
 }
 
 // Utility functions
@@ -230,9 +230,9 @@ export async function getLLMResponse<Output>({
   outputSchema,
   maxRetries = 1,
   isTestInvocation,
-  skipInvocationTracking = false,
-}: LLMResponseOptions): Promise<Output> {
+}: LLMResponseOptions): Promise<{ result: Output; sourceLinks?: Array<{ uri: string; title?: string }> }> {
   let lastResult: unknown | null = null;
+  let sourceLinks: Array<{ uri: string; title?: string }> | undefined;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
@@ -244,6 +244,9 @@ export async function getLLMResponse<Output>({
 
         // Step 1: Get grounded response from Gemini with Google Search
         const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
+
+        // Store source links
+        sourceLinks = groundedResponse.sources;
 
         // Log the sources for debugging/transparency
         if (groundedResponse.sources.length > 0) {
@@ -264,14 +267,12 @@ export async function getLLMResponse<Output>({
       console.log('Response from llm:', result);
       lastResult = result;
 
-      // Update invocation status (skip if tracking is disabled)
-      if (!skipInvocationTracking) {
-        await updateInvocationStatus(invocationId, PromptInvocationStatus.Completed, { outputJson: JSON.stringify(result) }, isTestInvocation);
-      }
+      // Update invocation status
+      await updateInvocationStatus(invocationId, PromptInvocationStatus.Completed, { outputJson: JSON.stringify(result) }, isTestInvocation);
 
-      // If test invocation or skip tracking, return early
-      if (isTestInvocation || skipInvocationTracking) {
-        return result;
+      // If test invocation, return early
+      if (isTestInvocation) {
+        return { result, sourceLinks };
       }
 
       // Validate output
@@ -281,7 +282,7 @@ export async function getLLMResponse<Output>({
         throw new Error(`Validation failed: ${JSON.stringify(errors)}`);
       }
 
-      return result;
+      return { result, sourceLinks };
     } catch (err: unknown) {
       const isLast = attempt === maxRetries;
       if (!isLast) {
@@ -289,9 +290,9 @@ export async function getLLMResponse<Output>({
         continue;
       }
 
-      if (lastResult !== null && !skipInvocationTracking) {
+      if (lastResult !== null) {
         await updateInvocationStatus(invocationId, PromptInvocationStatus.Failed, { outputJson: JSON.stringify(lastResult) }, isTestInvocation);
-      } else if (lastResult === null) {
+      } else {
         console.error('Last attempt failed, no result to save.');
         throw new Error(`Unexpected failure in getLLMResponse: ${err instanceof Error ? err.message : String(err)}`);
       }
@@ -373,7 +374,7 @@ export async function getLLMResponseForPromptViaInvocation<Input, Output>(
     const outputSchema = await loadSchema(outputSchemaPath, prompt.outputSchema);
 
     // Get LLM response
-    const result = await getLLMResponse<Output>({
+    const llmResult = await getLLMResponse<Output>({
       invocationId: invocation.id,
       llmProvider,
       modelName: model,
@@ -381,6 +382,8 @@ export async function getLLMResponseForPromptViaInvocation<Input, Output>(
       outputSchema,
       maxRetries: 2,
     });
+
+    const result = llmResult.result;
 
     // Prepare response object
     const originalObject: LLMResponseObject<Input, Output> = {
@@ -390,6 +393,7 @@ export async function getLLMResponseForPromptViaInvocation<Input, Output>(
       prompt: finalPrompt,
       response: result,
       invocationId: invocation.id,
+      sourceLinks: llmResult.sourceLinks,
     };
 
     // Apply transformation patch if available
@@ -481,7 +485,7 @@ export async function getLLMResponseForPromptViaTestInvocation<Output>(
     const outputSchema = await loadSchema(outputSchemaPath, dbPrompt.outputSchema);
 
     // Get LLM response
-    const result = await getLLMResponse<Output>({
+    const llmResult = await getLLMResponse<Output>({
       invocationId: invocation.id,
       llmProvider,
       modelName: model,
@@ -490,6 +494,8 @@ export async function getLLMResponseForPromptViaTestInvocation<Output>(
       maxRetries: 2,
       isTestInvocation: true,
     });
+
+    const result = llmResult.result;
 
     // Validate output
     const { valid: validOutput, errors: outputErrors } = validateData(outputSchema, result);
