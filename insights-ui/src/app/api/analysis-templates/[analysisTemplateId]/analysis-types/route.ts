@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisType } from '@prisma/client';
+import { AnalysisTemplateParameter } from '@prisma/client';
 
 export interface CreateAnalysisTypesRequest {
   categoryId: string;
@@ -11,13 +11,13 @@ export interface CreateAnalysisTypesRequest {
   }[];
 }
 
-async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<AnalysisType[]> {
+async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<AnalysisTemplateParameter[]> {
   const { analysisTemplateId } = await context.params;
   const body: CreateAnalysisTypesRequest = await req.json();
 
   const createdAnalysisTypes = await prisma.$transaction(
     body.analysisTypes.map((analysisType) =>
-      prisma.analysisType.create({
+      prisma.analysisTemplateParameter.create({
         data: {
           categoryId: body.categoryId,
           name: analysisType.name,
@@ -31,4 +31,4 @@ async function postHandler(req: Request, context: { params: Promise<{ analysisTe
   return createdAnalysisTypes;
 }
 
-export const POST = withErrorHandlingV2<AnalysisType[]>(postHandler);
+export const POST = withErrorHandlingV2<AnalysisTemplateParameter[]>(postHandler);

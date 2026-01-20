@@ -23,7 +23,6 @@ export default function AddEditAnalysisTemplateModal({ isOpen, onClose, onSucces
   const [formData, setFormData] = useState<CreateAnalysisTemplateRequest>({
     name: '',
     description: '',
-    promptKey: '',
   });
 
   // API hooks
@@ -46,14 +45,12 @@ export default function AddEditAnalysisTemplateModal({ isOpen, onClose, onSucces
         setFormData({
           name: existingTemplate.name,
           description: existingTemplate.description || '',
-          promptKey: existingTemplate.promptKey || '',
         });
       } else {
         // Reset form for new template
         setFormData({
           name: '',
           description: '',
-          promptKey: '',
         });
       }
     }
@@ -62,11 +59,6 @@ export default function AddEditAnalysisTemplateModal({ isOpen, onClose, onSucces
   const handleSubmit = async () => {
     if (!formData.name.trim()) {
       alert('Template name is required');
-      return;
-    }
-
-    if (!formData.promptKey.trim()) {
-      alert('Prompt key is required');
       return;
     }
 
@@ -105,22 +97,13 @@ export default function AddEditAnalysisTemplateModal({ isOpen, onClose, onSucces
             onUpdate={(val) => setFormData((prev) => ({ ...prev, description: val as string }))}
             placeholder="Enter template description (optional)"
           />
-
-          <Input
-            modelValue={formData.promptKey}
-            onUpdate={(val) => setFormData((prev) => ({ ...prev, promptKey: val as string }))}
-            placeholder="Enter prompt key"
-            required
-          >
-            Prompt Key *
-          </Input>
         </div>
 
         <div className="flex gap-4 mt-6 pt-4 border-t border-gray-200">
           <Button onClick={handleClose} variant="outlined" className="flex-1">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} primary loading={loading} disabled={!formData.name.trim() || !formData.promptKey.trim()} className="flex-1">
+          <Button onClick={handleSubmit} primary loading={loading} disabled={!formData.name.trim()} className="flex-1">
             {isEdit ? 'Update' : 'Create'} Template
           </Button>
         </div>

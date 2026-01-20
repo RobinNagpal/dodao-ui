@@ -2,7 +2,6 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { AnalysisTemplateWithRelations, CreateAnalysisTemplateRequest } from '../route';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 async function getHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<AnalysisTemplateWithRelations> {
   const { analysisTemplateId } = await context.params;
@@ -14,7 +13,7 @@ async function getHandler(req: Request, context: { params: Promise<{ analysisTem
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -30,14 +29,6 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ analysi
   const { analysisTemplateId } = await context.params;
   const body: CreateAnalysisTemplateRequest = await req.json();
 
-  // Find prompt by key (required)
-  const prompt = await prisma.prompt.findFirstOrThrow({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      key: body.promptKey,
-    },
-  });
-
   const updatedTemplate = await prisma.analysisTemplate.update({
     where: {
       id: analysisTemplateId,
@@ -45,13 +36,11 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ analysi
     data: {
       name: body.name,
       description: body.description,
-      promptId: prompt.id,
-      promptKey: body.promptKey,
     },
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
         orderBy: {
           createdAt: 'desc',

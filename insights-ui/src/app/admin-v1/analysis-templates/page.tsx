@@ -6,7 +6,7 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
-import { CreateAnalysisTemplateRequest, AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
+import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 import AddEditAnalysisTemplateModal from './AddEditAnalysisTemplateModal';
 import { PencilIcon } from '@heroicons/react/24/outline';
 
@@ -64,9 +64,8 @@ export default function DetailedReportsAdminPage() {
 
                   <div className="mb-4">
                     <div className="text-sm text-gray-500">
-                      {template.categories.length} categories, {template.categories.reduce((total, cat) => total + cat.analysisTypes.length, 0)} analysis types
+                      {template.categories.length} categories, {template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)} analysis parameters
                     </div>
-                    {template.promptKey && <div className="text-sm text-blue-600 mt-1">Prompt: {template.promptKey}</div>}
                   </div>
 
                   <div className="flex gap-2">

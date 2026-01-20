@@ -1,19 +1,17 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisTemplate, DetailedReportCategory, AnalysisType } from '@prisma/client';
+import { AnalysisTemplate, AnalysisTemplateCategory, AnalysisTemplateParameter } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export interface CreateAnalysisTemplateRequest {
   name: string;
   description?: string;
-  promptKey: string;
 }
 
 export type AnalysisTemplateWithRelations = AnalysisTemplate & {
   categories: Array<
-    DetailedReportCategory & {
-      analysisTypes: AnalysisType[];
+    AnalysisTemplateCategory & {
+      analysisParameters: AnalysisTemplateParameter[];
     }
   >;
 };
@@ -23,7 +21,7 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
       },
     },
@@ -37,25 +35,15 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
 async function postHandler(req: NextRequest): Promise<AnalysisTemplateWithRelations> {
   const body: CreateAnalysisTemplateRequest = await req.json();
 
-  // Find prompt by key (required)
-  const prompt = await prisma.prompt.findFirstOrThrow({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      key: body.promptKey,
-    },
-  });
-
   const createdTemplate = await prisma.analysisTemplate.create({
     data: {
       name: body.name,
       description: body.description,
-      promptId: prompt.id,
-      promptKey: body.promptKey,
     },
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
       },
     },

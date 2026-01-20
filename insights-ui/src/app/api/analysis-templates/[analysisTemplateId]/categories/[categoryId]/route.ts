@@ -1,11 +1,11 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DetailedReportCategory } from '@prisma/client';
+import { AnalysisTemplateCategory } from '@prisma/client';
 
-async function deleteHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string; categoryId: string }> }): Promise<DetailedReportCategory> {
+async function deleteHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string; categoryId: string }> }): Promise<AnalysisTemplateCategory> {
   const { categoryId } = await context.params;
 
-  const deletedCategory = await prisma.detailedReportCategory.delete({
+  const deletedCategory = await prisma.analysisTemplateCategory.delete({
     where: {
       id: categoryId,
     },
@@ -14,4 +14,4 @@ async function deleteHandler(req: Request, context: { params: Promise<{ analysis
   return deletedCategory;
 }
 
-export const DELETE = withErrorHandlingV2<DetailedReportCategory>(deleteHandler);
+export const DELETE = withErrorHandlingV2<AnalysisTemplateCategory>(deleteHandler);

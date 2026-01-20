@@ -8,7 +8,6 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
-import AdminNav from '../AdminNav';
 import { GeneratedAnalysis } from '../../api/analysis-templates/detailed-reports/route';
 import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 import { GenerateAnalysisTypeResponse } from '../../api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/[analysisTemplateId]/[categoryId]/[analysisTypeId]/route';
