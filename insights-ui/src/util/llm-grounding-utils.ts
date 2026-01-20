@@ -33,15 +33,28 @@ export async function getGroundedResponse(prompt: string, modelName: GeminiModel
   // Extract grounding sources from the response
   const sources: Array<{ uri: string; title?: string }> = [];
 
-  if (searchResponse.candidates && searchResponse.candidates[0]?.groundingAttributions) {
-    for (const attribution of searchResponse.candidates[0].groundingAttributions) {
-      if (attribution.sources) {
-        for (const source of attribution.sources) {
-          sources.push({
-            uri: source.uri,
-            title: source.title,
-          });
-        }
+  if (searchResponse.candidates && searchResponse.candidates[0]?.groundingMetadata?.groundingChunks) {
+    for (const chunk of searchResponse.candidates[0].groundingMetadata.groundingChunks) {
+      // Handle web sources
+      if (chunk.web) {
+        sources.push({
+          uri: chunk.web.uri || '',
+          title: chunk.web.title,
+        });
+      }
+      // Handle maps sources
+      else if (chunk.maps) {
+        sources.push({
+          uri: chunk.maps.uri || '',
+          title: chunk.maps.title,
+        });
+      }
+      // Handle retrieved context sources
+      else if (chunk.retrievedContext) {
+        sources.push({
+          uri: chunk.retrievedContext.uri || '',
+          title: chunk.retrievedContext.title,
+        });
       }
     }
   }
