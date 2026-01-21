@@ -83,7 +83,12 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [selectedInvocation, setSelectedInvocation] = useState<TestPromptInvocation>();
 
-  const modelItems: StyledSelectItem[] = [{ id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' }];
+  const llmProviderItems: StyledSelectItem[] = [{ id: LLMProvider.GEMINI, label: 'Gemini' }];
+
+  const modelItems: StyledSelectItem[] = [
+    { id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' },
+    { id: GeminiModel.GEMINI_3_PRO_PREVIEW, label: 'Gemini 3 Pro Preview' },
+  ];
 
   // When the parent prompt data loads, update our form state.
   useEffect(() => {
@@ -235,13 +240,19 @@ export default function CreateTestPromptInvocationPage(): JSX.Element {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="mb-4">
-            <label className="block mb-2">LLM Provider</label>
-            <input
-              type="text"
-              value={formData.llmProvider}
-              onChange={(e) => setFormData((prev) => ({ ...prev, llmProvider: e.target.value as LLMProvider }))}
-              className="border border-color p-2 w-full text-color block-bg-color"
-              readOnly
+            <StyledSelect
+              label="LLM Provider"
+              selectedItemId={formData.llmProvider}
+              items={llmProviderItems}
+              setSelectedItemId={(provider) => {
+                const newProvider = (provider as LLMProvider) || LLMProvider.GEMINI;
+                const defaultModel = GeminiModel.GEMINI_2_5_PRO;
+                setFormData((prev) => ({
+                  ...prev,
+                  llmProvider: newProvider,
+                  model: defaultModel,
+                }));
+              }}
             />
           </div>
 

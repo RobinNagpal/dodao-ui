@@ -2,7 +2,7 @@ import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { getDefaultGeminiModel, LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { saveCompetitionAnalysisResponse } from '@/utils/analysis-reports/save-report-utils';
 import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';

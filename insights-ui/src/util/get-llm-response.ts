@@ -12,7 +12,7 @@ import Handlebars from 'handlebars';
 import jsonpatch from 'jsonpatch';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
-import { getGroundedResponse, GroundedResponse } from './llm-grounding-utils';
+import { getGroundedResponse, getGroundedStructuredResponse, GroundedResponse } from './llm-grounding-utils';
 
 // Type definitions
 export type RequestSource = 'ui' | 'langflow';
@@ -237,34 +237,66 @@ export async function getLLMResponse<Output>({
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       let finalPrompt = prompt;
+      let singleCallGroundedResult: Output | null = null;
 
-      // Handle Gemini with grounding - two-step process
+      // Handle Gemini with grounding
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        console.log('Using Gemini with grounding - performing search first...');
+        // Only use single-call grounded structured output for GEMINI_3_PRO_PREVIEW
+        if (modelName === GeminiModel.GEMINI_3_PRO_PREVIEW) {
+          console.log('Using Gemini 3 Pro Preview with grounding - trying single-call grounded structured output...');
 
-        // Step 1: Get grounded response from Gemini with Google Search
-        const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, GeminiModel.GEMINI_2_5_PRO_GROUNDING);
+          try {
+            const groundedStructured = await getGroundedStructuredResponse<Output>(prompt, modelName, outputSchema);
 
-        // Store source links
-        sourceLinks = groundedResponse.sources;
+            sourceLinks = groundedStructured.sources;
+            singleCallGroundedResult = groundedStructured.result;
 
-        // Log the sources for debugging/transparency
-        if (groundedResponse.sources.length > 0) {
-          console.log('Grounding sources found:', groundedResponse.sources);
+            console.log('✅ Single-call grounded structured output succeeded');
+            console.log('Single-call grounded structured output result:', singleCallGroundedResult);
+          } catch (singleCallErr) {
+            console.warn('⚠️ Single-call grounded structured output failed; falling back to 2-step...', singleCallErr);
+
+            // Step 1: Get grounded response from Gemini with Google Search
+            const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName);
+
+            // Store source links
+            sourceLinks = groundedResponse.sources;
+
+            // Step 2: Convert grounded text to structured output using LangChain
+            finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
+            console.log('✅ Grounded response obtained, now converting to structured output (fallback)');
+          }
+        } else {
+          // For other models (like GEMINI_2_5_PRO), always use 2-step approach
+          console.log('Using Gemini with grounding - 2-step approach for model:', modelName);
+
+          // Step 1: Get grounded response from Gemini with Google Search
+          const groundedResponse: GroundedResponse = await getGroundedResponse(prompt, modelName);
+
+          // Store source links
+          sourceLinks = groundedResponse.sources;
+
+          // Step 2: Convert grounded text to structured output using LangChain
+          finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
+          console.log('✅ Grounded response obtained, now converting to structured output');
         }
-
-        // Step 2: Convert the grounded response to structured output
-        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
-        console.log('✅ Grounded response obtained, now converting to structured output');
       }
 
-      // Initialize LLM for structured output
-      const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
-      const structured = llm.withStructuredOutput(outputSchema);
+      // If single-call succeeded, we already have Output.
+      // Otherwise, we use LangChain structured output (normal path or fallback path).
+      let result: Output;
+      if (singleCallGroundedResult !== null) {
+        result = singleCallGroundedResult;
+      } else {
+        // Initialize LLM for structured output
+        const llm = initializeLLM(llmProvider === LLMProvider.GEMINI_WITH_GROUNDING ? LLMProvider.GEMINI : llmProvider, modelName);
+        const structured = llm.withStructuredOutput(outputSchema);
 
-      // Get response from LLM
-      const result = (await structured.invoke(finalPrompt)) as Output;
-      console.log('Response from llm:', result);
+        // Get response from LLM
+        result = (await structured.invoke(finalPrompt)) as Output;
+        console.log('Response from llm:', result);
+      }
+
       lastResult = result;
 
       // Update invocation status

@@ -1,4 +1,3 @@
-// app/prompts/[promptId]/invocations/create/page.tsx
 'use client';
 
 import { FullPromptResponse } from '@/app/api/[spaceId]/prompts/[promptId]/route';
@@ -129,7 +128,10 @@ export default function CreateInvocationPage(): JSX.Element {
 
   const getModelItems = (provider: LLMProvider): StyledSelectItem[] => {
     if (provider === LLMProvider.GEMINI) {
-      return [{ id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' }];
+      return [
+        { id: GeminiModel.GEMINI_2_5_PRO, label: 'Gemini 2.5 Pro' },
+        { id: GeminiModel.GEMINI_3_PRO_PREVIEW, label: 'Gemini 3 Pro Preview' },
+      ];
     }
     return [];
   };

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { prisma } from '@/prisma';
 import { getLlmResponse } from './llm‑utils‑gemini';
 import { generateMetaDescriptionPrompt, MetaDescriptionResponse, MetaDescriptionResponseType } from '@/lib/promptForMetaDescriptionV1';
-import { GeminiModelType } from '@/types/llmConstants';
+import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 async function generateMetaDescriptionsForExistingTickers() {
   console.log('🚀 Starting meta description generation for existing tickers...');
@@ -49,7 +49,8 @@ async function generateMetaDescriptionsForExistingTickers() {
         const metaDescriptionResult = await getLlmResponse<MetaDescriptionResponseType>(
           metaDescriptionPrompt,
           MetaDescriptionResponse,
-          GeminiModelType.GEMINI_2_5_PRO,
+          LLMProvider.GEMINI,
+          getDefaultGeminiModel(),
           3,
           1000
         );
