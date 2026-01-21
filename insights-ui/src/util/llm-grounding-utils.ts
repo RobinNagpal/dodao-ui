@@ -2,7 +2,6 @@ import { GoogleGenAI } from '@google/genai';
 import { GeminiModel } from '@/types/llmConstants';
 
 const geminiWithSearchModel = new GoogleGenAI({
-  vertexai: true,
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
