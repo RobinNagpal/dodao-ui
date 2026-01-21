@@ -2,7 +2,6 @@ import { GoogleGenAI } from '@google/genai';
 import { GeminiModel } from '@/types/llmConstants';
 
 const geminiWithSearchModel = new GoogleGenAI({
-  vertexai: true,
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
@@ -59,7 +58,7 @@ export async function getGroundedStructuredResponse<Output>(
   outputJsonSchema: object
 ): Promise<GroundedStructuredResponse<Output>> {
   const resp: any = await geminiWithSearchModel.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: modelName,
     contents: [
       {
         role: 'user',
