@@ -58,7 +58,7 @@ export async function getGroundedStructuredResponse<Output>(
   outputJsonSchema: object
 ): Promise<GroundedStructuredResponse<Output>> {
   const resp: any = await geminiWithSearchModel.models.generateContent({
-    model: 'gemini-2.5-flash',
+    model: modelName,
     contents: [
       {
         role: 'user',
