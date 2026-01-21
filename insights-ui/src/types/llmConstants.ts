@@ -9,13 +9,6 @@ export enum LLMProvider {
 
 export enum GeminiModel {
   GEMINI_2_5_PRO = 'gemini-2.5-pro',
-  GEMINI_2_5_PRO_GROUNDING = 'gemini-2.5-pro', // For GoogleGenAI grounding calls (no "models/" prefix)
-  GEMINI_3_PRO_PREVIEW = 'gemini-3-pro-preview',
-}
-
-export enum GeminiModelType {
-  GEMINI_2_5_PRO = 'gemini-2.5-pro',
-  GEMINI_2_5_PRO_WITH_GOOGLE_SEARCH = 'gemini-2.5-pro-with-google-search',
   GEMINI_3_PRO_PREVIEW = 'gemini-3-pro-preview',
 }
 

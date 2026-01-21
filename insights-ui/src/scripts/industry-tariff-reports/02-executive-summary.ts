@@ -3,7 +3,7 @@ import { ExecutiveSummary, IndustryAreasWrapper, TariffUpdatesForIndustry } from
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { GeminiModelType } from '@/types/llmConstants';
+import { LLMProvider, GeminiModel } from '@/types/llmConstants';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -64,7 +64,7 @@ async function getExecutiveSummary(
   tariffSummaries: string[]
 ): Promise<ExecutiveSummary> {
   const prompt = getExecutiveSummaryPrompt(industry, headings, tariffUpdates, tariffSummaries);
-  const response = await getLlmResponse<ExecutiveSummary>(prompt, ExecutiveSummarySchema, GeminiModelType.GEMINI_2_5_PRO);
+  const response = await getLlmResponse<ExecutiveSummary>(prompt, ExecutiveSummarySchema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO);
 
   return response;
 }
