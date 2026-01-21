@@ -2,18 +2,23 @@ $schema: 'http://json-schema.org/draft-07/schema#'
 type: object
 additionalProperties: false
 properties:
-  # Ticker Information
+  # Ticker Information (optional - only present for ticker analysis)
   tickerName:
     type: string
-    description: 'The full name of the company (e.g., Apple Inc.).'
+    description: 'The full name of the company (e.g., Apple Inc.). Only required for ticker analysis.'
   tickerSymbol:
     type: string
-    description: 'The stock ticker symbol (e.g., AAPL).'
+    description: 'The stock ticker symbol (e.g., AAPL). Only required for ticker analysis.'
   exchange:
     type: string
-    description: 'Exchange code, e.g. "NASDAQ" or "NYSE"'
-  
-  # Analysis Type Information
+    description: 'Exchange code, e.g. "NASDAQ" or "NYSE". Only required for ticker analysis.'
+
+  # Company Information (optional - only present for company analysis)
+  companyName:
+    type: string
+    description: 'The full name of the company (e.g., Apple Inc.). Only required for company analysis.'
+
+  # Analysis Type Information (always required)
   analysisTypeName:
     type: string
     description: 'Name of the analysis type being performed (e.g., Competition Analysis, Financial Health).'
@@ -23,11 +28,8 @@ properties:
   categoryName:
     type: string
     description: 'Name of the category this analysis belongs to (e.g., Market Position, Financial Metrics).'
-  
+
 required:
-  - tickerName
-  - tickerSymbol
-  - exchange
   - analysisTypeName
   - analysisTypeDescription
   - categoryName

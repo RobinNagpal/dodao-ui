@@ -220,7 +220,7 @@ export default function AnalysisTemplateDetailPage() {
     })) || [];
 
   if (templateLoading) {
-    return <FullPageLoader message="Loading template..." />;
+    return <FullPageLoader />;
   }
 
   if (!template) {

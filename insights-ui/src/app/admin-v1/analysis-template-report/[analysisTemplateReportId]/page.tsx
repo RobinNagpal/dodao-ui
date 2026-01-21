@@ -1,17 +1,11 @@
-'use client';
-
 import { parseMarkdown } from '@/util/parse-markdown';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
-import { use } from 'react';
-import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import Link from 'next/link';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { AnalysisTemplateReportWithRelations } from '../../../api/analysis-template-reports/route';
 import { getAnalysisResultColorClasses } from '@/utils/score-utils';
 import { SourceLink } from '@/types/prismaTypes';
 import { AnalysisTemplateParameterReport, AnalysisTemplateParameter, AnalysisTemplateCategory } from '@prisma/client';
-import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 
 type ParameterReportWithRelations = AnalysisTemplateParameterReport & {
   analysisTemplateParameter: AnalysisTemplateParameter & {
@@ -40,34 +34,32 @@ function groupParameterReportsByCategory(parameterReports: ParameterReportWithRe
   }));
 }
 
-export default function AnalysisTemplateReportPage({ params }: AnalysisTemplateReportPageProps) {
-  const { analysisTemplateReportId } = use(params);
+async function fetchAnalysisTemplateReport(analysisTemplateReportId: string): Promise<AnalysisTemplateReportWithRelations> {
+  const url = `${getBaseUrlForServerSidePages()}/api/analysis-template-reports/${analysisTemplateReportId}`;
+  const res = await fetch(url, { cache: 'no-cache' });
 
-  const {
-    data: report,
-    loading,
-    error,
-  } = useFetchData<AnalysisTemplateReportWithRelations>(
-    `${getBaseUrl()}/api/analysis-template-reports/${analysisTemplateReportId}`,
-    { cache: 'no-cache' },
-    'Failed to fetch analysis template report'
-  );
-
-  if (loading) {
-    return <FullPageLoader />;
+  if (!res.ok) {
+    if (res.status === 404) {
+      notFound();
+    }
+    throw new Error(`Failed to fetch analysis template report: ${res.status}`);
   }
 
-  if (error || !report) {
-    return (
-      <PageWrapper>
-        <div className="text-red-500">{error}</div>
-      </PageWrapper>
-    );
+  const data = (await res.json()) as AnalysisTemplateReportWithRelations;
+  if (!data) {
+    throw new Error('Failed to fetch analysis template report: empty response');
   }
+
+  return data;
+}
+
+export default async function AnalysisTemplateReportPage({ params }: AnalysisTemplateReportPageProps) {
+  const { analysisTemplateReportId } = await params;
+
+  const report = await fetchAnalysisTemplateReport(analysisTemplateReportId);
 
   const isTickerAnalysis = report.promptKey === 'US/ticker-analysis-template';
   const isCompanyAnalysis = report.promptKey === 'US/company-analysis-template';
-  const inputObj = report.inputObj as any;
 
   const groupedReports = groupParameterReportsByCategory(report.parameterReports as ParameterReportWithRelations[]);
 
@@ -105,17 +97,6 @@ export default function AnalysisTemplateReportPage({ params }: AnalysisTemplateR
                 })()}
               </div>
             </div>
-            <div className="flex gap-4">
-              <Link
-                href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}/generate`}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Generate More Analysis
-              </Link>
-              <Link href="/admin-v1/analysis-template-report" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                Back to Reports
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -123,12 +104,7 @@ export default function AnalysisTemplateReportPage({ params }: AnalysisTemplateR
           <div className="text-center py-12">
             <p className="text-gray-500 mb-4">No analysis results found</p>
             <p className="text-sm text-gray-400 mb-6">Generate analysis using the admin panel</p>
-            <Link
-              href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}/generate`}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-block"
-            >
-              Generate Analysis
-            </Link>
+            <div className="px-6 py-3 bg-gray-600 text-white rounded-lg inline-block">No Analysis Available</div>
           </div>
         ) : (
           <div className="space-y-8">

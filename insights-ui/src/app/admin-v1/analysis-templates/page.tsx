@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
 import AddEditAnalysisTemplateModal from './AddEditAnalysisTemplateModal';
 import { PencilIcon } from '@heroicons/react/24/outline';
+import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 
 export default function DetailedReportsAdminPage() {
   const [showModal, setShowModal] = useState(false);
@@ -39,6 +40,10 @@ export default function DetailedReportsAdminPage() {
     refetchTemplates();
   };
 
+  if (templatesLoading) {
+    return <FullPageLoader />;
+  }
+
   return (
     <PageWrapper>
       <div className="text-color">
@@ -53,9 +58,7 @@ export default function DetailedReportsAdminPage() {
 
         {/* Templates List */}
         <div>
-          {templatesLoading ? (
-            <p>Loading templates...</p>
-          ) : templates && templates.length > 0 ? (
+          {templates && templates.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {templates.map((template) => (
                 <div key={template.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
