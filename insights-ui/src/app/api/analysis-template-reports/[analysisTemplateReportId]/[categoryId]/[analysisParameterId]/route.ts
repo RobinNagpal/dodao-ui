@@ -3,7 +3,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { getLLMResponseForPromptViaInvocation, LLMResponseObject } from '@/util/get-llm-response';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 // Input interface for analysis
 interface AnalysisInput {
@@ -115,7 +115,7 @@ async function postHandler(
       inputJson,
       promptKey,
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: getDefaultGeminiModel(),
       requestFrom: 'ui',
     });
 

@@ -21,7 +21,7 @@ import {
   TariffUpdatesForIndustry,
 } from './tariff-types';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 // ---------------------------------------------------------------------------
 // ─── 1. TYPE & SCHEMA EXTENSIONS ────────────────────────────────────────────
@@ -230,7 +230,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     instructions: detailInstructions,
   });
 
-  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO);
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
 }
 
 function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
@@ -315,7 +315,7 @@ ${JSON.stringify(areas, null, 2)}
     prompt,
     EstablishedPlayerListSchema,
     LLMProvider.GEMINI,
-    GeminiModel.GEMINI_2_5_PRO
+    getDefaultGeminiModel()
   );
   console.log(`[EstablishedPlayers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -368,7 +368,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     },
   });
 
-  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO);
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
 }
 
 /**
@@ -445,7 +445,7 @@ ${JSON.stringify(areas, null, 2)}
     prompt,
     NewChallengerListSchema,
     LLMProvider.GEMINI,
-    GeminiModel.GEMINI_2_5_PRO
+    getDefaultGeminiModel()
   );
   console.log(`[NewChallengers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -478,7 +478,7 @@ async function getHeadwindsAndTailwinds(
     instructions,
   });
 
-  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO);
+  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
 }
 
 /**
@@ -508,7 +508,7 @@ async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffU
     negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
   }
 
-  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO);
+  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema, LLMProvider.GEMINI, getDefaultGeminiModel());
 }
 
 /**
@@ -558,7 +558,7 @@ async function getTariffImpactSummary(
     summary: string;
   }
 
-  return (await getLlmResponse<TariffImpactSummary>(prompt, schema, LLMProvider.GEMINI, GeminiModel.GEMINI_2_5_PRO)).summary;
+  return (await getLlmResponse<TariffImpactSummary>(prompt, schema, LLMProvider.GEMINI, getDefaultGeminiModel())).summary;
 }
 
 export async function getAndWriteEvaluateIndustryAreaJson(

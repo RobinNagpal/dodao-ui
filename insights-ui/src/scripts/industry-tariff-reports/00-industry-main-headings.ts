@@ -3,7 +3,7 @@ import { writeJsonForIndustryAreas } from '@/scripts/industry-tariff-reports/tar
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z, ZodObject } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 export const PublicCompanySchema = z.object({
   name: z.string().describe('Name of the public company.'),
@@ -50,12 +50,7 @@ function getMainIndustryPrompt(industryId: TariffIndustryId) {
 }
 
 export async function getAndWriteIndustryHeadings(industryId: TariffIndustryId) {
-  const areas = await getLlmResponse<IndustryAreasWrapper>(
-    getMainIndustryPrompt(industryId),
-    IndustryAreasSchema,
-    LLMProvider.GEMINI,
-    GeminiModel.GEMINI_2_5_PRO
-  );
+  const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(industryId), IndustryAreasSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
   console.log(JSON.stringify(areas, null, 2));
 
   // Upload JSON to S3

@@ -3,7 +3,7 @@ import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tar
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
-import { LLMProvider, GeminiModel } from '@/types/llmConstants';
+import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -114,7 +114,7 @@ export async function getUnderstandIndustry(industry: TariffIndustryId, headings
     getUnderstandIndustryPrompt(industry, headings),
     UnderstandIndustrySchema,
     LLMProvider.GEMINI,
-    GeminiModel.GEMINI_2_5_PRO
+    getDefaultGeminiModel()
   );
 }
 
