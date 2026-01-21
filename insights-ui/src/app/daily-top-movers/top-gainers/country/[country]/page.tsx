@@ -31,8 +31,6 @@ export default async function DailyTopGainersPage({ params }: PageProps) {
 
   const topGainers: TopGainerWithTicker[] = await response.json();
 
-  console.log('topGainers', topGainers);
-
   // Generate structured data
   const breadcrumbSchema = generateCountryMoversBreadcrumbSchema(country, DailyMoverType.GAINER);
 
