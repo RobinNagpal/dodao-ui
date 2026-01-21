@@ -36,3 +36,24 @@
 .react-datepicker__navigation:hover *::before {
   @apply border-white;
 }
+
+/* Override Tailwind's default input styles for DatePicker */
+.react-datepicker__input-container input {
+  background-color: var(--bg-color) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Additional override for the DatePicker input specifically */
+.date-picker-input {
+  background-color: var(--bg-color) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+/* Most specific override to ensure it works in production */
+input.date-picker-input[type="text"] {
+  background-color: var(--bg-color) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-color) !important;
+}
