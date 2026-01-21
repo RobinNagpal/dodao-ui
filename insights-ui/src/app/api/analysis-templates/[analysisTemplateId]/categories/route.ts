@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DetailedReportCategory, AnalysisType } from '@prisma/client';
+import { AnalysisTemplateCategory, AnalysisTemplateParameter } from '@prisma/client';
 
 export interface CreateCategoriesRequest {
   categories: {
@@ -9,24 +9,24 @@ export interface CreateCategoriesRequest {
   }[];
 }
 
-export type DetailedReportCategoryWithTypes = DetailedReportCategory & {
-  analysisTypes: AnalysisType[];
+export type AnalysisTemplateCategoryWithTypes = AnalysisTemplateCategory & {
+  analysisParameters: AnalysisTemplateParameter[];
 };
 
-async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<DetailedReportCategoryWithTypes[]> {
+async function postHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string }> }): Promise<AnalysisTemplateCategoryWithTypes[]> {
   const { analysisTemplateId } = await context.params;
   const body: CreateCategoriesRequest = await req.json();
 
   const createdCategories = await prisma.$transaction(
     body.categories.map((category) =>
-      prisma.detailedReportCategory.create({
+      prisma.analysisTemplateCategory.create({
         data: {
           analysisTemplateId,
           name: category.name,
           description: category.description,
         },
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
       })
     )
@@ -35,4 +35,4 @@ async function postHandler(req: Request, context: { params: Promise<{ analysisTe
   return createdCategories;
 }
 
-export const POST = withErrorHandlingV2<DetailedReportCategoryWithTypes[]>(postHandler);
+export const POST = withErrorHandlingV2<AnalysisTemplateCategoryWithTypes[]>(postHandler);

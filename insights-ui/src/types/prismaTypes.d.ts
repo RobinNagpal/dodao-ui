@@ -168,6 +168,13 @@ export interface KpisQuarterlyData {
 
 export type TopCompaniesToConsider = CompetitionAnalysisType;
 
+export interface SourceLink {
+  uri: string;
+  title?: string;
+}
+
+export type SourceLinks = SourceLink[];
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
@@ -185,5 +192,7 @@ declare global {
     type RatiosQuarterlyData = RatiosQuarterlyData;
     type KpisAnnualData = KpisAnnualData;
     type KpisQuarterlyData = KpisQuarterlyData;
+    // LLM grounding sources
+    type SourceLinks = SourceLinks;
   }
 }

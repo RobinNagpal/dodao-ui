@@ -7,7 +7,7 @@ import {
   PerformanceChecklistItem as PerformanceChecklistItemPrisma,
   Ticker,
 } from '@prisma/client';
-import { CriteriaMatchesOfLatest10Q, CriterionMatch, Latest10QInfo } from '.prisma/client';
+import { CriteriaMatchesOfLatest10Q, CriterionMatch, Latest10QInfo } from '@prisma/client';
 
 export enum ProcessingStatus {
   Completed = 'Completed',

@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { CriteriaMatchesOfLatest10Q } from '.prisma/client';
+import { CriteriaMatchesOfLatest10Q } from '@prisma/client';
 
 const updateMatchingAttachmentProcessedCount = async (
   req: NextRequest,

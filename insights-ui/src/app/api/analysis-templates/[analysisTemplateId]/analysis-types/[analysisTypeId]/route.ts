@@ -1,11 +1,14 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisType } from '@prisma/client';
+import { AnalysisTemplateParameter } from '@prisma/client';
 
-async function deleteHandler(req: Request, context: { params: Promise<{ analysisTemplateId: string; analysisTypeId: string }> }): Promise<AnalysisType> {
+async function deleteHandler(
+  req: Request,
+  context: { params: Promise<{ analysisTemplateId: string; analysisTypeId: string }> }
+): Promise<AnalysisTemplateParameter> {
   const { analysisTypeId } = await context.params;
 
-  const deletedAnalysisType = await prisma.analysisType.delete({
+  const deletedAnalysisType = await prisma.analysisTemplateParameter.delete({
     where: {
       id: analysisTypeId,
     },
@@ -14,4 +17,4 @@ async function deleteHandler(req: Request, context: { params: Promise<{ analysis
   return deletedAnalysisType;
 }
 
-export const DELETE = withErrorHandlingV2<AnalysisType>(deleteHandler);
+export const DELETE = withErrorHandlingV2<AnalysisTemplateParameter>(deleteHandler);

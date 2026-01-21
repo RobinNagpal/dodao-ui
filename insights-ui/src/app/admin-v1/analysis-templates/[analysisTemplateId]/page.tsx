@@ -16,9 +16,9 @@ import IconButton from '@dodao/web-core/components/core/buttons/IconButton';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { useParams } from 'next/navigation';
 import { AnalysisTemplateWithRelations } from '../../../api/analysis-templates/route';
-import { CreateCategoriesRequest, DetailedReportCategoryWithTypes } from '../../../api/analysis-templates/[analysisTemplateId]/categories/route';
+import { CreateCategoriesRequest, AnalysisTemplateCategoryWithTypes } from '../../../api/analysis-templates/[analysisTemplateId]/categories/route';
 import { CreateAnalysisTypesRequest } from '../../../api/analysis-templates/[analysisTemplateId]/analysis-types/route';
-import { AnalysisType } from '@prisma/client';
+import { AnalysisTemplateParameter } from '@prisma/client';
 import DeleteConfirmationModal from '../../industry-management/DeleteConfirmationModal';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
@@ -52,12 +52,12 @@ export default function AnalysisTemplateDetailPage() {
     'Failed to fetch analysis template'
   );
 
-  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<DetailedReportCategoryWithTypes[], CreateCategoriesRequest>({
+  const { postData: createCategories, loading: createCategoriesLoading } = usePostData<AnalysisTemplateCategoryWithTypes[], CreateCategoriesRequest>({
     successMessage: 'Categories created successfully!',
     errorMessage: 'Failed to create categories.',
   });
 
-  const { postData: createAnalysisTypes, loading: createAnalysisTypesLoading } = usePostData<AnalysisType[], CreateAnalysisTypesRequest>({
+  const { postData: createAnalysisTypes, loading: createAnalysisTypesLoading } = usePostData<AnalysisTemplateParameter[], CreateAnalysisTypesRequest>({
     successMessage: 'Analysis types created successfully!',
     errorMessage: 'Failed to create analysis types.',
   });
@@ -220,7 +220,7 @@ export default function AnalysisTemplateDetailPage() {
     })) || [];
 
   if (templateLoading) {
-    return <FullPageLoader message="Loading template..." />;
+    return <FullPageLoader />;
   }
 
   if (!template) {
@@ -396,10 +396,10 @@ export default function AnalysisTemplateDetailPage() {
                     </Button>
                   </div>
                   <div className="ml-4 mt-4">
-                    <h4 className="font-medium mb-2">Analysis Types:</h4>
-                    {category.analysisTypes.length > 0 ? (
+                    <h4 className="font-medium mb-2">Analysis Parameters:</h4>
+                    {category.analysisParameters.length > 0 ? (
                       <ul className="space-y-2">
-                        {category.analysisTypes.map((type) => (
+                        {category.analysisParameters.map((type) => (
                           <li key={type.id} className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
                             <div>
                               <strong>{type.name}</strong>

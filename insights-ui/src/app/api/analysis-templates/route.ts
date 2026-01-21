@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisTemplate, DetailedReportCategory, AnalysisType } from '@prisma/client';
+import { AnalysisTemplate, AnalysisTemplateCategory, AnalysisTemplateParameter } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 export interface CreateAnalysisTemplateRequest {
@@ -10,8 +10,8 @@ export interface CreateAnalysisTemplateRequest {
 
 export type AnalysisTemplateWithRelations = AnalysisTemplate & {
   categories: Array<
-    DetailedReportCategory & {
-      analysisTypes: AnalysisType[];
+    AnalysisTemplateCategory & {
+      analysisParameters: AnalysisTemplateParameter[];
     }
   >;
 };
@@ -21,7 +21,7 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
       },
     },
@@ -43,7 +43,7 @@ async function postHandler(req: NextRequest): Promise<AnalysisTemplateWithRelati
     include: {
       categories: {
         include: {
-          analysisTypes: true,
+          analysisParameters: true,
         },
       },
     },

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PromptInvocationStatus, Prisma } from '.prisma/client';
+import { PromptInvocationStatus, Prisma } from '@prisma/client';
 
 async function getPromptInvocations(req: NextRequest, context: { params: Promise<{ spaceId: string; promptId: string }> }) {
   const { spaceId, promptId } = await context.params;
