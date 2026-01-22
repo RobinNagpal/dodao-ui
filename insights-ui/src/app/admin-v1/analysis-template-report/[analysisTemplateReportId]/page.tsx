@@ -1,11 +1,11 @@
-import { parseMarkdown } from '@/util/parse-markdown';
-import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { AnalysisTemplateReportWithRelations } from '../../../api/analysis-template-reports/route';
-import { getAnalysisResultColorClasses } from '@/utils/score-utils';
-import { SourceLink } from '@/types/prismaTypes';
 import { AnalysisTemplateParameterReport, AnalysisTemplateParameter, AnalysisTemplateCategory } from '@prisma/client';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { ChartBarIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import AnalysisResultsTable from '@/components/analysis-templates/AnalysisResultsTable';
 
 type ParameterReportWithRelations = AnalysisTemplateParameterReport & {
   analysisTemplateParameter: AnalysisTemplateParameter & {
@@ -64,102 +64,69 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
   const groupedReports = groupParameterReportsByCategory(report.parameterReports as ParameterReportWithRelations[]);
 
   return (
-    <PageWrapper>
-      <div>
-        <div className="mb-4">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h1 className="text-3xl heading-color mb-4">{report.analysisTemplate.name}</h1>
-              <div className="flex items-center gap-4 text-sm text-gray-400">
-                {(() => {
-                  const inputObj = report.inputObj as any;
-                  if (isTickerAnalysis && inputObj?.tickerSymbol) {
-                    return (
-                      <>
-                        <span className="text-lg font-semibold text-white">{inputObj.tickerSymbol}</span>
-                        <span>•</span>
-                        <span>{inputObj.tickerName || 'Unknown'}</span>
-                        <span>•</span>
-                        <span>Exchange: {inputObj.exchange || 'Unknown'}</span>
-                      </>
-                    );
-                  }
-                  if (isCompanyAnalysis && inputObj?.companyName) {
-                    return (
-                      <>
-                        <span className="text-lg font-semibold text-white">{inputObj.companyName}</span>
-                        <span>•</span>
-                        <span>Company Analysis</span>
-                      </>
-                    );
-                  }
-                  return <span className="text-gray-500">No details available</span>;
-                })()}
-              </div>
+    <div className="w-full mx-auto max-w-7xl lg:px-6 py-2 md:py-4 lg:py-8 px-1 sm:px-2">
+      <div className="pt-2 pb-6">
+        {/* Header */}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-xl font-bold text-white">{report.analysisTemplate.name}</h1>
+            <div className="ml-auto flex gap-4">
+              <Link href="/admin-v1/analysis-template-report">
+                <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Reports →</span>
+              </Link>
             </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-4 text-sm text-gray-400">
+              {(() => {
+                const inputObj = report.inputObj as any;
+                if (isTickerAnalysis && inputObj?.tickerSymbol) {
+                  return (
+                    <>
+                      <span className="text-sm text-blue-400 font-medium">{inputObj.tickerSymbol}</span>
+                      <span>•</span>
+                      <span>{inputObj.tickerName || 'Unknown'}</span>
+                      <span>•</span>
+                      <span>Exchange: {inputObj.exchange || 'Unknown'}</span>
+                    </>
+                  );
+                }
+                if (isCompanyAnalysis && inputObj?.companyName) {
+                  return (
+                    <>
+                      <span className="text-sm text-blue-400 font-medium">{inputObj.companyName}</span>
+                      <span>•</span>
+                      <span>Company Analysis</span>
+                    </>
+                  );
+                }
+                return <span className="text-gray-500">No details available</span>;
+              })()}
+            </div>
+            <p className="text-gray-400 text-sm mt-2">
+              Analysis results with {report.parameterReports.length} parameter{report.parameterReports.length !== 1 ? 's' : ''} across {groupedReports.length}{' '}
+              categor{groupedReports.length !== 1 ? 'ies' : 'y'}
+            </p>
           </div>
         </div>
 
         {report.parameterReports.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No analysis results found</p>
-            <p className="text-sm text-gray-400 mb-6">Generate analysis using the admin panel</p>
-            <div className="px-6 py-3 bg-gray-600 text-white rounded-lg inline-block">No Analysis Available</div>
+          <div className="bg-gray-800 rounded-lg p-8 text-center">
+            <ChartBarIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No analysis results found</h3>
+            <p className="text-gray-400 mb-6">Generate analysis using the admin panel to see results here.</p>
+            <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}/generate`}>
+              <span className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg inline-block transition-colors">Generate Analysis →</span>
+            </Link>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-4">
             {groupedReports.map(({ categoryName, reports }) => (
-              <section key={categoryName} className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-                <h3 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">{categoryName}</h3>
-                <div className="space-y-6">
-                  {reports.map((report) => {
-                    const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(report.result);
-
-                    return (
-                      <div key={report.id} className="bg-gray-800 p-4 rounded-md">
-                        <div className="mb-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-lg font-semibold">{report.analysisTemplateParameter.name}</h4>
-                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${bgColorClass} bg-opacity-20 ${textColorClass}`}>
-                              {displayLabel}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-500">Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
-                        </div>
-                        <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.output) }} />
-
-                        {/* Source Links from Grounding */}
-                        {report.sourceLinks && report.sourceLinks.length > 0 && (
-                          <div className="mt-4 pt-4 border-t border-gray-600">
-                            <h5 className="text-sm font-semibold text-gray-300 mb-3">Sources:</h5>
-                            <div className="space-y-2">
-                              {(report.sourceLinks as SourceLink[]).map((source: SourceLink, index: number) => (
-                                <div key={index} className="flex items-start gap-2">
-                                  <span className="text-xs text-gray-500 mt-0.5">{index + 1}.</span>
-                                  <a
-                                    href={source.uri}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-sm text-blue-400 hover:text-blue-300 underline hover:no-underline break-all"
-                                    title={source.uri}
-                                  >
-                                    {source.title || source.uri}
-                                  </a>
-                                </div>
-                              ))}
-                            </div>
-                            <p className="text-xs text-gray-500 mt-2 italic">Information sourced from web search results</p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </section>
+              <AnalysisResultsTable key={categoryName} categoryName={categoryName} reports={reports} />
             ))}
           </div>
         )}
       </div>
-    </PageWrapper>
+    </div>
   );
 }

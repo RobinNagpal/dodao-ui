@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
+import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -11,6 +12,7 @@ import { AnalysisTemplateReportWithRelations } from '../../../../api/analysis-te
 import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { getAnalysisResultColorClasses } from '@/utils/score-utils';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { ChartBarIcon } from '@heroicons/react/24/outline';
 
 interface AnalysisParameterStatus {
   parameterId: string;
@@ -135,129 +137,134 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
   }
 
   return (
-    <div className="mt-12 px-4 text-color max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Generate Analysis Report</h1>
-          <div className="mt-2 text-gray-600">
-            <p className="font-medium">{analysisTemplateReport?.analysisTemplate.name}</p>
-            <p className="text-sm">
-              {(() => {
-                const inputObj = analysisTemplateReport?.inputObj as any;
-                return inputObj?.tickerSymbol ? `Ticker: ${inputObj.tickerSymbol} (${inputObj.exchange})` : `Company: ${inputObj?.companyName || 'Unknown'}`;
-              })()}
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}`} className="text-blue-600 hover:underline">
-            View Results
-          </Link>
-          <Link href="/admin-v1/analysis-template-report" className="text-blue-600 hover:underline">
-            Back to Reports
-          </Link>
-        </div>
-      </div>
-
-      <p className="text-gray-600 mb-8">Generate detailed analysis for selected categories using the analysis template parameters.</p>
-
-      {/* Generation Form */}
-      <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-6">Generate Analysis</h2>
-
-        <div className="space-y-6">
-          {/* Category Selection */}
-          <div>
-            <StyledSelect
-              label="Select Category *"
-              selectedItemId={selectedCategoryId}
-              items={categoryOptions}
-              setSelectedItemId={(id) => setSelectedCategoryId(id || '')}
-            />
-          </div>
-
-          {/* Analysis Parameters Status */}
-          {analysisParametersStatus.length > 0 && (
-            <div className="bg-gray-700 rounded-lg border border-gray-600 p-4">
-              <h3 className="text-lg font-semibold mb-4 text-white">Parameters to Analyze</h3>
-              <div className="space-y-3">
-                {analysisParametersStatus.map((parameter, index) => {
-                  const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(parameter.result);
-
-                  return (
-                    <div key={parameter.parameterId} className="flex items-center justify-between p-3 bg-gray-800 border border-gray-600 rounded-lg">
-                      <div className="flex-1">
-                        <span className="font-medium text-white">{parameter.parameterName}</span>
-                        {parameter.error && <div className="text-sm text-red-400 mt-1">{parameter.error}</div>}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {isGenerating && currentGeneratingIndex === index && (
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
-                        )}
-
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            parameter.status === ProcessingStatus.InProgress
-                              ? 'bg-blue-900 text-blue-200'
-                              : parameter.status === ProcessingStatus.NotStarted
-                              ? 'bg-gray-600 text-gray-300'
-                              : parameter.status === ProcessingStatus.Failed
-                              ? 'bg-red-900 text-red-200'
-                              : 'bg-green-900 text-green-200'
-                          }`}
-                        >
-                          {parameter.status === ProcessingStatus.InProgress
-                            ? 'Processing...'
-                            : parameter.status === ProcessingStatus.NotStarted
-                            ? 'Not Started'
-                            : parameter.status === ProcessingStatus.Failed
-                            ? 'Failed'
-                            : 'Completed'}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+    <PageWrapper>
+      <div className="max-w-7xl mx-auto">
+        <div className="pt-2 pb-6">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <ChartBarIcon className="w-8 h-8 text-blue-500" />
+              <h1 className="text-3xl font-bold text-white">Generate Analysis Report</h1>
+              <div className="ml-auto flex gap-4">
+                <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}`}>
+                  <span className="text-blue-400 hover:text-blue-300 transition-colors">View Results →</span>
+                </Link>
+                <Link href="/admin-v1/analysis-template-report">
+                  <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Reports →</span>
+                </Link>
               </div>
             </div>
-          )}
+            <div className="ml-11">
+              <p className="text-xl text-blue-400 font-medium mb-2">{analysisTemplateReport?.analysisTemplate.name}</p>
+              <p className="text-gray-400 text-base">
+                {(() => {
+                  const inputObj = analysisTemplateReport?.inputObj as any;
+                  return inputObj?.tickerSymbol ? `Ticker: ${inputObj.tickerSymbol} (${inputObj.exchange})` : `Company: ${inputObj?.companyName || 'Unknown'}`;
+                })()}
+              </p>
+              <p className="text-gray-400 text-base mt-2">Generate detailed analysis for selected categories using the analysis template parameters.</p>
+            </div>
+          </div>
 
-          {/* Generate Button */}
-          <div className="flex gap-4">
-            <Button
-              onClick={handleGenerateAnalysis}
-              primary
-              loading={isGenerating}
-              disabled={!selectedCategoryId || categoryOptions.length === 0 || analysisParametersStatus.length === 0}
-            >
-              {isGenerating ? `Generating... (${currentGeneratingIndex + 1}/${analysisParametersStatus.length})` : 'Generate All Analyses'}
-            </Button>
-            {analysisParametersStatus.length > 0 && !isGenerating && (
-              <Button
-                onClick={() => {
-                  setAnalysisParametersStatus((prev) =>
-                    prev.map((item) => ({
-                      ...item,
-                      status: ProcessingStatus.NotStarted,
-                      output: undefined,
-                      result: undefined,
-                      error: undefined,
-                    }))
-                  );
-                }}
-                variant="outlined"
-              >
-                Reset Status
-              </Button>
-            )}
-            {analysisParametersStatus.some((p) => p.status === ProcessingStatus.Completed) && !isGenerating && (
-              <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}`}>
-                <Button variant="outlined">View All Results →</Button>
-              </Link>
-            )}
+          {/* Generation Form */}
+          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
+            <h2 className="text-xl font-semibold text-white mb-6">Generate Analysis</h2>
+
+            <div className="space-y-6">
+              {/* Category Selection */}
+              <div>
+                <StyledSelect
+                  label="Select Category *"
+                  selectedItemId={selectedCategoryId}
+                  items={categoryOptions}
+                  setSelectedItemId={(id) => setSelectedCategoryId(id || '')}
+                />
+              </div>
+
+              {/* Analysis Parameters Status */}
+              {analysisParametersStatus.length > 0 && (
+                <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+                  <h3 className="text-lg font-semibold mb-4 text-white">Parameters to Analyze</h3>
+                  <div className="space-y-3">
+                    {analysisParametersStatus.map((parameter, index) => {
+                      const { textColorClass, bgColorClass, displayLabel } = getAnalysisResultColorClasses(parameter.result);
+
+                      return (
+                        <div key={parameter.parameterId} className="flex items-center justify-between p-3 bg-gray-900 border border-gray-700 rounded-lg">
+                          <div className="flex-1">
+                            <span className="font-medium text-white">{parameter.parameterName}</span>
+                            {parameter.error && <div className="text-sm text-red-400 mt-1">{parameter.error}</div>}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {isGenerating && currentGeneratingIndex === index && (
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                            )}
+
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs ${
+                                parameter.status === ProcessingStatus.InProgress
+                                  ? 'bg-blue-900 text-blue-200'
+                                  : parameter.status === ProcessingStatus.NotStarted
+                                  ? 'bg-gray-700 text-gray-300'
+                                  : parameter.status === ProcessingStatus.Failed
+                                  ? 'bg-red-900 text-red-200'
+                                  : 'bg-green-900 text-green-200'
+                              }`}
+                            >
+                              {parameter.status === ProcessingStatus.InProgress
+                                ? 'Processing...'
+                                : parameter.status === ProcessingStatus.NotStarted
+                                ? 'Not Started'
+                                : parameter.status === ProcessingStatus.Failed
+                                ? 'Failed'
+                                : 'Completed'}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Generate Button */}
+              <div className="flex gap-4">
+                <Button
+                  onClick={handleGenerateAnalysis}
+                  primary
+                  loading={isGenerating}
+                  disabled={!selectedCategoryId || categoryOptions.length === 0 || analysisParametersStatus.length === 0}
+                >
+                  {isGenerating ? `Generating... (${currentGeneratingIndex + 1}/${analysisParametersStatus.length})` : 'Generate All Analyses'}
+                </Button>
+                {analysisParametersStatus.length > 0 && !isGenerating && (
+                  <Button
+                    onClick={() => {
+                      setAnalysisParametersStatus((prev) =>
+                        prev.map((item) => ({
+                          ...item,
+                          status: ProcessingStatus.NotStarted,
+                          output: undefined,
+                          result: undefined,
+                          error: undefined,
+                        }))
+                      );
+                    }}
+                    variant="outlined"
+                  >
+                    Reset Status
+                  </Button>
+                )}
+                {analysisParametersStatus.some((p) => p.status === ProcessingStatus.Completed) && !isGenerating && (
+                  <Link href={`/admin-v1/analysis-template-report/${analysisTemplateReportId}`}>
+                    <Button variant="outlined">View All Results →</Button>
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

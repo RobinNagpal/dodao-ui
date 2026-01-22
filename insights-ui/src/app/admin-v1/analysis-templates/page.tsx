@@ -7,9 +7,10 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
-import AddEditAnalysisTemplateModal from './AddEditAnalysisTemplateModal';
-import { PencilIcon } from '@heroicons/react/24/outline';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import { DocumentTextIcon } from '@heroicons/react/24/outline';
+import AddEditAnalysisTemplateModal from '@/components/analysis-templates/AddEditAnalysisTemplateModal';
+import AnalysisTemplateActions from '@/components/analysis-templates/AnalysisTemplateActions';
 
 export default function DetailedReportsAdminPage() {
   const [showModal, setShowModal] = useState(false);
@@ -46,49 +47,68 @@ export default function DetailedReportsAdminPage() {
 
   return (
     <PageWrapper>
-      <div className="text-color">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl heading-color">Analysis Templates</h1>
-          <Button onClick={handleCreateTemplate} primary variant="contained">
-            Create New Template
-          </Button>
-        </div>
+      <div className="max-w-7xl mx-auto">
+        <div className="pt-2 pb-6">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <DocumentTextIcon className="w-8 h-8 text-blue-500" />
+              <h1 className="text-3xl font-bold text-white">Analysis Templates</h1>
+              <div className="ml-auto">
+                <Button onClick={handleCreateTemplate} primary variant="contained">
+                  Create New Template
+                </Button>
+              </div>
+            </div>
+            <p className="text-gray-400 text-base ml-11">
+              Discover {templates?.length || 0} analysis template{(templates?.length || 0) !== 1 ? 's' : ''} and explore their categories and parameters
+            </p>
+          </div>
 
-        <p className="text-gray-600 mb-8">Manage analysis templates that contain categories and analysis types for detailed reports.</p>
-
-        {/* Templates List */}
-        <div>
+          {/* Templates List */}
           {templates && templates.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {templates.map((template) => (
-                <div key={template.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                  <h3 className="text-xl font-semibold mb-2">{template.name}</h3>
-                  {template.description && <p className="text-gray-600 mb-4">{template.description}</p>}
-
-                  <div className="mb-4">
-                    <div className="text-sm text-gray-500">
-                      {template.categories.length} categories, {template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)} analysis
-                      parameters
-                    </div>
+                <div
+                  key={template.id}
+                  className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group"
+                >
+                  <div className="absolute top-4 right-4 z-10">
+                    <AnalysisTemplateActions
+                      onEdit={() => handleEditTemplate(template)}
+                      onManage={() => (window.location.href = `/admin-v1/analysis-templates/${template.id}`)}
+                    />
                   </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{template.name}</h3>
+                    {template.description && <p className="text-gray-300 text-sm leading-relaxed mb-4">{template.description}</p>}
 
-                  <div className="flex gap-2">
-                    <Button onClick={() => handleEditTemplate(template)} variant="outlined" className="flex items-center gap-2">
-                      <PencilIcon className="w-4 h-4" />
-                      Edit
-                    </Button>
-                    <Link href={`/admin-v1/analysis-templates/${template.id}`} className="flex-1">
-                      <Button variant="contained" primary className="w-full">
-                        Manage Template
-                      </Button>
-                    </Link>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-400">Categories:</span>
+                        <span className="text-white font-medium">{template.categories.length}</span>
+                      </div>
+
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-400">Analysis Parameters:</span>
+                        <span className="text-white font-medium">{template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)}</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-700 mt-4">
+                      <Link href={`/admin-v1/analysis-templates/${template.id}`}>
+                        <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">Manage Template →</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">No analysis templates created yet</p>
+            <div className="bg-gray-800 rounded-lg p-8 text-center">
+              <DocumentTextIcon className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">No analysis templates yet</h3>
+              <p className="text-gray-400 mb-4">You haven’t created any analysis templates yet.</p>
               <Button onClick={handleCreateTemplate} primary variant="contained">
                 Create Your First Template
               </Button>

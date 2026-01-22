@@ -9,8 +9,8 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { CreateAnalysisTemplateReportRequest, AnalysisTemplateReportWithRelations } from '../../api/analysis-template-reports/route';
-import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
+import { AnalysisTemplateReportWithRelations, CreateAnalysisTemplateReportRequest } from '@/app/api/analysis-template-reports/route';
+import { AnalysisTemplateWithRelations } from '@/app/api/analysis-templates/route';
 
 interface AddEditAnalysisTemplateReportModalProps {
   isOpen: boolean;
