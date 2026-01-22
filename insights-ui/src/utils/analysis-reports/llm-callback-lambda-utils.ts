@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { ReportType } from '@/types/ticker-typesv1';
 import {
   compileTemplate,
@@ -85,11 +85,15 @@ export interface LLMResponseForPromptViaInvocationViaLambda<Input> {
 
 export async function getLLMResponseForPromptViaInvocationViaLambda<Input>(args: LLMResponseForPromptViaInvocationViaLambda<Input>): Promise<void> {
   const { symbol, exchange, generationRequestId, params, reportType, moverType } = args;
-  const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
+  const { promptKey, llmProvider: providedLlmProvider, model: providedModel, spaceId, inputJson, bodyToAppend, requestFrom } = params;
+
+  // Use provided values or defaults
+  const llmProvider = providedLlmProvider || getDefaultLLMProvider();
+  const model = providedModel || getDefaultGeminiModel();
 
   // Validate required fields
-  if (!promptKey || !llmProvider || !model) {
-    throw new Error(`Missing required fields: promptKey, llmProvider, or model`);
+  if (!promptKey) {
+    throw new Error(`Missing required field: promptKey`);
   }
 
   // Fetch prompt from database
