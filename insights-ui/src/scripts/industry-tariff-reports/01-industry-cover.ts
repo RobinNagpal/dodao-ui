@@ -3,7 +3,6 @@ import { ExecutiveSummary, IndustryAreasWrapper, ReportCover, TariffUpdatesForIn
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const ReportCoverSchema = z.object({
   title: z.string().describe('Title of the cover page.'),
@@ -49,7 +48,7 @@ async function getReportCover(
     # Summaries of tariff updates
     ${JSON.stringify(tariffSummaries, null, 2)}
   `;
-  const response = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  const response = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema);
 
   return response;
 }

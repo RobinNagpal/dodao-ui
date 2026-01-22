@@ -2,7 +2,6 @@ import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFutureRiskResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 import { saveFutureRiskResponse } from '@/utils/analysis-reports/save-report-utils';
@@ -24,8 +23,6 @@ async function postHandler(
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/future-risk',
-    llmProvider: LLMProvider.GEMINI,
-    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

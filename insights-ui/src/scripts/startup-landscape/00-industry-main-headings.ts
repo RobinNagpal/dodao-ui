@@ -1,4 +1,4 @@
-import { getLlmResponse } from '@/scripts/llm-utils';
+import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
 import { z, ZodObject } from 'zod';
 import { addDirectoryIfNotPresent, reportsOutDir } from '@/scripts/report-file-utils';

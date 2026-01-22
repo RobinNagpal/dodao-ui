@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ZodObject } from 'zod';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { getGroundedResponse, getGroundedStructuredResponse } from '@/util/llm-grounding-utils';
 
 export const geminiModel = new ChatGoogleGenerativeAI({
@@ -30,8 +30,8 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
   schema: ZodObject<any>,
-  provider: LLMProvider = LLMProvider.GEMINI,
-  model: GeminiModel = GeminiModel.GEMINI_2_5_PRO,
+  provider: LLMProvider = getDefaultLLMProvider(),
+  model: GeminiModel = getDefaultGeminiModel(),
   maxRetries = 3,
   initialDelay = 1000
 ): Promise<T> {

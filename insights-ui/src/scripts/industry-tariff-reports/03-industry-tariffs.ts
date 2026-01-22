@@ -4,7 +4,7 @@ import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -77,7 +77,12 @@ Fetch the countries in the descending order of trading volume with the US for th
 
 async function getTopTradingCountries(industry: TariffIndustryId, date: string): Promise<string[]> {
   const prompt = getTopTradingCountriesPrompt(industry, date);
-  const response = await getLlmResponse<{ topCountries: string[] }>(prompt, TopCountriesSchema, LLMProvider.GEMINI_WITH_GROUNDING, getDefaultGeminiModel());
+  const response = await getLlmResponse<{ topCountries: string[] }>(
+    prompt,
+    TopCountriesSchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   return response.topCountries;
 }
 
@@ -159,12 +164,7 @@ async function getTariffUpdatesForIndustry(
   for (const country of countriesToProcess) {
     const prompt = getTariffUpdatesForIndustryPrompt(industry, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(
-      prompt,
-      CountrySpecificTariffSchema,
-      LLMProvider.GEMINI_WITH_GROUNDING,
-      getDefaultGeminiModel()
-    );
+    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, LLMProvider.GEMINI_WITH_GROUNDING);
 
     countrySpecificTariffs.push(countryTariff);
   }

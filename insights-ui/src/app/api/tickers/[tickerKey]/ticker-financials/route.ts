@@ -5,7 +5,7 @@ import { Ticker } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { SaveTickerFinancialsRequest } from '@/types/public-equity/ticker-request-response';
 import { safeParseJsonString } from '@/util/safe-parse-json-string';
-import { getLlmResponse } from '@/scripts/llm-utils';
+import { getLlmResponse } from '@/scripts/llm‑utils‑gemini';
 import { z } from 'zod';
 
 async function saveTickerFinancials(req: NextRequest, { params }: { params: Promise<{ tickerKey: string }> }): Promise<Ticker> {
@@ -23,28 +23,20 @@ async function saveTickerFinancials(req: NextRequest, { params }: { params: Prom
     averageDividendYield: z.number().describe('Average dividend yield of the REIT'),
   });
   const averageDividendYieldPrompt = `Tell me the average dividend yield % for the Equity REIT: ${existingTicker.companyName} (ticker: ${existingTicker.tickerKey})`;
-  const { averageDividendYield } = await getLlmResponse<{ averageDividendYield: string }>(
-    averageDividendYieldPrompt,
-    averageDividendYieldSchema,
-    'gpt-4o-mini-search-preview'
-  );
+  const { averageDividendYield } = await getLlmResponse<{ averageDividendYield: number }>(averageDividendYieldPrompt, averageDividendYieldSchema);
 
   const ffoPerShareSchema = z.object({
     ffoPerShareLastYear: z.number().describe('FFO per share of the REIT for last year'),
     ffoPerShareCurrentYear: z.number().describe('FFO per share of the REIT for current year'),
   });
   const ffoPerSharePrompt = `Tell me the FFO per share for the last year and FFO per share for this year for the Equity REIT: ${existingTicker.companyName} (ticker: ${existingTicker.tickerKey})`;
-  const ffoPerShare = await getLlmResponse<{ ffoPerShareLastYear: string; ffoPerShareCurrentYear: string }>(
-    ffoPerSharePrompt,
-    ffoPerShareSchema,
-    'gpt-4o-mini-search-preview'
-  );
+  const ffoPerShare = await getLlmResponse<{ ffoPerShareLastYear: number; ffoPerShareCurrentYear: number }>(ffoPerSharePrompt, ffoPerShareSchema);
 
   const priceToBookSchema = z.object({
     priceToBook: z.number().describe('Price per share to Book value per share of the REIT'),
   });
   const priceToBookPrompt = `Tell me the price per share to book value per share for the Equity REIT: ${existingTicker.companyName} (${existingTicker.tickerKey})`;
-  const { priceToBook } = await getLlmResponse<{ priceToBook: string }>(priceToBookPrompt, priceToBookSchema, 'gpt-4o-mini-search-preview');
+  const { priceToBook } = await getLlmResponse<{ priceToBook: number }>(priceToBookPrompt, priceToBookSchema);
 
   const infoObj = safeParseJsonString(existingTicker.tickerInfo);
 

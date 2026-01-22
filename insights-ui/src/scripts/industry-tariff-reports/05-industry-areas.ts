@@ -3,7 +3,6 @@ import { IndustryAreaSection, IndustryAreasWrapper } from '@/scripts/industry-ta
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const IndustryAreaSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses various industry areas.'),
@@ -39,7 +38,7 @@ function getIndustryAreaPrompt(industry: TariffIndustryId, headings: IndustryAre
 
 async function getIndustryAreaSection(industry: TariffIndustryId, headings: IndustryAreasWrapper): Promise<IndustryAreaSection> {
   const prompt = getIndustryAreaPrompt(industry, headings);
-  const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  const response = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema);
   return response;
 }
 

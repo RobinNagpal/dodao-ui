@@ -1,4 +1,3 @@
-import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { AnalysisRequest, LLMInvestorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
 import { fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry, getCompetitionAnalysisArray } from '@/utils/analysis-reports/get-report-data-utils';
@@ -33,8 +32,6 @@ async function postHandler(
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/investor-analysis',
-    llmProvider: LLMProvider.GEMINI,
-    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

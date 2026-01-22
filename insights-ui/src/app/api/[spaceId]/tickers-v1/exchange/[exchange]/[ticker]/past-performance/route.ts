@@ -6,7 +6,6 @@ import { preparePastPerformanceInputJson } from '@/utils/analysis-reports/report
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 
 async function postHandler(
@@ -35,8 +34,6 @@ async function postHandler(
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/past-performance',
-    llmProvider: LLMProvider.GEMINI,
-    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

@@ -9,7 +9,6 @@ import {
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -113,7 +112,7 @@ async function getFinalConclusion(
   negativeImpacts: NegativeTariffImpactOnCompanyType[]
 ): Promise<FinalConclusion> {
   const prompt = getFinalConclusionPrompt(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
   return response;
 }
 

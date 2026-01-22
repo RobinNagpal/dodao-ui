@@ -3,7 +3,6 @@ import { fetchTickerRecordBySymbolAndExchangeWithAnalysisData } from '@/utils/an
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { saveFinalSummaryResponse } from '@/utils/analysis-reports/save-report-utils';
 import { prepareFinalSummaryInputJson } from '@/utils/analysis-reports/report-input-json-utils';
 
@@ -30,8 +29,6 @@ async function postHandler(
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/final-summary',
-    llmProvider: LLMProvider.GEMINI,
-    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 
