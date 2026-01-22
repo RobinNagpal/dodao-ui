@@ -21,7 +21,6 @@ import {
   TariffUpdatesForIndustry,
 } from './tariff-types';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 // ---------------------------------------------------------------------------
 // ─── 1. TYPE & SCHEMA EXTENSIONS ────────────────────────────────────────────
@@ -230,7 +229,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     instructions: detailInstructions,
   });
 
-  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  return await getLlmResponse<EstablishedPlayer>(detailPrompt, EstablishedPlayerSchema);
 }
 
 function getSubAreaInfoString(subArea: IndustrySubArea, areas: IndustryAreasWrapper, tariffIndustry: TariffIndustryDefinition) {
@@ -313,9 +312,7 @@ ${JSON.stringify(areas, null, 2)}
 
   const { establishedPlayers: basicList } = await getLlmResponse<{ establishedPlayers: { companyName: string; companyTicker: string }[] }>(
     prompt,
-    EstablishedPlayerListSchema,
-    LLMProvider.GEMINI,
-    getDefaultGeminiModel()
+    EstablishedPlayerListSchema
   );
   console.log(`[EstablishedPlayers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -368,7 +365,7 @@ Gather full details for **${companyName}** (ticker: ${companyTicker}) in the ${s
     },
   });
 
-  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  return await getLlmResponse<NewChallenger>(detailPrompt, NewChallengerSchema);
 }
 
 /**
@@ -443,9 +440,7 @@ ${JSON.stringify(areas, null, 2)}
 
   const { newChallengers: basicList } = await getLlmResponse<{ newChallengers: { companyName: string; companyTicker: string }[] }>(
     prompt,
-    NewChallengerListSchema,
-    LLMProvider.GEMINI,
-    getDefaultGeminiModel()
+    NewChallengerListSchema
   );
   console.log(`[NewChallengers] ${`← Received basic list only: ${JSON.stringify(basicList)}`}`);
 
@@ -478,7 +473,7 @@ async function getHeadwindsAndTailwinds(
     instructions,
   });
 
-  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  return await getLlmResponse<HeadwindsAndTailwinds>(prompt, HeadwindsAndTailwindsSchema);
 }
 
 /**
@@ -508,7 +503,7 @@ async function getTariffImpactByCompanyType(areas: IndustryAreasWrapper, tariffU
     negativeTariffImpactOnCompanyType: NegativeTariffImpactOnCompanyType[];
   }
 
-  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema, LLMProvider.GEMINI, getDefaultGeminiModel());
+  return await getLlmResponse<TariffImpactByCompanyType>(prompt, schema);
 }
 
 /**
@@ -558,7 +553,7 @@ async function getTariffImpactSummary(
     summary: string;
   }
 
-  return (await getLlmResponse<TariffImpactSummary>(prompt, schema, LLMProvider.GEMINI, getDefaultGeminiModel())).summary;
+  return (await getLlmResponse<TariffImpactSummary>(prompt, schema)).summary;
 }
 
 export async function getAndWriteEvaluateIndustryAreaJson(

@@ -1,4 +1,3 @@
-import { getDefaultGeminiModel, LLMProvider } from '@/types/llmConstants';
 import { LLMFactorAnalysisResponse, TickerAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocation } from '@/util/get-llm-response';
@@ -35,8 +34,6 @@ async function postHandler(
     spaceId,
     inputJson,
     promptKey: 'US/public-equities-v1/business-moat',
-    llmProvider: LLMProvider.GEMINI,
-    model: getDefaultGeminiModel(),
     requestFrom: 'ui',
   });
 

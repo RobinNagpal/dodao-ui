@@ -32,3 +32,24 @@ export function getDefaultGeminiModel(): GeminiModel {
   console.warn(`Invalid GEMINI_MODEL value: ${envModel}. Using default GEMINI_2_5_PRO`);
   return GeminiModel.GEMINI_2_5_PRO;
 }
+
+/**
+ * Gets the default LLM provider from environment variable LLM_PROVIDER,
+ * defaults to GEMINI if not set or invalid
+ */
+export function getDefaultLLMProvider(): LLMProvider {
+  const envProvider = process.env.LLM_PROVIDER;
+
+  if (!envProvider) {
+    return LLMProvider.GEMINI;
+  }
+
+  // Validate that the env value is a valid LLMProvider
+  const validProviders = Object.values(LLMProvider);
+  if (validProviders.includes(envProvider as LLMProvider)) {
+    return envProvider as LLMProvider;
+  }
+
+  console.warn(`Invalid LLM_PROVIDER value: ${envProvider}. Using default GEMINI`);
+  return LLMProvider.GEMINI;
+}

@@ -3,8 +3,8 @@ import { IndustryAreasWrapper, AllCountriesTariffUpdatesForIndustry, AllCountrie
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import { z } from 'zod';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
-import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
+import { geminiModel, getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const CountrySpecificTariffSchema = z.object({
   countryName: z.string().describe('Name of the country.'),
@@ -56,7 +56,12 @@ Fetch 15 additional countries in descending order of trading volume with the US 
 
 async function getAllCountries(industry: TariffIndustryId, date: string, existingTop5Countries: string[]): Promise<string[]> {
   const prompt = getAllCountriesPrompt(industry, date, existingTop5Countries);
-  const response = await getLlmResponse<{ allCountries: string[] }>(prompt, AllCountriesSchema, LLMProvider.GEMINI_WITH_GROUNDING, getDefaultGeminiModel());
+  const response = await getLlmResponse<{ allCountries: string[] }>(
+    prompt,
+    AllCountriesSchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   return response.allCountries;
 }
 
@@ -167,7 +172,7 @@ async function getTariffUpdatesForAllCountries(
     prompt,
     AllCountriesTariffDataSchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    getDefaultGeminiModel()
+    GeminiModel.GEMINI_3_PRO_PREVIEW
   );
 
   // Clean the response data to remove any URL parameters that might affect country names

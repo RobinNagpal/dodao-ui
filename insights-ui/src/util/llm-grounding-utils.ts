@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { GeminiModel } from '@/types/llmConstants';
+import { GeminiModel, getDefaultGeminiModel } from '@/types/llmConstants';
 
 const geminiWithSearchModel = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY,
@@ -54,7 +54,7 @@ function extractGroundingSources(resp: any): Array<{ uri: string; title?: string
  */
 export async function getGroundedStructuredResponse<Output>(
   prompt: string,
-  modelName: GeminiModel,
+  modelName: GeminiModel = getDefaultGeminiModel(),
   outputJsonSchema: object
 ): Promise<GroundedStructuredResponse<Output>> {
   const resp: any = await geminiWithSearchModel.models.generateContent({
@@ -97,7 +97,7 @@ export async function getGroundedStructuredResponse<Output>(
 /**
  * Grounding only (text). Your existing function, kept for fallback.
  */
-export async function getGroundedResponse(prompt: string, modelName: GeminiModel): Promise<GroundedResponse> {
+export async function getGroundedResponse(prompt: string, modelName: GeminiModel = getDefaultGeminiModel()): Promise<GroundedResponse> {
   const groundingTool = {
     googleSearch: {},
   };
@@ -127,7 +127,7 @@ export async function getGroundedResponse(prompt: string, modelName: GeminiModel
 }
 
 // Backward compatibility function
-export async function getGroundedResponseText(prompt: string, modelName: GeminiModel): Promise<string> {
+export async function getGroundedResponseText(prompt: string, modelName: GeminiModel = getDefaultGeminiModel()): Promise<string> {
   const response = await getGroundedResponse(prompt, modelName);
   return response.text;
 }

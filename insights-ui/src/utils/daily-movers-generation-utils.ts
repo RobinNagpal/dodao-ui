@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
 import { DailyMoverInputJson, StockDataInScreenerResponse } from '@/types/daily-stock-movers';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
@@ -88,7 +88,7 @@ async function generateDailyMoverAnalysis(
       inputJson,
       promptKey: 'US/public-equities-v1/daily-movers',
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: getDefaultGeminiModel(),
+      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
       requestFrom: 'ui',
     },
     // reportType is optional for daily movers

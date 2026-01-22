@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { GeminiModel, LLMProvider } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
@@ -24,8 +24,8 @@ export interface ValidationResult {
 
 export interface LLMResponseOptions {
   invocationId: string;
-  llmProvider: LLMProvider;
-  modelName: GeminiModel;
+  llmProvider?: LLMProvider;
+  modelName?: GeminiModel;
   prompt: string;
   outputSchema: object;
   maxRetries?: number;
@@ -36,8 +36,8 @@ export interface LLMResponseViaInvocationRequest<Input> {
   spaceId?: string;
   inputJson?: Input;
   promptKey: string;
-  llmProvider: LLMProvider;
-  model: GeminiModel;
+  llmProvider?: LLMProvider;
+  model?: GeminiModel;
   bodyToAppend?: string;
   requestFrom: RequestSource;
 }
@@ -46,8 +46,8 @@ export interface LLMResponseViaTestInvocationRequest {
   spaceId?: string;
   promptId: string;
   promptTemplate: string;
-  llmProvider: LLMProvider;
-  model: GeminiModel;
+  llmProvider?: LLMProvider;
+  model?: GeminiModel;
   bodyToAppend?: string;
   inputJsonString?: string;
 }
@@ -162,8 +162,8 @@ export async function createPromptInvocation<Input>(
       updatedAt: new Date(),
       createdBy: 'unknown',
       updatedBy: 'unknown',
-      llmProvider: baseData.llmProvider,
-      model: baseData.model,
+      llmProvider: baseData.llmProvider!,
+      model: baseData.model!,
       bodyToAppend: baseData.bodyToAppend,
     },
   });
@@ -192,8 +192,8 @@ export async function createTestPromptInvocation(
       updatedAt: new Date(),
       createdBy: 'unknown',
       updatedBy: 'unknown',
-      llmProvider: baseData.llmProvider,
-      model: baseData.model,
+      llmProvider: baseData.llmProvider!,
+      model: baseData.model!,
       bodyToAppend: baseData.bodyToAppend,
     },
   });
@@ -224,8 +224,8 @@ export function compileTemplate(template: string, inputData: Record<string, unkn
  */
 export async function getLLMResponse<Output>({
   invocationId,
-  llmProvider,
-  modelName,
+  llmProvider = getDefaultLLMProvider(),
+  modelName = getDefaultGeminiModel(),
   prompt,
   outputSchema,
   maxRetries = 1,
@@ -342,11 +342,11 @@ export async function getLLMResponse<Output>({
 export async function getLLMResponseForPromptViaInvocation<Input, Output>(
   params: LLMResponseViaInvocationRequest<Input>
 ): Promise<LLMResponseObject<Input, Output>> {
-  const { promptKey, llmProvider, model, spaceId, inputJson, bodyToAppend, requestFrom } = params;
+  const { promptKey, llmProvider = getDefaultLLMProvider(), model = getDefaultGeminiModel(), spaceId, inputJson, bodyToAppend, requestFrom } = params;
 
   // Validate required fields
-  if (!promptKey || !llmProvider || !model) {
-    throw new Error(`Missing required fields: promptKey, llmProvider, or model`);
+  if (!promptKey) {
+    throw new Error(`Missing required field: promptKey`);
   }
 
   // Fetch prompt from database
@@ -464,11 +464,11 @@ export async function getLLMResponseForPromptViaTestInvocation<Output>(
   params: LLMResponseViaTestInvocationRequest
 ): Promise<TestPromptInvocationResponse<Output>> {
   console.log('getLLMResponseForPromptViaTestInvocation', JSON.stringify(params, null, 2));
-  const { promptId, promptTemplate, llmProvider, model, spaceId, bodyToAppend, inputJsonString } = params;
+  const { promptId, promptTemplate, llmProvider = getDefaultLLMProvider(), model = getDefaultGeminiModel(), spaceId, bodyToAppend, inputJsonString } = params;
 
   // Validate required fields
-  if (!promptId || !promptTemplate || !llmProvider || !model) {
-    throw new Error(`Missing required fields: promptId, promptTemplate, llmProvider, or model`);
+  if (!promptId || !promptTemplate) {
+    throw new Error(`Missing required fields: promptId or promptTemplate`);
   }
 
   // Parse input data
