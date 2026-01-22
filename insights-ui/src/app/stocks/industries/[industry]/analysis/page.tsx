@@ -1,5 +1,5 @@
+import AnalysisDisplay from '@/components/industry-analysis/AnalysisDisplay';
 import type { IndustryAnalysisWithRelations } from '@/types/ticker-typesv1';
-import AnalysisDisplay from '@/components/analysis/AnalysisDisplay';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getIndustryAnalysisTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';

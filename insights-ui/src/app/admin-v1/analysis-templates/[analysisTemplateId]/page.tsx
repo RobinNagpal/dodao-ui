@@ -20,7 +20,8 @@ import { CreateCategoriesRequest, AnalysisTemplateCategoryWithTypes } from '../.
 import { CreateAnalysisTypesRequest } from '../../../api/analysis-templates/[analysisTemplateId]/analysis-types/route';
 import { AnalysisTemplateParameter } from '@prisma/client';
 import DeleteConfirmationModal from '../../industry-management/DeleteConfirmationModal';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 export default function AnalysisTemplateDetailPage() {
   const params = useParams() as { analysisTemplateId: string };
@@ -226,201 +227,227 @@ export default function AnalysisTemplateDetailPage() {
   if (!template) {
     return (
       <PageWrapper>
-        <p>Template not found</p>
+        <div className="max-w-7xl mx-auto py-8">
+          <div className="bg-gray-800 rounded-lg p-8 text-center">
+            <h2 className="text-xl font-semibold mb-2">Template not found</h2>
+            <p className="text-gray-400">The analysis template you’re looking for doesn’t exist.</p>
+          </div>
+        </div>
       </PageWrapper>
     );
   }
 
   return (
     <PageWrapper>
-      <div className="text-color">
-        <div className="mb-6">
-          <h1 className="text-3xl heading-color mb-2">{template.name}</h1>
-          {template.description && <p className="text-gray-600">{template.description}</p>}
-        </div>
-
-        {/* Categories Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl heading-color mb-4">Add Categories</h2>
-          <p className="text-sm text-gray-600 mb-4">
-            Add multiple categories at once using JSON format. Each category should have a name field (required) and optional description field.
-          </p>
-
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-medium">Categories JSON *</label>
-              <IconButton iconName={IconTypes.Edit} onClick={() => setShowCategoriesJsonModal(true)} tooltip="Edit JSON" />
-            </div>
-            <div className="block-bg-color w-full py-4 px-2 border rounded max-h-[300px] overflow-y-auto">
-              <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto">
-                {(() => {
-                  try {
-                    return JSON.stringify(JSON.parse(categoriesJson), null, 2);
-                  } catch {
-                    return categoriesJson;
-                  }
-                })()}
-              </pre>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <Button onClick={handleCreateCategories} primary loading={createCategoriesLoading}>
-              Create Categories
-            </Button>
-          </div>
-        </div>
-
-        {/* Analysis Types Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl heading-color mb-4">Add Analysis Types</h2>
-
-          <div className="mb-6">
-            <StyledSelect
-              label="Select Category *"
-              selectedItemId={selectedCategoryId}
-              items={categoryOptions}
-              setSelectedItemId={(id) => setSelectedCategoryId(id || '')}
-            />
-          </div>
-
-          <div className="mb-6">
-            <div className="flex gap-4">
-              <Button
-                onClick={() => setUseJsonForAnalysisTypes(false)}
-                variant={!useJsonForAnalysisTypes ? 'contained' : 'outlined'}
-                primary={!useJsonForAnalysisTypes}
-              >
-                Form Input
-              </Button>
-              <Button
-                onClick={() => setUseJsonForAnalysisTypes(true)}
-                variant={useJsonForAnalysisTypes ? 'contained' : 'outlined'}
-                primary={useJsonForAnalysisTypes}
-              >
-                JSON Input
-              </Button>
-            </div>
-          </div>
-
-          {useJsonForAnalysisTypes ? (
-            // JSON Input Mode
-            <div className="mb-6">
-              <p className="text-sm text-gray-600 mb-4">Add multiple analysis types at once using JSON format.</p>
-              <div className="mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-medium">Analysis Types JSON *</label>
-                  <IconButton iconName={IconTypes.Edit} onClick={() => setShowAnalysisTypesFormJsonModal(true)} tooltip="Edit JSON" />
-                </div>
-                <div className="block-bg-color w-full py-4 px-2 border rounded max-h-[400px] overflow-y-auto">
-                  <pre className="whitespace-pre-wrap break-words text-xs overflow-x-auto">
-                    {(() => {
-                      try {
-                        return JSON.stringify(JSON.parse(analysisTypesJson), null, 2);
-                      } catch {
-                        return analysisTypesJson;
-                      }
-                    })()}
-                  </pre>
-                </div>
+      <div className="max-w-7xl mx-auto">
+        <div className="pt-2 pb-6">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <DocumentTextIcon className="w-8 h-8 text-blue-500" />
+              <h1 className="text-3xl font-bold text-white">{template.name}</h1>
+              <div className="ml-auto">
+                <Link href="/admin-v1/analysis-templates">
+                  <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Templates →</span>
+                </Link>
               </div>
             </div>
-          ) : (
-            // Form Input Mode
-            <div className="space-y-6">
-              {analysisTypes.map((analysisType, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-4">
-                  <div className="mb-4">
-                    <Input modelValue={analysisType.name} onUpdate={(val) => updateAnalysisType(index, 'name', val as string)} placeholder="Analysis type name">
-                      Name *
-                    </Input>
-                  </div>
-
-                  <div className="mb-4">
-                    <TextareaAutosize
-                      label="Description *"
-                      modelValue={analysisType.description}
-                      onUpdate={(val) => updateAnalysisType(index, 'description', val as string)}
-                      placeholder="Detailed description"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <TextareaAutosize
-                      label="Prompt Instructions *"
-                      modelValue={analysisType.promptInstructions}
-                      onUpdate={(val) => updateAnalysisType(index, 'promptInstructions', val as string)}
-                      placeholder="Instructions for the prompt"
-                    />
-                  </div>
-
-                  <Button onClick={() => removeAnalysisTypeRow(index)} variant="outlined" disabled={analysisTypes.length === 1}>
-                    Remove This Analysis Type
-                  </Button>
-                </div>
-              ))}
+            <div className="ml-11">
+              {template.description && <p className="text-gray-400 text-base">{template.description}</p>}
+              <p className="text-gray-400 text-base mt-2">Manage categories and analysis types for this template.</p>
             </div>
-          )}
-
-          <div className="flex gap-4 mt-6">
-            {!useJsonForAnalysisTypes && (
-              <Button onClick={addAnalysisTypeRow} variant="outlined">
-                Add Another Analysis Type
-              </Button>
-            )}
-            <Button
-              onClick={handleCreateAnalysisTypes}
-              primary
-              loading={createAnalysisTypesLoading}
-              disabled={!selectedCategoryId || (useJsonForAnalysisTypes ? false : analysisTypes.every((type) => !type.name.trim()))}
-            >
-              Create Analysis Types
-            </Button>
           </div>
-        </div>
 
-        {/* Existing Categories Display */}
-        <div>
-          <h2 className="text-2xl heading-color mb-4">Existing Categories</h2>
-          {template.categories && template.categories.length > 0 ? (
-            <div className="space-y-4">
-              {template.categories.map((category) => (
-                <div key={category.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="text-lg font-semibold">{category.name}</h3>
-                      {category.description && <p className="text-gray-600 mt-1">{category.description}</p>}
+          {/* Categories Section */}
+          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">Add Categories</h2>
+            <p className="text-gray-300 text-sm mb-6">
+              Add multiple categories at once using JSON format. Each category should have a name field (required) and optional description field.
+            </p>
+
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-3">
+                <label className="text-sm font-medium text-white">Categories JSON *</label>
+                <IconButton iconName={IconTypes.Edit} onClick={() => setShowCategoriesJsonModal(true)} tooltip="Edit JSON" />
+              </div>
+              <div className="bg-gray-800 border border-gray-700 rounded-lg w-full py-4 px-3 max-h-[300px] overflow-y-auto">
+                <pre className="whitespace-pre-wrap break-words text-xs text-gray-300 overflow-x-auto">
+                  {(() => {
+                    try {
+                      return JSON.stringify(JSON.parse(categoriesJson), null, 2);
+                    } catch {
+                      return categoriesJson;
+                    }
+                  })()}
+                </pre>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <Button onClick={handleCreateCategories} primary loading={createCategoriesLoading}>
+                Create Categories
+              </Button>
+            </div>
+          </div>
+
+          {/* Analysis Types Section */}
+          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 mb-8">
+            <h2 className="text-2xl font-semibold text-white mb-4">Add Analysis Types</h2>
+
+            <div className="mb-6">
+              <StyledSelect
+                label="Select Category *"
+                selectedItemId={selectedCategoryId}
+                items={categoryOptions}
+                setSelectedItemId={(id) => setSelectedCategoryId(id || '')}
+              />
+            </div>
+
+            <div className="mb-6">
+              <div className="flex gap-4">
+                <Button
+                  onClick={() => setUseJsonForAnalysisTypes(false)}
+                  variant={!useJsonForAnalysisTypes ? 'contained' : 'outlined'}
+                  primary={!useJsonForAnalysisTypes}
+                >
+                  Form Input
+                </Button>
+                <Button
+                  onClick={() => setUseJsonForAnalysisTypes(true)}
+                  variant={useJsonForAnalysisTypes ? 'contained' : 'outlined'}
+                  primary={useJsonForAnalysisTypes}
+                >
+                  JSON Input
+                </Button>
+              </div>
+            </div>
+
+            {useJsonForAnalysisTypes ? (
+              // JSON Input Mode
+              <div className="mb-6">
+                <p className="text-gray-300 text-sm mb-4">Add multiple analysis types at once using JSON format.</p>
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="text-sm font-medium text-white">Analysis Types JSON *</label>
+                    <IconButton iconName={IconTypes.Edit} onClick={() => setShowAnalysisTypesFormJsonModal(true)} tooltip="Edit JSON" />
+                  </div>
+                  <div className="bg-gray-800 border border-gray-700 rounded-lg w-full py-4 px-3 max-h-[400px] overflow-y-auto">
+                    <pre className="whitespace-pre-wrap break-words text-xs text-gray-300 overflow-x-auto">
+                      {(() => {
+                        try {
+                          return JSON.stringify(JSON.parse(analysisTypesJson), null, 2);
+                        } catch {
+                          return analysisTypesJson;
+                        }
+                      })()}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Form Input Mode
+              <div className="space-y-6">
+                {analysisTypes.map((analysisType, index) => (
+                  <div key={index} className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+                    <div className="mb-4">
+                      <Input
+                        modelValue={analysisType.name}
+                        onUpdate={(val) => updateAnalysisType(index, 'name', val as string)}
+                        placeholder="Analysis type name"
+                      >
+                        Name *
+                      </Input>
                     </div>
-                    <Button onClick={() => setCategoryToDelete({ id: category.id, name: category.name })} variant="outlined" loading={deleteCategoryLoading}>
-                      <TrashIcon className="w-4 h-4 mr-1" />
+
+                    <div className="mb-4">
+                      <TextareaAutosize
+                        label="Description *"
+                        modelValue={analysisType.description}
+                        onUpdate={(val) => updateAnalysisType(index, 'description', val as string)}
+                        placeholder="Detailed description"
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <TextareaAutosize
+                        label="Prompt Instructions *"
+                        modelValue={analysisType.promptInstructions}
+                        onUpdate={(val) => updateAnalysisType(index, 'promptInstructions', val as string)}
+                        placeholder="Instructions for the prompt"
+                      />
+                    </div>
+
+                    <Button onClick={() => removeAnalysisTypeRow(index)} variant="outlined" disabled={analysisTypes.length === 1}>
+                      Remove This Analysis Type
                     </Button>
                   </div>
-                  <div className="ml-4 mt-4">
-                    <h4 className="font-medium mb-2">Analysis Parameters:</h4>
-                    {category.analysisParameters.length > 0 ? (
-                      <ul className="space-y-2">
-                        {category.analysisParameters.map((type) => (
-                          <li key={type.id} className="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
-                            <div>
-                              <strong>{type.name}</strong>
-                              {type.description && <p className="text-gray-600 text-xs mt-1">{type.description}</p>}
-                            </div>
-                            <Button onClick={() => handleDeleteAnalysisType(type.id)} variant="outlined" size="sm" loading={deleteAnalysisTypeLoading}>
-                              Delete
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-sm text-gray-500">No analysis types yet</p>
-                    )}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            )}
+
+            <div className="flex gap-4 mt-6">
+              {!useJsonForAnalysisTypes && (
+                <Button onClick={addAnalysisTypeRow} variant="outlined">
+                  Add Another Analysis Type
+                </Button>
+              )}
+              <Button
+                onClick={handleCreateAnalysisTypes}
+                primary
+                loading={createAnalysisTypesLoading}
+                disabled={!selectedCategoryId || (useJsonForAnalysisTypes ? false : analysisTypes.every((type) => !type.name.trim()))}
+              >
+                Create Analysis Types
+              </Button>
             </div>
-          ) : (
-            <p className="text-gray-500">No categories created yet</p>
-          )}
+          </div>
+
+          {/* Existing Categories Display */}
+          <div>
+            <h2 className="text-2xl font-semibold text-white mb-6">Existing Categories</h2>
+            {template.categories && template.categories.length > 0 ? (
+              <div className="space-y-6">
+                {template.categories.map((category) => (
+                  <div key={category.id} className="bg-gray-900 rounded-2xl border border-gray-800 p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+                        {category.description && <p className="text-gray-300 mt-2">{category.description}</p>}
+                      </div>
+                      <Button onClick={() => setCategoryToDelete({ id: category.id, name: category.name })} variant="outlined" loading={deleteCategoryLoading}>
+                        <TrashIcon className="w-4 h-4 mr-1" />
+                      </Button>
+                    </div>
+                    <div className="ml-4 mt-6">
+                      <h4 className="font-medium text-white mb-4">Analysis Parameters:</h4>
+                      {category.analysisParameters.length > 0 ? (
+                        <ul className="space-y-3">
+                          {category.analysisParameters.map((type) => (
+                            <li key={type.id} className="flex justify-between items-center text-sm bg-gray-800 border border-gray-700 rounded-lg p-3">
+                              <div>
+                                <strong className="text-white">{type.name}</strong>
+                                {type.description && <p className="text-gray-400 text-xs mt-1">{type.description}</p>}
+                              </div>
+                              <Button onClick={() => handleDeleteAnalysisType(type.id)} variant="outlined" size="sm" loading={deleteAnalysisTypeLoading}>
+                                Delete
+                              </Button>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-gray-500 bg-gray-800 border border-gray-700 rounded-lg p-3">No analysis types yet</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-gray-800 rounded-lg p-8 text-center">
+                <h3 className="text-xl font-semibold mb-2">No categories yet</h3>
+                <p className="text-gray-400">You haven’t created any categories for this template yet.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal'
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { CreateAnalysisTemplateRequest, AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
+import { AnalysisTemplateWithRelations, CreateAnalysisTemplateRequest } from '@/app/api/analysis-templates/route';
 
 interface AddEditAnalysisTemplateModalProps {
   isOpen: boolean;
