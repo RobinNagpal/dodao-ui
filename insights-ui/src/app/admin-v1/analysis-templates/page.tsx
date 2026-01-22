@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import { AnalysisTemplateWithRelations } from '../../api/analysis-templates/route';
@@ -11,16 +12,24 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import AddEditAnalysisTemplateModal from '@/components/analysis-templates/AddEditAnalysisTemplateModal';
 import AnalysisTemplateActions from '@/components/analysis-templates/AnalysisTemplateActions';
+import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
 
 export default function DetailedReportsAdminPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<AnalysisTemplateWithRelations | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [templateToDelete, setTemplateToDelete] = useState<AnalysisTemplateWithRelations | null>(null);
 
   const {
     data: templates,
     loading: templatesLoading,
     reFetchData: refetchTemplates,
   } = useFetchData<AnalysisTemplateWithRelations[]>(`${getBaseUrl()}/api/analysis-templates`, { cache: 'no-cache' }, 'Failed to fetch analysis templates');
+
+  const { deleteData, loading: deleting } = useDeleteData<{ success: boolean }, any>({
+    errorMessage: 'Failed to delete analysis template',
+    successMessage: 'Analysis template deleted successfully',
+  });
 
   const handleCreateTemplate = () => {
     setEditingTemplate(null);
@@ -39,6 +48,28 @@ export default function DetailedReportsAdminPage() {
 
   const handleModalSuccess = () => {
     refetchTemplates();
+  };
+
+  const handleDeleteTemplate = (template: AnalysisTemplateWithRelations) => {
+    setTemplateToDelete(template);
+    setDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setTemplateToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!templateToDelete) return;
+
+    try {
+      await deleteData(`${getBaseUrl()}/api/analysis-templates/${templateToDelete.id}`);
+      refetchTemplates();
+      handleCloseDeleteModal();
+    } catch (error) {
+      // Error is handled by the hook
+    }
   };
 
   if (templatesLoading) {
@@ -77,6 +108,7 @@ export default function DetailedReportsAdminPage() {
                     <AnalysisTemplateActions
                       onEdit={() => handleEditTemplate(template)}
                       onManage={() => (window.location.href = `/admin-v1/analysis-templates/${template.id}`)}
+                      onDelete={() => handleDeleteTemplate(template)}
                     />
                   </div>
                   <div className="p-6">
@@ -119,6 +151,17 @@ export default function DetailedReportsAdminPage() {
 
       {/* Add/Edit Template Modal */}
       <AddEditAnalysisTemplateModal isOpen={showModal} onClose={handleCloseModal} onSuccess={handleModalSuccess} existingTemplate={editingTemplate} />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDelete={handleConfirmDelete}
+        title="Delete Analysis Template"
+        deleting={deleting}
+        deleteButtonText="Delete Template"
+        confirmationText="DELETE"
+      />
     </PageWrapper>
   );
 }
