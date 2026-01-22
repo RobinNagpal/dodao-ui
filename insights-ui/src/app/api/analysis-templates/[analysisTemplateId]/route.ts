@@ -19,6 +19,12 @@ async function getHandler(req: Request, context: { params: Promise<{ analysisTem
           createdAt: 'desc',
         },
       },
+      analysisTemplateReports: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 3,
+      },
     },
   });
 

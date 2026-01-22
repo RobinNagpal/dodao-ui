@@ -1200,6 +1200,7 @@ model AnalysisTemplateReport {
   analysisTemplateId String   @map("analysis_template_id")
   promptId           String   @map("prompt_id")
   promptKey          String   @map("prompt_key")
+  reportName         String   @default("Report Name") @map("report_name")
   inputObj           Json     @map("input_obj")
   createdAt          DateTime @default(now()) @map("created_at")
   updatedAt          DateTime @updatedAt @map("updated_at")

@@ -25,6 +25,7 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
   const [formData, setFormData] = useState<CreateAnalysisTemplateReportRequest>({
     analysisTemplateId: '',
     promptKey: '',
+    reportName: '',
     inputObj: {},
   });
   const [inputJson, setInputJson] = useState('');
@@ -55,6 +56,7 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
         setFormData({
           analysisTemplateId: existingReport.analysisTemplateId,
           promptKey: existingReport.promptKey,
+          reportName: existingReport.reportName,
           inputObj: existingReport.inputObj,
         });
         setInputJson(JSON.stringify(existingReport.inputObj, null, 2));
@@ -63,6 +65,7 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
         setFormData({
           analysisTemplateId: '',
           promptKey: '',
+          reportName: '',
           inputObj: {},
         });
         setInputJson('');
@@ -71,7 +74,7 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
   }, [isOpen, existingReport]);
 
   const handleSubmit = async () => {
-    if (!formData.analysisTemplateId || !formData.promptKey.trim() || !inputJson.trim()) {
+    if (!formData.analysisTemplateId || !formData.promptKey.trim() || !formData.reportName.trim() || !inputJson.trim()) {
       alert('Please fill in all required fields');
       return;
     }
@@ -132,6 +135,14 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
             Prompt Key *
           </Input>
 
+          <Input
+            modelValue={formData.reportName}
+            onUpdate={(val) => setFormData((prev) => ({ ...prev, reportName: val as string }))}
+            placeholder="Enter report name"
+          >
+            Report Name *
+          </Input>
+
           <div>
             <label className="block text-sm font-medium mb-2">Input JSON *</label>
             <textarea
@@ -153,7 +164,7 @@ export default function AddEditAnalysisTemplateReportModal({ isOpen, onClose, on
             onClick={handleSubmit}
             primary
             loading={loading}
-            disabled={!formData.analysisTemplateId || !formData.promptKey.trim() || !inputJson.trim()}
+            disabled={!formData.analysisTemplateId || !formData.promptKey.trim() || !formData.reportName.trim() || !inputJson.trim()}
             className="flex-1"
           >
             {isEdit ? 'Update' : 'Create'} Report
