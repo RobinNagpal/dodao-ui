@@ -87,5 +87,18 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ analysi
   return updatedReport;
 }
 
+async function deleteHandler(req: NextRequest, context: { params: Promise<{ analysisTemplateReportId: string }> }): Promise<{ success: boolean }> {
+  const { analysisTemplateReportId } = await context.params;
+
+  await prisma.analysisTemplateReport.delete({
+    where: {
+      id: analysisTemplateReportId,
+    },
+  });
+
+  return { success: true };
+}
+
 export const GET = withErrorHandlingV2<AnalysisTemplateReportWithRelations>(getHandler);
 export const PUT = withErrorHandlingV2<AnalysisTemplateReport>(putHandler);
+export const DELETE = withErrorHandlingV2<{ success: boolean }>(deleteHandler);
