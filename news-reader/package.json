@@ -16,6 +16,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@dodao/web-core": "file:../shared/web-core",
     "@hookform/resolvers": "^5.2.1",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
