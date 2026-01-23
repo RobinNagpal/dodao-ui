@@ -105,35 +105,31 @@ export default function AnalysisTemplateReportPage() {
             {reports && reports.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {reports.map((report) => (
-                  <div
-                    key={report.id}
-                    className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group"
-                  >
-                    <div className="absolute top-4 right-4 z-10">
-                      <AnalysisTemplateActions
-                        onEdit={() => handleEdit(report)}
-                        onSeeReport={() => (window.location.href = `/admin-v1/analysis-template-report/${report.id}`)}
-                        onDelete={() => handleDeleteReport(report)}
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold text-white mb-2 pr-12">{report.analysisTemplate.name}</h3>
-                      <p className="text-blue-400 text-sm font-medium mb-3">Prompt: {report.promptKey}</p>
+                  <Link key={report.id} href={`/admin-v1/analysis-template-report/${report.id}`}>
+                    <div className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group cursor-pointer">
+                      <div className="absolute top-4 right-4 z-10" onClick={(e) => e.stopPropagation()}>
+                        <AnalysisTemplateActions
+                          onEdit={() => handleEdit(report)}
+                          onGenerate={() => (window.location.href = `/admin-v1/analysis-template-report/${report.id}/generate`)}
+                          onDelete={() => handleDeleteReport(report)}
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{report.reportName}</h3>
+                        <p className="text-blue-400 text-sm font-medium mb-3">Prompt: {report.promptKey}</p>
 
-                      <div className="space-y-3 mb-4">
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-400">Created:</span>
-                          <span className="text-gray-300">{new Date(report.createdAt).toLocaleDateString()}</span>
+                        <div className="space-y-3 mb-4">
+                          <div className="flex items-center text-sm">
+                            <span className="text-gray-400">Analysis Template: {report.analysisTemplate.name}</span>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-gray-700 mt-4">
+                          <span className="text-blue-400 group-hover:text-blue-300 transition-color text-sm font-medium">See Report →</span>
                         </div>
                       </div>
-
-                      <div className="pt-4 border-t border-gray-700 mt-4">
-                        <Link href={`/admin-v1/analysis-template-report/${report.id}/generate`}>
-                          <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">Generate Analysis →</span>
-                        </Link>
-                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (

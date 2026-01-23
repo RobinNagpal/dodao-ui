@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { AnalysisTemplate, AnalysisTemplateCategory, AnalysisTemplateParameter } from '@prisma/client';
+import { AnalysisTemplate, AnalysisTemplateCategory, AnalysisTemplateParameter, AnalysisTemplateReport } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 export interface CreateAnalysisTemplateRequest {
@@ -14,6 +14,10 @@ export type AnalysisTemplateWithRelations = AnalysisTemplate & {
       analysisParameters: AnalysisTemplateParameter[];
     }
   >;
+  _count?: {
+    analysisTemplateReports: number;
+  };
+  analysisTemplateReports?: AnalysisTemplateReport[];
 };
 
 async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
@@ -24,6 +28,11 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
           analysisParameters: true,
         },
       },
+      _count: {
+        select: {
+          analysisTemplateReports: true,
+        },
+      },
     },
     orderBy: {
       createdAt: 'desc',
@@ -32,7 +41,7 @@ async function getHandler(): Promise<AnalysisTemplateWithRelations[]> {
   return templates;
 }
 
-async function postHandler(req: NextRequest): Promise<AnalysisTemplateWithRelations> {
+async function postHandler(req: NextRequest): Promise<AnalysisTemplate> {
   const body: CreateAnalysisTemplateRequest = await req.json();
 
   const createdTemplate = await prisma.analysisTemplate.create({
@@ -40,17 +49,10 @@ async function postHandler(req: NextRequest): Promise<AnalysisTemplateWithRelati
       name: body.name,
       description: body.description,
     },
-    include: {
-      categories: {
-        include: {
-          analysisParameters: true,
-        },
-      },
-    },
   });
 
   return createdTemplate;
 }
 
 export const GET = withErrorHandlingV2<AnalysisTemplateWithRelations[]>(getHandler);
-export const POST = withErrorHandlingV2<AnalysisTemplateWithRelations>(postHandler);
+export const POST = withErrorHandlingV2<AnalysisTemplate>(postHandler);

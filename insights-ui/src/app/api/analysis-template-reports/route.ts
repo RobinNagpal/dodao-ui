@@ -7,6 +7,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 export interface CreateAnalysisTemplateReportRequest {
   analysisTemplateId: string;
   promptKey: string;
+  reportName: string;
   inputObj: any;
 }
 
@@ -62,6 +63,7 @@ async function postHandler(req: NextRequest): Promise<AnalysisTemplateReportWith
       analysisTemplateId: body.analysisTemplateId,
       promptId: prompt.id,
       promptKey: body.promptKey,
+      reportName: body.reportName,
       inputObj: body.inputObj,
     },
     include: {

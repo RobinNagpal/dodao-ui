@@ -80,6 +80,7 @@ async function putHandler(req: NextRequest, context: { params: Promise<{ analysi
       analysisTemplateId: body.analysisTemplateId,
       promptId: prompt.id,
       promptKey: body.promptKey,
+      reportName: body.reportName,
       inputObj: body.inputObj,
     },
   });

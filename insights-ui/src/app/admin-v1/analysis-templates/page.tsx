@@ -100,40 +100,38 @@ export default function DetailedReportsAdminPage() {
           {templates && templates.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {templates.map((template) => (
-                <div
-                  key={template.id}
-                  className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group"
-                >
-                  <div className="absolute top-4 right-4 z-10">
-                    <AnalysisTemplateActions
-                      onEdit={() => handleEditTemplate(template)}
-                      onManage={() => (window.location.href = `/admin-v1/analysis-templates/${template.id}`)}
-                      onDelete={() => handleDeleteTemplate(template)}
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{template.name}</h3>
-                    {template.description && <p className="text-gray-300 text-sm leading-relaxed mb-4">{template.description}</p>}
-
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-400">Categories:</span>
-                        <span className="text-white font-medium">{template.categories.length}</span>
-                      </div>
-
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-400">Analysis Parameters:</span>
-                        <span className="text-white font-medium">{template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)}</span>
-                      </div>
+                <Link key={template.id} href={`/admin-v1/analysis-templates/${template.id}`}>
+                  <div className="bg-gray-900 rounded-2xl overflow-hidden transition-all border border-gray-800 hover:border-blue-500 relative group cursor-pointer">
+                    <div className="absolute top-4 right-4 z-10" onClick={(e) => e.stopPropagation()}>
+                      <AnalysisTemplateActions onEdit={() => handleEditTemplate(template)} onDelete={() => handleDeleteTemplate(template)} />
                     </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 mb-2 pr-12">{template.name}</h3>
+                      {template.description && <p className="text-gray-300 text-sm leading-relaxed mb-4">{template.description}</p>}
 
-                    <div className="pt-4 border-t border-gray-700 mt-4">
-                      <Link href={`/admin-v1/analysis-templates/${template.id}`}>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-400">Categories:</span>
+                          <span className="text-white font-medium">{template.categories.length}</span>
+                        </div>
+
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-400">Analysis Parameters:</span>
+                          <span className="text-white font-medium">{template.categories.reduce((total, cat) => total + cat.analysisParameters.length, 0)}</span>
+                        </div>
+
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-400">Generated Reports:</span>
+                          <span className="text-white font-medium">{template._count?.analysisTemplateReports ?? 0}</span>
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t border-gray-700 mt-4">
                         <span className="text-blue-400 group-hover:text-blue-300 transition-colors text-sm font-medium">Manage Template →</span>
-                      </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

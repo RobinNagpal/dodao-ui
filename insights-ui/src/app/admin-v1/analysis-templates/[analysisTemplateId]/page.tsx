@@ -243,18 +243,33 @@ export default function AnalysisTemplateDetailPage() {
         <div className="pt-2 pb-6">
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center gap-3 mb-2">
-              <DocumentTextIcon className="w-8 h-8 text-blue-500" />
-              <h1 className="text-3xl font-bold text-white">{template.name}</h1>
-              <div className="ml-auto">
-                <Link href="/admin-v1/analysis-templates">
-                  <span className="text-blue-400 hover:text-blue-300 transition-colors">Back to Templates →</span>
-                </Link>
+            <div className="flex items-start gap-8">
+              {/* Left side - Template info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <DocumentTextIcon className="w-8 h-8 text-blue-500" />
+                  <h1 className="text-3xl font-bold text-white">{template.name}</h1>
+                </div>
+                <div className="ml-11">
+                  {template.description && <p className="text-gray-400 text-base">{template.description}</p>}
+                  <p className="text-gray-400 text-base mt-2">Manage categories and analysis types for this template.</p>
+                </div>
               </div>
-            </div>
-            <div className="ml-11">
-              {template.description && <p className="text-gray-400 text-base">{template.description}</p>}
-              <p className="text-gray-400 text-base mt-2">Manage categories and analysis types for this template.</p>
+
+              {/* Right side - Links */}
+              <div className="flex flex-col gap-2 items-end">
+                {template.analysisTemplateReports && template.analysisTemplateReports.length > 0 && (
+                  <>
+                    {template.analysisTemplateReports.map((report) => {
+                      return (
+                        <Link key={report.id} href={`/admin-v1/analysis-template-report/${report.id}`}>
+                          <span className="text-blue-400 hover:text-blue-300 transition-colors text-sm">{report.reportName} →</span>
+                        </Link>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
