@@ -16,9 +16,9 @@
  * @module @auth/prisma-adapter
  */
 
-import type { Prisma, PrismaClient, User } from '@prisma/client';
-import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
-import { Adapter } from 'next-auth/adapters';
+// import type { Prisma, PrismaClient, User } from '@prisma/client';
+// import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
+// import { Adapter } from 'next-auth/adapters';
 
 /**
  * ## Setup
@@ -219,9 +219,8 @@ import { Adapter } from 'next-auth/adapters';
  * ```
  *
  **/
-export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser {}
+// export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'image' | 'name'>, AdapterUser {}
 
-// we are not using it anywhere and it is complaining about the types so i am commenting it out
 // export function CustomPrismaAdapter(p: PrismaClient): Adapter {
 //   return {
 //     createUser: (user: Omit<AdapterUser, 'id'>): Promise<PrismaUser> => p.user.create({ data: user as PrismaUser }) as Promise<PrismaUser>,
@@ -258,7 +257,7 @@ export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'imag
 //     deleteSession: (sessionToken) => p.session.delete({ where: { sessionToken } }),
 //     async createVerificationToken(data) {
 //       const verificationToken = await p.verificationToken.create({ data });
-
+//       // @ts-expect-errors // MongoDB needs an ID, but we don't
 //       if (verificationToken.id) delete verificationToken.id;
 //       return verificationToken;
 //     },
@@ -267,12 +266,13 @@ export interface PrismaUser extends Omit<User, 'emailVerified' | 'email' | 'imag
 //         const verificationToken = await p.verificationToken.delete({
 //           where: { identifier_token },
 //         });
+//         // @ts-expect-errors // MongoDB needs an ID, but we don't
 //         if (verificationToken.id) delete verificationToken.id;
 //         return verificationToken;
 //       } catch (error) {
 //         // If token already used/deleted, just return null
 //         // https://www.prisma.io/docs/reference/api-reference/error-reference#p2025
-//         if ((error as { code: string })?.code === 'P2025') return null;
+//         if ((error as Prisma.PrismaClientKnownRequestError).code === 'P2025') return null;
 //         throw error;
 //       }
 //     },

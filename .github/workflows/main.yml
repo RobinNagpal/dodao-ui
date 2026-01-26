@@ -65,8 +65,8 @@ jobs:
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn
 
-      # - name: Shared Web Core - TSC
-      #   run: cd shared/web-core && yarn tsc
+      - name: Shared Web Core - TSC
+        run: cd shared/web-core && yarn tsc
 
       - name: Shared Web Core - Run Prettier
         run: cd shared/web-core && yarn prettier-check
