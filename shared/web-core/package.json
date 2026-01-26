@@ -1,14 +1,37 @@
 {
   "name": "@dodao/web-core",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint . --ext .ts,.js,.tsx",
-    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
-    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
-    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./dist/*.js"
+    }
   },
+  "files": ["dist"],
+
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "yarn clean && tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json -w",
+    "prepare": "yarn build"
+  },
+
+  "peerDependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "next": "15.5.7"
+  },
+
   "devDependencies": {
+    "@types/katex": "^0.16.0",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@types/react-google-recaptcha": "^2.1.9",
@@ -16,16 +39,42 @@
     "@types/lodash": "^4.14.194",
     "@types/styled-components": "^5.1.26",
     "@types/react-datepicker": "^4.11.2",
-    "@types/uuid": "^9.0.1"
+    "@types/uuid": "^9.0.1",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/marked": "^4.3.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.12",
+    "@aws-sdk/client-s3": "3.363.0",
+    "@aws-sdk/client-ses": "^3.515.0",
     "@headlessui/react": "^2.1.8",
     "@heroicons/react": "2.1.5",
+    "@prisma/client": "4.13.0",
     "@uiw/react-markdown-preview": "^4.1.13",
     "@uiw/react-md-editor": "^3.20.10",
+    "@snapshot-labs/snapshot.js": "^0.4.82",
+    "@web3-react/coinbase-wallet": "8.2.3",
+    "@web3-react/core": "8.2.3",
+    "@web3-react/gnosis-safe": "8.2.4",
+    "@web3-react/injected-connector": "6.0.7",
+    "@web3-react/metamask": "8.2.4",
+    "@web3-react/network": "8.2.3",
+    "@web3-react/types": "8.2.3",
+    "@web3-react/url": "^8.2.3",
+    "@web3-react/walletconnect": "8.2.3",
+    "@web3-react/walletconnect-connector": "6.2.13",
+    "@web3-react/walletconnect-v2": "8.5.1",
+    "@web3-react/walletlink-connector": "6.2.14",
+    "axios": "^1.6.7",
+    "dayjs": "^1.11.7",
+    "marked": "^4.3.0",
     "ethers": "^6.3.0",
+    "ethereum-blockies-base64": "^1.0.2",
+    "framer-motion": "^10.16.16",
     "lodash": "^4.17.21",
+    "next": "15.5.7",
     "next-auth": "^4.24.11",
+    "near-api-js": "^2.1.4",
     "react": "18.3.1",
     "react-datepicker": "^4.12.0",
     "react-dom": "18.3.1",
@@ -40,6 +89,7 @@
     "react-slider": "^2.0.5",
     "react-syntax-highlighter": "^15.5.0",
     "react-type-animation": "^3.1.0",
+    "tailwind-merge": "^3.2.0",
     "typescript": "5.0.4"
   },
   "resolutions": {
@@ -49,3 +99,4 @@
     "react-dom": "18.3.1"
   }
 }
+

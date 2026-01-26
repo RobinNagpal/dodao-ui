@@ -16,7 +16,8 @@
  * @module @auth/prisma-adapter
  */
 
-import type { Prisma, PrismaClient, User } from '@prisma/client';
+import type { Prisma, PrismaClient } from '@prisma/client';
+import { User } from 'next-auth';
 import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
 import { Adapter } from 'next-auth/adapters';
 
@@ -257,7 +258,7 @@ export function CustomPrismaAdapter(p: PrismaClient): Adapter {
     deleteSession: (sessionToken) => p.session.delete({ where: { sessionToken } }),
     async createVerificationToken(data) {
       const verificationToken = await p.verificationToken.create({ data });
-      // @ts-expect-errors // MongoDB needs an ID, but we don't
+
       if (verificationToken.id) delete verificationToken.id;
       return verificationToken;
     },
@@ -266,13 +267,12 @@ export function CustomPrismaAdapter(p: PrismaClient): Adapter {
         const verificationToken = await p.verificationToken.delete({
           where: { identifier_token },
         });
-        // @ts-expect-errors // MongoDB needs an ID, but we don't
         if (verificationToken.id) delete verificationToken.id;
         return verificationToken;
       } catch (error) {
         // If token already used/deleted, just return null
         // https://www.prisma.io/docs/reference/api-reference/error-reference#p2025
-        if ((error as Prisma.PrismaClientKnownRequestError).code === 'P2025') return null;
+        if ((error as {code: string})?.code === 'P2025') return null;
         throw error;
       }
     },
