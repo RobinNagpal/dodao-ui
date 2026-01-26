@@ -23,7 +23,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@dodao/web-core": ["../shared/web-core/src/index.ts"],
       "@dodao/web-core/*": ["../shared/web-core/src/*"],
       "next-auth": ["./node_modules/next-auth"],
       "next-auth/*": ["./node_modules/next-auth/*"],

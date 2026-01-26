@@ -16,8 +16,7 @@
  * @module @auth/prisma-adapter
  */
 
-import type { Prisma, PrismaClient } from '@prisma/client';
-import { User } from 'next-auth';
+import type { Prisma, PrismaClient, User } from '@prisma/client';
 import { AdapterAccount, AdapterSession, AdapterUser } from 'next-auth/adapters';
 import { Adapter } from 'next-auth/adapters';
 
