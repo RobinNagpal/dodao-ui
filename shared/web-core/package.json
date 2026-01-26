@@ -2,29 +2,8 @@
   "name": "@dodao/web-core",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "default": "./dist/*.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
-    "clean": "rm -rf dist tsconfig.build.tsbuildinfo",
-    "build": "yarn clean && tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json -w",
-    "lint": "eslint . --ext .ts,.js,.tsx",
-    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
   },
@@ -46,8 +25,6 @@
     "@types/react-slider": "^1.3.1",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.1",
-    "eslint": "^8.39.0",
-    "eslint-config-next": "13.3.4",
     "prettier": "^2.8.8"
   },
   "dependencies": {
