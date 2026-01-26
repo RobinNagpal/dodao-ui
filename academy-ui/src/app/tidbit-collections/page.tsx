@@ -4,7 +4,7 @@ import { ByteCollectionSummary } from '@/types/byteCollections/byteCollection';
 import fetchDataServerSide from '@/utils/api/fetchDataServerSide';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import CollectionPageLoading from '@dodao/web-core/src/components/core/loaders/CollectionPageLoading';
+import CollectionPageLoading from '@dodao/web-core/components/core/loaders/CollectionPageLoading';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { getServerSession } from 'next-auth';

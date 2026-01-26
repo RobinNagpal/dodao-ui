@@ -65,8 +65,8 @@ jobs:
       - name: Shared Web Core - Install dependencies
         run: cd shared/web-core && yarn
 
-      - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+      # - name: Shared Web Core - TSC
+      #   run: cd shared/web-core && yarn tsc
 
       - name: Shared Web Core - Run Prettier
         run: cd shared/web-core && yarn prettier-check
@@ -80,7 +80,7 @@ jobs:
       - name: Academy - Run Prettier
         run: cd academy-ui && yarn prettier-check
 
-      - name: Academy - TSC
+      - name: Academy - TSC (includes web-core)
         run: cd academy-ui && yarn tsc
 
       - name: Academy - NEXT Build
