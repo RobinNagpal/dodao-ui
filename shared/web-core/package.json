@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -16,20 +15,21 @@
     }
   },
   "files": ["dist"],
-
   "scripts": {
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc -p tsconfig.build.json",
     "dev": "tsc -p tsconfig.build.json -w",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "lint": "eslint . --ext .ts,.js,.tsx",
+    "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
+    "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
   },
-
   "peerDependencies": {
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "next": "15.5.7"
   },
-
   "devDependencies": {
     "@types/katex": "^0.16.0",
     "@types/react": "18.3.12",
@@ -41,7 +41,10 @@
     "@types/react-datepicker": "^4.11.2",
     "@types/uuid": "^9.0.1",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/marked": "^4.3.0"
+    "@types/marked": "^4.3.0",
+    "prettier": "^2.8.8",
+    "eslint": "^8.39.0",
+    "eslint-config-next": "13.3.4"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",

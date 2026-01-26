@@ -272,7 +272,7 @@ export function CustomPrismaAdapter(p: PrismaClient): Adapter {
       } catch (error) {
         // If token already used/deleted, just return null
         // https://www.prisma.io/docs/reference/api-reference/error-reference#p2025
-        if ((error as {code: string})?.code === 'P2025') return null;
+        if ((error as { code: string })?.code === 'P2025') return null;
         throw error;
       }
     },

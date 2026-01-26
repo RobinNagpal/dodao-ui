@@ -1,4 +1,3 @@
-
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -33,7 +32,6 @@ export function jsonParse(input: any, fallback?: any) {
     return fallback || {};
   }
 }
-
 
 export function randomThreeDigitNumber() {
   return Math.floor(Math.random() * (999 - 100 + 1) + 100);
