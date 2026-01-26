@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    "declaration": true,
+    "declarationMap": true,
+
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+
+    "jsx": "react-jsx",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}

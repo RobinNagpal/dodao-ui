@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",
+    "@dodao/web-core": "file:../shared/web-core",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "@radix-ui/react-accordion": "^1.2.10",

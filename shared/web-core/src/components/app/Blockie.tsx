@@ -1,9 +1,9 @@
 import makeBlockie from 'ethereum-blockies-base64';
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
 interface IProps {
   seed?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
   className?: string;
   alt?: string;
 }
