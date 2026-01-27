@@ -25,13 +25,10 @@
       "@/*": ["./src/*"],
       "@dodao/web-core/*": ["../shared/web-core/src/*"],
       "next-auth": ["./node_modules/next-auth"],
-      "next-auth/*": ["./node_modules/next-auth/*"],
-      // "next": ["./node_modules/next"],
-      // "next/*": ["./node_modules/next/*"]
+      "next-auth/*": ["./node_modules/next-auth/*"]
     }
   },
-  "include": [
-    "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../shared/web-core/src/**/*.ts", "../shared/web-core/src/**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../shared/web-core/src/**/*.ts", "../shared/web-core/src/**/*.tsx"],
   "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
