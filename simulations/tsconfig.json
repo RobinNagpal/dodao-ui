@@ -18,11 +18,21 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@dodao/web-core/*": ["../shared/web-core/src/*"]
+      "@dodao/web-core/*": ["../shared/web-core/src/*"],
+      "next-auth": ["./node_modules/next-auth"],
+      "next-auth/*": ["./node_modules/next-auth/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../shared/web-core/src/**/*.ts",
+    "../shared/web-core/src/**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

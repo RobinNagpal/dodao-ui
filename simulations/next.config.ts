@@ -1,6 +1,12 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['@dodao/web-core'],
+  compiler: {
+    // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
+    styledComponents: true,
+  },
   async headers() {
     return [
       {
@@ -36,6 +42,25 @@ const nextConfig: NextConfig = {
         pathname: '/vi/**',
       },
     ],
+  },
+  crossOrigin: 'anonymous',
+  productionBrowserSourceMaps: true,
+  serverSourceMaps: true,
+  serverMinification: false,
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.devtool = 'source-map';
+    }
+
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      // Resolve next-auth from this app's node_modules so @dodao/web-core
+      // reuses the same next-auth instance as simulations
+      'next-auth': path.resolve(process.cwd(), 'node_modules/next-auth'),
+    };
+
+    return config;
   },
 };
 
