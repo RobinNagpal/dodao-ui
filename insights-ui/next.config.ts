@@ -1,6 +1,13 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
+  // Ensure @dodao/web-core is transpiled by Next.js
+  transpilePackages: ['@dodao/web-core'],
+  compiler: {
+    // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
+    styledComponents: true,
+  },
   /* config options here */
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],
@@ -17,6 +24,21 @@ const nextConfig: NextConfig = {
         pathname: '/RobinNagpal/dodao-ui/refs/heads/main/insights-ui/blogs',
       },
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.devtool = 'source-map';
+    }
+    
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      // Resolve next-auth from this app's node_modules so @dodao/web-core
+      // reuses the same next-auth instance as simulations
+      'next-auth': path.resolve(process.cwd(), 'node_modules/next-auth'),
+    };
+
+    return config;
   },
   async redirects() {
     return [

@@ -13,7 +13,7 @@
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.13.0"
   },
   "dependencies": {
     "@dodao/web-core": "file:../shared/web-core",
