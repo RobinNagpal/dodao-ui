@@ -81,7 +81,7 @@ jobs:
         run: cd academy-ui && yarn prettier-check
 
       - name: Academy - TSC (includes web-core)
-        run: cd academy-ui && yarn tsc
+        run: cd academy-ui && yarn compile
 
       - name: Academy - NEXT Build
         run: cd academy-ui && yarn build

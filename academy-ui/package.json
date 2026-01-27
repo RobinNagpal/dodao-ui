@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "compile": "prisma generate && tsc",
     "dev": "prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "prisma generate && next start",
