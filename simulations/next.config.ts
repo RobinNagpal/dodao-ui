@@ -45,8 +45,6 @@ const nextConfig: NextConfig = {
   },
   crossOrigin: 'anonymous',
   productionBrowserSourceMaps: true,
-  serverSourceMaps: true,
-  serverMinification: false,
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.devtool = 'source-map';
