@@ -3,7 +3,7 @@ import { prisma } from '@/prisma';
 import { EnrollmentWithRelations, CreateEnrollmentRequestForCaseStudy } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 
 // POST /api/case-studies/[caseStudyId]/class-enrollments - Create a new enrollment for a specific case study

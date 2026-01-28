@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { SpaceProvider } from '@/contexts/SpaceContext';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import { GlobalThemeColors } from '@dodao/web-core/src/components/app/themes';
+import { GlobalThemeColors } from '@dodao/web-core/components/app/themes';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { NotificationProvider } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { getGTagId } from '@dodao/web-core/utils/analytics/getGTagId';

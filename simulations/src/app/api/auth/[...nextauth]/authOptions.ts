@@ -6,13 +6,12 @@ import { User } from '@dodao/web-core/types/auth/User';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient, User as SimulationUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { AuthOptions } from 'next-auth';
 
 const p = new PrismaClient();
 
 export const prismaAdapter = PrismaAdapter(p);
 
-export const authOptions: AuthOptions = getAuthOptions(
+export const authOptions = getAuthOptions(
   {
     user: p.user,
     verificationToken: p.verificationToken,

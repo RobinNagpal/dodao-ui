@@ -23,7 +23,7 @@ import 'prismjs/components/prism-toml';
 import 'prismjs/components/prism-yaml';
 import { useEffect, useState } from 'react';
 import styles from './Question.module.scss';
-import CheckboxView from '@dodao/web-core/src/components/app/Form/CheckboxView';
+import CheckboxView from '@dodao/web-core/components/app/Form/CheckboxView';
 
 export interface LocalQuestionType
   extends Omit<CourseQuestionFragment | GuideQuestionFragment | ByteQuestionFragmentFragment | CourseReadingQuestionFragment, 'hint' | 'explanation'> {

@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { CreateUserListRequest, UpdateUserListRequest, UserListResponse, UserListsResponse } from '@/types/ticker-user';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 
 // GET /api/user-lists - Get all lists for the logged-in user

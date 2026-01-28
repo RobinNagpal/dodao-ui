@@ -3,7 +3,7 @@ import { CreateFavouriteTickerRequest, FavouriteTickerResponse, FavouriteTickers
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { revalidatePortfolioProfileIfExists } from '@/utils/cache-actions';
 

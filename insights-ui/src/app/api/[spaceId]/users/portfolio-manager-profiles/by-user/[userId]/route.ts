@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { PortfolioManagerProfile } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { CreatePortfolioManagerProfileRequest } from '@/types/portfolio';

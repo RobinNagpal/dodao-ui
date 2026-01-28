@@ -6,8 +6,8 @@ import { UserLogin } from '@/components/login/user-login';
 import { deleteSimulationSessionInfo } from '@/utils/auth-utils';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
-import { CardContent } from 'defi-alerts/src/components/ui/card';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { CardContent } from '@/components/ui/card';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useEffect, useState } from 'react';
 
 export default function LoginPage() {

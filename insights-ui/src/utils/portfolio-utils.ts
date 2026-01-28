@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 async function isUserAdmin(userId: string): Promise<boolean> {
   const user = await prisma.user.findUnique({

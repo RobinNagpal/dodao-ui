@@ -27,6 +27,12 @@
       ],
       "@dodao/web-core/*": [
         "../shared/web-core/src/*"
+      ],
+      "next-auth": [
+        "./node_modules/next-auth"
+      ],
+      "next-auth/*": [
+        "./node_modules/next-auth/*"
       ]
     },
     "target": "ES2017"

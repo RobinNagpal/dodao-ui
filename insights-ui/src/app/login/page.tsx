@@ -5,7 +5,7 @@ import { UserLogin } from '@/components/login/user-login';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useState } from 'react';
 
 // Define types for login request and response

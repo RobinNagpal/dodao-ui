@@ -1,9 +1,9 @@
 import { prisma } from '@/prisma';
 import { PortfolioManagerProfile, User } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { PortfolioManagerType } from 'insights-ui/src/types/portfolio-manager';
+import { PortfolioManagerType } from '@/types/portfolio-manager';
 
 export interface PortfolioManagerProfileWithUser extends PortfolioManagerProfile {
   user: User;

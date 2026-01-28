@@ -1,7 +1,7 @@
 import { CourseDetailsFragment, CourseFragment, GuideSummaryFragment, ClickableDemo, Timeline } from '@/graphql/generated/generated-types';
 import { SpaceWithIntegrationsDto, SpaceTypes } from '@/types/space/SpaceDto';
 import { getSpaceBasedOnHostHeader } from '@/utils/space/getSpaceServerSide';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
