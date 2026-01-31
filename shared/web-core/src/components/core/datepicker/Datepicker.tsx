@@ -27,7 +27,7 @@ const CustomDatePicker = (props: DatepickerProps & { error?: string | boolean })
   const { error, ...datePickerProps } = props;
   return (
     <StyledWrapper error={error}>
-      <DatePicker {...(datePickerProps as DatePickerProps) }  />
+      <DatePicker {...(datePickerProps as DatePickerProps)} />
     </StyledWrapper>
   );
 };
