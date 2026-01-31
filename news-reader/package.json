@@ -59,6 +59,7 @@
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
     "prisma-json-types-generator": "2.4.0",
+    "next-auth": "^4.24.11",
     "react": "18.3.1",
     "react-day-picker": "9.8.1",
     "react-dom": "18.3.1",
