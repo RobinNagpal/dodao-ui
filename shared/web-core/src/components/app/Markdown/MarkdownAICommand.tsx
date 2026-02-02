@@ -1,4 +1,4 @@
-import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
+import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/outline';
 import { ICommand, TextAreaTextApi, TextState } from '@uiw/react-md-editor';
 import { getBreaksNeededForEmptyLineAfter, getBreaksNeededForEmptyLineBefore, selectWord } from '@uiw/react-md-editor';
 import React from 'react';

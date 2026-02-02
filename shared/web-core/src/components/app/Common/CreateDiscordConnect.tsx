@@ -2,7 +2,7 @@ import Modal from '@dodao/web-core/components/app/Modal';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { UserDiscordConnect } from '@dodao/web-core/types/deprecated/models/byte/ByteModel';
 import { GuideStepItem } from '@dodao/web-core/types/deprecated/models/GuideModel';
-import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 

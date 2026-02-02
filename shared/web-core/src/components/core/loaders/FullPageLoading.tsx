@@ -1,7 +1,7 @@
 'use client';
 
 // FullPageLoader.tsx
-import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
+import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
 type FullPageLoaderProps = {
