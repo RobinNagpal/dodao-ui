@@ -9,6 +9,9 @@
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
   },
+  "engines": {
+    "node": ">=24.13.0"
+  },
   "peerDependencies": {
     "react": "18.3.1",
     "react-dom": "18.3.1",
