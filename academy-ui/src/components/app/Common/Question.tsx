@@ -8,7 +8,7 @@ import {
 } from '@/graphql/generated/generated-types';
 import { QuestionType } from '@dodao/web-core/types/deprecated/models/enums';
 import { getMarkedRenderer } from '@dodao/web-core/utils/ui/getMarkedRenderer';
-import { RadioGroup } from '@headlessui/react';
+import * as Headless from '@headlessui/react';
 import isEqual from 'lodash/isEqual';
 import { marked } from 'marked';
 import 'prismjs';
@@ -89,7 +89,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
         </div>
       )}
       {question.type === QuestionType.SingleChoice ? (
-        <RadioGroup
+        <Headless.RadioGroup
           value={questionResponse.length > 0 ? questionResponse[0] : null}
           onChange={(choiceKey) => {
             selectSingleChoice(choiceKey);
@@ -111,7 +111,7 @@ function Question({ answerClass = '', question, questionResponse, readonly, show
               </div>
             );
           })}
-        </RadioGroup>
+        </Headless.RadioGroup>
       ) : (
         questionWithFormattedChoices.choices.map((choice) => {
           const isSelected = questionResponse.includes(choice.key);
