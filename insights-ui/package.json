@@ -86,7 +86,9 @@
     "turndown-plugin-gfm": "^1.0.2",
     "vaul": "^1.1.2",
     "yahoo-finance2": "2.13.3",
-    "zod": "^3.24.3"
+    "zod": "^3.24.3",
+    "@headlessui/react": "^2.2.9",
+    "styled-components": "6.1.11"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

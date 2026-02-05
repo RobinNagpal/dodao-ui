@@ -1,5 +1,5 @@
 import classNames from '@dodao/web-core/utils/classNames';
-import * as Headless from '@headlessui/react';
+import { RadioGroup } from '@headlessui/react';
 import styles from './RadioOption.module.scss';
 
 export interface CustomRadioOptionProps {
@@ -12,7 +12,7 @@ export interface CustomRadioOptionProps {
 
 export default function RadioOption({ optionKey, value, content, isSelected, onSelect }: CustomRadioOptionProps) {
   return (
-    <Headless.RadioGroup.Option
+    <RadioGroup.Option
       key={optionKey}
       value={value}
       className={({ active }) =>
@@ -26,7 +26,7 @@ export default function RadioOption({ optionKey, value, content, isSelected, onS
       <>
         <span className="flex items-center">
           <span className="flex flex-col text-sm">
-            <Headless.RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{ __html: content }} />
+            <RadioGroup.Label as="span" className="font-medium" dangerouslySetInnerHTML={{ __html: content }} />
           </span>
         </span>
         <span
@@ -34,6 +34,6 @@ export default function RadioOption({ optionKey, value, content, isSelected, onS
           aria-hidden="true"
         />
       </>
-    </Headless.RadioGroup.Option>
+    </RadioGroup.Option>
   );
 }
