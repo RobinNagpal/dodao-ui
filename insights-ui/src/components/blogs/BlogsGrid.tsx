@@ -5,7 +5,7 @@ import React from 'react';
 export default function BlogsGrid({ posts, showViewAllButton = false }: { posts: BlogInterfaceWithId[]; length?: number; showViewAllButton?: boolean }) {
   const HeadingTag = showViewAllButton ? 'h2' : 'h1';
   return (
-    <section className="bg-gray-800 pt-16 pb-12 sm:pt-20 sm:pb-16">
+    <section className="bg-gray-800 pt-8 pb-6 sm:pt-10 sm:pb-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Heading */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
