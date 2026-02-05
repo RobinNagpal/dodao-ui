@@ -2,7 +2,13 @@ import { InsightsConstants } from './../../../../util/insights-constants';
 import { ListObjectsV2Command, ListObjectsV2CommandInput, ListObjectsV2CommandOutput, S3Client } from '@aws-sdk/client-s3';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
-const s3Client = new S3Client({ region: process.env.DEFAULT_REGION });
+const s3Client = new S3Client({
+  region: process.env.DEFAULT_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 async function getHandler(): Promise<{ projectIds: string[] }> {
   // First call to fetch folders directly under `crowd-fund-analysis/`
