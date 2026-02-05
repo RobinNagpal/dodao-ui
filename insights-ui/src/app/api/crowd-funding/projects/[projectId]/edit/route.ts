@@ -4,7 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { InsightsConstants } from '@/util/insights-constants';
 import { Readable } from 'stream';
-const s3Client = new S3Client({ region: process.env.DEFAULT_REGION });
+
+const s3Client = new S3Client({
+  region: process.env.DEFAULT_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 async function streamToString(stream: Readable): Promise<string> {
   const chunks: Buffer[] = [];
