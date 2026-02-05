@@ -78,6 +78,7 @@
     "@headlessui/react": "^2.2.9"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.26",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "18.16.3",

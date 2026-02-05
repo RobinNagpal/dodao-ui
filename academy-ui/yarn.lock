@@ -1657,7 +1657,7 @@
     "@apollo/client" "^3.7.12"
     "@aws-sdk/client-s3" "3.363.0"
     "@aws-sdk/client-ses" "^3.515.0"
-    "@headlessui/react" "^2.1.8"
+    "@headlessui/react" "^2.2.9"
     "@heroicons/react" "2.1.5"
     "@prisma/client" "4.13.0"
     "@snapshot-labs/snapshot.js" "^0.4.82"
@@ -2706,7 +2706,7 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@headlessui/react@^2.1.8":
+"@headlessui/react@^2.2.9":
   version "2.2.9"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-2.2.9.tgz#213f78534c86e03a7c986d2c2abe1270622b3e13"
   integrity sha512-Mb+Un58gwBn0/yWZfyrCh0TJyurtT+dETj7YHleylHk5od3dv2XqETPGWMyQ5/7sYN7oWdyM1u9MvC0OC8UmzQ==
