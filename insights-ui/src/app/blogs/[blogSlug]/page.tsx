@@ -92,7 +92,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="px-6 pt-16 lg:px-8 text-color">
+      <div className="px-6 pt-4 lg:px-8 text-color">
         <div className="mx-auto max-w-6xl text-base/7">
           <p className="text-base/7 font-semibold">
             <span className="relative z-10 rounded-full py-1.5 font-medium">{data.category.title}</span>

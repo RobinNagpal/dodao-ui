@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
   description:
-    'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities. KoalaGains helps you stay informed and make smarter investment decisions.',
+    'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, equity research and GenAI capabilities. KoalaGains helps you stay informed and make smarter investment decisions.',
   alternates: {
     canonical: 'https://koalagains.com/blogs',
   },
@@ -14,10 +14,21 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  keywords: ['KoalaGains Blog', 'REIT analysis', 'Crowdfunding insights', 'Investment insights', 'Financial analysis', 'AI-driven insights', 'REIT Analysis'],
+  keywords: [
+    'KoalaGains Blog',
+    'REIT analysis',
+    'Crowdfunding insights',
+    'Investment insights',
+    'Financial analysis',
+    'AI-driven insights',
+    'REIT Analysis',
+    'Equity Research',
+    'Value Investing',
+    'Investment Strategies',
+  ],
   openGraph: {
     title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
-    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities.',
+    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, equity research and GenAI capabilities.',
     url: 'https://koalagains.com/blogs',
     siteName: 'KoalaGains',
     type: 'website',
@@ -33,7 +44,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
-    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, and GenAI capabilities.',
+    description: 'Explore expert articles on REIT fundamentals, value‑investing techniques, crowdfunding analysis, equity research and GenAI capabilities.',
     images: ['https://koalagains.com/koalagain_logo.png'],
   },
 };
