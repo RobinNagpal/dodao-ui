@@ -51,7 +51,8 @@
     "postcss": "8.4.35",
     "prisma": "^4.13.0",
     "prettier": "^2.8.8",
-    "prisma-json-types-generator": "2.4.0"
+    "prisma-json-types-generator": "2.4.0",
+    "@types/uuid": "^9.0.1"
   },
   "resolutions": {
     "@types/react": "18.3.12",

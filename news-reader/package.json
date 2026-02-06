@@ -93,7 +93,8 @@
     "tailwindcss": "4.1.11",
     "tsx": "^4.19.3",
     "tw-animate-css": "1.3.3",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "@types/uuid": "^9.0.1"
   },
   "resolutions": {
     "@types/react": "18.3.12",

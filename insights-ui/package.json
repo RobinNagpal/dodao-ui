@@ -88,10 +88,12 @@
     "yahoo-finance2": "2.13.3",
     "zod": "^3.24.3",
     "@headlessui/react": "^2.2.9",
-    "styled-components": "6.1.11"
+    "styled-components": "6.1.11",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
+    "@types/uuid": "^9.0.1",
     "@eslint/eslintrc": "^3",
     "@types/node": "18.16.3",
     "@types/papaparse": "^5.3.16",
