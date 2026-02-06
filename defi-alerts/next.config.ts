@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   transpilePackages: ['@dodao/web-core'],
@@ -30,6 +31,21 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  webpack: (config, {isServer}) => {
+    if (isServer) {
+      config.devtool = 'source-map'
+    }
+
+    // Resolve next-auth from academy-ui's node_modules
+    // This ensures that when transpiling @dodao/web-core, next-auth is found
+    // Don't alias react/next - let Next.js handle those internally
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'next-auth': path.resolve(__dirname, 'node_modules/next-auth'),
+    };
+
+    return config
   },
   images: {
     remotePatterns: [
