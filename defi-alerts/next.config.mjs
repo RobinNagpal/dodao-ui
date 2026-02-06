@@ -1,4 +1,3 @@
-import createMDX from '@next/mdx';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
