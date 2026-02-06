@@ -37,12 +37,13 @@ const nextConfig: NextConfig = {
       config.devtool = 'source-map'
     }
 
-    // Resolve next-auth from academy-ui's node_modules
-    // This ensures that when transpiling @dodao/web-core, next-auth is found
+    // Resolve next-auth and @headlessui/react from defi-alerts's node_modules
+    // This ensures that when transpiling @dodao/web-core, these dependencies are found
     // Don't alias react/next - let Next.js handle those internally
     config.resolve.alias = {
       ...config.resolve.alias,
       'next-auth': path.resolve(__dirname, 'node_modules/next-auth'),
+      '@headlessui/react': path.resolve(__dirname, 'node_modules/@headlessui/react'),
     };
 
     return config
