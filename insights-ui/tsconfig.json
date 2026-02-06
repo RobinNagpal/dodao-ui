@@ -27,7 +27,7 @@
       ],
       "@dodao/web-core/*": [
         "../shared/web-core/src/*"
-      ],
+      ]
     },
     "target": "ES2017"
   },

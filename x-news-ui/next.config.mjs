@@ -3,6 +3,8 @@
 
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // Ensure @dodao/web-core is transpiled by Next.js
+  transpilePackages: ['@dodao/web-core'],
   compiler: {
     // Enables the styled-components SWC transform
     styledComponents: true,
