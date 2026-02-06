@@ -7,7 +7,8 @@
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
-    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'"
+    "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
+    "build": "tsc"
   },
   "engines": {
     "node": ">=24.13.0"
