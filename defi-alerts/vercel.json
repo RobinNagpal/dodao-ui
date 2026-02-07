@@ -10,7 +10,7 @@
       ]
     }
   ],
-  "buildCommand": "yarn install && prisma generate && next build",
+  "buildCommand": "cd ../shared/web-core && yarn install && yarn build && cd ../../defi-alerts && yarn install && prisma generate && next build",
 
   "crons": [
     {
