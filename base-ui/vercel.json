@@ -10,20 +10,5 @@
       ]
     }
   ],
-  "buildCommand": "cd shared/web-core && yarn install && yarn build && cd ../../defi-alerts && yarn install && prisma generate && next build",
-
-  "crons": [
-    {
-      "path": "/api/cron",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/sending-alerts/compare-compound",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/sending-alerts/compound-market-alerts",
-      "schedule": "0 * * * *"
-    }
-  ]
+  "buildCommand": "cd shared/web-core && yarn install && yarn build && cd ../../base-ui && yarn install && prisma generate && next build"
 }
