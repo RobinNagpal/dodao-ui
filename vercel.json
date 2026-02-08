@@ -1,8 +1,9 @@
 {
   "buildCommand": {
-    "academy-ui": "cd shared/web-core && yarn install && yarn build && cd ../../academy-ui && yarn install && prisma generate && next build",
-    "base-ui": "cd shared/web-core && yarn install && yarn build && cd ../../base-ui && yarn install && prisma generate && next build",
-    "defi-alerts": "cd shared/web-core && yarn install && yarn build && cd ../../defi-alerts && yarn install && prisma generate && next build",
-    "insights-ui": "cd shared/web-core && yarn install && yarn build && cd ../../insights-ui && yarn install && prisma generate && next build"
+    "dodao-ui-academy-ui": "cd shared/web-core && yarn install && yarn build && cd ../../academy-ui && yarn install && prisma generate && next build",
+    "dodao-ui-base-ui": "cd shared/web-core && yarn install && yarn build && cd ../../base-ui && yarn install && prisma generate && next build",
+    "dodao-ui-defi-alerts": "cd shared/web-core && yarn install && yarn build && cd ../../defi-alerts && yarn install && prisma generate && next build",
+    "dodao-ui-insights-ui": "cd shared/web-core && yarn install && yarn build && cd ../../insights-ui && yarn install && prisma generate && next build"
   }
 }
+
