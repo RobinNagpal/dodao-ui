@@ -38,6 +38,5 @@
       "source": "/public-equities/:path*",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
-  ],
-  "buildCommand": "cd shared/web-core && yarn install --ignore-workspace-root-check && yarn build && cd ../../insights-ui && yarn install --ignore-workspace-root-check && prisma generate && next build"
+  ]
 }

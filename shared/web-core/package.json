@@ -4,7 +4,7 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.js,.tsx",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",

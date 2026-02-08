@@ -9,6 +9,5 @@
         { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
       ]
     }
-  ],
-  "buildCommand": "cd shared/web-core && yarn install --ignore-workspace-root-check && yarn build && cd ../../base-ui && yarn install --ignore-workspace-root-check && prisma generate && next build"
+  ]
 }

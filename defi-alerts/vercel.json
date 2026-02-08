@@ -10,7 +10,6 @@
       ]
     }
   ],
-  "buildCommand": "cd shared/web-core && yarn install --ignore-workspace-root-check && yarn build && cd ../../defi-alerts && yarn install --ignore-workspace-root-check && prisma generate && next build",
 
   "crons": [
     {
