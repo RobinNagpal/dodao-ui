@@ -5,7 +5,7 @@
   "scripts": {
     "compile": "tsc",
     "build:scss": "sass --no-source-map src/styles/clickableDemoTooltipStyles.scss prod-files/clickableDemoTooltipStyles.css",
-    "build": "tsc && npm run build:scss",
+    "build": "cd ../shared/web-core && yarn build && cd ../../clickable-demos && tsc && npm run build:scss",
     "dev": "tsc -w",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
