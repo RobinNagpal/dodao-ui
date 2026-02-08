@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@dodao/web-core'],
   compiler: {
     // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
     styledComponents: true,

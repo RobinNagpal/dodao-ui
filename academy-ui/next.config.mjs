@@ -1,14 +1,8 @@
 import createMDX from '@next/mdx';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
-  transpilePackages: ['@dodao/web-core'],
   compiler: {
     // Enables the styled-components SWC transform
     styledComponents: true,
@@ -20,21 +14,13 @@ const nextConfig = {
     if (isServer) {
       config.devtool = 'source-map'
     }
-    
-    // Resolve next-auth from academy-ui's node_modules
-    // This ensures that when transpiling @dodao/web-core, next-auth is found
-    // Don't alias react/next - let Next.js handle those internally
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'next-auth': path.resolve(__dirname, 'node_modules/next-auth'),
-    };
-    
     return config
   },
   experimental: {
     serverMinification: false,
     serverSourceMaps: true,
     allowDevelopmentBuilds: true,
+
   },
   productionBrowserSourceMaps: true,
   serverSourceMaps: true,

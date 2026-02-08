@@ -5,7 +5,7 @@
   "scripts": {
     "compile": "prisma generate && tsc",
     "dev": "prisma generate && next dev --turbopack",
-    "build": "cd ../shared/web-core && yarn build && cd ../../insights-ui && prisma generate && next build",
+    "build": "yarn workspace @dodao/web-core build && prisma generate && next build",
     "start": "prisma generate && next start",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.9.3",
     "@aws-sdk/client-lambda": "3.363.0",
-    "@dodao/web-core": "file:../shared/web-core",
+    "@dodao/web-core": "1.0.0",
     "@aws-sdk/client-s3": "3.363.0",
     "autoprefixer": "10.4.14",
     "@google/genai": "^1.34.0",

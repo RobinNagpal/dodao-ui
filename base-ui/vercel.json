@@ -10,5 +10,5 @@
       ]
     }
   ],
-  "buildCommand": "cd shared/web-core && yarn install && yarn build && cd ../../base-ui && yarn install && prisma generate && next build"
+  "buildCommand": "cd shared/web-core && yarn install --ignore-workspace-root-check && yarn build && cd ../../base-ui && yarn install --ignore-workspace-root-check && prisma generate && next build"
 }

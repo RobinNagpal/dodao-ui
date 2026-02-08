@@ -1,19 +1,34 @@
 {
   "name": "dodao-ui",
   "private": true,
-  "workspaces": [
-    "academy-ui",
-    "referral-ui",
-    "base-ui",
-    "defi-alerts",
-    "x-news-ui",
-    "insights-ui",
-    "clickable-demos",
-    "news-reader",
-    "simulations",
-    "shared/web-core",
-    "dodao-lambdas/tweet-collection-updater"
-  ],
+  "workspaces": {
+    "packages": [
+      "academy-ui",
+      "referral-ui",
+      "base-ui",
+      "defi-alerts",
+      "x-news-ui",
+      "insights-ui",
+      "clickable-demos",
+      "news-reader",
+      "simulations",
+      "shared/web-core",
+      "dodao-lambdas/tweet-collection-updater"
+    ],
+    "nohoist": [
+      "**/academy-ui/**",
+      "**/referral-ui/**",
+      "**/base-ui/**", 
+      "**/defi-alerts/**",
+      "**/x-news-ui/**",
+      "**/insights-ui/**",
+      "**/clickable-demos/**",
+      "**/news-reader/**",
+      "**/simulations/**",
+      "**/dodao-lambdas/**",
+      "!**/shared/web-core/**"
+    ]
+  },
   "scripts": {
     "build:web-core": "cd shared/web-core && yarn build",
     "build:academy": "cd academy-ui && yarn build",

@@ -2,7 +2,7 @@
     "name": "tweet-collection-updater",
     "version": "1.0.0",
     "dependencies": {
-        "@dodao/web-core": "file:../../shared/web-core",
+        "@dodao/web-core": "1.0.0",
         "axios": "^1.7.9",
         "pg": "^8.13.1"
     }
