@@ -38,6 +38,5 @@
       "source": "/public-equities/:path*",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
-  ],
-  "packageManager": "pnpm@8.x"
+  ]
 }
