@@ -1,4 +1,4 @@
-import { utils } from 'ethers';
+import { getAddress } from 'ethers';
 import React from 'react';
 
 /**
@@ -10,7 +10,7 @@ import React from 'react';
  */
 export function AssetImageEmail({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }): JSX.Element {
   try {
-    const checksummed = utils.getAddress(assetAddress.toLowerCase());
+    const checksummed = getAddress(assetAddress.toLowerCase());
 
     // Build primary TrustWallet URL
     const primaryUrl = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${chain.toLowerCase()}/assets/${checksummed}/logo.png`;

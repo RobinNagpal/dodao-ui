@@ -1,8 +1,6 @@
 import type { NextConfig } from 'next';
-import path from 'path';
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@dodao/web-core'],
   compiler: {
     // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
     styledComponents: true,
@@ -31,22 +29,6 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
-  },
-  webpack: (config, {isServer}) => {
-    if (isServer) {
-      config.devtool = 'source-map'
-    }
-
-    // Resolve next-auth and @headlessui/react from defi-alerts's node_modules
-    // This ensures that when transpiling @dodao/web-core, these dependencies are found
-    // Don't alias react/next - let Next.js handle those internally
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'next-auth': path.resolve(__dirname, 'node_modules/next-auth'),
-      '@headlessui/react': path.resolve(__dirname, 'node_modules/@headlessui/react'),
-    };
-
-    return config
   },
   images: {
     remotePatterns: [

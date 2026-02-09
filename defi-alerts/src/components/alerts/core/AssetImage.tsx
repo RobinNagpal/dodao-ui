@@ -1,6 +1,6 @@
 'use client';
 
-import { utils } from 'ethers';
+import { getAddress } from 'ethers';
 import Image from 'next/image';
 import React, { useMemo, useState } from 'react';
 
@@ -9,7 +9,7 @@ import React, { useMemo, useState } from 'react';
  */
 export function AssetImage({ chain, assetAddress, assetSymbol }: { chain: string; assetAddress: string; assetSymbol: string }) {
   const [imageError, setImageError] = useState(false);
-  const checksummed = useMemo(() => utils.getAddress(assetAddress.toLowerCase()), [assetAddress]);
+  const checksummed = useMemo(() => getAddress(assetAddress.toLowerCase()), [assetAddress]);
 
   // 2. Build primary TrustWallet URL
   const primaryUrl = useMemo(
