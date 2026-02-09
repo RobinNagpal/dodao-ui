@@ -10,10 +10,7 @@ export function Dropdown(props: Headless.MenuProps) {
   return <Headless.Menu {...props} />;
 }
 
-export function DropdownButton({
-  className,
-  ...props
-}: { className?: string } & Omit<Headless.MenuButtonProps<typeof Button>, 'className'>) {
+export function DropdownButton({ className, ...props }: { className?: string } & Omit<Headless.MenuButtonProps<typeof Button>, 'className'>) {
   // @ts-ignore - Ignoring type error due to complex type compatibility issues
   return <Headless.MenuButton as={Button} {...props} />;
 }
