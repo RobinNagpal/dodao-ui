@@ -5,6 +5,7 @@ overrides:
   '@types/react-dom': 18.3.1
   react: 18.3.1
   react-dom: 18.3.1
+  '@apollo/client': ^3.7.12
 
 importers:
 
@@ -17,7 +18,7 @@ importers:
         version: 3.7.12(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
       '@apollo/react-hooks':
         specifier: ^4.0.0
-        version: 4.0.0(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)
+        version: 4.0.0(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
       '@aws-sdk/client-s3':
         specifier: 3.363.0
         version: 3.363.0
@@ -33,6 +34,9 @@ importers:
       '@dnd-kit/sortable':
         specifier: ^8.0.0
         version: 8.0.0(@dnd-kit/core@6.1.0)(react@18.3.1)
+      '@dnd-kit/utilities':
+        specifier: ^3.2.2
+        version: 3.2.2(react@18.3.1)
       '@dodao/web-core':
         specifier: 1.0.0
         version: link:../shared/web-core
@@ -156,12 +160,18 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       dayjs:
         specifier: ^1.11.7
         version: 1.11.7
       discord-oauth2:
         specifier: ^2.11.0
         version: 2.11.0
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       ethereum-blockies-base64:
         specifier: ^1.0.2
         version: 1.0.2
@@ -195,6 +205,9 @@ importers:
       isomorphic-git:
         specifier: 1.24.2
         version: 1.24.2
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.1
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.0
@@ -934,6 +947,24 @@ importers:
       '@prisma/client':
         specifier: 4.13.0
         version: 4.13.0(prisma@4.13.0)
+      '@radix-ui/react-dialog':
+        specifier: ^1.0.5
+        version: 1.1.15(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-label':
+        specifier: ^2.0.2
+        version: 2.1.4(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-tabs':
+        specifier: ^1.0.4
+        version: 1.1.9(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-toast':
+        specifier: ^1.1.5
+        version: 1.2.4(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-tooltip':
+        specifier: ^1.0.7
+        version: 1.2.6(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-visually-hidden':
+        specifier: ^1.0.3
+        version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       '@react-icons/all-files':
         specifier: ^4.1.0
         version: 4.1.0(react@18.3.1)
@@ -955,6 +986,9 @@ importers:
       '@types/react-datepicker':
         specifier: ^7.0.0
         version: 7.0.0(react-dom@18.3.1)(react@18.3.1)
+      '@uiw/react-md-editor':
+        specifier: ^3.20.10
+        version: 3.20.10(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       '@vercel/functions':
         specifier: ^3.1.0
         version: 3.1.0
@@ -985,6 +1019,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
+      framer-motion:
+        specifier: ^10.16.16
+        version: 10.16.16(react-dom@18.3.1)(react@18.3.1)
       glob:
         specifier: ^11.0.1
         version: 11.0.1
@@ -1027,6 +1064,9 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@18.3.1)(react@18.3.1)
+      node-fetch:
+        specifier: ^3.3.2
+        version: 3.3.2
       openai:
         specifier: ^4.96.0
         version: 4.96.0(zod@3.24.3)
@@ -1112,6 +1152,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.0.0
+      '@types/connect':
+        specifier: ^3.4.38
+        version: 3.4.38
       '@types/d3-array':
         specifier: ^3.0.3
         version: 3.0.3
@@ -1139,9 +1182,15 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
+      '@types/trusted-types':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       eslint:
         specifier: 8.39.0
         version: 8.39.0
@@ -1956,48 +2005,15 @@ packages:
       tslib: 2.8.1
       zen-observable-ts: 1.2.5
 
-  /@apollo/client@4.1.4(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2):
-    resolution: {integrity: sha512-bTbxPHGXDMcYyQuWcYOzvWBHHJ+5ehvH3uKhd3+jI8X3ZPgWlfiI0MYN3r2exq/SNo5/TbL1p+bzQnE1xf+5tg==}
-    peerDependencies:
-      graphql: ^16.0.0
-      graphql-ws: ^5.5.5 || ^6.0.3
-      react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-      react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-      rxjs: ^7.3.0
-      subscriptions-transport-ws: ^0.9.0 || ^0.11.0
-    peerDependenciesMeta:
-      graphql-ws:
-        optional: true
-      react:
-        optional: true
-      react-dom:
-        optional: true
-      subscriptions-transport-ws:
-        optional: true
-    dependencies:
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
-      '@wry/caches': 1.0.1
-      '@wry/equality': 0.5.7
-      '@wry/trie': 0.5.0
-      graphql: 16.8.1
-      graphql-tag: 2.12.6(graphql@16.8.1)
-      optimism: 0.18.1
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      rxjs: 7.8.2
-      tslib: 2.8.1
-    dev: false
-
-  /@apollo/react-hooks@4.0.0(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2):
+  /@apollo/react-hooks@4.0.0(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-fCu0cbne3gbUl0QbA8X4L33iuuFVQbC5Jo2MIKRK8CyawR6PoxDpFdFA1kc6033ODZuZZ9Eo4RdeJFlFIIYcLA==}
     dependencies:
-      '@apollo/client': 4.1.4(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)
+      '@apollo/client': 3.7.12(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
     transitivePeerDependencies:
       - graphql
       - graphql-ws
       - react
       - react-dom
-      - rxjs
       - subscriptions-transport-ws
     dev: false
 
@@ -14861,13 +14877,6 @@ packages:
       tslib: 2.8.1
     dev: true
 
-  /@wry/caches@1.0.1:
-    resolution: {integrity: sha512-bXuaUNLVVkD20wcGBWRyo7j9N3TxePEWFZj2Y+r9OoUzfqmavM84+mFykRicNsBqatba5JLay1t48wxaXaWnlA==}
-    engines: {node: '>=8'}
-    dependencies:
-      tslib: 2.8.1
-    dev: false
-
   /@wry/context@0.7.4:
     resolution: {integrity: sha512-jmT7Sb4ZQWI5iyu3lobQxICu2nC/vbUhP0vIdd6tHC9PTfenmRmuIFqktc6GH9cgi+ZHnsLWPvfSvc4DrYmKiQ==}
     engines: {node: '>=8'}
@@ -14885,13 +14894,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       tslib: 2.8.1
-
-  /@wry/trie@0.5.0:
-    resolution: {integrity: sha512-FNoYzHawTMk/6KMQoEG5O4PuioX19UbwdQKF44yw0nLfOypfQdjtfZzo/UIJWAJ23sNIFbD1Ug9lbaDGMwbqQA==}
-    engines: {node: '>=8'}
-    dependencies:
-      tslib: 2.8.1
-    dev: false
 
   /@xmldom/xmldom@0.9.8:
     resolution: {integrity: sha512-p96FSY54r+WJ50FIOsCOjyj/wavs8921hG5+kVMmZgKcvIKxMXHTrjNJvRgWa/zuX3B6t2lijLNFaOyuxUH+2A==}
@@ -22815,15 +22817,6 @@ packages:
       '@wry/context': 0.7.4
       '@wry/trie': 0.3.2
 
-  /optimism@0.18.1:
-    resolution: {integrity: sha512-mLXNwWPa9dgFyDqkNi54sjDyNJ9/fTI6WGBLgnXku1vdKY/jovHfZT5r+aiVeFFLOz+foPNOm5YJ4mqgld2GBQ==}
-    dependencies:
-      '@wry/caches': 1.0.1
-      '@wry/context': 0.7.4
-      '@wry/trie': 0.5.0
-      tslib: 2.8.1
-    dev: false
-
   /optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -25053,6 +25046,7 @@ packages:
     resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
     dependencies:
       tslib: 2.8.1
+    dev: true
 
   /sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
