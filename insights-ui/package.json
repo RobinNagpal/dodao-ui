@@ -96,6 +96,7 @@
     "vaul": "^1.1.2",
     "yahoo-finance2": "2.13.3",
     "zod": "^3.24.3",
+    "zod-to-json-schema": "3.24.1",
     "@headlessui/react": "^2.2.9",
     "styled-components": "6.1.11",
     "uuid": "^9.0.0"
