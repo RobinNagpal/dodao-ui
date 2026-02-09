@@ -15,7 +15,7 @@
     "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "engines": {
-    "node": ">=24.13.0"
+    "node": ">=23.11.0"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",

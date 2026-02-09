@@ -24,5 +24,7 @@
       "path": "/api/sending-alerts/compound-market-alerts",
       "schedule": "0 * * * *"
     }
-  ]
+  ],
+
+  "packageManager": "pnpm@8.x"
 }

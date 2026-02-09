@@ -45,6 +45,40 @@ Pure utilities that don't share state can stay only in `web-core`:
 
 ## Common Issues & Solutions
 
+### Issue: pnpm installs dependencies for all workspace projects
+
+**Cause**: When running `pnpm install` in the web-core directory, pnpm recognizes the workspace configuration and tries to install dependencies for all projects.
+
+**Solution**: Use one of these methods to install dependencies only for this package:
+
+1. Use the `install-deps` script:
+
+```bash
+# In web-core directory
+pnpm install-deps
+```
+
+2. Use the `--filter` flag directly:
+
+```bash
+# In web-core directory
+pnpm install --filter @dodao/web-core
+```
+
+or 
+
+```bash
+# In web-core directory
+pnpm install --filter ./shared/web-core
+```
+
+3. Use the provided shell script:
+
+```bash
+# In web-core directory
+./install-deps.sh
+```
+
 ### Issue: "Property X is missing in type" (TypeScript Error)
 
 **Cause**: Version mismatch between `web-core` and consumer project.

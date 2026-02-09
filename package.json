@@ -1,47 +1,19 @@
 {
   "name": "dodao-ui",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "academy-ui",
-      "referral-ui",
-      "base-ui",
-      "defi-alerts",
-      "x-news-ui",
-      "insights-ui",
-      "clickable-demos",
-      "news-reader",
-      "simulations",
-      "shared/web-core",
-      "dodao-lambdas/tweet-collection-updater"
-    ],
-    "nohoist": [
-      "**/academy-ui/**",
-      "**/referral-ui/**",
-      "**/base-ui/**", 
-      "**/defi-alerts/**",
-      "**/x-news-ui/**",
-      "**/insights-ui/**",
-      "**/clickable-demos/**",
-      "**/news-reader/**",
-      "**/simulations/**",
-      "**/dodao-lambdas/**",
-      "!**/shared/web-core/**"
-    ]
-  },
   "scripts": {
-    "build:web-core": "cd shared/web-core && yarn build",
-    "build:academy": "cd academy-ui && yarn build",
-    "build:referral": "cd referral-ui && yarn build",
-    "build:base": "cd base-ui && yarn build",
-    "build:defi-alerts": "cd defi-alerts && yarn build",
-    "build:x-news": "cd x-news-ui && yarn build",
-    "build:insights": "cd insights-ui && yarn build",
-    "build:clickable-demos": "cd clickable-demos && yarn build",
-    "build:news-reader": "cd news-reader && yarn build",
-    "build:simulations": "cd simulations && yarn build",
-    "build:tweet-updater": "cd dodao-lambdas/tweet-collection-updater && yarn build",
-    "build:all": "yarn build:web-core && yarn build:academy && yarn build:referral && yarn build:base && yarn build:defi-alerts && yarn build:x-news && yarn build:insights && yarn build:clickable-demos && yarn build:news-reader && yarn build:simulations && yarn build:tweet-updater"
+    "build:web-core": "cd shared/web-core && pnpm build",
+    "build:academy": "cd academy-ui && pnpm build",
+    "build:referral": "cd referral-ui && pnpm build",
+    "build:base": "cd base-ui && pnpm build",
+    "build:defi-alerts": "cd defi-alerts && pnpm build",
+    "build:x-news": "cd x-news-ui && pnpm build",
+    "build:insights": "cd insights-ui && pnpm build",
+    "build:clickable-demos": "cd clickable-demos && pnpm build",
+    "build:news-reader": "cd news-reader && pnpm build",
+    "build:simulations": "cd simulations && pnpm build",
+    "build:tweet-updater": "cd dodao-lambdas/tweet-collection-updater && pnpm build",
+    "build:all": "pnpm build:web-core && pnpm build:academy && pnpm build:referral && pnpm build:base && pnpm build:defi-alerts && pnpm build:x-news && pnpm build:insights && pnpm build:clickable-demos && pnpm build:news-reader && pnpm build:simulations && pnpm build:tweet-updater"
   },
   "resolutions": {
     "@types/react": "18.3.12",

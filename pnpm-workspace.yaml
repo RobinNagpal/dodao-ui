@@ -1,0 +1,12 @@
+packages:
+  - 'academy-ui'
+  - 'referral-ui'
+  - 'base-ui'
+  - 'defi-alerts'
+  - 'x-news-ui'
+  - 'insights-ui'
+  - 'clickable-demos'
+  - 'news-reader'
+  - 'simulations'
+  - 'shared/web-core'
+  - 'dodao-lambdas/tweet-collection-updater'
