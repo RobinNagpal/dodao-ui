@@ -262,6 +262,9 @@ jobs:
       - name: News Reader - Run Prettier
         run: cd news-reader && pnpm prettier-check
 
+      - name: News Reader - TSC
+        run: cd news-reader && pnpm compile
+
       - name: News Reader - NEXT Build
         run: cd news-reader && pnpm build
 

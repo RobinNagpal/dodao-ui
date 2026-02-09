@@ -481,6 +481,9 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
+      react-ga4:
+        specifier: ^2.1.0
+        version: 2.1.0
       sass:
         specifier: ^1.62.1
         version: 1.62.1
@@ -497,6 +500,9 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0
     devDependencies:
+      '@types/connect':
+        specifier: ^3.4.38
+        version: 3.4.38
       '@types/lodash':
         specifier: ^4.14.194
         version: 4.14.194
@@ -512,9 +518,15 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
+      '@types/trusted-types':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       eslint:
         specifier: 8.39.0
         version: 8.39.0
@@ -645,6 +657,9 @@ importers:
       '@uiw/react-md-editor':
         specifier: ^3.20.10
         version: 3.20.10(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@wagmi/core':
+        specifier: ^2.6.5
+        version: 2.13.0(@tanstack/query-core@5.74.9)(@types/react@18.3.12)(react@18.3.1)(typescript@5.0.4)(viem@2.45.1)
       '@web3-react/coinbase-wallet':
         specifier: 8.2.3
         version: 8.2.3(@coinbase/wallet-sdk@3.9.3)(@types/react@18.3.12)(react@18.3.1)
@@ -804,6 +819,9 @@ importers:
       uuid:
         specifier: ^9.0.0
         version: 9.0.0
+      viem:
+        specifier: ^2.7.9
+        version: 2.45.1(typescript@5.0.4)(zod@3.25.76)
       wagmi:
         specifier: ^2.12.0
         version: 2.12.0(@tanstack/query-core@5.74.9)(@tanstack/react-query@5.74.9)(@types/react@18.3.12)(react-dom@18.3.1)(react-native@0.83.1)(react@18.3.1)(typescript@5.0.4)(viem@2.45.1)
@@ -1274,6 +1292,9 @@ importers:
       input-otp:
         specifier: 1.4.2
         version: 1.4.2(react-dom@18.3.1)(react@18.3.1)
+      jsonwebtoken:
+        specifier: ^9.0.0
+        version: 9.0.0
       lucide-react:
         specifier: ^0.537.0
         version: 0.537.0(react@18.3.1)
@@ -1338,6 +1359,12 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.9
         version: 4.1.9
+      '@types/connect':
+        specifier: ^3.4.38
+        version: 3.4.38
+      '@types/jsonwebtoken':
+        specifier: ^9.0.0
+        version: 9.0.2
       '@types/node':
         specifier: 18.16.3
         version: 18.16.3
@@ -1350,9 +1377,15 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
+      '@types/trusted-types':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       eslint:
         specifier: 8.39.0
         version: 8.39.0
@@ -1465,6 +1498,9 @@ importers:
       '@types/marked':
         specifier: ^4.3.0
         version: 4.3.0
+      '@types/prismjs':
+        specifier: ^1.26.3
+        version: 1.26.5
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -1684,6 +1720,9 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.2
         version: 9.0.2
+      '@uiw/react-md-editor':
+        specifier: ^3.20.10
+        version: 3.20.10(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
       autoprefixer:
         specifier: 10.4.14
         version: 10.4.14(postcss@8.4.35)
@@ -1714,6 +1753,9 @@ importers:
       prisma-json-types-generator:
         specifier: 2.4.0
         version: 2.4.0
+      prismjs:
+        specifier: ^1.29.0
+        version: 1.29.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -1736,12 +1778,18 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.0.0
+      '@types/connect':
+        specifier: ^3.4.38
+        version: 3.4.38
       '@types/marked':
         specifier: ^4.3.0
         version: 4.3.0
       '@types/node':
         specifier: ^18.16.3
         version: 18.16.3
+      '@types/prismjs':
+        specifier: ^1.26.3
+        version: 1.26.5
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -1751,9 +1799,15 @@ importers:
       '@types/styled-components':
         specifier: ^5.1.26
         version: 5.1.26
+      '@types/trusted-types':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/uuid':
         specifier: ^9.0.1
         version: 9.0.1
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.18.1
       eslint:
         specifier: 8.39.0
         version: 8.39.0
@@ -10685,7 +10739,7 @@ packages:
   /@scure/bip32@1.7.0:
     resolution: {integrity: sha512-E4FFX/N3f4B80AKWp5dP6ow+flD1LQZo/w8UnLGYZO674jS6YnYeepycOOksv+vLPSpgN35wgKgy+ybfTb2SMw==}
     dependencies:
-      '@noble/curves': 1.9.1
+      '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
       '@scure/base': 1.2.6
 
@@ -12787,7 +12841,6 @@ packages:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
       '@types/node': 18.16.3
-    optional: true
 
   /@types/cross-spawn@6.0.2:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
@@ -24978,7 +25031,7 @@ packages:
       '@types/uuid': 8.3.4
       '@types/ws': 8.18.1
       buffer: 6.0.3
-      eventemitter3: 5.0.1
+      eventemitter3: 5.0.4
       uuid: 8.3.2
       ws: 8.19.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
     optionalDependencies:

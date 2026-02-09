@@ -51,7 +51,7 @@ export function useCompoundUserPositions(): (wallets: string[]) => Promise<Walle
             }
 
             // Walk through each result in the order of markets[]
-            rawResults.forEach((res, idx) => {
+            rawResults.forEach((res: any, idx: number) => {
               const [principal, , , assetsIn] = res.result as [bigint, bigint, bigint, number, number];
               if (principal === BigInt(0)) return;
 

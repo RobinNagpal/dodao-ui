@@ -6,6 +6,7 @@
     "dev": "prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "prisma generate && next start",
+    "compile": "prisma generate && tsc",
     "lint": "next lint",
     "lint-fix": "eslint . --ext .ts,.js,.tsx --fix",
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
