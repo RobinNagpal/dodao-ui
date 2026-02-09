@@ -2,7 +2,7 @@
 
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
-import DocumentPlusIcon from '@heroicons/react/24/solid/DocumentPlusIcon';
+import { DocumentPlusIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import React from 'react';
 

@@ -6,7 +6,7 @@ import { getTidbitsSiteHomepageContents } from '@/components/home/TidbitsSite/ge
 import { SpaceTypes } from '@/types/space/SpaceDto';
 import { getMetaTags } from '@/utils/metaTags/metaTagsInfo';
 import { getSpaceServerSide } from '@/utils/space/getSpaceServerSide';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';

@@ -60,31 +60,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: Academy - Install dependencies
-        run: cd academy-ui && yarn
+        run: cd academy-ui && pnpm install --filter academy-ui
 
       - name: Academy - Run ESLint
-        run: cd academy-ui && yarn lint
+        run: cd academy-ui && pnpm lint
 
       - name: Academy - Run Prettier
-        run: cd academy-ui && yarn prettier-check
+        run: cd academy-ui && pnpm prettier-check
 
-      - name: Academy - TSC
-        run: cd academy-ui && yarn tsc
+      - name: Academy - TSC (includes web-core)
+        run: cd academy-ui && pnpm compile
 
       - name: Academy - NEXT Build
-        run: cd academy-ui && yarn build
+        run: cd academy-ui && pnpm build
 
   base_ui_job:
     runs-on: ubuntu-latest
@@ -97,31 +102,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: Base UI - Install dependencies
-        run: cd base-ui && yarn
+        run: cd base-ui && pnpm install --filter base-ui
 
       - name: Base UI - Run ESLint
-        run: cd base-ui && yarn lint
+        run: cd base-ui && pnpm lint
 
       - name: Base UI - Run Prettier
-        run: cd base-ui && yarn prettier-check
+        run: cd base-ui && pnpm prettier-check
 
       - name: Base UI - TSC
-        run: cd base-ui && yarn compile
+        run: cd base-ui && pnpm compile
 
       - name: Base UI - NEXT Build
-        run: cd base-ui && yarn build
+        run: cd base-ui && pnpm build
 
   defi_alerts_job:
     runs-on: ubuntu-latest
@@ -134,31 +144,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: DeFi Alerts - Install dependencies
-        run: cd defi-alerts && yarn
+        run: cd defi-alerts && pnpm install --filter defi-alerts
 
       - name: DeFi Alerts - Run ESLint
-        run: cd defi-alerts && yarn lint
+        run: cd defi-alerts && pnpm lint
 
       - name: DeFi Alerts - Run Prettier
-        run: cd defi-alerts && yarn prettier-check
+        run: cd defi-alerts && pnpm prettier-check
 
       - name: DeFi Alerts - TSC
-        run: cd defi-alerts && yarn compile
+        run: cd defi-alerts && pnpm compile
 
       - name: DeFi Alerts - Build
-        run: cd defi-alerts && yarn build
+        run: cd defi-alerts && pnpm build
 
   insights_ui_job:
     runs-on: ubuntu-latest
@@ -171,7 +186,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Set environment variables
         run: |
@@ -183,28 +203,28 @@ jobs:
           echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> $GITHUB_ENV
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: Insights UI - Install dependencies
-        run: cd insights-ui && yarn
+        run: cd insights-ui && pnpm install --filter insights-ui
 
       - name: Insights UI - Run ESLint
-        run: cd insights-ui && yarn lint
+        run: cd insights-ui && pnpm lint
 
       - name: Insights UI - Run Prettier
-        run: cd insights-ui && yarn prettier-check
+        run: cd insights-ui && pnpm prettier-check
 
       - name: Insights UI - TSC
-        run: cd insights-ui && yarn compile
+        run: cd insights-ui && pnpm compile
 
       - name: Insights UI - NEXT Build
-        run: cd insights-ui && yarn build
+        run: cd insights-ui && pnpm build
 
   news_reader_job:
     runs-on: ubuntu-latest
@@ -217,28 +237,36 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: News Reader - Install dependencies
-        run: cd news-reader && yarn
+        run: cd news-reader && pnpm install --filter news-reader
 
       - name: News Reader - Run ESLint
-        run: cd news-reader && yarn lint
+        run: cd news-reader && pnpm lint
 
       - name: News Reader - Run Prettier
-        run: cd news-reader && yarn prettier-check
+        run: cd news-reader && pnpm prettier-check
+
+      - name: News Reader - TSC
+        run: cd news-reader && pnpm compile
 
       - name: News Reader - NEXT Build
-        run: cd news-reader && yarn build
+        run: cd news-reader && pnpm build
 
   simulations_job:
     runs-on: ubuntu-latest
@@ -251,28 +279,33 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: 23.11.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Shared Web Core - Install dependencies
-        run: cd shared/web-core && yarn
+        run: cd shared/web-core && pnpm install --filter @dodao/web-core
 
       - name: Shared Web Core - TSC
-        run: cd shared/web-core && yarn tsc
+        run: cd shared/web-core && pnpm tsc
 
       - name: Shared Web Core - Run Prettier
-        run: cd shared/web-core && yarn prettier-check
+        run: cd shared/web-core && pnpm prettier-check
 
       - name: Simulations - Install dependencies
-        run: cd simulations && yarn
+        run: cd simulations && pnpm install --filter simulations
 
       - name: Simulations - Run ESLint
-        run: cd simulations && yarn lint
+        run: cd simulations && pnpm lint
 
       - name: Simulations - Run Prettier
-        run: cd simulations && yarn prettier-check
+        run: cd simulations && pnpm prettier-check
 
       - name: Simulations - TSC
-        run: cd simulations && yarn compile
+        run: cd simulations && pnpm compile
 
       - name: Simulations - Build
-        run: cd simulations && yarn build
+        run: cd simulations && pnpm build

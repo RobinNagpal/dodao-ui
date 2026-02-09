@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { SpaceWithIntegrationsDto, SpaceTypes } from '@/types/space/SpaceDto';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 
 export function getMetaTags(space: SpaceWithIntegrationsDto): Metadata {
   if (space?.type === SpaceTypes.TidbitsSite) {

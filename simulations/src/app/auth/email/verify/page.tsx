@@ -1,6 +1,6 @@
 import LoginTokenVerificationPage from '@dodao/web-core/components/auth/LoginTokenVerificationPage';
 import { WebCoreSpace } from '@dodao/web-core/types/space';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export default async function VerifyTokenPage() {
   const space: WebCoreSpace = {

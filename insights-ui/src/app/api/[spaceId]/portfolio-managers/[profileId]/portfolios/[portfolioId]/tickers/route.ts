@@ -3,7 +3,7 @@ import { PortfolioTicker, CreatePortfolioTickerRequest } from '@/types/portfolio
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidatePortfolioProfileTag } from '@/utils/ticker-v1-cache-utils';
 import { verifyPortfolioOwnership } from '@/utils/portfolio-utils';
 

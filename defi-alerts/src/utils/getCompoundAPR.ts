@@ -36,7 +36,7 @@ async function getPrices(config: Config) {
   const [compPrice, ethPrice, wstEthPrice] = await multicall(config, {
     chainId: 1,
     contracts: calls,
-  }).then((res) => res.map((r) => r.result as bigint));
+  }).then((res: any[]) => res.map((r: any) => r.result as bigint));
 
   return { compPrice, ethPrice, wstEthPrice };
 }
@@ -79,8 +79,8 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
         });
 
         // split out the results
-        const feedIds = feedUtilResults.slice(0, markets.length).map((r) => r.result as `0x${string}`);
-        const utils = feedUtilResults.slice(markets.length).map((r) => r.result as bigint);
+        const feedIds = feedUtilResults.slice(0, markets.length).map((r: any) => r.result as `0x${string}`);
+        const utils = feedUtilResults.slice(markets.length).map((r: any) => r.result as bigint);
 
         // 3b) Batch call the remaining 9 methods per market
         const detailedCalls = markets.flatMap(
@@ -101,7 +101,7 @@ export function useCompoundMarketsAprs(): () => Promise<CompoundMarketApr[]> {
         const detailedResults = await multicall(config, {
           chainId,
           contracts: detailedCalls,
-        }).then((res) => res.map((r) => r.result as bigint));
+        }).then((res: any[]) => res.map((r: any) => r.result as bigint));
 
         // 4) Now slice & dice those bigints into your APR objects
         const aprs: CompoundMarketApr[] = markets.map((m, i) => {
