@@ -40,9 +40,9 @@ const triggerFinancialStatementsForTicker = async (req: NextRequest, { params }:
     body: JSON.stringify(payload),
   });
 
-  const financialStatements = await financialStatementsResponse.json();
+  const financialStatements = (await financialStatementsResponse.json()) as { message?: string; data: string };
 
-  if ('message' in financialStatements) {
+  if ('message' in financialStatements && financialStatements.message) {
     throw new Error(financialStatements.message);
   }
   return financialStatements.data;

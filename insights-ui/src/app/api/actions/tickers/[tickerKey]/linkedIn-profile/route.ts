@@ -56,7 +56,7 @@ const saveTeamLinkedInProfilesForTicker = async (req: NextRequest, { params }: {
             company_name: existingTicker.companyName,
           }),
         });
-        const json = await resp.json();
+        const json = (await resp.json()) as { message?: string; data?: any };
 
         if (!resp.ok) {
           console.warn(`Skipping LinkedIn fetch for ${name}: ${json.message || resp.statusText}`);
@@ -171,7 +171,7 @@ const addTeamMember = async (req: NextRequest, { params }: { params: { tickerKey
       company_name: existingTicker.companyName,
     }),
   });
-  const payload = await resp.json();
+  const payload = (await resp.json()) as { data?: any };
 
   if (!resp.ok || !payload.data) {
     throw new Error(`Could not find LinkedIn profile for "${name}" at "${endpoint}"`);

@@ -17,9 +17,9 @@ const getCriteriaMatchingForAttachment = async (req: NextRequest, { params }: { 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  const criteriaMatch = await criteriaMatchResponse.json();
+  const criteriaMatch = (await criteriaMatchResponse.json()) as CriterionMatchResponse & { message?: string };
 
-  if ('message' in criteriaMatch) {
+  if ('message' in criteriaMatch && criteriaMatch.message) {
     throw new Error(criteriaMatch.message);
   }
   return criteriaMatch as CriterionMatchResponse;
