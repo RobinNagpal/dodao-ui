@@ -14,7 +14,7 @@
     "test-server": "http-server -o --cors -d sample-demos -p 9090"
   },
   "dependencies": {
-    "@dodao/web-core": "1.0.0",
+    "@dodao/web-core": "workspace:*",
     "sass": "^1.62.1",
     "typescript": "5.0.4"
   },
