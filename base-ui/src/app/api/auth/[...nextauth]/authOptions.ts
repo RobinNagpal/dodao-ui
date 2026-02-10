@@ -1,7 +1,7 @@
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { authorizeCrypto } from './authorizeCrypto';
 import { User } from '@dodao/web-core/types/auth/User';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import { AuthOptions } from 'next-auth';
 

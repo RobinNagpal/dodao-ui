@@ -21,12 +21,14 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
 
   // If instructor doesn't exist, create a new user
   if (!instructor) {
-    instructor = await prismaAdapter.createUser({
-      email: instructorEmail,
-      spaceId: KoalaGainsSpaceId,
-      username: instructorEmail,
-      authProvider: 'custom-email',
-      role: 'Instructor',
+    instructor = await prisma.user.create({
+      data: {
+        email: instructorEmail,
+        spaceId: KoalaGainsSpaceId,
+        username: instructorEmail,
+        authProvider: 'custom-email',
+        role: 'Instructor',
+      },
     });
     if (!instructor) throw new Error(`Failed to create instructor ${instructorEmail} in Koala Gains. Please contact the Koala Gains team.`);
   }
