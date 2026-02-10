@@ -2,7 +2,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 
 export interface PopupProps {
   children: React.ReactNode;
-  IconComponent: React.ComponentType<{ className?: string }>;
+  IconComponent: React.FC<{ className?: string }>;
   IconClasses?: string;
   IconButtonTitle?: string;
 }

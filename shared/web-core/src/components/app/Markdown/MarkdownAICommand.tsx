@@ -13,7 +13,7 @@ export const markdownAIRewriteCommandFactory: (rewriteText: (text: string) => Pr
   buttonProps: { 'aria-label': 'Insert Code Block (ctrl + shift + j)', title: 'Insert Code Block (ctrl + shift +j)' },
   execute: async (tate: TextState, api: TextAreaTextApi) => {
     // Adjust the selection to encompass the whole word if the caret is inside one
-    const newSelectionRange = selectWord({ text: tate.text, selection: tate.selection });
+    const newSelectionRange = selectWord({ text: tate.text, selection: tate.selection, prefix: '' });
     const state1 = api.setSelectionRange(newSelectionRange);
 
     const breaksBeforeCount = getBreaksNeededForEmptyLineBefore(state1.text, state1.selection.start);

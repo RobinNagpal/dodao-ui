@@ -3,6 +3,7 @@ import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User } from '@dodao/web-core/types/auth/User';
+import { PrismaUserAdapter, PrismaVerificationTokenAdapter } from '@dodao/web-core/types/prisma/prismaAdapters';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient, User as KoalaGainsUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
@@ -11,10 +12,50 @@ const p = new PrismaClient();
 
 export const prismaAdapter = PrismaAdapter(p);
 
+// Create custom adapters that match the expected interface
+const userAdapter: PrismaUserAdapter = {
+  findUnique: async (args: {
+    where: {
+      id?: string;
+      email_spaceId?: { email: string; spaceId: string };
+    };
+  }) => {
+    if (args.where.id) {
+      return (await p.user.findUnique({ where: { id: args.where.id } })) as User | null;
+    }
+    if (args.where.email_spaceId) {
+      return (await p.user.findUnique({
+        where: {
+          email_spaceId: args.where.email_spaceId,
+        },
+      })) as User | null;
+    }
+    return null;
+  },
+  findFirst: async (args: { where: { email: string } }) => {
+    return await p.user.findFirst(args);
+  },
+  upsert: async (args: { where: { publicAddress_spaceId: { publicAddress: string; spaceId: string } }; create: Omit<User, 'id'>; update: {} }) => {
+    return (await p.user.upsert(args)) as User;
+  },
+  create: async (args: { data: Omit<User, 'id'> }) => {
+    return (await p.user.create(args)) as User;
+  },
+};
+
+const verificationTokenAdapter: PrismaVerificationTokenAdapter = {
+  delete: async (args: { where: { token: string } }) => {
+    return await p.verificationToken.delete(args);
+  },
+  findFirstOrThrow: async (args: { where: { token: string } }) => {
+    return await p.verificationToken.findFirstOrThrow(args);
+  },
+};
+
 export const authOptions = getAuthOptions(
   {
-    user: p.user,
-    verificationToken: p.verificationToken,
+    user: userAdapter,
+    verificationToken: verificationTokenAdapter,
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {

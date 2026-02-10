@@ -1,7 +1,7 @@
 import { PropsWithChildren } from '@dodao/web-core/types/PropsWithChildren';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import React from 'react';
-import DatePicker, { DatePickerProps } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { v4 as uuidV4 } from 'uuid';
@@ -25,11 +25,7 @@ const StyledWrapper = styled.div<{ error?: string | boolean }>`
 // Create a wrapper component for DatePicker
 const CustomDatePicker = (props: DatepickerProps & { error?: string | boolean }): React.ReactElement => {
   const { error, ...datePickerProps } = props;
-  return (
-    <StyledWrapper error={error}>
-      <DatePicker {...(datePickerProps as DatePickerProps)} />
-    </StyledWrapper>
-  );
+  return <StyledWrapper error={error}>{React.createElement(DatePicker as any, datePickerProps)}</StyledWrapper>;
 };
 
 export interface DatepickerProps extends PropsWithChildren {
