@@ -4,7 +4,7 @@ import { CreateUserTickerTagRequest, UpdateUserTickerTagRequest, UserTickerTagRe
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 // GET /api/user-ticker-tags - Get all tags for the logged-in user
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<UserTickerTagsResponse> {

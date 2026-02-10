@@ -1,7 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  compiler: {
+    // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
+    styledComponents: true,
+  },
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],
     // This allows you to use variables defined `"app/styles/variables.scss` to be used in scss module files without
@@ -10,8 +13,6 @@ const nextConfig: NextConfig = {
   },
   crossOrigin: 'anonymous',
   productionBrowserSourceMaps: true,
-  serverSourceMaps: true,
-  serverMinification: false,
   async headers() {
     console.log('Setting up headers');
     return [

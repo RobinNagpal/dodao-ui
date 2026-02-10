@@ -5,7 +5,7 @@ import { User } from 'next-auth/core/types';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import { LoginSignupByEmailRequestBody } from '@/types/request/LoginSignupByEmailRequest';
 
 const createUser = async (user: User & { email: string }, spaceId: string) => {

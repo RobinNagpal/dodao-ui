@@ -5,7 +5,7 @@ import { IconTypes } from '@dodao/web-core/components/core/icons/IconTypes';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { ChatCompletionRequestMessageRoleEnum, ImagesResponse, OpenAiChatCompletionResponse } from '@/graphql/generated/generated-types';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import ArrowPathRoundedSquareIcon from '@heroicons/react/24/outline/ArrowPathRoundedSquareIcon';
+import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/outline';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 

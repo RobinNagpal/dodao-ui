@@ -139,7 +139,7 @@ async function fetchUserReserveDataInBatches(
       });
 
       // append each raw entry (wrapped in { result: [...] })
-      allResults.push(...batch.map((result) => ({ result })));
+      allResults.push(...batch.map((result: any) => ({ result })));
     } catch (err) {
       console.error(`Chunked multicall getUserReserveData failed on chain ${chainId}, wallet ${wallet}.`, err);
       // bail out if any chunk fails

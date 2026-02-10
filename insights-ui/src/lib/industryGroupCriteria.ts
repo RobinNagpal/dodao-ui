@@ -2,7 +2,6 @@ import { getGicsNames } from '@/lib/gicsHelper';
 import { getCriteriaFileKey, getObjectFromS3, uploadToS3PublicEquities } from '@/lib/koalagainsS3Utils';
 import { CriteriaLookupItem, CriteriaLookupList, IndustryGroupCriteriaDefinition } from '@/types/public-equity/criteria-types';
 import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import fetch from 'node-fetch';
 
 export async function getIndustryGroupCriteria(criteriaLookup: CriteriaLookupItem): Promise<IndustryGroupCriteriaDefinition> {
   // In a real implementation you might call an AI service.

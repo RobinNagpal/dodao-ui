@@ -16,9 +16,9 @@ const getCriteriaMatchingForManagementDiscussion = async (
     body: JSON.stringify(payload),
   });
 
-  const managementDiscussion = await managementDiscussionResponse.json();
+  const managementDiscussion = (await managementDiscussionResponse.json()) as { message?: string; data: string };
 
-  if ('message' in managementDiscussion) {
+  if ('message' in managementDiscussion && managementDiscussion.message) {
     throw new Error(managementDiscussion.message);
   }
   return managementDiscussion.data;

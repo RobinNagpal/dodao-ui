@@ -16,6 +16,6 @@ export async function getDecodedJwtFromContext(req: NextRequest): Promise<DoDaoJ
     const decodedToken = jwt.verify(clientKeyHeader, process.env.DODAO_AUTH_SECRET!);
     return decodedToken as DoDaoJwtTokenPayload;
   }
-  const token = (await getToken({ req })) as DoDaoJwtTokenPayload | null;
+  const token = (await getToken({ req })) as unknown as DoDaoJwtTokenPayload | null;
   return token;
 }

@@ -3,7 +3,7 @@ import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Session } from '@dodao/web-core/types/auth/Session';
 import { User, UserRole } from '@prisma/client';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getServerSession } from 'next-auth/next';
 import { NextRequest } from 'next/server';
 import { authOptions } from '../[...nextauth]/authOptions';

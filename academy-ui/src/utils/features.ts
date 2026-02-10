@@ -1,5 +1,5 @@
 import { SpaceTypes, SpaceWithIntegrationsDto } from '@/types/space/SpaceDto';
-import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
+import { PredefinedSpaces } from '@dodao/web-core/utils/constants/constants';
 import { compoundFeatures } from '@dodao/web-core/types/features/compoundFeatures';
 import { creditUnionAcademyFeatures } from '@dodao/web-core/types/features/creditUnionAcademyFeatures';
 import { dodaoAcademyFeatures } from '@dodao/web-core/types/features/dodaoAcademyFeatures';

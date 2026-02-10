@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { Portfolio } from '@/types/portfolio';

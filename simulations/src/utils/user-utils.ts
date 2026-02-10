@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { User, UserRole } from '@prisma/client';
-import { KoalaGainsSpaceId } from 'insights-ui/src/types/koalaGainsConstants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export interface CreateUserInput {
   email: string;

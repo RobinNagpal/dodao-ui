@@ -2,7 +2,7 @@ import SelectImageInputModal from '@/components/app/Image/SelectImageInputModal'
 import GenerateContentUsingAIModal from '@/components/app/Modal/AI/GenerateContentUsingAIModal';
 import { ChatCompletionRequestMessageRoleEnum, ImageType } from '@/graphql/generated/generated-types';
 import generateNewMarkdownContentPrompt from '@dodao/web-core/components/app/Markdown/generateNewMarkdownContentPrompt';
-import { markdownAIRewriteCommandFacotry } from '@dodao/web-core/components/app/Markdown/MarkdownAICommand';
+import { markdownAIRewriteCommandFactory } from '@dodao/web-core/components/app/Markdown/MarkdownAICommand';
 import rewriteMarkdownContentPrompt from '@dodao/web-core/components/app/Markdown/rewriteMarkdownContentPrompt';
 import SelectAIGeneratorModal from '@dodao/web-core/components/app/Markdown/SelectAIGeneratorModal';
 import RobotIconSolid from '@dodao/web-core/components/core/icons/RobotIconSolid';
@@ -188,7 +188,7 @@ function MarkdownEditor({
                 setSelectImageUploadModal(true);
               },
             },
-            markdownAIRewriteCommandFacotry(rewriteContent),
+            markdownAIRewriteCommandFactory(rewriteContent),
             {
               name: 'aiContent',
               keyCommand: 'aiContent',

@@ -1,6 +1,10 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  compiler: {
+    // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
+    styledComponents: true,
+  },
   /* config options here */
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],

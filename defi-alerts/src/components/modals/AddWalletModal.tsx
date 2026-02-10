@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { utils } from 'ethers';
+import { isAddress } from 'ethers';
 
 interface AddWalletModalProps {
   isOpen: boolean;
@@ -39,7 +39,7 @@ export default function AddWalletModal({ isOpen, handleClose, onSwitchToPosition
 
   const handleAddWallet = async () => {
     const addr = newWalletAddress.trim();
-    if (!utils.isAddress(addr)) {
+    if (!isAddress(addr)) {
       setErrorMsg('Invalid wallet address');
       return;
     }
