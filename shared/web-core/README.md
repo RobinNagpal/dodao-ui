@@ -59,17 +59,6 @@ When `web-core` uses a library that requires a **single instance** (React contex
 Pure utilities can stay only in `web-core`:
 - `lodash`, `dayjs`, `uuid`, `clsx`
 
-## Consumer Projects
-
-| Project | Usage |
-|---------|-------|
-| academy-ui | Heavy (200+ imports) |
-| insights-ui | Heavy (170+ imports) |
-| base-ui | Light (16+ imports) |
-| defi-alerts | Moderate |
-| news-reader | Moderate |
-| simulations | Moderate |
-
 ## Directory Structure
 
 ```
