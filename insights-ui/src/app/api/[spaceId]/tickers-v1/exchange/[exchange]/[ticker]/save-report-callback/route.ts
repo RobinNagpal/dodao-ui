@@ -53,15 +53,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     case ReportType.FINAL_SUMMARY:
       await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);
       break;
-    case ReportType.WARREN_BUFFETT:
-      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.WARREN_BUFFETT);
-      break;
-    case ReportType.CHARLIE_MUNGER:
-      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.CHARLIE_MUNGER);
-      break;
-    case ReportType.BILL_ACKMAN:
-      await saveInvestorAnalysisResponse(ticker, exchange, llmResponse, InvestorTypes.BILL_ACKMAN);
-      break;
     default:
       throw new Error(`Unsupported report type: ${reportType}`);
   }

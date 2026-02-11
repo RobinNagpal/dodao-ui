@@ -27,7 +27,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
           },
         },
       },
-      investorAnalysisResults: true,
       futureRisks: true,
       vsCompetition: true,
       industry: true,

@@ -42,9 +42,6 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
   [ReportType.FAIR_VALUE]: [ReportType.BUSINESS_AND_MOAT, ReportType.FINANCIAL_ANALYSIS, ReportType.PAST_PERFORMANCE, ReportType.FUTURE_GROWTH],
   [ReportType.FUTURE_RISK]: [],
-  [ReportType.WARREN_BUFFETT]: [ReportType.COMPETITION],
-  [ReportType.CHARLIE_MUNGER]: [ReportType.COMPETITION],
-  [ReportType.BILL_ACKMAN]: [ReportType.COMPETITION],
   [ReportType.FINAL_SUMMARY]: [
     ReportType.FINANCIAL_ANALYSIS,
     ReportType.COMPETITION,
@@ -53,9 +50,6 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
     ReportType.FUTURE_GROWTH,
     ReportType.FAIR_VALUE,
     ReportType.FUTURE_RISK,
-    ReportType.WARREN_BUFFETT,
-    ReportType.CHARLIE_MUNGER,
-    ReportType.BILL_ACKMAN,
   ],
 };
 
@@ -74,9 +68,6 @@ export const dependencyBasedReportOrder: ReportType[] = [
   // Dependent reports (with dependencies)
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
-  ReportType.WARREN_BUFFETT,
-  ReportType.CHARLIE_MUNGER,
-  ReportType.BILL_ACKMAN,
   ReportType.FINAL_SUMMARY,
 ];
 
@@ -257,31 +248,6 @@ async function generateFutureRiskAnalysis(spaceId: string, tickerRecord: TickerV
   });
 }
 
-async function generateInvestorAnalysis(
-  spaceId: string,
-  tickerRecord: TickerV1WithIndustryAndSubIndustry,
-  investorKey: ReportType.BILL_ACKMAN | ReportType.CHARLIE_MUNGER | ReportType.WARREN_BUFFETT,
-  competitionAnalysisArray: CompetitionAnalysisArray,
-  generationRequestId: string
-): Promise<void> {
-  // Prepare input for the prompt
-  const inputJson = prepareInvestorAnalysisInputJson(tickerRecord, investorKey, competitionAnalysisArray);
-
-  // Call the LLM
-  await getLLMResponseForPromptViaInvocationViaLambda({
-    symbol: tickerRecord.symbol,
-    exchange: tickerRecord.exchange,
-    generationRequestId,
-    params: {
-      spaceId,
-      inputJson,
-      promptKey: 'US/public-equities-v1/investor-analysis',
-      requestFrom: 'ui',
-    },
-    reportType: investorKey,
-  });
-}
-
 async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Get ticker from DB with all related analysis data
   const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
@@ -431,11 +397,6 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         break;
       case ReportType.FUTURE_RISK:
         await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
-        break;
-      case ReportType.BILL_ACKMAN:
-      case ReportType.CHARLIE_MUNGER:
-      case ReportType.WARREN_BUFFETT:
-        await generateInvestorAnalysis(spaceId, tickerRecord, nextStep as any, competitionAnalysisArray, generationRequest.id);
         break;
       case ReportType.FINAL_SUMMARY:
         await generateFinalSummary(spaceId, tickerRecord, generationRequestId);

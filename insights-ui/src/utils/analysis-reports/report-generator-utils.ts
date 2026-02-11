@@ -19,9 +19,6 @@ export const createBackgroundGenerationRequest = async (
     regenerateFutureGrowth: true,
     regenerateFairValue: true,
     regenerateFutureRisk: true,
-    regenerateWarrenBuffett: true,
-    regenerateCharlieMunger: true,
-    regenerateBillAckman: true,
     regenerateFinalSummary: true,
   };
 
@@ -46,9 +43,6 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateFutureGrowth: false,
     regenerateFairValue: false,
     regenerateFutureRisk: false,
-    regenerateWarrenBuffett: false,
-    regenerateCharlieMunger: false,
-    regenerateBillAckman: false,
     regenerateFinalSummary: false,
   };
 
@@ -77,15 +71,6 @@ export const createSingleAnalysisBackgroundRequest = async (
       break;
     case ReportType.FINAL_SUMMARY:
       payload.regenerateFinalSummary = true;
-      break;
-    case ReportType.WARREN_BUFFETT:
-      payload.regenerateWarrenBuffett = true;
-      break;
-    case ReportType.CHARLIE_MUNGER:
-      payload.regenerateCharlieMunger = true;
-      break;
-    case ReportType.BILL_ACKMAN:
-      payload.regenerateBillAckman = true;
       break;
 
     default:

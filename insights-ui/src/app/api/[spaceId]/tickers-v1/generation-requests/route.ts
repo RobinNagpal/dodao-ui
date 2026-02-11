@@ -21,9 +21,6 @@ export interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateFutureRisk: boolean;
-  regenerateWarrenBuffett: boolean;
-  regenerateCharlieMunger: boolean;
-  regenerateBillAckman: boolean;
   regenerateFinalSummary: boolean;
 }
 
@@ -241,9 +238,6 @@ async function postHandler(
           regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
           regenerateFairValue: regenerateOptions.regenerateFairValue || existingRequest.regenerateFairValue,
           regenerateFutureRisk: regenerateOptions.regenerateFutureRisk || existingRequest.regenerateFutureRisk,
-          regenerateWarrenBuffett: regenerateOptions.regenerateWarrenBuffett || existingRequest.regenerateWarrenBuffett,
-          regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger || existingRequest.regenerateCharlieMunger,
-          regenerateBillAckman: regenerateOptions.regenerateBillAckman || existingRequest.regenerateBillAckman,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
         },
@@ -260,9 +254,6 @@ async function postHandler(
           regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth,
           regenerateFairValue: regenerateOptions.regenerateFairValue,
           regenerateFutureRisk: regenerateOptions.regenerateFutureRisk,
-          regenerateWarrenBuffett: regenerateOptions.regenerateWarrenBuffett,
-          regenerateCharlieMunger: regenerateOptions.regenerateCharlieMunger,
-          regenerateBillAckman: regenerateOptions.regenerateBillAckman,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
         },
       });

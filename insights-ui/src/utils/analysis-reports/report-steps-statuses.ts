@@ -99,26 +99,6 @@ export function calculatePendingSteps(request: TickerV1GenerationRequest): Repor
     pendingSteps.push(ReportType.FUTURE_RISK);
   }
 
-  if (
-    request.regenerateWarrenBuffett &&
-    !request.completedSteps.includes(ReportType.WARREN_BUFFETT) &&
-    !request.failedSteps.includes(ReportType.WARREN_BUFFETT)
-  ) {
-    pendingSteps.push(ReportType.WARREN_BUFFETT);
-  }
-
-  if (
-    request.regenerateCharlieMunger &&
-    !request.completedSteps.includes(ReportType.CHARLIE_MUNGER) &&
-    !request.failedSteps.includes(ReportType.CHARLIE_MUNGER)
-  ) {
-    pendingSteps.push(ReportType.CHARLIE_MUNGER);
-  }
-
-  if (request.regenerateBillAckman && !request.completedSteps.includes(ReportType.BILL_ACKMAN) && !request.failedSteps.includes(ReportType.BILL_ACKMAN)) {
-    pendingSteps.push(ReportType.BILL_ACKMAN);
-  }
-
   if (request.regenerateFinalSummary && !request.completedSteps.includes(ReportType.FINAL_SUMMARY) && !request.failedSteps.includes(ReportType.FINAL_SUMMARY)) {
     pendingSteps.push(ReportType.FINAL_SUMMARY);
   }
