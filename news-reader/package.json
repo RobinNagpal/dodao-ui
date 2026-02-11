@@ -16,7 +16,7 @@
     "node": ">=23.11.0"
   },
   "dependencies": {
-    "@dodao/web-core": "1.0.0",
+    "@dodao/web-core": "workspace:*",
     "@hookform/resolvers": "^5.2.1",
     "autoprefixer": "^10.4.21",
     "jsonwebtoken": "^9.0.0",
