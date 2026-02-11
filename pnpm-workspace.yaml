@@ -1,6 +1,5 @@
 packages:
   - 'academy-ui'
-  - 'referral-ui'
   - 'base-ui'
   - 'defi-alerts'
   - 'x-news-ui'
@@ -9,4 +8,3 @@ packages:
   - 'news-reader'
   - 'simulations'
   - 'shared/web-core'
-  - 'dodao-lambdas/tweet-collection-updater'
