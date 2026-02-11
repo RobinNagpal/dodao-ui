@@ -41,7 +41,7 @@ type GenerationRequestWithFlags = TickerV1GenerationRequestWithTicker;
 
 const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regenerateCompetition: 'Competition',
-  regenerateFinancialAnalysis: 'Financial',
+  regenerateFinancialAnalysis: 'Financial Analysis',
   regenerateBusinessAndMoat: 'Business & Moat',
   regeneratePastPerformance: 'Past Perf.',
   regenerateFutureGrowth: 'Future Growth',
