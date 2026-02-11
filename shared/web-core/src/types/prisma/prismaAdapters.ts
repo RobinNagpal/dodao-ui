@@ -18,22 +18,19 @@ import { WebCoreSpace } from '@dodao/web-core/types/space';
  * - Using PromiseLike allows direct assignment without type casting
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyArgs = any;
-
 export interface PrismaUserAdapter {
-  findUnique: (args: AnyArgs) => PromiseLike<User | null>;
-  findFirst: (args: AnyArgs) => PromiseLike<User | null>;
-  upsert: (args: AnyArgs) => PromiseLike<User>;
-  create: (args: AnyArgs) => PromiseLike<User>;
+  findUnique: (args: any) => PromiseLike<User | null>;
+  findFirst: (args: any) => PromiseLike<User | null>;
+  upsert: (args: any) => PromiseLike<User>;
+  create: (args: any) => PromiseLike<User>;
 }
 
 export interface PrismaVerificationTokenAdapter {
-  delete: (args: AnyArgs) => PromiseLike<VerificationToken | null>;
-  findFirstOrThrow: (args: AnyArgs) => PromiseLike<VerificationToken | null>;
+  delete: (args: any) => PromiseLike<VerificationToken | null>;
+  findFirstOrThrow: (args: any) => PromiseLike<VerificationToken | null>;
 }
 
 export interface PrismaSpaceAdapter<S extends WebCoreSpace> {
-  findUnique: (args: AnyArgs) => PromiseLike<S | null>;
-  findFirst: (args: AnyArgs) => PromiseLike<S | null>;
+  findUnique: (args: any) => PromiseLike<S | null>;
+  findFirst: (args: any) => PromiseLike<S | null>;
 }
