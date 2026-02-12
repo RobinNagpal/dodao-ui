@@ -94,7 +94,7 @@ export function getPrismaCallbacks(adapters: {
   }
 
   async function isUserAdminOfSpace(username: string, spaceId: string) {
-    const space = await adapters.space.findUnique({ where: { id: spaceId } });
+    const space = await adapters.space.findUniqueById({ where: { id: spaceId } });
     if (!space) {
       throw new Error('Space not found');
     }
@@ -107,9 +107,9 @@ export function getPrismaCallbacks(adapters: {
     async session(params): Promise<Session> {
       const { session, user, token } = params;
 
-      let userInfo: any = {};
+      let userInfo: { username?: string; authProvider?: string; spaceId?: string; id?: string } = {};
       if (token.sub) {
-        const dbUser: User | null = await adapters.user.findUnique({
+        const dbUser: User | null = await adapters.user.findUniqueById({
           where: { id: token.sub },
         });
         if (dbUser) {
@@ -120,19 +120,19 @@ export function getPrismaCallbacks(adapters: {
         }
       }
       const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
-        userId: userInfo.id,
-        spaceId: userInfo.spaceId,
-        username: userInfo.username,
-        accountId: userInfo.id,
-        isAdminOfSpace: await isUserAdminOfSpace(userInfo.username, userInfo.spaceId),
-        isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
+        userId: userInfo.id || '',
+        spaceId: userInfo.spaceId || '',
+        username: userInfo.username || '',
+        accountId: userInfo.id || '',
+        isAdminOfSpace: userInfo.username && userInfo.spaceId ? await isUserAdminOfSpace(userInfo.username, userInfo.spaceId) : false,
+        isSuperAdminOfDoDAO: userInfo.username ? isDoDAOSuperAdmin(userInfo.username) : false,
       };
       return {
         ...session,
         ...userInfo,
-        userId: userInfo.id,
-        isAdminOfSpace: await isUserAdminOfSpace(userInfo.username, userInfo.spaceId),
-        isSuperAdminOfDoDAO: isDoDAOSuperAdmin(userInfo.username),
+        userId: userInfo.id || '',
+        isAdminOfSpace: userInfo.username && userInfo.spaceId ? await isUserAdminOfSpace(userInfo.username, userInfo.spaceId) : false,
+        isSuperAdminOfDoDAO: userInfo.username ? isDoDAOSuperAdmin(userInfo.username) : false,
         dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
       };
     },
@@ -140,7 +140,7 @@ export function getPrismaCallbacks(adapters: {
       const { token, user, account, profile, isNewUser } = params;
 
       if (token.sub) {
-        const dbUser: User | null = await adapters.user.findUnique({
+        const dbUser: User | null = await adapters.user.findUniqueById({
           where: { id: token.sub },
         });
 

@@ -68,8 +68,9 @@ export function getAuthOptions(
 
           let verificationToken;
           try {
+            const hashedToken = await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`);
             verificationToken = await p.verificationToken.findFirstOrThrow({
-              where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+              where: { token: hashedToken },
             });
             console.log('verificationToken', verificationToken);
             console.log('[authOptions] Verification token found successfully');
@@ -87,8 +88,9 @@ export function getAuthOptions(
 
           console.log('[authOptions] Deleting verification token');
           try {
+            const hashedToken = await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`);
             await p.verificationToken.delete({
-              where: { token: await createHash(`${credentials?.token}${process.env.EMAIL_TOKEN_SECRET!}`) },
+              where: { token: hashedToken },
             });
             console.log('[authOptions] Verification token deleted successfully');
           } catch (error) {
@@ -122,7 +124,7 @@ export function getAuthOptions(
           try {
             if (credentials?.spaceId === PredefinedSpaces.TIDBITS_HUB) {
               console.log('[authOptions] Searching in TIDBITS_HUB space');
-              user = await p.user.findFirst({
+              user = await p.user.findFirstByEmail({
                 where: {
                   email: verificationToken.identifier,
                 },
@@ -130,7 +132,7 @@ export function getAuthOptions(
               console.log('[authOptions] User search in TIDBITS_HUB completed');
             } else {
               console.log(`[authOptions] Searching in specific space: ${credentials?.spaceId}`);
-              user = await p.user.findUnique({
+              user = await p.user.findUniqueByEmailSpaceId({
                 where: {
                   email_spaceId: {
                     email: verificationToken.identifier,
@@ -159,7 +161,7 @@ export function getAuthOptions(
             console.log('[authOptions] User not found in specified space, trying to find in any space');
             let globalUser;
             try {
-              globalUser = await p.user.findFirst({
+              globalUser = await p.user.findFirstByEmail({
                 where: {
                   email: verificationToken.identifier,
                 },
@@ -290,11 +292,11 @@ export function getAuthOptions(
         const { session, user, token } = params;
         console.log('[authOptions] Session callback - Processing session');
 
-        let userInfo: any = {};
+        let userInfo: { username?: string; authProvider?: string; spaceId?: string; id?: string } = {};
         if (token.sub) {
           console.log(`[authOptions] Session callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: User | null = await p.user.findUnique({
+            const dbUser: User | null = await p.user.findUniqueById({
               where: { id: token.sub },
             });
 
@@ -318,16 +320,18 @@ export function getAuthOptions(
           }
         }
         const doDaoJwtTokenPayload: DoDaoJwtTokenPayload = {
-          userId: userInfo.id,
-          spaceId: userInfo.spaceId,
-          username: userInfo.username,
-          accountId: userInfo.id,
+          userId: userInfo.id || '',
+          spaceId: userInfo.spaceId || '',
+          username: userInfo.username || '',
+          accountId: userInfo.id || '',
         };
         console.log('[authOptions] Session callback - Returning session');
         return {
-          userId: userInfo.id,
           ...session,
-          ...userInfo,
+          userId: userInfo.id || '',
+          username: userInfo.username || '',
+          spaceId: userInfo.spaceId || '',
+          authProvider: userInfo.authProvider || '',
           dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
         };
       },
@@ -339,7 +343,7 @@ export function getAuthOptions(
         if (token.sub) {
           console.log(`[authOptions] JWT callback - Looking up user with ID: ${token.sub}`);
           try {
-            const dbUser: User | null = await p.user.findUnique({
+            const dbUser: User | null = await p.user.findUniqueById({
               where: { id: token.sub },
             });
 
