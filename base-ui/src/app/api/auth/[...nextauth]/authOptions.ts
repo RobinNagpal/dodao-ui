@@ -1,24 +1,31 @@
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { authorizeCrypto } from './authorizeCrypto';
-import { User } from '@dodao/web-core/types/auth/User';
+import { createUserAdapter, createVerificationTokenAdapter } from '@dodao/web-core/utils/auth/createPrismaAdapters';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import { AuthOptions } from 'next-auth';
 
 const p = new PrismaClient();
-// Configure AWS SES
 
-p.verificationToken;
+// Create typed adapters from Prisma delegates
+const userAdapter = createUserAdapter(p.baseUser);
+const verificationTokenAdapter = createVerificationTokenAdapter(p.verificationToken);
+
 export const authOptions: AuthOptions = getAuthOptions(
   {
-    user: p.baseUser,
-    verificationToken: p.verificationToken,
+    user: userAdapter,
+    verificationToken: verificationTokenAdapter,
     adapter: {
       ...PrismaAdapter(p),
       getUserByEmail: async (email: string) => {
-        const user = (await p.baseUser.findFirst({ where: { email } })) as User;
+        const user = await p.baseUser.findFirst({ where: { email } });
         console.log('getUserByEmail', user);
-        return user as any;
+        if (!user) return null;
+        return {
+          ...user,
+          email: user.email || email,
+          emailVerified: user.emailVerified || null,
+        };
       },
     },
   },

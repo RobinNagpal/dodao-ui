@@ -3,34 +3,120 @@ import { VerificationToken } from '@dodao/web-core/types/auth/VerificationToken'
 import { WebCoreSpace } from '@dodao/web-core/types/space';
 
 /**
- * Prisma 6.x introduced stricter WhereUniqueInput types that require at least one unique field.
- * Each project has different User models with varying unique constraints (publicAddress_spaceId,
- * username_spaceId, email_spaceId), making it impossible to define a single shared input type.
+ * ============================================================================
+ * PRISMA ADAPTER INTERFACES - Fully Typed
+ * ============================================================================
  *
- * Solution: Use contravariant input types (accepting any args) while maintaining covariant
- * return types (PromiseLike<User | null>). This allows:
- * - Each project's Prisma delegate to be passed directly (they handle their own input validation)
- * - Type safety on return values (enforcing User, VerificationToken, WebCoreSpace interfaces)
- * - Compatibility with Prisma's Prisma__*Client thenable return types
+ * These interfaces define the exact methods and argument types used in web-core.
+ * Each project must create adapter wrappers that implement these interfaces.
  *
- * Why PromiseLike instead of Promise:
- * - Prisma delegates return Prisma__*Client<T> which implements PromiseLike<T>, not Promise<T>
- * - Using PromiseLike allows direct assignment without type casting
+ * USAGE:
+ * ------
+ * In each project, create an adapter using createUserAdapter(), createVerificationTokenAdapter(), etc.
+ * These helper functions wrap the Prisma client and provide the correct types.
  */
 
+// ============================================================================
+// User Adapter Types
+// ============================================================================
+
+/** Find user by primary key */
+export interface UserFindByIdArgs {
+  where: { id: string };
+}
+
+/** Find user by email + spaceId compound unique */
+export interface UserFindByEmailSpaceIdArgs {
+  where: {
+    email_spaceId: {
+      email: string;
+      spaceId: string;
+    };
+  };
+}
+
+/** Find user by publicAddress + spaceId compound unique */
+export interface UserFindByPublicAddressSpaceIdArgs {
+  where: {
+    publicAddress_spaceId: {
+      publicAddress: string;
+      spaceId: string;
+    };
+  };
+}
+
+/** Find first user by email */
+export interface UserFindFirstByEmailArgs {
+  where: {
+    email: string;
+  };
+}
+
+/** Create user data */
+export interface UserCreateData {
+  email?: string | null;
+  username: string;
+  name?: string | null;
+  authProvider: string;
+  spaceId: string;
+  publicAddress?: string | null;
+}
+
+/** Upsert user by publicAddress + spaceId */
+export interface UserUpsertByPublicAddressArgs {
+  where: {
+    publicAddress_spaceId: {
+      publicAddress: string;
+      spaceId: string;
+    };
+  };
+  create: UserCreateData;
+  update: Partial<UserCreateData>;
+}
+
+/**
+ * User adapter interface with fully typed methods.
+ * Each project must implement this by wrapping their Prisma client.
+ */
 export interface PrismaUserAdapter {
-  findUnique: (args: any) => PromiseLike<User | null>;
-  findFirst: (args: any) => PromiseLike<User | null>;
-  upsert: (args: any) => PromiseLike<User>;
-  create: (args: any) => PromiseLike<User>;
+  findUniqueById(args: UserFindByIdArgs): Promise<User | null>;
+  findUniqueByEmailSpaceId(args: UserFindByEmailSpaceIdArgs): Promise<User | null>;
+  findFirstByEmail(args: UserFindFirstByEmailArgs): Promise<User | null>;
+  create(args: { data: UserCreateData }): Promise<User>;
+  upsertByPublicAddress(args: UserUpsertByPublicAddressArgs): Promise<User>;
 }
 
+// ============================================================================
+// Verification Token Adapter Types
+// ============================================================================
+
+export interface VerificationTokenFindArgs {
+  where: { token: string };
+}
+
+export interface VerificationTokenDeleteArgs {
+  where: { token: string };
+}
+
+/**
+ * Verification token adapter interface with fully typed methods.
+ */
 export interface PrismaVerificationTokenAdapter {
-  delete: (args: any) => PromiseLike<VerificationToken | null>;
-  findFirstOrThrow: (args: any) => PromiseLike<VerificationToken | null>;
+  findFirstOrThrow(args: VerificationTokenFindArgs): Promise<VerificationToken>;
+  delete(args: VerificationTokenDeleteArgs): Promise<VerificationToken | null>;
 }
 
+// ============================================================================
+// Space Adapter Types
+// ============================================================================
+
+export interface SpaceFindByIdArgs {
+  where: { id: string };
+}
+
+/**
+ * Space adapter interface with fully typed methods.
+ */
 export interface PrismaSpaceAdapter<S extends WebCoreSpace> {
-  findUnique: (args: any) => PromiseLike<S | null>;
-  findFirst: (args: any) => PromiseLike<S | null>;
+  findUniqueById(args: SpaceFindByIdArgs): Promise<S | null>;
 }
