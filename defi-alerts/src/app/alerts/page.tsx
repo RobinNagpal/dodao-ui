@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 
 export default function AlertsPage() {
   const { data } = useSession();
-  const session = data as DoDAOSession;
+  const session = (data as DoDAOSession) || null;
 
   const baseUrl = getBaseUrl();
   const [filteredAlerts, setFilteredAlerts] = useState<Alert[]>([]);
@@ -40,7 +40,7 @@ export default function AlertsPage() {
     errorMessage: 'Failed to delete alert',
   });
 
-  const userId = session.userId;
+  const userId = session?.userId;
 
   // Use useFetchData hook to fetch alerts
   const {
