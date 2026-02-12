@@ -172,7 +172,11 @@ async function postHandler(
     caseStudyId,
   });
 
-  const addStudentToEnrollment = async (email: string, name?: string, throwOnDuplicate = true): Promise<'added' | 'duplicate'> => {
+  const addStudentToEnrollment = async (
+    email: string,
+    name?: string,
+    throwOnDuplicate = true
+  ): Promise<{ status: 'added' | 'duplicate'; signInCode?: string }> => {
     const currentStudent = await getOrCreateUser(email, UserRole.Student, name);
 
     const existingEnrollment = await prisma.enrollmentStudent.findFirst({
@@ -187,7 +191,7 @@ async function postHandler(
       if (throwOnDuplicate) {
         throw new Error('Student is already enrolled in this class');
       }
-      return 'duplicate';
+      return { status: 'duplicate' };
     }
 
     await prisma.enrollmentStudent.create({
@@ -200,7 +204,22 @@ async function postHandler(
       },
     });
 
-    return 'added';
+    // Get or create sign-in code for student
+    let signInCode: string | undefined;
+    const existingCode = await prisma.studentSignInCode.findFirst({
+      where: {
+        userId: currentStudent.id,
+        isActive: true,
+      },
+    });
+
+    if (existingCode) {
+      signInCode = existingCode.code;
+    } else if (currentStudent.signInCode) {
+      signInCode = currentStudent.signInCode;
+    }
+
+    return { status: 'added', signInCode };
   };
 
   // Bulk add flow
@@ -220,8 +239,8 @@ async function postHandler(
       }
 
       const result = await addStudentToEnrollment(email, name, false);
-      if (result === 'added') added += 1;
-      if (result === 'duplicate') duplicates += 1;
+      if (result.status === 'added') added += 1;
+      if (result.status === 'duplicate') duplicates += 1;
     }
 
     const parts = [`Added ${added} student${added === 1 ? '' : 's'}`];
