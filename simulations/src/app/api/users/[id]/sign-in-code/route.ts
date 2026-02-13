@@ -2,7 +2,6 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { SimulationJwtTokenPayload } from '@/types/user';
 import { createSignInCodeForUser } from '@/utils/sign-in-code-utils';
 
 interface GenerateSignInCodeResponse {
@@ -20,30 +19,20 @@ async function postHandler(
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<GenerateSignInCodeResponse> {
-  const { id: userId } = await params;
-  const simulationUserContext = userContext as SimulationJwtTokenPayload;
+  const { id: studentId } = await params;
+  const { userId } = userContext;
 
-  // Verify the requesting user is an admin or instructor
-  if (!simulationUserContext.role) {
-    const user = await prisma.user.findUnique({
-      where: {
-        email_spaceId: {
-          email: simulationUserContext.email || simulationUserContext.username,
-          spaceId: simulationUserContext.spaceId,
-        },
-      },
-    });
+  const currentUser = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+  });
 
-    if (!user || (user.role !== 'Admin' && user.role !== 'Instructor')) {
-      throw new Error('Unauthorized: Only admins and instructors can generate sign-in codes');
-    }
-  } else if (simulationUserContext.role !== 'Admin' && simulationUserContext.role !== 'Instructor') {
-    throw new Error('Unauthorized: Only admins and instructors can generate sign-in codes');
+  if (currentUser.role !== 'Instructor' && currentUser.role !== 'Admin') {
+    throw new Error('Only instructors and admins can generate sign-in codes');
   }
 
   // Verify the target user exists and is a student
   const targetUser = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: studentId },
   });
 
   if (!targetUser) {
@@ -57,7 +46,7 @@ async function postHandler(
   // Deactivate all existing codes for this user
   await prisma.studentSignInCode.updateMany({
     where: {
-      userId: userId,
+      userId: studentId,
       isActive: true,
     },
     data: {
@@ -67,7 +56,7 @@ async function postHandler(
 
   // Create a new sign-in code
   const newSignInCode = await createSignInCodeForUser(
-    userId,
+    studentId,
     userContext.userId,
     30 // 30 days expiration
   );
