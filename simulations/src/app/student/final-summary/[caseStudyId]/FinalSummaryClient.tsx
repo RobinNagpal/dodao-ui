@@ -1,13 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { FileText, Download, Eye, Sparkles, CheckCircle, Bot } from 'lucide-react';
+import { FileText, Download, Eye, Sparkles, CheckCircle, Bot, Save } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
-import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import BackButton from '@/components/navigation/BackButton';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { FinalSummaryResponse } from '@/types/api';
@@ -17,7 +15,22 @@ interface FinalSummaryClientProps {
   caseStudyId: string;
 }
 
+interface FinalSummaryData {
+  id: string;
+  response: string | null;
+  status: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface CreateFinalSummaryRequest {
+  caseStudyId: string;
+  studentEmail: string;
+}
+
 export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientProps): ReactElement | null {
+  const [isSaved, setIsSaved] = useState(false);
+
   const { data: summaryData, loading: loadingSummary } = useFetchData<FinalSummaryResponse>(
     `/api/student/final-summary/${caseStudyId}`,
     { skipInitialFetch: !caseStudyId },
@@ -32,6 +45,28 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     additionalLoadingConditions: [loadingSummary],
   });
 
+  const { postData: saveFinalSummary, loading: savingSummary } = usePostData<FinalSummaryData, CreateFinalSummaryRequest>({
+    successMessage: 'Final summary saved successfully!',
+    errorMessage: 'Failed to save final summary. Please try again.',
+  });
+
+  const handleSaveFinalSummary = async () => {
+    if (!session || savingSummary) return;
+
+    try {
+      const result = await saveFinalSummary(`/api/student/final-summary/${caseStudyId}`, {
+        caseStudyId,
+        studentEmail: session.email || '',
+      });
+
+      if (result) {
+        setIsSaved(true);
+      }
+    } catch (error) {
+      console.error('Error saving final summary:', error);
+    }
+  };
+
   const handleDownloadPdf = () => {
     if (!summaryData || !session) return;
 
@@ -39,13 +74,19 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     let content = `<h1>${summaryData.caseStudy.title}</h1>\n\n`;
 
     summaryData.modules.forEach((module, moduleIndex) => {
-      content += `<h2>${module.title}</h2>\n\n`;
+      content += `<h2>Module ${module.orderNumber}: ${module.title}</h2>\n\n`;
 
       module.exercises.forEach((exercise, exerciseIndex) => {
-        content += `<h3>${exercise.title}</h3>\n\n`;
+        content += `<h3>Exercise ${exercise.orderNumber}: ${exercise.title}</h3>\n\n`;
+
+        if (exercise.selectedAttempt?.prompt) {
+          content += `<h4>Student Prompt:</h4>\n`;
+          content += `<div style="background-color: #eff6ff; padding: 15px; margin: 10px 0; border-left: 4px solid #3b82f6; border-radius: 5px;">${exercise.selectedAttempt.prompt}</div>\n\n`;
+        }
 
         if (exercise.selectedAttempt?.promptResponse) {
-          content += `${exercise.selectedAttempt.promptResponse}\n\n`;
+          content += `<h4>Selected Response:</h4>\n`;
+          content += `<div style="background-color: #f9fafb; padding: 15px; margin: 10px 0; border-left: 4px solid #6b7280; border-radius: 5px;">${exercise.selectedAttempt.promptResponse}</div>\n\n`;
         }
       });
     });
@@ -142,35 +183,82 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
               <FileText className="h-8 w-8 text-purple-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Your Final Report</h1>
-            <p className="text-gray-600 text-base">View your selected answers and solutions for each exercise</p>
+            <p className="text-gray-600 text-base mb-4">This is your compiled final report with all your selected solutions for each exercise.</p>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-4">
+              <p className="text-blue-800 text-sm font-medium">
+                💡 <strong>Important:</strong> Click Save Report to store this final summary for your instructor to review. You can also download it as a PDF
+                for your records.
+              </p>
+            </div>
           </div>
 
           <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
             <div className="prose prose-lg max-w-none">
               <div className="flex items-center justify-between mb-6">
                 <h1 className="text-3xl font-bold text-gray-900 m-0">{summaryData.caseStudy.title}</h1>
-                <button
-                  onClick={handleDownloadPdf}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
-                >
-                  <Download className="h-5 w-5" />
-                  <span>Download PDF</span>
-                </button>
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={handleSaveFinalSummary}
+                    disabled={savingSummary}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {savingSummary ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                        <span>Saving...</span>
+                      </>
+                    ) : isSaved ? (
+                      <>
+                        <CheckCircle className="h-5 w-5" />
+                        <span>Saved</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-5 w-5" />
+                        <span>Save Report</span>
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={handleDownloadPdf}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+                  >
+                    <Download className="h-5 w-5" />
+                    <span>Download PDF</span>
+                  </button>
+                </div>
               </div>
 
               {summaryData.modules.map((module, moduleIndex) => (
                 <div key={moduleIndex} className="mb-8">
-                  <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">{module.title}</h2>
+                  <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                    Module {module.orderNumber}: {module.title}
+                  </h2>
 
                   {module.exercises.map((exercise, exerciseIndex) => (
                     <div key={exerciseIndex} className="mb-6">
-                      <h3 className="text-xl font-medium text-gray-700 mt-6 mb-3">{exercise.title}</h3>
+                      <h3 className="text-xl font-medium text-gray-700 mt-6 mb-3">
+                        Exercise {exercise.orderNumber}: {exercise.title}
+                      </h3>
+
+                      {exercise.selectedAttempt?.prompt && (
+                        <div className="mb-4">
+                          <h4 className="text-sm font-semibold text-gray-600 mb-2">Student Prompt:</h4>
+                          <div
+                            className="bg-blue-50 rounded-lg p-4 border border-blue-200"
+                            dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.selectedAttempt.prompt) }}
+                          />
+                        </div>
+                      )}
 
                       {exercise.selectedAttempt?.promptResponse ? (
-                        <div
-                          className="bg-gray-50 rounded-lg p-4 border border-gray-200"
-                          dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.selectedAttempt.promptResponse) }}
-                        />
+                        <div className="mb-4">
+                          <h4 className="text-sm font-semibold text-gray-600 mb-2">Selected Response:</h4>
+                          <div
+                            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                            dangerouslySetInnerHTML={{ __html: parseMarkdown(exercise.selectedAttempt.promptResponse) }}
+                          />
+                        </div>
                       ) : (
                         <p className="text-gray-500 italic">No selected solution available</p>
                       )}

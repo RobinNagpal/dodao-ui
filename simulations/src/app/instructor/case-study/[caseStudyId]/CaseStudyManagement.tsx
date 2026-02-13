@@ -1,10 +1,8 @@
 'use client';
 
-import AnalyticsTab from '@/components/instructor/case-study-tabs/AnalyticsTab';
 import OverviewTab from '@/components/instructor/case-study-tabs/OverviewTab';
-import StudentsTab from '@/components/instructor/case-study-tabs/StudentsTab';
 import TabNavigation, { TabType } from '@/components/instructor/case-study-tabs/TabNavigation';
-import BackButton from '@/components/navigation/BackButton';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
@@ -13,10 +11,11 @@ import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
 import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForInstructor } from '@/types/api';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { GraduationCap } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+import ClassesTab from '@/components/instructor/case-study-tabs/ClassesTab';
 
 interface CaseStudyManagementClientProps {
   caseStudyId: string;
@@ -24,7 +23,6 @@ interface CaseStudyManagementClientProps {
 
 export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyManagementClientProps): ReactElement | null {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
-  const router = useRouter();
 
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
@@ -67,6 +65,8 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
 
   const modules = caseStudy?.modules || [];
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [{ name: caseStudy?.title || 'Case Study', href: `/instructor/case-study/${caseStudyId}`, current: true }];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -82,13 +82,13 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        <BackButton userType="instructor" text="Back to Dashboard" href="/instructor" />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
 
         {/* Tab Navigation */}
         <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-4">
         {activeTab === 'overview' && (
           <OverviewTab
             caseStudy={caseStudy}
@@ -99,9 +99,7 @@ export default function CaseStudyManagementClient({ caseStudyId }: CaseStudyMana
           />
         )}
 
-        {activeTab === 'classes' && <StudentsTab caseStudy={caseStudy || null} caseStudyId={caseStudyId} />}
-
-        {activeTab === 'analytics' && <AnalyticsTab />}
+        {activeTab === 'classes' && <ClassesTab caseStudy={caseStudy || null} caseStudyId={caseStudyId} />}
       </div>
 
       {caseStudy && (

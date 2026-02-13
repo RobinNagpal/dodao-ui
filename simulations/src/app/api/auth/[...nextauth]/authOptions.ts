@@ -6,6 +6,8 @@ import { createUserAdapter, createVerificationTokenAdapter } from '@dodao/web-co
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient, User as SimulationUser } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { RequestInternal } from 'next-auth';
 
 const p = new PrismaClient();
 
@@ -15,7 +17,7 @@ export const prismaAdapter = PrismaAdapter(p);
 const userAdapter = createUserAdapter(p.user);
 const verificationTokenAdapter = createVerificationTokenAdapter(p.verificationToken);
 
-export const authOptions = getAuthOptions(
+const baseAuthOptions = getAuthOptions(
   {
     user: userAdapter,
     verificationToken: verificationTokenAdapter,
@@ -100,6 +102,7 @@ export const authOptions = getAuthOptions(
 
             if (dbUser) {
               console.log(`[authOptions] JWT callback - User found: ${dbUser.username}`);
+              token.userId = dbUser.id;
               token.spaceId = dbUser.spaceId;
               token.username = dbUser.username;
               token.authProvider = dbUser.authProvider;
@@ -108,6 +111,7 @@ export const authOptions = getAuthOptions(
               token.email = dbUser.email;
             } else {
               console.log(`[authOptions] JWT callback - No user found with ID: ${token.sub}`);
+              token.userId = token.sub;
             }
           } catch (error) {
             await logError(
@@ -125,3 +129,111 @@ export const authOptions = getAuthOptions(
     },
   }
 );
+
+// Add sign-in code provider to the base auth options
+export const authOptions = {
+  ...baseAuthOptions,
+  providers: [
+    ...baseAuthOptions.providers,
+    CredentialsProvider({
+      id: 'sign-in-code',
+      name: 'Sign-In Code',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        code: { label: 'Sign-In Code', type: 'text' },
+        spaceId: { label: 'Space Id', type: 'text' },
+      },
+      authorize: async function authorizeSignInCode(
+        credentials: Record<'email' | 'code' | 'spaceId', string> | undefined,
+        req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
+      ) {
+        console.log('[authOptions] Sign-in code authorization attempt');
+
+        if (!credentials?.code || !credentials?.email) {
+          await logError('Sign-in code or email missing', {}, null, credentials?.spaceId);
+          return null;
+        }
+
+        // Normalize code (uppercase, trim spaces) but keep hyphen
+        const normalizedCode = credentials.code.toUpperCase().replace(/\s/g, '');
+        const normalizedEmail = credentials.email.toLowerCase().trim();
+
+        const signInCodeRecord = await p.studentSignInCode.findFirst({
+          where: {
+            code: normalizedCode,
+            isActive: true,
+            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+          },
+          include: {
+            user: true,
+          },
+        });
+
+        if (!signInCodeRecord) {
+          await logError('Invalid or expired sign-in code', { code: normalizedCode, email: normalizedEmail }, null, credentials?.spaceId);
+          return null;
+        }
+
+        const user = signInCodeRecord.user;
+
+        // Verify email matches the user associated with the code
+        if (user.email?.toLowerCase() !== normalizedEmail) {
+          await logError(
+            'Email does not match sign-in code',
+            {
+              providedEmail: normalizedEmail,
+              codeUserEmail: user.email,
+              code: normalizedCode,
+            },
+            null,
+            credentials?.spaceId
+          );
+          return null;
+        }
+
+        // Verify user is a student or instructor and belongs to correct space
+        if ((user.role !== 'Student' && user.role !== 'Instructor') || user.spaceId !== credentials.spaceId) {
+          await logError(
+            'Sign-in code user validation failed',
+            {
+              userId: user.id,
+              role: user.role,
+              userSpaceId: user.spaceId,
+              requestedSpaceId: credentials.spaceId,
+            },
+            null,
+            credentials?.spaceId
+          );
+          return null;
+        }
+
+        // Ensure Account exists for sign-in code authentication
+        const existingAccount = await p.account.findFirst({
+          where: {
+            userId: user.id,
+            provider: 'sign-in-code',
+          },
+        });
+
+        if (!existingAccount) {
+          await p.account.create({
+            data: {
+              userId: user.id,
+              type: 'credentials',
+              provider: 'sign-in-code',
+              providerAccountId: user.email || user.id,
+            },
+          });
+        }
+
+        console.log(`[authOptions] Sign-in code authenticated user: ${user.id}`);
+
+        return {
+          id: user.id,
+          name: user.name,
+          username: user.username,
+        };
+      },
+    }),
+  ],
+};

@@ -12,30 +12,47 @@ import { useState } from 'react';
 
 // Define props with strict types
 interface UserLoginProps {
-  onLogin: (email: string) => void;
+  onEmailLogin: (email: string) => Promise<string | null>;
+  onSignInCodeLogin: (email: string, code: string) => Promise<string | null>;
   errorMessage?: string;
 }
 
-export function UserLogin({ onLogin, errorMessage }: UserLoginProps) {
+export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: externalErrorMessage }: UserLoginProps) {
   const [email, setEmail] = useState('');
+  const [signInCode, setSignInCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loginMethod, setLoginMethod] = useState<'email' | 'code'>('code');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null);
 
-    // Simulate login delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    let error: string | null = null;
 
-    // Call the onLogin function with the email
-    if (email) {
-      onLogin(email);
+    if (loginMethod === 'email') {
+      // Email login
+      if (email) {
+        error = await onEmailLogin(email);
+      }
+    } else {
+      // Sign-in code login
+      if (email && signInCode) {
+        error = await onSignInCodeLogin(email, signInCode);
+      } else {
+        error = 'Please enter both email and sign-in code';
+      }
+    }
+
+    if (error) {
+      setErrorMessage(error);
     }
 
     setIsLoading(false);
   };
 
-  // Get configuration based on currentRole
+  // Get configuration
   const currentConfig = {
     gradientFrom: 'from-indigo-50',
     gradientTo: 'to-cyan-50',
@@ -46,9 +63,6 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps) {
     sparklesBg: 'from-cyan-400 to-blue-500',
     titleGradient: 'from-gray-900 via-blue-800 to-indigo-800',
     cardTitleGradient: 'from-blue-600 to-indigo-600',
-    badgeGradient: '',
-    badgeTextColor: '',
-    badgeBorderColor: '',
     focusBorderColor: 'focus:border-blue-400',
     focusRingColor: 'focus:ring-blue-400/20',
     buttonGradient: 'from-blue-600 to-indigo-600',
@@ -68,13 +82,11 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps) {
     portalDescription: 'Sign in to start your GenAI simulation journey',
     emailLabel: 'Email Address',
     emailPlaceholder: 'user@university.edu',
-    badgeLabel: '',
-    buttonLabel: 'Sign In',
+    buttonLabel: loginMethod === 'email' ? 'Send Login Email' : 'Sign In with Code',
     feature1: 'Interactive Cases',
     feature2: 'AI-Guided Learning',
     feature3: 'Real-World Skills',
     mainIcon: <GraduationCap className="h-8 w-8 text-white" />,
-    badgeIcon: null,
     buttonIcon: <GraduationCap className="h-4 w-4" />,
     feature1Icon: <BookOpen className="h-6 w-6 text-blue-600" />,
     feature2Icon: <BotIcon className="h-6 w-6 text-cyan-600" />,
@@ -119,6 +131,35 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps) {
             <CardDescription className="text-center text-gray-600">{currentConfig.portalDescription}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoginMethod('code');
+                    setErrorMessage(null);
+                  }}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    loginMethod === 'code' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Sign-In Code
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoginMethod('email');
+                    setErrorMessage(null);
+                  }}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    loginMethod === 'email' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Email Login
+                </button>
+              </div>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium text-gray-700">
@@ -133,8 +174,26 @@ export function UserLogin({ onLogin, errorMessage }: UserLoginProps) {
                   required
                   className={`h-12 bg-white/50 border-gray-200 ${currentConfig.focusBorderColor} ${currentConfig.focusRingColor} transition-all duration-200`}
                 />
-                {errorMessage && <div className="text-red-500 text-sm mt-1">{errorMessage}</div>}
               </div>
+
+              {loginMethod === 'code' && (
+                <div className="space-y-2">
+                  <Label htmlFor="signInCode" className="text-sm font-medium text-gray-700">
+                    Sign-In Code
+                  </Label>
+                  <Input
+                    id="signInCode"
+                    type="text"
+                    placeholder="KG-ABC123"
+                    value={signInCode}
+                    onChange={(e) => setSignInCode(e.target.value)}
+                    required
+                    className={`h-12 bg-white/50 border-gray-200 ${currentConfig.focusBorderColor} ${currentConfig.focusRingColor} transition-all duration-200`}
+                  />
+                </div>
+              )}
+
+              {errorMessage && <div className="text-red-500 text-sm mt-1">{errorMessage}</div>}
 
               <Button
                 type="submit"
