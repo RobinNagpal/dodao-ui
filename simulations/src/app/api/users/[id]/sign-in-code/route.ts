@@ -3,10 +3,42 @@ import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { createSignInCodeForUser } from '@/utils/sign-in-code-utils';
+import { StudentSignInCode } from '@prisma/client';
 
 interface GenerateSignInCodeResponse {
   code: string;
   message: string;
+}
+
+/**
+ * GET /api/users/[id]/sign-in-code
+ * Fetch the current active sign-in code for a student
+ * Only admins and instructors can fetch codes
+ */
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<StudentSignInCode | null> {
+  const { id: studentId } = await params;
+  const { userId } = userContext;
+
+  const currentUser = await prisma.user.findUniqueOrThrow({
+    where: { id: userId },
+  });
+
+  if (currentUser.role !== 'Instructor' && currentUser.role !== 'Admin') {
+    throw new Error('Only instructors and admins can fetch sign-in codes');
+  }
+
+  const activeCode = await prisma.studentSignInCode.findFirst({
+    where: {
+      userId: studentId,
+      isActive: true,
+    },
+  });
+
+  return activeCode;
 }
 
 /**
@@ -67,4 +99,5 @@ async function postHandler(
   };
 }
 
+export const GET = withLoggedInUser<StudentSignInCode | null>(getHandler);
 export const POST = withLoggedInUser<GenerateSignInCodeResponse>(postHandler);

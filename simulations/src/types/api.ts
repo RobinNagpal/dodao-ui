@@ -33,6 +33,7 @@ export type ClassEnrollmentStudentData = EnrollmentStudent & {
 
 export type ClassEnrollmentResponse = {
   students: ClassEnrollmentStudentData[];
+  className: string;
 };
 
 export type ModuleExerciseWithProgress = ModuleExercise & {

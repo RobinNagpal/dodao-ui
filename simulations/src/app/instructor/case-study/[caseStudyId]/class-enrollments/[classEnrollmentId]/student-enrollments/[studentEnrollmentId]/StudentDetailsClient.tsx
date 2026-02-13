@@ -1,27 +1,13 @@
 'use client';
 
-import BackButton from '@/components/navigation/BackButton';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CaseStudyWithRelationsForInstructor, StudentDetailResponse } from '@/types/api';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import {
-  Activity,
-  AlertCircle,
-  Award,
-  BookOpen,
-  Calendar,
-  CheckCircle,
-  ChevronDown,
-  ChevronRight,
-  Clock,
-  GraduationCap,
-  Layers,
-  Mail,
-  Target,
-  TrendingUp,
-} from 'lucide-react';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { AlertCircle, BookOpen, Calendar, CheckCircle, ChevronDown, ChevronRight, Clock, GraduationCap, Layers, Mail, Target, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
@@ -144,7 +130,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
       case 'in_progress':
         return <Clock className="h-4 w-4 text-yellow-600" />;
       default:
-        return <Activity className="h-4 w-4 text-gray-500" />;
+        return <Clock className="h-4 w-4 text-gray-500" />;
     }
   };
 
@@ -167,6 +153,20 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard as ReactElement;
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    { name: caseStudyData?.title || 'Case Study', href: `/instructor/case-study/${caseStudyId}`, current: false },
+    {
+      name: studentDetails?.enrollment.className || 'Class Enrollment',
+      href: `/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`,
+      current: false,
+    },
+    {
+      name: studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'Student',
+      href: `/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
+      current: true,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -176,62 +176,68 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
       </div>
 
       <InstructorNavbar
-        title={studentDetails ? `${studentDetails.assignedStudent.email} - ${studentDetails.enrollment.className}` : 'Student Not Found'}
-        userEmail={session?.email || ''}
+        title={studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'Student Not Found'}
+        subtitle={studentDetails ? studentDetails.enrollment.className : undefined}
         icon={<GraduationCap className="h-8 w-8 text-white" />}
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
 
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/40 p-8 mb-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 space-y-6 lg:space-y-0">
-            <div className="flex items-center space-x-6">
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/40 p-6 mb-6 mt-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-20 h-20 flex items-center justify-center shadow-xl">
-                  <span className="text-white font-bold text-2xl">
-                    {(studentDetails?.assignedStudent.name || studentDetails?.assignedStudentId)?.charAt(0).toUpperCase()}
+                <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-xl">
+                    {(studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'S')?.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                {studentDetails?.finalScore && (
-                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                {studentDetails?.finalScore != null && studentDetails.finalScore > 0 && (
+                  <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow">
                     {studentDetails.finalScore}%
                   </div>
                 )}
               </div>
-              <div className="space-y-2">
-                {studentDetails?.assignedStudent.email && (
-                  <p className="flex items-center text-gray-600">
-                    <Mail className="h-4 w-4 mr-2" />
-                    {studentDetails.assignedStudent.email}
-                  </p>
+              <div>
+                {studentDetails?.assignedStudent.name && (
+                  <h3 className="text-lg font-bold text-gray-900 flex items-center">
+                    <User className="h-4 w-4 mr-1.5 text-purple-600" />
+                    {studentDetails.assignedStudent.name}
+                  </h3>
                 )}
-                <p className="flex items-center text-gray-600">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Enrolled: {new Date(studentDetails?.createdAt ?? '').toLocaleDateString()}
+                <p className="flex items-center text-sm text-gray-600">
+                  <Mail className="h-3.5 w-3.5 mr-1.5" />
+                  {studentDetails?.assignedStudent.email}
                 </p>
-                <p className="flex items-center text-gray-600">
-                  <BookOpen className="h-4 w-4 mr-2" />
-                  Class: <span className="font-semibold text-purple-600 ml-1">{studentDetails?.enrollment.className}</span>
-                </p>
+                <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                  <span className="flex items-center">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Enrolled: {new Date(studentDetails?.createdAt ?? '').toLocaleDateString()}
+                  </span>
+                  <span className="flex items-center">
+                    <BookOpen className="h-3 w-3 mr-1" />
+                    {studentDetails?.enrollment.className}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-6">
-              <div className="text-center">
-                <div className="relative w-20 h-20">
-                  <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 36 36">
+            <div className="flex items-center space-x-4 mt-4 lg:mt-0">
+              <div className="flex items-center space-x-3 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl px-4 py-2 border border-purple-200">
+                <div className="relative w-12 h-12">
+                  <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
                     <path
                       className="text-gray-200"
                       stroke="currentColor"
-                      strokeWidth="3"
+                      strokeWidth="3.5"
                       fill="transparent"
                       d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
                     <path
                       className="text-purple-600"
                       stroke="currentColor"
-                      strokeWidth="3"
+                      strokeWidth="3.5"
                       fill="transparent"
                       strokeLinecap="round"
                       strokeDasharray={`${statistics.completionPercentage}, 100`}
@@ -239,96 +245,59 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm font-bold text-gray-900">{statistics.completionPercentage}%</span>
+                    <span className="text-xs font-bold text-gray-900">{statistics.completionPercentage}%</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-600 mt-2">Progress</p>
+                <div>
+                  <p className="text-xs font-semibold text-purple-700">Progress</p>
+                  <p className="text-xs text-gray-600">
+                    {statistics.attemptedExercises}/{statistics.totalExercises} exercises
+                  </p>
+                </div>
               </div>
-              {studentDetails?.finalScore && (
-                <div className="text-center">
-                  <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white w-20 h-20 rounded-full flex items-center justify-center shadow-xl">
-                    <div>
-                      <div className="text-lg font-bold">{studentDetails.finalScore}</div>
-                      <div className="text-xs">Final Score</div>
-                    </div>
-                  </div>
+
+              {studentDetails?.finalScore != null && studentDetails.finalScore > 0 && (
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-xl shadow-lg">
+                  <p className="text-xs font-medium">Final Score</p>
+                  <p className="text-lg font-bold">{studentDetails.finalScore}%</p>
                 </div>
               )}
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200 shadow-sm">
-              <div className="flex items-center space-x-2 mb-2">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-semibold text-green-800">Attempted</span>
-              </div>
-              <p className="text-2xl font-bold text-green-900 mb-1">{statistics.attemptedExercises}</p>
-              <p className="text-xs text-green-600">out of {statistics.totalExercises} exercises</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200 shadow-sm">
-              <div className="flex items-center space-x-2 mb-2">
-                <Activity className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-semibold text-blue-800">Total Attempts</span>
-              </div>
-              <p className="text-2xl font-bold text-blue-900 mb-1">{statistics.totalAttempts}</p>
-              <p className="text-xs text-blue-600">across all exercises</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200 shadow-sm">
-              <div className="flex items-center space-x-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-semibold text-purple-800">Progress Rate</span>
-              </div>
-              <p className="text-2xl font-bold text-purple-900 mb-1">{statistics.completionPercentage}%</p>
-              <p className="text-xs text-purple-600">completion</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-4 border border-indigo-200 shadow-sm">
-              <div className="flex items-center space-x-2 mb-2">
-                <Award className="h-4 w-4 text-indigo-600" />
-                <span className="text-sm font-semibold text-indigo-800">Completed</span>
-              </div>
-              <p className="text-2xl font-bold text-indigo-900 mb-1">{statistics.completedExercises}</p>
-              <p className="text-xs text-indigo-600">successful attempts</p>
-            </div>
-          </div>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/40 p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center">
-            <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-xl mr-3">
-              <Layers className="h-6 w-6 text-white" />
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/40 p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+            <div className="bg-gradient-to-br from-purple-500 to-indigo-600 p-1.5 rounded-lg mr-2">
+              <Layers className="h-5 w-5 text-white" />
             </div>
             Modules & Exercise Attempts
           </h2>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {caseStudyData?.modules?.map((module) => (
-              <div key={module.id} className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+              <div key={module.id} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                 <button
                   onClick={() => toggleModule(module.id)}
-                  className="w-full bg-gradient-to-br from-gray-50 to-purple-50 p-6 text-left hover:from-purple-50 hover:to-indigo-50 transition-all duration-300"
+                  className="w-full bg-gradient-to-br from-gray-50 to-purple-50 p-4 text-left hover:from-purple-50 hover:to-indigo-50 transition-all duration-300"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-4 py-3 rounded-xl text-sm font-medium min-w-[90px] text-center shadow-lg">
-                        Module
-                        <span className="block text-xs font-semibold">{module.orderNumber}</span>
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-3 py-2 rounded-lg text-sm font-medium text-center shadow whitespace-nowrap">
+                        Module {module.orderNumber}
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-gray-900">{module.title}</h3>
-                        <p className="text-gray-600 mt-1">{module.shortDescription}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{module.title}</h3>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-center bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-2 rounded-lg border border-blue-200 shadow-sm">
-                        <p className="text-xs text-blue-600 font-medium">Attempted</p>
-                        <p className="text-lg font-bold text-blue-900">
-                          {(module.exercises || []).filter((exercise) => studentDetails?.attempts.some((attempt) => attempt.exerciseId === exercise.id)).length}{' '}
-                          / {(module.exercises || []).length}
-                        </p>
+                    <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-2 bg-gradient-to-br from-blue-50 to-indigo-50 px-3 py-1.5 rounded-lg border border-blue-200 shadow-sm whitespace-nowrap">
+                        <span className="text-xs text-blue-600 font-medium">Attempted</span>
+                        <span className="text-sm font-bold text-blue-900">
+                          {(module.exercises || []).filter((exercise) => studentDetails?.attempts.some((attempt) => attempt.exerciseId === exercise.id)).length}
+                          {' / '}
+                          {(module.exercises || []).length}
+                        </span>
                       </div>
                       {expandedModules.has(module.id) ? <ChevronDown className="h-6 w-6 text-gray-600" /> : <ChevronRight className="h-6 w-6 text-gray-600" />}
                     </div>
@@ -336,39 +305,37 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                 </button>
 
                 {expandedModules.has(module.id) && (
-                  <div className="p-6 bg-gradient-to-br from-white to-gray-50/50 border-t border-gray-200">
-                    <div className="space-y-6">
+                  <div className="p-4 bg-gradient-to-br from-white to-gray-50/50 border-t border-gray-200">
+                    <div className="space-y-4">
                       {(module.exercises || []).map((exercise) => (
-                        <div key={exercise.id} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-4">
-                              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-3 rounded-xl text-sm font-medium min-w-[100px] text-center shadow-lg">
-                                Exercise
-                                <span className="block text-xs font-semibold">{exercise.orderNumber}</span>
+                        <div key={exercise.id} className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center space-x-3">
+                              <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-medium text-center shadow whitespace-nowrap">
+                                Exercise {exercise.orderNumber}
                               </div>
                               <div>
-                                <h5 className="font-bold text-gray-900 text-lg">{exercise.title}</h5>
-                                <p className="text-sm text-gray-600 mt-1">{exercise.details.substring(0, 100)}...</p>
+                                <h5 className="font-bold text-gray-900">{exercise.title}</h5>
                               </div>
                             </div>
-                            <div className="text-center bg-gradient-to-br from-orange-50 to-yellow-50 px-4 py-2 rounded-lg border border-orange-200 min-w-[90px] shadow-sm">
-                              <p className="text-xs text-orange-600 font-medium">Attempts</p>
-                              <p className="text-lg font-bold text-orange-900">
+                            <div className="flex items-center space-x-2 bg-gradient-to-br from-orange-50 to-yellow-50 px-3 py-1.5 rounded-lg border border-orange-200 shadow-sm whitespace-nowrap">
+                              <span className="text-xs text-orange-600 font-medium">Attempts</span>
+                              <span className="text-sm font-bold text-orange-900">
                                 {studentDetails?.attempts.filter((attempt) => attempt.exerciseId === exercise.id).length || 0}
-                              </p>
+                              </span>
                             </div>
                           </div>
 
                           {(() => {
                             const exerciseAttempts = studentDetails?.attempts.filter((attempt) => attempt.exerciseId === exercise.id) || [];
                             return exerciseAttempts.length > 0 ? (
-                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {exerciseAttempts.map((attempt) => (
-                                  <div key={attempt.id} className="relative">
+                                  <div key={attempt.id}>
                                     <button
                                       onClick={() => handleAttemptClick(attempt.id)}
                                       disabled={false}
-                                      className={`w-full p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-lg transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                      className={`w-full p-3 rounded-lg border-2 transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${
                                         attempt.status === 'completed' || attempt.status === 'success'
                                           ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:from-green-100 hover:to-emerald-100'
                                           : attempt.status === 'failed' || attempt.status === 'error'
@@ -376,50 +343,50 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                                           : 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 hover:from-yellow-100 hover:to-orange-100'
                                       }`}
                                     >
-                                      <div className="flex items-center justify-center space-x-2 mb-2">
-                                        {getStatusIcon(attempt.status)}
-                                        <span className="font-medium text-sm">Attempt {attempt.attemptNumber}</span>
+                                      <div className="flex items-center justify-between mb-1.5">
+                                        <div className="flex items-center space-x-1.5">
+                                          {getStatusIcon(attempt.status)}
+                                          <span className="font-medium text-sm">Attempt {attempt.attemptNumber}</span>
+                                        </div>
+                                        {attempt.evaluatedScore !== null && (
+                                          <div className="flex items-center space-x-1">
+                                            <Target className="h-3.5 w-3.5 text-blue-600" />
+                                            <span className="text-xs font-bold text-blue-900">{attempt.evaluatedScore}/10</span>
+                                          </div>
+                                        )}
                                       </div>
 
-                                      {attempt.evaluatedScore !== null && (
-                                        <div className="mb-2">
-                                          <div className="flex items-center justify-center space-x-1">
-                                            <Target className="h-4 w-4 text-blue-600" />
-                                            <span className="text-sm font-bold text-blue-900">Score: {attempt.evaluatedScore}/10</span>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {attempt.status && (
-                                        <div className="mb-2">
-                                          <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(attempt.status)}`}>
+                                      <div className="flex items-center justify-between">
+                                        {attempt.status && (
+                                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium border ${getStatusColor(attempt.status)}`}>
                                             {attempt.status}
                                           </span>
-                                        </div>
-                                      )}
-
-                                      <div className="text-xs text-gray-600 text-center">
-                                        <div>{new Date(attempt.createdAt).toLocaleDateString()}</div>
-                                        <div>{new Date(attempt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                        )}
+                                        <span className="text-[10px] text-gray-500">
+                                          {new Date(attempt.createdAt).toLocaleDateString()},{' '}
+                                          {new Date(attempt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </span>
                                       </div>
                                     </button>
 
                                     {attempt.evaluationReasoning && (
-                                      <div className="mt-2 p-2 bg-blue-50 rounded-lg border border-blue-200">
-                                        <p className="text-xs text-blue-800 font-medium mb-1">Evaluation:</p>
-                                        <p className="text-xs text-blue-700">{attempt.evaluationReasoning.substring(0, 100)}...</p>
-                                      </div>
+                                      <details className="mt-1.5 group">
+                                        <summary className="text-[11px] text-blue-600 font-medium cursor-pointer hover:text-blue-800 select-none px-1">
+                                          View Evaluation
+                                        </summary>
+                                        <div className="mt-1 p-2 bg-blue-50 rounded-lg border border-blue-200 text-xs text-blue-800 leading-relaxed max-h-32 overflow-y-auto">
+                                          {attempt.evaluationReasoning}
+                                        </div>
+                                      </details>
                                     )}
                                   </div>
                                 ))}
                               </div>
                             ) : (
-                              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-8 border border-gray-200 text-center shadow-inner">
-                                <div className="text-gray-400 mb-3">
-                                  <Clock className="h-10 w-10 mx-auto mb-2" />
-                                </div>
-                                <h6 className="font-semibold text-gray-700 mb-1">No Attempts Yet</h6>
-                                <p className="text-sm text-gray-600">Student hasn’t attempted this exercise</p>
+                              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 text-center shadow-inner">
+                                <Clock className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                                <h6 className="font-semibold text-gray-700 text-sm">No Attempts Yet</h6>
+                                <p className="text-xs text-gray-600">Student hasn't attempted this exercise</p>
                               </div>
                             );
                           })()}
