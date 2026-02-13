@@ -2,11 +2,12 @@
 
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState, useEffect } from 'react';
-import { X, UserCheck, Plus, Users, Mail, Trash2, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, UserCheck, Plus, Users, Mail, Trash2, AlertCircle, RefreshCw } from 'lucide-react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import InstructorBulkAddStudentsModal from './InstructorBulkAddStudentsModal';
+import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 
 export interface AddStudentEnrollmentRequest {
   studentEmail?: string;
@@ -27,12 +28,14 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [showConfirmNewCode, setShowConfirmNewCode] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const {
     data: enrolledStudentsData,
     loading: loadingStudents,
     reFetchData: refetchStudents,
-  } = useFetchData<{ students: Array<{ email: string; name?: string; studentEnrollmentId: string }> }>(
+  } = useFetchData<{ students: Array<{ email: string; name?: string; studentEnrollmentId: string; userId: string; signInCode?: string | null }> }>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments/${enrollmentId}/student-enrollments`,
     { skipInitialFetch: !enrollmentId },
     'Failed to load enrolled students'
@@ -54,6 +57,11 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
   const { deleteData: removeStudent, loading: removingStudent } = useDeleteData<{ message: string }, AddStudentEnrollmentRequest>({
     successMessage: 'Student removed successfully!',
     errorMessage: 'Failed to remove student',
+  });
+
+  const { postData: generateNewCode, loading: generatingCode } = usePostData<{ code: string; message: string }, {}>({
+    successMessage: 'New sign-in code generated successfully!',
+    errorMessage: 'Failed to generate new code',
   });
 
   useEffect(() => {
@@ -119,18 +127,36 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
     }
   };
 
+  const handleGenerateNewCode = async () => {
+    if (!selectedUserId) return;
+
+    try {
+      const result = await generateNewCode(`${getBaseUrl()}/api/users/${selectedUserId}/sign-in-code`, {});
+      if (result) {
+        setShowConfirmNewCode(false);
+        setSelectedUserId(null);
+        await refetchStudents();
+      }
+    } catch (error) {
+      console.error('Error generating new code:', error);
+    }
+  };
+
+  const handleNewCodeClick = (userId: string) => {
+    setSelectedUserId(userId);
+    setShowConfirmNewCode(true);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white/95 backdrop-blur-lg rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-gray-200/50">
-        {/* Enhanced Header */}
-        <div className="bg-blue-100/50 backdrop-blur-lg p-6 border-b border-gray-200/50">
-          <div className="flex justify-between items-center gap-3">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[5]">
+      <div className="bg-white/95 backdrop-blur-md rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl border border-gray-200/50">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
+          <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-purple-100 to-indigo-100 p-2 rounded-xl">
-                <Users className="h-6 w-6 text-purple-600" />
-              </div>
+              <Users className="h-5 w-5 text-purple-600" />
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Manage Students</h3>
                 <p className="text-gray-600">{enrollmentTitle}</p>
@@ -145,15 +171,15 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
                 <span>Add Multiple</span>
               </button>
               <button onClick={onClose} className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 p-2 rounded-xl transition-all duration-200">
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
         </div>
 
-        <div className="p-8 overflow-y-auto max-h-[60vh]">
-          {/* Enhanced Add Student Section */}
-          <div className="mb-8 space-y-3">
+        <div className="p-6 overflow-y-auto max-h-[60vh]">
+          {/* Add Student Section */}
+          <div className="mb-4 space-y-3">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-3 md:space-y-0">
               <div className="flex-1">
                 <input
@@ -241,29 +267,42 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
                     className="group bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition-all duration-200"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 flex-1">
                         <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-2 rounded-xl">
-                          <UserCheck className="h-5 w-5 text-green-600" />
+                          <UserCheck className="h-4 w-4 text-green-600" />
                         </div>
-                        <div className="flex flex-col">
-                          <div className="flex items-center flex-wrap gap-2">
-                            <span className="text-gray-900 font-medium">{student.name || student.email}</span>
-                            {student.name && <span className="text-sm text-gray-600">{student.email}</span>}
-                          </div>
-                          <div className="flex items-center space-x-1 mt-1">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
-                            <span className="text-xs text-green-600 font-medium">Enrolled</span>
-                          </div>
+                        <div className="flex items-center flex-wrap gap-2 flex-1">
+                          <span className="text-gray-900 font-medium">{student.name || student.email}</span>
+                          {student.name && <span className="text-sm text-gray-600">{student.email}</span>}
+                          {student.signInCode && (
+                            <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-1 rounded-lg border border-blue-200">
+                              <span className="text-xs text-blue-600 font-medium">Sign-in Code:</span>
+                              <code className="text-xs font-mono font-bold text-blue-700 bg-white px-2 py-0.5 rounded border border-blue-300">
+                                {student.signInCode}
+                              </code>
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <button
-                        onClick={() => handleRemoveStudent(student.studentEnrollmentId)}
-                        disabled={removingStudent}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 group-hover:bg-red-50"
-                        title="Remove student"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleNewCodeClick(student.userId)}
+                          disabled={generatingCode}
+                          className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50 text-sm font-medium border border-blue-200"
+                          title="Generate new sign-in code"
+                        >
+                          <RefreshCw className="h-3.5 w-3.5" />
+                          <span>New Code</span>
+                        </button>
+                        <button
+                          onClick={() => handleRemoveStudent(student.studentEnrollmentId)}
+                          disabled={removingStudent}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 group-hover:bg-red-50"
+                          title="Remove student"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -279,6 +318,21 @@ export default function InstructorManageStudentsModal({ isOpen, onClose, enrollm
         onClose={() => setShowBulkModal(false)}
         onSubmit={handleBulkAddStudents}
         loading={addingStudentsBatch}
+      />
+
+      {/* Confirmation Modal for New Code */}
+      <ConfirmationModal
+        open={showConfirmNewCode}
+        showSemiTransparentBg={true}
+        onClose={() => {
+          setShowConfirmNewCode(false);
+          setSelectedUserId(null);
+        }}
+        onConfirm={handleGenerateNewCode}
+        confirming={generatingCode}
+        title="Generate New Sign-in Code"
+        confirmationText="Are you sure you want to generate a new sign-in code for this student? Their current code will be deactivated and they will need to use the new code to sign in."
+        askForTextInput={false}
       />
     </div>
   );

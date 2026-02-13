@@ -13,6 +13,8 @@ interface SimpleResponse {
     email: string;
     name?: string | null;
     studentEnrollmentId: string;
+    userId: string;
+    signInCode?: string | null;
   }>;
 }
 
@@ -51,7 +53,7 @@ async function getHandler(
       return { students: [] };
     }
 
-    // Fetch the user emails using the student IDs
+    // Fetch the user emails and sign-in codes using the student IDs
     const users = await prisma.user.findMany({
       where: {
         id: {
@@ -65,13 +67,30 @@ async function getHandler(
       },
     });
 
+    // Fetch active sign-in codes for all students
+    const signInCodes = await prisma.studentSignInCode.findMany({
+      where: {
+        userId: {
+          in: studentIds,
+        },
+        isActive: true,
+      },
+      select: {
+        userId: true,
+        code: true,
+      },
+    });
+
     const students = simpleEnrollment.students
       .map((enrollmentStudent) => {
         const user = users.find((u) => u.id === enrollmentStudent.assignedStudentId);
+        const signInCode = signInCodes.find((code) => code.userId === enrollmentStudent.assignedStudentId);
         return {
           email: user?.email || '',
           name: user?.name || '',
           studentEnrollmentId: enrollmentStudent.id,
+          userId: enrollmentStudent.assignedStudentId,
+          signInCode: signInCode?.code || null,
         };
       })
       .filter((student) => student.email !== '');
