@@ -21,7 +21,7 @@ export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: exter
   const [email, setEmail] = useState('');
   const [signInCode, setSignInCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<'email' | 'code'>('email');
+  const [loginMethod, setLoginMethod] = useState<'email' | 'code'>('code');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -136,18 +136,6 @@ export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: exter
                 <button
                   type="button"
                   onClick={() => {
-                    setLoginMethod('email');
-                    setErrorMessage(null);
-                  }}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                    loginMethod === 'email' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Email Login
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
                     setLoginMethod('code');
                     setErrorMessage(null);
                   }}
@@ -156,6 +144,18 @@ export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: exter
                   }`}
                 >
                   Sign-In Code
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLoginMethod('email');
+                    setErrorMessage(null);
+                  }}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                    loginMethod === 'email' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Email Login
                 </button>
               </div>
             </div>

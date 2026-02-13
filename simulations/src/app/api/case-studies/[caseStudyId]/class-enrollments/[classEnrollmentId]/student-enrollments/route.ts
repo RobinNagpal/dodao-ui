@@ -175,11 +175,7 @@ async function postHandler(
     caseStudyId,
   });
 
-  const addStudentToEnrollment = async (
-    email: string,
-    name?: string,
-    throwOnDuplicate = true
-  ): Promise<{ status: 'added' | 'duplicate'; signInCode?: string }> => {
+  const addStudentToEnrollment = async (email: string, name?: string, throwOnDuplicate = true): Promise<{ status: 'added' | 'duplicate' }> => {
     const currentStudent = await getOrCreateUser(email, UserRole.Student, name);
 
     const existingEnrollment = await prisma.enrollmentStudent.findFirst({
@@ -207,22 +203,7 @@ async function postHandler(
       },
     });
 
-    // Get or create sign-in code for student
-    let signInCode: string | undefined;
-    const existingCode = await prisma.studentSignInCode.findFirst({
-      where: {
-        userId: currentStudent.id,
-        isActive: true,
-      },
-    });
-
-    if (existingCode) {
-      signInCode = existingCode.code;
-    } else if (currentStudent.signInCode) {
-      signInCode = currentStudent.signInCode;
-    }
-
-    return { status: 'added', signInCode };
+    return { status: 'added' };
   };
 
   // Bulk add flow

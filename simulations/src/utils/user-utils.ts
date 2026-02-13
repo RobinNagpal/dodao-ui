@@ -35,16 +35,14 @@ export async function createNewUser(input: CreateUserInput): Promise<CreateUserR
 
   console.log('created user');
 
-  // Generate sign-in code for students
+  // Generate sign-in code for students and instructors
   let signInCode: string | undefined;
-  if (role === UserRole.Student) {
-    console.log('creating sign-in code for student');
+  if (role === UserRole.Student || role === UserRole.Instructor) {
     const codeRecord = await createSignInCodeForUser(
       user.id,
       user.id, // For initial creation, user creates their own code
       30 // 30 days expiration as number
     );
-    console.log('sign-in code created');
     signInCode = codeRecord.code;
   }
 
