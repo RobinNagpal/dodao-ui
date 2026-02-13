@@ -386,7 +386,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                               <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 text-center shadow-inner">
                                 <Clock className="h-8 w-8 mx-auto mb-2 text-gray-400" />
                                 <h6 className="font-semibold text-gray-700 text-sm">No Attempts Yet</h6>
-                                <p className="text-xs text-gray-600">Student hasn't attempted this exercise</p>
+                                <p className="text-xs text-gray-600">Student hasn’t attempted this exercise</p>
                               </div>
                             );
                           })()}

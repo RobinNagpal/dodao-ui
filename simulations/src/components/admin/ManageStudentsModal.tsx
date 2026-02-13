@@ -243,14 +243,6 @@ export default function ManageStudentsModal({ isOpen, onClose, enrollmentId, enr
                         <div className="flex items-center flex-wrap gap-2 flex-1">
                           <span className="font-medium text-gray-900">{student.name || student.email}</span>
                           {student.name && <span className="text-sm text-gray-600">{student.email}</span>}
-                          {student.signInCode && (
-                            <div className="flex items-center space-x-2 bg-gradient-to-r from-emerald-50 to-green-50 px-3 py-1 rounded-lg border border-emerald-200">
-                              <span className="text-xs text-emerald-600 font-medium">Sign-in Code:</span>
-                              <code className="text-xs font-mono font-bold text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-300">
-                                {student.signInCode}
-                              </code>
-                            </div>
-                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">

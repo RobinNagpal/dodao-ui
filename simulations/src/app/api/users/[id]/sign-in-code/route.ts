@@ -12,7 +12,7 @@ interface GenerateSignInCodeResponse {
 
 /**
  * GET /api/users/[id]/sign-in-code
- * Fetch the current active sign-in code for a student
+ * Fetch the current active sign-in code for a user (student or instructor)
  * Only admins and instructors can fetch codes
  */
 async function getHandler(
@@ -20,7 +20,7 @@ async function getHandler(
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<StudentSignInCode | null> {
-  const { id: studentId } = await params;
+  const { id: targetUserId } = await params;
   const { userId } = userContext;
 
   const currentUser = await prisma.user.findUniqueOrThrow({
@@ -33,7 +33,7 @@ async function getHandler(
 
   const activeCode = await prisma.studentSignInCode.findFirst({
     where: {
-      userId: studentId,
+      userId: targetUserId,
       isActive: true,
     },
   });
@@ -43,7 +43,7 @@ async function getHandler(
 
 /**
  * POST /api/users/[id]/sign-in-code
- * Generate a new sign-in code for a student
+ * Generate a new sign-in code for a user (student or instructor)
  * Only admins and instructors can generate codes
  */
 async function postHandler(
@@ -51,7 +51,7 @@ async function postHandler(
   userContext: DoDaoJwtTokenPayload,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<GenerateSignInCodeResponse> {
-  const { id: studentId } = await params;
+  const { id: targetUserId } = await params;
   const { userId } = userContext;
 
   const currentUser = await prisma.user.findUniqueOrThrow({
@@ -62,23 +62,23 @@ async function postHandler(
     throw new Error('Only instructors and admins can generate sign-in codes');
   }
 
-  // Verify the target user exists and is a student
+  // Verify the target user exists and is a student or instructor
   const targetUser = await prisma.user.findUnique({
-    where: { id: studentId },
+    where: { id: targetUserId },
   });
 
   if (!targetUser) {
     throw new Error('User not found');
   }
 
-  if (targetUser.role !== 'Student') {
-    throw new Error('Sign-in codes can only be generated for students');
+  if (targetUser.role !== 'Student' && targetUser.role !== 'Instructor') {
+    throw new Error('Sign-in codes can only be generated for students and instructors');
   }
 
   // Deactivate all existing codes for this user
   await prisma.studentSignInCode.updateMany({
     where: {
-      userId: studentId,
+      userId: targetUserId,
       isActive: true,
     },
     data: {
@@ -88,7 +88,7 @@ async function postHandler(
 
   // Create a new sign-in code
   const newSignInCode = await createSignInCodeForUser(
-    studentId,
+    targetUserId,
     userContext.userId,
     30 // 30 days expiration
   );
