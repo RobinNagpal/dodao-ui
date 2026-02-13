@@ -33,8 +33,6 @@ export async function createNewUser(input: CreateUserInput): Promise<CreateUserR
     },
   });
 
-  console.log('created user');
-
   // Generate sign-in code for students and instructors
   let signInCode: string | undefined;
   if (role === UserRole.Student || role === UserRole.Instructor) {
