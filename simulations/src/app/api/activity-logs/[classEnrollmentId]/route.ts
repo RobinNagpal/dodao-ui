@@ -40,11 +40,11 @@ async function getHandler(
         select: { id: true, email: true, name: true },
       },
       students: {
+        where: { archive: false },
         select: {
           assignedStudent: {
             select: { id: true },
           },
-          createdAt: true,
         },
       },
     },
@@ -54,42 +54,15 @@ async function getHandler(
     throw new Error('Enrollment not found');
   }
 
-  // Get all user IDs related to this enrollment
+  // Get user IDs for separating logs
   const studentUserIds = enrollment.students.map((s) => s.assignedStudent.id);
   const instructorUserId = enrollment.assignedInstructor.id;
-  const allUserIds = [...studentUserIds, instructorUserId];
 
-  // Get the case study ID for filtering
-  const caseStudyId = enrollment.caseStudy.id;
-  const enrollmentCreatedAt = enrollment.createdAt;
-
-  // Get activity logs for all users related to this enrollment
-  // Filter by:
-  // 1. Users in this enrollment
-  // 2. Logs created after enrollment creation date
-  // 3. For instructor: only logs that might be related to this case study
+  // Get activity logs for this specific class enrollment
+  // Now we can simply filter by classEnrollmentId
   const activityLogs = await prisma.userActivityLog.findMany({
     where: {
-      userId: { in: allUserIds },
-      createdAt: { gte: enrollmentCreatedAt },
-      OR: [
-        // Student logs - all logs after they joined this enrollment
-        { userId: { in: studentUserIds } },
-        // Instructor logs - filter by routes that might contain case study context
-        {
-          userId: instructorUserId,
-          OR: [
-            { requestRoute: { contains: caseStudyId } },
-            { requestPathParams: { contains: caseStudyId } },
-            { requestQueryParams: { contains: caseStudyId } },
-            { requestBody: { contains: caseStudyId } },
-            { responseBody: { contains: caseStudyId } },
-            // Include common instructor routes that might be related to enrollment management
-            { requestRoute: { contains: '/enrollments' } },
-            { requestRoute: { contains: '/students' } },
-          ],
-        },
-      ],
+      classEnrollmentId: classEnrollmentId,
     },
     include: {
       user: {

@@ -39,14 +39,150 @@ function extractRoutePattern(url: string): string {
   }
 }
 
-// Helper function to safely stringify objects
-function safeStringify(obj: any): string | null {
+// Helper function to safely get JSON-serializable object
+function safeJsonObject(obj: any): any | null {
   try {
     if (obj === null || obj === undefined) {
       return null;
     }
-    return JSON.stringify(obj);
+    // Ensure the object is JSON-serializable by round-tripping through JSON
+    return JSON.parse(JSON.stringify(obj));
   } catch {
+    return null;
+  }
+}
+
+/**
+ * Extracts classEnrollmentId from various sources based on the route pattern
+ * Priority:
+ * 1. Path params (classEnrollmentId)
+ * 2. Student lookup via studentId (path or body) -> enrollmentId
+ * 3. Exercise lookup via exerciseId -> caseStudy -> first instructor enrollment
+ * 4. User lookup via targetUserId -> first enrollment (for sign-in-code)
+ */
+async function extractClassEnrollmentId(pathParams: any, queryParams: URLSearchParams, requestBody: any, userId: string): Promise<string | null> {
+  try {
+    // 1. Check if classEnrollmentId is directly in path params
+    if (pathParams?.classEnrollmentId) {
+      return pathParams.classEnrollmentId;
+    }
+
+    // 2. Check for studentId (EnrollmentStudent.id) in path params or body
+    const studentId = pathParams?.studentId || requestBody?.studentId;
+    if (studentId) {
+      const student = await prisma.enrollmentStudent.findUnique({
+        where: { id: studentId },
+        select: { enrollmentId: true },
+      });
+      if (student?.enrollmentId) {
+        return student.enrollmentId;
+      }
+    }
+
+    // 3. Check for exerciseId in path params - get enrollment via exercise -> module -> caseStudy
+    const exerciseId = pathParams?.exerciseId;
+    if (exerciseId) {
+      const exercise = await prisma.moduleExercise.findUnique({
+        where: { id: exerciseId },
+        select: {
+          module: {
+            select: {
+              caseStudy: {
+                select: {
+                  enrollments: {
+                    where: {
+                      archive: false,
+                      assignedInstructorId: userId,
+                    },
+                    select: { id: true },
+                    take: 1,
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      // For instructor: get their enrollment for this case study
+      if (exercise?.module?.caseStudy?.enrollments?.[0]?.id) {
+        return exercise.module.caseStudy.enrollments[0].id;
+      }
+      // For student: get their enrollment through EnrollmentStudent
+      const studentEnrollment = await prisma.enrollmentStudent.findFirst({
+        where: {
+          assignedStudentId: userId,
+          archive: false,
+          enrollment: {
+            caseStudy: {
+              modules: {
+                some: {
+                  exercises: {
+                    some: { id: exerciseId },
+                  },
+                },
+              },
+            },
+          },
+        },
+        select: { enrollmentId: true },
+      });
+      if (studentEnrollment?.enrollmentId) {
+        return studentEnrollment.enrollmentId;
+      }
+    }
+
+    // 4. Check for caseStudyId in path params or query params - get enrollment for this user
+    const caseStudyId = pathParams?.caseStudyId || queryParams.get('caseStudyId');
+    if (caseStudyId) {
+      // For instructor
+      const instructorEnrollment = await prisma.classCaseStudyEnrollment.findFirst({
+        where: {
+          caseStudyId,
+          assignedInstructorId: userId,
+          archive: false,
+        },
+        select: { id: true },
+      });
+      if (instructorEnrollment?.id) {
+        return instructorEnrollment.id;
+      }
+      // For student
+      const studentEnrollment = await prisma.enrollmentStudent.findFirst({
+        where: {
+          assignedStudentId: userId,
+          archive: false,
+          enrollment: {
+            caseStudyId,
+            archive: false,
+          },
+        },
+        select: { enrollmentId: true },
+      });
+      if (studentEnrollment?.enrollmentId) {
+        return studentEnrollment.enrollmentId;
+      }
+    }
+
+    // 5. For sign-in-code route or other routes - check if target user (id param) has an enrollment
+    const targetUserId = pathParams?.id;
+    if (targetUserId) {
+      // First check if target user is a student in any enrollment
+      const targetStudentEnrollment = await prisma.enrollmentStudent.findFirst({
+        where: {
+          assignedStudentId: targetUserId,
+          archive: false,
+        },
+        select: { enrollmentId: true },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (targetStudentEnrollment?.enrollmentId) {
+        return targetStudentEnrollment.enrollmentId;
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error('[extractClassEnrollmentId] Error extracting classEnrollmentId:', error);
     return null;
   }
 }
@@ -123,6 +259,9 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
 
       // Log the activity if needed (do this after successful execution)
       if (shouldLog) {
+        const resolvedParams = await dynamic.params;
+        const url = new URL(req.url);
+        const classEnrollmentId = await extractClassEnrollmentId(resolvedParams, url.searchParams, requestBody, userContext.userId);
         await logActivity({
           req,
           userContext,
@@ -130,6 +269,7 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
           requestBody,
           responseData,
           statusCode,
+          classEnrollmentId,
         });
       }
 
@@ -154,6 +294,9 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
 
       // Log the failed activity if needed
       if (shouldLog && userContext) {
+        const resolvedParams = await dynamic.params;
+        const url = new URL(req.url);
+        const classEnrollmentId = await extractClassEnrollmentId(resolvedParams, url.searchParams, requestBody, userContext.userId);
         await logActivity({
           req,
           userContext,
@@ -161,6 +304,13 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
           requestBody,
           responseData: { error: userMessage },
           statusCode,
+          classEnrollmentId,
+          errorMessage: (error as any)?.message || userMessage,
+          errorDetails: {
+            name: (error as any)?.name || null,
+            code: (error as any)?.code || null,
+            stack: (error as any)?.stack || null,
+          },
         });
       }
 
@@ -178,6 +328,9 @@ async function logActivity({
   requestBody,
   responseData,
   statusCode,
+  classEnrollmentId = null,
+  errorMessage = null,
+  errorDetails = null,
 }: {
   req: NextRequest;
   userContext: DoDaoJwtTokenPayload;
@@ -185,6 +338,9 @@ async function logActivity({
   requestBody: any;
   responseData: any;
   statusCode: number;
+  classEnrollmentId?: string | null;
+  errorMessage?: string | null;
+  errorDetails?: any | null;
 }) {
   try {
     const resolvedParams = await dynamic.params;
@@ -194,22 +350,25 @@ async function logActivity({
     const routePattern = extractRoutePattern(req.url);
 
     // Extract path parameters from the resolved params
-    const pathParams = resolvedParams ? safeStringify(resolvedParams) : null;
+    const pathParams = resolvedParams ? safeJsonObject(resolvedParams) : null;
 
     // Extract query parameters
-    const queryParams = url.searchParams.toString() ? safeStringify(Object.fromEntries(url.searchParams)) : null;
+    const queryParams = url.searchParams.toString() ? safeJsonObject(Object.fromEntries(url.searchParams)) : null;
 
     // Create activity log entry using the simulations prisma instance
     await prisma.userActivityLog.create({
       data: {
         userId: userContext.userId,
+        classEnrollmentId,
         requestRoute: routePattern,
         requestMethod: req.method.toUpperCase(),
         requestPathParams: pathParams,
         requestQueryParams: queryParams,
-        requestBody: safeStringify(requestBody),
-        responseBody: safeStringify(responseData),
+        requestBody: safeJsonObject(requestBody),
+        responseBody: safeJsonObject(responseData),
         status: statusCode,
+        errorMessage,
+        errorDetails,
       },
     });
 

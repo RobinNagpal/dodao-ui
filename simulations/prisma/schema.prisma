@@ -202,7 +202,8 @@ model ClassCaseStudyEnrollment {
   createdBy User @relation("EnrollmentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
   updatedBy User @relation("EnrollmentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
-  students EnrollmentStudent[]
+  students     EnrollmentStudent[]
+  activityLogs UserActivityLog[]   @relation("EnrollmentActivityLogs")
 
   @@map("case_study_enrollments")
 }
@@ -366,26 +367,27 @@ model StudentSignInCode {
 }
 
 model UserActivityLog {
-  id                 String   @id @default(uuid())
-  userId             String   @map("user_id") // ID of the user who made the request
-  requestRoute       String   @map("request_route") // Route with variable names (e.g., /.../attempts/:id)
-  requestMethod      String   @map("request_method") // GET, POST, PUT, DELETE, etc.
-  requestPathParams  String?  @map("request_path_params") @db.Text // JSON string of path parameters
-  requestQueryParams String?  @map("request_query_params") @db.Text // JSON string of query parameters
-  requestBody        String?  @map("request_body") @db.Text // JSON string of request body
-  responseBody       String?  @map("response_body") @db.Text // JSON string of response body
-  status             Int      @map("status") // HTTP status code (200, 404, 500, etc.)
-  createdAt          DateTime @default(now()) @map("created_at")
+  id                  String   @id @default(uuid())
+  userId              String   @map("user_id") // ID of the user who made the request
+  classEnrollmentId   String?  @map("class_enrollment_id") // ID of the class enrollment this activity belongs to
+  requestRoute        String   @map("request_route") // Route with variable names (e.g., /.../attempts/:id)
+  requestMethod       String   @map("request_method") // GET, POST, PUT, DELETE, etc.
+  requestPathParams   Json?    @map("request_path_params") // Path parameters as JSON object
+  requestQueryParams  Json?    @map("request_query_params") // Query parameters as JSON object
+  requestBody         Json?    @map("request_body") // Request body as JSON object
+  responseBody        Json?    @map("response_body") // Response body as JSON object
+  status              Int      @map("status") // HTTP status code (200, 404, 500, etc.)
+  errorMessage        String?  @map("error_message") // Error message if request failed
+  errorDetails        Json?    @map("error_details") // Detailed error info (name, code, stack, cause)
+  createdAt           DateTime @default(now()) @map("created_at")
 
   // Relations
-  user User @relation("UserActivityLogs", fields: [userId], references: [id], onDelete: Cascade)
+  user            User                      @relation("UserActivityLogs", fields: [userId], references: [id], onDelete: Cascade)
+  classEnrollment ClassCaseStudyEnrollment? @relation("EnrollmentActivityLogs", fields: [classEnrollmentId], references: [id], onDelete: SetNull)
 
   // Indexes for better query performance
   @@index([userId])
-  @@index([requestRoute])
-  @@index([requestMethod])
+  @@index([classEnrollmentId])
   @@index([status])
-  @@index([createdAt])
-  @@index([userId, createdAt])
   @@map("user_activity_logs")
 }

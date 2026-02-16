@@ -77,7 +77,14 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
               setSelectedLog(null);
             }}
             title={`Activity Log Details - ${selectedLog.user.name || selectedLog.user.email}`}
-            jsonData={selectedLog}
+            jsonData={{
+              requestPathParams: selectedLog.requestPathParams,
+              requestQueryParams: selectedLog.requestQueryParams,
+              requestBody: selectedLog.requestBody,
+              responseBody: selectedLog.responseBody,
+              errorMessage: selectedLog.errorMessage,
+              errorDetails: selectedLog.errorDetails,
+            }}
           />
         )}
       </div>

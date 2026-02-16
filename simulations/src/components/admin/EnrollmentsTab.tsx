@@ -123,7 +123,13 @@ export default function EnrollmentsTab() {
                 </thead>
                 <tbody className="divide-y divide-emerald-50">
                   {enrollments?.map((enrollment) => (
-                    <EnrollmentRow key={enrollment.id} enrollment={enrollment} onManageStudents={handleManageStudents} onActivityLogs={handleActivityLogs} onDelete={handleDeleteEnrollment} />
+                    <EnrollmentRow
+                      key={enrollment.id}
+                      enrollment={enrollment}
+                      onManageStudents={handleManageStudents}
+                      onActivityLogs={handleActivityLogs}
+                      onDelete={handleDeleteEnrollment}
+                    />
                   ))}
                 </tbody>
               </table>

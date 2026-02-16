@@ -22,18 +22,12 @@ export default function LogTable({ logs, userType, onViewDetails }: LogTableProp
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100/50 overflow-hidden">
       <div className="px-6 py-4 bg-gradient-to-r from-emerald-50 to-green-50 border-b border-emerald-100">
         <div className="flex items-center space-x-3">
-          {userType === 'instructor' ? (
-            <GraduationCap className="h-6 w-6 text-emerald-600" />
-          ) : (
-            <User className="h-6 w-6 text-blue-600" />
-          )}
+          {userType === 'instructor' ? <GraduationCap className="h-6 w-6 text-emerald-600" /> : <User className="h-6 w-6 text-blue-600" />}
           <h3 className="text-lg font-bold text-gray-900 capitalize">{userType} Activity Logs</h3>
-          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-sm font-medium">
-            {logs.length} entries
-          </span>
+          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-sm font-medium">{logs.length} entries</span>
         </div>
       </div>
-      
+
       {logs.length === 0 ? (
         <div className="text-center py-12">
           <Settings className="mx-auto h-12 w-12 text-gray-400 mb-4" />
@@ -59,13 +53,10 @@ export default function LogTable({ logs, userType, onViewDetails }: LogTableProp
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-8 w-8">
-                        <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                          userType === 'instructor' ? 'bg-emerald-100' : 'bg-blue-100'
-                        }`}>
-                          {userType === 'instructor' ? 
-                            <GraduationCap className="h-4 w-4 text-emerald-600" /> :
-                            <User className="h-4 w-4 text-blue-600" />
-                          }
+                        <div
+                          className={`h-8 w-8 rounded-full flex items-center justify-center ${userType === 'instructor' ? 'bg-emerald-100' : 'bg-blue-100'}`}
+                        >
+                          {userType === 'instructor' ? <GraduationCap className="h-4 w-4 text-emerald-600" /> : <User className="h-4 w-4 text-blue-600" />}
                         </div>
                       </div>
                       <div className="ml-3">
@@ -75,25 +66,29 @@ export default function LogTable({ logs, userType, onViewDetails }: LogTableProp
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 font-mono bg-gray-100 px-2 py-1 rounded max-w-xs truncate" title={log.requestRoute}>
+                    <div className="text-xs text-gray-900 font-mono bg-gray-100 px-2 py-1 rounded max-w-xs truncate" title={log.requestRoute}>
                       {log.requestRoute}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      log.requestMethod === 'GET' ? 'bg-blue-100 text-blue-800' :
-                      log.requestMethod === 'POST' ? 'bg-green-100 text-green-800' :
-                      log.requestMethod === 'PUT' ? 'bg-yellow-100 text-yellow-800' :
-                      log.requestMethod === 'DELETE' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        log.requestMethod === 'GET'
+                          ? 'bg-blue-100 text-blue-800'
+                          : log.requestMethod === 'POST'
+                          ? 'bg-green-100 text-green-800'
+                          : log.requestMethod === 'PUT'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : log.requestMethod === 'DELETE'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
                       {log.requestMethod}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.status)}`}>
-                      {log.status}
-                    </span>
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.status)}`}>{log.status}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <div className="flex items-center space-x-1">
