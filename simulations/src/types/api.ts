@@ -266,3 +266,12 @@ export type ActivityLogsResponse = {
     assignedInstructor: Pick<User, 'id' | 'email' | 'name'>;
   } | null;
 };
+
+export type StudentActivityLogsResponse = {
+  logs: ActivityLogWithUser[];
+  student: {
+    id: string;
+    name: string | null;
+    email: string | null;
+  };
+};
