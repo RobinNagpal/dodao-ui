@@ -2,13 +2,14 @@ import {
   BusinessSubject,
   CaseStudy,
   CaseStudyModule,
-  ModuleExercise,
   ClassCaseStudyEnrollment,
   EnrollmentStudent,
-  FinalSubmission,
-  User,
   ExerciseAttempt,
+  FinalSubmission,
   FinalSummary,
+  ModuleExercise,
+  User,
+  UserActivityLog,
 } from '@prisma/client';
 
 export type StudentDetailResponse = EnrollmentStudent & {
@@ -246,3 +247,22 @@ export interface FinalSummaryResponse {
     }>;
   }>;
 }
+
+// Activity Log types
+export type ActivityLogWithUser = UserActivityLog & {
+  user: Pick<User, 'id' | 'email' | 'name' | 'role'>;
+};
+
+export type ActivityLogsResponse = {
+  instructorLogs: ActivityLogWithUser[];
+  studentLogs: ActivityLogWithUser[];
+  enrollment: {
+    id: string;
+    className: string;
+    caseStudy: {
+      id: string;
+      title: string;
+    };
+    assignedInstructor: Pick<User, 'id' | 'email' | 'name'>;
+  } | null;
+};
