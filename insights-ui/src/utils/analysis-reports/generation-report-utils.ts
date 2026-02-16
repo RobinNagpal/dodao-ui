@@ -51,6 +51,9 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
     ReportType.FAIR_VALUE,
     ReportType.FUTURE_RISK,
   ],
+  [ReportType.WARREN_BUFFETT]: [],
+  [ReportType.CHARLIE_MUNGER]: [],
+  [ReportType.BILL_ACKMAN]: [],
 };
 
 /**
