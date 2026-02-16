@@ -1,8 +1,9 @@
 'use client';
 
 import StudentTable from '@/components/instructor/StudentTable';
-import BackButton from '@/components/navigation/BackButton';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { AttemptDetail, ExerciseProgress, ModuleTableData, StudentTableData } from '@/types';
 import type { CaseStudyWithRelationsForInstructor, ClassEnrollmentResponse, DeleteResponse } from '@/types/api';
@@ -11,9 +12,48 @@ import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { GraduationCap } from 'lucide-react';
+import ManageStudentsTab from '@/components/instructor/case-study-tabs/ManageStudentsTab';
+import { GraduationCap, Users, ClipboardList } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
+
+export type TabType = 'manage-students' | 'student-attempts';
+
+interface TabNavigationProps {
+  activeTab: TabType;
+  onTabChange: (tab: TabType) => void;
+}
+
+const TabNavigation: FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
+  return (
+    <div className="border-b border-white/20">
+      <nav className="-mb-px flex space-x-8">
+        <button
+          onClick={() => onTabChange('student-attempts')}
+          className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+            activeTab === 'student-attempts'
+              ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
+              : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
+          }`}
+        >
+          <ClipboardList className="h-4 w-4" />
+          <span>Student Attempts</span>
+        </button>
+        <button
+          onClick={() => onTabChange('manage-students')}
+          className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+            activeTab === 'manage-students'
+              ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
+              : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
+          }`}
+        >
+          <Users className="h-4 w-4" />
+          <span>Manage Students</span>
+        </button>
+      </nav>
+    </div>
+  );
+};
 
 interface EnrollmentStudentProgressPageProps {
   params: Promise<{
@@ -27,6 +67,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const { caseStudyId, classEnrollmentId } = resolvedParams;
 
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<TabType>('student-attempts');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
   const [showDeleteAttemptConfirm, setShowDeleteAttemptConfirm] = useState<boolean>(false);
@@ -296,6 +337,15 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard;
 
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    { name: caseStudyData?.title || 'Case Study', href: `/instructor/case-study/${caseStudyId}`, current: false },
+    {
+      name: studentsData?.className || 'Class Enrollment',
+      href: `/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`,
+      current: true,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -304,14 +354,23 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      <InstructorNavbar title="Class Enrollment Progress" subtitle="Student Progress Management" icon={<GraduationCap className="h-8 w-8 text-white" />} />
+      <InstructorNavbar
+        title={studentsData?.className || 'Class Enrollment'}
+        subtitle="Students Details"
+        icon={<GraduationCap className="h-8 w-8 text-white" />}
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
-        <BackButton userType="instructor" text="Back to Case Study" href={`/instructor/case-study/${caseStudyId}`} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
+
+        {/* Tab Navigation */}
+        <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        {studentsTableData && (
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-4">
+        {activeTab === 'manage-students' && <ManageStudentsTab caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} />}
+
+        {activeTab === 'student-attempts' && studentsTableData && (
           <StudentTable
             students={studentsTableData.students}
             modules={studentsTableData.modules}

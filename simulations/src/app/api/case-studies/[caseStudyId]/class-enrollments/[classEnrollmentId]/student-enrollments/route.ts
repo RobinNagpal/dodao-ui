@@ -4,7 +4,7 @@ import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
 import { ClassEnrollmentResponse } from '@/types/api';
-import { AddStudentEnrollmentRequest } from '@/components/instructor/InstructorManageStudentsModal';
+import { AddStudentEnrollmentRequest } from '@/components/instructor/case-study-tabs/ManageStudentsTab';
 import { getOrCreateUser } from '@/utils/user-utils';
 import { UserRole } from '@prisma/client';
 
@@ -13,6 +13,7 @@ interface SimpleResponse {
     email: string;
     name?: string | null;
     studentEnrollmentId: string;
+    userId: string;
   }>;
 }
 
@@ -72,6 +73,7 @@ async function getHandler(
           email: user?.email || '',
           name: user?.name || '',
           studentEnrollmentId: enrollmentStudent.id,
+          userId: enrollmentStudent.assignedStudentId,
         };
       })
       .filter((student) => student.email !== '');
@@ -151,6 +153,7 @@ async function getHandler(
 
   return {
     students: studentsData.sort((a, b) => a.assignedStudentId.localeCompare(b.assignedStudentId)),
+    className: detailedEnrollment.className,
   };
 }
 
@@ -172,7 +175,7 @@ async function postHandler(
     caseStudyId,
   });
 
-  const addStudentToEnrollment = async (email: string, name?: string, throwOnDuplicate = true): Promise<'added' | 'duplicate'> => {
+  const addStudentToEnrollment = async (email: string, name?: string, throwOnDuplicate = true): Promise<{ status: 'added' | 'duplicate' }> => {
     const currentStudent = await getOrCreateUser(email, UserRole.Student, name);
 
     const existingEnrollment = await prisma.enrollmentStudent.findFirst({
@@ -187,7 +190,7 @@ async function postHandler(
       if (throwOnDuplicate) {
         throw new Error('Student is already enrolled in this class');
       }
-      return 'duplicate';
+      return { status: 'duplicate' };
     }
 
     await prisma.enrollmentStudent.create({
@@ -200,7 +203,7 @@ async function postHandler(
       },
     });
 
-    return 'added';
+    return { status: 'added' };
   };
 
   // Bulk add flow
@@ -220,8 +223,8 @@ async function postHandler(
       }
 
       const result = await addStudentToEnrollment(email, name, false);
-      if (result === 'added') added += 1;
-      if (result === 'duplicate') duplicates += 1;
+      if (result.status === 'added') added += 1;
+      if (result.status === 'duplicate') duplicates += 1;
     }
 
     const parts = [`Added ${added} student${added === 1 ? '' : 's'}`];

@@ -9,13 +9,13 @@ import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { CardContent } from '@/components/ui/card';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
+  const [step, setStep] = useState<1 | 2>(1); // 1 for login form, 2 for email sent message
 
-  const [step, setStep] = useState<1 | 2>(1); // 1 for email form, 2 for email sent message
-
-  // Initialize usePostData hook for login
+  // Initialize usePostData hook for email login
   const { postData: postLogin, loading: loginLoading } = usePostData<LoginSignupByEmailResponse, LoginSignupByEmailRequestBody>({
     errorMessage: 'Failed to send login email. Please try again.',
   });
@@ -43,9 +43,36 @@ export default function LoginPage() {
     }
   };
 
+  const handleSignInCodeSubmit = async (submittedEmail: string, code: string) => {
+    try {
+      const result = await signIn('sign-in-code', {
+        email: submittedEmail,
+        code: code,
+        spaceId: KoalaGainsSpaceId,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        return 'Invalid sign-in code or email. Please check and try again.';
+      }
+
+      if (result?.ok) {
+        // Redirect to home page on successful sign-in
+        window.location.href = '/';
+        return null;
+      }
+
+      return 'Error signing in with code. Please try again.';
+    } catch (err) {
+      console.error(err);
+      return 'Error signing in with code. Please try again.';
+    }
+  };
+
   const handleUseAnotherEmail = () => {
     setStep(1);
   };
+
   useEffect(() => {
     deleteSimulationSessionInfo();
   }, []);
@@ -53,7 +80,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {step === 1 ? (
-        <UserLogin onLogin={handleEmailSubmit} />
+        <UserLogin onEmailLogin={handleEmailSubmit} onSignInCodeLogin={handleSignInCodeSubmit} />
       ) : (
         <CardContent>
           <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />

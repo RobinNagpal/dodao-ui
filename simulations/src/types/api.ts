@@ -33,6 +33,7 @@ export type ClassEnrollmentStudentData = EnrollmentStudent & {
 
 export type ClassEnrollmentResponse = {
   students: ClassEnrollmentStudentData[];
+  className: string;
 };
 
 export type ModuleExerciseWithProgress = ModuleExercise & {
@@ -230,13 +231,16 @@ export interface FinalSummaryResponse {
     details: string;
   };
   modules: Array<{
+    orderNumber: number;
     title: string;
     shortDescription: string;
     details: string;
     exercises: Array<{
+      orderNumber: number;
       title: string;
       details: string;
       selectedAttempt: {
+        prompt: string | null;
         promptResponse: string | null;
       } | null;
     }>;
