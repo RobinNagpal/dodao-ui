@@ -11,30 +11,9 @@ import { Metadata } from 'next';
 import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
 import { getDailyMoverDetailsTag } from '@/utils/ticker-v1-cache-utils';
 import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
-import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
-import type { SimilarTicker } from '@/utils/ticker-v1-model-utils';
 
 interface PageProps {
   params: Promise<{ topGainersId: string }>;
-}
-
-async function fetchSimilarTickers(exchange: string, ticker: string, moverId: string): Promise<SimilarTicker[]> {
-  const url = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
-
-  const res = await fetch(url, {
-    next: {
-      revalidate: 604800, // 7 days
-      tags: [getDailyMoverDetailsTag(moverId)],
-    },
-  });
-
-  if (!res.ok) {
-    console.error(`fetchSimilarTickers failed (${res.status}): ${url}`);
-    return [];
-  }
-
-  const arr = (await res.json()) as SimilarTicker[];
-  return arr;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -94,9 +73,6 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
 
   const { mover: topGainer, relatedMovers } = await response.json();
 
-  // Fetch similar tickers
-  const similarTickersPromise = fetchSimilarTickers(topGainer.ticker.exchange, topGainer.ticker.symbol, topGainersId);
-
   // Generate structured data
   const articleSchema = generateStockMoverArticleSchema(topGainer, DailyMoverType.GAINER, topGainersId);
   const breadcrumbSchema = generateStockMoverBreadcrumbSchema(topGainer, DailyMoverType.GAINER, topGainersId);
@@ -125,7 +101,6 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <RelatedDailyMovers movers={relatedMovers} type={DailyMoverType.GAINER} />
-        <SimilarTickers dataPromise={similarTickersPromise} />
       </div>
     </PageWrapper>
   );
