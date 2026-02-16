@@ -86,10 +86,18 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
 
       // Determine if we should log this request
       const method = req.method.toUpperCase();
-      const userRole = decodedJwt.role || UserRole.Student;
+
+      // Get user's role from database
+      const user = await prisma.user.findUnique({
+        where: { id: userContext.userId },
+        select: { role: true },
+      });
+
+      const userRole = user?.role || UserRole.Student;
 
       // Skip GET requests and admin users
-      shouldLog = method !== 'GET' && userRole !== UserRole.Admin && (userRole === UserRole.Student || userRole === UserRole.Instructor);
+      // Log only POST, PUT, DELETE requests from students and instructors
+      shouldLog = method !== 'GET' && userRole !== UserRole.Admin;
 
       // Read request body if we're logging (for POST, PUT, DELETE)
       if (shouldLog && (method === 'POST' || method === 'PUT' || method === 'DELETE')) {
