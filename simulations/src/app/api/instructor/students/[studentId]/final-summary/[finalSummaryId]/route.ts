@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 
 interface DeleteResponse {
@@ -86,4 +86,4 @@ async function deleteHandler(
   };
 }
 
-export const DELETE = withLoggedInUser(deleteHandler);
+export const DELETE = withLoggedInUserAndActivityLog(deleteHandler);

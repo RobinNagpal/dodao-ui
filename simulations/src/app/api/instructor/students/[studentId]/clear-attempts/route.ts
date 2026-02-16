@@ -1,7 +1,7 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DeleteResponse } from '@/types/api';
 
 // DELETE /api/instructor/students/[studentId]/clear-attempts?caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
@@ -109,4 +109,4 @@ async function deleteHandler(
   return { message: 'Student attempts, final submission, and final summary cleared successfully' };
 }
 
-export const DELETE = withLoggedInUser<DeleteResponse>(deleteHandler);
+export const DELETE = withLoggedInUserAndActivityLog<DeleteResponse>(deleteHandler);

@@ -4,6 +4,7 @@ import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withEr
 import { verifyEnrollmentAccess } from '@/app/api/helpers/enrollments-util';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { StudentDetailResponse } from '@/types/api';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 
 // GET /api/case-studies/[caseStudyId]/class-enrollments/[classEnrollmentId]/student-enrollments/[studentEnrollmentId] - Get student-specific data only
 async function getHandler(
@@ -163,8 +164,8 @@ async function deleteHandler(
     return { success: true };
   });
 
-  return { message: 'Student and all related data removed successfully' };
+  return { message: `Student and all related data removed successfully from class ${enrollment.className}` };
 }
 
 export const GET = withLoggedInUser<StudentDetailResponse>(getHandler);
-export const DELETE = withLoggedInUser<{ message: string }>(deleteHandler);
+export const DELETE = withLoggedInUserAndActivityLog<{ message: string }>(deleteHandler);

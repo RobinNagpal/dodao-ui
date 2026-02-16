@@ -80,6 +80,9 @@ model User {
   signInCodes        StudentSignInCode[] @relation("UserSignInCodes")
   createdSignInCodes StudentSignInCode[] @relation("CodeCreatedBy")
 
+  // Activity monitoring relation
+  activityLogs UserActivityLog[] @relation("UserActivityLogs")
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -360,4 +363,29 @@ model StudentSignInCode {
 
   @@index([userId])
   @@map("student_sign_in_codes")
+}
+
+model UserActivityLog {
+  id                 String   @id @default(uuid())
+  userId             String   @map("user_id") // ID of the user who made the request
+  requestRoute       String   @map("request_route") // Route with variable names (e.g., /.../attempts/:id)
+  requestMethod      String   @map("request_method") // GET, POST, PUT, DELETE, etc.
+  requestPathParams  String?  @map("request_path_params") @db.Text // JSON string of path parameters
+  requestQueryParams String?  @map("request_query_params") @db.Text // JSON string of query parameters
+  requestBody        String?  @map("request_body") @db.Text // JSON string of request body
+  responseBody       String?  @map("response_body") @db.Text // JSON string of response body
+  status             Int      @map("status") // HTTP status code (200, 404, 500, etc.)
+  createdAt          DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation("UserActivityLogs", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes for better query performance
+  @@index([userId])
+  @@index([requestRoute])
+  @@index([requestMethod])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@map("user_activity_logs")
 }

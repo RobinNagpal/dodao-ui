@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { DeleteResponse } from '@/types/api';
 
@@ -98,4 +98,4 @@ async function deleteHandler(
   return { message: 'Exercise attempt deleted successfully' };
 }
 
-export const DELETE = withLoggedInUser<DeleteResponse>(deleteHandler);
+export const DELETE = withLoggedInUserAndActivityLog<DeleteResponse>(deleteHandler);

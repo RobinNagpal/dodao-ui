@@ -7,6 +7,7 @@ import { ClassEnrollmentResponse } from '@/types/api';
 import { AddStudentEnrollmentRequest } from '@/components/instructor/case-study-tabs/ManageStudentsTab';
 import { getOrCreateUser } from '@/utils/user-utils';
 import { UserRole } from '@prisma/client';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 
 interface SimpleResponse {
   students: Array<{
@@ -249,4 +250,4 @@ async function postHandler(
 }
 
 export const GET = withLoggedInUser<ClassEnrollmentResponse | SimpleResponse>(getHandler);
-export const POST = withLoggedInUser<{ message: string }>(postHandler);
+export const POST = withLoggedInUserAndActivityLog<{ message: string }>(postHandler);
