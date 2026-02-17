@@ -94,6 +94,7 @@ async function getHandler(
             select: {
               id: true,
               email: true,
+              name: true,
             },
           },
         },

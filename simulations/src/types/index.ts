@@ -54,6 +54,7 @@ export interface AttemptDetail {
   attemptNumber: number;
   status: string | null;
   evaluatedScore: number | null;
+  evaluationReasoning: string | null;
   createdAt: string;
 }
 
@@ -69,6 +70,7 @@ export interface ExerciseProgress {
 export interface StudentTableData {
   id: string;
   assignedStudentId: string;
+  name: string;
   email: string;
   enrollmentId: string;
   exercises: ExerciseProgress[];

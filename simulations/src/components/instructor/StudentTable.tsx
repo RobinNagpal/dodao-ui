@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Eye, Trash2, Check, Minus, X, Star, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Eye, Trash2, Check, Minus, X, Star, Loader2, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
@@ -12,7 +13,8 @@ import type { StudentTableData, ModuleTableData } from '@/types';
 interface StudentTableProps {
   students: StudentTableData[];
   modules: ModuleTableData[];
-  onViewStudentDetails: (studentId: string) => void;
+  classEnrollmentId: string;
+  caseStudyId: string;
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   onDeleteFinalSummary?: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
@@ -26,7 +28,8 @@ interface StudentTableProps {
 export default function StudentTable({
   students,
   modules,
-  onViewStudentDetails,
+  classEnrollmentId,
+  caseStudyId,
   onClearStudentAttempts,
   onDeleteAttempt,
   onDeleteFinalSummary,
@@ -43,6 +46,8 @@ export default function StudentTable({
     response: string;
   } | null>(null);
   const [showFinalSummaryModal, setShowFinalSummaryModal] = useState(false);
+  const [selectedEvaluationReasoning, setSelectedEvaluationReasoning] = useState<string | null>(null);
+  const [showEvaluationReasoningModal, setShowEvaluationReasoningModal] = useState(false);
 
   // API hook to fetch attempt details
   const { data: attemptDetails, loading: loadingAttemptDetails } = useFetchData<ExerciseAttempt>(
@@ -58,6 +63,11 @@ export default function StudentTable({
   const handleFinalSummaryClick = (finalSummaryId: string, response: string) => {
     setSelectedFinalSummary({ id: finalSummaryId, response });
     setShowFinalSummaryModal(true);
+  };
+
+  const handleEvaluationReasoningClick = (evaluationReasoning: string) => {
+    setSelectedEvaluationReasoning(evaluationReasoning);
+    setShowEvaluationReasoningModal(true);
   };
 
   // Effect to show modal when attempt details are loaded
@@ -95,9 +105,9 @@ export default function StudentTable({
           {/* Table Header */}
           <thead className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-200">
             <tr>
-              {/* Student Email Column */}
-              <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900 sticky left-0 bg-gradient-to-r from-purple-50 to-indigo-50 z-10 border-r border-gray-200 min-w-[200px]">
-                Student Email
+              {/* Student Name Column */}
+              <th className="px-4 py-4 text-left text-sm font-semibold text-gray-900 sticky left-0 bg-gradient-to-r from-purple-50 to-indigo-50 z-10 border-r border-gray-200 min-w-[150px]">
+                Student Name
               </th>
 
               {/* Module and Exercise Columns */}
@@ -117,7 +127,7 @@ export default function StudentTable({
               </th>
 
               {/* Actions Column */}
-              <th className="px-4 py-4 text-center text-sm font-semibold text-gray-900 border-l border-gray-200 min-w-[200px]">Actions</th>
+              <th className="px-4 py-4 text-center text-sm font-semibold text-gray-900 border-l border-gray-200 min-w-[160px]">Actions</th>
             </tr>
 
             {/* Sub-header for exercises */}
@@ -149,13 +159,23 @@ export default function StudentTable({
           <tbody className="divide-y divide-gray-200">
             {students.map((student) => (
               <tr key={student.id} className="hover:bg-purple-50/50 transition-colors duration-200">
-                {/* Student Email */}
+                {/* Student Name */}
                 <td className="px-4 py-4 text-sm font-medium text-gray-900 sticky left-0 bg-white/80 backdrop-blur-sm z-10 border-r border-gray-200">
                   <div className="flex items-center space-x-3">
-                    <div>
-                      <div className="font-medium text-gray-900 truncate" title={student.email}>
-                        {student.email}
-                      </div>
+                    <div className="flex-1">
+                      <Link
+                        href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.id}`}
+                        className="group flex items-center space-x-2 w-full text-left transition-all duration-200 hover:text-purple-600 cursor-pointer"
+                        title={`View details for ${student.name || student.email}`}
+                      >
+                        <div
+                          className="font-medium text-gray-900 truncate group-hover:text-purple-600 transition-colors duration-200"
+                          title={student.name || student.email}
+                        >
+                          {student.name || student.email}
+                        </div>
+                        <ExternalLink className="h-3 w-3 text-gray-400 group-hover:text-purple-600 transition-all duration-200 group-hover:scale-110" />
+                      </Link>
                     </div>
                   </div>
                 </td>
@@ -218,12 +238,13 @@ export default function StudentTable({
                                   <div key={`eval-${attempt.id}`} className="flex flex-col items-center space-y-1">
                                     {/* Evaluation Score Display */}
                                     {attempt.evaluatedScore !== null ? (
-                                      <div
-                                        className="w-8 h-4 rounded text-xs font-bold flex items-center justify-center bg-purple-100 text-purple-800"
-                                        title={`AI Score: ${attempt.evaluatedScore}/10`}
+                                      <button
+                                        onClick={() => handleEvaluationReasoningClick(attempt.evaluationReasoning || 'No evaluation reasoning available.')}
+                                        className="w-8 h-4 rounded text-xs font-bold flex items-center justify-center bg-purple-100 text-purple-800 hover:bg-purple-200 transition-all duration-200 cursor-pointer"
+                                        title={`AI Score: ${attempt.evaluatedScore}/10 - Click to see reasoning`}
                                       >
                                         {attempt.evaluatedScore}/10
-                                      </div>
+                                      </button>
                                     ) : attempt.status === 'completed' && onEvaluateAttempt ? (
                                       <button
                                         onClick={() => onEvaluateAttempt(attempt.id, exercise.id, student.id)}
@@ -289,14 +310,6 @@ export default function StudentTable({
                 {/* Actions */}
                 <td className="px-4 py-4 text-center border-l border-gray-200">
                   <div className="flex items-center justify-center space-x-2">
-                    <Button
-                      size="sm"
-                      onClick={() => onViewStudentDetails(student.id)}
-                      className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                      <Eye className="h-3 w-3 mr-1" />
-                      View
-                    </Button>
                     {onStartBulkEvaluation && (
                       <Button
                         size="sm"
@@ -347,6 +360,16 @@ export default function StudentTable({
           aiResponse={selectedFinalSummary.response || 'No summary content available.'}
         />
       )}
+
+      {/* Evaluation Reasoning Modal */}
+      <ViewAiResponseModal
+        open={showEvaluationReasoningModal}
+        onClose={() => {
+          setShowEvaluationReasoningModal(false);
+          setSelectedEvaluationReasoning(null);
+        }}
+        aiResponse={selectedEvaluationReasoning || 'No evaluation reasoning available.'}
+      />
     </div>
   );
 }

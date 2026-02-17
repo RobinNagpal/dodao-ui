@@ -182,6 +182,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
           attemptNumber: attempt.attemptNumber,
           status: attempt.status,
           evaluatedScore: attempt.evaluatedScore,
+          evaluationReasoning: attempt.evaluationReasoning,
           createdAt: attempt.createdAt instanceof Date ? attempt.createdAt.toISOString() : attempt.createdAt,
         });
         return acc;
@@ -202,6 +203,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       return {
         id: student.id,
         assignedStudentId: student.assignedStudentId,
+        name: student.assignedStudent.name || student.assignedStudent.email || 'Unknown',
         email: student.assignedStudent.email || 'Unknown',
         enrollmentId: student.enrollmentId,
         exercises,
@@ -342,10 +344,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     }
   };
 
-  const viewStudentDetails = (studentEnrollmentId: string) => {
-    router.push(`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`);
-  };
-
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard;
 
@@ -386,7 +384,8 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
           <StudentTable
             students={studentsTableData.students}
             modules={studentsTableData.modules}
-            onViewStudentDetails={viewStudentDetails}
+            classEnrollmentId={classEnrollmentId}
+            caseStudyId={caseStudyId}
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
             onDeleteFinalSummary={handleDeleteFinalSummary}

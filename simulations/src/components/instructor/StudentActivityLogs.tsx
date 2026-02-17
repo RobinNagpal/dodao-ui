@@ -34,7 +34,7 @@ export default function StudentActivityLogs({ classEnrollmentId, studentEnrollme
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <FullPageLoader message="Loading activity logs..." />
+        <FullPageLoader message="Loading activity logs..." className="[&_.primary-color]:!text-purple-600 [&_p]:!text-purple-700" />
       </div>
     );
   }

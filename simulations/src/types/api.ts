@@ -26,6 +26,7 @@ export type StudentDetailResponse = EnrollmentStudent & {
 export type ClassEnrollmentStudentData = EnrollmentStudent & {
   assignedStudent: {
     id: string;
+    name: string | null;
     email: string | null;
   };
   attempts: ExerciseAttempt[];

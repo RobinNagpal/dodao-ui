@@ -58,7 +58,7 @@ export async function evaluateStudentPrompt(
   exerciseDescription: string,
   exerciseInstructions: string,
   gradingLogic?: string,
-  model: string = DEFAULT_MODEL
+  model: string = 'gemini-2.5-flash'
 ): Promise<EvaluationResult> {
   const evaluationPrompt = `
 You are an expert evaluator for business case study exercises. Your task is to evaluate a student's prompt based on the exercise requirements and grading criteria.
