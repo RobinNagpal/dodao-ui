@@ -314,6 +314,7 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
       tickerSymbol: mover.ticker.symbol,
       exchange: mover.ticker.exchange,
     },
+    inLanguage: 'en-US',
   };
 };
 
@@ -374,9 +375,158 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 };
 
 // ────────────────────────────────────────────────────────────────────────────────
-// Common viewport configuration
+// Stock report structured data generators
 // ────────────────────────────────────────────────────────────────────────────────
 
+// Generate Report schema for stock analysis pages
+export const generateStockReportArticleSchema = (ticker: any) => {
+  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Report',
+    headline: `${ticker.name} (${ticker.symbol}) Stock Analysis & Investment Report`,
+    description: ticker.metaDescription || ticker.summary || `Comprehensive investment analysis and financial insights for ${ticker.name} (${ticker.symbol})`,
+    image: ['https://koalagains.com/koalagain_logo.png'],
+    datePublished: ticker.createdAt || ticker.updatedAt,
+    dateModified: ticker.updatedAt,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    keywords: [
+      ticker.name,
+      `${ticker.symbol} stock`,
+      `${ticker.symbol} analysis`,
+      `${ticker.name} stock analysis`,
+      `${ticker.name} investment report`,
+      `${ticker.symbol} financial analysis`,
+      `${ticker.name} stock insights`,
+      'investment analysis',
+      'financial reports',
+      'stock research',
+      'investment insights',
+      'equity analysis',
+      `${ticker.exchange} stocks`,
+      'KoalaGains',
+      'market analysis',
+      ticker.industryKey,
+      ticker.industry?.name,
+    ]
+      .filter(Boolean)
+      .join(', '),
+    about: {
+      '@type': 'Corporation',
+      name: ticker.name,
+      tickerSymbol: ticker.symbol,
+      exchange: ticker.exchange,
+    },
+    inLanguage: 'en-US',
+  };
+};
+
+export const generateStockReportBreadcrumbSchema = (ticker: any, country: string) => {
+  const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const industryName = ticker.industry?.name || ticker.industryKey;
+
+  const breadcrumbItems = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://koalagains.com',
+    },
+  ];
+
+  if (country === 'US') {
+    breadcrumbItems.push(
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'US Stocks',
+        item: 'https://koalagains.com/stocks',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: industryName,
+        item: `https://koalagains.com/stocks/industries/${ticker.industryKey}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: `${ticker.symbol}`,
+        item: canonicalUrl,
+      }
+    );
+  } else if (country) {
+    breadcrumbItems.push(
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: `${country} Stocks`,
+        item: `https://koalagains.com/stocks/countries/${country}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: industryName,
+        item: `https://koalagains.com/stocks/countries/${country}/industries/${ticker.industryKey}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: `${ticker.symbol}`,
+        item: canonicalUrl,
+      }
+    );
+  } else {
+    breadcrumbItems.push(
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Stocks',
+        item: 'https://koalagains.com/stocks',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: `${ticker.symbol}`,
+        item: canonicalUrl,
+      }
+    );
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems,
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Common viewport configuration
+// ────────────────────────────────────────────────────────────────────────────────
 export const commonViewport = {
   width: 'device-width',
   initialScale: 1,

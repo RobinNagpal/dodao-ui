@@ -12,14 +12,7 @@ import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import {
-  CATEGORY_MAPPINGS,
-  CompetitionResponse,
-  EvaluationResult,
-  FALLBACK_INVESTOR_MAPPINGS,
-  INVESTOR_MAPPINGS,
-  TickerAnalysisCategory,
-} from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -33,6 +26,7 @@ import {
 } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -471,24 +465,6 @@ function TickerSummaryInfo({
           </ul>
         </section>
       )}
-
-      {d.investorAnalysisResults.length > 0 && (
-        <section id="investor-summaries" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Wisdom of Top Value Investors</h2>
-          <div className="space-y-4">
-            {d.investorAnalysisResults.map((result) => (
-              <div key={result.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                <h3 className="font-semibold mb-2">
-                  {INVESTOR_MAPPINGS[result.investorKey as keyof typeof INVESTOR_MAPPINGS] ||
-                    FALLBACK_INVESTOR_MAPPINGS[result.investorKey as keyof typeof FALLBACK_INVESTOR_MAPPINGS] ||
-                    result.investorKey}
-                </h3>
-                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(result.summary) }} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </>
   );
 }
@@ -585,6 +561,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   // Main ticker data (promise for selective Suspense usage)
   const tickerInfo = getTickerOrRedirect(params);
 
+  // Get ticker data for structured data generation
+  const tickerData = await tickerInfo;
+  const country = getCountryByExchange(tickerData.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
+
+  // Generate structured data
+  const articleSchema = generateStockReportArticleSchema(tickerData);
+  const breadcrumbSchema = generateStockReportBreadcrumbSchema(tickerData, country);
+
   // We only need params (not data) to kick off Competition/Similar fetch promises up front
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const exchange: string = routeParams.exchange.toUpperCase();
@@ -608,6 +592,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
   return (
     <PageWrapper>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+        }}
+      />
+
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
         <BreadcrumbsFromData data={tickerInfo} />

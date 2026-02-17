@@ -67,24 +67,6 @@ export const useGenerateReports = () => {
     }
   };
 
-  const generateInvestorAnalysis = async (
-    investorKey: InvestorKey,
-    ticker: TickerIdentifier,
-    onReportGenerated?: (ticker: TickerIdentifier) => void
-  ): Promise<void> => {
-    if (!ticker || !ticker.symbol || !ticker.exchange) return;
-    try {
-      const payload: AnalysisRequest = { investorKey };
-      const result = await postAnalysisTo(
-        `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${ticker.exchange}/${ticker.symbol}/investor-analysis`,
-        payload
-      );
-      if (result && onReportGenerated) onReportGenerated(ticker);
-    } catch (err) {
-      console.error(`Error generating investor analysis for ${ticker.symbol}-${ticker.exchange} (${investorKey}):`, err);
-    }
-  };
-
   /** --- public API --- */
 
   /**
@@ -158,9 +140,6 @@ export const useGenerateReports = () => {
           regenerateFutureGrowth: false,
           regenerateFairValue: false,
           regenerateFutureRisk: false,
-          regenerateWarrenBuffett: false,
-          regenerateCharlieMunger: false,
-          regenerateBillAckman: false,
           regenerateFinalSummary: false,
         };
 
@@ -201,9 +180,6 @@ export const useGenerateReports = () => {
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
         regenerateFutureRisk: false,
-        regenerateWarrenBuffett: false,
-        regenerateCharlieMunger: false,
-        regenerateBillAckman: false,
         regenerateFinalSummary: true,
       }));
 
@@ -231,9 +207,6 @@ export const useGenerateReports = () => {
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
         regenerateFutureRisk: false,
-        regenerateWarrenBuffett: false,
-        regenerateCharlieMunger: false,
-        regenerateBillAckman: false,
         regenerateFinalSummary: true,
       }));
 
@@ -264,9 +237,6 @@ export const useGenerateReports = () => {
             regenerateFutureGrowth: false,
             regenerateFairValue: false,
             regenerateFutureRisk: false,
-            regenerateWarrenBuffett: false,
-            regenerateCharlieMunger: false,
-            regenerateBillAckman: false,
             regenerateFinalSummary: false,
           };
 
@@ -279,9 +249,6 @@ export const useGenerateReports = () => {
             else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
             else if (step === ReportType.FUTURE_RISK) p.regenerateFutureRisk = true;
             else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
-            else if (step === ReportType.WARREN_BUFFETT) p.regenerateWarrenBuffett = true;
-            else if (step === ReportType.CHARLIE_MUNGER) p.regenerateCharlieMunger = true;
-            else if (step === ReportType.BILL_ACKMAN) p.regenerateBillAckman = true;
           });
 
           return p;

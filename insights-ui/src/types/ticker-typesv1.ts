@@ -103,11 +103,6 @@ export enum ReportType {
   FAIR_VALUE = 'fair-value',
   FUTURE_RISK = 'future-risk',
   FINAL_SUMMARY = 'final-summary',
-
-  // Investor analysis types
-  WARREN_BUFFETT = 'investor-WARREN_BUFFETT',
-  CHARLIE_MUNGER = 'investor-CHARLIE_MUNGER',
-  BILL_ACKMAN = 'investor-BILL_ACKMAN',
 }
 
 // Common analysis types using constants
@@ -120,9 +115,6 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: ReportType.FAIR_VALUE, label: 'Fair Value' },
   { key: ReportType.FUTURE_RISK, label: 'Future Risk' },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary' },
-  { key: ReportType.WARREN_BUFFETT, label: 'Warren Buffett Analysis' },
-  { key: ReportType.CHARLIE_MUNGER, label: 'Charlie Munger Analysis' },
-  { key: ReportType.BILL_ACKMAN, label: 'Bill Ackman Analysis' },
 ];
 
 // Types for ticker analysis categories
@@ -148,12 +140,6 @@ export const INVESTOR_MAPPINGS = {
   [InvestorTypes.WARREN_BUFFETT]: 'Warren Buffett',
   [InvestorTypes.CHARLIE_MUNGER]: 'Charlie Munger',
   [InvestorTypes.BILL_ACKMAN]: 'Bill Ackman',
-};
-
-export const FALLBACK_INVESTOR_MAPPINGS = {
-  [ReportType.WARREN_BUFFETT]: 'Warren Buffett',
-  [ReportType.CHARLIE_MUNGER]: 'Charlie Munger',
-  [ReportType.BILL_ACKMAN]: 'Bill Ackman',
 };
 
 export const INVESTOR_OPTIONS = Object.entries(INVESTOR_MAPPINGS).map(([key, name]) => ({
