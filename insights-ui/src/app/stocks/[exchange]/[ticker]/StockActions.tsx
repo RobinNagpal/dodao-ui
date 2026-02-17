@@ -58,14 +58,8 @@ export default function StockActions({ ticker, children, session }: StockActions
     { key: 'import-prompt', label: 'Import Prompt' },
   ];
 
-  // Filter out future risk and investor analysis types
-  const filteredAnalysisTypes = analysisTypes.filter(
-    (type) =>
-      type.key !== ReportType.FUTURE_RISK &&
-      type.key !== ReportType.WARREN_BUFFETT &&
-      type.key !== ReportType.CHARLIE_MUNGER &&
-      type.key !== ReportType.BILL_ACKMAN
-  );
+  // Filter out future risk (investor analysis types already removed from reportTypes)
+  const filteredAnalysisTypes = analysisTypes.filter((type) => type.key !== ReportType.FUTURE_RISK);
 
   // Create modal items for filtered report types
   const reportGenerationItems: EllipsisDropdownItem[] = [

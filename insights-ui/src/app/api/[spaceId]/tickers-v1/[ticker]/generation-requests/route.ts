@@ -14,9 +14,6 @@ export interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateFutureRisk: boolean;
-  regenerateWarrenBuffett: boolean;
-  regenerateCharlieMunger: boolean;
-  regenerateBillAckman: boolean;
   regenerateFinalSummary: boolean;
   regenerateCachedScore: boolean;
 }
@@ -65,9 +62,6 @@ async function postHandler(
         regenerateFutureGrowth: payload.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue || existingRequest.regenerateFairValue,
         regenerateFutureRisk: payload.regenerateFutureRisk || existingRequest.regenerateFutureRisk,
-        regenerateWarrenBuffett: payload.regenerateWarrenBuffett || existingRequest.regenerateWarrenBuffett,
-        regenerateCharlieMunger: payload.regenerateCharlieMunger || existingRequest.regenerateCharlieMunger,
-        regenerateBillAckman: payload.regenerateBillAckman || existingRequest.regenerateBillAckman,
         regenerateFinalSummary: payload.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
 
         updatedAt: new Date(),
@@ -87,9 +81,6 @@ async function postHandler(
         regenerateFutureGrowth: payload.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue,
         regenerateFutureRisk: payload.regenerateFutureRisk,
-        regenerateWarrenBuffett: payload.regenerateWarrenBuffett,
-        regenerateCharlieMunger: payload.regenerateCharlieMunger,
-        regenerateBillAckman: payload.regenerateBillAckman,
         regenerateFinalSummary: payload.regenerateFinalSummary,
       },
     });
@@ -135,9 +126,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       regenerateFutureGrowth: false,
       regenerateFairValue: false,
       regenerateFutureRisk: false,
-      regenerateWarrenBuffett: false,
-      regenerateCharlieMunger: false,
-      regenerateBillAckman: false,
       regenerateFinalSummary: false,
       status: GenerationRequestStatus.NotStarted,
       createdAt: new Date(),

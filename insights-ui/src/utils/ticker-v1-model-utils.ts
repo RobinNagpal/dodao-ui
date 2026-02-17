@@ -13,7 +13,6 @@ import {
   TickerV1CategoryAnalysisResult,
   TickerV1FutureRisk,
   TickerV1Industry,
-  TickerV1InvestorAnalysisResult,
   TickerV1SubIndustry,
   TickerV1VsCompetition,
 } from '@prisma/client';
@@ -45,7 +44,6 @@ export interface CompetitorTicker {
 
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
-  investorAnalysisResults: TickerV1InvestorAnalysisResult[];
   futureRisks: TickerV1FutureRisk[];
   vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;

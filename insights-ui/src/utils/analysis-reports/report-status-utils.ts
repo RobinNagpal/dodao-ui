@@ -21,12 +21,6 @@ export function shouldRegenerateReport(request: TickerV1GenerationRequest, repor
       return request.regenerateFairValue;
     case ReportType.FUTURE_RISK:
       return request.regenerateFutureRisk;
-    case ReportType.WARREN_BUFFETT:
-      return request.regenerateWarrenBuffett;
-    case ReportType.CHARLIE_MUNGER:
-      return request.regenerateCharlieMunger;
-    case ReportType.BILL_ACKMAN:
-      return request.regenerateBillAckman;
     case ReportType.FINAL_SUMMARY:
       return request.regenerateFinalSummary;
     default:

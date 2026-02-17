@@ -183,13 +183,6 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       promptKey = 'US/public-equities-v1/future-risk';
       break;
 
-    case ReportType.WARREN_BUFFETT:
-    case ReportType.CHARLIE_MUNGER:
-    case ReportType.BILL_ACKMAN:
-      inputJson = prepareInvestorAnalysisInputJson(tickerRecord, reportType, competitionAnalysisArray);
-      promptKey = 'US/public-equities-v1/investor-analysis';
-      break;
-
     case ReportType.FINAL_SUMMARY:
       const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(symbol, exchange);
       inputJson = prepareFinalSummaryInputJson(tickerWithAnalysis);

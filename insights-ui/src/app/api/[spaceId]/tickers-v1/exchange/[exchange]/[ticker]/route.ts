@@ -36,7 +36,6 @@ async function getHandler(
             },
           },
         },
-        investorAnalysisResults: true,
         futureRisks: true,
         vsCompetition: true,
         industry: true,
