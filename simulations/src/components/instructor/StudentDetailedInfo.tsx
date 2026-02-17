@@ -1,8 +1,10 @@
 'use client';
 
 import { AlertCircle, Calendar, CheckCircle, ChevronDown, ChevronRight, Clock, Layers, Target } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { CaseStudyWithRelationsForInstructor, StudentDetailResponse } from '@/types/api';
+import ViewAiResponseModal from '../student/ViewAiResponseModal';
+// import ViewAiResponseModal from '@/components/shared/ViewAiResponseModal';
 
 interface StudentDetailedInfoProps {
   caseStudyData: CaseStudyWithRelationsForInstructor | null;
@@ -13,6 +15,14 @@ interface StudentDetailedInfoProps {
 }
 
 const StudentDetailedInfo: FC<StudentDetailedInfoProps> = ({ caseStudyData, studentDetails, expandedModules, onToggleModule, onAttemptClick }) => {
+  const [selectedEvaluationReasoning, setSelectedEvaluationReasoning] = useState<string | null>(null);
+  const [showEvaluationReasoningModal, setShowEvaluationReasoningModal] = useState(false);
+
+  const handleEvaluationReasoningClick = (evaluationReasoning: string) => {
+    setSelectedEvaluationReasoning(evaluationReasoning);
+    setShowEvaluationReasoningModal(true);
+  };
+
   const getStatusIcon = (status: string | null) => {
     switch (status?.toLowerCase()) {
       case 'completed':
@@ -53,7 +63,6 @@ const StudentDetailedInfo: FC<StudentDetailedInfoProps> = ({ caseStudyData, stud
         </div>
         Modules & Exercise Attempts
       </h2>
-
       <div className="space-y-4">
         {caseStudyData?.modules?.map((module) => (
           <div key={module.id} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
@@ -150,14 +159,12 @@ const StudentDetailedInfo: FC<StudentDetailedInfoProps> = ({ caseStudyData, stud
                                 </button>
 
                                 {attempt.evaluationReasoning && (
-                                  <details className="mt-1.5 group">
-                                    <summary className="text-[11px] text-blue-600 font-medium cursor-pointer hover:text-blue-800 select-none px-1">
-                                      View Evaluation
-                                    </summary>
-                                    <div className="mt-1 p-2 bg-blue-50 rounded-lg border border-blue-200 text-xs text-blue-800 leading-relaxed max-h-32 overflow-y-auto">
-                                      {attempt.evaluationReasoning}
-                                    </div>
-                                  </details>
+                                  <button
+                                    onClick={() => handleEvaluationReasoningClick(attempt.evaluationReasoning || 'No evaluation reasoning available.')}
+                                    className="mt-1.5 text-[11px] text-blue-600 font-medium cursor-pointer hover:text-blue-800 transition-colors duration-200 px-1 py-0.5 rounded hover:bg-blue-50"
+                                  >
+                                    View Evaluation
+                                  </button>
                                 )}
                               </div>
                             ))}
@@ -178,6 +185,15 @@ const StudentDetailedInfo: FC<StudentDetailedInfoProps> = ({ caseStudyData, stud
           </div>
         ))}
       </div>
+      {/* Evaluation Reasoning Modal */}
+      <ViewAiResponseModal
+        open={showEvaluationReasoningModal}
+        onClose={() => {
+          setShowEvaluationReasoningModal(false);
+          setSelectedEvaluationReasoning(null);
+        }}
+        aiResponse={selectedEvaluationReasoning || 'No evaluation reasoning available.'}
+      />{' '}
     </div>
   );
 };

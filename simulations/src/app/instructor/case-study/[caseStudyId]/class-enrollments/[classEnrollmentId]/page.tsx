@@ -15,7 +15,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ManageStudentsTab from '@/components/instructor/case-study-tabs/ManageStudentsTab';
 import InstructorActivityLogs from '@/components/instructor/InstructorActivityLogs';
 import { GraduationCap, Users, ClipboardList, Activity } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React, { FC, useState } from 'react';
 
 export type TabType = 'manage-students' | 'student-attempts' | 'activity-logs';
@@ -78,7 +77,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const resolvedParams = React.use(params);
   const { caseStudyId, classEnrollmentId } = resolvedParams;
 
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>('student-attempts');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
@@ -101,6 +99,8 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     id: string;
     email: string;
   } | null>(null);
+  // Local state for evaluation results to avoid refetching on each evaluation
+  const [localEvaluations, setLocalEvaluations] = useState<Map<string, { evaluatedScore: number; evaluationReasoning: string }>>(new Map());
 
   // Fetch case study structure (modules, exercises)
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor>(
@@ -177,12 +177,14 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         if (!acc[attempt.exerciseId]) {
           acc[attempt.exerciseId] = [];
         }
+        // Check if we have a local evaluation for this attempt
+        const localEval = localEvaluations.get(attempt.id);
         acc[attempt.exerciseId].push({
           id: attempt.id,
           attemptNumber: attempt.attemptNumber,
           status: attempt.status,
-          evaluatedScore: attempt.evaluatedScore,
-          evaluationReasoning: attempt.evaluationReasoning,
+          evaluatedScore: localEval?.evaluatedScore ?? attempt.evaluatedScore,
+          evaluationReasoning: localEval?.evaluationReasoning ?? attempt.evaluationReasoning,
           createdAt: attempt.createdAt instanceof Date ? attempt.createdAt.toISOString() : attempt.createdAt,
         });
         return acc;
@@ -246,10 +248,19 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       setEvaluatingAttempts((prev) => new Set([...prev, attemptId]));
 
       const url = `/api/instructor/exercises/${exerciseId}/evaluate`;
-      await evaluateAttempt(url, { studentId, attemptId });
+      const result = await evaluateAttempt(url, { studentId, attemptId });
 
-      // Refresh students data to show updated scores
-      await refetchStudentsData();
+      // Update local state instead of refetching
+      if (result) {
+        setLocalEvaluations((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(attemptId, {
+            evaluatedScore: result.evaluatedScore,
+            evaluationReasoning: result.evaluationReasoning,
+          });
+          return newMap;
+        });
+      }
     } catch (error) {
       console.error('Error evaluating attempt:', error);
     } finally {
@@ -303,8 +314,9 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       const url = `/api/instructor/students/${studentToClear.id}/clear-attempts?caseStudyId=${caseStudyId}`;
       await clearAttempts(url);
 
-      // Refresh students data
+      // Refresh students data and clear local evaluations for this student
       await refetchStudentsData();
+      setLocalEvaluations(new Map()); // Clear local evaluations since data is refreshed
       setShowDeleteConfirm(false);
       setStudentToClear(null);
     } catch (error: unknown) {
@@ -319,8 +331,9 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       const url = `/api/instructor/students/${attemptToDelete.studentId}/attempts/${attemptToDelete.attemptId}?caseStudyId=${caseStudyId}`;
       await deleteAttempt(url);
 
-      // Refresh students data
+      // Refresh students data and clear local evaluations
       await refetchStudentsData();
+      setLocalEvaluations(new Map());
       setShowDeleteAttemptConfirm(false);
       setAttemptToDelete(null);
     } catch (error: unknown) {

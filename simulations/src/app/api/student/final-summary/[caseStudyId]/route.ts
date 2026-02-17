@@ -43,6 +43,15 @@ async function getHandler(
               assignedStudentId: userContext.userId,
               archive: false,
             },
+            include: {
+              assignedStudent: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+            },
           },
         },
       },
@@ -81,6 +90,21 @@ async function getHandler(
     },
   });
 
+  // Get student information - Alternative approach: Query User directly
+  let studentInfo = null;
+
+  const enrollmentStudent = caseStudy.enrollments[0]?.students[0];
+  if (enrollmentStudent?.assignedStudent) {
+    studentInfo = enrollmentStudent.assignedStudent;
+  } else {
+    // Fallback: Query user directly since userContext.userId should be the student ID
+    const user = await prisma.user.findUnique({
+      where: { id: userContext.userId },
+      select: { id: true, name: true, email: true },
+    });
+    studentInfo = user;
+  }
+
   // Build the summary data - only include exercises with selected attempts
   const modules = caseStudy.modules
     .map((module) => ({
@@ -109,6 +133,10 @@ async function getHandler(
       title: caseStudy.title,
       shortDescription: caseStudy.shortDescription,
       details: caseStudy.details,
+    },
+    student: {
+      name: studentInfo?.name || null,
+      email: studentInfo?.email || null,
     },
     modules,
   };

@@ -97,37 +97,31 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Your Final Report</title>
+            <title>Case Study Final Report</title>
             <style>
-              body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-              h1 { color: #2563eb; font-size: 2em; margin-bottom: 20px; }
-              h2 { color: #2563eb; font-size: 1.5em; margin-top: 30px; margin-bottom: 15px; }
-              h3 { color: #2563eb; font-size: 1.2em; margin-top: 20px; margin-bottom: 10px; }
-              .header { text-align: center; margin-bottom: 40px; }
-              .content { max-width: 800px; margin: 0 auto; }
+              body { font-family: Arial, sans-serif; margin: 12px 10px; line-height: 1.6; }
+              h1 { color: #2563eb; font-size: 1.5em; margin-bottom: 15px; }
+              h2 { color: #2563eb; font-size: 1.2em; margin-top: 25px; margin-bottom: 10px; }
+              h3 { color: #2563eb; font-size: 1.1em; margin-top: 15px; margin-bottom: 8px; }
+              .header { text-align: left; margin-bottom: 25px; }
+              .student-info { margin-bottom: 5px; }
+              .content { max-width: none; margin: 0; }
               @media print {
-                body { margin: 20px; }
+                body { margin: 10px 8px; }
                 .no-print { display: none; }
+                @page { margin: 12mm 10mm; }
               }
             </style>
           </head>
           <body>
             <div class="header">
-              <h1>Case Study Final Report</h1>
-              <p>Student Email: ${session.email || 'N/A'}</p>
-              <p>Downloaded on ${new Date().toLocaleDateString()}</p>
+              <div class="student-info">Student: ${summaryData.student.name || summaryData.student.email || 'N/A'}</div>
+              <div class="student-info">Email: ${summaryData.student.email || 'N/A'}</div>
+              <div>Downloaded on ${new Date().toLocaleDateString()}</div>
             </div>
             <div class="content">
               ${parseMarkdown(content)}
             </div>
-            <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                };
-              };
-            </script>
           </body>
         </html>
       `);
@@ -194,36 +188,36 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
 
           <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
             <div className="prose prose-lg max-w-none">
-              <div className="flex items-center justify-between mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 m-0">{summaryData.caseStudy.title}</h1>
-                <div className="flex items-center space-x-3">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-6">
+                <h1 className="text-3xl font-bold text-gray-900 m-0 flex-1 min-w-0">{summaryData.caseStudy.title}</h1>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-shrink-0">
                   <button
                     onClick={handleSaveFinalSummary}
                     disabled={savingSummary}
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px] whitespace-nowrap"
                   >
                     {savingSummary ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                         <span>Saving...</span>
                       </>
                     ) : isSaved ? (
                       <>
-                        <CheckCircle className="h-5 w-5" />
+                        <CheckCircle className="h-4 w-4 flex-shrink-0" />
                         <span>Saved</span>
                       </>
                     ) : (
                       <>
-                        <Save className="h-5 w-5" />
+                        <Save className="h-4 w-4 flex-shrink-0" />
                         <span>Save Report</span>
                       </>
                     )}
                   </button>
                   <button
                     onClick={handleDownloadPdf}
-                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 min-w-[120px] whitespace-nowrap"
                   >
-                    <Download className="h-5 w-5" />
+                    <Download className="h-4 w-4 flex-shrink-0" />
                     <span>Download PDF</span>
                   </button>
                 </div>

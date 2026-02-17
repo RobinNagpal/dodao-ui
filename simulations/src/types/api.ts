@@ -232,6 +232,10 @@ export interface FinalSummaryResponse {
     shortDescription: string;
     details: string;
   };
+  student: {
+    name: string | null;
+    email: string | null;
+  };
   modules: Array<{
     orderNumber: number;
     title: string;

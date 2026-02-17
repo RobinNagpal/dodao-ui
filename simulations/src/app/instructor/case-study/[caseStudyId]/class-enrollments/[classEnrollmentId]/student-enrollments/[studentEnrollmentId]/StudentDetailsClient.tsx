@@ -88,10 +88,9 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
     const completionPercentage = totalExercises > 0 ? Math.round((attemptedExercises / totalExercises) * 100) : 0;
 
     const attemptsWithScores = studentDetails.attempts.filter((attempt) => attempt.evaluatedScore !== null);
+    console.log('Attempts with scores:', attemptsWithScores);
     const averageScore =
-      attemptsWithScores.length > 0
-        ? Math.round(attemptsWithScores.reduce((sum, attempt) => sum + (attempt.evaluatedScore || 0), 0) / attemptsWithScores.length)
-        : 0;
+      attemptsWithScores.length > 0 ? attemptsWithScores.reduce((sum, attempt) => sum + (attempt.evaluatedScore || 0), 0) / attemptsWithScores.length : 0;
 
     return {
       totalExercises,
@@ -167,9 +166,9 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                     {(studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'S')?.charAt(0).toUpperCase()}
                   </span>
                 </div>
-                {studentDetails?.finalScore != null && studentDetails.finalScore > 0 && (
+                {statistics.averageScore > 0 && (
                   <div className="absolute -top-1 -right-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow">
-                    {studentDetails.finalScore}%
+                    {(statistics.averageScore * 10).toFixed(1)}%
                   </div>
                 )}
               </div>
@@ -230,10 +229,10 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
                 </div>
               </div>
 
-              {studentDetails?.finalScore != null && studentDetails.finalScore > 0 && (
+              {statistics.averageScore > 0 && (
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-xl shadow-lg">
                   <p className="text-xs font-medium">Final Score</p>
-                  <p className="text-lg font-bold">{studentDetails.finalScore}%</p>
+                  <p className="text-lg font-bold">{(statistics.averageScore * 10).toFixed(1)}%</p>
                 </div>
               )}
             </div>
@@ -283,130 +282,3 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
     </div>
   );
 }
-
-//                   <div className="p-4 bg-gradient-to-br from-white to-gray-50/50 border-t border-gray-200">
-//                     <div className="space-y-4">
-//                       {(module.exercises || []).map((exercise) => (
-//                         <div key={exercise.id} className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-//                           <div className="flex items-center justify-between mb-3">
-//                             <div className="flex items-center space-x-3">
-//                               <div className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-2 rounded-lg text-sm font-medium text-center shadow whitespace-nowrap">
-//                                 Exercise {exercise.orderNumber}
-//                               </div>
-//                               <div>
-//                                 <h5 className="font-bold text-gray-900">{exercise.title}</h5>
-//                               </div>
-//                             </div>
-//                             <div className="flex items-center space-x-2 bg-gradient-to-br from-orange-50 to-yellow-50 px-3 py-1.5 rounded-lg border border-orange-200 shadow-sm whitespace-nowrap">
-//                               <span className="text-xs text-orange-600 font-medium">Attempts</span>
-//                               <span className="text-sm font-bold text-orange-900">
-//                                 {studentDetails?.attempts.filter((attempt) => attempt.exerciseId === exercise.id).length || 0}
-//                               </span>
-//                             </div>
-//                           </div>
-
-//                           {(() => {
-//                             const exerciseAttempts = studentDetails?.attempts.filter((attempt) => attempt.exerciseId === exercise.id) || [];
-//                             return exerciseAttempts.length > 0 ? (
-//                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-//                                 {exerciseAttempts.map((attempt) => (
-//                                   <div key={attempt.id}>
-//                                     <button
-//                                       onClick={() => handleAttemptClick(attempt.id)}
-//                                       disabled={false}
-//                                       className={`w-full p-3 rounded-lg border-2 transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed ${
-//                                         attempt.status === 'completed' || attempt.status === 'success'
-//                                           ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 hover:from-green-100 hover:to-emerald-100'
-//                                           : attempt.status === 'failed' || attempt.status === 'error'
-//                                           ? 'bg-gradient-to-br from-red-50 to-pink-50 border-red-200 hover:from-red-100 hover:to-pink-100'
-//                                           : 'bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 hover:from-yellow-100 hover:to-orange-100'
-//                                       }`}
-//                                     >
-//                                       <div className="flex items-center justify-between mb-1.5">
-//                                         <div className="flex items-center space-x-1.5">
-//                                           {getStatusIcon(attempt.status)}
-//                                           <span className="font-medium text-sm">Attempt {attempt.attemptNumber}</span>
-//                                         </div>
-//                                         {attempt.evaluatedScore !== null && (
-//                                           <div className="flex items-center space-x-1">
-//                                             <Target className="h-3.5 w-3.5 text-blue-600" />
-//                                             <span className="text-xs font-bold text-blue-900">{attempt.evaluatedScore}/10</span>
-//                                           </div>
-//                                         )}
-//                                       </div>
-
-//                                       <div className="flex items-center justify-between">
-//                                         {attempt.status && (
-//                                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium border ${getStatusColor(attempt.status)}`}>
-//                                             {attempt.status}
-//                                           </span>
-//                                         )}
-//                                         <span className="text-[10px] text-gray-500">
-//                                           {new Date(attempt.createdAt).toLocaleDateString()},{' '}
-//                                           {new Date(attempt.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-//                                         </span>
-//                                       </div>
-//                                     </button>
-
-//                                     {attempt.evaluationReasoning && (
-//                                       <details className="mt-1.5 group">
-//                                         <summary className="text-[11px] text-blue-600 font-medium cursor-pointer hover:text-blue-800 select-none px-1">
-//                                           View Evaluation
-//                                         </summary>
-//                                         <div className="mt-1 p-2 bg-blue-50 rounded-lg border border-blue-200 text-xs text-blue-800 leading-relaxed max-h-32 overflow-y-auto">
-//                                           {attempt.evaluationReasoning}
-//                                         </div>
-//                                       </details>
-//                                     )}
-//                                   </div>
-//                                 ))}
-//                               </div>
-//                             ) : (
-//                               <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 text-center shadow-inner">
-//                                 <Clock className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-//                                 <h6 className="font-semibold text-gray-700 text-sm">No Attempts Yet</h6>
-//                                 <p className="text-xs text-gray-600">Student hasn’t attempted this exercise</p>
-//                               </div>
-//                             );
-//                           })()}
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 )}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//         )}
-
-//         {activeTab === 'activity-logs' && caseStudyData?.modules && (
-//           <StudentActivityLogs
-//             classEnrollmentId={classEnrollmentId}
-//             studentEnrollmentId={studentEnrollmentId}
-//             modules={caseStudyData.modules.map((m) => ({
-//               id: m.id,
-//               orderNumber: m.orderNumber,
-//               title: m.title,
-//               exercises: (m.exercises || []).map((e) => ({
-//                 id: e.id,
-//                 orderNumber: e.orderNumber,
-//                 title: e.title,
-//               })),
-//             }))}
-//           />
-//         )}
-//       </div>
-
-//       {/* Attempt Detail Modal */}
-//       <AttemptDetailModal
-//         isOpen={showAttemptModal}
-//         onClose={() => {
-//           setShowAttemptModal(false);
-//           setSelectedAttemptId(null);
-//         }}
-//         attempt={attemptDetails || null}
-//       />
-//     </div>
-//   );
-// }
