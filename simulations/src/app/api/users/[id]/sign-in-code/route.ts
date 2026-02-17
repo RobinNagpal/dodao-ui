@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { createSignInCodeForUser } from '@/utils/sign-in-code-utils';
 import { StudentSignInCode } from '@prisma/client';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 interface GenerateSignInCodeResponse {
-  code: string;
   message: string;
 }
 
@@ -94,10 +94,9 @@ async function postHandler(
   );
 
   return {
-    code: newSignInCode.code,
     message: 'New sign-in code generated successfully',
   };
 }
 
 export const GET = withLoggedInUser<StudentSignInCode | null>(getHandler);
-export const POST = withLoggedInUser<GenerateSignInCodeResponse>(postHandler);
+export const POST = withLoggedInUserAndActivityLog<GenerateSignInCodeResponse>(postHandler);

@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { ExerciseAttempt } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -133,4 +133,4 @@ async function postHandler(
   }
 }
 
-export const POST = withLoggedInUser<CreateAttemptResponse>(postHandler);
+export const POST = withLoggedInUserAndActivityLog<CreateAttemptResponse>(postHandler);

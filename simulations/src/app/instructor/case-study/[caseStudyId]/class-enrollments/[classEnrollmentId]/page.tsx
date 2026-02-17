@@ -13,11 +13,12 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ManageStudentsTab from '@/components/instructor/case-study-tabs/ManageStudentsTab';
-import { GraduationCap, Users, ClipboardList } from 'lucide-react';
+import InstructorActivityLogs from '@/components/instructor/InstructorActivityLogs';
+import { GraduationCap, Users, ClipboardList, Activity } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { FC, useState } from 'react';
 
-export type TabType = 'manage-students' | 'student-attempts';
+export type TabType = 'manage-students' | 'student-attempts' | 'activity-logs';
 
 interface TabNavigationProps {
   activeTab: TabType;
@@ -49,6 +50,17 @@ const TabNavigation: FC<TabNavigationProps> = ({ activeTab, onTabChange }) => {
         >
           <Users className="h-4 w-4" />
           <span>Manage Students</span>
+        </button>
+        <button
+          onClick={() => onTabChange('activity-logs')}
+          className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+            activeTab === 'activity-logs'
+              ? 'text-purple-600 bg-purple-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-purple-500'
+              : 'text-gray-600 hover:text-purple-600 hover:after:absolute hover:after:bottom-1 hover:after:left-0 hover:after:right-0 hover:after:h-0.5 hover:after:bg-purple-300'
+          }`}
+        >
+          <Activity className="h-4 w-4" />
+          <span>Activity Logs</span>
         </button>
       </nav>
     </div>
@@ -170,6 +182,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
           attemptNumber: attempt.attemptNumber,
           status: attempt.status,
           evaluatedScore: attempt.evaluatedScore,
+          evaluationReasoning: attempt.evaluationReasoning,
           createdAt: attempt.createdAt instanceof Date ? attempt.createdAt.toISOString() : attempt.createdAt,
         });
         return acc;
@@ -190,6 +203,7 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       return {
         id: student.id,
         assignedStudentId: student.assignedStudentId,
+        name: student.assignedStudent.name || student.assignedStudent.email || 'Unknown',
         email: student.assignedStudent.email || 'Unknown',
         enrollmentId: student.enrollmentId,
         exercises,
@@ -330,10 +344,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     }
   };
 
-  const viewStudentDetails = (studentEnrollmentId: string) => {
-    router.push(`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`);
-  };
-
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard;
 
@@ -374,7 +384,8 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
           <StudentTable
             students={studentsTableData.students}
             modules={studentsTableData.modules}
-            onViewStudentDetails={viewStudentDetails}
+            classEnrollmentId={classEnrollmentId}
+            caseStudyId={caseStudyId}
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
             onDeleteFinalSummary={handleDeleteFinalSummary}
@@ -384,6 +395,10 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
             deletingAttempt={deletingAttempt}
             evaluatingAttempts={evaluatingAttempts}
           />
+        )}
+
+        {activeTab === 'activity-logs' && studentsTableData && (
+          <InstructorActivityLogs classEnrollmentId={classEnrollmentId} modules={studentsTableData.modules} />
         )}
       </div>
 

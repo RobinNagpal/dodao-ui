@@ -80,6 +80,9 @@ model User {
   signInCodes        StudentSignInCode[] @relation("UserSignInCodes")
   createdSignInCodes StudentSignInCode[] @relation("CodeCreatedBy")
 
+  // Activity monitoring relation
+  activityLogs UserActivityLog[] @relation("UserActivityLogs")
+
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
   @@unique([email, spaceId])
@@ -199,7 +202,8 @@ model ClassCaseStudyEnrollment {
   createdBy User @relation("EnrollmentCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
   updatedBy User @relation("EnrollmentUpdatedBy", fields: [updatedById], references: [id], onDelete: Restrict)
 
-  students EnrollmentStudent[]
+  students     EnrollmentStudent[]
+  activityLogs UserActivityLog[]   @relation("EnrollmentActivityLogs")
 
   @@map("case_study_enrollments")
 }
@@ -360,4 +364,30 @@ model StudentSignInCode {
 
   @@index([userId])
   @@map("student_sign_in_codes")
+}
+
+model UserActivityLog {
+  id                  String   @id @default(uuid())
+  userId              String   @map("user_id") // ID of the user who made the request
+  classEnrollmentId   String?  @map("class_enrollment_id") // ID of the class enrollment this activity belongs to
+  requestRoute        String   @map("request_route") // Route with variable names (e.g., /.../attempts/:id)
+  requestMethod       String   @map("request_method") // GET, POST, PUT, DELETE, etc.
+  requestPathParams   Json?    @map("request_path_params") // Path parameters as JSON object
+  requestQueryParams  Json?    @map("request_query_params") // Query parameters as JSON object
+  requestBody         Json?    @map("request_body") // Request body as JSON object
+  responseBody        Json?    @map("response_body") // Response body as JSON object
+  status              Int      @map("status") // HTTP status code (200, 404, 500, etc.)
+  errorMessage        String?  @map("error_message") // Error message if request failed
+  errorDetails        Json?    @map("error_details") // Detailed error info (name, code, stack, cause)
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user            User                      @relation("UserActivityLogs", fields: [userId], references: [id], onDelete: Cascade)
+  classEnrollment ClassCaseStudyEnrollment? @relation("EnrollmentActivityLogs", fields: [classEnrollmentId], references: [id], onDelete: SetNull)
+
+  // Indexes for better query performance
+  @@index([userId])
+  @@index([classEnrollmentId])
+  @@index([status])
+  @@map("user_activity_logs")
 }

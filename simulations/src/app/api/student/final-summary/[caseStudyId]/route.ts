@@ -1,8 +1,9 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { FinalSummaryResponse } from '@/types/api';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
 interface CreateFinalSummaryRequest {
   caseStudyId: string;
@@ -263,4 +264,4 @@ async function postHandler(
 }
 
 export const GET = withLoggedInUser<FinalSummaryResponse>(getHandler);
-export const POST = withLoggedInUser<FinalSummaryData>(postHandler);
+export const POST = withLoggedInUserAndActivityLog<FinalSummaryData>(postHandler);

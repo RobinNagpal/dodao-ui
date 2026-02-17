@@ -30,7 +30,7 @@ export default function SignInCodeModal({ isOpen, onClose, userId, studentName, 
     'Failed to load sign-in code'
   );
 
-  const { postData: generateNewCode, loading: generatingCode } = usePostData<{ code: string; message: string }, {}>({
+  const { postData: generateNewCode, loading: generatingCode } = usePostData<{ message: string }, {}>({
     successMessage: 'New sign-in code generated successfully!',
     errorMessage: 'Failed to generate new code',
   });

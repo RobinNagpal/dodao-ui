@@ -1,7 +1,8 @@
 'use client';
 
 import { FC, useState, useEffect } from 'react';
-import { UserCheck, Plus, Users, Trash2, Key } from 'lucide-react';
+import Link from 'next/link';
+import { UserCheck, Plus, Users, Trash2, Key, ExternalLink } from 'lucide-react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -165,9 +166,22 @@ const ManageStudentsTab: FC<ManageStudentsTabProps> = ({ caseStudyId, classEnrol
                     <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-2 rounded-xl">
                       <UserCheck className="h-4 w-4 text-green-600" />
                     </div>
-                    <div className="flex items-center flex-wrap gap-2 flex-1">
-                      <span className="text-gray-900 font-medium">{student.name || student.email}</span>
-                      {student.name && <span className="text-sm text-gray-600">{student.email}</span>}
+                    <div className="flex-1">
+                      <Link
+                        href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.studentEnrollmentId}`}
+                        className="group flex items-center space-x-2 text-left transition-all duration-200 hover:text-purple-600 cursor-pointer"
+                        title={`View details for ${student.name || student.email}`}
+                      >
+                        <div className="flex items-center flex-wrap gap-2">
+                          <span className="text-gray-900 font-medium group-hover:text-purple-600 transition-colors duration-200">
+                            {student.name || student.email}
+                          </span>
+                          {student.name && (
+                            <span className="text-sm text-gray-600 group-hover:text-purple-500 transition-colors duration-200">{student.email}</span>
+                          )}
+                        </div>
+                        <ExternalLink className="h-3 w-3 text-gray-400 group-hover:text-purple-600 transition-all duration-200 group-hover:scale-110" />
+                      </Link>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

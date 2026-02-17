@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { evaluateStudentPrompt } from '@/utils/llm-utils';
@@ -198,4 +198,4 @@ async function postHandler(
   }
 }
 
-export const POST = withLoggedInUser<EvaluatePromptResponse>(postHandler);
+export const POST = withLoggedInUserAndActivityLog<EvaluatePromptResponse>(postHandler);
