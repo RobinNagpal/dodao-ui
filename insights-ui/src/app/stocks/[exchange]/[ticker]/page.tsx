@@ -33,6 +33,7 @@ import {
 } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -585,6 +586,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   // Main ticker data (promise for selective Suspense usage)
   const tickerInfo = getTickerOrRedirect(params);
 
+  // Get ticker data for structured data generation
+  const tickerData = await tickerInfo;
+  const country = getCountryByExchange(tickerData.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
+
+  // Generate structured data
+  const articleSchema = generateStockReportArticleSchema(tickerData);
+  const breadcrumbSchema = generateStockReportBreadcrumbSchema(tickerData, country);
+
   // We only need params (not data) to kick off Competition/Similar fetch promises up front
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const exchange: string = routeParams.exchange.toUpperCase();
@@ -608,6 +617,14 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
   return (
     <PageWrapper>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([articleSchema, breadcrumbSchema]),
+        }}
+      />
+
       {/* Breadcrumbs can stream independently */}
       <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
         <BreadcrumbsFromData data={tickerInfo} />
