@@ -1,4 +1,5 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
+import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
@@ -8,6 +9,7 @@ import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
+import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -160,6 +162,24 @@ async function fetchFinancialInfo(exchange: string, ticker: string): Promise<Fin
   }
 }
 
+async function fetchQuarterlyChartData(exchange: string, ticker: string): Promise<QuarterlyChartDataResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/quarterly-chart-data`;
+
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchQuarterlyChartData failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    const wrapper = (await res.json()) as { chartData: QuarterlyChartDataResponse | null };
+    return wrapper.chartData;
+  } catch (error) {
+    console.error(`fetchQuarterlyChartData error for ${ticker}:`, error);
+    return null;
+  }
+}
+
 /** Metadata */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
@@ -217,70 +237,10 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 /* =============================================================================
    SHARED SKELETONS (typed, minimal)
 ============================================================================= */
-
-type BarSkeletonProps = Readonly<{ widthClass?: string }>;
-function BarSkeleton({ widthClass = 'w-full' }: BarSkeletonProps): JSX.Element {
-  return <div className={`h-6 ${widthClass} rounded bg-gray-800 animate-pulse mb-4`} />;
-}
-
-function SectionCardSkeleton(): JSX.Element {
-  return <div className="h-24 rounded-md bg-gray-800 animate-pulse" />;
-}
-
-function SummaryInfoSkeleton(): JSX.Element {
-  return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
-    </div>
-  );
-}
-
-function DetailsInfoSkeleton(): JSX.Element {
-  return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
-      <SectionCardSkeleton />
-    </div>
-  );
-}
-
-function CompetitionSkeleton(): JSX.Element {
-  return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8" style={{ minHeight: '320px' }}>
-      <div className="h-6 w-56 rounded bg-gray-800 animate-pulse mb-4" />
-      <div className="h-16 w-full rounded bg-gray-800 animate-pulse mb-4" />
-      <div className="space-y-3">
-        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
-        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
-        <div className="h-32 rounded-md bg-gray-800 animate-pulse" />
-      </div>
-    </div>
-  );
-}
-
-function SimilarSkeleton(): JSX.Element {
-  return (
-    <div className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8" style={{ minHeight: '230px' }}>
-      <div className="h-6 w-64 rounded bg-gray-800 animate-pulse mb-4" />
-      <div className="h-4 w-96 rounded bg-gray-800 animate-pulse mb-4" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-        <SectionCardSkeleton />
-      </div>
-    </div>
-  );
-}
-
 function FinancialInfoSkeleton(): JSX.Element {
   return (
     <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="Current Price" isLoading={true} />
         <FinancialCard label="52 Week Range" isLoading={true} />
         <FinancialCard label="Market Cap" isLoading={true} />
@@ -293,6 +253,55 @@ function FinancialInfoSkeleton(): JSX.Element {
         <FinancialCard label="Net Income (TTM)" isLoading={true} />
         <FinancialCard label="Annual Dividend" isLoading={true} />
         <FinancialCard label="Dividend Yield" isLoading={true} />
+      </div>
+    </section>
+  );
+}
+
+function QuarterlyChartSkeleton(): JSX.Element {
+  return (
+    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <div className="h-6 w-48 rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-32 rounded bg-gray-800 animate-pulse mt-1" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-8 w-20 rounded-md bg-gray-800 animate-pulse" />
+          ))}
+        </div>
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+    </section>
+  );
+}
+
+/** Skeleton for TickerChartsInfo: Financial table (left) + Radar chart (right) + Quarterly chart (below) */
+function ChartsInfoSkeleton(): JSX.Element {
+  return (
+    <section className="mb-8">
+      {/* Financial Info (left) and Spider Chart (right) side by side */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Left: Financial Information Skeleton */}
+        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
+          <FinancialInfoSkeleton />
+        </div>
+
+        {/* Right: Spider Chart Skeleton */}
+        <div className="lg:w-1/2 flex justify-center">
+          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+              <div className="h-8 w-12 rounded bg-gray-800 animate-pulse" />
+            </div>
+            <RadarSkeleton />
+          </div>
+        </div>
+      </div>
+
+      {/* Quarterly Metrics Chart Skeleton */}
+      <div style={{ minHeight: '320px' }}>
+        <QuarterlyChartSkeleton />
       </div>
     </section>
   );
@@ -350,15 +359,46 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
   );
 }
 
-function TickerSummaryInfo({
+function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
+
+  return (
+    <section className="text-left mb-2">
+      {/* About Report - displayed above the main heading */}
+      {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
+
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
+          {d.name} ({d.symbol}){' '}
+          {d.websiteUrl && (
+            <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
+              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+            </a>
+          )}
+        </h1>
+        <span className="text-sm font-medium text-gray-400 mr-2">{formatExchangeWithCountry(d.exchange)}</span>
+      </div>
+
+      {/* Company Summary */}
+      <div className="mb-2">
+        <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
+      </div>
+    </section>
+  );
+}
+
+function TickerChartsInfo({
   data,
   financialInfoPromise,
+  quarterlyChartPromise,
 }: {
   data: Promise<TickerV1FastResponse>;
   financialInfoPromise: Promise<FinancialInfoResponse | null>;
+  quarterlyChartPromise: Promise<QuarterlyChartDataResponse | null>;
 }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const financialData: FinancialInfoResponse | null = use(financialInfoPromise);
+  const quarterlyChartData: QuarterlyChartDataResponse | null = use(quarterlyChartPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -377,55 +417,44 @@ function TickerSummaryInfo({
   ) as SpiderGraphForTicker;
 
   const score: number = getSpiderGraphScorePercentage(spiderGraph);
+
   return (
-    <>
-      <section className="text-left mb-6">
-        {/* About Report - displayed above the main heading */}
-        {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
-
-        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl mb-6">
-          {d.name} ({d.symbol}){' '}
-          {d.websiteUrl && (
-            <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
-            </a>
-          )}
-        </h1>
-
-        <div className="flex flex-col gap-x-5 gap-y-6 lg:flex-row">
-          {/* Left: summary */}
-          <div className="lg:w/full lg:max-w-2xl lg:flex-auto min-h-[240px]">
-            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
-            <p className="text-sm font-medium text-gray-400 mt-4">{formatExchangeWithCountry(d.exchange)}</p>
-          </div>
-
-          {/* Right: Radar (Suspense retained only here) */}
-          <div className="lg:flex lg:flex-auto lg:justify-center relative lg:mb-16">
-            <div className="lg:absolute lg:top-4 lg:left-0 lg:flex lg:items-center lg:w-full lg:h-full">
-              <div className="w-full max-w-lg mx-auto relative" style={{ minHeight: '400px', contain: 'layout size' }}>
-                <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
-                  <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
-                    {score.toFixed(0)}%
-                  </div>
-                  <SpiderChartFlyoutMenu />
-                </div>
-                <Suspense fallback={<RadarSkeleton />}>
-                  <TickerRadarChart data={spiderGraph} scorePercentage={score} />
-                </Suspense>
-              </div>
-            </div>
-          </div>
+    <section className="mb-8">
+      {/* Financial Info (left) and Spider Chart (right) side by side */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Left: Financial Information - Always reserve space to prevent layout shift */}
+        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
+          {financialData ? <FinancialInfo data={financialData} /> : <FinancialInfoSkeleton />}
         </div>
 
-        {/* Financial Information - after radar chart */}
-        {financialData && (
-          <div style={{ minHeight: '120px' }}>
-            <Suspense fallback={<FinancialInfoSkeleton />}>
-              <FinancialInfo data={financialData} />
+        {/* Right: Spider Chart */}
+        <div className="lg:w-1/2 flex justify-center">
+          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+              <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
+                {score.toFixed(0)}%
+              </div>
+              <SpiderChartFlyoutMenu />
+            </div>
+            {/* Suspense needed here for dynamic import of TickerRadarChart */}
+            <Suspense fallback={<RadarSkeleton />}>
+              <TickerRadarChart data={spiderGraph} scorePercentage={score} />
             </Suspense>
           </div>
-        )}
-      </section>
+        </div>
+      </div>
+
+      {/* Quarterly Metrics Chart - Always reserve space to prevent layout shift */}
+      <div style={{ minHeight: '320px' }}>{quarterlyChartData ? <QuarterlyMetricsChart data={quarterlyChartData} /> : <QuarterlyChartSkeleton />}</div>
+    </section>
+  );
+}
+
+function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
+
+  return (
+    <>
       <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
         <div className="space-y-4">
@@ -589,6 +618,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const competitionPromise = retryWithCanonical(fetchCompetition);
   const similarPromise = retryWithCanonical(fetchSimilar);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
+  const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
 
   return (
     <PageWrapper>
@@ -600,31 +630,30 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         }}
       />
 
-      {/* Breadcrumbs can stream independently */}
-      <Suspense fallback={<BarSkeleton widthClass="w-64" />}>
-        <BreadcrumbsFromData data={tickerInfo} />
+      {/* Breadcrumbs - server rendered, no skeleton needed */}
+      <BreadcrumbsFromData data={tickerInfo} />
+
+      {/* Summary info - server rendered, no skeleton needed */}
+      <TickerSummaryInfo data={tickerInfo} />
+
+      <Suspense fallback={<ChartsInfoSkeleton />}>
+        <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
       </Suspense>
 
-      <Suspense fallback={<SummaryInfoSkeleton />}>
-        <TickerSummaryInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} />
-      </Suspense>
+      {/* Analysis info - server rendered, no skeleton needed */}
+      <TickerAnalysisInfo data={tickerInfo} />
 
-      <div className="mx-auto max-w-7xl" style={{ minHeight: '600px', contain: 'layout' }}>
-        <section className="mb-8" style={{ minHeight: '300px' }}>
-          <Suspense fallback={<CompetitionSkeleton />}>
-            <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
-          </Suspense>
+      <div className="mx-auto max-w-7xl">
+        <section className="mb-8">
+          <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
         </section>
 
-        <section className="mb-6" style={{ minHeight: '250px' }}>
-          <Suspense fallback={<SimilarSkeleton />}>
-            <SimilarTickers dataPromise={similarPromise} />
-          </Suspense>
+        <section className="mb-6">
+          <SimilarTickers dataPromise={similarPromise} />
         </section>
       </div>
-      <Suspense fallback={<DetailsInfoSkeleton />}>
-        <TickerDetailsInfo data={tickerInfo} />
-      </Suspense>
+
+      <TickerDetailsInfo data={tickerInfo} />
 
       {/* Floating nav after sections are known */}
       <Suspense fallback={null}>
