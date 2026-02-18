@@ -3,6 +3,25 @@ import { User, UserRole } from '@prisma/client';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { createSignInCodeForUser } from './sign-in-code-utils';
 
+// Efficient role checking functions - fetch user and check role in one go
+export async function requireAdminUser(userId: string, errorMessage = 'Only admins can perform this action'): Promise<User> {
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  if (user.role !== UserRole.Admin) throw new Error(errorMessage);
+  return user;
+}
+
+export async function requireInstructorUser(userId: string, errorMessage = 'Only instructors can perform this action'): Promise<User> {
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  if (user.role !== UserRole.Instructor) throw new Error(errorMessage);
+  return user;
+}
+
+export async function requireAdminOrInstructorUser(userId: string, errorMessage = 'Only admins and instructors can perform this action'): Promise<User> {
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  if (user.role !== UserRole.Admin && user.role !== UserRole.Instructor) throw new Error(errorMessage);
+  return user;
+}
+
 export interface CreateUserInput {
   email: string;
   name?: string;

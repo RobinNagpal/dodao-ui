@@ -3,6 +3,7 @@ import { prisma } from '@/prisma';
 import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { DeleteResponse } from '@/types/api';
+import { requireInstructorUser } from '@/utils/user-utils';
 
 // DELETE /api/instructor/students/[studentId]/attempts/[attemptId]?caseStudyId=xxx - Delete specific exercise attempt
 async function deleteHandler(
@@ -20,13 +21,7 @@ async function deleteHandler(
   }
 
   // Verify user has instructor role
-  const currentUser = await prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-  });
-
-  if (currentUser.role !== 'Instructor') {
-    throw new Error('Only instructors can delete exercise attempts');
-  }
+  const currentUser = await requireInstructorUser(userId);
 
   // First verify instructor has access to this student through the case study
   const student = await prisma.enrollmentStudent.findFirst({

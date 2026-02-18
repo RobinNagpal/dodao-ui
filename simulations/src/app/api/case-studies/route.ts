@@ -2,9 +2,10 @@ import { getAdminCaseStudies, getInstructorCaseStudies, getStudentCaseStudies } 
 import { prisma } from '@/prisma';
 import { CaseStudy } from '@/types';
 import { CaseStudyWithRelationsForStudents, CreateCaseStudyRequest } from '@/types/api';
-import { withErrorHandlingV2, withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
+import { requireAdminUser } from '@/utils/user-utils';
 
 // GET /api/case-studies - Get case studies based on user type
 async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelationsForStudents[] | CaseStudy[]> {
@@ -29,6 +30,8 @@ async function getHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): 
 
 // POST /api/case-studies - Create a new case study
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload): Promise<CaseStudyWithRelationsForStudents> {
+  await requireAdminUser(userContext.userId, 'Only admins can create case studies');
+
   const body: CreateCaseStudyRequest = await req.json();
 
   const caseStudy = await prisma.caseStudy.create({

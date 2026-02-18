@@ -1,22 +1,8 @@
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
-import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { FinalSummaryResponse } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-
-interface CreateFinalSummaryRequest {
-  caseStudyId: string;
-  studentEmail: string;
-}
-
-interface FinalSummaryData {
-  id: string;
-  response: string | null;
-  status: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 // GET /api/student/final-summary/[caseStudyId] - Get final summary data for student
 async function getHandler(
