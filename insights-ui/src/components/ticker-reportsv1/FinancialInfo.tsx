@@ -14,7 +14,7 @@ interface FinancialCardProps {
 
 export function FinancialCard({ label, value, isLoading = false }: FinancialCardProps): JSX.Element {
   return (
-    <div className="bg-gray-800 px-2 py-1 sm:p-2 rounded-md">
+    <div className="bg-gray-800 px-2 py-1 rounded-md">
       <div className="text-xs text-gray-400 mb-1">{label}</div>
       {isLoading ? <div className="rounded animate-pulse">--</div> : <div className="text-xs font-semibold">{value}</div>}
     </div>
@@ -58,7 +58,7 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
 
   return (
     <section id="financial-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <FinancialCard label="Current Price" value={formatCurrency(data.price, data.currency)} />
         <FinancialCard label="52 Week Range" value={`${formatCurrency(data.yearLow, data.currency)} - ${formatCurrency(data.yearHigh, data.currency)}`} />
         <FinancialCard label="Market Cap" value={data.marketCap || 'N/A'} />
