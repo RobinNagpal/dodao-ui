@@ -87,12 +87,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     studentEmail: string;
     exerciseTitle: string;
   } | null>(null);
-  const [showDeleteFinalSummaryConfirm, setShowDeleteFinalSummaryConfirm] = useState<boolean>(false);
-  const [finalSummaryToDelete, setFinalSummaryToDelete] = useState<{
-    finalSummaryId: string;
-    studentId: string;
-    studentEmail: string;
-  } | null>(null);
   const [evaluatingAttempts, setEvaluatingAttempts] = useState<Set<string>>(new Set());
   const [showBulkEvaluateConfirm, setShowBulkEvaluateConfirm] = useState(false);
   const [selectedStudentForEvaluation, setSelectedStudentForEvaluation] = useState<{
@@ -136,11 +130,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const { deleteData: deleteAttempt, loading: deletingAttempt } = useDeleteData<DeleteResponse, never>({
     successMessage: 'Exercise attempt deleted successfully!',
     errorMessage: 'Failed to delete exercise attempt',
-  });
-
-  const { deleteData: deleteFinalSummary, loading: deletingFinalSummary } = useDeleteData<DeleteResponse, never>({
-    successMessage: 'Final summary deleted successfully!',
-    errorMessage: 'Failed to delete final summary',
   });
 
   const { postData: evaluateAttempt } = usePostData<
@@ -236,11 +225,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const handleDeleteAttempt = (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => {
     setAttemptToDelete({ attemptId, studentId, studentEmail, exerciseTitle });
     setShowDeleteAttemptConfirm(true);
-  };
-
-  const handleDeleteFinalSummary = (finalSummaryId: string, studentId: string, studentEmail: string) => {
-    setFinalSummaryToDelete({ finalSummaryId, studentId, studentEmail });
-    setShowDeleteFinalSummaryConfirm(true);
   };
 
   const handleEvaluateAttempt = async (attemptId: string, exerciseId: string, studentId: string) => {
@@ -341,22 +325,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     }
   };
 
-  const handleConfirmDeleteFinalSummary = async (): Promise<void> => {
-    if (!finalSummaryToDelete) return;
-
-    try {
-      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${finalSummaryToDelete.finalSummaryId}?caseStudyId=${caseStudyId}`;
-      await deleteFinalSummary(url);
-
-      // Refresh students data
-      await refetchStudentsData();
-      setShowDeleteFinalSummaryConfirm(false);
-      setFinalSummaryToDelete(null);
-    } catch (error: unknown) {
-      console.error('Error deleting final summary:', error);
-    }
-  };
-
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard;
 
@@ -401,7 +369,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
             caseStudyId={caseStudyId}
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
-            onDeleteFinalSummary={handleDeleteFinalSummary}
             onEvaluateAttempt={handleEvaluateAttempt}
             onStartBulkEvaluation={handleStartBulkEvaluation}
             clearingAttempts={clearingAttempts}
@@ -440,20 +407,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         confirming={deletingAttempt}
         title="Delete Exercise Attempt"
         confirmationText={`Are you sure you want to delete this attempt for ${attemptToDelete?.studentEmail} in exercise "${attemptToDelete?.exerciseTitle}"? This action cannot be undone.`}
-        askForTextInput={false}
-      />
-
-      <ConfirmationModal
-        open={showDeleteFinalSummaryConfirm}
-        showSemiTransparentBg={true}
-        onClose={() => {
-          setShowDeleteFinalSummaryConfirm(false);
-          setFinalSummaryToDelete(null);
-        }}
-        onConfirm={handleConfirmDeleteFinalSummary}
-        confirming={deletingFinalSummary}
-        title="Delete Final Summary"
-        confirmationText={`Are you sure you want to delete the final summary for ${finalSummaryToDelete?.studentEmail}? This action cannot be undone.`}
         askForTextInput={false}
       />
 
