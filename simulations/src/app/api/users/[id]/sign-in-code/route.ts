@@ -3,6 +3,7 @@ import { prisma } from '@/prisma';
 import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { createSignInCodeForUser } from '@/utils/sign-in-code-utils';
+import { requireAdminOrInstructorUser } from '@/utils/user-utils';
 import { StudentSignInCode } from '@prisma/client';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
@@ -23,13 +24,7 @@ async function getHandler(
   const { id: targetUserId } = await params;
   const { userId } = userContext;
 
-  const currentUser = await prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-  });
-
-  if (currentUser.role !== 'Instructor' && currentUser.role !== 'Admin') {
-    throw new Error('Only instructors and admins can fetch sign-in codes');
-  }
+  await requireAdminOrInstructorUser(userId);
 
   const activeCode = await prisma.studentSignInCode.findFirst({
     where: {
@@ -54,13 +49,7 @@ async function postHandler(
   const { id: targetUserId } = await params;
   const { userId } = userContext;
 
-  const currentUser = await prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-  });
-
-  if (currentUser.role !== 'Instructor' && currentUser.role !== 'Admin') {
-    throw new Error('Only instructors and admins can generate sign-in codes');
-  }
+  await requireAdminOrInstructorUser(userId);
 
   // Verify the target user exists and is a student or instructor
   const targetUser = await prisma.user.findUnique({

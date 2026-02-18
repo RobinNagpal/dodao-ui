@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Eye, Trash2, Check, Minus, X, Star, Loader2, ExternalLink } from 'lucide-react';
+import { Eye, Trash2, Check, Minus, X, Star, Loader2, ExternalLink, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
+import FinalReportDownloadModal from '@/components/shared/FinalReportDownloadModal';
+import { buildFinalReportMarkdown } from '@/utils/final-report-utils';
+import type { FinalReportData } from '@/utils/final-report-utils';
 import type { ExerciseAttempt } from '@prisma/client';
 import type { StudentTableData, ModuleTableData } from '@/types';
 
@@ -17,7 +20,6 @@ interface StudentTableProps {
   caseStudyId: string;
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
-  onDeleteFinalSummary?: (finalSummaryId: string, studentId: string, studentEmail: string) => void;
   onEvaluateAttempt?: (attemptId: string, exerciseId: string, studentId: string) => void;
   onStartBulkEvaluation?: (studentId: string, studentEmail: string) => void;
   clearingAttempts: boolean;
@@ -32,7 +34,6 @@ export default function StudentTable({
   caseStudyId,
   onClearStudentAttempts,
   onDeleteAttempt,
-  onDeleteFinalSummary,
   onEvaluateAttempt,
   onStartBulkEvaluation,
   clearingAttempts,
@@ -49,6 +50,10 @@ export default function StudentTable({
   const [selectedEvaluationReasoning, setSelectedEvaluationReasoning] = useState<string | null>(null);
   const [showEvaluationReasoningModal, setShowEvaluationReasoningModal] = useState(false);
 
+  // State for student report modals
+  const [selectedStudentForReport, setSelectedStudentForReport] = useState<string | null>(null);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+
   // API hook to fetch attempt details
   const { data: attemptDetails, loading: loadingAttemptDetails } = useFetchData<ExerciseAttempt>(
     selectedAttemptId ? `/api/student/attempts/${selectedAttemptId}` : '',
@@ -56,19 +61,50 @@ export default function StudentTable({
     'Failed to load attempt details'
   );
 
+  // API hook to fetch report data for view
+  const {
+    data: viewReportData,
+    loading: loadingViewReport,
+    reFetchData: refetchViewReport,
+  } = useFetchData<FinalReportData>(
+    selectedStudentForReport && !showDownloadModal ? `/api/instructor/students/${selectedStudentForReport}/final-report/${caseStudyId}` : '',
+    { skipInitialFetch: true },
+    'Failed to load report data'
+  );
+
   const handleAttemptClick = (attemptId: string) => {
     setSelectedAttemptId(attemptId);
-  };
-
-  const handleFinalSummaryClick = (finalSummaryId: string, response: string) => {
-    setSelectedFinalSummary({ id: finalSummaryId, response });
-    setShowFinalSummaryModal(true);
   };
 
   const handleEvaluationReasoningClick = (evaluationReasoning: string) => {
     setSelectedEvaluationReasoning(evaluationReasoning);
     setShowEvaluationReasoningModal(true);
   };
+
+  const handleViewReport = (studentId: string) => {
+    setSelectedStudentForReport(studentId);
+  };
+
+  const handleDownloadReport = (studentId: string) => {
+    setSelectedStudentForReport(studentId);
+    setShowDownloadModal(true);
+  };
+
+  // Effect to trigger view report fetch when student is selected (not for download)
+  useEffect(() => {
+    if (selectedStudentForReport && !showDownloadModal) {
+      refetchViewReport();
+    }
+  }, [selectedStudentForReport, showDownloadModal]);
+
+  // Effect to show view modal when report data is loaded
+  useEffect(() => {
+    if (viewReportData && selectedStudentForReport && !showDownloadModal) {
+      const markdown = buildFinalReportMarkdown(viewReportData);
+      setSelectedFinalSummary({ id: selectedStudentForReport, response: markdown });
+      setShowFinalSummaryModal(true);
+    }
+  }, [viewReportData, selectedStudentForReport, showDownloadModal]);
 
   // Effect to show modal when attempt details are loaded
   useEffect(() => {
@@ -270,40 +306,32 @@ export default function StudentTable({
 
                 {/* Final Summary Column */}
                 <td className="px-1 py-2 text-center border-l border-gray-100">
-                  <div className="flex flex-col items-center space-y-1">
-                    {/* Completion Status Icon */}
-                    <div className="mb-1">
-                      {student.finalSummary?.hasContent ? <Check className="h-4 w-4 text-green-600" /> : <Minus className="h-4 w-4 text-gray-400" />}
-                    </div>
-
-                    {/* Final Summary Actions */}
-                    {student.finalSummary && (
-                      <div className="flex flex-col items-center space-y-1">
-                        {/* View Final Summary Button */}
-                        {student.finalSummary.hasContent && (
-                          <div className="flex flex-col items-center space-y-1">
-                            <button
-                              onClick={() => handleFinalSummaryClick(student.finalSummary!.id, student.finalSummary!.response || '')}
-                              className="w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 bg-green-100 text-green-800 hover:bg-green-200"
-                              title={`View Final Summary - ${student.finalSummary.status || 'completed'}`}
-                            >
-                              ✓
-                            </button>
-
-                            {/* Delete Icon for Final Summary */}
-                            {onDeleteFinalSummary && (
-                              <button
-                                onClick={() => onDeleteFinalSummary(student.finalSummary!.id, student.id, student.email)}
-                                className="w-6 h-6 text-red-600 hover:text-red-800 transition-all duration-200 hover:scale-110 flex items-center justify-center"
-                                title="Delete final summary"
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </button>
-                            )}
-                          </div>
+                  <div className="flex flex-col items-center space-y-2">
+                    {/* View and Download Icons - Always show */}
+                    <div className="flex items-center space-x-2">
+                      {/* View Report Button */}
+                      <button
+                        onClick={() => handleViewReport(student.id)}
+                        disabled={loadingViewReport && selectedStudentForReport === student.id && !showDownloadModal}
+                        className="w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 bg-blue-100 text-blue-800 hover:bg-blue-200 flex items-center justify-center disabled:opacity-50"
+                        title="View Final Report"
+                      >
+                        {loadingViewReport && selectedStudentForReport === student.id && !showDownloadModal ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          <Eye className="h-3 w-3" />
                         )}
-                      </div>
-                    )}
+                      </button>
+
+                      {/* Download Report Button */}
+                      <button
+                        onClick={() => handleDownloadReport(student.id)}
+                        className="w-6 h-6 rounded-full text-xs font-bold transition-all duration-200 hover:scale-110 bg-green-100 text-green-800 hover:bg-green-200 flex items-center justify-center"
+                        title="Download Final Report"
+                      >
+                        <Download className="h-3 w-3" />
+                      </button>
+                    </div>
                   </div>
                 </td>
 
@@ -369,6 +397,17 @@ export default function StudentTable({
           setSelectedEvaluationReasoning(null);
         }}
         aiResponse={selectedEvaluationReasoning || 'No evaluation reasoning available.'}
+      />
+
+      {/* Final Report Download Modal */}
+      <FinalReportDownloadModal
+        open={showDownloadModal}
+        onClose={() => {
+          setShowDownloadModal(false);
+          setSelectedStudentForReport(null);
+        }}
+        studentId={selectedStudentForReport}
+        caseStudyId={caseStudyId}
       />
     </div>
   );

@@ -1,35 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
-import { FileText, Download, Eye, Sparkles, CheckCircle, Bot, Save } from 'lucide-react';
+import { FileText, Download } from 'lucide-react';
 import { parseMarkdown } from '@/utils/parse-markdown';
 import StudentNavbar from '@/components/navigation/StudentNavbar';
 import BackButton from '@/components/navigation/BackButton';
+import FinalReportDownloadModal from '@/components/shared/FinalReportDownloadModal';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { FinalSummaryResponse } from '@/types/api';
+import type { FinalReportData } from '@/utils/final-report-utils';
 import type { ReactElement } from 'react';
 
 interface FinalSummaryClientProps {
   caseStudyId: string;
 }
 
-interface FinalSummaryData {
-  id: string;
-  response: string | null;
-  status: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface CreateFinalSummaryRequest {
-  caseStudyId: string;
-  studentEmail: string;
-}
-
 export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientProps): ReactElement | null {
-  const [isSaved, setIsSaved] = useState(false);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
   const { data: summaryData, loading: loadingSummary } = useFetchData<FinalSummaryResponse>(
     `/api/student/final-summary/${caseStudyId}`,
@@ -45,94 +33,25 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
     additionalLoadingConditions: [loadingSummary],
   });
 
-  const { postData: saveFinalSummary, loading: savingSummary } = usePostData<FinalSummaryData, CreateFinalSummaryRequest>({
-    successMessage: 'Final summary saved successfully!',
-    errorMessage: 'Failed to save final summary. Please try again.',
-  });
+  // Transform summaryData to FinalReportData format
+  const getReportData = (): FinalReportData | null => {
+    if (!summaryData || !session) return null;
 
-  const handleSaveFinalSummary = async () => {
-    if (!session || savingSummary) return;
-
-    try {
-      const result = await saveFinalSummary(`/api/student/final-summary/${caseStudyId}`, {
-        caseStudyId,
-        studentEmail: session.email || '',
-      });
-
-      if (result) {
-        setIsSaved(true);
-      }
-    } catch (error) {
-      console.error('Error saving final summary:', error);
-    }
-  };
-
-  const handleDownloadPdf = () => {
-    if (!summaryData || !session) return;
-
-    // Build the summary content
-    let content = `<h1>${summaryData.caseStudy.title}</h1>\n\n`;
-
-    summaryData.modules.forEach((module, moduleIndex) => {
-      content += `<h2>Module ${module.orderNumber}: ${module.title}</h2>\n\n`;
-
-      module.exercises.forEach((exercise, exerciseIndex) => {
-        content += `<h3>Exercise ${exercise.orderNumber}: ${exercise.title}</h3>\n\n`;
-
-        if (exercise.selectedAttempt?.prompt) {
-          content += `<h4>Student Prompt:</h4>\n`;
-          content += `<div style="background-color: #eff6ff; padding: 15px; margin: 10px 0; border-left: 4px solid #3b82f6; border-radius: 5px;">${exercise.selectedAttempt.prompt}</div>\n\n`;
-        }
-
-        if (exercise.selectedAttempt?.promptResponse) {
-          content += `<h4>Selected Response:</h4>\n`;
-          content += `<div style="background-color: #f9fafb; padding: 15px; margin: 10px 0; border-left: 4px solid #6b7280; border-radius: 5px;">${exercise.selectedAttempt.promptResponse}</div>\n\n`;
-        }
-      });
-    });
-
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>Your Final Report</title>
-            <style>
-              body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
-              h1 { color: #2563eb; font-size: 2em; margin-bottom: 20px; }
-              h2 { color: #2563eb; font-size: 1.5em; margin-top: 30px; margin-bottom: 15px; }
-              h3 { color: #2563eb; font-size: 1.2em; margin-top: 20px; margin-bottom: 10px; }
-              .header { text-align: center; margin-bottom: 40px; }
-              .content { max-width: 800px; margin: 0 auto; }
-              @media print {
-                body { margin: 20px; }
-                .no-print { display: none; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <h1>Case Study Final Report</h1>
-              <p>Student Email: ${session.email || 'N/A'}</p>
-              <p>Downloaded on ${new Date().toLocaleDateString()}</p>
-            </div>
-            <div class="content">
-              ${parseMarkdown(content)}
-            </div>
-            <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() {
-                  window.close();
-                };
-              };
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
-    }
+    return {
+      caseStudyTitle: summaryData.caseStudy.title,
+      studentName: summaryData.student.name,
+      studentEmail: summaryData.student.email,
+      modules: summaryData.modules.map((module) => ({
+        orderNumber: module.orderNumber,
+        title: module.title,
+        exercises: module.exercises.map((exercise) => ({
+          orderNumber: exercise.orderNumber,
+          title: exercise.title,
+          prompt: exercise.selectedAttempt?.prompt || null,
+          promptResponse: exercise.selectedAttempt?.promptResponse || null,
+        })),
+      })),
+    };
   };
 
   const loadingGuard = renderAuthGuard();
@@ -186,45 +105,22 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
             <p className="text-gray-600 text-base mb-4">This is your compiled final report with all your selected solutions for each exercise.</p>
             <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-4">
               <p className="text-blue-800 text-sm font-medium">
-                💡 <strong>Important:</strong> Click Save Report to store this final summary for your instructor to review. You can also download it as a PDF
-                for your records.
+                💡 <strong>Tip:</strong> Click Download to export this report as a PDF for your records.
               </p>
             </div>
           </div>
 
           <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 p-8">
             <div className="prose prose-lg max-w-none">
-              <div className="flex items-center justify-between mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 m-0">{summaryData.caseStudy.title}</h1>
-                <div className="flex items-center space-x-3">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-6">
+                <h1 className="text-3xl font-bold text-gray-900 m-0 flex-1 min-w-0">{summaryData.caseStudy.title}</h1>
+                <div className="flex-shrink-0">
                   <button
-                    onClick={handleSaveFinalSummary}
-                    disabled={savingSummary}
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => setShowDownloadModal(true)}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 min-w-[120px] whitespace-nowrap"
                   >
-                    {savingSummary ? (
-                      <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                        <span>Saving...</span>
-                      </>
-                    ) : isSaved ? (
-                      <>
-                        <CheckCircle className="h-5 w-5" />
-                        <span>Saved</span>
-                      </>
-                    ) : (
-                      <>
-                        <Save className="h-5 w-5" />
-                        <span>Save Report</span>
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={handleDownloadPdf}
-                    className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
-                  >
-                    <Download className="h-5 w-5" />
-                    <span>Download PDF</span>
+                    <Download className="h-4 w-4 flex-shrink-0" />
+                    <span>Download</span>
                   </button>
                 </div>
               </div>
@@ -270,6 +166,9 @@ export default function FinalSummaryClient({ caseStudyId }: FinalSummaryClientPr
           </div>
         </div>
       </div>
+
+      {/* Download Modal */}
+      {getReportData() && <FinalReportDownloadModal open={showDownloadModal} onClose={() => setShowDownloadModal(false)} reportData={getReportData()!} />}
     </div>
   );
 }

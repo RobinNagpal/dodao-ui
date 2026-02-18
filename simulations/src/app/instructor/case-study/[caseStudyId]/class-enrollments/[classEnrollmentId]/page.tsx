@@ -15,7 +15,6 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import ManageStudentsTab from '@/components/instructor/case-study-tabs/ManageStudentsTab';
 import InstructorActivityLogs from '@/components/instructor/InstructorActivityLogs';
 import { GraduationCap, Users, ClipboardList, Activity } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React, { FC, useState } from 'react';
 
 export type TabType = 'manage-students' | 'student-attempts' | 'activity-logs';
@@ -78,7 +77,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
   const resolvedParams = React.use(params);
   const { caseStudyId, classEnrollmentId } = resolvedParams;
 
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>('student-attempts');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [studentToClear, setStudentToClear] = useState<{ id: string; email: string } | null>(null);
@@ -89,18 +87,14 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     studentEmail: string;
     exerciseTitle: string;
   } | null>(null);
-  const [showDeleteFinalSummaryConfirm, setShowDeleteFinalSummaryConfirm] = useState<boolean>(false);
-  const [finalSummaryToDelete, setFinalSummaryToDelete] = useState<{
-    finalSummaryId: string;
-    studentId: string;
-    studentEmail: string;
-  } | null>(null);
   const [evaluatingAttempts, setEvaluatingAttempts] = useState<Set<string>>(new Set());
   const [showBulkEvaluateConfirm, setShowBulkEvaluateConfirm] = useState(false);
   const [selectedStudentForEvaluation, setSelectedStudentForEvaluation] = useState<{
     id: string;
     email: string;
   } | null>(null);
+  // Local state for evaluation results to avoid refetching on each evaluation
+  const [localEvaluations, setLocalEvaluations] = useState<Map<string, { evaluatedScore: number; evaluationReasoning: string }>>(new Map());
 
   // Fetch case study structure (modules, exercises)
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForInstructor>(
@@ -138,11 +132,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     errorMessage: 'Failed to delete exercise attempt',
   });
 
-  const { deleteData: deleteFinalSummary, loading: deletingFinalSummary } = useDeleteData<DeleteResponse, never>({
-    successMessage: 'Final summary deleted successfully!',
-    errorMessage: 'Failed to delete final summary',
-  });
-
   const { postData: evaluateAttempt } = usePostData<
     { evaluatedScore: number; evaluationReasoning: string; finalScore: number },
     { studentId: string; attemptId: string }
@@ -177,12 +166,14 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         if (!acc[attempt.exerciseId]) {
           acc[attempt.exerciseId] = [];
         }
+        // Check if we have a local evaluation for this attempt
+        const localEval = localEvaluations.get(attempt.id);
         acc[attempt.exerciseId].push({
           id: attempt.id,
           attemptNumber: attempt.attemptNumber,
           status: attempt.status,
-          evaluatedScore: attempt.evaluatedScore,
-          evaluationReasoning: attempt.evaluationReasoning,
+          evaluatedScore: localEval?.evaluatedScore ?? attempt.evaluatedScore,
+          evaluationReasoning: localEval?.evaluationReasoning ?? attempt.evaluationReasoning,
           createdAt: attempt.createdAt instanceof Date ? attempt.createdAt.toISOString() : attempt.createdAt,
         });
         return acc;
@@ -236,20 +227,24 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
     setShowDeleteAttemptConfirm(true);
   };
 
-  const handleDeleteFinalSummary = (finalSummaryId: string, studentId: string, studentEmail: string) => {
-    setFinalSummaryToDelete({ finalSummaryId, studentId, studentEmail });
-    setShowDeleteFinalSummaryConfirm(true);
-  };
-
   const handleEvaluateAttempt = async (attemptId: string, exerciseId: string, studentId: string) => {
     try {
       setEvaluatingAttempts((prev) => new Set([...prev, attemptId]));
 
       const url = `/api/instructor/exercises/${exerciseId}/evaluate`;
-      await evaluateAttempt(url, { studentId, attemptId });
+      const result = await evaluateAttempt(url, { studentId, attemptId });
 
-      // Refresh students data to show updated scores
-      await refetchStudentsData();
+      // Update local state instead of refetching
+      if (result) {
+        setLocalEvaluations((prev) => {
+          const newMap = new Map(prev);
+          newMap.set(attemptId, {
+            evaluatedScore: result.evaluatedScore,
+            evaluationReasoning: result.evaluationReasoning,
+          });
+          return newMap;
+        });
+      }
     } catch (error) {
       console.error('Error evaluating attempt:', error);
     } finally {
@@ -303,8 +298,9 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       const url = `/api/instructor/students/${studentToClear.id}/clear-attempts?caseStudyId=${caseStudyId}`;
       await clearAttempts(url);
 
-      // Refresh students data
+      // Refresh students data and clear local evaluations for this student
       await refetchStudentsData();
+      setLocalEvaluations(new Map()); // Clear local evaluations since data is refreshed
       setShowDeleteConfirm(false);
       setStudentToClear(null);
     } catch (error: unknown) {
@@ -319,28 +315,13 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
       const url = `/api/instructor/students/${attemptToDelete.studentId}/attempts/${attemptToDelete.attemptId}?caseStudyId=${caseStudyId}`;
       await deleteAttempt(url);
 
-      // Refresh students data
+      // Refresh students data and clear local evaluations
       await refetchStudentsData();
+      setLocalEvaluations(new Map());
       setShowDeleteAttemptConfirm(false);
       setAttemptToDelete(null);
     } catch (error: unknown) {
       console.error('Error deleting exercise attempt:', error);
-    }
-  };
-
-  const handleConfirmDeleteFinalSummary = async (): Promise<void> => {
-    if (!finalSummaryToDelete) return;
-
-    try {
-      const url = `/api/instructor/students/${finalSummaryToDelete.studentId}/final-summary/${finalSummaryToDelete.finalSummaryId}?caseStudyId=${caseStudyId}`;
-      await deleteFinalSummary(url);
-
-      // Refresh students data
-      await refetchStudentsData();
-      setShowDeleteFinalSummaryConfirm(false);
-      setFinalSummaryToDelete(null);
-    } catch (error: unknown) {
-      console.error('Error deleting final summary:', error);
     }
   };
 
@@ -388,7 +369,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
             caseStudyId={caseStudyId}
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
-            onDeleteFinalSummary={handleDeleteFinalSummary}
             onEvaluateAttempt={handleEvaluateAttempt}
             onStartBulkEvaluation={handleStartBulkEvaluation}
             clearingAttempts={clearingAttempts}
@@ -427,20 +407,6 @@ export default function EnrollmentStudentProgressPage({ params }: EnrollmentStud
         confirming={deletingAttempt}
         title="Delete Exercise Attempt"
         confirmationText={`Are you sure you want to delete this attempt for ${attemptToDelete?.studentEmail} in exercise "${attemptToDelete?.exerciseTitle}"? This action cannot be undone.`}
-        askForTextInput={false}
-      />
-
-      <ConfirmationModal
-        open={showDeleteFinalSummaryConfirm}
-        showSemiTransparentBg={true}
-        onClose={() => {
-          setShowDeleteFinalSummaryConfirm(false);
-          setFinalSummaryToDelete(null);
-        }}
-        onConfirm={handleConfirmDeleteFinalSummary}
-        confirming={deletingFinalSummary}
-        title="Delete Final Summary"
-        confirmationText={`Are you sure you want to delete the final summary for ${finalSummaryToDelete?.studentEmail}? This action cannot be undone.`}
         askForTextInput={false}
       />
 

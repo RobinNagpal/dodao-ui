@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DeleteResponse } from '@/types/api';
+import { requireInstructorUser } from '@/utils/user-utils';
 
 // DELETE /api/instructor/students/[studentId]/clear-attempts?caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
 async function deleteHandler(
@@ -20,13 +21,7 @@ async function deleteHandler(
   }
 
   // Verify user has instructor role
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-  });
-
-  if (user.role !== 'Instructor') {
-    throw new Error('Only instructors can clear student attempts');
-  }
+  const user = await requireInstructorUser(userId);
 
   // First verify instructor has access to this student through the case study
   const student = await prisma.enrollmentStudent.findFirst({

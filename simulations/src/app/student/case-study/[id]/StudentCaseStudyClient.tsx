@@ -28,6 +28,11 @@ interface UpdateInstructionStatusRequest {
   moduleId?: string;
 }
 
+interface InstructionReadStatus {
+  readCaseInstructions: boolean;
+  moduleInstructions: Array<{ id: string; readModuleInstructions: boolean }>;
+}
+
 export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudyClientProps): ReactElement | null {
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
@@ -38,17 +43,21 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
     message: string;
     moduleId?: string;
   } | null>(null);
+  const [localInstructionStatus, setLocalInstructionStatus] = useState<InstructionReadStatus | null>(null);
   const router = useRouter();
 
-  const {
-    data: caseStudy,
-    loading: loadingCaseStudy,
-    reFetchData: refetchCaseStudy,
-  } = useFetchData<CaseStudyWithRelationsForStudents>(
+  const { data: caseStudy, loading: loadingCaseStudy } = useFetchData<CaseStudyWithRelationsForStudents>(
     `${getBaseUrl()}/api/case-studies/${caseStudyId}`,
     { skipInitialFetch: !caseStudyId },
     'Failed to load case study'
   );
+
+  // Sync local instruction status from fetched data
+  useEffect(() => {
+    if (caseStudy?.instructionReadStatus) {
+      setLocalInstructionStatus(caseStudy.instructionReadStatus as InstructionReadStatus);
+    }
+  }, [caseStudy?.instructionReadStatus]);
 
   const { session, renderAuthGuard } = useAuthGuard({
     allowedRoles: 'any',
@@ -103,12 +112,12 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
   };
 
   const hasCaseStudyInstructionsRead = () => {
-    return caseStudy?.instructionReadStatus?.readCaseInstructions || false;
+    return localInstructionStatus?.readCaseInstructions || false;
   };
 
   const hasModuleInstructionsRead = (moduleId: string) => {
-    if (!caseStudy?.instructionReadStatus?.moduleInstructions) return false;
-    const moduleStatus = caseStudy.instructionReadStatus.moduleInstructions.find((m) => m.id === moduleId);
+    if (!localInstructionStatus?.moduleInstructions) return false;
+    const moduleStatus = localInstructionStatus.moduleInstructions.find((m) => m.id === moduleId);
     return moduleStatus?.readModuleInstructions || false;
   };
 
@@ -125,7 +134,24 @@ export default function StudentCaseStudyClient({ caseStudyId }: StudentCaseStudy
       });
 
       if (result) {
-        await refetchCaseStudy();
+        // Update local state instead of refetching
+        setLocalInstructionStatus((prev) => {
+          const base = prev || { readCaseInstructions: false, moduleInstructions: [] };
+
+          if (type === 'case_study') {
+            return { ...base, readCaseInstructions: true };
+          } else if (type === 'module' && moduleId) {
+            const existingIndex = base.moduleInstructions.findIndex((m) => m.id === moduleId);
+            if (existingIndex >= 0) {
+              const updated = [...base.moduleInstructions];
+              updated[existingIndex] = { ...updated[existingIndex], readModuleInstructions: true };
+              return { ...base, moduleInstructions: updated };
+            } else {
+              return { ...base, moduleInstructions: [...base.moduleInstructions, { id: moduleId, readModuleInstructions: true }] };
+            }
+          }
+          return base;
+        });
       }
     } catch (error) {
       console.error('Error updating instruction status:', error);

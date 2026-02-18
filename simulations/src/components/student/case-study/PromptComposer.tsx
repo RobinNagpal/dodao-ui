@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import type { ExerciseAttempt } from '@prisma/client';
 import { ArrowLeft, CheckCircle, MessageSquare, RotateCcw, Send, Sparkles } from 'lucide-react';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
@@ -59,6 +59,44 @@ const getBarColorClass = (percentUsed: number): string => {
   if (percentUsed >= 95) return 'bg-red-500';
   if (percentUsed >= 80) return 'bg-yellow-500';
   return 'bg-green-500';
+};
+
+/* =========================================================
+ * LocalStorage helpers for prompt draft persistence
+ * =======================================================*/
+
+const PROMPT_DRAFT_KEY_PREFIX = 'prompt_draft_';
+
+const getPromptDraftKey = (exerciseId: string): string => `${PROMPT_DRAFT_KEY_PREFIX}${exerciseId}`;
+
+const savePromptDraft = (exerciseId: string, text: string): void => {
+  try {
+    if (text.trim()) {
+      localStorage.setItem(getPromptDraftKey(exerciseId), text);
+    } else {
+      localStorage.removeItem(getPromptDraftKey(exerciseId));
+    }
+  } catch (err) {
+    // localStorage might be unavailable (e.g., private browsing)
+    console.warn('Failed to save prompt draft:', err);
+  }
+};
+
+const loadPromptDraft = (exerciseId: string): string => {
+  try {
+    return localStorage.getItem(getPromptDraftKey(exerciseId)) || '';
+  } catch (err) {
+    console.warn('Failed to load prompt draft:', err);
+    return '';
+  }
+};
+
+const clearPromptDraft = (exerciseId: string): void => {
+  try {
+    localStorage.removeItem(getPromptDraftKey(exerciseId));
+  } catch (err) {
+    console.warn('Failed to clear prompt draft:', err);
+  }
 };
 
 /* =========================================================
@@ -222,8 +260,20 @@ export default function PromptComposer({
   promptCharacterLimit,
 }: PromptComposerProps): JSX.Element {
   // Local UI state
-  const [prompt, setPrompt] = useState<string>('');
+  const [prompt, setPrompt] = useState<string>(() => loadPromptDraft(exerciseId));
   const [hasMovedToNext, setHasMovedToNext] = useState<boolean>(false);
+
+  // Persist prompt draft to localStorage when it changes
+  useEffect(() => {
+    savePromptDraft(exerciseId, prompt);
+  }, [exerciseId, prompt]);
+
+  // Load saved draft when exerciseId changes (navigating between exercises)
+  useEffect(() => {
+    const savedDraft = loadPromptDraft(exerciseId);
+    setPrompt(savedDraft);
+  }, [exerciseId]);
+
   const [showRetryPrompt, setShowRetryPrompt] = useState<boolean>(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
   const [showAiResponseModal, setShowAiResponseModal] = useState<boolean>(false);
@@ -295,6 +345,7 @@ export default function PromptComposer({
 
         onNewAttempt(result.attempt);
         setPrompt('');
+        clearPromptDraft(exerciseId);
         setShowRetryPrompt(false);
         setShowConfirmationModal(false);
 

@@ -1,13 +1,16 @@
 import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/prisma';
-import { EnrollmentWithRelations, CreateEnrollmentRequestForCaseStudy } from '@/types/api';
+import { CreateEnrollmentRequestForCaseStudy } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
+import { requireAdminUser } from '@/utils/user-utils';
 
 // POST /api/case-studies/[caseStudyId]/class-enrollments - Create a new enrollment for a specific case study
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<string> {
+  await requireAdminUser(userContext.userId, 'Only admins can create class enrollments');
+
   const { caseStudyId } = await params;
   const body: CreateEnrollmentRequestForCaseStudy = await req.json();
 
