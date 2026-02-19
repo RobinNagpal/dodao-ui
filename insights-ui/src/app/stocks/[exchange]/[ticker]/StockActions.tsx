@@ -223,7 +223,7 @@ export default function StockActions({ ticker, children, session }: StockActions
 
   return (
     <>
-      <div className="flex items-center gap-2 z-10">
+      <div className="flex flex-wrap items-center gap-2 z-10">
         {children}
         <PrivateWrapper session={session}>
           <EllipsisDropdown items={dropdownItems} className="px-2 py-2 z-10" onSelect={handleDropdownSelect} />

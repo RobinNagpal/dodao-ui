@@ -143,18 +143,21 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
   const modalTitle = (
     <div className="flex items-center w-full relative">
       <div className="flex-1 text-center">
-        <h2 className="text-xl font-semibold">
-          Stock Comparison - {currentTicker.industryName} - {currentTicker.subIndustryName} - Selected: {comparisonTickers.length}/5
+        <h2 className="text-base sm:text-xl font-semibold">
+          <span className="hidden sm:inline">
+            Stock Comparison &ndash; {currentTicker.industryName} &ndash; {currentTicker.subIndustryName} &ndash;{' '}
+          </span>
+          <span className="sm:hidden">Compare </span>
+          Selected: {comparisonTickers.length}/5
         </h2>
       </div>
-      <p className="absolute right-0 text-sm text-gray-400"></p>
     </div>
   );
 
   return (
     <FullScreenModal open={isOpen} onClose={onClose} title={modalTitle} showCloseButton={true} showTitleBg={true}>
       <PageWrapper>
-        <div className="px-6">
+        <div className="px-2 sm:px-6">
           {/* Ticker Header with Scores */}
           <div className="mb-6">
             {/* Add Ticker Section */}
