@@ -99,10 +99,10 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
       <div className="overflow-x-auto">
         <div className="min-w-full divide-y divide-gray-700">
           {/* Header */}
-          <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(300px, 1fr) repeat(${comparisonTickers.length}, minmax(200px, 1fr))` }}>
-            <div className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800">Comparison Factors</div>
+          <div className="bg-gray-800 grid" style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}>
+            <div className="px-2 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-800">Factors</div>
             {comparisonTickers.map((ticker) => (
-              <div key={ticker.symbol} className="px-2 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">
+              <div key={ticker.symbol} className="px-1 py-3 text-left text-xs font-medium text-gray-300 tracking-wider">
                 <div className="flex flex-col space-y-1">
                   <div className="flex items-center space-x-1">
                     {ticker.cachedScoreEntry?.finalScore !== undefined ? (
@@ -110,7 +110,7 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                     ) : (
                       <span className="text-gray-400">-/25</span>
                     )}
-                    <span className="ml-1">{ticker.symbol}</span>
+                    <span className="ml-1 font-bold">{ticker.symbol}</span>
                     <button
                       onClick={() => removeTicker(ticker.symbol)}
                       className="text-gray-400 hover:text-red-400 flex-shrink-0"
@@ -131,9 +131,9 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
               <div
                 key={`${row.category}-${row.factorIndex}`}
                 className={`grid ${row.isCategoryHeader ? 'bg-gray-800' : 'hover:bg-gray-800'}`}
-                style={{ gridTemplateColumns: `minmax(300px, 1fr) repeat(${comparisonTickers.length}, minmax(200px, 1fr))` }}
+                style={{ gridTemplateColumns: `minmax(140px, 1fr) repeat(${comparisonTickers.length}, minmax(130px, 1fr))` }}
               >
-                <div className="px-4 py-3 sticky left-0 text-left min-w-0 bg-gray-900">
+                <div className={`px-2 py-3 sticky left-0 text-left min-w-0 bg-gray-900`}>
                   {row.isCategoryHeader ? (
                     <div className="font-bold text-gray-100 text-base">{row.categoryName}</div>
                   ) : (
@@ -143,7 +143,7 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                 {comparisonTickers.map((ticker) => {
                   if (row.isCategoryHeader) {
                     return (
-                      <div key={`${ticker.symbol}-header`} className="px-2 py-3 text-left" style={{ backgroundColor: 'rgb(17 24 39)' }}>
+                      <div key={`${ticker.symbol}-header`} className="px-1 py-3 text-left" style={{ backgroundColor: 'rgb(17 24 39)' }}>
                         <span className="text-gray-400 text-sm">-</span>
                       </div>
                     );
@@ -152,20 +152,20 @@ export function TickerComparison({ comparisonTickers, removeTicker, isModal = fa
                   const factorResult = getFactorResult(ticker, row.category, row.factorIndex);
 
                   return (
-                    <div key={`${ticker.symbol}-${row.category}-${row.factorIndex}`} className="px-2 py-3 text-left">
+                    <div key={`${ticker.symbol}-${row.category}-${row.factorIndex}`} className="px-1 py-3 text-left">
                       {factorResult.result ? (
-                        <div className="flex flex-col items-start space-y-2">
+                        <div className="flex flex-col items-start space-y-1">
                           <div className="flex items-center space-x-1">
                             {factorResult.result === EvaluationResult.Pass ? (
-                              <CheckCircleIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                              <CheckCircleIcon className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
                             ) : (
-                              <XCircleIcon className="h-4 w-4 text-red-500 flex-shrink-0" />
+                              <XCircleIcon className="h-3 w-3 sm:h-4 sm:w-4 text-red-500 flex-shrink-0" />
                             )}
                             <span className={`text-xs font-medium ${factorResult.result === EvaluationResult.Pass ? 'text-green-400' : 'text-red-400'}`}>
                               {factorResult.result}
                             </span>
                           </div>
-                          <div className="text-xs text-gray-400 leading-tight max-w break-words">{factorResult.explanation}</div>
+                          <div className="text-xs text-gray-400 leading-tight break-words">{factorResult.explanation}</div>
                         </div>
                       ) : (
                         <span className="text-gray-500 text-sm">-</span>
