@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
-import { IncomeQuarterlyData, IncomeQuarterlyPeriod, FinancialMeta } from '@/types/prismaTypes';
+import { IncomeQuarterlyData, IncomeAnnualData, BaseFinancialPeriod } from '@/types/prismaTypes';
 import { ensureStockAnalyzerDataIsFresh } from '@/utils/stock-analyzer-scraper-utils';
 
 export type ChartMetricType = 'revenue' | 'grossMargin' | 'ebit' | 'freeCashFlow' | 'eps' | 'sharesOutstanding';
@@ -19,13 +19,14 @@ export interface QuarterlyChartDataResponse {
   };
   availableMetrics: ChartMetricType[];
   data: Record<ChartMetricType, QuarterlyDataPoint[]>;
+  dataFrequency: 'quarterly' | 'annual';
 }
 
 export interface QuarterlyChartDataWrapper {
   chartData: QuarterlyChartDataResponse | null;
 }
 
-function extractMetricValue(period: IncomeQuarterlyPeriod, metric: ChartMetricType): number | null {
+function extractMetricValue(period: BaseFinancialPeriod, metric: ChartMetricType): number | null {
   const values = period.values;
   if (!values) return null;
 
@@ -58,8 +59,41 @@ function extractNumericValue(value: unknown): number | null {
   return null;
 }
 
-function checkMetricAvailability(periods: IncomeQuarterlyPeriod[], metric: ChartMetricType): boolean {
+function checkMetricAvailability(periods: BaseFinancialPeriod[], metric: ChartMetricType): boolean {
   return periods.some((period) => extractMetricValue(period, metric) !== null);
+}
+
+function buildChartResponse(
+  periods: BaseFinancialPeriod[],
+  periodLabels: string[],
+  meta: { currency?: string; unit?: string; fiscalYearNote?: string },
+  dataFrequency: 'quarterly' | 'annual'
+): QuarterlyChartDataResponse | null {
+  const allMetrics: ChartMetricType[] = ['revenue', 'grossMargin', 'ebit', 'freeCashFlow', 'eps', 'sharesOutstanding'];
+  const availableMetrics = allMetrics.filter((metric) => checkMetricAvailability(periods, metric));
+
+  if (availableMetrics.length === 0) {
+    return null;
+  }
+
+  const data: Record<ChartMetricType, QuarterlyDataPoint[]> = {} as Record<ChartMetricType, QuarterlyDataPoint[]>;
+  for (const metric of allMetrics) {
+    data[metric] = periods.map((period, idx) => ({
+      quarter: periodLabels[idx],
+      value: extractMetricValue(period, metric),
+    }));
+  }
+
+  return {
+    meta: {
+      currency: meta.currency || null,
+      unit: meta.unit || null,
+      fiscalYearNote: meta.fiscalYearNote || null,
+    },
+    availableMetrics,
+    data,
+    dataFrequency,
+  };
 }
 
 async function getHandler(
@@ -87,51 +121,37 @@ async function getHandler(
     });
 
     const scraperInfo = await ensureStockAnalyzerDataIsFresh(tickerRecord);
+
+    // Try quarterly data first
     const incomeQuarterlyData = scraperInfo.incomeStatementQuarter as IncomeQuarterlyData | null;
-
-    if (!incomeQuarterlyData?.periods || incomeQuarterlyData.periods.length === 0) {
-      return { chartData: null };
+    if (incomeQuarterlyData?.periods && incomeQuarterlyData.periods.length > 0) {
+      const sortedPeriods = [...incomeQuarterlyData.periods].sort((a, b) => {
+        const parseQuarter = (q: string) => {
+          const match = q.match(/Q(\d)\s+(\d{4})/);
+          if (!match) return 0;
+          return parseInt(match[2]) * 4 + parseInt(match[1]);
+        };
+        return parseQuarter(a.fiscalQuarter) - parseQuarter(b.fiscalQuarter);
+      });
+      const labels = sortedPeriods.map((p) => p.fiscalQuarter);
+      const chartData = buildChartResponse(sortedPeriods, labels, incomeQuarterlyData.meta || {}, 'quarterly');
+      if (chartData) {
+        return { chartData };
+      }
     }
 
-    const meta = incomeQuarterlyData.meta || {};
-    const periods = incomeQuarterlyData.periods;
-
-    const allMetrics: ChartMetricType[] = ['revenue', 'grossMargin', 'ebit', 'freeCashFlow', 'eps', 'sharesOutstanding'];
-    const availableMetrics = allMetrics.filter((metric) => checkMetricAvailability(periods, metric));
-
-    if (availableMetrics.length === 0) {
-      return { chartData: null };
+    // Fall back to annual data
+    const incomeAnnualData = scraperInfo.incomeStatementAnnual as IncomeAnnualData | null;
+    if (incomeAnnualData?.periods && incomeAnnualData.periods.length > 0) {
+      const sortedPeriods = [...incomeAnnualData.periods].sort((a, b) => a.fiscalYear.localeCompare(b.fiscalYear));
+      const labels = sortedPeriods.map((p) => p.fiscalYear);
+      const chartData = buildChartResponse(sortedPeriods, labels, incomeAnnualData.meta || {}, 'annual');
+      if (chartData) {
+        return { chartData };
+      }
     }
 
-    const sortedPeriods = [...periods].sort((a, b) => {
-      const parseQuarter = (q: string) => {
-        const match = q.match(/Q(\d)\s+(\d{4})/);
-        if (!match) return 0;
-        return parseInt(match[2]) * 4 + parseInt(match[1]);
-      };
-      return parseQuarter(a.fiscalQuarter) - parseQuarter(b.fiscalQuarter);
-    });
-
-    const data: Record<ChartMetricType, QuarterlyDataPoint[]> = {} as Record<ChartMetricType, QuarterlyDataPoint[]>;
-
-    for (const metric of allMetrics) {
-      data[metric] = sortedPeriods.map((period) => ({
-        quarter: period.fiscalQuarter,
-        value: extractMetricValue(period, metric),
-      }));
-    }
-
-    return {
-      chartData: {
-        meta: {
-          currency: meta.currency || null,
-          unit: meta.unit || null,
-          fiscalYearNote: meta.fiscalYearNote || null,
-        },
-        availableMetrics,
-        data,
-      },
-    };
+    return { chartData: null };
   } catch (error) {
     console.error(`Error fetching quarterly chart data for ${t}:`, error);
     return { chartData: null };

@@ -16,6 +16,7 @@ import { GeneratePromptRequest, GeneratePromptResponse } from '@/app/api/[spaceI
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { LLMResponse, SaveJsonReportRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/save-json-report/route';
+import { revalidateTickerCache } from '@/utils/cache-actions';
 
 interface StockActionsProps {
   ticker: TickerIdentifier;
@@ -52,10 +53,11 @@ export default function StockActions({ ticker, children, session }: StockActions
     errorMessage: 'Failed to save report.',
   });
 
-  // Create dropdown items - "Generate Report" and "Import Prompt" options
+  // Create dropdown items - "Generate Report", "Import Prompt", and "Invalidate Cache" options
   const dropdownItems: EllipsisDropdownItem[] = [
     { key: 'generate-report', label: 'Generate Report' },
     { key: 'import-prompt', label: 'Import Prompt' },
+    { key: 'invalidate-cache', label: 'Invalidate Cache' },
   ];
 
   // Filter out future risk (investor analysis types already removed from reportTypes)
@@ -70,11 +72,15 @@ export default function StockActions({ ticker, children, session }: StockActions
     { key: 'generate-all', label: 'Generate All Reports' },
   ];
 
-  const handleDropdownSelect = (key: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleDropdownSelect = async (key: string, e: React.MouseEvent<HTMLAnchorElement>) => {
     if (key === 'generate-report') {
       setIsModalOpen(true);
     } else if (key === 'import-prompt') {
       setIsPromptModalOpen(true);
+    } else if (key === 'invalidate-cache') {
+      const result = await revalidateTickerCache(ticker.symbol, ticker.exchange);
+      console.log('[invalidate-cache]', result.message);
+      router.refresh();
     }
   };
 
