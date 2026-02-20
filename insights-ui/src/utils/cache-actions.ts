@@ -5,6 +5,7 @@ import {
   revalidateIndustryPageTag,
   revalidatePortfolioManagersByTypeTag,
   revalidatePortfolioProfileTag,
+  revalidateTickerAndExchangeTag,
 } from '@/utils/ticker-v1-cache-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
@@ -39,4 +40,9 @@ export async function revalidatePortfolioProfileIfExists(userId: string) {
 export async function revalidatePortfolioProfileCache(portfolioManagerId: string) {
   revalidatePortfolioProfileTag(portfolioManagerId);
   return { success: true, message: `Revalidated portfolio profile cache for ${portfolioManagerId}` };
+}
+
+export async function revalidateTickerCache(ticker: string, exchange: string) {
+  revalidateTickerAndExchangeTag(ticker, exchange);
+  return { success: true, message: `Cache invalidated for ${exchange.toUpperCase()}:${ticker.toUpperCase()}` };
 }

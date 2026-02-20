@@ -135,7 +135,9 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
     <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-100">Quarterly Financial Metrics</h3>
+          <h3 className="text-lg font-semibold text-gray-100">
+            {data.dataFrequency === 'annual' ? 'Annual Financial Metrics' : 'Quarterly Financial Metrics'}
+          </h3>
           {metaInfo.length > 0 && <p className="text-xs text-gray-400 mt-1">{metaInfo.join(' • ')}</p>}
         </div>
         <div className="flex flex-wrap gap-2">

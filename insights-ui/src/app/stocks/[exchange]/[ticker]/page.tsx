@@ -444,8 +444,8 @@ function TickerChartsInfo({
         </div>
       </div>
 
-      {/* Quarterly Metrics Chart - Always reserve space to prevent layout shift */}
-      <div style={{ minHeight: '320px' }}>{quarterlyChartData ? <QuarterlyMetricsChart data={quarterlyChartData} /> : <QuarterlyChartSkeleton />}</div>
+      {/* Quarterly Metrics Chart - skeleton handles CLS during streaming; once resolved, only render when data exists */}
+      {quarterlyChartData && <QuarterlyMetricsChart data={quarterlyChartData} />}
     </section>
   );
 }
