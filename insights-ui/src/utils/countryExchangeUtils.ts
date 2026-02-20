@@ -14,6 +14,7 @@ export enum SupportedCountries {
   Taiwan = 'Taiwan',
   HongKong = 'HongKong',
   Korea = 'Korea',
+  Australia = 'Australia',
 }
 
 export enum USExchanges {
@@ -60,6 +61,10 @@ export enum KoreaExchanges {
   KONEX = 'KONEX',
 }
 
+export enum AustraliaExchanges {
+  ASX = 'ASX',
+}
+
 export type AllExchanges =
   | USExchanges
   | CanadaExchanges
@@ -69,7 +74,8 @@ export type AllExchanges =
   | JapanExchanges
   | TaiwanExchanges
   | HongKongExchanges
-  | KoreaExchanges;
+  | KoreaExchanges
+  | AustraliaExchanges;
 
 /** ---------- Constants ---------- */
 
@@ -91,6 +97,7 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   KoreaExchanges.KOSPI,
   KoreaExchanges.KOSDAQ,
   KoreaExchanges.KONEX,
+  AustraliaExchanges.ASX,
 ] as const;
 
 export const exchangeItems: StyledSelectItem[] = EXCHANGES.map((e) => ({ id: e, label: e }));
@@ -105,6 +112,7 @@ export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllExchanges[]> = 
   [SupportedCountries.Taiwan]: Object.values(TaiwanExchanges),
   [SupportedCountries.HongKong]: Object.values(HongKongExchanges),
   [SupportedCountries.Korea]: Object.values(KoreaExchanges),
+  [SupportedCountries.Australia]: Object.values(AustraliaExchanges),
 };
 
 export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
@@ -125,6 +133,7 @@ export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [KoreaExchanges.KOSPI]: SupportedCountries.Korea,
   [KoreaExchanges.KOSDAQ]: SupportedCountries.Korea,
   [KoreaExchanges.KONEX]: SupportedCountries.Korea,
+  [AustraliaExchanges.ASX]: SupportedCountries.Australia,
 };
 
 export type CountryCode = keyof typeof SupportedCountries;
@@ -200,6 +209,7 @@ export const getCountryCodeForSearchBarDisplay = (country: SupportedCountries): 
     [SupportedCountries.Taiwan]: 'TWN',
     [SupportedCountries.HongKong]: 'HKG',
     [SupportedCountries.Korea]: 'KOR',
+    [SupportedCountries.Australia]: 'AUS',
   };
   return countryCodeMap[country] || country;
 };
