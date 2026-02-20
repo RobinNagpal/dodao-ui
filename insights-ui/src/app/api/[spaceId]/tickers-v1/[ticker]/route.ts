@@ -6,8 +6,9 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { Prisma, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1FastResponse> {
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<TickerV1FastResponse | null> {
   const { spaceId, ticker } = await context.params;
+  const allowNull = req.nextUrl.searchParams.get('allowNull') === 'true';
 
   // Get ticker from DB with all related data
   const whereClause: Prisma.TickerV1WhereInput = {
@@ -15,25 +16,50 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     symbol: ticker.toUpperCase(),
   };
 
-  const tickerRecord: TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry } = await prisma.tickerV1.findFirstOrThrow({
-    where: whereClause,
-    include: {
-      categoryAnalysisResults: {
+  const tickerRecord: (TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry }) | null = allowNull
+    ? await prisma.tickerV1.findFirst({
+        where: whereClause,
         include: {
-          factorResults: {
+          categoryAnalysisResults: {
             include: {
-              analysisCategoryFactor: true,
+              factorResults: {
+                include: {
+                  analysisCategoryFactor: true,
+                },
+              },
             },
           },
+          futureRisks: true,
+          vsCompetition: true,
+          industry: true,
+          subIndustry: true,
+          cachedScoreEntry: true,
         },
-      },
-      futureRisks: true,
-      vsCompetition: true,
-      industry: true,
-      subIndustry: true,
-      cachedScoreEntry: true,
-    },
-  });
+      })
+    : await prisma.tickerV1.findFirstOrThrow({
+        where: whereClause,
+        include: {
+          categoryAnalysisResults: {
+            include: {
+              factorResults: {
+                include: {
+                  analysisCategoryFactor: true,
+                },
+              },
+            },
+          },
+          futureRisks: true,
+          vsCompetition: true,
+          industry: true,
+          subIndustry: true,
+          cachedScoreEntry: true,
+        },
+      });
+
+  // Return null if ticker not found and allowNull is true
+  if (!tickerRecord) {
+    return null;
+  }
 
   // Get missing reports for this ticker
   const missingReports = await getMissingReportsForTicker(spaceId, tickerRecord.id);
@@ -49,4 +75,4 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   };
 }
 
-export const GET = withErrorHandlingV2<TickerV1FastResponse>(getHandler);
+export const GET = withErrorHandlingV2<TickerV1FastResponse | null>(getHandler);

@@ -13,8 +13,9 @@ import { AllExchanges } from '@/utils/countryExchangeUtils';
 async function getHandler(
   req: NextRequest,
   context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }
-): Promise<TickerV1FastResponse> {
+): Promise<TickerV1FastResponse | null> {
   const { spaceId, ticker, exchange } = await context.params;
+  const allowNull = req.nextUrl.searchParams.get('allowNull') === 'true';
 
   // Get ticker from DB with all related data
   const whereClause: Prisma.TickerV1WhereInput = {
@@ -23,25 +24,48 @@ async function getHandler(
     exchange: exchange.toUpperCase(),
   };
 
-  const tickerRecord: (TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry }) | null =
-    await prisma.tickerV1.findFirstOrThrow({
-      where: whereClause,
-      include: {
-        categoryAnalysisResults: {
-          include: {
-            factorResults: {
-              include: {
-                analysisCategoryFactor: true,
+  const tickerRecord: (TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry }) | null = allowNull
+    ? await prisma.tickerV1.findFirst({
+        where: whereClause,
+        include: {
+          categoryAnalysisResults: {
+            include: {
+              factorResults: {
+                include: {
+                  analysisCategoryFactor: true,
+                },
               },
             },
           },
+          futureRisks: true,
+          vsCompetition: true,
+          industry: true,
+          subIndustry: true,
         },
-        futureRisks: true,
-        vsCompetition: true,
-        industry: true,
-        subIndustry: true,
-      },
-    });
+      })
+    : await prisma.tickerV1.findFirstOrThrow({
+        where: whereClause,
+        include: {
+          categoryAnalysisResults: {
+            include: {
+              factorResults: {
+                include: {
+                  analysisCategoryFactor: true,
+                },
+              },
+            },
+          },
+          futureRisks: true,
+          vsCompetition: true,
+          industry: true,
+          subIndustry: true,
+        },
+      });
+
+  // Return null if ticker not found and allowNull is true
+  if (!tickerRecord) {
+    return null;
+  }
 
   // Get missing reports for this ticker
   const missingReports = await getMissingReportsForTicker(spaceId, tickerRecord.id);
@@ -98,5 +122,5 @@ async function putHandler(
   return updatedTicker;
 }
 
-export const GET = withErrorHandlingV2<TickerV1FastResponse>(getHandler);
+export const GET = withErrorHandlingV2<TickerV1FastResponse | null>(getHandler);
 export const PUT = withLoggedInAdmin<TickerV1>(putHandler);

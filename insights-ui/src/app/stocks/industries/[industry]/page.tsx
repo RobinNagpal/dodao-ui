@@ -7,6 +7,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import type { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
@@ -37,7 +38,13 @@ type PageProps = {
 
 export default async function IndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const industryKey = decodeURIComponent(resolvedParams.industry);
+  const rawIndustryKey = decodeURIComponent(resolvedParams.industry);
+  const industryKey = rawIndustryKey.toUpperCase();
+
+  // Redirect lowercase/mixed-case URLs to the canonical uppercase URL
+  if (rawIndustryKey !== industryKey) {
+    permanentRedirect(`/stocks/industries/${industryKey}`);
+  }
 
   const baseUrl = getBaseUrlForServerSidePages();
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/country/${SupportedCountries.US}/tickers/industries/${industryKey}`;

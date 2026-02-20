@@ -8,7 +8,7 @@ import { NextRequest } from 'next/server';
 async function getHandler(
   req: NextRequest,
   context: { params: Promise<{ spaceId: string; country: string; industryKey: string }> }
-): Promise<SubIndustriesResponse> {
+): Promise<SubIndustriesResponse | null> {
   const { spaceId, country: countryParam, industryKey } = await context.params;
   const country = toSupportedCountry(countryParam);
 
@@ -79,7 +79,7 @@ async function getHandler(
 
   // Check if any filters are applied
   const filtersApplied = hasFiltersAppliedServer(cacheFilter, filters);
-  const industry = await prisma.tickerV1Industry.findUniqueOrThrow({
+  const industry = await prisma.tickerV1Industry.findUnique({
     where: {
       industryKey,
     },
@@ -92,6 +92,11 @@ async function getHandler(
     },
   });
 
+  // Return null if industry not found (UI handles gracefully)
+  if (!industry) {
+    return null;
+  }
+
   return {
     ...industry,
     subIndustries: formattedSubIndustries,
@@ -100,4 +105,4 @@ async function getHandler(
   };
 }
 
-export const GET = withErrorHandlingV2<SubIndustriesResponse>(getHandler);
+export const GET = withErrorHandlingV2<SubIndustriesResponse | null>(getHandler);
