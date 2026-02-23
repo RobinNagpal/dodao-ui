@@ -9,7 +9,9 @@ import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import { CardContent } from '@/components/ui/card';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { useEffect, useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { getSession, signIn } from 'next-auth/react';
+import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
+import { Session } from '@dodao/web-core/types/auth/Session';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -57,6 +59,10 @@ export default function LoginPage() {
       }
 
       if (result?.ok) {
+        // Get session and store token in localStorage (same as email login flow)
+        const session = (await getSession()) as Session | undefined;
+        setDoDAOTokenInLocalStorage(session);
+
         // Redirect to home page on successful sign-in
         window.location.href = '/';
         return null;
