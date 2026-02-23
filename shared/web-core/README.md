@@ -5,6 +5,7 @@ Shared component library and utilities for DoDAO UI projects in a pnpm workspace
 ## Overview
 
 `@dodao/web-core` provides:
+
 - 🧩 **Reusable React components** (auth, modals, layouts, forms)
 - 🛠️ **Utility functions** (Apollo client, analytics, auth helpers)
 - 📝 **Common TypeScript types** and interfaces
@@ -13,6 +14,7 @@ Shared component library and utilities for DoDAO UI projects in a pnpm workspace
 ## Architecture: pnpm Workspace Package
 
 This is a **local workspace package** that:
+
 - ✅ **Not published to npm** - stays within the monorepo
 - ✅ **Auto-linked by pnpm** - no manual transpilation needed
 - ✅ **Instant changes** - modifications reflect immediately in consumer projects
@@ -20,6 +22,7 @@ This is a **local workspace package** that:
 ### Consumer Setup
 
 Add to your project's `package.json`:
+
 ```json
 {
   "dependencies": {
@@ -29,10 +32,11 @@ Add to your project's `package.json`:
 ```
 
 Add to your `next.config.js` (only for styled-components support):
+
 ```js
 const nextConfig = {
   compiler: {
-    styledComponents: true,  // Required for web-core components
+    styledComponents: true, // Required for web-core components
   },
 };
 ```
@@ -57,6 +61,7 @@ When `web-core` uses a library that requires a **single instance** (React contex
 ### Internal-Only Dependencies
 
 Pure utilities can stay only in `web-core`:
+
 - `lodash`, `dayjs`, `uuid`, `clsx`
 
 ## Directory Structure

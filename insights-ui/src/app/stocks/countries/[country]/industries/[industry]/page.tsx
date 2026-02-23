@@ -7,6 +7,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { commonViewport, generateCountryIndustryStocksMetadata } from '@/utils/metadata-generators';
 import { getIndustryPageTag } from '@/utils/ticker-v1-cache-utils';
 import { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ country: string; industry: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -27,7 +28,13 @@ type PageProps = {
 export default async function CountryIndustryStocksPage({ params }: PageProps) {
   const resolvedParams = await params;
   const countryName = decodeURIComponent(resolvedParams.country);
-  const industryKey = decodeURIComponent(resolvedParams.industry);
+  const rawIndustryKey = decodeURIComponent(resolvedParams.industry);
+  const industryKey = rawIndustryKey.toUpperCase();
+
+  // Redirect lowercase/mixed-case URLs to the canonical uppercase URL
+  if (rawIndustryKey !== industryKey) {
+    permanentRedirect(`/stocks/countries/${countryName}/industries/${industryKey}`);
+  }
 
   // Convert countryName to SupportedCountries type
   const country = countryName as SupportedCountries;

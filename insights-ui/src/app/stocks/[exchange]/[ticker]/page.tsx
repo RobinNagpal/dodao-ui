@@ -61,29 +61,25 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 }
 
 /** Data fetchers */
-async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
   const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
-    const error = new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
-    (error as any).status = res.status; // Attach status for error handling
-    throw error;
+    // Server error (DB down, etc.) - throw to show error.tsx
+    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   }
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
-  if (!data) throw new Error('fetchTickerByExchange returned empty payload');
   return data;
 }
 
-async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}`;
+async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}?allowNull=true`;
   const res: Response = await fetch(url, { cache: 'no-store' });
   if (!res.ok) {
-    const error = new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
-    (error as any).status = res.status; // Attach status for error handling
-    throw error;
+    // Server error (DB down, etc.) - throw to show error.tsx
+    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
   }
   const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
-  if (!data) throw new Error('fetchTickerAnyExchange returned empty payload');
   return data;
 }
 
@@ -91,33 +87,29 @@ async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastRespo
 async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastResponse> {
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
-  try {
-    return await fetchTickerByExchange(exchange, ticker);
-  } catch {
-    noStore();
-    let any: TickerV1FastResponse;
-    try {
-      any = await fetchTickerAnyExchange(ticker);
-    } catch (fallbackError) {
-      const status = (fallbackError as any)?.status;
-      console.error(`fetchTickerAnyExchange failed for ${ticker} on exchange ${exchange}`);
-      console.error(fallbackError);
 
-      // Only call notFound() for 404 (ticker genuinely doesn't exist)
-      // For 500/503 (DB down, server errors), throw to show error.tsx
-      if (status === 404) {
-        notFound(); // Safe - ticker doesn't exist, won't change later
-      }
-
-      // For server errors, throw - will show error.tsx, not cached
-      throw new Error(`Service temporarily unavailable for ${ticker}`);
-    }
-    const canonicalExchange: string = any.exchange.toUpperCase();
-    if (canonicalExchange !== exchange) {
-      permanentRedirect(`/stocks/${canonicalExchange}/${any.symbol.toUpperCase()}`);
-    }
-    return any;
+  // Try fetching by specific exchange first
+  const tickerByExchange = await fetchTickerByExchange(exchange, ticker);
+  if (tickerByExchange) {
+    return tickerByExchange;
   }
+
+  // Not found on specified exchange, try any exchange (uncached)
+  noStore();
+  const tickerAnyExchange = await fetchTickerAnyExchange(ticker);
+
+  // Ticker doesn't exist at all - show 404
+  if (!tickerAnyExchange) {
+    notFound();
+  }
+
+  // Found on a different exchange - redirect to canonical URL
+  const canonicalExchange: string = tickerAnyExchange.exchange.toUpperCase();
+  if (canonicalExchange !== exchange) {
+    permanentRedirect(`/stocks/${canonicalExchange}/${tickerAnyExchange.symbol.toUpperCase()}`);
+  }
+
+  return tickerAnyExchange;
 }
 
 /** Competition + Similar fetchers (promise-based for Suspense) */
@@ -190,10 +182,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let metaDescription: string = '';
 
   try {
-    const data: TickerV1FastResponse = await fetchTickerByExchange(exchange, ticker);
-    companyName = data?.name ?? companyName;
-    summary = data?.summary ?? summary;
-    metaDescription = data?.metaDescription ?? '';
+    const data = await fetchTickerByExchange(exchange, ticker);
+    if (data) {
+      companyName = data.name ?? companyName;
+      summary = data.summary ?? summary;
+      metaDescription = data.metaDescription ?? '';
+    }
   } catch {
     /* keep generic */
   }
