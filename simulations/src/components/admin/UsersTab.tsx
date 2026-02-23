@@ -8,6 +8,7 @@ import UserRow from './UserRow';
 import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import SignInCodeModal from '../instructor/SignInCodeModal';
 
 interface User {
   id: string;
@@ -29,8 +30,10 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
+  const [showSignInCodeModal, setShowSignInCodeModal] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
+  const [signInCodeUser, setSignInCodeUser] = useState<User | null>(null);
 
   const {
     data: usersResponse,
@@ -51,6 +54,11 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const handleDeleteUser = (userId: string): void => {
     setDeleteUserId(userId);
     setShowDeleteConfirm(true);
+  };
+
+  const handleShowSignInCode = (user: User): void => {
+    setSignInCodeUser(user);
+    setShowSignInCodeModal(true);
   };
 
   const handleConfirmDelete = async (): Promise<void> => {
@@ -124,7 +132,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
                 </thead>
                 <tbody className="divide-y divide-emerald-50">
                   {users.map((user) => (
-                    <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} />
+                    <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onShowSignInCode={handleShowSignInCode} />
                   ))}
                 </tbody>
               </table>
@@ -157,6 +165,19 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
         confirmationText="Are you sure you want to delete this user? This action cannot be undone."
         askForTextInput={false}
       />
+
+      {signInCodeUser && (
+        <SignInCodeModal
+          isOpen={showSignInCodeModal}
+          onClose={() => {
+            setShowSignInCodeModal(false);
+            setSignInCodeUser(null);
+          }}
+          userId={signInCodeUser.id}
+          studentName={signInCodeUser.name || ''}
+          studentEmail={signInCodeUser.email || signInCodeUser.username}
+        />
+      )}
     </div>
   );
 }
