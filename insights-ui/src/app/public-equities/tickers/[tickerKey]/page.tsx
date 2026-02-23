@@ -1,5 +1,6 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { permanentRedirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
@@ -23,13 +24,19 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
 
       if (exchange) {
         permanentRedirect(`/stocks/${exchange}/${tickerKey}`);
+      } else {
+        // Ticker not found in database
+        notFound();
       }
+    } else {
+      // Server error (500, 503, etc.) - throw to show error page
+      throw new Error(`API returned ${exchangeResponse.status}: ${exchangeResponse.statusText}`);
     }
   } catch (error) {
     if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
       throw error;
     }
-    console.error('Error fetching ticker exchange info:', error);
-    // If API call fails, continue with current page logic as fallback
+    // Network error or other server issue - throw to show error page
+    throw error;
   }
 }
