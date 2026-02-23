@@ -1,9 +1,39 @@
+'use client';
+
 import { BlogInterfaceWithId } from '@/types/blog';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 
-export default function BlogsGrid({ posts, showViewAllButton = false }: { posts: BlogInterfaceWithId[]; length?: number; showViewAllButton?: boolean }) {
+export default function BlogsGrid({
+  posts,
+  showViewAllButton = false,
+  showCategoryButtons = true,
+}: {
+  posts: BlogInterfaceWithId[];
+  length?: number;
+  showViewAllButton?: boolean;
+  showCategoryButtons?: boolean;
+}) {
   const HeadingTag = showViewAllButton ? 'h2' : 'h1';
+
+  // Extract unique categories from posts
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(new Set(posts.map((post) => JSON.stringify({ title: post.category.title, slug: post.category.slug })))).map(
+      (categoryStr) => JSON.parse(categoryStr)
+    );
+    return [{ title: 'All', slug: 'all' }, ...uniqueCategories];
+  }, [posts]);
+
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Filter posts based on selected category
+  const filteredPosts = useMemo(() => {
+    if (!showCategoryButtons || selectedCategory === 'all') {
+      return posts;
+    }
+    return posts.filter((post) => post.category.slug === selectedCategory);
+  }, [posts, selectedCategory, showCategoryButtons]);
+
   return (
     <section className="bg-gray-800 pt-8 pb-6 sm:pt-10 sm:pb-8">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -17,8 +47,28 @@ export default function BlogsGrid({ posts, showViewAllButton = false }: { posts:
             </p>
           </div>
         </div>
+
+        {/* Category Tabs */}
+        {showCategoryButtons && (
+          <div className="mx-auto max-w-6xl sm:text-center mt-8 w-full">
+            <div className="flex flex-wrap justify-center gap-2 w-full">
+              {categories.map((category) => (
+                <button
+                  key={category.slug}
+                  onClick={() => setSelectedCategory(category.slug)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-normal ${
+                    selectedCategory === category.slug ? 'bg-indigo-600 text-white shadow-lg' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
+                  }`}
+                >
+                  {category.title}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mx-auto mt-2 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 pt-10 sm:mt-2 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <article key={post.id} className="flex max-w-xl flex-col justify-between">
               <div className="flex-col items-start">
                 <div className="flex items-center gap-x-4 text-xs">
