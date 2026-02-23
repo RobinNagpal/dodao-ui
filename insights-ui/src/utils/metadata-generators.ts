@@ -55,22 +55,28 @@ export const generateCountryStocksMetadata = (countryName: string): Metadata => 
 export const generateCountryIndustryStocksMetadata = async (countryName: string, industryKey: string): Promise<Metadata> => {
   const isUS = countryName === 'US';
 
+  // Normalize to uppercase — generateMetadata runs before page-level permanentRedirect,
+  // so lowercase keys can arrive here; uppercasing ensures we always hit the right record.
+  const normalizedIndustryKey = industryKey.toUpperCase();
+
   // Fetch industry data to get name and summary
-  let industryName = industryKey; // fallback to key
-  let industrySummary = `Browse ${industryKey} stocks and sub-industries across ${countryName} exchanges. View reports, metrics, and AI-driven insights to guide your investments.`;
+  let industryName = normalizedIndustryKey; // fallback to key
+  let industrySummary = `Browse ${normalizedIndustryKey} stocks and sub-industries across ${countryName} exchanges. View reports, metrics, and AI-driven insights to guide your investments.`;
 
   try {
-    const response = await fetch(`${getBaseUrl()}/api/industries/${industryKey}`, { next: { revalidate: 3600 } });
-    const industryData: TickerV1Industry = await response.json();
-    industryName = industryData.name ?? industryKey;
-    industrySummary = industryData.summary ?? industrySummary;
+    const response = await fetch(`${getBaseUrl()}/api/industries/${normalizedIndustryKey}`, { next: { revalidate: 3600 } });
+    if (response.ok) {
+      const industryData: TickerV1Industry = await response.json();
+      industryName = industryData.name ?? normalizedIndustryKey;
+      industrySummary = industryData.summary ?? industrySummary;
+    }
   } catch (error) {
     console.log('Error fetching industry data for metadata:', error);
   }
 
   const base = isUS
-    ? `https://koalagains.com/stocks/industries/${encodeURIComponent(industryKey)}`
-    : `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}/industries/${industryKey}`;
+    ? `https://koalagains.com/stocks/industries/${encodeURIComponent(normalizedIndustryKey)}`
+    : `https://koalagains.com/stocks/countries/${encodeURIComponent(countryName)}/industries/${normalizedIndustryKey}`;
 
   const title = `${industryName} Stocks in ${countryName} | KoalaGains`;
 

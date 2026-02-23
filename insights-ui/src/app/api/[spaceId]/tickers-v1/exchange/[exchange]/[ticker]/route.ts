@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
-import { TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
+import { tickerV1IncludeWithRelations, TickerV1FastResponse, TickerV1WithRelations } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
@@ -25,42 +25,8 @@ async function getHandler(
   };
 
   const tickerRecord: (TickerV1WithRelations & { industry: TickerV1Industry; subIndustry: TickerV1SubIndustry }) | null = allowNull
-    ? await prisma.tickerV1.findFirst({
-        where: whereClause,
-        include: {
-          categoryAnalysisResults: {
-            include: {
-              factorResults: {
-                include: {
-                  analysisCategoryFactor: true,
-                },
-              },
-            },
-          },
-          futureRisks: true,
-          vsCompetition: true,
-          industry: true,
-          subIndustry: true,
-        },
-      })
-    : await prisma.tickerV1.findFirstOrThrow({
-        where: whereClause,
-        include: {
-          categoryAnalysisResults: {
-            include: {
-              factorResults: {
-                include: {
-                  analysisCategoryFactor: true,
-                },
-              },
-            },
-          },
-          futureRisks: true,
-          vsCompetition: true,
-          industry: true,
-          subIndustry: true,
-        },
-      });
+    ? await prisma.tickerV1.findFirst({ where: whereClause, include: tickerV1IncludeWithRelations })
+    : await prisma.tickerV1.findFirstOrThrow({ where: whereClause, include: tickerV1IncludeWithRelations });
 
   // Return null if ticker not found and allowNull is true
   if (!tickerRecord) {

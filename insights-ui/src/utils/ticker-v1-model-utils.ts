@@ -17,6 +17,23 @@ import {
   TickerV1VsCompetition,
 } from '@prisma/client';
 
+export const tickerV1IncludeWithRelations = {
+  categoryAnalysisResults: {
+    include: {
+      factorResults: {
+        include: {
+          analysisCategoryFactor: true,
+        },
+      },
+    },
+  },
+  futureRisks: true,
+  vsCompetition: true,
+  industry: true,
+  subIndustry: true,
+  cachedScoreEntry: true,
+} as const;
+
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
   factorResults: (TickerV1AnalysisCategoryFactorResult & {
     analysisCategoryFactor: {
