@@ -158,7 +158,7 @@ export default async function Home() {
       <ServiceNavigation />
       <KoalagainsOfferings />
       <KoalaGainsPlatform />
-      <BlogsGrid posts={posts} showViewAllButton={true} />
+      <BlogsGrid posts={posts} showViewAllButton={true} showCategoryButtons={false} />
       <Contact />
       <Footer />
     </div>

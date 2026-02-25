@@ -1,29 +1,29 @@
 ---
-title: "Estimating REIT Intrinsic Market Cap via Regression"
-abstract: "This article explains how to build a regression model to estimate a REIT’s intrinsic market capitalization. We cover selecting six core variables—including AFFO per Share, Debt‑to‑Capital Ratio, Operating Expense Ratio, Dividend Payout Ratio, Common Share Ratio, and Interest Coverage—applying log transformations and z‑score standardization, incorporating property‑type dummy variables, and comparing regression techniques (OLS, Ridge, Lasso, Elastic Net). Each variable and methodological choice is detailed with examples and rationale for why alternatives were not selected."
-date: "April 17, 2025"
-datetime: "2025-04-17"
-category: { title: "REITs - Valuation", slug: "reits-valuation" }
-slug: "2025-04-17-determine-reit-market-cap"
+title: 'Estimating REIT Intrinsic Market Cap via Regression'
+abstract: 'This article explains how to build a regression model to estimate a REIT’s intrinsic market capitalization. We cover selecting six core variables—including AFFO per Share, Debt‑to‑Capital Ratio, Operating Expense Ratio, Dividend Payout Ratio, Common Share Ratio, and Interest Coverage—applying log transformations and z‑score standardization, incorporating property‑type dummy variables, and comparing regression techniques (OLS, Ridge, Lasso, Elastic Net). Each variable and methodological choice is detailed with examples and rationale for why alternatives were not selected.'
+date: 'April 17, 2025'
+datetime: '2025-04-17'
+category: { title: 'Real Estate & REITs', slug: 'real-estate-reits' }
+slug: '2025-04-17-determine-reit-market-cap'
 seoKeywords:
   [
-    "REIT Intrinsic Value",
-    "Market Capitalization",
-    "Regression Analysis",
-    "AFFO per Share",
-    "Debt-to-Capital Ratio",
-    "Operating Expense Ratio",
-    "Dividend Payout Ratio",
-    "Common Share Ratio",
-    "Interest Coverage Ratio",
-    "Dummy Variables",
-    "OLS Regression",
-    "Ridge Regression",
-    "Lasso Regression",
-    "Elastic Net",
-    "Multicollinearity",
-    "Z-Score Standardization",
-    "Log Transformation"
+    'REIT Intrinsic Value',
+    'Market Capitalization',
+    'Regression Analysis',
+    'AFFO per Share',
+    'Debt-to-Capital Ratio',
+    'Operating Expense Ratio',
+    'Dividend Payout Ratio',
+    'Common Share Ratio',
+    'Interest Coverage Ratio',
+    'Dummy Variables',
+    'OLS Regression',
+    'Ridge Regression',
+    'Lasso Regression',
+    'Elastic Net',
+    'Multicollinearity',
+    'Z-Score Standardization',
+    'Log Transformation',
   ]
 ---
 
@@ -78,6 +78,7 @@ If REIT A has 65 million shares outstanding, then
 \]
 
 **Alternatives not used.**
+
 - **FFO per Share:** Omits maintenance capex, so it overstates the cash truly available for distributions.
 - **Net Asset Value (NAV) per Share:** NAV reflects the liquidation value of properties minus liabilities. However, NAV can lag market conditions because property appraisals update infrequently, and it says nothing about ongoing cash generation.
 
@@ -100,6 +101,7 @@ By choosing AFFO per Share, we focus squarely on recurring cash flow per share a
 \]
 
 **Alternatives not used.**
+
 - **Debt‑to‑Equity:** Uses equity only in the denominator. Because equity values (share price × shares) can swing with market sentiment, Debt‑to‑Equity can jump or fall sharply even if debt stays constant. That adds noise.
 - **Debt‑to‑Assets:** Divides debt by total assets. Asset values include non‑core items and can change with appraisals or accounting adjustments, giving a mixed signal. Debt‑to‑Capital ties debt to total financing, a cleaner reflection of leverage structure.
 
@@ -122,6 +124,7 @@ Operating Expenses include property taxes, maintenance, insurance, management fe
 \]
 
 **Alternatives not used.**
+
 - **Net Operating Income (NOI) Margin:** NOI = Revenue – OpEx; NOI Margin = NOI/Revenue = 1 – OpEx Ratio. Including both OpEx Ratio and NOI Margin would be redundant, causing perfect multicollinearity.
 - **General & Administrative (G&A) Ratio:** Captures only corporate overhead, missing property‑level costs. We want the full operating expense base to link directly to AFFO.
 
@@ -142,6 +145,7 @@ Operating Expenses include property taxes, maintenance, insurance, management fe
 \]
 
 **Alternatives not used.**
+
 - **Dividend Yield:** Dividend/Share Price mixes in share price, which is part of our target (market cap = price × shares). That feedback loop would let the model “cheat” by leaning on current market sentiment rather than fundamental cash flow.
 - **Dividend per Share:** Ignores the AFFO base. A \$1 dividend is very different if AFFO/share is \$2 versus \$4. We want the payout as a fraction of cash generated, not the dollar amount alone.
 
@@ -164,6 +168,7 @@ OP Units refers to operating partnership units in a UPREIT structure.
 \]
 
 **Alternatives not used.**
+
 - **Total Share Count:** Without mix, raw shares say nothing about the quality or seniority of claims.
 - **Preferred Dividend Coverage:** Focuses only on preferred shares but misses dilution of voting power from OP Units.
 
@@ -188,6 +193,7 @@ A higher ratio means the REIT comfortably covers its debt service with operating
 That means it generates five times the cash needed to pay interest.
 
 **Alternatives not used.**
+
 - **Debt Service Coverage Ratio (DSCR):** Includes principal repayments in addition to interest. DSCR can fluctuate with scheduled amortization even if cash flow steady. We isolate interest coverage to focus on pure interest‑rate risk.
 - **Cash Ratio (Cash ÷ Current Liabilities):** Closely tracks AFFO and interest coverage; adds little independent predictive value once the other measures are controlled for.
 
@@ -207,6 +213,7 @@ A log transform compresses large numbers and makes the relationship between inpu
 \]
 
 **Example.**
+
 - REIT G has MarketCap \$0.2 billion → \(\ln(200\,\text{million}) \approx 12.2\).
 - REIT H has MarketCap \$20 billion → \(\ln(20\,000\,\text{million}) \approx 16.8\).
 
@@ -238,10 +245,12 @@ Each method draws a straight‑line (or, in multiple dimensions, a flat hyperpla
 **How it works.** OLS finds the coefficients that minimize the sum of squared residuals—differences between actual and predicted values of the dependent variable.
 
 **Pros.**
+
 - Very simple to implement and interpret.
 - Gives unbiased coefficient estimates if standard assumptions hold.
 
 **Cons.**
+
 - Sensitive to outliers.
 - Struggles when independent variables are highly correlated (multicollinearity).
 
@@ -253,10 +262,12 @@ With just six well‑chosen inputs and a healthy sample size (e.g., 100+ REITs),
 **How it works.** Ridge adds a penalty proportional to the sum of squared coefficients to the OLS objective. This shrinks all coefficients toward zero but does not eliminate any completely.
 
 **Pros.**
+
 - Reduces variance when inputs are correlated.
 - More stable coefficient estimates under multicollinearity.
 
 **Cons.**
+
 - Estimated coefficients are biased downward.
 - Does not perform variable selection.
 
@@ -268,10 +279,12 @@ If you detect high multicollinearity among your six factors (e.g., Variance Infl
 **How it works.** Lasso adds a penalty proportional to the sum of absolute coefficient values. This encourages some coefficients to shrink exactly to zero, effectively selecting a subset of predictors.
 
 **Pros.**
+
 - Performs automatic variable selection.
 - Produces simpler, more interpretable models.
 
 **Cons.**
+
 - Can arbitrarily drop one of two highly correlated variables.
 - Coefficients are biased.
 
@@ -283,10 +296,12 @@ If you start with a larger pool of candidate variables and want the model to pic
 **How it works.** Elastic Net combines the Ridge (L2) and Lasso (L1) penalties in a single framework. It can both shrink coefficients and set some to zero.
 
 **Pros.**
+
 - Balances stability under correlation with variable selection.
 - Flexible tuning of mixture between L1 and L2 penalties.
 
 **Cons.**
+
 - Requires tuning two penalty parameters instead of one.
 - Slightly more complex to implement.
 
@@ -306,7 +321,7 @@ For our six‑input REIT model, we recommend starting with **OLS**. Its simplici
 For each input \(X_j\), compute the \(R^2\) of regressing \(X_j\) on the other inputs. Then
 
 \[
-\text{VIF}_j = \frac{1}{1 - R^2_j}.
+\text{VIF}\_j = \frac{1}{1 - R^2_j}.
 \]
 
 A common rule of thumb is that VIF above 5 (or more conservatively, above 10) signals problematic collinearity.
@@ -323,9 +338,9 @@ Since we have only six core inputs chosen to be largely independent, severe mult
 
 REITs operate in different property sectors—Residential, Office, Retail, and Industrial. Sector dynamics can affect valuations independently of financial ratios. To capture that, we add three dummy variables:
 
-- \(D_{Res}\) = 1 if a REIT is Residential, else 0
-- \(D_{Off}\) = 1 if Office
-- \(D_{Ret}\) = 1 if Retail
+- \(D\_{Res}\) = 1 if a REIT is Residential, else 0
+- \(D\_{Off}\) = 1 if Office
+- \(D\_{Ret}\) = 1 if Retail
 
 We omit Industrial as the baseline. These dummies let the regression shift the expected intrinsic value for each property type, holding all else constant.
 
@@ -338,35 +353,36 @@ Putting everything together—the six standardized, transformed core inputs and 
 \[
 \boxed{
 \begin{aligned}
-Z_{\ln MktCap,i}
+Z*{\ln MktCap,i}
 &= \beta_0 \\
-&\quad + \beta_1\,Z_{\ln AFFO,i} \\
-&\quad + \beta_2\,Z_{DebtCap,i} \\
-&\quad + \beta_3\,Z_{OpEx,i} \\
-&\quad + \beta_4\,Z_{Payout,i} \\
-&\quad + \beta_5\,Z_{CommonShare,i} \\
-&\quad + \beta_6\,Z_{IntCov,i} \\
-&\quad + \gamma_1\,D_{Res,i}
-+ \gamma_2\,D_{Off,i}
-+ \gamma_3\,D_{Ret,i}
-\\
-&\quad + \varepsilon_i
-\end{aligned}
-}
-\]
+&\quad + \beta_1\,Z*{\ln AFFO,i} \\
+&\quad + \beta*2\,Z*{DebtCap,i} \\
+&\quad + \beta*3\,Z*{OpEx,i} \\
+&\quad + \beta*4\,Z*{Payout,i} \\
+&\quad + \beta*5\,Z*{CommonShare,i} \\
+&\quad + \beta*6\,Z*{IntCov,i} \\
+&\quad + \gamma*1\,D*{Res,i}
+
+- \gamma*2\,D*{Off,i}
+- \gamma*3\,D*{Ret,i}
+  \\
+  &\quad + \varepsilon_i
+  \end{aligned}
+  }
+  \]
 
 #### Equation Image
+
 ![ELS Balance Sheet](/images/blogs/2025-04-17-determine-reit-market-cap/equation_image.jpg)
 
-
-- \(Z_{\ln MktCap,i}\) = standardized log of REIT \(i\)’s market capitalization
-- \(Z_{\ln AFFO,i}\) = standardized log of AFFO per share for REIT \(i\)
-- \(Z_{DebtCap,i}\) = standardized debt‑to‑capital ratio
-- \(Z_{OpEx,i}\) = standardized operating expense ratio
-- \(Z_{Payout,i}\) = standardized dividend payout ratio
-- \(Z_{CommonShare,i}\) = standardized common share ratio
-- \(Z_{IntCov,i}\) = standardized interest coverage ratio
-- \(D_{Res,i}, D_{Off,i}, D_{Ret,i}\) = dummy indicators for property type
+- \(Z\_{\ln MktCap,i}\) = standardized log of REIT \(i\)’s market capitalization
+- \(Z\_{\ln AFFO,i}\) = standardized log of AFFO per share for REIT \(i\)
+- \(Z\_{DebtCap,i}\) = standardized debt‑to‑capital ratio
+- \(Z\_{OpEx,i}\) = standardized operating expense ratio
+- \(Z\_{Payout,i}\) = standardized dividend payout ratio
+- \(Z\_{CommonShare,i}\) = standardized common share ratio
+- \(Z\_{IntCov,i}\) = standardized interest coverage ratio
+- \(D*{Res,i}, D*{Off,i}, D\_{Ret,i}\) = dummy indicators for property type
 - \(\varepsilon_i\) = residual error term
 
 ## Steps to Implement the Model
@@ -374,6 +390,7 @@ Z_{\ln MktCap,i}
 1. **Data Collection.** Gather the latest financial statements for each REIT. Extract Net Income, Depreciation & Amortization, maintenance CapEx, total debt, total equity, operating expenses, revenue, dividends, share counts by class, and interest expense.
 
 2. **Compute Core Inputs.**
+
 - AFFO per Share = (Net Income + D&A – Maintenance CapEx) / Common Shares
 - Debt‑to‑Capital = Debt / (Debt + Equity)
 - OpEx Ratio = Operating Expenses / Revenue
@@ -382,20 +399,24 @@ Z_{\ln MktCap,i}
 - Interest Coverage = AFFO / Interest Expense
 
 3. **Transform & Standardize.**
+
 - Apply natural log to MarketCap and AFFO per Share.
 - Compute means and standard deviations for each transformed or ratio variable.
 - Calculate Z‑scores for all inputs and the dependent variable.
 
 4. **Run Regression.**
+
 - Fit an OLS model with the seven numeric predictors plus three dummies.
 - Record coefficient estimates \(\beta_j\) and \(\gamma_k\), along with standard errors and \(R^2\).
 
 5. **Validate & Diagnose.**
+
 - Check VIFs for multicollinearity.
 - Inspect residuals for normality and homoscedasticity.
 - If issues arise, consider Ridge or Elastic Net.
 
 6. **Interpret & Compare.**
+
 - For each REIT, compute the predicted standardized log market cap.
 - Transform predictions back to the original scale if desired.
 - Compare predicted intrinsic market cap to actual market cap to flag undervalued or overvalued REITs.
