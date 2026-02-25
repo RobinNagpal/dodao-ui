@@ -3,13 +3,13 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 
 interface ExchangeResponse {
-  exchange: string;
+  exchange: string | null;
 }
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<ExchangeResponse> {
   const { spaceId, ticker } = await context.params;
 
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+  const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
       spaceId: spaceId,
       symbol: ticker.toUpperCase(),
@@ -20,7 +20,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   });
 
   return {
-    exchange: tickerRecord.exchange,
+    exchange: tickerRecord?.exchange || null,
   };
 }
 

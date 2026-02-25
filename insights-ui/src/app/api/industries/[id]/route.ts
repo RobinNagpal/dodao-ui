@@ -13,9 +13,9 @@ export interface IndustryUpdateRequest {
   archived?: boolean;
 }
 
-async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<IndustryWithSubIndustries> {
+async function getHandler(request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<IndustryWithSubIndustries | null> {
   const { id } = await params;
-  return prisma.tickerV1Industry.findUniqueOrThrow({
+  return prisma.tickerV1Industry.findUnique({
     where: {
       industryKey: id,
     },
@@ -59,6 +59,6 @@ async function deleteHandler(
   return { success: true };
 }
 
-export const GET = withErrorHandlingV2<IndustryWithSubIndustries>(getHandler);
+export const GET = withErrorHandlingV2<IndustryWithSubIndustries | null>(getHandler);
 export const PUT = withLoggedInAdmin<TickerV1Industry>(putHandler);
 export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);

@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { permanentRedirect, notFound } from 'next/navigation';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
@@ -23,13 +23,20 @@ export default async function CriterionDetailsPage({ params }: { params: Promise
       const exchange = exchangeData.exchange;
 
       if (exchange) {
-        redirect(`/stocks/${exchange}/${tickerKey}`);
+        permanentRedirect(`/stocks/${exchange}/${tickerKey}`);
+      } else {
+        // Ticker not found in database
+        notFound();
       }
+    } else {
+      // Server error (500, 503, etc.) - throw to show error page
+      throw new Error(`API returned ${exchangeResponse.status}: ${exchangeResponse.statusText}`);
     }
   } catch (error) {
     if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
       throw error;
     }
-    console.error('Error fetching ticker exchange info:', error);
+    // Network error or other server issue - throw to show error page
+    throw error;
   }
 }
