@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { useAuthCheck, UseAuthCheckOptions } from './useAuthCheck';
 import AdminLoading from '@/components/admin/AdminLoading';
 import InstructorLoading from '@/components/instructor/InstructorLoading';
@@ -32,7 +31,7 @@ interface UseAuthGuardReturn {
    * Renders the appropriate loading component if auth is still being checked or user is unauthorized
    * Returns null if authorized and ready
    */
-  renderAuthGuard: () => ReactNode | null;
+  renderAuthGuard: () => JSX.Element | null;
   /**
    * Checks if any loading condition is active
    */
@@ -50,7 +49,7 @@ export function useAuthGuard(options: UseAuthGuardOptions): UseAuthGuardReturn {
 
   const isLoading = additionalLoadingConditions.some((condition) => condition);
 
-  const renderAuthGuard = (): ReactNode | null => {
+  const renderAuthGuard = (): JSX.Element | null => {
     // Still checking auth or loading session
     if (status === 'loading' || isAuthorized === null) {
       const defaultText = loadingText || 'Loading...';

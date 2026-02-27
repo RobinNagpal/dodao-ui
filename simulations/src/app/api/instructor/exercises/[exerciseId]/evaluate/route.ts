@@ -3,7 +3,7 @@ import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { evaluateStudentPrompt } from '@/utils/llm-utils';
-import { requireInstructorUser } from '@/utils/user-utils';
+import { requireAdminOrInstructorUser } from '@/utils/user-utils';
 
 interface EvaluatePromptRequest {
   studentId: string;
@@ -32,7 +32,7 @@ async function postHandler(
   }
 
   // Verify user has instructor role
-  const user = await requireInstructorUser(userId);
+  const user = await requireAdminOrInstructorUser(userId);
 
   // Get exercise details with grading logic
   const exercise = await prisma.moduleExercise.findFirst({

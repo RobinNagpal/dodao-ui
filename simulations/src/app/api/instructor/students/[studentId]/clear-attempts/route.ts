@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUserAndActivityLog } from '@/middleware/withActivityLogging';
 import { DeleteResponse } from '@/types/api';
-import { requireInstructorUser } from '@/utils/user-utils';
+import { requireAdminOrInstructorUser } from '@/utils/user-utils';
 
 // DELETE /api/instructor/students/[studentId]/clear-attempts?caseStudyId=xxx - Clear all attempts, final submission, and final summary for a student
 async function deleteHandler(
@@ -20,20 +20,27 @@ async function deleteHandler(
     throw new Error('Case study ID is required');
   }
 
-  // Verify user has instructor role
-  const user = await requireInstructorUser(userId);
+  // Verify user has instructor or admin role
+  const user = await requireAdminOrInstructorUser(userId);
 
-  // First verify instructor has access to this student through the case study
-  const student = await prisma.enrollmentStudent.findFirst({
-    where: {
-      id: studentId,
+  // Build where clause - instructors can only access their own students, admins can access all
+  const whereClause: any = {
+    id: studentId,
+    archive: false,
+    enrollment: {
+      caseStudyId: caseStudyId,
       archive: false,
-      enrollment: {
-        caseStudyId: caseStudyId,
-        assignedInstructorId: userId,
-        archive: false,
-      },
     },
+  };
+
+  // Only filter by instructor ID if user is an instructor (admins can access all students)
+  if (user.role === 'Instructor') {
+    whereClause.enrollment.assignedInstructorId = userId;
+  }
+
+  // Find the student with access check
+  const student = await prisma.enrollmentStudent.findFirst({
+    where: whereClause,
     include: {
       enrollment: {
         include: {
@@ -58,14 +65,6 @@ async function deleteHandler(
 
   if (!student) {
     throw new Error('Student not found or you do not have access to this student');
-  }
-
-  // Verify instructor has access to this case study (skip for admin)
-  if (user.role !== 'Instructor') {
-    const hasAccess = student.enrollment.assignedInstructorId === userId;
-    if (!hasAccess) {
-      throw new Error('You do not have access to this student');
-    }
   }
 
   // Get all exercise IDs for this case study
