@@ -13,7 +13,7 @@ interface GenerateSignInCodeResponse {
 
 /**
  * GET /api/users/[id]/sign-in-code
- * Fetch the current active sign-in code for a user (student or instructor)
+ * Fetch the current active sign-in code for any user
  * Only admins and instructors can fetch codes
  */
 async function getHandler(
@@ -38,7 +38,7 @@ async function getHandler(
 
 /**
  * POST /api/users/[id]/sign-in-code
- * Generate a new sign-in code for a user (student or instructor)
+ * Generate a new sign-in code for any user
  * Only admins and instructors can generate codes
  */
 async function postHandler(
@@ -51,18 +51,10 @@ async function postHandler(
 
   await requireAdminOrInstructorUser(userId);
 
-  // Verify the target user exists and is a student or instructor
-  const targetUser = await prisma.user.findUnique({
+  // Verify the target user exists
+  const targetUser = await prisma.user.findFirstOrThrow({
     where: { id: targetUserId },
   });
-
-  if (!targetUser) {
-    throw new Error('User not found');
-  }
-
-  if (targetUser.role !== 'Student' && targetUser.role !== 'Instructor') {
-    throw new Error('Sign-in codes can only be generated for students and instructors');
-  }
 
   // Deactivate all existing codes for this user
   await prisma.studentSignInCode.updateMany({

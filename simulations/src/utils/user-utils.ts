@@ -28,9 +28,7 @@ export interface CreateUserInput {
   role: UserRole;
 }
 
-export interface CreateUserResult extends User {
-  signInCode?: string;
-}
+export interface CreateUserResult extends User {}
 
 export function isTestUserEmail(email: string) {
   const cleanedEmail = email.toLowerCase().trim();
@@ -52,18 +50,14 @@ export async function createNewUser(input: CreateUserInput): Promise<CreateUserR
     },
   });
 
-  // Generate sign-in code for students and instructors
-  let signInCode: string | undefined;
-  if (role === UserRole.Student || role === UserRole.Instructor) {
-    const codeRecord = await createSignInCodeForUser(
-      user.id,
-      user.id, // For initial creation, user creates their own code
-      30 // 30 days expiration as number
-    );
-    signInCode = codeRecord.code;
-  }
+  // Generate sign-in code for all users
+  await createSignInCodeForUser(
+    user.id,
+    user.id, // For initial creation, user creates their own code
+    30 // 30 days expiration as number
+  );
 
-  return { ...user, signInCode };
+  return user;
 }
 
 export async function getOrCreateUser(email: string, role: UserRole, name?: string): Promise<CreateUserResult> {

@@ -15,8 +15,6 @@ interface UserRowProps {
 }
 
 export default function UserRow({ user, onEdit, onDelete, onShowSignInCode }: UserRowProps): JSX.Element {
-  const showSignInCodeButton = user.role === UserRole.Student || user.role === UserRole.Instructor;
-
   return (
     <tr key={user.id} className="hover:bg-emerald-50/50 transition-colors">
       <td className="px-6 py-4">
@@ -42,7 +40,7 @@ export default function UserRow({ user, onEdit, onDelete, onShowSignInCode }: Us
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <div className="flex space-x-3">
-          {showSignInCodeButton && onShowSignInCode && (
+          {onShowSignInCode && (
             <button
               onClick={() => onShowSignInCode(user)}
               className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors flex items-center"
