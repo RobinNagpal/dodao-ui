@@ -69,5 +69,11 @@ Checklist for contribution to Tidbits Hub:
 - [ ] Understand what is a Clickable Demo
 - [ ] Understand the features we want to add in the Tidbits Hub application
 
-### Coding Patters
-[Coding Instructions](docs/ai-prompts/UIIInstructions)
+### AI Development Guidelines
+For AI-assisted development and coding patterns, refer to our comprehensive knowledge base:
+- **[AI Knowledge Base](docs/ai-knowledge/)** - Complete development guidelines and patterns
+  - [Backend Instructions](docs/ai-knowledge/BackendInstructions.md) - Next.js API development patterns
+  - [UI Instructions](docs/ai-knowledge/UIIInstructions.md) - React/Next.js UI development patterns
+  - [UI Components](docs/ai-knowledge/ui/) - Specific component guidelines (buttons, forms, page structure, themes)
+
+These documents contain the latest coding patterns, best practices, and examples used across all projects in this repository.

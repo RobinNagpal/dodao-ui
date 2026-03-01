@@ -21,6 +21,7 @@ export default async function TickerDetailsPage({ params }: { params: Promise<{ 
   );
   const industryGroupCriteria: IndustryGroupCriteriaDefinition = (await criteriaResponse.json()) as IndustryGroupCriteriaDefinition;
   const tickerResponse = await fetch(`${getBaseUrl()}/api/tickers/${tickerKey}`, { cache: 'no-cache' });
+}
 
 ```
 - For page components I add breadcrumbs.  
@@ -99,7 +100,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
     error,
     reFetchData,
   } = useFetchData<FullNestedTickerReport>(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' }, 'Failed to fetch ticker report');
-  
+
 }
 ```
 
@@ -185,7 +186,7 @@ export default function TickerDetailsDebugPage({ ticker }: { ticker: string }) {
     error,
     reFetchData,
   } = useFetchData<FullNestedTickerReport>(`${getBaseUrl()}/api/tickers/${ticker}`, { cache: 'no-cache' }, 'Failed to fetch ticker report');
-  
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -238,3 +239,39 @@ export default function PromptInvocationsListPage(): JSX.Element {
 
 ```
 
+- For authentication and loading management in client components, use the useAuthGuard hook (available in simulations project)
+```tsx
+'use client';
+
+import { useAuthGuard } from '@/hooks/useAuthGuard';
+import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
+export default function StudentDashboard() {
+  const { data: enrolledCaseStudies, loading: loadingCaseStudies } = useFetchData<CaseStudyWithRelationsForStudents[]>(
+    `${getBaseUrl()}/api/case-studies`,
+    { skipInitialFetch: false },
+    'Failed to load enrolled case studies'
+  );
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'any', // or specific roles like 'Student', 'Instructor', 'Admin'
+    loadingType: 'student', // 'admin', 'instructor', or 'student'
+    loadingText: 'Loading your dashboard...',
+    loadingSubtitle: 'Preparing your personalized learning experience',
+    additionalLoadingConditions: [loadingCaseStudies], // Additional loading states to wait for
+  });
+
+  // This will render loading/auth components if needed, or null if ready
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return loadingGuard;
+
+  return (
+    <div>
+      {/* Your component content here */}
+      <h1>Welcome, {session?.email}</h1>
+      {/* Rest of component */}
+    </div>
+  );
+}
+```
