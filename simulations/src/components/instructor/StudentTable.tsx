@@ -100,7 +100,7 @@ export default function StudentTable({
     if (selectedStudentForReport && !showDownloadModal) {
       refetchViewReport();
     }
-  }, [selectedStudentForReport, showDownloadModal]);
+  }, [selectedStudentForReport, showDownloadModal, refetchViewReport]);
 
   // Effect to show view modal when report data is loaded
   useEffect(() => {
