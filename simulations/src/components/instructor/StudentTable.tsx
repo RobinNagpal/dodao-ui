@@ -18,6 +18,7 @@ interface StudentTableProps {
   modules: ModuleTableData[];
   classEnrollmentId: string;
   caseStudyId: string;
+  userType?: 'admin' | 'instructor';
   onClearStudentAttempts: (studentId: string, studentEmail: string) => void;
   onDeleteAttempt: (attemptId: string, studentId: string, studentEmail: string, exerciseTitle: string) => void;
   onEvaluateAttempt?: (attemptId: string, exerciseId: string, studentId: string) => void;
@@ -27,11 +28,14 @@ interface StudentTableProps {
   evaluatingAttempts?: Set<string>;
 }
 
+const basePathFromUserType = (userType: 'admin' | 'instructor') => (userType === 'admin' ? '/admin' : '/instructor');
+
 export default function StudentTable({
   students,
   modules,
   classEnrollmentId,
   caseStudyId,
+  userType = 'instructor',
   onClearStudentAttempts,
   onDeleteAttempt,
   onEvaluateAttempt,
@@ -40,6 +44,7 @@ export default function StudentTable({
   deletingAttempt,
   evaluatingAttempts,
 }: StudentTableProps) {
+  const basePath = basePathFromUserType(userType);
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
   const [selectedFinalSummary, setSelectedFinalSummary] = useState<{
@@ -200,7 +205,7 @@ export default function StudentTable({
                   <div className="flex items-center space-x-3">
                     <div className="flex-1">
                       <Link
-                        href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.id}`}
+                        href={`${basePath}/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.id}`}
                         className="group flex items-center space-x-2 w-full text-left transition-all duration-200 hover:text-purple-600 cursor-pointer"
                         title={`View details for ${student.name || student.email}`}
                       >

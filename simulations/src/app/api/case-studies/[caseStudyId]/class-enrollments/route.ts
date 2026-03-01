@@ -1,11 +1,36 @@
 import { prismaAdapter } from '@/app/api/auth/[...nextauth]/authOptions';
 import { prisma } from '@/prisma';
-import { CreateEnrollmentRequestForCaseStudy } from '@/types/api';
+import { CreateEnrollmentRequestForCaseStudy, EnrollmentWithStudents } from '@/types/api';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest } from 'next/server';
 import { requireAdminUser } from '@/utils/user-utils';
+
+// GET /api/case-studies/[caseStudyId]/class-enrollments - Get enrollments for a case study for admin only
+async function getHandler(
+  req: NextRequest,
+  userContext: DoDaoJwtTokenPayload,
+  { params }: { params: Promise<{ caseStudyId: string }> }
+): Promise<EnrollmentWithStudents[]> {
+  const { caseStudyId } = await params;
+
+  await requireAdminUser(userContext.userId, 'Only admins can fetch all class enrollments');
+
+  const enrollments = await prisma.classCaseStudyEnrollment.findMany({
+    where: { caseStudyId, archive: false },
+    include: {
+      students: {
+        where: { archive: false },
+        orderBy: { createdAt: 'asc' },
+        include: { finalSubmission: true },
+      },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return enrollments as EnrollmentWithStudents[];
+}
 
 // POST /api/case-studies/[caseStudyId]/class-enrollments - Create a new enrollment for a specific case study
 async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ caseStudyId: string }> }): Promise<string> {
@@ -49,4 +74,5 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload, 
   return 'Enrollment created successfully';
 }
 
+export const GET = withLoggedInUser<EnrollmentWithStudents[]>(getHandler);
 export const POST = withLoggedInUser<string>(postHandler);

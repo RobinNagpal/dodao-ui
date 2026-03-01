@@ -4,14 +4,12 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Plus, Users } from 'lucide-react';
 import EnrollmentRow from './EnrollmentRow';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { DeleteResponse, EnrollmentWithRelations } from '@/types/api';
 import ManageStudentsModal from './ManageStudentsModal';
 
 export default function EnrollmentsTab() {
-  const router = useRouter();
   const [showManageStudents, setShowManageStudents] = useState<boolean>(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>('');
@@ -38,10 +36,6 @@ export default function EnrollmentsTab() {
     setSelectedEnrollmentId(enrollment.id);
     setSelectedEnrollmentTitle(enrollment.caseStudy.title);
     setShowManageStudents(true);
-  };
-
-  const handleActivityLogs = (enrollment: EnrollmentWithRelations): void => {
-    router.push(`/admin/activity-logs/${enrollment.id}`);
   };
 
   const handleDeleteEnrollment = (enrollmentId: string): void => {
@@ -123,13 +117,7 @@ export default function EnrollmentsTab() {
                 </thead>
                 <tbody className="divide-y divide-emerald-50">
                   {enrollments?.map((enrollment) => (
-                    <EnrollmentRow
-                      key={enrollment.id}
-                      enrollment={enrollment}
-                      onManageStudents={handleManageStudents}
-                      onActivityLogs={handleActivityLogs}
-                      onDelete={handleDeleteEnrollment}
-                    />
+                    <EnrollmentRow key={enrollment.id} enrollment={enrollment} onManageStudents={handleManageStudents} onDelete={handleDeleteEnrollment} />
                   ))}
                 </tbody>
               </table>

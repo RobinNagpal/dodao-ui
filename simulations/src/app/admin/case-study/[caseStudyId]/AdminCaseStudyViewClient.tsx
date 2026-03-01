@@ -1,34 +1,39 @@
 'use client';
 
 import AdminNavbar from '@/components/navigation/AdminNavbar';
-import BackButton from '@/components/navigation/BackButton';
+import ClassesTab from '@/components/instructor/case-study-tabs/ClassesTab';
 import CaseStudyStepper from '@/components/shared/CaseStudyStepper';
 import ViewCaseStudyInstructionsModal from '@/components/shared/ViewCaseStudyInstructionsModal';
 import ViewExerciseModal from '@/components/shared/ViewExerciseModal';
 import ViewModuleModal from '@/components/shared/ViewModuleModal';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { CaseStudyModule, ModuleExercise } from '@/types';
-import type { CaseStudyWithRelationsForStudents, DeleteResponse } from '@/types/api';
+import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForStudents, DeleteResponse, EnrollmentWithStudents } from '@/types/api';
 import { getSubjectColor, getSubjectDisplayName, getSubjectIcon } from '@/utils/subject-utils';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import EllipsisDropdown from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { BookOpen, GraduationCap, Shield } from 'lucide-react';
+import { BookOpen, GraduationCap, Shield, Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import type { ReactElement } from 'react';
 import { useState } from 'react';
+
+type AdminTabType = 'overview' | 'classes';
 
 interface CaseStudyViewClientProps {
   caseStudyId: string;
 }
 
 export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewClientProps): ReactElement | null {
+  const [activeTab, setActiveTab] = useState<AdminTabType>('overview');
   const [showCaseStudyModal, setShowCaseStudyModal] = useState(false);
   const [showModuleModal, setShowModuleModal] = useState(false);
   const [showExerciseModal, setShowExerciseModal] = useState(false);
@@ -45,6 +50,13 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
     loading: loadingCaseStudy,
     reFetchData,
   } = useFetchData<CaseStudyWithRelationsForStudents>(`${getBaseUrl()}/api/case-studies/${caseStudyId}`, {}, 'Failed to load case study');
+
+  // Fetch all class enrollments for this case study (admin sees all)
+  const { data: enrollments, loading: loadingEnrollments } = useFetchData<EnrollmentWithStudents[]>(
+    `${getBaseUrl()}/api/case-studies/${caseStudyId}/class-enrollments`,
+    { skipInitialFetch: activeTab !== 'classes' },
+    'Failed to load class enrollments'
+  );
 
   const { renderAuthGuard } = useAuthGuard({
     allowedRoles: 'Admin',
@@ -121,6 +133,22 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard as ReactElement;
 
+  // Build a caseStudy-like object with enrollments for ClassesTab
+  const caseStudyWithEnrollments: CaseStudyWithRelationsForAdmin | null = caseStudy
+    ? ({ ...caseStudy, enrollments: enrollments ?? [] } as CaseStudyWithRelationsForAdmin)
+    : null;
+
+  const basePath = '/admin';
+
+  const breadcrumbs: BreadcrumbsOjbect[] = [
+    { name: 'Dashboard', href: `${basePath}`, current: false },
+    {
+      name: caseStudy?.title || 'Case Study',
+      href: `${basePath}/case-study/${caseStudyId}`,
+      current: true,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
       {/* Floating Background Elements */}
@@ -133,11 +161,11 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
       <AdminNavbar title={caseStudy?.title || 'Case Study Not Found'} subtitle="Case Study Details" icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <div className="flex items-center justify-between mb-4">
-          <BackButton userType="admin" text="Back to Dashboard" href="/admin" />
+        <div className="flex items-center justify-between gap-4">
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
           <EllipsisDropdown
             items={actions}
-            className="flex items-center space-x-2"
+            className="flex items-center shrink-0"
             onSelect={async (key) => {
               if (key === 'edit') {
                 handleEditCaseStudy(caseStudyId);
@@ -151,7 +179,38 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
             }}
           />
         </div>
-        {modules.length > 0 && (
+
+        {/* Tab Navigation */}
+        <div className="border-b border-white/20 mb-4">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+                activeTab === 'overview'
+                  ? 'text-emerald-600 bg-emerald-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-emerald-500'
+                  : 'text-gray-600 hover:text-emerald-600'
+              }`}
+            >
+              <BookOpen className="h-4 w-4" />
+              <span>Overview</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('classes')}
+              className={`py-4 px-2 pb-2 relative font-semibold text-sm flex items-center space-x-2 transition-all duration-300 ${
+                activeTab === 'classes'
+                  ? 'text-emerald-600 bg-emerald-50/50 rounded-t-lg after:absolute after:bottom-1 after:left-0 after:right-0 after:h-0.5 after:bg-emerald-500'
+                  : 'text-gray-600 hover:text-emerald-600'
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              <span>Classes</span>
+            </button>
+          </nav>
+        </div>
+
+        {activeTab === 'classes' && <ClassesTab caseStudy={caseStudyWithEnrollments} caseStudyId={caseStudyId} linkBasePath="/admin" />}
+
+        {activeTab === 'overview' && modules.length > 0 && (
           <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between mb-4">

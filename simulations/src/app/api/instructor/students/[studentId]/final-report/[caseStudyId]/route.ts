@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { requireInstructorUser } from '@/utils/user-utils';
+import { requireAdminOrInstructorUser } from '@/utils/user-utils';
 
 interface FinalReportDataExercise {
   orderNumber: number;
@@ -34,7 +34,7 @@ async function getHandler(
   const { userId } = userContext;
 
   // Verify user has instructor role
-  const user = await requireInstructorUser(userId);
+  const user = await requireAdminOrInstructorUser(userId);
 
   // Get the student enrollment and verify access
   const student = await prisma.enrollmentStudent.findFirst({
