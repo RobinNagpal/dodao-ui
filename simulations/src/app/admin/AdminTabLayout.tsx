@@ -16,12 +16,7 @@ export default function AdminTabLayout({ children, userEmail }: AdminTabLayoutPr
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-200/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <AdminNavbar 
-        title="Admin Dashboard" 
-        subtitle="Manage your educational content" 
-        userEmail={userEmail}
-        icon={<Shield className="h-8 w-8 text-white" />} 
-      />
+      <AdminNavbar title="Admin Dashboard" subtitle="Manage your educational content" userEmail={userEmail} icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8 relative z-10">
         <div className="mb-8">
