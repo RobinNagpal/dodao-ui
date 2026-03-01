@@ -27,9 +27,13 @@ interface EnrolledStudent {
 interface ManageStudentsTabProps {
   caseStudyId: string;
   classEnrollmentId: string;
+  userType?: 'admin' | 'instructor';
 }
 
-const ManageStudentsTab: FC<ManageStudentsTabProps> = ({ caseStudyId, classEnrollmentId }) => {
+const basePathFromUserType = (userType: 'admin' | 'instructor') => (userType === 'admin' ? '/admin' : '/instructor');
+
+const ManageStudentsTab: FC<ManageStudentsTabProps> = ({ caseStudyId, classEnrollmentId, userType = 'instructor' }) => {
+  const basePath = basePathFromUserType(userType);
   const [showAddStudentModal, setShowAddStudentModal] = useState(false);
   const [showBulkModal, setShowBulkModal] = useState(false);
   const [selectedStudentForCode, setSelectedStudentForCode] = useState<EnrolledStudent | null>(null);
@@ -168,7 +172,7 @@ const ManageStudentsTab: FC<ManageStudentsTabProps> = ({ caseStudyId, classEnrol
                     </div>
                     <div className="flex-1">
                       <Link
-                        href={`/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.studentEnrollmentId}`}
+                        href={`${basePath}/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${student.studentEnrollmentId}`}
                         className="group flex items-center space-x-2 text-left transition-all duration-200 hover:text-purple-600 cursor-pointer"
                         title={`View details for ${student.name || student.email}`}
                       >

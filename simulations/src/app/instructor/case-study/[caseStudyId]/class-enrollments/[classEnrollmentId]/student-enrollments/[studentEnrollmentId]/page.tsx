@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import StudentDetailsClient from './StudentDetailsClient';
+import StudentDetailsClient from '@/components/shared/StudentDetailsClient';
 
 interface PageProps {
   params: Promise<{ caseStudyId: string; classEnrollmentId: string; studentEnrollmentId: string }>;

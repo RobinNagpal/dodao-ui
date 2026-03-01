@@ -378,7 +378,7 @@ export default function ClassEnrollmentDetailPage({ caseStudyId, classEnrollment
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-4">
-        {activeTab === 'manage-students' && <ManageStudentsTab caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} />}
+        {activeTab === 'manage-students' && <ManageStudentsTab caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} userType={userType} />}
 
         {activeTab === 'student-attempts' && studentsTableData && (
           <StudentTable
@@ -386,6 +386,7 @@ export default function ClassEnrollmentDetailPage({ caseStudyId, classEnrollment
             modules={studentsTableData.modules}
             classEnrollmentId={classEnrollmentId}
             caseStudyId={caseStudyId}
+            userType={userType}
             onClearStudentAttempts={handleClearStudentAttempts}
             onDeleteAttempt={handleDeleteAttempt}
             onEvaluateAttempt={handleEvaluateAttempt}
