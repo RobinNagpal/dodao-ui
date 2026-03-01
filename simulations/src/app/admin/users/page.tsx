@@ -16,7 +16,7 @@ export default function AdminUsersPage() {
   if (loadingGuard) return <AdminLoading />;
 
   return (
-    <AdminTabLayout>
+    <AdminTabLayout userEmail={session?.email || session?.username}>
       <UsersTab />
     </AdminTabLayout>
   );

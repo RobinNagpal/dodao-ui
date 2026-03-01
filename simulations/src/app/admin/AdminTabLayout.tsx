@@ -3,11 +3,12 @@ import { BookOpen, Shield, UserCog, Users } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
-interface AdminLayoutProps {
+interface AdminTabLayoutProps {
   children: ReactNode;
+  userEmail?: string;
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function AdminTabLayout({ children, userEmail }: AdminTabLayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -18,6 +19,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <AdminNavbar 
         title="Admin Dashboard" 
         subtitle="Manage your educational content" 
+        userEmail={userEmail}
         icon={<Shield className="h-8 w-8 text-white" />} 
       />
 

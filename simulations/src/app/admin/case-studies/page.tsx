@@ -41,7 +41,7 @@ export default function AdminCaseStudiesPage() {
   if (loadingGuard) return <AdminLoading />;
 
   return (
-    <AdminTabLayout>
+    <AdminTabLayout userEmail={session?.email || session?.username}>
       <CaseStudiesTab
         caseStudies={caseStudies}
         filteredCaseStudies={filteredCaseStudies}

@@ -16,7 +16,7 @@ export default function AdminEnrollmentsPage() {
   if (loadingGuard) return <AdminLoading />;
 
   return (
-    <AdminTabLayout>
+    <AdminTabLayout userEmail={session?.email || session?.username}>
       <EnrollmentsTab />
     </AdminTabLayout>
   );
