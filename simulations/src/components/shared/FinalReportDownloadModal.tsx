@@ -38,7 +38,7 @@ export default function FinalReportDownloadModal({ open, onClose, reportData: pr
     if (open && shouldFetch) {
       reFetchData();
     }
-  }, [open, shouldFetch]);
+  }, [open, shouldFetch, reFetchData]);
 
   // Use provided data or fetched data
   const reportData = providedReportData || fetchedReportData;

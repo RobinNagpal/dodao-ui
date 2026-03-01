@@ -1,7 +1,9 @@
 'use client';
 
 import CaseStudiesTab from '@/components/admin/CaseStudiesTab';
-import AdminLayout from '../layout';
+import AdminTabLayout from '../AdminTabLayout';
+import AdminLoading from '@/components/admin/AdminLoading';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 import type { BusinessSubject } from '@/types';
 import { CaseStudyWithRelationsForAdmin } from '@/types/api';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -13,6 +15,12 @@ export default function AdminCaseStudiesPage() {
   const [selectedSubject, setSelectedSubject] = useState<BusinessSubject | 'ALL'>('ALL');
   const [filteredCaseStudies, setFilteredCaseStudies] = useState<CaseStudyWithRelationsForAdmin[]>([]);
   const router = useRouter();
+
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading case studies...',
+  });
 
   const {
     data: caseStudies = [],
@@ -29,12 +37,11 @@ export default function AdminCaseStudiesPage() {
     }
   }, [selectedSubject, caseStudies]);
 
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return <AdminLoading />;
+
   return (
-    <AdminLayout 
-      title="Admin Dashboard - Case Studies"
-      subtitle="Manage all case studies"
-      activeTab="case-studies"
-    >
+    <AdminTabLayout>
       <CaseStudiesTab
         caseStudies={caseStudies}
         filteredCaseStudies={filteredCaseStudies}
@@ -43,6 +50,6 @@ export default function AdminCaseStudiesPage() {
         loadingCaseStudies={loadingCaseStudies}
         onCreateCaseStudy={() => router.push('/admin/create')}
       />
-    </AdminLayout>
+    </AdminTabLayout>
   );
 }

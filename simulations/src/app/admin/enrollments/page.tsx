@@ -1,16 +1,23 @@
 'use client';
 
 import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
-import AdminLayout from '../layout';
+import AdminTabLayout from '../AdminTabLayout';
+import AdminLoading from '@/components/admin/AdminLoading';
+import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 export default function AdminEnrollmentsPage() {
+  const { session, renderAuthGuard } = useAuthGuard({
+    allowedRoles: 'Admin',
+    loadingType: 'admin',
+    loadingText: 'Loading enrollments...',
+  });
+
+  const loadingGuard = renderAuthGuard();
+  if (loadingGuard) return <AdminLoading />;
+
   return (
-    <AdminLayout 
-      title="Admin Dashboard - Enrollments"
-      subtitle="Manage class and student enrollments"
-      activeTab="enrollments"
-    >
+    <AdminTabLayout>
       <EnrollmentsTab />
-    </AdminLayout>
+    </AdminTabLayout>
   );
 }
