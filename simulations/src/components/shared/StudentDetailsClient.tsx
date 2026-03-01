@@ -2,6 +2,7 @@
 
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import InstructorNavbar from '@/components/navigation/InstructorNavbar';
+import AdminNavbar from '@/components/navigation/AdminNavbar';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import StudentActivityLogs from '@/components/instructor/StudentActivityLogs';
 import StudentTabNavigation from '@/components/instructor/StudentTabNavigation';
@@ -10,135 +11,113 @@ import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { CaseStudyWithRelationsForInstructor, StudentDetailResponse } from '@/types/api';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import { BookOpen, Calendar, GraduationCap, Mail, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { BookOpen, Calendar, GraduationCap, Mail, Shield, User } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
+
+export type StudentDetailsVariant = 'instructor' | 'admin';
 
 interface StudentDetailsClientProps {
   caseStudyId: string;
   classEnrollmentId: string;
   studentEnrollmentId: string;
+  variant?: StudentDetailsVariant;
 }
 
-// Case study structure from case study API
 type CaseStudyResponse = CaseStudyWithRelationsForInstructor;
-
 type StudentTabType = 'detailed-info' | 'activity-logs';
 
-export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, studentEnrollmentId }: StudentDetailsClientProps): ReactElement | null {
+export default function StudentDetailsClient({
+  caseStudyId,
+  classEnrollmentId,
+  studentEnrollmentId,
+  variant = 'instructor',
+}: StudentDetailsClientProps): ReactElement | null {
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
   const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
   const [showAttemptModal, setShowAttemptModal] = useState(false);
   const [activeTab, setActiveTab] = useState<StudentTabType>('detailed-info');
 
-  const router = useRouter();
+  const basePath = variant === 'admin' ? '/admin' : '/instructor';
 
-  // API hook to fetch case study structure (modules, exercises)
   const { data: caseStudyData, loading: loadingCaseStudy } = useFetchData<CaseStudyResponse>(
     `/api/case-studies/${caseStudyId}`,
     { skipInitialFetch: !caseStudyId },
     'Failed to load case study details'
   );
 
-  // API hook to fetch student-specific data (attempts, enrollment info)
   const { data: studentDetails, loading: loadingStudentDetails } = useFetchData<StudentDetailResponse>(
     `/api/case-studies/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
     { skipInitialFetch: !studentEnrollmentId || !caseStudyId || !classEnrollmentId },
     'Failed to load student details'
   );
 
-  const { session, renderAuthGuard } = useAuthGuard({
+  const { renderAuthGuard } = useAuthGuard({
     allowedRoles: ['Instructor', 'Admin'],
-    loadingType: 'instructor',
+    loadingType: variant === 'admin' ? 'admin' : 'instructor',
     loadingText: 'Loading Student Details',
     loadingSubtitle: 'Preparing detailed analysis...',
     additionalLoadingConditions: [loadingCaseStudy || loadingStudentDetails],
   });
 
-  // Get attempt details from the main response (no need for separate API call)
-  const attemptDetails = selectedAttemptId ? studentDetails?.attempts.find((attempt) => attempt.id === selectedAttemptId) || null : null;
+  const attemptDetails = selectedAttemptId ? studentDetails?.attempts.find((a) => a.id === selectedAttemptId) ?? null : null;
 
-  // Calculate statistics on UI side
   const statistics = (() => {
     if (!studentDetails || !caseStudyData) {
-      return {
-        totalExercises: 0,
-        attemptedExercises: 0,
-        totalAttempts: 0,
-        completionPercentage: 0,
-        averageScore: 0,
-        completedExercises: 0,
-      };
+      return { totalExercises: 0, attemptedExercises: 0, totalAttempts: 0, completionPercentage: 0, averageScore: 0, completedExercises: 0 };
     }
-
-    // Get all exercises from case study structure
-    const allExercises = caseStudyData.modules?.flatMap((module) => module.exercises || []) || [];
+    const allExercises = caseStudyData.modules?.flatMap((m) => m.exercises || []) || [];
     const totalExercises = allExercises.length;
-
-    // Get attempted exercise IDs from student attempts
-    const attemptedExerciseIds = [...new Set(studentDetails.attempts.map((attempt) => attempt.exerciseId))];
+    const attemptedExerciseIds = [...new Set(studentDetails.attempts.map((a) => a.exerciseId))];
     const attemptedExercises = attemptedExerciseIds.length;
-
     const totalAttempts = studentDetails.attempts.length;
-
-    const completedAttempts = studentDetails.attempts.filter((attempt) => attempt.status === 'completed' || attempt.status === 'success');
+    const completedAttempts = studentDetails.attempts.filter((a) => a.status === 'completed' || a.status === 'success');
     const completedExercises = completedAttempts.length;
-
     const completionPercentage = totalExercises > 0 ? Math.round((attemptedExercises / totalExercises) * 100) : 0;
-
-    const attemptsWithScores = studentDetails.attempts.filter((attempt) => attempt.evaluatedScore !== null);
-    console.log('Attempts with scores:', attemptsWithScores);
+    const attemptsWithScores = studentDetails.attempts.filter((a) => a.evaluatedScore !== null);
     const averageScore =
-      attemptsWithScores.length > 0 ? attemptsWithScores.reduce((sum, attempt) => sum + (attempt.evaluatedScore || 0), 0) / attemptsWithScores.length : 0;
-
-    return {
-      totalExercises,
-      attemptedExercises,
-      totalAttempts,
-      completionPercentage,
-      averageScore,
-      completedExercises,
-    };
+      attemptsWithScores.length > 0 ? attemptsWithScores.reduce((sum, a) => sum + (a.evaluatedScore || 0), 0) / attemptsWithScores.length : 0;
+    return { totalExercises, attemptedExercises, totalAttempts, completionPercentage, averageScore, completedExercises };
   })();
 
   const toggleModule = (moduleId: string) => {
-    const newExpanded = new Set(expandedModules);
-    if (newExpanded.has(moduleId)) {
-      newExpanded.delete(moduleId);
-    } else {
-      newExpanded.add(moduleId);
-    }
-    setExpandedModules(newExpanded);
+    setExpandedModules((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
   };
 
   const handleAttemptClick = (attemptId: string) => {
     setSelectedAttemptId(attemptId);
   };
 
-  // Effect to show modal when attempt details are loaded
   useEffect(() => {
-    if (attemptDetails && selectedAttemptId) {
-      setShowAttemptModal(true);
-    }
+    if (attemptDetails && selectedAttemptId) setShowAttemptModal(true);
   }, [attemptDetails, selectedAttemptId]);
 
   const loadingGuard = renderAuthGuard();
   if (loadingGuard) return loadingGuard as ReactElement;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: caseStudyData?.title || 'Case Study', href: `/instructor/case-study/${caseStudyId}`, current: false },
+    { name: caseStudyData?.title || 'Case Study', href: `${basePath}/case-study/${caseStudyId}`, current: false },
     {
       name: studentDetails?.enrollment.className || 'Class Enrollment',
-      href: `/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`,
+      href: `${basePath}/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}`,
       current: false,
     },
     {
       name: studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'Student',
-      href: `/instructor/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
+      href: `${basePath}/case-study/${caseStudyId}/class-enrollments/${classEnrollmentId}/student-enrollments/${studentEnrollmentId}`,
       current: true,
     },
   ];
+
+  const Navbar = variant === 'admin' ? AdminNavbar : InstructorNavbar;
+  const title = studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'Student Not Found';
+  const subtitle = studentDetails ? studentDetails.enrollment.className : undefined;
+  const icon = variant === 'admin' ? <Shield className="h-8 w-8 text-white" /> : <GraduationCap className="h-8 w-8 text-white" />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
@@ -148,11 +127,7 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-indigo-200/20 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      <InstructorNavbar
-        title={studentDetails?.assignedStudent.name || studentDetails?.assignedStudent.email || 'Student Not Found'}
-        subtitle={studentDetails ? studentDetails.enrollment.className : undefined}
-        icon={<GraduationCap className="h-8 w-8 text-white" />}
-      />
+      <Navbar title={title} subtitle={subtitle} icon={icon} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-6">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -239,7 +214,6 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
           </div>
         </div>
 
-        {/* Tab Navigation */}
         <StudentTabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
         {activeTab === 'detailed-info' && (
@@ -260,17 +234,12 @@ export default function StudentDetailsClient({ caseStudyId, classEnrollmentId, s
               id: m.id,
               orderNumber: m.orderNumber,
               title: m.title,
-              exercises: (m.exercises || []).map((e) => ({
-                id: e.id,
-                orderNumber: e.orderNumber,
-                title: e.title,
-              })),
+              exercises: (m.exercises || []).map((e) => ({ id: e.id, orderNumber: e.orderNumber, title: e.title })),
             }))}
           />
         )}
       </div>
 
-      {/* Attempt Detail Modal */}
       <AttemptDetailModal
         isOpen={showAttemptModal}
         onClose={() => {

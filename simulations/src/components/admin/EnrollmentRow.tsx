@@ -1,14 +1,13 @@
 import { EnrollmentWithRelations } from '@/types/api';
-import { Users, Activity } from 'lucide-react';
+import { Users } from 'lucide-react';
 
 interface EnrollmentRowProps {
   enrollment: EnrollmentWithRelations;
   onManageStudents: (enrollment: EnrollmentRowProps['enrollment']) => void;
-  onActivityLogs: (enrollment: EnrollmentRowProps['enrollment']) => void;
   onDelete: (enrollmentId: string) => void;
 }
 
-export default function EnrollmentRow({ enrollment, onManageStudents, onActivityLogs, onDelete }: EnrollmentRowProps) {
+export default function EnrollmentRow({ enrollment, onManageStudents, onDelete }: EnrollmentRowProps) {
   return (
     <tr key={enrollment.id} className="hover:bg-emerald-50/50 transition-colors">
       <td className="px-6 py-4">
@@ -33,9 +32,6 @@ export default function EnrollmentRow({ enrollment, onManageStudents, onActivity
       <td className="px-6 py-4 text-sm font-medium space-x-3">
         <button onClick={() => onManageStudents(enrollment)} className="text-emerald-600 hover:text-emerald-800 font-medium hover:underline transition-colors">
           Manage Students
-        </button>
-        <button onClick={() => onActivityLogs(enrollment)} className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors">
-          Activity Logs
         </button>
         <button onClick={() => onDelete(enrollment.id)} className="text-red-600 hover:text-red-800 font-medium hover:underline transition-colors">
           Delete

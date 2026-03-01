@@ -1,16 +1,18 @@
 import { FC } from 'react';
 import Link from 'next/link';
-import type { CaseStudyWithRelationsForInstructor, EnrollmentWithStudents } from '@/types/api';
+import type { CaseStudyWithRelationsForAdmin, CaseStudyWithRelationsForInstructor, EnrollmentWithStudents } from '@/types/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, GraduationCap, BookOpen, ExternalLink } from 'lucide-react';
 
 interface StudentsTabProps {
-  caseStudy: CaseStudyWithRelationsForInstructor | null;
+  caseStudy: CaseStudyWithRelationsForInstructor | CaseStudyWithRelationsForAdmin | null;
   caseStudyId: string;
+  /** Base path for enrollment detail links. Defaults to '/instructor'. */
+  linkBasePath?: string;
 }
 
-const ClassesTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId }) => {
+const ClassesTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId, linkBasePath = '/instructor' }) => {
   if (!caseStudy) {
     return (
       <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 p-12">
@@ -61,7 +63,7 @@ const ClassesTab: FC<StudentsTabProps> = ({ caseStudy, caseStudyId }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {enrollments.map((enrollment: EnrollmentWithStudents) => (
-            <Link key={enrollment.id} href={`/instructor/case-study/${caseStudyId}/class-enrollments/${enrollment.id}`}>
+            <Link key={enrollment.id} href={`${linkBasePath}/case-study/${caseStudyId}/class-enrollments/${enrollment.id}`}>
               <Card className="backdrop-blur-xl bg-white/80 border-white/20 shadow-lg hover:shadow-purple-500/10 hover:shadow-xl hover:border-purple-400 transition-all duration-300 transform hover:scale-[1.02] group cursor-pointer">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-3">

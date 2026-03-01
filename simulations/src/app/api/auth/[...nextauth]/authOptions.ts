@@ -191,10 +191,10 @@ export const authOptions = {
           return null;
         }
 
-        // Verify user is a student or instructor and belongs to correct space
-        if ((user.role !== 'Student' && user.role !== 'Instructor') || user.spaceId !== credentials.spaceId) {
+        // Verify user belongs to correct space
+        if (user.spaceId !== credentials.spaceId) {
           await logError(
-            'Sign-in code user validation failed',
+            'User does not belong to the correct space',
             {
               userId: user.id,
               role: user.role,

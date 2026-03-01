@@ -6,12 +6,12 @@ interface PageProps {
 }
 
 export const metadata: Metadata = {
-  title: 'Student Details - Instructor Dashboard',
+  title: 'Student Details - Admin',
   description: 'Detailed view of student progress and attempts',
 };
 
 export default async function StudentDetailsPage({ params }: PageProps) {
   const { caseStudyId, classEnrollmentId, studentEnrollmentId } = await params;
 
-  return <StudentDetailsClient caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} studentEnrollmentId={studentEnrollmentId} />;
+  return <StudentDetailsClient variant="admin" caseStudyId={caseStudyId} classEnrollmentId={classEnrollmentId} studentEnrollmentId={studentEnrollmentId} />;
 }
