@@ -161,12 +161,11 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
       <AdminNavbar title={caseStudy?.title || 'Case Study Not Found'} subtitle="Case Study Details" icon={<Shield className="h-8 w-8 text-white" />} />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6">
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
-
-        <div className="mt-4 flex items-center justify-end">
+        <div className="flex items-center justify-between gap-4">
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
           <EllipsisDropdown
             items={actions}
-            className="flex items-center space-x-2"
+            className="flex items-center shrink-0"
             onSelect={async (key) => {
               if (key === 'edit') {
                 handleEditCaseStudy(caseStudyId);
@@ -182,7 +181,7 @@ export default function AdminCaseStudyViewClient({ caseStudyId }: CaseStudyViewC
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b border-white/20 mb-6">
+        <div className="border-b border-white/20 mb-4">
           <nav className="-mb-px flex space-x-8">
             <button
               onClick={() => setActiveTab('overview')}
