@@ -27,3 +27,6 @@ Comprehensive documentation of the DoDAO UI monorepo organization using pnpm wor
 
 ### build-process.md
 Detailed explanation of the build system across the monorepo including local development builds, CI/CD pipeline with path-based filtering, shared component build process, and deployment strategies. Covers build dependencies hierarchy, GitHub Actions workflow, quality gates, and development best practices for maintaining consistent builds across all projects.
+
+### insights-ui/tariffs-functionality.md
+Comprehensive documentation of the tariffs analysis system in the insights-ui project. Covers the AI-powered tariff report generation pipeline supporting 40+ industries, multi-step workflow from industry analysis to final conclusions, data structures for tariff impact assessment, UI components for report display and management, API endpoints for report generation, S3 storage integration, and development guidelines for extending the system. Includes detailed examples of report generation, company impact analysis, and admin interface usage.
