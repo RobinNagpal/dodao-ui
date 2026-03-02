@@ -1,5 +1,6 @@
 import { EnrollmentWithRelations } from '@/types/api';
 import { Users } from 'lucide-react';
+import Link from 'next/link';
 
 interface EnrollmentRowProps {
   enrollment: EnrollmentWithRelations;
@@ -8,14 +9,18 @@ interface EnrollmentRowProps {
 }
 
 export default function EnrollmentRow({ enrollment, onManageStudents, onDelete }: EnrollmentRowProps) {
+  const combinedTitle = `${enrollment.className || 'First Section'} - ${enrollment.caseStudy.title}`;
+
   return (
     <tr key={enrollment.id} className="hover:bg-emerald-50/50 transition-colors">
       <td className="px-6 py-4">
-        <div className="text-sm font-semibold text-gray-900">{enrollment.caseStudy.title}</div>
-        <div className="text-sm text-emerald-600 font-medium">{enrollment.caseStudy.subject}</div>
-      </td>
-      <td className="px-6 py-4">
-        <div className="text-sm font-medium text-gray-900">{enrollment.className || 'first section'}</div>
+        <Link href={`/admin/case-study/${enrollment.caseStudy.id}/class-enrollments/${enrollment.id}`} className="group block">
+          <div className="text-sm font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors">{combinedTitle}</div>
+          <div className="text-sm text-emerald-600 font-medium group-hover:text-emerald-800 transition-colors">
+            {enrollment.caseStudy.subject}
+            <span className="inline-block ml-2 text-xs text-emerald-500 group-hover:text-emerald-700 transition-colors">Click to view details →</span>
+          </div>
+        </Link>
       </td>
       <td className="px-6 py-4">
         <div className="text-sm text-gray-900 font-medium">{enrollment.assignedInstructor?.email || enrollment.assignedInstructorId}</div>
