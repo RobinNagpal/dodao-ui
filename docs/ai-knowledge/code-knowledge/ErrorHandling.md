@@ -4,30 +4,36 @@ with the error message.
 
 ### Example
 ```typescript
-import { withErrorHandlingV1 } from '@/app/api/helpers/middlewares/withErrorHandling';
-import { CreateClickableDemoHtmlCaptureRequest } from '@/types/request/ClickableDemoHtmlCaptureRequests';
-import { CreateClickableDemoHtmlCaptureResponse } from '@/types/response/ClickableDemoHtmlCaptureResponses';
-import { NextRequest, NextResponse } from 'next/server';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
+
+interface CreateCaptureRequest {
+  // request fields
+}
+
+interface CaptureResponse {
+  // response fields
+}
 
 async function postHandler(
   req: NextRequest,
-  { params }: { params: { spaceId: string } }
-): Promise<NextResponse<CreateClickableDemoHtmlCaptureResponse>> {
-  const args: CreateClickableDemoHtmlCaptureRequest = await req.json();
+  context: { params: Promise<{ spaceId: string }> }
+) {
+  const { spaceId } = await context.params;
+  const args: CreateCaptureRequest = await req.json();
   /// logic here
-  return NextResponse.json({ capture }, { status: 200 });
+  return capture;
 }
 
-export const POST = withErrorHandlingV1<CreateClickableDemoHtmlCaptureResponse>(postHandler);
+export const POST = withErrorHandlingV2(postHandler);
 ```
 
 ### Important things to Note
 - We have not added a try catch block in the main function of the route.
-- We have used `withErrorHandlingV1` middleware to catch the error and return the error response.
-- This `withErrorHandlingV1` middleware will catch the error and return the error response with a 500 status code.
-- We have added the type `CreateClickableDemoHtmlCaptureResponse` to the `withErrorHandlingV1` middleware. This is 
-important to make sure that the error response is of the same type as the response type of the route.
-- There is an old `withErrorHandling` middleware that should not be used anymore. We should use `withErrorHandlingV1` middleware.
+- We use `withErrorHandlingV2` middleware from `@dodao/web-core` to catch errors and return the error response with a 500 status code.
+- Just throw an error for any exception scenarios and it will be handled by the middleware.
+- In Next.js 15+, route handler params must be typed as `Promise<>` and awaited (e.g., `context: { params: Promise<{ spaceId: string }> }`).
+- There are older `withErrorHandling` and `withErrorHandlingV1` middlewares that should not be used anymore. Always use `withErrorHandlingV2`.
 
 # Displaying Error on UI
 We should show the error message on the UI when there is an error. We should show a generic error message in the notification 

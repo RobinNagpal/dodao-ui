@@ -50,16 +50,17 @@ In our project, defining clear request and response types is essential for maint
 
 **Usage Example**
 ```typescript
-async function postHandler(req: NextRequest, { params }: { params: { spaceId: string } }): Promise<NextResponse<ClickableDemoHtmlCaptureDto>> {
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 
+async function postHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }) {
+  const { spaceId } = await context.params;
   // ... handle request logic ...
+  return capture;
 }
+
+export const POST = withErrorHandlingV2(postHandler);
 ```
 
-- [ ] Note: Make sure to add a concrete type similar to `Promise<NextResponse<ClickableDemoHtmlCaptureDto>>` as the return type
-- [ ] Also we now use `withErrorHandlingV1` instead of `withErrorHandling` for the API routes for handling the errors in 
-the api routes. This is because `withErrorHandlingV1` is more flexible and allows us to define the response type explicitly.
-
-```typescript
-export const POST = withErrorHandlingV1<ClickableDemoHtmlCaptureDto>(postHandler);
-```
+- [ ] Make sure to use strict types for request and response.
+- [ ] In Next.js 15+, route handler params must be typed as `Promise<>` and awaited.
+- [ ] Use `withErrorHandlingV2` from `@dodao/web-core` for all API routes. Do not use the older `withErrorHandling` or `withErrorHandlingV1` middlewares.

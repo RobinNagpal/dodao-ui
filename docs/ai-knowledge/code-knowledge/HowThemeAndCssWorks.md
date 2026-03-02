@@ -64,7 +64,7 @@ in `academy-ui/src/components/bytes/View/SwiperByteView/SwiperlByteStepperItemVi
 
 
 # How Theme Works
-- Read [docs/UnderstandingSpace.md](UnderstandingSpace.md) to understand how the space works.
+- Read [UnderstandingSpace.md](../../UnderstandingSpace.md) to understand how the space works.
 - Space has a theme object that contains all the colors that we can customize.
     ```typescript
     export interface ThemeColors {
