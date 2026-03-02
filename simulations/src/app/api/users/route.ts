@@ -20,14 +20,6 @@ export interface UserResponse {
   role: UserRole;
 }
 
-export interface PaginatedUsersResponse {
-  users: UserResponse[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
 export interface UsersResponse {
   users: UserResponse[];
 }
@@ -43,50 +35,14 @@ export interface UserUpdateRequest {
   role?: UserRole;
 }
 
-async function getHandler(req: NextRequest, userContext: SimulationJwtTokenPayload): Promise<PaginatedUsersResponse> {
-  const url = new URL(req.url);
-  const page = parseInt(url.searchParams.get('page') || '1');
-  const limit = parseInt(url.searchParams.get('limit') || '100');
-  const skip = (page - 1) * limit;
+async function getHandler(req: NextRequest, userContext: SimulationJwtTokenPayload): Promise<UsersResponse> {
+  const users = await prisma.user.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+    },
+  });
 
-  // Default sort by createdAt ascending
-  const sortBy = url.searchParams.get('sortBy') || 'createdAt';
-  const sortOrder = url.searchParams.get('sortOrder') || 'asc';
-
-  // Validate and sanitize sort parameters
-  const validSortFields = ['createdAt', 'email', 'username', 'name'];
-  const validSortOrders = ['asc', 'desc'];
-
-  const finalSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
-  const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder : 'asc';
-
-  const [users, total] = await Promise.all([
-    prisma.user.findMany({
-      where: {
-        spaceId: KoalaGainsSpaceId,
-      },
-      orderBy: {
-        [finalSortBy]: finalSortOrder,
-      },
-      skip,
-      take: limit,
-    }),
-    prisma.user.count({
-      where: {
-        spaceId: KoalaGainsSpaceId,
-      },
-    }),
-  ]);
-
-  const totalPages = Math.ceil(total / limit);
-
-  return {
-    users: users as UserResponse[],
-    total,
-    page,
-    limit,
-    totalPages,
-  };
+  return { users: users as UserResponse[] };
 }
 
 async function postHandler(request: NextRequest, userContext: SimulationJwtTokenPayload): Promise<UserCreationResponse> {
@@ -102,5 +58,5 @@ async function postHandler(request: NextRequest, userContext: SimulationJwtToken
   return { user: user };
 }
 
-export const GET = withLoggedInAdmin<PaginatedUsersResponse>(getHandler);
+export const GET = withLoggedInAdmin<UsersResponse>(getHandler);
 export const POST = withLoggedInAdmin<UserCreationResponse>(postHandler);
