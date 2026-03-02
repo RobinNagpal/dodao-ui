@@ -168,8 +168,8 @@ Each project also has its own top-level AIKnowledge.md file (e.g., `insights-ui/
 - **AI Knowledge Base Overview**: See [docs/ai-knowledge/AIKnowledge.md](docs/ai-knowledge/AIKnowledge.md) for a complete index of all development guidelines and patterns
 - **Code Knowledge**: See [docs/ai-knowledge/code-knowledge/AIKnowledge.md](docs/ai-knowledge/code-knowledge/AIKnowledge.md) for coding patterns index
 - **Projects Knowledge**: See [docs/ai-knowledge/projects/AIKnowledge.md](docs/ai-knowledge/projects/AIKnowledge.md) for project documentation index
-- **Build Process**: See [docs/ai-knowledge/build-process.md](docs/ai-knowledge/build-process.md) for detailed build information
-- **Monorepo Structure**: See [docs/ai-knowledge/monorepo-structure.md](docs/ai-knowledge/monorepo-structure.md) for repository organization
+- **Build Process**: See [docs/ai-knowledge/code-knowledge/build-process.md](docs/ai-knowledge/code-knowledge/build-process.md) for detailed build information
+- **Monorepo Structure**: See [docs/ai-knowledge/code-knowledge/monorepo-structure.md](docs/ai-knowledge/code-knowledge/monorepo-structure.md) for repository organization
 
 ## Best Practices
 
