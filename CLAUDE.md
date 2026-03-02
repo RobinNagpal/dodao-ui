@@ -113,18 +113,38 @@ Social media news and content management interface.
 ### 🔧 Shared
 Common utilities, components, and libraries shared across all projects.
 
-## 📚 AI Development Guidelines
+## 📚 AI Knowledge Base (MUST READ)
 
-For AI-assisted development and coding patterns, refer to our comprehensive knowledge base in **[docs/ai-knowledge/](docs/ai-knowledge/)**. This folder contains:
+**Before starting any coding or knowledge task, always consult the AI Knowledge Base at [docs/ai-knowledge/](docs/ai-knowledge/).** This is the single source of truth for coding patterns, project features, requirements, and implementation plans.
 
+### Code Knowledge
+Refer to **[docs/ai-knowledge/code-knowledge/](docs/ai-knowledge/code-knowledge/)** for all common coding patterns and conventions used across the monorepo:
 - **Backend Instructions** - Next.js API development patterns and best practices
 - **UI Instructions** - React/Next.js UI development patterns and component guidelines
 - **Component Guidelines** - Specific documentation for buttons, forms, page structure, and theming
-- **Latest Code Patterns** - Up-to-date examples and patterns used across all projects
+- **Architecture** - Monorepo structure, build process, and shared package patterns
 
-These documents are essential for maintaining consistency and following established patterns when working with any project in this repository.
+### Project Knowledge
+Refer to **[docs/ai-knowledge/projects/](docs/ai-knowledge/projects/)** for project-specific documentation. Each project folder contains:
+- **features/** - Descriptions of each feature in the project
+- **requirements.md** - Index of all planned requirements
+- **requirements/** - Detailed requirement specifications
+- **todos.md** - Items next in the list to be worked on
+- **todos/** - Detailed implementation plans for todo items
+- **AIKnowledge.md** - Index of the project's folders and files
 
-Each project has its own detailed documentation in their respective AIKnowledge.md files.
+Currently documented projects:
+- **[docs/ai-knowledge/projects/insights-ui/](docs/ai-knowledge/projects/insights-ui/)** - KoalaGains financial insights platform
+- **[docs/ai-knowledge/projects/simulations/](docs/ai-knowledge/projects/simulations/)** - Business case study simulation platform
+
+### How to Use This Knowledge Base
+1. **Before writing code** - Read the relevant code-knowledge docs to follow established patterns.
+2. **Before implementing a feature** - Check the project's `features/`, `requirements.md`, and `todos.md` for context and plans.
+3. **When planning work** - Write detailed plans in the project's `todos/` folder and update `todos.md`.
+4. **When defining requirements** - Add requirement specs to the project's `requirements/` folder and update `requirements.md`.
+5. **After completing features** - Document the feature in the project's `features/` folder.
+
+Each project also has its own top-level AIKnowledge.md file (e.g., `insights-ui/AIKnowledge.md`, `simulations/AIKnowledge.md`) with full project overviews.
 
 ## Project-Specific Notes
 
@@ -146,7 +166,8 @@ Each project has its own detailed documentation in their respective AIKnowledge.
 ## Additional Resources
 
 - **AI Knowledge Base Overview**: See [docs/ai-knowledge/AIKnowledge.md](docs/ai-knowledge/AIKnowledge.md) for a complete index of all development guidelines and patterns
-- **AI Development Guidelines**: Refer to [docs/ai-knowledge/](docs/ai-knowledge/) for coding patterns
+- **Code Knowledge**: See [docs/ai-knowledge/code-knowledge/AIKnowledge.md](docs/ai-knowledge/code-knowledge/AIKnowledge.md) for coding patterns index
+- **Projects Knowledge**: See [docs/ai-knowledge/projects/AIKnowledge.md](docs/ai-knowledge/projects/AIKnowledge.md) for project documentation index
 - **Build Process**: See [docs/ai-knowledge/build-process.md](docs/ai-knowledge/build-process.md) for detailed build information
 - **Monorepo Structure**: See [docs/ai-knowledge/monorepo-structure.md](docs/ai-knowledge/monorepo-structure.md) for repository organization
 

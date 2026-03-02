@@ -1,8 +1,20 @@
 # AI Knowledge Base
 
-This directory contains comprehensive development guidelines and coding patterns for AI-assisted development across all projects in the DoDAO UI repository.
+This directory contains comprehensive development guidelines, coding patterns, project documentation, and planning resources for AI-assisted development across all projects in the DoDAO UI repository.
 
-## 📋 File Descriptions
+## Directory Structure
+
+### [code-knowledge/](code-knowledge/)
+Common coding patterns, conventions, and best practices used across the monorepo. Acts as an index pointing to the pattern files in this directory. See [code-knowledge/AIKnowledge.md](code-knowledge/AIKnowledge.md).
+
+### [projects/](projects/)
+Project-specific documentation including features, requirements, and todos. See [projects/AIKnowledge.md](projects/AIKnowledge.md).
+- **[projects/insights-ui/](projects/insights-ui/)** - KoalaGains financial insights platform. See [projects/insights-ui/AIKnowledge.md](projects/insights-ui/AIKnowledge.md).
+- **[projects/simulations/](projects/simulations/)** - Business case study simulation platform. See [projects/simulations/AIKnowledge.md](projects/simulations/AIKnowledge.md).
+
+---
+
+## File Descriptions
 
 ### BackendInstructions.md
 Contains Next.js API development guidelines including route patterns, error handling with withErrorHandlingV2 middleware, strict TypeScript typing requirements, and examples of GET/PUT/DELETE operations. Includes patterns for handling async params in Next.js 15+ and Prisma database operations.
