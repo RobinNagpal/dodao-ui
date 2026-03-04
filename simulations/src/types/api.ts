@@ -261,6 +261,11 @@ export type ActivityLogWithUser = UserActivityLog & {
 export type ActivityLogsResponse = {
   instructorLogs: ActivityLogWithUser[];
   studentLogs: ActivityLogWithUser[];
+  allLogs: ActivityLogWithUser[];
+  totalLogs: number;
+  page: number;
+  limit: number;
+  totalPages: number;
   enrollment: {
     id: string;
     className: string;
