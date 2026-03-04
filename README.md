@@ -72,8 +72,8 @@ Checklist for contribution to Tidbits Hub:
 ### AI Development Guidelines
 For AI-assisted development and coding patterns, refer to our comprehensive knowledge base:
 - **[AI Knowledge Base](docs/ai-knowledge/)** - Complete development guidelines and patterns
-  - [Backend Instructions](docs/ai-knowledge/BackendInstructions.md) - Next.js API development patterns
-  - [UI Instructions](docs/ai-knowledge/UIIInstructions.md) - React/Next.js UI development patterns
-  - [UI Components](docs/ai-knowledge/ui/) - Specific component guidelines (buttons, forms, page structure, themes)
+  - [Backend Instructions](docs/ai-knowledge/code-knowledge/BackendInstructions.md) - Next.js API development patterns
+  - [UI Instructions](docs/ai-knowledge/code-knowledge/UIIInstructions.md) - React/Next.js UI development patterns
+  - [UI Components](docs/ai-knowledge/code-knowledge/ui/) - Specific component guidelines (buttons, forms, page structure, themes)
 
 These documents contain the latest coding patterns, best practices, and examples used across all projects in this repository.
