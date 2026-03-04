@@ -10,6 +10,7 @@ export interface LLMConfig {
 }
 
 const DEFAULT_MODEL = 'gemini-2.5-pro';
+const FALLBACK_MODEL = 'gemini-2.5-flash';
 
 /**
  * Initialize Gemini AI client with grounding always enabled
@@ -19,7 +20,7 @@ function initializeGeminiAI(): GoogleGenAI {
 }
 
 /**
- * Core AI generation function with grounding always enabled
+ * Core AI generation function with grounding always enabled and automatic fallback
  */
 async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL): Promise<string> {
   const ai = initializeGeminiAI();
@@ -29,17 +30,39 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
   const aiConfig = { tools: [groundingTool] };
 
   console.log('AI Generation Prompt:', prompt);
+  console.log('Using model:', model);
 
-  const response = await ai.models.generateContent({
-    model,
-    contents: prompt,
-    config: aiConfig,
-  });
+  try {
+    const response = await ai.models.generateContent({
+      model,
+      contents: prompt,
+      config: aiConfig,
+    });
 
-  const aiResponse = response.text?.trim() || '';
-  console.log('AI Response:', aiResponse);
+    const aiResponse = response.text?.trim() || '';
+    console.log('AI Response:', aiResponse);
 
-  return aiResponse;
+    return aiResponse;
+  } catch (error) {
+    // If not already using fallback model, retry with fallback
+    if (model !== FALLBACK_MODEL) {
+      console.warn(`Error with model ${model}, falling back to ${FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
+
+      const response = await ai.models.generateContent({
+        model: FALLBACK_MODEL,
+        contents: prompt,
+        config: aiConfig,
+      });
+
+      const aiResponse = response.text?.trim() || '';
+      console.log('AI Response (fallback):', aiResponse);
+
+      return aiResponse;
+    }
+
+    // Re-throw if already using fallback model
+    throw error;
+  }
 }
 
 /**
