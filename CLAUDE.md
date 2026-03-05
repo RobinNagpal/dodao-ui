@@ -1,7 +1,3 @@
-Absolutely — here’s a tighter version with less extra wording **and** the added instruction about committing/pushing at the end of every completed task (when not on `main`/`master`).
-
----
-
 # CLAUDE Development Guidelines
 
 ## Overview
