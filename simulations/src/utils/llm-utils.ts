@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
 export interface EvaluationResult {
   evaluatedScore: number;
@@ -11,12 +12,58 @@ export interface LLMConfig {
 
 const DEFAULT_MODEL = 'gemini-2.5-pro';
 const FALLBACK_MODEL = 'gemini-2.5-flash';
+const BEDROCK_FALLBACK_MODEL = 'us.kimi.kimi-2.5';
+
+const MAX_OUTPUT_TOKENS = 1024;
 
 /**
  * Initialize Gemini AI client with grounding always enabled
  */
 function initializeGeminiAI(): GoogleGenAI {
   return new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
+}
+
+/**
+ * Initialize AWS Bedrock client
+ */
+function initializeBedrockClient(): BedrockRuntimeClient {
+  return new BedrockRuntimeClient({
+    region: process.env.AWS_REGION || 'us-east-1',
+  });
+}
+
+/**
+ * Generate content using AWS Bedrock with kimi2.5 model
+ */
+async function generateContentWithBedrock(prompt: string): Promise<string> {
+  const client = initializeBedrockClient();
+
+  console.log('Using Bedrock fallback model:', BEDROCK_FALLBACK_MODEL);
+
+  const requestBody = {
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    max_tokens: MAX_OUTPUT_TOKENS,
+  };
+
+  const command = new InvokeModelCommand({
+    modelId: BEDROCK_FALLBACK_MODEL,
+    contentType: 'application/json',
+    accept: 'application/json',
+    body: JSON.stringify(requestBody),
+  });
+
+  const response = await client.send(command);
+  const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+
+  const aiResponse = responseBody.choices?.[0]?.message?.content?.trim() || responseBody.content?.[0]?.text?.trim() || '';
+  console.log('AI Response (Bedrock fallback):', aiResponse);
+
+  return aiResponse;
 }
 
 /**
@@ -27,7 +74,10 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
 
   // Always use grounding
   const groundingTool = { googleSearch: {} };
-  const aiConfig = { tools: [groundingTool] };
+  const aiConfig = {
+    tools: [groundingTool],
+    maxOutputTokens: MAX_OUTPUT_TOKENS,
+  };
 
   console.log('AI Generation Prompt:', prompt);
   console.log('Using model:', model);
@@ -44,24 +94,35 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
 
     return aiResponse;
   } catch (error) {
-    // If not already using fallback model, retry with fallback
+    // If not already using fallback model, retry with Gemini fallback
     if (model !== FALLBACK_MODEL) {
       console.warn(`Error with model ${model}, falling back to ${FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
 
-      const response = await ai.models.generateContent({
-        model: FALLBACK_MODEL,
-        contents: prompt,
-        config: aiConfig,
-      });
+      try {
+        const response = await ai.models.generateContent({
+          model: FALLBACK_MODEL,
+          contents: prompt,
+          config: aiConfig,
+        });
 
-      const aiResponse = response.text?.trim() || '';
-      console.log('AI Response (fallback):', aiResponse);
+        const aiResponse = response.text?.trim() || '';
+        console.log('AI Response (fallback):', aiResponse);
 
-      return aiResponse;
+        return aiResponse;
+      } catch (fallbackError) {
+        console.warn(
+          `Error with fallback model ${FALLBACK_MODEL}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`,
+          fallbackError instanceof Error ? fallbackError.message : fallbackError
+        );
+
+        return generateContentWithBedrock(prompt);
+      }
     }
 
-    // Re-throw if already using fallback model
-    throw error;
+    // If already using Gemini fallback model, try Bedrock fallback
+    console.warn(`Error with model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
+
+    return generateContentWithBedrock(prompt);
   }
 }
 
