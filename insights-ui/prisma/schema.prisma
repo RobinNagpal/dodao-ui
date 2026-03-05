@@ -38,6 +38,7 @@ model User {
   username     String    @map("username")
   authProvider String    @map("auth_provider")
   role         UserRole  @default(FreeUser) @map("role")
+  createdAt    DateTime  @default(now()) @map("created_at")
   accounts     Account[]
   sessions     Session[]
 
