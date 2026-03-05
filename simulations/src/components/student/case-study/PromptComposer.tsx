@@ -40,7 +40,7 @@ type NullableAttempts = ExerciseAttempt[] | null | undefined;
  * Constants & Helpers (no memoization)
  * =======================================================*/
 
-const MAX_ATTEMPTS: number = 3;
+const MAX_ATTEMPTS: number = 5;
 
 const isCompletedOrFailed = (a: ExerciseAttempt): boolean => a.status === 'completed' || a.status === 'failed';
 

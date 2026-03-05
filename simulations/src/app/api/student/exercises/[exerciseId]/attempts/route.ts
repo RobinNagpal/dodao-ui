@@ -78,9 +78,9 @@ async function postHandler(
     throw new Error('Student is not enrolled in this case study');
   }
 
-  // Check if student has exceeded 3 attempts
-  if (exercise.attempts.length >= 3) {
-    throw new Error('Maximum number of attempts (3) reached for this exercise');
+  // Check if student has exceeded 5 attempts
+  if (exercise.attempts.length >= 5) {
+    throw new Error('Maximum number of attempts (5) reached for this exercise');
   }
 
   const nextAttemptNumber = exercise.attempts.length + 1;
