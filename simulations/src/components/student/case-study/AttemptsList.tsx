@@ -56,7 +56,7 @@ export function AttemptsList({ attempts, exerciseId, onAttemptsUpdate }: Attempt
     return 'Processing';
   };
 
-  const remainingAttempts: number = Math.max(0, 5 - attempts.filter((a) => a.status === 'completed' || a.status === 'failed').length);
+  const remainingAttempts: number = Math.max(0, 3 - attempts.filter((a) => a.status === 'completed' || a.status === 'failed').length);
 
   const handleSelectAttempt = async (attemptId: string): Promise<void> => {
     if (selectingAttempt) return;
