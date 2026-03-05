@@ -34,7 +34,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, item
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-gradient-to-r from-emerald-50 to-green-50 border-t border-emerald-100/50">
       <div className="text-sm text-emerald-700 font-medium">
         Showing <span className="font-bold">{startItem}</span> to <span className="font-bold">{endItem}</span> of{' '}
-        <span className="font-bold">{totalItems}</span> users
+        <span className="font-bold">{totalItems}</span> entries
       </div>
 
       <div className="flex items-center space-x-2">
