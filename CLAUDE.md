@@ -162,29 +162,6 @@ Currently documented:
 
 Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKnowledge.md`, `insights-ui/AIKnowledge.md`).
 
----
-
-## Project-Specific Notes
-
-### Simulations
-
-* Ensure Prisma schema is up to date: `prisma generate`
-* Verify authentication flows
-* Verify role-based access controls
-
-### Insights-UI
-
-* Validate financial data processing
-* Check external API integrations
-* Verify data visualization rendering
-
-### Shared Web-Core
-
-* Run type checking: `pnpm tsc`
-* Test changes across dependent projects
-* Update docs for API changes
-
----
 
 ## Additional Resources
 
@@ -204,13 +181,10 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 4. Review your changes before PR
 5. Monitor build status after pushing
 6. Fix failures quickly to avoid blocking others
+7. Always commit and push your changes. Always. Always (Mandatory)
 
 ---
 
 # Claude Commands
 
 Refer to `docs/ClaudeCliReference.md` for Claude Code command usage.
-
----
-
-If you want, I can also give you an even **more compact “agent-ready” version** (half the length) specifically optimized for Claude Code system prompts.
