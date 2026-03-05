@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { BedrockRuntimeClient, ConverseCommand } from '@aws-sdk/client-bedrock-runtime';
 
 export interface EvaluationResult {
   evaluatedScore: number;
@@ -12,7 +12,7 @@ export interface LLMConfig {
 
 const DEFAULT_MODEL = 'gemini-2.5-pro';
 const FALLBACK_MODEL = 'gemini-2.5-flash';
-const BEDROCK_FALLBACK_MODEL = 'us.kimi.kimi-2.5';
+const BEDROCK_FALLBACK_MODEL = 'moonshotai.kimi-k2.5';
 
 const MAX_OUTPUT_TOKENS = 1024;
 
@@ -33,34 +33,34 @@ function initializeBedrockClient(): BedrockRuntimeClient {
 }
 
 /**
- * Generate content using AWS Bedrock with kimi2.5 model
+ * Generate content using AWS Bedrock with kimi2.5 model via Converse API
  */
 async function generateContentWithBedrock(prompt: string): Promise<string> {
   const client = initializeBedrockClient();
 
   console.log('Using Bedrock fallback model:', BEDROCK_FALLBACK_MODEL);
 
-  const requestBody = {
+  const command = new ConverseCommand({
+    modelId: BEDROCK_FALLBACK_MODEL,
     messages: [
       {
         role: 'user',
-        content: prompt,
+        content: [{ text: prompt }],
       },
     ],
-    max_tokens: MAX_OUTPUT_TOKENS,
-  };
-
-  const command = new InvokeModelCommand({
-    modelId: BEDROCK_FALLBACK_MODEL,
-    contentType: 'application/json',
-    accept: 'application/json',
-    body: JSON.stringify(requestBody),
+    inferenceConfig: {
+      maxTokens: MAX_OUTPUT_TOKENS,
+    },
   });
 
   const response = await client.send(command);
-  const responseBody = JSON.parse(new TextDecoder().decode(response.body));
 
-  const aiResponse = responseBody.choices?.[0]?.message?.content?.trim() || responseBody.content?.[0]?.text?.trim() || '';
+  const aiResponse =
+    response.output?.message?.content
+      ?.map((block) => block.text)
+      .filter(Boolean)
+      .join('')
+      .trim() || '';
   console.log('AI Response (Bedrock fallback):', aiResponse);
 
   return aiResponse;
