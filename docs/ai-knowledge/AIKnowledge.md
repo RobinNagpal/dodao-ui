@@ -16,13 +16,13 @@ Project-specific documentation including features, requirements, and todos. See 
 
 ## File Descriptions
 
-All coding pattern files have been moved into the [code-knowledge/](code-knowledge/) folder. See [code-knowledge/AIKnowledge.md](code-knowledge/AIKnowledge.md) for the full index. Key files:
+All coding pattern files live in the [code-knowledge/](code-knowledge/) folder. See [code-knowledge/AIKnowledge.md](code-knowledge/AIKnowledge.md) for the full index. Key areas:
 
-- **[code-knowledge/BackendInstructions.md](code-knowledge/BackendInstructions.md)** - Next.js API development patterns, error handling, Prisma operations.
-- **[code-knowledge/UIIInstructions.md](code-knowledge/UIIInstructions.md)** - React/Next.js UI patterns, data fetching hooks, modals, loading states.
-- **[code-knowledge/ui/](code-knowledge/ui/)** - UI component guidelines (buttons, forms, page structure, theme colors).
-- **[code-knowledge/monorepo-structure.md](code-knowledge/monorepo-structure.md)** - Monorepo organization and dependency management.
-- **[code-knowledge/build-process.md](code-knowledge/build-process.md)** - Build system, CI/CD pipeline, and deployment strategies.
+- **Backend** - [BackendInstructions.md](code-knowledge/BackendInstructions.md), [AddingAPIRoutes.md](code-knowledge/AddingAPIRoutes.md), [ErrorHandling.md](code-knowledge/ErrorHandling.md), [TypeDefinitions.md](code-knowledge/TypeDefinitions.md), [PrismaTypesAndMigrations.md](code-knowledge/PrismaTypesAndMigrations.md), [Caching.md](code-knowledge/Caching.md)
+- **UI** - [UIIInstructions.md](code-knowledge/UIIInstructions.md), [Loaders.md](code-knowledge/Loaders.md), [ServerSideComponents.md](code-knowledge/ServerSideComponents.md), [SpacingRecommendations.md](code-knowledge/SpacingRecommendations.md)
+- **UI Components** - [ui/](code-knowledge/ui/) (buttons, forms, page structure, theme colors)
+- **Styling** - [HowThemeAndCssWorks.md](code-knowledge/HowThemeAndCssWorks.md), [HowImageUploadWorks.md](code-knowledge/HowImageUploadWorks.md)
+- **Architecture** - [monorepo-structure.md](code-knowledge/monorepo-structure.md), [build-process.md](code-knowledge/build-process.md)
 
 ### insights-ui/tariffs-functionality.md
 Comprehensive documentation of the tariffs analysis system in the insights-ui project. Covers the AI-powered tariff report generation pipeline supporting 40+ industries, multi-step workflow from industry analysis to final conclusions, data structures for tariff impact assessment, UI components for report display and management, API endpoints for report generation, S3 storage integration, and development guidelines for extending the system. Includes detailed examples of report generation, company impact analysis, and admin interface usage.
