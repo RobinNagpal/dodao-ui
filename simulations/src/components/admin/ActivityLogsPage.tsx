@@ -1,7 +1,6 @@
 'use client';
 
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ActivityLogsResponse, ActivityLogWithUser } from '@/types/api';
 import { ArrowLeft, Globe } from 'lucide-react';
 import Link from 'next/link';
@@ -10,6 +9,7 @@ import JsonViewModal from '@/components/admin/JsonViewModal';
 import LogTable from '@/components/admin/LogTable';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import Pagination from '../shared/Pagination';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface ActivityLogsPageProps {
   params: {
@@ -32,7 +32,7 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
         page: page.toString(),
         limit: itemsPerPage.toString(),
       });
-      return `/api/activity-logs/${classEnrollmentId}?${queryParams.toString()}`;
+      return `${getBaseUrl()}/api/activity-logs/${classEnrollmentId}?${queryParams.toString()}`;
     },
     [classEnrollmentId]
   );

@@ -1,7 +1,6 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import UserRow from './UserRow';
@@ -10,6 +9,7 @@ import EditUserModal from './EditUserModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import SignInCodeModal from '../instructor/SignInCodeModal';
 import Pagination from '../shared/Pagination';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface User {
   id: string;
@@ -25,10 +25,6 @@ interface PaginatedUsersResponse {
   page: number;
   limit: number;
   totalPages: number;
-}
-
-interface UsersResponse {
-  users: User[];
 }
 
 interface UsersTabProps {
@@ -55,7 +51,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
       sortBy: 'createdAt',
       sortOrder: 'asc',
     });
-    return `/api/users?${queryParams.toString()}`;
+    return `${getBaseUrl()}/api/users?${queryParams.toString()}`;
   }, []);
 
   const {
@@ -86,7 +82,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
 
   const handleConfirmDelete = async (): Promise<void> => {
     try {
-      await deleteUser(`/api/users/${deleteUserId}`);
+      await deleteUser(`${getBaseUrl()}/api/users/${deleteUserId}`);
       await refetchUsers();
       setShowDeleteConfirm(false);
       setDeleteUserId('');
