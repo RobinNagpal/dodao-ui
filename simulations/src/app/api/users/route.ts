@@ -65,10 +65,7 @@ async function getHandler(req: NextRequest, userContext: SimulationJwtTokenPaylo
       where: {
         spaceId: KoalaGainsSpaceId,
       },
-      orderBy: [
-        { [finalSortBy]: finalSortOrder },
-        { email: 'asc' },
-      ],
+      orderBy: [{ [finalSortBy]: finalSortOrder }, { email: 'asc' }],
       skip,
       take: limit,
     }),
