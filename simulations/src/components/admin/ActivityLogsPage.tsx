@@ -26,10 +26,13 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
 
   const buildApiUrl = useCallback(
     (page: number) => {
-      const url = new URL(`${getBaseUrl()}/api/activity-logs/${classEnrollmentId}`);
-      url.searchParams.set('page', page.toString());
-      url.searchParams.set('limit', itemsPerPage.toString());
-      return url.toString();
+      // Use a safer approach with string concatenation instead of URL constructor
+      // This avoids SSR issues with URL construction
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      return `/api/activity-logs/${classEnrollmentId}?${queryParams.toString()}`;
     },
     [classEnrollmentId]
   );

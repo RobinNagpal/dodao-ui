@@ -1,7 +1,7 @@
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import UserRow from './UserRow';
@@ -46,14 +46,17 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 100; // Fixed at 100 users per page as requested
 
-  const buildApiUrl = (page: number) => {
-    const url = new URL(`${getBaseUrl()}/api/users`);
-    url.searchParams.set('page', page.toString());
-    url.searchParams.set('limit', itemsPerPage.toString());
-    url.searchParams.set('sortBy', 'createdAt');
-    url.searchParams.set('sortOrder', 'asc');
-    return url.toString();
-  };
+  const buildApiUrl = useCallback((page: number) => {
+    // Use a safer approach with string concatenation instead of URL constructor
+    // This avoids SSR issues with URL construction
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: itemsPerPage.toString(),
+      sortBy: 'createdAt',
+      sortOrder: 'asc',
+    });
+    return `/api/users?${queryParams.toString()}`;
+  }, []);
 
   const {
     data: usersResponse,
@@ -83,7 +86,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
 
   const handleConfirmDelete = async (): Promise<void> => {
     try {
-      await deleteUser(`${getBaseUrl()}/api/users/${deleteUserId}`);
+      await deleteUser(`/api/users/${deleteUserId}`);
       await refetchUsers();
       setShowDeleteConfirm(false);
       setDeleteUserId('');
