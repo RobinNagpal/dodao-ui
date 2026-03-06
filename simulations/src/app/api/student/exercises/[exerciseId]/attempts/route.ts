@@ -114,7 +114,11 @@ async function postHandler(
 
     return { attempt };
   } catch (error) {
-    // Create failed attempt record
+    // Create failed attempt record and return it (instead of throwing) so the
+    // frontend can update its local attempt count.  Throwing here previously
+    // caused a desync: the DB had the failed attempt but the UI didn't, so the
+    // UI would allow another submission that the API would reject with
+    // "Maximum number of attempts (3) reached".
     const attempt = await prisma.exerciseAttempt.create({
       data: {
         exerciseId,
@@ -129,7 +133,7 @@ async function postHandler(
       },
     });
 
-    throw new Error(`Failed to generate AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return { attempt };
   }
 }
 
