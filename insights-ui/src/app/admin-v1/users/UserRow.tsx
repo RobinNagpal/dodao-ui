@@ -10,6 +10,7 @@ interface UserRowProps {
     role: UserRole;
     createdAt: string;
     hasPortfolioManagerProfile: boolean;
+    favouriteItemsCount: number;
   };
   onEdit: (user: UserRowProps['user']) => void;
   onDelete: (userId: string) => void;
@@ -18,18 +19,18 @@ interface UserRowProps {
 
 export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: UserRowProps): JSX.Element {
   return (
-    <tr key={user.id} className="hover:bg-emerald-50/50 transition-colors">
+    <tr key={user.id}>
       <td className="px-6 py-4">
-        <div className="text-sm font-semibold text-gray-900">{user.email}</div>
+        <div className="text-sm font-semibold">{user.email}</div>
       </td>
       <td className="px-6 py-4">
-        <div className="text-sm text-gray-900 font-medium">{user.name || 'N/A'}</div>
+        <div className="text-sm font-medium">{user.name || 'N/A'}</div>
       </td>
       <td className="px-6 py-4">
         <div className="flex items-center">
           <span
-            className={`text-sm font-medium px-2 py-1 rounded-full ${
-              user.role === 'Admin' ? 'bg-purple-100 text-purple-800' : user.role === 'FreeUser' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+            className={`text-xs font-medium px-2 py-1 rounded-full ${
+              user.role === 'Admin' ? 'bg-purple-900 text-purple-200' : user.role === 'FreeUser' ? 'bg-blue-900 text-blue-200' : 'bg-green-900 text-green-200'
             }`}
           >
             {user.role}
@@ -37,25 +38,22 @@ export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: 
         </div>
       </td>
       <td className="px-6 py-4">
-        <div className="text-sm text-gray-600">{new Date(user.createdAt).toLocaleDateString()}</div>
+        <div className="text-sm text-gray-400">{new Date(user.createdAt).toLocaleDateString()}</div>
+      </td>
+      <td className="px-6 py-4">
+        <div className="text-sm text-gray-300">{user.favouriteItemsCount}</div>
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <div className="flex space-x-3">
-          <button
-            onClick={() => onPortfolioProfile(user)}
-            className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors flex items-center"
-          >
+          <button onClick={() => onPortfolioProfile(user)} className="text-blue-400 hover:text-blue-300 font-medium transition-colors flex items-center">
             <User className="h-4 w-4 mr-1" />
             Portfolio
           </button>
-          <button
-            onClick={() => onEdit(user)}
-            className="text-emerald-600 hover:text-emerald-800 font-medium hover:underline transition-colors flex items-center"
-          >
+          <button onClick={() => onEdit(user)} className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors flex items-center">
             <Edit className="h-4 w-4 mr-1" />
             Edit
           </button>
-          <button onClick={() => onDelete(user.id)} className="text-red-600 hover:text-red-800 font-medium hover:underline transition-colors flex items-center">
+          <button onClick={() => onDelete(user.id)} className="text-red-400 hover:text-red-300 font-medium transition-colors flex items-center">
             <Trash2 className="h-4 w-4 mr-1" />
             Delete
           </button>

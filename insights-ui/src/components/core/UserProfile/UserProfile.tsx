@@ -129,6 +129,13 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                 >
                   Analysis Template Report
                 </Link>
+                <Link
+                  href="/admin-v1/users"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-300 hover:bg-gray-700 w-full text-left"
+                  onClick={onMenuToggle}
+                >
+                  All Users
+                </Link>
                 <div className="border-t border-gray-700 my-1"></div>
               </>
             )}
@@ -222,6 +229,9 @@ export function UserProfile({ isMobile = false, onMenuToggle }: UserProfileProps
                     className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700"
                   >
                     Analysis Template Report
+                  </Link>
+                  <Link href="/admin-v1/users" className="block w-full px-4 py-2 text-sm font-semibold text-color cursor-pointer text-left hover:bg-gray-700">
+                    All Users
                   </Link>
                   <div className="border-t border-gray-700 my-1"></div>
                 </>

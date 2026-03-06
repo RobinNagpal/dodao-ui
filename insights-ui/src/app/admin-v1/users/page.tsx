@@ -2,6 +2,9 @@
 
 import AdminNav from '@/app/admin-v1/AdminNav';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import Button from '@dodao/web-core/components/core/buttons/Button';
+import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
+import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -23,6 +26,7 @@ interface User {
   role: UserRole;
   createdAt: string;
   hasPortfolioManagerProfile: boolean;
+  favouriteItemsCount: number;
 }
 
 interface UsersResponse {
@@ -32,6 +36,12 @@ interface UsersResponse {
 interface DeleteProfileResponse {
   success: boolean;
 }
+
+const roleFilterItems: StyledSelectItem[] = [
+  { id: 'All', label: 'All Roles' },
+  { id: 'Admin', label: 'Admin' },
+  { id: 'FreeUser', label: 'FreeUser' },
+];
 
 export default function Page() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -54,7 +64,7 @@ export default function Page() {
     errorMessage: 'Failed to delete user',
   });
 
-  const { deleteData: deletePortfolioProfile, loading: deletingPortfolioProfile } = useDeleteData<DeleteProfileResponse, never>({
+  const { deleteData: deletePortfolioProfile } = useDeleteData<DeleteProfileResponse, never>({
     successMessage: 'Portfolio manager profile deleted successfully!',
     errorMessage: 'Failed to delete portfolio manager profile',
   });
@@ -110,85 +120,58 @@ export default function Page() {
   return (
     <PageWrapper>
       <AdminNav />
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">User Management</h2>
-          <p className="text-emerald-600/70 mt-1">Manage users and their roles</p>
+
+      <div className="bg-gray-800 -mx-6 px-6 py-6 mb-6 border-b border-gray-700/60">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-white">User Management</h1>
+            <p className="text-gray-300 mt-1">Manage users and their roles</p>
+          </div>
+          <Button onClick={() => setShowCreateModal(true)}>
+            <Plus className="h-4 w-4 mr-1" />
+            Add User
+          </Button>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105"
-        >
-          <Plus className="h-4 w-4" />
-          <span className="font-medium">Add User</span>
-        </button>
       </div>
 
       <div className="mb-4 flex items-center space-x-6">
-        <div className="flex items-center space-x-2">
-          <label htmlFor="roleFilter" className="text-sm font-medium text-gray-700">
-            Role:
-          </label>
-          <select
-            id="roleFilter"
-            value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
-            className="border border-emerald-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          >
-            <option value="All">All Roles</option>
-            <option value="Admin">Admin</option>
-            <option value="FreeUser">FreeUser</option>
-          </select>
+        <div className="w-48">
+          <StyledSelect label="Role" items={roleFilterItems} selectedItemId={roleFilter} setSelectedItemId={(id) => setRoleFilter(id || 'All')} />
         </div>
-        <div className="flex items-center space-x-2">
-          <input
-            id="isManagerFilter"
-            type="checkbox"
-            checked={isManagerFilter}
-            onChange={(e) => setIsManagerFilter(e.target.checked)}
-            className="h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500"
-          />
-          <label htmlFor="isManagerFilter" className="text-sm font-medium text-gray-700">
-            Is Manager
-          </label>
-        </div>
+        <Checkbox id="isManagerFilter" labelContent="Is Manager" isChecked={isManagerFilter} onChange={(checked) => setIsManagerFilter(checked)} />
       </div>
 
       {loadingUsers ? (
         <div className="flex justify-center items-center h-40">
-          <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-xl shadow-lg">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-600"></div>
-            <span className="text-lg font-medium text-emerald-600">Loading users...</span>
-          </div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-400" />
+          <span className="ml-3 text-indigo-300">Loading users...</span>
         </div>
       ) : (
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-emerald-100/50 overflow-hidden">
+        <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
           {users.length === 0 ? (
             <div className="text-center py-16">
-              <UsersIcon className="mx-auto h-16 w-16 text-emerald-400 mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No users</h3>
-              <p className="text-gray-600 mb-6">Get started by adding a new user.</p>
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 mx-auto"
-              >
-                <Plus className="h-5 w-5" />
-                <span className="font-medium">Add User</span>
-              </button>
+              <UsersIcon className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+              <h3 className="text-xl font-bold mb-2">No users</h3>
+              <p className="text-gray-400 mb-6">Get started by adding a new user.</p>
+              <Button onClick={() => setShowCreateModal(true)}>
+                <Plus className="h-5 w-5 mr-1" />
+                Add User
+              </Button>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-emerald-100">
-                <thead className="bg-gradient-to-r from-emerald-50 to-green-50">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-700">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Created Date</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Favourites</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-emerald-50">
+                <tbody className="bg-gray-800 divide-y divide-gray-700">
                   {users.map((user) => (
                     <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onPortfolioProfile={handlePortfolioProfile} />
                   ))}
