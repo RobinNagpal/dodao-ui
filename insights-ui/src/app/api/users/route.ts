@@ -19,6 +19,7 @@ export interface UserResponse {
   role: UserRole;
   createdAt: Date;
   hasPortfolioManagerProfile: boolean;
+  favouriteItemsCount: number;
 }
 
 export interface UsersResponse {
@@ -45,6 +46,9 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
       portfolioManagerProfile: {
         select: { id: true },
       },
+      _count: {
+        select: { favouriteTickers: true },
+      },
     },
   });
 
@@ -62,6 +66,7 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
     role: user.role,
     createdAt: user.createdAt,
     hasPortfolioManagerProfile: !!user.portfolioManagerProfile,
+    favouriteItemsCount: user._count.favouriteTickers,
   }));
 
   return { users: usersResponse };
