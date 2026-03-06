@@ -8,6 +8,7 @@ interface FriendlyActivityLogTableProps {
   title?: string;
   emptyMessage?: string;
   showUserColumn?: boolean;
+  totalCount?: number;
 }
 
 export default function FriendlyActivityLogTable({
@@ -15,6 +16,7 @@ export default function FriendlyActivityLogTable({
   title = 'Activity Logs',
   emptyMessage = 'No activity has been recorded yet.',
   showUserColumn = true,
+  totalCount,
 }: FriendlyActivityLogTableProps) {
   const formatDate = (dateString: string | Date) => {
     return new Date(dateString).toLocaleString();
@@ -36,7 +38,7 @@ export default function FriendlyActivityLogTable({
         <div className="flex items-center space-x-3">
           <Activity className="h-6 w-6 text-purple-600" />
           <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-          <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-sm font-medium">{logs.length} entries</span>
+          <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-sm font-medium">{totalCount ?? logs.length} entries</span>
         </div>
       </div>
 

@@ -50,6 +50,7 @@ export default function InstructorActivityLogs({ classEnrollmentId, modules }: I
       title="Student Activity Logs"
       emptyMessage="No student activity has been recorded for this class yet."
       showUserColumn={true}
+      totalCount={activityData?.totalStudentLogs}
     />
   );
 }
