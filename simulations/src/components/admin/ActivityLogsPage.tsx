@@ -22,7 +22,7 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
   const [selectedLog, setSelectedLog] = useState<ActivityLogWithUser | null>(null);
   const [showJsonModal, setShowJsonModal] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 100; // Show top 100 logs as requested
+  const itemsPerPage = 50;
 
   const buildApiUrl = useCallback(
     (page: number) => {
@@ -50,7 +50,7 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
     setCurrentPage(page);
   }, []);
 
-  if (loading) {
+  if (loading && !activityData) {
     return <FullPageLoader message="Loading activity logs..." />;
   }
 
@@ -81,7 +81,7 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
         </div>
 
         {/* Activity Logs */}
-        <div className="space-y-8">
+        <div className={`space-y-8 ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
           <LogTable logs={activityData?.instructorLogs || []} userType="instructor" onViewDetails={handleViewDetails} />
           <LogTable logs={activityData?.studentLogs || []} userType="student" onViewDetails={handleViewDetails} />
 
