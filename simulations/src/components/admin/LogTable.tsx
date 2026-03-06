@@ -5,9 +5,10 @@ interface LogTableProps {
   logs: ActivityLogWithUser[];
   userType: 'instructor' | 'student';
   onViewDetails: (log: ActivityLogWithUser) => void;
+  totalCount?: number;
 }
 
-export default function LogTable({ logs, userType, onViewDetails }: LogTableProps) {
+export default function LogTable({ logs, userType, onViewDetails, totalCount }: LogTableProps) {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
   };
@@ -24,7 +25,9 @@ export default function LogTable({ logs, userType, onViewDetails }: LogTableProp
         <div className="flex items-center space-x-3">
           {userType === 'instructor' ? <GraduationCap className="h-6 w-6 text-emerald-600" /> : <User className="h-6 w-6 text-blue-600" />}
           <h3 className="text-lg font-bold text-gray-900 capitalize">{userType} Activity Logs</h3>
-          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-sm font-medium">{logs.length} entries</span>
+          <span className="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-sm font-medium">
+            {totalCount !== undefined ? totalCount : logs.length} entries
+          </span>
         </div>
       </div>
 

@@ -22,7 +22,7 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
   const [selectedLog, setSelectedLog] = useState<ActivityLogWithUser | null>(null);
   const [showJsonModal, setShowJsonModal] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 100;
 
   const buildApiUrl = useCallback(
     (page: number) => {
@@ -82,8 +82,13 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
 
         {/* Activity Logs */}
         <div className={`space-y-8 ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
-          <LogTable logs={activityData?.instructorLogs || []} userType="instructor" onViewDetails={handleViewDetails} />
-          <LogTable logs={activityData?.studentLogs || []} userType="student" onViewDetails={handleViewDetails} />
+          <LogTable
+            logs={activityData?.instructorLogs || []}
+            userType="instructor"
+            onViewDetails={handleViewDetails}
+            totalCount={activityData?.totalInstructorLogs}
+          />
+          <LogTable logs={activityData?.studentLogs || []} userType="student" onViewDetails={handleViewDetails} totalCount={activityData?.totalStudentLogs} />
 
           {/* Pagination */}
           {activityData && activityData.allLogs && activityData.totalLogs > 0 && (

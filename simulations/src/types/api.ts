@@ -263,6 +263,8 @@ export type ActivityLogsResponse = {
   studentLogs: ActivityLogWithUser[];
   allLogs: ActivityLogWithUser[];
   totalLogs: number;
+  totalInstructorLogs: number;
+  totalStudentLogs: number;
   page: number;
   limit: number;
   totalPages: number;
