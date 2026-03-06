@@ -13,7 +13,7 @@ async function getHandler(
 
   const url = new URL(req.url);
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
-  const limit = Math.max(1, Math.min(500, parseInt(url.searchParams.get('limit') || '50')));
+  const limit = Math.max(1, Math.min(500, parseInt(url.searchParams.get('limit') || '100')));
   const skip = (page - 1) * limit;
 
   // Get enrollment details
@@ -48,7 +48,7 @@ async function getHandler(
   const whereClause = { classEnrollmentId };
   const includeUser = { user: { select: { id: true, email: true, name: true, role: true as const } } };
 
-  const [activityLogs, totalLogs] = await Promise.all([
+  const [activityLogs, totalLogs, totalInstructorLogs, totalStudentLogs] = await Promise.all([
     prisma.userActivityLog.findMany({
       where: whereClause,
       include: includeUser,
@@ -57,6 +57,8 @@ async function getHandler(
       take: limit,
     }),
     prisma.userActivityLog.count({ where: whereClause }),
+    prisma.userActivityLog.count({ where: { classEnrollmentId, userId: instructorUserId } }),
+    prisma.userActivityLog.count({ where: { classEnrollmentId, userId: { in: studentUserIds } } }),
   ]);
 
   // Separate logs by user type
@@ -70,6 +72,8 @@ async function getHandler(
     studentLogs,
     allLogs: activityLogs,
     totalLogs,
+    totalInstructorLogs,
+    totalStudentLogs,
     page,
     limit,
     totalPages,
