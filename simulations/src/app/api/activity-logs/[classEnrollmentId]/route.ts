@@ -13,7 +13,7 @@ async function getHandler(
 
   const url = new URL(req.url);
   const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
-  const limit = Math.max(1, Math.min(500, parseInt(url.searchParams.get('limit') || '100')));
+  const limit = Math.max(1, Math.min(500, parseInt(url.searchParams.get('limit') || '50')));
   const skip = (page - 1) * limit;
 
   // Get enrollment details
