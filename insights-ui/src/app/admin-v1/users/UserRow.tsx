@@ -8,6 +8,8 @@ interface UserRowProps {
     email: string | null;
     username: string;
     role: UserRole;
+    createdAt: string;
+    hasPortfolioManagerProfile: boolean;
   };
   onEdit: (user: UserRowProps['user']) => void;
   onDelete: (userId: string) => void;
@@ -33,6 +35,9 @@ export default function UserRow({ user, onEdit, onDelete, onPortfolioProfile }: 
             {user.role}
           </span>
         </div>
+      </td>
+      <td className="px-6 py-4">
+        <div className="text-sm text-gray-600">{new Date(user.createdAt).toLocaleDateString()}</div>
       </td>
       <td className="px-6 py-4 text-sm font-medium">
         <div className="flex space-x-3">

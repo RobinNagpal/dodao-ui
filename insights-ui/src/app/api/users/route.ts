@@ -17,6 +17,8 @@ export interface UserResponse {
   username: string;
   authProvider: string;
   role: UserRole;
+  createdAt: Date;
+  hasPortfolioManagerProfile: boolean;
 }
 
 export interface UsersResponse {
@@ -39,9 +41,30 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
     where: {
       spaceId: KoalaGainsSpaceId,
     },
+    include: {
+      portfolioManagerProfile: {
+        select: { id: true },
+      },
+    },
   });
 
-  return { users: users as UserResponse[] };
+  const usersResponse: UserResponse[] = users.map((user) => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    emailVerified: user.emailVerified,
+    image: user.image,
+    publicAddress: user.publicAddress,
+    phoneNumber: user.phoneNumber,
+    spaceId: user.spaceId,
+    username: user.username,
+    authProvider: user.authProvider,
+    role: user.role,
+    createdAt: user.createdAt,
+    hasPortfolioManagerProfile: !!user.portfolioManagerProfile,
+  }));
+
+  return { users: usersResponse };
 }
 
 async function postHandler(request: NextRequest, userContext: KoalaGainsJwtTokenPayload): Promise<UserCreationResponse> {
