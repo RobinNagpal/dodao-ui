@@ -75,3 +75,6 @@ ai-agents/crowd-fund-analysis/terraform/terraform.tfstate
 ai-agents/crowd-fund-analysis/terraform/terraform.tfstate.backup
 ai-agents/crowd-fund-analysis/terraform/terraform.tfvars
 ai-agents/crowd-fund-analysis/terraform/.terraform/providers/
+
+# lock files (project uses pnpm)
+yarn.lock
