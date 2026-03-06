@@ -21,6 +21,8 @@ interface User {
   email: string | null;
   username: string;
   role: UserRole;
+  createdAt: string;
+  hasPortfolioManagerProfile: boolean;
 }
 
 interface UsersResponse {
@@ -39,6 +41,8 @@ export default function Page() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [portfolioProfileUser, setPortfolioProfileUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
+  const [roleFilter, setRoleFilter] = useState<string>('All');
+  const [isManagerFilter, setIsManagerFilter] = useState<boolean>(false);
   const {
     data: usersResponse,
     loading: loadingUsers,
@@ -96,7 +100,12 @@ export default function Page() {
     }
   };
 
-  const users = usersResponse?.users || [];
+  const allUsers = usersResponse?.users || [];
+  const users = allUsers.filter((user) => {
+    if (roleFilter !== 'All' && user.role !== roleFilter) return false;
+    if (isManagerFilter && !user.hasPortfolioManagerProfile) return false;
+    return true;
+  });
 
   return (
     <PageWrapper>
@@ -113,6 +122,36 @@ export default function Page() {
           <Plus className="h-4 w-4" />
           <span className="font-medium">Add User</span>
         </button>
+      </div>
+
+      <div className="mb-4 flex items-center space-x-6">
+        <div className="flex items-center space-x-2">
+          <label htmlFor="roleFilter" className="text-sm font-medium text-gray-700">
+            Role:
+          </label>
+          <select
+            id="roleFilter"
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="border border-emerald-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="All">All Roles</option>
+            <option value="Admin">Admin</option>
+            <option value="FreeUser">FreeUser</option>
+          </select>
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            id="isManagerFilter"
+            type="checkbox"
+            checked={isManagerFilter}
+            onChange={(e) => setIsManagerFilter(e.target.checked)}
+            className="h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500"
+          />
+          <label htmlFor="isManagerFilter" className="text-sm font-medium text-gray-700">
+            Is Manager
+          </label>
+        </div>
       </div>
 
       {loadingUsers ? (
@@ -145,6 +184,7 @@ export default function Page() {
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Email</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Name</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Role</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Created Date</th>
                     <th className="px-6 py-4 text-left text-xs font-bold text-emerald-700 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
