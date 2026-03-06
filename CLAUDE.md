@@ -34,7 +34,17 @@ yarn build
 
 **Important:** Do not proceed until the build completes without errors.
 
-### 4) Commit and Push Changes (Mandatory)
+### 4) Run Prettier Fix (Mandatory)
+
+Before committing, **always** run `yarn prettier-fix` from the relevant project directory to auto-format all changed files:
+
+```bash
+yarn prettier-fix
+```
+
+This must be done even if `yarn prettier-check` passes, to guarantee consistent formatting.
+
+### 5) Commit and Push Changes (Mandatory)
 
 After checks and build pass, commit and push your changes:
 
@@ -44,14 +54,14 @@ git commit -m "Your descriptive commit message"
 git push origin your-branch-name
 ```
 
-### 5) End-of-Task Rule  (Mandatory)
+### 6) End-of-Task Rule  (Mandatory)
 
 **At the end of every completed task, Claude Code must commit and push the code if the current branch is *not* `main` or `master`.**
 (Do not commit directly to `main`/`master` unless explicitly instructed.)
 
 AT ALL TIMES ALL THE CODE SHOULD BE CHECKEDIN AND PUSHED (Mandatory)
 
-### 6) Monitor CI / Deployment Status
+### 7) Monitor CI / Deployment Status
 
 After pushing:
 
@@ -59,7 +69,7 @@ After pushing:
 2. Confirm all checks pass
 3. If deployed via **Vercel**, verify deployment/build logs there as well
 
-### 7) If Build Fails
+### 8) If Build Fails
 
 Check logs and fix issues:
 

@@ -252,9 +252,7 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
       }
 
       // Create a new request with the body intact for the handler, since we consumed the original body above
-      const handlerReq = bodyText !== null
-        ? new NextRequest(req.url, { method: req.method, headers: req.headers, body: bodyText })
-        : req;
+      const handlerReq = bodyText !== null ? new NextRequest(req.url, { method: req.method, headers: req.headers, body: bodyText }) : req;
 
       console.log('[withLoggedInUserAndActivityLog] User found, executing handler function for user:', decodedJwt);
       const result = await handler(handlerReq, decodedJwt, dynamic);
