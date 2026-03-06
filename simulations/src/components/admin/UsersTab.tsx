@@ -1,7 +1,6 @@
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { UserRole } from '@prisma/client';
 import { Plus, Users as UsersIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import UserRow from './UserRow';
@@ -9,6 +8,8 @@ import CreateUserModal from './CreateUserModal';
 import EditUserModal from './EditUserModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
 import SignInCodeModal from '../instructor/SignInCodeModal';
+import Pagination from '../shared/Pagination';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface User {
   id: string;
@@ -18,8 +19,12 @@ interface User {
   role: UserRole;
 }
 
-interface UsersResponse {
+interface PaginatedUsersResponse {
   users: User[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 interface UsersTabProps {
@@ -34,12 +39,26 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string>('');
   const [signInCodeUser, setSignInCodeUser] = useState<User | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 100; // Fixed at 100 users per page as requested
+
+  const buildApiUrl = useCallback((page: number) => {
+    // Use a safer approach with string concatenation instead of URL constructor
+    // This avoids SSR issues with URL construction
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: itemsPerPage.toString(),
+      sortBy: 'createdAt',
+      sortOrder: 'asc',
+    });
+    return `${getBaseUrl()}/api/users?${queryParams.toString()}`;
+  }, []);
 
   const {
     data: usersResponse,
     loading: loadingUsers,
     reFetchData: refetchUsers,
-  } = useFetchData<UsersResponse>(`${getBaseUrl()}/api/users`, {}, 'Failed to load users');
+  } = useFetchData<PaginatedUsersResponse>(buildApiUrl(currentPage), {}, 'Failed to load users');
 
   const { deleteData: deleteUser, loading: deletingUser } = useDeleteData<{ success: boolean }, never>({
     successMessage: 'User deleted successfully!',
@@ -79,7 +98,13 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
     await refetchUsers();
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const users = usersResponse?.users || [];
+  const totalUsers = usersResponse?.total || 0;
+  const totalPages = usersResponse?.totalPages || 1;
 
   return (
     <div>
@@ -136,6 +161,14 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
                   ))}
                 </tbody>
               </table>
+
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                itemsPerPage={itemsPerPage}
+                totalItems={totalUsers}
+              />
             </div>
           )}
         </div>

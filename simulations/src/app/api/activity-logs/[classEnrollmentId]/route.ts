@@ -1,26 +1,8 @@
-import { UserActivityLog, User } from '@prisma/client';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/prisma';
 import { withLoggedInUser } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-
-export type ActivityLogWithUser = UserActivityLog & {
-  user: Pick<User, 'id' | 'email' | 'name' | 'role'>;
-};
-
-export type ActivityLogsResponse = {
-  instructorLogs: ActivityLogWithUser[];
-  studentLogs: ActivityLogWithUser[];
-  enrollment: {
-    id: string;
-    className: string;
-    caseStudy: {
-      id: string;
-      title: string;
-    };
-    assignedInstructor: Pick<User, 'id' | 'email' | 'name'>;
-  } | null;
-};
+import { ActivityLogsResponse } from '@/types/api';
 
 async function getHandler(
   req: NextRequest,
@@ -28,6 +10,11 @@ async function getHandler(
   { params }: { params: Promise<{ classEnrollmentId: string }> }
 ): Promise<ActivityLogsResponse> {
   const { classEnrollmentId } = await params;
+
+  const url = new URL(req.url);
+  const page = Math.max(1, parseInt(url.searchParams.get('page') || '1'));
+  const limit = Math.max(1, Math.min(500, parseInt(url.searchParams.get('limit') || '100')));
+  const skip = (page - 1) * limit;
 
   // Get enrollment details
   const enrollment = await prisma.classCaseStudyEnrollment.findUnique({
@@ -58,29 +45,34 @@ async function getHandler(
   const studentUserIds = enrollment.students.map((s) => s.assignedStudent.id);
   const instructorUserId = enrollment.assignedInstructor.id;
 
-  // Get activity logs for this specific class enrollment
-  // Now we can simply filter by classEnrollmentId
-  const activityLogs = await prisma.userActivityLog.findMany({
-    where: {
-      classEnrollmentId: classEnrollmentId,
-    },
-    include: {
-      user: {
-        select: { id: true, email: true, name: true, role: true },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  const whereClause = { classEnrollmentId };
+  const includeUser = { user: { select: { id: true, email: true, name: true, role: true as const } } };
+
+  const [activityLogs, totalLogs] = await Promise.all([
+    prisma.userActivityLog.findMany({
+      where: whereClause,
+      include: includeUser,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    }),
+    prisma.userActivityLog.count({ where: whereClause }),
+  ]);
 
   // Separate logs by user type
   const instructorLogs = activityLogs.filter((log) => log.userId === instructorUserId);
   const studentLogs = activityLogs.filter((log) => studentUserIds.includes(log.userId));
 
+  const totalPages = Math.ceil(totalLogs / limit);
+
   return {
     instructorLogs,
     studentLogs,
+    allLogs: activityLogs,
+    totalLogs,
+    page,
+    limit,
+    totalPages,
     enrollment: {
       id: enrollment.id,
       className: enrollment.className,
