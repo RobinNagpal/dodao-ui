@@ -1,14 +1,15 @@
 'use client';
 
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ActivityLogsResponse, ActivityLogWithUser } from '@/types/api';
 import { ArrowLeft, Globe } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import JsonViewModal from '@/components/admin/JsonViewModal';
 import LogTable from '@/components/admin/LogTable';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
+import Pagination from '../shared/Pagination';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 interface ActivityLogsPageProps {
   params: {
@@ -20,17 +21,34 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
   const { classEnrollmentId } = params;
   const [selectedLog, setSelectedLog] = useState<ActivityLogWithUser | null>(null);
   const [showJsonModal, setShowJsonModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 100; // Show top 100 logs as requested
 
-  const { data: activityData, loading } = useFetchData<ActivityLogsResponse>(
-    `${getBaseUrl()}/api/activity-logs/${classEnrollmentId}`,
-    {},
-    'Failed to load activity logs'
+  const buildApiUrl = useCallback(
+    (page: number) => {
+      // Use a safer approach with string concatenation instead of URL constructor
+      // This avoids SSR issues with URL construction
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
+      return `${getBaseUrl()}/api/activity-logs/${classEnrollmentId}?${queryParams.toString()}`;
+    },
+    [classEnrollmentId]
   );
+
+  const apiUrl = buildApiUrl(currentPage);
+
+  const { data: activityData, loading } = useFetchData<ActivityLogsResponse>(apiUrl, {}, 'Failed to load activity logs');
 
   const handleViewDetails = (log: ActivityLogWithUser) => {
     setSelectedLog(log);
     setShowJsonModal(true);
   };
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
 
   if (loading) {
     return <FullPageLoader message="Loading activity logs..." />;
@@ -66,6 +84,19 @@ export default function ActivityLogsPage({ params }: ActivityLogsPageProps) {
         <div className="space-y-8">
           <LogTable logs={activityData?.instructorLogs || []} userType="instructor" onViewDetails={handleViewDetails} />
           <LogTable logs={activityData?.studentLogs || []} userType="student" onViewDetails={handleViewDetails} />
+
+          {/* Pagination */}
+          {activityData && activityData.allLogs && activityData.totalLogs > 0 && (
+            <div className="mt-8">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={activityData.totalPages}
+                onPageChange={handlePageChange}
+                itemsPerPage={itemsPerPage}
+                totalItems={activityData.totalLogs}
+              />
+            </div>
+          )}
         </div>
 
         {/* JSON View Modal */}
