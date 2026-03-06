@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Insights-UI (KoalaGains)
+
+KoalaGains is an AI-powered financial insights and stock analysis platform that democratizes investment research. It provides deep value investing insights, industry analysis, tariff impact reports, and global market coverage previously available only to institutional investors.
+
+## Features
+
+- **Stock Analysis & Research** - Fundamental analysis with intrinsic value calculations, industry comparisons, and AI-powered insights
+- **Market Intelligence** - Daily top movers, industry reports, tariff impact analysis, and portfolio management tools
+- **AI-Powered Reports** - Automated company and industry research reports generated via OpenAI, Google GenAI, and LangChain
+- **Global Market Coverage** - Support for major exchanges across Americas, Europe, Asia-Pacific, and Middle East/Africa (NYSE, NASDAQ, LSE, TSE, HKEX, NSE/BSE, and more)
+- **Financial Blog & Content** - Expert analysis, market commentary, and educational resources
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org) 15 (App Router, Turbopack)
+- **Language**: TypeScript
+- **UI**: React 18, Tailwind CSS, Radix UI, Headless UI, Framer Motion
+- **Database**: PostgreSQL with [Prisma](https://www.prisma.io) ORM
+- **Authentication**: NextAuth.js
+- **AI/ML**: OpenAI, Google GenAI, LangChain
+- **Data Visualization**: Chart.js, D3.js, react-d3-tree
+- **Financial Data**: yahoo-finance2
+- **Cloud**: AWS (Lambda, S3), Vercel
+- **Analytics**: Microsoft Clarity, LogRocket
+
+## Prerequisites
+
+- Node.js >= 23.11.0
+- PostgreSQL database
+- Yarn (monorepo uses Yarn workspaces)
+- API keys for AI providers and data services
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies** (from the monorepo root):
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   yarn install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Set up environment variables**:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```bash
+   cp .env.example .env
+   # Configure database URL, API keys, and other required variables
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Set up the database**:
 
-## Learn More
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the development server**:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   yarn dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command | Description |
+|---------|-------------|
+| `yarn dev` | Start dev server with Turbopack |
+| `yarn build` | Production build |
+| `yarn start` | Start production server |
+| `yarn lint` | Run ESLint |
+| `yarn lint-fix` | Auto-fix lint issues |
+| `yarn prettier-check` | Check formatting |
+| `yarn prettier-fix` | Auto-fix formatting |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+This project is part of the [DoDAO UI monorepo](../). It uses shared packages from `@dodao/web-core` and follows the conventions documented in `docs/ai-knowledge/`.
