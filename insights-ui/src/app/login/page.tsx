@@ -6,6 +6,7 @@ import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { Contexts } from '@dodao/web-core/utils/constants/constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 // Define types for login request and response
@@ -51,6 +52,10 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    signIn('google', { callbackUrl: '/' });
+  };
+
   const handleUseAnotherEmail = () => {
     localStorage.removeItem('email');
     localStorage.removeItem('userId');
@@ -61,7 +66,11 @@ export default function LoginPage() {
     <PageWrapper>
       <div className="flex items-center justify-center min-h-[calc(100vh-200px)] py-12 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
         <div className="w-full max-w-md">
-          {step === 1 ? <UserLogin onLogin={handleEmailSubmit} /> : <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />}
+          {step === 1 ? (
+            <UserLogin onLogin={handleEmailSubmit} onGoogleSignIn={handleGoogleSignIn} />
+          ) : (
+            <EmailSentMessage email={email} onChangeEmail={handleUseAnotherEmail} />
+          )}
         </div>
       </div>
     </PageWrapper>
