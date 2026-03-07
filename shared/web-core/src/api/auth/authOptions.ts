@@ -30,7 +30,8 @@ export function getAuthOptions(
     username: string | null;
     publicAddress: string | null;
   } | null>,
-  overrides?: Partial<AuthOptions>
+  overrides?: Partial<AuthOptions>,
+  oauthSpaceId: string = 'dodao-eth-1'
 ): AuthOptions {
   const cookieDomain = process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || '.tidbitshub.org' : undefined;
   console.log('[authOptions] cookieDomain', cookieDomain);
@@ -251,7 +252,7 @@ export function getAuthOptions(
             ...profile,
             username: profile.name || profile.email,
             authProvider: 'discord',
-            spaceId: 'dodao-eth-1',
+            spaceId: oauthSpaceId,
           };
         },
       }),
@@ -268,7 +269,7 @@ export function getAuthOptions(
             id: profile.sub,
             username: profile.email || profile.sub,
             authProvider: 'google',
-            spaceId: 'dodao-eth-1',
+            spaceId: oauthSpaceId,
           };
         },
       }),
@@ -281,7 +282,7 @@ export function getAuthOptions(
             ...profile,
             username: profile.name || profile.email,
             authProvider: 'twitter',
-            spaceId: 'dodao-eth-1',
+            spaceId: oauthSpaceId,
           };
         },
       }),
