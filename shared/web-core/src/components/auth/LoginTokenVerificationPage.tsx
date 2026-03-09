@@ -92,23 +92,17 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
               error: result?.error,
             });
             console.log('[LoginTokenVerificationPage] Redirecting to login page with error');
-            const errorMessage = encodeURIComponent(
-              'This login link has expired or was already used. Please request a new login email.'
-            );
+            const errorMessage = encodeURIComponent('This login link has expired or was already used. Please request a new login email.');
             push(`/login?error=${errorMessage}`);
           }
         } catch (error) {
           console.error('[LoginTokenVerificationPage] Exception during sign-in process:', error);
-          const errorMessage = encodeURIComponent(
-            'An error occurred during sign-in. Please try again.'
-          );
+          const errorMessage = encodeURIComponent('An error occurred during sign-in. Please try again.');
           push(`/login?error=${errorMessage}`);
         }
       } else {
         console.log('[LoginTokenVerificationPage] No token found in URL, cannot proceed with authentication');
-        const errorMessage = encodeURIComponent(
-          'No login token found. Please request a new login email.'
-        );
+        const errorMessage = encodeURIComponent('No login token found. Please request a new login email.');
         push(`/login?error=${errorMessage}`);
       }
     }
