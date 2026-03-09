@@ -14,8 +14,6 @@ const DEFAULT_MODEL = 'gemini-2.5-pro';
 const FALLBACK_MODEL = 'gemini-2.5-flash';
 const BEDROCK_FALLBACK_MODEL = 'moonshotai.kimi-k2.5';
 
-const MAX_OUTPUT_TOKENS = 1024;
-
 /**
  * Initialize Gemini AI client with grounding always enabled
  */
@@ -48,9 +46,6 @@ async function generateContentWithBedrock(prompt: string): Promise<string> {
         content: [{ text: prompt }],
       },
     ],
-    inferenceConfig: {
-      maxTokens: MAX_OUTPUT_TOKENS,
-    },
   });
 
   const response = await client.send(command);
@@ -72,13 +67,6 @@ async function generateContentWithBedrock(prompt: string): Promise<string> {
 async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL): Promise<string> {
   const ai = initializeGeminiAI();
 
-  // Always use grounding
-  const groundingTool = { googleSearch: {} };
-  const aiConfig = {
-    tools: [groundingTool],
-    maxOutputTokens: MAX_OUTPUT_TOKENS,
-  };
-
   console.log('AI Generation Prompt:', prompt);
   console.log('Using model:', model);
 
@@ -86,7 +74,6 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
     const response = await ai.models.generateContent({
       model,
       contents: prompt,
-      config: aiConfig,
     });
 
     const aiResponse = response.text?.trim() || '';
@@ -102,7 +89,6 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
         const response = await ai.models.generateContent({
           model: FALLBACK_MODEL,
           contents: prompt,
-          config: aiConfig,
         });
 
         const aiResponse = response.text?.trim() || '';
