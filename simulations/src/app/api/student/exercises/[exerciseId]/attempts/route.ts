@@ -85,7 +85,7 @@ async function postHandler(
 
   const nextAttemptNumber = exercise.attempts.length + 1;
 
-  const defaultPromptOutputInstructions = `Give the output in 2-3 short paragraphs using simple language. Keep the total response under 300 words. Present key facts and figures from the context. Do not use any redundant language. Be crisp, concise and informative.`;
+  const defaultPromptOutputInstructions = `Give the output in 2-3 medium paragraphs using simple language. Keep the total response under 600 words. Present key facts and figures from the context. Do not use any redundant language. Be crisp, concise and informative.`;
 
   try {
     const outputInstructions = exercise.promptOutputInstructions || defaultPromptOutputInstructions;
