@@ -235,14 +235,12 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
       // Log only POST, PUT, DELETE requests from students and instructors
       shouldLog = method !== 'GET' && userRole !== UserRole.Admin;
 
-      // Read request body once for POST/PUT/DELETE to avoid "Body already read" errors.
-      // Request.clone() can mark the original body as consumed in some Node.js/undici versions,
-      // so we read the body text once and reconstruct a fresh request for the handler.
-      let bodyText: string | null = null;
-      if (method === 'POST' || method === 'PUT' || method === 'DELETE') {
+      // Read request body if we're logging (for POST, PUT, DELETE)
+      if (shouldLog && (method === 'POST' || method === 'PUT' || method === 'DELETE')) {
         try {
-          bodyText = await req.text();
-          if (bodyText && shouldLog) {
+          // Clone the request to read the body without consuming it
+          const bodyText = await req.clone().text();
+          if (bodyText) {
             requestBody = JSON.parse(bodyText);
           }
         } catch (error) {
@@ -251,11 +249,8 @@ export function withLoggedInUserAndActivityLog<T>(handler: HandlerWithUser<T> | 
         }
       }
 
-      // Create a new request with the body intact for the handler, since we consumed the original body above
-      const handlerReq = bodyText !== null ? new NextRequest(req.url, { method: req.method, headers: req.headers, body: bodyText }) : req;
-
       console.log('[withLoggedInUserAndActivityLog] User found, executing handler function for user:', decodedJwt);
-      const result = await handler(handlerReq, decodedJwt, dynamic);
+      const result = await handler(req, decodedJwt, dynamic);
 
       console.log('[withLoggedInUserAndActivityLog] Handler executed successfully, returning JSON response with status 200');
       const jsonResponse = NextResponse.json(result, { status: 200 });
