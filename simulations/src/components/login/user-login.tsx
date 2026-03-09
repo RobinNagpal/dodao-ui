@@ -161,6 +161,21 @@ export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: exter
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              {loginMethod === 'email' && (
+                <div className="text-center text-sm text-gray-500">
+                  Prefer a faster login?{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginMethod('code');
+                      setErrorMessage(null);
+                    }}
+                    className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+                  >
+                    Login with Sign-In Code →
+                  </button>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                   {currentConfig.emailLabel}

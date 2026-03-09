@@ -12,10 +12,22 @@ import { useEffect, useState } from 'react';
 import { getSession, signIn } from 'next-auth/react';
 import { setDoDAOTokenInLocalStorage } from '@dodao/web-core/utils/auth/setDoDAOTokenInLocalStorage';
 import { Session } from '@dodao/web-core/types/auth/Session';
+import { useSearchParams } from 'next/navigation';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const { showNotification } = useNotificationContext();
   const [email, setEmail] = useState('');
   const [step, setStep] = useState<1 | 2>(1); // 1 for login form, 2 for email sent message
+
+  useEffect(() => {
+    const errorParam = searchParams.get('error');
+    if (errorParam) {
+      const errorMessage = decodeURIComponent(errorParam);
+      showNotification({ type: 'error', message: errorMessage, duration: 8000 });
+    }
+  }, [searchParams, showNotification]);
 
   // Initialize usePostData hook for email login
   const { postData: postLogin, loading: loginLoading } = usePostData<LoginSignupByEmailResponse, LoginSignupByEmailRequestBody>({
