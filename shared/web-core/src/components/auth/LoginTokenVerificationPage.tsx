@@ -85,20 +85,31 @@ export default function LoginTokenVerificationPage({ space }: CallbackPageProps)
             console.log('[LoginTokenVerificationPage] Redirecting to:', fullCallbackUrl);
             push(fullCallbackUrl);
           } else {
-            // Handle sign-in failure (e.g., invalid token) as needed
             console.error('[LoginTokenVerificationPage] Failed to sign in', result);
             console.log('[LoginTokenVerificationPage] Sign-in failed with result:', {
               ok: result?.ok,
               url: result?.url,
               error: result?.error,
             });
-            // Redirect to an error page or display an error message
+            console.log('[LoginTokenVerificationPage] Redirecting to login page with error');
+            const errorMessage = encodeURIComponent(
+              'This login link has expired or was already used. Please request a new login email.'
+            );
+            push(`/login?error=${errorMessage}`);
           }
         } catch (error) {
           console.error('[LoginTokenVerificationPage] Exception during sign-in process:', error);
+          const errorMessage = encodeURIComponent(
+            'An error occurred during sign-in. Please try again.'
+          );
+          push(`/login?error=${errorMessage}`);
         }
       } else {
         console.log('[LoginTokenVerificationPage] No token found in URL, cannot proceed with authentication');
+        const errorMessage = encodeURIComponent(
+          'No login token found. Please request a new login email.'
+        );
+        push(`/login?error=${errorMessage}`);
       }
     }
 
