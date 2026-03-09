@@ -6,6 +6,11 @@ export interface EvaluationResult {
   evaluationReasoning: string;
 }
 
+export interface AIResponse {
+  text: string;
+  model: string;
+}
+
 export interface LLMConfig {
   model?: string;
 }
@@ -33,7 +38,7 @@ function initializeBedrockClient(): BedrockRuntimeClient {
 /**
  * Generate content using AWS Bedrock with kimi2.5 model via Converse API
  */
-async function generateContentWithBedrock(prompt: string): Promise<string> {
+async function generateContentWithBedrock(prompt: string): Promise<AIResponse> {
   const client = initializeBedrockClient();
 
   console.log('Using Bedrock fallback model:', BEDROCK_FALLBACK_MODEL);
@@ -58,13 +63,14 @@ async function generateContentWithBedrock(prompt: string): Promise<string> {
       .trim() || '';
   console.log('AI Response (Bedrock fallback):', aiResponse);
 
-  return aiResponse;
+  return { text: aiResponse, model: BEDROCK_FALLBACK_MODEL };
 }
 
 /**
- * Core AI generation function with grounding always enabled and automatic fallback
+ * Core AI generation function and automatic fallback.
+ * Falls back to the next model on errors OR empty responses.
  */
-async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL): Promise<string> {
+async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL): Promise<AIResponse> {
   const ai = initializeGeminiAI();
 
   console.log('AI Generation Prompt:', prompt);
@@ -79,35 +85,48 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
     const aiResponse = response.text?.trim() || '';
     console.log('AI Response:', aiResponse);
 
-    return aiResponse;
-  } catch (error) {
-    // If not already using fallback model, retry with Gemini fallback
-    if (model !== FALLBACK_MODEL) {
-      console.warn(`Error with model ${model}, falling back to ${FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
-
-      try {
-        const response = await ai.models.generateContent({
-          model: FALLBACK_MODEL,
-          contents: prompt,
-        });
-
-        const aiResponse = response.text?.trim() || '';
-        console.log('AI Response (fallback):', aiResponse);
-
-        return aiResponse;
-      } catch (fallbackError) {
-        console.warn(
-          `Error with fallback model ${FALLBACK_MODEL}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`,
-          fallbackError instanceof Error ? fallbackError.message : fallbackError
-        );
-
-        return generateContentWithBedrock(prompt);
-      }
+    if (!aiResponse && model !== FALLBACK_MODEL) {
+      console.warn(`Empty response from model ${model}, falling back to ${FALLBACK_MODEL}`);
+      return generateWithGeminiFallback(ai, prompt);
+    }
+    if (!aiResponse) {
+      console.warn(`Empty response from model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}`);
+      return generateContentWithBedrock(prompt);
     }
 
-    // If already using Gemini fallback model, try Bedrock fallback
-    console.warn(`Error with model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
+    return { text: aiResponse, model };
+  } catch (error) {
+    if (model !== FALLBACK_MODEL) {
+      console.warn(`Error with model ${model}, falling back to ${FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
+      return generateWithGeminiFallback(ai, prompt);
+    }
 
+    console.warn(`Error with model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
+    return generateContentWithBedrock(prompt);
+  }
+}
+
+async function generateWithGeminiFallback(ai: GoogleGenAI, prompt: string): Promise<AIResponse> {
+  try {
+    const response = await ai.models.generateContent({
+      model: FALLBACK_MODEL,
+      contents: prompt,
+    });
+
+    const aiResponse = response.text?.trim() || '';
+    console.log('AI Response (fallback):', aiResponse);
+
+    if (!aiResponse) {
+      console.warn(`Empty response from fallback model ${FALLBACK_MODEL}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}`);
+      return generateContentWithBedrock(prompt);
+    }
+
+    return { text: aiResponse, model: FALLBACK_MODEL };
+  } catch (fallbackError) {
+    console.warn(
+      `Error with fallback model ${FALLBACK_MODEL}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`,
+      fallbackError instanceof Error ? fallbackError.message : fallbackError
+    );
     return generateContentWithBedrock(prompt);
   }
 }
@@ -115,7 +134,7 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
 /**
  * Generate AI response for a given prompt
  */
-export async function generateAIResponse(prompt: string, model: string = DEFAULT_MODEL): Promise<string> {
+export async function generateAIResponse(prompt: string, model: string = DEFAULT_MODEL): Promise<AIResponse> {
   return generateContentWithAI(prompt, model);
 }
 
@@ -161,7 +180,7 @@ Only respond with the JSON object, no additional text.`;
 
   console.log('Evaluation Prompt:', evaluationPrompt);
 
-  const aiResponse = await generateContentWithAI(evaluationPrompt, model);
+  const { text: aiResponse } = await generateContentWithAI(evaluationPrompt, model);
 
   // Parse AI response
   let evaluationResult: EvaluationResult;

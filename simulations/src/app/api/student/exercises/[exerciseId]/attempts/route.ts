@@ -93,7 +93,7 @@ async function postHandler(
     const enhancedPrompt = `${prompt}\n\n # Output Instructions: \n\n ${outputInstructions}`;
 
     // Use the shared AI response generation utility
-    const aiResponse = await generateAIResponse(enhancedPrompt);
+    const { text: aiResponse, model: actualModel } = await generateAIResponse(enhancedPrompt);
 
     // Create the attempt record
     const attempt = await prisma.exerciseAttempt.create({
@@ -102,7 +102,7 @@ async function postHandler(
         createdById: userId,
         updatedById: userId,
         attemptNumber: nextAttemptNumber,
-        model: 'gemini-2.5-pro',
+        model: actualModel,
         prompt,
         promptResponse: aiResponse,
         status: 'completed',
@@ -114,21 +114,6 @@ async function postHandler(
 
     return { attempt };
   } catch (error) {
-    // Create failed attempt record
-    const attempt = await prisma.exerciseAttempt.create({
-      data: {
-        exerciseId,
-        createdById: userId,
-        updatedById: userId,
-        attemptNumber: nextAttemptNumber,
-        model: 'gemini-2.0-flash-exp',
-        prompt,
-        status: 'failed',
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
-        archive: false,
-      },
-    });
-
     throw new Error(`Failed to generate AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
