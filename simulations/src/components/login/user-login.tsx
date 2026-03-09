@@ -162,18 +162,22 @@ export function UserLogin({ onEmailLogin, onSignInCodeLogin, errorMessage: exter
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {loginMethod === 'email' && (
-                <div className="text-center text-sm text-gray-500">
-                  Prefer a faster login?{' '}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setLoginMethod('code');
-                      setErrorMessage(null);
-                    }}
-                    className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
-                  >
-                    Login with Sign-In Code →
-                  </button>
+                <div className="rounded-lg border-2 border-orange-400 bg-gradient-to-r from-red-50 to-orange-50 p-4 text-center shadow-md">
+                  <p className="text-sm font-bold text-orange-700 uppercase tracking-wide mb-1">⚠ Recommended</p>
+                  <p className="text-sm font-semibold text-gray-800">
+                    Most users sign in with a{' '}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLoginMethod('code');
+                        setErrorMessage(null);
+                      }}
+                      className="font-bold text-red-600 underline hover:text-red-700 transition-colors duration-150"
+                    >
+                      Sign-In Code
+                    </button>{' '}
+                    — it’s faster!
+                  </p>
                 </div>
               )}
               <div className="space-y-2">
