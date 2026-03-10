@@ -4,6 +4,41 @@
 
 Development workflow guidelines for the DoDAO UI monorepo. For full architecture and project context, see [AIKnowledge.md](AIKnowledge.md).
 
+## Worktree Workflow (MANDATORY)
+
+All code changes MUST happen in a git worktree, never directly on the main checkout.
+
+- **Main repo (read-only for changes):** `/home/ubuntu/.openclaw/workspace-insights-ui/dodao-ui`
+- **Worktree base dir:** `/home/ubuntu/.openclaw/workspace-insights-ui/worktrees/`
+- **Convention:** worktree directory name = branch name (e.g., `worktrees/fix-chart-layout/` → branch `fix-chart-layout`)
+
+### Worktree Management (run from main repo)
+
+**List worktrees:**
+```bash
+git worktree list
+```
+
+**Cleanup merged worktrees:**
+For each worktree (skip the main one):
+1. Check if its PR is merged: `gh pr list --head <branch> --state merged`
+2. Check for uncommitted changes: `git -C <worktree-path> status --porcelain`
+3. If merged and clean: `git worktree remove <path>` then `git branch -d <branch>`
+
+**Create a new worktree:**
+```bash
+git worktree add /home/ubuntu/.openclaw/workspace-insights-ui/worktrees/<branch-name> -b <branch-name>
+```
+
+**Resume an existing worktree:** Just `cd` into the worktree path and continue working.
+
+### After Completing Work in a Worktree
+1. Commit and push: `git push -u origin <branch-name>`
+2. Create PR if none exists: `gh pr create --base main --head <branch-name> --title "..." --body "..."`
+3. Report: branch name, commit hash, PR URL
+
+---
+
 ## Required Workflow (Before and After Coding)
 
 ### 1) Run Code Quality Checks
