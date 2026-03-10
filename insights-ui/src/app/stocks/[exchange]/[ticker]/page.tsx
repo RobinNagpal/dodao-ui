@@ -550,6 +550,33 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     </>
   );
 }
+
+function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date; formattedModifiedDate: string }): JSX.Element {
+  return (
+    <footer className="mt-8 pt-6 border-t border-color">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="text-sm text-muted-foreground">
+          <span>Last updated by </span>
+          <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+            <span itemProp="name">KoalaGains</span>
+          </span>
+          <span> on </span>
+          <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+            {formattedModifiedDate}
+          </time>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+            Stock Analysis
+          </span>
+          <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+            Investment Report
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
 /** PAGE */
 export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   // Main ticker data (promise for selective Suspense usage)
@@ -584,9 +611,9 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
 
-  // Derive dates for semantic footer
-  const createdAtRaw = tickerData.vsCompetition?.createdAt || tickerData.createdAt || new Date();
-  const updatedAtRaw = tickerData.vsCompetition?.updatedAt || tickerData.updatedAt || new Date();
+  // Derive dates for semantic footer (based solely on tickerData)
+  const createdAtRaw = tickerData.createdAt || new Date();
+  const updatedAtRaw = tickerData.updatedAt || tickerData.createdAt || new Date();
   const publishedDate = new Date(createdAtRaw);
   const modifiedDate = new Date(updatedAtRaw);
   const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
@@ -630,29 +657,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
         <TickerDetailsInfo data={tickerInfo} />
 
-        {/* Article Footer */}
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
-            </div>
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                Stock Analysis
-              </span>
-              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
-                Investment Report
-              </span>
-            </div>
-          </div>
-        </footer>
+        <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>
 
       {/* Floating nav after sections are known */}
