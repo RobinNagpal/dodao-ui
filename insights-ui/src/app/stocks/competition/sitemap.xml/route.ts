@@ -26,20 +26,15 @@ async function generateCompetitionUrls(): Promise<SiteMapUrl[]> {
     },
   });
 
-  const addedUrls = new Set<string>();
-
   for (const record of competitionRecords) {
     const competitionUrl = `/stocks/${record.ticker.exchange}/${record.ticker.symbol}/competition`;
 
-    if (!addedUrls.has(competitionUrl)) {
-      urls.push({
-        url: competitionUrl,
-        changefreq: 'weekly',
-        priority: 0.6,
-        lastmod: record.updatedAt ? new Date(record.updatedAt).toISOString().split('T')[0] : undefined,
-      });
-      addedUrls.add(competitionUrl);
-    }
+    urls.push({
+      url: competitionUrl,
+      changefreq: 'weekly',
+      priority: 0.6,
+      lastmod: record.updatedAt ? new Date(record.updatedAt).toISOString().split('T')[0] : undefined,
+    });
   }
 
   return urls;
