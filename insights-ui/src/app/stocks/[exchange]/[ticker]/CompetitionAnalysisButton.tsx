@@ -11,10 +11,10 @@ export default function CompetitionAnalysisButton({ exchange, ticker }: Competit
     <div className="flex-shrink-0 relative z-10">
       <Link
         href={`/stocks/${exchange}/${ticker}/competition`}
-        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 border border-gray-600 rounded-lg shadow-md relative z-10"
+        className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#38BDF8] to-[#818CF8] hover:from-[#0EA5E9] hover:to-[#6366F1] border border-transparent rounded-lg shadow-md relative z-10"
         title="View competition analysis"
       >
-        <TrophyIcon className="w-5 h-5 mr-2" aria-hidden="true" />
+        <TrophyIcon className="w-4 h-4 mr-2" aria-hidden="true" />
         <span>Competition</span>
       </Link>
     </div>

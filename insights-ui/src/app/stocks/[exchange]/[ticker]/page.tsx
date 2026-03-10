@@ -339,7 +339,6 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
             tickerIndustryName={industryName}
             tickerSubIndustryName={subIndustryName}
           />
-          <CompetitionAnalysisButton exchange={exchange} ticker={ticker} />
         </StockActions>
       }
       hideHomeIcon={true}
