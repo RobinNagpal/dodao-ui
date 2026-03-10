@@ -4,6 +4,7 @@ import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requ
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
+import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
@@ -338,6 +339,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
             tickerIndustryName={industryName}
             tickerSubIndustryName={subIndustryName}
           />
+          <CompetitionAnalysisButton exchange={exchange} ticker={ticker} />
         </StockActions>
       }
       hideHomeIcon={true}
@@ -362,7 +364,10 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
             </a>
           )}
         </h1>
-        <span className="text-sm font-medium text-gray-400 mr-2">{formatExchangeWithCountry(d.exchange)}</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-gray-400 mr-2">{formatExchangeWithCountry(d.exchange)}</span>
+          <CompetitionAnalysisButton exchange={d.exchange.toUpperCase()} ticker={d.symbol.toUpperCase()} />
+        </div>
       </div>
 
       {/* Company Summary */}
