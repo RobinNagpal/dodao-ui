@@ -27,7 +27,6 @@ export const tickerV1IncludeWithRelations = {
       },
     },
   },
-  vsCompetition: true,
   industry: true,
   subIndustry: true,
   cachedScoreEntry: true,
@@ -60,6 +59,7 @@ export interface CompetitorTicker {
 
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
+  futureRisks?: TickerV1FutureRisk[];
   vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;
 };
