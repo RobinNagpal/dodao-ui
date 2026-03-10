@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, INVESTOR_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
@@ -356,11 +356,6 @@ export function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: 
   // Get all category names (factors)
   const factors = Object.values(CATEGORY_MAPPINGS).join(', ');
 
-  // Get 2 investor names
-  const investorKeys = Object.keys(INVESTOR_MAPPINGS);
-  const investor1 = INVESTOR_MAPPINGS[investorKeys[0] as keyof typeof INVESTOR_MAPPINGS];
-  const investor2 = INVESTOR_MAPPINGS[investorKeys[1] as keyof typeof INVESTOR_MAPPINGS];
-
   // Use today's date instead of ticker's updatedAt
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -385,7 +380,7 @@ export function buildBaseAboutReport(tickerRecord: TickerV1 & { vsCompetition?: 
     competitorsText = `${comp1}, ${comp2}, ${comp3} and ${remainingCount} more`;
   }
 
-  const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${competitorsText}, and maps takeaways to ${investor1}/${investor2} styles. Last updated ${today}.`;
+  const baseInfo = `This report examines ${tickerRecord.name} (${tickerRecord.symbol}) on five angles—${factors}. It also benchmarks against ${competitorsText}. Last updated ${today}.`;
 
   return baseInfo;
 }

@@ -7,14 +7,13 @@ import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
-import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -112,20 +111,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
   return tickerAnyExchange;
 }
 
-/** Competition + Similar fetchers (promise-based for Suspense) */
-export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
-
-async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-
-  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
-
-  const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
-
-  return json;
-}
-
+/** Similar + financial fetchers (promise-based for Suspense) */
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
 
@@ -180,6 +166,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let companyName: string = ticker;
   let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
   let metaDescription: string = '';
+  let createdTime: string | undefined;
+  let updatedTime: string | undefined;
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
@@ -187,6 +175,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       companyName = data.name ?? companyName;
       summary = data.summary ?? summary;
       metaDescription = data.metaDescription ?? '';
+      createdTime = data.createdAt?.toISOString();
+      updatedTime = data.updatedAt?.toISOString() ?? createdTime;
     }
   } catch {
     /* keep generic */
@@ -218,6 +208,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
+      publishedTime: createdTime ?? updatedTime,
+      modifiedTime: updatedTime ?? createdTime,
     },
     twitter: {
       card: 'summary_large_image',
@@ -476,18 +468,6 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
           })}
         </div>
       </section>
-      {d.futureRisks.length > 0 && (
-        <section id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
-          <ul className="space-y-3">
-            {d.futureRisks.map((futureRisk) => (
-              <li key={futureRisk.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </>
   );
 }
@@ -563,19 +543,6 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
           );
         })}
       </section>
-
-      {d.futureRisks.length > 0 && (
-        <section id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
-          <div className="space-y-3">
-            {d.futureRisks.map((futureRisk) => (
-              <div key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
-                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(futureRisk.detailedAnalysis) }} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </>
   );
 }
@@ -609,7 +576,6 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     })();
 
   // Promises consumed by child components via `use()` under Suspense
-  const competitionPromise = retryWithCanonical(fetchCompetition);
   const similarPromise = retryWithCanonical(fetchSimilar);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
@@ -638,10 +604,6 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       <TickerAnalysisInfo data={tickerInfo} />
 
       <div className="mx-auto max-w-7xl">
-        <section className="mb-8">
-          <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
-        </section>
-
         <section className="mb-6">
           <SimilarTickers dataPromise={similarPromise} />
         </section>
