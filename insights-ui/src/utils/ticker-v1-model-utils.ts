@@ -30,6 +30,7 @@ export const tickerV1IncludeWithRelations = {
   industry: true,
   subIndustry: true,
   cachedScoreEntry: true,
+  vsCompetition: true,
 } as const;
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {

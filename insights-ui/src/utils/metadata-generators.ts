@@ -391,7 +391,7 @@ export const generateStockReportArticleSchema = (ticker: any) => {
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'Report',
+    '@type': 'Article',
     headline: `${ticker.name} (${ticker.symbol}) Stock Analysis & Investment Report`,
     description: ticker.metaDescription || ticker.summary || `Comprehensive investment analysis and financial insights for ${ticker.name} (${ticker.symbol})`,
     image: ['https://koalagains.com/koalagain_logo.png'],

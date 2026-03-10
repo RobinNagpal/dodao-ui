@@ -355,7 +355,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
           {d.name} ({d.symbol}){' '}
           {d.websiteUrl && (
             <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
@@ -370,7 +370,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       </div>
 
       {/* Company Summary */}
-      <div className="mb-2">
+      <div className="mb-2" itemProp="description">
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
       </div>
     </section>
@@ -445,7 +445,7 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
 
   return (
     <>
-      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
+      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6" itemProp="abstract">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
         <div className="space-y-4">
           {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
@@ -490,7 +490,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 
   return (
     <>
-      <section id="detailed-analysis" className="mb-8">
+      <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
         <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
         {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
@@ -584,6 +584,17 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
 
+  // Derive dates for semantic footer
+  const createdAtRaw = tickerData.vsCompetition?.createdAt || tickerData.createdAt || new Date();
+  const updatedAtRaw = tickerData.vsCompetition?.updatedAt || tickerData.updatedAt || new Date();
+  const publishedDate = new Date(createdAtRaw);
+  const modifiedDate = new Date(updatedAtRaw);
+  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <PageWrapper>
       {/* Structured Data */}
@@ -597,23 +608,52 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       {/* Breadcrumbs - server rendered, no skeleton needed */}
       <BreadcrumbsFromData data={tickerInfo} />
 
-      {/* Summary info - server rendered, no skeleton needed */}
-      <TickerSummaryInfo data={tickerInfo} />
+      <article itemScope itemType="https://schema.org/Article">
+        {/* Hidden datePublished for schema - machine readable only */}
+        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
-      <Suspense fallback={<ChartsInfoSkeleton />}>
-        <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
-      </Suspense>
+        {/* Summary info - server rendered, no skeleton needed */}
+        <TickerSummaryInfo data={tickerInfo} />
 
-      {/* Analysis info - server rendered, no skeleton needed */}
-      <TickerAnalysisInfo data={tickerInfo} />
+        <Suspense fallback={<ChartsInfoSkeleton />}>
+          <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
+        </Suspense>
 
-      <div className="mx-auto max-w-7xl">
-        <section className="mb-6">
-          <SimilarTickers dataPromise={similarPromise} />
-        </section>
-      </div>
+        {/* Analysis info - server rendered, no skeleton needed */}
+        <TickerAnalysisInfo data={tickerInfo} />
 
-      <TickerDetailsInfo data={tickerInfo} />
+        <div className="mx-auto max-w-7xl">
+          <section className="mb-6">
+            <SimilarTickers dataPromise={similarPromise} />
+          </section>
+        </div>
+
+        <TickerDetailsInfo data={tickerInfo} />
+
+        {/* Article Footer */}
+        <footer className="mt-8 pt-6 border-t border-color">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              <span>Last updated by </span>
+              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <span itemProp="name">KoalaGains</span>
+              </span>
+              <span> on </span>
+              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                {formattedModifiedDate}
+              </time>
+            </div>
+            <div className="flex gap-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Stock Analysis
+              </span>
+              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+                Investment Report
+              </span>
+            </div>
+          </div>
+        </footer>
+      </article>
 
       {/* Floating nav after sections are known */}
       <Suspense fallback={null}>
