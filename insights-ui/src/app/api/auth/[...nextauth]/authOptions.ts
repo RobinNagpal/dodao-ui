@@ -34,6 +34,18 @@ export const authOptions = getAuthOptions(
   },
   () => Promise.resolve(null),
   {
+    cookies: {
+      sessionToken: {
+        name: 'next-auth.session-token',
+        options: {
+          httpOnly: true,
+          secure: process.env.VERCEL_ENV === 'production',
+          path: '/',
+          sameSite: 'lax' as const,
+          domain: process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || '.koalagains.com' : undefined,
+        },
+      },
+    },
     callbacks: {
       async session(params): Promise<Session> {
         const { session, user, token } = params;
