@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -122,5 +123,6 @@ export const authOptions = getAuthOptions(
         return token;
       },
     },
-  }
+  },
+  KoalaGainsSpaceId
 );
