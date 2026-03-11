@@ -23,14 +23,14 @@ export function getAuthOptions(
   p: PrismaUserHelper,
   authorizeCrypto: (
     credentials: Record<'publicAddress' | 'signedNonce' | 'spaceId', string> | undefined,
-    req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>,
+    req: Pick<RequestInternal, 'body' | 'headers' | 'method' | 'query'>
   ) => Promise<{
     id: string;
     name: string | null;
     username: string | null;
     publicAddress: string | null;
   } | null>,
-  overrides?: Partial<AuthOptions>,
+  overrides?: Partial<AuthOptions>
 ): AuthOptions {
   const cookieDomain = process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || '.tidbitshub.org' : undefined;
   console.log('[authOptions] cookieDomain', cookieDomain);
@@ -63,7 +63,7 @@ export function getAuthOptions(
         },
         authorize: async function authorizeCrypto(
           credentials: Record<'token' | 'spaceId', string> | undefined,
-          req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>,
+          req: Pick<RequestInternal, 'body' | 'query' | 'headers' | 'method'>
         ) {
           console.log('authorize - credentials', credentials);
           console.log('[authOptions] Attempting to find verification token');
@@ -113,7 +113,7 @@ export function getAuthOptions(
                 identifier: verificationToken.identifier,
               },
               null,
-              credentials?.spaceId,
+              credentials?.spaceId
             );
             return null;
           }
@@ -152,7 +152,7 @@ export function getAuthOptions(
                 spaceId: credentials?.spaceId,
               },
               error as Error,
-              credentials?.spaceId,
+              credentials?.spaceId
             );
           }
 
@@ -176,7 +176,7 @@ export function getAuthOptions(
                   email: verificationToken.identifier,
                 },
                 error as Error,
-                credentials?.spaceId,
+                credentials?.spaceId
               );
             }
 
@@ -188,7 +188,7 @@ export function getAuthOptions(
                   spaceId: credentials?.spaceId,
                 },
                 null,
-                credentials?.spaceId,
+                credentials?.spaceId
               );
               console.error('User not found - ', verificationToken.identifier);
               return null;
@@ -224,7 +224,7 @@ export function getAuthOptions(
                   authProvider: 'custom-email',
                 },
                 error as Error,
-                credentials?.spaceId,
+                credentials?.spaceId
               );
 
               // Still return the global user info to allow login
@@ -317,7 +317,7 @@ export function getAuthOptions(
               {
                 userId: token.sub,
               },
-              error as Error,
+              error as Error
             );
           }
         }
@@ -364,7 +364,7 @@ export function getAuthOptions(
               {
                 userId: token.sub,
               },
-              error as Error,
+              error as Error
             );
           }
         }
