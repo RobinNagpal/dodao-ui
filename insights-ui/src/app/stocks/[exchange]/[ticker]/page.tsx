@@ -354,17 +354,17 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       {/* About Report - displayed above the main heading */}
       {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
+        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
           {d.name} ({d.symbol}){' '}
           {d.websiteUrl && (
             <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              <ArrowTopRightOnSquareIcon className="size-6 sm:size-8 cursor-pointer inline link-color" />
             </a>
           )}
         </h1>
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium text-gray-400 mr-2">{formatExchangeWithCountry(d.exchange)}</span>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(d.exchange)}</span>
           <CompetitionAnalysisButton exchange={d.exchange.toUpperCase()} ticker={d.symbol.toUpperCase()} />
         </div>
       </div>
