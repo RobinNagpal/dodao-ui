@@ -4,17 +4,17 @@ import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requ
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import StockActions from '@/app/stocks/[exchange]/[ticker]/StockActions';
+import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/CompetitionAnalysisButton';
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
-import Competition from '@/components/ticker-reportsv1/Competition';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, INVESTOR_MAPPINGS, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -112,20 +112,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
   return tickerAnyExchange;
 }
 
-/** Competition + Similar fetchers (promise-based for Suspense) */
-export type VsCompetition = Readonly<{ overallAnalysisDetails: string }>;
-
-async function fetchCompetition(exchange: string, ticker: string): Promise<CompetitionResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-
-  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) throw new Error(`fetchCompetition failed (${res.status}): ${url}`);
-
-  const json: CompetitionResponse = (await res.json()) as CompetitionResponse;
-
-  return json;
-}
-
+/** Similar + financial fetchers (promise-based for Suspense) */
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
 
@@ -180,6 +167,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let companyName: string = ticker;
   let summary: string = `Financial analysis and reports for ${ticker}. Explore key metrics, insights, and evaluations.`;
   let metaDescription: string = '';
+  let createdTime: string | undefined;
+  let updatedTime: string | undefined;
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
@@ -187,6 +176,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       companyName = data.name ?? companyName;
       summary = data.summary ?? summary;
       metaDescription = data.metaDescription ?? '';
+      createdTime = data.createdAt?.toISOString();
+      updatedTime = data.updatedAt?.toISOString() ?? createdTime;
     }
   } catch {
     /* keep generic */
@@ -218,6 +209,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
+      publishedTime: createdTime ?? updatedTime,
+      modifiedTime: updatedTime ?? createdTime,
     },
     twitter: {
       card: 'summary_large_image',
@@ -361,20 +354,23 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       {/* About Report - displayed above the main heading */}
       {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
+        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
           {d.name} ({d.symbol}){' '}
           {d.websiteUrl && (
             <a href={d.websiteUrl} target="_blank" rel="noopener noreferrer" title={"website of the company's homepage"}>
-              <ArrowTopRightOnSquareIcon className="size-8 cursor-pointer inline link-color" />
+              <ArrowTopRightOnSquareIcon className="size-6 sm:size-8 cursor-pointer inline link-color" />
             </a>
           )}
         </h1>
-        <span className="text-sm font-medium text-gray-400 mr-2">{formatExchangeWithCountry(d.exchange)}</span>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(d.exchange)}</span>
+          <CompetitionAnalysisButton exchange={d.exchange.toUpperCase()} ticker={d.symbol.toUpperCase()} />
+        </div>
       </div>
 
       {/* Company Summary */}
-      <div className="mb-2">
+      <div className="mb-2" itemProp="description">
         <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary ?? 'Not yet populated') }} />
       </div>
     </section>
@@ -449,7 +445,7 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
 
   return (
     <>
-      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6">
+      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6" itemProp="abstract">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
         <div className="space-y-4">
           {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
@@ -476,18 +472,6 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
           })}
         </div>
       </section>
-      {d.futureRisks.length > 0 && (
-        <section id="future-risks" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Future Risks</h2>
-          <ul className="space-y-3">
-            {d.futureRisks.map((futureRisk) => (
-              <li key={futureRisk.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                <div className="flex flex-col gap-y-2">{futureRisk.summary}</div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </>
   );
 }
@@ -506,7 +490,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 
   return (
     <>
-      <section id="detailed-analysis" className="mb-8">
+      <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
         <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
         {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
@@ -563,20 +547,34 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
           );
         })}
       </section>
-
-      {d.futureRisks.length > 0 && (
-        <section id="detailed-future-risks" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Detailed Future Risks</h2>
-          <div className="space-y-3">
-            {d.futureRisks.map((futureRisk) => (
-              <div key={futureRisk.id} className="bg-gray-800 p-4 rounded-md">
-                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(futureRisk.detailedAnalysis) }} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </>
+  );
+}
+
+function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDate: Date; formattedModifiedDate: string }): JSX.Element {
+  return (
+    <footer className="mt-8 pt-6 border-t border-color">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="text-sm text-muted-foreground">
+          <span>Last updated by </span>
+          <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+            <span itemProp="name">KoalaGains</span>
+          </span>
+          <span> on </span>
+          <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+            {formattedModifiedDate}
+          </time>
+        </div>
+        <div className="flex gap-2">
+          <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+            Stock Analysis
+          </span>
+          <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+            Investment Report
+          </span>
+        </div>
+      </div>
+    </footer>
   );
 }
 /** PAGE */
@@ -609,10 +607,20 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
     })();
 
   // Promises consumed by child components via `use()` under Suspense
-  const competitionPromise = retryWithCanonical(fetchCompetition);
   const similarPromise = retryWithCanonical(fetchSimilar);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
+
+  // Derive dates for semantic footer (based solely on tickerData)
+  const createdAtRaw = tickerData.createdAt || new Date();
+  const updatedAtRaw = tickerData.updatedAt || tickerData.createdAt || new Date();
+  const publishedDate = new Date(createdAtRaw);
+  const modifiedDate = new Date(updatedAtRaw);
+  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   return (
     <PageWrapper>
@@ -627,27 +635,30 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       {/* Breadcrumbs - server rendered, no skeleton needed */}
       <BreadcrumbsFromData data={tickerInfo} />
 
-      {/* Summary info - server rendered, no skeleton needed */}
-      <TickerSummaryInfo data={tickerInfo} />
+      <article itemScope itemType="https://schema.org/Article">
+        {/* Hidden datePublished for schema - machine readable only */}
+        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
-      <Suspense fallback={<ChartsInfoSkeleton />}>
-        <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
-      </Suspense>
+        {/* Summary info - server rendered, no skeleton needed */}
+        <TickerSummaryInfo data={tickerInfo} />
 
-      {/* Analysis info - server rendered, no skeleton needed */}
-      <TickerAnalysisInfo data={tickerInfo} />
+        <Suspense fallback={<ChartsInfoSkeleton />}>
+          <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
+        </Suspense>
 
-      <div className="mx-auto max-w-7xl">
-        <section className="mb-8">
-          <Competition exchange={exchange} ticker={ticker} dataPromise={competitionPromise} />
-        </section>
+        {/* Analysis info - server rendered, no skeleton needed */}
+        <TickerAnalysisInfo data={tickerInfo} />
 
-        <section className="mb-6">
-          <SimilarTickers dataPromise={similarPromise} />
-        </section>
-      </div>
+        <div className="mx-auto max-w-7xl">
+          <section className="mb-6">
+            <SimilarTickers dataPromise={similarPromise} />
+          </section>
+        </div>
 
-      <TickerDetailsInfo data={tickerInfo} />
+        <TickerDetailsInfo data={tickerInfo} />
+
+        <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
+      </article>
 
       {/* Floating nav after sections are known */}
       <Suspense fallback={null}>
