@@ -5,6 +5,19 @@ import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-mov
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import { VsCompetition } from '@/types/ticker-typesv1';
 
+/** Minimal ticker shape required by stock report metadata/schema generators. */
+interface TickerReportMetadata {
+  name: string;
+  symbol: string;
+  exchange: string;
+  industryKey: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  metaDescription?: string | null;
+  summary?: string | null;
+  industry?: { name: string | null } | null;
+}
+
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator
 // ────────────────────────────────────────────────────────────────────────────────
@@ -386,7 +399,7 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 // ────────────────────────────────────────────────────────────────────────────────
 
 // Generate Report schema for stock analysis pages
-export const generateStockReportArticleSchema = (ticker: any) => {
+export const generateStockReportArticleSchema = (ticker: TickerReportMetadata) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
 
   return {
@@ -452,7 +465,7 @@ export const generateStockReportArticleSchema = (ticker: any) => {
   };
 };
 
-export const generateStockReportBreadcrumbSchema = (ticker: any, country: string) => {
+export const generateStockReportBreadcrumbSchema = (ticker: TickerReportMetadata, country: string) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const industryName = ticker.industry?.name || ticker.industryKey;
 
