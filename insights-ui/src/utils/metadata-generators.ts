@@ -1,22 +1,12 @@
 import { Metadata } from 'next';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1Industry } from '@prisma/client';
+import { TickerV1, TickerV1Industry } from '@prisma/client';
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import { VsCompetition } from '@/types/ticker-typesv1';
 
-/** Minimal ticker shape required by stock report metadata/schema generators. */
-interface TickerReportMetadata {
-  name: string;
-  symbol: string;
-  exchange: string;
-  industryKey: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-  metaDescription?: string | null;
-  summary?: string | null;
-  industry?: { name: string | null } | null;
-}
+/** TickerV1 with optional industry relation – compatible with both TickerV1FastResponse and CompetitionResponse callers. */
+type TickerWithOptionalIndustry = TickerV1 & { industry?: Pick<TickerV1Industry, 'name'> | null };
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator
@@ -399,7 +389,7 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 // ────────────────────────────────────────────────────────────────────────────────
 
 // Generate Report schema for stock analysis pages
-export const generateStockReportArticleSchema = (ticker: TickerReportMetadata) => {
+export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndustry) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
 
   return {
@@ -465,7 +455,7 @@ export const generateStockReportArticleSchema = (ticker: TickerReportMetadata) =
   };
 };
 
-export const generateStockReportBreadcrumbSchema = (ticker: TickerReportMetadata, country: string) => {
+export const generateStockReportBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const industryName = ticker.industry?.name || ticker.industryKey;
 
@@ -548,7 +538,7 @@ export const generateStockReportBreadcrumbSchema = (ticker: TickerReportMetadata
 // Stock competition structured data generators
 // ────────────────────────────────────────────────────────────────────────────────
 
-export const generateCompetitionArticleSchema = (ticker: TickerReportMetadata, competitorNames: string[], vsCompetition?: VsCompetition | null) => {
+export const generateCompetitionArticleSchema = (ticker: TickerWithOptionalIndustry, competitorNames: string[], vsCompetition?: VsCompetition | null) => {
   const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const canonicalUrl = `${stockUrl}/competition`;
   const competitorList = competitorNames.length > 0 ? competitorNames.join(', ') : 'industry peers';
@@ -617,7 +607,7 @@ export const generateCompetitionArticleSchema = (ticker: TickerReportMetadata, c
   };
 };
 
-export const generateCompetitionBreadcrumbSchema = (ticker: TickerReportMetadata, country: string) => {
+export const generateCompetitionBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
   const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const canonicalUrl = `${stockUrl}/competition`;
   const industryName = ticker.industry?.name || ticker.industryKey;
