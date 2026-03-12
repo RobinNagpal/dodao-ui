@@ -548,7 +548,7 @@ export const generateStockReportBreadcrumbSchema = (ticker: TickerReportMetadata
 // Stock competition structured data generators
 // ────────────────────────────────────────────────────────────────────────────────
 
-export const generateCompetitionArticleSchema = (ticker: any, competitorNames: string[], vsCompetition?: VsCompetition | null) => {
+export const generateCompetitionArticleSchema = (ticker: TickerReportMetadata, competitorNames: string[], vsCompetition?: VsCompetition | null) => {
   const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const canonicalUrl = `${stockUrl}/competition`;
   const competitorList = competitorNames.length > 0 ? competitorNames.join(', ') : 'industry peers';
@@ -617,12 +617,12 @@ export const generateCompetitionArticleSchema = (ticker: any, competitorNames: s
   };
 };
 
-export const generateCompetitionBreadcrumbSchema = (ticker: any, country: string) => {
+export const generateCompetitionBreadcrumbSchema = (ticker: TickerReportMetadata, country: string) => {
   const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const canonicalUrl = `${stockUrl}/competition`;
   const industryName = ticker.industry?.name || ticker.industryKey;
 
-  const breadcrumbItems: any[] = [
+  const breadcrumbItems: { '@type': string; position: number; name: string; item: string }[] = [
     {
       '@type': 'ListItem',
       position: 1,
