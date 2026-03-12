@@ -14,7 +14,7 @@ export const prismaAdapter = PrismaAdapter(prisma);
 const userAdapter = createUserAdapter(prisma.user);
 const verificationTokenAdapter = createVerificationTokenAdapter(prisma.verificationToken);
 
-export const authOptions = getAuthOptions(
+const baseAuthOptions = getAuthOptions(
   {
     user: userAdapter,
     verificationToken: verificationTokenAdapter,
@@ -77,12 +77,20 @@ export const authOptions = getAuthOptions(
           role: userInfo.role,
         };
         console.log('[authOptions] Session callback - Returning session');
+
+        let dodaoAccessToken = '';
+        if (process.env.DODAO_AUTH_SECRET) {
+          dodaoAccessToken = jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET);
+        } else {
+          console.error('[authOptions] DODAO_AUTH_SECRET is not set — cannot sign access token');
+        }
+
         return {
           userId: userInfo.id,
           ...session,
           user: user?.email ? await prisma.user.findFirst({ where: { email: user.email } }) : undefined,
           ...userInfo,
-          dodaoAccessToken: jwt.sign(doDaoJwtTokenPayload, process.env.DODAO_AUTH_SECRET!),
+          dodaoAccessToken,
         };
       },
 
@@ -124,3 +132,25 @@ export const authOptions = getAuthOptions(
     },
   }
 );
+
+// Override cookie domain: the shared getAuthOptions defaults to '.tidbitshub.org'
+// which is wrong for insights-ui (koalagains.com). Use COOKIE_DOMAIN env var or
+// let the browser default to the current origin.
+const koalaCookieDomain = process.env.VERCEL_ENV === 'production' ? process.env.COOKIE_DOMAIN || undefined : undefined;
+
+export const authOptions = {
+  ...baseAuthOptions,
+  cookies: {
+    ...baseAuthOptions.cookies,
+    sessionToken: {
+      name: 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        secure: process.env.VERCEL_ENV === 'production',
+        path: '/',
+        sameSite: 'lax' as const,
+        domain: koalaCookieDomain,
+      },
+    },
+  },
+};
