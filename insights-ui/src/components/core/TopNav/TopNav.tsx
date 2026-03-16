@@ -31,6 +31,7 @@ const reportsDropdown: ReportItem[] = [
   { name: 'Daily Top Gainers', href: '/daily-top-movers/top-gainers/country/US', description: 'Top performing stocks today', isNew: true },
   { name: 'Daily Top Losers', href: '/daily-top-movers/top-losers/country/US', description: 'Biggest stock declines today', isNew: true },
   { name: 'Professional Managers', href: '/portfolio-managers/professional-managers', description: 'Professional Managers', isNew: false },
+  { name: 'College Ambassadors', href: '/portfolio-managers/college-ambassadors', description: 'College Ambassadors', isNew: false },
 ];
 
 const genaiDropdown: GenAIItem[] = [
