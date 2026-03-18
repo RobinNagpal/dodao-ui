@@ -2,46 +2,56 @@
 
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { DailyMoverType } from '@/types/daily-mover-constants';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Link from 'next/link';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import DateSelector from './DateSelector';
-import { useState, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 
 interface StockMoversTableProps {
   movers: (TopGainerWithTicker | TopLoserWithTicker)[];
   type: DailyMoverType;
   country: string;
+  availableDates: string[];
 }
 
-export default function StockMoversTable({ movers, type, country }: StockMoversTableProps) {
-  // Extract unique dates from movers and sort them
-  const availableDates = useMemo(() => {
-    const dateSet = new Set<string>();
-    movers.forEach((mover) => {
-      const dateStr = new Date(mover.createdAt).toISOString().split('T')[0];
-      dateSet.add(dateStr);
-    });
-    return Array.from(dateSet)
-      .sort((a, b) => b.localeCompare(a))
-      .map((dateStr) => new Date(dateStr + 'T00:00:00'));
-  }, [movers]);
+export default function StockMoversTable({ movers, type, country, availableDates }: StockMoversTableProps) {
+  const dateObjects = availableDates.map((d) => new Date(d + 'T00:00:00'));
+  const minDate = dateObjects.length > 0 ? dateObjects[dateObjects.length - 1] : new Date();
+  const maxDate = dateObjects.length > 0 ? dateObjects[0] : new Date();
 
-  // Get min and max dates
-  const minDate = availableDates.length > 0 ? availableDates[availableDates.length - 1] : new Date();
-  const maxDate = availableDates.length > 0 ? availableDates[0] : new Date();
-
-  // Set initial selected date to the latest available date
   const [selectedDate, setSelectedDate] = useState<Date>(maxDate);
+  const [displayedMovers, setDisplayedMovers] = useState(movers);
+  const [loading, setLoading] = useState(false);
 
-  // Filter movers by selected date
-  const filteredMovers = useMemo(() => {
-    const selectedDateStr = selectedDate.toISOString().split('T')[0];
-    return movers.filter((mover) => {
-      const moverDateStr = new Date(mover.createdAt).toISOString().split('T')[0];
-      return moverDateStr === selectedDateStr;
-    });
-  }, [movers, selectedDate]);
+  const fetchMoversForDate = useCallback(
+    async (date: Date) => {
+      setSelectedDate(date);
+      const dateStr = date.toISOString().split('T')[0];
+      const initialDateStr = maxDate.toISOString().split('T')[0];
+
+      // If selecting back to the initial date, use the server-provided data
+      if (dateStr === initialDateStr) {
+        setDisplayedMovers(movers);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const endpoint = type === DailyMoverType.GAINER ? 'daily-top-gainers' : 'daily-top-losers';
+        const res = await fetch(`/api/${KoalaGainsSpaceId}/tickers-v1/${endpoint}?country=${country}&date=${dateStr}`);
+        if (res.ok) {
+          const data = await res.json();
+          setDisplayedMovers(data);
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [type, country, movers, maxDate]
+  );
+
   const isGainer = type === DailyMoverType.GAINER;
   const title = isGainer ? `Top Performing Stocks in ${country.toUpperCase()} Today` : `Worst Performing Stocks in ${country.toUpperCase()} Today`;
   const description = isGainer
@@ -57,11 +67,15 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
         <p className="text-muted-foreground mt-2">{description}</p>
       </div>
 
-      {availableDates.length > 0 && (
-        <DateSelector selectedDate={selectedDate} availableDates={availableDates} minDate={minDate} maxDate={maxDate} onChange={setSelectedDate} />
+      {dateObjects.length > 0 && (
+        <DateSelector selectedDate={selectedDate} availableDates={dateObjects} minDate={minDate} maxDate={maxDate} onChange={fetchMoversForDate} />
       )}
 
-      {filteredMovers.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
+          <p className="text-muted-foreground text-lg">Loading...</p>
+        </div>
+      ) : displayedMovers.length === 0 ? (
         <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
           <p className="text-muted-foreground text-lg">No {type === DailyMoverType.GAINER ? 'gainers' : 'losers'} found</p>
         </div>
@@ -83,7 +97,7 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
                 </tr>
               </thead>
               <tbody className="divide-y border-color">
-                {filteredMovers.map((mover) => (
+                {displayedMovers.map((mover) => (
                   <tr key={mover.id} className="bg-gray-900 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Link

@@ -20,18 +20,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DailyTopGainersPage({ params }: PageProps) {
   const { country } = await params;
-
-  // Fetch top gainers from the API with country filter
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-gainers?country=${country}`, {
+  const baseUrl = getBaseUrl();
+  const cacheOptions = {
     next: {
-      revalidate: 604800, // 7 days in seconds
+      revalidate: 604800,
       tags: [getDailyMoversByCountryTag(country, DailyMoverType.GAINER)],
     },
-  });
+  };
 
-  const topGainers: TopGainerWithTicker[] = await response.json();
+  // Fetch available dates first, then only the latest date's movers
+  const datesRes = await fetch(
+    `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-movers-available-dates?country=${country}&type=${DailyMoverType.GAINER}`,
+    cacheOptions
+  );
+  const { dates: availableDates } = (await datesRes.json()) as { dates: string[] };
 
-  // Generate structured data
+  const latestDate = availableDates.length > 0 ? availableDates[0] : null;
+  const dateParam = latestDate ? `&date=${latestDate}` : '';
+  const gainersRes = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-gainers?country=${country}${dateParam}`, cacheOptions);
+  const topGainers: TopGainerWithTicker[] = await gainersRes.json();
+
   const breadcrumbSchema = generateCountryMoversBreadcrumbSchema(country, DailyMoverType.GAINER);
 
   const breadcrumbs = [
@@ -50,7 +58,7 @@ export default async function DailyTopGainersPage({ params }: PageProps) {
         }}
       />
 
-      <StockMoversTable movers={topGainers} type={DailyMoverType.GAINER} country={country} />
+      <StockMoversTable movers={topGainers} type={DailyMoverType.GAINER} country={country} availableDates={availableDates} />
     </PageWrapper>
   );
 }
