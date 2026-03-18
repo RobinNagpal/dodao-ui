@@ -28,6 +28,7 @@ export const tickerV1IncludeWithRelations = {
     },
   },
   futureRisks: true,
+  vsCompetition: true,
   industry: true,
   subIndustry: true,
   cachedScoreEntry: true,
@@ -61,6 +62,7 @@ export interface CompetitorTicker {
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
   futureRisks: TickerV1FutureRisk[];
+  vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;
 };
 
@@ -79,6 +81,7 @@ export interface TickerV1FullReportResponse extends TickerV1WithRelations, Ticke
   industryName: string;
   subIndustryName: string;
   similarTickers: SimilarTicker[];
+  competitorTickers: CompetitorTicker[];
 }
 
 export interface TickerV1FastResponse extends TickerV1WithRelations, TickerWithMissingReportInfo {}
@@ -100,6 +103,7 @@ export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prism
       },
       investorAnalysisResults: true,
       futureRisks: true,
+      vsCompetition: true,
     },
   });
 
@@ -197,6 +201,8 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
     take: 3,
   });
 
+  const competitorTickers = await getCompetitorTickers(tickerRecord);
+
   // Get missing reports for this ticker
   const missingReports = await getMissingReportsForTicker(tickerRecord.spaceId, tickerRecord.id);
 
@@ -213,9 +219,11 @@ export async function getTickerWithAllDetails(tickerRecord: TickerV1WithRelation
     ticker: tickerRecord,
     ...tickerRecord,
     ...missingReports,
+    vsCompetition: tickerRecord.vsCompetition || undefined,
     industryName,
     subIndustryName,
     similarTickers,
+    competitorTickers,
     websiteUrl: tickerRecord.websiteUrl || null,
     summary: tickerRecord.summary || null,
   };

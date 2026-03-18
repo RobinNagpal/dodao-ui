@@ -18,6 +18,11 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
       hasContent: d.futureRisks.length > 0,
     },
     {
+      id: 'competition',
+      title: 'Competition',
+      hasContent: true,
+    },
+    {
       id: 'similar-tickers',
       title: 'Similar Tickers',
       hasContent: true,
