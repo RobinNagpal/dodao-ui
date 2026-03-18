@@ -1,8 +1,12 @@
 import { Metadata } from 'next';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { TickerV1Industry } from '@prisma/client';
+import { TickerV1, TickerV1Industry } from '@prisma/client';
 import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { DailyMoverType } from '@/types/daily-mover-constants';
+import { VsCompetition } from '@/types/ticker-typesv1';
+
+/** TickerV1 with optional industry relation – compatible with both TickerV1FastResponse and CompetitionResponse callers. */
+type TickerWithOptionalIndustry = TickerV1 & { industry?: Pick<TickerV1Industry, 'name'> | null };
 
 // ────────────────────────────────────────────────────────────────────────────────
 // Country stocks metadata generator
@@ -385,12 +389,12 @@ export const generateCountryMoversBreadcrumbSchema = (country: string, type: Dai
 // ────────────────────────────────────────────────────────────────────────────────
 
 // Generate Report schema for stock analysis pages
-export const generateStockReportArticleSchema = (ticker: any) => {
+export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndustry) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
 
   return {
     '@context': 'https://schema.org',
-    '@type': 'Report',
+    '@type': 'Article',
     headline: `${ticker.name} (${ticker.symbol}) Stock Analysis & Investment Report`,
     description: ticker.metaDescription || ticker.summary || `Comprehensive investment analysis and financial insights for ${ticker.name} (${ticker.symbol})`,
     image: ['https://koalagains.com/koalagain_logo.png'],
@@ -451,7 +455,7 @@ export const generateStockReportArticleSchema = (ticker: any) => {
   };
 };
 
-export const generateStockReportBreadcrumbSchema = (ticker: any, country: string) => {
+export const generateStockReportBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
   const canonicalUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const industryName = ticker.industry?.name || ticker.industryKey;
 
@@ -520,6 +524,127 @@ export const generateStockReportBreadcrumbSchema = (ticker: any, country: string
         name: `${ticker.symbol}`,
         item: canonicalUrl,
       }
+    );
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems,
+  };
+};
+
+// ────────────────────────────────────────────────────────────────────────────────
+// Stock competition structured data generators
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateCompetitionArticleSchema = (ticker: TickerWithOptionalIndustry, competitorNames: string[], vsCompetition?: VsCompetition | null) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/competition`;
+  const competitorList = competitorNames.length > 0 ? competitorNames.join(', ') : 'industry peers';
+
+  // Use competition dates if available, otherwise ticker dates
+  const datePublished = vsCompetition?.createdAt ? new Date(vsCompetition.createdAt).toISOString() : new Date(ticker.createdAt).toISOString();
+  const dateModified = vsCompetition?.updatedAt ? new Date(vsCompetition.updatedAt).toISOString() : new Date(ticker.updatedAt).toISOString();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${ticker.name} (${ticker.symbol}) Competitive Analysis & Comparison`,
+    description: `Detailed competitive analysis of ${ticker.name} (${ticker.symbol}) compared against ${competitorList}. Evaluate market position, financial strengths, and competitive advantages.`,
+    image: ['https://koalagains.com/koalagain_logo.png'],
+    datePublished,
+    dateModified,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: 'Competitive Analysis',
+    keywords: [
+      ticker.name,
+      `${ticker.symbol} competitors`,
+      `${ticker.name} competitive analysis`,
+      `${ticker.symbol} vs competitors`,
+      `${ticker.name} market position`,
+      ...competitorNames.map((name: string) => `${ticker.name} vs ${name}`),
+      'competitive analysis',
+      'stock comparison',
+      'investment analysis',
+      `${ticker.exchange} stocks`,
+      ticker.industryKey,
+      ticker.industry?.name,
+      'KoalaGains',
+    ]
+      .filter(Boolean)
+      .join(', '),
+    about: {
+      '@type': 'Corporation',
+      name: ticker.name,
+      tickerSymbol: ticker.symbol,
+      exchange: ticker.exchange,
+    },
+    inLanguage: 'en-US',
+  };
+};
+
+export const generateCompetitionBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/competition`;
+  const industryName = ticker.industry?.name || ticker.industryKey;
+
+  const breadcrumbItems: { '@type': string; position: number; name: string; item: string }[] = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://koalagains.com',
+    },
+  ];
+
+  if (country === 'US') {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'US Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: industryName, item: `https://koalagains.com/stocks/industries/${ticker.industryKey}` },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Competition', item: canonicalUrl }
+    );
+  } else if (country) {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: `${country} Stocks`, item: `https://koalagains.com/stocks/countries/${country}` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: industryName,
+        item: `https://koalagains.com/stocks/countries/${country}/industries/${ticker.industryKey}`,
+      },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Competition', item: canonicalUrl }
+    );
+  } else {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 4, name: 'Competition', item: canonicalUrl }
     );
   }
 

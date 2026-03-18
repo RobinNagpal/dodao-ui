@@ -5,7 +5,7 @@ import { getCompetitorTickers } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { TickerV1VsCompetition } from '@prisma/client';
+import { TickerV1VsCompetition, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }): Promise<CompetitionResponse> {
   const { spaceId, ticker, exchange } = await context.params;
@@ -19,16 +19,24 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const tickerRecord: TickerV1 & {
     vsCompetition?: TickerV1VsCompetition | null;
+    industry: TickerV1Industry | null;
+    subIndustry: TickerV1SubIndustry | null;
   } = await prisma.tickerV1.findFirstOrThrow({
     where: whereClause,
     include: {
       vsCompetition: true,
+      industry: true,
+      subIndustry: true,
     },
   });
 
   const competitorTickers = await getCompetitorTickers(tickerRecord);
 
-  return { vsCompetition: tickerRecord.vsCompetition || null, competitorTickers };
+  return {
+    vsCompetition: tickerRecord.vsCompetition || null,
+    competitorTickers,
+    ticker: tickerRecord,
+  };
 }
 
 export const GET = withErrorHandlingV2<CompetitionResponse>(getHandler);

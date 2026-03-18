@@ -85,7 +85,7 @@ async function postHandler(
 
   const nextAttemptNumber = exercise.attempts.length + 1;
 
-  const defaultPromptOutputInstructions = `Give the output in 2-3 short paragraphs using simple language. Keep the total response under 300 words. Present key facts and figures from the context. Do not use any redundant language. Be crisp, concise and informative.`;
+  const defaultPromptOutputInstructions = `Give the output in 2 paragraphs and simple language. Make sure to present as many facts and figures from the context as much as possible. Do not use any redudant language. Be crisp, concise and informative.`;
 
   try {
     const outputInstructions = exercise.promptOutputInstructions || defaultPromptOutputInstructions;
@@ -93,7 +93,7 @@ async function postHandler(
     const enhancedPrompt = `${prompt}\n\n # Output Instructions: \n\n ${outputInstructions}`;
 
     // Use the shared AI response generation utility
-    const aiResponse = await generateAIResponse(enhancedPrompt);
+    const { text: aiResponse, model: actualModel } = await generateAIResponse(enhancedPrompt);
 
     // Create the attempt record
     const attempt = await prisma.exerciseAttempt.create({
@@ -102,7 +102,7 @@ async function postHandler(
         createdById: userId,
         updatedById: userId,
         attemptNumber: nextAttemptNumber,
-        model: 'gemini-2.5-pro',
+        model: actualModel,
         prompt,
         promptResponse: aiResponse,
         status: 'completed',
@@ -114,26 +114,7 @@ async function postHandler(
 
     return { attempt };
   } catch (error) {
-    // Create failed attempt record and return it (instead of throwing) so the
-    // frontend can update its local attempt count.  Throwing here previously
-    // caused a desync: the DB had the failed attempt but the UI didn't, so the
-    // UI would allow another submission that the API would reject with
-    // "Maximum number of attempts (3) reached".
-    const attempt = await prisma.exerciseAttempt.create({
-      data: {
-        exerciseId,
-        createdById: userId,
-        updatedById: userId,
-        attemptNumber: nextAttemptNumber,
-        model: 'gemini-2.0-flash-exp',
-        prompt,
-        status: 'failed',
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
-        archive: false,
-      },
-    });
-
-    return { attempt };
+    throw new Error(`Failed to generate AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 

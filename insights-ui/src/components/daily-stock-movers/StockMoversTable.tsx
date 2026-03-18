@@ -6,6 +6,7 @@ import Link from 'next/link';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import DateSelector from './DateSelector';
 import { useState, useMemo } from 'react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 
 interface StockMoversTableProps {
   movers: (TopGainerWithTicker | TopLoserWithTicker)[];
@@ -85,7 +86,13 @@ export default function StockMoversTable({ movers, type, country }: StockMoversT
                 {filteredMovers.map((mover) => (
                   <tr key={mover.id} className="bg-gray-900 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-semibold text-color">{mover.ticker.symbol}</div>
+                      <Link
+                        href={`/stocks/${mover.ticker.exchange}/${mover.ticker.symbol}`}
+                        className="group inline-flex items-center gap-1 text-sm font-semibold"
+                      >
+                        <span className="text-color group-hover:text-[#a09bff] group-hover:underline">{mover.ticker.symbol}</span>
+                        <ArrowTopRightOnSquareIcon className="h-4 w-4 text-muted-foreground group-hover:text-[#a09bff]" aria-hidden="true" />
+                      </Link>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">

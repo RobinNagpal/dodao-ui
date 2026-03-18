@@ -34,17 +34,7 @@ yarn build
 
 **Important:** Do not proceed until the build completes without errors.
 
-### 4) Run Prettier Fix (Mandatory)
-
-Before committing, **always** run `yarn prettier-fix` from the relevant project directory to auto-format all changed files:
-
-```bash
-yarn prettier-fix
-```
-
-This must be done even if `yarn prettier-check` passes, to guarantee consistent formatting.
-
-### 5) Commit and Push Changes (Mandatory)
+### 4) Commit and Push Changes (Mandatory)
 
 After checks and build pass, commit and push your changes:
 
@@ -54,14 +44,14 @@ git commit -m "Your descriptive commit message"
 git push origin your-branch-name
 ```
 
-### 6) End-of-Task Rule  (Mandatory)
+### 5) End-of-Task Rule  (Mandatory)
 
 **At the end of every completed task, Claude Code must commit and push the code if the current branch is *not* `main` or `master`.**
 (Do not commit directly to `main`/`master` unless explicitly instructed.)
 
 AT ALL TIMES ALL THE CODE SHOULD BE CHECKEDIN AND PUSHED (Mandatory)
 
-### 7) Monitor CI / Deployment Status
+### 6) Monitor CI / Deployment Status
 
 After pushing:
 
@@ -69,7 +59,7 @@ After pushing:
 2. Confirm all checks pass
 3. If deployed via **Vercel**, verify deployment/build logs there as well
 
-### 8) If Build Fails
+### 7) If Build Fails
 
 Check logs and fix issues:
 
@@ -83,6 +73,94 @@ Common failure areas:
 * Build/compile errors
 * Tests
 * Missing/incorrect environment variables
+
+---
+
+## Worktree-Based Workflow (MANDATORY — READ THIS FIRST)
+
+All code changes MUST happen in git worktrees. The main repo checkout is READ-ONLY.
+
+### What Are Worktrees?
+
+Git worktrees let you have multiple branches checked out simultaneously in separate directories, all sharing the same `.git` history. This means you can work on `fix-auth` in one folder and `add-feature` in another, without switching branches. Each worktree is an independent working directory with its own branch.
+
+### Layout
+
+- **Main repo (READ-ONLY, must stay on `main`):** `/home/ubuntu/.openclaw/workspace-insights-ui/dodao-ui`
+- **Worktree base dir:** `/home/ubuntu/.openclaw/workspace-insights-ui/worktrees/`
+- **Convention:** worktree folder name = branch name (e.g., `worktrees/fix-auth/` → branch `fix-auth`)
+
+### CRITICAL SAFETY RULES
+
+1. **NEVER change branches in the main repo.** It must always stay on `main`. If you are in the main repo and it's not on `main`, run `git checkout main` before doing anything else.
+2. **NEVER commit code in the main repo.** All commits happen in worktrees only.
+3. **BEFORE doing any coding work, verify your current directory.** Your working directory path MUST contain `/worktrees/`. If it does not, you are in the main repo — STOP and do NOT write code.
+4. **Each new task = new branch = new worktree.** Do NOT reuse a worktree/branch from a different task. Only continue in an existing worktree if the task is explicitly a continuation of that branch's work.
+5. **A branch can only be checked out in ONE place.** Git does not allow the same branch in two worktrees. The main repo stays on `main`, worktrees get feature branches.
+
+### Step 1: Worktree Management (run from main repo)
+
+Run these commands from the main repo directory (`/home/ubuntu/.openclaw/workspace-insights-ui/dodao-ui`):
+
+```bash
+# 1. Ensure main repo is on main and up to date
+git checkout main && git pull origin main
+
+# 2. Cleanup — remove worktrees whose PRs are merged
+git worktree list
+# For each worktree (not the main one):
+#   gh pr list --head <branch> --state merged
+#   If merged: git worktree remove <path> && git branch -d <branch>
+
+# 3. Select or create worktree for current task
+# If existing worktree matches this task exactly → use it
+# Otherwise create new:
+git worktree add /home/ubuntu/.openclaw/workspace-insights-ui/worktrees/<branch-name> -b <branch-name> main
+```
+
+**Important:** The trailing `main` in the `git worktree add` command means "create this branch starting from main's HEAD." Always include it so new branches start clean.
+
+### Step 2: Do Work (run from worktree directory)
+
+You must `cd` into or be spawned in the worktree directory. Verify with:
+```bash
+pwd  # Must contain /worktrees/
+git branch --show-current  # Must NOT be main
+```
+
+Then do your work, and when finished:
+```bash
+# 1. Quality checks
+yarn lint && yarn prettier-check && yarn build
+
+# 2. Commit and push
+git add .
+git commit -m "descriptive message"
+git push -u origin <BRANCH_NAME>
+
+# 3. Create PR if none exists
+gh pr list --head <BRANCH_NAME> --state open  # check first
+gh pr create --base main --head <BRANCH_NAME> --title "..." --body "..."
+```
+
+### Common Worktree Commands Reference
+
+```bash
+git worktree list                    # Show all worktrees and their branches
+git worktree add <path> -b <branch> main  # Create new worktree+branch from main
+git worktree add <path> <existing-branch> # Checkout existing branch in new worktree
+git worktree remove <path>           # Remove a worktree (must have clean working tree)
+git worktree prune                   # Clean up stale worktree references
+git branch -d <branch>              # Delete branch after worktree is removed
+```
+
+### Why This Matters
+
+Without worktrees, switching branches in a single checkout causes:
+- Build cache invalidation (slow rebuilds)
+- Risk of uncommitted changes being lost or mixed between tasks
+- Inability to work on multiple tasks concurrently
+- Commits landing on wrong branches (exactly what happened when auth fixes went onto competition-page)
 
 ---
 

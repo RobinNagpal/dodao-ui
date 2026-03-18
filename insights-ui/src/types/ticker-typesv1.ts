@@ -1,8 +1,13 @@
-import { VsCompetition } from '@/app/stocks/[exchange]/[ticker]/page';
 import { MinimalTickerWithOnlyFinalScore, TickerMinimal } from '@/types/api/ticker-industries';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
 import { IndustryBuildingBlockAnalysis, TickerV1, TickerV1CachedScore, TickerV1Industry, TickerV1IndustryAnalysis, TickerV1SubIndustry } from '@prisma/client';
+
+export type VsCompetition = Readonly<{
+  overallAnalysisDetails: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}>;
 
 export interface TickerWithIndustryNames extends TickerV1WithIndustryAndSubIndustry {
   industryName: string;
@@ -44,6 +49,10 @@ export interface ReportTickersResponse {
 export type CompetitionResponse = {
   vsCompetition: VsCompetition | null;
   competitorTickers: CompetitorTicker[];
+  ticker?: TickerV1 & {
+    industry: TickerV1Industry | null;
+    subIndustry: TickerV1SubIndustry | null;
+  };
 };
 
 export interface IndustryWithSubIndustries extends TickerV1Industry {

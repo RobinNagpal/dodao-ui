@@ -13,16 +13,6 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
       hasContent: true,
     },
     {
-      id: 'future-risks',
-      title: 'Future Risks',
-      hasContent: d.futureRisks.length > 0,
-    },
-    {
-      id: 'competition',
-      title: 'Competition',
-      hasContent: true,
-    },
-    {
       id: 'similar-tickers',
       title: 'Similar Tickers',
       hasContent: true,
@@ -42,11 +32,6 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
             : null;
         })
         .filter((item): item is NonNullable<typeof item> => item !== null),
-    },
-    {
-      id: 'detailed-future-risks',
-      title: 'Detailed Future Risks',
-      hasContent: d.futureRisks.length > 0,
     },
   ];
 

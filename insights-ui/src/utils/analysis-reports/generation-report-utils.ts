@@ -1,13 +1,11 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { GenerationRequestStatus, ReportType, TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry } from '@/types/ticker-typesv1';
 import {
   fetchAnalysisFactors,
   fetchBusinessMoatAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  fetchTickerRecordWithAnalysisData,
 } from '@/utils/analysis-reports/get-report-data-utils';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
 import {
@@ -17,7 +15,6 @@ import {
   prepareFinalSummaryInputJson,
   prepareFinancialAnalysisInputJson,
   prepareFutureGrowthInputJson,
-  prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
 import { markAsCompleted, markAsInProgress } from '@/utils/analysis-reports/report-status-utils';

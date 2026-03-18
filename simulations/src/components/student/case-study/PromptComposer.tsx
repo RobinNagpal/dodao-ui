@@ -3,7 +3,6 @@ import type { ExerciseAttempt } from '@prisma/client';
 import { ArrowLeft, CheckCircle, MessageSquare, RotateCcw, Send, Sparkles } from 'lucide-react';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import ConfirmationModal from '@dodao/web-core/components/app/Modal/ConfirmationModal';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import type { NavigationData } from '@/components/student/case-study/types';
 
@@ -289,10 +288,9 @@ export default function PromptComposer({
   const barColorClass: string = getBarColorClass(percentUsed);
   const isAtLimit: boolean = hasCharacterLimit && usedChars >= charLimit;
 
-  const { showNotification } = useNotificationContext();
-
-  // API — no automatic success message; we handle it based on attempt status
+  // API
   const { postData: createAttempt, loading: submittingAttempt } = usePostData<CreateAttemptResponse, CreateAttemptRequest>({
+    successMessage: 'Response generated successfully!',
     errorMessage: 'Failed to generate AI response. Please try again.',
   });
 
@@ -345,17 +343,13 @@ export default function PromptComposer({
 
         if (!result) return;
 
-        // Always update attempts so the UI count stays in sync with the DB
         onNewAttempt(result.attempt);
         setPrompt('');
         clearPromptDraft(exerciseId);
         setShowRetryPrompt(false);
         setShowConfirmationModal(false);
 
-        if (result.attempt.status === 'failed') {
-          showNotification({ type: 'error', message: 'AI response generation failed. This attempt has been recorded.' });
-        } else if (result.attempt.promptResponse) {
-          showNotification({ type: 'success', message: 'Response generated successfully!' });
+        if (result.attempt.promptResponse) {
           setCurrentAiResponse(result.attempt.promptResponse);
           setShowAiResponseModal(true);
         }
