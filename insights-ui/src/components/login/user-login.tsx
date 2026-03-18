@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import { ShieldCheck, BarChart3, LineChart, TrendingUp } from 'lucide-react';
+import { ShieldCheck, BarChart3, LineChart } from 'lucide-react';
 
 // Strict props for the login component
 interface UserLoginProps {
@@ -53,22 +53,16 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage }: UserLoginPr
         <div className="relative isolate">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
-              <div className="flex justify-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-600 shadow-lg transition-transform duration-300">
-                  <TrendingUp className="h-8 w-8 text-white" aria-hidden />
-                </div>
-              </div>
-
               <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 KoalaGains <span className="text-indigo-400">Insights</span>
               </h1>
 
-              <p className="mt-4 text-base leading-7 text-gray-300 max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
+              <p className="mt-3 text-base leading-7 text-gray-300 max-w-2xl mx-auto">Institutional‑grade, value‑driven stock insights for everyone.</p>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6">
               <Card className="bg-gray-700/40 backdrop-blur-sm rounded-xl border border-gray-600/40 hover:border-indigo-500/50 transition-all duration-300 shadow-lg">
-                <CardHeader className="pb-2">
+                <CardHeader>
                   <CardTitle className="text-xl font-semibold text-white text-center">Sign in</CardTitle>
                   <CardDescription className="text-center text-gray-300">Access personalized investment insights</CardDescription>
                 </CardHeader>
@@ -154,9 +148,9 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage }: UserLoginPr
 
             <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6">
               {[
-                { icon: BarChart3, label: 'Institutional Signals', color: 'from-emerald-500 to-teal-600' },
-                { icon: LineChart, label: 'Value Frameworks', color: 'from-blue-500 to-cyan-600' },
-                { icon: ShieldCheck, label: 'Actionable Picks', color: 'from-indigo-500 to-purple-600' },
+                { icon: BarChart3, label: 'Save Favorite Stocks', color: 'from-emerald-500 to-teal-600' },
+                { icon: LineChart, label: 'Add Notes to Tickers', color: 'from-blue-500 to-cyan-600' },
+                { icon: ShieldCheck, label: 'View Stock Analysis', color: 'from-indigo-500 to-purple-600' },
               ].map((item, index) => (
                 <div key={index} className="flex flex-col items-center gap-2 group transition-all duration-300">
                   <div className={`rounded-lg p-2 bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300 shadow-lg`}>

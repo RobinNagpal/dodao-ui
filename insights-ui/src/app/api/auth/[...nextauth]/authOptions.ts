@@ -22,8 +22,9 @@ const baseAuthOptions = getAuthOptions(
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {
-        const user = await prisma.user.findFirst({ where: { email } });
-        console.log('getUserByEmail', user);
+        const user = await prisma.user.findUnique({
+          where: { email_spaceId: { email, spaceId: KoalaGainsSpaceId } },
+        });
         if (!user) return null;
         return {
           ...user,
