@@ -20,18 +20,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DailyTopLosersPage({ params }: PageProps) {
   const { country } = await params;
-
-  // Fetch top losers from the API with country filter
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-losers?country=${country}`, {
+  const baseUrl = getBaseUrl();
+  const cacheOptions = {
     next: {
-      revalidate: 604800, // 7 days in seconds
+      revalidate: 604800,
       tags: [getDailyMoversByCountryTag(country, DailyMoverType.LOSER)],
     },
-  });
+  };
 
-  const topLosers: TopLoserWithTicker[] = await response.json();
+  // Fetch available dates first, then only the latest date's movers
+  const datesRes = await fetch(
+    `${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-movers-available-dates?country=${country}&type=${DailyMoverType.LOSER}`,
+    cacheOptions
+  );
+  const { dates: availableDates } = (await datesRes.json()) as { dates: string[] };
 
-  // Generate structured data
+  const latestDate = availableDates.length > 0 ? availableDates[0] : null;
+  const dateParam = latestDate ? `&date=${latestDate}` : '';
+  const losersRes = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-losers?country=${country}${dateParam}`, cacheOptions);
+  const topLosers: TopLoserWithTicker[] = await losersRes.json();
+
   const breadcrumbSchema = generateCountryMoversBreadcrumbSchema(country, DailyMoverType.LOSER);
 
   const breadcrumbs = [
@@ -50,7 +58,7 @@ export default async function DailyTopLosersPage({ params }: PageProps) {
         }}
       />
 
-      <StockMoversTable movers={topLosers} type={DailyMoverType.LOSER} country={country} />
+      <StockMoversTable movers={topLosers} type={DailyMoverType.LOSER} country={country} availableDates={availableDates} />
     </PageWrapper>
   );
 }
