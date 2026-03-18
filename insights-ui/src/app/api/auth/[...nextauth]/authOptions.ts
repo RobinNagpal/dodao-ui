@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getAuthOptions } from '@dodao/web-core/api/auth/authOptions';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { Session } from '@dodao/web-core/types/auth/Session';
@@ -21,8 +22,9 @@ const baseAuthOptions = getAuthOptions(
     adapter: {
       ...prismaAdapter,
       getUserByEmail: async (email: string) => {
-        const user = await prisma.user.findFirst({ where: { email } });
-        console.log('getUserByEmail', user);
+        const user = await prisma.user.findUnique({
+          where: { email_spaceId: { email, spaceId: KoalaGainsSpaceId } },
+        });
         if (!user) return null;
         return {
           ...user,
@@ -130,7 +132,8 @@ const baseAuthOptions = getAuthOptions(
         return token;
       },
     },
-  }
+  },
+  KoalaGainsSpaceId
 );
 
 // Override cookie domain: the shared getAuthOptions defaults to '.tidbitshub.org'
