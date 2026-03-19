@@ -7,7 +7,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { getStocksPageTag } from '@/utils/ticker-v1-cache-utils';
 
-export const dynamic = process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' ? 'force-dynamic' : 'force-static';
+export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours
 
