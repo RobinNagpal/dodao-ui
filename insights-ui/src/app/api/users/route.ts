@@ -24,6 +24,7 @@ export interface UserResponse {
 
 export interface UsersResponse {
   users: UserResponse[];
+  totalCount: number;
 }
 
 export interface UserCreationResponse {
@@ -38,19 +39,41 @@ export interface UserUpdateRequest {
 }
 
 async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPayload): Promise<UsersResponse> {
-  const users = await prisma.user.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-    },
-    include: {
-      portfolioManagerProfile: {
-        select: { id: true },
+  const { searchParams } = new URL(req.url);
+  const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
+  const limit = Math.min(200, Math.max(1, parseInt(searchParams.get('limit') || '100', 10)));
+  const roleParam = searchParams.get('role');
+  const isManagerParam = searchParams.get('isManager');
+
+  const where: Record<string, unknown> = {
+    spaceId: KoalaGainsSpaceId,
+  };
+
+  if (roleParam && roleParam !== 'All' && Object.values(UserRole).includes(roleParam as UserRole)) {
+    where.role = roleParam as UserRole;
+  }
+
+  if (isManagerParam === 'true') {
+    where.portfolioManagerProfile = { isNot: null };
+  }
+
+  const [users, totalCount] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      include: {
+        portfolioManagerProfile: {
+          select: { id: true },
+        },
+        _count: {
+          select: { favouriteTickers: true },
+        },
       },
-      _count: {
-        select: { favouriteTickers: true },
-      },
-    },
-  });
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+    }),
+    prisma.user.count({ where }),
+  ]);
 
   const usersResponse: UserResponse[] = users.map((user) => ({
     id: user.id,
@@ -69,7 +92,7 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
     favouriteItemsCount: user._count.favouriteTickers,
   }));
 
-  return { users: usersResponse };
+  return { users: usersResponse, totalCount };
 }
 
 async function postHandler(request: NextRequest, userContext: KoalaGainsJwtTokenPayload): Promise<UserCreationResponse> {

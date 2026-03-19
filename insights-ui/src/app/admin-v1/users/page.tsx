@@ -6,8 +6,8 @@ import Button from '@dodao/web-core/components/core/buttons/Button';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import Checkbox from '@dodao/web-core/components/app/Form/Checkbox';
 import { UserRole } from '@prisma/client';
-import { Plus, Users as UsersIcon } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, ChevronRight, Plus, Users as UsersIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -31,6 +31,7 @@ interface User {
 
 interface UsersResponse {
   users: User[];
+  totalCount: number;
 }
 
 interface DeleteProfileResponse {
@@ -53,11 +54,22 @@ export default function Page() {
   const [deleteUserId, setDeleteUserId] = useState<string>('');
   const [roleFilter, setRoleFilter] = useState<string>('All');
   const [isManagerFilter, setIsManagerFilter] = useState<boolean>(false);
-  const {
-    data: usersResponse,
-    loading: loadingUsers,
-    reFetchData: refetchUsers,
-  } = useFetchData<UsersResponse>(`${getBaseUrl()}/api/users`, {}, 'Failed to load users');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 100;
+
+  const usersApiUrl = useMemo(() => {
+    const params = new URLSearchParams();
+    params.set('page', String(currentPage));
+    params.set('limit', String(pageSize));
+    if (roleFilter !== 'All') params.set('role', roleFilter);
+    if (isManagerFilter) params.set('isManager', 'true');
+    return `${getBaseUrl()}/api/users?${params.toString()}`;
+  }, [currentPage, roleFilter, isManagerFilter]);
+
+  const { data: usersResponse, loading: loadingUsers, reFetchData: refetchUsers } = useFetchData<UsersResponse>(usersApiUrl, {}, 'Failed to load users');
+
+  const totalCount = usersResponse?.totalCount || 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   const { deleteData: deleteUser, loading: deletingUser } = useDeleteData<{ success: boolean }, never>({
     successMessage: 'User deleted successfully!',
@@ -110,12 +122,17 @@ export default function Page() {
     }
   };
 
-  const allUsers = usersResponse?.users || [];
-  const users = allUsers.filter((user) => {
-    if (roleFilter !== 'All' && user.role !== roleFilter) return false;
-    if (isManagerFilter && !user.hasPortfolioManagerProfile) return false;
-    return true;
-  });
+  const users = usersResponse?.users || [];
+
+  const handleRoleFilterChange = (id: string | null) => {
+    setRoleFilter(id || 'All');
+    setCurrentPage(1);
+  };
+
+  const handleIsManagerFilterChange = (checked: boolean) => {
+    setIsManagerFilter(checked);
+    setCurrentPage(1);
+  };
 
   return (
     <PageWrapper>
@@ -136,9 +153,9 @@ export default function Page() {
 
       <div className="mb-4 flex items-center space-x-6">
         <div className="w-48">
-          <StyledSelect label="Role" items={roleFilterItems} selectedItemId={roleFilter} setSelectedItemId={(id) => setRoleFilter(id || 'All')} />
+          <StyledSelect label="Role" items={roleFilterItems} selectedItemId={roleFilter} setSelectedItemId={handleRoleFilterChange} />
         </div>
-        <Checkbox id="isManagerFilter" labelContent="Is Manager" isChecked={isManagerFilter} onChange={(checked) => setIsManagerFilter(checked)} />
+        <Checkbox id="isManagerFilter" labelContent="Is Manager" isChecked={isManagerFilter} onChange={handleIsManagerFilterChange} />
       </div>
 
       {loadingUsers ? (
@@ -159,25 +176,55 @@ export default function Page() {
               </Button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-700">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Favourites</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-gray-800 divide-y divide-gray-700">
-                  {users.map((user) => (
-                    <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onPortfolioProfile={handlePortfolioProfile} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-700">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Created Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Favourites</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-gray-800 divide-y divide-gray-700">
+                    {users.map((user) => (
+                      <UserRow key={user.id} user={user} onEdit={handleEditUser} onDelete={handleDeleteUser} onPortfolioProfile={handlePortfolioProfile} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700/50 bg-gray-800/60">
+                  <span className="text-sm text-gray-400">
+                    Showing {(currentPage - 1) * pageSize + 1}
+                    {'\u2013'}
+                    {Math.min(currentPage * pageSize, totalCount)} of {totalCount} users
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <span className="text-sm text-gray-300">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}
