@@ -22,11 +22,15 @@ export default function WebhookUrlInput({ criterionDefinition, sectorId, industr
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
 
   useEffect(() => {
+    // This effect intentionally runs only once on mount to initialize localStorage
+    // with the default webhook URL from the criterion definition if not already set.
+    // Adding deps would re-run this and overwrite any user-saved URL on prop changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (!getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key)?.trim()) {
       console.log('Setting Webhook URL from criterion definition:', criterionDefinition.langflowWebhookUrl);
       localStorage.setItem(webhookUrlKey, criterionDefinition.langflowWebhookUrl || '');
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [webhookUrl, setWebhookUrl] = useState<string>(
     getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) || criterionDefinition.langflowWebhookUrl || ''

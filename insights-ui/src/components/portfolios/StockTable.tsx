@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { DocumentTextIcon as DocumentTextSolid } from '@heroicons/react/24/solid';
 import { TickerV1Notes } from '@prisma/client';
@@ -42,12 +42,15 @@ export default function StockTable({ items, type }: StockTableProps) {
   const [selectedItem, setSelectedItem] = useState<FavouriteWithFullDetails | NoteWithFullDetails | null>(null);
 
   // Helper to get my score from either favorites or notes
-  const getMyScore = (item: FavouriteWithFullDetails | NoteWithFullDetails): number | null => {
-    if (type === 'favorites') {
-      return (item as FavouriteWithFullDetails).myScore ?? null;
-    }
-    return (item as NoteWithFullDetails).score ?? null;
-  };
+  const getMyScore = useCallback(
+    (item: FavouriteWithFullDetails | NoteWithFullDetails): number | null => {
+      if (type === 'favorites') {
+        return (item as FavouriteWithFullDetails).myScore ?? null;
+      }
+      return (item as NoteWithFullDetails).score ?? null;
+    },
+    [type]
+  );
 
   // Helper to determine if details icon should be shown
   const shouldShowDetailsIcon = (item: FavouriteWithFullDetails | NoteWithFullDetails): boolean => {
@@ -111,7 +114,7 @@ export default function StockTable({ items, type }: StockTableProps) {
           return 0;
       }
     });
-  }, [items, sortField, sortDirection]);
+  }, [items, sortField, sortDirection, getMyScore]);
 
   const handleSortChange = (field: SortField) => {
     if (sortField === field) {

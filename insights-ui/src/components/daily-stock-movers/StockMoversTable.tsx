@@ -6,7 +6,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Link from 'next/link';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import DateSelector from './DateSelector';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 
 interface StockMoversTableProps {
@@ -17,9 +17,9 @@ interface StockMoversTableProps {
 }
 
 export default function StockMoversTable({ movers, type, country, availableDates }: StockMoversTableProps) {
-  const dateObjects = availableDates.map((d) => new Date(d + 'T00:00:00'));
-  const minDate = dateObjects.length > 0 ? dateObjects[dateObjects.length - 1] : new Date();
-  const maxDate = dateObjects.length > 0 ? dateObjects[0] : new Date();
+  const dateObjects = useMemo(() => availableDates.map((d) => new Date(d + 'T00:00:00')), [availableDates]);
+  const minDate = useMemo(() => (dateObjects.length > 0 ? dateObjects[dateObjects.length - 1] : new Date()), [dateObjects]);
+  const maxDate = useMemo(() => (dateObjects.length > 0 ? dateObjects[0] : new Date()), [dateObjects]);
 
   const [selectedDate, setSelectedDate] = useState<Date>(maxDate);
   const [displayedMovers, setDisplayedMovers] = useState(movers);
