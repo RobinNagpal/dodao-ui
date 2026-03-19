@@ -16,6 +16,15 @@ export async function getDecodedJwtFromContext(req: NextRequest): Promise<DoDaoJ
     const decodedToken = jwt.verify(clientKeyHeader, process.env.DODAO_AUTH_SECRET!);
     return decodedToken as DoDaoJwtTokenPayload;
   }
-  const token = (await getToken({ req })) as unknown as DoDaoJwtTokenPayload | null;
-  return token;
+  const token = (await getToken({ req })) as Record<string, unknown> | null;
+  if (!token) return null;
+
+  // NextAuth JWT stores the user ID as `sub`, but DoDaoJwtTokenPayload expects `userId`.
+  // Map the fields so downstream handlers get a consistent shape regardless of
+  // whether the token came from the dodao-auth-token header or the session cookie.
+  return {
+    ...token,
+    userId: (token.userId as string) || (token.sub as string) || '',
+    accountId: (token.accountId as string) || (token.sub as string) || '',
+  } as DoDaoJwtTokenPayload;
 }

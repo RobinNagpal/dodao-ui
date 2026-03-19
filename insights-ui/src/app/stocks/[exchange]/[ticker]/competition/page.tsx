@@ -14,7 +14,7 @@ import { notFound } from 'next/navigation';
 /**
  * Static-by-default with on-demand invalidation.
  */
-export const dynamic = 'force-static';
+export const dynamic = process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' ? 'force-dynamic' : 'force-static';
 export const dynamicParams = true;
 export const revalidate = false;
 
