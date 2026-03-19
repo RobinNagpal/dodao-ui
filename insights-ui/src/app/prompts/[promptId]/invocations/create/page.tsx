@@ -87,12 +87,7 @@ export default function CreateInvocationPage(): JSX.Element {
     }
   }, [formData.inputJsonString, formData.promptVersionId, prompt]);
 
-  // formData.llmProvider and formData.model are intentionally omitted from deps: this effect only
-  // runs when `prompt` loads/changes (to seed defaults from the fetched prompt). Including formData
-  // fields would cause an infinite loop because the effect itself updates formData. The functional
-  // updater form `setFormData((prev) => ...)` safely reads the latest values without needing them
-  // in the dependency array.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Seed form data when prompt loads/changes
   useEffect(() => {
     setFormData((prev) => ({
       bodyToAppend: prompt?.sampleBodyToAppend || '',

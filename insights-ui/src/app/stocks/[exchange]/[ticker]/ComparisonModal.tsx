@@ -90,7 +90,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
       // Load available tickers from same industry
       loadAvailableTickers();
     }
-  }, [isOpen, currentTicker, loadCurrentTickerData, loadAvailableTickers]);
+  }, [isOpen, currentTicker.symbol, loadCurrentTickerData, loadAvailableTickers]);
 
   const addTicker = async (ticker: BasicTickersResponse['tickers'][0]) => {
     if (comparisonTickers.length >= 5) return;
