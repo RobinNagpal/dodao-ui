@@ -6,6 +6,7 @@ import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/Delete
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import { SlideStatus, GenerateArtifactResponse, RenderStatusResponse, UploadImageResponse } from '@/types/presentation/presentation-types';
 
@@ -237,7 +238,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
           </div>
           {slideStatus.hasImage && slideStatus.imageUrl ? (
             <div className="mb-2 h-24">
-              <img src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" />
+              <Image src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" width={300} height={96} unoptimized />
             </div>
           ) : (
             <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>
@@ -263,7 +264,7 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
           </div>
           {slideStatus.hasImage && slideStatus.imageUrl ? (
             <div className="mb-2 h-24">
-              <img src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" />
+              <Image src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" width={300} height={96} unoptimized />
             </div>
           ) : (
             <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>

@@ -7,6 +7,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Dialog, DialogPanel, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -41,7 +42,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, report
           <Link href="/" className="-m-1.5 p-1.5" aria-label="KoalaGains home">
             <span className="sr-only">KoalaGains</span>
             {/* Mobile: app icon */}
-            <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" />
+            <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto" width={32} height={32} />
           </Link>
           <button type="button" onClick={() => setMobileMenuOpen(false)} className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-400">
             <span className="sr-only">Close menu</span>

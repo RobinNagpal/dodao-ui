@@ -1,5 +1,6 @@
 import { PortfolioManagerProfileWithUser } from '@/app/api/[spaceId]/portfolio-managers/type/[type]/route';
 import { UserIcon, AcademicCapIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface ProfileGridProps {
@@ -35,7 +36,7 @@ export default function ProfileGrid({ profiles, emptyStateConfig, showCollegeAmb
           {/* Profile Image - Large on Left */}
           <div className="flex-shrink-0">
             {profile.profileImageUrl ? (
-              <img src={profile.profileImageUrl} alt={`${profile.user.name}'s profile`} className="w-40 h-48 rounded-xl object-cover" />
+              <Image src={profile.profileImageUrl} alt={`${profile.user.name}'s profile`} className="w-40 h-48 rounded-xl object-cover" width={160} height={192} unoptimized />
             ) : (
               <div className="w-40 h-48 bg-gray-700 rounded-xl flex items-center justify-center">
                 <UserIcon className="w-16 h-16 text-gray-400" />
