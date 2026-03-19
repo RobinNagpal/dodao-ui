@@ -238,7 +238,14 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
           </div>
           {slideStatus.hasImage && slideStatus.imageUrl ? (
             <div className="mb-2 h-24">
-              <Image src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" width={300} height={96} unoptimized />
+              <Image
+                src={slideStatus.imageUrl}
+                alt={`Slide ${slideStatus.slideNumber}`}
+                className="w-full h-24 object-cover rounded"
+                width={300}
+                height={96}
+                unoptimized
+              />
             </div>
           ) : (
             <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>
@@ -264,7 +271,14 @@ const SlideRow: React.FC<SlideRowProps> = ({ slideStatus, presentationId, onView
           </div>
           {slideStatus.hasImage && slideStatus.imageUrl ? (
             <div className="mb-2 h-24">
-              <Image src={slideStatus.imageUrl} alt={`Slide ${slideStatus.slideNumber}`} className="w-full h-24 object-cover rounded" width={300} height={96} unoptimized />
+              <Image
+                src={slideStatus.imageUrl}
+                alt={`Slide ${slideStatus.slideNumber}`}
+                className="w-full h-24 object-cover rounded"
+                width={300}
+                height={96}
+                unoptimized
+              />
             </div>
           ) : (
             <div className="h-24 mb-2 flex items-center justify-center text-xs text-gray-500 border-2 border-dashed rounded">No image</div>

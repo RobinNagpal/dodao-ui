@@ -146,7 +146,14 @@ export default function DebugManagementTeam({ report, onPostUpdate }: DebugManag
                   />
                 )}
 
-                <Image src={member.profilePicUrl ?? '/dummy-avatar.svg'} alt={member.fullName} className="h-32 w-32 rounded-full object-cover" width={128} height={128} unoptimized />
+                <Image
+                  src={member.profilePicUrl ?? '/dummy-avatar.svg'}
+                  alt={member.fullName}
+                  className="h-32 w-32 rounded-full object-cover"
+                  width={128}
+                  height={128}
+                  unoptimized
+                />
 
                 <div className="mt-4 flex items-center space-x-2">
                   <h3 className="font-semibold">{member.fullName}</h3>

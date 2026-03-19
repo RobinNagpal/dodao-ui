@@ -23,7 +23,14 @@ export default function ProfileHeader({ profile, portfolioManagerId }: ProfileHe
         <div className="flex-shrink-0">
           {/* Profile Image */}
           {profile.profileImageUrl ? (
-            <Image src={profile.profileImageUrl} alt={`${profile.user.name}'s profile`} className="w-48 h-56 rounded-xl object-cover mb-6" width={192} height={224} unoptimized />
+            <Image
+              src={profile.profileImageUrl}
+              alt={`${profile.user.name}'s profile`}
+              className="w-48 h-56 rounded-xl object-cover mb-6"
+              width={192}
+              height={224}
+              unoptimized
+            />
           ) : (
             <div className="w-48 h-56 bg-gray-700 rounded-xl flex items-center justify-center mb-6">
               <UserIcon className="w-24 h-24 text-gray-400" />
