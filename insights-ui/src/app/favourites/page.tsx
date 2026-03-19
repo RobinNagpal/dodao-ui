@@ -123,8 +123,11 @@ export default function FavouritesPage() {
 
   // Group favourites by list
   const { listsWithFavourites, unlistedFavourites } = useMemo(() => {
+    const favouriteItems = favouritesData?.favouriteTickers || [];
+    const listItems = listsData?.lists || [];
+
     // Sort lists alphabetically
-    const sortedLists = [...lists].sort((a, b) => a.name.localeCompare(b.name));
+    const sortedLists = [...listItems].sort((a, b) => a.name.localeCompare(b.name));
 
     // Group favourites by list
     const listsMap = new Map<string, ListWithFavourites>();
@@ -134,7 +137,7 @@ export default function FavouritesPage() {
 
     const unlisted: FavouriteTickerResponse[] = [];
 
-    favourites.forEach((fav) => {
+    favouriteItems.forEach((fav) => {
       if (fav.lists.length === 0) {
         unlisted.push(fav);
       } else {
@@ -167,7 +170,7 @@ export default function FavouritesPage() {
       listsWithFavourites: Array.from(listsMap.values()).filter((l) => l.favourites.length > 0),
       unlistedFavourites: unlisted,
     };
-  }, [favourites, lists]);
+  }, [favouritesData, listsData]);
 
   const toggleList = (listId: string) => {
     setOpenListIds((prev) => {

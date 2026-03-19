@@ -70,7 +70,7 @@ export default function SelectIndustryAndSubIndustry({
     if (selectedIndustry) {
       refetchSubIndustries();
     }
-  }, [selectedIndustry]);
+  }, [selectedIndustry, refetchSubIndustries]);
   // Filter out archived industries and sub-industries
   const activeIndustries = industries?.filter((industry) => !industry.archived) || [];
 

@@ -71,7 +71,7 @@ export default function TickerManagementPage() {
     if (selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey) {
       reFetchTickersForSubIndustry();
     }
-  }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey]);
+  }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey, reFetchTickersForSubIndustry]);
 
   // Apply country filter to tickers
   const filteredTickers = filterTickersByCountries(tickerInfos?.tickers || [], selectedCountries);

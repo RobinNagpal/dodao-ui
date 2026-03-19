@@ -85,16 +85,22 @@ export default function CreateInvocationPage(): JSX.Element {
       setPreviewError(error.message || 'Error during template compilation');
       setPreviewPrompt('');
     }
-  }, [formData.inputJsonString, formData.promptVersionId]);
+  }, [formData.inputJsonString, formData.promptVersionId, prompt]);
 
+  // formData.llmProvider and formData.model are intentionally omitted from deps: this effect only
+  // runs when `prompt` loads/changes (to seed defaults from the fetched prompt). Including formData
+  // fields would cause an infinite loop because the effect itself updates formData. The functional
+  // updater form `setFormData((prev) => ...)` safely reads the latest values without needing them
+  // in the dependency array.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    setFormData({
+    setFormData((prev) => ({
       bodyToAppend: prompt?.sampleBodyToAppend || '',
       inputJsonString: prompt?.sampleJson || '{}',
-      llmProvider: formData.llmProvider,
-      model: formData.model,
+      llmProvider: prev.llmProvider,
+      model: prev.model,
       promptVersionId: prompt?.activePromptVersion?.id,
-    });
+    }));
   }, [prompt]);
 
   // Use the post hook to send the invocation request.

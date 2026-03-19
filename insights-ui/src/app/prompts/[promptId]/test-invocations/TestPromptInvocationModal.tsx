@@ -24,7 +24,7 @@ export default function TestPromptInvocationModal({ open, onClose, invocation }:
     } catch (error: any) {
       setPreviewHtml('');
     }
-  }, [invocation.promptTemplate]);
+  }, [invocation.promptTemplate, invocation.inputJson]);
 
   return (
     <FullPageModal open={open} onClose={onClose} title={'Invocation'}>

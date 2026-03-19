@@ -67,7 +67,7 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
     if (selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey) {
       reFetchTickersForSubIndustry();
     }
-  }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey]);
+  }, [selectedIndustry?.industryKey, selectedSubIndustry?.subIndustryKey, reFetchTickersForSubIndustry]);
 
   // Convenience derived data
   const allTickers = tickerInfos?.tickers || [];
