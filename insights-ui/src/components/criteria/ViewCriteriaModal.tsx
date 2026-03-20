@@ -25,7 +25,7 @@ export default function ViewCriteriaModal({ open, onClose, title, url }: ViewCri
     if (open) {
       fetchCriteria(url);
     }
-  }, [url]);
+  }, [url, open]);
   return (
     <FullPageModal open={open} onClose={onClose} title={title}>
       <ReactJson src={selectedCriterion || {}} theme="monokai" enableClipboard={true} style={{ textAlign: 'left', height: '90vh' }} />

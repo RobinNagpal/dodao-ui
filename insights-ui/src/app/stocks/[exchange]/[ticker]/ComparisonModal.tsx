@@ -9,7 +9,7 @@ import FullScreenModal from '@dodao/web-core/components/core/modals/FullScreenMo
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // Using ComparisonTicker interface imported from TickerComparison component
 
@@ -31,17 +31,7 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
   const [availableTickers, setAvailableTickers] = useState<BasicTickersResponse['tickers']>([]);
   const [loading, setLoading] = useState(false);
 
-  // Initialize with current ticker
-  useEffect(() => {
-    if (isOpen && currentTicker.symbol) {
-      // Load current ticker data
-      loadCurrentTickerData();
-      // Load available tickers from same industry
-      loadAvailableTickers();
-    }
-  }, [isOpen, currentTicker]);
-
-  const loadCurrentTickerData = async () => {
+  const loadCurrentTickerData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/${currentTicker.symbol}`);
@@ -78,9 +68,9 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentTicker.symbol]);
 
-  const loadAvailableTickers = async () => {
+  const loadAvailableTickers = useCallback(async () => {
     try {
       const response = await fetch(
         `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/industry/${currentTicker.industryKey}/${currentTicker.subIndustryKey}?basicOnly=true`
@@ -90,7 +80,17 @@ export default function ComparisonModal({ isOpen, onClose, currentTicker }: Comp
     } catch (error) {
       console.error('Error loading available tickers:', error);
     }
-  };
+  }, [currentTicker.industryKey, currentTicker.subIndustryKey, currentTicker.symbol]);
+
+  // Initialize with current ticker
+  useEffect(() => {
+    if (isOpen && currentTicker.symbol) {
+      // Load current ticker data
+      loadCurrentTickerData();
+      // Load available tickers from same industry
+      loadAvailableTickers();
+    }
+  }, [isOpen, currentTicker.symbol, loadCurrentTickerData, loadAvailableTickers]);
 
   const addTicker = async (ticker: BasicTickersResponse['tickers'][0]) => {
     if (comparisonTickers.length >= 5) return;

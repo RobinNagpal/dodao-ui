@@ -79,7 +79,7 @@ export default function CriterionDebugPage({ ticker, criterionKey }: CriterionDe
 
       await reFetchTickerReport();
     },
-    [tickerReport, criterionKey, regenerateSingleCriterionReports, ticker]
+    [tickerReport, criterionKey, regenerateSingleCriterionReports, ticker, reFetchTickerReport]
   );
 
   // Build breadcrumbs

@@ -85,16 +85,17 @@ export default function CreateInvocationPage(): JSX.Element {
       setPreviewError(error.message || 'Error during template compilation');
       setPreviewPrompt('');
     }
-  }, [formData.inputJsonString, formData.promptVersionId]);
+  }, [formData.inputJsonString, formData.promptVersionId, prompt]);
 
+  // Seed form data when prompt loads/changes
   useEffect(() => {
-    setFormData({
+    setFormData((prev) => ({
       bodyToAppend: prompt?.sampleBodyToAppend || '',
       inputJsonString: prompt?.sampleJson || '{}',
-      llmProvider: formData.llmProvider,
-      model: formData.model,
+      llmProvider: prev.llmProvider,
+      model: prev.model,
       promptVersionId: prompt?.activePromptVersion?.id,
-    });
+    }));
   }, [prompt]);
 
   // Use the post hook to send the invocation request.

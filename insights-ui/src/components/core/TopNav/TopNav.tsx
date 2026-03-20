@@ -6,6 +6,7 @@ import MobileTopNav from '@/components/core/TopNav/MobileTopNav';
 import { Popover, PopoverButton, PopoverGroup, PopoverPanel } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Bars3Icon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -56,8 +57,8 @@ export default function TopNav() {
               <span className="sr-only">KoalaGains</span>
 
               {/* Mobile: app icon, Desktop: full logo */}
-              <img alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" />
-              <img alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" />
+              <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" width={32} height={32} />
+              <Image alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" width={160} height={32} />
             </Link>
             {!isHomeRoute && (
               <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">

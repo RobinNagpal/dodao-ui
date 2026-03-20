@@ -25,7 +25,7 @@ export default function ViewTickerReportJsonModal({ open, onClose, title, url }:
     if (open) {
       fetchCriteria(url);
     }
-  }, [url]);
+  }, [url, open]);
   return (
     <FullPageModal open={open} onClose={onClose} title={title}>
       <ReactJson src={selectedTickerReport || {}} theme="monokai" enableClipboard={true} style={{ textAlign: 'left', height: '90vh' }} />

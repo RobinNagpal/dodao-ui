@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
@@ -103,11 +104,13 @@ export default function AnimatedFlyerCarousel() {
               {/* Main Flyer */}
               <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                 <div className={`absolute inset-0 bg-gradient-to-br ${flyerData[currentIndex].gradient} opacity-10`} />
-                <img
+                <Image
                   src={flyerData[currentIndex].imageUrl || '/placeholder.svg'}
                   alt={flyerData[currentIndex].title}
                   className="w-full h-auto object-cover transition-all duration-700 ease-in-out"
                   style={{ aspectRatio: '1414/2000' }} // Original flyer aspect ratio (1414x2000)
+                  width={1414}
+                  height={2000}
                 />
 
                 {/* Overlay with title */}
@@ -124,18 +127,22 @@ export default function AnimatedFlyerCarousel() {
 
               {/* Side Flyers (Circular Effect) */}
               <div className="absolute top-1/2 -translate-y-1/2 -left-20 w-16 h-20 opacity-30 transform -rotate-12 transition-all duration-700">
-                <img
+                <Image
                   src={flyerData[(currentIndex - 1 + flyerData.length) % flyerData.length].imageUrl || '/placeholder.svg'}
                   alt="Previous flyer"
                   className="w-full h-full object-cover rounded-lg shadow-lg"
+                  width={64}
+                  height={80}
                 />
               </div>
 
               <div className="absolute top-1/2 -translate-y-1/2 -right-20 w-16 h-20 opacity-30 transform rotate-12 transition-all duration-700">
-                <img
+                <Image
                   src={flyerData[(currentIndex + 1) % flyerData.length].imageUrl || '/placeholder.svg'}
                   alt="Next flyer"
                   className="w-full h-full object-cover rounded-lg shadow-lg"
+                  width={64}
+                  height={80}
                 />
               </div>
             </div>

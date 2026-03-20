@@ -12,7 +12,7 @@ import {
 } from '@/types/project/project';
 import Accordion from '@dodao/web-core/utils/accordion/Accordion';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import RepopulateButton from '../ui/RepopulateButton';
 import { parseMarkdown } from '@/util/parse-markdown';
 
@@ -31,7 +31,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
   const [openAdditionalUrlsContentAccordion, setOpenAdditionalUrlsContentAccordion] = useState(false);
   const [openSecMarkdownContentAccordion, setOpenSecMarkdownContentAccordion] = useState(false);
   const [openIndustryDetailAccordion, setOpenIndustryDetailAccordion] = useState(false);
-  const fetchProjectDetails = async () => {
+  const fetchProjectDetails = useCallback(async () => {
     try {
       const res = await fetch(`${getBaseUrl()}/api/crowd-funding/projects/${projectId}`, { cache: 'no-cache' });
       const data = await res.json();
@@ -40,7 +40,7 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
     } catch (err) {
       console.error('Failed to fetch project details:', err);
     }
-  };
+  }, [projectId]);
 
   // Combine reports and finalReport into a single array
   // UseMemo for reports calculation
@@ -61,13 +61,13 @@ export default function ProjectDebugPage({ projectId, initialProjectDetails, spi
     }, 10000); // Poll every 15 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [reports]);
+  }, [reports, fetchProjectDetails]);
 
   useEffect(() => {
     if (reloadTrigger) {
       fetchProjectDetails();
     }
-  }, [reloadTrigger]);
+  }, [reloadTrigger, fetchProjectDetails]);
 
   const getMarkdownContent = (content?: string) => {
     return content ? parseMarkdown(content) : 'No Information';

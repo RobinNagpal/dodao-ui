@@ -35,7 +35,7 @@ export default function EditProjectView(props: { projectId?: string | null; proj
   };
   useEffect(() => {
     setIsMounted(true);
-  });
+  }, []);
   const handleUpdateField = (field: keyof ProjectSubmissionData, value: string) => {
     setProject((prev) => ({ ...prev, [field]: value }));
   };

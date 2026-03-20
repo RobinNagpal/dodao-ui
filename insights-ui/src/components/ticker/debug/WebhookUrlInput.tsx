@@ -22,11 +22,12 @@ export default function WebhookUrlInput({ criterionDefinition, sectorId, industr
   const webhookUrlKey = getWebhookUrlKey(sectorId, industryGroupId, criterionDefinition.key);
 
   useEffect(() => {
+    // Initialize localStorage with default webhook URL if not already set
     if (!getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key)?.trim()) {
       console.log('Setting Webhook URL from criterion definition:', criterionDefinition.langflowWebhookUrl);
       localStorage.setItem(webhookUrlKey, criterionDefinition.langflowWebhookUrl || '');
     }
-  }, []);
+  }, [sectorId, industryGroupId, criterionDefinition.key, criterionDefinition.langflowWebhookUrl, webhookUrlKey]);
 
   const [webhookUrl, setWebhookUrl] = useState<string>(
     getWebhookUrlFromLocalStorage(sectorId, industryGroupId, criterionDefinition.key) || criterionDefinition.langflowWebhookUrl || ''
