@@ -37,6 +37,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
+import Link from 'next/link';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
@@ -350,7 +351,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   const d: TickerV1FastResponse = use(data);
 
   return (
-    <section className="text-left mb-2">
+    <section id="introduction" className="text-left mb-2">
       {/* About Report - displayed above the main heading */}
       {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
@@ -452,15 +453,26 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
             const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             return (
               <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  {categoryResult && (
-                    <div
-                      className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                <div className={`flex items-center gap-2 mb-2 ${categoryKey === TickerAnalysisCategory.PastPerformance ? 'justify-between' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                    {categoryResult && (
+                      <div
+                        className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+                        style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                      >
+                        {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
+                      </div>
+                    )}
+                  </div>
+
+                  {categoryKey === TickerAnalysisCategory.PastPerformance && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
+                      className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
                     >
-                      {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
-                    </div>
+                      View Detailed Analysis →
+                    </Link>
                   )}
                 </div>
                 <div
@@ -488,11 +500,15 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
   };
 
+  // Filter out PastPerformance — it now has its own dedicated page
+  const categoriesToShow = Object.values(TickerAnalysisCategory).filter((key) => key !== TickerAnalysisCategory.PastPerformance);
+
   return (
     <>
       <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
         <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
-        {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
+
+        {categoriesToShow.map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
           if (!categoryResult) return null;
 
