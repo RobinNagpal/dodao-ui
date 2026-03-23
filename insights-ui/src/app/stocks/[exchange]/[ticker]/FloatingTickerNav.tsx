@@ -22,6 +22,7 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
       title: 'Detailed Analysis',
       hasContent: d.categoryAnalysisResults && d.categoryAnalysisResults.length > 0,
       subsections: Object.values(TickerAnalysisCategory)
+        .filter((categoryKey) => categoryKey !== TickerAnalysisCategory.PastPerformance)
         .map((categoryKey) => {
           const categoryResult = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
           return categoryResult

@@ -488,11 +488,31 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
   };
 
+  // Filter out PastPerformance — it now has its own dedicated page
+  const categoriesToShow = Object.values(TickerAnalysisCategory).filter((key) => key !== TickerAnalysisCategory.PastPerformance);
+
   return (
     <>
       <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
         <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
-        {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
+
+        {/* Link to dedicated Past Performance page */}
+        {d.categoryAnalysisResults?.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance) && (
+          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mb-8 flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">{CATEGORY_QUESTION_MAPPINGS[TickerAnalysisCategory.PastPerformance]}</h3>
+              <p className="text-sm text-gray-400 mt-1">View the full historical performance analysis on its dedicated page.</p>
+            </div>
+            <a
+              href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#38BDF8] to-[#818CF8] hover:from-[#0EA5E9] hover:to-[#6366F1] border border-transparent rounded-lg shadow-md whitespace-nowrap"
+            >
+              Show Detailed Analysis
+            </a>
+          </div>
+        )}
+
+        {categoriesToShow.map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
           if (!categoryResult) return null;
 
