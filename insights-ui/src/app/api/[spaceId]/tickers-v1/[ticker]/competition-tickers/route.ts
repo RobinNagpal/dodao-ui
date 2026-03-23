@@ -7,14 +7,12 @@ import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { TickerV1VsCompetition, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 
-async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }): Promise<CompetitionResponse> {
-  const { spaceId, ticker, exchange } = await context.params;
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<CompetitionResponse> {
+  const { spaceId, ticker } = await context.params;
 
-  // Get ticker from DB with all related data
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId: spaceId || KoalaGainsSpaceId,
     symbol: ticker.toUpperCase(),
-    exchange: exchange.toUpperCase(),
   };
 
   const tickerRecord:

@@ -9,7 +9,8 @@ import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema }
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -30,17 +31,55 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-/** Data fetcher - single API call */
-async function fetchCompetitionData(exchange: string, ticker: string): Promise<CompetitionResponse> {
+/** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */
+async function fetchCompetitionByExchange(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
   const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
-    if (res.status === 404) {
-      notFound();
-    }
-    throw new Error(`fetchCompetitionData failed (${res.status}): ${url}`);
+    throw new Error(`fetchCompetitionByExchange failed (${res.status}): ${url}`);
   }
   return (await res.json()) as CompetitionResponse;
+}
+
+/** Fetch competition data for any exchange (uncached — used only as fallback). */
+async function fetchCompetitionAnyExchange(ticker: string): Promise<CompetitionResponse> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/competition-tickers`;
+  const res: Response = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`fetchCompetitionAnyExchange failed (${res.status}): ${url}`);
+  }
+  return (await res.json()) as CompetitionResponse;
+}
+
+/**
+ * Exchange-aware fetch with uncached fallback + canonical redirect.
+ * Mirrors the pattern used in stocks/[exchange]/[ticker]/page.tsx.
+ */
+async function getCompetitionOrRedirect(exchange: string, ticker: string): Promise<CompetitionResponse> {
+  // Try the requested exchange first (cached)
+  const data = await fetchCompetitionByExchange(exchange, ticker);
+
+  // Ticker found on the correct exchange — happy path
+  if (data.ticker) {
+    return data;
+  }
+
+  // Ticker not found for this exchange — try any exchange (uncached)
+  noStore();
+  const fallback = await fetchCompetitionAnyExchange(ticker);
+
+  // Ticker doesn't exist at all — show 404
+  if (!fallback.ticker) {
+    notFound();
+  }
+
+  // Found on a different exchange — redirect to the canonical competition URL
+  const canonicalExchange: string = fallback.ticker.exchange.toUpperCase();
+  if (canonicalExchange !== exchange.toUpperCase()) {
+    permanentRedirect(`/stocks/${canonicalExchange}/${fallback.ticker.symbol.toUpperCase()}/competition`);
+  }
+
+  return fallback;
 }
 
 /** Metadata */
@@ -54,7 +93,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let competitionUpdatedTime: string;
 
   try {
-    const data = await fetchCompetitionData(exchange, ticker);
+    const data = await fetchCompetitionByExchange(exchange, ticker);
     companyName = data.ticker?.name ?? companyName;
     industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
 
@@ -123,7 +162,7 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
-  const competitionData = await fetchCompetitionData(exchange, ticker);
+  const competitionData = await getCompetitionOrRedirect(exchange, ticker);
   const tickerData = competitionData.ticker;
   if (!tickerData) {
     notFound();
