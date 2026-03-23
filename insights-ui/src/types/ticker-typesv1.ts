@@ -55,6 +55,32 @@ export type CompetitionResponse = {
   };
 };
 
+export type PastPerformanceResponse = {
+  categoryResult: {
+    id: string;
+    categoryKey: string;
+    summary: string;
+    overallAnalysisDetails: string;
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    factorResults: {
+      id: string;
+      result: string;
+      oneLineExplanation: string;
+      detailedExplanation: string;
+      analysisCategoryFactor: {
+        factorAnalysisKey: string;
+        factorAnalysisTitle: string;
+        factorAnalysisDescription: string;
+      };
+    }[];
+  } | null;
+  ticker?: TickerV1 & {
+    industry: TickerV1Industry | null;
+    subIndustry: TickerV1SubIndustry | null;
+  };
+};
+
 export interface IndustryWithSubIndustries extends TickerV1Industry {
   subIndustries: TickerV1SubIndustry[];
 }
