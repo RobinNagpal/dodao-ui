@@ -1,5 +1,4 @@
 import { parseMarkdown } from '@/util/parse-markdown';
-import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import { EvaluationResult } from '@/types/ticker-typesv1';
 import type { PastPerformanceResponse } from '@/types/ticker-typesv1';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
@@ -33,15 +32,7 @@ export default function PastPerformance({ tickerData, data }: PastPerformancePro
   const ticker = tickerData.symbol;
   const exchange = tickerData.exchange;
 
-  const industryName = tickerData.industry?.name || tickerData.industryKey;
-  const subIndustryName = tickerData.subIndustry?.name;
-
-  const country = getCountryByExchange(exchange as any);
-  const locationContext = country ? `${country} stock market` : `${exchange.toUpperCase()} stock market`;
-  const industryContext = subIndustryName ? `${subIndustryName} (${industryName})` : industryName;
-
   const analysisTitle = `${tickerData.name} (${ticker}) Past Performance Analysis`;
-  const executiveSummary = `A comprehensive historical performance analysis of ${tickerData.name} (${ticker}) in the ${industryContext} within the ${locationContext}, evaluating earnings growth, revenue trends, return on equity, and other key historical metrics.`;
 
   const passCount = categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0;
   const totalCount = categoryResult.factorResults?.length || 0;
@@ -94,9 +85,11 @@ export default function PastPerformance({ tickerData, data }: PastPerformancePro
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
-            <p className="text-color leading-relaxed" itemProp="abstract">
-              {executiveSummary}
-            </p>
+            {categoryResult.summary ? (
+              <div className="text-color leading-relaxed" itemProp="abstract" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.summary) }} />
+            ) : (
+              <p className="text-color leading-relaxed" itemProp="abstract" />
+            )}
           </section>
 
           {categoryResult.overallAnalysisDetails && (
@@ -109,15 +102,7 @@ export default function PastPerformance({ tickerData, data }: PastPerformancePro
             </section>
           )}
 
-          {categoryResult.summary && (
-            <section className="mb-6">
-              <h2 className="text-xl font-semibold text-color mb-3">Summary</h2>
-              <div
-                className="markdown markdown-body prose-headings:text-color prose-p:text-color prose-strong:text-color prose-code:text-color"
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.summary) }}
-              />
-            </section>
-          )}
+          {/* Summary block removed: categoryResult.summary is now shown in Executive Summary */}
 
           {categoryResult.factorResults && categoryResult.factorResults.length > 0 && (
             <section className="mb-6">

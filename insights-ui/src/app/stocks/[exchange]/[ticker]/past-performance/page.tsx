@@ -9,7 +9,8 @@ import { generatePastPerformanceArticleSchema, generatePastPerformanceBreadcrumb
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
+import { notFound, permanentRedirect } from 'next/navigation';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -30,17 +31,55 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-/** Data fetcher - single API call */
-async function fetchPastPerformanceData(exchange: string, ticker: string): Promise<PastPerformanceResponse> {
+/** Fetch past performance data for a specific exchange+ticker (cached). */
+async function fetchPastPerformanceByExchange(exchange: string, ticker: string): Promise<PastPerformanceResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/past-performance-data`;
   const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
-    if (res.status === 404) {
-      notFound();
-    }
-    throw new Error(`fetchPastPerformanceData failed (${res.status}): ${url}`);
+    throw new Error(`fetchPastPerformanceByExchange failed (${res.status}): ${url}`);
   }
   return (await res.json()) as PastPerformanceResponse;
+}
+
+/** Fetch past performance data for any exchange (uncached fallback). */
+async function fetchPastPerformanceAnyExchange(ticker: string): Promise<PastPerformanceResponse> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/past-performance-data`;
+  const res: Response = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`fetchPastPerformanceAnyExchange failed (${res.status}): ${url}`);
+  }
+  return (await res.json()) as PastPerformanceResponse;
+}
+
+/**
+ * Exchange-aware fetch with uncached fallback + canonical redirect.
+ * Mirrors the pattern used in `competition/page.tsx`.
+ */
+async function getPastPerformanceOrRedirect(exchange: string, ticker: string): Promise<PastPerformanceResponse> {
+  // Try the requested exchange first (cached)
+  const data = await fetchPastPerformanceByExchange(exchange, ticker);
+
+  // Ticker found on the correct exchange — happy path
+  if (data.ticker) {
+    return data;
+  }
+
+  // Ticker not found for this exchange — try any exchange (uncached)
+  noStore();
+  const fallback = await fetchPastPerformanceAnyExchange(ticker);
+
+  // Ticker doesn't exist at all — show 404
+  if (!fallback.ticker) {
+    notFound();
+  }
+
+  // Found on a different exchange — redirect to the canonical past-performance URL
+  const canonicalExchange: string = fallback.ticker.exchange.toUpperCase();
+  if (canonicalExchange !== exchange.toUpperCase()) {
+    permanentRedirect(`/stocks/${canonicalExchange}/${fallback.ticker.symbol.toUpperCase()}/past-performance`);
+  }
+
+  return fallback;
 }
 
 /** Metadata */
@@ -54,7 +93,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let pastPerfUpdatedTime: string;
 
   try {
-    const data = await fetchPastPerformanceData(exchange, ticker);
+    const data = await fetchPastPerformanceByExchange(exchange, ticker);
     companyName = data.ticker?.name ?? companyName;
     industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
 
@@ -121,7 +160,7 @@ export default async function PastPerformancePage({ params }: { params: RoutePar
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
-  const pastPerformanceData = await fetchPastPerformanceData(exchange, ticker);
+  const pastPerformanceData = await getPastPerformanceOrRedirect(exchange, ticker);
   const tickerData = pastPerformanceData.ticker;
   if (!tickerData) {
     notFound();

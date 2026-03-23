@@ -1,7 +1,16 @@
 import { MinimalTickerWithOnlyFinalScore, TickerMinimal } from '@/types/api/ticker-industries';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { CompetitorTicker } from '@/utils/ticker-v1-model-utils';
-import { IndustryBuildingBlockAnalysis, TickerV1, TickerV1CachedScore, TickerV1Industry, TickerV1IndustryAnalysis, TickerV1SubIndustry } from '@prisma/client';
+import {
+  IndustryBuildingBlockAnalysis,
+  TickerV1,
+  TickerV1AnalysisCategoryFactorResult,
+  TickerV1CachedScore,
+  TickerV1CategoryAnalysisResult,
+  TickerV1Industry,
+  TickerV1IndustryAnalysis,
+  TickerV1SubIndustry,
+} from '@prisma/client';
 
 export type VsCompetition = Readonly<{
   overallAnalysisDetails: string;
@@ -56,28 +65,19 @@ export type CompetitionResponse = {
 };
 
 export type PastPerformanceResponse = {
-  categoryResult: {
-    id: string;
-    categoryKey: string;
-    summary: string;
-    overallAnalysisDetails: string;
-    createdAt: string | Date;
-    updatedAt: string | Date;
-    factorResults: {
-      id: string;
-      result: string;
-      oneLineExplanation: string;
-      detailedExplanation: string;
-      analysisCategoryFactor: {
-        factorAnalysisKey: string;
-        factorAnalysisTitle: string;
-        factorAnalysisDescription: string;
-      };
-    }[];
-  } | null;
+  categoryResult:
+    | (TickerV1CategoryAnalysisResult & {
+        factorResults: (TickerV1AnalysisCategoryFactorResult & {
+          analysisCategoryFactor: {
+            factorAnalysisKey: string;
+            factorAnalysisTitle: string;
+            factorAnalysisDescription: string;
+          };
+        })[];
+      })
+    | null;
   ticker?: TickerV1 & {
     industry: TickerV1Industry | null;
-    subIndustry: TickerV1SubIndustry | null;
   };
 };
 

@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PastPerformanceResponse } from '@/types/ticker-typesv1';
+import { PastPerformanceResponse, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -10,7 +10,7 @@ async function getHandler(
 ): Promise<PastPerformanceResponse> {
   const { spaceId, ticker, exchange } = await context.params;
 
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+  const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
       spaceId: spaceId || KoalaGainsSpaceId,
       symbol: ticker.toUpperCase(),
@@ -18,14 +18,17 @@ async function getHandler(
     },
     include: {
       industry: true,
-      subIndustry: true,
     },
   });
+
+  if (!tickerRecord) {
+    return { categoryResult: null, ticker: undefined };
+  }
 
   const categoryResult = await prisma.tickerV1CategoryAnalysisResult.findFirst({
     where: {
       tickerId: tickerRecord.id,
-      categoryKey: 'PastPerformance',
+      categoryKey: TickerAnalysisCategory.PastPerformance,
       spaceId: spaceId || KoalaGainsSpaceId,
     },
     include: {

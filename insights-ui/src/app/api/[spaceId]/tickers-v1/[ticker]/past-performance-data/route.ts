@@ -7,16 +7,19 @@ import { NextRequest } from 'next/server';
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<PastPerformanceResponse> {
   const { spaceId, ticker } = await context.params;
 
-  const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
+  const tickerRecord = await prisma.tickerV1.findFirst({
     where: {
       spaceId: spaceId || KoalaGainsSpaceId,
       symbol: ticker.toUpperCase(),
     },
     include: {
       industry: true,
-      subIndustry: true,
     },
   });
+
+  if (!tickerRecord) {
+    return { categoryResult: null, ticker: undefined };
+  }
 
   const categoryResult = await prisma.tickerV1CategoryAnalysisResult.findFirst({
     where: {

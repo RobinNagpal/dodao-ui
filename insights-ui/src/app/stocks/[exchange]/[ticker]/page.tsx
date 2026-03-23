@@ -37,6 +37,7 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
+import Link from 'next/link';
 import { Suspense, use } from 'react';
 import { FloatingNavFromData } from './FloatingTickerNav';
 import { TickerRadarChart } from './TickerRadarChart';
@@ -350,7 +351,7 @@ function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
   const d: TickerV1FastResponse = use(data);
 
   return (
-    <section className="text-left mb-2">
+    <section id="introduction" className="text-left mb-2">
       {/* About Report - displayed above the main heading */}
       {d.aboutReport && <div className="text-gray-400 markdown-body text-sm pb-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.aboutReport) }} />}
 
@@ -452,15 +453,26 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
             const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             return (
               <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                  {categoryResult && (
-                    <div
-                      className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                <div className={`flex items-center gap-2 mb-2 ${categoryKey === TickerAnalysisCategory.PastPerformance ? 'justify-between' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+                    {categoryResult && (
+                      <div
+                        className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+                        style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                      >
+                        {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
+                      </div>
+                    )}
+                  </div>
+
+                  {categoryKey === TickerAnalysisCategory.PastPerformance && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
+                      className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
                     >
-                      {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
-                    </div>
+                      View Detailed Analysis →
+                    </Link>
                   )}
                 </div>
                 <div
@@ -495,22 +507,6 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     <>
       <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
         <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
-
-        {/* Link to dedicated Past Performance page */}
-        {d.categoryAnalysisResults?.some((r) => r.categoryKey === TickerAnalysisCategory.PastPerformance) && (
-          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mb-8 flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold">{CATEGORY_QUESTION_MAPPINGS[TickerAnalysisCategory.PastPerformance]}</h3>
-              <p className="text-sm text-gray-400 mt-1">View the full historical performance analysis on its dedicated page.</p>
-            </div>
-            <a
-              href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
-              className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#38BDF8] to-[#818CF8] hover:from-[#0EA5E9] hover:to-[#6366F1] border border-transparent rounded-lg shadow-md whitespace-nowrap"
-            >
-              Show Detailed Analysis
-            </a>
-          </div>
-        )}
 
         {categoriesToShow.map((categoryKey: TickerAnalysisCategory) => {
           const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);

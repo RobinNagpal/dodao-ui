@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -16,7 +17,7 @@ async function generatePastPerformanceUrls(): Promise<SiteMapUrl[]> {
   const pastPerformanceRecords = await prisma.tickerV1CategoryAnalysisResult.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
-      categoryKey: 'PastPerformance',
+      categoryKey: TickerAnalysisCategory.PastPerformance,
     },
     select: {
       updatedAt: true,

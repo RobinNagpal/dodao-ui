@@ -8,6 +8,11 @@ export function FloatingNavFromData({ data }: { data: Promise<TickerV1FastRespon
   // Generate navigation sections based on available content
   const sections: NavigationSection[] = [
     {
+      id: 'introduction',
+      title: 'Introduction',
+      hasContent: true,
+    },
+    {
       id: 'summary-analysis',
       title: 'Summary Analysis',
       hasContent: true,
