@@ -114,6 +114,66 @@ export function downloadFinalReportPdf(data: FinalReportData, options: ExportOpt
   }
 }
 
+export interface AllPromptsStudent {
+  studentName: string | null;
+  studentEmail: string | null;
+  modules: FinalReportModule[];
+}
+
+export interface AllPromptsData {
+  caseStudyTitle: string;
+  className: string;
+  students: AllPromptsStudent[];
+}
+
+function escapeCsvField(value: string | null): string {
+  if (!value) return '';
+  // If the value contains commas, quotes, or newlines, wrap in quotes and escape internal quotes
+  if (value.includes(',') || value.includes('"') || value.includes('\n') || value.includes('\r')) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+  return value;
+}
+
+/**
+ * Generates and downloads a CSV file with all students' selected prompts for a class enrollment
+ */
+export function downloadAllPromptsCsv(data: AllPromptsData): void {
+  const headers = ['Student Name', 'Student Email', 'Module #', 'Module Title', 'Exercise #', 'Exercise Title', 'Student Prompt', 'Selected Response'];
+  const rows: string[][] = [];
+
+  for (const student of data.students) {
+    for (const mod of student.modules) {
+      for (const exercise of mod.exercises) {
+        if (exercise.prompt || exercise.promptResponse) {
+          rows.push([
+            student.studentName || '',
+            student.studentEmail || '',
+            String(mod.orderNumber),
+            mod.title,
+            String(exercise.orderNumber),
+            exercise.title,
+            exercise.prompt || '',
+            exercise.promptResponse || '',
+          ]);
+        }
+      }
+    }
+  }
+
+  const csvContent = [headers.map(escapeCsvField).join(','), ...rows.map((row) => row.map(escapeCsvField).join(','))].join('\n');
+
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${data.className || 'class'}-all-prompts.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
 /**
  * Builds report content string for display (e.g., in view modal)
  */
