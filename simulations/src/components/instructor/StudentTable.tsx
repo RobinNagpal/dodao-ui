@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Eye, Trash2, Check, Minus, X, Star, Loader2, ExternalLink, Download } from 'lucide-react';
+import { Eye, Trash2, Check, Minus, X, Star, Loader2, ExternalLink, Download, FileDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import AttemptDetailModal from '@/components/shared/AttemptDetailModal';
 import ViewAiResponseModal from '@/components/student/ViewAiResponseModal';
 import FinalReportDownloadModal from '@/components/shared/FinalReportDownloadModal';
-import { buildFinalReportMarkdown } from '@/utils/final-report-utils';
-import type { FinalReportData } from '@/utils/final-report-utils';
+import { buildFinalReportMarkdown, downloadAllPromptsCsv } from '@/utils/final-report-utils';
+import type { FinalReportData, AllPromptsData } from '@/utils/final-report-utils';
 import type { ExerciseAttempt } from '@prisma/client';
 import type { StudentTableData, ModuleTableData } from '@/types';
 
@@ -58,6 +58,7 @@ export default function StudentTable({
   // State for student report modals
   const [selectedStudentForReport, setSelectedStudentForReport] = useState<string | null>(null);
   const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [downloadingAllPrompts, setDownloadingAllPrompts] = useState(false);
 
   // API hook to fetch attempt details
   const { data: attemptDetails, loading: loadingAttemptDetails } = useFetchData<ExerciseAttempt>(
@@ -93,6 +94,20 @@ export default function StudentTable({
   const handleDownloadReport = (studentId: string) => {
     setSelectedStudentForReport(studentId);
     setShowDownloadModal(true);
+  };
+
+  const handleDownloadAllPromptsCsv = async () => {
+    try {
+      setDownloadingAllPrompts(true);
+      const response = await fetch(`/api/instructor/class-enrollments/${classEnrollmentId}/all-prompts/${caseStudyId}`);
+      if (!response.ok) throw new Error('Failed to fetch prompts data');
+      const data: AllPromptsData = await response.json();
+      downloadAllPromptsCsv(data);
+    } catch (error) {
+      console.error('Error downloading all prompts CSV:', error);
+    } finally {
+      setDownloadingAllPrompts(false);
+    }
   };
 
   // Effect to trigger view report fetch when student is selected (not for download)
@@ -136,8 +151,20 @@ export default function StudentTable({
     <div className="bg-white/70 backdrop-blur-lg rounded-3xl shadow-xl border border-white/30 overflow-hidden">
       {/* Table Header */}
       <div className="p-6 border-b border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">Student Progress Overview</h3>
-        <p className="text-gray-600">Click on attempt numbers and final report to view details</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Student Progress Overview</h3>
+            <p className="text-gray-600">Click on attempt numbers and final report to view details</p>
+          </div>
+          <Button
+            onClick={handleDownloadAllPromptsCsv}
+            disabled={downloadingAllPrompts}
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
+          >
+            {downloadingAllPrompts ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <FileDown className="h-4 w-4 mr-2" />}
+            Download All Prompts CSV
+          </Button>
+        </div>
       </div>
 
       {/* Table Container with horizontal scroll */}
