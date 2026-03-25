@@ -81,6 +81,23 @@ export type PastPerformanceResponse = {
   };
 };
 
+export type FuturePerformanceResponse = {
+  categoryResult:
+    | (TickerV1CategoryAnalysisResult & {
+        factorResults: (TickerV1AnalysisCategoryFactorResult & {
+          analysisCategoryFactor: {
+            factorAnalysisKey: string;
+            factorAnalysisTitle: string;
+            factorAnalysisDescription: string;
+          };
+        })[];
+      })
+    | null;
+  ticker?: TickerV1 & {
+    industry: TickerV1Industry | null;
+  };
+};
+
 export interface IndustryWithSubIndustries extends TickerV1Industry {
   subIndustries: TickerV1SubIndustry[];
 }

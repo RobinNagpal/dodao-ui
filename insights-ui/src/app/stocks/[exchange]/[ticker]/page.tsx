@@ -453,7 +453,11 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
             const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             return (
               <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                <div className={`flex items-center gap-2 mb-2 ${categoryKey === TickerAnalysisCategory.PastPerformance ? 'justify-between' : ''}`}>
+                <div
+                  className={`flex items-center gap-2 mb-2 ${
+                    categoryKey === TickerAnalysisCategory.PastPerformance || categoryKey === TickerAnalysisCategory.FutureGrowth ? 'justify-between' : ''
+                  }`}
+                >
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
                     {categoryResult && (
@@ -472,6 +476,15 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                       className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
                     >
                       View Detailed Analysis →
+                    </Link>
+                  )}
+
+                  {categoryKey === TickerAnalysisCategory.FutureGrowth && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/future-performance`}
+                      className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
+                    >
+                      Show Detailed Future Analysis →
                     </Link>
                   )}
                 </div>
@@ -500,8 +513,10 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
   };
 
-  // Filter out PastPerformance — it now has its own dedicated page
-  const categoriesToShow = Object.values(TickerAnalysisCategory).filter((key) => key !== TickerAnalysisCategory.PastPerformance);
+  // Filter out PastPerformance and FutureGrowth — they now have their own dedicated pages
+  const categoriesToShow = Object.values(TickerAnalysisCategory).filter(
+    (key) => key !== TickerAnalysisCategory.PastPerformance && key !== TickerAnalysisCategory.FutureGrowth
+  );
 
   return (
     <>
