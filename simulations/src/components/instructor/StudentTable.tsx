@@ -12,6 +12,7 @@ import { buildFinalReportMarkdown, downloadAllPromptsCsv } from '@/utils/final-r
 import type { FinalReportData, AllPromptsData } from '@/utils/final-report-utils';
 import type { ExerciseAttempt } from '@prisma/client';
 import type { StudentTableData, ModuleTableData } from '@/types';
+import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 
 interface StudentTableProps {
   students: StudentTableData[];
@@ -99,7 +100,14 @@ export default function StudentTable({
   const handleDownloadAllPromptsCsv = async () => {
     try {
       setDownloadingAllPrompts(true);
-      const response = await fetch(`/api/instructor/class-enrollments/${classEnrollmentId}/all-prompts/${caseStudyId}`);
+      const accessToken = localStorage.getItem(DODAO_ACCESS_TOKEN_KEY);
+      const response = await fetch(`/api/instructor/class-enrollments/${classEnrollmentId}/all-prompts/${caseStudyId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(accessToken ? { 'dodao-auth-token': accessToken } : {}),
+        },
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch prompts data');
       const data: AllPromptsData = await response.json();
       downloadAllPromptsCsv(data);
