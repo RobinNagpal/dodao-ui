@@ -473,7 +473,8 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                   {categoryKey === TickerAnalysisCategory.PastPerformance && (
                     <Link
                       href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
-                      className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
                       View Detailed Analysis →
                     </Link>
@@ -482,7 +483,8 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                   {categoryKey === TickerAnalysisCategory.FutureGrowth && (
                     <Link
                       href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/future-performance`}
-                      className="link-color hover:underline text-xs font-medium whitespace-nowrap flex items-center gap-1"
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
                       Show Detailed Future Analysis →
                     </Link>
