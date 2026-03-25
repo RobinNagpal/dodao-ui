@@ -31,24 +31,39 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
+/** Empty response returned when the API is unavailable or returns an error. */
+const EMPTY_RESPONSE: PastPerformanceResponse = { categoryResult: null, ticker: undefined };
+
 /** Fetch past performance data for a specific exchange+ticker (cached). */
 async function fetchPastPerformanceByExchange(exchange: string, ticker: string): Promise<PastPerformanceResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/past-performance-data`;
-  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchPastPerformanceByExchange failed (${res.status}): ${url}`);
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.warn(`fetchPastPerformanceByExchange failed (${res.status}): ${url}`);
+      return EMPTY_RESPONSE;
+    }
+    return (await res.json()) as PastPerformanceResponse;
+  } catch (err) {
+    console.warn('fetchPastPerformanceByExchange error:', err);
+    return EMPTY_RESPONSE;
   }
-  return (await res.json()) as PastPerformanceResponse;
 }
 
 /** Fetch past performance data for any exchange (uncached fallback). */
 async function fetchPastPerformanceAnyExchange(ticker: string): Promise<PastPerformanceResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/past-performance-data`;
-  const res: Response = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`fetchPastPerformanceAnyExchange failed (${res.status}): ${url}`);
+  try {
+    const res: Response = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) {
+      console.warn(`fetchPastPerformanceAnyExchange failed (${res.status}): ${url}`);
+      return EMPTY_RESPONSE;
+    }
+    return (await res.json()) as PastPerformanceResponse;
+  } catch (err) {
+    console.warn('fetchPastPerformanceAnyExchange error:', err);
+    return EMPTY_RESPONSE;
   }
-  return (await res.json()) as PastPerformanceResponse;
 }
 
 /**

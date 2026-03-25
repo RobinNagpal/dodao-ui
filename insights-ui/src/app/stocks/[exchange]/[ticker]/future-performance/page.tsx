@@ -31,24 +31,39 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
+/** Empty response returned when the API is unavailable or returns an error. */
+const EMPTY_RESPONSE: FuturePerformanceResponse = { categoryResult: null, ticker: undefined };
+
 /** Fetch future performance data for a specific exchange+ticker (cached). */
 async function fetchFuturePerformanceByExchange(exchange: string, ticker: string): Promise<FuturePerformanceResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/future-performance-data`;
-  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
-  if (!res.ok) {
-    throw new Error(`fetchFuturePerformanceByExchange failed (${res.status}): ${url}`);
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.warn(`fetchFuturePerformanceByExchange failed (${res.status}): ${url}`);
+      return EMPTY_RESPONSE;
+    }
+    return (await res.json()) as FuturePerformanceResponse;
+  } catch (err) {
+    console.warn('fetchFuturePerformanceByExchange error:', err);
+    return EMPTY_RESPONSE;
   }
-  return (await res.json()) as FuturePerformanceResponse;
 }
 
 /** Fetch future performance data for any exchange (uncached fallback). */
 async function fetchFuturePerformanceAnyExchange(ticker: string): Promise<FuturePerformanceResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}/future-performance-data`;
-  const res: Response = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`fetchFuturePerformanceAnyExchange failed (${res.status}): ${url}`);
+  try {
+    const res: Response = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) {
+      console.warn(`fetchFuturePerformanceAnyExchange failed (${res.status}): ${url}`);
+      return EMPTY_RESPONSE;
+    }
+    return (await res.json()) as FuturePerformanceResponse;
+  } catch (err) {
+    console.warn('fetchFuturePerformanceAnyExchange error:', err);
+    return EMPTY_RESPONSE;
   }
-  return (await res.json()) as FuturePerformanceResponse;
 }
 
 /**
