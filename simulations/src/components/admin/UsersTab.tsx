@@ -1,5 +1,5 @@
 import { UserRole } from '@prisma/client';
-import { Plus, Users as UsersIcon } from 'lucide-react';
+import { Plus, Users as UsersIcon, Filter } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -10,6 +10,8 @@ import ConfirmationModal from '@dodao/web-core/components/app/Modal/Confirmation
 import SignInCodeModal from '../instructor/SignInCodeModal';
 import Pagination from '../shared/Pagination';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+
+type RoleFilterValue = 'All' | UserRole;
 
 interface User {
   id: string;
@@ -40,17 +42,19 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
   const [deleteUserId, setDeleteUserId] = useState<string>('');
   const [signInCodeUser, setSignInCodeUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [roleFilter, setRoleFilter] = useState<RoleFilterValue>('All');
   const itemsPerPage = 100; // Fixed at 100 users per page as requested
 
-  const buildApiUrl = useCallback((page: number) => {
-    // Use a safer approach with string concatenation instead of URL constructor
-    // This avoids SSR issues with URL construction
+  const buildApiUrl = useCallback((page: number, role: RoleFilterValue) => {
     const queryParams = new URLSearchParams({
       page: page.toString(),
       limit: itemsPerPage.toString(),
       sortBy: 'createdAt',
       sortOrder: 'asc',
     });
+    if (role !== 'All') {
+      queryParams.set('role', role);
+    }
     return `${getBaseUrl()}/api/users?${queryParams.toString()}`;
   }, []);
 
@@ -58,7 +62,7 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
     data: usersResponse,
     loading: loadingUsers,
     reFetchData: refetchUsers,
-  } = useFetchData<PaginatedUsersResponse>(buildApiUrl(currentPage), {}, 'Failed to load users');
+  } = useFetchData<PaginatedUsersResponse>(buildApiUrl(currentPage, roleFilter), {}, 'Failed to load users');
 
   const { deleteData: deleteUser, loading: deletingUser } = useDeleteData<{ success: boolean }, never>({
     successMessage: 'User deleted successfully!',
@@ -102,6 +106,11 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
     setCurrentPage(page);
   };
 
+  const handleRoleFilterChange = (role: RoleFilterValue) => {
+    setRoleFilter(role);
+    setCurrentPage(1);
+  };
+
   const users = usersResponse?.users || [];
   const totalUsers = usersResponse?.total || 0;
   const totalPages = usersResponse?.totalPages || 1;
@@ -120,6 +129,26 @@ export default function UsersTab({ onDeleteUser }: UsersTabProps): JSX.Element {
           <Plus className="h-4 w-4" />
           <span className="font-medium">Add User</span>
         </button>
+      </div>
+
+      <div className="mb-4 flex items-center space-x-3">
+        <Filter className="h-4 w-4 text-emerald-600" />
+        <label htmlFor="role-filter" className="text-sm font-medium text-gray-700">
+          Filter by Role:
+        </label>
+        <select
+          id="role-filter"
+          value={roleFilter}
+          onChange={(e) => handleRoleFilterChange(e.target.value as RoleFilterValue)}
+          className="border border-emerald-200 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+        >
+          <option value="All">All Roles</option>
+          {Object.values(UserRole).map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </select>
       </div>
 
       {loadingUsers ? (

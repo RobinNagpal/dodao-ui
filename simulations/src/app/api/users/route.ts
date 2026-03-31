@@ -53,6 +53,11 @@ async function getHandler(req: NextRequest, userContext: SimulationJwtTokenPaylo
   const sortBy = url.searchParams.get('sortBy') || 'createdAt';
   const sortOrder = url.searchParams.get('sortOrder') || 'asc';
 
+  // Optional role filter
+  const roleParam = url.searchParams.get('role');
+  const validRoles = Object.values(UserRole);
+  const roleFilter = roleParam && validRoles.includes(roleParam as UserRole) ? (roleParam as UserRole) : undefined;
+
   // Validate and sanitize sort parameters
   const validSortFields = ['createdAt', 'email', 'username', 'name'];
   const validSortOrders = ['asc', 'desc'];
@@ -60,19 +65,20 @@ async function getHandler(req: NextRequest, userContext: SimulationJwtTokenPaylo
   const finalSortBy = validSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder : 'asc';
 
+  const whereClause = {
+    spaceId: KoalaGainsSpaceId,
+    ...(roleFilter && { role: roleFilter }),
+  };
+
   const [users, total] = await Promise.all([
     prisma.user.findMany({
-      where: {
-        spaceId: KoalaGainsSpaceId,
-      },
+      where: whereClause,
       orderBy: [{ [finalSortBy]: finalSortOrder }, { email: 'asc' }],
       skip,
       take: limit,
     }),
     prisma.user.count({
-      where: {
-        spaceId: KoalaGainsSpaceId,
-      },
+      where: whereClause,
     }),
   ]);
 
