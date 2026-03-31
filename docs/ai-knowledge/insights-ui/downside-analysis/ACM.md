@@ -1,10 +1,10 @@
 For AECOM, the answer is:
 
-**the business stayed mostly good, but the stock stopped being safe when near-term cash flow weakened while long-term expectations got bigger.** AECOM hit an all-time high close of $133.93 on Oct. 31, 2025. Then on Nov. 18 management raised long-term targets, including a 20%+ margin exit target for fiscal 2028 and 15%+ adjusted EPS CAGR from fiscal 2026 to 2029, while the stock then fell about 3.6% in 1 day and 21.3% in 5 trading days after that earnings/investor-day event. Baird downgraded the stock on Nov. 21, and Barclays downgraded it in late December. ([Yahoo Finance][1])
+**the business stayed mostly good, but the stock stopped being safe when near-term cash flow weakened while long-term expectations got bigger.** AECOM hit an all-time high close of $133.93 on Oct. 31, 2025. Then on Nov. 18 management raised long-term targets, including a 20%+ margin exit target for fiscal 2028 and 15%+ adjusted EPS CAGR from fiscal 2026 to 2029, while the stock then fell about 3.6% in 1 day and 21.3% in 5 trading days after that earnings/investor-day event. Baird downgraded the stock on Nov. 21, and Barclays downgraded it in late December.
 
 That is the trend:
 **big story got stronger, but near-term cash reality got weaker.**
-That mismatch is what usually causes a valuation reset. ([AECOM][2])
+That mismatch is what usually causes a valuation reset.
 
 ## What you could have known at that time
 
@@ -14,7 +14,7 @@ In the first three quarters of FY2025, management kept showing strong cash conve
 
 So before the stock kept falling, you already had a clear warning:
 
-**cash generation had stopped matching the premium story.** ([AECOM][4])
+**cash generation had stopped matching the premium story.**
 
 **Effect**
 
@@ -22,13 +22,13 @@ When a stock is trading near all-time highs on a "compounding quality" narrative
 
 **Expected pricing impact**
 
-* Mild (one-quarter FCF miss but management reaffirms full-year guidance convincingly): **5–10% downside**
-* Moderate (FCF drops 40–50% quarter-over-quarter with rising capex, even if management explains it): **10–20% downside**
-* Severe (FCF breaks down + operating cash flow also declines + capex jumps without clear near-term payback): **15–25% downside**
+- Mild (one-quarter FCF miss but management reaffirms full-year guidance convincingly): **5–10% downside**
+- Moderate (FCF drops 40–50% quarter-over-quarter with rising capex, even if management explains it): **10–20% downside**
+- Severe (FCF breaks down + operating cash flow also declines + capex jumps without clear near-term payback): **15–25% downside**
 
 ### 2) FY2026 guidance confirmed it was not just a noisy quarter
 
-AECOM reported **FY2025 free cash flow of $685.2 million**, but then guided to only **about $400 million** for FY2026. That is about a **42% step down**. Management explicitly said this lower cash-flow guidance included investments tied to restructuring, AI initiatives, and efficiency programs. ([AECOM][5])
+AECOM reported **FY2025 free cash flow of $685.2 million**, but then guided to only **about $400 million** for FY2026. That is about a **42% step down**. Management explicitly said this lower cash-flow guidance included investments tied to restructuring, AI initiatives, and efficiency programs.
 
 That should have been a major red flag for the stock.
 
@@ -38,7 +38,7 @@ Because when a company is near an all-time high, the market wants:
 - strong earnings
 - and also strong near-term cash flow
 
-AECOM still had the first two, but not the third. ([Yahoo Finance][1])
+AECOM still had the first two, but not the third.
 
 **Effect**
 
@@ -46,9 +46,9 @@ A 42% step-down in FCF guidance confirms the Q4 weakness was not a one-off. For 
 
 **Expected pricing impact**
 
-* Mild (FCF guided 10–15% lower, with clear one-time items that will reverse): **5–10% downside**
-* Moderate (FCF guided 25–35% lower, investments are multi-quarter): **10–20% downside**
-* Severe (FCF guided 40%+ lower, restructuring costs are vague, and management simultaneously raises long-term targets — creating a credibility gap): **20–30% downside**
+- Mild (FCF guided 10–15% lower, with clear one-time items that will reverse): **5–10% downside**
+- Moderate (FCF guided 25–35% lower, investments are multi-quarter): **10–20% downside**
+- Severe (FCF guided 40%+ lower, restructuring costs are vague, and management simultaneously raises long-term targets — creating a credibility gap): **20–30% downside**
 
 ### 3) Where did the free cash flow go?
 
@@ -68,9 +68,9 @@ When the cash-flow shortfall is driven by OpEx investments (AI, restructuring, e
 
 **Expected pricing impact**
 
-* Mild (investment spend is small, <50 bps of margin, and clearly tied to visible cost savings): **3–8% downside**
-* Moderate (60–70 bps of investment flowing through OpEx, restructuring timeline is vague): **10–15% downside**
-* Severe (OpEx-heavy investment + restructuring + raised long-term targets that require faith in execution + analyst downgrades citing valuation disconnect): **15–25% downside**
+- Mild (investment spend is small, <50 bps of margin, and clearly tied to visible cost savings): **3–8% downside**
+- Moderate (60–70 bps of investment flowing through OpEx, restructuring timeline is vague): **10–15% downside**
+- Severe (OpEx-heavy investment + restructuring + raised long-term targets that require faith in execution + analyst downgrades citing valuation disconnect): **15–25% downside**
 
 ### 4) Strategic-review uncertainty was visible immediately
 
@@ -86,18 +86,18 @@ Strategic reviews create an overhang on the stock. Investors do not know whether
 
 **Expected pricing impact**
 
-* Mild (review of a small, non-core segment with clear timeline): **2–5% downside**
-* Moderate (review of a meaningful segment with vague "12-month" timeline): **5–10% downside**
-* Severe (review + simultaneous cash-flow weakness + no clarity on financial impact of either outcome): **8–15% downside**
+- Mild (review of a small, non-core segment with clear timeline): **2–5% downside**
+- Moderate (review of a meaningful segment with vague "12-month" timeline): **5–10% downside**
+- Severe (review + simultaneous cash-flow weakness + no clarity on financial impact of either outcome): **8–15% downside**
 
 ### 5) Federal-funding timing risk was later confirmed
 
-In Q1 FY2026, AECOM said the Americas design business still had a 1.0 book-to-burn ratio, but awards were delayed because of the **43-day U.S. federal government shutdown**. ([AECOM][6])
+In Q1 FY2026, AECOM said the Americas design business still had a 1.0 book-to-burn ratio, but awards were delayed because of the **43-day U.S. federal government shutdown**.
 
 This tells you something important:
 
 AECOM is not just a generic industrial company.
-It has real **timing risk** tied to public-sector awards and approvals. ([AECOM][6])
+It has real **timing risk** tied to public-sector awards and approvals.
 
 So for this stock, a "good business" can still mean "messy short-term stock action."
 
@@ -107,9 +107,9 @@ Government-award delays do not destroy the business (the work eventually comes),
 
 **Expected pricing impact**
 
-* Mild (short shutdown or delay, management confirms backlog is intact): **2–5% downside**
-* Moderate (multi-week shutdown + visible impact on book-to-burn for 1–2 quarters): **5–10% downside**
-* Severe (extended funding uncertainty + political risk to infrastructure spending + delayed appropriations affecting multi-quarter visibility): **10–15% downside**
+- Mild (short shutdown or delay, management confirms backlog is intact): **2–5% downside**
+- Moderate (multi-week shutdown + visible impact on book-to-burn for 1–2 quarters): **5–10% downside**
+- Severe (extended funding uncertainty + political risk to infrastructure spending + delayed appropriations affecting multi-quarter visibility): **10–15% downside**
 
 ## The real lesson
 
@@ -150,7 +150,7 @@ If wins are not keeping up with revenue, future growth gets weaker.
 - Q1 FY2025: enterprise book-to-burn **1.1x**
 - Q2 FY2025: **1.1x**
 - Q3 FY2025: **1.0x**
-- Q1 FY2026: **1.5x** and 21st straight quarter above 1.0x ([AECOM][3])
+- Q1 FY2026: **1.5x** and 21st straight quarter above 1.0x
 
 **Conclusion:**
 This did **not** show a broken business.
@@ -162,9 +162,9 @@ A declining book-to-burn signals the pipeline is drying up — future revenue wi
 
 **Expected pricing impact**
 
-* Mild (book-to-burn dips to 1.0–1.05x for 1 quarter): **3–5% downside**
-* Moderate (below 1.0x for 1 quarter or 1.0–1.05x for 2 quarters): **8–12% downside**
-* Severe (below 1.0x for 2+ quarters, backlog starts shrinking): **15–25% downside**
+- Mild (book-to-burn dips to 1.0–1.05x for 1 quarter): **3–5% downside**
+- Moderate (below 1.0x for 1 quarter or 1.0–1.05x for 2 quarters): **8–12% downside**
+- Severe (below 1.0x for 2+ quarters, backlog starts shrinking): **15–25% downside**
 
 ## 2) Backlog growth
 
@@ -182,7 +182,7 @@ AECOM's future revenue is heavily linked to backlog.
 - Q1 FY2025 backlog up **4%**
 - Q2 FY2025 backlog up **3%**
 - Q3 FY2025 backlog up **5%**
-- Q1 FY2026 backlog up **9%** to record high ([AECOM][3])
+- Q1 FY2026 backlog up **9%** to record high
 
 **Conclusion:**
 Backlog stayed okay to strong.
@@ -194,9 +194,9 @@ Slowing or negative backlog growth means AECOM is burning through its work faste
 
 **Expected pricing impact**
 
-* Mild (backlog growth slows to 0–5% but remains positive): **3–7% downside**
-* Moderate (backlog flat for 2 quarters): **8–15% downside**
-* Severe (backlog shrinking, negative growth for 2+ quarters): **15–25% downside**
+- Mild (backlog growth slows to 0–5% but remains positive): **3–7% downside**
+- Moderate (backlog flat for 2 quarters): **8–15% downside**
+- Severe (backlog shrinking, negative growth for 2+ quarters): **15–25% downside**
 
 ## 3) Net leverage
 
@@ -211,7 +211,7 @@ If cash flow gets weaker, leverage tells you whether the company can absorb it s
 
 **AECOM at the time**
 
-- Q1 FY2026 net leverage was **1.0x** ([AECOM][6])
+- Q1 FY2026 net leverage was **1.0x**
 
 **Conclusion:**
 Balance sheet was fine.
@@ -223,9 +223,9 @@ Rising leverage during a cash-flow weak period signals the company may need to c
 
 **Expected pricing impact**
 
-* Mild (leverage rises to 1.5–2.0x but cash flow covers interest easily): **3–5% downside**
-* Moderate (leverage above 2.0x, buyback pace slows): **8–12% downside**
-* Severe (leverage above 2.5x, credit rating at risk, dividend or buyback suspended): **15–25% downside**
+- Mild (leverage rises to 1.5–2.0x but cash flow covers interest easily): **3–5% downside**
+- Moderate (leverage above 2.0x, buyback pace slows): **8–12% downside**
+- Severe (leverage above 2.5x, credit rating at risk, dividend or buyback suspended): **15–25% downside**
 
 ## 4) Next-year free-cash-flow guidance vs current-year actual
 
@@ -243,7 +243,7 @@ If a premium stock suddenly guides to much weaker cash generation, the market us
 **AECOM at the time**
 
 - FY2025 free cash flow: **$685.2M**
-- FY2026 guide: **~$400M** ([AECOM][5])
+- FY2026 guide: **~$400M**
 
 **Conclusion:**
 This was a **clear red flag**.
@@ -254,9 +254,9 @@ This is the single most impactful check for AECOM. A 42% FCF step-down at a prem
 
 **Expected pricing impact**
 
-* Mild (FCF guided down 10–15%): **5–8% downside**
-* Moderate (FCF guided down 20–35%): **10–20% downside**
-* Severe (FCF guided down 40%+, especially combined with rising long-term targets): **20–35% downside**
+- Mild (FCF guided down 10–15%): **5–8% downside**
+- Moderate (FCF guided down 20–35%): **10–20% downside**
+- Severe (FCF guided down 40%+, especially combined with rising long-term targets): **20–35% downside**
 
 ## 5) Standalone quarterly free-cash-flow trend
 
@@ -271,7 +271,7 @@ It helps you catch the first crack in the story before the full-year numbers rol
 
 **AECOM at the time**
 
-- Q4 standalone FCF fell from **$274.6M** to **$134.1M**, about **-51%** ([AECOM][7])
+- Q4 standalone FCF fell from **$274.6M** to **$134.1M**, about **-51%**
 
 **Conclusion:**
 This was another **clear red flag**.
@@ -282,9 +282,9 @@ Quarterly FCF is the earliest signal. A -51% drop in a single quarter tells you 
 
 **Expected pricing impact**
 
-* Mild (quarterly FCF down 10–25%, explainable by timing): **3–7% downside**
-* Moderate (quarterly FCF down 25–40%): **8–15% downside**
-* Severe (quarterly FCF down 40%+, especially if prior quarters were strong): **12–20% downside**
+- Mild (quarterly FCF down 10–25%, explainable by timing): **3–7% downside**
+- Moderate (quarterly FCF down 25–40%): **8–15% downside**
+- Severe (quarterly FCF down 40%+, especially if prior quarters were strong): **12–20% downside**
 
 ## 6) Standalone operating-cash-flow trend
 
@@ -299,7 +299,7 @@ This tells you whether the business is actually converting profit into cash.
 
 **AECOM at the time**
 
-- Q4 operating cash flow fell from **$298.8M** to **$196.1M**, about **-34%** ([AECOM][7])
+- Q4 operating cash flow fell from **$298.8M** to **$196.1M**, about **-34%**
 
 **Conclusion:**
 Another red flag.
@@ -310,9 +310,9 @@ Operating cash flow declining alongside FCF means the problem is not just capex 
 
 **Expected pricing impact**
 
-* Mild (OCF down 10–20%, working capital timing issue): **3–7% downside**
-* Moderate (OCF down 20–35%): **8–15% downside**
-* Severe (OCF down 35%+ while reported earnings still look fine — cash-earnings divergence): **12–20% downside**
+- Mild (OCF down 10–20%, working capital timing issue): **3–7% downside**
+- Moderate (OCF down 20–35%): **8–15% downside**
+- Severe (OCF down 35%+ while reported earnings still look fine — cash-earnings divergence): **12–20% downside**
 
 ## 7) "Investment year" flag
 
@@ -337,9 +337,9 @@ This should have moved the stock from **"safe premium compounder"** to **"wait a
 
 **Expected pricing impact**
 
-* Mild (investment <50 bps, clear ROI timeline within 2–3 quarters): **3–8% downside**
-* Moderate (investment 50–70 bps, mostly OpEx, ROI timeline is 4–6 quarters): **8–15% downside**
-* Severe (investment 70+ bps + vague returns timeline + announced at all-time high valuation): **15–25% downside**
+- Mild (investment <50 bps, clear ROI timeline within 2–3 quarters): **3–8% downside**
+- Moderate (investment 50–70 bps, mostly OpEx, ROI timeline is 4–6 quarters): **8–15% downside**
+- Severe (investment 70+ bps + vague returns timeline + announced at all-time high valuation): **15–25% downside**
 
 ## 8) Strategic-review / sale / retain event
 
@@ -365,9 +365,9 @@ Strategic reviews create binary outcome uncertainty. The market cannot model whe
 
 **Expected pricing impact**
 
-* Mild (small non-core segment, quick resolution expected): **2–5% downside**
-* Moderate (meaningful segment, 6–12 month timeline): **5–10% downside**
-* Severe (large segment + long timeline + simultaneous operational concerns): **8–15% downside**
+- Mild (small non-core segment, quick resolution expected): **2–5% downside**
+- Moderate (meaningful segment, 6–12 month timeline): **5–10% downside**
+- Severe (large segment + long timeline + simultaneous operational concerns): **8–15% downside**
 
 ## 9) Government-award timing risk
 
@@ -381,7 +381,7 @@ AECOM has meaningful public-sector exposure.
 
 **AECOM at the time**
 
-- Q1 FY2026: management said the 43-day U.S. federal shutdown caused award delays in the Americas design business. ([AECOM][6])
+- Q1 FY2026: management said the 43-day U.S. federal shutdown caused award delays in the Americas design business.
 
 **Conclusion:**
 This was a real stock-risk factor.
@@ -392,9 +392,9 @@ Government-dependent revenue creates lumpy quarters. While the work is not lost 
 
 **Expected pricing impact**
 
-* Mild (short delay, backlog intact, management provides clear catch-up timeline): **2–5% downside**
-* Moderate (multi-week shutdown + visible book-to-burn impact): **5–10% downside**
-* Severe (extended political uncertainty around infrastructure funding + potential program cancellations): **10–20% downside**
+- Mild (short delay, backlog intact, management provides clear catch-up timeline): **2–5% downside**
+- Moderate (multi-week shutdown + visible book-to-burn impact): **5–10% downside**
+- Severe (extended political uncertainty around infrastructure funding + potential program cancellations): **10–20% downside**
 
 ## 10) Market-reaction check
 
@@ -408,7 +408,7 @@ This is not a business metric. It is a very useful stock signal.
 
 - After Nov. 18, the stock was about **-3.6%** in 1 day and **-21.3%** in 5 days.
 - Baird downgraded on Nov. 21.
-- Barclays downgraded in late December. ([Trefis][8])
+- Barclays downgraded in late December.
 
 **Conclusion:**
 The market was telling you very early:
@@ -420,6 +420,6 @@ A negative market reaction followed by analyst downgrades confirms that the cons
 
 **Expected pricing impact**
 
-* Mild (3–5% drop on earnings, stabilizes within 2–3 days, no analyst downgrades): **5–8% total downside**
-* Moderate (5–10% drop, continues falling for a week, 1–2 analyst downgrades): **10–20% total downside**
-* Severe (3%+ day-1 drop + 15–20% over first week + multiple analyst downgrades within a month): **20–35% total downside**
+- Mild (3–5% drop on earnings, stabilizes within 2–3 days, no analyst downgrades): **5–8% total downside**
+- Moderate (5–10% drop, continues falling for a week, 1–2 analyst downgrades): **10–20% total downside**
+- Severe (3%+ day-1 drop + 15–20% over first week + multiple analyst downgrades within a month): **20–35% total downside**
