@@ -13,6 +13,16 @@ A company can show strong revenue growth, but if costs are rising almost as fast
 
 For Sea in Q4 2025, revenue was up **38.4%**, but cost of revenue was up **40.4%** and sales and marketing was up **33.6%**. In Q3 2025, sales and marketing was also up **30.9%** and total operating expenses were up **28.0%**.
 
+**Effect**
+
+Investors lose confidence in operating leverage. If costs consistently match or outpace revenue growth, it signals the company cannot scale efficiently, which leads to multiple compression and a shift from "growth stock" to "show me the profit" scrutiny.
+
+**Expected pricing impact**
+
+* Mild (costs slightly above revenue growth for 1 quarter): **5–10% downside**
+* Moderate (costs outpacing revenue for 2 consecutive quarters): **10–20% downside**
+* Severe (operating margins contracting while revenue grows): **20–30% downside**
+
 **Simple red flag**
 
 * If revenue grows, but costs grow just as fast for **2 quarters in a row**
@@ -45,6 +55,16 @@ So the warning sign was not "bad loans already exploded." The warning sign was: 
 * Is provision growth lower than loan growth, or is it staying very high?
 * Is the NPL ratio stable, or starting to rise?
 * Is lending profit growing without a big jump in credit cost?
+
+**Effect**
+
+Credit risk fears can trigger a rapid re-rating. Investors treat fast-growing fintech lending with high scrutiny — if provisions spike or NPLs tick up, the market prices in potential large-scale loan losses, which can wipe out the profit contribution from the entire financial services segment.
+
+**Expected pricing impact**
+
+* Mild (provisions rising but NPL stable, loan growth moderating): **5–10% downside**
+* Moderate (provisions rising faster than loan growth for 2 quarters, or NPL ratio ticking up 20–30 bps): **10–20% downside**
+* Severe (NPL ratio jumps above 2%, or management signals tighter lending standards amid rising defaults): **20–35% downside**
 
 **Simple red flag**
 
@@ -81,11 +101,21 @@ That means the growth was strong, but it was not fully "cheap" growth.
 * Is logistics cost under control?
 * Is segment EBITDA improving, or is growth being bought at a high cost?
 
+**Effect**
+
+The market starts questioning whether Shopee's growth is sustainable or just "bought" growth. When e-commerce growth comes primarily from subsidies and heavy spending, investors worry that pulling back on spending would cause growth to collapse — creating a lose-lose perception (spend more = lower margins, spend less = lower growth).
+
+**Expected pricing impact**
+
+* Mild (subsidies rising but segment EBITDA still improving): **3–8% downside**
+* Moderate (value-added services revenue declining, shipping subsidies growing faster than GMV): **10–15% downside**
+* Severe (segment EBITDA flat or declining while GMV grows, combined with competitive pressure from TikTok Shop or others): **15–25% downside**
+
 **Simple red flag**
 
 * GMV is growing, but segment profit stays flat
 * Shipping subsidies rise too much
-* The company needs more discounts every quarter to keep gring
+* The company needs more discounts every quarter to keep growing
 
 ---
 
@@ -102,6 +132,16 @@ That means the growth was strong, but it was not fully "cheap" growth.
 A lot of investors make this mistake: they see strong revenue and assume the quarter was strong. But markets often care more about **profit quality**.
 
 In Q3 2025, Sea reported revenue above estimates, but profit missed analyst expectations. In Q4 2025, Reuters again focused on rising expenses even though revenue beat estimates. This tells you that the market had started to worry more about **how profitable the growth really was**. ([Reuters][1])
+
+**Effect**
+
+This is one of the most dangerous patterns for a stock trading at a growth premium. When revenue beats stop translating into earnings beats, the market begins to question whether the business model can ever deliver strong profitability. The stock's P/E or EV/EBITDA multiple contracts as investors shift from paying for "growth" to demanding "profitable growth."
+
+**Expected pricing impact**
+
+* Mild (profit misses by a small margin, one-off items explain it): **5–10% downside**
+* Moderate (profit misses 2 quarters in a row despite revenue beats): **10–20% downside**
+* Severe (persistent revenue-profit disconnect + analyst downgrades on earnings quality): **20–30% downside**
 
 **Simple red flag**
 
@@ -126,6 +166,16 @@ Stocks fall hard when investors realize the next year may be weaker than they ex
 In Sea's Q4 release, management guided for Shopee annual GMV growth of around **25%** in 2026, versus **26.8%** growth in 2025, while saying adjusted EBITDA should be **no lower than 2025 in absolute dollar terms**.
 
 That is not terrible guidance, but it tells you something important: management still expects growth, yet not a big jump in profitability. That can disappoint investors if the stock price was expecting cleaner margin expansion.
+
+**Effect**
+
+Forward guidance is what the market prices in next. When guidance disappoints — even slightly — investors who were positioned for acceleration sell quickly. For Sea specifically, if Shopee GMV growth guidance decelerates while spending guidance stays high, it signals a maturing business that still needs to spend heavily, which is the worst combination for a growth stock valuation.
+
+**Expected pricing impact**
+
+* Mild (guidance slightly below consensus but still shows growth): **5–10% downside**
+* Moderate (growth guidance decelerates meaningfully + no margin improvement guidance): **10–20% downside**
+* Severe (growth guidance slows + management signals increased competition spending + analyst target cuts): **20–35% downside**
 
 **Simple red flag**
 
