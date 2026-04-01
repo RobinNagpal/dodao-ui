@@ -294,9 +294,27 @@ The three quantitative frameworks (Scenarios, Stress Test, Precedent) analyze fi
 | 4/5 (low switching costs, disruptable) | Bear scenarios get +10pp probability |
 | 5/5 (existential competitive risk) | Bear/severe bear combined should be 60%+ of probability weight |
 
+### Step 4F: Quantifying Competitive Revenue Risk
+
+Moat scoring (1-5) tells you WHETHER competition matters. But for stocks scoring 3-5, you must also quantify HOW MUCH revenue is at risk. The process:
+
+1. Identify the top 2 most direct competitors (not largest — most likely to take THIS company's customers)
+2. Estimate their growth trajectory and geographic/product overlap
+3. Calculate: Competitor takes X pp of share → $Y revenue loss → at current multiple = Z% stock decline
+4. Verify with evidence: is it already showing up in quarterly results?
+
+**Revenue Risk Severity Scale:**
+- **<3%** = Noise (PCTY, BROS today)
+- **3–8%** = Monitor (ELF, SE, PRKS)
+- **8–15%** = Core bear scenario (FRSH, SLNO)
+- **15–25%** = Thesis-level risk (DUOL, CELH, HSAI)
+- **>25%** = Existential (INVZ growth trajectory)
+
+See `final_framework_for_downside.md` Step 4F and `competitive_landscape.md` for full analysis of all 12 at-risk stocks.
+
 ### Three Categories of Competitive Risk
 
-**Competition INCREASES downside** (financial models underestimate): DUOL, UPWK, FRSH (AI structural), SE (TikTok Shop), BROS (7 Brew replication), PRKS (Epic Universe)
+**Competition INCREASES downside** (financial models underestimate): DUOL, UPWK, FRSH (AI structural), SE (TikTok Shop), BROS (7 Brew replication), PRKS (Epic Universe), CELH (Monster/Ghost)
 
 **Competition is IRRELEVANT to downside** (all risk is macro/financial): AGM, CRH (monopoly positions), AZO (counter-cyclical), LOAR, ZBRA (locked-in enterprise)
 

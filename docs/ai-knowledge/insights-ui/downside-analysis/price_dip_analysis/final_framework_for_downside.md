@@ -230,6 +230,83 @@ A stock can look cheap on every financial metric (low PE, high FCF yield, oversh
 
 **E. Score moat vulnerability (1–5).** 1 = nearly invulnerable, 5 = existentially threatened.
 
+**F. Quantify the competitive revenue risk from the top 2 direct competitors.** This is the step most investors skip — and it's the most important. Don't just say "competition is a risk." Calculate how much revenue the top 2 competitors could realistically take.
+
+### Step 4F: Competitive Revenue Risk (The Missing Piece)
+
+Most competitive analysis stops at "Company X is a threat." That's not useful. You need to answer: **"How much of this company's revenue could Competitor A and Competitor B realistically take in the next 2–3 years, and what does that do to the stock price?"**
+
+**How to do it:**
+
+**1. Identify the top 2 most direct competitors.** Not the biggest companies in the industry — the ones most likely to take THIS company's customers. Ask: "Which competitor is actively targeting the same customers with a comparable or better product?"
+
+**2. Estimate the competitor's growth trajectory.** How fast are they growing? How many of this company's markets are they entering? What's their market share trend?
+
+**3. Calculate the revenue at risk.** Follow this chain:
+
+```
+Competitor takes X percentage points of market share
+→ That equals $Y in lost revenue for our company
+→ At the current valuation multiple, $Y revenue loss = Z% stock price decline
+→ Timeline: when does this happen?
+```
+
+**4. Check if it's already happening.** Look for:
+- Declining same-store sales or same-unit metrics in markets where the competitor operates
+- Customer wins announced by the competitor that were previously this company's customers
+- Management acknowledging the competitor on earnings calls
+- Deceleration in the specific segment the competitor targets
+
+**Example — Dutch Bros (BROS) vs. 7 Brew:**
+
+```
+7 Brew opened 280+ stores in 2025, entering BROS's Arizona/Texas markets
+→ 7 Brew could overlap with ~200-300 BROS stores by 2028
+→ In overlapping markets, 2-4% same-store-sales drag is realistic
+→ 200-300 stores × $2.1M AUV × 3% drag = $12.6M-$18.9M per year
+→ At 25x EV/EBITDA, that's roughly $315-475M in enterprise value, or ~$4-6/share
+→ Timeline: 2-3 years as 7 Brew expands westward
+→ Evidence: BROS guided SSS growth down to 3-5% from 5.6% (not attributed to 7 Brew specifically, but the format is getting crowded)
+```
+
+**Example — Upwork (UPWK) vs. AI coding tools:**
+
+```
+AI coding tools (GitHub Copilot, Cursor, Devin) reduce demand for freelance developers
+→ Software development is 34% of Upwork's GSV (~$1.6B)
+→ Web & Mobile Development category already shrank 13% YoY in 2025
+→ If AI reduces freelance dev demand by 20-30% over 3 years: $320-480M GSV loss
+→ At 17% take rate: $54-82M revenue at risk (7-10% of total revenue)
+→ Timeline: already happening — 11 of 12 Upwork categories showed YoY declines in 2025
+```
+
+### Revenue Risk Severity Scale
+
+| Revenue at Risk (% of total) | Severity | What It Means for the Stock |
+|------------------------------|----------|---------------------------|
+| **<3%** | Low | Noise. Doesn't materially change the downside assessment. |
+| **3–8%** | Moderate | Adds 5-10pp to bear case probabilities. Monitor but don't panic. |
+| **8–15%** | High | Meaningfully increases downside. Should be a core scenario in Framework 1. |
+| **15–25%** | Very High | The competitive threat IS the investment thesis. Must be the #1 factor in your analysis. |
+| **>25%** | Existential | The business model may not survive in current form. Size position accordingly. |
+
+### What We Found Across 12 Stocks
+
+| Stock | Revenue at Risk | % of Revenue | Severity | Key Finding |
+|-------|----------------|-------------|----------|-------------|
+| UPWK | $97–140M | 12–18% | High | Already declining. AI is not theoretical — 11/12 categories down. Most urgent. |
+| DUOL | $120–240M | 12–23% | High–Very High | AI chatbots threaten intermediate+ learners (15-25% of paid subs). Already evident in growth deceleration. |
+| CELH | $315–525M | 13–21% | High–Very High | Monster "Flrt" + Ghost/KDP target exact same demographic. Largest dollar risk after SE. |
+| HSAI | $56–87M | 13–20% | High | Camera-only budget EVs + RoboSense closing gap. Offset by robotics diversification. |
+| SLNO | $15–25M near-term | 8–13% | Moderate | GLP-1 off-label use. ARD-101 paused (threat diminished). Own safety profile is bigger risk. |
+| FRSH | $75–105M | 8–12% | Moderate–High | CX business vulnerable to AI-native tools. ITSM (Freshservice) is more defensible. |
+| SE | $1.1–1.4B | 6–8% | Moderate | TikTok Shop gaining in Vietnam (68%→56% Shopee share). Largest dollar amount. |
+| ELF | $35–60M | 2.7–4.6% | Moderate | NYX acceleration, but ultra-cheap import threat diminishing (tariffs). |
+| PRKS | $37–56M | 2.2–3.3% | Moderate | Epic Universe cannibalized regional parks, not Orlando directly (counterintuitive). |
+| BROS | $35–70M | 2–4% | Low–Moderate | 7 Brew overlap currently limited to Texas/Arizona. Western expansion is 2-3 years away. |
+| PCTY | $23–45M | 1.4–2.8% | Low | Paychex+Paycor merger integration may actually benefit PCTY short-term. |
+| INVZ | $10–50M (trajectory) | Caps growth | Existential | Hesai Thailand factory (2027) removes INVZ's geopolitical positioning advantage. |
+
 ### How Moat Vulnerability Changes the Analysis
 
 | Moat Score | What It Means for Downside | Adjustment |
@@ -316,7 +393,14 @@ After completing all four steps, combine the results:
    → 3: Competition adds risk. Increase bear probabilities.
    → 4-5: Competition may be the whole story. "Cheap" ≠ "safe."
 
-COMBINE: Moat + financial position + precedent = final assessment
+   4F. COMPETITIVE REVENUE RISK: For moat 3-5 stocks, quantify:
+   → Top 2 competitors' growth trajectory and overlap
+   → $ revenue at risk = market share shift × revenue per point
+   → Translate to price impact via valuation multiple
+   → Check: is it already showing up in recent quarters?
+   → <3% = noise | 3-8% = monitor | 8-15% = core scenario | >15% = thesis risk
+
+COMBINE: Moat + revenue risk + financial position + precedent = final assessment
    Best case: Strong moat + temporary headwind
    Worst case: Weak moat + unresolved/structural risk
 ```

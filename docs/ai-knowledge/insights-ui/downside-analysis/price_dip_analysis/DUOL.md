@@ -185,6 +185,25 @@ The stress test reveals something the scenario modeling partially obscured: **DU
 
 ---
 
+## Competitive Revenue Risk — Top 2 Direct Competitors
+
+**Competitor 1: ChatGPT / AI Chatbots (conversational practice)**
+- ChatGPT has 300M+ weekly active users with free voice mode for conversation practice
+- Primarily threatens intermediate+ learners (15–25% of paid subscribers = 1.7–2.9M users)
+- At ~$72/year average subscription: **$120–210M annual revenue at risk**
+- Evidence: Revenue growth decelerated from 40%+ to 34%. Stock fell 80% partially on AI substitution fears. Duolingo Max tier is *powered by OpenAI* — feeding its competitor the data to displace it.
+- Timeline: 2–3 years for meaningful subscriber displacement
+
+**Competitor 2: Babbel ($370M revenue, 10M+ lifetime subs)**
+- Babbel's churn is 58% vs. Duolingo's 28% — Babbel is losing the retention war
+- Competitive flow is actually Babbel-to-Duolingo, not reverse
+- Revenue at risk: **Minimal ($0–30M)**
+
+**Total Revenue at Risk: $120–240M (12–23% of revenue) over 2–3 years**
+Almost entirely from AI chatbot substitution. This is a HIGH severity competitive risk that should increase bear scenario probability by +10pp.
+
+---
+
 ## Summary
 
 | Scenario | Business Trigger | Price Range | Change from $94 | Probability |
