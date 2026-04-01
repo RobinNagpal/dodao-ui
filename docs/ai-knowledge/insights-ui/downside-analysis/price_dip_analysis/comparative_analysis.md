@@ -1,8 +1,8 @@
-## Comparative Price Dip Analysis — All 12 Stocks
+## Comparative Price Dip Analysis — All 13 Stocks
 
 **Date:** April 1, 2026
 
-Twelve stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
+Thirteen stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
@@ -45,6 +45,20 @@ Twelve stocks that have experienced significant drawdowns. This analysis compare
 | FY 2026 guided growth | +35–50% (2–3M units) | FFO -29% ($6.25–6.55) |
 | Framework 1 expected downside | -16% | -10% |
 
+## At a Glance — INVZ
+
+| Metric | INVZ |
+|--------|------|
+| Current price | ~$0.70 |
+| 52-week high / ATH | $2.54 / $17.75 (SPAC) |
+| Decline from high | -96% (ATH) / -72% (52wk) |
+| FY 2025 revenue | $55.1M (~$45M NRE + ~$10M product) |
+| FY 2025 revenue growth | +127% |
+| FY 2025 net income | -$67.8M (loss) |
+| FY 2026 guided revenue | $67–73M |
+| Cash / Burn rate | $72.1M / ~$49M/yr (~5–6 quarters runway) |
+| Framework 1 expected downside | -29% |
+
 ---
 
 ## Why Each Stock Crashed
@@ -59,6 +73,7 @@ Twelve stocks that have experienced significant drawdowns. This analysis compare
 
 | HSAI | Pentagon blacklist + US-China tensions + LiDAR TAM questions | **Geopolitical/narrative** — multiple driven by politics, not fundamentals |
 | ARE | Life science lab 7.5x oversupply + 45% dividend cut + S&P negative outlook + lawsuit | **Credit/cyclical** — structural oversupply compressing FFO while leverage rises |
+| INVZ | SPAC bust + pre-profitability + LiDAR TAM questioned + tight cash runway | **Survival/dilution** — binary bet on OEM ramp before cash exhaustion |
 
 Each crash has a fundamentally different character. ZBRA is about whether earnings hold up under external cost pressure. DUOL is about whether the market will ever pay growth multiples again. VITL is about whether premium egg demand was real or just an avian flu artifact. HSAI is about whether geopolitics let a strong business get valued on its fundamentals. ARE is about whether lab space oversupply resolves before credit stress escalates.
 
@@ -239,6 +254,7 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | CELH | Revenue $2.5–3.2B | Gross Margin 46–53% | **Revenue + Margin (integration)** | Alani Nu + Rockstar synergies vs. cannibalization |
 | HSAI | Revenue $450–700M | EV/Revenue 2.0–6.0x | **Multiple (geopolitical)** | Pentagon blacklist + US-China tensions drive the multiple, not fundamentals |
 | ARE | FFO/Share $4.75–7.00 | P/FFO 3.5–12x | **Multiple (credit/sentiment)** | S&P rating, interest rates, and lab-sector sentiment drive valuation |
+| INVZ | Revenue $40–80M | EV/Revenue 1.0–6.0x | **Dilution (survival)** | Cash runway and dilution destroy per-share value even in "okay" scenarios |
 
 ### Matrix Floor vs. Scenario Floor Comparison
 
@@ -251,6 +267,7 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | EQPT | $5.70 (at 3x distressed) | $7–10 | Close — matrix goes deeper because 3x is more extreme |
 | HSAI | $13.30 (at 2x EV/Rev, stall) | $8–11 | Partial — scenario floor goes lower because it prices in TAM collapse + true floor at ~$7 (net cash) |
 | ARE | $16.63 (at 3.5x P/FFO, crisis) | $23–30 | Partial — scenario floor is higher because it assumes P/FFO stays above 5x; matrix explores GFC-level distress |
+| INVZ | $0.46 (at 1x EV/Rev, post-dilution) | $0.07–0.21 | Partial — scenario floor goes much lower (bankruptcy risk); matrix captures the dilution spiral |
 
 ### Key Insight: What Type of Risk Dominates Each Stock?
 
@@ -292,6 +309,7 @@ The stress tests revealed three distinct risk archetypes:
 | CELH | Own 2023–24 (−73%), Monster 2023–24 (−44%) | −73% | −49% | No (24pp gap) | **−10 to −25%** |
 | HSAI | Own 2023–24 (−81%), LiDAR peers (−90% avg), China ADR avg (−80%) | −81% | −34% | No (47pp gap vs own) | **−15 to −40%** |
 | ARE | Own GFC (−70–75%), MPW (−75%), Office REITs (−40–60%) | −75% | −75% | **Yes — matching GFC trough** | **−5 to −25%** |
+| INVZ | Luminar (−99%), Velodyne (−98%), Ouster (−95%), own ATH (−97%) | −96% avg | −96% | **Yes — matching SPAC LiDAR cohort** | **−30 to −85%** (binary: Ouster path vs Luminar path) |
 
 ### Key Precedent Insights
 
@@ -333,6 +351,7 @@ The stress tests revealed three distinct risk archetypes:
 | UPWK | −24% | Floor at $6.15 at 5x | −10 to −20% (Fiverr nearly matched) | **−15 to −25%** — AI displacement is existential but 17% FCF yield + net cash provide a floor |
 | HSAI | −16% | Floor at $13.30 at 2x EV/Rev (true floor ~$7 net cash) | −15 to −40% (far from own −81% precedent) | **−10 to −25%** — geopolitical multiple risk is the sole driver; $917M net cash (29% of mkt cap) provides hard floor |
 | ARE | −10% | Floor at $16.63 at 3.5x P/FFO | −5 to −25% (matching GFC trough) | **−5 to −20%** — already at GFC-level decline; 6.1% yield on 33% payout provides floor; credit downgrade is the tail risk |
+| INVZ | −29% | Floor at $0.46 post-dilution at 1x EV/Rev | −30 to −85% (matching LiDAR SPAC cohort) | **−25 to −50%** — binary survival bet; 40% prob of dilution spiral + 25% prob of Luminar repeat = 65% prob of severe downside |
 
 ### What Each Framework Adds That Others Miss
 
@@ -362,11 +381,19 @@ The stress tests revealed three distinct risk archetypes:
 | Company-specific | Thailand factory progress, RoboSense pricing | $2.9B asset sales cap rates, Boston lab vacancy |
 | Wild card | Tesla FSD L3 in China (cameras only) | Second dividend cut, securities fraud lawsuit |
 
+| Catalyst | INVZ |
+|----------|------|
+| Q1 2026 earnings | Revenue trajectory, cash burn rate, OEM commentary (May 13) |
+| OEM milestones | VW ID.Buzz L4 deployment in 6 cities (H2 2026) |
+| Cash / Dilution | ATM usage pace, any new capital raise terms |
+| Competition | Hesai Thailand factory, Tesla FSD L3 certification |
+| Wild card | Mobileye/Audi SOP confirmation, additional OEM wins |
+
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks (All 12 Stocks)
+## Bottom Line — Final Ranking Across All Three Frameworks (All 13 Stocks)
 
-**DUOL ≈ VITL ≈ ARE ≈ ELF > ZG ≈ CELH > HSAI ≈ BROS ≈ LOAR > ZBRA > UPWK ≈ EQPT**
+**DUOL ≈ VITL ≈ ARE ≈ ELF > ZG ≈ CELH > HSAI ≈ BROS ≈ LOAR > ZBRA > UPWK ≈ EQPT > INVZ**
 
 | Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
 |------|-------|-------------------|--------------------------|-----------|-----|
@@ -381,7 +408,8 @@ The stress tests revealed three distinct risk archetypes:
 | **9** | **LOAR** | −35% | −15 to −25% | Multiple compression | Great aerospace aftermarket business, but 76x PE and 34.5x EV/EBITDA for 5.2% ROIC. Valuation is the sole risk — fundamentals are solid. |
 | **10** | **ZBRA** | −43% | −20 to −30% | Margin + leverage | Most room to fall to own precedent (2021–23 was −68%). Margin compression from memory costs + tariffs. Leverage at 3.0x amplifies misses. |
 | **11** | **UPWK** | −82% ATH | −15 to −25% | AI existential | AI displacement is a real existential risk, not theoretical. GSV declining in 2026. But 17% FCF yield + net cash + $6 floor at 5x provides margin of safety. |
-| **12** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of all twelve stocks. Leverage amplifies everything. |
+| **12** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of established stocks. Leverage amplifies everything. |
+| **13** | **INVZ** | −96% (ATH) | −25 to −50% | Survival/dilution | Binary bet: either OEM programs ramp before ~5-quarter cash runway expires, or dilution spiral → Luminar repeat. 65% probability of severe downside (Scenarios 3+4). Best-positioned Western LiDAR after Luminar's bankruptcy, but Hesai dominance and camera-only L3 risk loom. At $0.70, it's a venture-stage bet in a public market wrapper. |
 
 ---
 
@@ -399,6 +427,7 @@ The stress tests revealed three distinct risk archetypes:
 | **Leverage** | EQPT, ZBRA | Net Debt/EBITDA, interest coverage | Earnings delivery — each quarter matters |
 | **Geopolitical** | HSAI | Pentagon blacklist, US-China policy, LiDAR bans | Binary — policy decisions can move the stock 30%+ overnight |
 | **Credit / Structural Oversupply** | ARE | S&P rating, interest rates, lab vacancy, occupancy | 2–3 years — oversupply takes time to absorb; credit actions can accelerate |
+| **Survival / Dilution** | INVZ | Cash burn rate, OEM ramp timelines, ATM usage, capital raises | 5–6 quarters — binary outcome by mid-2027 |
 
 ---
 
@@ -411,5 +440,7 @@ The bottom 3 (ZBRA, UPWK, EQPT) share the opposite: **the negative catalyst is u
 **HSAI is the outlier — strong fundamentals but binary geopolitical risk.** It sits mid-pack (#7) because the business is excellent (sole profitable LiDAR company, 46% growth, $917M net cash) but the multiple is entirely controlled by US-China tensions. A single policy decision (Western LiDAR ban or Pentagon blacklist resolution) could move the stock 30%+ in either direction. The 29% net-cash-to-market-cap ratio is the strongest downside protection of any stock in the analysis, but the precedent gap (only −34% vs. own −81% prior crash) means there's room for geopolitics to take it much lower.
 
 **ARE joins the "known and priced" group despite having the highest absolute decline (−75%).** It's already matching its own GFC trough, the worst real estate crisis in modern history. For ARE to fall significantly further, the lab oversupply would need to be classified as "worse than the GFC" — possible but not the base case. The 6.1% dividend yield on a 33% payout ratio provides income floor support.
+
+**INVZ is the highest-risk stock in the analysis — a survival bet.** At −96% from ATH, it's matched the LiDAR SPAC cohort average, but the comparison set includes Luminar (−99%, bankrupt) and Ouster (−95%, survived). INVZ's 5–6 quarter cash runway makes it a ticking clock: either OEM programs deliver meaningful product revenue, or dilution destroys per-share value. It's the only stock where bankruptcy is a realistic (25%) scenario. Unlike all other stocks in this analysis, INVZ's risk is not about valuation — it's about survival.
 
 **The precedent analysis was the key tiebreaker.** It revealed which stocks have already overshot historical patterns (DUOL, ARE, UPWK partially) and which have room to match them (ZBRA, HSAI, BROS, EQPT). Frameworks 1 and 3 alone can't distinguish between "priced in" and "room to fall" — Framework 4 provides that dimension.
