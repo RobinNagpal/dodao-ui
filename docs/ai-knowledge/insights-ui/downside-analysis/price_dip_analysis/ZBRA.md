@@ -37,7 +37,7 @@ ZBRA posted FY 2025 revenue of $5.4B, GAAP EPS of $8.18, FCF of $831M. Guided FY
 
 ---
 
-## Downside Scenarios
+## Framework 1: Scenario-Based Ratio Modeling
 
 ### Scenario 1: Memory Costs Absorbed, Tariffs Stable — Guidance Met (20% probability)
 
@@ -134,6 +134,45 @@ FCF collapses to $400–500M (from $831M in 2025) because revenue drops, margins
 | **Total (overlapping, ~55% of sum)** | | **-45 to 55%** |
 
 **Price target: ~$90–110**
+
+---
+
+---
+
+## Framework 3: Stress Test / Sensitivity Matrix
+
+**Key variables:** FY2026 Revenue (tariff/demand driven) × EBITDA Margin (memory costs/mix)
+
+**Assumptions:** 12x EV/EBITDA (industrial-tech mid-cycle), net debt $2.3B, 51M shares diluted.
+
+**Formula:** Price = ((Revenue × Margin × 12) − $2.3B) / 51M shares
+
+### Price Matrix at 12x EV/EBITDA
+
+| FY2026 Revenue → | $5.0B (−7%) | $5.4B (flat) | $5.9B (low guide) | $6.1B (high guide) |
+|---|---|---|---|---|
+| **EBITDA Margin 14%** | **$120** | $133 | $149 | $156 |
+| **EBITDA Margin 16%** | $143 | $158 | $177 | $185 |
+| **EBITDA Margin 18%** | $167 | $184 | **$205** ← current | $213 |
+| **EBITDA Margin 20%** | $190 | $209 | $232 | $242 |
+
+**What the matrix reveals:**
+- **Current price ($202) implies:** ~$5.9B revenue at ~18% margin at 12x — roughly the low end of guidance with stable margins.
+- **Floor ($120):** Revenue decline of 7% + margin compression to 14%. This requires a recession + memory cost + tariff triple-hit. Matches Scenario 4 range ($90–110) if the multiple also compresses to 10x.
+- **Upside ($242):** High-end guidance + 20% margin. Requires everything to go right.
+- **Most sensitive variable:** EBITDA margin. Moving from 18% to 14% at constant revenue ($5.9B) drops the price from $205 to $149 (−27%). Moving revenue from $5.9B to $5.0B at constant margin (18%) drops the price from $205 to $167 (−19%). **Margin matters more than revenue for ZBRA.**
+
+### Multiple Sensitivity (at $5.4B revenue, 17% margin = $918M EBITDA)
+
+| EV/EBITDA | 8x | 10x | 12x | 14x |
+|---|---|---|---|---|
+| **Price** | $99 | $135 | $158* | $206 |
+
+*Current price implies ~13–14x forward at the base case.
+
+### Framework 3 Takeaway
+
+The stress test confirms that ZBRA's downside is **margin-driven, not revenue-driven**. A 4pp margin compression (-18% to 14%) is worth more downside than a 17% revenue miss ($5.9B to $5.0B). This aligns with the real-world risk: memory costs and tariffs hit margins directly. The matrix floor of ~$120 (12x on worst-case fundamentals) maps closely to Scenario 3 ($125–145), validating the ratio modeling.
 
 ---
 

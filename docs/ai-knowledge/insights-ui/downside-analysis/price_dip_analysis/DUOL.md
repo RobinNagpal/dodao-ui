@@ -36,7 +36,7 @@ Duolingo posted FY 2025 revenue of $1.04B (+39% YoY), net income of $414M (up fr
 
 ---
 
-## Downside Scenarios
+## Framework 1: Scenario-Based Ratio Modeling
 
 ### Scenario 1: AI Pivot Pays Off — DAU Re-accelerates, Monetization Follows (15% probability)
 
@@ -141,6 +141,47 @@ The saving grace (which prevents a full Peloton collapse): DUOL has $1B+ net cas
 | **Total (overlapping, ~50% of sum)** | | **-45 to 55%** |
 
 **Price target: ~$42–52**
+
+---
+
+---
+
+## Framework 3: Stress Test / Sensitivity Matrix
+
+**Key variables:** FY2026 Revenue Growth (DAU + ARPU driven) × EBITDA Margin (AI cost + monetization strategy)
+
+**Assumptions:** 18x EV/EBITDA (decelerating growth SaaS), net cash $1.05B, 43.1M shares diluted. FY2025 revenue = $1.04B.
+
+**Formula:** Price = ((Revenue × Margin × 18) + $1.05B) / 43.1M shares
+
+### Price Matrix at 18x EV/EBITDA
+
+| FY2026 Revenue Growth → | +8% ($1.12B) | +12% ($1.17B) | +15% ($1.20B) | +18% ($1.23B) |
+|---|---|---|---|---|
+| **EBITDA Margin 15%** | **$95** ← current | $97 | $99 | $101 |
+| **EBITDA Margin 20%** | $118 | $122 | $124 | $127 |
+| **EBITDA Margin 25%** | $141 | $146 | $149 | $153 |
+| **EBITDA Margin 30%** | $164 | $170 | $174 | $178 |
+
+**What the matrix reveals:**
+- **Current price ($94) implies:** Only 8% revenue growth at 15% EBITDA margin at 18x. The market is already pricing in severe deceleration AND margin compression. Guided 15–18% growth at 25% margin would imply $149–153 — a 60% premium to current.
+- **The stock is already at the worst corner of the matrix.** This is the single most important finding: at $94, there is very little room for the fundamentals to undershoot what's already priced in.
+- **Upside is huge if guidance is met.** At 15% growth and 25% margin (guidance), the stock is worth $149 — 58% above current. This explains why analysts still see $152 target.
+- **Most sensitive variable:** EBITDA margin. At 8% growth, moving from 15% to 25% margin lifts the price from $95 to $141 (+48%). Moving growth from 8% to 18% at constant 15% margin lifts the price from $95 to $101 (+6%). **Margin matters 8x more than growth for DUOL at current levels.**
+
+### Multiple Sensitivity: What If the Market Re-rates?
+
+At $1.17B revenue (12% growth), 20% margin = $233M EBITDA:
+
+| EV/EBITDA | 12x (mature app) | 15x | 18x | 22x (growth restored) |
+|---|---|---|---|---|
+| **Price** | $89 | $105 | $122 | $143 |
+
+At 12x (mature consumer app), the stock has ~5% further downside from $94. At 22x (growth premium restored), there's 52% upside. **The multiple is the swing factor for longer-term returns.**
+
+### Framework 3 Takeaway
+
+The stress test reveals something the scenario modeling partially obscured: **DUOL's current price already discounts the bear case.** At $94, the stock prices in ~8% growth and ~15% margin — far below management's 15–18% growth and 25% margin guidance. The remaining downside comes almost entirely from multiple compression (18x → 12x), not fundamental deterioration. This makes DUOL more of a **multiple/sentiment bet** than a business risk bet. If the market keeps 18x and the business delivers even modestly above what's priced in, the upside is substantial.
 
 ---
 

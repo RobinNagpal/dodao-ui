@@ -189,6 +189,52 @@ The combination of leverage (3.0x Debt/EBITDA), tariff uncertainty, weak liquidi
 
 ---
 
+## Framework 3: Stress Test Comparison — What Each Matrix Reveals
+
+Each stock was stress-tested by varying the top 2 business drivers across a realistic range and calculating implied prices at sector-appropriate EV/EBITDA multiples.
+
+### Most Sensitive Variable per Stock
+
+| Stock | Variable 1 (Revenue) | Variable 2 (Margin) | **Which Matters More?** | Dominant Risk |
+|-------|---------------------|---------------------|------------------------|---------------|
+| ZBRA | FY2026 Revenue $5.0–6.1B | EBITDA Margin 14–20% | **Margin (1.4x more sensitive)** | Memory costs + tariffs compress margins |
+| DUOL | Revenue Growth 8–18% | EBITDA Margin 15–30% | **Margin (8x more sensitive)** | AI costs vs. monetization |
+| VITL | Revenue $830–950M | EBITDA Margin 10–16% | **Multiple (dominates both)** | Re-rating from 6x to 10x = +75% |
+| ZG | Revenue $2.4–3.2B | EBITDA Margin 8–15% | **Multiple (30x → 20x = −31%)** | Rocket-Redfin competitive threat |
+| EQPT | Revenue $4.5–5.5B | EBITDA Margin 32–40% | **Leverage/Multiple (5x → 3x = −65%)** | Net Debt/EBITDA drives everything |
+
+### Matrix Floor vs. Scenario Floor Comparison
+
+| Stock | Stress Test Floor (worst matrix cell) | Scenario 3/4 Floor | Match? |
+|-------|--------------------------------------|-------------------|--------|
+| ZBRA | $120 (at 12x) | $90–145 | Yes — matrix floor sits between Scenario 3 and 4 |
+| DUOL | $89 (at 12x mature) | $42–70 | Partial — scenario floors are lower because they model multiple compression to 10x |
+| VITL | $7.90 (at 4x distressed) | $7.75–9.40 | Yes — near-exact match |
+| ZG | $18 (at 20x, recession) | $18–22 | Yes — exact match |
+| EQPT | $5.70 (at 3x distressed) | $7–10 | Close — matrix goes deeper because 3x is more extreme |
+
+### Key Insight: What Type of Risk Dominates Each Stock?
+
+The stress tests revealed three distinct risk archetypes:
+
+**1. Margin Risk (ZBRA, DUOL):** These stocks move primarily on EBITDA margin changes. Revenue is less important because it's relatively predictable — the uncertainty is in costs (memory prices for ZBRA, AI costs for DUOL). For these stocks, track cost/margin data more closely than revenue.
+
+**2. Multiple/Re-rating Risk (VITL, ZG):** These stocks move primarily on what multiple the market assigns. The fundamentals are either already depressed (VITL at 6x) or dependent on competitive dynamics (ZG at 30x vs. 20x if Rocket-Redfin wins). For these stocks, track sentiment, competitive developments, and peer multiples more closely than quarterly earnings.
+
+**3. Leverage/Structural Risk (EQPT):** This stock moves primarily on the interaction between EBITDA and debt load. Small fundamental changes create large equity swings because debt amplifies everything. For EQPT, track Net Debt/EBITDA and interest coverage — the stock price is a residual after debt claims.
+
+### Where Both Frameworks Agree vs. Disagree
+
+| Stock | Framework 1 (Scenario) Expected Downside | Framework 3 (Matrix) Confirmed? | Biggest Disagreement |
+|-------|------------------------------------------|-------------------------------|---------------------|
+| ZBRA | −22% | **Yes** — matrix floor of $120 supports the probability-weighted ~$157 | None significant |
+| DUOL | −21% | **Partially** — matrix shows current price already at worst-case corner, suggesting less downside than scenarios imply | Scenarios model 35% prob of $60–70, but matrix shows even bear-case fundamentals at 18x = $95. The $60–70 range requires 12x multiple, which is a separate sentiment event. |
+| VITL | −8% | **Strongly confirmed** — matrix worst case at 6x is $11.60 (−13%), and 4x is needed for $7.90. Very limited fundamental downside. | None — strongest agreement across both frameworks |
+| ZG | −24% | **Yes** — matrix confirms 20x de-rating takes stock to $25–29, matching Scenario 3 | None significant |
+| EQPT | −24% | **Strongly confirmed** — leverage amplification clearly visible in the matrix. 3x multiple = $5.70 floor. | Matrix reveals even steeper tail risk than scenarios — the $5.70 floor is below the Scenario 4 floor of $7 |
+
+---
+
 ## What to Watch — Next 90 Days
 
 | Catalyst | ZBRA | DUOL | VITL |

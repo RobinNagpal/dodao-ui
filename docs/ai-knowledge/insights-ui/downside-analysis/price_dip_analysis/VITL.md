@@ -52,7 +52,7 @@ VITL has an unusual profile:
 
 ---
 
-## Downside Scenarios
+## Framework 1: Scenario-Based Ratio Modeling
 
 ### Scenario 1: Egg Market Normalizes Gradually — Guidance Met, Stock Stabilizes (20% probability)
 
@@ -154,6 +154,54 @@ The Vital Crossroads capex suddenly looks prescient — VITL is building capacit
 | **Total (overlapping)** | | **+50 to 75%** |
 
 **Price target: ~$20–23**
+
+---
+
+---
+
+## Framework 3: Stress Test / Sensitivity Matrix
+
+**Key variables:** FY2026 Revenue (egg demand/pricing) × EBITDA Margin (promotional activity/breaker exposure)
+
+**Assumptions:** 6x EV/EBITDA (current market-implied multiple — severely depressed for a 20%+ grower), net cash $30M by end of 2026 (after ~$140M capex burn), 45.6M shares diluted.
+
+**Formula:** Price = ((Revenue × Margin × 6) + $0.03B) / 45.6M shares
+
+### Price Matrix at 6x EV/EBITDA (Current Market-Implied Multiple)
+
+| FY2026 Revenue → | $830M (miss) | $870M (mild miss) | $910M (low guide) | $950M (above guide) |
+|---|---|---|---|---|
+| **EBITDA Margin 10%** | **$11.6** | $12.1 | $12.6 | $13.2 |
+| **EBITDA Margin 12%** | $13.8 | $14.4 | $15.0 | $15.7 |
+| **EBITDA Margin 14%** | $15.9 | $16.7 | $17.4 | $18.2 |
+| **EBITDA Margin 16%** | $18.1 | $19.0 | $19.9 | $20.7 |
+
+### Price Matrix at 10x EV/EBITDA (Fair Value for Growing Food Company)
+
+| FY2026 Revenue → | $830M | $870M | $910M | $950M |
+|---|---|---|---|---|
+| **EBITDA Margin 10%** | $18.9 | $19.7 | $20.6 | $21.5 |
+| **EBITDA Margin 12%** | $22.5 | $23.5 | $24.6 | $25.7 |
+| **EBITDA Margin 14%** | $26.2 | $27.4 | $28.6 | $29.9 |
+| **EBITDA Margin 16%** | $29.8 | $31.2 | $32.6 | $34.1 |
+
+### Price Matrix at 4x EV/EBITDA (Distressed — Capex Trap + Demand Collapse)
+
+| FY2026 Revenue → | $830M | $870M | $910M |
+|---|---|---|---|
+| **EBITDA Margin 10%** | **$7.9** | $8.3 | $8.6 |
+| **EBITDA Margin 12%** | $9.4 | $9.9 | $10.3 |
+
+**What the matrix reveals:**
+- **Current price ($13.40) implies:** ~$870M revenue at ~12% margin at 6x. The market is pricing in a revenue miss AND margin compression AND a distressed multiple. All three are punitive.
+- **The multiple is doing most of the damage.** At the same fundamentals ($870M, 12% margin) but a fair 10x multiple, the stock would be $23.50 — 75% above current. The gap between 6x and 10x is where almost all the "value vs. price" tension sits.
+- **True floor ($7.90):** Requires revenue miss + margin collapse + distressed 4x multiple. Matches Scenario 3 ($7.75–9.40) closely.
+- **If guidance is met ($910M, 12%) at fair value (10x):** Stock = $24.60 — 84% upside from current.
+- **Most sensitive variable:** The multiple, not the fundamentals. Revenue and margin moves within the realistic range only swing the price ±$2–3 at a fixed multiple. But moving from 6x to 10x on the same fundamentals swings the price +75%. **VITL is a pure re-rating bet.**
+
+### Framework 3 Takeaway
+
+The stress test reveals that **VITL's further downside is extremely limited because the multiple is already at distressed levels (6x).** Even at the worst fundamental outcome ($830M revenue, 10% margin), the stock only falls to $11.60 at 6x — just 13% below current. The only way to get to $7–8 is a multiple compression to 4x, which requires genuine financial stress (but VITL has zero debt). The asymmetry is stark: limited further downside from fundamentals, massive upside from re-rating. This confirms VITL's ranking as the stock with the least further downside risk.
 
 ---
 

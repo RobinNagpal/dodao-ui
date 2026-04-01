@@ -72,7 +72,7 @@ Zillow has a split personality:
 
 ---
 
-## Downside Scenarios
+## Framework 1: Scenario-Based Ratio Modeling
 
 ### Scenario 1: Housing Warms Up — Zillow Delivers Mid-Teens Growth (15% probability)
 
@@ -178,6 +178,47 @@ SBC doesn't decline proportionally in a downturn (compensation is already commit
 | **Total (overlapping, ~50% of sum)** | | **-45 to 55%** |
 
 **Price target: ~$18–22**
+
+---
+
+---
+
+## Framework 3: Stress Test / Sensitivity Matrix
+
+**Key variables:** FY2026 Revenue (housing volume + competitive share) × EBITDA Margin (operating leverage + SBC)
+
+**Assumptions:** 30x EV/EBITDA (platform tech premium, but decelerating), net cash $650M, 245M shares diluted. FY2025 EBITDA = $230M on $2.58B revenue (~8.9% margin).
+
+**Formula:** Price = ((Revenue × Margin × 30) + $0.65B) / 245M shares
+
+### Price Matrix at 30x EV/EBITDA
+
+| FY2026 Revenue → | $2.4B (−7%) | $2.7B (+5%) | $2.95B (mid-teens) | $3.2B (+24%) |
+|---|---|---|---|---|
+| **EBITDA Margin 8%** | **$26** | $29 | $32 | $34 |
+| **EBITDA Margin 10%** | $32 | $36 | $39 | $42 |
+| **EBITDA Margin 12%** | $38 | **$42** ← current | $46 | $50 |
+| **EBITDA Margin 15%** | $47 | $52 | $57 | $61 |
+
+### Price Matrix at 20x EV/EBITDA (Competitive De-rating)
+
+| FY2026 Revenue → | $2.4B | $2.7B | $2.95B | $3.2B |
+|---|---|---|---|---|
+| **EBITDA Margin 8%** | **$18** | $20 | $22 | $24 |
+| **EBITDA Margin 10%** | $22 | $25 | $27 | $29 |
+| **EBITDA Margin 12%** | $26 | $29 | $32 | $34 |
+| **EBITDA Margin 15%** | $32 | $36 | $39 | $42 |
+
+**What the matrix reveals:**
+- **Current price ($40.63) implies:** ~$2.7B revenue at ~12% margin at 30x, or ~$2.95B at 10% margin at 30x. The market is pricing in solid execution at a premium multiple.
+- **The multiple is the key risk.** If Rocket-Redfin-Compass forces a de-rating from 30x to 20x at the same fundamentals ($2.7B, 12% margin), the price drops from $42 to $29 (−31%). That's the competitive disruption scenario.
+- **Floor at 20x ($18):** Revenue declines 7% + margin compresses to 8% + competitive de-rating. This is the recession + competitive disruption combo. Matches Scenario 4 ($18–22).
+- **SBC dilution is invisible in the matrix** but erodes 8.56% of value annually on top of whatever the matrix shows. A $42 stock with −8.56% SBC dilution is effectively $38.40 on an after-dilution basis.
+- **Most sensitive variable:** The multiple. At $2.7B revenue and 10% margin, the difference between 30x ($36) and 20x ($25) is $11 — a 31% swing. Revenue and margin combined only swing ±$8 at a fixed 30x. **ZG is a multiple bet, and the multiple depends on whether Zillow retains its competitive moat against Rocket-Redfin.**
+
+### Framework 3 Takeaway
+
+The stress test shows ZG's downside is **primarily driven by multiple compression, not fundamental deterioration.** The business generates real revenue growth (mid-teens) and real cash flow ($420M FCF), but the stock is priced at 30x EBITDA — a premium that evaporates if the Rocket-Redfin-Compass alliance proves to be a durable competitor. At 20x (which is still generous for a barely-profitable company), the stock has 25–35% further downside even with decent execution. The matrix also exposes that ZG's floor is significantly lower than DUOL's or VITL's because EBITDA margins are thin (8–12%) and the multiple has far to fall.
 
 ---
 

@@ -62,7 +62,7 @@ EQPT has a dramatic split profile:
 
 ---
 
-## Downside Scenarios
+## Framework 1: Scenario-Based Ratio Modeling
 
 ### Scenario 1: Construction Stays Strong — Rental Growth Executes (15% probability)
 
@@ -169,6 +169,67 @@ Lockup expiration in this environment triggers aggressive selling by early inves
 | **Total (overlapping, ~50% of sum)** | | **-50 to 65%** |
 
 **Price target: ~$7–10**
+
+---
+
+---
+
+## Framework 3: Stress Test / Sensitivity Matrix
+
+**Key variables:** FY2026 Total Revenue (construction demand) × Adjusted Core EBITDA Margin (fleet utilization + operational leverage)
+
+**Assumptions:** 5x EV/EBITDA (equipment rental sector, adjusted for EQPT's elevated leverage), net debt $2.8B (post-IPO), 266M shares diluted. FY2025 EBITDA margin = 38.1%.
+
+**Formula:** Price = ((Revenue × Margin × 5) − $2.8B) / 266M shares
+
+### Price Matrix at 5x EV/EBITDA
+
+| FY2026 Revenue → | $4.5B (slowdown) | $4.8B (low growth) | $5.2B (low guide) | $5.5B (high guide) |
+|---|---|---|---|---|
+| **EBITDA Margin 32%** | **$16.5** | $18.3 | $20.8 | $22.6 |
+| **EBITDA Margin 36%** | $19.9 | $22.0 | $24.7 | $26.7 |
+| **EBITDA Margin 38%** | **$21.3** ← ~current | $23.4 | $26.2 | $28.2 |
+| **EBITDA Margin 40%** | $22.6 | $24.8 | $27.7 | $29.7 |
+
+### Price Matrix at 4x EV/EBITDA (Leverage Stress — Debt/EBITDA >7x)
+
+| FY2026 Revenue → | $4.5B | $4.8B | $5.2B | $5.5B |
+|---|---|---|---|---|
+| **EBITDA Margin 32%** | **$11.1** | $12.6 | $14.8 | $16.2 |
+| **EBITDA Margin 36%** | $13.8 | $15.5 | $18.0 | $19.7 |
+| **EBITDA Margin 38%** | $15.2 | $17.0 | $19.6 | $21.3 |
+
+### Price Matrix at 3x EV/EBITDA (Severe Distress — Covenant Risk)
+
+| FY2026 Revenue → | $4.5B | $4.8B | $5.2B |
+|---|---|---|---|
+| **EBITDA Margin 32%** | **$5.7** | $6.8 | $8.7 |
+| **EBITDA Margin 36%** | $7.6 | $8.9 | $11.2 |
+
+**What the matrix reveals:**
+- **Current price ($20.50) implies:** ~$4.6B revenue at 38% margin at 5x, or ~$5.2B at 38% margin at 5x. The market is pricing in modest growth with maintained margins.
+- **Leverage makes the multiple the dominant variable.** At $4.8B revenue and 36% margin ($1.73B EBITDA), the difference between 5x ($22) and 3x ($8.90) is $13 — a 60% swing. Revenue and margin combined only swing ±$6 at a fixed multiple. **For EQPT, the multiple (i.e., how much credit stress the market perceives) matters more than anything.**
+- **The debt amplifies all outcomes.** At 5x, the net debt ($2.8B) consumes 32–40% of enterprise value. At 3x, it consumes 45–55%. This is why small EBITDA changes cause large equity swings — classic leverage amplification.
+- **Distressed floor ($5.70):** Revenue decline to $4.5B + margin compression to 32% + distressed 3x multiple. This is near-covenant-breach territory. Matches the extreme end of Scenario 4 ($7–10).
+- **Most sensitive variable:** The EV/EBITDA multiple, driven by leverage perception. A credit downgrade or covenant breach fear can crater the multiple from 5x to 3x overnight, taking the stock from $20 to $8. **EQPT is a leveraged bet where the stock price is a residual after debt — small EV changes create huge equity swings.**
+
+### Third Variable: Net Debt/EBITDA (the Hidden Driver of the Multiple)
+
+The EV/EBITDA multiple the market assigns to EQPT is primarily a function of Net Debt/EBITDA. As leverage increases, the multiple contracts:
+
+| Net Debt/EBITDA | Implied EV/EBITDA | Stock Price (at $5.0B rev, 37% margin) |
+|---|---|---|
+| 5.0x (improving) | 5.5x | $27.5 |
+| 6.0x (current) | 5.0x | $24.3 |
+| 7.0x (stressed) | 4.0x | $17.3 |
+| 8.0x (distressed) | 3.5x | $13.1 |
+| 9.0x+ (covenant risk) | 3.0x | $9.0 |
+
+This is the real stress test for EQPT: **leverage → multiple → equity value**. Everything else (revenue, margin) is secondary.
+
+### Framework 3 Takeaway
+
+The stress test confirms EQPT has the **most amplified downside of all five stocks** due to the leverage transmission mechanism. A 10% EBITDA miss doesn't just reduce earnings — it spikes Net Debt/EBITDA, which compresses the multiple, which destroys equity value through three compounding channels simultaneously. At 3x (severe distress), the stock goes to $5.70–8.70 — a 60–72% decline from current. No other stock in our coverage has this kind of leverage-driven tail risk. The stress test independently validates the Scenario 4 floor ($7–10) and confirms that **EQPT's downside is governed by one number: Net Debt/EBITDA.**
 
 ---
 
