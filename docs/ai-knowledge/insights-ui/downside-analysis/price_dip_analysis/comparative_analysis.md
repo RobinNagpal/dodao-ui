@@ -500,9 +500,40 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks (All 31 Stocks)
+## Bottom Line — Final Ranking Across All Four Dimensions (All 31 Stocks)
 
-**DUOL ≈ VITL ≈ FRSH ≈ AZO ≈ PCTY ≈ ARE ≈ ELF > AGM ≈ TGLS ≈ RITM ≈ OBDC ≈ ZG ≈ ZTS ≈ CELH ≈ FSV > ACM ≈ CRH ≈ PGR ≈ ESAB ≈ KTB ≈ HSAI ≈ BROS ≈ LOAR > SE ≈ LAD ≈ ZBRA ≈ PRKS > UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
+*Incorporates: (1) Scenario Modeling, (2) Stress Test Matrix, (3) Precedent Drawdown, (4) Competitive Landscape / Moat Vulnerability*
+
+**AZO ≈ AGM ≈ VITL ≈ CRH ≈ PGR > ARE ≈ ELF ≈ PCTY ≈ LOAR > TGLS ≈ RITM ≈ ZTS ≈ ZG ≈ ACM ≈ FSV > DUOL ≈ CELH ≈ ESAB ≈ KTB ≈ HSAI ≈ OBDC > BROS ≈ ZBRA ≈ LAD ≈ PRKS > FRSH ≈ SE ≈ UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
+
+### What Changed After Adding Competitive Analysis (vs. Prior 3-Framework Ranking)
+
+| Stock | Prior Rank | New Rank | Direction | Why |
+|-------|-----------|----------|-----------|-----|
+| **AZO** | ~5 | **1–2** | ⬆ Significant | Moat 2/5. Counter-cyclical franchise (aging fleet tailwind), LIFO is temporary accounting, 42.5% ROIC. Competition (Amazon, EVs) is 10-15+ years away. Least competitive risk of any stock. |
+| **AGM** | ~8 | **1–2** | ⬆ Significant | Moat 1/5 — literal Congressional monopoly. Zero competitive risk. All downside is credit cycle, not competition. Cheap at 10x PE with 3.45% yield. |
+| **CRH** | ~16 | **4–5** | ⬆ Significant | Moat 1/5 — irreplaceable quarry positions. Competition cannot displace aggregates. Valuation reset was justified (22x → 18x), but the business is a local monopoly collection. |
+| **PGR** | ~17 | **4–5** | ⬆ Significant | Moat 2/5 — telematics pricing advantage takes years to replicate. Best insurer in the world at 12.8x PE. Earnings normalization is priced; competitive position is actually strengthening (gaining share even in soft market). |
+| **LOAR** | ~13 | **8–9** | ⬆ Moderate | Moat 2/5 — sole-source aerospace parts locked in for 20-30 year aircraft lives. Valuation is the only risk; competition is almost zero. |
+| **DUOL** | **1** | **~14** | ⬇ Significant | Moat **4/5** — AI commoditization is structural, not cyclical. ChatGPT can replicate the core product. Duolingo Max is powered by OpenAI. The "overshot precedent" argument is weaker when the product itself is being displaced. Still has fortress balance sheet, but the moat is genuinely eroding. |
+| **FRSH** | **3** | **~20** | ⬇ Significant | Moat **4/5** — low switching costs in mid-market SaaS. ServiceNow moving downmarket. AI commoditization makes every helpdesk equally easy. $844M cash provides a floor, but the competitive position is weak. Moved from "overshot SaaS crash" to "cheap for a reason." |
+| **SE** | ~14 | **~22** | ⬇ Moderate | Moat 3/5 — TikTok Shop is a structural threat with no historical analogue. Lending provisions spiking. Competition increases downside beyond what financial models capture. |
+| **OBDC** | ~11 | **~18** | ⬇ Moderate | Moat 3/5 — direct lending is increasingly commoditized. Every alt manager scaling. Spread compression is structural, not just cyclical. |
+
+### Stocks That Didn't Change Meaningfully
+VITL (2/5 moat, stays top 3), ARE (3/5 but already at GFC trough), ELF (3/5 but known and priced), ZG (2/5 moat confirms mid-pack), ZTS (2/5 confirms mid-pack), ZBRA (2/5 but leverage/margin is the issue), EQPT (3/5, stays bottom), INVZ (5/5, stays last), SLNO (5/5, stays unrankable).
+
+### Why the Ranking Changed Fundamentally
+
+The prior ranking was based on three financial dimensions: scenario probability-weighting, stress test floors, and precedent drawdowns. These frameworks correctly identified "how much downside exists in the numbers" but missed a critical question: **can the company defend its position, or is the moat eroding?**
+
+Adding competitive analysis revealed three important corrections:
+
+1. **Monopoly/irreplaceable positions (AGM, CRH, AZO, PGR) had artificially low rankings** because their financial drawdowns looked similar to other stocks, but their competitive risk is near-zero. A stock with a 1/5 moat and −24% decline has far less further downside than one with a 4/5 moat and −85% decline, because the monopoly stock's decline is driven by temporary factors while the weak-moat stock's decline may reflect permanent value destruction.
+
+2. **DUOL and FRSH moved down significantly despite having "overshot precedent"** because the precedent comparison (Netflix, Meta, SaaS crashes) assumed the moat was intact. For Netflix and Meta, the moat WAS intact — they recovered because their competitive positions were never threatened. For DUOL and FRSH, AI is a genuine structural competitor that didn't exist during those precedent crashes. "Overshooting precedent" means less when the analogy breaks down.
+
+3. **Stocks where competition IS the bear case** (INVZ, SLNO, PRKS, SE) were correctly ranked by the original frameworks because the competitive threat was already embedded in the scenario analysis. The competitive landscape confirmed rather than changed their positioning.
 
 ### New Additions (7 stocks from parent folder — sorted by least further downside)
 
@@ -571,9 +602,11 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-### Key Insight: The Stocks with Least Downside Share a Pattern
+### Key Insight: The Stocks with Least Downside Share TWO Patterns (Updated)
 
-The top 5 (DUOL, VITL, FRSH, ARE, ELF) all share the same characteristic: **the bad news is already known, priced, and reflected in depressed multiples.** FRSH joins this group at −85% from ATH — exceeding the SaaS crash cohort — while generating $223M FCF with $844M cash and zero debt. DUOL's growth deceleration is public. VITL's egg deflation is public. ARE's lab oversupply and dividend cut are public. ELF's tariff exposure is public. When the negative catalyst is known, the market tends to overshoot — creating opportunity.
+**Pattern 1 (NEW — strongest signal): Irreplaceable competitive position + temporary financial headwind.** AZO, AGM, CRH, PGR all have moat vulnerability of 1-2/5 — the competition literally cannot take their customers. Their declines (−23 to −31%) are driven by temporary factors (LIFO charges, ag credit cycle, valuation reset, earnings normalization) that reverse with time. These stocks have the least further downside because the franchise is permanent and the headwind is not.
+
+**Pattern 2 (still valid but weaker): Bad news is known and priced.** VITL, ARE, ELF, PCTY have depressed multiples reflecting public information. But this pattern is weaker when the moat is also weak — DUOL and FRSH appeared to fit this pattern but were downgraded because their competitive moats (4/5 vulnerability) mean the "bad news" may be structural, not just a temporary overreaction. DUOL's growth deceleration is public. VITL's egg deflation is public. ARE's lab oversupply and dividend cut are public. ELF's tariff exposure is public. When the negative catalyst is known, the market tends to overshoot — creating opportunity.
 
 The bottom 3 (ZBRA, UPWK, EQPT) share the opposite: **the negative catalyst is unresolved or structural.** ZBRA faces unknown tariff policy + unknown margin trajectory. UPWK faces an unresolved AI displacement question. EQPT faces leverage that amplifies any unknown. When the risk is uncertain, the market may not have fully priced it yet.
 
@@ -585,4 +618,4 @@ The bottom 3 (ZBRA, UPWK, EQPT) share the opposite: **the negative catalyst is u
 
 **INVZ is the highest-risk stock in the analysis — a survival bet.** At −96% from ATH, it's matched the LiDAR SPAC cohort average, but the comparison set includes Luminar (−99%, bankrupt) and Ouster (−95%, survived). INVZ's 5–6 quarter cash runway makes it a ticking clock: either OEM programs deliver meaningful product revenue, or dilution destroys per-share value. It's the only stock where bankruptcy is a realistic (25%) scenario. Unlike all other stocks in this analysis, INVZ's risk is not about valuation — it's about survival.
 
-**The precedent analysis was the key tiebreaker.** It revealed which stocks have already overshot historical patterns (DUOL, ARE, UPWK partially) and which have room to match them (ZBRA, HSAI, BROS, EQPT). Frameworks 1 and 3 alone can't distinguish between "priced in" and "room to fall" — Framework 4 provides that dimension.
+**The competitive landscape analysis was the most impactful addition.** It reshuffled the top of the ranking by revealing that monopoly/irreplaceable businesses (AGM, CRH, AZO, PGR) had been under-ranked, while AI-vulnerable businesses (DUOL, FRSH) had been over-ranked. The precedent analysis is still valuable for identifying "priced in vs. room to fall," but it's incomplete without asking: "is the moat still intact?" For Netflix and Meta, the answer was yes — so overshooting precedent was a buy signal. For DUOL and FRSH, the answer is uncertain — so overshooting precedent may just reflect the market correctly pricing in structural competitive risk.
