@@ -1,8 +1,8 @@
-## Comparative Price Dip Analysis — All 13 Stocks
+## Comparative Price Dip Analysis — All 14 Stocks
 
 **Date:** April 1, 2026
 
-Thirteen stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
+Fourteen stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
@@ -45,6 +45,19 @@ Thirteen stocks that have experienced significant drawdowns. This analysis compa
 | FY 2026 guided growth | +35–50% (2–3M units) | FFO -29% ($6.25–6.55) |
 | Framework 1 expected downside | -16% | -10% |
 
+## At a Glance — KTB
+
+| Metric | KTB |
+|--------|-----|
+| Current price | ~$71.17 |
+| 52-week high / ATH | $86.27 / $92.82 |
+| Decline from high | -23% (ATH) / -18% (52wk) |
+| FY 2025 revenue | $2.83B |
+| FY 2025 revenue growth | +46% (acquisition-driven) |
+| FY 2025 net income | ~$215M (est.) |
+| FY 2026 guided revenue growth | ~9% ($3.40–3.45B) |
+| Framework 1 expected downside | -17% |
+
 ## At a Glance — INVZ
 
 | Metric | INVZ |
@@ -73,6 +86,7 @@ Thirteen stocks that have experienced significant drawdowns. This analysis compa
 
 | HSAI | Pentagon blacklist + US-China tensions + LiDAR TAM questions | **Geopolitical/narrative** — multiple driven by politics, not fundamentals |
 | ARE | Life science lab 7.5x oversupply + 45% dividend cut + S&P negative outlook + lawsuit | **Credit/cyclical** — structural oversupply compressing FFO while leverage rises |
+| KTB | Tariff exposure ($135M headwind) + Helly Hansen integration risk + Lee brand decline + elevated leverage post-acquisition | **Tariff/leverage** — margin compression from tariffs on 85% Asia-sourced production while integrating $957M acquisition |
 | INVZ | SPAC bust + pre-profitability + LiDAR TAM questioned + tight cash runway | **Survival/dilution** — binary bet on OEM ramp before cash exhaustion |
 
 Each crash has a fundamentally different character. ZBRA is about whether earnings hold up under external cost pressure. DUOL is about whether the market will ever pay growth multiples again. VITL is about whether premium egg demand was real or just an avian flu artifact. HSAI is about whether geopolitics let a strong business get valued on its fundamentals. ARE is about whether lab space oversupply resolves before credit stress escalates.
@@ -254,6 +268,7 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | CELH | Revenue $2.5–3.2B | Gross Margin 46–53% | **Revenue + Margin (integration)** | Alani Nu + Rockstar synergies vs. cannibalization |
 | HSAI | Revenue $450–700M | EV/Revenue 2.0–6.0x | **Multiple (geopolitical)** | Pentagon blacklist + US-China tensions drive the multiple, not fundamentals |
 | ARE | FFO/Share $4.75–7.00 | P/FFO 3.5–12x | **Multiple (credit/sentiment)** | S&P rating, interest rates, and lab-sector sentiment drive valuation |
+| KTB | Revenue $3.0–3.5B | EBITDA Margin 12–17% | **Margin (tariff-driven)** | $135M+ tariff headwind on ~$500M EBITDA is the make-or-break variable |
 | INVZ | Revenue $40–80M | EV/Revenue 1.0–6.0x | **Dilution (survival)** | Cash runway and dilution destroy per-share value even in "okay" scenarios |
 
 ### Matrix Floor vs. Scenario Floor Comparison
@@ -309,6 +324,7 @@ The stress tests revealed three distinct risk archetypes:
 | CELH | Own 2023–24 (−73%), Monster 2023–24 (−44%) | −73% | −49% | No (24pp gap) | **−10 to −25%** |
 | HSAI | Own 2023–24 (−81%), LiDAR peers (−90% avg), China ADR avg (−80%) | −81% | −34% | No (47pp gap vs own) | **−15 to −40%** |
 | ARE | Own GFC (−70–75%), MPW (−75%), Office REITs (−40–60%) | −75% | −75% | **Yes — matching GFC trough** | **−5 to −25%** |
+| KTB | Own COVID crash (−58.5%), VFC post-spin (−75%), HBI (−70%), LEVI 2022 (−40%) | −58.5% (own) | −23% | No (35pp gap vs own COVID) | **−15 to −40%** |
 | INVZ | Luminar (−99%), Velodyne (−98%), Ouster (−95%), own ATH (−97%) | −96% avg | −96% | **Yes — matching SPAC LiDAR cohort** | **−30 to −85%** (binary: Ouster path vs Luminar path) |
 
 ### Key Precedent Insights
@@ -351,6 +367,7 @@ The stress tests revealed three distinct risk archetypes:
 | UPWK | −24% | Floor at $6.15 at 5x | −10 to −20% (Fiverr nearly matched) | **−15 to −25%** — AI displacement is existential but 17% FCF yield + net cash provide a floor |
 | HSAI | −16% | Floor at $13.30 at 2x EV/Rev (true floor ~$7 net cash) | −15 to −40% (far from own −81% precedent) | **−10 to −25%** — geopolitical multiple risk is the sole driver; $917M net cash (29% of mkt cap) provides hard floor |
 | ARE | −10% | Floor at $16.63 at 3.5x P/FFO | −5 to −25% (matching GFC trough) | **−5 to −20%** — already at GFC-level decline; 6.1% yield on 33% payout provides floor; credit downgrade is the tail risk |
+| KTB | −17% | Floor at $25 at 8x EV/EBITDA | −15 to −40% (far from own −58.5% COVID crash) | **−10 to −25%** — tariff mitigation is the swing variable; 2.83x D/E amplifies margin misses; VFC/HBI leverage+decline parallel is the tail risk |
 | INVZ | −29% | Floor at $0.46 post-dilution at 1x EV/Rev | −30 to −85% (matching LiDAR SPAC cohort) | **−25 to −50%** — binary survival bet; 40% prob of dilution spiral + 25% prob of Luminar repeat = 65% prob of severe downside |
 
 ### What Each Framework Adds That Others Miss
@@ -381,6 +398,14 @@ The stress tests revealed three distinct risk archetypes:
 | Company-specific | Thailand factory progress, RoboSense pricing | $2.9B asset sales cap rates, Boston lab vacancy |
 | Wild card | Tesla FSD L3 in China (cameras only) | Second dividend cut, securities fraud lawsuit |
 
+| Catalyst | KTB |
+|----------|-----|
+| Q1 FY2026 earnings | First full quarter with Helly Hansen; organic Wrangler/Lee growth vs. acquisition contribution |
+| Tariff developments | India/Bangladesh/Pakistan tariff escalation; Bangladesh cotton exemption ruling |
+| Macro indicators | Value apparel spending at Walmart/Target; consumer confidence |
+| Company-specific | Net leverage trajectory toward <1.5x; Project Jeanius savings; Lee brand trajectory |
+| Wild card | Tariff escalation beyond $135M assumption; dividend cut risk if FCF compresses |
+
 | Catalyst | INVZ |
 |----------|------|
 | Q1 2026 earnings | Revenue trajectory, cash burn rate, OEM commentary (May 13) |
@@ -391,9 +416,9 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks (All 13 Stocks)
+## Bottom Line — Final Ranking Across All Three Frameworks (All 14 Stocks)
 
-**DUOL ≈ VITL ≈ ARE ≈ ELF > ZG ≈ CELH > HSAI ≈ BROS ≈ LOAR > ZBRA > UPWK ≈ EQPT > INVZ**
+**DUOL ≈ VITL ≈ ARE ≈ ELF > ZG ≈ CELH ≈ KTB > HSAI ≈ BROS ≈ LOAR > ZBRA > UPWK ≈ EQPT > INVZ**
 
 | Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
 |------|-------|-------------------|--------------------------|-----------|-----|
@@ -403,13 +428,14 @@ The stress tests revealed three distinct risk archetypes:
 | **4** | **ELF** | −61% | −8 to −15% | Tariff/margin | Tariff risk known and partially priced. Beauty category resilient. Strong brand with pricing power. Own 2017–18 precedent (−73%) shows it can recover. |
 | **5** | **ZG** | −55% | −10 to −20% | Competitive + macro | Near 2018–19 precedent trough. Multiple compression (30x→20x) is the main risk. Rocket-Redfin unprecedented but may take years to play out. |
 | **6** | **CELH** | −49% | −10 to −20% | Integration | Three-brand portfolio (CELSIUS + Alani Nu + Rockstar) is a bet. If synergies work: $50+. If cannibalization: $14–19. PepsiCo partnership provides distribution floor. |
-| **7** | **HSAI** | −34% | −10 to −25% | Geopolitical | Business is excellent (sole profitable LiDAR co., 46% growth, tripling shipments) but multiple is controlled by Pentagon blacklist + US-China tensions. $917M net cash (29% of mkt cap) is the strongest cash floor of all 12. Far from own −81% precedent — room to fall if geopolitics escalate. |
-| **8** | **BROS** | −40% | −15 to −25% | Multiple compression | Extreme 79x PE and −20.78% SBC dilution at 5.7% ROIC. Growth is real (28% revenue, 181 new stores) but the multiple must compress. SSS deceleration is the trigger. |
-| **9** | **LOAR** | −35% | −15 to −25% | Multiple compression | Great aerospace aftermarket business, but 76x PE and 34.5x EV/EBITDA for 5.2% ROIC. Valuation is the sole risk — fundamentals are solid. |
-| **10** | **ZBRA** | −43% | −20 to −30% | Margin + leverage | Most room to fall to own precedent (2021–23 was −68%). Margin compression from memory costs + tariffs. Leverage at 3.0x amplifies misses. |
-| **11** | **UPWK** | −82% ATH | −15 to −25% | AI existential | AI displacement is a real existential risk, not theoretical. GSV declining in 2026. But 17% FCF yield + net cash + $6 floor at 5x provides margin of safety. |
-| **12** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of established stocks. Leverage amplifies everything. |
-| **13** | **INVZ** | −96% (ATH) | −25 to −50% | Survival/dilution | Binary bet: either OEM programs ramp before ~5-quarter cash runway expires, or dilution spiral → Luminar repeat. 65% probability of severe downside (Scenarios 3+4). Best-positioned Western LiDAR after Luminar's bankruptcy, but Hesai dominance and camera-only L3 risk loom. At $0.70, it's a venture-stage bet in a public market wrapper. |
+| **7** | **KTB** | −23% (ATH) | −10 to −25% | Tariff/leverage | Reasonable valuation (11.2x EV/EBITDA, 3% div yield, 6% FCF yield) but $135M tariff headwind on 85% Asia-sourced production is the swing factor. HH integration adds execution risk. 2.83x D/E echoes VFC's post-spin leverage. Lee decline is chronic drag. If tariff mitigation works, stock is cheap. If tariffs escalate, VFC/HBI precedent (−70–75%) is the template. |
+| **8** | **HSAI** | −34% | −10 to −25% | Geopolitical | Business is excellent (sole profitable LiDAR co., 46% growth, tripling shipments) but multiple is controlled by Pentagon blacklist + US-China tensions. $917M net cash (29% of mkt cap) is the strongest cash floor of all 14. Far from own −81% precedent — room to fall if geopolitics escalate. |
+| **9** | **BROS** | −40% | −15 to −25% | Multiple compression | Extreme 79x PE and −20.78% SBC dilution at 5.7% ROIC. Growth is real (28% revenue, 181 new stores) but the multiple must compress. SSS deceleration is the trigger. |
+| **10** | **LOAR** | −35% | −15 to −25% | Multiple compression | Great aerospace aftermarket business, but 76x PE and 34.5x EV/EBITDA for 5.2% ROIC. Valuation is the sole risk — fundamentals are solid. |
+| **11** | **ZBRA** | −43% | −20 to −30% | Margin + leverage | Most room to fall to own precedent (2021–23 was −68%). Margin compression from memory costs + tariffs. Leverage at 3.0x amplifies misses. |
+| **12** | **UPWK** | −82% ATH | −15 to −25% | AI existential | AI displacement is a real existential risk, not theoretical. GSV declining in 2026. But 17% FCF yield + net cash + $6 floor at 5x provides margin of safety. |
+| **13** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of established stocks. Leverage amplifies everything. |
+| **14** | **INVZ** | −96% (ATH) | −25 to −50% | Survival/dilution | Binary bet: either OEM programs ramp before ~5-quarter cash runway expires, or dilution spiral → Luminar repeat. 65% probability of severe downside (Scenarios 3+4). Best-positioned Western LiDAR after Luminar's bankruptcy, but Hesai dominance and camera-only L3 risk loom. At $0.70, it's a venture-stage bet in a public market wrapper. |
 
 ---
 
@@ -419,7 +445,7 @@ The stress tests revealed three distinct risk archetypes:
 |-----------|--------|----------------|-----------------|
 | **Narrative / Sentiment** | DUOL | DAU growth, churn, AI competition | Time — market eventually reprices to fundamentals |
 | **Commodity Cycle** | VITL | Egg prices, avian flu, consumer spending | Supply/demand cycle — 6–12 months |
-| **Tariff / Margin** | ELF, ZBRA | Tariff policy, input costs, pricing power | Policy clarity — could be quick or prolonged |
+| **Tariff / Margin** | ELF, ZBRA, KTB | Tariff policy, input costs, pricing power | Policy clarity — could be quick or prolonged |
 | **Competitive** | ZG | Rocket-Redfin traction, agent behavior | 12–24 months for competitive shifts to show in data |
 | **Integration** | CELH | Brand performance, gross margin recovery | 12–18 months for acquisition synergies |
 | **Multiple Compression** | BROS, LOAR | SSS/growth deceleration, ROIC improvement | Gradual — multiples compress as growth normalizes |
