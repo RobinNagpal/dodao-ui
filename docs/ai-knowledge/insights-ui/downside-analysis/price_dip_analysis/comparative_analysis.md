@@ -1,8 +1,8 @@
-## Comparative Price Dip Analysis — All 24 Stocks
+## Comparative Price Dip Analysis — All 31 Stocks
 
 **Date:** April 1, 2026
 
-Twenty-four stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
+Thirty-one stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
@@ -500,9 +500,21 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks (All 24 Stocks)
+## Bottom Line — Final Ranking Across All Three Frameworks (All 31 Stocks)
 
-**DUOL ≈ VITL ≈ FRSH ≈ PCTY ≈ ARE ≈ ELF > TGLS ≈ RITM ≈ ZG ≈ ZTS ≈ CELH > ESAB ≈ KTB ≈ HSAI ≈ BROS ≈ LOAR > SE ≈ LAD ≈ ZBRA ≈ PRKS > UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
+**DUOL ≈ VITL ≈ FRSH ≈ AZO ≈ PCTY ≈ ARE ≈ ELF > AGM ≈ TGLS ≈ RITM ≈ OBDC ≈ ZG ≈ ZTS ≈ CELH ≈ FSV > ACM ≈ CRH ≈ PGR ≈ ESAB ≈ KTB ≈ HSAI ≈ BROS ≈ LOAR > SE ≈ LAD ≈ ZBRA ≈ PRKS > UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
+
+### New Additions (7 stocks from parent folder — sorted by least further downside)
+
+| Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
+|------|-------|-------------------|--------------------------|-----------|-----|
+| **~5** | **AZO** | −24% (ATH) | −5 to −15% | LIFO/tariff (temporary) | Exceptional franchise (42.5% ROIC). Margin pressure is LIFO accounting-driven, not fundamental. Aging fleet is structural tailwind. Defensive in recessions. LIFO will reverse when inflation abates. |
+| **~8** | **AGM** | −24% (ATH) | −5 to −15% | Ag credit cycle | 10x PE, 3.45% growing dividend, record business volumes. Credit quality deteriorating (provisions spiking) but GSE status limits tail risk. Depends on ag economy — if farm profitability stabilizes, stock is cheap. |
+| **~11** | **OBDC** | −33% (ATH) | −5 to −20% | NII/dividend cut | 13.5% yield at 0.75x NAV. NII undercovering dividend, governance fiasco lingers. But Moody's upgrade + $1.4B sale at 99.8% par validates portfolio. Market may be overpricing dividend cut risk. |
+| **~12** | **FSV** | −28% (52wk) | −5 to −15% | Organic growth weakness | Premium compounder de-rating on Brands segment organic decline (−3%). Residential holding. Weather-dependent restoration will normalize. Still 51x trailing PE — further de-rating possible if organic growth doesn't return. |
+| **~15** | **ACM** | −37% (ATH) | −5 to −20% | FCF cut / investment year | Record backlog ($26B) + record margins, but FCF guided −42% for "investment year." Market needs proof that investments pay off. Infrastructure tailwinds are structural but FCF recovery is key. |
+| **~16** | **CRH** | −23% (ATH) | −5 to −20% | Valuation reset / tariffs | Excellent business (record margins, infrastructure tailwinds) that got ahead of itself at 22x PE. Now at 18x with $19.7B debt from aggressive M&A. Tariff risk is real but manageable. |
+| **~17** | **PGR** | −31% (ATH) | −5 to −20% | Earnings normalization | Best insurer in the world (87% combined ratio, 40% ROE) facing inevitable mean reversion. EPS declining ~20% as hard market fades. At 12.8x forward PE, the decline may be mostly priced, but soft market could push CR to 96%+. |
 
 | Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
 |------|-------|-------------------|--------------------------|-----------|-----|
