@@ -1,24 +1,23 @@
-## Comparative Price Dip Analysis — ZBRA vs DUOL vs VITL
+## Comparative Price Dip Analysis — ZBRA vs DUOL vs VITL vs ZG vs EQPT
 
 **Date:** March 31, 2026
 
-Three stocks that have experienced significant drawdowns from their 52-week highs. This analysis compares their current positioning, further downside risk, and what's driving each situation.
+Five stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
 ## At a Glance
 
-| Metric | ZBRA | DUOL | VITL |
-|--------|------|------|------|
-| Current price | $202 | $94 | $13.40 |
-| 52-week high | $352.66 | $544.93 | $53.13 |
-| Decline from high | -43% | -83% | -75% |
-| FY 2025 revenue | $5.4B | $1.04B | $759M |
-| FY 2025 revenue growth | +8.3% | +39% | +25.3% |
-| FY 2025 net income | $419M | $414M | $66.3M |
-| FY 2026 guided revenue growth | +9–13% | +15–18% | +19–21% |
-| Prob-weighted expected price | ~$163 | ~$78 | ~$12.30 |
-| **Expected further downside** | **-19%** | **-17%** | **-8%** |
+| Metric | ZBRA | DUOL | VITL | ZG | EQPT |
+|--------|------|------|------|-----|------|
+| Current price | $202 | $94 | $13.40 | $40.63 | $20.50 |
+| 52-week high / ATH | $352.66 | $544.93 | $53.13 | $90.22 | $35.50 |
+| Decline from high | -43% | -83% | -75% | -55% | -42% |
+| FY 2025 revenue | $5.4B | $1.04B | $759M | $2.58B | $4.38B |
+| FY 2025 revenue growth | +8.3% | +39% | +25.3% | +16% | +16% |
+| FY 2025 net income | $419M | $414M | $66.3M | $23M | $40M |
+| FY 2026 guided revenue growth | +9–13% | +15–18% | +19–21% | Mid-teens | +15–25% |
+| Framework 1 expected downside | -22% | -21% | -8% | -24% | -24% |
 
 ---
 
@@ -28,6 +27,8 @@ Three stocks that have experienced significant drawdowns from their 52-week high
 |-------|--------------|----------------|
 | ZBRA | Tariff exposure + memory cost inflation + analyst downgrades | **Financial/macro** — leverage amplifies earnings misses |
 | DUOL | DAU growth deceleration (40%→30%→20%), guidance miss, AI disruption fears | **Narrative/structural** — growth-to-value re-rating |
+| ZG | Rocket-Redfin-Compass competitive threat + housing volume stagnation + SBC dilution | **Competitive/macro** — multiple depends on moat durability |
+| EQPT | Post-IPO selling + tariff/construction uncertainty + extreme leverage | **Leverage/cyclical** — debt amplifies all outcomes |
 | VITL | Egg price deflation, scanner data weakness, guidance cut, founder departure | **Commodity/cyclical** — supply normalization after avian flu tailwind |
 
 Each crash has a fundamentally different character. ZBRA is about whether earnings hold up under external cost pressure. DUOL is about whether the market will ever pay growth multiples again. VITL is about whether premium egg demand was real or just an avian flu artifact.
@@ -235,22 +236,84 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-## What to Watch — Next 90 Days
+## Framework 4: Precedent Drawdown + Catalyst Mapping
 
-| Catalyst | ZBRA | DUOL | VITL |
-|----------|------|------|------|
-| Q1 2026 earnings | Memory cost impact visible | First test of 2026 DAU/bookings guide | Scanner data trend (improving or worsening) |
-| Tariff developments | Vietnam/Malaysia tariff risk | Not directly exposed | Not directly exposed |
-| Macro indicators | Manufacturing PMI, enterprise capex surveys | Consumer discretionary spending | Consumer confidence, grocery spending trends |
-| Company-specific | Elo Touch revenue contribution, Debt/EBITDA trajectory | Cancellation/churn rate, Max tier penetration | Egg price trajectory (USDA data), Vital Crossroads construction progress |
-| Wild card | Credit downgrade if Debt/EBITDA >3.5x | Google I/O (May) — new Gemini language features | HPAI outbreak (any time) |
+### Has Each Stock Already Exceeded Its Historical Precedent?
+
+| Stock | Largest Comparable Precedent | Precedent Decline | Current Decline | **Exceeded?** | Precedent-Implied Further Downside |
+|-------|------------------------------|-------------------|----------------|--------------|-----------------------------------|
+| ZBRA | 2021–23 destocking cycle | −68% | −43% | No (25pp gap) | **−20 to −44%** |
+| DUOL | Netflix 2022 / Meta 2022 average | −76% | −83% | **Yes (+7pp)** | **0 to −15%** |
+| VITL | Own 2020–22 post-IPO crash | −82% | −76% | No (6pp gap, but fundamentals now stronger) | **−10 to −25%** |
+| ZG | 2018–19 growth scare | −58% | −55% | Nearly matched | **−6 to −16%** |
+| EQPT | URI 2015–16 (leverage-adjusted) | ~−75% | −44% | No (31pp gap) | **−12 to −27%** |
+
+### Key Precedent Insights
+
+**DUOL has already overshot.** At −83%, DUOL's decline exceeds the Netflix 2022 crash (−76%), Meta 2022 crash (−77%), and DUOL's own 2022 post-IPO crash (−70%). The only precedent suggesting more downside is Peloton (−98%), which requires the product to be fully commoditized by AI. This is the strongest signal from precedent analysis — **Frameworks 1 & 3 likely overstate DUOL's further downside.**
+
+**ZG is near its historical template.** The current −55% decline nearly matches the 2018–19 growth scare (−58%). Only the unprecedented Rocket-Redfin-Compass competitive threat (which has no historical parallel) justifies further downside beyond the precedent.
+
+**ZBRA has the most room to fall to precedent.** The 2021–23 destocking episode saw a −68% peak-to-trough decline. The current drawdown is only −43%. If a 2023-style revenue miss materializes, the precedent says 25pp of further decline is possible.
+
+**EQPT's leverage amplifies everything.** With no stock history, we rely on URI (United Rentals) precedents. URI at 2.5x leverage saw −58% in 2015–16. EQPT at 6.1x leverage should expect ~1.3–1.5x the decline for the same fundamental shock — implying −75% in a comparable slowdown. From the current −44%, there's significant further room.
+
+### Current Catalyst vs. Historical Catalyst Severity
+
+| Stock | Current Catalyst | Best Historical Match | Current More or Less Severe? |
+|-------|-----------------|----------------------|------------------------------|
+| ZBRA | Tariffs + memory costs | 2021–23 destocking | **Less severe** — revenue growing vs. declining 21% in 2023 |
+| DUOL | DAU deceleration + AI disruption | Netflix 2022 subscriber stall | **Similar** — but DUOL has AI existential risk Netflix didn't |
+| VITL | Egg deflation + capex trap | Own 2020–22 post-IPO crash | **Less severe** — revenue 60% higher, profitable, zero debt |
+| ZG | Rocket-Redfin competition | 2018–19 growth scare | **More severe** — first time a vertically integrated competitor exists |
+| EQPT | Construction uncertainty + leverage | URI 2015–16 oil/construction | **Similar on demand, worse on leverage** — 6.1x vs. 3x |
 
 ---
 
-## Bottom Line
+## All Three Frameworks Combined
 
-If forced to rank by "which stock is least likely to dip further from here":
+### How Each Framework Rates Further Downside
 
-**VITL > DUOL > ZBRA**
+| Stock | F1: Scenarios | F3: Stress Test | F4: Precedent | **Combined Assessment** |
+|-------|--------------|-----------------|---------------|------------------------|
+| DUOL | −21% | Already at worst matrix corner | 0 to −15% (overshot precedent) | **−5 to −15%** — F1 overstates risk; F3 and F4 agree the bear case is priced in |
+| VITL | −8% | Floor at $11.60 (−13%) at 6x | −10 to −25% (2022 low template) | **−8 to −15%** — narrow range, all frameworks agree on limited downside |
+| ZG | −24% | Floor at $18 at 20x | −6 to −16% (matching 2018–19) | **−10 to −20%** — F4 is more bullish because precedent is nearly matched |
+| ZBRA | −22% | Floor at $120 (−41%) | −20 to −44% (2021–23 not repeated yet) | **−20 to −30%** — all frameworks agree: most room to fall on fundamentals |
+| EQPT | −24% | Floor at $5.70 at 3x | −12 to −27% (URI leverage-adjusted) | **−15 to −27%** — leverage amplification confirmed across all frameworks |
 
-VITL's downside is most contained because its valuation already reflects the bear case, the catalyst (egg deflation) is known, and it has tangible asset value as a floor. ZBRA is the most dangerous because leverage + macro uncertainty = amplified downside. DUOL sits in between — great business, but the market hasn't finished re-pricing the growth deceleration, and the AI disruption question adds a tail risk that doesn't exist for the other two.
+### What Each Framework Adds That Others Miss
+
+| Framework | Unique Contribution | What It Catches That Others Don't |
+|-----------|--------------------|------------------------------------|
+| **F1: Scenarios** | Business-specific triggers + probability weights | The *why* behind each price level — specific events that drive outcomes |
+| **F3: Stress Test** | Sensitivity to individual variables | Which variable matters most (margin vs. revenue vs. multiple) |
+| **F4: Precedent** | Whether the decline is "normal" or "excessive" for this type of event | Catches when a stock has already overshot (DUOL) or has further to go (ZBRA) |
+
+---
+
+## What to Watch — Next 90 Days
+
+| Catalyst | ZBRA | DUOL | VITL | ZG | EQPT |
+|----------|------|------|------|-----|------|
+| Q1 2026 earnings | Memory cost impact visible | First test of DAU/bookings guide | Scanner data trend | Residential revenue + Rocket-Redfin impact | First quarter as public company |
+| Tariff developments | Vietnam/Malaysia tariff risk | Not directly exposed | Not directly exposed | Not directly exposed | Construction project delays |
+| Macro indicators | Manufacturing PMI | Consumer discretionary | Grocery spending trends | Housing volume (NAR data) | Construction spending (Census) |
+| Company-specific | Elo Touch contribution, Debt/EBITDA | Churn rate, Max tier penetration | Egg prices (USDA), Crossroads capex | SBC trajectory, agent retention | Net Debt/EBITDA, lockup expiration |
+| Wild card | Credit downgrade >3.5x | Google I/O (May) Gemini features | HPAI outbreak | FTC investigation | Used equipment price index |
+
+---
+
+## Bottom Line — Final Ranking Across All Three Frameworks
+
+**DUOL ≈ VITL > ZG > ZBRA > EQPT**
+
+| Rank | Stock | Combined Further Downside | Why |
+|------|-------|--------------------------|-----|
+| **1 (tied)** | **DUOL** | −5 to −15% | Has already overshot Netflix/Meta precedents at −83%. Stress test shows bear case is priced in. Fortress balance sheet ($1B+ cash). Upside is 50–60% if the Netflix recovery pattern plays out. |
+| **1 (tied)** | **VITL** | −8 to −15% | Already at distressed 6x EV/EBITDA for a 20%+ grower. Zero debt. All three frameworks agree on limited downside. Precedent floor of $9–10 is only 25–30% below current. |
+| **3** | **ZG** | −10 to −20% | Current −55% decline nearly matches the 2018–19 precedent (−58%). Stress test downside comes from multiple compression (30x → 20x), not fundamental failure. The Rocket-Redfin risk has no historical precedent, which is what keeps ZG below DUOL/VITL. |
+| **4** | **ZBRA** | −20 to −30% | Most room to fall to precedent (2021–23 destocking was −68%, current is only −43%). Margin compression confirmed by all frameworks as the key driver. Leverage at 3.0x amplifies any miss. |
+| **5** | **EQPT** | −15 to −27% | Extreme leverage (6.1x) amplifies every outcome. No stock history — relies on URI peer precedents. Deepest worst-case floor ($5.70) of all five stocks. Post-IPO lockup expiration is an imminent, predictable selling catalyst. |
+
+**The precedent analysis was the tiebreaker.** Before Framework 4, DUOL ranked below VITL and tied with ZBRA on expected downside. The precedent analysis revealed DUOL has already overshot comparable growth-stock crashes, lifting it to co-#1 with VITL. Meanwhile, ZBRA dropped because the 2021–23 precedent shows a −68% drawdown is possible and the current −43% hasn't yet matched it.
