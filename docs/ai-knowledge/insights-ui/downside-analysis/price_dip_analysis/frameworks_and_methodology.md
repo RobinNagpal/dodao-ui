@@ -269,3 +269,35 @@ Stocks with the **least further downside** share a common characteristic: **the 
 Stocks with the **most further downside** share the opposite: **the negative catalyst is unresolved or structural.** (ZBRA, UPWK, EQPT, PRKS, INVZ, SE)
 
 The precedent analysis is what distinguishes these two groups — it reveals whether a stock has already "overshot" historical patterns or has "room to match" them.
+
+---
+
+# Part 6: Competitive Landscape as a Downside Dimension
+
+**See `competitive_landscape.md` for the full 31-stock competitive analysis.**
+
+The three quantitative frameworks (Scenarios, Stress Test, Precedent) analyze financial metrics but can miss **competitive dynamics** that drive stock declines. Sub-industry competitive position matters because:
+
+1. **Competitive moat determines pricing power** — which directly affects whether margin compression scenarios play out. A monopoly (AGM) can't lose pricing power to competitors. A commodity marketplace (UPWK) can.
+
+2. **The bear case for many stocks IS a competitive scenario** — FRSH's biggest risk isn't growth deceleration, it's AI-native startups replacing helpdesk software. PRKS's biggest risk isn't a recession, it's Epic Universe opening next door.
+
+3. **Moat vulnerability score should adjust the probability weights in Framework 1.** A stock with a 5/5 vulnerability moat should have higher probability assigned to bear/severe-bear scenarios than one with a 1/5 moat.
+
+### How Competitive Vulnerability Maps to Framework 1 Probabilities
+
+| Moat Vulnerability | Suggested Bear Case Probability Adjustment |
+|--------------------|-------------------------------------------|
+| 1/5 (monopoly/irreplaceable) | Bear scenarios get −10pp probability (more likely to muddle through) |
+| 2/5 (strong switching costs) | No adjustment (standard weights) |
+| 3/5 (moderate, replicable) | Bear scenarios get +5pp probability |
+| 4/5 (low switching costs, disruptable) | Bear scenarios get +10pp probability |
+| 5/5 (existential competitive risk) | Bear/severe bear combined should be 60%+ of probability weight |
+
+### Three Categories of Competitive Risk
+
+**Competition INCREASES downside** (financial models underestimate): DUOL, UPWK, FRSH (AI structural), SE (TikTok Shop), BROS (7 Brew replication), PRKS (Epic Universe)
+
+**Competition is IRRELEVANT to downside** (all risk is macro/financial): AGM, CRH (monopoly positions), AZO (counter-cyclical), LOAR, ZBRA (locked-in enterprise)
+
+**Competition IS the entire bear case**: INVZ (Hesai + camera-only), SLNO (safety → competitor entry), PRKS (Epic Universe direct impact)
