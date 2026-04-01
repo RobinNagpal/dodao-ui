@@ -1,8 +1,8 @@
-## Comparative Price Dip Analysis — All 20 Stocks
+## Comparative Price Dip Analysis — All 24 Stocks
 
 **Date:** April 1, 2026
 
-Twenty stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
+Twenty-four stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
@@ -85,6 +85,19 @@ Twenty stocks that have experienced significant drawdowns. This analysis compare
 | FY 2026 guided growth | +3–5% (acq.) | +6–9% (incl. M&A) | +10% origination | +13.5–14.5% | Full year ramp | Declining |
 | Framework 1 expected downside | -20% | -15% | -10% | -2% (flat) | 0% (flat — binary) | -21% |
 
+## At a Glance — Batch 5
+
+| Metric | SE | TGLS | PCTY | ZTS |
+|--------|-----|------|------|-----|
+| Current price | ~$79 | ~$40 | ~$105 | ~$115 |
+| 52-week high / ATH | $199.30 / $366.99 | $90.34 / $90.34 | $201.62 / $314.50 | $172.23 / ~$249 |
+| Decline from high | -78% (ATH) / -60% (52wk) | -56% (ATH) | -67% (ATH) / -48% (52wk) | -54% (ATH) / -33% (52wk) |
+| FY 2025 revenue | ~$18.2B | $983.6M | ~$1.58B (FY Jun) | $9.5B |
+| FY 2025 revenue growth | +29% | +10.5% | +14% (recurring) | +2% reported / +6% organic |
+| FY 2025 net income | Adj EPS $0.80 (Q4) | ~$130M | ~$225M | $2.7B ($6.02 EPS) |
+| FY 2026 guided growth | Shopee GMV +25%, EBITDA no lower than 2025 | Rev $1.06–1.13B, EBITDA $265–305M | Rev $1.73–1.74B (+10%) | Rev $9.83–10.03B (+3–5% organic) |
+| Framework 1 expected downside | -24% | -12% | -10% | -14% |
+
 ---
 
 ## Why Each Stock Crashed
@@ -107,6 +120,10 @@ Twenty stocks that have experienced significant drawdowns. This analysis compare
 | FRSH | SaaS growth deceleration (21%→14%) + AI disruption fears + post-IPO SBC burden | **Narrative/structural** — AI-native competitors threaten the core helpdesk model |
 | SLNO | Scorpion Capital short report + safety concerns + securities class action | **Safety binary** — drug is working (859 patients, $190M revenue) but safety signal unresolved |
 | PRKS | Epic Universe competition + attendance decline + $2.35B debt on negative equity | **Leverage/competitive** — net debt/share ($46) exceeds stock price ($30); EBITDA declining |
+| SE | Q4 EPS miss + OpEx growing faster than revenue (COGS +40% vs rev +38%) + lending provisions spiking +67% + TikTok Shop competition | **Competitive/credit** — three-segment conglomerate where lending book ($9.2B, +80% YoY) is the hidden risk |
+| TGLS | Colombian peso appreciation (+9.5%) + aluminum costs doubled + tariffs + EBITDA margin guide cut from 33% to 25–27% | **FX/commodity/tariff** — manufacturing cost structure in COP with revenue in USD; margin swing is extreme |
+| PCTY | Recurring revenue growth deceleration from 20%+ to 10–11% + multiple compression from growth to mature SaaS | **Narrative/structural** — classic growth-to-value transition; 69% gross margin business at the wrong multiple |
+| ZTS | Librela safety concerns (FDA label update, "Dear Veterinarian" warning) + declining vet visits + Numelvi competition + revenue guide cut | **Pipeline/pharma** — flagship drug impaired by safety data; companion animal market weakening |
 
 Each crash has a fundamentally different character. ZBRA is about whether earnings hold up under external cost pressure. DUOL is about whether the market will ever pay growth multiples again. VITL is about whether premium egg demand was real or just an avian flu artifact. HSAI is about whether geopolitics let a strong business get valued on its fundamentals. ARE is about whether lab space oversupply resolves before credit stress escalates.
 
@@ -295,6 +312,10 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | FRSH | FY2026 Revenue $880M–1B | EV/Rev 0.8–5.0x | **Multiple (AI narrative)** | AI disruption narrative drives the multiple, not quarterly execution |
 | SLNO | FY2026 Revenue $200–550M | P/S 3–12x | **Revenue (safety-driven)** | Safety signal determines whether revenue trajectory is $200M or $550M |
 | PRKS | FY2026 EBITDA $420–620M | EV/EBITDA 4–9x | **EBITDA + Leverage** | $2.25B net debt means EBITDA decline → equity near-zero at trough |
+| SE | FY2026 EBITDA $2.0–3.5B | EV/EBITDA 8–20x | **Lending provisions (EBITDA swing)** | 100bp NPL increase on $12B+ loan book = $500M–1B EBITDA hit |
+| TGLS | FY2026 EBITDA $220–340M | EV/EBITDA 5–11x | **EBITDA margin (FX + commodity)** | Every 100bps margin on $1.1B revenue = $11M EBITDA; COP/aluminum double headwind |
+| PCTY | FY2027E EPS $4.50–6.00 | PE 15–30x | **Multiple (growth narrative)** | Difference between 15x and 30x PE at same EPS = 100% price swing; growth rate drives multiple |
+| ZTS | FY2026 Adj EPS $6.00–7.50 | PE 12–30x | **Multiple (compounder vs. pharma)** | Historical 30x PE vs. current 19x; Librela safety outcome drives which multiple applies |
 
 ### Matrix Floor vs. Scenario Floor Comparison
 
@@ -314,6 +335,10 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | FRSH | $5.15 (at 0.8x EV/Rev, miss) | $3.20–4.40 | Partial — scenario goes lower with AI obsolescence; cash floor at $2.81/share |
 | SLNO | $11.54 (at 3x P/S on $200M) | $4.50–9 | Partial — drug withdrawal scenario goes below matrix |
 | PRKS | $0–1 (at 4x on $420M EBITDA) | $10–15 | Matrix reveals equity can be near-zero due to debt exceeding EV |
+| SE | $28 (at 8x on $2.0B EBITDA) | $28–40 | Yes — exact match at recession/credit-blowup floor |
+| TGLS | $20 (at 5x on $220M EBITDA) | $20–26 | Yes — match (low leverage means matrix and scenarios converge) |
+| PCTY | $68 (at 15x PE on $4.50 EPS) | $53–68 | Partial — scenario goes lower because it models employment recession at 12x PE |
+| ZTS | $72 (at 12x PE on $6.00 EPS) | $63–81 | Close match — litigation discount could take below matrix floor |
 
 ### Key Insight: What Type of Risk Dominates Each Stock?
 
@@ -363,6 +388,10 @@ The stress tests revealed three distinct risk archetypes:
 | FRSH | Own ATH (−85%), Twilio (−82%), SaaS ETF 2022 (−40%), Zendesk (−62%) | −60 to −82% | −85% | **Yes — exceeded SaaS cohort** | **−5 to −25%** |
 | SLNO | Cassava SAVA short report (−85%), Belviq withdrawal (−95%), own Scorpion (−40%) | −85 to −95% | −67% | No (18–28pp gap vs SAVA/Belviq) | **−15 to −70%** (widest range — binary) |
 | PRKS | Own Blackfish (−69%), own COVID (−81%), SIX 2018–20 (−70%) | −69 to −81% | −59% | No (10–22pp gap) | **−10 to −35%** |
+| SE | Own 2021–22 pandemic unwind (−82%), MELI 2022 (−55%), Grab 2022 (−68%) | −55 to −82% | −60% (52wk) / −78% (ATH) | No (4pp from ATH precedent) | **−15 to −45%** |
+| TGLS | Own COVID 2020 (−70%), own 2022 rate shock (−45%), BLDR 2022 (−55%) | −45 to −70% | −56% | No (14pp from own COVID) | **−10 to −30%** |
+| PCTY | Own 2021–22 (−55%), Paycom 2023–24 (−60%), Ceridian 2022–23 (−65%) | −55 to −65% | −67% | **Yes (+2pp vs Ceridian)** | **−10 to −25%** |
+| ZTS | Own 2021–26 (−54%), IDEXX 2021–23 (−45%), Elanco 2021–22 (−65%) | −45 to −65% | −54% | No (11pp from Elanco) | **−10 to −25%** |
 
 ### Key Precedent Insights
 
@@ -412,6 +441,10 @@ The stress tests revealed three distinct risk archetypes:
 | FRSH | −2% (flat) | Floor at $5.15 at 0.8x EV/Rev + $2.81 cash/share | −5 to −25% (exceeded SaaS cohort at −85%) | **−5 to −15%** — already overshot SaaS precedents; $844M cash + $400M buyback provide hard floor; AI narrative is the risk |
 | SLNO | 0% (flat) | Floor at $11.54 at 3x P/S (or $4.50 if drug pulled) | −15 to −70% (widest range — binary) | **Binary: 0 to −40% OR +80 to +150%** — not rankable by traditional methods; safety signal outcome determines everything |
 | PRKS | −21% | Floor at $0–1 at 4x EBITDA on recession (debt exceeds EV) | −10 to −35% (Blackfish template) | **−15 to −30%** — negative equity + declining EBITDA + Epic Universe; leverage means equity can be near-zero in recession |
+| SE | −24% | Floor at $28 at 8x on recession EBITDA | −15 to −45% (4pp from own −82% ATH precedent) | **−15 to −30%** — lending book ($9.2B, +80% YoY) is the hidden risk; TikTok competition is real; $4.5B FCF + $1B buyback provide some floor; 7.2% FCF yield attractive if credit quality holds |
+| TGLS | −12% | Floor at $20 at 5x on deep EBITDA miss | −10 to −30% (within building-products range) | **−10 to −20%** — pristine balance sheet (0.16x D/E) limits solvency risk; $13.1M insider buying is strongest signal; margin headwinds (COP + aluminum) are known and partially priced at 8.6x EV/EBITDA |
+| PCTY | −10% | Floor at $68 at 15x PE on recession EPS | −10 to −25% (exceeded HCM cohort at −67%) | **−5 to −15%** — has overshot Ceridian/Paycom precedents; 69% gross margin + net cash + 20% ROE are excellent fundamentals; risk is growth deceleration from 11% to 7–8%, not business impairment |
+| ZTS | −14% | Floor at $72 at 12x PE on recession EPS | −10 to −25% (Librela is Teva-like element) | **−10 to −20%** — Librela safety damage is real but company is only 6% Librela revenue; at 19x PE (cheapest since IPO), much bad news is priced; $2.3B FCF + 72% gross margins = franchise quality; Numelvi competition is incremental headwind |
 
 ### What Each Framework Adds That Others Miss
 
@@ -457,11 +490,19 @@ The stress tests revealed three distinct risk archetypes:
 | Competition | Hesai Thailand factory, Tesla FSD L3 certification |
 | Wild card | Mobileye/Audi SOP confirmation, additional OEM wins |
 
+| Catalyst | SE | TGLS | PCTY | ZTS |
+|----------|-----|------|------|-----|
+| Q1 2026 earnings | OpEx vs revenue trajectory; SeaMoney NPL ratio | Gross margin trajectory — is Q4's 40% the trough? | Recurring revenue growth — stable at 11% or decelerating? | Librela sales — stabilizing or accelerating decline? |
+| Key variable | SeaMoney NPL ratio (1.1% → watch for >1.5%) | COP/USD rate (below 4,000 = more pain) | FY2027 initial guidance (Aug 2026) | FDA adverse event data (Librela) |
+| Macro indicators | Indonesia consumer confidence, IDR/USD | U.S. multifamily building permits, aluminum premiums | Non-farm payrolls, initial claims | Vet visit data (AVMA/IDEXX), pet spending |
+| Company-specific | TikTok Shop GMV share; Shopee take rate trend | U.S. vinyl facility milestones; insider buying activity | AI module attach rates; net revenue retention | Numelvi prescription share; Librela international growth |
+| Wild card | SE Asia consumer credit cycle turning | Full Colombia tariff targeting glass/windows | Recession hitting SMB employment | Librela class-action litigation filing |
+
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks (All 20 Stocks)
+## Bottom Line — Final Ranking Across All Three Frameworks (All 24 Stocks)
 
-**DUOL ≈ VITL ≈ FRSH ≈ ARE ≈ ELF > RITM ≈ ZG ≈ CELH > ESAB ≈ KTB ≈ HSAI ≈ BROS ≈ LOAR > LAD ≈ ZBRA ≈ PRKS > UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
+**DUOL ≈ VITL ≈ FRSH ≈ PCTY ≈ ARE ≈ ELF > TGLS ≈ RITM ≈ ZG ≈ ZTS ≈ CELH > ESAB ≈ KTB ≈ HSAI ≈ BROS ≈ LOAR > SE ≈ LAD ≈ ZBRA ≈ PRKS > UPWK ≈ EQPT > INVZ | SLNO = unrankable binary**
 
 | Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
 |------|-------|-------------------|--------------------------|-----------|-----|
@@ -469,9 +510,12 @@ The stress tests revealed three distinct risk archetypes:
 | **2** | **VITL** | −75% | −8 to −15% | Commodity cycle | Distressed 6x EV/EBITDA for a 20%+ grower. Zero debt. Known catalyst (egg deflation). Tangible asset floor. |
 | **3** | **FRSH** | −85% (ATH) | −5 to −15% | AI narrative | Exceeded SaaS crash precedents at −85%. EV/FCF of 7x and $844M cash ($2.81/share) provide hard floor. $400M buyback = 17% of mkt cap. AI disruption risk is real but Freshservice (ITSM, +26%) is the overlooked growth engine. Cheapest profitable SaaS stock in the analysis. |
 | **4** | **ARE** | −75% (ATH) | −5 to −20% | Credit/cyclical | Already matching GFC trough (−70–75%). 6.1% dividend yield on 33% payout is well covered. Lab oversupply is known and priced. Tail risk is credit downgrade, but BBB+ with $5.3B liquidity provides cushion. |
+| **4b** | **PCTY** | −67% (ATH) | −5 to −15% | Narrative/structural | Has overshot Ceridian/Paycom HCM precedents at −67%. 69% gross margin + 34% EBITDA margin + net cash + 20% ROE are excellent fundamentals. Growth deceleration (25% → 11%) is known and priced at 13.7x forward PE. Risk is further deceleration to 7–8%, not business impairment. Best risk/reward in HCM sector. |
 | **5** | **ELF** | −61% | −8 to −15% | Tariff/margin | Tariff risk known and partially priced. Beauty category resilient. Strong brand with pricing power. Own 2017–18 precedent (−73%) shows it can recover. |
-| **6** | **RITM** | −49% (ATH) | −5 to −20% | Complexity/volatility | Trading at 4x EAD and 0.75x book. Record operations ($2.35 EAD, $1.1B Newrez income). 10.7% dividend yield on 43% EAD payout is well covered. Discount driven by MSR GAAP volatility and conglomerate complexity — not fundamentals. Re-rating requires simplification catalyst (spinoff, asset sale). |
+| **6a** | **TGLS** | −56% (ATH) | −10 to −20% | FX/commodity/tariff | Pristine balance sheet (0.16x D/E) eliminates solvency risk. $13.1M insider buying is the strongest signal in the analysis. Margin headwinds (COP + aluminum + tariffs) are known and partially priced at 8.6x EV/EBITDA. $1.3B backlog provides revenue visibility. U.S. vinyl facility is medium-term structural fix for FX/tariff exposure. |
+| **6b** | **RITM** | −49% (ATH) | −5 to −20% | Complexity/volatility | Trading at 4x EAD and 0.75x book. Record operations ($2.35 EAD, $1.1B Newrez income). 10.7% dividend yield on 43% EAD payout is well covered. Discount driven by MSR GAAP volatility and conglomerate complexity — not fundamentals. Re-rating requires simplification catalyst (spinoff, asset sale). |
 | **7** | **ZG** | −55% | −10 to −20% | Competitive + macro | Near 2018–19 precedent trough. Multiple compression (30x→20x) is the main risk. Rocket-Redfin unprecedented but may take years to play out. |
+| **7b** | **ZTS** | −54% (ATH) | −10 to −20% | Pipeline/pharma | At 19x forward PE, cheapest valuation since IPO. 72% gross margins + $2.3B FCF = franchise quality. Librela is only 6% of revenue — company is much more than one drug. Vet visit decline is structural headwind but not existential. Numelvi competition is incremental. Multiple contraction from 35x to 19x has priced in significant pessimism. |
 | **8** | **CELH** | −49% | −10 to −20% | Integration | Three-brand portfolio (CELSIUS + Alani Nu + Rockstar) is a bet. If synergies work: $50+. If cannibalization: $14–19. PepsiCo partnership provides distribution floor. |
 | **9** | **ESAB** | −28% (ATH) | −10 to −25% | Leverage/integration | Was a quality compounder (+325% from 2022 low). Eddyfi $1.45B acquisition added $1B debt, pushing pro forma leverage to 3.5–4x at exactly the wrong cycle point. If integration works + PMI recovers, stock is cheap. If industrial recession, the leverage amplifies downside to $25–54 range. |
 | **10** | **KTB** | −23% (ATH) | −10 to −25% | Tariff/leverage | Reasonable valuation (11.2x EV/EBITDA, 3% div yield, 6% FCF yield) but $135M tariff headwind on 85% Asia-sourced production is the swing factor. HH integration adds execution risk. If tariff mitigation works, stock is cheap. If tariffs escalate, VFC/HBI precedent (−70–75%) is the template. |
@@ -484,6 +528,7 @@ The stress tests revealed three distinct risk archetypes:
 | **17** | **UPWK** | −82% ATH | −15 to −25% | AI existential | AI displacement is a real existential risk, not theoretical. GSV declining in 2026. But 17% FCF yield + net cash + $6 floor at 5x provides margin of safety. |
 | **18** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of established stocks. Leverage amplifies everything. |
 | **19** | **INVZ** | −96% (ATH) | −25 to −50% | Survival/dilution | Binary bet: either OEM programs ramp before ~5-quarter cash runway expires, or dilution spiral → Luminar repeat. 65% probability of severe downside. At $0.70, it's a venture-stage bet in a public market wrapper. |
+| **21** | **SE** | −78% (ATH) / −60% (52wk) | −15 to −30% | Competitive/credit | Three-segment conglomerate with $9.2B lending book (+80% YoY) as hidden risk. TikTok Shop competition is real and intensifying. Q4 showed negative operating leverage (COGS +40% vs rev +38%). 7.2% FCF yield and $1B buyback provide some floor, but lending credit cycle is the swing factor. 4pp from own −82% ATH precedent means further decline is plausible. |
 | **—** | **SLNO** | −67% | Binary: 0% to −40% OR +80% to +150% | Safety binary | **Unrankable by traditional methods.** The stock is a pure bet on whether VYKAT XR's safety profile holds. If safety manageable: $54–75 (analyst PTs $105–114). If drug impaired: $16–21 (REMS). If drug withdrawn: $4.50–9. Revenue is accelerating ($33M→$66M→$92M quarterly), 98.6% gross margin, monopoly orphan drug — but the Scorpion Capital safety allegations + class action create a genuine binary outcome. |
 
 ---
@@ -507,7 +552,10 @@ The stress tests revealed three distinct risk archetypes:
 | **Leverage / Integration** | ESAB | Eddyfi synergies, PMI, pro forma leverage | 12–18 months for integration proof points |
 | **Complexity / Volatility** | RITM | EAD vs GAAP divergence, spinoff status, P/BV discount | Structural — requires simplification catalyst |
 | **AI Disruption (SaaS)** | FRSH | NDR trends, AI-native competitor launches, buyback execution | 12–24 months — transition from seat-based to AI pricing |
-| **Safety Binary** | SLNO | FDA post-marketing data, REMS decisions, EMA approval, lawsuit | 6–12 months — safety data determines everything |
+| **Safety Binary** | SLNO, ZTS (partial) | FDA post-marketing data, REMS decisions, EMA approval, lawsuit; Librela adverse events | 6–12 months — safety data determines everything |
+| **Competitive / Credit** | SE | TikTok Shop market share, SeaMoney NPL ratio, lending provisions | 12–24 months — credit cycles lag loan growth |
+| **FX / Commodity / Tariff** | TGLS, ELF, KTB | COP/USD, aluminum premiums, tariff policy | Policy + macro dependent — 6–18 months |
+| **Growth Deceleration** | PCTY | Recurring revenue growth, ARR, net revenue retention | Gradual — each quarter's growth rate drives narrative |
 
 ---
 
