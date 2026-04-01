@@ -1,12 +1,12 @@
-## Comparative Price Dip Analysis — ZBRA vs DUOL vs VITL vs ZG vs EQPT
+## Comparative Price Dip Analysis — All 10 Stocks
 
 **Date:** March 31, 2026
 
-Five stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
+Ten stocks that have experienced significant drawdowns. This analysis compares their current positioning, further downside risk across three analytical frameworks, and what's driving each situation.
 
 ---
 
-## At a Glance
+## At a Glance — Original 5
 
 | Metric | ZBRA | DUOL | VITL | ZG | EQPT |
 |--------|------|------|------|-----|------|
@@ -18,6 +18,19 @@ Five stocks that have experienced significant drawdowns. This analysis compares 
 | FY 2025 net income | $419M | $414M | $66.3M | $23M | $40M |
 | FY 2026 guided revenue growth | +9–13% | +15–18% | +19–21% | Mid-teens | +15–25% |
 | Framework 1 expected downside | -22% | -21% | -8% | -24% | -24% |
+
+## At a Glance — Batch 2
+
+| Metric | LOAR | UPWK | ELF | BROS | CELH |
+|--------|------|------|-----|------|------|
+| Current price | ~$65 | ~$11.50 | $59.35 | $46.69 | ~$34 |
+| 52-week high / ATH | $99.67 | $22.84 / $64 ATH | $150.99 | $77.88 | $66.74 |
+| Decline from high | -35% | -50% (82% ATH) | -61% | -40% | -49% |
+| FY 2025 revenue | $496M | $788M | $1.3B | $1.64B | $2.5B |
+| FY 2025 revenue growth | +23% | +2% | +28% | +28% | Record (acq.) |
+| FY 2025 net income | $72M | $115M | $112M | ~$96M | GAAP: ~$59M |
+| FY 2026 guided revenue growth | +9–11% | Soft (GSV declining) | +22–23% | ~22% (181 stores) | ~20%+ (full yr acq.) |
+| Framework 1 expected downside | -23% | -24% | -12% | -19% | -15% |
 
 ---
 
@@ -203,6 +216,11 @@ Each stock was stress-tested by varying the top 2 business drivers across a real
 | VITL | Revenue $830–950M | EBITDA Margin 10–16% | **Multiple (dominates both)** | Re-rating from 6x to 10x = +75% |
 | ZG | Revenue $2.4–3.2B | EBITDA Margin 8–15% | **Multiple (30x → 20x = −31%)** | Rocket-Redfin competitive threat |
 | EQPT | Revenue $4.5–5.5B | EBITDA Margin 32–40% | **Leverage/Multiple (5x → 3x = −65%)** | Net Debt/EBITDA drives everything |
+| LOAR | Revenue $490–560M | EBITDA Margin 33–38% | **Multiple (30x → 20x = −35%)** | Aerospace cycle + valuation compression |
+| UPWK | Revenue $700–800M | EBITDA Margin 20–32% | **Revenue (AI displacement)** | Whether AI replaces or augments freelancers |
+| ELF | Revenue $1.45–1.65B | EBITDA Margin 17–23% | **Margin (tariff-driven)** | China tariff rate directly compresses gross margin |
+| BROS | Revenue $1.75–2.1B | EBITDA Margin 15–20% | **Multiple (25x → 15x = −40%)** | SSS deceleration triggers re-rating |
+| CELH | Revenue $2.5–3.2B | Gross Margin 46–53% | **Revenue + Margin (integration)** | Alani Nu + Rockstar synergies vs. cannibalization |
 
 ### Matrix Floor vs. Scenario Floor Comparison
 
@@ -247,6 +265,11 @@ The stress tests revealed three distinct risk archetypes:
 | VITL | Own 2020–22 post-IPO crash | −82% | −76% | No (6pp gap, but fundamentals now stronger) | **−10 to −25%** |
 | ZG | 2018–19 growth scare | −58% | −55% | Nearly matched | **−6 to −16%** |
 | EQPT | URI 2015–16 (leverage-adjusted) | ~−75% | −44% | No (31pp gap) | **−12 to −27%** |
+| LOAR | TransDigm COVID (−45%), HEICO 2022 (−30%) | −45% | −35% | No (10pp gap) | **−10 to −25%** |
+| UPWK | Fiverr 2021–23 (−90%), own ATH −82% | −90% | −82% from ATH | Nearly matched | **−10 to −20%** |
+| ELF | Own 2017–18 (−73%), Estée Lauder 2022–25 (−65%) | −73% | −61% | No (12pp gap) | **−5 to −20%** |
+| BROS | Sweetgreen post-IPO (−85%), Starbucks 2022 (−37%) | −85% | −40% | No (45pp gap vs SG) | **−10 to −30%** |
+| CELH | Own 2023–24 (−73%), Monster 2023–24 (−44%) | −73% | −49% | No (24pp gap) | **−10 to −25%** |
 
 ### Key Precedent Insights
 
@@ -281,6 +304,11 @@ The stress tests revealed three distinct risk archetypes:
 | ZG | −24% | Floor at $18 at 20x | −6 to −16% (matching 2018–19) | **−10 to −20%** — F4 is more bullish because precedent is nearly matched |
 | ZBRA | −22% | Floor at $120 (−41%) | −20 to −44% (2021–23 not repeated yet) | **−20 to −30%** — all frameworks agree: most room to fall on fundamentals |
 | EQPT | −24% | Floor at $5.70 at 3x | −12 to −27% (URI leverage-adjusted) | **−15 to −27%** — leverage amplification confirmed across all frameworks |
+| ELF | −12% | Floor at $44 at 12x | −5 to −20% (own 2017–18, EL precedent) | **−8 to −15%** — tariff risk is known and partially priced; beauty category is resilient |
+| CELH | −15% | Floor at $12 at 10x | −10 to −25% (own −73% precedent) | **−10 to −20%** — integration is the swing factor; three-brand portfolio is risky but could be transformative |
+| BROS | −19% | Floor at $18 at 15x | −10 to −30% (Sweetgreen parallel) | **−15 to −25%** — extreme 79x PE and −20.78% SBC dilution; growth is real but multiples must compress |
+| LOAR | −23% | Floor at $35 at 20x | −10 to −25% (TDG/HEICO precedent) | **−15 to −25%** — great business at extreme valuation; 76x PE on 5.2% ROIC is unsustainable |
+| UPWK | −24% | Floor at $6.15 at 5x | −10 to −20% (Fiverr nearly matched) | **−15 to −25%** — AI displacement is existential but 17% FCF yield + net cash provide a floor |
 
 ### What Each Framework Adds That Others Miss
 
@@ -304,16 +332,44 @@ The stress tests revealed three distinct risk archetypes:
 
 ---
 
-## Bottom Line — Final Ranking Across All Three Frameworks
+## Bottom Line — Final Ranking Across All Three Frameworks (All 10 Stocks)
 
-**DUOL ≈ VITL > ZG > ZBRA > EQPT**
+**DUOL ≈ VITL ≈ ELF > ZG ≈ CELH > BROS ≈ LOAR > ZBRA > UPWK ≈ EQPT**
 
-| Rank | Stock | Combined Further Downside | Why |
-|------|-------|--------------------------|-----|
-| **1 (tied)** | **DUOL** | −5 to −15% | Has already overshot Netflix/Meta precedents at −83%. Stress test shows bear case is priced in. Fortress balance sheet ($1B+ cash). Upside is 50–60% if the Netflix recovery pattern plays out. |
-| **1 (tied)** | **VITL** | −8 to −15% | Already at distressed 6x EV/EBITDA for a 20%+ grower. Zero debt. All three frameworks agree on limited downside. Precedent floor of $9–10 is only 25–30% below current. |
-| **3** | **ZG** | −10 to −20% | Current −55% decline nearly matches the 2018–19 precedent (−58%). Stress test downside comes from multiple compression (30x → 20x), not fundamental failure. The Rocket-Redfin risk has no historical precedent, which is what keeps ZG below DUOL/VITL. |
-| **4** | **ZBRA** | −20 to −30% | Most room to fall to precedent (2021–23 destocking was −68%, current is only −43%). Margin compression confirmed by all frameworks as the key driver. Leverage at 3.0x amplifies any miss. |
-| **5** | **EQPT** | −15 to −27% | Extreme leverage (6.1x) amplifies every outcome. No stock history — relies on URI peer precedents. Deepest worst-case floor ($5.70) of all five stocks. Post-IPO lockup expiration is an imminent, predictable selling catalyst. |
+| Rank | Stock | Decline from High | Combined Further Downside | Risk Type | Why |
+|------|-------|-------------------|--------------------------|-----------|-----|
+| **1** | **DUOL** | −83% | −5 to −15% | Narrative | Has overshot Netflix/Meta precedents. Stress test shows bear case priced in. Fortress balance sheet. Highest upside optionality if recovery plays out. |
+| **2** | **VITL** | −75% | −8 to −15% | Commodity cycle | Distressed 6x EV/EBITDA for a 20%+ grower. Zero debt. Known catalyst (egg deflation). Tangible asset floor. |
+| **3** | **ELF** | −61% | −8 to −15% | Tariff/margin | Tariff risk known and partially priced. Beauty category resilient. Strong brand with pricing power. Own 2017–18 precedent (−73%) shows it can recover. |
+| **4** | **ZG** | −55% | −10 to −20% | Competitive + macro | Near 2018–19 precedent trough. Multiple compression (30x→20x) is the main risk. Rocket-Redfin unprecedented but may take years to play out. |
+| **5** | **CELH** | −49% | −10 to −20% | Integration | Three-brand portfolio (CELSIUS + Alani Nu + Rockstar) is a bet. If synergies work: $50+. If cannibalization: $14–19. PepsiCo partnership provides distribution floor. |
+| **6** | **BROS** | −40% | −15 to −25% | Multiple compression | Extreme 79x PE and −20.78% SBC dilution at 5.7% ROIC. Growth is real (28% revenue, 181 new stores) but the multiple must compress. SSS deceleration is the trigger. |
+| **7** | **LOAR** | −35% | −15 to −25% | Multiple compression | Great aerospace aftermarket business, but 76x PE and 34.5x EV/EBITDA for 5.2% ROIC. Valuation is the sole risk — fundamentals are solid. |
+| **8** | **ZBRA** | −43% | −20 to −30% | Margin + leverage | Most room to fall to own precedent (2021–23 was −68%). Margin compression from memory costs + tariffs. Leverage at 3.0x amplifies misses. |
+| **9** | **UPWK** | −82% ATH | −15 to −25% | AI existential | AI displacement is a real existential risk, not theoretical. GSV declining in 2026. But 17% FCF yield + net cash + $6 floor at 5x provides margin of safety. |
+| **10** | **EQPT** | −42% | −15 to −27% | Leverage | 6.1x Net Debt/EBITDA is 2.5x higher than peers. Interest coverage at 1.2x is razor thin. Deepest worst-case floor ($5.70) of all ten stocks. Leverage amplifies everything. |
 
-**The precedent analysis was the tiebreaker.** Before Framework 4, DUOL ranked below VITL and tied with ZBRA on expected downside. The precedent analysis revealed DUOL has already overshot comparable growth-stock crashes, lifting it to co-#1 with VITL. Meanwhile, ZBRA dropped because the 2021–23 precedent shows a −68% drawdown is possible and the current −43% hasn't yet matched it.
+---
+
+### Risk Archetype Summary
+
+| Risk Type | Stocks | What to Monitor | How It Resolves |
+|-----------|--------|----------------|-----------------|
+| **Narrative / Sentiment** | DUOL | DAU growth, churn, AI competition | Time — market eventually reprices to fundamentals |
+| **Commodity Cycle** | VITL | Egg prices, avian flu, consumer spending | Supply/demand cycle — 6–12 months |
+| **Tariff / Margin** | ELF, ZBRA | Tariff policy, input costs, pricing power | Policy clarity — could be quick or prolonged |
+| **Competitive** | ZG | Rocket-Redfin traction, agent behavior | 12–24 months for competitive shifts to show in data |
+| **Integration** | CELH | Brand performance, gross margin recovery | 12–18 months for acquisition synergies |
+| **Multiple Compression** | BROS, LOAR | SSS/growth deceleration, ROIC improvement | Gradual — multiples compress as growth normalizes |
+| **AI Existential** | UPWK | GSV trends, AI replacement evidence | 2–3 years — structural question |
+| **Leverage** | EQPT, ZBRA | Net Debt/EBITDA, interest coverage | Earnings delivery — each quarter matters |
+
+---
+
+### Key Insight: The Stocks with Least Downside Share a Pattern
+
+The top 3 (DUOL, VITL, ELF) all share the same characteristic: **the bad news is already known, priced, and reflected in depressed multiples.** DUOL's growth deceleration is public. VITL's egg deflation is public. ELF's tariff exposure is public. When the negative catalyst is known, the market tends to overshoot — creating opportunity.
+
+The bottom 3 (ZBRA, UPWK, EQPT) share the opposite: **the negative catalyst is unresolved or structural.** ZBRA faces unknown tariff policy + unknown margin trajectory. UPWK faces an unresolved AI displacement question. EQPT faces leverage that amplifies any unknown. When the risk is uncertain, the market may not have fully priced it yet.
+
+**The precedent analysis was the key tiebreaker.** It revealed which stocks have already overshot historical patterns (DUOL, UPWK partially) and which have room to match them (ZBRA, BROS, EQPT). Frameworks 1 and 3 alone can't distinguish between "priced in" and "room to fall" — Framework 4 provides that dimension.
