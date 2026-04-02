@@ -76,6 +76,8 @@ The single most important metric is SeaMoney NPL ratio — any move above 1.5% s
 
 *All ratios calculated at current price of ~$79, as of March 2026.*
 
+*Note: TTM PE (34.9x) diverges from Forward PE (20.2x) by 73%. The gap reflects SE's rapid earnings growth trajectory — FY2025 EPS was depressed by heavy investment in SeaMoney lending infrastructure and Shopee logistics. Forward PE is the more relevant metric for a company growing revenue at 29% YoY. EV/EBITDA (16-19x) is the primary valuation metric used in this analysis because SE's multi-segment structure and lending provisions make net income lumpy.*
+
 | Ratio | Value | Status |
 |-------|-------|--------|
 | PE (TTM) | 34.9x | Expensive |

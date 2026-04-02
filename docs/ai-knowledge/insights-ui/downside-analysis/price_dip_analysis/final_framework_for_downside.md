@@ -309,6 +309,16 @@ Ask yourself these 3 questions for each scenario:
    - **Revenue** (or a driver like GMV, subscribers, units shipped)
    - **Margin** (gross, EBITDA, or operating margin)
    Sometimes the second variable is a **valuation multiple** (PE or EV/EBITDA) if sentiment/re-rating is the main risk.
+   
+   **When to collapse revenue and margin into EBITDA:** If the company has multiple business lines with different margin profiles (e.g., SE has e-commerce, fintech, and gaming), or if provisions/write-offs make margin hard to separate from revenue (lending businesses), use EBITDA directly as one axis and the valuation multiple as the second. This is simpler and more honest than pretending you can forecast consolidated margin independently.
+   
+   **Which valuation metric to use:**
+   - **EV/EBITDA** (default for most companies): Use when the company has significant debt, non-cash charges, or multi-segment operations. Best for SE, ZBRA, AZO.
+   - **PE**: Use for simple, profitable, single-segment businesses. Best for PGR, ZTS.
+   - **EV/Revenue or Price/Sales**: Use for pre-profit companies or companies with lumpy EBITDA. Best for high-growth SaaS, early-stage biotech.
+   - **P/Book**: Use for banks, BDCs, and financial companies where book value drives valuation. Best for OBDC, AGM.
+   
+   **TTM vs Forward earnings:** Use Forward PE or next-12-months EBITDA when the company is growing >15% YoY and TTM materially understates run-rate earnings. State which you use and why. If TTM PE and Forward PE diverge by >40%, explain the gap (high growth? one-time charges? cyclical trough?).
 
 2. **Justify the base multiple.** MUST state:
    - The base EV/EBITDA (or PE) multiple used in the matrix
