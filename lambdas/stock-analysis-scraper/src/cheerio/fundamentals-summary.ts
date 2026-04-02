@@ -69,19 +69,25 @@ export function parseFundamentalsSummary(html: Html): SummaryResult {
 
   // Generic handlers by label
   const handlers: Record<string, (v: string) => void> = {
-    "Market Cap": (v) => (stats.marketCap = v), // Keep raw value like "26.09B"
-    "Revenue (ttm)": (v) => (stats.revenueTtm = v), // Keep raw value like "3.02B"
-    "Net Income (ttm)": (v) => (stats.netIncomeTtm = v), // Keep raw value like "1.16B"
-    "Shares Out": (v) => (stats.sharesOut = v), // Keep raw value like "142.21M"
+    "Market Cap": (v) => (stats.marketCap = v),
+    "Revenue (ttm)": (v) => (stats.revenueTtm = v),
+    // Site may show "Net Income (ttm)" or just "Net Income"
+    "Net Income (ttm)": (v) => (stats.netIncomeTtm = v),
+    "Net Income": (v) => (stats.netIncomeTtm = stats.netIncomeTtm || v),
+    "Shares Out": (v) => (stats.sharesOut = v),
+    // Site may show "EPS (ttm)" or just "EPS"
     "EPS (ttm)": (v) => (stats.epsTtm = parseNumberLike(v)),
+    EPS: (v) => (stats.epsTtm = stats.epsTtm ?? parseNumberLike(v)),
     "PE Ratio": (v) => (stats.peRatio = parseNumberLike(v)),
     "Forward PE": (v) => (stats.forwardPE = parseNumberLike(v)),
     Dividend: (v) => {
-      const mAmt = v.match(/^(-?\d+(?:\.\d+)?)/);
+      // Value may be "$4.68 (10.89%)" or "4.68 (10.89%)" — strip leading $ and whitespace
+      const cleaned = v.replace(/^\$/, "").trim();
+      const mAmt = cleaned.match(/^(-?\d+(?:\.\d+)?)/);
       const mY = v.match(/\(([-+]?\d+(?:\.\d+)?)%\)/);
       stats.dividend = {
         amount: mAmt ? Number(mAmt[1]) : undefined,
-        yieldPct: mY ? `${mY[1]}%` : undefined, // Keep % symbol
+        yieldPct: mY ? `${mY[1]}%` : undefined,
       };
     },
     "Ex-Dividend Date": (v) => {
