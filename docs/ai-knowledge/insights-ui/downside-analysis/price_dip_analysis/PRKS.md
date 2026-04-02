@@ -1,15 +1,65 @@
-## United Parks & Resorts (PRKS) — Price Dip Analysis
+# United Parks & Resorts (PRKS) — Price Dip Analysis
 
-**Current price:** ~$30.45 (March 2026)
-**52-week high / ATH:** $56.95 / $74.44 (Apr 2022)
-**52-week low:** $28.77
-**Already down:** ~59% from ATH, ~47% from 52-week high
+# Section 1: Analysis
 
-PRKS (formerly SeaWorld Entertainment) operates 13 theme parks across 7 US markets plus Abu Dhabi under SeaWorld, Busch Gardens, Sesame Place, Aquatica, and other brands. FY2025 revenue $1.7B (−3.6% YoY), net income $168.4M (−26%), adjusted EBITDA $605.1M. Attendance 21.2M guests (−1.8%). Per capita in-park spending hit record $36.81 (+1%). Q4 EPS missed by $0.27 ($0.28 vs. $0.55 consensus).
+## What This Company Does & Why the Stock Dropped
 
-**Business context:** PRKS is a leveraged theme park operator with $2.35B total debt on a $1.45B market cap — net debt per share ($46) exceeds the stock price ($30). Shareholders' equity is −$395M (negative due to aggressive buybacks). The stock is under pressure from: (1) Universal's Epic Universe (opened May 2025) competing for Orlando tourism dollars, (2) declining attendance (−1.8% in FY2025, accelerating to −2.6% in Q4), (3) EBITDA deterioration (−14% YoY, Q4 down 20.3%), and (4) the DOJ ADA lawsuit (March 2026). Hill Path Capital owns 49% — potential for activist-driven sale or take-private.
+United Parks & Resorts (formerly SeaWorld Entertainment) operates 13 theme parks across 7 US markets plus Abu Dhabi. SeaWorld parks account for roughly 50% of revenue, Busch Gardens parks roughly 35%, and Sesame Place plus water parks roughly 15%. The company is a leveraged theme park operator with $2.35B total debt on a $1.45B market cap — net debt per share ($46) exceeds the stock price ($30). Shareholders' equity is negative $395M due to aggressive buybacks. Hill Path Capital owns 49%, creating potential for activist-driven sale or take-private.
+
+PRKS posted FY2025 revenue of $1.7B (-3.6% YoY), net income of $168.4M (-26%), adjusted EBITDA of $605.1M, and attendance of 21.2M guests (-1.8%). Per capita in-park spending hit a record $36.81 (+1%). Q4 EPS missed by $0.27 ($0.28 vs. $0.55 consensus), and Q4 EBITDA fell 20.3%.
+
+The stock has fallen approximately 47% from its 52-week high of $56.95 to around $30.45 (and 59% from the ATH of $74.44). The decline was driven by Universal's Epic Universe opening in May 2025 competing for Orlando tourism dollars, declining attendance (-1.8% FY2025 accelerating to -2.6% in Q4), EBITDA deterioration (-14% YoY), and a DOJ ADA lawsuit filed in March 2026. Epic Universe is an unprecedented competitive event for PRKS's Orlando parks (SeaWorld Orlando, Aquatica, Discovery Cove), which are the weakest competitive position versus Disney and Universal.
+
+## How Much Further Can It Fall?
+
+The probability-weighted expected price is approximately $24, implying roughly 21% further downside from $30.45. PRKS is the most leverage-sensitive stock in this analysis — the $2.25B net debt is a fixed claim that does not shrink when EBITDA declines, so every dollar of EBITDA loss comes directly out of equity value. At current EBITDA levels the stock works; if EBITDA drops 20-30%, the equity could be worth near-zero.
+
+The bull case depends on Hill Path Capital orchestrating a take-private or strategic sale at 8-10x EV/EBITDA, or land monetization of 2,000+ acres of prime real estate. The severe bear case envisions a consumer recession where attendance drops to 17-18M, EBITDA collapses to $400-440M, Net Debt/EBITDA spikes to 5-6x, and the stock enters restructuring territory. The stress test shows that at 4x EV/EBITDA on $420M EBITDA, the net debt exceeds the enterprise value and equity is worthless. The COVID crash saw PRKS fall from $35 to $6.75.
+
+**Table 1 — Scenario Summary**
+
+| Scenario | Story | Price Range | Probability |
+|----------|-------|-------------|-------------|
+| Bull | Hill Path take-private or strategic sale at 8-10x EV/EBITDA, land monetization | $43–55 | 15% |
+| Base | Attendance stabilizes 20.5-21M, EBITDA ~$590M, FCF to debt paydown | $29–35 | 25% |
+| Bear | Epic Universe accelerates decline, attendance 19-19.5M, EBITDA $500-530M, leverage >4x | $20–23 | 40% |
+| Severe | Consumer recession, attendance 17-18M, EBITDA $400-440M, restructuring risk | $10–15 | 20% |
+| **Weighted Expected** | | **~$24** | |
+
+## Competitive Position & Moat
+
+PRKS offers a marine/animal differentiation that is unique in the theme park industry — no other operator has a comparable marine life experience. The Busch Gardens parks combine animal encounters with world-class roller coasters in a way that neither Disney nor Universal replicates. The company is a cash machine at current levels: 27% FCF yield and 32.8% EBITDA margins demonstrate strong pricing power, with per capita spending hitting records despite attendance declines.
+
+However, Epic Universe represents an unprecedented competitive event. Universal has a track record of expanding Orlando's tourism pie eventually, but in the first 2-3 years a new mega-park primarily cannibalizes existing parks, and PRKS is most vulnerable. The Six Flags/Cedar Fair merger creates a more formidable regional competitor. The negative shareholders' equity (-$395M) means there is no equity buffer — in a severe downturn, the $2.35B debt is senior to all equity value. PRKS's lower-income demographic skew makes it more vulnerable to consumer spending pullbacks than Disney.
+
+Precedent analysis shows the current -59% from ATH sits between the Blackfish crisis (-69%) and COVID (-81%). The Blackfish precedent is most relevant as a multi-year attendance decline from competitive/brand headwinds. Following the Blackfish template implies another 10-15pp of decline. Precedent-implied further downside: -10 to -35%.
+
+**Table 2 — Ratings Dashboard**
+
+| Rating | Score | What It Means |
+|--------|-------|---------------|
+| Moat Strength | 3/5 | Marine/animal differentiation unique; Epic Universe is unprecedented competitive event + Six Flags merger |
+| Financial Health | 2/5 | High leverage $2.35B debt on $1.45B market cap, negative equity, seasonal cash flow |
+| Precedent Position | 2/5 | -45% from high, but Epic Universe is unprecedented; Blackfish template suggests further decline possible |
+| Overall Downside Risk | 2/5 | Leverage amplifies every EBITDA decline directly into equity; restructuring risk in severe scenario |
+
+## What to Watch
+
+The key variable is Orlando attendance impact from Epic Universe — PRKS's Orlando parks are ground zero. Double-digit attendance declines in Orlando specifically would validate the bear scenario. The interaction of EBITDA decline plus multiple compression plus fixed debt is what makes PRKS so volatile: a 15% EBITDA decline at constant 7x multiple drops the stock from $42 to $30, but if the multiple also compresses to 5.5x the stock drops to $13. Hill Path Capital's 49% ownership is the wildcard — any 13D/13G filing suggesting increased position or take-private intent would rerate the stock immediately.
+
+**Table 3 — Key Metrics to Monitor**
+
+| What to Watch | Current Value | Bull Signal | Bear Signal | Next Data Point |
+|---------------|---------------|-------------|-------------|-----------------|
+| Orlando Park Attendance | Declining (-2.6% Q4) | Stabilizes at -5% or better | Double-digit decline | Q1 2026 earnings (spring) |
+| EBITDA | $605.1M FY2025 (-14% YoY) | Stabilizes above $580M | Falls below $520M | Q1 2026 earnings |
+| Net Debt/EBITDA | 3.3x | Declines toward 2.5x via paydown | Rises above 4x | Quarterly earnings |
+| Hill Path Capital Activity | 49% ownership, passive | 13D filing or take-private bid | Sells shares | SEC filings (ongoing) |
+| Per Capita In-Park Spending | $36.81 (record) | Continues growing 2-3% | Declines (forced discounting) | Quarterly earnings |
 
 ---
+
+# Section 2: Raw Information
 
 ## Current Ratio Snapshot
 
@@ -31,21 +81,15 @@ PRKS (formerly SeaWorld Entertainment) operates 13 theme parks across 7 US marke
 | EBITDA Margin | 32.8% | Good |
 | Net Margin | 10.1% | Okay |
 | FCF Yield | ~27% | Excellent |
-| Revenue Growth | −3.6% YoY | Poor |
+| Revenue Growth | -3.6% YoY | Poor |
 
-**Key dynamic:** PRKS is a cash machine (27% FCF yield, 32.8% EBITDA margin) trading at deep value multiples (6.9x EV/EBITDA, 8x forward PE). The discount exists because: (1) negative shareholders' equity signals structural leverage risk, (2) attendance is declining in the face of Epic Universe competition, (3) EBITDA is deteriorating (−14% YoY), and (4) the company has no clear growth catalyst. Hill Path Capital's 49% ownership creates both risk (concentrated ownership) and opportunity (potential take-private at a premium).
-
----
-
-## Framework 1: Scenario-Based Ratio Modeling
+## Detailed Scenario Breakdowns
 
 ### Scenario 1: Hill Path Take-Private or Strategic Sale (15% probability)
 
-**What happens:** Hill Path Capital, owning 49%, takes PRKS private or orchestrates a sale to a strategic buyer (Merlin Entertainments, a sovereign wealth fund, or PE). The 2,000+ acres of prime real estate (400 acres adjacent to existing parks) are monetized. The take-private is done at 8–10x EV/EBITDA (vs. current 6.9x), implying an equity price of $45–55 after netting debt.
+Hill Path Capital (49% owner) takes PRKS private or orchestrates sale to a strategic buyer (Merlin Entertainments, sovereign wealth fund, or PE). 2,000+ acres of prime real estate (400 acres adjacent to existing parks) monetized. Take-private at 8-10x EV/EBITDA implies equity price of $45-55 after netting debt.
 
-Alternatively, PRKS sells or develops the excess land holdings (Orlando, Tampa, San Diego land worth potentially $500M–$1B), creating a one-time value unlock.
-
-**Why only 15%:** Take-privates require financing, and the $2.35B existing debt makes adding more leverage expensive. Hill Path has been a patient holder, not an aggressive activist. And theme park assets are hard to sell — the buyer universe is small.
+Only 15% because take-privates require financing and $2.35B existing debt makes adding leverage expensive. Hill Path has been patient, not aggressive. Theme park buyer universe is small.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
@@ -53,17 +97,11 @@ Alternatively, PRKS sells or develops the excess land holdings (Orlando, Tampa, 
 | Land value recognized | Hidden asset | +20% |
 | **Total** | | **+40 to 80%** |
 
-**Price target: ~$43–55**
-
----
+**Price target: ~$43-55**
 
 ### Scenario 2: Attendance Stabilizes — Muddle Through (25% probability)
 
-**What happens:** Epic Universe impact peaks in 2026 and normalizes. PRKS's new attractions (Barracuda Strike coaster, SEAQuest dark ride) draw guests. Attendance stabilizes at 20.5–21M. Per capita spending continues growing 2–3% (record $36.81 heading toward $38+). EBITDA stabilizes at $580–600M.
-
-Revenue is flat to slightly up. The company generates $350–400M in FCF, using most for debt paydown (reducing Net Debt/EBITDA from 3.3x toward 2.5x). The stock holds its value on FCF yield alone.
-
-**Why 25%:** Theme parks are resilient businesses once attendance stabilizes. PRKS has survived Blackfish, COVID, and now Epic Universe. The per capita spending trend suggests strong pricing power. But "stabilizes" doesn't mean "grows" — and without growth, the stock stays cheap.
+Epic Universe impact peaks in 2026 and normalizes. New attractions (Barracuda Strike coaster, SEAQuest dark ride) draw guests. Attendance stabilizes at 20.5-21M. Per capita spending continues growing 2-3%. EBITDA stabilizes at $580-600M. Company generates $350-400M FCF for debt paydown (Net Debt/EBITDA from 3.3x toward 2.5x).
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
@@ -72,19 +110,13 @@ Revenue is flat to slightly up. The company generates $350–400M in FCF, using 
 | Attendance stabilization | Removes downside fear | +5% |
 | **Total** | | **-5 to +15%** |
 
-**Price target: ~$29–35**
-
----
+**Price target: ~$29-35**
 
 ### Scenario 3: Epic Universe Accelerates Decline + Consumer Weakness (40% probability)
 
-**What happens:** Epic Universe is a massive hit, drawing tourists away from PRKS's Orlando parks (SeaWorld Orlando, Aquatica, Discovery Cove). Orlando attendance at PRKS parks drops 8–12%. Disney also expands aggressively. PRKS's non-Orlando parks (Busch Gardens, Sesame Place) hold better but can't offset.
+Epic Universe draws tourists away from PRKS Orlando parks. Orlando attendance at PRKS drops 8-12%. Total attendance drops to 19-19.5M (-8 to -10%). Per capita spending growth stalls from forced discounting. Revenue drops to $1.55-1.60B. EBITDA compresses to $500-530M. Net Debt/EBITDA rises above 4x. Stock enters "debt trap" territory.
 
-Total attendance drops to 19–19.5M (−8 to −10%). Per capita spending growth stalls as PRKS is forced to discount to attract guests. Revenue drops to $1.55–1.60B. EBITDA compresses to $500–530M as fixed costs (park maintenance, labor) don't flex proportionally.
-
-Net Debt/EBITDA rises above 4x. The negative shareholders' equity deepens. The stock enters "debt trap" territory where every dollar of EBITDA decline increases leverage and further depresses the equity.
-
-**Why 40% (most likely):** Epic Universe opened in May 2025 and its impact on PRKS is already visible (Q4 attendance −2.6%, accelerating). Universal has a track record of expanding Orlando's overall tourism pie eventually, but in the first 2–3 years, a new mega-park primarily cannibalizes existing parks. PRKS is the most vulnerable because its Orlando parks are the weakest competitive position (vs. Disney and Universal).
+Highest probability because Epic Universe impact is already visible (Q4 attendance -2.6%, accelerating), and in the first 2-3 years new mega-parks primarily cannibalize existing parks.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
@@ -94,103 +126,59 @@ Net Debt/EBITDA rises above 4x. The negative shareholders' equity deepens. The s
 | Negative equity deepens | Equity risk | -5% |
 | **Total (overlapping, ~65% of sum)** | | **-25 to 35%** |
 
-**Price target: ~$20–23**
-
----
+**Price target: ~$20-23**
 
 ### Scenario 4: Consumer Recession + Debt Crisis (20% probability)
 
-**What happens:** A US consumer recession hits. Theme park visits are an early discretionary cut. Attendance drops to 17–18M (−15 to −20%). PRKS's lower-income demographic skew makes it more vulnerable than Disney (which skews higher income).
+US consumer recession hits. Theme park visits are an early discretionary cut. Attendance drops to 17-18M (-15 to -20%). Revenue drops to $1.35-1.45B. EBITDA collapses to $400-440M. Net Debt/EBITDA spikes to 5-6x. Interest coverage drops below 3x. Rating agencies downgrade. Company suspends buybacks and considers dilutive equity raise.
 
-Revenue drops to $1.35–1.45B. EBITDA collapses to $400–440M. Net Debt/EBITDA spikes to 5–6x. Interest coverage drops below 3x. Rating agencies downgrade. The $2.35B debt maturity wall (most due 2029–2031 from Dec 2024 refinancing) becomes a concern — markets question whether PRKS can refinance in a recession.
-
-The company suspends buybacks and considers an equity raise (dilutive) to pay down debt. The Blackfish-era playbook repeats: operating leverage works in reverse, and fixed costs on empty parks crush margins.
-
-The COVID template is extreme (−81%), but a recession without park closures suggests a −50 to −65% drawdown from the 52-week high, or $20–28 (the 52-week low was already $28.77).
-
-**Why 20%:** The negative shareholders' equity (−$395M) means there's no equity buffer. The $2.35B debt is senior to all equity value — in a severe downturn, equity holders are wiped out in a restructuring scenario. The COVID crash showed PRKS (then SEAS) could fall from $35 to $6.75. A recession less severe than COVID but with Epic Universe competition could push the stock to $10–15.
+Negative shareholders' equity (-$395M) means no equity buffer. COVID template: PRKS (then SEAS) fell from $35 to $6.75.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
 | EV/EBITDA collapses to 4x | Distressed valuation | -40% |
 | EBITDA drops 30% | Revenue collapse + operating deleverage | -30% |
-| Leverage spikes to 5–6x | Restructuring risk priced in | -15% |
+| Leverage spikes to 5-6x | Restructuring risk priced in | -15% |
 | Equity dilution or restructuring | Equity could be impaired | -20% |
 | **Total (overlapping, ~55% of sum)** | | **-50 to 65%** |
 
-**Price target: ~$10–15**
+**Price target: ~$10-15**
 
----
+## Stress Test / Sensitivity Matrix
 
-## Framework 3: Stress Test / Sensitivity Matrix
-
-**Key variables:** FY2026 EBITDA × EV/EBITDA Multiple
+**Key variables:** FY2026 EBITDA x EV/EBITDA Multiple
 
 **Assumptions:** Net debt $2.25B, ~47.6M shares diluted.
 
-**Formula:** Price = ((EBITDA × Multiple) − Net Debt) / Shares
+**Formula:** Price = ((EBITDA x Multiple) - Net Debt) / Shares
 
 ### Price Matrix
 
 | FY2026 EBITDA → | $420M (recession) | $520M (decline) | $580M (stabilize) | $620M (recover) |
 |---|---|---|---|---|
-| **EV/EBITDA 4x** | $-12* | $-3* | $1 | $5 |
+| **EV/EBITDA 4x** | -$12* | -$3* | $1 | $5 |
 | **EV/EBITDA 5.5x** | $1 | $13 | $20 | $25 |
-| **EV/EBITDA 7x** | $14 | **$30** ← current | $38 | $44 |
+| **EV/EBITDA 7x** | $14 | **$30** | $38 | $44 |
 | **EV/EBITDA 9x** | $32 | $51 | $63 | $70 |
 
 *Negative values indicate net debt exceeds enterprise value — equity worthless in liquidation.
 
-**What the matrix reveals:**
-- **Current price ($30.45) implies:** ~$520M EBITDA at 7x or ~$580M at 6x. The market is pricing in EBITDA declining from $605M to ~$520–580M with today's multiple.
-- **Floor ($0–$1):** At 4x on declining EBITDA, the debt eats all the equity value. This is a restructuring scenario. The negative equity on the balance sheet means there's no cushion.
-- **Leverage amplification:** This is the most leverage-sensitive stock in the analysis alongside EQPT. A 15% EBITDA decline ($605M→$520M) at constant 7x multiple drops the stock from $42 to $30 (−29%). But if the multiple also compresses to 5.5x, the stock drops to $13 (−69%). **The interaction of EBITDA decline + multiple compression + fixed debt is what makes PRKS so volatile.**
-- **Upside ($70):** Requires EBITDA recovery to $620M at 9x — possible but needs attendance growth AND multiple expansion.
+**Key insight:** Current price ($30.45) implies ~$520M EBITDA at 7x. Floor ($0-1) at 4x on declining EBITDA — debt eats all equity. A 15% EBITDA decline ($605M to $520M) at constant 7x drops stock from $42 to $30 (-29%); if multiple also compresses to 5.5x, stock drops to $13 (-69%). Leverage amplifies everything.
 
-### Framework 3 Takeaway
-
-PRKS's stress test confirms this is a **leverage-and-EBITDA stock.** The $2.25B net debt is a fixed claim that doesn't shrink when EBITDA declines — so every dollar of EBITDA loss comes directly out of equity value. At current EBITDA levels, the stock works. If EBITDA drops 20–30%, the equity could be worth near-zero. This is the same dynamic as EQPT — leverage amplifies everything.
-
----
-
-## Framework 4: Precedent Drawdown + Catalyst Mapping
-
-### Comparable Drawdowns
+## Precedent Drawdowns
 
 | Company/Event | Period | Decline | Catalyst |
 |--------------|--------|---------|----------|
-| **PRKS Blackfish crisis** | 2013–2016 | −69% | Documentary backlash, attendance collapse |
-| **PRKS COVID crash** | Feb–Mar 2020 | −81% | Park closures |
-| **PRKS current** | Apr 2022–Mar 2026 | −59% | Post-reopening normalization + Epic Universe + consumer weakness |
-| **Six Flags (SIX) 2018–2020** | Peak to trough | −70% | Attendance decline + COVID |
-| **Cedar Fair 2020** | COVID | −60% | Park closures |
+| **PRKS Blackfish crisis** | 2013-2016 | -69% | Documentary backlash, attendance collapse |
+| **PRKS COVID crash** | Feb-Mar 2020 | -81% | Park closures |
+| **PRKS current** | Apr 2022-Mar 2026 | -59% | Post-reopening + Epic Universe + consumer weakness |
+| **Six Flags (SIX) 2018-2020** | Peak to trough | -70% | Attendance decline + COVID |
+| **Cedar Fair 2020** | COVID | -60% | Park closures |
 
-**Key finding:** PRKS's current −59% decline is between the Blackfish crisis (−69%) and COVID (−81%). The Blackfish precedent is most relevant — it was a multi-year attendance decline driven by brand damage, similar to how Epic Universe is a multi-year competitive headwind. If PRKS follows the Blackfish template, there's another 10–15pp of decline (to −69–75% from ATH, or $19–23). If it follows COVID, the stock could reach $10–15 — but COVID involved zero revenue, which won't happen here.
+Current -59% sits between Blackfish (-69%) and COVID (-81%). Blackfish template (multi-year competitive headwind) implies another 10-15pp decline. Precedent-implied further downside: -10 to -35%.
 
-### Precedent-Implied Further Downside: **−10 to −35%**
+## Sources
 
----
-
-## Summary
-
-| Scenario | Business Trigger | Price Range | Change from $30.45 | Probability |
-|----------|-----------------|-----------|---------------------|-------------|
-| Hill Path take-private / land monetization | Strategic sale at 8–10x EV/EBITDA | $43–55 | +40 to 80% | 15% |
-| Attendance stabilizes — muddle through | 20.5–21M guests, EBITDA ~$590M, FCF to debt paydown | $29–35 | -5 to +15% | 25% |
-| Epic Universe accelerates decline | Attendance 19–19.5M, EBITDA $500–530M, leverage >4x | $20–23 | -25 to 35% | 40% |
-| Consumer recession + debt crisis | Attendance 17–18M, EBITDA $400–440M, restructuring risk | $10–15 | -50 to 65% | 20% |
-
-**Probability-weighted expected price: ~$24** (approximately 21% further downside from $30.45).
-
-**Key catalysts and timing:**
-- **Epic Universe attendance impact (2026 monthly data):** PRKS's Orlando parks are ground zero. Watch for double-digit attendance declines in Orlando specifically.
-- **Q1 2026 earnings (spring):** First full quarter with Epic Universe operating. EBITDA trajectory and management commentary on competitive response.
-- **Consumer spending data (monthly):** Below-inflation spending growth signals the consumer is weakening. PRKS's lower-income skew makes it a leading indicator.
-- **Hill Path Capital activity:** Any 13D/13G filings suggesting increased position or activist intent.
-- **Debt covenants / leverage ratios:** Net Debt/EBITDA crossing 4x could trigger lender concerns.
-- **DOJ ADA lawsuit resolution:** If settled, removes a headline risk. If litigated, creates ongoing uncertainty.
-
-Sources:
 - [PRKS FY2025 Results](https://www.prnewswire.com/news-releases/united-parks--resorts-inc-reports-fourth-quarter-and-fiscal-2025-results-302697954.html)
 - [PRKS StockAnalysis](https://stockanalysis.com/stocks/prks/)
 - [Theme Park Insider — Lower Attendance 2025](https://www.themeparkinsider.com/flume/202602/12323/)
