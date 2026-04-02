@@ -222,7 +222,12 @@ export default function AnalysisTemplateDetailPage() {
     })) || [];
 
   if (templateLoading) {
-    return <FullPageLoader />;
+    return (
+      <PageWrapper>
+        <AdminNav />
+        <FullPageLoader />
+      </PageWrapper>
+    );
   }
 
   if (!template) {

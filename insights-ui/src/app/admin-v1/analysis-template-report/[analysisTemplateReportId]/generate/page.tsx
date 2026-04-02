@@ -134,7 +134,12 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
     })) || [];
 
   if (reportLoading) {
-    return <FullPageLoader />;
+    return (
+      <PageWrapper>
+        <AdminNav />
+        <FullPageLoader />
+      </PageWrapper>
+    );
   }
 
   return (

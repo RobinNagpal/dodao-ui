@@ -78,7 +78,12 @@ export default function AnalysisTemplateReportPage() {
   };
 
   if (reportsLoading) {
-    return <FullPageLoader />;
+    return (
+      <PageWrapper>
+        <AdminNav />
+        <FullPageLoader />
+      </PageWrapper>
+    );
   }
 
   return (

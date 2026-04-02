@@ -74,7 +74,12 @@ export default function DetailedReportsAdminPage() {
   };
 
   if (templatesLoading) {
-    return <FullPageLoader />;
+    return (
+      <PageWrapper>
+        <AdminNav />
+        <FullPageLoader />
+      </PageWrapper>
+    );
   }
 
   return (
