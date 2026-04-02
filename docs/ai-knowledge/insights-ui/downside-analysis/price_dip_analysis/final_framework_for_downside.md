@@ -111,11 +111,16 @@ All data is available free. Use these specific URLs (replace `[TICKER]` and `[na
 
 4. **Include 2-3 sub-scenarios under each case.** Different combinations of product outcomes that lead to the same overall result.
 
-5. **For each scenario, estimate a price range.** Use: Price = EPS x PE, or Price = (EBITDA x EV/EBITDA - Net Debt) / Shares.
+5. **For each scenario, estimate a price range using TWO methods as cross-checks:**
+   - **Method A (primary): Stress test matrix.** Look up the EBITDA (or EPS) implied by the scenario story, find it in the Step 2 matrix, and read off the price. This is the primary method because it uses explicit assumptions.
+   - **Method B (secondary): Overlap-discounted ratio impact.** Sum the individual ratio impacts (multiple compression + earnings decline + risk premium), apply 60% overlap discount, and apply the resulting % move to the current price. This is a sanity check.
+   - If the two methods diverge by more than 15%, investigate why and state which you trust more.
 
 6. **For each scenario's ratio impacts, apply the overlap discount.** When multiple negative (or positive) factors hit simultaneously, they don't add linearly. **Use 60% of the raw ratio-impact sum for ALL scenarios. Do not vary this number.**
 
    > Example: If EV/EBITDA compression = -29%, EPS decline = -15%, lending provision spike = -10%, raw sum = -54%. Apply 60%: -54% x 0.60 = -32%. Price impact = -30 to -35%.
+   >
+   > Cross-check with stress test: Bear scenario implies ~$2.5B EBITDA at 12x = $53. From overlap method: $79 x (1 - 0.32) = $54. Methods agree — price target $47-55.
 
 7. **Calculate the weighted expected price.** MUST show this math explicitly:
 
@@ -180,7 +185,7 @@ All data is available free. Use these specific URLs (replace `[TICKER]` and `[na
 
 ---
 
-**Bear Case (35-40% probability) — Price target: $50-65**
+**Bear Case (35-40% probability) — Price target: $47-55**
 
 *Sub-scenario Be1: "TikTok Shop takes Shopee's lunch in Indonesia"*
 - TikTok Shop gains 5-8pp of GMV share in Indonesia (SE's largest market, 40% of Shopee GMV)
@@ -201,7 +206,7 @@ All data is available free. Use these specific URLs (replace `[TICKER]` and `[na
 
 ---
 
-**Severe Bear (15-20% probability) — Price target: $35-48**
+**Severe Bear (15-20% probability) — Price target: $28-40**
 
 *Sub-scenario S1: "Regulatory crackdown + credit crisis"*
 - Indonesia bans foreign e-commerce platforms or imposes punitive taxes
@@ -568,6 +573,8 @@ AI coding tools (GitHub Copilot, Cursor, Devin) reduce demand for freelance deve
 ## Stock Report Template (MANDATORY)
 
 Every stock analysis MUST follow this structure with these EXACT headers. Do not rename, reorder, or omit any section.
+
+**The report MUST state the time horizon and data date at the top**, immediately below the title. Format: *Time horizon: next 12 months (through [date]). All prices and ratios as of [month year].*
 
 ### Section 1: Analysis
 
