@@ -29,6 +29,18 @@ properties:
   subIndustryDescription:
     type: string
     description: 'A few lines explaining the sub-industry'
+  valuationReportDateDisplay:
+    type: string
+    description: 'Report/evaluation date to use in prose (e.g. Month D, YYYY). Must match when this generation ran.'
+  lastClosePrice:
+    type: number
+    nullable: true
+    description: 'Last close price from the stock analyzer summary (same as Current Price on the site). Null if unavailable.'
+  marketSnapshotFetchedAt:
+    type: string
+    format: date-time
+    nullable: true
+    description: 'ISO 8601 timestamp when the market summary snapshot was last updated from the data source.'
   categoryKey:
     type: string
     enum: ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue']
@@ -110,3 +122,6 @@ required:
   - subIndustryDescription
   - industryName
   - subIndustryName
+  - valuationReportDateDisplay
+  - lastClosePriceUsd
+  - marketSnapshotFetchedAt

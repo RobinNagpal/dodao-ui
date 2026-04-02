@@ -65,7 +65,7 @@ export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element
         <FinancialCard label="EPS (Diluted TTM)" value={formatCurrency(data.epsDilutedTTM, data.currency)} />
         <FinancialCard label="P/E Ratio" value={formatNumber(data.pe)} />
         <FinancialCard label="Forward P/E" value={formatNumber(data.forwardPE)} />
-        <FinancialCard label="Avg Volume (3M)" value={formatVolume(data.avgVolume3M)} />
+        <FinancialCard label="Beta" value={formatNumber(data.beta)} />
         <FinancialCard label="Day Volume" value={formatVolume(data.dayVolume)} />
         <FinancialCard label="Total Revenue (TTM)" value={data.totalRevenue || 'N/A'} />
         <FinancialCard label="Net Income (TTM)" value={data.netIncome || 'N/A'} />

@@ -2,6 +2,7 @@ import { AnalysisCategoryFactor } from '@prisma/client';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
 import { TickerAnalysisCategory, TickerV1WithIndustryAndSubIndustry, VERDICT_DEFINITIONS } from '@/types/ticker-typesv1';
 import { buildBaseAboutReport } from '@/utils/analysis-reports/save-report-utils';
+import type { FairValueValuationSnapshot } from '@/utils/stock-analyzer-scraper-utils';
 
 /**
  * Base input JSON for ticker analysis
@@ -299,13 +300,15 @@ export function prepareFairValueInputJson(
   tickerRecord: TickerV1WithIndustryAndSubIndustry & {
     categoryAnalysisResults: CategoryAnalysisResultFromDb[];
   },
-  analysisFactors: AnalysisCategoryFactor[]
-): FactorAnalysisInputJson & { priorCategoryAnalyses: PriorCategoryAnalysisInput[] } {
+  analysisFactors: AnalysisCategoryFactor[],
+  valuationSnapshot: FairValueValuationSnapshot
+): FactorAnalysisInputJson & { priorCategoryAnalyses: PriorCategoryAnalysisInput[] } & FairValueValuationSnapshot {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.FairValue,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
     priorCategoryAnalyses: preparePriorCategoryAnalyses(tickerRecord.categoryAnalysisResults || []),
+    ...valuationSnapshot,
   };
 }
 
