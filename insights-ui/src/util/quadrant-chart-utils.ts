@@ -7,6 +7,7 @@ export interface QuadrantDataPoint {
   valueScore: number;
   classification: 'High Quality' | 'Investable' | 'Value Play' | 'Underperform';
   isMainTicker: boolean;
+  exchange?: string;
 }
 
 /**
