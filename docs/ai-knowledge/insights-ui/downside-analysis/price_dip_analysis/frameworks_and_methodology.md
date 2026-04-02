@@ -8,20 +8,26 @@ A consolidated reference covering the 7 downside analysis frameworks, their comp
 
 ## 1. Scenario-Based Ratio Modeling ⭐ (Primary Framework)
 
-**What it is:** Build 3–5 business-specific scenarios (bull, base, mild bear, severe bear), estimate how key ratios change in each, translate to % price impact, assign probabilities, and compute a probability-weighted expected price.
+**What it is:** Build 3–5 business-specific scenarios (bull, base, mild bear, severe bear) grounded in **product/service-level narratives**, estimate how key ratios change in each, translate to % price impact, assign probabilities, and compute a probability-weighted expected price.
 
-**Process:** Business trigger → Financial metric change → Valuation change → Price impact
+**Core Principle:** Every scenario must tell a real story about what happens to the company's top 2–3 revenue-generating products or services. "Revenue declines 15%" is an output, not a scenario. "TikTok Shop captures 8% of Indonesian e-commerce GMV, forcing Shopee into a subsidy war" is a scenario.
+
+**Process:** Product/service story → Revenue/margin impact → Valuation change → Price impact
 
 **Steps:**
-1. Identify 8–12 key ratios (valuation, profitability, leverage, liquidity, yield)
-2. Define realistic scenarios with specific business triggers (e.g., "tariffs escalate to Vietnam, gross margin drops 3pp")
-3. Estimate ratio changes per scenario
-4. Apply price sensitivity per unit of ratio change (see Part 4)
-5. Sum overlapping impacts (typically 50–65% of raw sum)
-6. Assign probability ranges and compute weighted expected price
+1. **Identify the top 2–3 revenue-generating products or services.** Be specific — not "e-commerce segment" but "Shopee marketplace ($127B GMV), SeaMoney lending ($9.2B loan book), Garena/Free Fire ($1.9B bookings)"
+2. **For each product/service, understand:** Who buys it? Who competes for those customers? What could go right/wrong for THIS specific product?
+3. Identify 8–12 key ratios (valuation, profitability, leverage, liquidity, yield)
+4. **Build 4 scenarios, each with 2–3 sub-scenarios.** Each sub-scenario describes a different combination of product-level outcomes that leads to a similar overall result. Example: SE's bear case could be "Shopee loses share but lending holds" OR "Shopee holds but lending NPLs spike" — both lead to similar price, but different monitoring triggers.
+5. **Headline test each scenario:** Could you write a news headline for it? If not, it's too vague.
+6. Estimate ratio changes per scenario
+7. Apply price sensitivity per unit of ratio change (see Part 4)
+8. Sum overlapping impacts (typically 50–65% of raw sum)
+9. Assign probability ranges and compute weighted expected price
+10. **Identify monitoring triggers:** Each sub-scenario should point to specific data you can track quarterly (competitor store count, market share report, NPL ratio, FDA decision, same-store sales in specific markets)
 
-**Strengths:** Holistic, business-specific, probability-weighted, easy to update, communicable.
-**Weaknesses:** Probability assignments are subjective, price sensitivity is approximate, overlapping effects hard to isolate.
+**Strengths:** Holistic, business-specific, probability-weighted, easy to update, communicable, **monitorable** (each sub-scenario has tracking triggers).
+**Weaknesses:** Probability assignments are subjective, price sensitivity is approximate, overlapping effects hard to isolate. Requires understanding the company's actual products, not just its financials.
 **Ease:** Moderate | **Reliability:** Moderate–High | **Best for:** Individual stock deep-dives | **Horizon:** 6–18 months
 
 ---

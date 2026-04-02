@@ -65,29 +65,190 @@ These ratios compare the stock price to the company's fundamentals. Think of the
 
 ## Step 1: Scenario Modeling — "What Could Happen?"
 
-This is the core of the framework. You're building 3–5 realistic futures for the company.
+This is the core of the framework. You're building 3–5 realistic futures for the company — **grounded in what actually happens to the company's products and services, not abstract financial metrics.**
+
+### The Key Principle
+
+Every company's stock price is ultimately driven by what happens to its products and services. A "bear case" isn't "revenue declines 15%" — that's the *output*. The bear case is the *story*: "Competitor X launches a cheaper alternative, steals 20% of Product A's customers in the mid-market, and Product B's growth slows because the TAM is saturating." The financial numbers follow from the story.
+
+**If you can't tell a specific, plausible story about what happens to each major product/service, you don't understand the stock well enough to assign probabilities.**
 
 ### How to Do It
 
-**A. Identify the 1–2 things that matter most for this stock right now.** Every stock has a "main thing" that's driving the decline:
+**A. Identify the company's top 2–3 revenue-generating products or services.** Not "segments" in the vague corporate sense — the actual products customers buy. Be specific:
 
-| Example Stock | The Main Thing |
-|--------------|---------------|
-| ZBRA | Will tariffs + memory costs compress margins? |
-| DUOL | Will AI replace language learning apps? |
-| PRKS | Will Epic Universe steal SeaWorld's customers? |
-| ARE | Will lab space oversupply get worse before it gets better? |
+| Company | Don't Say | Say Instead |
+|---------|-----------|-------------|
+| SE | "E-commerce segment" | "Shopee marketplace (GMV $127B), SeaMoney lending ($9.2B loan book), Garena/Free Fire gaming ($1.9B bookings)" |
+| BROS | "Coffee revenue" | "Drive-thru beverages in Western US (1,136 stores, $2.1M AUV), new market expansion (East Coast via Clutch acquisition)" |
+| ZBRA | "Enterprise products" | "Mobile computers for warehouses (40-50% market share), barcode scanners, enterprise software/services (recurring)" |
+| DUOL | "Subscription revenue" | "Duolingo Plus/Max subscriptions (15M paid subs), English test (Duolingo English Test), ad-supported free tier (135M MAU)" |
+| ZTS | "Companion animal" | "Apoquel/Cytopoint derm franchise (~$2B), Simparica Trio parasiticide, livestock vaccines" |
 
-**B. Build 4 scenarios around that main thing:**
+**B. For each product/service, understand the competitive dynamics.** Who is the direct competitor for this specific product? What could go wrong? What could go right?
 
-| Scenario | Description | Typical Probability |
-|----------|-------------|-------------------|
-| **Bull case** | The problem resolves, business beats expectations | 10–20% |
-| **Base case** | Things go roughly as guided, no surprises | 25–35% |
-| **Bear case** | The main risk materializes partially | 30–40% |
-| **Severe bear** | Everything goes wrong simultaneously | 15–25% |
+**C. Build 4 scenarios by constructing a real story for EACH product/service.** The scenario is the *combination* of what happens across all 2–3 products. Each scenario should read like a plausible news story you could see in 12 months.
 
-**C. For each scenario, estimate a price range.** Ask: "If this scenario plays out, where would the stock trade?"
+| Scenario | What It Means | Typical Probability |
+|----------|---------------|-------------------|
+| **Bull case** | Most products beat expectations — growth accelerates, competitors stumble, new product launches succeed | 10–20% |
+| **Base case** | Products perform roughly as guided — some beat, some miss, net result is close to consensus | 25–35% |
+| **Bear case** | 1–2 key products face real problems — competitor gains share, demand weakens, or margins compress | 30–40% |
+| **Severe bear** | Multiple products deteriorate simultaneously + macro/leverage amplifies the damage | 15–25% |
+
+**D. Include 2–3 specific sub-scenarios under each case.** Different combinations of product-level outcomes can lead to the same overall result. This prevents tunnel vision.
+
+### Worked Example: Sea Limited (SE) at $79
+
+**Top 3 revenue drivers:**
+1. **Shopee** (e-commerce, ~60% of revenue, $127B GMV)
+2. **SeaMoney** (fintech/lending, ~21% of revenue, $9.2B loan book growing 80% YoY)
+3. **Garena** (gaming, ~10% of revenue, Free Fire)
+
+---
+
+**Bull Case (10–15% probability) — Price target: $115–130**
+
+*Sub-scenario B1: "TikTok Shop stumbles on regulation"*
+- Indonesia/Vietnam tighten social commerce regulations (already proposed in Indonesia)
+- Shopee regains 3–5pp of GMV share, EBITDA margin improves to 3–4%
+- SeaMoney NPLs stay at 1.1%, lending profit grows 40%+
+- Free Fire 2.0 content cycle extends engagement
+
+*Sub-scenario B2: "Lending becomes the growth engine"*
+- Shopee GMV grows 25% (as guided, nothing special)
+- But SeaMoney cross-sells insurance + banking to Shopee's merchant base → revenue diversification
+- Credit quality holds because SEA employment is strong
+- Market re-rates SE as a fintech platform, not just e-commerce
+
+---
+
+**Base Case (25–30% probability) — Price target: $79–91**
+
+*Sub-scenario Ba1: "Guidance met, nothing changes"*
+- Shopee GMV +25%, take rate stable, EBITDA "no lower than 2025"
+- SeaMoney revenue +40% but provisions rise proportionally → flat EBITDA contribution
+- Garena bookings flat post-content burst
+- Market says "show me the profit" — stock treads water
+
+*Sub-scenario Ba2: "Shopee beats but lending worries offset"*
+- Shopee GMV +30% (beats guidance), gaining in LatAm markets
+- But SeaMoney NPLs tick up to 1.5%, provisions +30% — analysts raise credit risk flag
+- Net effect: revenue beats, but margin concern keeps multiple at 16–18x
+
+---
+
+**Bear Case (35–40% probability) — Price target: $50–65**
+
+*Sub-scenario Be1: "TikTok Shop takes Shopee's lunch in Indonesia"*
+- TikTok Shop gains 5–8pp of GMV share in Indonesia (SE's largest market, 40% of Shopee GMV)
+- Shopee increases S&M subsidies to defend → EBITDA margins go back toward zero
+- Revenue grows 15–20% but costs grow faster
+- SeaMoney performs fine but can't offset Shopee margin erosion
+
+*Sub-scenario Be2: "Lending cycle turns"*
+- Shopee holds share (TikTok Shop growth stalls)
+- But SEA consumer credit weakens: NPLs rise from 1.1% to 2.0–2.5%
+- $9.2B loan book × 1.5pp NPL increase = $138M additional provisions
+- Market panics about "the next Ant Financial" — multiple compresses to 12–14x
+
+*Sub-scenario Be3: "Both hit simultaneously"*
+- Shopee loses share AND SeaMoney NPLs spike
+- Garena bookings decline QoQ as Free Fire engagement fades
+- All three engines stall → stock re-tests 2022 lows
+
+---
+
+**Severe Bear (15–20% probability) — Price target: $35–48**
+
+*Sub-scenario S1: "Regulatory crackdown + credit crisis"*
+- Indonesia bans foreign e-commerce platforms or imposes punitive taxes
+- SEA-wide consumer credit contraction (rate hikes, unemployment spike)
+- SeaMoney forced to slow lending, write down loan book
+- Garena faces gaming regulation in key markets
+
+*Sub-scenario S2: "Cash burn spiral"*
+- To fight TikTok Shop, Shopee reverts to heavy subsidies (2019-era cash burn)
+- $4.5B FCF turns to near-zero as SE prioritizes market share defense
+- Market treats SE as "back to growth at any cost" — multiple collapses to 8–10x EBITDA
+
+---
+
+**Why this approach is better than "revenue declines 20%":**
+- Each sub-scenario points to a **specific competitor, product, or event** you can monitor
+- You can check quarterly: "Is TikTok Shop actually gaining share?" "Are NPLs rising?" "Is Free Fire engagement holding?"
+- The financial numbers (revenue growth, margins, multiples) are **outputs** of the story, not inputs
+- Different sub-scenarios within the same case can have different monitoring triggers
+
+### Worked Example: AutoZone (AZO) at $3,115
+
+**Top 3 revenue drivers:**
+1. **DIY retail** (Do-It-Yourself, ~75% of domestic revenue — consumers buying parts to fix their own cars)
+2. **DIFM / commercial** (Do-It-For-Me, ~30% of revenue — professional mechanics buying parts for customer repairs)
+3. **International** (Mexico + Brazil, ~15% of revenue, growing faster than US)
+
+---
+
+**Bull Case (20–25% probability) — Price target: $3,600–3,900**
+
+*"Recession drives repair over replace"*
+- US recession pushes consumers to repair aging cars instead of buying new ones
+- 12.6-year average car age → massive installed base needing parts
+- DIY same-store sales accelerate +4–6% (consumers trading down from dealer service)
+- DIFM grows as independent mechanics gain share from dealers
+- Tariffs on Chinese auto parts benefit AZO (domestic inventory advantage)
+
+---
+
+**Base Case (35–40% probability) — Price target: $3,100–3,400**
+
+*"Steady as she goes"*
+- DIY grows 1–3% (normal range), DIFM grows 5–8% (continuing share gains)
+- International grows 10%+ but is still a small contributor
+- LIFO charges normalize ($200M → $100M) as supply chain deflation arrives
+- Buyback machine continues ($5B+/year), EPS grows 8–12%
+
+---
+
+**Bear Case (25–30% probability) — Price target: $2,600–2,900**
+
+*Sub-scenario Be1: "Tariff cost absorption kills margins"*
+- US tariffs on auto parts (25%+ on Chinese imports) hit AZO's COGS
+- AZO can pass through 60–70% but absorbs the rest → gross margin contracts 100–150 bps
+- Revenue fine, but earnings miss for 2–3 quarters
+- Multiple compresses from 18x to 15x → stock falls 15–20%
+
+*Sub-scenario Be2: "Amazon cracks auto parts"*
+- Amazon expands same-day delivery for auto parts in 20+ markets
+- DIY customers (less brand-loyal, price-sensitive) shift 3–5% of purchases online
+- DIFM business is immune (mechanics need parts in 30 minutes, not 2 hours)
+- Slow bleed, not collapse — 2–3% annual revenue headwind
+
+---
+
+**Severe Bear (10–15% probability) — Price target: $2,200–2,500**
+
+*"EV adoption accelerates faster than expected"*
+- Federal EV subsidies + cheap Chinese EVs → new car sales boom
+- Average car age drops from 12.6 to 11 years over 3 years
+- DIY volume declines 5–8% as newer cars need less repair
+- This is the 15–20 year structural risk arriving early — unlikely but not impossible
+
+---
+
+**Notice the difference:** AZO's bull case is a *specific economic story* (recession → repair over replace), not "revenue grows 5%." The bear case isn't "margins compress" — it's "tariffs on Chinese auto parts force AZO to absorb costs it normally passes through."
+
+### How to Check If Your Scenarios Are Good Enough
+
+Ask yourself these 3 questions for each scenario:
+
+1. **"Could I write a headline for this?"** If your bear case is "revenue declines and margins compress," that's not a scenario — it's a financial outcome. A real scenario: "TikTok Shop captures 8% of Indonesian e-commerce GMV, forcing Shopee into a subsidy war." That's a headline.
+
+2. **"Can I monitor this in real time?"** Each sub-scenario should point to something you can track quarterly: a competitor's store count, a market share report, an NPL ratio, an FDA decision. If you can't monitor it, you can't update your probabilities.
+
+3. **"Does this story have a specific competitor, customer, product, or event?"** Vague scenarios ("macro deteriorates") are useless. Name the competitor. Name the product. Name the market. Specificity forces intellectual honesty.
+
+**E. For each scenario, estimate a price range.** Ask: "If this story plays out, where would the stock trade?"
 
 The simplest way: take the company's expected earnings (EPS) in that scenario and multiply by a reasonable PE ratio.
 
@@ -95,7 +256,7 @@ The simplest way: take the company's expected earnings (EPS) in that scenario an
 >
 > Example: If ZBRA earns $26 in a bear case and trades at 7x PE, the price would be $26 × 7 = $182.
 
-**D. Multiply each price by its probability and add them up.** This gives you the "probability-weighted expected price."
+**F. Multiply each price by its probability and add them up.** This gives you the "probability-weighted expected price."
 
 > Example:
 > - Bull ($270) × 15% = $40.50
@@ -109,8 +270,9 @@ The simplest way: take the company's expected earnings (EPS) in that scenario an
 ### Important Caveats
 
 - **Use probability ranges (30–40%), not exact numbers (35%).** Nobody can predict the future precisely.
-- **Trace the causal chain:** Business event → Financial impact → Valuation change → Price. Don't skip from "tariffs escalate" directly to "stock drops 30%."
+- **Trace the causal chain:** Product/service story → Revenue/margin impact → Valuation change → Price. Don't skip from "tariffs escalate" directly to "stock drops 30%."
 - **Include a time horizon.** "In the next 6–12 months" is more useful than an undated prediction.
+- **Update as new data arrives.** The whole point of product-level scenarios is that you can monitor them. When TikTok Shop publishes GMV numbers, or when AZO reports DIY same-store sales, update your probability weights.
 
 ---
 
@@ -375,6 +537,10 @@ After completing all four steps, combine the results:
 
 ```
 1. SCENARIOS: Build 4 futures (bull / base / bear / severe)
+   → First: identify top 2-3 revenue-generating products/services
+   → For each scenario: tell a specific story for EACH product
+   → Include 2-3 sub-scenarios per case (different product-level combos)
+   → Headline test: "Could I write a news headline for this scenario?"
    → Price each scenario (EPS × PE)
    → Weight by probability ranges
    → Get expected price
