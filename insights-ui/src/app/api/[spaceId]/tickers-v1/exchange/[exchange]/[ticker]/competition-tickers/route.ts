@@ -5,7 +5,7 @@ import { getCompetitorTickers } from '@/utils/ticker-v1-model-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { TickerV1VsCompetition, TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
+import { TickerV1VsCompetition, TickerV1Industry, TickerV1SubIndustry, TickerV1CachedScore } from '@prisma/client';
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string; exchange: string }> }): Promise<CompetitionResponse> {
   const { spaceId, ticker, exchange } = await context.params;
@@ -22,6 +22,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         vsCompetition?: TickerV1VsCompetition | null;
         industry: TickerV1Industry | null;
         subIndustry: TickerV1SubIndustry | null;
+        cachedScoreEntry?: TickerV1CachedScore | null;
       })
     | null = await prisma.tickerV1.findFirst({
     where: whereClause,
@@ -29,6 +30,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       vsCompetition: true,
       industry: true,
       subIndustry: true,
+      cachedScoreEntry: true,
     },
   });
 

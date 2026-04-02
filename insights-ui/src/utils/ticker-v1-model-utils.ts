@@ -42,6 +42,15 @@ export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult 
   })[];
 };
 
+export interface CompetitorTickerCachedScore {
+  businessAndMoatScore: number;
+  financialStatementAnalysisScore: number;
+  pastPerformanceScore: number;
+  futureGrowthScore: number;
+  fairValueScore: number;
+  finalScore: number;
+}
+
 export interface CompetitorTicker {
   companyName: string;
   companySymbol?: string;
@@ -54,6 +63,7 @@ export interface CompetitorTicker {
     name: string;
     symbol: string;
     exchange: string;
+    cachedScoreEntry?: CompetitorTickerCachedScore | null;
   };
 }
 
@@ -145,6 +155,16 @@ export async function getCompetitorTickers(
             name: true,
             symbol: true,
             exchange: true,
+            cachedScoreEntry: {
+              select: {
+                businessAndMoatScore: true,
+                financialStatementAnalysisScore: true,
+                pastPerformanceScore: true,
+                futureGrowthScore: true,
+                fairValueScore: true,
+                finalScore: true,
+              },
+            },
           },
         })
       : [];
@@ -164,7 +184,15 @@ export async function getCompetitorTickers(
       exchangeName: competition.exchangeName,
       detailedComparison: competition.detailedComparison,
       existsInSystem: !!existingTicker,
-      tickerData: existingTicker,
+      tickerData: existingTicker
+        ? {
+            id: existingTicker.id,
+            name: existingTicker.name,
+            symbol: existingTicker.symbol,
+            exchange: existingTicker.exchange,
+            cachedScoreEntry: existingTicker.cachedScoreEntry,
+          }
+        : undefined,
     };
   });
 }

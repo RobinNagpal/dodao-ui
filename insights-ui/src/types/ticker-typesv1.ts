@@ -61,6 +61,7 @@ export type CompetitionResponse = {
   ticker?: TickerV1 & {
     industry: TickerV1Industry | null;
     subIndustry: TickerV1SubIndustry | null;
+    cachedScoreEntry?: TickerV1CachedScore | null;
   };
 };
 

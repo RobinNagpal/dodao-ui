@@ -8,13 +8,14 @@ import CompetitionAnalysisButton from '@/app/stocks/[exchange]/[ticker]/Competit
 import TickerComparisonButton from '@/app/stocks/[exchange]/[ticker]/TickerComparisonButton';
 import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
+import CompetitionChartSection from '@/components/ticker-reportsv1/CompetitionChartSection';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -156,6 +157,23 @@ async function fetchQuarterlyChartData(exchange: string, ticker: string): Promis
     return wrapper.chartData;
   } catch (error) {
     console.error(`fetchQuarterlyChartData error for ${ticker}:`, error);
+    return null;
+  }
+}
+
+async function fetchCompetitionData(exchange: string, ticker: string): Promise<CompetitionResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
+
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchCompetitionData failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    return (await res.json()) as CompetitionResponse;
+  } catch (error) {
+    console.error(`fetchCompetitionData error for ${ticker}:`, error);
     return null;
   }
 }
@@ -643,6 +661,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const similarPromise = retryWithCanonical(fetchSimilar);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
+  const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
   // Derive dates for semantic footer (based solely on tickerData)
   const createdAtRaw = tickerData.createdAt || new Date();
@@ -686,6 +705,10 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
           <section className="mb-6">
             <SimilarTickers dataPromise={similarPromise} />
           </section>
+        </div>
+
+        <div className="mx-auto max-w-7xl">
+          <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
         </div>
 
         <TickerDetailsInfo data={tickerInfo} />
