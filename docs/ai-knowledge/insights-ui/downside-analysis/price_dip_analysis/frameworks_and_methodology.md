@@ -288,21 +288,24 @@ The three quantitative frameworks (Scenarios, Stress Test, Precedent) analyze fi
 
 2. **The bear case for many stocks IS a competitive scenario** — FRSH's biggest risk isn't growth deceleration, it's AI-native startups replacing helpdesk software. PRKS's biggest risk isn't a recession, it's Epic Universe opening next door.
 
-3. **Moat vulnerability score should adjust the probability weights in Framework 1.** A stock with a 5/5 vulnerability moat should have higher probability assigned to bear/severe-bear scenarios than one with a 1/5 moat.
+3. **Moat strength score should adjust the probability weights in Framework 1.** A stock with moat strength 0/5 should have higher probability assigned to bear/severe-bear scenarios than one with 5/5.
 
-### How Competitive Vulnerability Maps to Framework 1 Probabilities
+### How Moat Strength Maps to Framework 1 Probabilities
 
-| Moat Vulnerability | Suggested Bear Case Probability Adjustment |
-|--------------------|-------------------------------------------|
-| 1/5 (monopoly/irreplaceable) | Bear scenarios get −10pp probability (more likely to muddle through) |
-| 2/5 (strong switching costs) | No adjustment (standard weights) |
+*All ratings: 5/5 = strongest moat, 0/5 = no moat.*
+
+| Moat Strength | Suggested Bear Case Probability Adjustment |
+|---------------|-------------------------------------------|
+| 5/5 (monopoly/irreplaceable) | Bear scenarios get −10pp probability (more likely to muddle through) |
+| 4/5 (strong switching costs) | No adjustment (standard weights) |
 | 3/5 (moderate, replicable) | Bear scenarios get +5pp probability |
-| 4/5 (low switching costs, disruptable) | Bear scenarios get +10pp probability |
-| 5/5 (existential competitive risk) | Bear/severe bear combined should be 60%+ of probability weight |
+| 2/5 (low switching costs, disruptable) | Bear scenarios get +10pp probability |
+| 1/5 (barely any moat) | Bear + severe bear should be 55%+ combined |
+| 0/5 (existential competitive risk) | Bear + severe bear should be 60%+ combined |
 
 ### Step 4F: Quantifying Competitive Revenue Risk
 
-Moat scoring (1-5) tells you WHETHER competition matters. But for stocks scoring 3-5, you must also quantify HOW MUCH revenue is at risk. The process:
+Moat scoring (0-5) tells you WHETHER competition matters. But for stocks scoring 0-2, you must also quantify HOW MUCH revenue is at risk. The process:
 
 1. Identify the top 2 most direct competitors (not largest — most likely to take THIS company's customers)
 2. Estimate their growth trajectory and geographic/product overlap

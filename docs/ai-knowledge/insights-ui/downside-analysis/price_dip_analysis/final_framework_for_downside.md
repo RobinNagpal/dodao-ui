@@ -390,7 +390,7 @@ A stock can look cheap on every financial metric (low PE, high FCF yield, oversh
 
 **D. Identify the bear case competitive scenario.** What specific competitive threat could erode the moat in 2–3 years?
 
-**E. Score moat vulnerability (1–5).** 1 = nearly invulnerable, 5 = existentially threatened.
+**E. Score moat strength (0–5).** 5/5 = monopoly or irreplaceable position, 0/5 = no moat, existential competitive risk.
 
 **F. Quantify the competitive revenue risk from the top 2 direct competitors.** This is the step most investors skip — and it's the most important. Don't just say "competition is a risk." Calculate how much revenue the top 2 competitors could realistically take.
 
@@ -469,15 +469,16 @@ AI coding tools (GitHub Copilot, Cursor, Devin) reduce demand for freelance deve
 | PCTY | $23–45M | 1.4–2.8% | Low | Paychex+Paycor merger integration may actually benefit PCTY short-term. |
 | INVZ | $10–50M (trajectory) | Caps growth | Existential | Hesai Thailand factory (2027) removes INVZ's geopolitical positioning advantage. |
 
-### How Moat Vulnerability Changes the Analysis
+### How Moat Strength Changes the Analysis
 
-| Moat Score | What It Means for Downside | Adjustment |
-|------------|---------------------------|------------|
-| **1/5** | Competition is irrelevant. All risk is financial/macro. | Reduce bear case probabilities by ~10pp |
-| **2/5** | Strong moat. Downside is cycle/valuation, not competition. | No adjustment needed |
+| Moat Strength | What It Means for Downside | Adjustment |
+|---------------|---------------------------|------------|
+| **5/5** | Monopoly/irreplaceable. Competition is irrelevant. All risk is financial/macro. | Reduce bear case probabilities by ~10pp |
+| **4/5** | Strong moat. Downside is cycle/valuation, not competition. | No adjustment needed |
 | **3/5** | Moderate moat. Competition adds risk beyond financials. | Increase bear case probabilities by ~5pp |
-| **4/5** | Weak moat. "Cheap" may reflect permanent impairment. | Increase bear case probabilities by ~10pp |
-| **5/5** | Existential competitive risk. The business model may not survive. | Bear + severe bear should be 60%+ combined |
+| **2/5** | Weak moat. "Cheap" may reflect permanent impairment. | Increase bear case probabilities by ~10pp |
+| **1/5** | Barely any moat. Competitive risk is the dominant factor. | Bear + severe bear should be 55%+ combined |
+| **0/5** | No moat. Existential competitive risk. Business model may not survive. | Bear + severe bear should be 60%+ combined |
 
 ### What We Learned from 31 Stocks
 
@@ -489,7 +490,7 @@ This step revealed the single most important insight of the entire analysis:
 
 Stocks like AZO, AGM, and CRH have moats that literally cannot be competed away (regulatory monopoly, irreplaceable physical assets). Their declines are driven by temporary factors (LIFO charges, credit cycle, valuation reset) that reverse with time. These had the least further downside.
 
-Stocks like DUOL and FRSH looked safe on Steps 1–3 (overshot precedent, cheap on financials, strong balance sheet) but had eroding moats (AI disruption, low switching costs). The historical precedents (Netflix, Meta recoveries) didn't apply because those companies' moats were INTACT during their crashes — DUOL and FRSH's moats are actively being challenged by AI.
+Stocks like DUOL and FRSH looked safe on Steps 1–3 (overshot precedent, cheap on financials, strong balance sheet) but had weak moats (moat strength 1/5 — AI disruption, low switching costs). The historical precedents (Netflix, Meta recoveries) didn't apply because those companies' moats were INTACT during their crashes — DUOL and FRSH's moats are actively being challenged by AI.
 
 ---
 
@@ -501,10 +502,10 @@ After completing all four steps, combine the results:
 
 | Step 1 (Scenarios) | Step 2 (Stress Test) | Step 3 (Precedent) | Step 4 (Moat) | **Conclusion** |
 |--------------------|--------------------|-------------------|--------------|----------------|
-| Low expected downside | Current price near floor | Overshot precedent | Strong moat (1-2) | **Least further downside — likely near bottom** |
-| Low expected downside | Current price near floor | Overshot precedent | Weak moat (4-5) | **Caution — "cheap" may be permanent** |
-| High expected downside | Current price far from floor | Room to match precedent | Strong moat (1-2) | **Temporary pain — will recover but timing unclear** |
-| High expected downside | Current price far from floor | Room to match precedent | Weak moat (4-5) | **Most further downside — avoid or size small** |
+| Low expected downside | Current price near floor | Overshot precedent | Strong moat (4–5/5) | **Least further downside — likely near bottom** |
+| Low expected downside | Current price near floor | Overshot precedent | Weak moat (0–1/5) | **Caution — "cheap" may be permanent** |
+| High expected downside | Current price far from floor | Room to match precedent | Strong moat (4–5/5) | **Least further downside — likely near bottom** |
+| High expected downside | Current price far from floor | Room to match precedent | Weak moat (0–1/5) | **Most further downside — avoid or size small** |
 
 ### The Two Patterns That Predict Least Downside
 
@@ -515,7 +516,7 @@ After completing all four steps, combine the results:
 **Pattern 2 (Valid but weaker):** Bad news is known, priced, and reflected in depressed multiples + moat intact.
 - The market tends to overshoot when the catalyst is public information.
 - Examples: VITL (egg deflation public), ARE (lab oversupply public), ELF (tariff exposure public)
-- **Caution:** This pattern breaks when the moat is also weak. DUOL and FRSH appeared to fit this pattern but their competitive moats (4/5 vulnerability) mean the "bad news" may be structural, not temporary.
+- **Caution:** This pattern breaks when the moat is also weak. DUOL and FRSH appeared to fit this pattern but their moat strength (1/5) means the "bad news" may be structural, not temporary.
 
 ---
 
@@ -554,12 +555,12 @@ After completing all four steps, combine the results:
    → Has this stock already overshot or has room to match?
    → Is the current catalyst more or less severe?
 
-4. COMPETITIVE MOAT: Score 1–5
-   → 1-2: Competition is irrelevant. Focus on financials.
+4. COMPETITIVE MOAT: Score 0–5 (5 = strongest, 0 = no moat)
+   → 4-5: Competition is irrelevant. Focus on financials.
    → 3: Competition adds risk. Increase bear probabilities.
-   → 4-5: Competition may be the whole story. "Cheap" ≠ "safe."
+   → 0-2: Competition may be the whole story. "Cheap" ≠ "safe."
 
-   4F. COMPETITIVE REVENUE RISK: For moat 3-5 stocks, quantify:
+   4F. COMPETITIVE REVENUE RISK: For moat 0-2 stocks, quantify:
    → Top 2 competitors' growth trajectory and overlap
    → $ revenue at risk = market share shift × revenue per point
    → Translate to price impact via valuation multiple
@@ -570,3 +571,108 @@ COMBINE: Moat + revenue risk + financial position + precedent = final assessment
    Best case: Strong moat + temporary headwind
    Worst case: Weak moat + unresolved/structural risk
 ```
+
+---
+
+## Stock Report Template
+
+Every stock analysis should follow this two-section structure. The goal: a retail investor can read the Analysis in 5 minutes and make a decision. The Raw Information is there for anyone who wants to verify or dig deeper.
+
+### Section 1: Analysis (1–2 A4 pages)
+
+This is the only section most readers will read. No jargon without explanation. No repeated information across sub-sections. Every sentence should either inform or help the reader decide.
+
+**Structure: 2–4 sub-sections + 2–3 tables**
+
+---
+
+#### Sub-section 1: What This Company Does & Why the Stock Dropped
+
+*2–3 paragraphs. Plain English. A non-finance reader should understand this.*
+
+- What the company sells, to whom, and why it matters
+- The company's top 2–3 revenue-generating products/services with approximate revenue contribution
+- What caused the stock decline — the specific event(s), not "market conditions"
+- How much it's fallen and from when
+
+#### Sub-section 2: How Much Further Can It Fall?
+
+*2–3 paragraphs summarizing the scenario analysis results.*
+
+- The probability-weighted expected price and what it implies (further downside or upside)
+- The bear case story in 2–3 sentences — what specifically goes wrong, for which product, caused by whom
+- The bull case story in 2–3 sentences — what specifically goes right
+- The stress test finding: which variable matters most and where the floor is
+
+**Table 1 — Scenario Summary**
+
+| Scenario | Story (1 sentence) | Price Range | Probability |
+|----------|-------------------|-------------|-------------|
+| Bull | [Specific product-level story] | $XX–$XX | XX–XX% |
+| Base | [Specific product-level story] | $XX–$XX | XX–XX% |
+| Bear | [Specific product-level story] | $XX–$XX | XX–XX% |
+| Severe Bear | [Specific product-level story] | $XX–$XX | XX–XX% |
+| **Weighted Expected** | | **$XX** | |
+
+#### Sub-section 3: Competitive Position & Moat
+
+*2–3 paragraphs on competitive dynamics.*
+
+- Exact sub-industry and market position (rank, share)
+- Moat type and moat strength rating (X/5, where 5 = strongest, 0 = no moat)
+- The top 2 direct competitors and what they're doing
+- Revenue at risk from competition ($ and % of total revenue)
+- Whether the competitive threat is already showing up in recent results
+
+**Table 2 — Ratings Dashboard**
+
+| Rating | Score | What It Means |
+|--------|-------|---------------|
+| Moat Strength | X/5 | [One-line explanation] |
+| Financial Health | X/5 | [Based on leverage, FCF, profitability] |
+| Precedent Position | X/5 | [5 = overshot all precedents, 1 = room to fall] |
+| Overall Downside Risk | X/5 | [5 = least risk, 1 = most risk] |
+
+*All ratings: 5 = best / safest, 0 = worst / most dangerous.*
+
+#### Sub-section 4 (Optional): What to Watch
+
+*1–2 paragraphs. Only include if there are specific, monitorable triggers.*
+
+- The 2–3 things that will tell you whether the bear or bull case is playing out
+- Specific metrics to track (e.g., "Shopee's Indonesia GMV share in Q2 earnings," "SeaMoney NPL ratio," "7 Brew store count in Arizona")
+- Timeline: when you'll have enough data to update your view
+
+**Table 3 — Key Metrics to Monitor**
+
+| What to Watch | Current Value | Bull Signal | Bear Signal | Next Data Point |
+|---------------|--------------|-------------|-------------|-----------------|
+| [Metric 1] | [Value] | [Threshold] | [Threshold] | [Date/event] |
+| [Metric 2] | [Value] | [Threshold] | [Threshold] | [Date/event] |
+| [Metric 3] | [Value] | [Threshold] | [Threshold] | [Date/event] |
+
+---
+
+### Section 2: Raw Information
+
+Everything that supports the analysis. This section can be as long as needed — it's reference material, not reading material.
+
+**Include:**
+
+- **Financial snapshot:** All key ratios with values and status (the full ratio table)
+- **Scenario details:** The complete 4-scenario breakdown with sub-scenarios, ratio-by-ratio impact tables, and price calculations
+- **Stress test matrix:** The full 2D grid with all price intersections
+- **Precedent drawdowns:** The 3–5 historical episodes with peak-to-trough data and comparability assessment
+- **Competitive landscape:** Detailed competitor profiles, market share data, revenue-at-risk calculations
+- **Sources and links:** Earnings call transcripts, SEC filings, analyst reports, competitor data sources, market share reports
+- **Data as of date:** When each data point was last updated
+
+---
+
+### Template Formatting Rules
+
+1. **No repetition between Analysis and Raw Information.** The Analysis summarizes and interprets. Raw Information provides the evidence. Don't copy tables from Raw Information into Analysis — create new summary tables.
+2. **Analysis tables should have ≤6 columns and ≤8 rows.** If you need more, it belongs in Raw Information.
+3. **Every number in Analysis must appear with context.** Not "$75M revenue at risk" — say "$75M revenue at risk (8% of total), primarily from AI-native CX tools replacing the Freshdesk product."
+4. **Ratings are always X/5 with 5 = best.** Moat Strength 5/5 = monopoly/irreplaceable. Moat Strength 0/5 = no moat, existential competitive risk. This applies to all ratings in the report.
+5. **The Analysis should stand alone.** A reader who never opens Raw Information should still be able to make an informed decision.
