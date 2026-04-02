@@ -1,3 +1,5 @@
+import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
+import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
@@ -55,6 +57,36 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   const analysisTitle = `${tickerData.name} (${ticker}) Competitive Analysis`;
   const executiveSummary = `A comprehensive competitive analysis of ${tickerData.name} (${ticker}) in the ${industryContext} within the ${locationContext}, comparing it against ${competitorList} and evaluating market position, financial strengths, and competitive advantages.`;
 
+  // Build quadrant data points from tickers that exist in system with cached scores
+  const quadrantDataPoints: QuadrantDataPoint[] = [];
+
+  const mainCached = tickerData.cachedScoreEntry;
+  if (mainCached) {
+    const { qualityScore, valueScore } = computeQuadrantScores(mainCached);
+    quadrantDataPoints.push({
+      ticker: tickerData.symbol,
+      companyName: tickerData.name,
+      qualityScore,
+      valueScore,
+      classification: classifyStock(qualityScore, valueScore),
+      isMainTicker: true,
+    });
+  }
+
+  for (const competitor of competitorTickers) {
+    const cached = competitor.tickerData?.cachedScoreEntry;
+    if (!cached || !competitor.existsInSystem) continue;
+    const { qualityScore, valueScore } = computeQuadrantScores(cached);
+    quadrantDataPoints.push({
+      ticker: competitor.tickerData!.symbol,
+      companyName: competitor.companyName,
+      qualityScore,
+      valueScore,
+      classification: classifyStock(qualityScore, valueScore),
+      isMainTicker: false,
+    });
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
@@ -97,12 +129,94 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
             </p>
           </section>
 
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
-            <p className="text-color leading-relaxed" itemProp="abstract">
-              {executiveSummary}
-            </p>
-          </section>
+          {quadrantDataPoints.length >= 2 ? (
+            <section className="mb-6">
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                {/* Left: Executive Summary + classification breakdown */}
+                <div className="lg:w-1/2">
+                  <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
+                  <p className="text-color leading-relaxed mb-5" itemProp="abstract">
+                    {executiveSummary}
+                  </p>
+
+                  <div className="space-y-2.5">
+                    {quadrantDataPoints.map((dp) => (
+                      <div key={dp.ticker} className="flex items-start gap-2.5 text-sm">
+                        <span
+                          className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 mt-1.5"
+                          style={{
+                            backgroundColor: dp.isMainTicker
+                              ? '#f59e0b'
+                              : dp.classification === 'High Quality'
+                              ? '#34d399'
+                              : dp.classification === 'Investable'
+                              ? '#818cf8'
+                              : dp.classification === 'Value Play'
+                              ? '#38bdf8'
+                              : '#fb7185',
+                          }}
+                        />
+                        <div className="min-w-0">
+                          <div className="flex items-baseline gap-2 flex-wrap">
+                            <span className={dp.isMainTicker ? 'font-semibold text-amber-400' : 'text-gray-200'}>{dp.companyName}</span>
+                            <span className={dp.isMainTicker ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.ticker})</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                            <span>{dp.classification}</span>
+                            <span>·</span>
+                            <span>Quality {dp.qualityScore.toFixed(0)}%</span>
+                            <span>·</span>
+                            <span>Value {dp.valueScore.toFixed(0)}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Quadrant chart */}
+                <div className="lg:w-1/2">
+                  <CompetitionQuadrantChart dataPoints={quadrantDataPoints} mainTickerSymbol={ticker} />
+                </div>
+              </div>
+
+              {/* Server-rendered table for SEO — search engines can't read Canvas charts */}
+              <div className="sr-only" aria-hidden="false">
+                <table>
+                  <caption>
+                    Quality vs Value comparison of {tickerData.name} ({ticker}) and competitors
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Ticker</th>
+                      <th>Quality Score</th>
+                      <th>Value Score</th>
+                      <th>Classification</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {quadrantDataPoints.map((dp) => (
+                      <tr key={dp.ticker}>
+                        <td>{dp.companyName}</td>
+                        <td>{dp.ticker}</td>
+                        <td>{dp.qualityScore.toFixed(0)}%</td>
+                        <td>{dp.valueScore.toFixed(0)}%</td>
+                        <td>{dp.classification}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : (
+            <section className="mb-6">
+              <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
+              <p className="text-color leading-relaxed" itemProp="abstract">
+                {executiveSummary}
+              </p>
+            </section>
+          )}
 
           {vsCompetition?.overallAnalysisDetails && (
             <section className="mb-6" itemProp="articleBody">
