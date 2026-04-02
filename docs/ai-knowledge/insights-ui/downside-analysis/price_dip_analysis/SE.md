@@ -41,7 +41,7 @@ The stress test matrix shows that at 16x EV/EBITDA (SE's 3-year median is ~17x, 
 
 SE holds the #1 position in Southeast Asian e-commerce with 48-52% market share through Shopee, an integrated ecosystem spanning e-commerce, digital payments, and gaming that no competitor replicates. The $127B GMV, 700M addressable population in SE Asia, and rising internet penetration provide a structural secular growth tailwind. The $4.5B FCF and $1B buyback program demonstrate cash generation at scale. Garena's Free Fire, despite declining from pandemic peaks, remains a globally significant mobile game with rebounding engagement.
 
-However, TikTok Shop is a genuine structural threat — not speculation, but visible in merchant data across every SE Asian market. Shopee's Vietnam market share has declined from 68% to 56% as TikTok Shop gained. Revenue at risk from TikTok Shop is estimated at $1.1-1.4B (6-8% of total revenue), the largest dollar amount across our coverage universe. Shopee's thin margins (operating margin 8.7%) leave little room for competitive response without returning to the subsidize-growth cycle. SeaMoney's $9.2B loan book growing at 80% YoY is the most dangerous asset: credit cycles in emerging markets always lag loan growth by 12-24 months, and the +67% Q4 provision spike may be the early signal. The Q4 earnings pattern — revenue +38% but COGS +40% — shows negative operating leverage.
+The top 2 direct competitors are TikTok Shop (ByteDance) and Lazada (Alibaba). TikTok Shop is a genuine structural threat — not speculation, but visible in merchant data across every SE Asian market. Shopee's Vietnam market share has declined from 68% to 56% as TikTok Shop gained share. Lazada, backed by Alibaba, remains #2 in Southeast Asia but has been losing share and is less of an immediate threat. Revenue at risk from TikTok Shop is estimated at $1.1-1.4B (6-8% of total revenue), the largest dollar amount across our coverage universe. Shopee's thin margins (operating margin 8.7%) leave little room for competitive response without returning to the subsidize-growth cycle. SeaMoney's $9.2B loan book growing at 80% YoY is the most dangerous asset: credit cycles in emerging markets always lag loan growth by 12-24 months, and the +67% Q4 provision spike may be the early signal. The Q4 earnings pattern — revenue +38% but COGS +40% — shows negative operating leverage.
 
 SE's moat (3/5 — network effects + ecosystem integration) is moderate: #1 market share is real, but TikTok Shop demonstrates it can be eroded. Precedent-implied further downside: -15 to -45%. MercadoLibre recovered 3x from its 2022 trough; Grab never recovered from its 2022 crash. The difference is credit quality plus competitive moat strength — SE sits between these outcomes.
 
@@ -194,6 +194,32 @@ Southeast Asian credit cycles are volatile. Indonesia, Vietnam, and Thailand hav
 2021-2022 drawdown bottomed at $40. If this cycle rhymes, $40-55 is likely floor. Current $79 is 50-100% above trough levels. Precedent-implied further downside: -15 to -45%.
 
 **Key distinction:** In the 2021-2022 crash, Shopee's moat was intact — it was still gaining share. In the current decline, TikTok Shop is actively eroding Shopee's market share (Vietnam: 68% -> 56%). This makes the MELI precedent (moat intact, recovered 3x) less applicable and the Grab precedent (moat unclear, never recovered) more relevant.
+
+## Competitive Landscape Detail
+
+**Sub-industry:** Southeast Asian e-commerce marketplace + consumer fintech lending + mobile gaming
+
+**Market position:** #1 in SE Asian e-commerce (48-52% GMV share via Shopee)
+
+**Top competitors:**
+
+| Competitor | What They Do | Threat Level | Evidence |
+|-----------|-------------|-------------|---------|
+| **TikTok Shop (ByteDance)** | Social commerce integrated into TikTok app; leverages 325M+ SE Asian MAU | High — active share gain | Shopee Vietnam share declined 68% to 56%; Indonesia gaining 5-8pp; merchant data shows TikTok GMV growing 60%+ YoY |
+| **Lazada (Alibaba)** | Traditional e-commerce marketplace, #2 in SE Asia | Low-Moderate — losing relevance | Alibaba has deprioritized Lazada investment; share declining in most markets; management turnover |
+
+**Revenue at risk calculation (TikTok Shop):**
+
+```
+TikTok Shop gains 5-8pp of GMV share in SE Asia (already visible in Vietnam)
+-> SE Asia GMV ~$250B total market; Shopee $127B (~50%)
+-> 5-8pp share loss = $12.5-20B GMV shift to TikTok
+-> At Shopee's ~2% take rate, that's $250-400M in direct marketplace revenue at risk
+-> But the bigger impact is margin: defending share requires subsidies
+-> If Shopee returns to 2019-era subsidies, EBITDA impact could be $1.0-1.5B
+-> Total revenue + EBITDA-at-risk: $1.1-1.4B (6-8% of total revenue)
+-> Severity: Moderate (but largest absolute dollar amount in coverage)
+```
 
 ## Sources
 

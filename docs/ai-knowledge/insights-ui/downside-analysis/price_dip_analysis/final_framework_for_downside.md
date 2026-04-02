@@ -651,6 +651,18 @@ The MANDATORY tables are:
 
 *All ratings: 5 = best / safest, 1 = worst / most dangerous.*
 
+**Scoring rubrics:**
+
+| Score | Moat Strength | Financial Health | Precedent Position | Overall Downside Risk |
+|-------|--------------|-----------------|-------------------|---------------------|
+| **5** | Monopoly/regulatory (AGM, CRH) | Net cash, >10% FCF yield, growing margins | Declined >50% more than worst precedent | Strong moat + temporary headwind + overshot precedent |
+| **4** | High switching costs/network (ZBRA) | Low debt (<1x), >7% FCF yield, stable margins | Declined >25% more than average precedent | Strong moat + financial/cycle risk only |
+| **3** | Moderate moat, some threat (SE) | Moderate debt (1-3x), 4-7% FCF yield, mixed margins | Roughly matched historical precedent | Mixed signals — some protection, some risk |
+| **2** | Weak moat, active erosion (FRSH) | High debt (>3x), <4% FCF yield, or declining margins | Room to fall 15-30% to match precedent | Weak moat + unresolved structural risk |
+| **1** | No moat, existential threat (INVZ) | Distressed, cash burn, covenant risk | Room to fall >30% to match precedent | Weak moat + deteriorating fundamentals + room to fall |
+
+**Overall Downside Risk is NOT an average.** It is a judgment call weighted heavily by moat strength and precedent position. Use the Decision Matrix in Step 5 as the primary guide.
+
 #### What to Watch
 
 *1-2 paragraphs on the 2-3 most important monitorable triggers.*
