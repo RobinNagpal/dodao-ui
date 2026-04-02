@@ -22,6 +22,7 @@ import { AnalysisTemplateParameter } from '@prisma/client';
 import DeleteConfirmationModal from '../../industry-management/DeleteConfirmationModal';
 import { TrashIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import AdminNav from '@/app/admin-v1/AdminNav';
 
 export default function AnalysisTemplateDetailPage() {
   const params = useParams() as { analysisTemplateId: string };
@@ -227,6 +228,7 @@ export default function AnalysisTemplateDetailPage() {
   if (!template) {
     return (
       <PageWrapper>
+        <AdminNav />
         <div className="max-w-7xl mx-auto py-8">
           <div className="bg-gray-800 rounded-lg p-8 text-center">
             <h2 className="text-xl font-semibold mb-2">Template not found</h2>
@@ -239,6 +241,7 @@ export default function AnalysisTemplateDetailPage() {
 
   return (
     <PageWrapper>
+      <AdminNav />
       <div className="max-w-7xl mx-auto">
         <div className="pt-2 pb-6">
           {/* Header */}

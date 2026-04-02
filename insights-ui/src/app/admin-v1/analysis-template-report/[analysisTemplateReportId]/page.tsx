@@ -6,6 +6,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChartBarIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import AnalysisResultsTable from '@/components/analysis-templates/AnalysisResultsTable';
+import AdminNav from '@/app/admin-v1/AdminNav';
 
 type ParameterReportWithRelations = AnalysisTemplateParameterReport & {
   analysisTemplateParameter: AnalysisTemplateParameter & {
@@ -65,6 +66,7 @@ export default async function AnalysisTemplateReportPage({ params }: AnalysisTem
 
   return (
     <div className="w-full mx-auto max-w-7xl lg:px-6 py-2 md:py-4 lg:py-8 px-1 sm:px-2">
+      <AdminNav />
       <div className="pt-2 pb-6">
         {/* Header */}
         <div className="mb-6">

@@ -13,6 +13,7 @@ import { ProcessingStatus } from '@/types/public-equity/ticker-report-types';
 import { getAnalysisResultColorClasses } from '@/utils/score-utils';
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
 import { ChartBarIcon } from '@heroicons/react/24/outline';
+import AdminNav from '@/app/admin-v1/AdminNav';
 
 interface AnalysisParameterStatus {
   parameterId: string;
@@ -138,6 +139,7 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
 
   return (
     <PageWrapper>
+      <AdminNav />
       <div className="max-w-7xl mx-auto">
         <div className="pt-2 pb-6">
           {/* Header */}
