@@ -47,6 +47,7 @@ export interface FinancialInfoResponse {
   totalRevenue: string | null; // Keep as formatted string (e.g., "461.60B")
   netIncome: string | null; // Keep as formatted string (e.g., "81.02B")
   forwardPE: Num;
+  beta: Num;
 }
 
 /**
@@ -88,6 +89,8 @@ function convertSummaryToFinancialInfo(summary: StockFundamentalsSummary, symbol
   const totalRevenue = summary.revenueTtm || null;
   const netIncome = summary.netIncomeTtm || null;
 
+  const beta = num(summary.beta);
+
   return {
     symbol,
     currency: null, // Currency not available in summary
@@ -106,6 +109,7 @@ function convertSummaryToFinancialInfo(summary: StockFundamentalsSummary, symbol
     totalRevenue,
     netIncome,
     forwardPE,
+    beta,
   };
 }
 

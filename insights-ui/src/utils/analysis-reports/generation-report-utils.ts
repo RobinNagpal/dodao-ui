@@ -24,6 +24,7 @@ import {
   extractFinancialDataForAnalysis,
   extractFinancialDataForPastPerformance,
   extractKpisDataForAnalysis,
+  loadFairValueValuationSnapshot,
 } from '@/utils/stock-analyzer-scraper-utils';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
@@ -205,11 +206,14 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
   // Fetch existing category analyses to feed into Fair Value
   const tickerWithAnalysisData = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
 
+  // Always refresh market summary from scraper (not the 7-day rule) so fair value uses latest price
+  const valuationSnapshot = await loadFairValueValuationSnapshot(tickerRecord);
+
   // Get analysis factors for FairValue category
   const analysisFactors: AnalysisCategoryFactor[] = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
 
   // Prepare input for the prompt
-  const inputJson = prepareFairValueInputJson(tickerWithAnalysisData, analysisFactors);
+  const inputJson = prepareFairValueInputJson(tickerWithAnalysisData, analysisFactors, valuationSnapshot);
 
   // Call the LLM
   await getLLMResponseForPromptViaInvocationViaLambda({

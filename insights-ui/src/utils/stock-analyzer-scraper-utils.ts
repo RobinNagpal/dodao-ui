@@ -324,6 +324,69 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   return scraperInfo;
 }
 
+const summaryFetchConfigFound = FETCH_CONFIGS.find((c) => c.field === 'summary');
+if (!summaryFetchConfigFound) {
+  throw new Error('stock-analyzer-scraper-utils: summary fetch config is missing from FETCH_CONFIGS');
+}
+const SUMMARY_FETCH_CONFIG: FetchConfig = summaryFetchConfigFound;
+
+/**
+ * Always re-fetches the market summary from the scraper (bypasses the 7-day freshness rule).
+ * Use for Fair Value so last close / snapshot time matches the latest quote, without refreshing all other sections.
+ * If no scraper row exists yet, falls back to a full {@link fetchAndUpdateStockAnalyzerData} bootstrap.
+ */
+export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promise<TickerV1StockAnalyzerScrapperInfo> {
+  if (!ticker.stockAnalyzeUrl) {
+    throw new Error(`Ticker ${ticker.symbol} does not have a stockAnalyzeUrl`);
+  }
+
+  const existingInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.findUnique({
+    where: { tickerId: ticker.id },
+  });
+
+  if (!existingInfo) {
+    return fetchAndUpdateStockAnalyzerData(ticker);
+  }
+
+  const config = SUMMARY_FETCH_CONFIG;
+  const allErrors: any[] = existingInfo.errors ? [...(existingInfo.errors as any[])] : [];
+  const updateData: Partial<Prisma.TickerV1StockAnalyzerScrapperInfoUpdateInput> = {};
+
+  try {
+    const result = await fetchFromLambda(ticker.stockAnalyzeUrl, config.endpoint, config.view);
+    const timestampValue = new Date();
+    (updateData as Record<string, unknown>)[config.field] = result.data;
+    (updateData as Record<string, unknown>)[config.lastUpdatedField] = timestampValue;
+    if (result.errors && result.errors.length > 0) {
+      allErrors.push(
+        ...result.errors.map((err: any) => ({
+          endpoint: config.endpoint,
+          error: err,
+          timestamp: new Date().toISOString(),
+        }))
+      );
+    }
+  } catch (error) {
+    console.error(`Error fetching ${config.endpoint} for ${ticker.symbol}:`, error);
+    allErrors.push({
+      endpoint: config.endpoint,
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
+  }
+
+  updateData.errors = allErrors;
+
+  const scraperInfo = await prisma.tickerV1StockAnalyzerScrapperInfo.update({
+    where: { tickerId: ticker.id },
+    data: updateData,
+  });
+
+  console.log(`Refreshed market summary only for ticker ${ticker.symbol} (fair value)`);
+  revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
+  return scraperInfo;
+}
+
 /**
  * Ensure stock analyzer data is available and fresh for a ticker
  * This is the main function to call from route handlers
@@ -503,6 +566,68 @@ export function extractFinancialDataForPastPerformance(scraperInfo: TickerV1Stoc
         }
       : { meta: {}, summary: {}, last5Annuals: [] },
   };
+}
+
+/**
+ * Coerce unknown to a finite number (same semantics as financial-info route).
+ */
+function coerceSummaryNumber(v: unknown): number | null {
+  if (typeof v === 'number') return Number.isFinite(v) ? v : null;
+  if (typeof v === 'string') {
+    const cleaned = v.replace(/,/g, '').trim();
+    const x = Number(cleaned);
+    return Number.isFinite(x) ? x : null;
+  }
+  return null;
+}
+
+export interface FairValueValuationSnapshot {
+  /** e.g. "April 2, 2026" — use for "today" / report date in the fair value prompt */
+  valuationReportDateDisplay: string;
+  /** Last close (or open fallback), aligned with Current Price on the ticker page */
+  lastClosePriceUsd: number | null;
+  /** ISO 8601 timestamp when summary was last refreshed from the scraper */
+  marketSnapshotFetchedAt: string | null;
+}
+
+/**
+ * Builds authoritative date/price context for Fair Value prompts from stored scraper summary.
+ * For up-to-date price, call {@link refreshMarketSummaryForFairValue} first (or use {@link loadFairValueValuationSnapshot}).
+ */
+export function buildFairValueValuationSnapshotFromScraperInfo(
+  scraperInfo: TickerV1StockAnalyzerScrapperInfo,
+  reportDate: Date = new Date()
+): FairValueValuationSnapshot {
+  const summary = scraperInfo.summary as StockFundamentalsSummary;
+  const valuationReportDateDisplay = reportDate.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+  if (isEmptySummary(summary)) {
+    return {
+      valuationReportDateDisplay,
+      lastClosePriceUsd: null,
+      marketSnapshotFetchedAt: scraperInfo.lastUpdatedAtSummary?.toISOString() ?? null,
+    };
+  }
+
+  const lastClosePriceUsd = coerceSummaryNumber(summary.previousClose) ?? coerceSummaryNumber(summary.open);
+
+  return {
+    valuationReportDateDisplay,
+    lastClosePriceUsd,
+    marketSnapshotFetchedAt: scraperInfo.lastUpdatedAtSummary?.toISOString() ?? null,
+  };
+}
+
+/**
+ * Refreshes market summary (always) then builds the fair value valuation snapshot for the LLM input.
+ */
+export async function loadFairValueValuationSnapshot(ticker: TickerV1): Promise<FairValueValuationSnapshot> {
+  const scraperInfo = await refreshMarketSummaryForFairValue(ticker);
+  return buildFairValueValuationSnapshotFromScraperInfo(scraperInfo);
 }
 
 /**

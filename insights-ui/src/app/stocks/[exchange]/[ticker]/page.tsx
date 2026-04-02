@@ -253,7 +253,7 @@ function FinancialInfoSkeleton(): JSX.Element {
         <FinancialCard label="EPS (Diluted TTM)" isLoading={true} />
         <FinancialCard label="P/E Ratio" isLoading={true} />
         <FinancialCard label="Forward P/E" isLoading={true} />
-        <FinancialCard label="Avg Volume (3M)" isLoading={true} />
+        <FinancialCard label="Beta" isLoading={true} />
         <FinancialCard label="Day Volume" isLoading={true} />
         <FinancialCard label="Total Revenue (TTM)" isLoading={true} />
         <FinancialCard label="Net Income (TTM)" isLoading={true} />

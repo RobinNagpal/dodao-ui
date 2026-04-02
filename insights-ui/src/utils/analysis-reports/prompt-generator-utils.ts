@@ -7,8 +7,14 @@ import {
   fetchBusinessMoatAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithAnalysisData,
   fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry,
-  fetchTickerRecordWithAnalysisData,
 } from '@/utils/analysis-reports/get-report-data-utils';
+import {
+  ensureStockAnalyzerDataIsFresh,
+  extractFinancialDataForAnalysis,
+  extractFinancialDataForPastPerformance,
+  extractKpisDataForAnalysis,
+  loadFairValueValuationSnapshot,
+} from '@/utils/stock-analyzer-scraper-utils';
 import {
   prepareBaseTickerInputJson,
   prepareBusinessAndMoatInputJson,
@@ -16,15 +22,8 @@ import {
   prepareFinalSummaryInputJson,
   prepareFinancialAnalysisInputJson,
   prepareFutureGrowthInputJson,
-  prepareInvestorAnalysisInputJson,
   preparePastPerformanceInputJson,
 } from '@/utils/analysis-reports/report-input-json-utils';
-import {
-  ensureStockAnalyzerDataIsFresh,
-  extractFinancialDataForAnalysis,
-  extractFinancialDataForPastPerformance,
-  extractKpisDataForAnalysis,
-} from '@/utils/stock-analyzer-scraper-utils';
 import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
 import { AnalysisCategoryFactor } from '@prisma/client';
@@ -173,8 +172,9 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
 
     case ReportType.FAIR_VALUE:
       const tickerV1WithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(symbol, exchange);
+      const valuationSnapshotFair = await loadFairValueValuationSnapshot(tickerRecord);
       const analysisFactorsFair: AnalysisCategoryFactor[] = await fetchAnalysisFactors(tickerRecord, TickerAnalysisCategory.FairValue);
-      inputJson = prepareFairValueInputJson(tickerV1WithAnalysis, analysisFactorsFair);
+      inputJson = prepareFairValueInputJson(tickerV1WithAnalysis, analysisFactorsFair, valuationSnapshotFair);
       promptKey = 'US/public-equities-v1/fair-value';
       break;
 
