@@ -1,31 +1,94 @@
 ## Zillow Group (ZG) — Price Dip Analysis
 
-**Current price:** ~$40.63 (March 31, 2026)
-**52-week high:** $90.22
-**52-week low:** $40.00 (near current levels)
-**Already down:** ~55% from high
-
-Zillow posted FY 2025 revenue of $2.58B (+16% YoY), GAAP net income of $23M (first profitable year after losses), adjusted EBITDA of $230M (+435% YoY), and free cash flow of $420M (+36% YoY). Q1 2026 guided revenue $700–710M, EBITDA $160–175M. Management targets mid-teens revenue growth in 2026 with continued EBITDA margin expansion.
-
-**Business context:** Zillow is the dominant U.S. real estate marketplace with 235M average monthly unique users and 9.6B annual website visits. Revenue comes from Residential ($1.7B, +7%), Rentals ($630M, +39%), Mortgages ($199M, +37%), and Other ($50M). The company exited iBuying (Zillow Offers) in 2021 after a $528M loss. It now focuses on being a "housing super app" — connecting agents, lenders, and renters. The competitive landscape shifted dramatically when Rocket Companies acquired Redfin for $1.75B and then partnered with Compass to push 500K+ listings onto Redfin, creating the first vertically integrated search→agent→mortgage competitor.
+**Current price:** ~$40.63 (March 31, 2026) | **52-week high:** $90.22 | **52-week low:** $40.00 | **Down ~55% from high**
 
 ---
 
-## Current Ratio Snapshot
+# Section 1: Analysis
 
-| Ratio | Value | Status |
-|-------|-------|--------|
-| PE Ratio | 758.00 | Terrible (barely profitable — $23M net income on $10B+ market cap) |
-| Forward PE | 32.61 | Bad (expensive for mid-teens growth) |
-| PS | 6.35 | Bad |
+## 1. What the Company Does & Why It Dropped
+
+Zillow is the dominant U.S. real estate marketplace — 235M average monthly unique users, 9.6B annual website visits, roughly 2x the traffic of #2 Realtor.com. Revenue comes from three products:
+
+1. **Residential / Premier Agent** ($1.7B, +7% YoY) — agents pay Zillow for advertising and lead referrals. This is the core business and ~66% of revenue.
+2. **Rentals** ($630M, +39% YoY) — landlords and property managers pay for listing visibility. Fastest-growing segment, least competitively threatened.
+3. **Mortgages / Zillow Home Loans** ($199M, +37% YoY) — direct mortgage originations. Growing fast but highly rate-sensitive.
+
+The company exited iBuying (Zillow Offers) in 2021 after a $528M loss and now positions itself as a "housing super app" connecting agents, lenders, and renters.
+
+**Why the stock dropped 55%:** Three forces converged. First, the Rocket-Redfin-Compass alliance — Rocket acquired Redfin for $1.75B and partnered with Compass to push 500K+ listings onto Redfin, creating the first vertically integrated search-to-agent-to-mortgage competitor that directly threatens Zillow's agent advertising model. Second, mortgage rates stuck at ~6.3% have suppressed housing transaction volume, limiting the core Residential segment to only 7% growth. Third, despite $420M in free cash flow, GAAP net income is only $23M and stock-based compensation dilutes shareholders by -8.56% annually — the $420M FCF does not even cover the SBC, meaning the company is destroying shareholder value even as the business grows.
+
+## 2. How Much Further Can It Fall
+
+**Probability-weighted expected price: ~$31 (24% further downside from $40.63).**
+
+| Scenario | Probability | Price Range | Change from $40.63 | Key Trigger |
+|----------|-------------|-------------|---------------------|-------------|
+| Bull: Housing warms up | 15% | $53–59 | +30 to 45% | Rates drop to 5.8%, volume +10%, Rocket threat delayed |
+| Base: Muddle through | 30% | $33–36 | -12 to 18% | Mid-teens growth delivered, SBC dilution -7%, no re-rating |
+| Bear: Competitive disruption | 35% | $26–30 | -25 to 35% | Rocket-Redfin takes agent share, Residential stagnates, FTC overhang |
+| Severe: Housing recession | 20% | $18–22 | -45 to 55% | Transaction volume collapses, revenue declines, GAAP loss returns |
+
+The bear scenario carries the highest probability (35%) because the Rocket-Redfin-Compass alliance is not theoretical — Rocket spent $1.75B on Redfin and immediately locked in Compass's 500K listings, creating a closed loop (Compass listings → Redfin search → Rocket mortgage) that puts Zillow outside the transaction. Historically, when advertising-dependent platforms face a vertically integrated competitor, they lose pricing power.
+
+**Stress test insight:** Multiple compression is the primary risk. At $2.7B revenue and 10% EBITDA margin, the difference between 30x EV/EBITDA ($36) and 20x ($25) is a 31% swing. Revenue and margin combined only swing +/-$8 at a fixed 30x. ZG is a multiple bet, and the multiple depends on whether Zillow retains its moat against Rocket-Redfin.
+
+## 3. Competitive Position & Moat
+
+| Rating | Score | Assessment |
+|--------|-------|------------|
+| Moat Strength | 4/5 | #1 U.S. real estate traffic, 235M monthly uniques, 2x #2 Realtor.com. Network effects + Zestimate brand. BUT: Rocket-Redfin-Compass alliance is the first credible end-to-end competitor. |
+| Financial Health | 2/5 | Net cash position, good balance sheet. BUT: GAAP barely profitable ($23M), ROIC -0.93%, -8.56% SBC dilution — $420M FCF does not cover SBC. Value destruction for shareholders. |
+| Precedent Position | 2/5 | -55% from high, but still expensive at 30x+ EBITDA with negative ROIC. Has room to fall if competitive threat materializes. |
+| **Overall Downside Risk** | **2/5** | Strong traffic moat but massive SBC dilution + competitive threat + housing rate sensitivity = significant further downside. |
+
+Zillow's moat is real — no competitor matches its traffic volume or brand recognition for home search. The Zestimate has become a cultural reference point. But the moat is in the top of the funnel (search), not the transaction. Rocket-Redfin-Compass is building a moat around the full transaction, which may prove more defensible and more monetizable. If agents get better conversion from Redfin/Compass leads (because a mortgage is already pre-approved via Rocket), they will shift ad spend away from Zillow regardless of traffic.
+
+## 4. What to Watch
+
+| Catalyst | Timing | Signal |
+|----------|--------|--------|
+| Q1 2026 earnings | May 2026 | Guided $700–710M revenue, $160–175M EBITDA. A miss signals demand weakness. |
+| Rocket-Redfin integration milestones | Ongoing | Watch for Redfin launching integrated mortgage features. Any quarter where Redfin traffic grows faster than Zillow is a warning. |
+| Mortgage rate trajectory | Monthly | Below 6% = bullish for housing volume. Above 6.5% = bearish. |
+| NAR existing home sales | Monthly | Below 4.0M = recession territory for housing. |
+| SBC trajectory | Quarterly | Guided -10% decline in 2026. Net dilution dropping below -5% is positive. Staying above -8% means value destruction continues. |
+| FTC investigation | Unknown | Any formal complaint or settlement around real estate portal practices could hit the stock 10–15%. |
+
+---
+
+# Section 2: Raw Information
+
+## Financial Summary (FY2025)
+
+Revenue $2.58B (+16% YoY). GAAP net income $23M (first profitable year after years of losses). Adjusted EBITDA $230M (+435% YoY, ~8.9% margin). Free cash flow $420M (+36% YoY). Q1 2026 guidance: revenue $700–710M, EBITDA $160–175M. Management targets mid-teens revenue growth in 2026 with continued EBITDA margin expansion.
+
+Market cap ~$10B (245M diluted shares). EV ~$9.5B.
+
+## Segment Revenue Detail
+
+| Segment | FY2025 Revenue | YoY Growth | Notes |
+|---------|---------------|------------|-------|
+| Residential / Premier Agent | $1.7B | +7% | Core agent advertising; directly threatened by Rocket-Redfin |
+| Rentals | $630M | +39% | Landlord/PM advertising; fastest growing, least at risk |
+| Mortgages (Zillow Home Loans) | $199M | +37% | Origination volume $4.75B (+52%); rate-sensitive |
+| Other | $50M | — | Miscellaneous |
+
+## Ratio Snapshot
+
+| Ratio | Value | Assessment |
+|-------|-------|------------|
+| PE Ratio | 758.00 | Terrible ($23M net income on $10B+ market cap) |
+| Forward PE | 32.61 | Expensive for mid-teens growth |
+| PS | 6.35 (recalc: ~3.9x at $40.63) | Elevated |
 | PB | 3.36 | Okay |
 | P/TBV | 3.55 | Okay |
-| P/FCF | 69.80 | Bad |
-| P/OCF | 44.57 | Bad |
-| EV/Sales | 6.02 | Bad |
-| EV/EBITDA | 60.04 | Terrible |
+| P/FCF | 69.80 (recalc: ~24x at $40.63) | Elevated |
+| P/OCF | 44.57 | Elevated |
+| EV/Sales | 6.02 (recalc: ~3.7x) | Elevated |
+| EV/EBITDA | 60.04 (recalc: ~41x) | Expensive |
 | EV/EBIT | -457.39 | N/A (operating loss) |
-| EV/FCF | 66.18 | Bad |
+| EV/FCF | 66.18 | Elevated |
 | Debt/Equity | 0.09 | Good (minimal debt) |
 | Debt/EBITDA | 1.76 | Good |
 | Net Debt/Equity | -0.17 | Good (net cash) |
@@ -33,237 +96,122 @@ Zillow posted FY 2025 revenue of $2.58B (+16% YoY), GAAP net income of $23M (fir
 | Quick Ratio | 2.13 | Good |
 | Current Ratio | 3.13 | Good |
 | ROE | 0.47% | Terrible |
-| ROA | -0.64% | Bad (negative) |
-| ROIC | -0.93% | Bad (negative — destroying value) |
-| ROCE | -0.68% | Bad |
-| Asset Turnover | 0.45 | Bad |
+| ROA | -0.64% | Negative |
+| ROIC | -0.93% | Negative — destroying value |
+| ROCE | -0.68% | Negative |
+| Asset Turnover | 0.45 | Low |
 | Earnings Yield | 0.13% | Terrible |
-| FCF Yield | 1.43% | Bad |
-| Buyback Yield | -8.56% | Terrible (massive SBC dilution) |
+| FCF Yield | 1.43% (recalc: ~4.2%) | Low |
+| Buyback Yield | -8.56% | Massive SBC dilution |
 | Total Shareholder Return | -8.56% | Terrible |
 
-**At $40.63/share:** Market cap ~$10B (245M diluted shares), EV ~$9.5B. Recalculated: PS ~3.9x, EV/Sales ~3.7x, EV/EBITDA ~41x, P/FCF ~24x, FCF Yield ~4.2%.
+## Full Scenario Breakdowns
 
----
+### Scenario 1: Housing Warms Up (15% probability) — Price $53–59
 
-## The Zillow Paradox: Strong Platform, Terrible Unit Economics for Shareholders
+Mortgage rates drift to 5.8–6.0% by H2 2026 as the Fed cuts modestly. Existing home sales tick up to 4.5M (+10% YoY). Residential revenue re-accelerates to +12–15% as agent ad spend increases with transaction volume. Rentals continues 30%+ growth. Mortgage originations reach $7B+ ($250M+ revenue).
 
-Zillow has a split personality:
-- **Strengths:** Dominant traffic position (235M monthly uniques), fast-growing Rentals (+39%) and Mortgages (+37%), strong balance sheet (net cash, 3.1x current ratio), $420M FCF, declining SBC.
-- **Weaknesses:** GAAP EPS of $0.09 on a $40 stock (PE 758x), ROE 0.47%, ROIC -0.93%, buyback yield of -8.56% (massive dilution from SBC). The company generates real cash flow but almost none of it reaches shareholders because SBC eats it all.
+Rocket-Redfin threat proves slower to materialize — integration friction (Rocket is a fintech learning to run a brokerage) creates a 12–18 month window. Agents stay with Zillow because it still drives the most traffic.
 
-**Why the stock crashed:** The Rocket-Redfin-Compass alliance creates the first credible end-to-end competitor. Mortgage rates stuck at ~6.3% keep housing transaction volume suppressed. The stock was priced for a housing recovery that hasn't materialized.
+EBITDA margin expands from ~9% to 12–13%. GAAP profitability improves to $80–100M.
 
----
+**Why only 15%:** Needs both macro help (rates down) AND competitive stability — a high bar. Rates at 6.3% are consensus; the Fed has shown no urgency to cut aggressively. The Compass-Redfin listing deal is a genuine structural threat, not noise.
 
-## Key Risk Factors for Further Downside
+| Ratio Movement | Impact |
+|----------------|--------|
+| EV/EBITDA: earnings-driven compression 41x → 30x | Positive (earnings growth, not multiple expansion) |
+| PS re-rates 3.9x → 5x | +28% |
+| FCF yield 4.2% → 5.5% | +10% |
 
-1. **Rocket-Redfin-Compass alliance** — Rocket acquired Redfin ($1.75B), then partnered with Compass to add 500K+ listings. This creates a vertically integrated search→agent→mortgage→title pipeline that directly threatens Zillow's agent advertising model. If agents start getting better leads from Redfin/Compass, they cut Zillow ad spend.
+### Scenario 2: Muddle Through (30% probability) — Price $33–36
 
-2. **Housing transaction volume stuck** — Mortgage rates at ~6.3% with no clear path below 6%. Existing home sales forecast at only 4.26M in 2026 (+4.3% YoY). Zillow's Residential revenue (+7%) is growing barely above inflation because transaction volume is constrained.
+Zillow delivers guidance: ~$2.95–3.0B revenue, EBITDA margin 10–11%, mortgage originations +30–40%. Operationally solid.
 
-3. **Massive SBC dilution** — Buyback yield of -8.56% means shareholders are diluted nearly 9% per year. On a $10B market cap, that's ~$850M/year in SBC. The $420M FCF doesn't even cover half the dilution. SBC is declining (down 13% in 2025, guided -10% in 2026), but it's still enormous.
+No re-rating because: rates stay 6.0–6.5% keeping housing flat; Residential grows only 6–8%; Rocket-Redfin integration shows early traction by Q3/Q4 2026; SBC dilution remains -6 to -7%; GAAP profitability improves to $50–70M but PE stays >100x trailing. Market won't pay a premium for barely-profitable company with 7% annual dilution.
 
-4. **Profitability is paper-thin** — $23M GAAP net income on $2.58B revenue = 0.9% net margin. Any revenue miss or cost overrun flips this back to a loss. Operating income was -$34M (still negative on GAAP basis).
+**Why 30%:** Most likely base case. Traffic moat is real, rentals is a genuine growth engine, company is executing. But macro is neutral at best and competitive environment is worsening.
 
-5. **Valuation still extreme** — Even at $40 (down 55%), EV/EBITDA is ~41x and forward PE is ~33x. For a company growing mid-teens with negative ROIC, this is expensive. Compare to DUOL at 23x EV/EBITDA with 38% ROE.
+| Ratio Movement | Impact |
+|----------------|--------|
+| EV/EBITDA: 41x → 35x (modest EBITDA growth) | -8% |
+| SBC dilution -7% over 12 months | -7% |
+| PS slight compression | -3% |
 
-6. **FTC regulatory risk** — The FTC is examining anticompetitive behavior in real estate portals. Any regulatory action could disrupt Zillow's agent referral model.
+### Scenario 3: Competitive Disruption (35% probability) — Price $26–30
 
----
+Rocket-Redfin-Compass gains real traction by mid-2026. 500K+ Compass listings flow exclusively to Redfin. Other brokerages question paying Zillow for leads when Redfin offers leads AND integrated mortgage close via Rocket.
 
-## Framework 1: Scenario-Based Ratio Modeling
+Premier Agent revenue stagnates (+2–3%). Some large agent teams shift 20–30% of ad budget from Zillow to Redfin/Compass network. Rates stay 6.0–6.5% (tariff inflation persists). Total revenue growth slows to 10–12% (vs. mid-teens guided). EBITDA misses as Zillow spends to defend competitive position. FTC investigation adds overhang.
 
-### Scenario 1: Housing Warms Up — Zillow Delivers Mid-Teens Growth (15% probability)
+**Why 35%:** Rocket spent $1.75B on Redfin, immediately locked in 500K Compass listings. The alliance creates a closed loop: Compass listings → Redfin search → Rocket mortgage. Zillow is outside that loop. When advertising platforms face vertically integrated competitors, they lose pricing power (cf. Google vs. Amazon in product search).
 
-**What happens:** Mortgage rates drift down to 5.8–6.0% by H2 2026 as the Fed cuts rates modestly. Existing home sales tick up to 4.5M (+10% YoY). Zillow's Residential revenue re-accelerates to +12–15% as agent ad spend increases with transaction volume. The Rentals segment continues its 30%+ growth trajectory as multifamily inventory grows and Zillow captures more landlord advertising.
+| Ratio Movement | Impact |
+|----------------|--------|
+| EV/EBITDA: 41x → 50x (lower EBITDA, same EV) | -15% |
+| PS: 3.9x → 3.0x | -23% |
+| ROIC: -0.93% → -3% | -6% |
+| FCF yield: 4.2% → 3% | -5% |
+| SBC dilution -7% | -7% |
 
-Mortgage origination volume, which grew 52% in 2025 to $4.75B, continues its trajectory. Zillow Home Loans reaches $7B+ in originations, contributing $250M+ in mortgage revenue.
+### Scenario 4: Housing Recession (20% probability) — Price $18–22
 
-The Rocket-Redfin threat proves slower to materialize than feared. Integration friction (Rocket is a fintech company learning to run a brokerage) creates a 12–18 month window where Zillow's incumbent position holds. Agents stay with Zillow because it still drives the most traffic.
+U.S. recession in H2 2026 crushes housing. Existing home sales drop to 3.8M (lowest since post-2008 recovery). Rates stay above 6% due to tariff-driven inflation even as economy weakens (stagflation).
 
-EBITDA margin expands from ~9% to 12–13%. GAAP profitability improves from $23M to $80–100M. The market starts giving Zillow credit for the "housing super app" vision.
+Residential revenue declines 5–10% (Zillow experienced -3.2% in the mild 2022 slowdown). Mortgage originations drop from $4.75B to $3.5B; revenue falls from $199M to $150M. Even Rentals slows to 15–20% as household formation declines. Total revenue declines 3–5% to $2.45–2.50B. EBITDA collapses to $100–130M on relatively fixed cost structure. GAAP net income returns to loss (-$50M to -$100M).
 
-**Why only 15%:** Mortgage rates at 6.3% are consensus, and the Fed has shown no urgency to cut aggressively. Housing volume improvement is modest at best. The Rocket-Redfin-Compass alliance is a genuine structural threat, not just competitive noise — Compass alone has 500K+ listings flowing to Redfin. For the bull case, Zillow needs both macro help (rates down) AND competitive stability, which is a high bar.
+Rocket-Redfin threat intensifies — Rocket's mortgage business cross-subsidizes Redfin growth (Rocket makes money on the mortgage, so it offers Redfin leads cheaper). Zillow has no such cross-subsidy. SBC dilution spikes to -10%+ as share price drops but equity grants vest.
 
-| Ratio | Move | Price Impact |
-|-------|------|-------------|
-| EV/EBITDA compresses from 41x to 30x (earnings growth) | -11x | Earnings-driven, not multiple compression |
-| PS re-rates to 5x | 3.9x → 5x | +28% |
-| FCF yield improves | 4.2% → 5.5% | +10% |
-| **Total (overlapping)** | | **+30 to 45%** |
+**Why 20%:** Recession is material risk given tariff uncertainty and weakening consumer confidence. Zillow's 2022 performance (-8.2% revenue) shows mild downturn impact; a genuine recession would be worse. Recession + competitive threat from well-capitalized Rocket-Redfin is particularly dangerous.
 
-**Price target: ~$53–59**
+| Ratio Movement | Impact |
+|----------------|--------|
+| PS: 3.9x → 2x (recession multiple) | -49% |
+| EV/EBITDA: EBITDA drops ~40% | -35% |
+| ROIC: -0.93% → -5% | -8% |
+| ROE: 0.47% → -3% | -5% |
+| SBC dilution -10%+ | -10% |
+| FCF yield: 4.2% → 1% | -12% |
 
----
+## Stress Test / Sensitivity Matrix
 
-### Scenario 2: Muddle Through — Mid-Teens Growth but No Re-rating (30% probability)
+**Variables:** FY2026 Revenue × EBITDA Margin. Assumptions: net cash $650M, 245M diluted shares.
+**Formula:** Price = ((Revenue x Margin x Multiple) + $0.65B) / 245M shares
 
-**What happens:** Zillow delivers on guidance: mid-teens revenue growth (~$2.95–3.0B), EBITDA margin expands modestly to 10–11%, mortgage originations grow 30–40%. The business executes well operationally.
+### At 30x EV/EBITDA
 
-But the stock doesn't re-rate because:
-- Mortgage rates stay at 6.0–6.5%, keeping housing volume flat. Residential revenue grows only 6–8% (organic, no volume tailwind).
-- The Rocket-Redfin integration proceeds. By Q3/Q4 2026, the combined platform starts showing early traction — Redfin's agent referrals to Rocket Mortgage create a seamless experience that some agents and consumers prefer. Zillow doesn't lose share dramatically, but the narrative shifts from "Zillow has no competition" to "Zillow has a real competitor."
-- SBC dilution remains -6 to -7% net (improving from -8.56% but still massive). Shareholders see earnings growth but their ownership percentage shrinks every year.
-- GAAP profitability improves to $50–70M but PE remains >100x on trailing earnings. The market won't pay a premium PE for a barely-profitable company with 7% annual dilution.
-
-**Why 30%:** This is the most likely "base case." Zillow's traffic moat is real (235M monthly uniques), rentals is a genuine growth engine, and the company is executing. But the macro environment (rates, volume) is neutral at best, and the competitive environment is worsening. "Good company, wrong price, wrong macro" is the most common outcome for housing-exposed tech stocks in a 6%+ rate environment.
-
-| Ratio | Move | Price Impact |
-|-------|------|-------------|
-| EV/EBITDA compresses to 35x (modest EBITDA growth) | 41x → 35x | -8% |
-| SBC dilution | -7% over 12 months | -7% |
-| PS stable at ~3.5–4x | Slight compression | -3% |
-| **Total** | | **-12 to 18%** |
-
-**Price target: ~$33–36**
-
----
-
-### Scenario 3: Competitive Disruption — Rocket-Redfin Takes Share (35% probability)
-
-**What happens:** The Rocket-Redfin-Compass alliance gains real traction by mid-2026. The partnership puts 500K+ Compass listings exclusively on Redfin (not Zillow). Other brokerages start questioning why they're paying Zillow for leads when Redfin offers both leads AND an integrated mortgage close through Rocket.
-
-Zillow's Premier Agent revenue (the core of Residential segment) stagnates. Agent ad spend grows only 2–3% as agents diversify their lead sources. Some large agent teams shift 20–30% of their advertising budget from Zillow to Redfin/Compass network.
-
-Meanwhile, mortgage rates stay elevated (6.0–6.5%). The Fed doesn't cut meaningfully because tariff-driven inflation persists. Housing transaction volume is flat or declines slightly. Zillow's Residential revenue ($1.7B) grows only 3–4%, well below the mid-teens total growth target.
-
-Rentals and Mortgages continue to grow (~30% and ~25% respectively) but can't fully offset the Residential slowdown. Total revenue growth slows to 10–12% (vs. mid-teens guided). EBITDA misses because Zillow increases spending to defend its competitive position — more AI features, more agent tools, possibly cutting pricing to retain advertisers.
-
-The FTC investigation adds an overhang. Even if no formal action occurs in 2026, the uncertainty around real estate portal regulation deters institutional investors.
-
-SBC remains elevated at -7% net dilution because Zillow needs to retain talent against the well-funded Rocket-Redfin-Compass competitor.
-
-**Why 35% (most likely negative scenario):** The Rocket-Redfin-Compass alliance is not theoretical — Rocket spent $1.75B on Redfin and then immediately locked in Compass's 500K listings. This is the biggest structural threat to Zillow's business model since the company was founded. The alliance creates a closed loop: Compass listings → Redfin search → Rocket mortgage. Zillow is outside that loop. Historically, when advertising-dependent platforms face a vertically integrated competitor, they lose pricing power (see Google vs. Amazon in product search). The 35% probability reflects that the threat is real and imminent, not speculative.
-
-| Ratio | Move | Price Impact |
-|-------|------|-------------|
-| EV/EBITDA expands (lower EBITDA, same EV) | 41x → 50x | -15% |
-| PS compresses to 3x | 3.9x → 3.0x | -23% |
-| ROIC stays negative (more spending to compete) | -0.93% → -3% | -6% |
-| FCF yield worsens (higher spending) | 4.2% → 3% | -5% |
-| SBC dilution | -7% | -7% |
-| **Total (overlapping, ~55% of sum)** | | **-25 to 35%** |
-
-**Price target: ~$26–30**
-
----
-
-### Scenario 4: Housing Recession + Agent Model Collapse (20% probability)
-
-**What happens:** A U.S. recession in H2 2026 crushes housing. Existing home sales drop to 3.8M (the lowest since the post-2008 recovery). Mortgage rates stay above 6% because the Fed is fighting tariff-driven inflation even as the economy weakens (stagflation scenario).
-
-Zillow's Residential revenue declines 5–10% for the first time since 2022. Agent advertising is highly cyclical — agents cut marketing spend immediately when transactions dry up because they pay per lead and can't afford leads that don't convert. Zillow experienced this in 2022 when Residential revenue dropped -3.2% even in a mild slowdown.
-
-Mortgage originations, which were Zillow's bright spot, decline as purchase volume collapses. The $4.75B origination volume in 2025 drops to $3.5B. Mortgage revenue falls from $199M to $150M.
-
-Even Rentals, the best-performing segment, slows as a recession reduces household formation and new multifamily construction slows. Growth decelerates from 39% to 15–20%.
-
-Total revenue declines 3–5% to $2.45–2.50B. EBITDA collapses to $100–130M because Zillow's cost structure is relatively fixed (engineering, data, offices). GAAP net income goes back to a loss (-$50M to -$100M).
-
-The Rocket-Redfin threat intensifies during a downturn because Rocket's mortgage business gives it a reason to subsidize Redfin's growth — Rocket makes money on the mortgage, so it can offer Redfin leads cheaper. Zillow, which relies on agents paying for leads, has no such cross-subsidy.
-
-SBC doesn't decline proportionally in a downturn (compensation is already committed), so dilution spikes to -10%+ as the share price drops but equity grants vest.
-
-**Why 20%:** A recession is a material risk given tariff uncertainty and already-weakening consumer confidence. Housing is the most rate-sensitive and cycle-sensitive sector. Zillow's 2022 performance (revenue -8.2%) shows what happens in a mild downturn. A genuine recession would be worse. The combination of recession + competitive threat from a well-capitalized Rocket-Redfin is particularly dangerous because Zillow faces macro and micro headwinds simultaneously.
-
-| Ratio | Move | Price Impact |
-|-------|------|-------------|
-| PS compresses to 2x (recession multiple) | 3.9x → 2x | -49% |
-| EV/EBITDA stays high but EBITDA drops 40% | EBITDA-driven | -35% |
-| ROIC deeply negative | -0.93% → -5% | -8% |
-| ROE goes negative | 0.47% → -3% | -5% |
-| SBC dilution accelerates (lower price, same grants) | -10%+ | -10% |
-| FCF collapses (revenue drop + fixed costs) | 4.2% → 1% | -12% |
-| **Total (overlapping, ~50% of sum)** | | **-45 to 55%** |
-
-**Price target: ~$18–22**
-
----
-
----
-
-## Framework 3: Stress Test / Sensitivity Matrix
-
-**Key variables:** FY2026 Revenue (housing volume + competitive share) × EBITDA Margin (operating leverage + SBC)
-
-**Assumptions:** 30x EV/EBITDA (platform tech premium, but decelerating), net cash $650M, 245M shares diluted. FY2025 EBITDA = $230M on $2.58B revenue (~8.9% margin).
-
-**Formula:** Price = ((Revenue × Margin × 30) + $0.65B) / 245M shares
-
-### Price Matrix at 30x EV/EBITDA
-
-| FY2026 Revenue → | $2.4B (−7%) | $2.7B (+5%) | $2.95B (mid-teens) | $3.2B (+24%) |
+| FY2026 Revenue → | $2.4B (-7%) | $2.7B (+5%) | $2.95B (mid-teens) | $3.2B (+24%) |
 |---|---|---|---|---|
-| **EBITDA Margin 8%** | **$26** | $29 | $32 | $34 |
-| **EBITDA Margin 10%** | $32 | $36 | $39 | $42 |
-| **EBITDA Margin 12%** | $38 | **$42** ← current | $46 | $50 |
-| **EBITDA Margin 15%** | $47 | $52 | $57 | $61 |
+| **Margin 8%** | **$26** | $29 | $32 | $34 |
+| **Margin 10%** | $32 | $36 | $39 | $42 |
+| **Margin 12%** | $38 | **$42** (current) | $46 | $50 |
+| **Margin 15%** | $47 | $52 | $57 | $61 |
 
-### Price Matrix at 20x EV/EBITDA (Competitive De-rating)
+### At 20x EV/EBITDA (Competitive De-rating)
 
 | FY2026 Revenue → | $2.4B | $2.7B | $2.95B | $3.2B |
 |---|---|---|---|---|
-| **EBITDA Margin 8%** | **$18** | $20 | $22 | $24 |
-| **EBITDA Margin 10%** | $22 | $25 | $27 | $29 |
-| **EBITDA Margin 12%** | $26 | $29 | $32 | $34 |
-| **EBITDA Margin 15%** | $32 | $36 | $39 | $42 |
+| **Margin 8%** | **$18** | $20 | $22 | $24 |
+| **Margin 10%** | $22 | $25 | $27 | $29 |
+| **Margin 12%** | $26 | $29 | $32 | $34 |
+| **Margin 15%** | $32 | $36 | $39 | $42 |
 
-**What the matrix reveals:**
-- **Current price ($40.63) implies:** ~$2.7B revenue at ~12% margin at 30x, or ~$2.95B at 10% margin at 30x. The market is pricing in solid execution at a premium multiple.
-- **The multiple is the key risk.** If Rocket-Redfin-Compass forces a de-rating from 30x to 20x at the same fundamentals ($2.7B, 12% margin), the price drops from $42 to $29 (−31%). That's the competitive disruption scenario.
-- **Floor at 20x ($18):** Revenue declines 7% + margin compresses to 8% + competitive de-rating. This is the recession + competitive disruption combo. Matches Scenario 4 ($18–22).
-- **SBC dilution is invisible in the matrix** but erodes 8.56% of value annually on top of whatever the matrix shows. A $42 stock with −8.56% SBC dilution is effectively $38.40 on an after-dilution basis.
-- **Most sensitive variable:** The multiple. At $2.7B revenue and 10% margin, the difference between 30x ($36) and 20x ($25) is $11 — a 31% swing. Revenue and margin combined only swing ±$8 at a fixed 30x. **ZG is a multiple bet, and the multiple depends on whether Zillow retains its competitive moat against Rocket-Redfin.**
+**Key finding:** Current price ($40.63) implies ~$2.7B revenue at ~12% margin at 30x. If Rocket-Redfin forces a de-rating from 30x to 20x on the same fundamentals, price drops from $42 to $29 (-31%). At 20x, the floor is $18 (revenue -7%, margin 8%) — matching the severe scenario. SBC dilution erodes an additional 8.56% annually on top of whatever the matrix shows.
 
-### Framework 3 Takeaway
+## Comparative Context
 
-The stress test shows ZG's downside is **primarily driven by multiple compression, not fundamental deterioration.** The business generates real revenue growth (mid-teens) and real cash flow ($420M FCF), but the stock is priced at 30x EBITDA — a premium that evaporates if the Rocket-Redfin-Compass alliance proves to be a durable competitor. At 20x (which is still generous for a barely-profitable company), the stock has 25–35% further downside even with decent execution. The matrix also exposes that ZG's floor is significantly lower than DUOL's or VITL's because EBITDA margins are thin (8–12%) and the multiple has far to fall.
+| Factor | ZG |
+|--------|-----|
+| Already down from high | -55% |
+| Expected further downside | -24% |
+| Probability of any further dip | 85% |
+| Balance sheet | Good (net cash) |
+| ROIC | -0.93% (destroying value) |
+| SBC dilution | -8.56% (worst in coverage) |
+| Nature of risk | Competitive + macro |
+| Wild card | Rocket-Redfin-Compass alliance |
 
----
+## Sources
 
-## Summary
-
-| Scenario | Business Trigger | Price Range | Change from $40.63 | Probability |
-|----------|-----------------|-----------|---------------------|-------------|
-| Housing warms up | Rates drop to 5.8%, volume +10%, Rocket threat delayed | $53–59 | +30 to 45% | 15% |
-| Muddle through | Mid-teens growth delivered, but SBC dilution + no re-rating | $33–36 | -12 to 18% | 30% |
-| Competitive disruption | Rocket-Redfin-Compass takes agent share, Residential stagnates | $26–30 | -25 to 35% | 35% |
-| Housing recession | Transaction volume collapses, revenue declines, GAAP loss returns | $18–22 | -45 to 55% | 20% |
-
-**Probability-weighted expected price: ~$31** (approximately 24% further downside from $40.63).
-
----
-
-## ZG vs Other Stocks in Our Coverage
-
-| Factor | ZBRA | DUOL | VITL | ZG |
-|--------|------|------|------|-----|
-| Already down from high | -43% | -83% | -75% | -55% |
-| Expected further downside | -22% | -21% | -8% | **-24%** |
-| Prob of any further dip | 80% | 85% | 65% | **85%** |
-| Balance sheet | Leveraged | Fortress | Strong | **Good (net cash)** |
-| ROIC | 8% (barely above WACC) | 52% (excellent) | 30% (excellent) | **-0.93% (destroying value)** |
-| SBC dilution | 1.3% buyback yield | -2.56% | -1.98% | **-8.56% (worst by far)** |
-| Nature of risk | Financial/macro | Narrative/structural | Commodity cycle | **Competitive + macro** |
-| Wild card | Credit downgrade | AI disruption | Avian flu | **Rocket-Redfin-Compass** |
-
-**Key insight:** ZG has the worst expected further downside of all four stocks (-24%) and the worst shareholder dilution (-8.56%/year). Despite generating $420M in FCF, almost none reaches shareholders because SBC consumes it. The Rocket-Redfin-Compass alliance is a structural competitive threat unlike anything Zillow has faced. Combined with housing market sensitivity to mortgage rates, ZG faces both micro (competitive) and macro (rates, recession) headwinds simultaneously.
-
-**Ranking (least to most further downside): VITL (-8%) > DUOL (-21%) > ZBRA (-22%) > ZG (-24%)**
-
----
-
-## Key Catalysts and Timing (ZG)
-
-- **Q1 2026 earnings (May):** Guided $700–710M revenue, $160–175M EBITDA. A miss here signals demand weakness.
-- **Rocket-Redfin integration milestones (ongoing):** Watch for Redfin launching integrated mortgage features and Compass listings going live on Redfin. Any quarter where Redfin traffic grows faster than Zillow's is a warning.
-- **Mortgage rate trajectory (monthly):** Below 6% = bullish for housing volume and Zillow. Above 6.5% = bearish.
-- **NAR home sales data (monthly):** Existing home sales below 4.0M = recession territory for housing.
-- **SBC trajectory (quarterly):** Guided -10% decline in 2026. If net dilution drops below -5%, that's a positive inflection. If it stays above -8%, the value destruction continues.
-- **FTC investigation (unknown timing):** Any formal complaint or settlement around real estate portal practices could hit the stock 10–15%.
-
-Sources:
 - [Zillow Q4 & FY2025 Financial Results](https://investors.zillowgroup.com/investors/news-and-events/news/news-details/2026/Zillow-Group-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx)
 - [Zillow SWOT Analysis — Housing Market Volatility](https://www.investing.com/news/swot-analysis/zillows-swot-analysis-stock-faces-headwinds-amid-housing-market-volatility-93CH-4277932)
 - [Rocket-Redfin-Compass Portal Wars](https://www.housingwire.com/articles/zillow-rocket-redfin-portal-wars/)
