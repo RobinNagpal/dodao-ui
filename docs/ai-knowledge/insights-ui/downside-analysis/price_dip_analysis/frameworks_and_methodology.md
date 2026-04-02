@@ -48,10 +48,13 @@ A consolidated reference covering the 7 downside analysis frameworks, their comp
 **Steps:**
 1. Identify the 2–3 most impactful variables (revenue/EBITDA, margin, multiple)
 2. Define realistic ranges for each
-3. Build a 2D matrix: each cell = stock price at that combination
-4. Identify current price position, floor, and break-even points
+3. **Valuation regime check (before setting the multiple range):** Compare the stock's average PE and EV/EBITDA over the last 5 years vs. the prior 5 years. If the multiple expanded >25%, ask: how much is explained by business improvement (growth acceleration, margin expansion, market position change) vs. market environment (low rates, narrative inflation)? Use the pre-expansion average as the severe-case floor multiple, not just the bottom of the recent range. Use normalized (5-year average) earnings in the severe case, not peak/trough single-year EPS. *(Rationale: Shiller, Campbell & Shiller, and AQR research shows multiples mean-revert over 5–10 years. Stocks that re-rated without corresponding fundamental improvement are statistically likely to de-rate.)*
+4. Build a 2D matrix: each cell = stock price at that combination
+5. Identify current price position, floor, and break-even points
 
 **Key insight from our analyses:** The matrix reveals *which variable matters more.* For margin-risk stocks (ZBRA, DUOL), margin sensitivity is 1.4–8x greater than revenue sensitivity. For leverage stocks (EQPT, PRKS), the EBITDA-to-equity amplification is the dominant factor.
+
+**Valuation regime insight:** If both the multiple AND margins are at historical highs simultaneously, the stock has "double reversion risk" — both can compress at the same time. The matrix should include a corner case testing pre-expansion multiple × below-average margins, not just one at a time. (Hussman research: "record multiples on record margins" is the most dangerous combination.)
 
 **Strengths:** Visual, objective, reveals relative sensitivity, easy to communicate.
 **Weaknesses:** Limited to 2–3 variables, doesn't assign probabilities, can produce implausible corners.
@@ -147,9 +150,9 @@ Scenarios jump from business description to price impact without tracing the cha
 **Improvement:** Each scenario should follow: **Business trend** (volume, demand, pricing) → **Financial translation** (revenue, margin, EPS impact) → **Valuation change** (multiple expansion/compression) → **Price impact**. This makes the reasoning auditable.
 
 ### Shortcoming 3: Starting Valuation Not Accounted For
-Some stocks are overvalued when analyzed, meaning even a small negative business change causes outsized price decline. Others are undervalued, providing a cushion.
+Some stocks are overvalued when analyzed, meaning even a small negative business change causes outsized price decline. Others are undervalued, providing a cushion. This is especially dangerous for "quality compounders" whose multiples expanded significantly over the last 5 years — the stress test floor may be anchored to an inflated range.
 
-**Improvement:** Always note whether the starting valuation is above/below historical averages and peer comparables. Adjust scenario price impacts accordingly.
+**Improvement:** For each stock, compare the average PE/EV-EBITDA of the last 5 years vs. the prior 5 years. If the multiple expanded >25%, decompose the stock's price appreciation into earnings growth vs. multiple expansion. The multiple expansion portion is the "air" at risk of reverting. Use the pre-expansion average multiple (not the recent trough) as the severe-case floor in the stress test. Use 5-year average EPS rather than trailing EPS to avoid anchoring to cyclical peaks. See Step 3 in the Stress Test framework (Part 1, Section 3) for the full procedure.
 
 ### Shortcoming 4: No Time Dimension
 Scenarios don't specify *when* the outcome is expected. A 20% decline over 3 months feels different from 20% over 18 months.
@@ -280,7 +283,7 @@ The precedent analysis is what distinguishes these two groups — it reveals whe
 
 # Part 6: Competitive Landscape as a Downside Dimension
 
-**See `competitive_landscape.md` for the full 31-stock competitive analysis.**
+**See `comparative_analysis.md` for the full 31-stock competitive analysis.**
 
 The three quantitative frameworks (Scenarios, Stress Test, Precedent) analyze financial metrics but can miss **competitive dynamics** that drive stock declines. Sub-industry competitive position matters because:
 
@@ -319,7 +322,7 @@ Moat scoring (0-5) tells you WHETHER competition matters. But for stocks scoring
 - **15–25%** = Thesis-level risk (DUOL, CELH, HSAI)
 - **>25%** = Existential (INVZ growth trajectory)
 
-See `final_framework_for_downside.md` Step 4F and `competitive_landscape.md` for full analysis of all 12 at-risk stocks.
+See `final_framework_for_downside.md` Step 4F and `comparative_analysis.md` for full analysis of all 12 at-risk stocks.
 
 ### Three Categories of Competitive Risk
 

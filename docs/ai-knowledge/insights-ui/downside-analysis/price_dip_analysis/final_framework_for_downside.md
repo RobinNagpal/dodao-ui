@@ -300,7 +300,21 @@ Sometimes the second variable is a **valuation multiple** (PE or EV/EBITDA) if s
 >
 > **For BDCs:** Price = Book Value × P/Book
 
-**D. Read the matrix.** The key questions are:
+**D. Valuation regime check (before reading the matrix).** The multiple range you chose in step B can silently inflate the floor if the stock re-rated upward in recent years. Quick check:
+
+1. Compare the stock's average PE (or EV/EBITDA) over the **last 5 years** vs. the **prior 5 years**
+2. If the multiple expanded **>25%**, ask: is the expansion explained by real business improvement (faster growth, higher margins, stronger market position) or by market environment (low rates, narrative shift)?
+3. The portion explained by business improvement is the **new justified floor**. The rest is air that can revert.
+4. For the severe-case corner of the matrix, use the **pre-expansion average multiple** — not just the bottom of the recent range
+5. If both the multiple AND margins are at historical highs, flag **double reversion risk** — both can compress at the same time
+
+**Where to get the data:** macrotrends.net or stockanalysis.com — search "[ticker] PE ratio history." Takes ~5 minutes per stock.
+
+**Example — AZO:** Average PE was ~16x in 2016–2020, expanded to ~20x+ in 2021–2025. Some is justified (DIFM growth engine, aging fleet). But the stress test's severe floor of 18x may be too generous — 15–16x is a more honest severe case, which drops the floor from $2,070 to ~$1,840.
+
+*(Rationale: Shiller, Campbell & Shiller, and Arnott research shows valuation multiples mean-revert over 5–10 year horizons. Stocks that re-rated without corresponding fundamental improvement are statistically likely to de-rate.)*
+
+**E. Read the matrix.** The key questions are:
 - **Where is the current price on the matrix?** This tells you what the market already expects.
 - **What's the floor?** (worst-case corner) This is your maximum downside.
 - **Which axis moves the price more?** If moving down one column changes the price more than moving down one row, that variable is the one to watch.
@@ -547,6 +561,9 @@ After completing all four steps, combine the results:
    → Get expected price
 
 2. STRESS TEST: Pick 2 key variables, build a matrix
+   → Valuation regime check: avg multiple last 5yr vs prior 5yr
+     If expanded >25%, use pre-expansion multiple for severe case
+     If multiple AND margins both at highs → double reversion risk
    → Find current price on the matrix (what's priced in?)
    → Find the floor (worst case corner)
    → Which variable matters more?
