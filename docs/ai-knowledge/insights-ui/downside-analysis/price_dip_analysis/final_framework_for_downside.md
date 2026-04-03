@@ -716,12 +716,15 @@ Before submitting a report, verify:
 [ ] Step 1: Probabilities sum to 100%
 [ ] Step 1: Weighted expected price shown with FULL calculation
 [ ] Step 1: Overlap discount = 60% of raw ratio-impact sum
+[ ] Step 1: If TTM PE and Forward PE diverge >40%, the gap is explained
+[ ] Step 1: Price targets cross-checked via stress test matrix AND overlap discount
 [ ] Step 2: Base multiple stated and JUSTIFIED (sector median, historical avg, or peer comp)
 [ ] Step 2: Valuation regime check performed (5yr vs prior 5yr)
 [ ] Step 2: Stress test matrix completed with floor identified
 [ ] Step 3: At least 3 precedents (including own history if available)
 [ ] Step 3: Each precedent notes whether moat was intact during drawdown
 [ ] Step 4: Moat scored 0-5 with type identified
+[ ] Step 4: Top 2 direct competitors named with what they're doing
 [ ] Step 4F: Revenue risk quantified in $ for moat 0-3
 [ ] Step 4F: For moat 4-5, stated "competitive displacement risk is minimal"
 [ ] Step 5: Decision matrix applied

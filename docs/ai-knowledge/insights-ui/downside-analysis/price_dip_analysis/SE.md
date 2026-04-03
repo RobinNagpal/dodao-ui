@@ -90,6 +90,8 @@ The single most important metric is SeaMoney NPL ratio — any move above 1.5% s
 | ROE | 15.3% | Okay |
 | ROIC | 28.1% | Excellent |
 | FCF Yield | 7.2% | Good |
+| Debt/EBITDA | ~1.0x | Good |
+| Net Cash Position | Approximately neutral | Okay |
 | Revenue Growth | +29% YoY (FY2025) | Strong |
 | Free Cash Flow | $4.5B (TTM) | Strong |
 
@@ -179,6 +181,8 @@ Southeast Asian credit cycles are volatile. Indonesia, Vietnam, and Thailand hav
 | **EV/EBITDA 20x** | $70 | $88 | $105 | $123 |
 
 **Key insight:** Current price (~$79) implies ~$3.0B EBITDA at 15x or ~$2.5B at 18x. Floor ($28) at credit cycle blowup with $2.0B EBITDA/8x. Most sensitive variable is lending provisions — a 100bp NPL increase on a $12B+ loan book (2026 estimate) could wipe $500M-1B off EBITDA.
+
+**Price derivation cross-check:** Bear case — overlap discount method gives $79 x (1 - 0.32) = $54; stress test matrix at $2.5B EBITDA / 12x = $53. Methods agree within 2%. Severe case — overlap gives $79 x (1 - 0.61) = $31; stress test at $2.0B / 8x = $28. Methods agree within 10%. Both methods produce consistent results; stress test matrix used as primary.
 
 ## Precedent Drawdowns
 
