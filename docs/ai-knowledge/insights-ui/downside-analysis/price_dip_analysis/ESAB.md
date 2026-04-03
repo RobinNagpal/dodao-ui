@@ -1,63 +1,78 @@
-## ESAB Corporation (ESAB) — Price Dip Analysis
+# ESAB Corporation (ESAB) — Price Dip Analysis
 
-**Current price:** ~$98 (March 2026) | **ATH:** $136.24 | **52-week low:** $93.10 | **Down:** ~28% from ATH
-
----
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
 
 # Section 1: Analysis
 
-## 1. What the Company Does and Why It Dropped
+## What This Company Does & Why the Stock Dropped
 
-ESAB is the world's #3 global welding manufacturer (~$2.79B FY2025 revenue), producing welding consumables, equipment, and cutting systems across ~150 countries with ~9,000 employees. Revenue split: Americas ~43%, EMEA/APAC ~57%. The company was spun off from Enovis (formerly Colfax) in April 2022 and runs the "EBX" business system inherited from the Danaher/Rales playbook.
+ESAB is the world's #3 global welding manufacturer (approximately $2.79B FY2025 revenue), producing welding consumables, equipment, and cutting systems across approximately 150 countries with approximately 9,000 employees. Top revenue products are: welding consumables (filler metals, electrodes, approximately 60% of revenue — the razor/blade recurring model), welding equipment (manual and automated systems, approximately 25% of revenue), and gas control/cutting systems/PPE (approximately 15% of revenue). Plus the incoming Eddyfi advanced inspection business ($1.45B acquisition). Revenue split: Americas approximately 43%, EMEA/APAC approximately 57%. The company was spun off from Enovis (formerly Colfax) in April 2022 and runs the "EBX" business system inherited from the Danaher/Rales playbook.
 
-**Top products:** 1) Welding consumables — filler metals, electrodes (~60% of revenue, razor/blade recurring model), 2) Welding equipment — manual and automated systems (~25%), 3) Gas control, cutting systems, PPE (~15%). Plus the incoming Eddyfi advanced inspection business.
+The stock has fallen approximately 28% from its ATH of $136.24 to around $98. The stock rallied +325% from its 2022 post-spinoff low of $32 to $136, then pulled back sharply on three converging factors: the $1.45B Eddyfi Technologies acquisition financed with $1B in new senior notes at 5.625% pushed pro forma net debt/EBITDA from a comfortable 2.3x to a concerning 3.5-4x. Tariffs on steel and metals raised input cost uncertainty. Organic revenue growth was already flat-to-negative in FY2025 (+1.2% YoY) amid soft global manufacturing PMI. The market repriced ESAB from "proven quality compounder" to "leveraged acquirer digesting a large deal during an industrial slowdown."
 
-**Why it dropped:** The stock rallied +325% from its 2022 post-spinoff low of $32 to $136, then pulled back sharply on three converging factors. First, ESAB announced the $1.45B Eddyfi Technologies acquisition, financed with $1B in new senior notes at 5.625%, pushing pro forma net debt/EBITDA from a comfortable ~2.3x to a concerning ~3.5-4x. Second, tariffs on steel and metals raised input cost uncertainty. Third, organic revenue growth was already flat-to-negative in FY2025 (+1.2% YoY) amid soft global manufacturing PMI. The market repriced ESAB from "proven quality compounder" to "leveraged acquirer digesting a large deal during an industrial slowdown."
+## How Much Further Can It Fall?
 
-## 2. How Much Further Can It Fall
+The probability-weighted expected price is approximately $83, implying roughly 15% further downside from $98. The bear scenario carries the highest probability (35%) because industrial cycles do not recover on command, FY2025 organic growth was already flat, and the Eddyfi acquisition at 18x EBITDA needs synergies and growth to justify — if either disappoints, the math does not work.
 
-The probability-weighted expected price is ~$83, implying roughly 15% further downside from $98.
+**Weighted expected price calculation:**
+- Bull midpoint $135.00 x 15% = $20.25
+- Base midpoint $100.50 x 30% = $30.15
+- Bear midpoint $69.00 x 35% = $24.15
+- Severe midpoint $49.00 x 20% = $9.80
+- **Weighted Expected Price = $84.35**
 
-| Scenario | Probability | Price Range | vs. $98 | Key Trigger |
-|----------|-------------|-------------|---------|-------------|
-| Bull: Eddyfi integrates + industrial recovery | 15% | $128-142 | +30 to 45% | Synergies deliver, PMI recovers, deleverage to ~2.5x |
-| Base: Guidance met, steady execution | 30% | $93-108 | -5 to +10% | 2-4% organic, $575-595M EBITDA, Eddyfi partial year |
-| Bear: Industrial slowdown + Eddyfi friction | 35% | $64-74 | -25 to 35% | PMI <50, synergies slip, leverage stays 3.5-4x |
-| Severe: Recession + acquisition writedown | 20% | $44-54 | -45 to 55% | Revenue -10-15%, EBITDA $450-480M, goodwill impairment |
+The stress test matrix shows that with $2.3B net debt post-Eddyfi, small changes in EV/EBITDA multiples create outsized equity swings: moving from 14x to 10x at constant EBITDA drops the stock from $98 to $59 (-40%). This is a multiple-and-leverage stock where debt amplifies everything.
 
-The bear scenario carries the highest probability (35%) because industrial cycles do not recover on command, FY2025 organic growth was already flat-to-negative, and the $1.45B Eddyfi acquisition at 18x EBITDA is a premium price that needs synergies and growth to justify — if either disappoints, the math does not work.
+**Table 1 — Scenario Summary**
 
-## 3. Competitive Position and Moat
+| Scenario | Story | Price Range | Probability |
+|----------|-------|-------------|-------------|
+| Bull | Eddyfi integrates well, synergies deliver $100M EBITDA contribution, industrial recovery, deleverage to 2.5x | $128-142 | 15% |
+| Base | Guidance met (2-4% organic, $575-595M EBITDA, $5.70-5.90 EPS), Eddyfi partial year, leverage 3.5x | $93-108 | 30% |
+| Bear | Industrial slowdown (PMI <50), Eddyfi friction, synergies slip, EBITDA misses, leverage stays 3.5-4x | $64-74 | 35% |
+| Severe | Industrial recession, revenue -10-15%, EBITDA $450-480M, Eddyfi goodwill impairment, leverage 5x+ | $44-54 | 20% |
+| **Weighted Expected** | **(135.0 x 0.15) + (100.5 x 0.30) + (69.0 x 0.35) + (49.0 x 0.20) = $84** | **~$84** | |
 
-ESAB holds the #3 global welding position behind Lincoln Electric and Illinois Tool Works. Its primary moat comes from the consumables razor/blade model: once fabricators adopt ESAB filler metals and electrodes, they stay because of certification requirements, welding procedure specifications (WPS), and sheer tradesperson habit. This generates ~60% recurring revenue. The EBX operating system (Danaher heritage) drives consistent margin improvement.
+## Competitive Position & Moat
+
+ESAB holds the #3 global welding position behind Lincoln Electric and Illinois Tool Works. The primary moat comes from the consumables razor/blade model: once fabricators adopt ESAB filler metals and electrodes, they stay because of certification requirements, welding procedure specifications (WPS), and tradesperson habit. This generates approximately 60% recurring revenue. The EBX operating system (Danaher heritage) drives consistent margin improvement.
+
+The top 2 direct competitors are Lincoln Electric (LECO, #1 global welding manufacturer) and Illinois Tool Works (ITW, #2 with welding as one of several segments). Both have similar consumables-driven recurring revenue but are better capitalized. Competitive displacement risk is minimal due to certification-based switching costs (4/5 moat). The risk is not competition but leverage and cycle timing.
 
 However, the Eddyfi acquisition fundamentally changed the risk profile. Pre-Eddyfi, ESAB was a conservatively leveraged quality compounder. Post-Eddyfi, it is a leveraged bet on industrial cycle timing and acquisition integration.
 
-| Dimension | Rating | Detail |
-|-----------|--------|--------|
-| Moat | 4/5 | #3 global welding, consumables razor/blade model with 60% recurring revenue, certification-based switching costs, brand-loyal tradesperson base |
-| Financial Health | 2/5 | Post-Eddyfi net debt/EBITDA ~3.5-4x with $1B new senior notes. Pre-Eddyfi was manageable at 2.3x. FCF yield 3.62% below average |
-| Precedent | 3/5 | Current -32% matches typical industrial corrections (-30 to -45%). Colfax -60% template applies if recession hits during integration |
-| Overall | 2/5 | Strong moat but Eddyfi leverage fundamentally changed the risk profile; equity swings amplified by debt load |
+**Table 2 — Ratings Dashboard**
 
-## 4. What to Watch
+| Rating | Score | What It Means |
+|--------|-------|---------------|
+| Moat Strength | 4/5 | #3 global welding, consumables razor/blade model with 60% recurring revenue, certification-based switching costs, EBX operating system |
+| Financial Health | 2/5 | Post-Eddyfi net debt/EBITDA 3.5-4x with $1B new senior notes; pre-Eddyfi was comfortable at 2.3x; FCF yield 3.62% below average |
+| Precedent Position | 3/5 | Current -28% matches typical industrial corrections (-30 to -45%); Colfax -60% template applies if recession hits during integration |
+| Overall Downside Risk | 2/5 | Strong moat BUT Eddyfi leverage fundamentally changed the risk profile; equity swings amplified by $2.3B net debt |
 
-The Eddyfi close (mid-2026) is the defining event. Everything else — organic growth, deleverage timeline, multiple re-rating — flows from whether this $1.45B acquisition delivers. The stress test matrix shows that at $2.3B net debt, small changes in EV/EBITDA multiples create outsized equity swings: moving from 14x to 10x at constant EBITDA drops the stock from $98 to $59 (-40%).
+## What to Watch
 
-| Metric | Signal | Frequency |
-|--------|--------|-----------|
-| Pro forma Net Debt/EBITDA post-Eddyfi close | Above 4x = deleverage becomes dominant narrative | Quarterly |
-| Q1 2026 organic growth (April/May earnings) | Americas staying negative = concerns mount | Quarterly |
-| Manufacturing PMI | Below 48 for 3+ months signals industrial recession | Monthly |
-| Eddyfi customer retention and synergy updates | $20M synergy target — any slip is a red flag | Quarterly |
-| Tariff policy on metals/cross-border trade | Directly affects input costs and demand | Ongoing |
-| Lincoln Electric (LECO) results | Primary peer comp — LECO weakness validates ESAB concerns | Quarterly |
+The Eddyfi close (mid-2026) is the defining event. Everything else — organic growth, deleverage timeline, multiple re-rating — flows from whether this $1.45B acquisition delivers. Lincoln Electric (LECO) results serve as the primary peer comp for the welding cycle.
+
+**Table 3 — Key Metrics to Monitor**
+
+| What to Watch | Current Value | Bull Signal | Bear Signal | Next Data Point |
+|---------------|---------------|-------------|-------------|-----------------|
+| Pro Forma Net Debt/EBITDA | ~3.5-4x (post-Eddyfi) | Deleveraging to 2.5x | Stays above 4x | Post-Eddyfi close quarterly earnings |
+| Q1 Organic Growth | +1.2% (FY2025) | Reaccelerates to 3-5% | Americas stays negative | Q1 2026 earnings (Apr/May) |
+| Manufacturing PMI | Softening | Above 50 for 3+ months | Below 48 for 3+ months | Monthly ISM reports |
+| Eddyfi Synergy Updates | $20M target | On track or exceeds | Any slip vs. target | Quarterly post-close |
+| Lincoln Electric (LECO) Results | Primary peer | LECO beats (validates cycle recovery) | LECO misses (validates slowdown) | Quarterly earnings |
 
 ---
 
 # Section 2: Raw Information
 
 ## Current Ratio Snapshot
+
+*All ratios calculated at current price of ~$98, as of March 2026.*
+
+*Note: TTM PE (27.2x) diverges from Forward PE (17.2x) by 58%. The gap reflects FY2025 being a transition year with flat organic growth and pre-Eddyfi acquisition costs, while FY2026 guidance ($5.70-5.90 adjusted EPS) includes margin expansion and Eddyfi partial-year contribution. Forward PE is more relevant. EV/EBITDA (12.8x) is the primary valuation metric because ESAB's post-Eddyfi leverage makes PE less informative about enterprise-level valuation.*
 
 | Ratio | Value | Status |
 |-------|-------|--------|
@@ -66,141 +81,135 @@ The Eddyfi close (mid-2026) is the defining event. Everything else — organic g
 | EV/EBITDA | 12.8x | Okay (industrial premium) |
 | Price/Sales | 2.07x | Okay |
 | Price/Book | 2.71x | Okay |
-| PEG | 1.79 | Okay |
-| Debt/Equity | 0.61x | Good |
-| Debt/EBITDA | 2.32x | Okay (pre-Eddyfi) |
-| Net Debt/EBITDA | ~2.3x (pre-Eddyfi) | Okay → Watch (post-Eddyfi ~3.5-4x) |
+| Debt/Equity | 0.61x | Good (pre-Eddyfi) |
+| Debt/EBITDA | 2.32x (pre-Eddyfi) | Okay -> Watch (post-Eddyfi 3.5-4x) |
 | Interest Coverage | 6.14x | Good (pre-Eddyfi) |
 | ROIC | 10.87% | Good |
-| ROE | 12.89% | Okay |
-| ROA | 6.63% | Okay |
 | Operating Margin | 16.43% | Good |
-| Net Margin | 7.98% | Okay |
 | Gross Margin | 36.88% | Good |
 | EBITDA Margin | 19.38% | Good |
-| FCF Yield | 3.62% | Below Avg |
+| FCF Yield | 3.62% | Below Average |
 | Revenue Growth | +1.2% YoY | Weak |
-| Current Ratio | 1.90 | Good |
-| Quick Ratio | 0.96 | Okay |
-| Dividend Yield | 0.40% | Low |
 
-**Key dynamic:** ESAB was a quality compounder (+325% from 2022 low) with Danaher-heritage operating excellence. The Eddyfi acquisition changes the narrative: it adds $1B in debt (pushing pro forma Net Debt/EBITDA to ~3.5-4x), is slightly EPS dilutive in 2026, and introduces integration risk. The stock went from "proven operating system + organic margin expansion" to "leveraged acquirer digesting a large deal." The market is repricing accordingly.
+## Detailed Scenario Breakdowns
 
-## Scenario Details
+### Scenario 1: Eddyfi Integrates + Industrial Recovery (15% probability)
 
-### Scenario 1: Eddyfi Integrates Well + Industrial Recovery (15% probability)
+Eddyfi delivers guided $80M EBITDA + $20M synergies = $100M contribution by 2027. Organic growth reaccelerates to 3-5% as global industrial capex recovers. EBITDA margin expands to 21-22%. Combined revenue approaches $3.3B. Net Debt/EBITDA deleverages from 3.5x to 2.5x within 18 months. EBX system applied to Eddyfi.
 
-**What happens:** Eddyfi delivers its guided $80M EBITDA + $20M synergies = $100M contribution by 2027. ESAB's organic growth reaccelerates to 3-5% as global industrial capex recovers (infrastructure spending, energy transition, reshoring). EBITDA margin expands to 21-22% (from 20%). Combined revenue approaches $3.3B.
-
-Pro forma Net Debt/EBITDA deleverages from ~3.5x to ~2.5x within 18 months as Eddyfi EBITDA flows through. The EBX system is applied to Eddyfi, improving its margins from ~30% to 35%+. Analysts re-rate ESAB as a "Danaher-lite" compounder again.
-
-**Why only 15%:** Large acquisitions rarely integrate smoothly in year one. Eddyfi is in an adjacent but different space (inspection vs. fabrication). Industrial PMI is soft globally, and tariff uncertainty dampens capex. The market has seen too many "transformative acquisitions" that stumbled.
+Only 15% because large acquisitions rarely integrate smoothly in year one, Eddyfi is in adjacent space (inspection vs. fabrication), and industrial PMI is soft globally.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| EV/EBITDA re-rates from 12.8x to 15x | Premium compounder status restored | +17% |
-| EPS grows 15%+ (Eddyfi accretive + organic) | Earnings deliver | +15% |
-| Leverage decompresses (3.5x → 2.5x) | Risk premium shrinks | +8% |
-| **Total** | | **+30 to 45%** |
+| EV/EBITDA re-rates from 12.8x to 15x | Compounder status restored | +17% |
+| EPS grows 15%+ | Eddyfi accretive + organic | +15% |
+| Leverage decompresses 3.5x to 2.5x | Risk premium shrinks | +8% |
+| **Raw sum** | | **+40%** |
+| **After 60% overlap discount** | | **+24%** |
 
-**Price target: ~$128-142**
+**Price target: ~$128-142** (midpoint: $135.00)
 
 ### Scenario 2: Guidance Met — Steady Execution (30% probability)
 
-**What happens:** ESAB delivers the 2026 guide: 2-4% organic growth, $575-595M core EBITDA, $5.70-5.90 adjusted EPS. Eddyfi closes mid-2026 and contributes a partial year. Pro forma leverage is ~3.5x but management outlines a clear deleverage path. Americas segment stabilizes after weak 2025.
-
-The stock trades in a range as the market waits for Eddyfi integration proof points. EMEA/APAC continue to outperform (EMEA +200bps volumes, APAC +400bps). Margin expansion continues incrementally.
-
-**Why 30%:** This is the base case — management has a track record of hitting guidance (EBX system drives consistency). The 2026 guide is conservative enough to be achievable.
+ESAB delivers 2026 guide: 2-4% organic growth, $575-595M core EBITDA, $5.70-5.90 adjusted EPS. Eddyfi closes mid-2026, contributes partial year. Pro forma leverage 3.5x with clear deleverage path. Americas stabilizes.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
 | EV/EBITDA stable at 12-13x | No re-rating | 0 to +5% |
-| EPS grows 8-12% ($5.70-5.90 vs $5.27) | Modest | +5% |
+| EPS grows 8-12% | Modest | +5% |
 | Leverage overhang limits upside | Market waits for proof | -3% |
-| **Total** | | **-5 to +10%** |
+| **Raw sum** | | **+2 to +7%** |
+| **After 60% overlap discount** | | **+1 to +4%** |
 
-**Price target: ~$93-108**
+**Price target: ~$93-108** (midpoint: $100.50)
 
 ### Scenario 3: Industrial Slowdown + Eddyfi Digestion Issues (35% probability)
 
-**What happens:** Global manufacturing PMI stays below 50 for 3+ quarters. ESAB's organic revenue declines 2-4% (Americas leads the weakness). Tariffs on steel/metals raise input costs that can't be fully passed through. EBITDA margin compresses to 18-19%.
+Global manufacturing PMI stays below 50. Organic revenue declines 2-4%. Tariffs raise input costs that can't be fully passed through. Eddyfi integration friction — customer retention harder than expected, $20M synergy target slips to $10M. Net Debt/EBITDA stays at 3.5-4x. EPS $5.00-5.30 (below guide).
 
-Eddyfi integration encounters friction — customer retention is harder than expected (inspection contracts are relationship-driven), key talent leaves, and the $20M synergy target slips to $10M. Pro forma EBITDA for the combined entity disappoints. Net Debt/EBITDA stays at 3.5-4x instead of deleveraging.
-
-EPS comes in at $5.00-5.30 (below the $5.70-5.90 guide). Analysts who championed the Eddyfi deal cut targets. The narrative shifts from "compounder" to "leveraged industrial with integration risk."
-
-**Why 35% (most likely):** Industrial cycles don't recover on command, and ESAB's organic growth was already flat-to-negative in FY2025. The $1.45B Eddyfi acquisition at 18x EBITDA is a premium price that needs to be justified by synergies and growth — if either disappoints, the math doesn't work. This is the "Eddyfi was a reach" scenario.
+Highest probability because industrial cycles don't recover on command, organic growth was already flat, and the Eddyfi premium price (18x EBITDA) needs to be justified.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
 | EV/EBITDA compresses from 12.8x to 10x | Industrial de-rate | -22% |
 | EPS misses by 10% | Earnings disappoint | -10% |
-| Leverage stays elevated (3.5-4x) | Credit risk premium | -5% |
+| Leverage stays elevated 3.5-4x | Credit risk premium | -5% |
 | Integration concerns | Narrative damage | -5% |
-| **Total (overlapping, ~65% of sum)** | | **-25 to 35%** |
+| **Raw sum** | | **-42%** |
+| **After 60% overlap discount** | | **-25%** |
 
-**Price target: ~$64-74**
+**Price target: ~$64-74** (midpoint: $69.00)
 
 ### Scenario 4: Recession + Acquisition Writedown (20% probability)
 
-**What happens:** A global industrial recession hits. Manufacturing capex collapses. ESAB's revenue declines 10-15%. Welding consumables volume drops (a leading indicator of industrial activity). Eddyfi's inspection business, tied to infrastructure/energy maintenance budgets, also contracts.
-
-Combined EBITDA drops to $450-480M. Net Debt/EBITDA spikes to 5x+. Rating agencies downgrade. The $1B in 5.625% senior notes become a burden. Eddyfi goodwill impairment of $200-400M is plausible (paid $1.45B for a business generating $80M EBITDA — any EBITDA decline makes the price look expensive).
-
-EPS collapses to $3.50-4.50. The stock reprices as a leveraged cyclical rather than a quality compounder.
-
-**Why 20%:** Industrial recession is a real risk with tariffs, PMI softness, and capex uncertainty. ESAB was a $32 stock just 3.5 years ago (post-spinoff low in Oct 2022). The +325% rally was fueled by margin expansion and multiple expansion — both of which reverse in a downturn. The Eddyfi leverage adds a new dimension of risk that didn't exist during the 2022 recovery.
+Global industrial recession. Manufacturing capex collapses. Revenue declines 10-15%. Combined EBITDA drops to $450-480M. Net Debt/EBITDA spikes to 5x+. Eddyfi goodwill impairment of $200-400M plausible. EPS collapses to $3.50-4.50.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| EV/EBITDA collapses to 7-8x | Cyclical trough multiple | -38% |
+| EV/EBITDA collapses to 7-8x | Cyclical trough | -38% |
 | EPS drops 30%+ | Earnings collapse | -30% |
 | Goodwill impairment | Book value destroyed | -10% |
 | Leverage spikes to 5x+ | Credit risk | -10% |
-| **Total (overlapping, ~55% of sum)** | | **-45 to 55%** |
+| **Raw sum** | | **-88%** |
+| **After 60% overlap discount** | | **-53%** |
 
-**Price target: ~$44-54**
+**Price target: ~$44-54** (midpoint: $49.00)
 
 ## Stress Test / Sensitivity Matrix
 
-**Key variables:** FY2026 EBITDA (organic + Eddyfi partial year) x EV/EBITDA Multiple
+**Base multiple justification:** 12x EV/EBITDA. ESAB's post-spinoff trading range has been approximately 12-16x EV/EBITDA. Industrial peers (Lincoln Electric 12-14x, ITW 14-16x) bracket this range. Current price of $98 implies approximately $585M EBITDA at 14x or $640M at 12x.
 
-**Assumptions:** Net debt ~$2.3B (post-Eddyfi), 60M shares diluted.
+**Valuation regime check:** ESAB has only been public since April 2022. Its EV/EBITDA ranged from ~8x at spinoff trough to ~16x at ATH peak. The pre-Eddyfi expansion to 16x was driven by EBX-driven margin improvement and "Danaher-lite" narrative. For the severe case, 8x EV/EBITDA (the post-spinoff trough) is appropriate, reflecting a recession plus integration failure.
 
-**Formula:** Price = ((EBITDA x Multiple) - Net Debt) / Shares
+**Key variables:** FY2026 EBITDA x EV/EBITDA Multiple. Assumes net debt $2.3B (post-Eddyfi), ~60M shares diluted.
 
-| FY2026 EBITDA → | $480M (miss) | $540M (flat) | $585M (guide mid) | $640M (beat + Eddyfi) |
+**Formula:** Price = ((EBITDA x Multiple) - $2.3B) / 60M shares
+
+### Price Matrix
+
+| FY2026 EBITDA -> | $480M (miss) | $540M (flat) | $585M (guide mid) | $640M (beat + Eddyfi) |
 |---|---|---|---|---|
 | **EV/EBITDA 8x** | $25 | $33 | $40 | $47 |
-| **EV/EBITDA 10x** | $42 | $52 | **$59** | $68 |
+| **EV/EBITDA 10x** | $42 | $52 | $59 | $68 |
 | **EV/EBITDA 12x** | $58 | $70 | $78 | $89 |
-| **EV/EBITDA 14x** | $73 | $88 | **$98** ← current | $111 |
+| **EV/EBITDA 14x** | $73 | $88 | **$98** | $111 |
 
-**What the matrix reveals:**
-- **Current price ($98) implies:** ~$585M EBITDA at 14x or ~$640M at 12x. The market is pricing in guidance delivery at a premium multiple — there's no margin of safety at current prices.
-- **Floor ($25):** Recession EBITDA ($480M) at 8x. This requires a severe industrial downturn.
-- **Post-Eddyfi leverage effect:** Net debt of $2.3B eats a massive chunk of enterprise value at lower EBITDA levels. At 8x on $480M, the equity is only worth $25/share — the leverage amplifies downside dramatically.
-- **Most sensitive variable:** EV/EBITDA multiple. Moving from 14x to 10x at constant EBITDA ($585M) drops price from $98 to $59 (-40%). This is a multiple-and-leverage stock — the Eddyfi debt load means small multiple changes create large equity swings.
+**Key insight:** Current price ($98) implies approximately $585M EBITDA at 14x — the market is pricing in guidance delivery at a premium multiple with no margin of safety. Floor ($25) at recession EBITDA ($480M) at 8x. Post-Eddyfi leverage ($2.3B net debt) eats a massive chunk of enterprise value at lower EBITDA levels — at 8x on $480M, equity is only $25/share. Most sensitive variable is EV/EBITDA multiple: 14x to 10x at constant EBITDA drops price from $98 to $59 (-40%).
+
+**Price derivation cross-check:** Bear case — overlap discount method gives $98 x (1 - 0.25) = $74; stress test matrix at $540M EBITDA / 10x = $52. Methods diverge by 30% — the overlap method understates bear downside because the $2.3B net debt creates non-linear equity erosion at lower EBITDA levels. Stress test matrix used as primary ($64-74 range reflects the reality of leverage amplification). Severe case — overlap gives $98 x (1 - 0.53) = $46; stress test at $480M / 8x = $25. Methods diverge significantly due to leverage. For ESAB, the stress test matrix is the more reliable tool.
 
 ## Precedent Drawdowns
 
-| Company/Event | Period | Decline | Catalyst |
-|--------------|--------|---------|----------|
-| **ESAB post-spinoff** | Apr-Oct 2022 | -36% ($50→$32) | Rate hikes, industrial uncertainty, new-issue discount |
-| **ESAB 2025-2026 current** | Feb-Mar 2026 | -32% ($136→$93) | Eddyfi leverage + tariffs + industrial softness |
-| **Lincoln Electric (LECO) 2019-2020** | COVID | -45% | Industrial shutdown |
-| **Lincoln Electric 2022** | Rate cycle | -30% | Same dynamics |
-| **Illinois Tool Works (ITW) 2020** | COVID | -35% | Industrial shutdown |
-| **Colfax (pre-spinoff) 2018-2020** | Peak to trough | -60% | Industrial cycle + COVID |
+| Company/Event | Period | Decline | Catalyst | Moat Intact? |
+|--------------|--------|---------|----------|--------------|
+| **ESAB post-spinoff** | Apr-Oct 2022 | -36% ($50 to $32) | Rate hikes, industrial uncertainty, new-issue discount | Yes (recovered +325% to $136) |
+| **ESAB current 2025-2026** | Feb-Mar 2026 | -28% ($136 to $98) | Eddyfi leverage + tariffs + industrial softness | Yes (franchise intact, issue is leverage/timing) |
+| **Lincoln Electric (LECO) COVID** | 2020 | -45% | Industrial shutdown | Yes (recovered fully) |
+| **Lincoln Electric 2022** | 2022 | -30% | Rate hike cycle | Yes (similar dynamics) |
+| **Colfax (pre-spinoff, ESAB parent) 2018-2020** | 2018-2020 | -60% | Industrial cycle + COVID | Partially (required restructuring and spinoff) |
 
-**Key finding:** ESAB's current -32% drawdown is in line with typical industrial corrections (-30 to -45%). But the company now has significantly more leverage than during the 2022 drawdown (post-Eddyfi). The Colfax precedent (-60%) — ESAB's own former parent — represents the template if a full recession materializes while the company is mid-integration.
+ESAB's current -28% matches typical industrial corrections (-30 to -45%). But the company now has significantly more leverage than during the 2022 drawdown. The Colfax precedent (-60%) — ESAB's own former parent — represents the template if a full recession materializes while mid-integration. Precedent-implied further downside: -10 to -35%.
 
-**Precedent-implied further downside: -10 to -35%.** The current decline matches typical industrial corrections, but the Eddyfi leverage adds a new risk dimension. If this is "just a tariff scare" (like 2019), the stock is near bottom. If it's the start of a real industrial recession, the Colfax -60% template says there's 30-40pp more to go.
+## Competitive Landscape Detail
+
+**Sub-industry:** Global welding consumables, equipment, and cutting systems
+
+**Market position:** #3 global welding manufacturer (behind Lincoln Electric and Illinois Tool Works)
+
+**Top competitors:**
+
+| Competitor | What They Do | Threat Level | Evidence |
+|-----------|-------------|-------------|---------|
+| **Lincoln Electric (LECO)** | #1 global welding manufacturer; similar consumables + equipment model; better capitalized | Low — stable oligopoly | Market is mature and consolidated among top 3; competition is on innovation and service, not price; LECO results serve as cycle indicator for ESAB |
+| **Illinois Tool Works (ITW)** | #2 global welding (welding is one of 7 segments); higher margins via 80/20 front-to-back | Low — different operating model | ITW's diversification makes welding a smaller focus; not aggressively competing for ESAB's share |
+
+**Revenue at risk calculation:** Competitive displacement risk is minimal due to certification-based switching costs (4/5 moat). Welding procedure specifications (WPS) and tradesperson habit create structural stickiness for consumables. The real risk is cyclical demand decline and Eddyfi leverage, not competitive displacement.
 
 ## Sources
 
 - [ESAB Q4 2025 Earnings & Eddyfi Announcement](https://s29.q4cdn.com/708594787/files/doc_presentation/2026/ESAB-Announcement-and-4Q-2025-Earnings-Final.pdf)
-- [ESAB StockAnalysis](https://stockanalysis.com/stocks/esab/)
+- [ESAB Financials & Ratios — StockAnalysis](https://stockanalysis.com/stocks/esab/financials/ratios/)
+- [ESAB PE Ratio History — Macrotrends](https://macrotrends.net/stocks/charts/ESAB/esab-corporation/pe-ratio)
+- [Yahoo Finance ESAB](https://finance.yahoo.com/quote/ESAB/)
 - [Seeking Alpha — ESAB Welder With Ambitions](https://seekingalpha.com/article/4882679-esab-welder-with-ambitions)
 - [ESAB $1B Senior Notes Issuance](https://za.investing.com/news/sec-filings/esab-corp-issues-1-billion-in-senior-notes-to-finance-eddyfi-technologies-acquisition-93CH-4184859)
