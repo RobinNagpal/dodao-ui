@@ -1,48 +1,70 @@
 # EquipmentShare (EQPT) — Price Dip Analysis
 
-**Current Price:** ~$20.50 (March 31, 2026) | **ATH:** $35.50 (Jan 28, 2026) | **Drop from ATH:** -42%
-
-**Moat: 3/5** | **Financial Health: 1/5** | **Precedent: 2/5** | **Overall: 1/5**
-
----
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
 
 # Section 1: Analysis
 
-## 1. Business Overview & Moat Assessment (3/5)
+## What This Company Does & Why the Stock Dropped
 
-EquipmentShare is the #3 U.S. construction equipment rental company behind United Rentals ($15B+ revenue) and Sunbelt Rentals (~$10B). IPO'd in January 2026 at $24.50, raising $747M. The company operates 385 locations with 252K rental fleet units and fleet OEC of $8.78B.
+EquipmentShare is the #3 US construction equipment rental company behind United Rentals ($15B+ revenue) and Sunbelt Rentals (~$10B). The company IPO'd in January 2026 at $24.50, raising $747M. It operates 385 locations with 252K rental fleet units and fleet OEC (original equipment cost) of $8.78B. Top revenue products are: equipment rental and services (construction equipment rentals bundled with T3 telematics platform for real-time fleet tracking, $2.72B or approximately 62% of revenue, +34% YoY — the core business and primary growth driver), equipment sales (used equipment sales to contractors, $1.54B or approximately 35% of revenue, -8% YoY, normalizing from post-pandemic boom), and the OWN Program (capital-light asset-backed financing model where third-party investors purchase equipment and lease it to EQPT customers — growing but credit-sensitive). FY2025: revenue $4.38B (+16%), net income $40M, adjusted core EBITDA $1.67B, operating income $297M.
 
-**Top products:**
-1. **Equipment Rental & Services** — construction equipment rentals bundled with T3 telematics platform for real-time fleet tracking and management ($2.72B, +34% YoY, core business and primary growth driver)
-2. **Equipment Sales** — used equipment sales to contractors and third parties ($1.54B, -8% YoY, normalizing after a post-pandemic boom in used equipment pricing)
-3. **OWN Program** — capital-light asset-backed financing model where third-party investors purchase equipment and lease it to EQPT customers (growing but credit-sensitive, dependent on used equipment values and investor appetite)
+The stock has fallen approximately 42% from its ATH of $35.50 (reached just 5 days after IPO) to around $20.50, and trades approximately 16% below its $24.50 IPO price. The decline reflects post-IPO normalization from first-day hype, combined with construction cycle uncertainty driven by tariffs, elevated interest rates, and fears about a construction spending slowdown. The extreme leverage (6.11x Net Debt/EBITDA, 2.5-3x higher than peers) amplifies every concern.
 
-**Moat rationale (3/5):** T3 telematics is a genuine technology differentiator that drives customer stickiness and operational efficiency. However, United Rentals is closing the tech gap with its own digital investments. The #3 position provides scale advantages over smaller regional players, but EQPT lacks the pricing power and balance sheet strength of URI and Sunbelt. Construction equipment rental is inherently cyclical — no moat protects against a demand downturn. The moat is real but narrow and overwhelmed by the cyclical nature of the business.
+## How Much Further Can It Fall?
 
-## 2. Financial Health (1/5)
+The probability-weighted expected price is approximately $15.50, implying roughly 24% further downside from $20.50. EQPT has the worst tail risk of all stocks in coverage. The extreme leverage amplifies every downside scenario through a compounding mechanism: revenue decline leads to EBITDA miss, which spikes Net Debt/EBITDA, which compresses the EV/EBITDA multiple, which destroys equity value through three channels simultaneously.
 
-FY2025: Revenue $4.38B (+16%), net income $40M (+1,233% from $3M), Adjusted Core EBITDA $1.67B, operating income $297M (+36%), operating cash flow $264M. Guided FY2026: revenue $5.05-5.47B (+15-25%), EBITDA $1.81-1.93B.
+**Weighted expected price calculation:**
+- Bull midpoint $29.50 x 15% = $4.43
+- Base midpoint $17.25 x 30% = $5.18
+- Bear midpoint $13.75 x 35% = $4.81
+- Severe midpoint $8.50 x 20% = $1.70
+- **Weighted Expected Price = $16.12**
 
-**Financial health rationale (1/5):** Net Debt/EBITDA of 6.11x is TERRIBLE — peers United Rentals and Sunbelt operate at 2.0-2.5x, making EQPT roughly 2.5-3x more leveraged than competitors. Interest coverage of 1.2x is razor-thin ($297M operating income vs. ~$250M interest expense), meaning almost all operating profit goes to debt service. ROIC of 4.92% is well below estimated WACC, destroying shareholder value at the company level (mature sites earn 16.5% ROIC but 120+ new sites in ramp are dragging the average deeply negative). Net income margin is 0.9% — barely profitable. Free cash flow is negative due to massive fleet capex. Post-IPO with lockup overhang (April-July 2026). Buyback yield of -193.5% reflects IPO dilution. This is the worst financial health profile of all 31 stocks in coverage.
+The bull case requires construction to stay strong, rental revenue +30%, EBITDA growing to $1.9B, and leverage improving to 5.0-5.5x. The severe case envisions a recession with construction spending declining 5-10%, EBITDA dropping to $1.1-1.3B, Net Debt/EBITDA spiking to 8-10x, and potential fleet liquidation at distressed prices.
 
-## 3. Precedent Analysis (2/5)
+Interest coverage of 1.2x ($297M operating income vs. approximately $250M interest expense) is razor-thin — almost all operating profit goes to debt service. Any revenue deceleration cascades directly into potential net losses.
 
-EQPT is down -42% from its ATH of $35.50 and trades ~16% below its IPO price of $24.50. However, the stock has only 2 months of public trading history (IPO January 23, 2026). The ATH was reached just 5 days after IPO, reflecting first-day hype rather than a fundamental valuation anchor.
+**Table 1 — Scenario Summary**
 
-**Precedent rationale (2/5):** There is no meaningful precedent to draw from. The stock has never been through an earnings cycle, a macro downturn, or a lockup expiration as a public company. The -42% decline happened in a compressed timeframe driven by post-IPO normalization and sector-wide construction fears. Peer precedents (URI declined -7% in 2020, -11% in 2009) provide some guidance, but EQPT's leverage is 2.5-3x higher than peers, making direct comparison unreliable.
+| Scenario | Story | Price Range | Probability |
+|----------|-------|-------------|-------------|
+| Bull | Construction strong, rental +30%, EBITDA $1.9B, leverage improves to 5.0x | $28-31 | 15% |
+| Base | Low-end guidance ($5.05B revenue, $1.81B EBITDA), leverage stays 5.5-6.0x, lockup selling pressure | $16.50-18 | 30% |
+| Bear | Construction slowdown, EBITDA misses at $1.5-1.6B, leverage spikes to 7.0-7.5x, interest coverage <1.0x | $12.50-15 | 35% |
+| Severe | Recession, revenue -5-10%, EBITDA $1.1-1.3B, leverage 8-10x, covenant risk, fleet liquidation | $7-10 | 20% |
+| **Weighted Expected** | **(29.5 x 0.15) + (17.25 x 0.30) + (13.75 x 0.35) + (8.5 x 0.20) = $16** | **~$16** | |
 
-## 4. Scenarios & Probability-Weighted Outcome
+## Competitive Position & Moat
 
-| Scenario | Price Range | Change | Probability |
-|----------|------------|--------|-------------|
-| Bull: Construction strong, rental +30%, EBITDA grows to $1.9B | $28-31 | +35 to 50% | 15% |
-| Base: Low-end guidance, leverage stays elevated, lockup expires | $16.50-18 | -12 to 20% | 30% |
-| Bear: Construction slowdown, EBITDA misses, leverage spikes to 7x+ | $12.50-15 | -28 to 38% | 35% |
-| Severe: Recession, leverage 8-10x, fleet liquidation risk | $7-10 | -50 to 65% | 20% |
+EQPT's T3 telematics platform is a genuine technology differentiator that drives customer stickiness and operational efficiency. However, United Rentals is closing the tech gap with its own digital investments. The #3 position provides scale advantages over smaller regional players, but EQPT lacks the pricing power and balance sheet strength of URI and Sunbelt. Construction equipment rental is inherently cyclical — no moat protects against a demand downturn.
 
-**Probability-weighted expected price: ~$15.50 (approximately 24% further downside from $20.50).**
+The top 2 direct competitors are United Rentals (URI, #1, approximately $15B revenue, 2.0-2.5x Net Debt/EBITDA — far better capitalized) and Sunbelt Rentals (SNBF, #2, approximately $10B, similar leverage profile to URI). Both compete directly in construction equipment rental. Revenue at risk from direct competition is moderate — EQPT's T3 telematics provides some stickiness, but customers will switch for price in a downturn. The bigger risk is cyclical demand decline amplified by leverage.
 
-**Overall rating rationale (1/5):** EQPT has the worst tail risk of all 31 stocks in coverage. The extreme leverage (6.11x Net Debt/EBITDA) amplifies every downside scenario through a leverage transmission mechanism: revenue decline -> EBITDA miss -> Net Debt/EBITDA spikes -> market compresses EV/EBITDA multiple -> equity value destroyed through three compounding channels simultaneously. A 10% EBITDA miss does not just reduce earnings — it can crater the stock 30-40% because the debt absorbs most of the enterprise value. The 55% combined probability of Bear + Severe scenarios reflects the genuine fragility of a hyper-leveraged cyclical business in an uncertain construction environment. Construction cycle sensitivity dominates all other considerations.
+EQPT's moat (3/5 — T3 telematics differentiation + scale) is moderate: technology advantage is real but narrow, and the cyclical nature of the business overwhelms moat considerations.
+
+**Table 2 — Ratings Dashboard**
+
+| Rating | Score | What It Means |
+|--------|-------|---------------|
+| Moat Strength | 3/5 | #3 US equipment rental, T3 telematics is real differentiator; BUT: URI closing tech gap, cyclical business, moat doesn't protect against demand downturn |
+| Financial Health | 1/5 | Net Debt/EBITDA 6.11x (2.5-3x peers), interest coverage 1.2x razor-thin, ROIC 4.92% below WACC, net income $40M barely positive, negative FCF |
+| Precedent Position | 2/5 | -42% from ATH, but stock has only 2 months of public history; no meaningful precedent; IPO hype inflated ATH |
+| Overall Downside Risk | 1/5 | Worst tail risk in coverage; extreme leverage amplifies every downside scenario; 55% bear+severe probability; construction cycle sensitivity dominates |
+
+## What to Watch
+
+Net Debt/EBITDA trajectory is the single most important metric — improving toward 5.0x is the bull case, worsening above 6.5x is the bear case. Post-IPO lockup expiration (April-July 2026) will create selling pressure from early investors. Interest coverage ratio staying above 1.0x is the minimum threshold to avoid covenant risk.
+
+**Table 3 — Key Metrics to Monitor**
+
+| What to Watch | Current Value | Bull Signal | Bear Signal | Next Data Point |
+|---------------|---------------|-------------|-------------|-----------------|
+| Net Debt/EBITDA | 6.11x | Improving toward 5.0x | Worsening above 6.5x | Quarterly earnings |
+| Interest Coverage (EBIT/Interest) | 1.2x | Above 1.5x | Below 1.0x | Q1 2026 earnings (May) |
+| Construction Spending Growth | ~5% | Sustained 5%+ | Below 2% or declining | Monthly Census Bureau data |
+| Used Equipment Price Index | Stable | Stable or rising | Declining (fleet writedown risk) | Monthly Ritchie Bros data |
+| Lockup Expiration | Pending | Orderly, minimal selling | Aggressive insider selling | April-July 2026 |
 
 ---
 
@@ -50,229 +72,164 @@ EQPT is down -42% from its ATH of $35.50 and trades ~16% below its IPO price of 
 
 ## Current Ratio Snapshot
 
+*All ratios calculated at current price of ~$20.50, as of March 2026.*
+
+*Note: TTM PE is not meaningful ($40M net income on approximately $5.5B market cap = 130x+). EQPT is barely profitable at the net income level because interest expense ($250M) consumes nearly all operating income ($297M). EV/EBITDA (~5.1x) is the primary valuation metric — it looks "cheap" but only because the massive debt load inflates enterprise value. For EQPT, Net Debt/EBITDA is the real valuation framework because leverage determines what EV/EBITDA multiple the market assigns.*
+
 | Ratio | Value | Status |
 |-------|-------|--------|
-| PE Ratio | N/A (barely profitable at $40M net income) | Bad |
-| Forward PE | N/A | Unknown |
-| PS | ~1.2x (est. at $5.5B market cap) | Good |
-| EV/Sales | ~2.0x (est. at $8.5B EV) | Okay |
-| EV/EBITDA | ~5.1x (est. on $1.67B EBITDA) | Good |
-| Debt/Equity | 4.78 | Terrible |
-| Debt/EBITDA | 6.57 | Terrible (far above 3.0x comfort) |
-| Net Debt/EBITDA | 6.11 | Terrible |
-| Debt/FCF | -2.47 | Bad (negative FCF) |
-| Quick Ratio | 1.20 | Okay |
-| Current Ratio | 1.97 | Good |
+| PE (TTM) | N/A (barely profitable) | Bad |
+| EV/EBITDA | ~5.1x | Looks cheap but leverage-distorted |
+| EV/Sales | ~2.0x | Okay |
+| Price/Sales | ~1.2x | Good |
+| Debt/Equity | 4.78x | Terrible |
+| Net Debt/EBITDA | 6.11x | Terrible (peers at 2.0-2.5x) |
+| Interest Coverage | 1.2x | Razor-thin |
+| ROIC | 4.92% | Bad (below cost of capital) |
 | ROE | 4.54% | Bad |
-| ROA | 4.07% | Bad |
-| ROIC | 4.92% | Bad (well below cost of capital) |
-| ROCE | 6.41% | Bad |
-| Asset Turnover | 0.81 | Okay |
-| Inventory Turnover | 7.70 | Good |
-| Buyback Yield | -193.51% | Extreme (IPO dilution) |
+| Current Ratio | 1.97 | Good |
+| Quick Ratio | 1.20 | Okay |
+| Net Margin | 0.9% | Barely profitable |
+| Revenue Growth | +16% YoY | Good |
+| EBITDA Margin | ~38% | Good |
+| FCF | Negative | Bad (massive fleet capex) |
+| Buyback Yield | -193.5% | Extreme (IPO dilution) |
 
----
+## Detailed Scenario Breakdowns
 
-## Detailed Scenario Analysis
+### Scenario 1: Construction Stays Strong (15% probability)
 
-### Scenario 1: Construction Stays Strong — Rental Growth Executes (15% probability)
+Infrastructure spending (IIJA, CHIPS Act) flows, data center construction booms. EQPT delivers high end of guidance: ~$5.4B revenue, $1.9B EBITDA, rental revenue +30%. Net Debt/EBITDA improves from 6.1x to 5.0-5.5x through EBITDA growth.
 
-**What happens:** Infrastructure spending from IIJA ($1.2T) and CHIPS Act continues to flow. Data center construction booms. Tariff uncertainty doesn't materially slow private construction because projects already in pipeline proceed. Mortgage rates drift down slightly, stabilizing residential construction.
-
-EQPT delivers at the high end of guidance: ~$5.4B revenue, $1.9B EBITDA, rental revenue +30%. The 36-44 new locations open and begin ramping. Mature site EBITDA margin holds at 54%. Fleet utilization stays high.
-
-Net income improves to $80-100M as revenue growth outpaces interest expense. Net Debt/EBITDA improves from 6.1x to 5.0-5.5x through EBITDA growth (not debt paydown — EQPT is still investing in fleet). The market starts giving EQPT credit as a "tech-enabled rental disruptor" vs. traditional players.
-
-Goldman Sachs has a $44 target (already lowered from higher). If execution is strong, the stock re-rates toward that level.
-
-**Why only 15%:** The macro environment is hostile — tariff uncertainty is real, construction spending data is mixed, and interest rates remain elevated. EQPT's leverage means it needs everything to go right to show meaningful net income improvement. Post-IPO stocks rarely recover quickly in a weak market — the lockup overhang keeps a lid on price.
+Only 15% because macro is hostile (tariff uncertainty, elevated rates), leverage means everything must go right, and post-IPO stocks rarely recover quickly.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| EV/EBITDA stays at 5x but EBITDA grows to $1.9B | EV grows, equity benefits | +30% |
-| PS re-rates to 1.5x on revenue growth | 1.2x -> 1.5x | +25% |
-| Net Debt/EBITDA improves to 5.0x | 6.1x -> 5.0x | +8% |
-| **Total (overlapping)** | | **+35 to 50%** |
+| EV/EBITDA stays at 5x but EBITDA grows | EV expands, equity benefits | +30% |
+| Net Debt/EBITDA improves to 5.0x | Leverage relief | +8% |
+| Revenue growth validates thesis | Growth premium | +10% |
+| **Raw sum** | | **+48%** |
+| **After 60% overlap discount** | | **+29%** |
 
-**Price target: ~$28-31**
+**Price target: ~$28-31** (midpoint: $29.50)
 
----
+### Scenario 2: Low-End Guidance, Leverage Stays (30% probability)
 
-### Scenario 2: Guidance Met at Low End — Leverage Stays Elevated (30% probability)
-
-**What happens:** Construction activity holds up but doesn't accelerate. Infrastructure projects proceed on schedule but private commercial/industrial construction is cautious. Tariff uncertainty causes some project delays but not cancellations.
-
-EQPT delivers at the low end of guidance: ~$5.05B revenue, $1.81B EBITDA, rental revenue +21%. New sites open but ramp slower than planned — site-level margins at new locations are 35% instead of targeting the 54% mature site level. Equipment sales continue to decline as the used equipment market softens.
-
-Interest expense grows slightly (new debt for fleet additions). Net income stays in the $40-60M range — positive but thin. Net Debt/EBITDA stays at 5.5-6.0x because EBITDA growth is offset by new fleet debt.
-
-Post-IPO lockup expires in mid-2026. Some early investors sell, creating temporary downward pressure. The stock drifts but doesn't collapse because the business is fundamentally growing.
-
-**Why 30%:** This is the "nothing breaks but nothing excites" scenario. EQPT's guidance bakes in 15-25% revenue growth, so the low end is still solid growth. The equipment rental sector has structural tailwinds (rental penetration still increasing, infrastructure spending). But the leverage keeps the stock from re-rating — institutional investors won't pay a premium for a company with 6x Net Debt/EBITDA when they can buy United Rentals at 2.5x.
+Low-end guidance: ~$5.05B revenue, $1.81B EBITDA. New sites ramp slower. Equipment sales decline. Net Debt/EBITDA stays at 5.5-6.0x. Lockup expires with some selling pressure. Stock drifts.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| EV/EBITDA compresses to 4.5x (leverage discount) | 5.1x -> 4.5x | -8% |
-| Lockup expiration selling pressure | One-time | -5 to -8% |
-| Net Debt/EBITDA stays above 5.5x | No improvement | -3% |
-| **Total** | | **-12 to 20%** |
+| EV/EBITDA compresses to 4.5x | Leverage discount | -8% |
+| Lockup selling pressure | Temporary | -7% |
+| Net Debt/EBITDA no improvement | Overhang | -3% |
+| **Raw sum** | | **-18%** |
+| **After 60% overlap discount** | | **-11%** |
 
-**Price target: ~$16.50-18**
-
----
+**Price target: ~$16.50-18** (midpoint: $17.25)
 
 ### Scenario 3: Construction Slowdown + Leverage Trap (35% probability)
 
-**What happens:** Tariff-driven uncertainty freezes private commercial and industrial construction projects. Companies delay new warehouse, factory, and data center builds because input costs are unpredictable. Residential construction stays weak due to 6%+ mortgage rates.
+Tariff-driven uncertainty freezes private construction. Total construction growth slows to 1-2%. Rental revenue growth decelerates to 15-18%. Revenue $4.7-4.9B (below low guide). EBITDA $1.5-1.6B. Net Debt/EBITDA spikes to 7.0-7.5x. Interest coverage falls below 1.0x. Net income goes negative. 120+ new sites still ramping and losing money.
 
-Infrastructure spending (public) continues but can't fully offset private sector weakness. Total construction spending growth slows from 5-7% to 1-2%.
-
-EQPT's rental revenue growth decelerates from 34% to 15-18%. Equipment sales decline accelerates (-15 to -20%) as contractors defer purchases. Total revenue comes in at $4.7-4.9B (below the $5.05B low end of guidance). EBITDA hits $1.5-1.6B — solid but below the $1.81B low-end guide.
-
-Here's where the leverage bites: Net Debt/EBITDA spikes from 6.1x to 7.0-7.5x because EBITDA drops but debt stays (fleet commitments are multi-year). Interest coverage (EBIT/Interest) tightens dangerously — EQPT generated $297M operating income against ~$250M interest in 2025. If operating income drops 15%, interest coverage falls below 1.0x (interest exceeds operating income). Net income goes negative.
-
-The 120+ new sites (opened in 2025-2026) are still ramping and losing money. EQPT can't close them easily because leases and fleet commitments are locked in. The SG&A ratio (already elevated at 24.2%) worsens as revenue growth slows against a fixed cost base.
-
-Used equipment values soften as construction companies liquidate fleets. EQPT's $8.78B fleet (OEC) faces potential writedowns. The OWN Program's third-party investors become cautious, reducing new financing availability.
-
-**Why 35% (most likely negative scenario):** Construction spending is genuinely uncertain in a tariff environment. Equipment rental is a cyclical business — United Rentals saw revenue decline 7% in 2020 and 11% in 2009. EQPT's leverage amplifies any cyclical downturn dramatically: at 6.1x Net Debt/EBITDA, even a 10% EBITDA miss pushes leverage to 6.8x, which is distressed territory for an equipment company. The new site ramp (120+ locations in 2 years) is a fixed cost commitment that can't be unwound in a downturn. This is the classic "leveraged growth company hits a cyclical slowdown" pattern.
+Highest probability because construction spending is genuinely uncertain in a tariff environment, equipment rental is cyclical, and EQPT's leverage amplifies any downturn dramatically.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| EV/EBITDA expands to 5.5x (lower EBITDA) | 5.1x -> 5.5x | -5% |
-| Net Debt/EBITDA spikes to 7.0x+ (2 units of 0.5x) | 6.1x -> 7.2x | -8% |
-| ROIC drops further below cost of capital | 4.9% -> 3% | -6% |
-| ROE collapses (net loss + high debt) | 4.5% -> negative | -5% |
-| Lockup selling + sentiment collapse | Combined | -10% |
-| Equity value eroded by debt (EV stays stable but debt grows relative to equity) | Leverage effect | -12% |
-| **Total (overlapping, ~60% of sum)** | | **-28 to 38%** |
+| EV/EBITDA expands to 5.5x | Lower EBITDA | -5% |
+| Net Debt/EBITDA spikes to 7.0x+ | Credit concern | -8% |
+| ROIC drops further below WACC | Value destruction | -6% |
+| Lockup + sentiment collapse | Combined | -10% |
+| Equity eroded by debt | Leverage effect | -12% |
+| **Raw sum** | | **-41%** |
+| **After 60% overlap discount** | | **-25%** |
 
-**Price target: ~$12.50-15**
+**Price target: ~$12.50-15** (midpoint: $13.75)
 
----
+### Scenario 4: Recession — Debt Spiral (20% probability)
 
-### Scenario 4: Recession — Debt Spiral + Fleet Liquidation Risk (20% probability)
-
-**What happens:** A U.S. recession hits construction hard. Total construction spending declines 5-10%. Commercial real estate projects are cancelled. Even infrastructure spending gets delayed as state/local budgets tighten.
-
-EQPT's rental revenue declines for the first time — dropping 5-10% as contractors release equipment and utilization drops from 70%+ to 55-60%. Equipment sales collapse (-30%) as the used equipment market floods with returned and liquidated fleet.
-
-Revenue drops to $3.8-4.1B (vs. $4.38B in 2025). EBITDA drops to $1.1-1.3B. Net Debt/EBITDA spikes to 8-10x — deep distress territory. Interest coverage falls well below 1.0x. The company swings to a $100-200M net loss.
-
-Lenders get nervous. EQPT's credit facility covenants (likely tied to leverage ratios) come under pressure. The company may need to sell fleet at distressed prices to reduce debt — but selling equipment in a down market crystallizes losses and further reduces revenue capacity.
-
-The OWN Program freezes as third-party investors flee asset-backed financing in a recession. EQPT must either take fleet back onto its balance sheet (more debt) or let contracts expire (less revenue).
-
-The stock, already below IPO price, trades toward tangible book value. With $8.78B in fleet OEC, $2.8B net debt, and declining equity, the stock could approach $8-12 — essentially a bet on the recovery value of the fleet.
-
-Lockup expiration in this environment triggers aggressive selling by early investors and insiders seeking to preserve any remaining gains from the IPO.
-
-**Why 20%:** Construction spending is cyclical, and the sector hasn't had a real downturn since 2020 (which was brief and V-shaped). A tariff-driven recession would be different — slower, structural, and without the fiscal stimulus that cushioned 2020. EQPT's 6.1x leverage means a moderate cyclical downturn produces a severe financial outcome. United Rentals (at 2.5x leverage) can survive a recession — EQPT at 6.1x is far more fragile. The comparison to highly leveraged oil companies in 2014-2016 is apt: great growth companies that discovered their debt levels were unsustainable when the cycle turned.
+US recession. Construction spending declines 5-10%. Rental revenue declines for first time. Revenue drops to $3.8-4.1B. EBITDA $1.1-1.3B. Net Debt/EBITDA spikes to 8-10x. Interest coverage well below 1.0x. Covenant pressure. May need to sell fleet at distressed prices. OWN Program freezes.
 
 | Ratio | Move | Price Impact |
 |-------|------|-------------|
-| Net Debt/EBITDA spikes to 8-10x | 6.1x -> 9x (6 units of 0.5x) | -24% |
-| ROIC goes deeply negative | 4.9% -> -5% | -12% |
-| ROE deeply negative (net loss on thin equity) | 4.5% -> -15% | -10% |
-| Asset Turnover declines (revenue drops, assets stay) | 0.81 -> 0.60 | -6% |
-| Current ratio pressured (debt maturities + cash burn) | 1.97 -> 1.2 | -5% |
-| Fleet writedown risk | Potential impairment | -10% |
-| **Total (overlapping, ~50% of sum)** | | **-50 to 65%** |
+| Net Debt/EBITDA to 8-10x | Deep distress | -24% |
+| ROIC deeply negative | Capital destruction | -12% |
+| Fleet writedown risk | Asset impairment | -10% |
+| Covenant risk / debt spiral | Existential | -15% |
+| **Raw sum** | | **-61%** |
+| **After 60% overlap discount** | | **-37%** |
 
-**Price target: ~$7-10**
-
----
-
-## Leverage Transmission Analysis
-
-The EV/EBITDA multiple the market assigns to EQPT is primarily a function of Net Debt/EBITDA. As leverage increases, the multiple contracts:
-
-| Net Debt/EBITDA | Implied EV/EBITDA | Stock Price (at $5.0B rev, 37% margin) |
-|---|---|---|
-| 5.0x (improving) | 5.5x | $27.5 |
-| 6.0x (current) | 5.0x | $24.3 |
-| 7.0x (stressed) | 4.0x | $17.3 |
-| 8.0x (distressed) | 3.5x | $13.1 |
-| 9.0x+ (covenant risk) | 3.0x | $9.0 |
-
-This is the real stress test for EQPT: **leverage -> multiple -> equity value**. Everything else (revenue, margin) is secondary.
-
----
+**Price target: ~$7-10** (midpoint: $8.50)
 
 ## Stress Test / Sensitivity Matrix
 
-**Key variables:** FY2026 Total Revenue (construction demand) x Adjusted Core EBITDA Margin (fleet utilization + operational leverage)
+**Base multiple justification:** 5x EV/EBITDA. Equipment rental sector (URI 7-9x, Sunbelt similar) trades higher, but EQPT's 6.1x leverage warrants a 2-3x discount. Current price of $20.50 implies approximately $4.6B revenue at 38% margin at 5x. The market assigns a leverage-adjusted discount.
 
-**Assumptions:** 5x EV/EBITDA (equipment rental sector, adjusted for EQPT's elevated leverage), net debt $2.8B (post-IPO), 266M shares diluted. FY2025 EBITDA margin = 38.1%.
+**Valuation regime check:** EQPT has only 2 months of public trading history — no meaningful historical multiple data. Peer comparison: URI averaged ~7-9x EV/EBITDA with 2.0-2.5x leverage. EQPT's 6.1x leverage means the market applies a 2-4x multiple discount. For the severe case, 3x EV/EBITDA (distressed/covenant-risk territory) is appropriate.
 
-**Formula:** Price = ((Revenue x Margin x Multiple) - $2.8B) / 266M shares
+**Key variables:** FY2026 Revenue x EBITDA Margin. Assumes 5x EV/EBITDA, net debt $2.8B, ~266M shares diluted.
 
-### Price Matrix at 5x EV/EBITDA
+**Formula:** Price = ((Revenue x Margin x 5) - $2.8B) / 266M shares
 
-| FY2026 Revenue | $4.5B (slowdown) | $4.8B (low growth) | $5.2B (low guide) | $5.5B (high guide) |
+### Price Matrix (at 5x EV/EBITDA)
+
+| FY2026 Revenue -> | $4.5B (slow) | $4.8B (low growth) | $5.2B (low guide) | $5.5B (high guide) |
 |---|---|---|---|---|
-| **EBITDA Margin 32%** | **$16.5** | $18.3 | $20.8 | $22.6 |
+| **EBITDA Margin 32%** | $16.5 | $18.3 | $20.8 | $22.6 |
 | **EBITDA Margin 36%** | $19.9 | $22.0 | $24.7 | $26.7 |
-| **EBITDA Margin 38%** | **$21.3** (approx current) | $23.4 | $26.2 | $28.2 |
-| **EBITDA Margin 40%** | $22.6 | $24.8 | $27.7 | $29.7 |
+| **EBITDA Margin 38%** | **$21.3** | $23.4 | $26.2 | $28.2 |
 
-### Price Matrix at 4x EV/EBITDA (Leverage Stress — Debt/EBITDA >7x)
+### Price Matrix (at 3x EV/EBITDA — Severe Distress)
 
-| FY2026 Revenue | $4.5B | $4.8B | $5.2B | $5.5B |
-|---|---|---|---|---|
-| **EBITDA Margin 32%** | **$11.1** | $12.6 | $14.8 | $16.2 |
-| **EBITDA Margin 36%** | $13.8 | $15.5 | $18.0 | $19.7 |
-| **EBITDA Margin 38%** | $15.2 | $17.0 | $19.6 | $21.3 |
-
-### Price Matrix at 3x EV/EBITDA (Severe Distress — Covenant Risk)
-
-| FY2026 Revenue | $4.5B | $4.8B | $5.2B |
+| FY2026 Revenue -> | $4.5B | $4.8B | $5.2B |
 |---|---|---|---|
-| **EBITDA Margin 32%** | **$5.7** | $6.8 | $8.7 |
+| **EBITDA Margin 32%** | $5.7 | $6.8 | $8.7 |
 | **EBITDA Margin 36%** | $7.6 | $8.9 | $11.2 |
 
-**What the matrix reveals:**
-- **Current price ($20.50) implies:** ~$4.6B revenue at 38% margin at 5x, or ~$5.2B at 38% margin at 5x. The market is pricing in modest growth with maintained margins.
-- **Leverage makes the multiple the dominant variable.** At $4.8B revenue and 36% margin ($1.73B EBITDA), the difference between 5x ($22) and 3x ($8.90) is $13 — a 60% swing. Revenue and margin combined only swing +/-$6 at a fixed multiple. For EQPT, the multiple (i.e., how much credit stress the market perceives) matters more than anything.
-- **The debt amplifies all outcomes.** At 5x, the net debt ($2.8B) consumes 32-40% of enterprise value. At 3x, it consumes 45-55%. This is why small EBITDA changes cause large equity swings — classic leverage amplification.
-- **Distressed floor ($5.70):** Revenue decline to $4.5B + margin compression to 32% + distressed 3x multiple. This is near-covenant-breach territory. Matches the extreme end of Scenario 4 ($7-10).
-- **Most sensitive variable:** The EV/EBITDA multiple, driven by leverage perception. A credit downgrade or covenant breach fear can crater the multiple from 5x to 3x overnight, taking the stock from $20 to $8. EQPT is a leveraged bet where the stock price is a residual after debt — small EV changes create huge equity swings.
+**Key insight:** Leverage makes the multiple the dominant variable. At $4.8B revenue / 36% margin ($1.73B EBITDA), the difference between 5x ($22) and 3x ($8.90) is $13 — a 60% swing. Revenue and margin combined only swing +/-$6 at a fixed multiple. For EQPT, leverage perception (which drives the multiple) matters more than fundamental performance.
 
----
+**Price derivation cross-check:** Bear case — overlap discount method gives $20.50 x (1 - 0.25) = $15.38; stress test at $4.8B / 36% / 4x = $15.50 (at 4x for leverage-stressed scenario). Methods agree within 1%. Severe case — overlap gives $20.50 x (1 - 0.37) = $12.92; stress test at $4.5B / 32% / 3x = $5.70. Methods diverge significantly — the stress test captures the non-linear leverage effect that linear overlap discounting misses. Stress test matrix used as primary for severe case.
 
-## Key Risk Factors
+## Precedent Drawdowns
 
-1. **Extreme leverage** — Net Debt/EBITDA of 6.11x is 2.5-3x higher than United Rentals and Sunbelt. Interest expense consumed ~$250M of the $297M operating income in 2025, leaving only $40M net income. Any revenue deceleration cascades directly into potential net losses because the interest burden is fixed.
+| Company/Event | Period | Decline | Catalyst | Moat Intact? |
+|--------------|--------|---------|----------|--------------|
+| **EQPT current (post-IPO)** | Jan-Mar 2026 | -42% | Post-IPO normalization, construction fears, leverage concern | N/A (too early to assess) |
+| **United Rentals (URI) COVID** | 2020 | -7% | Brief construction shutdown | Yes (low leverage protected equity) |
+| **United Rentals 2009** | 2009 | -11% | Construction recession | Yes (survived, gained share) |
 
-2. **Construction cycle sensitivity** — Equipment rental is directly tied to construction spending. Tariff uncertainty could freeze commercial/industrial construction projects. Infrastructure spending (IIJA/CHIPS Act) provides a floor but private construction is more volatile.
+EQPT has only 2 months of public history — no meaningful own precedent exists. Peer precedents (URI -7% in 2020, -11% in 2009) are unreliable because EQPT's leverage is 2.5-3x higher. The ATH of $35.50 was reached 5 days after IPO (first-day hype, not fundamental anchor). Precedent-implied further downside: -15 to -40%, but with extreme uncertainty given no historical track record.
 
-3. **New site ramp risk** — EQPT opened 95 locations in 2025 and plans 36-44 more in 2026. New sites lose money during the 2-3 year ramp period (company-wide ROIC is 4.9% vs. 16.5% at mature sites). If construction slows while EQPT is mid-ramp on 120+ new sites, the losses widen.
+## Competitive Landscape Detail
 
-4. **OWN Program dependency** — The capital-light OWN model depends on third-party investors buying equipment and leasing it to EQPT customers. If credit markets tighten or used equipment values decline, OWN Program financing dries up.
+**Sub-industry:** US construction equipment rental and services
 
-5. **Equipment residual value risk** — EQPT's $8.78B fleet (OEC) needs to maintain value. If used equipment prices drop (common during construction downturns when fleet liquidations increase), EQPT faces writedowns.
+**Market position:** #3 US construction equipment rental (behind United Rentals and Sunbelt)
 
-6. **Post-IPO lockup expiration** — Early investors and insiders hold the majority of shares. Lockup expiration (typically 90-180 days post-IPO, so April-July 2026) could create significant selling pressure.
+**Top competitors:**
 
----
+| Competitor | What They Do | Threat Level | Evidence |
+|-----------|-------------|-------------|---------|
+| **United Rentals (URI)** | #1 US equipment rental, $15B+ revenue, 2.0-2.5x Net Debt/EBITDA, closing tech gap with own digital investments | Moderate — scale + balance sheet advantage | URI can compete on price while maintaining healthy leverage; EQPT cannot match URI's financial resilience in a downturn |
+| **Sunbelt Rentals (SNBF)** | #2 US equipment rental, ~$10B revenue, similar leverage to URI | Moderate — same dynamics | Sunbelt's balance sheet strength gives it pricing flexibility that EQPT lacks |
 
-## Key Catalysts and Timing
+**Revenue at risk calculation (competitive + cyclical):**
 
-- **Post-IPO lockup expiration (April-July 2026):** 90-180 day lockup on insider shares. This is the most immediate and predictable catalyst for selling pressure.
-- **Q1 2026 earnings (May):** First quarter as a public company. Market will scrutinize rental revenue growth, new site openings, and interest coverage ratio.
-- **Construction spending data (monthly, Census Bureau):** Total construction spending growth below 2% signals trouble. Decline = Scenario 3/4.
-- **Net Debt/EBITDA trajectory (quarterly):** The single most important metric. Improving toward 5.0x = bull case. Worsening above 6.5x = bear case.
-- **Used equipment price index (Ritchie Bros auction data, monthly):** Declining used equipment values signal fleet writedown risk and OWN Program stress.
-- **Interest coverage ratio (quarterly):** Operating income ($297M) vs. interest expense (~$250M) is razor-thin at 1.2x. Falling below 1.0x triggers covenant risk.
-- **Peer performance (United Rentals, Sunbelt quarterly results):** If URI and SNBF report construction demand weakness, EQPT will be hit hardest due to leverage.
-
----
+```
+Equipment rental is cyclical — construction downturns reduce demand for all players
+-> In a downturn, customers negotiate harder on rates
+-> EQPT's T3 telematics provides some stickiness but price matters most
+-> URI and Sunbelt can absorb rate cuts (low leverage, strong cash flow)
+-> EQPT cannot absorb rate cuts (razor-thin margins after interest)
+-> Revenue at risk from cyclical downturn: 5-15% ($220-660M)
+-> This is not competitive displacement — it's demand destruction
+-> EQPT's leverage amplifies revenue loss into potential covenant breach
+-> Severity: High (leverage transforms moderate revenue risk into existential equity risk)
+```
 
 ## Sources
 
 - [EquipmentShare Q4 & FY2025 Results](https://www.globenewswire.com/news-release/2026/03/18/3258628/0/en/EquipmentShare-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results.html)
-- [EquipmentShare IPO Details and Market Outlook](https://www.ainvest.com/news/equipmentshare-ipo-2026-eqpt-shares-price-range-market-outlook-2601/)
+- [EQPT Financials — StockAnalysis](https://stockanalysis.com/stocks/eqpt/financials/ratios/)
+- [Yahoo Finance EQPT](https://finance.yahoo.com/quote/EQPT/)
 - [EquipmentShare: Rental Growth At A Price (Seeking Alpha)](https://seekingalpha.com/article/4862349-equipmentsharecom-rental-growth-at-a-price)
 - [Goldman Sachs Lowers EQPT Price Target to $44](https://www.insidermonkey.com/blog/goldman-sachs-lowers-its-price-target-on-equipmentshare-com-eqpt-to-44-1727810/)
-- [EquipmentShare 10-K: OWN Program and Key Risks](https://www.stocktitan.net/sec-filings/EQPT/10-k-equipment-share-com-inc-files-annual-report-71b42b74cc8c.html)
-- [EquipmentShare IPO Reveals Finance Data (Equipment World)](https://www.equipmentworld.com/market-pulse/article/15774914/equipmentshares-ipo-reveals-new-finance-data)
