@@ -1234,3 +1234,67 @@ model AnalysisTemplateParameterReport {
   @@index([analysisTemplateReportId])
   @@map("analysis_template_parameter_reports")
 }
+
+// --------------------------
+// ETF (exchange-traded funds)
+// --------------------------
+
+model Etf {
+  id            String   @id @default(uuid())
+  symbol        String   @map("symbol")
+  name          String   @map("name")
+  exchange      String   @map("exchange")
+  /// Sponsor / company that issues or manages the fund (e.g. "Vanguard", "Direxion")
+  provider      String   @map("provider")
+  /// Short positioning line (a few words), e.g. from prospectus or data vendor
+  segment       String?  @map("segment")
+  /// Broad asset class / mandate (e.g. "Equity", "Fixed income") — values enforced in app code, not Prisma enums
+  category      String?  @map("category")
+  /// As shown on source (e.g. "May 28, 2014") to avoid timezone shifts vs calendar-only labels
+  inceptionDate String?  @map("inception_date")
+  spaceId       String   @default("koala_gains") @map("space_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  createdBy     String?  @map("created_by")
+  updatedBy     String?  @map("updated_by")
+
+  financialInfo EtfFinancialInfo?
+
+  @@unique([spaceId, symbol, exchange])
+  @@index([symbol])
+  @@index([provider])
+  @@map("etfs")
+}
+
+model EtfFinancialInfo {
+  id     String @id @default(uuid())
+  etfId  String @unique @map("etf_id")
+  /// Assets under management; may store raw display text from source (e.g. "$190.08M")
+  aum    String? @map("aum")
+  /// Expense ratio as percent number (e.g. 0.60 for 0.60%)
+  expenseRatio    Float?  @map("expense_ratio")
+  pe              Float?  @map("pe")
+  /// e.g. "1.13M", "212.40M"
+  sharesOut       String? @map("shares_out")
+  dividendTtm     Float?  @map("dividend_ttm")
+  /// Percent (e.g. 1.76 for 1.76%)
+  dividendYield   Float?  @map("dividend_yield")
+  payoutFrequency String? @map("payout_frequency")
+  /// Percent (e.g. 45.94 for 45.94%)
+  payoutRatio     Float?  @map("payout_ratio")
+  volume          Float?  @map("volume")
+  yearHigh        Float?  @map("year_high")
+  yearLow         Float?  @map("year_low")
+  beta            Float?  @map("beta")
+  holdings        Int?    @map("holdings")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_financial_info")
+}
