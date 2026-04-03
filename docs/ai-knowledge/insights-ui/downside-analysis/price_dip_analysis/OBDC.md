@@ -1,5 +1,7 @@
 # Blue Owl Capital Corporation (OBDC) — Price Dip Analysis
 
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
+
 # Section 1: Analysis
 
 ## What This Company Does & Why the Stock Dropped
@@ -114,7 +116,7 @@ Private credit broadly faces a reckoning. Software/SaaS portfolio companies (hea
 
 **Key insight:** Floor ($6.88) at crisis NAV/0.55x matches worst BDC discounts during 2020 COVID. Current price ($11.25) implies $14.81 NAV at 0.76x. Upside to NAV ($14.81) at 1.0x P/NAV represents 32% upside — achievable only if governance concerns ease and dividend is secured.
 
-## Precedent Context
+## Precedent Drawdowns
 
 The OBDC II merger fiasco is a unique governance event with no direct precedent in BDC history. The NII/dividend cycle mirrors the broader BDC sector post-rate-cuts. Precedent-implied further downside: -5 to -20%. The 13.5% yield provides significant cushion — at some point, income investors step in.
 
