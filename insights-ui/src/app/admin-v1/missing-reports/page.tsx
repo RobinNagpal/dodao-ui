@@ -313,13 +313,24 @@ function MissingReportsTable({ rows, selectedRows, onSelectRow, onUrlUpdate }: M
   );
 }
 
+function buildMissingReportsUrl(businessAndMoatBefore: string, fairValueBefore: string): string {
+  const base = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
+  const params = new URLSearchParams();
+  if (businessAndMoatBefore) params.set('businessAndMoatBefore', businessAndMoatBefore);
+  if (fairValueBefore) params.set('fairValueBefore', fairValueBefore);
+  const qs = params.toString();
+  return qs ? `${base}?${qs}` : base;
+}
+
 export default function MissingReportsPage(): JSX.Element {
   const router = useRouter();
   const [localGenerating, setLocalGenerating] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
+  const [businessAndMoatBefore, setBusinessAndMoatBefore] = useState<string>('');
+  const [fairValueBefore, setFairValueBefore] = useState<string>('');
 
-  const apiUrl: string = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/missing-reports`;
+  const apiUrl: string = buildMissingReportsUrl(businessAndMoatBefore, fairValueBefore);
 
   const { data, loading, reFetchData } = useFetchData<TickerWithMissingReportInfoExtended[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
@@ -474,11 +485,76 @@ export default function MissingReportsPage(): JSX.Element {
         </div>
       </div>
 
+      {/* Date filters */}
+      <div className="mb-4 bg-gray-800 border border-gray-600 rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-3">Filter by Report Updated Date</h3>
+        <p className="text-sm text-gray-400 mb-4">
+          When a date is selected, only tickers whose report was last updated before that date (or never generated) are shown. Leave both empty to see all
+          missing reports.
+        </p>
+        <div className="flex flex-wrap gap-6">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="bm-date" className="text-sm font-medium text-gray-300">
+              Business & Moat — Updated Before
+            </label>
+            <input
+              id="bm-date"
+              type="date"
+              value={businessAndMoatBefore}
+              onChange={(e) => {
+                setBusinessAndMoatBefore(e.target.value);
+                setSelectedRows(new Set());
+              }}
+              className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="fv-date" className="text-sm font-medium text-gray-300">
+              Fair Value — Updated Before
+            </label>
+            <input
+              id="fv-date"
+              type="date"
+              value={fairValueBefore}
+              onChange={(e) => {
+                setFairValueBefore(e.target.value);
+                setSelectedRows(new Set());
+              }}
+              className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          {(businessAndMoatBefore || fairValueBefore) && (
+            <div className="flex items-end">
+              <Button
+                onClick={() => {
+                  setBusinessAndMoatBefore('');
+                  setFairValueBefore('');
+                  setSelectedRows(new Set());
+                }}
+                variant="outlined"
+                className="text-sm"
+              >
+                Clear Filters
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <div className="mb-6">
         <div className="bg-gray-800 border border-red-500 rounded-lg p-4">
           <div className="flex items-baseline justify-between mb-2">
-            <h3 className="text-xl font-semibold">Tickers with Missing Reports or Financial Data</h3>
+            <h3 className="text-xl font-semibold">
+              {businessAndMoatBefore || fairValueBefore ? 'Tickers with Stale Reports (Date Filtered)' : 'Tickers with Missing Reports or Financial Data'}
+            </h3>
             <div className="flex items-center gap-4">
+              {(businessAndMoatBefore || fairValueBefore) && (
+                <span className="text-xs text-yellow-400 font-medium">
+                  {[businessAndMoatBefore && `B&M before ${businessAndMoatBefore}`, fairValueBefore && `Fair Value before ${fairValueBefore}`]
+                    .filter(Boolean)
+                    .join(' | ')}
+                </span>
+              )}
               <span className="text-sm text-gray-400">Showing {data?.length || 0} tickers</span>
             </div>
           </div>

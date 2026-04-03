@@ -123,5 +123,5 @@ required:
   - industryName
   - subIndustryName
   - valuationReportDateDisplay
-  - lastClosePriceUsd
+  - lastClosePrice
   - marketSnapshotFetchedAt
