@@ -1,5 +1,7 @@
 # Rithm Capital (RITM) — Price Dip Analysis
 
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
+
 # Section 1: Analysis
 
 ## What This Company Does & Why the Stock Dropped
