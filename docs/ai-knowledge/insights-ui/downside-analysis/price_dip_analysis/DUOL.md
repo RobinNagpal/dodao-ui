@@ -1,5 +1,7 @@
 # Duolingo (DUOL) — Price Dip Analysis
 
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
+
 # Section 1: Analysis
 
 ## What This Company Does & Why the Stock Dropped
@@ -177,7 +179,7 @@ Saving grace: $1B+ net cash, zero debt, 52.7M DAUs. Even in worst case, user bas
 
 **Total Revenue at Risk: $120-240M (12-23% of revenue) over 2-3 years** — almost entirely from AI chatbot substitution.
 
-## Precedent Context
+## Precedent Drawdowns
 
 The -83% decline overshot Netflix (-75% in 2022) and Meta (-77% in 2022), both of which recovered fully. The Peloton parallel (-95%) is the bear case where competition commoditized the core offering and it never recovered. DUOL's product is more defensible than Peloton's but the direction of threat is similar. At $94, the stock has overshot typical growth re-rating drawdowns.
 
