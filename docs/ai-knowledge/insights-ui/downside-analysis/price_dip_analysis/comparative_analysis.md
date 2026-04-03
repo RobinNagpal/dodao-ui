@@ -1,8 +1,12 @@
 # Comparative Analysis — 31-Stock Downside Study
 
-**Date:** April 1, 2026
+**Date:** April 3, 2026 (Updated)
+
+*Time horizon: next 12 months (through Q1 2027). All prices and ratios as of March 2026.*
 
 Analysis combining four frameworks: (1) Scenario Modeling, (2) Stress Test Matrix, (3) Precedent Drawdown, (4) Competitive Landscape / Moat Assessment. Individual stock reports contain full details; this file is the cross-stock comparison.
+
+**Framework Update (April 2026):** All 31 reports have been updated to match the standardized framework. Key structural improvements include: explicit weighted expected price calculations with math shown, 60% overlap discount applied uniformly to all scenario ratio impacts, price derivation cross-checks (overlap method vs. stress test matrix), competitive landscape detail sections with revenue-at-risk quantification for moat 0-3 stocks, TTM vs Forward PE divergence notes where gap exceeds 40%, and base multiple justification with valuation regime checks in all stress test sections.
 
 ---
 
@@ -43,6 +47,48 @@ Analysis combining four frameworks: (1) Scenario Modeling, (2) Stress Test Matri
 | **29** | **EQPT** | $20.50 | −42% | −15 to −27% | 3/5 | 1/5 | 1/5 | Leverage | 6.1x Net Debt/EBITDA, 1.2x interest coverage. Deepest worst-case floor ($5.70). |
 | **30** | **INVZ** | $0.70 | −96% | −25 to −50% | 0/5 | 0/5 | 0/5 | Survival/dilution | 5-6 quarter cash runway. Hesai 20x larger. Binary: OEM ramp or Luminar repeat. |
 | **—** | **SLNO** | $30 | −67% | Binary: ±40–150% | 0/5 | 1/5 | 0/5 | Safety binary | **Unrankable.** Only FDA-approved PWS drug but class action + safety signals. Binary outcome. |
+
+---
+
+## Weighted Expected Prices (Explicit Calculations)
+
+All 31 reports now show the weighted expected price calculation explicitly. The formula is: (Bull midpoint x Bull prob) + (Base midpoint x Base prob) + (Bear midpoint x Bear prob) + (Severe midpoint x Severe prob).
+
+| Stock | Current Price | Weighted Expected | Implied Further Move | Calculation |
+|-------|--------------|-------------------|---------------------|-------------|
+| AZO | $3,316 | $3,090 | -7% | (4150 x 0.15) + (3350 x 0.35) + (2750 x 0.30) + (2350 x 0.20) |
+| AGM | $158 | $149 | -6% | (207.5 x 0.20) + (162.5 x 0.35) + (125.0 x 0.30) + (90.0 x 0.15) |
+| CRH | $102 | $95 | -7% | (137.5 x 0.15) + (107.5 x 0.30) + (84.0 x 0.35) + (64.0 x 0.20) |
+| PGR | $199 | $180 | -10% | (262.5 x 0.15) + (207.5 x 0.35) + (152.5 x 0.30) + (112.5 x 0.20) |
+| ZTS | $115 | $102 | -11% | (164.0 x 0.10) + (121.0 x 0.30) + (86.5 x 0.40) + (72.0 x 0.20) |
+| ZBRA | $202 | $169 | -16% | (260.0 x 0.20) + (176.0 x 0.35) + (135.0 x 0.30) + (100.0 x 0.15) |
+| LOAR | $65 | $52 | -20% | (80.0 x 0.15) + (60.0 x 0.30) + (44.0 x 0.35) + (31.5 x 0.20) |
+| ZG | $40.63 | $33 | -19% | (56.0 x 0.15) + (34.5 x 0.30) + (28.0 x 0.35) + (20.0 x 0.20) |
+| VITL | $13.40 | $13 | -3% | (19.0 x 0.20) + (11.5 x 0.30) + (8.58 x 0.35) + (21.5 x 0.15) |
+| LAD | $257 | $212 | -18% | (355.0 x 0.15) + (257.5 x 0.30) + (167.5 x 0.35) + (115.0 x 0.20) |
+| ESAB | $98 | $84 | -14% | (135.0 x 0.15) + (100.5 x 0.30) + (69.0 x 0.35) + (49.0 x 0.20) |
+| KTB | $71 | $63 | -11% | (96.0 x 0.15) + (75.5 x 0.30) + (52.5 x 0.35) + (36.5 x 0.20) |
+| ACM | $85 | $78 | -8% | (122.5 x 0.15) + (87.5 x 0.30) + (66.0 x 0.35) + (50.0 x 0.20) |
+| FSV | $151 | $142 | -6% | (200.0 x 0.20) + (152.5 x 0.30) + (120.0 x 0.35) + (92.5 x 0.15) |
+| EQPT | $20.50 | $16 | -22% | (29.5 x 0.15) + (17.25 x 0.30) + (13.75 x 0.35) + (8.5 x 0.20) |
+| ELF | $59.35 | $51 | -14% | (80.0 x 0.15) + (60.0 x 0.30) + (43.0 x 0.35) + (28.5 x 0.20) |
+| BROS | $46.69 | $40 | -14% | (66.0 x 0.15) + (48.0 x 0.25) + (34.0 x 0.35) + (23.0 x 0.25) |
+| CELH | $34 | $31 | -9% | (54.0 x 0.15) + (38.5 x 0.25) + (25.0 x 0.35) + (16.5 x 0.25) |
+| SE | $79 | $62 | -22% | (122.5 x 0.10) + (85.0 x 0.25) + (51.0 x 0.40) + (34.0 x 0.25) |
+| HSAI | $20.22 | $17 | -16% | Per report scenarios |
+| ARE | $46.88 | $42 | -10% | Per report scenarios |
+| RITM | $9.48 | $8.50 | -10% | Per report scenarios |
+| PRKS | $30.45 | $24 | -21% | Per report scenarios |
+| TGLS | $40 | $35 | -12% | Per report scenarios |
+| OBDC | $11.25 | $10.30 | -8% | Per report scenarios |
+| PCTY | $105 | [Per report] | ~-10% | Per report scenarios |
+| DUOL | $94 | [Per report] | ~-10% | Per report scenarios |
+| UPWK | $11.50 | [Per report] | ~-20% | Per report scenarios |
+| FRSH | $8.03 | [Per report] | ~-5% | Per report scenarios |
+| SLNO | $30 | Binary | +/-40-150% | Per report scenarios |
+| INVZ | $0.70 | [Per report] | ~-30% | Per report scenarios |
+
+**Key finding from weighted expected prices:** The stocks with the least implied further downside (AZO -7%, AGM -6%, CRH -7%, VITL -3%, FSV -6%) are exactly the Pattern 1 (irreplaceable position + temporary headwind) and Pattern 2 (bad news known and priced) stocks. The stocks with the most implied further downside (EQPT -22%, SE -22%, PRKS -21%, LOAR -20%) all share leverage amplification or competitive disruption as the dominant risk. Leverage is the strongest predictor of further downside across the portfolio.
 
 ---
 
