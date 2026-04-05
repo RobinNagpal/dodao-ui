@@ -82,7 +82,8 @@ export const SLIDES: Slide[] = [
     ],
     paragraphAccents: ["35% increase", "60%", "500-mile ranges"],
     footer: "Source: International Energy Agency, 2024 Automotive Report",
-    narration: "Electric vehicle sales reached 10 million units in 2023, showing 35% growth. Major automakers like Tesla, Volkswagen, and GM are investing billions in EV production. China dominates with 60% of global EV sales. Solid-state batteries promise 500-mile ranges, though challenges remain in sourcing lithium, cobalt, and nickel.",
+    narration:
+      "Electric vehicle sales reached 10 million units in 2023, showing 35% growth. Major automakers like Tesla, Volkswagen, and GM are investing billions in EV production. China dominates with 60% of global EV sales. Solid-state batteries promise 500-mile ranges, though challenges remain in sourcing lithium, cobalt, and nickel.",
   },
   {
     id: "004",
@@ -96,7 +97,8 @@ export const SLIDES: Slide[] = [
       "Level 5: Full automation without human intervention",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "Autonomous driving advances through five levels, from basic assistance to full automation. Companies like Waymo, Tesla, and Cruise invest billions in sensors, AI, and machine learning. Level 4 autonomy enables self-driving in specific areas, while Level 5 promises full independence. Challenges include regulations, cybersecurity, and public acceptance.",
+    narration:
+      "Autonomous driving advances through five levels, from basic assistance to full automation. Companies like Waymo, Tesla, and Cruise invest billions in sensors, AI, and machine learning. Level 4 autonomy enables self-driving in specific areas, while Level 5 promises full independence. Challenges include regulations, cybersecurity, and public acceptance.",
   },
   {
     id: "005",
@@ -109,7 +111,13 @@ export const SLIDES: Slide[] = [
       "Advanced telematics provide real-time diagnostics, predictive maintenance, and personalized insurance rates.",
       "5G connectivity enables ultra-low latency communication essential for autonomous vehicle coordination.",
     ],
-    bulletAccents: ["Vehicle-to-Vehicle", "Vehicle-to-Infrastructure", "Over-the-Air", "Advanced telematics", "5G connectivity"],
+    bulletAccents: [
+      "Vehicle-to-Vehicle",
+      "Vehicle-to-Infrastructure",
+      "Over-the-Air",
+      "Advanced telematics",
+      "5G connectivity",
+    ],
     narration:
       "Modern vehicles are becoming sophisticated computing platforms with V2V and V2I communication capabilities. Over-the-air updates enable remote software improvements, while 5G connectivity supports real-time decision-making. Advanced telematics provide diagnostics and predictive maintenance, though cybersecurity and data privacy remain key challenges.",
   },
@@ -125,7 +133,8 @@ export const SLIDES: Slide[] = [
     ],
     paragraphAccents: ["carbon neutrality by 2050", "zero tailpipe emissions", "Circular economy"],
     footer: "United Nations Sustainable Development Goals - Industry Partnership",
-    narration: "Manufacturers are committing to carbon neutrality by 2050 through sustainable practices. Circular economy principles emphasize recycling and lightweight materials like carbon fiber and aluminum. Renewable energy adoption and water conservation are becoming standard in manufacturing facilities.",
+    narration:
+      "Manufacturers are committing to carbon neutrality by 2050 through sustainable practices. Circular economy principles emphasize recycling and lightweight materials like carbon fiber and aluminum. Renewable energy adoption and water conservation are becoming standard in manufacturing facilities.",
   },
   {
     id: "007",
@@ -139,7 +148,8 @@ export const SLIDES: Slide[] = [
       "Integrated multimodal transportation systems",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "Shared mobility solutions like Uber, Lyft, and car-sharing platforms are transforming urban transportation. Electric scooters and bike-sharing provide last-mile connectivity, while autonomous taxi fleets represent the future. These services reduce congestion and parking demands in cities.",
+    narration:
+      "Shared mobility solutions like Uber, Lyft, and car-sharing platforms are transforming urban transportation. Electric scooters and bike-sharing provide last-mile connectivity, while autonomous taxi fleets represent the future. These services reduce congestion and parking demands in cities.",
   },
   {
     id: "008",
@@ -154,7 +164,12 @@ export const SLIDES: Slide[] = [
       "Workforce transition as manufacturing becomes more automated",
       "Regulatory uncertainty across different global markets",
     ],
-    bulletAccents: ["Semiconductor chip shortages", "Rising raw material costs", "Cybersecurity threats", "Regulatory uncertainty"],
+    bulletAccents: [
+      "Semiconductor chip shortages",
+      "Rising raw material costs",
+      "Cybersecurity threats",
+      "Regulatory uncertainty",
+    ],
     narration:
       "The industry faces semiconductor shortages disrupting production, rising raw material costs, and intense competition from Tesla. Cybersecurity threats and infrastructure gaps in charging networks pose additional challenges. Regulatory uncertainty and workforce transitions add complexity to global operations.",
   },
@@ -168,9 +183,14 @@ export const SLIDES: Slide[] = [
       "Hydrogen fuel cell vehicles will complement battery electric vehicles, particularly for heavy-duty applications like trucks and buses. Urban air mobility solutions, including electric vertical takeoff and landing aircraft, will emerge in major metropolitan areas.",
       "Artificial intelligence and machine learning will optimize traffic flow, predict maintenance needs, and personalize driving experiences. Blockchain technology will enable secure vehicle identity management and automated insurance claims processing.",
     ],
-    paragraphAccents: ["40% of global new car sales", "below $100 per kilowatt-hour", "Urban air mobility"],
+    paragraphAccents: [
+      "40% of global new car sales",
+      "below $100 per kilowatt-hour",
+      "Urban air mobility",
+    ],
     footer: "McKinsey Global Automotive Report 2024",
-    narration: "By 2030, electric vehicles will account for 40% of global sales with battery costs below $100 per kilowatt-hour. Autonomous technology will become standard, while hydrogen fuel cells complement EVs for heavy-duty applications. AI and blockchain will optimize operations and enable mobility-as-a-service.",
+    narration:
+      "By 2030, electric vehicles will account for 40% of global sales with battery costs below $100 per kilowatt-hour. Autonomous technology will become standard, while hydrogen fuel cells complement EVs for heavy-duty applications. AI and blockchain will optimize operations and enable mobility-as-a-service.",
   },
   {
     id: "010",
@@ -184,7 +204,8 @@ export const SLIDES: Slide[] = [
       "Southeast Asia: Emerging markets, two-wheeler dominance",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "China leads EV production with comprehensive infrastructure and government support. Europe focuses on sustainability with strict regulations and premium engineering. North America drives autonomous technology innovation, while India emphasizes affordable mobility solutions.",
+    narration:
+      "China leads EV production with comprehensive infrastructure and government support. Europe focuses on sustainability with strict regulations and premium engineering. North America drives autonomous technology innovation, while India emphasizes affordable mobility solutions.",
   },
   {
     id: "011",
@@ -199,7 +220,12 @@ export const SLIDES: Slide[] = [
       "Big data analytics for predictive maintenance",
       "Digital marketplaces for used vehicle transactions",
     ],
-    bulletAccents: ["Digital twins", "AI-powered", "Robotic process automation", "Augmented reality"],
+    bulletAccents: [
+      "Digital twins",
+      "AI-powered",
+      "Robotic process automation",
+      "Augmented reality",
+    ],
     narration:
       "Digital transformation uses AI for quality control, robotic automation for assembly, and digital twins for virtual testing. Cloud-based systems manage fleets, while augmented reality assists maintenance. IoT connects manufacturing processes and cybersecurity protects digital systems.",
   },
@@ -213,9 +239,15 @@ export const SLIDES: Slide[] = [
       "New roles are emerging in areas like autonomous vehicle testing, cybersecurity, and data analytics. The industry is partnering with educational institutions to develop specialized training programs. Women and underrepresented groups are being actively recruited to bring diverse perspectives to innovation teams.",
       "Remote work and flexible arrangements are becoming more common, particularly in software development and digital operations. The industry is also exploring four-day workweeks and improved work-life balance initiatives to attract top talent in competitive labor markets.",
     ],
-    paragraphAccents: ["skills gap", "artificial intelligence", "diverse perspectives", "four-day workweeks"],
+    paragraphAccents: [
+      "skills gap",
+      "artificial intelligence",
+      "diverse perspectives",
+      "four-day workweeks",
+    ],
     footer: "World Economic Forum - Future of Jobs in Automotive 2024",
-    narration: "The automotive workforce is transitioning from mechanical to technology-driven roles requiring skills in battery chemistry, AI, and software engineering. Companies provide retraining programs and embrace diversity, while new roles emerge in autonomous testing and cybersecurity.",
+    narration:
+      "The automotive workforce is transitioning from mechanical to technology-driven roles requiring skills in battery chemistry, AI, and software engineering. Companies provide retraining programs and embrace diversity, while new roles emerge in autonomous testing and cybersecurity.",
   },
   {
     id: "013",
@@ -229,7 +261,8 @@ export const SLIDES: Slide[] = [
       "Nanotechnology-enhanced components",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "Advanced materials like carbon fiber composites and high-strength steel enable lighter, stronger vehicles. Self-healing coatings and nanotechnology enhance durability, while recyclable materials support sustainability goals and improve fuel efficiency.",
+    narration:
+      "Advanced materials like carbon fiber composites and high-strength steel enable lighter, stronger vehicles. Self-healing coatings and nanotechnology enhance durability, while recyclable materials support sustainability goals and improve fuel efficiency.",
   },
   {
     id: "014",
@@ -244,7 +277,12 @@ export const SLIDES: Slide[] = [
       "Risk assessment and contingency planning",
       "Sustainable sourcing certification programs",
     ],
-    bulletAccents: ["Diversification", "Local battery material production", "Digital supply chain", "Sustainable sourcing"],
+    bulletAccents: [
+      "Diversification",
+      "Local battery material production",
+      "Digital supply chain",
+      "Sustainable sourcing",
+    ],
     narration:
       "Manufacturers are diversifying suppliers and investing in local battery material production to build resilient supply chains. Digital platforms provide real-time visibility, while AI optimizes inventory management and blockchain improves traceability.",
   },
@@ -258,9 +296,15 @@ export const SLIDES: Slide[] = [
       "Digital purchasing experiences are becoming essential, with virtual showrooms, online configuration tools, and seamless financing options. Subscription-based models for software features and insurance are gaining popularity. Consumers expect personalized experiences, from customized infotainment to predictive maintenance alerts.",
       "Brand loyalty is shifting toward technology leaders rather than traditional manufacturers. Social media and user reviews heavily influence purchasing decisions. The rise of over-the-air updates means consumers expect continuous improvement and new features throughout the vehicle's lifecycle.",
     ],
-    paragraphAccents: ["sustainability, safety, and connectivity", "shared mobility solutions", "Digital purchasing", "continuous improvement"],
+    paragraphAccents: [
+      "sustainability, safety, and connectivity",
+      "shared mobility solutions",
+      "Digital purchasing",
+      "continuous improvement",
+    ],
     footer: "Nielsen Automotive Consumer Report 2024",
-    narration: "Consumers prioritize sustainability and digital experiences when purchasing vehicles. Electric vehicles gain status appeal, while subscription models and over-the-air updates become expected features. Brand loyalty shifts toward technology leaders like Tesla.",
+    narration:
+      "Consumers prioritize sustainability and digital experiences when purchasing vehicles. Electric vehicles gain status appeal, while subscription models and over-the-air updates become expected features. Brand loyalty shifts toward technology leaders like Tesla.",
   },
   {
     id: "016",
@@ -274,7 +318,8 @@ export const SLIDES: Slide[] = [
       "Electric delivery vehicles and drones",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "Cities adopt micro-mobility solutions like e-scooters and e-bikes for last-mile connectivity. Autonomous shuttles, smart parking, and electric delivery vehicles address urban challenges. Integrated systems combine multiple transportation modes through unified platforms.",
+    narration:
+      "Cities adopt micro-mobility solutions like e-scooters and e-bikes for last-mile connectivity. Autonomous shuttles, smart parking, and electric delivery vehicles address urban challenges. Integrated systems combine multiple transportation modes through unified platforms.",
   },
   {
     id: "017",
@@ -289,7 +334,12 @@ export const SLIDES: Slide[] = [
       "Data privacy regulations for connected vehicles",
       "Autonomous vehicle testing and deployment frameworks",
     ],
-    bulletAccents: ["Carbon neutrality by 2050", "100% zero-emission sales by 2035", "NEV credits", "Data privacy regulations"],
+    bulletAccents: [
+      "Carbon neutrality by 2050",
+      "100% zero-emission sales by 2035",
+      "NEV credits",
+      "Data privacy regulations",
+    ],
     narration:
       "The EU's Green Deal targets carbon neutrality by 2050, while California mandates 100% zero-emission sales by 2035. China's NEV policies drive EV adoption, and global standards harmonize safety requirements for autonomous vehicles.",
   },
@@ -303,9 +353,15 @@ export const SLIDES: Slide[] = [
       "Research and development spending has reached record levels, with focus areas including battery technology, autonomous systems, and sustainable materials. Open innovation platforms are enabling collaboration between competitors, suppliers, and startups. Intellectual property sharing and joint ventures are becoming common in the industry.",
       "Startup ecosystems are thriving in automotive hubs like Silicon Valley, Detroit, Stuttgart, and Shanghai. Incubators and accelerators are nurturing innovative solutions for mobility challenges. The industry is also investing in educational partnerships to develop the next generation of automotive engineers and designers.",
     ],
-    paragraphAccents: ["$50 billion annually", "unprecedented investment", "Open innovation", "educational partnerships"],
+    paragraphAccents: [
+      "$50 billion annually",
+      "unprecedented investment",
+      "Open innovation",
+      "educational partnerships",
+    ],
     footer: "CB Insights - Global Mobility Investment Report 2024",
-    narration: "Venture capital funding exceeds $50 billion annually for mobility startups. Traditional automakers partner with tech companies, while governments provide subsidies and research funding. Open innovation platforms foster collaboration across the industry.",
+    narration:
+      "Venture capital funding exceeds $50 billion annually for mobility startups. Traditional automakers partner with tech companies, while governments provide subsidies and research funding. Open innovation platforms foster collaboration across the industry.",
   },
   {
     id: "019",
@@ -319,7 +375,8 @@ export const SLIDES: Slide[] = [
       "Flexible production lines for customization",
     ],
     imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    narration: "IoT sensors enable real-time monitoring and predictive maintenance in manufacturing. Collaborative robots work with humans, while digital quality systems use AI for defect detection. Flexible production lines adapt quickly to market demands.",
+    narration:
+      "IoT sensors enable real-time monitoring and predictive maintenance in manufacturing. Collaborative robots work with humans, while digital quality systems use AI for defect detection. Flexible production lines adapt quickly to market demands.",
   },
   {
     id: "020",
@@ -335,7 +392,12 @@ export const SLIDES: Slide[] = [
       "Talent development and workforce planning",
       "Regulatory compliance and proactive engagement",
     ],
-    bulletAccents: ["Strong partnerships", "Investment in R&D", "sustainability", "Digital transformation"],
+    bulletAccents: [
+      "Strong partnerships",
+      "Investment in R&D",
+      "sustainability",
+      "Digital transformation",
+    ],
     narration:
       "Success requires strong OEM-tech partnerships, substantial R&D investment, and adaptation to consumer preferences. Companies must build resilient supply chains, commit to sustainability, and embrace digital transformation while managing regulatory compliance and risk.",
   },
