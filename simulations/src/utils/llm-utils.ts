@@ -20,6 +20,24 @@ const FALLBACK_MODEL = 'gemini-2.5-flash';
 const BEDROCK_FALLBACK_MODEL = 'moonshotai.kimi-k2.5';
 
 /**
+ * JSON Schema for EvaluationResult structured output
+ */
+const EVALUATION_RESULT_SCHEMA = {
+  type: 'object' as const,
+  properties: {
+    evaluatedScore: {
+      type: 'number' as const,
+      description: 'Score from 0 to 10 (10 being excellent, 0 being poor)',
+    },
+    evaluationReasoning: {
+      type: 'string' as const,
+      description: 'Detailed explanation of the scoring reasoning, including strengths and areas for improvement',
+    },
+  },
+  required: ['evaluatedScore', 'evaluationReasoning'],
+};
+
+/**
  * Initialize Gemini AI client with grounding always enabled
  */
 function initializeGeminiAI(): GoogleGenAI {
@@ -66,11 +84,17 @@ async function generateContentWithBedrock(prompt: string): Promise<AIResponse> {
   return { text: aiResponse, model: BEDROCK_FALLBACK_MODEL };
 }
 
+interface StructuredOutputConfig {
+  responseMimeType: string;
+  responseJsonSchema: object;
+}
+
 /**
  * Core AI generation function and automatic fallback.
  * Falls back to the next model on errors OR empty responses.
+ * When structuredOutput is provided, uses Gemini's native structured output.
  */
-async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL): Promise<AIResponse> {
+async function generateContentWithAI(prompt: string, model: string = DEFAULT_MODEL, structuredOutput?: StructuredOutputConfig): Promise<AIResponse> {
   const ai = initializeGeminiAI();
 
   console.log('AI Generation Prompt:', prompt);
@@ -80,6 +104,7 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
     const response = await ai.models.generateContent({
       model,
       contents: prompt,
+      ...(structuredOutput ? { config: structuredOutput } : {}),
     });
 
     const aiResponse = response.text?.trim() || '';
@@ -87,7 +112,7 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
 
     if (!aiResponse && model !== FALLBACK_MODEL) {
       console.warn(`Empty response from model ${model}, falling back to ${FALLBACK_MODEL}`);
-      return generateWithGeminiFallback(ai, prompt);
+      return generateWithGeminiFallback(ai, prompt, structuredOutput);
     }
     if (!aiResponse) {
       console.warn(`Empty response from model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}`);
@@ -98,7 +123,7 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
   } catch (error) {
     if (model !== FALLBACK_MODEL) {
       console.warn(`Error with model ${model}, falling back to ${FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
-      return generateWithGeminiFallback(ai, prompt);
+      return generateWithGeminiFallback(ai, prompt, structuredOutput);
     }
 
     console.warn(`Error with model ${model}, falling back to Bedrock ${BEDROCK_FALLBACK_MODEL}:`, error instanceof Error ? error.message : error);
@@ -106,11 +131,12 @@ async function generateContentWithAI(prompt: string, model: string = DEFAULT_MOD
   }
 }
 
-async function generateWithGeminiFallback(ai: GoogleGenAI, prompt: string): Promise<AIResponse> {
+async function generateWithGeminiFallback(ai: GoogleGenAI, prompt: string, structuredOutput?: StructuredOutputConfig): Promise<AIResponse> {
   try {
     const response = await ai.models.generateContent({
       model: FALLBACK_MODEL,
       contents: prompt,
+      ...(structuredOutput ? { config: structuredOutput } : {}),
     });
 
     const aiResponse = response.text?.trim() || '';
@@ -168,30 +194,16 @@ ${prompt}
 
 **Evaluation Requirements:**
 1. Score the prompt from 0 to 10 (10 being excellent, 0 being poor)
-2. Provide detailed evaluation reasoning explaining your scoring
-
-**Response Format (JSON only):**
-{
-  "evaluatedScore": [number from 0-10],
-  "evaluationReasoning": "[detailed explanation of the scoring reasoning, including strengths and areas for improvement]"
-}
-
-Only respond with the JSON object, no additional text.`;
+2. Provide detailed evaluation reasoning explaining your scoring`;
 
   console.log('Evaluation Prompt:', evaluationPrompt);
 
-  const { text: aiResponse } = await generateContentWithAI(evaluationPrompt, model);
+  const { text: aiResponse } = await generateContentWithAI(evaluationPrompt, model, {
+    responseMimeType: 'application/json',
+    responseJsonSchema: EVALUATION_RESULT_SCHEMA,
+  });
 
-  // Parse AI response
-  let evaluationResult: EvaluationResult;
-  try {
-    // Remove any potential markdown formatting
-    const cleanResponse = aiResponse.replace(/```json\n?|```\n?/g, '');
-    evaluationResult = JSON.parse(cleanResponse);
-  } catch (parseError) {
-    console.error('Failed to parse AI response:', aiResponse);
-    throw new Error('AI returned invalid response format');
-  }
+  const evaluationResult: EvaluationResult = JSON.parse(aiResponse);
 
   const { evaluatedScore, evaluationReasoning } = evaluationResult;
 

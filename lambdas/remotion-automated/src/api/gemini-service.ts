@@ -1,9 +1,35 @@
 // Gemini AI Service - Generate slide content from prompts
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import type { SlideInput, GeneratedContentAll } from "./types";
 import { formatSlideNumber } from "./storage-service";
 
 const GEMINI_MODEL = "gemini-2.5-pro";
+
+/**
+ * JSON Schema for the structured output of generated slides.
+ * Used with Gemini's native structured output (responseMimeType + responseJsonSchema).
+ */
+const SLIDES_JSON_SCHEMA = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      id: { type: "string", description: "Unique identifier (e.g., '001', '002')" },
+      type: { type: "string", enum: ["title", "bullets", "paragraphs", "image"] },
+      title: { type: "string" },
+      subtitle: { type: "string" },
+      titleAccent: { type: "string" },
+      bullets: { type: "array", items: { type: "string" } },
+      bulletAccents: { type: "array", items: { type: "string" } },
+      paragraphs: { type: "array", items: { type: "string" } },
+      paragraphAccents: { type: "array", items: { type: "string" } },
+      footer: { type: "string" },
+      imageUrl: { type: "string" },
+      narration: { type: "string", description: "Spoken script for this slide (2-4 sentences)" },
+    },
+    required: ["id", "type", "narration"],
+  },
+};
 
 /**
  * System prompt for generating presentation slides
@@ -71,74 +97,16 @@ Additional requirements:
 ${additionalInstructions}`;
   }
 
-  prompt += `
-
-Output format: Return ONLY a JSON array of slides. No markdown, no explanation, just the JSON array.
-Example format:
-[
-  {
-    "id": "001",
-    "type": "title",
-    "title": "Presentation Title",
-    "subtitle": "Subtitle here",
-    "narration": "Welcome to this presentation about..."
-  },
-  {
-    "id": "002",
-    "type": "bullets",
-    "title": "Key Points",
-    "bullets": ["Point 1", "Point 2", "Point 3"],
-    "bulletAccents": ["Point 1", "Point 2", "Point 3"],
-    "narration": "Let's discuss the key points..."
-  }
-]`;
-
   return prompt;
 }
 
 /**
- * Parse and validate Gemini response
+ * Validate and normalize parsed slides from Gemini structured output
  */
-function parseGeminiResponse(responseText: string): SlideInput[] {
-  // Clean up response - remove markdown code blocks if present
-  let cleanedText = responseText.trim();
-
-  // Remove markdown code blocks
-  if (cleanedText.startsWith("```json")) {
-    cleanedText = cleanedText.slice(7);
-  } else if (cleanedText.startsWith("```")) {
-    cleanedText = cleanedText.slice(3);
-  }
-  if (cleanedText.endsWith("```")) {
-    cleanedText = cleanedText.slice(0, -3);
-  }
-  cleanedText = cleanedText.trim();
-
-  // Parse JSON
-  const slides = JSON.parse(cleanedText);
-
-  if (!Array.isArray(slides)) {
-    throw new Error("Response is not an array of slides");
-  }
-
-  // Validate and normalize each slide
+function validateAndNormalizeSlides(slides: any[]): SlideInput[] {
   return slides.map((slide: any, index: number) => {
-    // Ensure required fields
-    if (!slide.type) {
-      throw new Error(`Slide ${index + 1} missing type`);
-    }
-    if (!slide.narration) {
-      throw new Error(`Slide ${index + 1} missing narration`);
-    }
-
     // Normalize ID
     const id = slide.id || formatSlideNumber(index + 1);
-
-    // Validate type
-    const validTypes = ["title", "bullets", "paragraphs", "image"];
-    if (!validTypes.includes(slide.type)) {
-      throw new Error(`Slide ${index + 1} has invalid type: ${slide.type}`);
-    }
 
     // Build normalized slide
     const normalizedSlide: SlideInput = {
@@ -176,23 +144,42 @@ export async function generateSlidesFromPrompt(
     throw new Error("Missing GOOGLE_API_KEY environment variable");
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: GEMINI_MODEL,
-    systemInstruction: SYSTEM_PROMPT,
-  });
+  const genAI = new GoogleGenAI({ apiKey });
 
   const userPrompt = buildPrompt(prompt, numberOfSlides, additionalInstructions);
 
-  console.log(`Generating ${numberOfSlides} slides with Gemini...`);
+  console.log(`Generating ${numberOfSlides} slides with Gemini (structured output)...`);
 
-  const result = await model.generateContent(userPrompt);
-  const response = await result.response;
-  const text = response.text();
+  const result = await genAI.models.generateContent({
+    model: GEMINI_MODEL,
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: userPrompt }],
+      },
+    ],
+    config: {
+      systemInstruction: SYSTEM_PROMPT,
+      responseMimeType: "application/json",
+      responseJsonSchema: SLIDES_JSON_SCHEMA,
+    },
+  });
 
-  console.log("Gemini response received, parsing...");
+  const text = result.text || "";
 
-  const slides = parseGeminiResponse(text);
+  if (!text) {
+    throw new Error("No text returned from Gemini structured output");
+  }
+
+  console.log("Gemini structured response received, parsing...");
+
+  const parsed = JSON.parse(text);
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("Response is not an array of slides");
+  }
+
+  const slides = validateAndNormalizeSlides(parsed);
 
   console.log(`Successfully generated ${slides.length} slides`);
 
@@ -224,4 +211,3 @@ export async function generatePresentationContent(
 
   return generatedContent;
 }
-
