@@ -83,11 +83,26 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
+### 6. Maximum Drawdown
+**Impact Score: 9/10**
+
+**What it measures:** The largest peak-to-trough percentage decline the ETF has experienced over a given period, before a new high is reached. It answers the question: "What was the absolute worst loss I would have suffered if I bought at the worst possible time?"
+
+**Why it's not straightforward:** Standard deviation treats upside and downside volatility equally, but investors experience them very differently — nobody complains about upside volatility. Maximum drawdown captures the actual pain investors endured, not a theoretical average. Critically, two ETFs can have identical annualized returns and identical standard deviations but very different maximum drawdowns depending on *how* the losses arrived — a slow grind down and recovery looks the same statistically as a sharp crash and V-recovery, but the drawdown depths differ dramatically. Also, drawdown depth is only half the story; **recovery time** matters just as much — a 30% drawdown that recovers in 6 months is far less damaging than one that takes 4 years.
+
+**Examples:**
+- **QQQ** (Invesco Nasdaq-100) had a maximum drawdown of approximately -83% during the dot-com bust (2000-2002) and -35% during COVID (2020). An investor comparing QQQ to **SPY** (max drawdown -51% in 2008-2009 and -34% during COVID) would see that QQQ's worst case was far worse than SPY's, despite QQQ's superior long-term returns. The max drawdown reveals that QQQ's outperformance came with dramatically higher tail risk — something standard deviation alone understates because the dot-com crash was a single, extreme event.
+- **USMV** (iShares MSCI USA Min Vol) had a maximum drawdown of about -20% during COVID versus SPY's -34%. But during the 2022 rate-hike selloff, USMV drew down ~-17% while SPY drew down ~-25%. The minimum volatility strategy consistently delivered 30-40% shallower drawdowns across different types of market stress (pandemic shock vs. monetary tightening), confirming it does what it promises. An investor who only looked at average returns would have missed that USMV's main value is in the drawdowns, not the upside.
+
+**Where to find it:** Portfolio Visualizer (Backtest Portfolio tool), Morningstar (Risk tab, "worst 3-month return" as a proxy), Koyfin (drawdown chart), Yahoo Finance (interactive chart, calculate manually)
+
+---
+
 ## Tier 2: High-Impact Metrics (Score 7–8)
 
 ---
 
-### 6. Bid-Ask Spread (Median, Not Snapshot)
+### 7. Bid-Ask Spread (Median, Not Snapshot)
 **Impact Score: 8/10**
 
 **What it measures:** The cost of executing a round-trip trade (buy + sell), expressed as the difference between the bid and ask prices as a percentage of the mid-price. The median spread over 30-60 days is far more useful than a single point-in-time snapshot.
@@ -102,7 +117,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 7. Premium / Discount to NAV (30-Day Average and Extremes)
+### 8. Premium / Discount to NAV (30-Day Average and Extremes)
 **Impact Score: 8/10**
 
 **What it measures:** How much the ETF's market price deviates from the per-share value of its underlying holdings. Positive = premium (you're overpaying), negative = discount (you're getting a bargain, or something is wrong).
@@ -117,7 +132,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 8. Tax Cost Ratio
+### 9. Tax Cost Ratio
 **Impact Score: 8/10**
 
 **What it measures:** The annual percentage of return lost to taxes, calculated by comparing the fund's pre-tax return with its after-tax return (assuming the highest marginal tax rate). A tax cost ratio of 0.50% means taxes reduced your return by half a percentage point per year.
@@ -132,7 +147,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 9. Portfolio Concentration (Top 10 Holding Weight)
+### 10. Portfolio Concentration (Top 10 Holding Weight)
 **Impact Score: 8/10**
 
 **What it measures:** The combined percentage weight of the 10 largest positions. A higher percentage means a smaller number of companies drive the fund's returns.
@@ -147,7 +162,37 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 10. Distribution Yield vs. SEC Yield (Bond ETFs)
+### 11. Sharpe Ratio
+**Impact Score: 8/10**
+
+**What it measures:** The ETF's excess return (above the risk-free rate) divided by its standard deviation. It answers: "How much return am I getting per unit of risk?" A higher Sharpe ratio means better risk-adjusted performance. A Sharpe of 0.5 is average; above 1.0 is excellent; below 0.3 suggests the risk isn't being compensated.
+
+**Why it's not straightforward:** The Sharpe ratio assumes returns are normally distributed, but ETF returns often aren't — they have fat tails (extreme events happen more often than a bell curve predicts) and skewness (losses can be larger than gains). A covered call ETF might show a beautiful Sharpe ratio because it collects steady premium income (low volatility, consistent small gains), but it hides the occasional large loss when the market gaps up past the call strike. The Sharpe ratio treats that truncated upside as "low risk" when it's actually a structural asymmetry. Also, the Sharpe ratio changes significantly depending on the measurement period — a 3-year Sharpe through a bull market says nothing about how the fund performs through a full cycle.
+
+**Examples:**
+- **USMV** (iShares MSCI USA Min Vol) consistently posts a higher Sharpe ratio than **SPY** over full market cycles (~0.65 vs. ~0.55 for SPY over 10+ years). This doesn't mean USMV delivers higher returns — it doesn't. It means the return *per unit of volatility* is higher. An investor who can tolerate SPY's volatility is better served by SPY's higher absolute returns. An investor who would panic-sell during a 30% drawdown is better served by USMV's superior risk-adjusted path.
+- **QYLD** (Global X Nasdaq-100 Covered Call) showed a Sharpe ratio above 1.0 during parts of 2021 — seemingly outstanding risk-adjusted performance. But this was an artifact of the strategy collecting steady options premium during a calm bull market. The Sharpe ratio didn't account for the asymmetric risk: QYLD captured only ~50% of the upside while remaining exposed to most of the downside. When the Nasdaq dropped 33% in 2022, QYLD still dropped ~22%, revealing that the high Sharpe was a calm-weather mirage.
+
+**Where to find it:** Portfolio Visualizer (Backtest Portfolio), Morningstar (Risk tab), Koyfin, any tool that calculates risk-adjusted returns. Use at least a 5-year window for meaningful comparison.
+
+---
+
+### 12. Upside/Downside Capture Ratio
+**Impact Score: 8/10**
+
+**What it measures:** Two paired ratios showing what percentage of the benchmark's gains the ETF captures during up months (upside capture) and what percentage of the benchmark's losses it suffers during down months (downside capture). Expressed relative to a benchmark, usually the S&P 500 or the ETF's stated benchmark. An ideal fund has upside capture above 100% and downside capture below 100%.
+
+**Why it's not straightforward:** Many investors focus only on total return or Sharpe ratio, but capture ratios reveal the *asymmetry* of returns — the quality of the ride. A fund that captures 85% of upside but only 60% of downside will compound to a higher total return than one that captures 100% of both, because avoiding losses matters more than capturing gains mathematically (a 50% loss requires a 100% gain to break even). The subtle insight is that capture ratios are not fixed — they change across market regimes. A fund might have excellent downside capture during a garden-variety 10% correction but fail during a true crisis when correlations spike to 1.0.
+
+**Examples:**
+- **QUAL** (iShares MSCI USA Quality Factor) has historically captured ~98% of S&P 500 upside but only ~85% of the downside. This 13-percentage-point asymmetry compounds powerfully — over a 10-year period, QUAL delivered total returns comparable to or slightly above SPY with noticeably lower drawdowns. An investor who only compared absolute returns would see two funds that look similar; the capture ratios reveal that QUAL delivered those returns with a fundamentally better risk profile.
+- **SCHD** (Schwab US Dividend Equity) shows ~90% upside capture and ~75% downside capture vs. the S&P 500 over most measured periods. During the 2022 downturn, SCHD dropped only ~5% while the S&P 500 dropped ~18% — a downside capture of ~28% for that specific period. But during 2023's tech-led rally, SCHD's upside capture was only ~55%. The lesson: SCHD's capture ratios shift dramatically depending on whether the market environment favors quality/dividend stocks or growth/momentum. A single capture ratio number hides this regime dependency.
+
+**Where to find it:** Morningstar (Risk tab, "Upside/Downside Capture"), Portfolio Visualizer, Koyfin. Always check the benchmark used — capture ratios are meaningless if measured against the wrong benchmark.
+
+---
+
+### 13. Distribution Yield vs. SEC Yield (Bond ETFs)
 **Impact Score: 7/10**
 
 **What it measures:** Two different ways to express an ETF's income:
@@ -164,7 +209,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 11. Tracking Error (Standard Deviation of Daily Differences)
+### 14. Tracking Error (Standard Deviation of Daily Differences)
 **Impact Score: 7/10**
 
 **What it measures:** The standard deviation of daily return differences between the ETF and its benchmark. It measures *consistency* of tracking, not cumulative cost (that's tracking difference).
@@ -179,11 +224,71 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
+### 15. Beta (Market Sensitivity)
+**Impact Score: 7/10**
+
+**What it measures:** The ETF's sensitivity to movements in its benchmark. A beta of 1.0 means the ETF moves in lockstep with the benchmark. Beta of 1.3 means it moves 30% more in both directions. Beta of 0.7 means it moves 30% less. It quantifies how much market risk the ETF takes relative to its benchmark.
+
+**Why it's not straightforward:** Beta is often confused with volatility, but they're different. Volatility measures total price variation; beta measures *correlated* variation with a benchmark. A gold ETF might have high volatility but low (or even negative) beta to the S&P 500 because gold moves independently of stocks. Also, beta is not constant — it changes over market regimes. Most ETFs have higher beta during crashes (correlations spike, everything drops together) and lower beta during calm markets. Using a calm-period beta to estimate crash exposure understates the risk. Finally, beta explains outperformance: if a fund beats the S&P 500 by 3% in a year but has a beta of 1.3, it *should* outperform by 3% in an up market — it took more risk, not more skill.
+
+**Examples:**
+- **TQQQ** (ProShares UltraPro QQQ, 3x leveraged Nasdaq-100) has a beta to the Nasdaq-100 of approximately 3.0 by design. But its beta to the S&P 500 is higher — around 3.5-4.0 — because the Nasdaq-100 itself has a beta above 1.0 to the S&P 500. An investor using TQQQ for a "tactical bet on tech" is actually making a leveraged bet on the entire equity market with extra tech concentration. The S&P 500 beta reveals the true market risk, not just the Nasdaq tracking.
+- **SPLV** (Invesco S&P 500 Low Volatility) has a beta of ~0.70 to the S&P 500 during normal markets. But during the March 2020 COVID crash, SPLV's realized beta spiked to ~0.85-0.90 because correlations increased across all stocks. The fund still provided protection (it fell less than SPY), but less protection than the stated beta implied. Investors who sized their portfolio based on normal-market beta were overexposed during the crash.
+
+**Where to find it:** Morningstar (Risk tab), Portfolio Visualizer (factor regression), Koyfin, Yahoo Finance (Statistics tab). Always check which benchmark is used — beta to the S&P 500 is different from beta to the fund's stated benchmark.
+
+---
+
+### 16. Sortino Ratio
+**Impact Score: 7/10**
+
+**What it measures:** Similar to the Sharpe ratio, but divides excess return by *downside deviation* only — volatility from returns below a minimum acceptable threshold (usually 0% or the risk-free rate). It only penalizes harmful volatility (losses), not beneficial volatility (outsized gains).
+
+**Why it's not straightforward:** The Sharpe ratio penalizes all volatility equally, which unfairly punishes funds that have occasional large positive returns (upside volatility). The Sortino ratio fixes this by ignoring upside volatility entirely. This makes it particularly useful for asymmetric strategies — growth ETFs that occasionally spike, or factor ETFs that deliver lumpy returns. A fund with a lower Sharpe but higher Sortino than a peer has more "good" volatility and less "bad" volatility, which is exactly what investors want. The trap is that the Sortino ratio can make leveraged or high-beta funds look attractive during bull markets because all their high volatility is upside volatility — the denominator (downside deviation) stays small until the inevitable drawdown arrives.
+
+**Examples:**
+- **AVUV** (Avantis US Small Cap Value) has a Sortino ratio significantly higher than its Sharpe ratio because small-cap value stocks tend to deliver lumpy, positively skewed returns — long periods of modest performance punctuated by sharp rallies during value rotations. The Sharpe ratio penalizes these spikes as "risk." The Sortino ratio correctly identifies them as the desirable kind of volatility. An investor who rejected AVUV based on its Sharpe ratio would miss that most of its volatility is on the upside.
+- **JEPI** (JPMorgan Equity Premium Income) shows an unusually high Sortino ratio because its covered call overlay truncates upside volatility, and the premium income cushions small downside moves — resulting in low downside deviation. But the Sortino ratio is deceived by the same truncation that flatters the Sharpe: the fund has a hard ceiling on gains and an unprotected floor on losses. During a 30%+ crash, JEPI's downside deviation would spike and the Sortino would collapse. The ratio works best for comparing strategies with similar structures, not across fundamentally different strategy types.
+
+**Where to find it:** Portfolio Visualizer (Backtest Portfolio or Factor Analysis), Morningstar (Risk tab on premium), some broker research platforms. Less commonly displayed than Sharpe — you may need to calculate it from monthly return data.
+
+---
+
+### 17. Rolling Returns (3-Year, 5-Year, 10-Year)
+**Impact Score: 7/10**
+
+**What it measures:** The annualized return over overlapping periods (e.g., every possible 3-year window), plotted over time. Instead of a single point-to-point return, rolling returns show the full range of investor experiences depending on when they bought and when they measured.
+
+**Why it's not straightforward:** A fund's annualized return is one number that hides enormous variability. If a fund returned 10% annualized over 10 years, that could mean it returned ~10% every year (consistent) or it returned +40% in one year and -15% in several others (volatile). Rolling returns reveal this variability. They also expose **start-date and end-date sensitivity** — the single biggest trap in performance comparisons. Picking a 5-year window starting March 2009 (market bottom) will make any equity fund look spectacular. Starting from October 2007 (market peak) paints the opposite picture. Rolling returns show *all* possible entry points.
+
+**Examples:**
+- **VWO** (Vanguard FTSE Emerging Markets) has a 10-year annualized return of approximately 3-4% if measured from 2014-2024. That single number looks terrible. But the rolling 3-year return chart reveals periods of +15% annualized (2016-2017) and periods of -5% annualized (2021-2023). The "bad" 10-year return is driven by the specific start/end dates coinciding with EM underperformance. An investor who sees only the 10-year number concludes EM is a permanently bad investment; the rolling return chart shows it cycles between feast and famine.
+- **SCHD** (Schwab US Dividend Equity) has a rolling 5-year return that has *never* been negative since inception — every possible 5-year holding period produced positive results. **ARKK**, by contrast, has rolling 3-year returns ranging from +80% annualized (2018-2020) to -35% annualized (2021-2023). The rolling return distribution shows that SCHD is a "narrow range of acceptable outcomes" fund while ARKK is a "wide range of extreme outcomes" fund — a difference that single-point returns completely hide.
+
+**Where to find it:** Portfolio Visualizer (Rolling Returns tool), Morningstar Direct (institutional), Koyfin (charting). Most free tools show trailing returns at fixed endpoints — for true rolling analysis, Portfolio Visualizer is the best free option.
+
+---
+
+### 18. Factor Loadings (Fama-French 5-Factor Model)
+**Impact Score: 7/10**
+
+**What it measures:** The ETF's statistical exposure to the five academically documented return factors: market risk (beta), size (small vs. large), value (cheap vs. expensive), profitability (high vs. low), and investment (conservative vs. aggressive). A factor regression decomposes the fund's returns into what portion comes from each factor, plus an unexplained residual (alpha).
+
+**Why it's not straightforward:** Factor loadings explain *why* an ETF performed the way it did and predict how it will behave in different environments — they are the X-ray of an ETF's true character. A "growth" ETF might have a negative value loading and a positive momentum loading, meaning it's actually a momentum bet disguised as a growth fund. Two "quality" ETFs might have completely different factor profiles — one emphasizing profitability, the other emphasizing low investment (conservative balance sheets). The subtlety is that factor loadings are estimated statistically from historical returns, so they change depending on the time period analyzed. A 3-year regression during a tech boom will show different loadings than a 10-year regression that includes a value rotation.
+
+**Examples:**
+- **SCHD** (Schwab US Dividend Equity) shows strong positive loadings on value (~0.25), profitability (~0.30), and negative loading on investment (~-0.15, meaning it favors companies with conservative investment spending). Its alpha residual after accounting for factors is near zero. This means SCHD's outperformance vs. the S&P 500 during value/quality rotations is *entirely* explained by its factor tilts — it's not stock-picking alpha, it's systematic factor exposure. An investor who already owns a value + quality factor portfolio would get redundant exposure from adding SCHD.
+- **ARKK** (ARK Innovation) shows strong negative value loading (~-0.5), strong positive market beta (~1.4), and significant negative profitability loading (~-0.3). Translated: ARKK is a leveraged bet on expensive, unprofitable, high-beta growth stocks. Its massive outperformance in 2020 was predictable given that environment (falling rates, growth euphoria). Its collapse in 2022 was equally predictable (rising rates, profitability rotation). The factor loadings explain 80%+ of ARKK's return variation — Cathie Wood's stock selection explains relatively little after accounting for the factor tilts.
+
+**Where to find it:** Portfolio Visualizer (Factor Analysis tool — free, outputs 5-factor regression for any ETF), Morningstar Direct (institutional). For a quick approximation, check the fund's P/E, P/B, and average market cap relative to the broad market — high P/E + high market cap = growth/large-cap tilt; low P/E + low market cap = value/small-cap tilt.
+
+---
+
 ## Tier 3: Important Supporting Metrics (Score 5–6)
 
 ---
 
-### 12. Portfolio Turnover Rate
+### 19. Portfolio Turnover Rate
 **Impact Score: 6/10**
 
 **What it measures:** The percentage of the fund's holdings bought or sold in a year. A 100% turnover means the fund replaced its entire portfolio over 12 months. Reported in the fund's annual report and factsheet.
@@ -198,7 +303,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 13. Duration (Bond ETFs)
+### 20. Duration (Bond ETFs)
 **Impact Score: 6/10**
 
 **What it measures:** The weighted average time (in years) until the bond portfolio's cash flows are received, which also serves as the approximate percentage the ETF will decline for each 1% rise in interest rates. A duration of 6 means a 1% rate hike causes roughly a 6% price drop.
@@ -213,7 +318,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 14. Credit Quality Distribution (Bond ETFs)
+### 21. Credit Quality Distribution (Bond ETFs)
 **Impact Score: 6/10**
 
 **What it measures:** The breakdown of bond holdings by credit rating (AAA, AA, A, BBB, BB, B, CCC, and below). Investment grade is BBB- and above; below that is high yield / junk.
@@ -228,7 +333,52 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 15. Number of Holdings / Effective Number of Holdings
+### 22. Weighted Average Market Capitalization
+**Impact Score: 6/10**
+
+**What it measures:** The average market cap of the ETF's holdings, weighted by each position's portfolio weight. It reveals the true "size" of the companies you own — a single number that tells you whether the fund is really a large-cap, mid-cap, or small-cap portfolio regardless of its label.
+
+**Why it's not straightforward:** Fund category labels ("large cap," "mid cap," "small cap") are defined differently by each index provider, and they drift over time. A fund labeled "mid-cap" 10 years ago might now hold companies that are firmly large-cap because its original holdings grew. The weighted average market cap cuts through the naming confusion. It also reveals hidden mega-cap concentration: two "total market" ETFs might both claim to hold the full market, but if one has a weighted average market cap of $500B (mega-cap dominated) and another has $200B (more mid-cap influence), they'll behave very differently.
+
+**Examples:**
+- **VTI** (Vanguard Total Stock Market) holds 3,600+ stocks including micro-caps, but its weighted average market cap is ~$650-750B — firmly mega-cap territory. The name says "total market" but the weighting means it behaves like a large-cap fund with a tiny small-cap garnish. Compare to **RSP** (S&P 500 Equal Weight), which holds only 500 stocks but has a weighted average market cap of ~$80-100B — squarely mid-cap. RSP, despite holding only large-cap stocks, *behaves* more like a mid-cap fund than VTI does a "total market" fund.
+- **IWM** (iShares Russell 2000) is the flagship "small-cap" ETF with a weighted average market cap of ~$3-4B. Compare to **AVUV** (Avantis US Small Cap Value), which has a weighted average market cap of ~$2-3B — smaller, meaning AVUV provides deeper small-cap exposure. For investors who believe in the small-cap premium, the weighted average market cap tells you which fund actually delivers the small-cap exposure more purely.
+
+**Where to find it:** Fund factsheet ("Portfolio Characteristics" section), Morningstar (Portfolio tab), issuer website
+
+---
+
+### 23. Portfolio Valuation Metrics (P/E, P/B, P/S)
+**Impact Score: 6/10**
+
+**What it measures:** The aggregate valuation ratios of the ETF's underlying holdings — price-to-earnings (P/E), price-to-book (P/B), and price-to-sales (P/S), weighted by portfolio position size. These tell you how "expensive" or "cheap" the overall portfolio is relative to its fundamentals.
+
+**Why it's not straightforward:** Two ETFs in the same category can have dramatically different portfolio valuations, meaning you're paying very different prices for similar earnings. Also, low P/E doesn't always mean "cheap" — it can mean "the market expects declining earnings" (a value trap). High P/E doesn't always mean "expensive" — it can mean "the market expects rapid growth" (justified premium). The valuation metrics are most useful for *comparing* similar ETFs, not for making absolute judgments. Also, P/E ratios can be distorted by one-time items, and the choice of trailing vs. forward P/E changes the picture significantly.
+
+**Examples:**
+- **VTV** (Vanguard Value) has a portfolio P/E of ~15-17x, while **VUG** (Vanguard Growth) has a P/E of ~30-35x. An investor rotating from growth to value is buying roughly 2x more earnings per dollar invested. Whether that's a good deal depends on whether value stocks' lower earnings growth justifies the discount — but the magnitude of the valuation gap is a critical input to that decision.
+- **VWO** (Vanguard FTSE Emerging Markets) often trades at a portfolio P/E of ~12-14x versus ~22x for **VTI** (Vanguard Total US Stock Market). The 40% valuation discount looks like a bargain until you realize EM companies often have lower profit margins, weaker governance, and higher political risk — the discount may be fully justified. But in periods when EM fundamentals improve, that valuation gap compresses and produces outsized returns. The P/E is the starting point for the analysis, not the conclusion.
+
+**Where to find it:** Fund factsheet (Portfolio Characteristics), Morningstar (Portfolio tab), issuer website. Always check whether the P/E is trailing 12-month or forward — forward P/E is more useful for comparison but relies on analyst estimates.
+
+---
+
+### 24. Correlation with Existing Portfolio Holdings
+**Impact Score: 6/10**
+
+**What it measures:** The statistical correlation (ranging from -1.0 to +1.0) between the ETF's returns and the returns of other assets you already own. A correlation of 0.95 means the two move almost identically; 0.0 means they move independently; -0.50 means they tend to move in opposite directions.
+
+**Why it's not straightforward:** Correlation is different from holdings overlap. Two ETFs can have zero holdings in common but 0.90+ correlation if their holdings are in the same sector or respond to the same macro factors. Conversely, two ETFs with significant holdings overlap might have lower correlation than expected if the non-overlapping portions are in different sectors. The critical insight is that **correlations are unstable** — they spike during crises (everything drops together) and decrease during calm markets (individual drivers dominate). A fund that shows 0.50 correlation with your portfolio in normal times might show 0.90 during the exact moments you need diversification most.
+
+**Examples:**
+- **GLD** (SPDR Gold Shares) has a correlation of approximately 0.0 to 0.15 with **SPY** (S&P 500) over 10+ year periods. This near-zero correlation makes gold one of the few genuine diversifiers in a stock-heavy portfolio. But during March 2020, gold initially fell *alongside* stocks (correlation spiked to 0.60+) as investors liquidated everything for cash. The diversification benefit returned within weeks, but the short-term correlation spike was exactly when an investor most needed protection.
+- **BNDX** (Vanguard Total International Bond, hedged) has a correlation of ~0.0 to 0.1 with US equities and ~0.5 with **BND** (Vanguard Total US Bond Market). Adding BNDX alongside BND provides genuine incremental diversification because international interest rate cycles don't move in lockstep with US rates. An investor who assumed "bonds are bonds" and held only BND would miss this diversification benefit.
+
+**Where to find it:** Portfolio Visualizer (Asset Correlation tool — free, outputs correlation matrix for any set of ETFs), Koyfin (correlation analysis), some broker research platforms
+
+---
+
+### 25. Number of Holdings / Effective Number of Holdings
 **Impact Score: 6/10**
 
 **What it measures:** The raw count of securities in the ETF versus the *effective* number (1 / sum of squared weights, also known as the inverse Herfindahl-Hirschman Index). The effective number captures how many holdings truly matter to the portfolio's behavior.
@@ -243,7 +393,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 16. Sector and Geographic Concentration vs. Benchmark
+### 26. Sector and Geographic Concentration vs. Benchmark
 **Impact Score: 6/10**
 
 **What it measures:** How much the ETF's sector and country weights deviate from a broad market benchmark. An "overweight" in technology or an "underweight" in healthcare represents an active bet relative to the market.
@@ -258,7 +408,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 17. Fund Age / Inception Date
+### 27. Fund Age / Inception Date
 **Impact Score: 5/10**
 
 **What it measures:** How long the ETF has been in operation. Older funds have longer track records, more proven tracking, and lower closure risk.
@@ -273,7 +423,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 18. Average Daily Dollar Volume
+### 28. Average Daily Dollar Volume
 **Impact Score: 5/10**
 
 **What it measures:** The average number of shares traded per day multiplied by the share price — the total dollar value of daily trading activity. More useful than share volume because it normalizes for share price differences.
@@ -288,7 +438,7 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 19. Capital Gains Distribution History
+### 29. Capital Gains Distribution History
 **Impact Score: 5/10**
 
 **What it measures:** Whether the ETF has distributed taxable capital gains to shareholders in prior years, and if so, how much. Ideally: zero.
@@ -303,7 +453,37 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 
 ---
 
-### 20. Securities Lending Revenue
+### 30. Dividend Growth Rate
+**Impact Score: 5/10**
+
+**What it measures:** The annualized rate at which the ETF's per-share distributions have grown over time (1-year, 3-year, 5-year, and 10-year growth rates). For dividend-focused ETFs, this measures whether your income stream is growing, stagnating, or shrinking in real terms.
+
+**Why it's not straightforward:** Most income investors focus on current yield — how much the fund pays today — and ignore whether that payment is growing. But for long-term investors, dividend growth rate determines your *future* yield on cost and whether your income keeps pace with inflation. A fund yielding 2% today with 10% annual dividend growth will yield 5.2% on your original investment in 10 years. A fund yielding 5% today with 0% growth will still yield 5% in 10 years — and inflation will have eroded its purchasing power by 25-30%. The subtlety is that dividend growth can be lumpy (one special dividend inflates the growth rate) and can be negative (dividend cuts during recessions). The 5-year growth rate smooths out noise.
+
+**Examples:**
+- **VIG** (Vanguard Dividend Appreciation) yields only ~1.8%, which looks unattractive next to **SPYD** (SPDR S&P 500 High Dividend) at ~4.5%. But VIG's 5-year dividend growth rate is ~8-10% annually, while SPYD's is ~2-3%. In 10 years, VIG's yield on cost will likely exceed SPYD's current yield, and VIG's total return (price appreciation + growing dividends) will almost certainly beat SPYD's total return. The current yield comparison is a snapshot; the dividend growth rate tells the movie.
+- **SCHD** (Schwab US Dividend Equity) had a 5-year dividend growth rate of ~12-13% through 2023, which made it the darling of income investors. But a significant portion of that growth came from 2021's outsized special distributions. The 10-year dividend growth rate is closer to ~8-9%, which is still excellent but tells a different story than the cherry-picked 5-year figure. Always check multiple time horizons.
+
+**Where to find it:** Seeking Alpha (Dividend History tab, calculates growth rates), issuer website (distribution history, calculate manually), etf.com. For precise calculation: compare the trailing 12-month dividend per share from 5 years ago to today and annualize.
+
+---
+
+### 31. Information Ratio
+**Impact Score: 5/10**
+
+**What it measures:** The ETF's active return (return above the benchmark) divided by its tracking error (volatility of the difference between fund and benchmark returns). It measures how efficiently the fund converts its deviations from the benchmark into excess returns. A higher information ratio means the fund is consistently adding value when it deviates, rather than just adding noise.
+
+**Why it's not straightforward:** The information ratio is the gold standard for evaluating active ETFs and smart beta strategies, but it's meaningless for passive index trackers (which aim for zero deviation). A positive information ratio means the fund's active decisions added value on a risk-adjusted basis; a negative one means the deviations destroyed value. The ratio is highly sensitive to the choice of benchmark — an active ETF might show a great information ratio versus the S&P 500 but a poor one versus a more appropriate style benchmark. Also, like all ratios based on historical data, a high information ratio over 3 years can deteriorate rapidly if the manager's edge disappears or the market regime shifts.
+
+**Examples:**
+- **AVUV** (Avantis US Small Cap Value) has a high information ratio (~0.5-0.8) versus the Russell 2000 Value Index because its active tilts (toward higher profitability within small-cap value) have consistently added value above the passive benchmark with relatively low tracking error. This suggests the fund's deviations are deliberate and productive — not random noise. Compare to a generic active small-cap fund with a 0.1 information ratio, where the manager deviates a lot but adds almost no net value.
+- **ARKK** (ARK Innovation) has had an information ratio that swung from strongly positive (2019-2020, massive outperformance) to deeply negative (2021-2023, massive underperformance). The multi-year information ratio is near zero, meaning that despite enormous deviations from any benchmark, ARKK has not consistently added value. The high tracking error generated both spectacular gains and spectacular losses — the information ratio reveals that this was volatility, not skill.
+
+**Where to find it:** Morningstar (Risk tab on premium — listed as "information ratio"), Portfolio Visualizer (Factor Analysis), institutional platforms. For a quick proxy: divide the fund's alpha by its tracking error using data from the fund factsheet.
+
+---
+
+### 32. Securities Lending Revenue
 **Impact Score: 5/10**
 
 **What it measures:** The income the ETF earns by lending its holdings to short-sellers, and how much of that revenue is returned to shareholders versus retained by the fund manager. Reported annually in the fund's financial statements.
@@ -327,18 +507,30 @@ A ranked guide to every metric that matters when evaluating whether an ETF is wo
 | 3 | Holdings Overlap | 9 | Portfolio construction |
 | 4 | Expense Ratio | 9 | All ETFs |
 | 5 | AUM & Fund Flows | 9 | Fund viability |
-| 6 | Bid-Ask Spread (Median) | 8 | Frequent traders, large orders |
-| 7 | Premium/Discount to NAV | 8 | Bond ETFs, international ETFs |
-| 8 | Tax Cost Ratio | 8 | Taxable accounts |
-| 9 | Top 10 Concentration | 8 | Cap-weighted ETFs |
-| 10 | Distribution vs. SEC Yield | 7 | Bond and income ETFs |
-| 11 | Tracking Error | 7 | Hedging, options strategies |
-| 12 | Portfolio Turnover | 6 | Active ETFs, factor ETFs |
-| 13 | Duration | 6 | Bond ETFs |
-| 14 | Credit Quality Distribution | 6 | Bond ETFs |
-| 15 | Holdings Count (Effective) | 6 | Diversification assessment |
-| 16 | Sector/Geo Concentration | 6 | Non-obvious tilts |
-| 17 | Fund Age | 5 | New/thematic ETFs |
-| 18 | Daily Dollar Volume | 5 | Large orders |
-| 19 | Capital Gains History | 5 | Taxable accounts |
-| 20 | Securities Lending Revenue | 5 | Explaining tracking difference |
+| 6 | Maximum Drawdown | 9 | Risk tolerance assessment |
+| 7 | Bid-Ask Spread (Median) | 8 | Frequent traders, large orders |
+| 8 | Premium/Discount to NAV | 8 | Bond ETFs, international ETFs |
+| 9 | Tax Cost Ratio | 8 | Taxable accounts |
+| 10 | Top 10 Concentration | 8 | Cap-weighted ETFs |
+| 11 | Sharpe Ratio | 8 | Comparing across risk levels |
+| 12 | Upside/Downside Capture | 8 | Quality of return profile |
+| 13 | Distribution vs. SEC Yield | 7 | Bond and income ETFs |
+| 14 | Tracking Error | 7 | Hedging, options strategies |
+| 15 | Beta | 7 | Understanding market sensitivity |
+| 16 | Sortino Ratio | 7 | Asymmetric strategies |
+| 17 | Rolling Returns | 7 | Start/end-date sensitivity |
+| 18 | Factor Loadings | 7 | Smart beta, active ETFs |
+| 19 | Portfolio Turnover | 6 | Active ETFs, factor ETFs |
+| 20 | Duration | 6 | Bond ETFs |
+| 21 | Credit Quality Distribution | 6 | Bond ETFs |
+| 22 | Weighted Avg Market Cap | 6 | True size exposure |
+| 23 | Portfolio Valuation (P/E, P/B) | 6 | Value vs. growth assessment |
+| 24 | Correlation with Holdings | 6 | True diversification benefit |
+| 25 | Holdings Count (Effective) | 6 | Diversification assessment |
+| 26 | Sector/Geo Concentration | 6 | Non-obvious tilts |
+| 27 | Fund Age | 5 | New/thematic ETFs |
+| 28 | Daily Dollar Volume | 5 | Large orders |
+| 29 | Capital Gains History | 5 | Taxable accounts |
+| 30 | Dividend Growth Rate | 5 | Income ETFs, long-term yield |
+| 31 | Information Ratio | 5 | Active and smart beta ETFs |
+| 32 | Securities Lending Revenue | 5 | Explaining tracking difference |
