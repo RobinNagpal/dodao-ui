@@ -3,8 +3,8 @@
 # =========================
 SLS ?= npx serverless
 TSX ?= npx tsx
-TICKER_URL ?= https://stockanalysis.com/stocks/avb/
-ETF_URL ?= https://stockanalysis.com/etf/spuu/
+TICKER_URL ?= https://www.macrotrends.net/stocks/charts/AAPL/apple
+ETF_URL ?= https://www.macrotrends.net/stocks/charts/SPY/spdr-sp-500-etf
 VIEW ?= strict
 ORIGIN ?= http://localhost:3000
 
