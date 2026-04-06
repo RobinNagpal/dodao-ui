@@ -4,6 +4,7 @@
 SLS ?= npx serverless
 TSX ?= npx tsx
 TICKER_URL ?= https://www.macrotrends.net/stocks/charts/AAPL/apple
+ETF_URL ?= https://www.macrotrends.net/stocks/charts/SPY/spdr-sp-500-etf
 VIEW ?= strict
 ORIGIN ?= http://localhost:3000
 
@@ -12,6 +13,7 @@ ORIGIN ?= http://localhost:3000
 # ==============
 .PHONY: help print-config \
         invoke-fetchSummary \
+        invoke-fetchEtfSummary \
         invoke-fetchDividends \
         invoke-fetchIncomeStatementAnnual \
         invoke-fetchIncomeStatementQuarterly \
@@ -45,6 +47,7 @@ print-config:
 	@echo "SLS        = $(SLS)"
 	@echo "TSX        = $(TSX)"
 	@echo "TICKER_URL = $(TICKER_URL)"
+	@echo "ETF_URL    = $(ETF_URL)"
 	@echo "VIEW       = $(VIEW)"
 	@echo "ORIGIN     = $(ORIGIN)"
 
@@ -59,6 +62,10 @@ endef
 # =========================
 invoke-fetchSummary:
 	$(call INVOKE_INLINE,fetchSummary)
+
+invoke-fetchEtfSummary:
+	@echo "Invoking via router: fetchEtfSummary ..."
+	@$(SLS) invoke local -f api -d "$$($(TSX) scripts/generate-events.ts --route fetchEtfSummary --url $(ETF_URL) --view $(VIEW) --origin $(ORIGIN))"
 
 invoke-fetchDividends:
 	$(call INVOKE_INLINE,fetchDividends)
@@ -110,6 +117,7 @@ invoke-optionsAll:
 # Batch
 invoke-all: \
 	invoke-fetchSummary \
+	invoke-fetchEtfSummary \
 	invoke-fetchDividends \
 	invoke-fetchIncomeStatementAnnual \
 	invoke-fetchIncomeStatementQuarterly \

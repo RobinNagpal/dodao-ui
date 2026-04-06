@@ -61,6 +61,7 @@ const MAP: Record<string, Mapping> = {
 
   // Summary & Dividends
   fetchSummary: { method: "POST", path: "/summary", includeView: true },
+  fetchEtfSummary: { method: "POST", path: "/etf/summary", includeView: true },
   fetchDividends: { method: "POST", path: "/dividends", includeView: true },
 
   // Income
