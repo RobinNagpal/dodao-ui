@@ -1388,9 +1388,9 @@ model EtfStockAnalyzerInfo {
   indexName String? @map("index")
   priceCurrency String? @map("price_curr")
 
-  beta5y Float? @map("beta_5y")
   beta1y Float? @map("beta_1y")
   beta2y Float? @map("beta_2y")
+  beta5y Float? @map("beta_5y")
 
   rsi   Float? @map("rsi")
   rsiW  Float? @map("rsi_w")
