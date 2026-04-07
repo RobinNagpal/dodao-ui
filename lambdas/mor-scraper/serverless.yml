@@ -1,0 +1,25 @@
+service: mor-scraper
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  timeout: 300
+  memorySize: 3008
+  environment:
+    NODE_ENV: production
+
+functions:
+  api:
+    handler: src/handler.api
+    url:
+      cors: true
+      invokeMode: RESPONSE_STREAM
+
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    external:
+      - "@sparticuz/chromium"

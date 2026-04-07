@@ -175,6 +175,46 @@ export interface SourceLink {
 
 export type SourceLinks = SourceLink[];
 
+// -----------------------------
+// ETF quote scraper JSON types
+// -----------------------------
+
+export interface EtfMorAnalysisSection {
+  pillar: string;
+  date?: string;
+  rating?: string;
+  author?: string;
+  content: string;
+}
+
+export interface EtfMorAnalysis {
+  available: boolean;
+  medalistRating?: string;
+  headline?: string;
+  sections: EtfMorAnalysisSection[];
+}
+
+export interface EtfMorReturnsRow {
+  label: string;
+  values: Record<string, string>;
+}
+
+export interface EtfMorHolding {
+  name: string;
+  portfolioWeight?: string;
+  marketValue?: string;
+  sector?: string;
+}
+
+export interface EtfMorHoldings {
+  currentPortfolioDate?: string;
+  equityHoldings?: string;
+  bondHoldings?: string;
+  otherHoldings?: string;
+  pctAssetsInTop10?: string;
+  topHoldings: EtfMorHolding[];
+}
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
@@ -194,5 +234,10 @@ declare global {
     type KpisQuarterlyData = KpisQuarterlyData;
     // LLM grounding sources
     type SourceLinks = SourceLinks;
+
+    // ETF quote scraper JSON shapes
+    type EtfMorAnalysis = EtfMorAnalysis;
+    type EtfMorReturnsRow = EtfMorReturnsRow;
+    type EtfMorHoldings = EtfMorHoldings;
   }
 }
