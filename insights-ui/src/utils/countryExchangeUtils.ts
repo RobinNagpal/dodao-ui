@@ -18,8 +18,10 @@ export enum SupportedCountries {
 }
 
 export enum USExchanges {
+  BATS = 'BATS',
   NASDAQ = 'NASDAQ',
   NYSE = 'NYSE',
+  NYSEARCA = 'NYSEARCA',
   NYSEAMERICAN = 'NYSEAMERICAN',
   OTCMKTS = 'OTCMKTS',
 }
@@ -80,8 +82,10 @@ export type AllExchanges =
 /** ---------- Constants ---------- */
 
 export const EXCHANGES: ReadonlyArray<AllExchanges> = [
+  USExchanges.BATS,
   USExchanges.NASDAQ,
   USExchanges.NYSE,
+  USExchanges.NYSEARCA,
   USExchanges.NYSEAMERICAN,
   USExchanges.OTCMKTS,
   CanadaExchanges.TSX,
@@ -116,8 +120,10 @@ export const COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllExchanges[]> = 
 };
 
 export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
+  [USExchanges.BATS]: SupportedCountries.US,
   [USExchanges.NASDAQ]: SupportedCountries.US,
   [USExchanges.NYSE]: SupportedCountries.US,
+  [USExchanges.NYSEARCA]: SupportedCountries.US,
   [USExchanges.NYSEAMERICAN]: SupportedCountries.US,
   [USExchanges.OTCMKTS]: SupportedCountries.US,
   [CanadaExchanges.TSX]: SupportedCountries.Canada,
