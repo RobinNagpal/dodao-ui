@@ -3,7 +3,7 @@
  *
  * Run with:
  *   npx tsx src/test-local.ts
- *   npx tsx src/test-local.ts --url https://www.morningstar.com/etfs/bats/nnov/quote
+ *   npx tsx src/test-local.ts --url ...
  *   npx tsx src/test-local.ts --section overview
  *   npx tsx src/test-local.ts --section analysis
  *   npx tsx src/test-local.ts --section returns
@@ -13,7 +13,7 @@
 
 import { scrapeEtfQuote, ScrapeSection } from "./puppeteer/etf-quote";
 
-const DEFAULT_URL = "https://www.morningstar.com/etfs/arcx/vv/quote";
+const DEFAULT_URL = "";
 
 function parseArgs(): { url: string; sections: ScrapeSection[] } {
   const args = process.argv.slice(2);

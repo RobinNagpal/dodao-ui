@@ -2,8 +2,8 @@
 # Config (override via env)
 # =========================
 TSX ?= npx tsx
-ETF_URL ?= https://www.morningstar.com/etfs/arcx/agg/quote
-NNOV_URL ?= https://www.morningstar.com/etfs/bats/nnov/quote
+ETF_URL ?= 
+NNOV_URL ?= 
 
 # ==============
 # Phony targets
@@ -39,7 +39,7 @@ help:
 	@echo ""
 	@echo "Examples:"
 	@echo "  make test-local"
-	@echo "  make test-local ETF_URL=https://www.morningstar.com/etfs/arcx/spy/quote"
+	@echo "  make test-local ETF_URL=..."
 	@echo "  make test-overview"
 	@echo "  make test-analysis ETF_URL=$(NNOV_URL)"
 	@echo "  DEBUG_DUMP=1 make test-local"
