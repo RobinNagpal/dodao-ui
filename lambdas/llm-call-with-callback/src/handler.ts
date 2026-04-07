@@ -32,8 +32,11 @@ async function myHandler(
       : event.body
   );
 
-  const llmResponse = await getLLMResponseInLamnda<any, any>(body);
+  const llmResponseWithMeta = await getLLMResponseInLamnda<any, any>(body);
   const { callbackUrl, additionalData } = body;
+
+  // Extract just the result - sourceLinks not needed for callbacks
+  const llmResponse = llmResponseWithMeta.result;
 
   logger.info("[Function] Sending response to callback URL");
   await fetch(callbackUrl, {
