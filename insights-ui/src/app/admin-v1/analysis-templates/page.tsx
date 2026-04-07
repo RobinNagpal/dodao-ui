@@ -73,7 +73,11 @@ export default function DetailedReportsAdminPage() {
   };
 
   if (templatesLoading) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
 
   return (

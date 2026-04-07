@@ -77,7 +77,11 @@ export default function AnalysisTemplateReportPage() {
   };
 
   if (reportsLoading) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
 
   return (

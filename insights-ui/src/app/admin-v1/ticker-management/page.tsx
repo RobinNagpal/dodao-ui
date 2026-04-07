@@ -149,7 +149,11 @@ export default function TickerManagementPage() {
             selectedSubIndustryKey={selectedSubIndustry.subIndustryKey}
           />
         )}
-        {loadingTickers && <FullPageLoader />}
+        {loadingTickers && (
+          <div className="flex items-center justify-center py-8">
+            <FullPageLoader className="!static !w-auto !h-auto" />
+          </div>
+        )}
         {selectedIndustry && selectedSubIndustry && !loadingTickers && (
           <Block title="Selected Tickers" className="dark:bg-gray-800">
             <Tooltip.Provider delayDuration={300}>

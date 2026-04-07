@@ -95,7 +95,11 @@ export default function SelectIndustryAndSubIndustry({
   };
 
   if (loadingIndustries) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
 
   const subIndustryDropdownItems = activeSubIndustries.map((subIndustry) => ({
