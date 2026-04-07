@@ -199,6 +199,8 @@ export interface EtfMorReturnsRow {
   values: Record<string, string>;
 }
 
+export type EtfMorReturnsRows = EtfMorReturnsRow[];
+
 export interface EtfMorHolding {
   name: string;
   portfolioWeight?: string;
@@ -238,6 +240,7 @@ declare global {
     // ETF quote scraper JSON shapes
     type EtfMorAnalysis = EtfMorAnalysis;
     type EtfMorReturnsRow = EtfMorReturnsRow;
+    type EtfMorReturnsRows = EtfMorReturnsRows;
     type EtfMorHoldings = EtfMorHoldings;
   }
 }

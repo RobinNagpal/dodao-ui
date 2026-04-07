@@ -1463,9 +1463,9 @@ model EtfMorAnalyzerInfo {
   analysis Json? @map("analysis") @db.JsonB
 
   // Returns (annual/trailing arrays from the scraper)
-  /// [EtfMorReturnsRow[]]
+  /// [EtfMorReturnsRows]
   returnsAnnual   Json? @map("returns_annual") @db.JsonB
-  /// [EtfMorReturnsRow[]]
+  /// [EtfMorReturnsRows]
   returnsTrailing Json? @map("returns_trailing") @db.JsonB
 
   // Holdings (metadata + topHoldings array from the scraper)
