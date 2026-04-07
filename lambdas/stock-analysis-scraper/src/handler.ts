@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
 // --- your existing imports (unchanged) ---
 import { scrapeFundamentalsSummary } from "./cheerio/fundamentals-summary";
+import { scrapeEtfFundamentalsSummary } from "./cheerio/etf-fundamentals-summary";
 import {
   scrapeIncomeStatementAnnual,
   scrapeIncomeStatementAnnualRaw,
@@ -146,6 +147,7 @@ function okResponse(params: {
   url: string;
   section:
     | "summary"
+    | "etf-summary"
     | "dividends"
     | "income-statement"
     | "balance-sheet"
@@ -204,6 +206,32 @@ export const fetchSummary = async (event: APIGatewayProxyEvent) => {
     });
   } catch (error: any) {
     console.error("fetchSummary error:", error);
+    return {
+      statusCode: 500,
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        error: "Internal server error",
+        details: error?.message,
+      }),
+    };
+  }
+};
+
+export const fetchEtfSummary = async (event: APIGatewayProxyEvent) => {
+  try {
+    const parsed = parseBodyOr400(event);
+    if (!parsed.ok) return parsed.res;
+    const { url, view } = parsed;
+    const summaryRes = await scrapeEtfFundamentalsSummary(url);
+    return okResponse({
+      url,
+      section: "etf-summary",
+      view,
+      data: summaryRes.etfSummary,
+      errors: summaryRes.errors ?? [],
+    });
+  } catch (error: any) {
+    console.error("fetchEtfSummary error:", error);
     return {
       statusCode: 500,
       headers: JSON_HEADERS,
@@ -783,6 +811,9 @@ export const api = async (
 
     case "/summary":
       return fetchSummary(event);
+
+    case "/etf/summary":
+      return fetchEtfSummary(event);
 
     case "/dividends":
       return fetchDividends(event);
