@@ -1,7 +1,7 @@
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 
 type Num = number | null;
 
@@ -31,10 +31,8 @@ async function getHandler(
   { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
 ): Promise<EtfFinancialInfoOptionalWrapper> {
   const { spaceId, exchange, etf } = await params;
-  const e = exchange?.toUpperCase()?.trim();
-  const t = etf?.toUpperCase()?.trim();
-
-  if (!t || !e) {
+  const whereClause = getEtfWhereClause({ spaceId, exchange, etf });
+  if (!whereClause.symbol || !whereClause.exchange) {
     return { financialInfo: null };
   }
 
@@ -42,9 +40,7 @@ async function getHandler(
     // Find the ETF in database
     const etfRecord = await prisma.etf.findFirstOrThrow({
       where: {
-        spaceId: spaceId || KoalaGainsSpaceId,
-        symbol: t,
-        exchange: e,
+        ...whereClause,
       },
       include: {
         financialInfo: true,
@@ -53,7 +49,7 @@ async function getHandler(
 
     // Check if financial info exists
     if (!etfRecord.financialInfo) {
-      console.error(`No financial info available for ETF ${t}`);
+      console.error(`No financial info available for ETF ${whereClause.symbol}`);
       return { financialInfo: null };
     }
 
@@ -77,7 +73,7 @@ async function getHandler(
 
     return { financialInfo };
   } catch (error) {
-    console.error(`Error fetching ETF financial info for ${t}:`, error);
+    console.error(`Error fetching ETF financial info for ${whereClause.symbol}:`, error);
     return { financialInfo: null };
   }
 }

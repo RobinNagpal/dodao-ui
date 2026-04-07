@@ -1,7 +1,6 @@
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
-
-type Num = number | null;
+import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 
 interface EtfFinancialInfoProps {
   data: EtfFinancialInfoResponse;
@@ -24,29 +23,6 @@ function formatCompactMillions(value: string | null): string {
   const n = parseNumericString(value);
   if (n === null) return 'N/A';
   return `${(n / 1_000_000).toFixed(2)}M`;
-}
-
-// Helper to format regular numbers with commas
-function formatNumber(value: Num, decimals: number = 2): string {
-  if (value === null) return 'N/A';
-  return value.toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
-}
-
-// Helper to format volume numbers with commas (no decimals)
-function formatVolume(value: Num): string {
-  if (value === null) return 'N/A';
-  return value.toLocaleString('en-US', {
-    maximumFractionDigits: 0,
-  });
-}
-
-// Helper to format percentage from decimal
-function formatPercentageDecimal(value: Num): string {
-  if (value === null) return 'N/A';
-  return `${value.toFixed(2)}%`;
 }
 
 // Helper to format integer
