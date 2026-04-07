@@ -133,7 +133,11 @@ export default function GenerateAnalysisTemplateReportPage({ params }: { params:
     })) || [];
 
   if (reportLoading) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
 
   return (

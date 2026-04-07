@@ -221,7 +221,11 @@ export default function AnalysisTemplateDetailPage() {
     })) || [];
 
   if (templateLoading) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
 
   if (!template) {
