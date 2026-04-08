@@ -76,7 +76,6 @@ export async function validateSignInCode(code: string): Promise<(StudentSignInCo
     where: {
       code: normalizedCode,
       isActive: true,
-      OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
     },
     include: {
       user: true,
