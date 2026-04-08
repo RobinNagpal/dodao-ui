@@ -217,6 +217,19 @@ export interface EtfMorHoldings {
   topHoldings: EtfMorHolding[];
 }
 
+// --------------------------------
+// ETF people fetcher JSON types
+// --------------------------------
+
+export interface EtfMorCurrentManager {
+  name: string;
+  startDate?: string;
+  endDate?: string;
+  dateRangeText?: string;
+}
+
+export type EtfMorCurrentManagers = EtfMorCurrentManager[];
+
 // ----------------------------
 // ETF risk fetcher JSON types
 // ----------------------------
@@ -284,6 +297,8 @@ declare global {
     type EtfMorReturnsRow = EtfMorReturnsRow;
     type EtfMorReturnsRows = EtfMorReturnsRows;
     type EtfMorHoldings = EtfMorHoldings;
+    type EtfMorCurrentManager = EtfMorCurrentManager;
+    type EtfMorCurrentManagers = EtfMorCurrentManagers;
 
     // ETF risk fetcher JSON shapes
     type EtfMorRiskScoreBlock = EtfMorRiskScoreBlock;
