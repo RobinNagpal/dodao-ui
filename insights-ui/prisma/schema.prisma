@@ -1252,6 +1252,7 @@ model Etf {
   financialInfo EtfFinancialInfo?
   stockAnalyzerInfo EtfStockAnalyzerInfo?
   morAnalyzerInfo EtfMorAnalyzerInfo?
+  morRiskInfo EtfMorRiskInfo?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1481,4 +1482,20 @@ model EtfMorAnalyzerInfo {
 
   @@index([etfId])
   @@map("etf_mor_analyzer_info")
+}
+
+model EtfMorRiskInfo {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  /// [EtfMorRiskPeriods]
+  riskPeriods Json? @map("risk_periods") @db.JsonB
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_mor_risk_info")
 }
