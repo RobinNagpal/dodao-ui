@@ -17,7 +17,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
 import { CountryCode } from '@/utils/countryExchangeUtils';
 
@@ -43,16 +43,19 @@ export default function TickerManagementPage() {
     `Failed to fetch tickers`
   );
 
-  const selectIndustry = async (industry: TickerV1Industry | null) => {
+  const selectIndustry = useCallback((industry: TickerV1Industry | null) => {
     setSelectedIndustry(industry);
     setSelectedSubIndustry(null);
-    setSelectedTickerIds([]); // Clear selections when changing industry
-  };
+    setSelectedTickerIds([]);
+  }, []);
 
-  const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    setSelectedSubIndustry(subIndustry);
-    setSelectedTickerIds([]); // Clear selections when changing sub-industry
-  };
+  const selectSubIndustry = useCallback((subIndustry: TickerV1SubIndustry | null) => {
+    setSelectedSubIndustry((prev) => {
+      if (prev?.subIndustryKey === subIndustry?.subIndustryKey) return prev;
+      setSelectedTickerIds([]);
+      return subIndustry;
+    });
+  }, []);
 
   const handleTickerSelectionChange = (tickerIds: string[]) => {
     setSelectedTickerIds(tickerIds);

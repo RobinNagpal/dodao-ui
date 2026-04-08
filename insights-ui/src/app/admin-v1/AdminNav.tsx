@@ -29,12 +29,21 @@ const stockIndustryMgmtSection: AdminNavSection = {
     { name: 'Industry Management', href: '/admin-v1/industry-management' },
     { name: 'Industry Analysis', href: '/admin-v1/industry-analysis-management' },
     { name: 'Ticker Management', href: '/admin-v1/ticker-management' },
+    { name: 'Analysis Factors', href: '/admin-v1/analysis-factors' },
   ],
 };
 
 const etfMgmtSection: AdminNavSection = {
   label: 'ETF Mgmt',
   items: [{ name: 'ETF Reports', href: '/admin-v1/etf-reports' }],
+};
+
+const analysisTemplatesSection: AdminNavSection = {
+  label: 'Analysis Templates',
+  items: [
+    { name: 'Analysis Templates', href: '/admin-v1/analysis-templates' },
+    { name: 'Analysis Template Reports', href: '/admin-v1/analysis-template-report' },
+  ],
 };
 
 function AdminNavDropdown({ section }: { section: AdminNavSection }) {
@@ -77,6 +86,7 @@ export default function AdminNav() {
         <AdminNavDropdown section={stocksReportsSection} />
         <AdminNavDropdown section={stockIndustryMgmtSection} />
         <AdminNavDropdown section={etfMgmtSection} />
+        <AdminNavDropdown section={analysisTemplatesSection} />
         <Link href="/admin-v1/users" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">
           Users
         </Link>

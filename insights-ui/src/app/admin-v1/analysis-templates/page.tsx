@@ -13,6 +13,7 @@ import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import AddEditAnalysisTemplateModal from '@/components/analysis-templates/AddEditAnalysisTemplateModal';
 import AnalysisTemplateActions from '@/components/analysis-templates/AnalysisTemplateActions';
 import DeleteConfirmationModal from '@dodao/web-core/components/app/Modal/DeleteConfirmationModal';
+import AdminNav from '../AdminNav';
 
 export default function DetailedReportsAdminPage() {
   const [showModal, setShowModal] = useState(false);
@@ -83,6 +84,7 @@ export default function DetailedReportsAdminPage() {
   return (
     <PageWrapper>
       <div className="max-w-7xl mx-auto">
+        <AdminNav />
         <div className="pt-2 pb-6">
           {/* Header */}
           <div className="mb-8">
