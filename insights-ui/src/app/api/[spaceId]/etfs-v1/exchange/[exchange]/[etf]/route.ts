@@ -1,8 +1,8 @@
 import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Etf, EtfFinancialInfo, EtfStockAnalyzerInfo } from '@prisma/client';
 import { NextRequest } from 'next/server';
+import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 
 export type EtfWithRelations = Etf & {
   financialInfo: EtfFinancialInfo | null;
@@ -11,46 +11,12 @@ export type EtfWithRelations = Etf & {
 
 export interface EtfFastResponse extends EtfWithRelations {}
 
-// Helper function to convert BigInt values to strings for JSON serialization
-function serializeBigIntFields(obj: any): any {
-  if (obj === null || obj === undefined) {
-    return obj;
-  }
-
-  if (typeof obj === 'bigint') {
-    return obj.toString();
-  }
-
-  // Preserve Date objects
-  if (obj instanceof Date) {
-    return obj;
-  }
-
-  if (Array.isArray(obj)) {
-    return obj.map(serializeBigIntFields);
-  }
-
-  if (typeof obj === 'object') {
-    const serialized: any = {};
-    for (const [key, value] of Object.entries(obj)) {
-      serialized[key] = serializeBigIntFields(value);
-    }
-    return serialized;
-  }
-
-  return obj;
-}
-
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; etf: string; exchange: string }> }): Promise<EtfFastResponse | null> {
   const { spaceId, etf, exchange } = await context.params;
   const allowNull = req.nextUrl.searchParams.get('allowNull') === 'true';
 
   // Get ETF from DB with all related data
-  const whereClause = {
-    spaceId: spaceId || KoalaGainsSpaceId,
-    symbol: etf.toUpperCase(),
-    exchange: exchange.toUpperCase(),
-  };
+  const whereClause = getEtfWhereClause({ spaceId, exchange, etf });
 
   const etfRecord: EtfWithRelations | null = allowNull
     ? await prisma.etf.findFirst({
