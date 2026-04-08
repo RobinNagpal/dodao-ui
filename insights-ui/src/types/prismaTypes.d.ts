@@ -175,6 +175,90 @@ export interface SourceLink {
 
 export type SourceLinks = SourceLink[];
 
+// -----------------------------
+// ETF quote scraper JSON types
+// -----------------------------
+
+export interface EtfMorAnalysisSection {
+  pillar: string;
+  date?: string;
+  rating?: string;
+  author?: string;
+  content: string;
+}
+
+export interface EtfMorAnalysis {
+  available: boolean;
+  medalistRating?: string;
+  headline?: string;
+  sections: EtfMorAnalysisSection[];
+}
+
+export interface EtfMorReturnsRow {
+  label: string;
+  values: Record<string, string>;
+}
+
+export type EtfMorReturnsRows = EtfMorReturnsRow[];
+
+export interface EtfMorHolding {
+  name: string;
+  portfolioWeight?: string;
+  marketValue?: string;
+  sector?: string;
+}
+
+export interface EtfMorHoldings {
+  currentPortfolioDate?: string;
+  equityHoldings?: string;
+  bondHoldings?: string;
+  otherHoldings?: string;
+  pctAssetsInTop10?: string;
+  topHoldings: EtfMorHolding[];
+}
+
+// ----------------------------
+// ETF risk fetcher JSON types
+// ----------------------------
+
+export type EtfMorRiskPeriod = '3-Yr' | '5-Yr' | '10-Yr';
+
+export interface EtfMorRiskScoreBlock {
+  riskScore?: string;
+  riskLevel?: string;
+}
+
+export interface EtfMorRiskReturnBlock {
+  riskVsCategory?: string;
+  returnVsCategory?: string;
+}
+
+export interface EtfMorRiskTableRow {
+  label: string;
+  values: Record<string, string>;
+}
+
+export interface EtfMorRiskTable {
+  columns: string[];
+  rows: EtfMorRiskTableRow[];
+}
+
+export interface EtfMorMarketVolatilityMeasures {
+  captureRatios?: EtfMorRiskTable;
+  drawdown?: EtfMorRiskTable;
+  drawdownDates?: EtfMorRiskTable;
+}
+
+export interface EtfMorRiskPeriodData {
+  period: EtfMorRiskPeriod;
+  portfolioRiskScore?: EtfMorRiskScoreBlock;
+  morningstarRiskReturn?: EtfMorRiskReturnBlock;
+  riskAndVolatilityMeasures?: EtfMorRiskTable;
+  marketVolatilityMeasures?: EtfMorMarketVolatilityMeasures;
+}
+
+export type EtfMorRiskPeriods = Record<EtfMorRiskPeriod, EtfMorRiskPeriodData>;
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
@@ -194,5 +278,20 @@ declare global {
     type KpisQuarterlyData = KpisQuarterlyData;
     // LLM grounding sources
     type SourceLinks = SourceLinks;
+
+    // ETF quote scraper JSON shapes
+    type EtfMorAnalysis = EtfMorAnalysis;
+    type EtfMorReturnsRow = EtfMorReturnsRow;
+    type EtfMorReturnsRows = EtfMorReturnsRows;
+    type EtfMorHoldings = EtfMorHoldings;
+
+    // ETF risk fetcher JSON shapes
+    type EtfMorRiskScoreBlock = EtfMorRiskScoreBlock;
+    type EtfMorRiskReturnBlock = EtfMorRiskReturnBlock;
+    type EtfMorRiskTableRow = EtfMorRiskTableRow;
+    type EtfMorRiskTable = EtfMorRiskTable;
+    type EtfMorMarketVolatilityMeasures = EtfMorMarketVolatilityMeasures;
+    type EtfMorRiskPeriodData = EtfMorRiskPeriodData;
+    type EtfMorRiskPeriods = EtfMorRiskPeriods;
   }
 }

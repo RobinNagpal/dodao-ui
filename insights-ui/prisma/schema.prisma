@@ -1251,6 +1251,8 @@ model Etf {
 
   financialInfo EtfFinancialInfo?
   stockAnalyzerInfo EtfStockAnalyzerInfo?
+  morAnalyzerInfo EtfMorAnalyzerInfo?
+  morRiskInfo EtfMorRiskInfo?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1260,18 +1262,18 @@ model Etf {
 model EtfFinancialInfo {
   id     String @id @default(uuid())
   etfId  String @unique @map("etf_id")
-  /// Assets under management; may store raw display text from source (e.g. "$190.08M")
+  // Assets under management; may store raw display text from source (e.g. "$190.08M")
   aum    String? @map("aum")
-  /// Expense ratio as percent number (e.g. 0.60 for 0.60%)
+  // Expense ratio as percent number (e.g. 0.60 for 0.60%)
   expenseRatio    Float?  @map("expense_ratio")
   pe              Float?  @map("pe")
-  /// e.g. "1.13M", "212.40M"
+  // e.g. "1.13M", "212.40M"
   sharesOut       String? @map("shares_out")
   dividendTtm     Float?  @map("dividend_ttm")
-  /// Percent (e.g. 1.76 for 1.76%)
+  // Percent (e.g. 1.76 for 1.76%)
   dividendYield   Float?  @map("dividend_yield")
   payoutFrequency String? @map("payout_frequency")
-  /// Percent (e.g. 45.94 for 45.94%)
+  // Percent (e.g. 45.94 for 45.94%)
   payoutRatio     Float?  @map("payout_ratio")
   volume          Float?  @map("volume")
   yearHigh        Float?  @map("year_high")
@@ -1302,13 +1304,13 @@ model EtfStockAnalyzerInfo {
   isinNumber String? @map("isin_number")
   cusipNumber String? @map("cusip_number")
 
-  /// Moving-average change percentages vs the respective MA level
+  // Moving-average change percentages vs the respective MA level
   ma200ChgPercent String? @map("ma_200_chg_percent")
   ma150ChgPercent String? @map("ma_150_chg_percent")
   ma50ChgPercent  String? @map("ma_50_chg_percent")
   ma20ChgPercent  String? @map("ma_20_chg_percent")
 
-  /// Simple moving-average levels
+  // Simple moving-average levels
   ma200 Float? @map("ma_200")
   ma150 Float? @map("ma_150")
   ma50  Float? @map("ma_50")
@@ -1316,7 +1318,7 @@ model EtfStockAnalyzerInfo {
 
   tags String? @map("tags")
 
-  /// All-time-low / all-time-high metrics from the screener
+  // All-time-low / all-time-high metrics from the screener
   atlDate String?  @map("atl_date")
   atlChgPercent String? @map("atl_chg_percent")
   atl Float? @map("atl")
@@ -1325,13 +1327,13 @@ model EtfStockAnalyzerInfo {
   athChgPercent String? @map("ath_chg_percent")
   ath Float? @map("ath")
 
-  /// 52-week range metrics from the screener (dates + % changes)
+  // 52-week range metrics from the screener (dates + % changes)
   low52wDate  String? @map("low_52w_date")
   high52wDate String? @map("high_52w_date")
   high52wChg  String? @map("high_52w_chg")
   low52wChg   String? @map("low_52w_chg")
 
-  /// CAGR values as shown by source (kept as strings to preserve formatting/empties)
+  // CAGR values as shown by source (kept as strings to preserve formatting/empties)
   cagr20y String? @map("cagr_20y")
   cagr15y String? @map("cagr_15y")
   cagr10y String? @map("cagr_10y")
@@ -1339,7 +1341,7 @@ model EtfStockAnalyzerInfo {
   cagr3y  String? @map("cagr_3y")
   cagr1y  String? @map("cagr_1y")
 
-  /// Period returns as shown by source
+  // Period returns as shown by source
   return20y String? @map("return_20y")
   return15y String? @map("return_15y")
   return10y String? @map("return_10y")
@@ -1351,7 +1353,7 @@ model EtfStockAnalyzerInfo {
   return3m  String? @map("return_3m")
   return1m  String? @map("return_1m")
 
-  /// Absolute/relative change metrics as shown by source (separate from returns in their UI)
+  // Absolute/relative change metrics as shown by source (separate from returns in their UI)
   change20y String? @map("change_20y")
   change15y String? @map("change_15y")
   change10y String? @map("change_10y")
@@ -1409,13 +1411,13 @@ model EtfStockAnalyzerInfo {
   premarketPrice Float? @map("premarket_price")
   premarketChgPercent String? @map("premarket_chg_percent")
   gapPercent String? @map("gap_percent")
-  /// Relative volume vs average volume (as shown by source; often a percent-like string)
+  // Relative volume vs average volume (as shown by source; often a percent-like string)
   relVolume String? @map("rel_volume")
   avgVolume BigInt? @map("avg_volume")
-  /// Dollar volume from the screener (can be very large)
+  // Dollar volume from the screener (can be very large)
   dollarVol BigInt? @map("dollar_vol")
 
-  /// After-hours metrics from the screener (when available)
+  // After-hours metrics from the screener (when available)
   afterhrClose Float? @map("afterhr_close")
   afterhrChgPercent String? @map("afterhr_chg_percent")
   afterhrPrice Float? @map("afterhr_price")
@@ -1430,4 +1432,70 @@ model EtfStockAnalyzerInfo {
 
   @@index([etfId])
   @@map("etf_stock_analyzer_info")
+}
+
+model EtfMorAnalyzerInfo {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  // Overview metrics (from overviewMetrics)
+  overviewNav                     String? @map("overview_nav")
+  overviewOneDayReturn            String? @map("overview_one_day_return")
+  overviewTotalAssets             String? @map("overview_total_assets")
+  overviewAdjExpenseRatio         String? @map("overview_adj_expense_ratio")
+  overviewProspectusNetExpenseRatio String? @map("overview_prospectus_net_expense_ratio")
+  overviewCategory                String? @map("overview_category")
+  overviewStyleBox                String? @map("overview_style_box")
+  overviewSecYield                String? @map("overview_sec_yield")
+  overviewTtmYield                String? @map("overview_ttm_yield")
+  overviewTurnover                String? @map("overview_turnover")
+  overviewStatus                  String? @map("overview_status")
+
+  // Market data (from marketData)
+  marketNav           String? @map("market_nav")
+  marketOpenPrice     String? @map("market_open_price")
+  marketBidAskSpread  String? @map("market_bid_ask_spread")
+  marketVolumeAvg     String? @map("market_volume_avg")
+  marketDayRange      String? @map("market_day_range")
+  marketYearRange     String? @map("market_year_range")
+
+  // Analysis (sections array + any extra fields)
+  /// [EtfMorAnalysis]
+  analysis Json? @map("analysis") @db.JsonB
+
+  // Returns (annual/trailing arrays from the scraper)
+  /// [EtfMorReturnsRows]
+  returnsAnnual   Json? @map("returns_annual") @db.JsonB
+  /// [EtfMorReturnsRows]
+  returnsTrailing Json? @map("returns_trailing") @db.JsonB
+
+  // Holdings (metadata + topHoldings array from the scraper)
+  /// [EtfMorHoldings]
+  holdings Json? @map("holdings") @db.JsonB
+
+  // Strategy text (kept separately for easier full-text search)
+  strategyText String? @map("strategy_text")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_mor_analyzer_info")
+}
+
+model EtfMorRiskInfo {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  /// [EtfMorRiskPeriods]
+  riskPeriods Json? @map("risk_periods") @db.JsonB
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_mor_risk_info")
 }
