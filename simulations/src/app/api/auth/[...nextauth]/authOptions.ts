@@ -158,11 +158,11 @@ export const authOptions = {
         const normalizedCode = credentials.code.toUpperCase().replace(/\s/g, '');
         const normalizedEmail = credentials.email.toLowerCase().trim();
 
+        // Only check if code exists and is active (no expiry check)
         const signInCodeRecord = await p.studentSignInCode.findFirst({
           where: {
             code: normalizedCode,
             isActive: true,
-            OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
           },
           include: {
             user: true,
@@ -170,7 +170,7 @@ export const authOptions = {
         });
 
         if (!signInCodeRecord) {
-          await logError('Invalid or expired sign-in code', { code: normalizedCode, email: normalizedEmail }, null, credentials?.spaceId);
+          await logError('Invalid or inactive sign-in code', { code: normalizedCode, email: normalizedEmail }, null, credentials?.spaceId);
           return null;
         }
 
