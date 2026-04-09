@@ -17,7 +17,7 @@ export interface TriggerMorScrapeResponse {
 }
 
 const LAMBDA_URL = process.env.ETF_MORN_LAMBDA_URL || '';
-const CALLBACK_BASE_URL = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || '';
+const CALLBACK_BASE_URL = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || 'https://koalagains.com';
 
 function normalizeUpperTrim(v: string | null | undefined): string {
   return (v ?? '').toUpperCase().trim();
