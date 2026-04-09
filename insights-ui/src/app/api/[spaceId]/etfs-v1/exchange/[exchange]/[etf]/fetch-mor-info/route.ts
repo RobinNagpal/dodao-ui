@@ -1,5 +1,6 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { AllExchanges, toExchange, USExchanges } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
 
 export type MorKind = 'quote' | 'risk' | 'people';
@@ -16,7 +17,6 @@ export interface TriggerMorScrapeResponse {
 }
 
 const LAMBDA_URL = process.env.ETF_MORN_LAMBDA_URL || '';
-const MORN_BASE_URL = process.env.NEXT_PUBLIC_ETF_MORN_BASE_URL || '';
 const CALLBACK_BASE_URL = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || '';
 
 function normalizeUpperTrim(v: string | null | undefined): string {
@@ -32,6 +32,31 @@ function joinUrl(base: string, path: string): string {
   const b = (base ?? '').replace(/\/+$/, '');
   const p = (path ?? '').replace(/^\/+/, '');
   return `${b}/${p}`;
+}
+
+type MorningstarEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats';
+
+function toMorningstarEtfExchangeSegment(exchange: AllExchanges): MorningstarEtfExchangeSegment {
+  switch (exchange) {
+    case USExchanges.NYSE:
+      return 'xnys';
+    case USExchanges.NASDAQ:
+      return 'xnas';
+    case USExchanges.NYSEARCA:
+      return 'arcx';
+    case USExchanges.BATS:
+      return 'bats';
+    default:
+      throw new Error(`Unsupported exchange for Morningstar ETF scrape: ${exchange}`);
+  }
+}
+
+function buildMorningstarEtfRelativePath(params: { exchange: string; symbol: string; kind: MorKind }): string {
+  const ex = toExchange(params.exchange);
+  const seg = toMorningstarEtfExchangeSegment(ex);
+  const sym = (params.symbol ?? '').trim().toLowerCase();
+  if (!sym) throw new Error('Invalid ETF symbol');
+  return `/${seg}/${encodeURIComponent(sym)}/${params.kind}`;
 }
 
 async function postHandler(
@@ -52,8 +77,7 @@ async function postHandler(
   const { spaceId, exchange, etf } = await params;
   const ex = normalizeUpperTrim(exchange);
   const symbol = normalizeUpperTrim(etf);
-
-  const morUrl = joinUrl(MORN_BASE_URL, `${encodeURIComponent(ex)}/${encodeURIComponent(symbol)}/${kind}`);
+  const morRelativePath = buildMorningstarEtfRelativePath({ exchange: ex, symbol, kind });
   const callbackUrl = joinUrl(
     CALLBACK_BASE_URL,
     `/api/${encodeURIComponent(spaceId)}/etfs-v1/exchange/${encodeURIComponent(ex)}/${encodeURIComponent(symbol)}/mor-info-callback`
@@ -63,7 +87,7 @@ async function postHandler(
   const resp = await fetch(lambdaBase, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: morUrl, callbackUrl }),
+    body: JSON.stringify({ url: morRelativePath, callbackUrl }),
   });
 
   if (!resp.ok) {
@@ -74,7 +98,7 @@ async function postHandler(
   const json = (await resp.json().catch(() => null)) as any;
   const message = (json?.message as string) || 'Request accepted. Processing in background.';
 
-  return { success: true, message, url: morUrl, kind };
+  return { success: true, message, url: morRelativePath, kind };
 }
 
 export const POST = withLoggedInAdmin<TriggerMorScrapeResponse>(postHandler);
