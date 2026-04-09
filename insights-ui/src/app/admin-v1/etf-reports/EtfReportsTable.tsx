@@ -1,12 +1,13 @@
 'use client';
 
 import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
+import EtfRowActionsDropdown from './EtfRowActionsDropdown';
 
 function StatusPill({ ok }: { ok: boolean }): JSX.Element {
   return <span className={`px-2 py-1 rounded-full text-xs ${ok ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}>{ok ? 'Yes' : 'No'}</span>;
 }
 
-export default function EtfReportsTable({ etfs }: { etfs: EtfReportRow[] }): JSX.Element {
+export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRow[]; onRefresh: () => void }): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -18,6 +19,7 @@ export default function EtfReportsTable({ etfs }: { etfs: EtfReportRow[] }): JSX
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Analyzer</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Risk</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR People</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
@@ -47,12 +49,15 @@ export default function EtfReportsTable({ etfs }: { etfs: EtfReportRow[] }): JSX
               <td className="px-4 py-3 text-sm text-center">
                 <StatusPill ok={e.hasMorPeopleInfo} />
               </td>
+              <td className="px-4 py-3 text-sm text-center">
+                <EtfRowActionsDropdown etf={e} onDone={onRefresh} />
+              </td>
             </tr>
           ))}
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={6} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={7} className="px-4 py-10 text-center text-gray-300">
                 No ETFs found.
               </td>
             </tr>
@@ -62,4 +67,3 @@ export default function EtfReportsTable({ etfs }: { etfs: EtfReportRow[] }): JSX
     </div>
   );
 }
-

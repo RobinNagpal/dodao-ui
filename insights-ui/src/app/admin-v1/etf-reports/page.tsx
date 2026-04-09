@@ -35,7 +35,7 @@ export default function EtfReportsPage(): JSX.Element {
     return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/etf-admin-reports?${params.toString()}`;
   }, [currentPage, exchange, missing, debouncedSearch]);
 
-  const { data: response, loading } = useFetchData<EtfReportsResponse>(apiUrl, {}, 'Failed to load ETFs');
+  const { data: response, loading, reFetchData } = useFetchData<EtfReportsResponse>(apiUrl, {}, 'Failed to load ETFs');
 
   const etfs = response?.etfs ?? [];
   const totalCount = response?.totalCount ?? 0;
@@ -71,7 +71,7 @@ export default function EtfReportsPage(): JSX.Element {
         </div>
       ) : (
         <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
-          <EtfReportsTable etfs={etfs} />
+          <EtfReportsTable etfs={etfs} onRefresh={reFetchData} />
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700/50 bg-gray-800/60">

@@ -42,10 +42,7 @@ function buildSearchWhere(qRaw: string | null): any {
 
   return {
     AND: tokens.map((token) => ({
-      OR: [
-        { symbol: { contains: token, mode: 'insensitive' } },
-        { name: { contains: token, mode: 'insensitive' } },
-      ],
+      OR: [{ symbol: { contains: token, mode: 'insensitive' } }, { name: { contains: token, mode: 'insensitive' } }],
     })),
   };
 }
@@ -80,10 +77,10 @@ const getHandler = async (
           OR: [{ financialInfo: { is: null } }, { stockAnalyzerInfo: { is: null } }],
         }
       : missing === 'mor'
-        ? {
-            OR: [{ morAnalyzerInfo: { is: null } }, { morRiskInfo: { is: null } }, { morPeopleInfo: { is: null } }],
-          }
-        : null;
+      ? {
+          OR: [{ morAnalyzerInfo: { is: null } }, { morRiskInfo: { is: null } }, { morPeopleInfo: { is: null } }],
+        }
+      : null;
 
   const where: any = {
     spaceId,
@@ -139,4 +136,3 @@ const getHandler = async (
 };
 
 export const GET = withLoggedInAdmin<EtfReportsResponse>(getHandler);
-
