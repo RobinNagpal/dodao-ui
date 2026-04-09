@@ -3,6 +3,7 @@
 import AdminNav from '@/app/admin-v1/AdminNav';
 import { EtfReportsResponse } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { AllExchanges, EXCHANGES } from '@/utils/countryExchangeUtils';
 import EtfReportsFilters from './EtfReportsFilters';
 import EtfReportsTable from './EtfReportsTable';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -14,7 +15,7 @@ import { useDebouncedValue } from './useDebouncedValue';
 
 export default function EtfReportsPage(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [exchange, setExchange] = useState<string>('');
+  const [exchange, setExchange] = useState<AllExchanges | ''>('');
   const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor'>('');
   const [search, setSearch] = useState<string>('');
   const pageSize = 100;
@@ -40,7 +41,7 @@ export default function EtfReportsPage(): JSX.Element {
   const etfs = response?.etfs ?? [];
   const totalCount = response?.totalCount ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-  const availableExchanges = response?.availableExchanges ?? ['BATS', 'NYSEARCA', 'NASDAQ', 'NYSE'];
+  const availableExchanges: ReadonlyArray<AllExchanges> = response?.availableExchanges ?? EXCHANGES;
 
   return (
     <PageWrapper>

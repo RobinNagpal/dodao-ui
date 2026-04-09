@@ -1,18 +1,12 @@
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
+import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
+import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import {
-  getCountryByExchange,
-  USExchanges,
-  CanadaExchanges,
-  IndiaExchanges,
-  UKExchanges,
-  SupportedCountries,
-  formatExchangeWithCountry,
-} from '@/utils/countryExchangeUtils';
+import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -80,6 +74,23 @@ async function fetchEtfFinancialInfo(exchange: string, etf: string): Promise<Etf
   } catch (error) {
     console.error(`fetchEtfFinancialInfo error for ${etf}:`, error);
     return null;
+  }
+}
+
+/** MOR info fetcher (analyzer + risk + people) */
+async function fetchEtfMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/mor-info`;
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchEtfMorInfo failed (${res.status}): ${url}`);
+      return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null };
+    }
+    const wrapper = (await res.json()) as EtfMorInfoOptionalWrapper;
+    return wrapper;
+  } catch (error) {
+    console.error(`fetchEtfMorInfo error for ${etf}:`, error);
+    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null };
   }
 }
 
@@ -173,10 +184,10 @@ function BreadcrumbsFromData({ data }: { data: Promise<EtfFastResponse> }): JSX.
   const d: EtfFastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const etf: string = d.symbol.toUpperCase();
-  const country: SupportedCountries = getCountryByExchange(d.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
+  const country: SupportedCountries = getCountryByExchange(toExchange(d.exchange));
 
   const breadcrumbs: BreadcrumbsOjbect[] =
-    country === 'US'
+    country === SupportedCountries.US
       ? [
           { name: 'US ETFs', href: `/etfs`, current: false },
           { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
@@ -268,6 +279,24 @@ function EtfArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDat
   );
 }
 
+function EtfMorInfoSkeleton(): JSX.Element {
+  return (
+    <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
+      <div className="h-5 w-48 bg-gray-800 rounded" />
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="h-10 bg-gray-800 rounded" />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function EtfMorInfoSection({ morInfoPromise }: { morInfoPromise: Promise<EtfMorInfoOptionalWrapper> }): JSX.Element {
+  const morData: EtfMorInfoOptionalWrapper = use(morInfoPromise);
+  return <EtfMorInfo data={morData} />;
+}
+
 /** PAGE */
 export default async function EtfDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   // Main ETF data (promise for selective Suspense usage)
@@ -283,6 +312,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
   // Promises consumed by child components via `use()` under Suspense
   const financialInfoPromise = fetchEtfFinancialInfo(exchange, etf);
+  const morInfoPromise = fetchEtfMorInfo(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -324,6 +354,10 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <Suspense fallback={<EtfFinancialInfoSkeleton />}>
           <EtfFinancialInfoSection data={etfInfo} financialInfoPromise={financialInfoPromise} />
+        </Suspense>
+
+        <Suspense fallback={<EtfMorInfoSkeleton />}>
+          <EtfMorInfoSection morInfoPromise={morInfoPromise} />
         </Suspense>
 
         <EtfArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
