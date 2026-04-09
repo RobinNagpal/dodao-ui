@@ -179,6 +179,26 @@ export type SourceLinks = SourceLink[];
 // ETF quote scraper JSON types
 // -----------------------------
 
+export interface EtfMorOverview {
+  name?: string;
+  ticker?: string;
+  exchange?: string;
+  overviewMetrics?: Record<string, string>;
+  marketData?: Record<string, string>;
+}
+
+export interface EtfMorStrategy {
+  text?: string;
+}
+
+export interface EtfMorPeopleSummary {
+  inceptionDate?: string;
+  numberOfManagers?: string;
+  longestTenure?: string;
+  advisors?: string;
+  averageTenure?: string;
+}
+
 export interface EtfMorAnalysisSection {
   pillar: string;
   date?: string;

@@ -12,18 +12,26 @@ export interface EtfRowActionsDropdownProps {
 }
 
 type FetchResponse = { success: boolean; etfUrl: string; errors: unknown[] };
+type TriggerMorResponse = { success: boolean; message: string; url: string; kind: 'quote' | 'risk' | 'people' };
 
 export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDropdownProps): JSX.Element {
-  const { postData, loading } = usePostData<FetchResponse, unknown>({
+  const { postData: fetchFinancialInfo, loading: fetchingFinancialInfo } = usePostData<FetchResponse, unknown>({
     successMessage: 'Fetched financial info successfully!',
     errorMessage: 'Failed to fetch financial info',
   });
 
+  const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' }>({
+    successMessage: 'Request accepted. Processing in background.',
+    errorMessage: 'Failed to queue Morningstar scrape',
+  });
+
+  const isBusy = fetchingFinancialInfo || triggeringMor;
+
   const items: EllipsisDropdownItem[] = [
-    { key: 'financial', label: 'Financial Info', disabled: loading },
-    { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: true },
-    { key: 'morRisk', label: 'Mor Risk', disabled: true },
-    { key: 'morPeople', label: 'Mor People', disabled: true },
+    { key: 'financial', label: 'Financial Info', disabled: isBusy },
+    { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: isBusy },
+    { key: 'morRisk', label: 'Mor Risk', disabled: isBusy },
+    { key: 'morPeople', label: 'Mor People', disabled: isBusy },
   ];
 
   return (
@@ -31,8 +39,14 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
       items={items}
       onSelect={async (key) => {
         if (key === 'financial') {
-          await postData(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-financial-info`, {});
+          await fetchFinancialInfo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-financial-info`, {});
           onDone();
+        } else if (key === 'morAnalyzer') {
+          await triggerMorScrape(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-mor-info`, { kind: 'quote' });
+        } else if (key === 'morRisk') {
+          await triggerMorScrape(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-mor-info`, { kind: 'risk' });
+        } else if (key === 'morPeople') {
+          await triggerMorScrape(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-mor-info`, { kind: 'people' });
         }
       }}
     />
