@@ -1,18 +1,19 @@
 'use client';
 
+import { AllExchanges } from '@/utils/countryExchangeUtils';
 import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 
 export interface EtfReportsFiltersProps {
-  exchange: string;
-  onExchangeChange: (exchange: string) => void;
-  availableExchanges: string[];
+  exchange: AllExchanges | '';
+  onExchangeChange: (exchange: AllExchanges | '') => void;
+  availableExchanges: ReadonlyArray<AllExchanges>;
   missing: '' | 'stockAnalyze' | 'mor';
   onMissingChange: (value: '' | 'stockAnalyze' | 'mor') => void;
   search: string;
   onSearchChange: (value: string) => void;
 }
 
-function toExchangeItems(exchanges: string[]): StyledSelectItem[] {
+function toExchangeItems(exchanges: ReadonlyArray<AllExchanges>): StyledSelectItem[] {
   return [{ id: 'All', label: 'All Exchanges' }, ...exchanges.map((e) => ({ id: e, label: e }))];
 }
 
@@ -42,7 +43,7 @@ export default function EtfReportsFilters({
           label="Exchange"
           items={items}
           selectedItemId={selectedId}
-          setSelectedItemId={(id: string | null) => onExchangeChange(id && id !== 'All' ? id : '')}
+          setSelectedItemId={(id: string | null) => onExchangeChange(id && id !== 'All' ? (id as AllExchanges) : '')}
         />
       </div>
       <div className="w-64">
@@ -50,7 +51,7 @@ export default function EtfReportsFilters({
           label="Missing"
           items={missingItems}
           selectedItemId={selectedMissing}
-          setSelectedItemId={(id: string | null) => onMissingChange(id && id !== 'All' ? (id as any) : '')}
+          setSelectedItemId={(id: string | null) => onMissingChange(id && id !== 'All' ? (id as 'stockAnalyze' | 'mor') : '')}
         />
       </div>
       <div className="w-80">

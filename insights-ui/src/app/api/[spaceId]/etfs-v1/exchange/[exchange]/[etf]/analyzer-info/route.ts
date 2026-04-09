@@ -18,23 +18,17 @@ async function getHandler(
     return { analyzerInfo: null };
   }
 
-  try {
-    // Find the ETF in database
-    const etfRecord = await prisma.etf.findFirstOrThrow({
-      where: {
-        ...whereClause,
-      },
-      include: {
-        stockAnalyzerInfo: true,
-      },
-    });
+  const etfRecord = await prisma.etf.findFirstOrThrow({
+    where: {
+      ...whereClause,
+    },
+    include: {
+      stockAnalyzerInfo: true,
+    },
+  });
 
-    // Return analyzer info (can be null), serializing BigInt fields
-    return { analyzerInfo: serializeBigIntFields(etfRecord.stockAnalyzerInfo) };
-  } catch (error) {
-    console.error(`Error fetching ETF analyzer info for ${whereClause.symbol}:`, error);
-    return { analyzerInfo: null };
-  }
+  // Return analyzer info (can be null), serializing BigInt fields
+  return { analyzerInfo: serializeBigIntFields(etfRecord.stockAnalyzerInfo) };
 }
 
 export const GET = withErrorHandlingV2<EtfAnalyzerInfoOptionalWrapper>(getHandler);

@@ -1,13 +1,14 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
 
 export interface EtfReportRow {
   id: string;
   symbol: string;
   name: string;
-  exchange: string;
+  exchange: AllExchanges;
   hasFinancialInfo: boolean;
   hasStockAnalyzerInfo: boolean;
   hasMorAnalyzerInfo: boolean;
@@ -20,10 +21,14 @@ export interface EtfReportsResponse {
   totalCount: number;
   page: number;
   limit: number;
-  availableExchanges: string[];
+  availableExchanges: AllExchanges[];
 }
 
 export type MissingFilter = '' | 'stockAnalyze' | 'mor';
+
+function normalizeUpperTrim(value: string | null | undefined): string {
+  return (value ?? '').toUpperCase().trim();
+}
 
 function buildSearchWhere(qRaw: string | null): any {
   const q = (qRaw ?? '').trim();
@@ -65,7 +70,8 @@ const getHandler = async (
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const limit = Math.min(200, Math.max(1, parseInt(searchParams.get('limit') || '100', 10)));
 
-  const exchange = (searchParams.get('exchange') ?? '').trim();
+  const exchangeRaw = normalizeUpperTrim(searchParams.get('exchange'));
+  const exchange: AllExchanges | '' = exchangeRaw && isExchange(exchangeRaw) ? exchangeRaw : '';
   const q = searchParams.get('q');
   const missing = toMissingFilter(searchParams.get('missing'));
 
@@ -116,22 +122,27 @@ const getHandler = async (
     }),
   ]);
 
+  const supportedEtfs = etfs.filter((e) => isExchange(e.exchange));
+  const availableExchanges: AllExchanges[] = distinctExchanges.map((e) => normalizeUpperTrim(e.exchange)).filter((ex): ex is AllExchanges => isExchange(ex));
+
   return {
-    etfs: etfs.map((e) => ({
+    etfs: supportedEtfs.map((e) => ({
       id: e.id,
       symbol: e.symbol,
       name: e.name,
-      exchange: e.exchange,
+      exchange: e.exchange as AllExchanges,
       hasFinancialInfo: !!e.financialInfo,
       hasStockAnalyzerInfo: !!e.stockAnalyzerInfo,
       hasMorAnalyzerInfo: !!e.morAnalyzerInfo,
       hasMorRiskInfo: !!e.morRiskInfo,
       hasMorPeopleInfo: !!e.morPeopleInfo,
     })),
+    // totalCount comes from the DB query; UI can still show a correct pager even if we
+    // filter out unsupported exchanges client-side.
     totalCount,
     page,
     limit,
-    availableExchanges: distinctExchanges.map((e) => e.exchange),
+    availableExchanges: availableExchanges.length ? availableExchanges : [...EXCHANGES],
   };
 };
 
