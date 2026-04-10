@@ -1,6 +1,7 @@
 'use client';
 
 import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
+import Link from 'next/link';
 import EtfRowActionsDropdown from './EtfRowActionsDropdown';
 
 function StatusPill({ ok }: { ok: boolean }): JSX.Element {
@@ -50,7 +51,17 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
                 <StatusPill ok={e.hasMorPeopleInfo} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
-                <EtfRowActionsDropdown etf={e} onDone={onRefresh} />
+                <div className="flex items-center justify-center gap-2">
+                  <Link
+                    href={`/etfs/${e.exchange}/${e.symbol}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs link-color underline underline-offset-2"
+                  >
+                    Open
+                  </Link>
+                  <EtfRowActionsDropdown etf={e} onDone={onRefresh} />
+                </div>
               </td>
             </tr>
           ))}
