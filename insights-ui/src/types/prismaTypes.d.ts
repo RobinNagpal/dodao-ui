@@ -285,7 +285,7 @@ export interface EtfMorMarketVolatilityMeasures {
 export interface EtfMorRiskPeriodData {
   period: EtfMorRiskPeriod;
   portfolioRiskScore?: EtfMorRiskScoreBlock;
-  morningstarRiskReturn?: EtfMorRiskReturnBlock;
+  morAnalyzerRiskReturn?: EtfMorRiskReturnBlock;
   riskAndVolatilityMeasures?: EtfMorRiskTable;
   marketVolatilityMeasures?: EtfMorMarketVolatilityMeasures;
 }

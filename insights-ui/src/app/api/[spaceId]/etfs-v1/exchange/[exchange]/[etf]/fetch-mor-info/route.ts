@@ -96,7 +96,7 @@ async function postHandler(
 
   // Lambda returns immediately with "Request accepted..." when callbackUrl is provided.
   const json = (await resp.json().catch(() => null)) as any;
-  const message = (json?.message as string) || 'Request accepted. Processing in background.';
+  const message = (json?.message as string) || 'Default Message';
 
   return { success: true, message, url: morRelativePath, kind };
 }
