@@ -2,7 +2,7 @@ import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoad
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 export interface SelectIndustryAndSubIndustryProps {
   selectedIndustry?: TickerV1Industry | null;
@@ -42,8 +42,8 @@ export default function SelectIndustryAndSubIndustry({
     }
   }, [selectedIndustry, refetchSubIndustries]);
 
-  const activeIndustries = industries?.filter((industry) => !industry.archived) || [];
-  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived) || [];
+  const activeIndustries = useMemo(() => industries?.filter((industry) => !industry.archived) || [], [industries]);
+  const activeSubIndustries = useMemo(() => subIndustries.filter((subIndustry) => !subIndustry.archived) || [], [subIndustries]);
 
   const handleIndustryChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
