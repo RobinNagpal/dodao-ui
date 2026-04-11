@@ -19,11 +19,19 @@ export const metadata = {
 
 export default async function EtfsPage() {
   const baseUrl = getBaseUrlForServerSidePages();
-  const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/etfs-v1/listing`, {
-    next: { revalidate: WEEK, tags: [getEtfListingTag()] },
-  });
+  let data: EtfListingResponse = { etfs: [], totalCount: 0, page: 1, pageSize: 100, totalPages: 1, filtersApplied: false };
 
-  const data = (await res.json()) as EtfListingResponse;
+  try {
+    const res = await fetch(`${baseUrl}/api/${KoalaGainsSpaceId}/etfs-v1/listing`, {
+      next: { revalidate: WEEK, tags: [getEtfListingTag()] },
+    });
+
+    if (res.ok) {
+      data = (await res.json()) as EtfListingResponse;
+    }
+  } catch (e) {
+    console.error('Failed to fetch ETF listing:', e);
+  }
 
   return (
     <EtfPageLayout
