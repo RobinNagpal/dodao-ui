@@ -14,6 +14,7 @@ export interface EtfReportRow {
   hasMorAnalyzerInfo: boolean;
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
+  hasMorPortfolioInfo: boolean;
 }
 
 export interface EtfReportsResponse {
@@ -84,7 +85,7 @@ const getHandler = async (
         }
       : missing === 'mor'
       ? {
-          OR: [{ morAnalyzerInfo: { is: null } }, { morRiskInfo: { is: null } }, { morPeopleInfo: { is: null } }],
+          OR: [{ morAnalyzerInfo: { is: null } }, { morRiskInfo: { is: null } }, { morPeopleInfo: { is: null } }, { morPortfolioInfo: { is: null } }],
         }
       : null;
 
@@ -108,6 +109,7 @@ const getHandler = async (
         morAnalyzerInfo: { select: { id: true } },
         morRiskInfo: { select: { id: true } },
         morPeopleInfo: { select: { id: true } },
+        morPortfolioInfo: { select: { id: true } },
       },
       orderBy: [{ symbol: 'asc' }, { exchange: 'asc' }],
       skip: (page - 1) * limit,
@@ -136,6 +138,7 @@ const getHandler = async (
       hasMorAnalyzerInfo: !!e.morAnalyzerInfo,
       hasMorRiskInfo: !!e.morRiskInfo,
       hasMorPeopleInfo: !!e.morPeopleInfo,
+      hasMorPortfolioInfo: !!e.morPortfolioInfo,
     })),
     // totalCount comes from the DB query; UI can still show a correct pager even if we
     // filter out unsupported exchanges client-side.

@@ -20,6 +20,7 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Analyzer</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Risk</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR People</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Portfolio</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
@@ -51,6 +52,9 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
                 <StatusPill ok={e.hasMorPeopleInfo} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
+                <StatusPill ok={e.hasMorPortfolioInfo} />
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
                 <div className="flex items-center justify-center gap-2">
                   <Link
                     href={`/etfs/${e.exchange}/${e.symbol}`}
@@ -68,7 +72,7 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={7} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={8} className="px-4 py-10 text-center text-gray-300">
                 No ETFs found.
               </td>
             </tr>

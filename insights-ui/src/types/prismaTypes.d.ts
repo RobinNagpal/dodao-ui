@@ -292,11 +292,110 @@ export interface EtfMorRiskPeriodData {
 
 export type EtfMorRiskPeriods = Record<EtfMorRiskPeriod, EtfMorRiskPeriodData>;
 
+// --------------------------------
+// ETF portfolio scraper JSON types (Morningstar /portfolio — etf-portfolio.ts)
+// --------------------------------
+
+export interface EtfMorPortfolioAssetAllocationRow {
+  assetClass: string;
+  investment?: string;
+  net?: string;
+  short?: string;
+  long?: string;
+  category?: string;
+  index?: string;
+}
+
+export interface EtfMorPortfolioAssetAllocation {
+  columns: string[];
+  rows: EtfMorPortfolioAssetAllocationRow[];
+}
+
+export interface EtfMorPortfolioStyleMeasuresRow {
+  measure: string;
+  investment?: string;
+  categoryAverage?: string;
+  index?: string;
+}
+
+export interface EtfMorPortfolioStyleMeasures {
+  rows: EtfMorPortfolioStyleMeasuresRow[];
+}
+
+export interface EtfMorPortfolioFixedIncomeMeasuresRow {
+  measure: string;
+  investment?: string;
+  categoryAverage?: string;
+}
+
+export interface EtfMorPortfolioFixedIncomeMeasures {
+  rows: EtfMorPortfolioFixedIncomeMeasuresRow[];
+}
+
+export interface EtfMorPortfolioSectorExposureRow {
+  sector: string;
+  group?: string;
+  investmentPct?: string;
+  comparisonPct?: string;
+}
+
+export interface EtfMorPortfolioSectorExposure {
+  vsCategoryPct: EtfMorPortfolioSectorExposureRow[];
+  vsIndexPct: EtfMorPortfolioSectorExposureRow[];
+}
+
+export interface EtfMorPortfolioBondBreakdownRow {
+  grade: string;
+  investmentPct?: string;
+  comparisonPct?: string;
+}
+
+export interface EtfMorPortfolioBondBreakdownView {
+  breakdownType: string;
+  comparisonType: string;
+  rows: EtfMorPortfolioBondBreakdownRow[];
+}
+
+export interface EtfMorPortfolioBondBreakdown {
+  views: EtfMorPortfolioBondBreakdownView[];
+}
+
+export interface EtfMorPortfolioHoldingsSummary {
+  equityHoldings?: string;
+  bondHoldings?: string;
+  otherHoldings?: string;
+  totalHoldings?: string;
+  pctAssetsInTop10Holdings?: string;
+  reportedTurnoverPct?: string;
+  turnoverAsOfDate?: string;
+  womenDirectorsPct?: string;
+  womenExecutivesPct?: string;
+}
+
+export interface EtfMorPortfolioHoldingRow {
+  name: string;
+  portfolioWeightPct?: string;
+  firstBought?: string;
+  marketValue?: string;
+  marketValueAsOfDate?: string;
+  currency?: string;
+  oneYearReturn?: string;
+  forwardPE?: string;
+  maturityDate?: string;
+  couponRate?: string;
+  sector?: string;
+}
+
+export interface EtfMorPortfolioHoldings {
+  summary: EtfMorPortfolioHoldingsSummary;
+  holdings: EtfMorPortfolioHoldingRow[];
+}
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
     type TopCompaniesToConsider = CompetitionAnalysisType;
-    // Stock analyzer scraper types
+    // Stock analyzer types
     type StockFundamentalsSummary = StockFundamentalsSummary;
     type DividendsData = DividendsData;
     type BalanceAnnualData = BalanceAnnualData;
@@ -312,7 +411,7 @@ declare global {
     // LLM grounding sources
     type SourceLinks = SourceLinks;
 
-    // ETF quote scraper JSON shapes
+    // ETF quote JSON shapes
     type EtfMorAnalysis = EtfMorAnalysis;
     type EtfMorReturnsRow = EtfMorReturnsRow;
     type EtfMorReturnsRows = EtfMorReturnsRows;
@@ -328,5 +427,13 @@ declare global {
     type EtfMorMarketVolatilityMeasures = EtfMorMarketVolatilityMeasures;
     type EtfMorRiskPeriodData = EtfMorRiskPeriodData;
     type EtfMorRiskPeriods = EtfMorRiskPeriods;
+
+    // ETF portfolio JSON shapes
+    type EtfMorPortfolioAssetAllocation = EtfMorPortfolioAssetAllocation;
+    type EtfMorPortfolioStyleMeasures = EtfMorPortfolioStyleMeasures;
+    type EtfMorPortfolioFixedIncomeMeasures = EtfMorPortfolioFixedIncomeMeasures;
+    type EtfMorPortfolioSectorExposure = EtfMorPortfolioSectorExposure;
+    type EtfMorPortfolioBondBreakdown = EtfMorPortfolioBondBreakdown;
+    type EtfMorPortfolioHoldings = EtfMorPortfolioHoldings;
   }
 }

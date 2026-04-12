@@ -1254,6 +1254,7 @@ model Etf {
   morAnalyzerInfo EtfMorAnalyzerInfo?
   morRiskInfo EtfMorRiskInfo?
   morPeopleInfo EtfMorPeopleInfo?
+  morPortfolioInfo EtfMorPortfolioInfo?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1521,4 +1522,31 @@ model EtfMorPeopleInfo {
 
   @@index([etfId])
   @@map("etf_mor_people_info")
+}
+
+// Morningstar ETF /portfolio scraper payload (see morningstar-etfs etf-portfolio.ts)
+model EtfMorPortfolioInfo {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  /// [EtfMorPortfolioAssetAllocation]
+  assetAllocation Json? @map("asset_allocation") @db.JsonB
+  /// [EtfMorPortfolioStyleMeasures]
+  styleMeasures Json? @map("style_measures") @db.JsonB
+  /// [EtfMorPortfolioFixedIncomeMeasures]
+  fixedIncomeMeasures Json? @map("fixed_income_measures") @db.JsonB
+  /// [EtfMorPortfolioSectorExposure]
+  sectorExposure Json? @map("sector_exposure") @db.JsonB
+  /// [EtfMorPortfolioBondBreakdown]
+  bondBreakdown Json? @map("bond_breakdown") @db.JsonB
+  /// [EtfMorPortfolioHoldings]
+  holdings Json? @map("holdings") @db.JsonB
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_mor_portfolio_info")
 }
