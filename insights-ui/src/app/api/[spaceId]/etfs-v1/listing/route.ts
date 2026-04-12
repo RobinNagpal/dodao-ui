@@ -7,9 +7,10 @@ import {
   parseEtfFilterParams,
   parseNumericStringValue,
   parseRangeParam,
-  extractCaptureRatio,
-  extractRiskLevel,
+  extractCaptureRatioForPeriod,
+  extractRiskLevelForPeriod,
   EtfFilterParamKey,
+  MOR_ADVANCED_FILTERS,
 } from '@/utils/etf-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -114,10 +115,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // Check if we need application-level post-filtering
   const aumRange = parseRangeParam(filters[EtfFilterParamKey.AUM]);
   const sharesOutRange = parseRangeParam(filters[EtfFilterParamKey.SHARES_OUT]);
-  const upsideRange = parseRangeParam(filters[EtfFilterParamKey.MOR_UPSIDE_CAPTURE]);
-  const downsideRange = parseRangeParam(filters[EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE]);
-  const riskLevelFilter = filters[EtfFilterParamKey.MOR_RISK_LEVEL]?.trim();
   const needsPostFilter = aumRange !== null || sharesOutRange !== null || hasMorFilters;
+
+  // Pre-parse active Morningstar advanced filters for post-filtering
+  const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
+    ...def,
+    raw: filters[def.paramKey]?.trim() || null,
+    range: def.kind !== 'risk' ? parseRangeParam(filters[def.paramKey]) : null,
+  })).filter((f) => f.raw);
 
   const include = hasMorFilters ? etfListingIncludeWithMorRisk : etfListingInclude;
 
@@ -137,20 +142,18 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         const soValue = parseNumericStringValue(etf.financialInfo?.sharesOut);
         if (!isInRange(soValue, sharesOutRange.min, sharesOutRange.max)) return false;
       }
-      if (upsideRange) {
-        const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
-        const upside = extractCaptureRatio(riskPeriods, 'upside');
-        if (!isInRange(upside, upsideRange.min, upsideRange.max)) return false;
-      }
-      if (downsideRange) {
-        const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
-        const downside = extractCaptureRatio(riskPeriods, 'downside');
-        if (!isInRange(downside, downsideRange.min, downsideRange.max)) return false;
-      }
-      if (riskLevelFilter) {
-        const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
-        const level = extractRiskLevel(riskPeriods);
-        if (!level || level.toLowerCase() !== riskLevelFilter.toLowerCase()) return false;
+      const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
+      for (const mf of activeMorFilters) {
+        if (mf.kind === 'upside' && mf.range) {
+          const val = extractCaptureRatioForPeriod(riskPeriods, mf.period, 'upside');
+          if (!isInRange(val, mf.range.min, mf.range.max)) return false;
+        } else if (mf.kind === 'downside' && mf.range) {
+          const val = extractCaptureRatioForPeriod(riskPeriods, mf.period, 'downside');
+          if (!isInRange(val, mf.range.min, mf.range.max)) return false;
+        } else if (mf.kind === 'risk' && mf.raw) {
+          const level = extractRiskLevelForPeriod(riskPeriods, mf.period);
+          if (!level || level.toLowerCase() !== mf.raw.toLowerCase()) return false;
+        }
       }
       return true;
     });
