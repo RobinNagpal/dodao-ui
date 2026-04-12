@@ -12,6 +12,8 @@ export enum EtfFilterType {
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
+  SHARPE_RATIO = 'sharpeRatio',
+  SORTINO_RATIO = 'sortinoRatio',
   SEARCH = 'search',
   // Advanced (Morningstar) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
@@ -33,6 +35,8 @@ export enum EtfFilterParamKey {
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
+  SHARPE_RATIO = 'sharpeRatio',
+  SORTINO_RATIO = 'sortinoRatio',
   SEARCH = 'search',
   // Advanced (Morningstar) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
@@ -66,6 +70,8 @@ type RangeFilterType =
   | EtfFilterType.DIVIDEND_TTM
   | EtfFilterType.SHARES_OUT
   | EtfFilterType.HOLDINGS
+  | EtfFilterType.SHARPE_RATIO
+  | EtfFilterType.SORTINO_RATIO
   | EtfFilterType.MOR_UPSIDE_3YR
   | EtfFilterType.MOR_UPSIDE_5YR
   | EtfFilterType.MOR_UPSIDE_10YR
@@ -163,6 +169,24 @@ export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Very Many (250+)', value: '250-' },
 ] as const;
 
+export const ETF_SHARPE_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0)', value: 'negative' },
+  { label: 'Low (0 - 0.5)', value: '0-0.5' },
+  { label: 'Moderate (0.5 - 1)', value: '0.5-1' },
+  { label: 'Good (1 - 1.5)', value: '1-1.5' },
+  { label: 'Excellent (> 1.5)', value: '1.5-' },
+] as const;
+
+export const ETF_SORTINO_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0)', value: 'negative' },
+  { label: 'Low (0 - 1)', value: '0-1' },
+  { label: 'Moderate (1 - 2)', value: '1-2' },
+  { label: 'Good (2 - 3)', value: '2-3' },
+  { label: 'Excellent (> 3)', value: '3-' },
+] as const;
+
 export const ETF_MOR_UPSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
   { label: 'Low (< 80%)', value: '0-80' },
@@ -198,6 +222,8 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.PAYOUT_FREQUENCY,
   EtfFilterParamKey.SHARES_OUT,
   EtfFilterParamKey.HOLDINGS,
+  EtfFilterParamKey.SHARPE_RATIO,
+  EtfFilterParamKey.SORTINO_RATIO,
   EtfFilterParamKey.SEARCH,
   EtfFilterParamKey.MOR_UPSIDE_3YR,
   EtfFilterParamKey.MOR_UPSIDE_5YR,
@@ -414,6 +440,20 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     if (f) filters.push(f);
   }
 
+  // Sharpe Ratio
+  const sharpeRaw = searchParams.get(EtfFilterParamKey.SHARPE_RATIO);
+  if (sharpeRaw) {
+    const f = parseRangeFilter(sharpeRaw, EtfFilterType.SHARPE_RATIO, EtfFilterParamKey.SHARPE_RATIO, ETF_SHARPE_RATIO_OPTIONS, 'Sharpe Ratio');
+    if (f) filters.push(f);
+  }
+
+  // Sortino Ratio
+  const sortinoRaw = searchParams.get(EtfFilterParamKey.SORTINO_RATIO);
+  if (sortinoRaw) {
+    const f = parseRangeFilter(sortinoRaw, EtfFilterType.SORTINO_RATIO, EtfFilterParamKey.SORTINO_RATIO, ETF_SORTINO_RATIO_OPTIONS, 'Sortino Ratio');
+    if (f) filters.push(f);
+  }
+
   // Morningstar advanced filters (per-period)
   for (const def of MOR_ADVANCED_FILTERS) {
     const raw = searchParams.get(def.paramKey);
@@ -596,6 +636,42 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
     if (holdingsRange.min !== undefined) holdingsFilter.gte = holdingsRange.min;
     if (holdingsRange.max !== undefined) holdingsFilter.lte = holdingsRange.max;
     where.holdings = holdingsFilter;
+  }
+
+  return where;
+}
+
+export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.EtfStockAnalyzerInfoWhereInput {
+  const where: Prisma.EtfStockAnalyzerInfoWhereInput = {};
+
+  const sharpeParam = filters[EtfFilterParamKey.SHARPE_RATIO]?.trim();
+  if (sharpeParam) {
+    if (sharpeParam === 'negative') {
+      where.sharpe = { lt: 0 };
+    } else {
+      const sharpeRange = parseRangeParam(sharpeParam);
+      if (sharpeRange) {
+        const sharpeFilter: Prisma.FloatNullableFilter = {};
+        if (sharpeRange.min !== undefined) sharpeFilter.gte = sharpeRange.min;
+        if (sharpeRange.max !== undefined) sharpeFilter.lte = sharpeRange.max;
+        where.sharpe = sharpeFilter;
+      }
+    }
+  }
+
+  const sortinoParam = filters[EtfFilterParamKey.SORTINO_RATIO]?.trim();
+  if (sortinoParam) {
+    if (sortinoParam === 'negative') {
+      where.sortino = { lt: 0 };
+    } else {
+      const sortinoRange = parseRangeParam(sortinoParam);
+      if (sortinoRange) {
+        const sortinoFilter: Prisma.FloatNullableFilter = {};
+        if (sortinoRange.min !== undefined) sortinoFilter.gte = sortinoRange.min;
+        if (sortinoRange.max !== undefined) sortinoFilter.lte = sortinoRange.max;
+        where.sortino = sortinoFilter;
+      }
+    }
   }
 
   return where;
