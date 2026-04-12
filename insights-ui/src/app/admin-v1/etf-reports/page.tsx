@@ -7,6 +7,7 @@ import { AllExchanges, EXCHANGES } from '@/utils/countryExchangeUtils';
 import BulkActionsBar from './BulkActionsBar';
 import EtfReportsFilters from './EtfReportsFilters';
 import EtfReportsTable from './EtfReportsTable';
+import SelectMissingBar from './SelectMissingBar';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -106,6 +107,7 @@ export default function EtfReportsPage(): JSX.Element {
         </div>
       ) : (
         <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
+          <SelectMissingBar etfs={etfs} onSelectIds={setSelectedIds} />
           {selectedEtfs.length > 0 && <BulkActionsBar selectedEtfs={selectedEtfs} onClearSelection={handleClearSelection} onRefresh={reFetchData} />}
 
           <EtfReportsTable
