@@ -105,9 +105,13 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
   const r = (Array.isArray(rows) ? rows : []) as Array<{ label: string; values: Record<string, string> }>;
   if (!r.length) {
     return (
-      <div className="bg-purple-950/20 border border-purple-800/30 rounded-lg p-4 mt-4">
-        <h4 className="text-sm font-medium text-purple-200 mb-2">{title}</h4>
-        <p className="text-sm text-purple-300/70">No {title.toLowerCase()} data available.</p>
+      <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900/60 overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-700">
+          <h4 className="text-sm font-medium text-gray-200">{title}</h4>
+        </div>
+        <div className="px-4 py-4">
+          <p className="text-sm text-gray-400">No {title.toLowerCase()} data available.</p>
+        </div>
       </div>
     );
   }
@@ -120,37 +124,41 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
 
   return (
     <div className="mt-4">
-      <h4 className="text-sm font-medium text-gray-200 mb-3">{title}</h4>
-      <div className="overflow-x-auto rounded-lg border border-purple-800/30 bg-purple-950/20">
-        <table className="min-w-full">
-          <thead className="bg-purple-900/40">
-            <tr>
-              {columns.map((c) => (
-                <th key={c} className="px-4 py-3 text-left text-xs font-medium text-purple-200 uppercase tracking-wider whitespace-nowrap">
-                  {c}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-purple-800/20">
-            {tableRows.map((r, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'bg-purple-950/10' : 'bg-purple-950/25'}>
-                {columns.map((c) => {
-                  const cellValue = (r as any)[c];
-                  return (
-                    <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
-                      {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
-                        <span className="text-gray-500">—</span>
-                      ) : (
-                        String(cellValue)
-                      )}
-                    </td>
-                  );
-                })}
+      <div className="rounded-lg border border-gray-700 bg-gray-900 shadow-sm overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-700 sm:px-6">
+          <h4 className="text-sm font-medium text-gray-100">{title}</h4>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-800">
+              <tr>
+                {columns.map((c) => (
+                  <th key={c} className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider whitespace-nowrap sm:px-6">
+                    {c}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 bg-gray-800">
+              {tableRows.map((r, idx) => (
+                <tr key={idx} className="hover:bg-gray-700">
+                  {columns.map((c) => {
+                    const cellValue = (r as any)[c];
+                    return (
+                      <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap sm:px-6">
+                        {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
+                          <span className="text-gray-500">—</span>
+                        ) : (
+                          String(cellValue)
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -159,8 +167,8 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
 function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Element {
   if (!analysis || !analysis.available) {
     return (
-      <div className="bg-orange-950/20 border border-orange-800/30 rounded-lg p-4 mt-4">
-        <p className="text-sm text-orange-300/70">No analysis available.</p>
+      <div className="border border-gray-700/50 rounded-lg p-4 mt-4">
+        <p className="text-sm">No analysis available.</p>
       </div>
     );
   }
@@ -211,7 +219,7 @@ function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Ele
     { label: 'Equity Holdings', value: holdings.equityHoldings },
     { label: 'Bond Holdings', value: holdings.bondHoldings },
     { label: 'Other Holdings', value: holdings.otherHoldings },
-    { label: '% Assets in Top 10', value: holdings.pctAssetsInTop10, accent: true },
+    { label: '% Assets in Top 10', value: holdings.pctAssetsInTop10 },
   ];
 
   const top = Array.isArray(holdings.topHoldings) ? holdings.topHoldings : [];
@@ -270,7 +278,7 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
 
             <MetricGrid
               items={[
-                { label: 'Risk Score', value: score.riskScore, accent: true },
+                { label: 'Risk Score', value: score.riskScore },
                 { label: 'Risk Level', value: score.riskLevel },
                 { label: 'Risk vs Category', value: rr.riskVsCategory },
                 { label: 'Return vs Category', value: rr.returnVsCategory },
@@ -332,11 +340,11 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
 
   return (
     <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-6 mt-6">
-      <SectionHeading title="Mor Analyzer Data" subtitle={updatedLabel} />
+      <SectionHeading title="Detailed Financial Data" subtitle={updatedLabel} />
 
       {!hasAny ? (
         <div className="mt-6 bg-slate-800/30 border border-slate-700/50 rounded-lg p-6 text-center">
-          <p className="text-gray-400">No Mor Analyzer data saved yet.</p>
+          <p className="text-gray-400">No detailed financial data saved yet.</p>
           <p className="text-sm text-gray-500 mt-1">Use the admin panel to trigger data collection.</p>
         </div>
       ) : (
@@ -346,8 +354,8 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
             <h3 className="text-lg font-medium text-gray-100 mb-4">Overview</h3>
             <MetricGrid
               items={[
-                { label: 'NAV', value: analyzer?.overviewNav, accent: true },
-                { label: '1-Day Return', value: analyzer?.overviewOneDayReturn, accent: true },
+                { label: 'NAV', value: analyzer?.overviewNav },
+                { label: '1-Day Return', value: analyzer?.overviewOneDayReturn },
                 { label: 'Total Assets', value: analyzer?.overviewTotalAssets },
                 { label: 'Adj. Expense Ratio', value: analyzer?.overviewAdjExpenseRatio },
                 { label: 'Prospectus Net Expense Ratio', value: analyzer?.overviewProspectusNetExpenseRatio },
@@ -399,7 +407,7 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
             <MetricGrid
               items={[
                 { label: 'Inception Date', value: people?.inceptionDate },
-                { label: 'Number of Managers', value: people?.numberOfManagers, accent: true },
+                { label: 'Number of Managers', value: people?.numberOfManagers },
                 { label: 'Longest Tenure', value: people?.longestTenure },
                 { label: 'Advisors', value: people?.advisors },
                 { label: 'Average Tenure', value: people?.averageTenure },
