@@ -2,6 +2,7 @@
 
 import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { revalidateEtfCache } from '@/utils/cache-actions';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -30,7 +31,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const isBusy = fetchingFinancialInfo || triggeringMor || progress !== null;
 
-  async function runBulk(action: 'financial' | 'morAnalyzer' | 'morRisk' | 'morPeople') {
+  async function runBulk(action: 'financial' | 'morAnalyzer' | 'morRisk' | 'morPeople' | 'flushCache') {
     const total = selectedEtfs.length;
     setProgress({ done: 0, total });
 
@@ -46,6 +47,8 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
         await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'risk' });
       } else if (action === 'morPeople') {
         await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'people' });
+      } else if (action === 'flushCache') {
+        await revalidateEtfCache(etf.symbol, etf.exchange);
       }
 
       setProgress({ done: i + 1, total });
@@ -75,6 +78,9 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPeople')}>
         Mor People
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('flushCache')}>
+        Flush Cache
       </button>
 
       {progress && (
