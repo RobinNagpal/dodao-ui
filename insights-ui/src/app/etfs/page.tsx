@@ -8,7 +8,7 @@ export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours
 
-const DEFAULT_PAGE_SIZE = 100;
+const DEFAULT_PAGE_SIZE = 32;
 
 export const metadata = {
   title: 'US ETFs - Exchange Traded Funds Analysis | KoalaGains',
@@ -31,6 +31,9 @@ function toEtfListingItem(etf: any): EtfListingItem {
     payoutFrequency: etf.financialInfo?.payoutFrequency ?? null,
     holdings: etf.financialInfo?.holdings ?? null,
     beta: etf.financialInfo?.beta ?? null,
+    hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
+    hasMorRiskInfo: !!etf.morRiskInfo,
+    hasMorPeopleInfo: !!etf.morPeopleInfo,
   };
 }
 
@@ -41,7 +44,12 @@ export default async function EtfsPage() {
     const [etfs, totalCount] = await Promise.all([
       prisma.etf.findMany({
         where: { spaceId: KoalaGainsSpaceId },
-        include: { financialInfo: true },
+        include: {
+          financialInfo: true,
+          morAnalyzerInfo: { select: { id: true } },
+          morRiskInfo: { select: { id: true } },
+          morPeopleInfo: { select: { id: true } },
+        },
         orderBy: [{ symbol: 'asc' }],
         skip: 0,
         take: DEFAULT_PAGE_SIZE,

@@ -10,7 +10,7 @@ import {
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-const DEFAULT_PAGE_SIZE = 100;
+const DEFAULT_PAGE_SIZE = 32;
 
 export interface EtfListingItem {
   id: string;
@@ -26,6 +26,9 @@ export interface EtfListingItem {
   payoutFrequency: string | null;
   holdings: number | null;
   beta: number | null;
+  hasMorAnalyzerInfo: boolean;
+  hasMorRiskInfo: boolean;
+  hasMorPeopleInfo: boolean;
 }
 
 export interface EtfListingResponse {
@@ -68,8 +71,18 @@ function toEtfListingItem(etf: any): EtfListingItem {
     payoutFrequency: etf.financialInfo?.payoutFrequency ?? null,
     holdings: etf.financialInfo?.holdings ?? null,
     beta: etf.financialInfo?.beta ?? null,
+    hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
+    hasMorRiskInfo: !!etf.morRiskInfo,
+    hasMorPeopleInfo: !!etf.morPeopleInfo,
   };
 }
+
+const etfListingInclude = {
+  financialInfo: true,
+  morAnalyzerInfo: { select: { id: true } },
+  morRiskInfo: { select: { id: true } },
+  morPeopleInfo: { select: { id: true } },
+} as const;
 
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<EtfListingResponse> {
   const { spaceId } = await context.params;
@@ -102,7 +115,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     // apply string-field filters in memory, then paginate the result.
     const allEtfs = await prisma.etf.findMany({
       where: etfWhere,
-      include: { financialInfo: true },
+      include: etfListingInclude,
       orderBy: [{ symbol: 'asc' }],
     });
 
@@ -137,7 +150,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const [etfs, totalCount] = await Promise.all([
     prisma.etf.findMany({
       where: etfWhere,
-      include: { financialInfo: true },
+      include: etfListingInclude,
       orderBy: [{ symbol: 'asc' }],
       skip: (page - 1) * pageSize,
       take: pageSize,
