@@ -3,21 +3,21 @@ import { EtfMorAnalysis, EtfMorHoldings, EtfMorRiskPeriods } from '@/types/prism
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }): JSX.Element {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
-      <h2 className="text-lg font-semibold text-gray-100">{title}</h2>
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 pb-2 border-b border-gray-700">
+      <h2 className="text-xl font-bold text-gray-100">{title}</h2>
       {subtitle ? <div className="text-xs text-gray-400">{subtitle}</div> : null}
     </div>
   );
 }
 
-function MetricCard({ label, value, accent = false }: { label: string; value?: string | null; accent?: boolean }): JSX.Element {
+function MetricCard({ label, value }: { label: string; value?: string | null }): JSX.Element {
   const displayValue = value && String(value).trim() !== '' ? String(value) : 'N/A';
   const isNA = displayValue === 'N/A';
 
   return (
-    <div className={`px-3 py-2 rounded-lg border ${accent ? 'bg-blue-950/30 border-blue-800/50' : 'bg-gray-800/50 border-gray-700/50'}`}>
+    <div className="bg-gray-800 px-3 py-2 rounded-md">
       <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <div className={`text-sm font-medium ${isNA ? 'text-gray-500' : accent ? 'text-blue-200' : 'text-gray-200'}`}>{displayValue}</div>
+      <div className={`text-sm font-medium ${isNA ? 'text-gray-500' : 'text-gray-200'}`}>{displayValue}</div>
     </div>
   );
 }
@@ -25,7 +25,7 @@ function MetricCard({ label, value, accent = false }: { label: string; value?: s
 function TextCard({ title, content, className = '' }: { title: string; content?: string | null; className?: string }): JSX.Element {
   if (!content || String(content).trim() === '') {
     return (
-      <div className={`bg-gray-800/30 border border-gray-700/50 rounded-lg p-4 ${className}`}>
+      <div className={`bg-gray-800 rounded-md p-4 ${className}`}>
         <h3 className="text-sm font-medium text-gray-200 mb-2">{title}</h3>
         <p className="text-sm text-gray-500">No {title.toLowerCase()} available.</p>
       </div>
@@ -33,21 +33,21 @@ function TextCard({ title, content, className = '' }: { title: string; content?:
   }
 
   return (
-    <div className={`bg-slate-800/40 border border-slate-700/50 rounded-lg p-4 ${className}`}>
+    <div className={`bg-gray-800 rounded-md p-4 ${className}`}>
       <h3 className="text-sm font-medium text-gray-200 mb-3">{title}</h3>
       <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{String(content)}</p>
     </div>
   );
 }
 
-function MetricGrid({ items }: { items: Array<{ label: string; value: unknown; accent?: boolean }> }): JSX.Element {
+function MetricGrid({ items }: { items: Array<{ label: string; value: unknown }> }): JSX.Element {
   const visible = items.filter((i) => i.value !== null && i.value !== undefined && String(i.value).trim() !== '');
   if (!visible.length) return <div className="text-sm text-gray-400">No data available.</div>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
       {visible.map((i) => (
-        <MetricCard key={i.label} label={i.label} value={String(i.value)} accent={i.accent} />
+        <MetricCard key={i.label} label={i.label} value={String(i.value)} />
       ))}
     </div>
   );
@@ -56,9 +56,9 @@ function MetricGrid({ items }: { items: Array<{ label: string; value: unknown; a
 function DataTable({ columns, rows, title }: { columns: string[]; rows: Array<Record<string, unknown>>; title?: string }): JSX.Element {
   if (!rows.length) {
     return (
-      <div className="bg-amber-950/20 border border-amber-800/30 rounded-lg p-4 mt-4">
-        {title && <h4 className="text-sm font-medium text-amber-200 mb-2">{title}</h4>}
-        <p className="text-sm text-amber-300/70">No data available.</p>
+      <div className="bg-gray-800 rounded-md p-4 mt-4">
+        {title && <h4 className="text-sm font-medium text-gray-200 mb-2">{title}</h4>}
+        <p className="text-sm text-gray-500">No data available.</p>
       </div>
     );
   }
@@ -66,26 +66,26 @@ function DataTable({ columns, rows, title }: { columns: string[]; rows: Array<Re
   return (
     <div className="mt-4">
       {title && <h4 className="text-sm font-medium text-gray-200 mb-3">{title}</h4>}
-      <div className="overflow-x-auto rounded-lg border border-emerald-800/30 bg-emerald-950/20">
+      <div className="overflow-x-auto rounded-lg border border-gray-700">
         <table className="min-w-full">
-          <thead className="bg-emerald-900/40">
+          <thead className="bg-gray-800">
             <tr>
               {columns.map((c) => (
-                <th key={c} className="px-4 py-3 text-left text-xs font-medium text-emerald-200 uppercase tracking-wider whitespace-nowrap">
+                <th key={c} className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap">
                   {c}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-emerald-800/20">
+          <tbody className="divide-y divide-gray-700">
             {rows.map((r, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'bg-emerald-950/10' : 'bg-emerald-950/25'}>
+              <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}>
                 {columns.map((c) => {
                   const cellValue = (r as any)[c];
                   return (
                     <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap">
                       {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
-                        <span className="text-gray-500">—</span>
+                        <span className="text-gray-500">&mdash;</span>
                       ) : (
                         String(cellValue)
                       )}
@@ -105,7 +105,7 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
   const r = (Array.isArray(rows) ? rows : []) as Array<{ label: string; values: Record<string, string> }>;
   if (!r.length) {
     return (
-      <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900/60 overflow-hidden">
+      <div className="mt-4 rounded-lg border border-gray-700 bg-gray-900 overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-700">
           <h4 className="text-sm font-medium text-gray-200">{title}</h4>
         </div>
@@ -129,17 +129,17 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
           <h4 className="text-sm font-medium text-gray-100">{title}</h4>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-700">
             <thead className="bg-gray-800">
               <tr>
                 {columns.map((c) => (
-                  <th key={c} className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider whitespace-nowrap sm:px-6">
+                  <th key={c} className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap sm:px-6">
                     {c}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 bg-gray-800">
+            <tbody className="divide-y divide-gray-700 bg-gray-800">
               {tableRows.map((r, idx) => (
                 <tr key={idx} className="hover:bg-gray-700">
                   {columns.map((c) => {
@@ -147,7 +147,7 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
                     return (
                       <td key={c} className="px-4 py-3 text-sm text-gray-300 whitespace-nowrap sm:px-6">
                         {cellValue === null || cellValue === undefined || String(cellValue).trim() === '' ? (
-                          <span className="text-gray-500">—</span>
+                          <span className="text-gray-500">&mdash;</span>
                         ) : (
                           String(cellValue)
                         )}
@@ -167,31 +167,28 @@ function ReturnsTable({ title, rows }: { title: string; rows: any }): JSX.Elemen
 function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Element {
   if (!analysis || !analysis.available) {
     return (
-      <div className="border border-gray-700/50 rounded-lg p-4 mt-4">
-        <p className="text-sm">No analysis available.</p>
+      <div className="bg-gray-800 rounded-md p-4">
+        <p className="text-sm text-gray-400">No analysis available.</p>
       </div>
     );
   }
 
   return (
-    <div className="mt-4 space-y-4">
-      {/* Rating & Headline */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <MetricCard label="Medalist Rating" value={analysis.medalistRating} accent />
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <MetricCard label="Medalist Rating" value={analysis.medalistRating} />
         <MetricCard label="Headline" value={analysis.headline} />
       </div>
 
-      {/* Analysis Sections */}
       {analysis.sections?.length ? (
-        <div className="space-y-4">
-          <h4 className="text-sm font-medium text-gray-200">Analysis Sections</h4>
+        <div className="space-y-3">
           {analysis.sections.map((s, idx) => {
-            const meta = [s.date, s.author, s.rating].filter(Boolean).join(' • ');
+            const meta = [s.date, s.author, s.rating].filter(Boolean).join(' \u2022 ');
             return (
-              <div key={idx} className="bg-indigo-950/20 border border-indigo-800/30 rounded-lg p-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                  <h5 className="text-sm font-semibold text-indigo-200">{s.pillar}</h5>
-                  {meta && <div className="text-xs text-indigo-300/70">{meta}</div>}
+              <div key={idx} className="bg-gray-800 rounded-md px-4 py-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                  <h5 className="text-sm font-semibold text-gray-200">{s.pillar}</h5>
+                  {meta && <div className="text-xs text-gray-400">{meta}</div>}
                 </div>
                 <div className="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">{s.content}</div>
               </div>
@@ -208,8 +205,8 @@ function MorAnalysis({ analysis }: { analysis: EtfMorAnalysis | null }): JSX.Ele
 function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Element {
   if (!holdings) {
     return (
-      <div className="bg-teal-950/20 border border-teal-800/30 rounded-lg p-4 mt-4">
-        <p className="text-sm text-teal-300/70">No holdings data available.</p>
+      <div className="bg-gray-800 rounded-md p-4">
+        <p className="text-sm text-gray-400">No holdings data available.</p>
       </div>
     );
   }
@@ -231,7 +228,7 @@ function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Ele
   }));
 
   return (
-    <div className="mt-4 space-y-4">
+    <div className="space-y-4">
       <MetricGrid items={metaItems} />
       <DataTable title="Top Holdings" columns={['Name', 'Portfolio Weight', 'Market Value', 'Sector']} rows={rows} />
     </div>
@@ -241,8 +238,8 @@ function MorHoldings({ holdings }: { holdings: EtfMorHoldings | null }): JSX.Ele
 function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JSX.Element {
   if (!riskPeriods) {
     return (
-      <div className="bg-red-950/20 border border-red-800/30 rounded-lg p-4 mt-4">
-        <p className="text-sm text-red-300/70">No risk data available.</p>
+      <div className="bg-gray-800 rounded-md p-4">
+        <p className="text-sm text-gray-400">No risk data available.</p>
       </div>
     );
   }
@@ -250,14 +247,14 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
   const periods = (['3-Yr', '5-Yr', '10-Yr'] as const).filter((p) => (riskPeriods as any)?.[p]);
   if (!periods.length) {
     return (
-      <div className="bg-red-950/20 border border-red-800/30 rounded-lg p-4 mt-4">
-        <p className="text-sm text-red-300/70">No risk periods available.</p>
+      <div className="bg-gray-800 rounded-md p-4">
+        <p className="text-sm text-gray-400">No risk periods available.</p>
       </div>
     );
   }
 
   return (
-    <div className="mt-4 space-y-6">
+    <div className="space-y-6">
       {periods.map((p) => {
         const d: any = (riskPeriods as any)[p];
         const score = d?.portfolioRiskScore ?? {};
@@ -270,10 +267,10 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
         ];
 
         return (
-          <div key={p} className="bg-red-950/20 border border-red-800/30 rounded-lg p-4">
-            <div className="flex items-center justify-between gap-3 mb-4">
-              <h4 className="text-sm font-semibold text-red-200">{p} Risk Analysis</h4>
-              {d?.period && <div className="text-xs text-red-300/70">{d.period}</div>}
+          <div key={p} className="bg-gray-800 rounded-md p-4">
+            <div className="flex items-center justify-between gap-3 mb-4 pb-2 border-b border-gray-700">
+              <h4 className="text-sm font-semibold text-gray-200">{p} Risk Analysis</h4>
+              {d?.period && <div className="text-xs text-gray-400">{d.period}</div>}
             </div>
 
             <MetricGrid
@@ -339,19 +336,18 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
   const updatedLabel = updatedAt ? `Last updated: ${new Date(updatedAt as any).toLocaleString('en-US')}` : undefined;
 
   return (
-    <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-6 mt-6">
+    <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
       <SectionHeading title="Detailed Financial Data" subtitle={updatedLabel} />
 
       {!hasAny ? (
-        <div className="mt-6 bg-slate-800/30 border border-slate-700/50 rounded-lg p-6 text-center">
+        <div className="mt-6 bg-gray-800 rounded-md p-6 text-center">
           <p className="text-gray-400">No detailed financial data saved yet.</p>
           <p className="text-sm text-gray-500 mt-1">Use the admin panel to trigger data collection.</p>
         </div>
       ) : (
         <div className="mt-6 space-y-8">
-          {/* Overview Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Overview</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Overview</h3>
             <MetricGrid
               items={[
                 { label: 'NAV', value: analyzer?.overviewNav },
@@ -373,37 +369,32 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
                 { label: 'Year Range', value: analyzer?.marketYearRange },
               ]}
             />
-            {analyzer?.strategyText && <TextCard title="Investment Strategy" content={analyzer.strategyText} className="mt-6" />}
+            {analyzer?.strategyText && <TextCard title="Investment Strategy" content={analyzer.strategyText} className="mt-4" />}
           </div>
 
-          {/* Analysis Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Analysis</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Analysis</h3>
             <MorAnalysis analysis={analysis} />
           </div>
 
-          {/* Returns Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Returns</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Returns</h3>
             <ReturnsTable title="Annual Returns" rows={returnsAnnual} />
             <ReturnsTable title="Trailing Returns" rows={returnsTrailing} />
           </div>
 
-          {/* Holdings Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Holdings</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Holdings</h3>
             <MorHoldings holdings={holdings} />
           </div>
 
-          {/* Risk Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Risk Analysis</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Risk Analysis</h3>
             <MorRisk riskPeriods={riskPeriods} />
           </div>
 
-          {/* People Section */}
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-lg p-5">
-            <h3 className="text-lg font-medium text-gray-100 mb-4">Management</h3>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Management</h3>
             <MetricGrid
               items={[
                 { label: 'Inception Date', value: people?.inceptionDate },
