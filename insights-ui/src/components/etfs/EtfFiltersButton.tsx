@@ -12,6 +12,8 @@ import {
   ETF_DIVIDEND_TTM_OPTIONS,
   ETF_PAYOUT_FREQUENCY_OPTIONS,
   ETF_SHARES_OUT_OPTIONS,
+  ETF_HOLDINGS_OPTIONS,
+  MOR_ADVANCED_FILTERS,
   getAppliedEtfFilters,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
@@ -122,11 +124,18 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
     onClose();
   };
 
+  const morFiltersByPeriod = [
+    { period: '3 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '3-Yr') },
+    { period: '5 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '5-Yr') },
+    { period: '10 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '10-Yr') },
+  ];
+
   return (
     <div className="space-y-6">
+      {/* Basic Filters */}
       <div>
-        <p className="text-[#E5E7EB] text-sm mb-4">Filter ETFs by financial metrics</p>
-
+        <h3 className="text-white font-semibold text-sm mb-3">Basic Filters</h3>
+        <p className="text-[#9CA3AF] text-xs mb-4">Filter ETFs by financial metrics</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <FilterDropdown
             id="aum"
@@ -170,7 +179,38 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
             options={ETF_SHARES_OUT_OPTIONS}
             onChange={(v) => handleChange(EtfFilterParamKey.SHARES_OUT, v)}
           />
+          <FilterDropdown
+            id="holdings"
+            label="Number of Holdings"
+            value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
+            options={ETF_HOLDINGS_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
+          />
         </div>
+      </div>
+
+      {/* Advanced (Morningstar) Filters */}
+      <div>
+        <h3 className="text-white font-semibold text-sm mb-1">Advanced Filters</h3>
+        <p className="text-[#9CA3AF] text-xs mb-4">Morningstar risk data — only ETFs with Morningstar data will be shown when these filters are active</p>
+
+        {morFiltersByPeriod.map(({ period, filters: periodFilters }) => (
+          <div key={period} className="mb-4">
+            <h4 className="text-gray-300 text-xs font-medium mb-2 uppercase tracking-wider">{period}</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {periodFilters.map((def) => (
+                <FilterDropdown
+                  key={def.paramKey}
+                  id={def.paramKey}
+                  label={def.kind === 'upside' ? 'Upside Capture' : def.kind === 'downside' ? 'Downside Capture' : 'Risk Level'}
+                  value={selectedFilters[def.paramKey] || ''}
+                  options={def.options}
+                  onChange={(v) => handleChange(def.paramKey, v)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Actions */}
