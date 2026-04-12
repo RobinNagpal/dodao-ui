@@ -63,6 +63,66 @@ function normalizeUpperTrim(v: string | null | undefined): string {
   return (v ?? '').toUpperCase().trim();
 }
 
+function sectorExposureIsEmpty(s: EtfMorPortfolioSectorExposure | null | undefined): boolean {
+  if (s == null) return true;
+  return (s.vsCategoryPct?.length ?? 0) === 0 && (s.vsIndexPct?.length ?? 0) === 0;
+}
+
+type PortfolioRow = {
+  assetAllocation: unknown;
+  styleMeasures: unknown;
+  fixedIncomeMeasures: unknown;
+  sectorExposure: unknown;
+  bondBreakdown: unknown;
+  holdings: unknown;
+};
+
+/**
+ * Only patch JSON keys that appear on the payload. Lambda/JSON omits `undefined` keys — if we treated
+ * missing keys as null we would wipe existing DB columns on partial callbacks.
+ */
+function buildPortfolioUpdatePatch(d: PortfolioData, existing: PortfolioRow | null): Record<string, unknown> {
+  const patch: Record<string, unknown> = {};
+
+  if ('assetAllocation' in d) {
+    patch.assetAllocation = (d.assetAllocation ?? null) as object | null;
+  }
+  if ('styleMeasures' in d) {
+    patch.styleMeasures = (d.styleMeasures ?? null) as object | null;
+  }
+  if ('fixedIncomeMeasures' in d) {
+    patch.fixedIncomeMeasures = (d.fixedIncomeMeasures ?? null) as object | null;
+  }
+  if ('sectorExposure' in d) {
+    const incoming = d.sectorExposure ?? null;
+    const prev = existing?.sectorExposure as EtfMorPortfolioSectorExposure | null | undefined;
+    if (incoming != null && sectorExposureIsEmpty(incoming) && prev != null && !sectorExposureIsEmpty(prev)) {
+      patch.sectorExposure = prev as object;
+    } else {
+      patch.sectorExposure = incoming as object | null;
+    }
+  }
+  if ('bondBreakdown' in d) {
+    patch.bondBreakdown = (d.bondBreakdown ?? null) as object | null;
+  }
+  if ('holdings' in d) {
+    patch.holdings = (d.holdings ?? null) as object | null;
+  }
+
+  return patch;
+}
+
+function buildPortfolioCreateData(d: PortfolioData): Record<string, unknown> {
+  return {
+    assetAllocation: ('assetAllocation' in d ? d.assetAllocation ?? null : null) as object | null,
+    styleMeasures: ('styleMeasures' in d ? d.styleMeasures ?? null : null) as object | null,
+    fixedIncomeMeasures: ('fixedIncomeMeasures' in d ? d.fixedIncomeMeasures ?? null : null) as object | null,
+    sectorExposure: ('sectorExposure' in d ? d.sectorExposure ?? null : null) as object | null,
+    bondBreakdown: ('bondBreakdown' in d ? d.bondBreakdown ?? null : null) as object | null,
+    holdings: ('holdings' in d ? d.holdings ?? null : null) as object | null,
+  };
+}
+
 async function postHandler(
   req: NextRequest,
   { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
@@ -177,26 +237,39 @@ async function postHandler(
   } else if (kind === 'portfolio') {
     const d = data as PortfolioData;
 
-    await prisma.etfMorPortfolioInfo.upsert({
+    const existingRow = await prisma.etfMorPortfolioInfo.findUnique({
       where: { etfId: etfRecord.id },
-      update: {
-        assetAllocation: (d.assetAllocation ?? null) as any,
-        styleMeasures: (d.styleMeasures ?? null) as any,
-        fixedIncomeMeasures: (d.fixedIncomeMeasures ?? null) as any,
-        sectorExposure: (d.sectorExposure ?? null) as any,
-        bondBreakdown: (d.bondBreakdown ?? null) as any,
-        holdings: (d.holdings ?? null) as any,
-      },
-      create: {
-        etf: { connect: { id: etfRecord.id } },
-        assetAllocation: (d.assetAllocation ?? null) as any,
-        styleMeasures: (d.styleMeasures ?? null) as any,
-        fixedIncomeMeasures: (d.fixedIncomeMeasures ?? null) as any,
-        sectorExposure: (d.sectorExposure ?? null) as any,
-        bondBreakdown: (d.bondBreakdown ?? null) as any,
-        holdings: (d.holdings ?? null) as any,
-      },
     });
+
+    const patch = buildPortfolioUpdatePatch(
+      d,
+      existingRow
+        ? {
+            assetAllocation: existingRow.assetAllocation,
+            styleMeasures: existingRow.styleMeasures,
+            fixedIncomeMeasures: existingRow.fixedIncomeMeasures,
+            sectorExposure: existingRow.sectorExposure,
+            bondBreakdown: existingRow.bondBreakdown,
+            holdings: existingRow.holdings,
+          }
+        : null
+    );
+
+    if (existingRow) {
+      if (Object.keys(patch).length > 0) {
+        await prisma.etfMorPortfolioInfo.update({
+          where: { etfId: etfRecord.id },
+          data: patch as any,
+        });
+      }
+    } else {
+      await prisma.etfMorPortfolioInfo.create({
+        data: {
+          etf: { connect: { id: etfRecord.id } },
+          ...(buildPortfolioCreateData(d) as any),
+        },
+      });
+    }
   } else {
     throw new Error(`Unknown kind: ${kind}`);
   }

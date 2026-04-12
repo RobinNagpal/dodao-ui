@@ -481,7 +481,7 @@ function MorPortfolioHoldingsBlock({ data }: { data: EtfMorPortfolioHoldings | n
         <div className="rounded-lg border border-gray-700 overflow-hidden">
           <div className="px-4 py-3 border-b border-gray-700 bg-gray-800">
             <h4 className="text-sm font-medium text-gray-200">Holdings detail</h4>
-            <p className="text-xs text-gray-500 mt-1">Full portfolio holdings from the Morningstar portfolio page.</p>
+            <p className="text-xs text-gray-500 mt-1">Full portfolio holdings page.</p>
           </div>
           <div className="max-h-[32rem] overflow-auto -mt-4">
             <DataTable
@@ -633,9 +633,7 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
 
           <div>
             <h3 className="text-lg font-semibold text-gray-100 mb-4">Portfolio breakdown</h3>
-            <p className="text-xs text-gray-500 mb-4">
-              Asset mix, style and sector exposure, bond quality views, and full holdings from the Morningstar portfolio tab (when scraped).
-            </p>
+            <p className="text-xs text-gray-500 mb-4">Asset mix, style and sector exposure, bond quality views, and full holdings page.</p>
             {portfolio && morPortfolioHasContent(portfolio) ? (
               <MorPortfolio portfolio={portfolio} />
             ) : (
