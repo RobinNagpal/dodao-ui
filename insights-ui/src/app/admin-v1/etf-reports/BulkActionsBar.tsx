@@ -8,7 +8,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
 
 type FetchResponse = { success: boolean; etfUrl: string; errors: unknown[] };
-type TriggerMorResponse = { success: boolean; message: string; url: string; kind: 'quote' | 'risk' | 'people' };
+type TriggerMorResponse = { success: boolean; message: string; url: string; kind: 'quote' | 'risk' | 'people' | 'portfolio' };
 
 export interface BulkActionsBarProps {
   selectedEtfs: EtfReportRow[];
@@ -24,14 +24,14 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     errorMessage: 'Failed to fetch financial info',
   });
 
-  const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' }>({
+  const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' | 'portfolio' }>({
     successMessage: 'Request accepted. Processing in background.',
     errorMessage: 'Failed to queue Morningstar scrape',
   });
 
   const isBusy = fetchingFinancialInfo || triggeringMor || progress !== null;
 
-  async function runBulk(action: 'financial' | 'morAnalyzer' | 'morRisk' | 'morPeople' | 'flushCache') {
+  async function runBulk(action: 'financial' | 'morAnalyzer' | 'morRisk' | 'morPeople' | 'morPortfolio' | 'flushCache') {
     const total = selectedEtfs.length;
     setProgress({ done: 0, total });
 
@@ -47,6 +47,8 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
         await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'risk' });
       } else if (action === 'morPeople') {
         await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'people' });
+      } else if (action === 'morPortfolio') {
+        await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'portfolio' });
       } else if (action === 'flushCache') {
         await revalidateEtfCache(etf.symbol, etf.exchange);
       }
@@ -78,6 +80,9 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPeople')}>
         Mor People
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('morPortfolio')}>
+        Mor Portfolio
       </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => runBulk('flushCache')}>
         Flush Cache

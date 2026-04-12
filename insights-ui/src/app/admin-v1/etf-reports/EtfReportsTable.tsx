@@ -42,6 +42,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Analyzer</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Risk</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR People</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">MOR Portfolio</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
@@ -79,6 +80,9 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <StatusPill ok={e.hasMorPeopleInfo} />
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
+                <StatusPill ok={e.hasMorPortfolioInfo} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <div className="flex items-center justify-center gap-2">
