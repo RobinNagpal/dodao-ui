@@ -2,12 +2,13 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
-import { EtfMorAnalyzerInfo, EtfMorPeopleInfo, EtfMorRiskInfo } from '@prisma/client';
+import { EtfMorAnalyzerInfo, EtfMorPeopleInfo, EtfMorPortfolioInfo, EtfMorRiskInfo } from '@prisma/client';
 
 export interface EtfMorInfoOptionalWrapper {
   morAnalyzerInfo: EtfMorAnalyzerInfo | null;
   morRiskInfo: EtfMorRiskInfo | null;
   morPeopleInfo: EtfMorPeopleInfo | null;
+  morPortfolioInfo: EtfMorPortfolioInfo | null;
 }
 
 async function getHandler(
@@ -17,7 +18,7 @@ async function getHandler(
   const { spaceId, exchange, etf } = await params;
   const whereClause = getEtfWhereClause({ spaceId, exchange, etf });
   if (!whereClause.symbol || !whereClause.exchange) {
-    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null };
+    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
   }
 
   const etfRecord = await prisma.etf.findFirstOrThrow({
@@ -26,6 +27,7 @@ async function getHandler(
       morAnalyzerInfo: true,
       morRiskInfo: true,
       morPeopleInfo: true,
+      morPortfolioInfo: true,
     },
   });
 
@@ -33,6 +35,7 @@ async function getHandler(
     morAnalyzerInfo: etfRecord.morAnalyzerInfo,
     morRiskInfo: etfRecord.morRiskInfo,
     morPeopleInfo: etfRecord.morPeopleInfo,
+    morPortfolioInfo: etfRecord.morPortfolioInfo,
   };
 }
 

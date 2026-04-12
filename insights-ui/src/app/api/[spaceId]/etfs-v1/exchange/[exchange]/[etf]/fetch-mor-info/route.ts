@@ -3,7 +3,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { AllExchanges, toExchange, USExchanges } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
 
-export type MorKind = 'quote' | 'risk' | 'people';
+export type MorKind = 'quote' | 'risk' | 'people' | 'portfolio';
 
 export interface TriggerMorScrapeRequest {
   kind: MorKind;
@@ -24,8 +24,8 @@ function normalizeUpperTrim(v: string | null | undefined): string {
 }
 
 function toKind(v: unknown): MorKind {
-  if (v === 'quote' || v === 'risk' || v === 'people') return v;
-  throw new Error('Invalid kind. Expected quote, risk, or people.');
+  if (v === 'quote' || v === 'risk' || v === 'people' || v === 'portfolio') return v;
+  throw new Error('Invalid kind. Expected quote, risk, people, or portfolio.');
 }
 
 function joinUrl(base: string, path: string): string {

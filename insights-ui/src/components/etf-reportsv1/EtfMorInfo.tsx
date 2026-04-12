@@ -1,5 +1,17 @@
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
-import { EtfMorAnalysis, EtfMorHoldings, EtfMorRiskPeriods } from '@/types/prismaTypes';
+import {
+  EtfMorAnalysis,
+  EtfMorHoldings,
+  EtfMorRiskPeriods,
+  EtfMorPortfolioAssetAllocation,
+  EtfMorPortfolioAssetAllocationRow,
+  EtfMorPortfolioBondBreakdown,
+  EtfMorPortfolioFixedIncomeMeasures,
+  EtfMorPortfolioHoldings,
+  EtfMorPortfolioSectorExposure,
+  EtfMorPortfolioSectorExposureRow,
+  EtfMorPortfolioStyleMeasures,
+} from '@/types/prismaTypes';
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }): JSX.Element {
   return (
@@ -301,10 +313,231 @@ function MorRisk({ riskPeriods }: { riskPeriods: EtfMorRiskPeriods | null }): JS
   );
 }
 
+const ALLOCATION_FIELD_ORDER: Array<{ key: keyof EtfMorPortfolioAssetAllocationRow; label: string }> = [
+  { key: 'investment', label: 'Investment' },
+  { key: 'net', label: 'Net' },
+  { key: 'short', label: 'Short' },
+  { key: 'long', label: 'Long' },
+  { key: 'category', label: 'Category' },
+  { key: 'index', label: 'Index' },
+];
+
+function headerToAllocationField(header: string): keyof EtfMorPortfolioAssetAllocationRow | null {
+  const h = header.toLowerCase().replace(/[.\s]/g, '');
+  if (h === 'net') return 'net';
+  if (h === 'short') return 'short';
+  if (h === 'long') return 'long';
+  if (h === 'investment' || h === 'inv') return 'investment';
+  if (h === 'cat' || h === 'category' || h === 'cataverage') return 'category';
+  if (h === 'index') return 'index';
+  return null;
+}
+
+function MorPortfolioAssetAllocationBlock({ data }: { data: EtfMorPortfolioAssetAllocation | null }): JSX.Element | null {
+  const rows = data?.rows?.length ? data.rows : [];
+  if (!rows.length) return null;
+
+  let colDefs: Array<{ label: string; field: keyof EtfMorPortfolioAssetAllocationRow }>;
+  if (data?.columns?.length) {
+    colDefs = data.columns
+      .map((label) => {
+        const field = headerToAllocationField(label);
+        return field ? { label, field } : null;
+      })
+      .filter((x): x is { label: string; field: keyof EtfMorPortfolioAssetAllocationRow } => x !== null);
+  } else {
+    colDefs = ALLOCATION_FIELD_ORDER.filter((c) => rows.some((r) => r[c.key] != null && String(r[c.key]).trim() !== '')).map((c) => ({
+      label: c.label,
+      field: c.key,
+    }));
+  }
+
+  if (!colDefs.length) {
+    colDefs = ALLOCATION_FIELD_ORDER.filter((c) => rows.some((r) => r[c.key] != null && String(r[c.key]).trim() !== '')).map((c) => ({
+      label: c.label,
+      field: c.key,
+    }));
+  }
+
+  const tableRows = rows.map((r) => {
+    const row: Record<string, unknown> = { 'Asset class': r.assetClass };
+    for (const { label, field } of colDefs) {
+      row[label] = r[field] ?? '';
+    }
+    return row;
+  });
+
+  const columns = ['Asset class', ...colDefs.map((c) => c.label)];
+
+  return <DataTable title="Asset allocation" columns={columns} rows={tableRows} />;
+}
+
+function MorPortfolioStyleMeasuresBlock({ data }: { data: EtfMorPortfolioStyleMeasures | null }): JSX.Element | null {
+  const rows = data?.rows?.length ? data.rows : [];
+  if (!rows.length) return null;
+  const tableRows = rows.map((r) => ({
+    Measure: r.measure,
+    Investment: r.investment ?? '',
+    'Cat. average': r.categoryAverage ?? '',
+    Index: r.index ?? '',
+  }));
+  return <DataTable title="Style measures" columns={['Measure', 'Investment', 'Cat. average', 'Index']} rows={tableRows} />;
+}
+
+function MorPortfolioFixedIncomeBlock({ data }: { data: EtfMorPortfolioFixedIncomeMeasures | null }): JSX.Element | null {
+  const rows = data?.rows?.length ? data.rows : [];
+  if (!rows.length) return null;
+  const tableRows = rows.map((r) => ({
+    Measure: r.measure,
+    Investment: r.investment ?? '',
+    'Category average': r.categoryAverage ?? '',
+  }));
+  return <DataTable title="Fixed income measures" columns={['Measure', 'Investment', 'Category average']} rows={tableRows} />;
+}
+
+function sectorRowsToTable(rows: EtfMorPortfolioSectorExposureRow[]): Array<Record<string, unknown>> {
+  return rows.map((r) => ({
+    Sector: r.sector,
+    Group: r.group ?? '',
+    'Investment %': r.investmentPct ?? '',
+    'Comparison %': r.comparisonPct ?? '',
+  }));
+}
+
+function MorPortfolioSectorExposureBlock({ data }: { data: EtfMorPortfolioSectorExposure | null }): JSX.Element | null {
+  if (!data) return null;
+  const cat = data.vsCategoryPct?.length ? sectorRowsToTable(data.vsCategoryPct) : [];
+  const idx = data.vsIndexPct?.length ? sectorRowsToTable(data.vsIndexPct) : [];
+  if (!cat.length && !idx.length) return null;
+
+  return (
+    <div className="space-y-4">
+      {cat.length > 0 ? <DataTable title="Sector exposure (vs. category %)" columns={['Sector', 'Group', 'Investment %', 'Comparison %']} rows={cat} /> : null}
+      {idx.length > 0 ? <DataTable title="Sector exposure (vs. index %)" columns={['Sector', 'Group', 'Investment %', 'Comparison %']} rows={idx} /> : null}
+    </div>
+  );
+}
+
+function MorPortfolioBondBreakdownBlock({ data }: { data: EtfMorPortfolioBondBreakdown | null }): JSX.Element | null {
+  const views = data?.views?.length ? data.views : [];
+  if (!views.length) return null;
+
+  return (
+    <div className="space-y-4">
+      {views.map((v, i) => {
+        const title = `${v.breakdownType} — ${v.comparisonType}`;
+        const tableRows =
+          v.rows?.map((r) => ({
+            Grade: r.grade,
+            'Investment %': r.investmentPct ?? '',
+            'Comparison %': r.comparisonPct ?? '',
+          })) ?? [];
+        return (
+          <DataTable key={`${v.breakdownType}-${v.comparisonType}-${i}`} title={title} columns={['Grade', 'Investment %', 'Comparison %']} rows={tableRows} />
+        );
+      })}
+    </div>
+  );
+}
+
+function MorPortfolioHoldingsBlock({ data }: { data: EtfMorPortfolioHoldings | null }): JSX.Element | null {
+  if (!data) return null;
+  const summary = data.summary ?? {};
+  const metaItems = [
+    { label: 'Equity holdings', value: summary.equityHoldings },
+    { label: 'Bond holdings', value: summary.bondHoldings },
+    { label: 'Other holdings', value: summary.otherHoldings },
+    { label: 'Total holdings', value: summary.totalHoldings },
+    { label: '% assets in top 10', value: summary.pctAssetsInTop10Holdings },
+    { label: 'Reported turnover %', value: summary.reportedTurnoverPct },
+    { label: 'Turnover as of', value: summary.turnoverAsOfDate },
+    { label: 'Women directors %', value: summary.womenDirectorsPct },
+    { label: 'Women executives %', value: summary.womenExecutivesPct },
+  ];
+
+  const list = Array.isArray(data.holdings) ? data.holdings : [];
+  const holdingRows = list.map((h) => ({
+    Name: h.name,
+    'Weight %': h.portfolioWeightPct ?? '',
+    'First bought': h.firstBought ?? '',
+    'Market value': h.marketValue ?? '',
+    Cur: h.currency ?? '',
+    '1Y return': h.oneYearReturn ?? '',
+    'Fwd P/E': h.forwardPE ?? '',
+    Maturity: h.maturityDate ?? '',
+    Coupon: h.couponRate ?? '',
+    Sector: h.sector ?? '',
+  }));
+
+  const hasSummary = metaItems.some((m) => m.value != null && String(m.value).trim() !== '');
+  const hasList = holdingRows.length > 0;
+
+  if (!hasSummary && !hasList) return null;
+
+  return (
+    <div className="space-y-4">
+      {hasSummary ? <MetricGrid items={metaItems} /> : null}
+      {hasList ? (
+        <div className="rounded-lg border border-gray-700 overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-700 bg-gray-800">
+            <h4 className="text-sm font-medium text-gray-200">Holdings detail</h4>
+            <p className="text-xs text-gray-500 mt-1">Full portfolio holdings from the Morningstar portfolio page.</p>
+          </div>
+          <div className="max-h-[32rem] overflow-auto -mt-4">
+            <DataTable
+              columns={['Name', 'Weight %', 'First bought', 'Market value', 'Cur', '1Y return', 'Fwd P/E', 'Maturity', 'Coupon', 'Sector']}
+              rows={holdingRows}
+            />
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function morPortfolioHasContent(portfolio: EtfMorInfoOptionalWrapper['morPortfolioInfo']): boolean {
+  if (!portfolio) return false;
+  const aa = portfolio.assetAllocation as EtfMorPortfolioAssetAllocation | null;
+  if (aa?.rows?.length) return true;
+  const sm = portfolio.styleMeasures as EtfMorPortfolioStyleMeasures | null;
+  if (sm?.rows?.length) return true;
+  const fi = portfolio.fixedIncomeMeasures as EtfMorPortfolioFixedIncomeMeasures | null;
+  if (fi?.rows?.length) return true;
+  const se = portfolio.sectorExposure as EtfMorPortfolioSectorExposure | null;
+  if (se?.vsCategoryPct?.length || se?.vsIndexPct?.length) return true;
+  const bb = portfolio.bondBreakdown as EtfMorPortfolioBondBreakdown | null;
+  if (bb?.views?.some((v) => v.rows?.length)) return true;
+  const h = portfolio.holdings as EtfMorPortfolioHoldings | null;
+  if (h?.holdings?.length) return true;
+  if (h?.summary && Object.values(h.summary).some((v) => v != null && String(v).trim() !== '')) return true;
+  return false;
+}
+
+function MorPortfolio({ portfolio }: { portfolio: NonNullable<EtfMorInfoOptionalWrapper['morPortfolioInfo']> }): JSX.Element {
+  const assetAllocation = portfolio.assetAllocation as EtfMorPortfolioAssetAllocation | null;
+  const styleMeasures = portfolio.styleMeasures as EtfMorPortfolioStyleMeasures | null;
+  const fixedIncomeMeasures = portfolio.fixedIncomeMeasures as EtfMorPortfolioFixedIncomeMeasures | null;
+  const sectorExposure = portfolio.sectorExposure as EtfMorPortfolioSectorExposure | null;
+  const bondBreakdown = portfolio.bondBreakdown as EtfMorPortfolioBondBreakdown | null;
+  const holdings = portfolio.holdings as EtfMorPortfolioHoldings | null;
+
+  return (
+    <div className="space-y-6">
+      <MorPortfolioAssetAllocationBlock data={assetAllocation} />
+      <MorPortfolioStyleMeasuresBlock data={styleMeasures} />
+      <MorPortfolioFixedIncomeBlock data={fixedIncomeMeasures} />
+      <MorPortfolioSectorExposureBlock data={sectorExposure} />
+      <MorPortfolioBondBreakdownBlock data={bondBreakdown} />
+      <MorPortfolioHoldingsBlock data={holdings} />
+    </div>
+  );
+}
+
 export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }): JSX.Element {
   const analyzer = data.morAnalyzerInfo;
   const people = data.morPeopleInfo;
   const risk = data.morRiskInfo;
+  const portfolio = data.morPortfolioInfo;
 
   const analysis = (analyzer?.analysis ?? null) as unknown as EtfMorAnalysis | null;
   const holdings = (analyzer?.holdings ?? null) as unknown as EtfMorHoldings | null;
@@ -330,9 +563,19 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
     Boolean(analyzer?.analysis) ||
     Boolean(analyzer?.holdings) ||
     Boolean(risk?.riskPeriods) ||
-    Boolean(people?.currentManagers);
+    Boolean(people?.currentManagers) ||
+    morPortfolioHasContent(portfolio);
 
-  const updatedAt = analyzer?.updatedAt ?? risk?.updatedAt ?? people?.updatedAt ?? analyzer?.createdAt ?? risk?.createdAt ?? people?.createdAt ?? null;
+  const updatedAt =
+    analyzer?.updatedAt ??
+    risk?.updatedAt ??
+    people?.updatedAt ??
+    portfolio?.updatedAt ??
+    analyzer?.createdAt ??
+    risk?.createdAt ??
+    people?.createdAt ??
+    portfolio?.createdAt ??
+    null;
   const updatedLabel = updatedAt ? `Last updated: ${new Date(updatedAt as any).toLocaleString('en-US')}` : undefined;
 
   return (
@@ -386,6 +629,21 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
           <div>
             <h3 className="text-lg font-semibold text-gray-100 mb-4">Holdings</h3>
             <MorHoldings holdings={holdings} />
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-100 mb-4">Portfolio breakdown</h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Asset mix, style and sector exposure, bond quality views, and full holdings from the Morningstar portfolio tab (when scraped).
+            </p>
+            {portfolio && morPortfolioHasContent(portfolio) ? (
+              <MorPortfolio portfolio={portfolio} />
+            ) : (
+              <div className="bg-gray-800 rounded-md p-4">
+                <p className="text-sm text-gray-400">No portfolio breakdown saved yet.</p>
+                <p className="text-sm text-gray-500 mt-1">Trigger &quot;Mor Portfolio&quot; from the admin ETF reports tool to collect this data.</p>
+              </div>
+            )}
           </div>
 
           <div>

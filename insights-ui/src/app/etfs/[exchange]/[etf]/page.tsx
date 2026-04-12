@@ -84,13 +84,13 @@ async function fetchEtfMorInfo(exchange: string, etf: string): Promise<EtfMorInf
     const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
     if (!res.ok) {
       console.error(`fetchEtfMorInfo failed (${res.status}): ${url}`);
-      return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null };
+      return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
     }
     const wrapper = (await res.json()) as EtfMorInfoOptionalWrapper;
     return wrapper;
   } catch (error) {
     console.error(`fetchEtfMorInfo error for ${etf}:`, error);
-    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null };
+    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
   }
 }
 

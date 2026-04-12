@@ -8,12 +8,18 @@ import {
   EtfMorReturnsRows,
   EtfMorRiskPeriods,
   EtfMorStrategy,
+  EtfMorPortfolioAssetAllocation,
+  EtfMorPortfolioBondBreakdown,
+  EtfMorPortfolioFixedIncomeMeasures,
+  EtfMorPortfolioHoldings,
+  EtfMorPortfolioSectorExposure,
+  EtfMorPortfolioStyleMeasures,
 } from '@/types/prismaTypes';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-type MorKind = 'quote' | 'risk' | 'people';
+type MorKind = 'quote' | 'risk' | 'people' | 'portfolio';
 
 interface QuoteData {
   overview?: EtfMorOverview;
@@ -29,10 +35,20 @@ interface PeopleData {
   managerTimeline?: Array<{ name: string; startYear?: number; endYear?: number; source?: string }>;
 }
 
+/** Morningstar /portfolio scraper payload (etf-portfolio.ts) */
+interface PortfolioData {
+  assetAllocation?: EtfMorPortfolioAssetAllocation;
+  styleMeasures?: EtfMorPortfolioStyleMeasures;
+  fixedIncomeMeasures?: EtfMorPortfolioFixedIncomeMeasures;
+  sectorExposure?: EtfMorPortfolioSectorExposure;
+  bondBreakdown?: EtfMorPortfolioBondBreakdown;
+  holdings?: EtfMorPortfolioHoldings;
+}
+
 interface CallbackBody {
   url: string;
   section: string;
-  data: QuoteData | EtfMorRiskPeriods | PeopleData;
+  data: QuoteData | EtfMorRiskPeriods | PeopleData | PortfolioData;
   errors?: unknown[];
   kind: MorKind;
 }
@@ -156,6 +172,29 @@ async function postHandler(
         advisors: people.advisors ?? null,
         averageTenure: people.averageTenure ?? null,
         currentManagers: managementTeam as any,
+      },
+    });
+  } else if (kind === 'portfolio') {
+    const d = data as PortfolioData;
+
+    await prisma.etfMorPortfolioInfo.upsert({
+      where: { etfId: etfRecord.id },
+      update: {
+        assetAllocation: (d.assetAllocation ?? null) as any,
+        styleMeasures: (d.styleMeasures ?? null) as any,
+        fixedIncomeMeasures: (d.fixedIncomeMeasures ?? null) as any,
+        sectorExposure: (d.sectorExposure ?? null) as any,
+        bondBreakdown: (d.bondBreakdown ?? null) as any,
+        holdings: (d.holdings ?? null) as any,
+      },
+      create: {
+        etf: { connect: { id: etfRecord.id } },
+        assetAllocation: (d.assetAllocation ?? null) as any,
+        styleMeasures: (d.styleMeasures ?? null) as any,
+        fixedIncomeMeasures: (d.fixedIncomeMeasures ?? null) as any,
+        sectorExposure: (d.sectorExposure ?? null) as any,
+        bondBreakdown: (d.bondBreakdown ?? null) as any,
+        holdings: (d.holdings ?? null) as any,
       },
     });
   } else {
