@@ -13,6 +13,10 @@ export enum EtfFilterType {
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
   SEARCH = 'search',
+  // Advanced (Morningstar) filters
+  MOR_UPSIDE_CAPTURE = 'morUpsideCapture',
+  MOR_DOWNSIDE_CAPTURE = 'morDownsideCapture',
+  MOR_RISK_LEVEL = 'morRiskLevel',
 }
 
 export enum EtfFilterParamKey {
@@ -24,6 +28,10 @@ export enum EtfFilterParamKey {
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
   SEARCH = 'search',
+  // Advanced (Morningstar) filters
+  MOR_UPSIDE_CAPTURE = 'morUpsideCapture',
+  MOR_DOWNSIDE_CAPTURE = 'morDownsideCapture',
+  MOR_RISK_LEVEL = 'morRiskLevel',
 }
 
 export type EtfSearchParams = { [key: string]: string | string[] | undefined };
@@ -39,20 +47,24 @@ export interface AppliedEtfFilterBase {
   paramKey: EtfFilterParamKey;
 }
 
+type RangeFilterType =
+  | EtfFilterType.AUM
+  | EtfFilterType.EXPENSE_RATIO
+  | EtfFilterType.PE_RATIO
+  | EtfFilterType.DIVIDEND_TTM
+  | EtfFilterType.SHARES_OUT
+  | EtfFilterType.HOLDINGS
+  | EtfFilterType.MOR_UPSIDE_CAPTURE
+  | EtfFilterType.MOR_DOWNSIDE_CAPTURE;
+
 export interface AppliedEtfRangeFilter extends AppliedEtfFilterBase {
-  type:
-    | EtfFilterType.AUM
-    | EtfFilterType.EXPENSE_RATIO
-    | EtfFilterType.PE_RATIO
-    | EtfFilterType.DIVIDEND_TTM
-    | EtfFilterType.SHARES_OUT
-    | EtfFilterType.HOLDINGS;
+  type: RangeFilterType;
   minValue?: number;
   maxValue?: number;
 }
 
 export interface AppliedEtfSelectFilter extends AppliedEtfFilterBase {
-  type: EtfFilterType.PAYOUT_FREQUENCY;
+  type: EtfFilterType.PAYOUT_FREQUENCY | EtfFilterType.MOR_RISK_LEVEL;
   selectedValue: string;
 }
 
@@ -74,6 +86,9 @@ export interface EtfFilterParams {
   [EtfFilterParamKey.SHARES_OUT]?: string;
   [EtfFilterParamKey.HOLDINGS]?: string;
   [EtfFilterParamKey.SEARCH]?: string;
+  [EtfFilterParamKey.MOR_UPSIDE_CAPTURE]?: string;
+  [EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE]?: string;
+  [EtfFilterParamKey.MOR_RISK_LEVEL]?: string;
 }
 
 /** ----- Constants ----- */
@@ -140,6 +155,33 @@ export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Very Many (250+)', value: '250-' },
 ] as const;
 
+export const ETF_MOR_UPSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Low (< 80%)', value: '0-80' },
+  { label: 'Below Avg (80% - 95%)', value: '80-95' },
+  { label: 'Average (95% - 105%)', value: '95-105' },
+  { label: 'Above Avg (105% - 120%)', value: '105-120' },
+  { label: 'High (> 120%)', value: '120-' },
+] as const;
+
+export const ETF_MOR_DOWNSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Excellent (< 50%)', value: '0-50' },
+  { label: 'Good (50% - 70%)', value: '50-70' },
+  { label: 'Average (70% - 90%)', value: '70-90' },
+  { label: 'Below Avg (90% - 100%)', value: '90-100' },
+  { label: 'Poor (> 100%)', value: '100-' },
+] as const;
+
+export const ETF_MOR_RISK_LEVEL_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Low', value: 'Low' },
+  { label: 'Below Average', value: 'Below Average' },
+  { label: 'Average', value: 'Average' },
+  { label: 'Above Average', value: 'Above Average' },
+  { label: 'High', value: 'High' },
+] as const;
+
 const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.AUM,
   EtfFilterParamKey.EXPENSE_RATIO,
@@ -149,19 +191,22 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.SHARES_OUT,
   EtfFilterParamKey.HOLDINGS,
   EtfFilterParamKey.SEARCH,
+  EtfFilterParamKey.MOR_UPSIDE_CAPTURE,
+  EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE,
+  EtfFilterParamKey.MOR_RISK_LEVEL,
+];
+
+export const ADVANCED_MOR_FILTER_KEYS: EtfFilterParamKey[] = [
+  EtfFilterParamKey.MOR_UPSIDE_CAPTURE,
+  EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE,
+  EtfFilterParamKey.MOR_RISK_LEVEL,
 ];
 
 /** ----- Client-side Helpers ----- */
 
 function parseRangeFilter(
   raw: string,
-  type:
-    | EtfFilterType.AUM
-    | EtfFilterType.EXPENSE_RATIO
-    | EtfFilterType.PE_RATIO
-    | EtfFilterType.DIVIDEND_TTM
-    | EtfFilterType.SHARES_OUT
-    | EtfFilterType.HOLDINGS,
+  type: RangeFilterType,
   paramKey: EtfFilterParamKey,
   options: ReadonlyArray<ThresholdOption>,
   defaultLabel: string
@@ -256,6 +301,38 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     if (f) filters.push(f);
   }
 
+  // Morningstar Upside Capture
+  const ucRaw = searchParams.get(EtfFilterParamKey.MOR_UPSIDE_CAPTURE);
+  if (ucRaw) {
+    const f = parseRangeFilter(ucRaw, EtfFilterType.MOR_UPSIDE_CAPTURE, EtfFilterParamKey.MOR_UPSIDE_CAPTURE, ETF_MOR_UPSIDE_CAPTURE_OPTIONS, 'Upside Capture');
+    if (f) filters.push(f);
+  }
+
+  // Morningstar Downside Capture
+  const dcRaw = searchParams.get(EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE);
+  if (dcRaw) {
+    const f = parseRangeFilter(
+      dcRaw,
+      EtfFilterType.MOR_DOWNSIDE_CAPTURE,
+      EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE,
+      ETF_MOR_DOWNSIDE_CAPTURE_OPTIONS,
+      'Downside Capture'
+    );
+    if (f) filters.push(f);
+  }
+
+  // Morningstar Risk Level
+  const rlRaw = searchParams.get(EtfFilterParamKey.MOR_RISK_LEVEL);
+  if (rlRaw && rlRaw.trim()) {
+    const matchingOption = ETF_MOR_RISK_LEVEL_OPTIONS.find((o) => o.value === rlRaw);
+    filters.push({
+      type: EtfFilterType.MOR_RISK_LEVEL,
+      paramKey: EtfFilterParamKey.MOR_RISK_LEVEL,
+      selectedValue: rlRaw,
+      label: matchingOption ? `Risk: ${matchingOption.label}` : `Risk: ${rlRaw}`,
+    });
+  }
+
   // Search
   const searchRaw = searchParams.get(EtfFilterParamKey.SEARCH);
   if (searchRaw && searchRaw.trim()) {
@@ -275,8 +352,8 @@ export function buildInitialEtfSelected(filters: ReadonlyArray<AppliedEtfFilter>
   for (const filter of filters) {
     if (filter.type === EtfFilterType.SEARCH) {
       initial[EtfFilterParamKey.SEARCH] = (filter as AppliedEtfSearchFilter).searchQuery;
-    } else if (filter.type === EtfFilterType.PAYOUT_FREQUENCY) {
-      initial[EtfFilterParamKey.PAYOUT_FREQUENCY] = (filter as AppliedEtfSelectFilter).selectedValue;
+    } else if (filter.type === EtfFilterType.PAYOUT_FREQUENCY || filter.type === EtfFilterType.MOR_RISK_LEVEL) {
+      initial[filter.paramKey] = (filter as AppliedEtfSelectFilter).selectedValue;
     } else {
       const rangeFilter = filter as AppliedEtfRangeFilter;
       if (filter.label.includes('Negative')) {
@@ -296,7 +373,6 @@ export function clearAllEtfFilterParams(searchParams: ReadonlyURLSearchParams): 
   for (const key of ALL_ETF_PARAM_KEYS) {
     params.delete(key);
   }
-  // Reset to page 1 when clearing filters
   params.delete('page');
   return params;
 }
@@ -304,7 +380,6 @@ export function clearAllEtfFilterParams(searchParams: ReadonlyURLSearchParams): 
 export function removeEtfFilterFromParams(searchParams: ReadonlyURLSearchParams, filterToRemove: AppliedEtfFilter): URLSearchParams {
   const params = new URLSearchParams(searchParams.toString());
   params.delete(filterToRemove.paramKey);
-  // Reset to page 1 when removing a filter
   params.delete('page');
   return params;
 }
@@ -316,7 +391,6 @@ export function applySelectedEtfFiltersToParams(searchParams: ReadonlyURLSearchP
       params.set(k, v);
     }
   }
-  // Reset to page 1 when applying new filters
   params.delete('page');
   return params;
 }
@@ -352,6 +426,9 @@ export function parseEtfFilterParams(req: NextRequest): EtfFilterParams {
     [EtfFilterParamKey.SHARES_OUT]: searchParams.get(EtfFilterParamKey.SHARES_OUT) || undefined,
     [EtfFilterParamKey.HOLDINGS]: searchParams.get(EtfFilterParamKey.HOLDINGS) || undefined,
     [EtfFilterParamKey.SEARCH]: searchParams.get(EtfFilterParamKey.SEARCH) || undefined,
+    [EtfFilterParamKey.MOR_UPSIDE_CAPTURE]: searchParams.get(EtfFilterParamKey.MOR_UPSIDE_CAPTURE) || undefined,
+    [EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE]: searchParams.get(EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE) || undefined,
+    [EtfFilterParamKey.MOR_RISK_LEVEL]: searchParams.get(EtfFilterParamKey.MOR_RISK_LEVEL) || undefined,
   };
 }
 
@@ -364,7 +441,7 @@ export function parseNumericStringValue(value: string | null | undefined): numbe
   const raw = value.trim();
   if (!raw) return null;
 
-  const cleaned = raw.replace(/,/g, '').replace(/^\$/, '').trim();
+  const cleaned = raw.replace(/,/g, '').replace(/^\$/, '').replace(/%$/, '').trim();
   const match = cleaned.match(/^([+-]?\d+(?:\.\d+)?)\s*([KMBT])?$/i);
   if (!match) return null;
 
@@ -376,7 +453,7 @@ export function parseNumericStringValue(value: string | null | undefined): numbe
   return num * mult;
 }
 
-function parseRangeParam(param: string | undefined): { min?: number; max?: number } | null {
+export function parseRangeParam(param: string | undefined): { min?: number; max?: number } | null {
   if (!param || !param.trim()) return null;
   const [minStr, maxStr] = param.split('-');
   const min = minStr ? parseFloat(minStr) : undefined;
@@ -465,4 +542,31 @@ export function createEtfSearchFilter(spaceId: string, filters: EtfFilterParams)
 
 export function hasEtfFiltersAppliedServer(filters: EtfFilterParams): boolean {
   return ALL_ETF_PARAM_KEYS.some((key) => !!filters[key]?.trim());
+}
+
+export function hasAdvancedMorFilters(filters: EtfFilterParams): boolean {
+  return ADVANCED_MOR_FILTER_KEYS.some((key) => !!filters[key]?.trim());
+}
+
+/**
+ * Extract a numeric capture ratio value from the Morningstar riskPeriods JSON.
+ * Looks in the 3-Yr period's captureRatios table for a column matching the given name.
+ */
+export function extractCaptureRatio(riskPeriods: any, columnSubstring: string): number | null {
+  const period = riskPeriods?.['3-Yr'] ?? riskPeriods?.['5-Yr'] ?? riskPeriods?.['10-Yr'];
+  if (!period) return null;
+  const table = period?.marketVolatilityMeasures?.captureRatios;
+  if (!table?.columns || !table?.rows?.length) return null;
+
+  const col = table.columns.find((c: string) => c.toLowerCase().includes(columnSubstring.toLowerCase()));
+  if (!col) return null;
+
+  const firstRow = table.rows[0];
+  const raw = firstRow?.values?.[col];
+  return parseNumericStringValue(raw);
+}
+
+export function extractRiskLevel(riskPeriods: any): string | null {
+  const period = riskPeriods?.['3-Yr'] ?? riskPeriods?.['5-Yr'] ?? riskPeriods?.['10-Yr'];
+  return period?.portfolioRiskScore?.riskLevel ?? null;
 }

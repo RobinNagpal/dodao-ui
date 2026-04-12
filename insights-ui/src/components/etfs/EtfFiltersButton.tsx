@@ -13,6 +13,9 @@ import {
   ETF_PAYOUT_FREQUENCY_OPTIONS,
   ETF_SHARES_OUT_OPTIONS,
   ETF_HOLDINGS_OPTIONS,
+  ETF_MOR_UPSIDE_CAPTURE_OPTIONS,
+  ETF_MOR_DOWNSIDE_CAPTURE_OPTIONS,
+  ETF_MOR_RISK_LEVEL_OPTIONS,
   getAppliedEtfFilters,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
@@ -125,9 +128,10 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
 
   return (
     <div className="space-y-6">
+      {/* Basic Filters */}
       <div>
-        <p className="text-[#E5E7EB] text-sm mb-4">Filter ETFs by financial metrics</p>
-
+        <h3 className="text-white font-semibold text-sm mb-3">Basic Filters</h3>
+        <p className="text-[#9CA3AF] text-xs mb-4">Filter ETFs by financial metrics</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <FilterDropdown
             id="aum"
@@ -177,6 +181,35 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
             value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
             options={ETF_HOLDINGS_OPTIONS}
             onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
+          />
+        </div>
+      </div>
+
+      {/* Advanced (Morningstar) Filters */}
+      <div>
+        <h3 className="text-white font-semibold text-sm mb-1">Advanced Filters</h3>
+        <p className="text-[#9CA3AF] text-xs mb-4">Morningstar risk data — only ETFs with Morningstar data will be shown when these filters are active</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <FilterDropdown
+            id="morUpsideCapture"
+            label="Upside Capture (3-Yr)"
+            value={selectedFilters[EtfFilterParamKey.MOR_UPSIDE_CAPTURE] || ''}
+            options={ETF_MOR_UPSIDE_CAPTURE_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.MOR_UPSIDE_CAPTURE, v)}
+          />
+          <FilterDropdown
+            id="morDownsideCapture"
+            label="Downside Capture (3-Yr)"
+            value={selectedFilters[EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE] || ''}
+            options={ETF_MOR_DOWNSIDE_CAPTURE_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.MOR_DOWNSIDE_CAPTURE, v)}
+          />
+          <FilterDropdown
+            id="morRiskLevel"
+            label="Risk Level"
+            value={selectedFilters[EtfFilterParamKey.MOR_RISK_LEVEL] || ''}
+            options={ETF_MOR_RISK_LEVEL_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.MOR_RISK_LEVEL, v)}
           />
         </div>
       </div>
