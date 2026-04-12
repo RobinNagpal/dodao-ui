@@ -12,6 +12,7 @@ import {
   ETF_DIVIDEND_TTM_OPTIONS,
   ETF_PAYOUT_FREQUENCY_OPTIONS,
   ETF_SHARES_OUT_OPTIONS,
+  ETF_HOLDINGS_OPTIONS,
   getAppliedEtfFilters,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
@@ -169,6 +170,13 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
             value={selectedFilters[EtfFilterParamKey.SHARES_OUT] || ''}
             options={ETF_SHARES_OUT_OPTIONS}
             onChange={(v) => handleChange(EtfFilterParamKey.SHARES_OUT, v)}
+          />
+          <FilterDropdown
+            id="holdings"
+            label="Number of Holdings"
+            value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
+            options={ETF_HOLDINGS_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
           />
         </div>
       </div>

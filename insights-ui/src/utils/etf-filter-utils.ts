@@ -11,6 +11,7 @@ export enum EtfFilterType {
   DIVIDEND_TTM = 'dividendTtm',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
+  HOLDINGS = 'holdings',
   SEARCH = 'search',
 }
 
@@ -21,6 +22,7 @@ export enum EtfFilterParamKey {
   DIVIDEND_TTM = 'dividendTtm',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
+  HOLDINGS = 'holdings',
   SEARCH = 'search',
 }
 
@@ -38,7 +40,13 @@ export interface AppliedEtfFilterBase {
 }
 
 export interface AppliedEtfRangeFilter extends AppliedEtfFilterBase {
-  type: EtfFilterType.AUM | EtfFilterType.EXPENSE_RATIO | EtfFilterType.PE_RATIO | EtfFilterType.DIVIDEND_TTM | EtfFilterType.SHARES_OUT;
+  type:
+    | EtfFilterType.AUM
+    | EtfFilterType.EXPENSE_RATIO
+    | EtfFilterType.PE_RATIO
+    | EtfFilterType.DIVIDEND_TTM
+    | EtfFilterType.SHARES_OUT
+    | EtfFilterType.HOLDINGS;
   minValue?: number;
   maxValue?: number;
 }
@@ -64,6 +72,7 @@ export interface EtfFilterParams {
   [EtfFilterParamKey.DIVIDEND_TTM]?: string;
   [EtfFilterParamKey.PAYOUT_FREQUENCY]?: string;
   [EtfFilterParamKey.SHARES_OUT]?: string;
+  [EtfFilterParamKey.HOLDINGS]?: string;
   [EtfFilterParamKey.SEARCH]?: string;
 }
 
@@ -122,6 +131,15 @@ export const ETF_SHARES_OUT_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Very Large (> 200M)', value: '200000000-' },
 ] as const;
 
+export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Very Few (1 - 5)', value: '0-5' },
+  { label: 'Few (5 - 15)', value: '5-15' },
+  { label: 'Moderate (15 - 50)', value: '15-50' },
+  { label: 'Many (50 - 250)', value: '50-250' },
+  { label: 'Very Many (250+)', value: '250-' },
+] as const;
+
 const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.AUM,
   EtfFilterParamKey.EXPENSE_RATIO,
@@ -129,6 +147,7 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.DIVIDEND_TTM,
   EtfFilterParamKey.PAYOUT_FREQUENCY,
   EtfFilterParamKey.SHARES_OUT,
+  EtfFilterParamKey.HOLDINGS,
   EtfFilterParamKey.SEARCH,
 ];
 
@@ -136,7 +155,13 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
 
 function parseRangeFilter(
   raw: string,
-  type: EtfFilterType.AUM | EtfFilterType.EXPENSE_RATIO | EtfFilterType.PE_RATIO | EtfFilterType.DIVIDEND_TTM | EtfFilterType.SHARES_OUT,
+  type:
+    | EtfFilterType.AUM
+    | EtfFilterType.EXPENSE_RATIO
+    | EtfFilterType.PE_RATIO
+    | EtfFilterType.DIVIDEND_TTM
+    | EtfFilterType.SHARES_OUT
+    | EtfFilterType.HOLDINGS,
   paramKey: EtfFilterParamKey,
   options: ReadonlyArray<ThresholdOption>,
   defaultLabel: string
@@ -221,6 +246,13 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
   const soRaw = searchParams.get(EtfFilterParamKey.SHARES_OUT);
   if (soRaw) {
     const f = parseRangeFilter(soRaw, EtfFilterType.SHARES_OUT, EtfFilterParamKey.SHARES_OUT, ETF_SHARES_OUT_OPTIONS, 'Shares Out');
+    if (f) filters.push(f);
+  }
+
+  // Holdings
+  const holdingsRaw = searchParams.get(EtfFilterParamKey.HOLDINGS);
+  if (holdingsRaw) {
+    const f = parseRangeFilter(holdingsRaw, EtfFilterType.HOLDINGS, EtfFilterParamKey.HOLDINGS, ETF_HOLDINGS_OPTIONS, 'Holdings');
     if (f) filters.push(f);
   }
 
@@ -318,6 +350,7 @@ export function parseEtfFilterParams(req: NextRequest): EtfFilterParams {
     [EtfFilterParamKey.DIVIDEND_TTM]: searchParams.get(EtfFilterParamKey.DIVIDEND_TTM) || undefined,
     [EtfFilterParamKey.PAYOUT_FREQUENCY]: searchParams.get(EtfFilterParamKey.PAYOUT_FREQUENCY) || undefined,
     [EtfFilterParamKey.SHARES_OUT]: searchParams.get(EtfFilterParamKey.SHARES_OUT) || undefined,
+    [EtfFilterParamKey.HOLDINGS]: searchParams.get(EtfFilterParamKey.HOLDINGS) || undefined,
     [EtfFilterParamKey.SEARCH]: searchParams.get(EtfFilterParamKey.SEARCH) || undefined,
   };
 }
@@ -396,6 +429,15 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
   const pf = filters[EtfFilterParamKey.PAYOUT_FREQUENCY];
   if (pf && pf.trim()) {
     where.payoutFrequency = { equals: pf, mode: 'insensitive' };
+  }
+
+  // Holdings
+  const holdingsRange = parseRangeParam(filters[EtfFilterParamKey.HOLDINGS]);
+  if (holdingsRange) {
+    const holdingsFilter: Prisma.IntNullableFilter = {};
+    if (holdingsRange.min !== undefined) holdingsFilter.gte = holdingsRange.min;
+    if (holdingsRange.max !== undefined) holdingsFilter.lte = holdingsRange.max;
+    where.holdings = holdingsFilter;
   }
 
   return where;
