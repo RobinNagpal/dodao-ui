@@ -8,12 +8,34 @@ function StatusPill({ ok }: { ok: boolean }): JSX.Element {
   return <span className={`px-2 py-1 rounded-full text-xs ${ok ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}>{ok ? 'Yes' : 'No'}</span>;
 }
 
-export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRow[]; onRefresh: () => void }): JSX.Element {
+export interface EtfReportsTableProps {
+  etfs: EtfReportRow[];
+  onRefresh: () => void;
+  selectedIds: Set<string>;
+  onToggleSelect: (id: string) => void;
+  onToggleSelectAll: () => void;
+}
+
+export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggleSelect, onToggleSelectAll }: EtfReportsTableProps): JSX.Element {
+  const allSelected = etfs.length > 0 && etfs.every((e) => selectedIds.has(e.id));
+  const someSelected = etfs.some((e) => selectedIds.has(e.id));
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-700">
           <tr>
+            <th className="px-4 py-3 text-center w-10">
+              <input
+                type="checkbox"
+                checked={allSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = someSelected && !allSelected;
+                }}
+                onChange={onToggleSelectAll}
+                className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+              />
+            </th>
             <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider sticky left-0 bg-gray-700 z-10">ETF</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Financial Info</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Stock Analyzer</th>
@@ -25,7 +47,15 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
         </thead>
         <tbody className="bg-gray-800 divide-y divide-gray-700">
           {etfs.map((e) => (
-            <tr key={e.id}>
+            <tr key={e.id} className={selectedIds.has(e.id) ? 'bg-indigo-900/20' : ''}>
+              <td className="px-4 py-3 text-center w-10">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.has(e.id)}
+                  onChange={() => onToggleSelect(e.id)}
+                  className="h-4 w-4 rounded border-gray-500 bg-gray-700 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-0 cursor-pointer"
+                />
+              </td>
               <td className="px-4 py-3 text-sm font-medium sticky left-0 bg-gray-800 z-10" style={{ minWidth: '220px', maxWidth: '320px' }}>
                 <div className="flex items-center gap-1">
                   <span className="font-semibold text-sm text-gray-100">{e.symbol}</span>
@@ -68,7 +98,7 @@ export default function EtfReportsTable({ etfs, onRefresh }: { etfs: EtfReportRo
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={7} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={8} className="px-4 py-10 text-center text-gray-300">
                 No ETFs found.
               </td>
             </tr>
