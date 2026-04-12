@@ -7,6 +7,7 @@ import {
   revalidatePortfolioProfileTag,
   revalidateTickerAndExchangeTag,
 } from '@/utils/ticker-v1-cache-utils';
+import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
 import { prisma } from '@/prisma';
@@ -45,4 +46,9 @@ export async function revalidatePortfolioProfileCache(portfolioManagerId: string
 export async function revalidateTickerCache(ticker: string, exchange: string) {
   revalidateTickerAndExchangeTag(ticker, exchange);
   return { success: true, message: `Cache invalidated for ${exchange.toUpperCase()}:${ticker.toUpperCase()}` };
+}
+
+export async function revalidateEtfCache(symbol: string, exchange: string) {
+  revalidateEtfAndExchangeTag(symbol, exchange);
+  return { success: true, message: `Cache invalidated for ETF ${exchange.toUpperCase()}:${symbol.toUpperCase()}` };
 }
