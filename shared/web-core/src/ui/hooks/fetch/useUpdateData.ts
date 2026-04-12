@@ -2,6 +2,7 @@ import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { UpdateDataOptions } from '@dodao/web-core/ui/hooks/fetch/UpdateDataOptions';
 import { useDeepCompareMemoize } from '@dodao/web-core/ui/hooks/fetch/useDeepCompareMemoize';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -53,6 +54,12 @@ export const useUpdateData = <RESPONSE_TYPE, REQUEST_TYPE>(
         setLoading(false);
 
         if (!response.ok) {
+          if (response.status === 401) {
+            showNotification({ type: 'error', message: 'Your session has expired. Please log in again.' });
+            localStorage.removeItem(DODAO_ACCESS_TOKEN_KEY);
+            await signOut({ redirect: true, callbackUrl: `/login?updated=${Date.now()}` });
+            return;
+          }
           let errorText = await response.text();
           try {
             errorText = JSON.parse(errorText).error || errorText;

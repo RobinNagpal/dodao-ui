@@ -1,6 +1,7 @@
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useDeepCompareMemoize } from '@dodao/web-core/ui/hooks/fetch/useDeepCompareMemoize';
+import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface UseFetchDataResponse<T> {
@@ -43,6 +44,12 @@ export const useFetchData = <T>(
 
       setLoading(false);
       if (!response.ok) {
+        if (response.status === 401) {
+          showNotification({ type: 'error', message: 'Your session has expired. Please log in again.' });
+          localStorage.removeItem(DODAO_ACCESS_TOKEN_KEY);
+          await signOut({ redirect: true, callbackUrl: `/login?updated=${Date.now()}` });
+          return;
+        }
         const errorText = await response.text();
         setError(errorText);
         setLoading(false);

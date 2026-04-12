@@ -4,6 +4,11 @@ import { logError, logErrorRequest } from '@dodao/web-core/api/helpers/adapters/
 import { ErrorResponse, RedirectResponse } from '@dodao/web-core/types/errors/ErrorResponse';
 import { getDecodedJwtFromContext } from '@dodao/web-core/api/auth/getJwtFromContext';
 
+function isJwtError(error: unknown): boolean {
+  const name = (error as any)?.name;
+  return name === 'JsonWebTokenError' || name === 'TokenExpiredError' || name === 'NotBeforeError';
+}
+
 type Handler<T> = (
   req: NextRequest,
   dynamic: { params: Promise<any> }
@@ -38,8 +43,9 @@ export function withErrorHandlingV1<T>(handler: Handler<T>): Handler<T> {
       await logError(message, {}, error as any, null, null);
       await logErrorRequest(error as Error, req);
 
-      console.log('[withErrorHandlingV1] Returning error response with status 500');
-      return NextResponse.json({ error: message }, { status: 500 });
+      const statusCode = isJwtError(error) ? 401 : 500;
+      console.log(`[withErrorHandlingV1] Returning error response with status ${statusCode}`);
+      return NextResponse.json({ error: message }, { status: statusCode });
     }
   };
 }
@@ -82,8 +88,7 @@ export function withErrorHandlingV2<T>(handler: Handler2<T> | Handler2WithReq<T>
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
 
-      // Return 404 for "not found" errors, 500 for everything else
-      const statusCode = isPrismaNotFound ? 404 : 500;
+      const statusCode = isJwtError(error) ? 401 : isPrismaNotFound ? 404 : 500;
       console.log(`[withErrorHandlingV2] Returning user-friendly error message with status ${statusCode}:`, userMessage);
       return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
@@ -132,8 +137,9 @@ export function withLoggedInUser<T>(handler: HandlerWithUser<T> | HandlerWithUse
       await logErrorRequest(error as Error, req);
 
       const userMessage = (error as any)?.response?.data || (error as any)?.message || 'An unknown error occurred';
-      console.log('[withLoggedInUser] Returning user-friendly error message with status 500:', userMessage);
-      return NextResponse.json({ error: userMessage }, { status: 500 });
+      const statusCode = isJwtError(error) ? 401 : 500;
+      console.log(`[withLoggedInUser] Returning user-friendly error message with status ${statusCode}:`, userMessage);
+      return NextResponse.json({ error: userMessage }, { status: statusCode });
     }
   };
 }
