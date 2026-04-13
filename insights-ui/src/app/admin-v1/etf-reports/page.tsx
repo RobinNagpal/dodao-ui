@@ -4,13 +4,15 @@ import AdminNav from '@/app/admin-v1/AdminNav';
 import { EtfReportsResponse } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { AllExchanges, EXCHANGES } from '@/utils/countryExchangeUtils';
+import BulkActionsBar from './BulkActionsBar';
 import EtfReportsFilters from './EtfReportsFilters';
 import EtfReportsTable from './EtfReportsTable';
+import SelectMissingBar from './SelectMissingBar';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebouncedValue } from './useDebouncedValue';
 
 export default function EtfReportsPage(): JSX.Element {
@@ -18,6 +20,7 @@ export default function EtfReportsPage(): JSX.Element {
   const [exchange, setExchange] = useState<AllExchanges | ''>('');
   const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor'>('');
   const [search, setSearch] = useState<string>('');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const pageSize = 100;
 
   const debouncedSearch = useDebouncedValue(search, 350);
@@ -25,6 +28,10 @@ export default function EtfReportsPage(): JSX.Element {
   useEffect(() => {
     setCurrentPage(1);
   }, [exchange, missing, debouncedSearch]);
+
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [currentPage, exchange, missing, debouncedSearch]);
 
   const apiUrl = useMemo(() => {
     const params = new URLSearchParams();
@@ -38,10 +45,38 @@ export default function EtfReportsPage(): JSX.Element {
 
   const { data: response, loading, reFetchData } = useFetchData<EtfReportsResponse>(apiUrl, {}, 'Failed to load ETFs');
 
-  const etfs = response?.etfs ?? [];
+  const etfs = useMemo(() => response?.etfs ?? [], [response]);
   const totalCount = response?.totalCount ?? 0;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   const availableExchanges: ReadonlyArray<AllExchanges> = response?.availableExchanges ?? EXCHANGES;
+
+  const selectedEtfs = useMemo(() => etfs.filter((e) => selectedIds.has(e.id)), [etfs, selectedIds]);
+
+  const handleToggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleToggleSelectAll = useCallback(() => {
+    setSelectedIds((prev) => {
+      const allSelected = etfs.length > 0 && etfs.every((e) => prev.has(e.id));
+      if (allSelected) {
+        return new Set();
+      }
+      return new Set(etfs.map((e) => e.id));
+    });
+  }, [etfs]);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
 
   return (
     <PageWrapper>
@@ -72,7 +107,16 @@ export default function EtfReportsPage(): JSX.Element {
         </div>
       ) : (
         <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 overflow-hidden">
-          <EtfReportsTable etfs={etfs} onRefresh={reFetchData} />
+          <SelectMissingBar etfs={etfs} onSelectIds={setSelectedIds} />
+          {selectedEtfs.length > 0 && <BulkActionsBar selectedEtfs={selectedEtfs} onClearSelection={handleClearSelection} onRefresh={reFetchData} />}
+
+          <EtfReportsTable
+            etfs={etfs}
+            onRefresh={reFetchData}
+            selectedIds={selectedIds}
+            onToggleSelect={handleToggleSelect}
+            onToggleSelectAll={handleToggleSelectAll}
+          />
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between px-6 py-4 border-t border-gray-700/50 bg-gray-800/60">

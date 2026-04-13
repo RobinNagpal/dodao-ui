@@ -21,16 +21,14 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
       params.set('page', String(page));
     }
 
-    // If going to page 1 with no other filters, navigate to static page
     const hasFilters = Array.from(params.keys()).some((k) => k !== 'page');
     const targetPage = page <= 1 ? 1 : page;
 
-    if (targetPage === 1 && !hasFilters && pathname.includes('/etfs-filtered')) {
+    if (targetPage === 1 && !hasFilters) {
       router.push('/etfs');
     } else {
-      const filteredPath = pathname.includes('/etfs-filtered') ? pathname : '/etfs-filtered';
       const qs = params.toString();
-      router.push(qs ? `${filteredPath}?${qs}` : filteredPath);
+      router.push(`/etfs-filtered?${qs}`);
     }
   };
 

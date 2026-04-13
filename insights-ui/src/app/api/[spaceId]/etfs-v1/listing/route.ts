@@ -1,11 +1,17 @@
 import { prisma } from '@/prisma';
 import {
   createEtfFinancialFilter,
+  createEtfStockAnalyzerFilter,
   createEtfSearchFilter,
   hasEtfFiltersAppliedServer,
+  hasAdvancedMorFilters,
   parseEtfFilterParams,
   parseNumericStringValue,
+  parseRangeParam,
+  extractCaptureRatioForPeriod,
+  extractRiskLevelForPeriod,
   EtfFilterParamKey,
+  MOR_ADVANCED_FILTERS,
 } from '@/utils/etf-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -38,15 +44,6 @@ export interface EtfListingResponse {
   pageSize: number;
   totalPages: number;
   filtersApplied: boolean;
-}
-
-function parseRangeParam(param: string | undefined): { min?: number; max?: number } | null {
-  if (!param || !param.trim()) return null;
-  const [minStr, maxStr] = param.split('-');
-  const min = minStr ? parseFloat(minStr) : undefined;
-  const max = maxStr ? parseFloat(maxStr) : undefined;
-  if (min === undefined && max === undefined) return null;
-  return { min, max };
 }
 
 function isInRange(value: number | null, min?: number, max?: number): boolean {
@@ -84,6 +81,13 @@ const etfListingInclude = {
   morPeopleInfo: { select: { id: true } },
 } as const;
 
+const etfListingIncludeWithMorRisk = {
+  financialInfo: true,
+  morAnalyzerInfo: { select: { id: true } },
+  morRiskInfo: true,
+  morPeopleInfo: { select: { id: true } },
+} as const;
+
 async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string }> }): Promise<EtfListingResponse> {
   const { spaceId } = await context.params;
   const { searchParams } = new URL(req.url);
@@ -93,11 +97,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const filters = parseEtfFilterParams(req);
   const filtersApplied = hasEtfFiltersAppliedServer(filters);
+  const hasMorFilters = hasAdvancedMorFilters(filters);
 
-  // Build Prisma where clause for Etf (search)
   const etfWhere = createEtfSearchFilter(spaceId, filters);
 
-  // Build Prisma where clause for EtfFinancialInfo (float fields)
   const financialFilter = createEtfFinancialFilter(filters);
   const hasFinancialFilter = Object.keys(financialFilter).length > 0;
 
@@ -105,17 +108,35 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     etfWhere.financialInfo = { is: financialFilter };
   }
 
-  // Check if we need application-level post-filtering (string numeric fields)
+  const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);
+  const hasStockAnalyzerFilter = Object.keys(stockAnalyzerFilter).length > 0;
+  if (hasStockAnalyzerFilter) {
+    etfWhere.stockAnalyzerInfo = { is: stockAnalyzerFilter };
+  }
+
+  // When advanced Morningstar filters are active, require morRiskInfo to exist
+  if (hasMorFilters) {
+    etfWhere.morRiskInfo = { isNot: null };
+  }
+
+  // Check if we need application-level post-filtering
   const aumRange = parseRangeParam(filters[EtfFilterParamKey.AUM]);
   const sharesOutRange = parseRangeParam(filters[EtfFilterParamKey.SHARES_OUT]);
-  const needsPostFilter = aumRange !== null || sharesOutRange !== null;
+  const needsPostFilter = aumRange !== null || sharesOutRange !== null || hasMorFilters;
+
+  // Pre-parse active Morningstar advanced filters for post-filtering
+  const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
+    ...def,
+    raw: filters[def.paramKey]?.trim() || null,
+    range: def.kind !== 'risk' ? parseRangeParam(filters[def.paramKey]) : null,
+  })).filter((f) => f.raw);
+
+  const include = hasMorFilters ? etfListingIncludeWithMorRisk : etfListingInclude;
 
   if (needsPostFilter) {
-    // When post-filtering is needed, fetch all DB-matching records,
-    // apply string-field filters in memory, then paginate the result.
     const allEtfs = await prisma.etf.findMany({
       where: etfWhere,
-      include: etfListingInclude,
+      include,
       orderBy: [{ symbol: 'asc' }],
     });
 
@@ -127,6 +148,19 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (sharesOutRange) {
         const soValue = parseNumericStringValue(etf.financialInfo?.sharesOut);
         if (!isInRange(soValue, sharesOutRange.min, sharesOutRange.max)) return false;
+      }
+      const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
+      for (const mf of activeMorFilters) {
+        if (mf.kind === 'upside' && mf.range) {
+          const val = extractCaptureRatioForPeriod(riskPeriods, mf.period, 'upside');
+          if (!isInRange(val, mf.range.min, mf.range.max)) return false;
+        } else if (mf.kind === 'downside' && mf.range) {
+          const val = extractCaptureRatioForPeriod(riskPeriods, mf.period, 'downside');
+          if (!isInRange(val, mf.range.min, mf.range.max)) return false;
+        } else if (mf.kind === 'risk' && mf.raw) {
+          const level = extractRiskLevelForPeriod(riskPeriods, mf.period);
+          if (!level || level.toLowerCase() !== mf.raw.toLowerCase()) return false;
+        }
       }
       return true;
     });
@@ -150,7 +184,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const [etfs, totalCount] = await Promise.all([
     prisma.etf.findMany({
       where: etfWhere,
-      include: etfListingInclude,
+      include,
       orderBy: [{ symbol: 'asc' }],
       skip: (page - 1) * pageSize,
       take: pageSize,

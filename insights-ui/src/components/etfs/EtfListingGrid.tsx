@@ -13,13 +13,14 @@ const MOR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInf
 function MorIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
   return (
     <PrivateWrapper>
-      <div className="flex items-center gap-1" aria-label="MOR data available">
+      <div className="flex items-center gap-1.5" aria-label="MOR data available">
         {MOR_INDICATORS.map(({ key, label }) => (
-          <span
-            key={key}
-            title={`MOR ${label}: ${etf[key] ? 'present' : 'missing'}`}
-            className={`inline-block w-2 h-2 rounded-full ${etf[key] ? 'bg-emerald-400' : 'bg-gray-600'}`}
-          />
+          <span key={key} className="relative group/dot">
+            <span className={`inline-block w-2 h-2 rounded-full ${etf[key] ? 'bg-emerald-400' : 'bg-gray-600'}`} />
+            <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[10px] text-gray-200 opacity-0 shadow-lg transition-opacity group-hover/dot:opacity-100 border border-gray-700 z-10">
+              MOR {label}: {etf[key] ? 'Present' : 'Missing'}
+            </span>
+          </span>
         ))}
       </div>
     </PrivateWrapper>
