@@ -68,6 +68,47 @@ function sectorExposureIsEmpty(s: EtfMorPortfolioSectorExposure | null | undefin
   return (s.vsCategoryPct?.length ?? 0) === 0 && (s.vsIndexPct?.length ?? 0) === 0;
 }
 
+function rowsContainerIsEmpty(v: { rows?: unknown[] } | null | undefined): boolean {
+  if (v == null) return true;
+  return (v.rows?.length ?? 0) === 0;
+}
+
+function bondBreakdownIsEmpty(v: EtfMorPortfolioBondBreakdown | null | undefined): boolean {
+  if (v == null) return true;
+  if ((v.views?.length ?? 0) === 0) return true;
+  return v.views.every((view) => (view.rows?.length ?? 0) === 0);
+}
+
+function holdingsIsEmpty(v: EtfMorPortfolioHoldings | null | undefined): boolean {
+  if (v == null) return true;
+  const listEmpty = !Array.isArray(v.holdings) || v.holdings.length === 0;
+  const summaryEmpty = !v.summary || Object.values(v.summary).every((x) => x == null || String(x).trim() === '');
+  return listEmpty && summaryEmpty;
+}
+
+const DASH_PLACEHOLDERS = new Set(['—', '–', '−', '-', 'N/A', 'n/a']);
+
+function normalizeDashes<T extends Record<string, unknown>>(obj: T | undefined | null): T | undefined | null {
+  if (obj == null) return obj;
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (typeof v === 'string' && DASH_PLACEHOLDERS.has(v.trim())) {
+      out[k] = null;
+    } else {
+      out[k] = v;
+    }
+  }
+  return out as T;
+}
+
+function normalizeHoldings(h: EtfMorPortfolioHoldings | null | undefined): EtfMorPortfolioHoldings | null | undefined {
+  if (h == null) return h;
+  return {
+    summary: (normalizeDashes(h.summary) ?? {}) as EtfMorPortfolioHoldings['summary'],
+    holdings: Array.isArray(h.holdings) ? h.holdings.map((row) => normalizeDashes(row) as (typeof h.holdings)[number]) : [],
+  };
+}
+
 type PortfolioRow = {
   assetAllocation: unknown;
   styleMeasures: unknown;
@@ -85,13 +126,31 @@ function buildPortfolioUpdatePatch(d: PortfolioData, existing: PortfolioRow | nu
   const patch: Record<string, unknown> = {};
 
   if ('assetAllocation' in d) {
-    patch.assetAllocation = (d.assetAllocation ?? null) as object | null;
+    const incoming = d.assetAllocation ?? null;
+    const prev = existing?.assetAllocation as EtfMorPortfolioAssetAllocation | null | undefined;
+    if (incoming != null && rowsContainerIsEmpty(incoming) && prev != null && !rowsContainerIsEmpty(prev)) {
+      patch.assetAllocation = prev as object;
+    } else {
+      patch.assetAllocation = incoming as object | null;
+    }
   }
   if ('styleMeasures' in d) {
-    patch.styleMeasures = (d.styleMeasures ?? null) as object | null;
+    const incoming = d.styleMeasures ?? null;
+    const prev = existing?.styleMeasures as EtfMorPortfolioStyleMeasures | null | undefined;
+    if (incoming != null && rowsContainerIsEmpty(incoming) && prev != null && !rowsContainerIsEmpty(prev)) {
+      patch.styleMeasures = prev as object;
+    } else {
+      patch.styleMeasures = incoming as object | null;
+    }
   }
   if ('fixedIncomeMeasures' in d) {
-    patch.fixedIncomeMeasures = (d.fixedIncomeMeasures ?? null) as object | null;
+    const incoming = d.fixedIncomeMeasures ?? null;
+    const prev = existing?.fixedIncomeMeasures as EtfMorPortfolioFixedIncomeMeasures | null | undefined;
+    if (incoming != null && rowsContainerIsEmpty(incoming) && prev != null && !rowsContainerIsEmpty(prev)) {
+      patch.fixedIncomeMeasures = prev as object;
+    } else {
+      patch.fixedIncomeMeasures = incoming as object | null;
+    }
   }
   if ('sectorExposure' in d) {
     const incoming = d.sectorExposure ?? null;
@@ -103,10 +162,22 @@ function buildPortfolioUpdatePatch(d: PortfolioData, existing: PortfolioRow | nu
     }
   }
   if ('bondBreakdown' in d) {
-    patch.bondBreakdown = (d.bondBreakdown ?? null) as object | null;
+    const incoming = d.bondBreakdown ?? null;
+    const prev = existing?.bondBreakdown as EtfMorPortfolioBondBreakdown | null | undefined;
+    if (incoming != null && bondBreakdownIsEmpty(incoming) && prev != null && !bondBreakdownIsEmpty(prev)) {
+      patch.bondBreakdown = prev as object;
+    } else {
+      patch.bondBreakdown = incoming as object | null;
+    }
   }
   if ('holdings' in d) {
-    patch.holdings = (d.holdings ?? null) as object | null;
+    const incoming = normalizeHoldings(d.holdings ?? null) ?? null;
+    const prev = existing?.holdings as EtfMorPortfolioHoldings | null | undefined;
+    if (incoming != null && holdingsIsEmpty(incoming) && prev != null && !holdingsIsEmpty(prev)) {
+      patch.holdings = prev as object;
+    } else {
+      patch.holdings = incoming as object | null;
+    }
   }
 
   return patch;
@@ -119,7 +190,7 @@ function buildPortfolioCreateData(d: PortfolioData): Record<string, unknown> {
     fixedIncomeMeasures: ('fixedIncomeMeasures' in d ? d.fixedIncomeMeasures ?? null : null) as object | null,
     sectorExposure: ('sectorExposure' in d ? d.sectorExposure ?? null : null) as object | null,
     bondBreakdown: ('bondBreakdown' in d ? d.bondBreakdown ?? null : null) as object | null,
-    holdings: ('holdings' in d ? d.holdings ?? null : null) as object | null,
+    holdings: ('holdings' in d ? normalizeHoldings(d.holdings ?? null) ?? null : null) as object | null,
   };
 }
 
