@@ -293,7 +293,7 @@ export interface EtfMorRiskPeriodData {
 export type EtfMorRiskPeriods = Record<EtfMorRiskPeriod, EtfMorRiskPeriodData>;
 
 // --------------------------------
-// ETF portfolio scraper JSON types (Morningstar /portfolio — etf-portfolio.ts)
+// ETF portfolio scraper JSON types (/portfolio — etf-portfolio.ts)
 // --------------------------------
 
 export interface EtfMorPortfolioAssetAllocationRow {
@@ -322,15 +322,17 @@ export interface EtfMorPortfolioStyleMeasures {
   rows: EtfMorPortfolioStyleMeasuresRow[];
 }
 
-export interface EtfMorPortfolioFixedIncomeMeasuresRow {
+export interface EtfMorPortfolioFixedIncomeStyleRow {
   measure: string;
   investment?: string;
   categoryAverage?: string;
 }
 
-export interface EtfMorPortfolioFixedIncomeMeasures {
-  rows: EtfMorPortfolioFixedIncomeMeasuresRow[];
+export interface EtfMorPortfolioFixedIncomeStyle {
+  rows: EtfMorPortfolioFixedIncomeStyleRow[];
 }
+
+export type EtfMorPortfolioSectorExposureType = 'EQUITY' | 'FIXEDINCOME';
 
 export interface EtfMorPortfolioSectorExposureRow {
   sector: string;
@@ -340,6 +342,7 @@ export interface EtfMorPortfolioSectorExposureRow {
 }
 
 export interface EtfMorPortfolioSectorExposure {
+  type?: EtfMorPortfolioSectorExposureType;
   vsCategoryPct: EtfMorPortfolioSectorExposureRow[];
   vsIndexPct: EtfMorPortfolioSectorExposureRow[];
 }
@@ -350,14 +353,9 @@ export interface EtfMorPortfolioBondBreakdownRow {
   comparisonPct?: string;
 }
 
-export interface EtfMorPortfolioBondBreakdownView {
-  breakdownType: string;
-  comparisonType: string;
-  rows: EtfMorPortfolioBondBreakdownRow[];
-}
-
 export interface EtfMorPortfolioBondBreakdown {
-  views: EtfMorPortfolioBondBreakdownView[];
+  vsCategoryPct: EtfMorPortfolioBondBreakdownRow[];
+  vsIndexPct: EtfMorPortfolioBondBreakdownRow[];
 }
 
 export interface EtfMorPortfolioHoldingsSummary {
@@ -388,6 +386,7 @@ export interface EtfMorPortfolioHoldingRow {
 
 export interface EtfMorPortfolioHoldings {
   summary: EtfMorPortfolioHoldingsSummary;
+  columns: string[];
   holdings: EtfMorPortfolioHoldingRow[];
 }
 
@@ -431,7 +430,7 @@ declare global {
     // ETF portfolio JSON shapes
     type EtfMorPortfolioAssetAllocation = EtfMorPortfolioAssetAllocation;
     type EtfMorPortfolioStyleMeasures = EtfMorPortfolioStyleMeasures;
-    type EtfMorPortfolioFixedIncomeMeasures = EtfMorPortfolioFixedIncomeMeasures;
+    type EtfMorPortfolioFixedIncomeStyle = EtfMorPortfolioFixedIncomeStyle;
     type EtfMorPortfolioSectorExposure = EtfMorPortfolioSectorExposure;
     type EtfMorPortfolioBondBreakdown = EtfMorPortfolioBondBreakdown;
     type EtfMorPortfolioHoldings = EtfMorPortfolioHoldings;

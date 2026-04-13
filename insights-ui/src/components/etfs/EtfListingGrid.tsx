@@ -4,20 +4,20 @@ import Link from 'next/link';
 import React, { use } from 'react';
 import EtfPagination from './EtfPagination';
 
-const MORNINGSTAR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInfo' | 'hasMorRiskInfo' | 'hasMorPeopleInfo'>; label: string }> = [
+const MOR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInfo' | 'hasMorRiskInfo' | 'hasMorPeopleInfo'>; label: string }> = [
   { key: 'hasMorAnalyzerInfo', label: 'Analyzer' },
   { key: 'hasMorRiskInfo', label: 'Risk' },
   { key: 'hasMorPeopleInfo', label: 'People' },
 ];
 
-function MorningstarIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
+function MorIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
   return (
     <PrivateWrapper>
-      <div className="flex items-center gap-1" aria-label="Morningstar data available">
-        {MORNINGSTAR_INDICATORS.map(({ key, label }) => (
+      <div className="flex items-center gap-1" aria-label="MOR data available">
+        {MOR_INDICATORS.map(({ key, label }) => (
           <span
             key={key}
-            title={`Morningstar ${label}: ${etf[key] ? 'present' : 'missing'}`}
+            title={`MOR ${label}: ${etf[key] ? 'present' : 'missing'}`}
             className={`inline-block w-2 h-2 rounded-full ${etf[key] ? 'bg-emerald-400' : 'bg-gray-600'}`}
           />
         ))}
@@ -64,7 +64,7 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
         <div className="flex items-center gap-2">
           <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-gray-400">{etf.exchange}</span>
-          <MorningstarIndicators etf={etf} />
+          <MorIndicators etf={etf} />
         </div>
         {etf.payoutFrequency && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
       </div>

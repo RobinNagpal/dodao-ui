@@ -10,7 +10,8 @@ import {
   EtfMorStrategy,
   EtfMorPortfolioAssetAllocation,
   EtfMorPortfolioBondBreakdown,
-  EtfMorPortfolioFixedIncomeMeasures,
+  EtfMorPortfolioFixedIncomeStyle,
+  EtfMorPortfolioHoldingRow,
   EtfMorPortfolioHoldings,
   EtfMorPortfolioSectorExposure,
   EtfMorPortfolioStyleMeasures,
@@ -35,11 +36,11 @@ interface PeopleData {
   managerTimeline?: Array<{ name: string; startYear?: number; endYear?: number; source?: string }>;
 }
 
-/** Morningstar /portfolio scraper payload (etf-portfolio.ts) */
+/** MOR /portfolio scraper payload (etf-portfolio.ts) */
 interface PortfolioData {
   assetAllocation?: EtfMorPortfolioAssetAllocation;
   styleMeasures?: EtfMorPortfolioStyleMeasures;
-  fixedIncomeMeasures?: EtfMorPortfolioFixedIncomeMeasures;
+  fixedIncomeStyle?: EtfMorPortfolioFixedIncomeStyle;
   sectorExposure?: EtfMorPortfolioSectorExposure;
   bondBreakdown?: EtfMorPortfolioBondBreakdown;
   holdings?: EtfMorPortfolioHoldings;
@@ -75,8 +76,7 @@ function rowsContainerIsEmpty(v: { rows?: unknown[] } | null | undefined): boole
 
 function bondBreakdownIsEmpty(v: EtfMorPortfolioBondBreakdown | null | undefined): boolean {
   if (v == null) return true;
-  if ((v.views?.length ?? 0) === 0) return true;
-  return v.views.every((view) => (view.rows?.length ?? 0) === 0);
+  return (v.vsCategoryPct?.length ?? 0) === 0 && (v.vsIndexPct?.length ?? 0) === 0;
 }
 
 function holdingsIsEmpty(v: EtfMorPortfolioHoldings | null | undefined): boolean {
@@ -88,31 +88,32 @@ function holdingsIsEmpty(v: EtfMorPortfolioHoldings | null | undefined): boolean
 
 const DASH_PLACEHOLDERS = new Set(['—', '–', '−', '-', 'N/A', 'n/a']);
 
-function normalizeDashes<T extends Record<string, unknown>>(obj: T | undefined | null): T | undefined | null {
+function normalizeDashes<T extends object>(obj: T | undefined | null): T | undefined | null {
   if (obj == null) return obj;
   const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(obj)) {
+  for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
     if (typeof v === 'string' && DASH_PLACEHOLDERS.has(v.trim())) {
       out[k] = null;
     } else {
       out[k] = v;
     }
   }
-  return out as T;
+  return out as unknown as T;
 }
 
 function normalizeHoldings(h: EtfMorPortfolioHoldings | null | undefined): EtfMorPortfolioHoldings | null | undefined {
   if (h == null) return h;
   return {
-    summary: (normalizeDashes(h.summary) ?? {}) as EtfMorPortfolioHoldings['summary'],
-    holdings: Array.isArray(h.holdings) ? h.holdings.map((row) => normalizeDashes(row) as (typeof h.holdings)[number]) : [],
+    summary: normalizeDashes(h.summary) ?? {},
+    columns: Array.isArray(h.columns) ? h.columns : [],
+    holdings: Array.isArray(h.holdings) ? h.holdings.map((row) => normalizeDashes(row) as EtfMorPortfolioHoldingRow) : [],
   };
 }
 
 type PortfolioRow = {
   assetAllocation: unknown;
   styleMeasures: unknown;
-  fixedIncomeMeasures: unknown;
+  fixedIncomeStyle: unknown;
   sectorExposure: unknown;
   bondBreakdown: unknown;
   holdings: unknown;
@@ -143,13 +144,13 @@ function buildPortfolioUpdatePatch(d: PortfolioData, existing: PortfolioRow | nu
       patch.styleMeasures = incoming as object | null;
     }
   }
-  if ('fixedIncomeMeasures' in d) {
-    const incoming = d.fixedIncomeMeasures ?? null;
-    const prev = existing?.fixedIncomeMeasures as EtfMorPortfolioFixedIncomeMeasures | null | undefined;
+  if ('fixedIncomeStyle' in d) {
+    const incoming = d.fixedIncomeStyle ?? null;
+    const prev = existing?.fixedIncomeStyle as EtfMorPortfolioFixedIncomeStyle | null | undefined;
     if (incoming != null && rowsContainerIsEmpty(incoming) && prev != null && !rowsContainerIsEmpty(prev)) {
-      patch.fixedIncomeMeasures = prev as object;
+      patch.fixedIncomeStyle = prev as object;
     } else {
-      patch.fixedIncomeMeasures = incoming as object | null;
+      patch.fixedIncomeStyle = incoming as object | null;
     }
   }
   if ('sectorExposure' in d) {
@@ -187,7 +188,7 @@ function buildPortfolioCreateData(d: PortfolioData): Record<string, unknown> {
   return {
     assetAllocation: ('assetAllocation' in d ? d.assetAllocation ?? null : null) as object | null,
     styleMeasures: ('styleMeasures' in d ? d.styleMeasures ?? null : null) as object | null,
-    fixedIncomeMeasures: ('fixedIncomeMeasures' in d ? d.fixedIncomeMeasures ?? null : null) as object | null,
+    fixedIncomeStyle: ('fixedIncomeStyle' in d ? d.fixedIncomeStyle ?? null : null) as object | null,
     sectorExposure: ('sectorExposure' in d ? d.sectorExposure ?? null : null) as object | null,
     bondBreakdown: ('bondBreakdown' in d ? d.bondBreakdown ?? null : null) as object | null,
     holdings: ('holdings' in d ? normalizeHoldings(d.holdings ?? null) ?? null : null) as object | null,
@@ -318,7 +319,7 @@ async function postHandler(
         ? {
             assetAllocation: existingRow.assetAllocation,
             styleMeasures: existingRow.styleMeasures,
-            fixedIncomeMeasures: existingRow.fixedIncomeMeasures,
+            fixedIncomeStyle: existingRow.fixedIncomeStyle,
             sectorExposure: existingRow.sectorExposure,
             bondBreakdown: existingRow.bondBreakdown,
             holdings: existingRow.holdings,
