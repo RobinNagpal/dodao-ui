@@ -4,21 +4,21 @@ import Link from 'next/link';
 import React, { use } from 'react';
 import EtfPagination from './EtfPagination';
 
-const MORNINGSTAR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInfo' | 'hasMorRiskInfo' | 'hasMorPeopleInfo'>; label: string }> = [
+const MOR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInfo' | 'hasMorRiskInfo' | 'hasMorPeopleInfo'>; label: string }> = [
   { key: 'hasMorAnalyzerInfo', label: 'Analyzer' },
   { key: 'hasMorRiskInfo', label: 'Risk' },
   { key: 'hasMorPeopleInfo', label: 'People' },
 ];
 
-function MorningstarIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
+function MorIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
   return (
     <PrivateWrapper>
-      <div className="flex items-center gap-1.5" aria-label="Morningstar data available">
-        {MORNINGSTAR_INDICATORS.map(({ key, label }) => (
+      <div className="flex items-center gap-1.5" aria-label="MOR data available">
+        {MOR_INDICATORS.map(({ key, label }) => (
           <span key={key} className="relative group/dot">
             <span className={`inline-block w-2 h-2 rounded-full ${etf[key] ? 'bg-emerald-400' : 'bg-gray-600'}`} />
             <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[10px] text-gray-200 opacity-0 shadow-lg transition-opacity group-hover/dot:opacity-100 border border-gray-700 z-10">
-              {label}: {etf[key] ? 'Present' : 'Missing'}
+              MOR {label}: {etf[key] ? 'Present' : 'Missing'}
             </span>
           </span>
         ))}
@@ -65,7 +65,7 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
         <div className="flex items-center gap-2">
           <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-gray-400">{etf.exchange}</span>
-          <MorningstarIndicators etf={etf} />
+          <MorIndicators etf={etf} />
         </div>
         {etf.payoutFrequency && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
       </div>

@@ -1524,7 +1524,6 @@ model EtfMorPeopleInfo {
   @@map("etf_mor_people_info")
 }
 
-// Morningstar ETF /portfolio scraper payload (see morningstar-etfs etf-portfolio.ts)
 model EtfMorPortfolioInfo {
   id    String @id @default(uuid())
   etfId String @unique @map("etf_id")
@@ -1533,8 +1532,8 @@ model EtfMorPortfolioInfo {
   assetAllocation Json? @map("asset_allocation") @db.JsonB
   /// [EtfMorPortfolioStyleMeasures]
   styleMeasures Json? @map("style_measures") @db.JsonB
-  /// [EtfMorPortfolioFixedIncomeMeasures]
-  fixedIncomeMeasures Json? @map("fixed_income_measures") @db.JsonB
+  /// [EtfMorPortfolioFixedIncomeStyle]
+  fixedIncomeStyle Json? @map("fixed_income_style") @db.JsonB
   /// [EtfMorPortfolioSectorExposure]
   sectorExposure Json? @map("sector_exposure") @db.JsonB
   /// [EtfMorPortfolioBondBreakdown]

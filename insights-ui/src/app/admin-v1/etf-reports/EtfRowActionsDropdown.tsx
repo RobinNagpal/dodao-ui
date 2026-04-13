@@ -31,7 +31,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
 
   const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' | 'portfolio' }>({
     successMessage: 'Request accepted. Processing in background.',
-    errorMessage: 'Failed to queue Morningstar scrape',
+    errorMessage: 'Failed to fetch MOR info',
   });
 
   const isBusy = fetchingFinancialInfo || triggeringMor || flushing;

@@ -34,9 +34,9 @@ function joinUrl(base: string, path: string): string {
   return `${b}/${p}`;
 }
 
-type MorningstarEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats';
+type MorEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats';
 
-function toMorningstarEtfExchangeSegment(exchange: AllExchanges): MorningstarEtfExchangeSegment {
+function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment {
   switch (exchange) {
     case USExchanges.NYSE:
       return 'xnys';
@@ -47,13 +47,13 @@ function toMorningstarEtfExchangeSegment(exchange: AllExchanges): MorningstarEtf
     case USExchanges.BATS:
       return 'bats';
     default:
-      throw new Error(`Unsupported exchange for Morningstar ETF scrape: ${exchange}`);
+      throw new Error(`Unsupported exchange: ${exchange}`);
   }
 }
 
-function buildMorningstarEtfRelativePath(params: { exchange: string; symbol: string; kind: MorKind }): string {
+function buildMorEtfRelativePath(params: { exchange: string; symbol: string; kind: MorKind }): string {
   const ex = toExchange(params.exchange);
-  const seg = toMorningstarEtfExchangeSegment(ex);
+  const seg = toMorEtfExchangeSegment(ex);
   const sym = (params.symbol ?? '').trim().toLowerCase();
   if (!sym) throw new Error('Invalid ETF symbol');
   return `/${seg}/${encodeURIComponent(sym)}/${params.kind}`;
@@ -77,7 +77,7 @@ async function postHandler(
   const { spaceId, exchange, etf } = await params;
   const ex = normalizeUpperTrim(exchange);
   const symbol = normalizeUpperTrim(etf);
-  const morRelativePath = buildMorningstarEtfRelativePath({ exchange: ex, symbol, kind });
+  const morRelativePath = buildMorEtfRelativePath({ exchange: ex, symbol, kind });
   const callbackUrl = joinUrl(
     CALLBACK_BASE_URL,
     `/api/${encodeURIComponent(spaceId)}/etfs-v1/exchange/${encodeURIComponent(ex)}/${encodeURIComponent(symbol)}/mor-info-callback`
