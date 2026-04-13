@@ -189,29 +189,29 @@ export const ETF_SORTINO_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
 
 export const ETF_MOR_UPSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
-  { label: 'Low (< 80%)', value: '0-80' },
-  { label: 'Below Avg (80% - 95%)', value: '80-95' },
-  { label: 'Average (95% - 105%)', value: '95-105' },
-  { label: 'Above Avg (105% - 120%)', value: '105-120' },
-  { label: 'High (> 120%)', value: '120-' },
+  { label: 'Low (< 85)', value: '0-85' },
+  { label: 'Below Avg (85 - 95)', value: '85-95' },
+  { label: 'Average (95 - 105)', value: '95-105' },
+  { label: 'Above Avg (105 - 115)', value: '105-115' },
+  { label: 'High (> 115)', value: '115-' },
 ] as const;
 
 export const ETF_MOR_DOWNSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
-  { label: 'Excellent (< 50%)', value: '0-50' },
-  { label: 'Good (50% - 70%)', value: '50-70' },
-  { label: 'Average (70% - 90%)', value: '70-90' },
-  { label: 'Below Avg (90% - 100%)', value: '90-100' },
-  { label: 'Poor (> 100%)', value: '100-' },
+  { label: 'Excellent (< 50)', value: '0-50' },
+  { label: 'Good (50 - 80)', value: '50-80' },
+  { label: 'Average (80 - 100)', value: '80-100' },
+  { label: 'Below Avg (100 - 115)', value: '100-115' },
+  { label: 'Poor (> 115)', value: '115-' },
 ] as const;
 
 export const ETF_MOR_RISK_LEVEL_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
-  { label: 'Low', value: 'Low' },
-  { label: 'Below Average', value: 'Below Average' },
-  { label: 'Average', value: 'Average' },
-  { label: 'Above Average', value: 'Above Average' },
-  { label: 'High', value: 'High' },
+  { label: 'Conservative', value: 'Conservative' },
+  { label: 'Moderate', value: 'Moderate' },
+  { label: 'Aggressive', value: 'Aggressive' },
+  { label: 'Very Aggressive', value: 'Very Aggressive' },
+  { label: 'Extreme', value: 'Extreme' },
 ] as const;
 
 const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
@@ -702,17 +702,16 @@ export function hasAdvancedMorFilters(filters: EtfFilterParams): boolean {
   return ADVANCED_MOR_FILTER_KEYS.some((key) => !!filters[key]?.trim());
 }
 
-export function extractCaptureRatioForPeriod(riskPeriods: any, period: MorPeriodKey, columnSubstring: string): number | null {
+export function extractCaptureRatioForPeriod(riskPeriods: any, period: MorPeriodKey, rowLabel: string): number | null {
   const periodData = riskPeriods?.[period];
   if (!periodData) return null;
   const table = periodData?.marketVolatilityMeasures?.captureRatios;
   if (!table?.columns || !table?.rows?.length) return null;
 
-  const col = table.columns.find((c: string) => c.toLowerCase().includes(columnSubstring.toLowerCase()));
-  if (!col) return null;
+  const row = table.rows.find((r: any) => r.label?.toLowerCase() === rowLabel.toLowerCase());
+  if (!row) return null;
 
-  const firstRow = table.rows[0];
-  const raw = firstRow?.values?.[col];
+  const raw = row.values?.['Index'];
   return parseNumericStringValue(raw);
 }
 
