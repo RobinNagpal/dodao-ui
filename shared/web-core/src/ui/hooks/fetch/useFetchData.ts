@@ -1,6 +1,7 @@
 import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/enums';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { useDeepCompareMemoize } from '@dodao/web-core/ui/hooks/fetch/useDeepCompareMemoize';
+import { handleUnauthorized } from '@dodao/web-core/ui/hooks/fetch/handleUnauthorized';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface UseFetchDataResponse<T> {
@@ -43,6 +44,10 @@ export const useFetchData = <T>(
 
       setLoading(false);
       if (!response.ok) {
+        if (response.status === 401) {
+          await handleUnauthorized(showNotification);
+          return;
+        }
         const errorText = await response.text();
         setError(errorText);
         setLoading(false);
