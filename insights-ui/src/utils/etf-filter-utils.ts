@@ -9,11 +9,17 @@ export enum EtfFilterType {
   EXPENSE_RATIO = 'expenseRatio',
   PE_RATIO = 'peRatio',
   DIVIDEND_TTM = 'dividendTtm',
+  DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
   SHARPE_RATIO = 'sharpeRatio',
   SORTINO_RATIO = 'sortinoRatio',
+  BETA = 'beta',
+  RSI = 'rsi',
+  DIVIDEND_YEARS = 'dividendYears',
+  ASSET_CLASS = 'assetClass',
+  ISSUER = 'issuer',
   SEARCH = 'search',
   // Advanced (Morningstar) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
@@ -32,11 +38,17 @@ export enum EtfFilterParamKey {
   EXPENSE_RATIO = 'expenseRatio',
   PE_RATIO = 'peRatio',
   DIVIDEND_TTM = 'dividendTtm',
+  DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
   SHARPE_RATIO = 'sharpeRatio',
   SORTINO_RATIO = 'sortinoRatio',
+  BETA = 'beta',
+  RSI = 'rsi',
+  DIVIDEND_YEARS = 'dividendYears',
+  ASSET_CLASS = 'assetClass',
+  ISSUER = 'issuer',
   SEARCH = 'search',
   // Advanced (Morningstar) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
@@ -68,10 +80,14 @@ type RangeFilterType =
   | EtfFilterType.EXPENSE_RATIO
   | EtfFilterType.PE_RATIO
   | EtfFilterType.DIVIDEND_TTM
+  | EtfFilterType.DIVIDEND_YIELD
   | EtfFilterType.SHARES_OUT
   | EtfFilterType.HOLDINGS
   | EtfFilterType.SHARPE_RATIO
   | EtfFilterType.SORTINO_RATIO
+  | EtfFilterType.BETA
+  | EtfFilterType.RSI
+  | EtfFilterType.DIVIDEND_YEARS
   | EtfFilterType.MOR_UPSIDE_3YR
   | EtfFilterType.MOR_UPSIDE_5YR
   | EtfFilterType.MOR_UPSIDE_10YR
@@ -79,7 +95,13 @@ type RangeFilterType =
   | EtfFilterType.MOR_DOWNSIDE_5YR
   | EtfFilterType.MOR_DOWNSIDE_10YR;
 
-type SelectFilterType = EtfFilterType.PAYOUT_FREQUENCY | EtfFilterType.MOR_RISK_3YR | EtfFilterType.MOR_RISK_5YR | EtfFilterType.MOR_RISK_10YR;
+type SelectFilterType =
+  | EtfFilterType.PAYOUT_FREQUENCY
+  | EtfFilterType.ASSET_CLASS
+  | EtfFilterType.ISSUER
+  | EtfFilterType.MOR_RISK_3YR
+  | EtfFilterType.MOR_RISK_5YR
+  | EtfFilterType.MOR_RISK_10YR;
 
 export interface AppliedEtfRangeFilter extends AppliedEtfFilterBase {
   type: RangeFilterType;
@@ -187,6 +209,75 @@ export const ETF_SORTINO_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Excellent (> 3)', value: '3-' },
 ] as const;
 
+export const ETF_BETA_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0)', value: 'negative' },
+  { label: 'Low (0 - 0.5)', value: '0-0.5' },
+  { label: 'Below Market (0.5 - 0.8)', value: '0.5-0.8' },
+  { label: 'Market (0.8 - 1.2)', value: '0.8-1.2' },
+  { label: 'Above Market (1.2 - 1.5)', value: '1.2-1.5' },
+  { label: 'High (> 1.5)', value: '1.5-' },
+] as const;
+
+export const ETF_RSI_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Oversold (< 30)', value: '0-30' },
+  { label: 'Weak (30 - 40)', value: '30-40' },
+  { label: 'Neutral (40 - 60)', value: '40-60' },
+  { label: 'Strong (60 - 70)', value: '60-70' },
+  { label: 'Overbought (> 70)', value: '70-' },
+] as const;
+
+export const ETF_DIVIDEND_YIELD_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'None (< 0.5%)', value: '0-0.5' },
+  { label: 'Low (0.5% - 2%)', value: '0.5-2' },
+  { label: 'Moderate (2% - 4%)', value: '2-4' },
+  { label: 'High (4% - 6%)', value: '4-6' },
+  { label: 'Very High (> 6%)', value: '6-' },
+] as const;
+
+export const ETF_DIVIDEND_YEARS_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'None (0)', value: '0-0' },
+  { label: 'New (1 - 3)', value: '1-3' },
+  { label: 'Established (3 - 10)', value: '3-10' },
+  { label: 'Long (10 - 20)', value: '10-20' },
+  { label: 'Aristocrat (20+)', value: '20-' },
+] as const;
+
+export const ETF_ASSET_CLASS_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Equity', value: 'Equity' },
+  { label: 'Fixed Income', value: 'Fixed Income' },
+  { label: 'Commodity', value: 'Commodity' },
+  { label: 'Alternatives', value: 'Alternatives' },
+  { label: 'Multi-Asset', value: 'Multi-Asset' },
+  { label: 'Currency', value: 'Currency' },
+] as const;
+
+export const ETF_ISSUER_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'BlackRock', value: 'BlackRock' },
+  { label: 'Vanguard', value: 'Vanguard' },
+  { label: 'State Street', value: 'State Street' },
+  { label: 'Invesco', value: 'Invesco' },
+  { label: 'Schwab', value: 'Schwab' },
+  { label: 'First Trust', value: 'First Trust' },
+  { label: 'ProShares', value: 'ProShares' },
+  { label: 'WisdomTree', value: 'WisdomTree' },
+  { label: 'Goldman Sachs', value: 'Goldman Sachs' },
+  { label: 'JPMorgan', value: 'JPMorgan' },
+  { label: 'Fidelity', value: 'Fidelity' },
+  { label: 'Direxion', value: 'Direxion' },
+  { label: 'Global X', value: 'Global X' },
+  { label: 'PIMCO', value: 'PIMCO' },
+  { label: 'Innovator', value: 'Innovator' },
+  { label: 'VanEck', value: 'VanEck' },
+  { label: 'ARK', value: 'ARK' },
+  { label: 'Dimensional', value: 'Dimensional' },
+] as const;
+
 export const ETF_MOR_UPSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
   { label: 'Low (< 85)', value: '0-85' },
@@ -219,11 +310,17 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.EXPENSE_RATIO,
   EtfFilterParamKey.PE_RATIO,
   EtfFilterParamKey.DIVIDEND_TTM,
+  EtfFilterParamKey.DIVIDEND_YIELD,
   EtfFilterParamKey.PAYOUT_FREQUENCY,
   EtfFilterParamKey.SHARES_OUT,
   EtfFilterParamKey.HOLDINGS,
   EtfFilterParamKey.SHARPE_RATIO,
   EtfFilterParamKey.SORTINO_RATIO,
+  EtfFilterParamKey.BETA,
+  EtfFilterParamKey.RSI,
+  EtfFilterParamKey.DIVIDEND_YEARS,
+  EtfFilterParamKey.ASSET_CLASS,
+  EtfFilterParamKey.ISSUER,
   EtfFilterParamKey.SEARCH,
   EtfFilterParamKey.MOR_UPSIDE_3YR,
   EtfFilterParamKey.MOR_UPSIDE_5YR,
@@ -336,6 +433,8 @@ export const MOR_ADVANCED_FILTERS: MorAdvancedFilterDef[] = [
 
 const SELECT_FILTER_TYPES: Set<string> = new Set([
   EtfFilterType.PAYOUT_FREQUENCY,
+  EtfFilterType.ASSET_CLASS,
+  EtfFilterType.ISSUER,
   EtfFilterType.MOR_RISK_3YR,
   EtfFilterType.MOR_RISK_5YR,
   EtfFilterType.MOR_RISK_10YR,
@@ -414,6 +513,13 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     if (f) filters.push(f);
   }
 
+  // Dividend Yield
+  const dyRaw = searchParams.get(EtfFilterParamKey.DIVIDEND_YIELD);
+  if (dyRaw) {
+    const f = parseRangeFilter(dyRaw, EtfFilterType.DIVIDEND_YIELD, EtfFilterParamKey.DIVIDEND_YIELD, ETF_DIVIDEND_YIELD_OPTIONS, 'Dividend Yield');
+    if (f) filters.push(f);
+  }
+
   // Payout Frequency
   const pfRaw = searchParams.get(EtfFilterParamKey.PAYOUT_FREQUENCY);
   if (pfRaw && pfRaw.trim()) {
@@ -452,6 +558,51 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
   if (sortinoRaw) {
     const f = parseRangeFilter(sortinoRaw, EtfFilterType.SORTINO_RATIO, EtfFilterParamKey.SORTINO_RATIO, ETF_SORTINO_RATIO_OPTIONS, 'Sortino Ratio');
     if (f) filters.push(f);
+  }
+
+  // Beta
+  const betaRaw = searchParams.get(EtfFilterParamKey.BETA);
+  if (betaRaw) {
+    const f = parseRangeFilter(betaRaw, EtfFilterType.BETA, EtfFilterParamKey.BETA, ETF_BETA_OPTIONS, 'Beta');
+    if (f) filters.push(f);
+  }
+
+  // RSI
+  const rsiRaw = searchParams.get(EtfFilterParamKey.RSI);
+  if (rsiRaw) {
+    const f = parseRangeFilter(rsiRaw, EtfFilterType.RSI, EtfFilterParamKey.RSI, ETF_RSI_OPTIONS, 'RSI');
+    if (f) filters.push(f);
+  }
+
+  // Dividend Years
+  const divYearsRaw = searchParams.get(EtfFilterParamKey.DIVIDEND_YEARS);
+  if (divYearsRaw) {
+    const f = parseRangeFilter(divYearsRaw, EtfFilterType.DIVIDEND_YEARS, EtfFilterParamKey.DIVIDEND_YEARS, ETF_DIVIDEND_YEARS_OPTIONS, 'Dividend Years');
+    if (f) filters.push(f);
+  }
+
+  // Asset Class
+  const acRaw = searchParams.get(EtfFilterParamKey.ASSET_CLASS);
+  if (acRaw && acRaw.trim()) {
+    const matchingOption = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value === acRaw);
+    filters.push({
+      type: EtfFilterType.ASSET_CLASS,
+      paramKey: EtfFilterParamKey.ASSET_CLASS,
+      selectedValue: acRaw,
+      label: matchingOption ? `Asset Class: ${matchingOption.label}` : `Asset Class: ${acRaw}`,
+    });
+  }
+
+  // Issuer
+  const issuerRaw = searchParams.get(EtfFilterParamKey.ISSUER);
+  if (issuerRaw && issuerRaw.trim()) {
+    const matchingOption = ETF_ISSUER_OPTIONS.find((o) => o.value === issuerRaw);
+    filters.push({
+      type: EtfFilterType.ISSUER,
+      paramKey: EtfFilterParamKey.ISSUER,
+      selectedValue: issuerRaw,
+      label: matchingOption ? `Issuer: ${matchingOption.label}` : `Issuer: ${issuerRaw}`,
+    });
   }
 
   // Morningstar advanced filters (per-period)
@@ -638,6 +789,14 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
     where.holdings = holdingsFilter;
   }
 
+  const dyRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YIELD]);
+  if (dyRange) {
+    const dyFilter: Prisma.FloatNullableFilter = {};
+    if (dyRange.min !== undefined) dyFilter.gte = dyRange.min;
+    if (dyRange.max !== undefined) dyFilter.lte = dyRange.max;
+    where.dividendYield = dyFilter;
+  }
+
   return where;
 }
 
@@ -672,6 +831,47 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
         where.sortino = sortinoFilter;
       }
     }
+  }
+
+  const betaParam = filters[EtfFilterParamKey.BETA]?.trim();
+  if (betaParam) {
+    if (betaParam === 'negative') {
+      where.beta1y = { lt: 0 };
+    } else {
+      const betaRange = parseRangeParam(betaParam);
+      if (betaRange) {
+        const betaFilter: Prisma.FloatNullableFilter = {};
+        if (betaRange.min !== undefined) betaFilter.gte = betaRange.min;
+        if (betaRange.max !== undefined) betaFilter.lte = betaRange.max;
+        where.beta1y = betaFilter;
+      }
+    }
+  }
+
+  const rsiRange = parseRangeParam(filters[EtfFilterParamKey.RSI]);
+  if (rsiRange) {
+    const rsiFilter: Prisma.FloatNullableFilter = {};
+    if (rsiRange.min !== undefined) rsiFilter.gte = rsiRange.min;
+    if (rsiRange.max !== undefined) rsiFilter.lte = rsiRange.max;
+    where.rsi = rsiFilter;
+  }
+
+  const divYearsRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YEARS]);
+  if (divYearsRange) {
+    const divYearsFilter: Prisma.IntNullableFilter = {};
+    if (divYearsRange.min !== undefined) divYearsFilter.gte = divYearsRange.min;
+    if (divYearsRange.max !== undefined) divYearsFilter.lte = divYearsRange.max;
+    where.divYears = divYearsFilter;
+  }
+
+  const assetClass = filters[EtfFilterParamKey.ASSET_CLASS]?.trim();
+  if (assetClass) {
+    where.assetClass = { equals: assetClass, mode: 'insensitive' };
+  }
+
+  const issuer = filters[EtfFilterParamKey.ISSUER]?.trim();
+  if (issuer) {
+    where.issuer = { contains: issuer, mode: 'insensitive' };
   }
 
   return where;
