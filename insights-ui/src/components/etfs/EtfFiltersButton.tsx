@@ -13,6 +13,8 @@ import {
   ETF_PAYOUT_FREQUENCY_OPTIONS,
   ETF_SHARES_OUT_OPTIONS,
   ETF_HOLDINGS_OPTIONS,
+  ETF_SHARPE_RATIO_OPTIONS,
+  ETF_SORTINO_RATIO_OPTIONS,
   MOR_ADVANCED_FILTERS,
   getAppliedEtfFilters,
   buildInitialEtfSelected,
@@ -185,6 +187,20 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
             value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
             options={ETF_HOLDINGS_OPTIONS}
             onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
+          />
+          <FilterDropdown
+            id="sharpeRatio"
+            label="Sharpe Ratio"
+            value={selectedFilters[EtfFilterParamKey.SHARPE_RATIO] || ''}
+            options={ETF_SHARPE_RATIO_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.SHARPE_RATIO, v)}
+          />
+          <FilterDropdown
+            id="sortinoRatio"
+            label="Sortino Ratio"
+            value={selectedFilters[EtfFilterParamKey.SORTINO_RATIO] || ''}
+            options={ETF_SORTINO_RATIO_OPTIONS}
+            onChange={(v) => handleChange(EtfFilterParamKey.SORTINO_RATIO, v)}
           />
         </div>
       </div>

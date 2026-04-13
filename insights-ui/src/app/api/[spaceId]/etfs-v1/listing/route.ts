@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import {
   createEtfFinancialFilter,
+  createEtfStockAnalyzerFilter,
   createEtfSearchFilter,
   hasEtfFiltersAppliedServer,
   hasAdvancedMorFilters,
@@ -105,6 +106,12 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   if (hasFinancialFilter) {
     etfWhere.financialInfo = { is: financialFilter };
+  }
+
+  const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);
+  const hasStockAnalyzerFilter = Object.keys(stockAnalyzerFilter).length > 0;
+  if (hasStockAnalyzerFilter) {
+    etfWhere.stockAnalyzerInfo = { is: stockAnalyzerFilter };
   }
 
   // When advanced Morningstar filters are active, require morRiskInfo to exist
