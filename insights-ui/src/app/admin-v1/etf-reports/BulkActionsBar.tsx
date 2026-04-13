@@ -36,6 +36,10 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     setProgress({ done: 0, total });
 
     for (let i = 0; i < total; i++) {
+      if (i > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+
       const etf = selectedEtfs[i];
       const base = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}`;
 
