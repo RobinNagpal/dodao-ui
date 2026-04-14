@@ -81,9 +81,7 @@ async function fetchEtfFinancialInfo(exchange: string, etf: string): Promise<Etf
 async function fetchEtfMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/mor-info`;
   try {
-    const res: Response = await fetch(url, 
-      { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } }
-    );
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
     if (!res.ok) {
       console.error(`fetchEtfMorInfo failed (${res.status}): ${url}`);
       return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
