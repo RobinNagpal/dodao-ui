@@ -2,10 +2,7 @@ import { prisma } from '@/prisma';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { Etf, EtfGenerationRequest } from '@prisma/client';
 
-export async function markEtfRequestAsInProgress(
-  generationRequest: EtfGenerationRequest & { etf: Etf },
-  reportToGenerate: EtfReportType
-): Promise<void> {
+export async function markEtfRequestAsInProgress(generationRequest: EtfGenerationRequest & { etf: Etf }, reportToGenerate: EtfReportType): Promise<void> {
   await prisma.etfGenerationRequest.update({
     where: { id: generationRequest.id },
     data: {
