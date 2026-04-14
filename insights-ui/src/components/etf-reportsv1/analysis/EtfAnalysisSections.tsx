@@ -10,14 +10,28 @@ const CATEGORY_DISPLAY: Record<string, { name: string; order: number }> = {
   [EtfAnalysisCategory.RiskAnalysis]: { name: 'Risk Analysis', order: 3 },
 };
 
-function FactorResult({ factorKey, oneLineExplanation, detailedExplanation, result }: { factorKey: string; oneLineExplanation: string; detailedExplanation: string; result: string }) {
+function FactorResult({
+  factorKey,
+  oneLineExplanation,
+  detailedExplanation,
+  result,
+}: {
+  factorKey: string;
+  oneLineExplanation: string;
+  detailedExplanation: string;
+  result: string;
+}) {
   const [expanded, setExpanded] = useState(false);
   const isPassing = result === 'Pass';
 
   return (
     <div className="border border-gray-700 rounded-lg p-3 mb-2">
       <button onClick={() => setExpanded(!expanded)} className="w-full text-left flex items-start gap-3">
-        <span className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${isPassing ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'}`}>
+        <span
+          className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+            isPassing ? 'bg-green-900 text-green-300' : 'bg-red-900 text-red-300'
+          }`}
+        >
           {isPassing ? '✓' : '✗'}
         </span>
         <div className="flex-1 min-w-0">
@@ -25,9 +39,7 @@ function FactorResult({ factorKey, oneLineExplanation, detailedExplanation, resu
         </div>
         <span className="text-gray-400 text-xs flex-shrink-0">{expanded ? '▲' : '▼'}</span>
       </button>
-      {expanded && (
-        <div className="mt-3 ml-8 text-sm text-gray-300 whitespace-pre-wrap">{detailedExplanation}</div>
-      )}
+      {expanded && <div className="mt-3 ml-8 text-sm text-gray-300 whitespace-pre-wrap">{detailedExplanation}</div>}
     </div>
   );
 }
@@ -41,7 +53,9 @@ function CategorySection({ category }: { category: EtfCategoryAnalysisResultResp
     <section className="bg-gray-900 rounded-lg p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg font-semibold">{display.name}</h3>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${passCount >= totalCount / 2 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}>
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-medium ${passCount >= totalCount / 2 ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}
+        >
           {passCount}/{totalCount} Pass
         </span>
       </div>

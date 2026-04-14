@@ -21,10 +21,7 @@ export interface EtfAnalysisResponse {
   categories: EtfCategoryAnalysisResultResponse[];
 }
 
-async function getHandler(
-  _req: NextRequest,
-  context: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
-): Promise<EtfAnalysisResponse> {
+async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }): Promise<EtfAnalysisResponse> {
   const { spaceId, exchange, etf } = await context.params;
   const where = getEtfWhereClause({ spaceId, exchange, etf });
 

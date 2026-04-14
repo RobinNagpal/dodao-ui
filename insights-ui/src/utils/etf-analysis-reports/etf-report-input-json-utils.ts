@@ -1,9 +1,29 @@
-import { EtfAnalysisCategory, EtfAnalysisFactorDefinition, EtfCategoryAnalysisFactors } from '@/types/etf/etf-analysis-types';
+import { EtfAnalysisCategory, EtfAnalysisFactorDefinition, EtfAnalysisFactorsConfig } from '@/types/etf/etf-analysis-types';
 import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 
+function isEtfAnalysisCategory(value: string): value is EtfAnalysisCategory {
+  return (Object.values(EtfAnalysisCategory) as string[]).includes(value);
+}
+
+function parseEtfAnalysisFactorsConfig(raw: typeof etfAnalysisFactorsConfig): EtfAnalysisFactorsConfig {
+  return {
+    categories: raw.categories.map((c) => {
+      if (!isEtfAnalysisCategory(c.categoryKey)) {
+        throw new Error(`Invalid ETF analysis categoryKey in config: ${c.categoryKey}`);
+      }
+      return {
+        ...c,
+        categoryKey: c.categoryKey,
+      };
+    }),
+  };
+}
+
+const typedConfig = parseEtfAnalysisFactorsConfig(etfAnalysisFactorsConfig);
+
 export function getEtfAnalysisFactorsForCategory(categoryKey: EtfAnalysisCategory): EtfAnalysisFactorDefinition[] {
-  const category = etfAnalysisFactorsConfig.categories.find((c: EtfCategoryAnalysisFactors) => c.categoryKey === categoryKey);
+  const category = typedConfig.categories.find((c) => c.categoryKey === categoryKey);
   if (!category) {
     throw new Error(`ETF analysis category not found: ${categoryKey}`);
   }

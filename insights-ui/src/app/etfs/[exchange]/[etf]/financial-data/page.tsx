@@ -27,13 +27,16 @@ async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOp
 }
 
 function JsonSection({ title, data }: { title: string; data: unknown }) {
-  if (!data) return <div className="mb-6"><h3 className="text-lg font-semibold mb-2 text-red-400">{title} — No Data</h3></div>;
+  if (!data)
+    return (
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold mb-2 text-red-400">{title} — No Data</h3>
+      </div>
+    );
   return (
     <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2 text-green-400">{title}</h3>
-      <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto text-xs text-gray-300 max-h-96 overflow-y-auto">
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto text-xs text-gray-300 max-h-96 overflow-y-auto">{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }
@@ -57,7 +60,13 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
               <tr key={key}>
                 <td className="px-4 py-2 text-sm font-mono text-gray-300">{key}</td>
                 <td className="px-4 py-2 text-sm text-gray-200">
-                  {value === null ? <span className="text-gray-500 italic">null</span> : typeof value === 'object' ? <span className="text-blue-400">[JSON]</span> : String(value)}
+                  {value === null ? (
+                    <span className="text-gray-500 italic">null</span>
+                  ) : typeof value === 'object' ? (
+                    <span className="text-blue-400">[JSON]</span>
+                  ) : (
+                    String(value)
+                  )}
                 </td>
               </tr>
             ))}
@@ -86,9 +95,6 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
         <p className="text-sm text-gray-400 mt-1">
           Exchange: {etfData.exchange} | Inception: {etfData.inception || 'N/A'} | ID: {etfData.id}
         </p>
-        <a href={`/etfs/${exchange}/${etfSymbol}`} className="text-sm text-blue-400 hover:text-blue-300 mt-2 inline-block">
-          ← Back to ETF detail page
-        </a>
       </div>
 
       {etfData.financialInfo ? (

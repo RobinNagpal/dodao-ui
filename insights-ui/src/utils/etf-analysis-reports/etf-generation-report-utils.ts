@@ -1,12 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import {
-  EtfAnalysisCategory,
-  EtfGenerationRequestStatus,
-  EtfReportType,
-  ETF_PROMPT_KEYS,
-  ETF_REPORT_TYPE_TO_CATEGORY,
-} from '@/types/etf/etf-analysis-types';
+import { EtfAnalysisCategory, EtfGenerationRequestStatus, EtfReportType, ETF_PROMPT_KEYS, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
 import { fetchEtfWithAllData, EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import {
   prepareCostEfficiencyAndTeamInputJson,
@@ -40,12 +34,7 @@ function prepareInputJsonForReportType(etf: EtfWithAllData, reportType: EtfRepor
   }
 }
 
-async function generateEtfCategoryAnalysis(
-  spaceId: string,
-  etf: EtfWithAllData,
-  generationRequestId: string,
-  reportType: EtfReportType
-): Promise<void> {
+async function generateEtfCategoryAnalysis(spaceId: string, etf: EtfWithAllData, generationRequestId: string, reportType: EtfReportType): Promise<void> {
   const inputJson = prepareInputJsonForReportType(etf, reportType);
   const promptKey = ETF_PROMPT_KEYS[reportType];
 

@@ -46,7 +46,19 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgres
 
 const REFRESH_SECONDS = 30;
 
-function SectionHeader({ title, count, totalCount, onShowMore, hasMore }: { title: string; count: number; totalCount: number; onShowMore?: () => void; hasMore: boolean }): JSX.Element {
+function SectionHeader({
+  title,
+  count,
+  totalCount,
+  onShowMore,
+  hasMore,
+}: {
+  title: string;
+  count: number;
+  totalCount: number;
+  onShowMore?: () => void;
+  hasMore: boolean;
+}): JSX.Element {
   return (
     <div className="flex items-baseline justify-between mb-2">
       <h3 className="text-xl font-semibold">{title}</h3>
@@ -64,7 +76,13 @@ function SectionHeader({ title, count, totalCount, onShowMore, hasMore }: { titl
   );
 }
 
-function EtfRequestsTable({ rows, onReloadRequest }: { rows: EtfGenerationRequestWithEtf[]; onReloadRequest: (r: EtfGenerationRequestWithEtf) => void }): JSX.Element {
+function EtfRequestsTable({
+  rows,
+  onReloadRequest,
+}: {
+  rows: EtfGenerationRequestWithEtf[];
+  onReloadRequest: (r: EtfGenerationRequestWithEtf) => void;
+}): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -129,12 +147,14 @@ function EtfRequestsTable({ rows, onReloadRequest }: { rows: EtfGenerationReques
                     {request.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                  {new Date(request.updatedAt || request.createdAt).toLocaleString()}
-                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-center">{new Date(request.updatedAt || request.createdAt).toLocaleString()}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                   {isFailed && failedSteps.length > 0 && (
-                    <button onClick={() => onReloadRequest(request)} className="text-blue-400 hover:text-blue-300 transition-colors" title="Reload failed request">
+                    <button
+                      onClick={() => onReloadRequest(request)}
+                      className="text-blue-400 hover:text-blue-300 transition-colors"
+                      title="Reload failed request"
+                    >
                       <ArrowPathIcon className="w-5 h-5" />
                     </button>
                   )}
@@ -250,7 +270,15 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
             )}
           </div>
           <Button onClick={() => setIsPaused((p) => !p)} variant="outlined" className="flex items-center gap-2">
-            {isPaused ? <><PlayIcon className="w-4 h-4" /> Resume</> : <><PauseIcon className="w-4 h-4" /> Pause</>}
+            {isPaused ? (
+              <>
+                <PlayIcon className="w-4 h-4" /> Resume
+              </>
+            ) : (
+              <>
+                <PauseIcon className="w-4 h-4" /> Pause
+              </>
+            )}
           </Button>
           <Button onClick={handleManualRefresh} variant="outlined" className="flex items-center gap-2">
             <ArrowPathIcon className="w-4 h-4" /> Refresh
@@ -261,23 +289,68 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
       <div className="p-2 bg-gray-800 rounded-lg mb-4">
         <div className="flex items-center gap-6 text-sm">
           <span className="font-semibold">Legend:</span>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-gray-400" /><span>Not Enabled</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-500" /><span>Pending</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-green-500" /><span>Completed</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-red-500" /><span>Failed</span></div>
-          <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-yellow-500" /><span>In Progress</span></div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-gray-400" />
+            <span>Not Enabled</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-blue-500" />
+            <span>Pending</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500" />
+            <span>Completed</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500" />
+            <span>Failed</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <span>In Progress</span>
+          </div>
         </div>
       </div>
 
       {[
-        { title: 'In Progress', rows: accumulatedInProgress, border: 'border-blue-500', count: data?.counts?.inProgress, onMore: () => setInProgressPagination((p) => ({ skip: p.skip + p.take, take: p.take })) },
-        { title: 'Not Started', rows: accumulatedNotStarted, border: 'border-gray-500', count: data?.counts?.notStarted, onMore: () => setNotStartedPagination((p) => ({ skip: p.skip + p.take, take: p.take })) },
-        { title: 'Failed', rows: accumulatedFailed, border: 'border-red-500', count: data?.counts?.failed, onMore: () => setFailedPagination((p) => ({ skip: p.skip + p.take, take: p.take })) },
-        { title: 'Completed', rows: accumulatedCompleted, border: 'border-green-500', count: data?.counts?.completed, onMore: () => setCompletedPagination((p) => ({ skip: p.skip + p.take, take: p.take })) },
+        {
+          title: 'In Progress',
+          rows: accumulatedInProgress,
+          border: 'border-blue-500',
+          count: data?.counts?.inProgress,
+          onMore: () => setInProgressPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
+        },
+        {
+          title: 'Not Started',
+          rows: accumulatedNotStarted,
+          border: 'border-gray-500',
+          count: data?.counts?.notStarted,
+          onMore: () => setNotStartedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
+        },
+        {
+          title: 'Failed',
+          rows: accumulatedFailed,
+          border: 'border-red-500',
+          count: data?.counts?.failed,
+          onMore: () => setFailedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
+        },
+        {
+          title: 'Completed',
+          rows: accumulatedCompleted,
+          border: 'border-green-500',
+          count: data?.counts?.completed,
+          onMore: () => setCompletedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
+        },
       ].map(({ title, rows, border, count, onMore }) => (
         <div key={title} className="mb-6">
           <div className={`bg-gray-800 border ${border} rounded-lg p-4`}>
-            <SectionHeader title={`${title} Requests`} count={rows.length} totalCount={count || rows.length} onShowMore={onMore} hasMore={rows.length < (count || 0)} />
+            <SectionHeader
+              title={`${title} Requests`}
+              count={rows.length}
+              totalCount={count || rows.length}
+              onShowMore={onMore}
+              hasMore={rows.length < (count || 0)}
+            />
             {loading && rows.length === 0 ? (
               <div className="py-8">Loading...</div>
             ) : rows.length === 0 ? (
