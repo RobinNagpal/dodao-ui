@@ -665,6 +665,8 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
     null;
   const updatedLabel = updatedAt ? `Last updated: ${new Date(updatedAt as any).toLocaleString('en-US')}` : undefined;
 
+  console.log('data', data.morAnalyzerInfo);
+
   return (
     <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
       <SectionHeading title="Detailed Financial Data" subtitle={updatedLabel} />
