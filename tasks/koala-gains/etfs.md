@@ -1,19 +1,21 @@
 # ETF Analysis — Implementation Checklist
 
-## 1. Categories & Factors (JSON file, not DB)
+## 1. Categories & Factors (JSON file, not DB) ✅
 
-- [ ] Finalize the ETF analysis categories (e.g., Performance & Returns, Risk & Volatility, Cost & Efficiency, Holdings & Composition, Fund Management & Structure, Income & Distributions)
-- [ ] Decide if categories are static (same for all ETFs) or vary by ETF type (equity, bond, commodity, sector, thematic)
-- [ ] For each category, define 4-8 analysis factors with: `factorAnalysisKey`, `factorAnalysisTitle`, `factorAnalysisDescription`, `factorAnalysisMetrics`
-- [ ] Store all categories and factors in a JSON file (e.g., `src/data/etf-analysis-factors.json`) — not in DB like stocks
-- [ ] Create TypeScript types for the JSON structure: `EtfAnalysisCategory`, `EtfAnalysisFactorDefinition`
+- [x] Finalized 3 ETF analysis categories: Performance & Returns, Cost Efficiency & Team, Risk Analysis
+- [x] Categories are static/generic — same for all ETF types (equity, bond, commodity, sector, thematic)
+- [x] Defined 5 analysis factors per category with factorAnalysisKey, title, description, and metrics
+- [x] Stored in `insights-ui/src/etf-analysis-data/etf-analysis-factors.json`
+- [x] Created TypeScript types in `insights-ui/src/types/etf/etf-analysis-types.ts`: `EtfAnalysisCategory` enum, `EtfAnalysisFactorDefinition`, `EtfCategoryAnalysisFactors`, `EtfAnalysisFactorsConfig`, `EtfFactorAnalysisResult`, `EtfCategoryAnalysisResponse`
 - [ ] Add a utility function to load and validate the JSON at runtime
 
-## 2. Input/Output Schemas
+## 2. Input/Output Schemas ✅
 
-- [ ] Create input YAML schema for ETF category analysis (like `schemas/analysis-factors/inputs/business-moat-input.schema.yaml` but for ETFs)
-- [ ] Reuse the existing output schema `schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml` (same structure: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
-- [ ] If ETF output differs from stocks (e.g., needs numeric score per factor), create a new output schema
+- [x] Created 3 input YAML schemas (one per category) in `insights-ui/schemas/etf-analysis/inputs/`:
+  - `performance-and-returns-input.schema.yaml` — uses StockAnalyzer returns/technicals, Morningstar returns/overview, financial summary
+  - `cost-efficiency-and-team-input.schema.yaml` — uses financial info, StockAnalyzer fund info, Morningstar analysis, management info, portfolio turnover
+  - `risk-analysis-input.schema.yaml` — uses StockAnalyzer risk metrics, Morningstar risk periods, financial risk context, category context
+- [x] Created ETF-specific output schema `insights-ui/schemas/etf-analysis/outputs/etf-category-analysis-output.schema.yaml` (same structure as stock output: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
 - [ ] Document example input/output for one ETF category (e.g., SPY Performance & Returns)
 
 ## 3. Database — New Tables

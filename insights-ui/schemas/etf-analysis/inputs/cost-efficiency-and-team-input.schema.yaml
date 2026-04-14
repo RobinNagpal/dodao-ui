@@ -1,0 +1,76 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'The ETF ticker symbol (e.g., SPY).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
+  categoryKey:
+    type: string
+    enum: ['CostEfficiencyAndTeam']
+    description: 'The analysis category being evaluated.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factors to analyze for this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short explanation of what this factor represents and why it matters.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+
+  # From EtfFinancialInfo — cost & size data
+  financialInfo:
+    type: string
+    description: 'JSON string with expense ratio, AUM, volume, shares outstanding, holdings count, beta, 52-week range, P/E ratio.'
+
+  # From EtfStockAnalyzerInfo — issuer, category, liquidity
+  stockAnalyzerFundInfo:
+    type: string
+    description: 'JSON string with issuer, asset class, category, fund name, average volume, dollar volume, bid-ask spread context, and relative volume.'
+
+  # From EtfMorAnalyzerInfo — expense, turnover, Morningstar assessment
+  morningstarAnalysis:
+    type: string
+    description: 'JSON string with adjusted expense ratio, prospectus net expense ratio, turnover, category, medalist rating, analyst sections (Process, People, Parent pillars), strategy text, and bid-ask spread.'
+
+  # From EtfMorPeopleInfo — management team
+  managementInfo:
+    type: string
+    description: 'JSON string with inception date, number of managers, longest tenure, average tenure, advisors, and current managers list with start/end dates.'
+
+  # From EtfMorPortfolioInfo — turnover context
+  portfolioTurnover:
+    type: string
+    description: 'JSON string with reported turnover percentage and turnover as-of date from portfolio holdings summary.'
+
+required:
+  - name
+  - symbol
+  - exchange
+  - categoryKey
+  - factorAnalysisArray
+  - financialInfo
+  - stockAnalyzerFundInfo
+  - morningstarAnalysis
+  - managementInfo
+  - portfolioTurnover

@@ -1,0 +1,115 @@
+{
+  "categories": [
+    {
+      "categoryKey": "PerformanceAndReturns",
+      "categoryName": "Performance & Returns",
+      "categoryDescription": "Evaluates the ETF's historical returns, consistency, and how well it has tracked or outperformed its benchmark across multiple time horizons.",
+      "factors": [
+        {
+          "factorAnalysisKey": "long_term_cagr",
+          "factorAnalysisTitle": "Long-Term CAGR",
+          "factorAnalysisDescription": "Measures the compound annual growth rate over 5, 10, 15, and 20-year periods. Strong long-term CAGR indicates the fund has consistently grown investor capital over extended horizons.",
+          "factorAnalysisMetrics": "cagr5y, cagr10y, cagr15y, cagr20y"
+        },
+        {
+          "factorAnalysisKey": "short_term_returns",
+          "factorAnalysisTitle": "Short-Term Returns",
+          "factorAnalysisDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Helps assess current momentum and whether the fund is in a favorable or unfavorable short-term trend.",
+          "factorAnalysisMetrics": "return1m, return3m, return6m, returnYtd, return1y"
+        },
+        {
+          "factorAnalysisKey": "returns_consistency",
+          "factorAnalysisTitle": "Returns Consistency",
+          "factorAnalysisDescription": "Assesses how stable returns have been across different time periods. A fund with consistent returns across 1yr, 3yr, 5yr, and 10yr horizons is more reliable than one with volatile swings.",
+          "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual"
+        },
+        {
+          "factorAnalysisKey": "benchmark_comparison",
+          "factorAnalysisTitle": "Benchmark & Category Comparison",
+          "factorAnalysisDescription": "Compares the ETF's returns against its benchmark index and category average using Morningstar trailing and annual returns data. Persistent underperformance vs benchmark is a red flag.",
+          "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, overviewCategory, indexName"
+        },
+        {
+          "factorAnalysisKey": "price_trend_momentum",
+          "factorAnalysisTitle": "Price Trend & Momentum",
+          "factorAnalysisDescription": "Analyzes the ETF's price relative to its moving averages (20, 50, 150, 200-day) and RSI. Trading above key moving averages with healthy RSI suggests positive momentum.",
+          "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, stockPrice"
+        }
+      ]
+    },
+    {
+      "categoryKey": "CostEfficiencyAndTeam",
+      "categoryName": "Cost, Efficiency & Team",
+      "categoryDescription": "Evaluates the ETF's cost structure, operational efficiency, fund management quality, and how well the fund delivers value relative to its fees.",
+      "factors": [
+        {
+          "factorAnalysisKey": "expense_ratio",
+          "factorAnalysisTitle": "Expense Ratio Assessment",
+          "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average and prospectus net expense ratio. Lower expense ratios directly translate to higher net returns for investors over time.",
+          "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+        },
+        {
+          "factorAnalysisKey": "fund_size_liquidity",
+          "factorAnalysisTitle": "Fund Size & Liquidity",
+          "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Larger, more liquid funds typically have tighter spreads, lower trading costs, and reduced risk of closure.",
+          "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+        },
+        {
+          "factorAnalysisKey": "portfolio_turnover",
+          "factorAnalysisTitle": "Portfolio Turnover",
+          "factorAnalysisDescription": "Assesses how frequently the fund trades its holdings. High turnover increases transaction costs and tax drag, reducing net investor returns.",
+          "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+        },
+        {
+          "factorAnalysisKey": "management_quality",
+          "factorAnalysisTitle": "Management & Issuer Quality",
+          "factorAnalysisDescription": "Evaluates the fund management team's tenure, experience, and the issuer's reputation. Longer manager tenure and reputable issuers indicate stable fund operations.",
+          "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+        },
+        {
+          "factorAnalysisKey": "morningstar_assessment",
+          "factorAnalysisTitle": "Morningstar Analyst Assessment",
+          "factorAnalysisDescription": "Reviews the Morningstar medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating from Morningstar analysts indicates strong fund quality.",
+          "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+        }
+      ]
+    },
+    {
+      "categoryKey": "RiskAnalysis",
+      "categoryName": "Risk Analysis",
+      "categoryDescription": "Evaluates the ETF's risk profile including volatility, drawdowns, risk-adjusted returns, and downside protection across multiple time periods.",
+      "factors": [
+        {
+          "factorAnalysisKey": "volatility_measures",
+          "factorAnalysisTitle": "Volatility & Standard Deviation",
+          "factorAnalysisDescription": "Measures the fund's price volatility using beta, standard deviation, and ATR. Lower volatility relative to category and benchmark suggests a smoother ride for investors.",
+          "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+        },
+        {
+          "factorAnalysisKey": "risk_adjusted_returns",
+          "factorAnalysisTitle": "Risk-Adjusted Returns",
+          "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios which measure return per unit of risk. Higher ratios mean the fund delivers better returns for the risk taken compared to alternatives.",
+          "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+        },
+        {
+          "factorAnalysisKey": "drawdown_analysis",
+          "factorAnalysisTitle": "Maximum Drawdown & Recovery",
+          "factorAnalysisDescription": "Analyzes the worst peak-to-trough declines and how quickly the fund recovered. Shallower drawdowns and faster recoveries indicate better downside protection.",
+          "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+        },
+        {
+          "factorAnalysisKey": "capture_ratios",
+          "factorAnalysisTitle": "Upside/Downside Capture Ratios",
+          "factorAnalysisDescription": "Measures how much of the market's upside the fund captures vs how much of the downside it absorbs. Ideal funds capture more upside than downside relative to their benchmark.",
+          "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
+        },
+        {
+          "factorAnalysisKey": "risk_vs_category",
+          "factorAnalysisTitle": "Risk Score vs Category",
+          "factorAnalysisDescription": "Compares the fund's overall Morningstar risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. Consistently below-average risk vs category is favorable.",
+          "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+        }
+      ]
+    }
+  ]
+}
