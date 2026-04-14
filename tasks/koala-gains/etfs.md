@@ -28,25 +28,30 @@
 - [x] Added relation fields on `Etf` model for all new tables
 - [ ] Run Prisma migration and generate client types
 
-## 4. Prompts
+## 4. Prompts (done by user on KoalaGains platform)
 
 - [ ] Write a system prompt for ETF analysis (analyst persona, evaluation framework)
 - [ ] Write one prompt per category that takes ETF data + factors as input and outputs analysis in the YAML schema format
-- [ ] Write a final summary prompt that takes all category results and produces an overall ETF assessment
-- [ ] Register each prompt in the prompts admin page with keys like `US/etfs-v1/performance`, `US/etfs-v1/risk`, etc.
+- [ ] Register each prompt with keys: `US/etfs/performance-returns`, `US/etfs/cost-efficiency-team`, `US/etfs/risk-analysis`
 - [ ] Test each prompt with sample ETF data (SPY, QQQ, BND) before integrating
 
-## 5. Input Preparation Utils
+## 5. Input Preparation Utils ✅
 
-- [ ] Create `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` (like `report-input-json-utils.ts` for stocks)
-- [ ] For each category, write a function that gathers the right ETF data (from EtfFinancialInfo, EtfStockAnalyzerInfo, EtfMorAnalyzerInfo, EtfMorRiskInfo, EtfMorPortfolioInfo) and formats it as input JSON
-- [ ] Create `src/utils/etf-analysis-reports/get-etf-report-data-utils.ts` to fetch ETF records with all related tables
+- [x] Created `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` with per-category functions:
+  - `preparePerformanceAndReturnsInputJson()` — gathers StockAnalyzer returns/technicals, Morningstar returns/overview, financial summary
+  - `prepareCostEfficiencyAndTeamInputJson()` — gathers financial info, fund info, Morningstar analysis, management/people info, portfolio turnover
+  - `prepareRiskAnalysisInputJson()` — gathers risk metrics (beta, Sharpe, Sortino), Morningstar risk periods, financial risk context
+  - `getEtfAnalysisFactorsForCategory()` — loads factors from JSON config by category
+- [x] Created `src/utils/etf-analysis-reports/get-etf-report-data-utils.ts` with `fetchEtfWithAllData()` and `fetchEtfBySymbolAndExchange()`
+- [x] Created `src/utils/etf-analysis-reports/etf-report-steps-statuses.ts` with `calculateEtfPendingSteps()`
+- [x] Created `src/utils/etf-analysis-reports/etf-report-status-utils.ts` with `markEtfRequestAsInProgress()` and `markEtfRequestAsCompleted()`
+- [x] Added `EtfReportType` enum, `EtfGenerationRequestStatus` enum, `ETF_PROMPT_KEYS` map, `ETF_REPORT_TYPE_TO_CATEGORY` map to types
 
-## 6. Generation Request API Routes
+## 6. Generation Request API Routes ✅
 
-- [ ] Create POST `api/[spaceId]/etfs-v1/generation-requests` — create or update a generation request (merge flags if existing NotStarted request exists, else create new)
-- [ ] Create GET `api/[spaceId]/etfs-v1/generation-requests` — list all ETF generation requests with status filters (for admin page)
-- [ ] Create POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generation-requests/reload` — retry a failed request
+- [x] Created POST `api/[spaceId]/etfs-v1/generation-requests` — creates or updates generation request (merges flags with OR if existing NotStarted request)
+- [x] Created GET `api/[spaceId]/etfs-v1/generation-requests` — lists all requests grouped by status with pagination and counts
+- [x] Created POST `api/[spaceId]/etfs-v1/generation-requests/[requestId]/reload` — resets a failed request to NotStarted
 
 ## 7. Generation Processing Pipeline
 
