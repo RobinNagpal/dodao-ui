@@ -1,2 +1,13 @@
-- first we need to finalize the 5 categories or x number of categories.
-- then the analysis factors under it. will they be static or dynammic like stocks where we have based on industry+sub industry
+- [ ] first we need to finalize the 5 categories or x number of categories.
+- [ ] then the analysis factors under it. will they be static or dynammic like stocks where we have based on industry sub industry
+- [ ] define input/ouput yaml schema output for category and analysis factors under it.
+- [ ] create new prisma tables based on schema we define and run migrations
+- [ ] define relevant types based on prisma schema
+- [ ] define etf generation request table in prisma
+- [ ] finalize the prompts for each category and then create prompts for it on UI as we need prompt key in code
+- [ ] add admin page for etf generation request
+- [ ] implement whole logic for processing requests for etfs as we did for stocks by setting cron job
+- [ ] add admin page for missing etf reports, this will help in generation of etf reports for missing
+- [ ] implement spider chart on etf individual page and display report content there
+- [ ] manage proper seo and metadata on individual page
+- [ ] add admin action on individual page to generate different sections 
