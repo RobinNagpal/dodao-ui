@@ -853,6 +853,127 @@ export const generateFuturePerformanceArticleSchema = (
   };
 };
 
+// ────────────────────────────────────────────────────────────────────────────────
+// Stock business & moat structured data generators
+// ────────────────────────────────────────────────────────────────────────────────
+
+export const generateBusinessAndMoatArticleSchema = (
+  ticker: TickerWithOptionalIndustry,
+  categoryResult?: { createdAt?: string | Date; updatedAt?: string | Date } | null
+) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/business-and-moat`;
+
+  const datePublished = categoryResult?.createdAt ? new Date(categoryResult.createdAt).toISOString() : new Date(ticker.createdAt).toISOString();
+  const dateModified = categoryResult?.updatedAt ? new Date(categoryResult.updatedAt).toISOString() : new Date(ticker.updatedAt).toISOString();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${ticker.name} (${ticker.symbol}) Business & Moat Analysis`,
+    description: `Detailed business model and competitive moat analysis of ${ticker.name} (${ticker.symbol}). Evaluate pricing power, market positioning, durability of advantages, and key competitive factors.`,
+    image: ['https://koalagains.com/koalagain_logo.png'],
+    datePublished,
+    dateModified,
+    author: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+      },
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'KoalaGains',
+      url: 'https://koalagains.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://koalagains.com/koalagain_logo.png',
+        width: 600,
+        height: 60,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+    articleSection: 'Business & Moat Analysis',
+    keywords: [
+      ticker.name,
+      `${ticker.symbol} business model`,
+      `${ticker.name} competitive moat`,
+      `${ticker.symbol} pricing power`,
+      `${ticker.name} competitive advantage`,
+      'business moat analysis',
+      'competitive moat',
+      'investment analysis',
+      `${ticker.exchange} stocks`,
+      ticker.industryKey,
+      ticker.industry?.name,
+      'KoalaGains',
+    ]
+      .filter(Boolean)
+      .join(', '),
+    about: {
+      '@type': 'Corporation',
+      name: ticker.name,
+      tickerSymbol: ticker.symbol,
+      exchange: ticker.exchange,
+    },
+    inLanguage: 'en-US',
+  };
+};
+
+export const generateBusinessAndMoatBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
+  const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
+  const canonicalUrl = `${stockUrl}/business-and-moat`;
+  const industryName = ticker.industry?.name || ticker.industryKey;
+
+  const breadcrumbItems: { '@type': string; position: number; name: string; item: string }[] = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://koalagains.com',
+    },
+  ];
+
+  if (country === 'US') {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'US Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: industryName, item: `https://koalagains.com/stocks/industries/${ticker.industryKey}` },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Business & Moat', item: canonicalUrl }
+    );
+  } else if (country) {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: `${country} Stocks`, item: `https://koalagains.com/stocks/countries/${country}` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: industryName,
+        item: `https://koalagains.com/stocks/countries/${country}/industries/${ticker.industryKey}`,
+      },
+      { '@type': 'ListItem', position: 4, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 5, name: 'Business & Moat', item: canonicalUrl }
+    );
+  } else {
+    breadcrumbItems.push(
+      { '@type': 'ListItem', position: 2, name: 'Stocks', item: 'https://koalagains.com/stocks' },
+      { '@type': 'ListItem', position: 3, name: `${ticker.symbol}`, item: stockUrl },
+      { '@type': 'ListItem', position: 4, name: 'Business & Moat', item: canonicalUrl }
+    );
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems,
+  };
+};
+
 export const generateFuturePerformanceBreadcrumbSchema = (ticker: TickerWithOptionalIndustry, country: string) => {
   const stockUrl = `https://koalagains.com/stocks/${ticker.exchange}/${ticker.symbol}`;
   const canonicalUrl = `${stockUrl}/future-performance`;
