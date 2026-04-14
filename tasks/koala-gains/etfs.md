@@ -93,33 +93,28 @@
 
 ## 12. ETF Detail Page — Spider Chart & Analysis
 
-- [ ] On the ETF detail page (`etfs/[exchange]/[etf]/page.tsx`), add spider/radar chart on the right side showing category scores (reuse `TickerRadarChart` pattern)
-- [ ] Move the existing financial info table to the left side of the layout (spider chart right, financial table left)
-- [ ] Below the chart/financial section, add analysis sections for each category showing: summary, factor Pass/Fail list, expandable detailed explanations
+- [x] Added spider/radar chart on the right side using `EtfRadarChart` component (reuses `RadarChart` + `SpiderGraphForTicker`)
+- [x] Moved financial info to left side, spider chart to right side (50/50 lg layout)
+- [x] Added `EtfAnalysisSections` component below chart: shows summary, Pass/Fail factor list with expandable details per category
+- [x] Fetches analysis data via new API routes; shows nothing gracefully when not yet generated
 - [ ] Add admin-only "Generate" / "Regenerate" buttons per category on the detail page
-- [ ] Fetch analysis data via new API route and handle missing data gracefully (show placeholder if not yet generated)
 
-## 13. New ETF Financial Data Debug Page
+## 13. New ETF Financial Data Debug Page ✅
 
-- [ ] Create a new page (e.g., `etfs/[exchange]/[etf]/financial-data`) that shows ALL raw financial data for an ETF in a readable format
-- [ ] Display EtfFinancialInfo fields in a structured table
-- [ ] Display EtfStockAnalyzerInfo fields (moving averages, CAGR, period returns, technical indicators)
-- [ ] Display all EtfMorAnalyzerInfo sections (overview, market data, analysis, returns, holdings, strategy)
-- [ ] Display EtfMorRiskInfo (risk periods, scores, volatility, capture ratios)
-- [ ] Display EtfMorPeopleInfo (managers, tenure, inception)
-- [ ] Display EtfMorPortfolioInfo (asset allocation, style measures, sector exposure, bond breakdown, holdings)
-- [ ] This page helps debug whether data is present and correct before running analysis generation
+- [x] Created `etfs/[exchange]/[etf]/financial-data/page.tsx` showing all raw financial data
+- [x] Displays EtfFinancialInfo and EtfStockAnalyzerInfo as structured field tables
+- [x] Displays EtfMorAnalyzerInfo, EtfMorRiskInfo, EtfMorPeopleInfo, EtfMorPortfolioInfo as formatted JSON
 
-## 14. Analysis Results API Routes
+## 14. Analysis Results API Routes ✅
 
-- [ ] Create GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis` — returns all category analysis results with factor details
-- [ ] Create GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores` — returns cached scores for spider chart rendering
+- [x] Created GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis` — returns categories with factor results
+- [x] Created GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores` — returns cached scores for spider chart
 
-## 15. SEO & Metadata
+## 15. SEO & Metadata ✅
 
-- [ ] Update `generateMetadata()` on ETF detail page to include analysis keywords in title/description
-- [ ] Add structured data (JSON-LD) for ETF pages
-- [ ] Ensure OpenGraph and Twitter card meta tags are set for social sharing
+- [x] Updated `generateMetadata()` with analysis-specific keywords (performance, risk, expense ratio)
+- [x] Added JSON-LD structured data (Article schema with author, publisher, dates)
+- [x] OpenGraph and Twitter card meta tags already present from initial implementation
 
 ## 16. Testing & Validation
 

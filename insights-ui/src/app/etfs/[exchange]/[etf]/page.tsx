@@ -1,6 +1,10 @@
+import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
+import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
+import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
+import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
@@ -94,13 +98,35 @@ async function fetchEtfMorInfo(exchange: string, etf: string): Promise<EtfMorInf
   }
 }
 
+async function fetchEtfAnalysis(exchange: string, etf: string): Promise<EtfAnalysisResponse> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/analysis`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) return { categories: [] };
+    return (await res.json()) as EtfAnalysisResponse;
+  } catch {
+    return { categories: [] };
+  }
+}
+
+async function fetchEtfScores(exchange: string, etf: string): Promise<EtfScoresResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/scores`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) return null;
+    return (await res.json()) as EtfScoresResponse | null;
+  } catch {
+    return null;
+  }
+}
+
 /** Metadata */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const routeParams: Readonly<{ exchange: string; etf: string }> = await params;
   const { exchange, etf } = { exchange: routeParams.exchange.toUpperCase(), etf: routeParams.etf.toUpperCase() };
 
   let etfName: string = etf;
-  let summary: string = `ETF analysis and reports for ${etf}. Explore key metrics, insights, and evaluations.`;
+  let summary: string = `ETF analysis and reports for ${etf}. Explore performance, risk, cost efficiency, and key metrics.`;
   let createdTime: string | undefined;
   let updatedTime: string | undefined;
 
@@ -121,11 +147,14 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const canonicalUrl: string = `https://koalagains.com/etfs/${exchange}/${etf}`;
   const keywords: string[] = [
     etfName,
-    `Analysis on ${etfName}`,
-    `ETF Analysis on ${etfName}`,
-    `Reports on ${etfName}`,
     `${etfName} analysis`,
-    'ETF insights',
+    `${etf} ETF performance`,
+    `${etf} ETF risk analysis`,
+    `${etf} expense ratio`,
+    `ETF analysis ${etfName}`,
+    'ETF performance analysis',
+    'ETF risk assessment',
+    'ETF cost efficiency',
     'exchange-traded funds',
     'KoalaGains',
   ];
@@ -233,19 +262,27 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
 function EtfFinancialInfoSection({
   data,
   financialInfoPromise,
+  scoresPromise,
+  analysisPromise,
 }: {
   data: Promise<EtfFastResponse>;
   financialInfoPromise: Promise<EtfFinancialInfoResponse | null>;
+  scoresPromise: Promise<EtfScoresResponse | null>;
+  analysisPromise: Promise<EtfAnalysisResponse>;
 }): JSX.Element {
   const d: EtfFastResponse = use(data);
   const financialData: EtfFinancialInfoResponse | null = use(financialInfoPromise);
+  const scores: EtfScoresResponse | null = use(scoresPromise);
+  const analysis: EtfAnalysisResponse = use(analysisPromise);
 
   return (
     <section className="mb-8">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Financial Information */}
-        <div className="lg:w-full" style={{ minHeight: '340px' }}>
+        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
+        </div>
+        <div className="lg:w-1/2 flex items-center justify-center">
+          <EtfRadarChart scores={scores} analysis={analysis} />
         </div>
       </div>
     </section>
@@ -297,6 +334,11 @@ function EtfMorInfoSection({ morInfoPromise }: { morInfoPromise: Promise<EtfMorI
   return <EtfMorInfo data={morData} />;
 }
 
+function EtfAnalysisSection({ analysisPromise }: { analysisPromise: Promise<EtfAnalysisResponse> }): JSX.Element | null {
+  const analysis: EtfAnalysisResponse = use(analysisPromise);
+  return <EtfAnalysisSections data={analysis} />;
+}
+
 /** PAGE */
 export default async function EtfDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   // Main ETF data (promise for selective Suspense usage)
@@ -313,6 +355,8 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   // Promises consumed by child components via `use()` under Suspense
   const financialInfoPromise = fetchEtfFinancialInfo(exchange, etf);
   const morInfoPromise = fetchEtfMorInfo(exchange, etf);
+  const analysisPromise = fetchEtfAnalysis(exchange, etf);
+  const scoresPromise = fetchEtfScores(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -342,6 +386,23 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
   return (
     <PageWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: `${etfData.name} (${etfData.symbol}) ETF Analysis`,
+            description: `Performance, risk, and cost analysis for ${etfData.name} ETF on ${etfData.exchange}.`,
+            author: { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
+            publisher: { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
+            datePublished: publishedDate.toISOString(),
+            dateModified: modifiedDate.toISOString(),
+            mainEntityOfPage: `https://koalagains.com/etfs/${exchange}/${etf}`,
+          }),
+        }}
+      />
+
       {/* Breadcrumbs - server rendered, no skeleton needed */}
       <BreadcrumbsFromData data={etfInfo} />
 
@@ -353,7 +414,11 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         <EtfSummaryInfo data={etfInfo} />
 
         <Suspense fallback={<EtfFinancialInfoSkeleton />}>
-          <EtfFinancialInfoSection data={etfInfo} financialInfoPromise={financialInfoPromise} />
+          <EtfFinancialInfoSection data={etfInfo} financialInfoPromise={financialInfoPromise} scoresPromise={scoresPromise} analysisPromise={analysisPromise} />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <EtfAnalysisSection analysisPromise={analysisPromise} />
         </Suspense>
 
         <Suspense fallback={<EtfMorInfoSkeleton />}>
