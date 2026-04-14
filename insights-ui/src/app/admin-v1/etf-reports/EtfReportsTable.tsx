@@ -66,13 +66,15 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                 />
               </td>
               <td className="px-4 py-3 text-sm font-medium sticky left-0 bg-gray-800 z-10" style={{ minWidth: '220px', maxWidth: '320px' }}>
-                <div className="flex items-center gap-1">
-                  <span className="font-semibold text-sm text-gray-100">{e.symbol}</span>
-                  <span className="text-blue-400 text-xs">({e.exchange})</span>
-                </div>
-                <div className="text-xs text-gray-400 truncate" title={e.name}>
-                  {e.name}
-                </div>
+                <Link href={`/etfs/${e.exchange}/${e.symbol}`} target="_blank" rel="noopener noreferrer" className="link-color">
+                  <div className="flex items-center gap-1">
+                    <span className="font-semibold text-sm">{e.symbol}</span>
+                    <span className="text-blue-400 text-xs">({e.exchange})</span>
+                  </div>
+                  <div className="text-xs text-gray-400 truncate" title={e.name}>
+                    {e.name}
+                  </div>
+                </Link>
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <StatusPill ok={e.hasFinancialInfo} />
@@ -104,7 +106,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
               <td className="px-4 py-3 text-sm text-center">
                 <div className="flex items-center justify-center gap-2">
                   <Link
-                    href={`/etfs/${e.exchange}/${e.symbol}`}
+                    href={`/etfs/${e.exchange}/${e.symbol}/financial-data`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs link-color underline underline-offset-2"
