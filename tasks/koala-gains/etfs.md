@@ -1,178 +1,122 @@
 # ETF Analysis — Implementation Checklist
 
-## Phase 1: Define Analysis Categories & Factors
+## 1. Categories & Factors (JSON file, not DB)
 
-### 1.1 Finalize ETF Analysis Categories
-- [ ] Decide on the final set of ETF analysis categories (e.g., 5-6 categories). Proposed categories:
-  - **Performance & Returns** — historical returns (1m, 3m, 6m, 1y, 3y, 5y, 10y, 20y), CAGR, benchmark comparison, rolling returns consistency
-  - **Risk & Volatility** — beta, standard deviation, Sharpe ratio, Sortino ratio, max drawdown, capture ratios (upside/downside), ATR, risk-adjusted returns across 3yr/5yr/10yr periods
-  - **Cost & Efficiency** — expense ratio vs category peers, tracking error vs benchmark, tax efficiency, transaction costs, bid-ask spread impact
-  - **Holdings & Portfolio Composition** — top holdings concentration, sector diversification, geographic exposure, asset allocation, portfolio turnover, overlap with popular ETFs
-  - **Fund Management & Structure** — AUM and fund flows, fund age/inception, issuer reputation, replication method (physical vs synthetic), securities lending revenue, manager tenure
-  - **Income & Distributions** — dividend yield, distribution frequency, dividend growth rate, yield vs category average, tax treatment of distributions
-- [ ] Determine whether categories are static (same for all ETFs) or dynamic (varying by ETF type — equity, bond, commodity, sector, thematic)
-- [ ] Document the final category list with descriptions in `docs/ai-knowledge/projects/insights-ui/`
+- [ ] Finalize the ETF analysis categories (e.g., Performance & Returns, Risk & Volatility, Cost & Efficiency, Holdings & Composition, Fund Management & Structure, Income & Distributions)
+- [ ] Decide if categories are static (same for all ETFs) or vary by ETF type (equity, bond, commodity, sector, thematic)
+- [ ] For each category, define 4-8 analysis factors with: `factorAnalysisKey`, `factorAnalysisTitle`, `factorAnalysisDescription`, `factorAnalysisMetrics`
+- [ ] Store all categories and factors in a JSON file (e.g., `src/data/etf-analysis-factors.json`) — not in DB like stocks
+- [ ] Create TypeScript types for the JSON structure: `EtfAnalysisCategory`, `EtfAnalysisFactorDefinition`
+- [ ] Add a utility function to load and validate the JSON at runtime
 
-### 1.2 Define Analysis Factors per Category
-- [ ] For each category, define 4-8 specific analysis factors with:
-  - `factorAnalysisKey` — unique identifier (e.g., `sharpe_ratio_evaluation`)
-  - `factorAnalysisTitle` — human-readable name (e.g., "Sharpe Ratio Evaluation")
-  - `factorAnalysisDescription` — what this factor measures and why it matters
-  - `factorAnalysisMetrics` — specific data points used (e.g., "3yr Sharpe, 5yr Sharpe, category avg Sharpe")
-- [ ] Decide if factors vary by ETF type (equity ETFs, bond ETFs, commodity ETFs, etc.) or remain uniform
-- [ ] Define `EvaluationResult` criteria for each factor — what constitutes Pass vs Fail, and scoring thresholds (0-10 scale)
+## 2. Input/Output Schemas
 
-### 1.3 Define Input/Output Schemas
-- [ ] Create YAML schema for ETF analysis category definitions (input to the LLM prompts)
-- [ ] Create YAML schema for category factor analysis results (LLM output format)
-- [ ] Define the scoring/grading output structure per factor (score, one-liner, detailed explanation, data used)
-- [ ] Document example input/output for at least one complete category
+- [ ] Create input YAML schema for ETF category analysis (like `schemas/analysis-factors/inputs/business-moat-input.schema.yaml` but for ETFs)
+- [ ] Reuse the existing output schema `schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml` (same structure: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
+- [ ] If ETF output differs from stocks (e.g., needs numeric score per factor), create a new output schema
+- [ ] Document example input/output for one ETF category (e.g., SPY Performance & Returns)
 
-## Phase 2: Database Schema & Types
+## 3. Database — New Tables
 
-### 2.1 Prisma Schema — New ETF Analysis Tables
-- [ ] Create `EtfAnalysisCategory` enum in Prisma (or reuse extended `TickerAnalysisCategory` if categories overlap)
-- [ ] Create `EtfAnalysisCategoryFactor` model (mirrors `AnalysisCategoryFactor` for stocks):
-  - Fields: id, etfTypeKey (equity/bond/commodity/etc.), categoryKey, factorAnalysisKey, factorAnalysisTitle, factorAnalysisDescription, factorAnalysisMetrics, spaceId, timestamps
-- [ ] Create `EtfCategoryAnalysisResult` model (mirrors `TickerV1CategoryAnalysisResult`):
-  - Fields: id, categoryKey, summary, overallAnalysisDetails, etfId, spaceId
-  - Relation: has many `EtfAnalysisCategoryFactorResult`
-- [ ] Create `EtfAnalysisCategoryFactorResult` model (mirrors `TickerV1AnalysisCategoryFactorResult`):
-  - Fields: id, categoryKey, analysisCategoryFactorId, oneLineExplanation, detailedExplanation, result (Pass/Fail), score (Float), etfId, spaceId
-- [ ] Create `EtfCachedScore` model (mirrors `TickerV1CachedScore`):
-  - Fields: id, etfId, performanceAndReturnsScore, riskAndVolatilityScore, costAndEfficiencyScore, holdingsAndPortfolioScore, fundManagementScore, incomeAndDistributionsScore, finalScore, spaceId, timestamps
-- [ ] Create `EtfGenerationRequest` model (mirrors `TickerV1GenerationRequest`):
-  - Fields: id, etfId, status (ProcessingStatus), regenerate flags per category (e.g., `regeneratePerformance`, `regenerateRisk`, `regenerateCost`, `regenerateHoldings`, `regenerateManagement`, `regenerateIncome`), completedSteps, failedSteps, inProgressStep, error messages, timestamps, spaceId
-- [ ] Run Prisma migration: `npx prisma migrate dev --name add-etf-analysis-tables`
-- [ ] Verify migration applies cleanly and all relations are correct
+- [ ] Create `EtfAnalysisCategory` enum in Prisma (one value per finalized category)
+- [ ] Create `EtfGenerationRequest` model (like `TickerV1GenerationRequest`): id, etfId, status, one boolean flag per category (e.g., `regeneratePerformance`, `regenerateRisk`, etc.), completedSteps, failedSteps, inProgressStep, timestamps, spaceId
+- [ ] Create `EtfCategoryAnalysisResult` model (like `TickerV1CategoryAnalysisResult`): id, categoryKey, summary, overallAnalysisDetails, etfId, spaceId
+- [ ] Create `EtfAnalysisCategoryFactorResult` model (like `TickerV1AnalysisCategoryFactorResult`): id, categoryKey, factorKey, oneLineExplanation, detailedExplanation, result (Pass/Fail), etfId, spaceId
+- [ ] Create `EtfCachedScore` model (like `TickerV1CachedScore`): id, etfId, one score field per category, finalScore, spaceId, timestamps
+- [ ] Run Prisma migration and generate client types
 
-### 2.2 TypeScript Types
-- [ ] Generate Prisma client types: `npx prisma generate`
-- [ ] Create ETF analysis TypeScript types in `src/types/etf/` (or extend existing `src/types/public-equity/`):
-  - `EtfAnalysisCategory` enum type
-  - `EtfAnalysisFactorDefinition` interface
-  - `EtfCategoryAnalysisFactors` interface
-  - `EtfAnalysisResultResponse` interface (API response shape)
-- [ ] Create ETF spider chart types:
-  - `SpiderGraphForEtf` type (category scores mapped for chart rendering)
-- [ ] Add ETF generation request types:
-  - `EtfGenerationRequestStatus` type
-  - `UpsertEtfGenerationRequest` interface
+## 4. Prompts
 
-## Phase 3: Prompts & LLM Integration
+- [ ] Write a system prompt for ETF analysis (analyst persona, evaluation framework)
+- [ ] Write one prompt per category that takes ETF data + factors as input and outputs analysis in the YAML schema format
+- [ ] Write a final summary prompt that takes all category results and produces an overall ETF assessment
+- [ ] Register each prompt in the prompts admin page with keys like `US/etfs-v1/performance`, `US/etfs-v1/risk`, etc.
+- [ ] Test each prompt with sample ETF data (SPY, QQQ, BND) before integrating
 
-### 3.1 Finalize Prompts
-- [ ] Write the system prompt for ETF analysis that establishes the analyst persona and evaluation framework
-- [ ] Write per-category prompts that include:
-  - Category-specific evaluation criteria
-  - Required data points to analyze (mapped from EtfFinancialInfo, EtfStockAnalyzerInfo, EtfMorAnalyzerInfo, etc.)
-  - Output format specification (matching the YAML schema from Phase 1)
-  - Scoring rubric (what earns 1-2 vs 5 vs 8-10)
-- [ ] Write a final summary prompt that synthesizes all category results into an overall assessment
-- [ ] Test each prompt manually with sample ETF data (e.g., SPY, QQQ, BND) to validate output quality
+## 5. Input Preparation Utils
 
-### 3.2 Register Prompts on UI
-- [ ] Add prompt templates to the prompts admin page (each prompt needs a unique `promptKey` referenced in code)
-- [ ] Verify prompts are retrievable via the prompt API and render correctly
-- [ ] Document the prompt keys and their mapping to categories
+- [ ] Create `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` (like `report-input-json-utils.ts` for stocks)
+- [ ] For each category, write a function that gathers the right ETF data (from EtfFinancialInfo, EtfStockAnalyzerInfo, EtfMorAnalyzerInfo, EtfMorRiskInfo, EtfMorPortfolioInfo) and formats it as input JSON
+- [ ] Create `src/utils/etf-analysis-reports/get-etf-report-data-utils.ts` to fetch ETF records with all related tables
 
-## Phase 4: Backend — Generation Request Processing
+## 6. Generation Request API Routes
 
-### 4.1 API Routes for ETF Generation Requests
-- [ ] Create `POST /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generation-requests` — upsert generation request (merge if NotStarted, create new otherwise)
-- [ ] Create `GET /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generation-requests` — list generation requests for an ETF
-- [ ] Create `GET /api/[spaceId]/etfs-v1/generation-requests` — list all ETF generation requests (for admin page) with filters by status
-- [ ] Create `POST /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generation-requests/[requestId]/reload` — retry a failed request
+- [ ] Create POST `api/[spaceId]/etfs-v1/generation-requests` — create or update a generation request (merge flags if existing NotStarted request exists, else create new)
+- [ ] Create GET `api/[spaceId]/etfs-v1/generation-requests` — list all ETF generation requests with status filters (for admin page)
+- [ ] Create POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generation-requests/reload` — retry a failed request
 
-### 4.2 Cron Job / Processing Pipeline
-- [ ] Implement ETF analysis generation processor (similar to stock ticker processing):
-  - Pick up oldest NotStarted/Failed request
-  - Set status to InProgress
-  - For each flagged category: fetch relevant ETF data, call LLM with category prompt, parse response, store results
-  - Update completedSteps/failedSteps as each category finishes
-  - On completion: compute and update `EtfCachedScore` with per-category scores and final score
-  - Handle errors gracefully — mark individual steps as failed without failing the entire request
-- [ ] Set up cron schedule for ETF analysis processing (e.g., every 2-5 minutes, process one request at a time)
-- [ ] Add rate limiting / delay between LLM calls to avoid API throttling (similar to 2-second delay in stock bulk operations)
-- [ ] Implement idempotency — re-processing a completed category should overwrite cleanly
+## 7. Generation Processing Pipeline
 
-### 4.3 API Routes for Analysis Results
-- [ ] Create `GET /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis` — fetch all category analysis results for an ETF
-- [ ] Create `GET /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/[category]` — fetch single category result with factor details
-- [ ] Create `GET /api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores` — fetch cached scores for spider chart
+- [ ] Create `src/utils/etf-analysis-reports/etf-generation-report-utils.ts` (like `generation-report-utils.ts` for stocks)
+- [ ] Define dependency map for ETF categories (which categories must complete before others can start)
+- [ ] Implement `triggerEtfGenerationOfAReport()` — picks up oldest pending request, finds next step by dependency order, invokes LLM via Lambda
+- [ ] Create GET `api/[spaceId]/etfs-v1/generate-etf-v1-request` — the endpoint the cron job calls to process pending requests
+- [ ] Use the same Lambda + callback pattern as stocks: invoke Lambda with prompt + input, Lambda calls back with results
 
-## Phase 5: Admin Pages
+## 8. Save Report Callback
 
-### 5.1 ETF Generation Request Admin Page
-- [ ] Create admin page at `/admin-v1/etf-generation-requests/` (similar to `/admin-v1/generation-requests/`)
-- [ ] Show generation requests grouped by status: InProgress, Pending (NotStarted), Completed, Failed
-- [ ] Display per-request details: ETF symbol, status, completed/failed steps with color-coded indicators
-- [ ] Add action buttons: "Reload" for failed requests, "Cancel" for in-progress
-- [ ] Add auto-refresh (every 30 seconds) to track in-progress requests
-- [ ] Add bulk action: select multiple ETFs and create generation requests for all
+- [ ] Create POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/save-report-callback` — receives LLM response from Lambda
+- [ ] Create `src/utils/etf-analysis-reports/save-etf-report-utils.ts` — parses LLM response, upserts EtfCategoryAnalysisResult and EtfAnalysisCategoryFactorResult records
+- [ ] After saving, compute category score (Pass count / total factors) and update EtfCachedScore
+- [ ] After saving, mark step as completed in EtfGenerationRequest and trigger next step
 
-### 5.2 Missing ETF Reports Admin Page
-- [ ] Create admin page at `/admin-v1/etf-missing-reports/` (or extend existing `/admin-v1/etf-reports/`)
-- [ ] Show ETFs that are missing analysis results (no `EtfCategoryAnalysisResult` records)
-- [ ] Add filters: by exchange, by missing category, by ETF type
-- [ ] Add bulk action: "Generate Analysis" for selected ETFs — creates generation requests for all missing categories
-- [ ] Show count of ETFs with complete vs incomplete analysis
+## 9. Cron Job Setup
 
-### 5.3 Individual ETF Admin Actions
-- [ ] Add "Generate Analysis" button on ETF detail page (admin view) to trigger generation for specific categories
-- [ ] Add per-category "Regenerate" buttons to re-run individual analysis sections
-- [ ] Show analysis generation status on the detail page (last generated date, current request status if any)
+- [ ] Set up a cron job that calls `generate-etf-v1-request` endpoint every 2-5 minutes
+- [ ] Add 2-second delay between sequential LLM calls (like stocks do for Morningstar/StockAnalysis)
+- [ ] Handle timeout: if a step has been InProgress for 5+ minutes, mark it as failed and move on
 
-## Phase 6: ETF Detail Page — Analysis Display
+## 10. Admin Page — ETF Reports (extend existing)
 
-### 6.1 Spider Chart
-- [ ] Implement spider/radar chart component for ETF scores (reuse or adapt stock spider chart component)
-- [ ] Map `EtfCachedScore` fields to chart axes (one axis per category)
-- [ ] Style chart consistently with existing stock spider charts
-- [ ] Add tooltips showing score details on hover
-- [ ] Handle missing scores gracefully (show partial chart or placeholder)
+- [ ] Extend `insights-ui/src/app/admin-v1/etf-reports/` to show analysis status columns (one column per category, green/red/empty dot)
+- [ ] Add "Missing Analysis" filter — show ETFs that are missing one or more category analysis results
+- [ ] Add "Generate Analysis" bulk action — creates generation requests for selected ETFs with all categories flagged
+- [ ] Add per-ETF dropdown action to generate or regenerate specific categories
+- [ ] Add auto-refresh (30s) when any generation request is InProgress
 
-### 6.2 Category Analysis Sections
-- [ ] Create `EtfAnalysisSection` component to display one category's analysis results:
-  - Category summary and overall details
-  - List of factor results with Pass/Fail indicators, scores, one-liner explanations
-  - Expandable detailed explanations per factor
-- [ ] Add analysis sections to ETF detail page (below or alongside existing financial/Morningstar data)
-- [ ] Create tab or accordion navigation for switching between categories
-- [ ] Ensure responsive layout for mobile/tablet/desktop
+## 11. Admin Page — ETF Generation Requests
 
-### 6.3 Overall Assessment Display
-- [ ] Show final score prominently (e.g., as a badge or header score)
-- [ ] Display category score breakdown in a summary card
-- [ ] Add comparison context (e.g., "Above average for Large Cap Blend ETFs")
+- [ ] Create new admin page at `admin-v1/etf-generation-requests/` (like `admin-v1/generation-requests/` for stocks)
+- [ ] Show requests grouped by status: InProgress, Failed, NotStarted, Completed
+- [ ] For each request, show ETF symbol, per-step status dots (green=done, red=failed, blue=pending, yellow=in-progress)
+- [ ] Add "Reload" button for failed requests
+- [ ] Add auto-refresh every 30 seconds
 
-## Phase 7: SEO & Metadata
+## 12. ETF Detail Page — Spider Chart & Analysis
 
-### 7.1 Page Metadata
-- [ ] Update `generateMetadata()` in ETF detail page to include analysis-related keywords
-- [ ] Add structured data (JSON-LD) for ETF analysis pages (FAQPage or Review schema where appropriate)
-- [ ] Ensure unique, descriptive title and meta description per ETF (e.g., "SPY ETF Analysis — Performance, Risk, Holdings | KoalaGains")
-- [ ] Add OpenGraph and Twitter card meta tags for social sharing
+- [ ] On the ETF detail page (`etfs/[exchange]/[etf]/page.tsx`), add spider/radar chart on the right side showing category scores (reuse `TickerRadarChart` pattern)
+- [ ] Move the existing financial info table to the left side of the layout (spider chart right, financial table left)
+- [ ] Below the chart/financial section, add analysis sections for each category showing: summary, factor Pass/Fail list, expandable detailed explanations
+- [ ] Add admin-only "Generate" / "Regenerate" buttons per category on the detail page
+- [ ] Fetch analysis data via new API route and handle missing data gracefully (show placeholder if not yet generated)
 
-### 7.2 URL Structure & Sitemap
-- [ ] Verify ETF analysis pages follow clean URL structure: `/etfs/[exchange]/[etf]`
-- [ ] Add ETF pages to sitemap generation
-- [ ] Ensure proper canonical URLs to avoid duplicate content
+## 13. New ETF Financial Data Debug Page
 
-## Phase 8: Testing & Quality
+- [ ] Create a new page (e.g., `etfs/[exchange]/[etf]/financial-data`) that shows ALL raw financial data for an ETF in a readable format
+- [ ] Display EtfFinancialInfo fields in a structured table
+- [ ] Display EtfStockAnalyzerInfo fields (moving averages, CAGR, period returns, technical indicators)
+- [ ] Display all EtfMorAnalyzerInfo sections (overview, market data, analysis, returns, holdings, strategy)
+- [ ] Display EtfMorRiskInfo (risk periods, scores, volatility, capture ratios)
+- [ ] Display EtfMorPeopleInfo (managers, tenure, inception)
+- [ ] Display EtfMorPortfolioInfo (asset allocation, style measures, sector exposure, bond breakdown, holdings)
+- [ ] This page helps debug whether data is present and correct before running analysis generation
 
-### 8.1 Data Validation
-- [ ] Test analysis generation end-to-end with at least 3 different ETF types (equity, bond, sector)
-- [ ] Validate LLM output parsing handles edge cases (missing fields, unexpected formats)
-- [ ] Verify scores are computed correctly and cached scores match individual factor results
+## 14. Analysis Results API Routes
 
-### 8.2 UI Testing
-- [ ] Test spider chart rendering with various score distributions (all high, all low, mixed, partial data)
-- [ ] Test analysis sections display on mobile, tablet, and desktop breakpoints
-- [ ] Verify light and dark theme compatibility for all new components
-- [ ] Test admin pages with large datasets (100+ ETFs with generation requests)
+- [ ] Create GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis` — returns all category analysis results with factor details
+- [ ] Create GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores` — returns cached scores for spider chart rendering
 
-### 8.3 Performance
-- [ ] Ensure ETF detail page with analysis data loads within acceptable time
-- [ ] Add caching for analysis results (revalidation strategy similar to existing ETF data caching)
-- [ ] Monitor LLM API usage and costs for analysis generation at scale
+## 15. SEO & Metadata
+
+- [ ] Update `generateMetadata()` on ETF detail page to include analysis keywords in title/description
+- [ ] Add structured data (JSON-LD) for ETF pages
+- [ ] Ensure OpenGraph and Twitter card meta tags are set for social sharing
+
+## 16. Testing & Validation
+
+- [ ] Test end-to-end: create generation request → cron processes it → callback saves results → detail page shows analysis
+- [ ] Test with different ETF types: equity ETF (SPY), bond ETF (BND), sector ETF (XLF)
+- [ ] Test spider chart with partial data (some categories generated, others not)
+- [ ] Test admin bulk actions with 10+ ETFs
+- [ ] Verify light and dark theme for all new components
+- [ ] Test on mobile, tablet, and desktop
