@@ -1,0 +1,2 @@
+- first we need to finalize the 5 categories or x number of categories.
+- then the analysis factors under it. will they be static or dynammic like stocks where we have based on industry+sub industry
