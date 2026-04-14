@@ -18,13 +18,14 @@
 - [x] Created ETF-specific output schema `insights-ui/schemas/etf-analysis/outputs/etf-category-analysis-output.schema.yaml` (same structure as stock output: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
 - [ ] Document example input/output for one ETF category (e.g., SPY Performance & Returns)
 
-## 3. Database — New Tables
+## 3. Database — New Tables (schema added, migration pending)
 
-- [ ] Create `EtfAnalysisCategory` enum in Prisma (one value per finalized category)
-- [ ] Create `EtfGenerationRequest` model (like `TickerV1GenerationRequest`): id, etfId, status, one boolean flag per category (e.g., `regeneratePerformance`, `regenerateRisk`, etc.), completedSteps, failedSteps, inProgressStep, timestamps, spaceId
-- [ ] Create `EtfCategoryAnalysisResult` model (like `TickerV1CategoryAnalysisResult`): id, categoryKey, summary, overallAnalysisDetails, etfId, spaceId
-- [ ] Create `EtfAnalysisCategoryFactorResult` model (like `TickerV1AnalysisCategoryFactorResult`): id, categoryKey, factorKey, oneLineExplanation, detailedExplanation, result (Pass/Fail), etfId, spaceId
-- [ ] Create `EtfCachedScore` model (like `TickerV1CachedScore`): id, etfId, one score field per category, finalScore, spaceId, timestamps
+- [x] Created `EtfAnalysisCategory` enum: PerformanceAndReturns, CostEfficiencyAndTeam, RiskAnalysis
+- [x] Created `EtfGenerationRequest` model with per-category regenerate booleans, status, step tracking, timestamps
+- [x] Created `EtfCategoryAnalysisResult` model with summary, overallAnalysisDetails, unique on (spaceId, etfId, categoryKey)
+- [x] Created `EtfAnalysisCategoryFactorResult` model with factorKey, Pass/Fail result, cascading relation to parent result
+- [x] Created `EtfCachedScore` model with per-category scores and finalScore
+- [x] Added relation fields on `Etf` model for all new tables
 - [ ] Run Prisma migration and generate client types
 
 ## 4. Prompts
