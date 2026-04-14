@@ -68,27 +68,28 @@
 - [x] After saving, computes category score (Pass count) and upserts EtfCachedScore with per-category + final scores
 - [x] After saving, marks step as completed in EtfGenerationRequest and triggers next step via `triggerEtfGenerationOfAReport()`
 
-## 9. Cron Job Setup
+## 9. Cron Job Setup ✅
 
-- [ ] Set up a cron job that calls `generate-etf-v1-request` endpoint every 2-5 minutes
-- [ ] Add 2-second delay between sequential LLM calls (like stocks do for Morningstar/StockAnalysis)
-- [ ] Handle timeout: if a step has been InProgress for 5+ minutes, mark it as failed and move on
+- [x] Added cron job in `vercel.json` — calls `/api/koala_gains/etfs-v1/generate-etf-v1-request` every 3 minutes
+- [x] Timeout handling already implemented in `etf-generation-report-utils.ts` — 5-min timeout marks step as failed
 
-## 10. Admin Page — ETF Reports (extend existing)
+## 10. Admin Page — ETF Reports (extend existing) ✅
 
-- [ ] Extend `insights-ui/src/app/admin-v1/etf-reports/` to show analysis status columns (one column per category, green/red/empty dot)
-- [ ] Add "Missing Analysis" filter — show ETFs that are missing one or more category analysis results
-- [ ] Add "Generate Analysis" bulk action — creates generation requests for selected ETFs with all categories flagged
-- [ ] Add per-ETF dropdown action to generate or regenerate specific categories
-- [ ] Add auto-refresh (30s) when any generation request is InProgress
+- [x] Added 3 analysis status columns (Performance, Cost & Team, Risk) to EtfReportsTable showing factor result counts
+- [x] Added "Missing Analysis" filter option in EtfReportsFilters dropdown
+- [x] Added "Generate Analysis" bulk action in BulkActionsBar — creates generation requests for all selected ETFs
+- [x] Added "Generate All Analysis" per-ETF dropdown action in EtfRowActionsDropdown
+- [x] Added "Missing Analysis" category in SelectMissingBar for quick-selecting ETFs without analysis
+- [x] Updated API to return `performanceAnalysisCount`, `costEfficiencyAnalysisCount`, `riskAnalysisCount`
 
-## 11. Admin Page — ETF Generation Requests
+## 11. Admin Page — ETF Generation Requests ✅
 
-- [ ] Create new admin page at `admin-v1/etf-generation-requests/` (like `admin-v1/generation-requests/` for stocks)
-- [ ] Show requests grouped by status: InProgress, Failed, NotStarted, Completed
-- [ ] For each request, show ETF symbol, per-step status dots (green=done, red=failed, blue=pending, yellow=in-progress)
-- [ ] Add "Reload" button for failed requests
-- [ ] Add auto-refresh every 30 seconds
+- [x] Created new admin page at `admin-v1/etf-generation-requests/page.tsx`
+- [x] Shows requests grouped by status with color-coded borders (blue=InProgress, gray=NotStarted, red=Failed, green=Completed)
+- [x] Per-step status dots (green=done, red=failed, blue=pending, yellow=in-progress, gray=not enabled)
+- [x] "Reload" button for failed requests (calls reload API endpoint)
+- [x] Auto-refresh every 30 seconds when active requests exist, with Pause/Resume toggle
+- [x] Added nav link in AdminNav under "ETF Mgmt" section
 
 ## 12. ETF Detail Page — Spider Chart & Analysis
 

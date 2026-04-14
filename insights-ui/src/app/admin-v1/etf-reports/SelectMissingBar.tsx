@@ -15,6 +15,11 @@ const categories: MissingCategory[] = [
   { key: 'morRisk', label: 'MOR Risk', filter: (e) => !e.hasMorRiskInfo },
   { key: 'morPeople', label: 'MOR People', filter: (e) => !e.hasMorPeopleInfo },
   { key: 'morPortfolio', label: 'MOR Portfolio', filter: (e) => !e.hasMorPortfolioInfo },
+  {
+    key: 'analysis',
+    label: 'Missing Analysis',
+    filter: (e) => e.performanceAnalysisCount === 0 || e.costEfficiencyAnalysisCount === 0 || e.riskAnalysisCount === 0,
+  },
 ];
 
 export interface SelectMissingBarProps {

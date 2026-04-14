@@ -35,7 +35,10 @@ const stockIndustryMgmtSection: AdminNavSection = {
 
 const etfMgmtSection: AdminNavSection = {
   label: 'ETF Mgmt',
-  items: [{ name: 'ETF Reports', href: '/admin-v1/etf-reports' }],
+  items: [
+    { name: 'ETF Reports', href: '/admin-v1/etf-reports' },
+    { name: 'ETF Generation Requests', href: '/admin-v1/etf-generation-requests' },
+  ],
 };
 
 const analysisTemplatesSection: AdminNavSection = {

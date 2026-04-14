@@ -15,6 +15,9 @@ export interface EtfReportRow {
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
   hasMorPortfolioInfo: boolean;
+  performanceAnalysisCount: number;
+  costEfficiencyAnalysisCount: number;
+  riskAnalysisCount: number;
 }
 
 export interface EtfReportsResponse {
@@ -25,7 +28,7 @@ export interface EtfReportsResponse {
   availableExchanges: AllExchanges[];
 }
 
-export type MissingFilter = '' | 'stockAnalyze' | 'mor';
+export type MissingFilter = '' | 'stockAnalyze' | 'mor' | 'analysis';
 
 function normalizeUpperTrim(value: string | null | undefined): string {
   return (value ?? '').toUpperCase().trim();
@@ -57,6 +60,7 @@ function toMissingFilter(v: string | null): MissingFilter {
   const normalized = (v ?? '').trim();
   if (normalized === 'stockAnalyze') return 'stockAnalyze';
   if (normalized === 'mor') return 'mor';
+  if (normalized === 'analysis') return 'analysis';
   return '';
 }
 
@@ -87,6 +91,10 @@ const getHandler = async (
       ? {
           OR: [{ morAnalyzerInfo: { is: null } }, { morRiskInfo: { is: null } }, { morPeopleInfo: { is: null } }, { morPortfolioInfo: { is: null } }],
         }
+      : missing === 'analysis'
+      ? {
+          categoryAnalysisResults: { none: {} },
+        }
       : null;
 
   const where: any = {
@@ -110,6 +118,9 @@ const getHandler = async (
         morRiskInfo: { select: { id: true } },
         morPeopleInfo: { select: { id: true } },
         morPortfolioInfo: { select: { id: true } },
+        analysisCategoryFactorResults: {
+          select: { categoryKey: true },
+        },
       },
       orderBy: [{ symbol: 'asc' }, { exchange: 'asc' }],
       skip: (page - 1) * limit,
@@ -128,18 +139,24 @@ const getHandler = async (
   const availableExchanges: AllExchanges[] = distinctExchanges.map((e) => normalizeUpperTrim(e.exchange)).filter((ex): ex is AllExchanges => isExchange(ex));
 
   return {
-    etfs: supportedEtfs.map((e) => ({
-      id: e.id,
-      symbol: e.symbol,
-      name: e.name,
-      exchange: e.exchange as AllExchanges,
-      hasFinancialInfo: !!e.financialInfo,
-      hasStockAnalyzerInfo: !!e.stockAnalyzerInfo,
-      hasMorAnalyzerInfo: !!e.morAnalyzerInfo,
-      hasMorRiskInfo: !!e.morRiskInfo,
-      hasMorPeopleInfo: !!e.morPeopleInfo,
-      hasMorPortfolioInfo: !!e.morPortfolioInfo,
-    })),
+    etfs: supportedEtfs.map((e) => {
+      const factorResults = e.analysisCategoryFactorResults || [];
+      return {
+        id: e.id,
+        symbol: e.symbol,
+        name: e.name,
+        exchange: e.exchange as AllExchanges,
+        hasFinancialInfo: !!e.financialInfo,
+        hasStockAnalyzerInfo: !!e.stockAnalyzerInfo,
+        hasMorAnalyzerInfo: !!e.morAnalyzerInfo,
+        hasMorRiskInfo: !!e.morRiskInfo,
+        hasMorPeopleInfo: !!e.morPeopleInfo,
+        hasMorPortfolioInfo: !!e.morPortfolioInfo,
+        performanceAnalysisCount: factorResults.filter((r) => r.categoryKey === 'PerformanceAndReturns').length,
+        costEfficiencyAnalysisCount: factorResults.filter((r) => r.categoryKey === 'CostEfficiencyAndTeam').length,
+        riskAnalysisCount: factorResults.filter((r) => r.categoryKey === 'RiskAnalysis').length,
+      };
+    }),
     // totalCount comes from the DB query; UI can still show a correct pager even if we
     // filter out unsupported exchanges client-side.
     totalCount,

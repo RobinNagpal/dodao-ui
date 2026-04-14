@@ -36,20 +36,38 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
 
   const isBusy = fetchingFinancialInfo || triggeringMor || flushing;
 
+  const { postData: createGenerationRequest, loading: creatingGenRequest } = usePostData<unknown, unknown>({
+    successMessage: 'Analysis generation request created!',
+    errorMessage: 'Failed to create generation request',
+  });
+
+  const isBusyAll = isBusy || creatingGenRequest;
+
   const items: EllipsisDropdownItem[] = [
-    { key: 'financial', label: 'Financial Info', disabled: isBusy },
-    { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: isBusy },
-    { key: 'morRisk', label: 'Mor Risk', disabled: isBusy },
-    { key: 'morPeople', label: 'Mor People', disabled: isBusy },
-    { key: 'morPortfolio', label: 'Mor Portfolio', disabled: isBusy },
-    { key: 'flushCache', label: 'Flush Cache', disabled: isBusy },
+    { key: 'generateAnalysis', label: 'Generate All Analysis', disabled: isBusyAll },
+    { key: 'financial', label: 'Financial Info', disabled: isBusyAll },
+    { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: isBusyAll },
+    { key: 'morRisk', label: 'Mor Risk', disabled: isBusyAll },
+    { key: 'morPeople', label: 'Mor People', disabled: isBusyAll },
+    { key: 'morPortfolio', label: 'Mor Portfolio', disabled: isBusyAll },
+    { key: 'flushCache', label: 'Flush Cache', disabled: isBusyAll },
   ];
 
   return (
     <EllipsisDropdown
       items={items}
       onSelect={async (key) => {
-        if (key === 'financial') {
+        if (key === 'generateAnalysis') {
+          await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
+            {
+              etf: { symbol: etf.symbol, exchange: etf.exchange },
+              regeneratePerformanceAndReturns: true,
+              regenerateCostEfficiencyAndTeam: true,
+              regenerateRiskAnalysis: true,
+            },
+          ]);
+          onDone();
+        } else if (key === 'financial') {
           await fetchFinancialInfo(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/fetch-financial-info`, {});
           onDone();
         } else if (key === 'morAnalyzer') {
