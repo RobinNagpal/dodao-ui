@@ -329,8 +329,10 @@ export default function MissingReportsPage(): JSX.Element {
   const [showGenerateAllConfirmation, setShowGenerateAllConfirmation] = useState<boolean>(false);
   const [businessAndMoatBefore, setBusinessAndMoatBefore] = useState<string>('');
   const [fairValueBefore, setFairValueBefore] = useState<string>('');
+  const [appliedBusinessAndMoatBefore, setAppliedBusinessAndMoatBefore] = useState<string>('');
+  const [appliedFairValueBefore, setAppliedFairValueBefore] = useState<string>('');
 
-  const apiUrl: string = buildMissingReportsUrl(businessAndMoatBefore, fairValueBefore);
+  const apiUrl: string = buildMissingReportsUrl(appliedBusinessAndMoatBefore, appliedFairValueBefore);
 
   const { data, loading, reFetchData } = useFetchData<TickerWithMissingReportInfoExtended[]>(apiUrl, {}, 'Failed to fetch missing reports');
 
@@ -501,10 +503,7 @@ export default function MissingReportsPage(): JSX.Element {
               id="bm-date"
               type="date"
               value={businessAndMoatBefore}
-              onChange={(e) => {
-                setBusinessAndMoatBefore(e.target.value);
-                setSelectedRows(new Set());
-              }}
+              onChange={(e) => setBusinessAndMoatBefore(e.target.value)}
               className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -516,19 +515,30 @@ export default function MissingReportsPage(): JSX.Element {
               id="fv-date"
               type="date"
               value={fairValueBefore}
-              onChange={(e) => {
-                setFairValueBefore(e.target.value);
-                setSelectedRows(new Set());
-              }}
+              onChange={(e) => setFairValueBefore(e.target.value)}
               className="px-3 py-2 bg-gray-700 text-gray-200 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-          {(businessAndMoatBefore || fairValueBefore) && (
-            <div className="flex items-end">
+          <div className="flex items-end gap-2">
+            <Button
+              onClick={() => {
+                setAppliedBusinessAndMoatBefore(businessAndMoatBefore);
+                setAppliedFairValueBefore(fairValueBefore);
+                setSelectedRows(new Set());
+              }}
+              variant="contained"
+              className="text-sm"
+              disabled={!businessAndMoatBefore && !fairValueBefore}
+            >
+              Apply
+            </Button>
+            {(appliedBusinessAndMoatBefore || appliedFairValueBefore) && (
               <Button
                 onClick={() => {
                   setBusinessAndMoatBefore('');
                   setFairValueBefore('');
+                  setAppliedBusinessAndMoatBefore('');
+                  setAppliedFairValueBefore('');
                   setSelectedRows(new Set());
                 }}
                 variant="outlined"
@@ -536,8 +546,8 @@ export default function MissingReportsPage(): JSX.Element {
               >
                 Clear Filters
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
@@ -545,12 +555,17 @@ export default function MissingReportsPage(): JSX.Element {
         <div className="bg-gray-800 border border-red-500 rounded-lg p-4">
           <div className="flex items-baseline justify-between mb-2">
             <h3 className="text-xl font-semibold">
-              {businessAndMoatBefore || fairValueBefore ? 'Tickers with Stale Reports (Date Filtered)' : 'Tickers with Missing Reports or Financial Data'}
+              {appliedBusinessAndMoatBefore || appliedFairValueBefore
+                ? 'Tickers with Stale Reports (Date Filtered)'
+                : 'Tickers with Missing Reports or Financial Data'}
             </h3>
             <div className="flex items-center gap-4">
-              {(businessAndMoatBefore || fairValueBefore) && (
+              {(appliedBusinessAndMoatBefore || appliedFairValueBefore) && (
                 <span className="text-xs text-yellow-400 font-medium">
-                  {[businessAndMoatBefore && `B&M before ${businessAndMoatBefore}`, fairValueBefore && `Fair Value before ${fairValueBefore}`]
+                  {[
+                    appliedBusinessAndMoatBefore && `B&M before ${appliedBusinessAndMoatBefore}`,
+                    appliedFairValueBefore && `Fair Value before ${appliedFairValueBefore}`,
+                  ]
                     .filter(Boolean)
                     .join(' | ')}
                 </span>
