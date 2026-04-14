@@ -26,7 +26,7 @@
 - [x] Created `EtfAnalysisCategoryFactorResult` model with factorKey, Pass/Fail result, cascading relation to parent result
 - [x] Created `EtfCachedScore` model with per-category scores and finalScore
 - [x] Added relation fields on `Etf` model for all new tables
-- [ ] Run Prisma migration and generate client types
+- [x] Run Prisma migration and generate client types
 
 ## 4. Prompts (done by user on KoalaGains platform)
 
@@ -53,20 +53,20 @@
 - [x] Created GET `api/[spaceId]/etfs-v1/generation-requests` — lists all requests grouped by status with pagination and counts
 - [x] Created POST `api/[spaceId]/etfs-v1/generation-requests/[requestId]/reload` — resets a failed request to NotStarted
 
-## 7. Generation Processing Pipeline
+## 7. Generation Processing Pipeline ✅
 
-- [ ] Create `src/utils/etf-analysis-reports/etf-generation-report-utils.ts` (like `generation-report-utils.ts` for stocks)
-- [ ] Define dependency map for ETF categories (which categories must complete before others can start)
-- [ ] Implement `triggerEtfGenerationOfAReport()` — picks up oldest pending request, finds next step by dependency order, invokes LLM via Lambda
-- [ ] Create GET `api/[spaceId]/etfs-v1/generate-etf-v1-request` — the endpoint the cron job calls to process pending requests
-- [ ] Use the same Lambda + callback pattern as stocks: invoke Lambda with prompt + input, Lambda calls back with results
+- [x] Created `src/utils/etf-analysis-reports/etf-generation-report-utils.ts` with `triggerEtfGenerationOfAReport()`
+- [x] Defined dependency map (all 3 categories are independent — no dependencies between them)
+- [x] Created `src/utils/etf-analysis-reports/etf-llm-lambda-utils.ts` with ETF-specific callback URL (`etfs-v1/exchange/...`)
+- [x] Created GET `api/[spaceId]/etfs-v1/generate-etf-v1-request` — cron endpoint that processes up to 10 requests
+- [x] Uses same Lambda + callback pattern as stocks with ETF-specific callback URL
 
-## 8. Save Report Callback
+## 8. Save Report Callback ✅
 
-- [ ] Create POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/save-report-callback` — receives LLM response from Lambda
-- [ ] Create `src/utils/etf-analysis-reports/save-etf-report-utils.ts` — parses LLM response, upserts EtfCategoryAnalysisResult and EtfAnalysisCategoryFactorResult records
-- [ ] After saving, compute category score (Pass count / total factors) and update EtfCachedScore
-- [ ] After saving, mark step as completed in EtfGenerationRequest and trigger next step
+- [x] Created POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/save-report-callback` — receives LLM response, dispatches via ETF_REPORT_TYPE_TO_CATEGORY map
+- [x] Created `src/utils/etf-analysis-reports/save-etf-report-utils.ts` — upserts EtfCategoryAnalysisResult and EtfAnalysisCategoryFactorResult, uses factor keys from JSON config
+- [x] After saving, computes category score (Pass count) and upserts EtfCachedScore with per-category + final scores
+- [x] After saving, marks step as completed in EtfGenerationRequest and triggers next step via `triggerEtfGenerationOfAReport()`
 
 ## 9. Cron Job Setup
 
