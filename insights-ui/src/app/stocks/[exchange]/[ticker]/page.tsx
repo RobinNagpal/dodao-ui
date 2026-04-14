@@ -473,7 +473,11 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
               <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
                 <div
                   className={`flex items-center gap-2 mb-2 ${
-                    categoryKey === TickerAnalysisCategory.PastPerformance || categoryKey === TickerAnalysisCategory.FutureGrowth ? 'justify-between' : ''
+                    categoryKey === TickerAnalysisCategory.BusinessAndMoat ||
+                    categoryKey === TickerAnalysisCategory.PastPerformance ||
+                    categoryKey === TickerAnalysisCategory.FutureGrowth
+                      ? 'justify-between'
+                      : ''
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -487,6 +491,16 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                       </div>
                     )}
                   </div>
+
+                  {categoryKey === TickerAnalysisCategory.BusinessAndMoat && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/business-and-moat`}
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+                    >
+                      View Detailed Analysis →
+                    </Link>
+                  )}
 
                   {categoryKey === TickerAnalysisCategory.PastPerformance && (
                     <Link
@@ -535,7 +549,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
 
   // Filter out PastPerformance and FutureGrowth — they now have their own dedicated pages
   const categoriesToShow = Object.values(TickerAnalysisCategory).filter(
-    (key) => key !== TickerAnalysisCategory.PastPerformance && key !== TickerAnalysisCategory.FutureGrowth
+    (key) => key !== TickerAnalysisCategory.BusinessAndMoat && key !== TickerAnalysisCategory.PastPerformance && key !== TickerAnalysisCategory.FutureGrowth
   );
 
   return (
