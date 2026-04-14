@@ -78,11 +78,11 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       atlDate: sa?.atlDate,
       atlChgPercent: sa?.atlChgPercent,
     }),
-    morningstarReturns: JSON.stringify({
+    morReturns: JSON.stringify({
       returnsAnnual: mor?.returnsAnnual,
       returnsTrailing: mor?.returnsTrailing,
     }),
-    morningstarOverview: JSON.stringify({
+    morOverview: JSON.stringify({
       overviewCategory: mor?.overviewCategory,
       overviewStyleBox: mor?.overviewStyleBox,
       overviewNav: mor?.overviewNav,
@@ -136,7 +136,7 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
       dollarVol: sa?.dollarVol ? sa.dollarVol.toString() : null,
       relVolume: sa?.relVolume,
     }),
-    morningstarAnalysis: JSON.stringify({
+    morAnalysis: JSON.stringify({
       overviewAdjExpenseRatio: mor?.overviewAdjExpenseRatio,
       overviewProspectusNetExpenseRatio: mor?.overviewProspectusNetExpenseRatio,
       overviewTurnover: mor?.overviewTurnover,
@@ -190,7 +190,7 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
       atlDate: sa?.atlDate,
       atlChgPercent: sa?.atlChgPercent,
     }),
-    morningstarRiskPeriods: JSON.stringify({
+    morRiskPeriods: JSON.stringify({
       riskPeriods: risk?.riskPeriods,
     }),
     financialRiskContext: JSON.stringify({

@@ -1,12 +1,10 @@
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
-import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
-import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -78,23 +76,6 @@ async function fetchEtfFinancialInfo(exchange: string, etf: string): Promise<Etf
   } catch (error) {
     console.error(`fetchEtfFinancialInfo error for ${etf}:`, error);
     return null;
-  }
-}
-
-/** MOR info fetcher (analyzer + risk + people) */
-async function fetchEtfMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/mor-info`;
-  try {
-    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
-    if (!res.ok) {
-      console.error(`fetchEtfMorInfo failed (${res.status}): ${url}`);
-      return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
-    }
-    const wrapper = (await res.json()) as EtfMorInfoOptionalWrapper;
-    return wrapper;
-  } catch (error) {
-    console.error(`fetchEtfMorInfo error for ${etf}:`, error);
-    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
   }
 }
 
@@ -316,24 +297,6 @@ function EtfArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDat
   );
 }
 
-function EtfMorInfoSkeleton(): JSX.Element {
-  return (
-    <section id="etf-mor-info" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-6">
-      <div className="h-5 w-48 bg-gray-800 rounded" />
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-10 bg-gray-800 rounded" />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function EtfMorInfoSection({ morInfoPromise }: { morInfoPromise: Promise<EtfMorInfoOptionalWrapper> }): JSX.Element {
-  const morData: EtfMorInfoOptionalWrapper = use(morInfoPromise);
-  return <EtfMorInfo data={morData} />;
-}
-
 function EtfAnalysisSection({ analysisPromise }: { analysisPromise: Promise<EtfAnalysisResponse> }): JSX.Element | null {
   const analysis: EtfAnalysisResponse = use(analysisPromise);
   return <EtfAnalysisSections data={analysis} />;
@@ -354,7 +317,6 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
   // Promises consumed by child components via `use()` under Suspense
   const financialInfoPromise = fetchEtfFinancialInfo(exchange, etf);
-  const morInfoPromise = fetchEtfMorInfo(exchange, etf);
   const analysisPromise = fetchEtfAnalysis(exchange, etf);
   const scoresPromise = fetchEtfScores(exchange, etf);
 
@@ -419,10 +381,6 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} />
-        </Suspense>
-
-        <Suspense fallback={<EtfMorInfoSkeleton />}>
-          <EtfMorInfoSection morInfoPromise={morInfoPromise} />
         </Suspense>
 
         <EtfArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />

@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
@@ -94,6 +95,16 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
         <JsonSection title="EtfStockAnalyzerInfo" data={null} />
       )}
 
+      <EtfMorInfo
+        data={{
+          morAnalyzerInfo: etf.morAnalyzerInfo,
+          morRiskInfo: etf.morRiskInfo,
+          morPeopleInfo: etf.morPeopleInfo,
+          morPortfolioInfo: etf.morPortfolioInfo,
+        }}
+      />
+
+      <h2 className="text-xl font-bold mt-8 mb-4">Raw JSON Data</h2>
       <JsonSection title="EtfMorAnalyzerInfo" data={etf.morAnalyzerInfo} />
       <JsonSection title="EtfMorRiskInfo" data={etf.morRiskInfo} />
       <JsonSection title="EtfMorPeopleInfo" data={etf.morPeopleInfo} />

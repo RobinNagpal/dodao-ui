@@ -26,7 +26,7 @@
         {
           "factorAnalysisKey": "benchmark_comparison",
           "factorAnalysisTitle": "Benchmark & Category Comparison",
-          "factorAnalysisDescription": "Compares the ETF's returns against its benchmark index and category average using Morningstar trailing and annual returns data. Persistent underperformance vs benchmark is a red flag.",
+          "factorAnalysisDescription": "Compares the ETF's returns against its benchmark index and category average using Mor trailing and annual returns data. Persistent underperformance vs benchmark is a red flag.",
           "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, overviewCategory, indexName"
         },
         {
@@ -67,9 +67,9 @@
           "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
         },
         {
-          "factorAnalysisKey": "morningstar_assessment",
-          "factorAnalysisTitle": "Morningstar Analyst Assessment",
-          "factorAnalysisDescription": "Reviews the Morningstar medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating from Morningstar analysts indicates strong fund quality.",
+          "factorAnalysisKey": "mor_assessment",
+          "factorAnalysisTitle": "Mor Analyst Assessment",
+          "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating from Mor analysts indicates strong fund quality.",
           "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
         }
       ]
@@ -106,7 +106,7 @@
         {
           "factorAnalysisKey": "risk_vs_category",
           "factorAnalysisTitle": "Risk Score vs Category",
-          "factorAnalysisDescription": "Compares the fund's overall Morningstar risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. Consistently below-average risk vs category is favorable.",
+          "factorAnalysisDescription": "Compares the fund's overall Mor risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. Consistently below-average risk vs category is favorable.",
           "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
         }
       ]

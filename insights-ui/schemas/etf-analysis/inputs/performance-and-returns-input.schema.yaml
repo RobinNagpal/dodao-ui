@@ -48,15 +48,15 @@ properties:
     type: string
     description: 'JSON string with moving averages (MA20, MA50, MA150, MA200), MA change percentages, RSI (daily/weekly/monthly), stock price, and ATH/ATL data.'
 
-  # From EtfMorAnalyzerInfo — Morningstar returns
-  morningstarReturns:
+  # From EtfMorAnalyzerInfo — Mor returns
+  morReturns:
     type: string
-    description: 'JSON string with Morningstar annual and trailing returns data, including fund vs category vs index comparisons across multiple periods.'
+    description: 'JSON string with Mor annual and trailing returns data, including fund vs category vs index comparisons across multiple periods.'
 
   # From EtfMorAnalyzerInfo — overview context
-  morningstarOverview:
+  morOverview:
     type: string
-    description: 'JSON string with Morningstar overview: category, style box, NAV, one-day return, total assets, strategy text, and index name.'
+    description: 'JSON string with Mor overview: category, style box, NAV, one-day return, total assets, strategy text, and index name.'
 
   # From EtfFinancialInfo — basic financial context
   financialSummary:
@@ -71,6 +71,6 @@ required:
   - factorAnalysisArray
   - stockAnalyzerReturns
   - stockAnalyzerTechnicals
-  - morningstarReturns
-  - morningstarOverview
+  - morReturns
+  - morOverview
   - financialSummary

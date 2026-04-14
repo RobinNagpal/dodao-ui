@@ -48,8 +48,8 @@ properties:
     type: string
     description: 'JSON string with issuer, asset class, category, fund name, average volume, dollar volume, bid-ask spread context, and relative volume.'
 
-  # From EtfMorAnalyzerInfo — expense, turnover, Morningstar assessment
-  morningstarAnalysis:
+  # From EtfMorAnalyzerInfo — expense, turnover, Mor assessment
+  morAnalysis:
     type: string
     description: 'JSON string with adjusted expense ratio, prospectus net expense ratio, turnover, category, medalist rating, analyst sections (Process, People, Parent pillars), strategy text, and bid-ask spread.'
 
@@ -71,6 +71,6 @@ required:
   - factorAnalysisArray
   - financialInfo
   - stockAnalyzerFundInfo
-  - morningstarAnalysis
+  - morAnalysis
   - managementInfo
   - portfolioTurnover

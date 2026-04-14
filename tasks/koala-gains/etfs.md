@@ -12,9 +12,9 @@
 ## 2. Input/Output Schemas ✅
 
 - [x] Created 3 input YAML schemas (one per category) in `insights-ui/schemas/etf-analysis/inputs/`:
-  - `performance-and-returns-input.schema.yaml` — uses StockAnalyzer returns/technicals, Morningstar returns/overview, financial summary
-  - `cost-efficiency-and-team-input.schema.yaml` — uses financial info, StockAnalyzer fund info, Morningstar analysis, management info, portfolio turnover
-  - `risk-analysis-input.schema.yaml` — uses StockAnalyzer risk metrics, Morningstar risk periods, financial risk context, category context
+  - `performance-and-returns-input.schema.yaml` — uses StockAnalyzer returns/technicals, Mor returns/overview, financial summary
+  - `cost-efficiency-and-team-input.schema.yaml` — uses financial info, StockAnalyzer fund info, Mor analysis, management info, portfolio turnover
+  - `risk-analysis-input.schema.yaml` — uses StockAnalyzer risk metrics, Mor risk periods, financial risk context, category context
 - [x] Created ETF-specific output schema `insights-ui/schemas/etf-analysis/outputs/etf-category-analysis-output.schema.yaml` (same structure as stock output: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
 - [ ] Document example input/output for one ETF category (e.g., SPY Performance & Returns)
 
@@ -38,9 +38,9 @@
 ## 5. Input Preparation Utils ✅
 
 - [x] Created `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` with per-category functions:
-  - `preparePerformanceAndReturnsInputJson()` — gathers StockAnalyzer returns/technicals, Morningstar returns/overview, financial summary
-  - `prepareCostEfficiencyAndTeamInputJson()` — gathers financial info, fund info, Morningstar analysis, management/people info, portfolio turnover
-  - `prepareRiskAnalysisInputJson()` — gathers risk metrics (beta, Sharpe, Sortino), Morningstar risk periods, financial risk context
+  - `preparePerformanceAndReturnsInputJson()` — gathers StockAnalyzer returns/technicals, Mor returns/overview, financial summary
+  - `prepareCostEfficiencyAndTeamInputJson()` — gathers financial info, fund info, Mor analysis, management/people info, portfolio turnover
+  - `prepareRiskAnalysisInputJson()` — gathers risk metrics (beta, Sharpe, Sortino), Mor risk periods, financial risk context
   - `getEtfAnalysisFactorsForCategory()` — loads factors from JSON config by category
 - [x] Created `src/utils/etf-analysis-reports/get-etf-report-data-utils.ts` with `fetchEtfWithAllData()` and `fetchEtfBySymbolAndExchange()`
 - [x] Created `src/utils/etf-analysis-reports/etf-report-steps-statuses.ts` with `calculateEtfPendingSteps()`

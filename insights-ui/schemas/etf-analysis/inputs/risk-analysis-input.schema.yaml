@@ -43,8 +43,8 @@ properties:
     type: string
     description: 'JSON string with beta (1y, 2y, 5y), Sharpe ratio, Sortino ratio, ATR, RSI (daily/weekly/monthly), ATH/ATL data with dates and change percentages.'
 
-  # From EtfMorRiskInfo — Morningstar risk periods (3yr, 5yr, 10yr)
-  morningstarRiskPeriods:
+  # From EtfMorRiskInfo — Mor risk periods (3yr, 5yr, 10yr)
+  morRiskPeriods:
     type: string
     description: 'JSON string with risk period data for 3-Yr, 5-Yr, 10-Yr including: portfolio risk score & level, risk vs category, return vs category, risk & volatility measures table, and market volatility measures (capture ratios, drawdown, drawdown dates).'
 
@@ -56,7 +56,7 @@ properties:
   # From EtfMorAnalyzerInfo — category context for comparison
   categoryContext:
     type: string
-    description: 'JSON string with Morningstar category, style box, and overview metrics for peer comparison context.'
+    description: 'JSON string with Mor category, style box, and overview metrics for peer comparison context.'
 
 required:
   - name
@@ -65,6 +65,6 @@ required:
   - categoryKey
   - factorAnalysisArray
   - stockAnalyzerRiskMetrics
-  - morningstarRiskPeriods
+  - morRiskPeriods
   - financialRiskContext
   - categoryContext
