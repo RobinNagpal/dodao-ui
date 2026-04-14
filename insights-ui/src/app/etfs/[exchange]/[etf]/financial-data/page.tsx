@@ -1,10 +1,30 @@
-import { prisma } from '@/prisma';
+import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
+import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
+
+async function fetchEtfData(exchange: string, etf: string): Promise<EtfFastResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  return (await res.json()) as EtfFastResponse | null;
+}
+
+async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/mor-info`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
+    return (await res.json()) as EtfMorInfoOptionalWrapper;
+  } catch {
+    return { morAnalyzerInfo: null, morRiskInfo: null, morPeopleInfo: null, morPortfolioInfo: null };
+  }
+}
 
 function JsonSection({ title, data }: { title: string; data: unknown }) {
   if (!data) return <div className="mb-6"><h3 className="text-lg font-semibold mb-2 text-red-400">{title} — No Data</h3></div>;
@@ -12,7 +32,7 @@ function JsonSection({ title, data }: { title: string; data: unknown }) {
     <div className="mb-6">
       <h3 className="text-lg font-semibold mb-2 text-green-400">{title}</h3>
       <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto text-xs text-gray-300 max-h-96 overflow-y-auto">
-        {JSON.stringify(data, (_key, value) => (typeof value === 'bigint' ? value.toString() : value), 2)}
+        {JSON.stringify(data, null, 2)}
       </pre>
     </div>
   );
@@ -49,66 +69,47 @@ function FieldTable({ title, fields }: { title: string; fields: Record<string, u
 }
 
 export default async function EtfFinancialDataPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
-  const { exchange, etf: etfSymbol } = await params;
+  const { exchange: rawExchange, etf: rawEtf } = await params;
+  const exchange = rawExchange.toUpperCase();
+  const etfSymbol = rawEtf.toUpperCase();
 
-  const etf = await prisma.etf.findFirst({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      symbol: etfSymbol.toUpperCase(),
-      exchange: exchange.toUpperCase(),
-    },
-    include: {
-      financialInfo: true,
-      stockAnalyzerInfo: true,
-      morAnalyzerInfo: true,
-      morRiskInfo: true,
-      morPeopleInfo: true,
-      morPortfolioInfo: true,
-    },
-  });
+  const [etfData, morData] = await Promise.all([fetchEtfData(exchange, etfSymbol), fetchMorInfo(exchange, etfSymbol)]);
 
-  if (!etf) notFound();
+  if (!etfData) notFound();
 
   return (
     <PageWrapper>
       <div className="mb-6">
         <h1 className="text-2xl font-bold">
-          {etf.name} ({etf.symbol}) — Raw Financial Data
+          {etfData.name} ({etfData.symbol}) — Raw Financial Data
         </h1>
         <p className="text-sm text-gray-400 mt-1">
-          Exchange: {etf.exchange} | Inception: {etf.inception || 'N/A'} | ID: {etf.id}
+          Exchange: {etfData.exchange} | Inception: {etfData.inception || 'N/A'} | ID: {etfData.id}
         </p>
         <a href={`/etfs/${exchange}/${etfSymbol}`} className="text-sm text-blue-400 hover:text-blue-300 mt-2 inline-block">
           ← Back to ETF detail page
         </a>
       </div>
 
-      {etf.financialInfo ? (
-        <FieldTable title="EtfFinancialInfo" fields={etf.financialInfo as unknown as Record<string, unknown>} />
+      {etfData.financialInfo ? (
+        <FieldTable title="EtfFinancialInfo" fields={etfData.financialInfo as unknown as Record<string, unknown>} />
       ) : (
         <JsonSection title="EtfFinancialInfo" data={null} />
       )}
 
-      {etf.stockAnalyzerInfo ? (
-        <FieldTable title="EtfStockAnalyzerInfo" fields={etf.stockAnalyzerInfo as unknown as Record<string, unknown>} />
+      {etfData.stockAnalyzerInfo ? (
+        <FieldTable title="EtfStockAnalyzerInfo" fields={etfData.stockAnalyzerInfo as unknown as Record<string, unknown>} />
       ) : (
         <JsonSection title="EtfStockAnalyzerInfo" data={null} />
       )}
 
-      <EtfMorInfo
-        data={{
-          morAnalyzerInfo: etf.morAnalyzerInfo,
-          morRiskInfo: etf.morRiskInfo,
-          morPeopleInfo: etf.morPeopleInfo,
-          morPortfolioInfo: etf.morPortfolioInfo,
-        }}
-      />
+      <EtfMorInfo data={morData} />
 
       <h2 className="text-xl font-bold mt-8 mb-4">Raw JSON Data</h2>
-      <JsonSection title="EtfMorAnalyzerInfo" data={etf.morAnalyzerInfo} />
-      <JsonSection title="EtfMorRiskInfo" data={etf.morRiskInfo} />
-      <JsonSection title="EtfMorPeopleInfo" data={etf.morPeopleInfo} />
-      <JsonSection title="EtfMorPortfolioInfo" data={etf.morPortfolioInfo} />
+      <JsonSection title="EtfMorAnalyzerInfo" data={morData.morAnalyzerInfo} />
+      <JsonSection title="EtfMorRiskInfo" data={morData.morRiskInfo} />
+      <JsonSection title="EtfMorPeopleInfo" data={morData.morPeopleInfo} />
+      <JsonSection title="EtfMorPortfolioInfo" data={morData.morPortfolioInfo} />
     </PageWrapper>
   );
 }
