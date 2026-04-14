@@ -2,6 +2,7 @@ import EtfListingGrid from '@/components/etfs/EtfListingGrid';
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import { EtfListingResponse, EtfListingItem } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { generateEtfListingMetadata, generateEtfListingJsonLd, generateEtfListingBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { prisma } from '@/prisma';
 
 export const dynamic = 'force-static';
@@ -10,11 +11,7 @@ export const revalidate = 86400; // 24 hours
 
 const DEFAULT_PAGE_SIZE = 32;
 
-export const metadata = {
-  title: 'US ETFs - Exchange Traded Funds Analysis | KoalaGains',
-  description:
-    'Explore US ETFs with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights. Filter by AUM, P/E ratio, payout frequency, and more.',
-};
+export const metadata = generateEtfListingMetadata();
 
 function toEtfListingItem(etf: any): EtfListingItem {
   return {
@@ -76,6 +73,8 @@ export default async function EtfsPage() {
       title="US ETFs"
       description="Explore US exchange-traded funds with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights."
     >
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingBreadcrumbJsonLd()) }} />
       <EtfListingGrid data={data} />
     </EtfPageLayout>
   );

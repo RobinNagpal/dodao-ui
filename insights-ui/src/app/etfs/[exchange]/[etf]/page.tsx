@@ -9,6 +9,7 @@ import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
+import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -29,12 +30,6 @@ export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
 /** Cache revalidation constants */
 const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
-
-/** Helpers */
-function truncateForMeta(text: string, maxLength: number = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
 
 /** Data fetchers */
 async function fetchEtfByExchange(exchange: string, etf: string): Promise<EtfFastResponse | null> {
@@ -103,11 +98,11 @@ async function fetchEtfScores(exchange: string, etf: string): Promise<EtfScoresR
 
 /** Metadata */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
-  const routeParams: Readonly<{ exchange: string; etf: string }> = await params;
-  const { exchange, etf } = { exchange: routeParams.exchange.toUpperCase(), etf: routeParams.etf.toUpperCase() };
+  const routeParams = await params;
+  const exchange = routeParams.exchange.toUpperCase();
+  const etf = routeParams.etf.toUpperCase();
 
-  let etfName: string = etf;
-  let summary: string = `ETF analysis and reports for ${etf}. Explore performance, risk, cost efficiency, and key metrics.`;
+  let etfName = etf;
   let createdTime: string | undefined;
   let updatedTime: string | undefined;
 
@@ -122,44 +117,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     /* keep generic */
   }
 
-  const year = new Date().getFullYear();
-
-  const shortDesc: string = truncateForMeta(summary);
-  const canonicalUrl: string = `https://koalagains.com/etfs/${exchange}/${etf}`;
-  const keywords: string[] = [
-    etfName,
-    `${etfName} analysis`,
-    `${etf} ETF performance`,
-    `${etf} ETF risk analysis`,
-    `${etf} expense ratio`,
-    `ETF analysis ${etfName}`,
-    'ETF performance analysis',
-    'ETF risk assessment',
-    'ETF cost efficiency',
-    'exchange-traded funds',
-    'KoalaGains',
-  ];
-
-  return {
-    title: `${etfName} (${etf}) ETF Analysis & Key Metrics (${year})`,
-    description: shortDesc,
-    alternates: { canonical: canonicalUrl },
-    openGraph: {
-      title: `${etfName} (${etf}) ETF Analysis & Key Metrics | KoalaGains`,
-      description: shortDesc,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'article',
-      publishedTime: createdTime ?? updatedTime,
-      modifiedTime: updatedTime ?? createdTime,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${etfName} (${etf}) ETF Analysis & Key Metrics | KoalaGains`,
-      description: shortDesc,
-    },
-    keywords,
-  };
+  return generateEtfDetailMetadata({ etfName, symbol: etf, exchange, createdTime, updatedTime });
 }
 
 /* =============================================================================
@@ -351,17 +309,21 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Article',
-            headline: `${etfData.name} (${etfData.symbol}) ETF Analysis`,
-            description: `Performance, risk, and cost analysis for ${etfData.name} ETF on ${etfData.exchange}.`,
-            author: { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
-            publisher: { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
-            datePublished: publishedDate.toISOString(),
-            dateModified: modifiedDate.toISOString(),
-            mainEntityOfPage: `https://koalagains.com/etfs/${exchange}/${etf}`,
-          }),
+          __html: JSON.stringify(
+            generateEtfDetailArticleJsonLd({
+              etfName: etfData.name,
+              symbol: etfData.symbol,
+              exchange: etfData.exchange,
+              publishedDate: publishedDate.toISOString(),
+              modifiedDate: modifiedDate.toISOString(),
+            })
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(generateEtfDetailBreadcrumbJsonLd({ etfName: etfData.name, symbol: etfData.symbol, exchange: etfData.exchange })),
         }}
       />
 
