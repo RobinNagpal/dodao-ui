@@ -1,0 +1,76 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'The ETF ticker symbol (e.g., SPY).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
+  categoryKey:
+    type: string
+    enum: ['PerformanceAndReturns']
+    description: 'The analysis category being evaluated.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factors to analyze for this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short explanation of what this factor represents and why it matters.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+
+  # From EtfStockAnalyzerInfo — returns & CAGR data
+  stockAnalyzerReturns:
+    type: string
+    description: 'JSON string with period returns (1m through 20y), CAGR values (1y through 20y), YTD returns, and change metrics from StockAnalyzer.'
+
+  # From EtfStockAnalyzerInfo — moving averages & momentum
+  stockAnalyzerTechnicals:
+    type: string
+    description: 'JSON string with moving averages (MA20, MA50, MA150, MA200), MA change percentages, RSI (daily/weekly/monthly), stock price, and ATH/ATL data.'
+
+  # From EtfMorAnalyzerInfo — Mor returns
+  morReturns:
+    type: string
+    description: 'JSON string with Mor annual and trailing returns data, including fund vs category vs index comparisons across multiple periods.'
+
+  # From EtfMorAnalyzerInfo — overview context
+  morOverview:
+    type: string
+    description: 'JSON string with Mor overview: category, style box, NAV, one-day return, total assets, strategy text, and index name.'
+
+  # From EtfFinancialInfo — basic financial context
+  financialSummary:
+    type: string
+    description: 'JSON string with AUM, beta, 52-week high/low, volume, and holdings count for context.'
+
+required:
+  - name
+  - symbol
+  - exchange
+  - categoryKey
+  - factorAnalysisArray
+  - stockAnalyzerReturns
+  - stockAnalyzerTechnicals
+  - morReturns
+  - morOverview
+  - financialSummary

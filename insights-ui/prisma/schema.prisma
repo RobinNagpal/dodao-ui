@@ -1256,6 +1256,11 @@ model Etf {
   morPeopleInfo EtfMorPeopleInfo?
   morPortfolioInfo EtfMorPortfolioInfo?
 
+  generationRequests          EtfGenerationRequest[]
+  categoryAnalysisResults     EtfCategoryAnalysisResult[]
+  analysisCategoryFactorResults EtfAnalysisCategoryFactorResult[]
+  cachedScore                 EtfCachedScore?
+
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
   @@map("etfs")
@@ -1548,4 +1553,104 @@ model EtfMorPortfolioInfo {
 
   @@index([etfId])
   @@map("etf_mor_portfolio_info")
+}
+
+// --------------------------
+// ETF Analysis Tables
+// --------------------------
+
+enum EtfAnalysisCategory {
+  PerformanceAndReturns
+  CostEfficiencyAndTeam
+  RiskAnalysis
+}
+
+model EtfGenerationRequest {
+  id    String @id @default(uuid())
+  etfId String @map("etf_id")
+  spaceId String @default("koala_gains") @map("space_id")
+
+  regeneratePerformanceAndReturns Boolean @default(false) @map("regenerate_performance_and_returns")
+  regenerateCostEfficiencyAndTeam Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
+  regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
+
+  status String @default("NotStarted") @map("status")
+
+  inProgressStep String?  @map("in_progress_step")
+  completedSteps String[] @default([]) @map("completed_steps")
+  failedSteps    String[] @default([]) @map("failed_steps")
+
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  startedAt          DateTime? @map("started_at")
+  completedAt        DateTime? @map("completed_at")
+  lastInvocationTime DateTime? @map("last_invocation_time")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@index([status])
+  @@index([etfId, status])
+  @@map("etf_generation_requests")
+}
+
+model EtfCategoryAnalysisResult {
+  id                     String              @id @default(uuid())
+  categoryKey            EtfAnalysisCategory @map("category_key")
+  summary                String              @map("summary")
+  overallAnalysisDetails String              @map("overall_analysis_details")
+  etfId                  String              @map("etf_id")
+  spaceId                String              @default("koala_gains") @map("space_id")
+  createdAt              DateTime            @default(now()) @map("created_at")
+  updatedAt              DateTime            @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  factorResults EtfAnalysisCategoryFactorResult[]
+
+  @@unique([spaceId, etfId, categoryKey])
+  @@index([etfId])
+  @@map("etf_category_analysis_results")
+}
+
+model EtfAnalysisCategoryFactorResult {
+  id                  String              @id @default(uuid())
+  categoryKey         EtfAnalysisCategory @map("category_key")
+  factorKey           String              @map("factor_key")
+  oneLineExplanation  String              @map("one_line_explanation")
+  detailedExplanation String              @map("detailed_explanation")
+  result              EvaluationResult    @map("result")
+  etfId               String              @map("etf_id")
+  spaceId             String              @default("koala_gains") @map("space_id")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  categoryAnalysisResult EtfCategoryAnalysisResult @relation(fields: [spaceId, etfId, categoryKey], references: [spaceId, etfId, categoryKey], onDelete: Cascade)
+
+  @@unique([spaceId, etfId, factorKey])
+  @@index([etfId])
+  @@index([spaceId, etfId, categoryKey], name: "etf_factor_results_by_parent")
+  @@map("etf_analysis_category_factor_results")
+}
+
+model EtfCachedScore {
+  id    String @id @default(uuid())
+  etfId String @map("etf_id")
+
+  performanceAndReturnsScore Int @map("performance_and_returns_score")
+  costEfficiencyAndTeamScore Int @map("cost_efficiency_and_team_score")
+  riskAnalysisScore          Int @map("risk_analysis_score")
+
+  finalScore Int @map("final_score")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([etfId])
+  @@index([etfId])
+  @@map("etf_cached_scores")
 }

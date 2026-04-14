@@ -18,7 +18,7 @@ import { useDebouncedValue } from './useDebouncedValue';
 export default function EtfReportsPage(): JSX.Element {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [exchange, setExchange] = useState<AllExchanges | ''>('');
-  const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor'>('');
+  const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor' | 'analysis'>('');
   const [search, setSearch] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const pageSize = 100;

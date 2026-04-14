@@ -7,8 +7,8 @@ export interface EtfReportsFiltersProps {
   exchange: AllExchanges | '';
   onExchangeChange: (exchange: AllExchanges | '') => void;
   availableExchanges: ReadonlyArray<AllExchanges>;
-  missing: '' | 'stockAnalyze' | 'mor';
-  onMissingChange: (value: '' | 'stockAnalyze' | 'mor') => void;
+  missing: '' | 'stockAnalyze' | 'mor' | 'analysis';
+  onMissingChange: (value: '' | 'stockAnalyze' | 'mor' | 'analysis') => void;
   search: string;
   onSearchChange: (value: string) => void;
 }
@@ -21,6 +21,7 @@ const missingItems: StyledSelectItem[] = [
   { id: 'All', label: 'All' },
   { id: 'stockAnalyze', label: 'Missing StockAnalyze' },
   { id: 'mor', label: 'Missing MorData' },
+  { id: 'analysis', label: 'Missing Analysis' },
 ];
 
 export default function EtfReportsFilters({
@@ -51,7 +52,7 @@ export default function EtfReportsFilters({
           label="Missing"
           items={missingItems}
           selectedItemId={selectedMissing}
-          setSelectedItemId={(id: string | null) => onMissingChange(id && id !== 'All' ? (id as 'stockAnalyze' | 'mor') : '')}
+          setSelectedItemId={(id: string | null) => onMissingChange(id && id !== 'All' ? (id as 'stockAnalyze' | 'mor' | 'analysis') : '')}
         />
       </div>
       <div className="w-80">

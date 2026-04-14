@@ -3,6 +3,7 @@
 import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
+import { EtfGenerationRequestPayload } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -29,7 +30,23 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     errorMessage: 'Failed to queue Morningstar scrape',
   });
 
-  const isBusy = fetchingFinancialInfo || triggeringMor || progress !== null;
+  const { postData: createGenerationRequests, loading: creatingGenRequests } = usePostData<unknown, EtfGenerationRequestPayload[]>({
+    successMessage: 'Analysis generation requests created!',
+    errorMessage: 'Failed to create generation requests',
+  });
+
+  const isBusy = fetchingFinancialInfo || triggeringMor || creatingGenRequests || progress !== null;
+
+  async function handleGenerateAnalysis() {
+    const payloads: EtfGenerationRequestPayload[] = selectedEtfs.map((etf) => ({
+      etf: { symbol: etf.symbol, exchange: etf.exchange },
+      regeneratePerformanceAndReturns: true,
+      regenerateCostEfficiencyAndTeam: true,
+      regenerateRiskAnalysis: true,
+    }));
+    await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
+    onRefresh();
+  }
 
   async function runBulk(action: 'financial' | 'morAnalyzer' | 'morRisk' | 'morPeople' | 'morPortfolio' | 'flushCache') {
     const total = selectedEtfs.length;
@@ -70,6 +87,12 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
   return (
     <div className="flex items-center gap-3 px-6 py-3 bg-indigo-900/40 border-b border-indigo-700/50">
       <span className="text-sm font-medium text-indigo-200">{selectedEtfs.length} selected</span>
+
+      <div className="h-4 w-px bg-indigo-700/60" />
+
+      <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={handleGenerateAnalysis}>
+        Generate Analysis
+      </button>
 
       <div className="h-4 w-px bg-indigo-700/60" />
 
