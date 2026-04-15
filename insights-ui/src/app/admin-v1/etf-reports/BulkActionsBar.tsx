@@ -37,12 +37,13 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const isBusy = fetchingFinancialInfo || triggeringMor || creatingGenRequests || progress !== null;
 
-  async function handleGenerateAnalysis() {
+  async function handleGenerateAnalysis(options?: { performanceAndReturns?: boolean; costEfficiencyAndTeam?: boolean; riskAnalysis?: boolean }) {
+    const allTypes = !options;
     const payloads: EtfGenerationRequestPayload[] = selectedEtfs.map((etf) => ({
       etf: { symbol: etf.symbol, exchange: etf.exchange },
-      regeneratePerformanceAndReturns: true,
-      regenerateCostEfficiencyAndTeam: true,
-      regenerateRiskAnalysis: true,
+      regeneratePerformanceAndReturns: allTypes || (options?.performanceAndReturns ?? false),
+      regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
+      regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
     onRefresh();
@@ -90,8 +91,17 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
       <div className="h-4 w-px bg-indigo-700/60" />
 
-      <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={handleGenerateAnalysis}>
-        Generate Analysis
+      <button className={`${buttonClass} !bg-indigo-700 !text-indigo-100 hover:!bg-indigo-600`} disabled={isBusy} onClick={() => handleGenerateAnalysis()}>
+        Generate All Analysis
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ performanceAndReturns: true })}>
+        Past Returns
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ costEfficiencyAndTeam: true })}>
+        Cost, Efficiency & Team
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ riskAnalysis: true })}>
+        Risk Analysis
       </button>
 
       <div className="h-4 w-px bg-indigo-700/60" />
