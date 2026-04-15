@@ -27,7 +27,9 @@ function CopyButton({ text }: { text: string }) {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       }}
-      className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'}`}
+      className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${
+        copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'
+      }`}
     >
       {copied ? 'Copied!' : 'Copy Markdown'}
     </button>
@@ -68,7 +70,7 @@ export default function PromptInvocationDetailsPage() {
     {
       cache: 'no-cache',
     },
-    'Cannot fetch prompt invocation data',
+    'Cannot fetch prompt invocation data'
   );
 
   if (!invocation)
