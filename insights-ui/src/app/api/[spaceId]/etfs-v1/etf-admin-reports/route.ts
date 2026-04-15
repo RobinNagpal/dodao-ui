@@ -15,6 +15,7 @@ export interface EtfReportRow {
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
   hasMorPortfolioInfo: boolean;
+  hasSummary: boolean;
   performanceAnalysisCount: number;
   costEfficiencyAnalysisCount: number;
   riskAnalysisCount: number;
@@ -112,6 +113,7 @@ const getHandler = async (
         symbol: true,
         name: true,
         exchange: true,
+        summary: true,
         financialInfo: { select: { id: true } },
         stockAnalyzerInfo: { select: { id: true } },
         morAnalyzerInfo: { select: { id: true } },
@@ -152,6 +154,7 @@ const getHandler = async (
         hasMorRiskInfo: !!e.morRiskInfo,
         hasMorPeopleInfo: !!e.morPeopleInfo,
         hasMorPortfolioInfo: !!e.morPortfolioInfo,
+        hasSummary: Boolean(e.summary && e.summary.trim()),
         performanceAnalysisCount: factorResults.filter((r) => r.categoryKey === 'PerformanceAndReturns').length,
         costEfficiencyAnalysisCount: factorResults.filter((r) => r.categoryKey === 'CostEfficiencyAndTeam').length,
         riskAnalysisCount: factorResults.filter((r) => r.categoryKey === 'RiskAnalysis').length,

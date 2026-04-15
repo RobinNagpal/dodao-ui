@@ -4,6 +4,7 @@ import { EtfAnalysisCategory, EtfGenerationRequestStatus, EtfReportType, ETF_PRO
 import { fetchEtfWithAllData, EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import {
   prepareCostEfficiencyAndTeamInputJson,
+  prepareEtfFinalSummaryInputJson,
   preparePerformanceAndReturnsInputJson,
   prepareRiskAnalysisInputJson,
 } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
@@ -15,12 +16,14 @@ export const etfReportDependencyMap: Record<EtfReportType, EtfReportType[]> = {
   [EtfReportType.PERFORMANCE_AND_RETURNS]: [],
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: [],
   [EtfReportType.RISK_ANALYSIS]: [],
+  [EtfReportType.FINAL_SUMMARY]: [EtfReportType.PERFORMANCE_AND_RETURNS, EtfReportType.COST_EFFICIENCY_AND_TEAM, EtfReportType.RISK_ANALYSIS],
 };
 
 export const etfDependencyBasedReportOrder: EtfReportType[] = [
   EtfReportType.PERFORMANCE_AND_RETURNS,
   EtfReportType.COST_EFFICIENCY_AND_TEAM,
   EtfReportType.RISK_ANALYSIS,
+  EtfReportType.FINAL_SUMMARY,
 ];
 
 function prepareInputJsonForReportType(etf: EtfWithAllData, reportType: EtfReportType) {
@@ -31,6 +34,8 @@ function prepareInputJsonForReportType(etf: EtfWithAllData, reportType: EtfRepor
       return prepareCostEfficiencyAndTeamInputJson(etf);
     case EtfReportType.RISK_ANALYSIS:
       return prepareRiskAnalysisInputJson(etf);
+    case EtfReportType.FINAL_SUMMARY:
+      return prepareEtfFinalSummaryInputJson(etf);
   }
 }
 
