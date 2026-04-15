@@ -45,6 +45,9 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
 
   const items: EllipsisDropdownItem[] = [
     { key: 'generateAnalysis', label: 'Generate All Analysis', disabled: isBusyAll },
+    { key: 'generatePastReturns', label: 'Generate Past Returns', disabled: isBusyAll },
+    { key: 'generateCostEfficiencyTeam', label: 'Generate Cost, Efficiency & Team', disabled: isBusyAll },
+    { key: 'generateRiskAnalysis', label: 'Generate Risk Analysis', disabled: isBusyAll },
     { key: 'financial', label: 'Financial Info', disabled: isBusyAll },
     { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: isBusyAll },
     { key: 'morRisk', label: 'Mor Risk', disabled: isBusyAll },
@@ -63,6 +66,36 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               etf: { symbol: etf.symbol, exchange: etf.exchange },
               regeneratePerformanceAndReturns: true,
               regenerateCostEfficiencyAndTeam: true,
+              regenerateRiskAnalysis: true,
+            },
+          ]);
+          onDone();
+        } else if (key === 'generatePastReturns') {
+          await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
+            {
+              etf: { symbol: etf.symbol, exchange: etf.exchange },
+              regeneratePerformanceAndReturns: true,
+              regenerateCostEfficiencyAndTeam: false,
+              regenerateRiskAnalysis: false,
+            },
+          ]);
+          onDone();
+        } else if (key === 'generateCostEfficiencyTeam') {
+          await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
+            {
+              etf: { symbol: etf.symbol, exchange: etf.exchange },
+              regeneratePerformanceAndReturns: false,
+              regenerateCostEfficiencyAndTeam: true,
+              regenerateRiskAnalysis: false,
+            },
+          ]);
+          onDone();
+        } else if (key === 'generateRiskAnalysis') {
+          await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
+            {
+              etf: { symbol: etf.symbol, exchange: etf.exchange },
+              regeneratePerformanceAndReturns: false,
+              regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: true,
             },
           ]);
