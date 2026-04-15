@@ -4,11 +4,7 @@ import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryRe
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import {
-  generateEtfCategoryMetadata,
-  generateEtfCategoryArticleJsonLd,
-  generateEtfCategoryBreadcrumbJsonLd,
-} from '@/utils/etf-metadata-generators';
+import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -95,8 +91,22 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
   const publishedDate = etfData.createdAt?.toISOString?.() || now;
   const modifiedDate = etfData.updatedAt?.toISOString?.() || now;
 
-  const articleSchema = generateEtfCategoryArticleJsonLd({ etfName: etfData.name, symbol, exchange, categoryName: CATEGORY_NAME, categorySlug: CATEGORY_SLUG, publishedDate, modifiedDate });
-  const breadcrumbSchema = generateEtfCategoryBreadcrumbJsonLd({ etfName: etfData.name, symbol, exchange, categoryName: CATEGORY_NAME, categorySlug: CATEGORY_SLUG });
+  const articleSchema = generateEtfCategoryArticleJsonLd({
+    etfName: etfData.name,
+    symbol,
+    exchange,
+    categoryName: CATEGORY_NAME,
+    categorySlug: CATEGORY_SLUG,
+    publishedDate,
+    modifiedDate,
+  });
+  const breadcrumbSchema = generateEtfCategoryBreadcrumbJsonLd({
+    etfName: etfData.name,
+    symbol,
+    exchange,
+    categoryName: CATEGORY_NAME,
+    categorySlug: CATEGORY_SLUG,
+  });
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'US ETFs', href: '/etfs', current: false },

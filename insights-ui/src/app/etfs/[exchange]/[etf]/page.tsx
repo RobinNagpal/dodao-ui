@@ -263,7 +263,15 @@ function EtfArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDat
   );
 }
 
-function EtfAnalysisSection({ analysisPromise, exchange, symbol }: { analysisPromise: Promise<EtfAnalysisResponse>; exchange: string; symbol: string }): JSX.Element | null {
+function EtfAnalysisSection({
+  analysisPromise,
+  exchange,
+  symbol,
+}: {
+  analysisPromise: Promise<EtfAnalysisResponse>;
+  exchange: string;
+  symbol: string;
+}): JSX.Element | null {
   const analysis: EtfAnalysisResponse = use(analysisPromise);
   return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} />;
 }
