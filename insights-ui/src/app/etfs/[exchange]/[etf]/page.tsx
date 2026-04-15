@@ -263,9 +263,17 @@ function EtfArticleFooter({ modifiedDate, formattedModifiedDate }: { modifiedDat
   );
 }
 
-function EtfAnalysisSection({ analysisPromise }: { analysisPromise: Promise<EtfAnalysisResponse> }): JSX.Element | null {
+function EtfAnalysisSection({
+  analysisPromise,
+  exchange,
+  symbol,
+}: {
+  analysisPromise: Promise<EtfAnalysisResponse>;
+  exchange: string;
+  symbol: string;
+}): JSX.Element | null {
   const analysis: EtfAnalysisResponse = use(analysisPromise);
-  return <EtfAnalysisSections data={analysis} />;
+  return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} />;
 }
 
 /** PAGE */
@@ -350,7 +358,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         </Suspense>
 
         <Suspense fallback={null}>
-          <EtfAnalysisSection analysisPromise={analysisPromise} />
+          <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
         </Suspense>
 
         <EtfArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
