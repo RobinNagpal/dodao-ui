@@ -69,10 +69,7 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
 
   for (const request of [...inProgressRequests, ...notStartedRequests]) {
     try {
-      const pending = calculateEtfPendingSteps(request);
-      console.log(
-        `ETF cron: processing request ${request.id} for ${request.etf.symbol} | status=${request.status} | inProgressStep=${request.inProgressStep} | completed=[${request.completedSteps}] | failed=[${request.failedSteps}] | pending=[${pending}]`
-      );
+      console.log(`Processing ETF request ${request.id} for ${request.etf.symbol} on ${request.etf.exchange}`);
       await triggerEtfGenerationOfAReport(request.etf.symbol, request.etf.exchange, request.id);
       processedCount++;
     } catch (error) {
