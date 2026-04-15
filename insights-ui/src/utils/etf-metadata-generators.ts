@@ -192,3 +192,93 @@ export function generateEtfDetailBreadcrumbJsonLd({ etfName, symbol, exchange }:
     ],
   };
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
+// ETF Category Detail Pages (/etfs/[exchange]/[etf]/[category])
+// ────────────────────────────────────────────────────────────────────────────────
+
+interface EtfCategoryMetadataInput {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+  categoryName: string;
+  categorySlug: string;
+  description: string;
+  keywords: string[];
+  createdTime?: string;
+  updatedTime?: string;
+}
+
+export function generateEtfCategoryMetadata(input: EtfCategoryMetadataInput): Metadata {
+  const { etfName, symbol, exchange, categoryName, categorySlug, description, keywords, createdTime, updatedTime } = input;
+  const year = new Date().getFullYear();
+  const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}/${categorySlug}`;
+  const shortDesc = truncateForMeta(description);
+
+  return {
+    title: `${etfName} (${symbol}) ${categoryName} Analysis (${year}) | ${SITE_NAME}`,
+    description: shortDesc,
+    alternates: { canonical: canonicalUrl },
+    keywords,
+    openGraph: {
+      title: `${etfName} (${symbol}) ${categoryName} Analysis | ${SITE_NAME}`,
+      description: shortDesc,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      type: 'article',
+      publishedTime: createdTime,
+      modifiedTime: updatedTime,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${etfName} (${symbol}) ${categoryName} Analysis | ${SITE_NAME}`,
+      description: shortDesc,
+    },
+  };
+}
+
+export function generateEtfCategoryArticleJsonLd(input: {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+  categoryName: string;
+  categorySlug: string;
+  publishedDate: string;
+  modifiedDate: string;
+}) {
+  const { etfName, symbol, exchange, categoryName, categorySlug, publishedDate, modifiedDate } = input;
+  const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}/${categorySlug}`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${etfName} (${symbol}) ${categoryName} Analysis`,
+    description: `${categoryName} analysis for ${etfName} (${symbol}) ETF on ${exchange}.`,
+    image: [LOGO_URL],
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
+    author: { '@type': 'Organization', name: SITE_NAME, url: BASE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: BASE_URL,
+      logo: { '@type': 'ImageObject', url: LOGO_URL, width: 600, height: 60 },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+    articleSection: 'ETF Analysis',
+  };
+}
+
+export function generateEtfCategoryBreadcrumbJsonLd(input: { etfName: string; symbol: string; exchange: string; categoryName: string; categorySlug: string }) {
+  const { etfName, symbol, exchange, categoryName, categorySlug } = input;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+      { '@type': 'ListItem', position: 2, name: 'US ETFs', item: `${BASE_URL}/etfs` },
+      { '@type': 'ListItem', position: 3, name: `${etfName} (${symbol})`, item: `${BASE_URL}/etfs/${exchange}/${symbol}` },
+      { '@type': 'ListItem', position: 4, name: categoryName, item: `${BASE_URL}/etfs/${exchange}/${symbol}/${categorySlug}` },
+    ],
+  };
+}
