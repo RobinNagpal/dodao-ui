@@ -3,6 +3,7 @@
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import dynamic from 'next/dynamic';
@@ -18,6 +19,12 @@ const CATEGORY_NAMES: Record<string, string> = {
   [EtfAnalysisCategory.RiskAnalysis]: 'Risk Analysis',
 };
 
+function getFactorTitle(categoryKey: string, factorKey: string): string {
+  const cat = etfAnalysisFactorsConfig.categories.find((c) => c.categoryKey === categoryKey);
+  const factor = cat?.factors.find((f) => f.factorAnalysisKey === factorKey);
+  return factor?.factorAnalysisTitle || factorKey;
+}
+
 export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: EtfAnalysisResponse | null): SpiderGraphForTicker | null {
   if (!scores && (!analysis || analysis.categories.length === 0)) return null;
 
@@ -29,7 +36,7 @@ export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: 
     const factorScores = categoryResult
       ? categoryResult.factorResults.map((f) => ({
           score: f.result === 'Pass' ? 1 : 0,
-          comment: `${f.factorKey}: ${f.oneLineExplanation}`,
+          comment: `${getFactorTitle(cat, f.factorKey)}: ${f.oneLineExplanation}`,
         }))
       : [];
 
@@ -59,8 +66,12 @@ export default function EtfRadarChart({ scores, analysis }: EtfRadarChartProps):
   const scorePercentage = getSpiderGraphScorePercentage(spiderGraph);
 
   return (
-    <div className="relative">
-      <div className="absolute top-2 right-2 text-sm font-semibold text-gray-300">{Math.round(scorePercentage)}%</div>
+    <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+      <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+        <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
+          {scorePercentage.toFixed(0)}%
+        </div>
+      </div>
       <RadarChart data={spiderGraph} scorePercentage={scorePercentage} />
     </div>
   );

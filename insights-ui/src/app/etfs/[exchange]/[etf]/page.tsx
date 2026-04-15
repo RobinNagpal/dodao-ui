@@ -220,7 +220,7 @@ function EtfFinancialInfoSection({
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
         </div>
-        <div className="lg:w-1/2 flex items-center justify-center">
+        <div className="lg:w-1/2 flex justify-center">
           <EtfRadarChart scores={scores} analysis={analysis} />
         </div>
       </div>
