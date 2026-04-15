@@ -24,4 +24,10 @@
   <sitemap>
     <loc>https://koalagains.com/stocks/past-performance-sitemap.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/stocks/future-performance-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/stocks/business-and-moat-sitemap.xml</loc>
+  </sitemap>
 </sitemapindex>
