@@ -74,44 +74,34 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
     const inProgressStep = generationRequest.inProgressStep;
     const lastInvocationTime = generationRequest.lastInvocationTime;
 
-    if (!inProgressStep || !lastInvocationTime) {
-      await prisma.etfGenerationRequest.update({
+    if (inProgressStep && lastInvocationTime) {
+      const fiveMinutes = 5 * 60 * 1000;
+      if (Date.now() - lastInvocationTime.getTime() < fiveMinutes) {
+        console.log(`Waiting for ${inProgressStep} of ETF ${symbol} to finish...`);
+        return;
+      }
+
+      const failedSteps = [...generationRequest.failedSteps];
+      if (!failedSteps.includes(inProgressStep)) {
+        failedSteps.push(inProgressStep);
+      }
+
+      Object.entries(etfReportDependencyMap).forEach(([reportType, dependencies]) => {
+        if (dependencies.includes(inProgressStep as EtfReportType) && !failedSteps.includes(reportType as EtfReportType)) {
+          failedSteps.push(reportType as EtfReportType);
+        }
+      });
+
+      generationRequest = await prisma.etfGenerationRequest.update({
         where: { id: generationRequest.id },
         data: {
-          status: EtfGenerationRequestStatus.Failed,
-          completedAt: new Date(),
+          failedSteps: [...new Set(failedSteps)],
+          inProgressStep: null,
           updatedAt: new Date(),
         },
+        include: { etf: true },
       });
-      return;
     }
-
-    const fiveMinutes = 5 * 60 * 1000;
-    if (Date.now() - lastInvocationTime.getTime() < fiveMinutes) {
-      console.log(`Waiting for ${inProgressStep} of ETF ${symbol} to finish...`);
-      return;
-    }
-
-    const failedSteps = [...generationRequest.failedSteps];
-    if (!failedSteps.includes(inProgressStep)) {
-      failedSteps.push(inProgressStep);
-    }
-
-    Object.entries(etfReportDependencyMap).forEach(([reportType, dependencies]) => {
-      if (dependencies.includes(inProgressStep as EtfReportType) && !failedSteps.includes(reportType as EtfReportType)) {
-        failedSteps.push(reportType as EtfReportType);
-      }
-    });
-
-    generationRequest = await prisma.etfGenerationRequest.update({
-      where: { id: generationRequest.id },
-      data: {
-        failedSteps: [...new Set(failedSteps)],
-        inProgressStep: null,
-        updatedAt: new Date(),
-      },
-      include: { etf: true },
-    });
   }
 
   const latestPendingSteps = calculateEtfPendingSteps(generationRequest);
