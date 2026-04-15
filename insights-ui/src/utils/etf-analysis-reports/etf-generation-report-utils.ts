@@ -117,16 +117,25 @@ export async function triggerEtfGenerationOfAReport(symbol: string, exchange: st
     return;
   }
 
+  console.log(`ETF trigger: starting step ${nextStep} for ${symbol} (request: ${generationRequest.id})`);
   await markEtfRequestAsInProgress(generationRequest, nextStep);
 
   try {
     await generateEtfCategoryAnalysis(spaceId, etfRecord, generationRequest.id, nextStep);
+    console.log(`ETF trigger: Lambda invoked for step ${nextStep} of ${symbol} — waiting for callback`);
   } catch (error) {
     console.error(`Error generating ETF ${nextStep} for ${symbol}:`, error);
+    const currentRequest = await prisma.etfGenerationRequest.findUniqueOrThrow({
+      where: { id: generationRequest.id },
+    });
+    const updatedFailedSteps = [...currentRequest.failedSteps];
+    if (!updatedFailedSteps.includes(nextStep)) {
+      updatedFailedSteps.push(nextStep);
+    }
     await prisma.etfGenerationRequest.update({
       where: { id: generationRequest.id },
       data: {
-        failedSteps: [...generationRequest.failedSteps, nextStep],
+        failedSteps: updatedFailedSteps,
         inProgressStep: null,
         updatedAt: new Date(),
       },

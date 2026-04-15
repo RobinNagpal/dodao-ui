@@ -43,7 +43,11 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       },
     });
 
-    await triggerEtfGenerationOfAReport(etf, exchange, generationRequestId);
+    try {
+      await triggerEtfGenerationOfAReport(etf, exchange, generationRequestId);
+    } catch (triggerError) {
+      console.error('Error triggering next ETF report step (will be retried by cron):', triggerError);
+    }
   }
 
   return { success: true };
