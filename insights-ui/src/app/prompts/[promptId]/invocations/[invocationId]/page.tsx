@@ -14,7 +14,25 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Editor } from '@monaco-editor/react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <button
+      onClick={async (e) => {
+        e.stopPropagation();
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }}
+      className={`px-3 py-1 rounded text-sm text-white transition-colors duration-200 ${copied ? 'bg-green-600 hover:bg-green-500' : 'bg-blue-600 hover:bg-blue-500'}`}
+    >
+      {copied ? 'Copied!' : 'Copy Markdown'}
+    </button>
+  );
+}
 
 function InvocationOutput({ invocation }: { invocation: FullPromptInvocationResponse }) {
   if (invocation.prompt.outputSchema === 'public-equities/outputs/reports/common/message-response.schema.yaml') {
@@ -50,7 +68,7 @@ export default function PromptInvocationDetailsPage() {
     {
       cache: 'no-cache',
     },
-    'Cannot fetch prompt invocation data'
+    'Cannot fetch prompt invocation data',
   );
 
   if (!invocation)
@@ -147,13 +165,18 @@ export default function PromptInvocationDetailsPage() {
             )}
           </div>
         </div>
-        <Accordion
-          label={'Prompt Request Sent to LLM'}
-          isOpen={showPromptRequestSentToLLM}
-          onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}
-        >
-          <div className="markdown-body mt-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.promptRequestToLlm ?? 'No Request Logging') }} />
-        </Accordion>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1">
+            <Accordion
+              label={'Prompt Request Sent to LLM'}
+              isOpen={showPromptRequestSentToLLM}
+              onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}
+            >
+              <div className="markdown-body mt-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.promptRequestToLlm ?? 'No Request Logging') }} />
+            </Accordion>
+          </div>
+          {invocation.promptRequestToLlm && <CopyButton text={invocation.promptRequestToLlm} />}
+        </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
             <div>Output JSON or Message:</div>
