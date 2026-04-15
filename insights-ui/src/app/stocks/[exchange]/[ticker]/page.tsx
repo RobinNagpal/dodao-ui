@@ -40,7 +40,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
 import { Suspense, use } from 'react';
-import { FloatingNavFromData } from './FloatingTickerNav';
+
 import { TickerRadarChart } from './TickerRadarChart';
 
 /**
@@ -729,11 +729,6 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
         <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>
-
-      {/* Floating nav after sections are known */}
-      <Suspense fallback={null}>
-        <FloatingNavFromData data={tickerInfo} />
-      </Suspense>
     </PageWrapper>
   );
 }
