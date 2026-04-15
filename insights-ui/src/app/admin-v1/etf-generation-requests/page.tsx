@@ -12,7 +12,12 @@ import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const ETF_REGENERATE_FIELDS = ['regeneratePerformanceAndReturns', 'regenerateCostEfficiencyAndTeam', 'regenerateRiskAnalysis'] as const;
+const ETF_REGENERATE_FIELDS = [
+  'regeneratePerformanceAndReturns',
+  'regenerateCostEfficiencyAndTeam',
+  'regenerateRiskAnalysis',
+  'regenerateFinalSummary',
+] as const;
 
 type EtfRegenerateField = (typeof ETF_REGENERATE_FIELDS)[number];
 
@@ -20,12 +25,14 @@ const ETF_FIELD_LABELS: Record<EtfRegenerateField, string> = {
   regeneratePerformanceAndReturns: 'Performance',
   regenerateCostEfficiencyAndTeam: 'Cost & Team',
   regenerateRiskAnalysis: 'Risk',
+  regenerateFinalSummary: 'Final Summary',
 };
 
 const ETF_FIELD_TO_STEP_MAP: Record<EtfRegenerateField, EtfReportType> = {
   regeneratePerformanceAndReturns: EtfReportType.PERFORMANCE_AND_RETURNS,
   regenerateCostEfficiencyAndTeam: EtfReportType.COST_EFFICIENCY_AND_TEAM,
   regenerateRiskAnalysis: EtfReportType.RISK_ANALYSIS,
+  regenerateFinalSummary: EtfReportType.FINAL_SUMMARY,
 };
 
 interface StatusDotProps {

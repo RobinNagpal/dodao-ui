@@ -13,6 +13,10 @@ function AnalysisPill({ count }: { count: number }): JSX.Element {
   return <span className="px-2 py-1 rounded-full text-xs bg-green-900 text-green-200">{count}</span>;
 }
 
+function SummaryPill({ ok }: { ok: boolean }): JSX.Element {
+  return <span className={`px-2 py-1 rounded-full text-xs ${ok ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'}`}>{ok ? 'Yes' : 'No'}</span>;
+}
+
 export interface EtfReportsTableProps {
   etfs: EtfReportRow[];
   onRefresh: () => void;
@@ -51,6 +55,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Performance</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Cost & Team</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Risk</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Summary</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
@@ -104,6 +109,9 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                 <AnalysisPill count={e.riskAnalysisCount} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
+                <SummaryPill ok={e.hasSummary} />
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
                 <div className="flex items-center justify-center gap-2">
                   <Link
                     href={`/etfs/${e.exchange}/${e.symbol}/financial-data`}
@@ -121,7 +129,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={11} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={12} className="px-4 py-10 text-center text-gray-300">
                 No ETFs found.
               </td>
             </tr>

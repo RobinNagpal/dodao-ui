@@ -44,6 +44,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       regeneratePerformanceAndReturns: allTypes || (options?.performanceAndReturns ?? false),
       regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
       regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
+      regenerateFinalSummary: allTypes,
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
     onRefresh();

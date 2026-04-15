@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { EtfAnalysisCategory, EtfCategoryAnalysisResponse } from '@/types/etf/etf-analysis-types';
+import { EtfAnalysisCategory, EtfCategoryAnalysisResponse, EtfFinalSummaryResponse } from '@/types/etf/etf-analysis-types';
 import { getEtfAnalysisFactorsForCategory } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -73,6 +73,20 @@ export async function saveEtfFactorAnalysisResponse(
 
   const score = response.factors.filter((f) => f.result && f.result.toLowerCase().includes('pass')).length;
   await updateEtfCachedScore(etfRecord.id, categoryKey, score);
+
+  revalidateEtfAndExchangeTag(symbol, exchange);
+}
+
+export async function saveEtfFinalSummaryResponse(symbol: string, exchange: string, response: EtfFinalSummaryResponse): Promise<void> {
+  const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
+
+  await prisma.etf.update({
+    where: { id: etfRecord.id },
+    data: {
+      summary: response.summary,
+      updatedAt: new Date(),
+    },
+  });
 
   revalidateEtfAndExchangeTag(symbol, exchange);
 }

@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { EtfReportType, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
 import { triggerEtfGenerationOfAReport } from '@/utils/etf-analysis-reports/etf-generation-report-utils';
-import { saveEtfFactorAnalysisResponse } from '@/utils/etf-analysis-reports/save-etf-report-utils';
+import { saveEtfFactorAnalysisResponse, saveEtfFinalSummaryResponse } from '@/utils/etf-analysis-reports/save-etf-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -13,12 +13,16 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   console.log('ETF save-report-callback received:', { reportType, generationRequestId, exchange, etf });
 
-  const categoryKey = ETF_REPORT_TYPE_TO_CATEGORY[reportType];
-  if (!categoryKey) {
-    throw new Error(`Unsupported ETF report type: ${reportType}`);
-  }
+  if (reportType === EtfReportType.FINAL_SUMMARY) {
+    await saveEtfFinalSummaryResponse(etf, exchange, llmResponse);
+  } else {
+    const categoryKey = ETF_REPORT_TYPE_TO_CATEGORY[reportType];
+    if (!categoryKey) {
+      throw new Error(`Unsupported ETF report type: ${reportType}`);
+    }
 
-  await saveEtfFactorAnalysisResponse(etf, exchange, llmResponse, categoryKey);
+    await saveEtfFactorAnalysisResponse(etf, exchange, llmResponse, categoryKey);
+  }
 
   if (generationRequestId) {
     const generationRequest = await prisma.etfGenerationRequest.findUniqueOrThrow({
