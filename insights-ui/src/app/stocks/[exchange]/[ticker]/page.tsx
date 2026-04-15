@@ -729,7 +729,6 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
 
         <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>
-
     </PageWrapper>
   );
 }
