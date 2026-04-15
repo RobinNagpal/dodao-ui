@@ -44,6 +44,13 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
   const itemKeys = Object.keys(data);
   const SCORE_OFFSET = 0.5; // Adds padding ONLY for zero scores
 
+  const shouldShowFactorDetails = (): boolean => {
+    const keys = Object.keys(data);
+    const v1Keys = ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'];
+    const etfKeys = ['PerformanceAndReturns', 'CostEfficiencyAndTeam', 'RiskAnalysis'];
+    return keys.some((key) => v1Keys.includes(key) || etfKeys.includes(key));
+  };
+
   const scores: number[] = itemKeys.map((category) => {
     const rawScore = data[category].scores.reduce((acc, item) => acc + item.score, 0);
     return rawScore === 0 ? SCORE_OFFSET : rawScore;
@@ -182,13 +189,8 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
               return 'No data available';
             }
 
-            // Check if this is V1 data (has V1 category keys) - if so, skip showing summary
-            const isV1Data = Object.keys(data).some((key) =>
-              ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'].includes(key)
-            );
-
-            if (isV1Data) {
-              return ''; // Don't show summary for V1 data
+            if (shouldShowFactorDetails()) {
+              return ''; // Don't show summary when we show factor breakdown
             }
 
             const summary = data[categoryKey].summary;
@@ -208,27 +210,19 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
             const totalChecks = categoryData.length;
             const totalOnes = categoryData.filter((item) => item.score === 1).length;
 
-            // Check if this is V1 data (has V1 category keys)
-            const isV1Data = Object.keys(data).some((key) =>
-              ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'].includes(key)
-            );
-
-            if (isV1Data) {
-              // For V1 data, show detailed factor breakdown in footer (normal text)
+            if (shouldShowFactorDetails()) {
               const factorDetails = categoryData
                 .map((item) => {
                   const icon = item.score === 1 ? '✅' : '❌';
-                  // Extract factor name from comment (before the colon)
                   const factorName = item.comment.split(':')[0] || 'Unknown Factor';
                   return `${icon} ${factorName}`;
                 })
                 .join('\n');
-              return factorDetails;
-            } else {
-              // For original data, show the compact version
-              const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
-              return `Analysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
+              return factorDetails || 'No analysis available';
             }
+
+            const analysisChecks = categoryData.map((item) => (item.score === 1 ? '✅' : '❌')).join('');
+            return `Analysis Checks ${totalOnes}/${totalChecks}\n${analysisChecks}`;
           },
         },
       },

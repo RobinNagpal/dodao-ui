@@ -1,6 +1,16 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { Etf, EtfFinancialInfo, EtfMorAnalyzerInfo, EtfMorPeopleInfo, EtfMorPortfolioInfo, EtfMorRiskInfo, EtfStockAnalyzerInfo } from '@prisma/client';
+import {
+  Etf,
+  EtfAnalysisCategoryFactorResult,
+  EtfCategoryAnalysisResult,
+  EtfFinancialInfo,
+  EtfMorAnalyzerInfo,
+  EtfMorPeopleInfo,
+  EtfMorPortfolioInfo,
+  EtfMorRiskInfo,
+  EtfStockAnalyzerInfo,
+} from '@prisma/client';
 
 export interface EtfWithAllData extends Etf {
   financialInfo: EtfFinancialInfo | null;
@@ -9,6 +19,8 @@ export interface EtfWithAllData extends Etf {
   morRiskInfo: EtfMorRiskInfo | null;
   morPeopleInfo: EtfMorPeopleInfo | null;
   morPortfolioInfo: EtfMorPortfolioInfo | null;
+  categoryAnalysisResults: (EtfCategoryAnalysisResult & { factorResults: EtfAnalysisCategoryFactorResult[] })[];
+  analysisCategoryFactorResults: EtfAnalysisCategoryFactorResult[];
 }
 
 export async function fetchEtfBySymbolAndExchange(symbol: string, exchange: string): Promise<Etf> {
@@ -35,6 +47,12 @@ export async function fetchEtfWithAllData(symbol: string, exchange: string): Pro
       morRiskInfo: true,
       morPeopleInfo: true,
       morPortfolioInfo: true,
+      categoryAnalysisResults: {
+        include: {
+          factorResults: true,
+        },
+      },
+      analysisCategoryFactorResults: true,
     },
   });
 }

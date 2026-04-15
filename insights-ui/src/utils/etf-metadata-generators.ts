@@ -95,7 +95,7 @@ export function generateEtfDetailMetadata({ etfName, symbol, exchange, createdTi
   const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}`;
 
   const description = truncateForMeta(
-    `${etfName} (${symbol}) ETF analysis — performance returns, risk assessment, cost efficiency, expense ratio, and portfolio insights on ${exchange}.`
+    `${etfName} (${symbol}) analysis — performance returns, risk assessment, cost efficiency, expense ratio, and portfolio insights on ${exchange}.`
   );
 
   const keywords = [

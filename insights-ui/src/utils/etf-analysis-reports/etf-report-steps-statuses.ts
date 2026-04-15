@@ -28,5 +28,13 @@ export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfRepo
     pendingSteps.push(EtfReportType.RISK_ANALYSIS);
   }
 
+  if (
+    request.regenerateFinalSummary &&
+    !request.completedSteps.includes(EtfReportType.FINAL_SUMMARY) &&
+    !request.failedSteps.includes(EtfReportType.FINAL_SUMMARY)
+  ) {
+    pendingSteps.push(EtfReportType.FINAL_SUMMARY);
+  }
+
   return pendingSteps;
 }

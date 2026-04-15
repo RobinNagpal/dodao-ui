@@ -12,6 +12,7 @@ import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, to
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -192,6 +193,13 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
         <div className="mb-4">
           <span className="text-sm text-gray-400">Inception Date: </span>
           <span className="text-sm font-medium">{d.inception}</span>
+        </div>
+      )}
+
+      {/* Summary (if available) */}
+      {d.summary && d.summary.trim() && (
+        <div className="mb-2" itemProp="description">
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary) }} />
         </div>
       )}
     </section>

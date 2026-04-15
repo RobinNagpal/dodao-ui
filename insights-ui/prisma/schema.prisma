@@ -1245,6 +1245,7 @@ model Etf {
   name          String   @map("name")
   exchange      String   @map("exchange")
   inception     String?  @map("inception")
+  summary       String?  @map("summary")
   spaceId       String   @default("koala_gains") @map("space_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
@@ -1573,6 +1574,7 @@ model EtfGenerationRequest {
   regeneratePerformanceAndReturns Boolean @default(false) @map("regenerate_performance_and_returns")
   regenerateCostEfficiencyAndTeam Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
   regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
+  regenerateFinalSummary          Boolean @default(false) @map("regenerate_final_summary")
 
   status String @default("NotStarted") @map("status")
 

@@ -1,0 +1,13 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: >-
+      The final ETF summary text. It must be 6–7 short lines, each line a clear sentence.
+      The first line should give the overall verdict (Positive, Negative, or Mixed).
+      The following lines should justify the verdict using the categorySummaries and factorResults.
+      Keep language simple and suitable for retail investors.
+required:
+  - summary

@@ -15,6 +15,7 @@ const categories: MissingCategory[] = [
   { key: 'morRisk', label: 'MOR Risk', filter: (e) => !e.hasMorRiskInfo },
   { key: 'morPeople', label: 'MOR People', filter: (e) => !e.hasMorPeopleInfo },
   { key: 'morPortfolio', label: 'MOR Portfolio', filter: (e) => !e.hasMorPortfolioInfo },
+  { key: 'summary', label: 'Missing Summary', filter: (e) => !e.hasSummary },
   {
     key: 'analysis',
     label: 'Missing Analysis',

@@ -226,3 +226,26 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
     }),
   };
 }
+
+export function prepareEtfFinalSummaryInputJson(etf: EtfWithAllData) {
+  const categorySummaries = (etf.categoryAnalysisResults || []).map((c) => ({
+    categoryKey: c.categoryKey,
+    overallSummary: c.summary,
+  }));
+
+  const factorResults = (etf.analysisCategoryFactorResults || []).map((f) => ({
+    categoryKey: f.categoryKey,
+    factorAnalysisKey: f.factorKey,
+    oneLineExplanation: f.oneLineExplanation,
+    result: f.result,
+  }));
+
+  return {
+    name: etf.name,
+    symbol: etf.symbol,
+    exchange: etf.exchange,
+    inception: etf.inception || '',
+    categorySummaries,
+    factorResults,
+  };
+}
