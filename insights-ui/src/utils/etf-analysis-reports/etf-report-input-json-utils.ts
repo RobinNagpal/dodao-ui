@@ -95,6 +95,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
   const mor = etf.morAnalyzerInfo;
   const fin = etf.financialInfo;
+  const people = etf.morPeopleInfo;
   const assetClass = sa?.assetClass || 'Equity';
   const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.PerformanceAndReturns, assetClass);
 
@@ -103,6 +104,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     symbol: etf.symbol,
     exchange: etf.exchange,
     categoryKey: EtfAnalysisCategory.PerformanceAndReturns,
+    assetClass,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerReturns: JSON.stringify({
       return1m: sa?.return1m,
@@ -171,6 +173,20 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       yearLow: fin?.yearLow,
       volume: fin?.volume,
       holdings: fin?.holdings,
+    }),
+    yieldAndIncome: JSON.stringify({
+      dividendYield: fin?.dividendYield,
+      overviewSecYield: mor?.overviewSecYield,
+      overviewTtmYield: mor?.overviewTtmYield,
+      payoutFrequency: fin?.payoutFrequency,
+      dividendTtm: fin?.dividendTtm,
+      divGrowth3y: sa?.divGrowth3y,
+      divGrowth5y: sa?.divGrowth5y,
+    }),
+    fundContext: JSON.stringify({
+      expenseRatio: fin?.expenseRatio,
+      inceptionDate: people?.inceptionDate,
+      overviewStyleBox: mor?.overviewStyleBox,
     }),
   };
 }
