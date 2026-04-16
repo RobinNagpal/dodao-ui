@@ -167,17 +167,14 @@ export default function PromptInvocationDetailsPage() {
             )}
           </div>
         </div>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1">
-            <Accordion
-              label={'Prompt Request Sent to LLM'}
-              isOpen={showPromptRequestSentToLLM}
-              onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}
-            >
-              <div className="markdown-body mt-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.promptRequestToLlm ?? 'No Request Logging') }} />
-            </Accordion>
+        <div className="mb-4">
+          <div className="flex justify-between w-full mb-2 gap-2 items-center">
+            <div>Prompt Request Sent to LLM:</div>
+            {invocation.promptRequestToLlm && <CopyButton text={invocation.promptRequestToLlm} />}
           </div>
-          {invocation.promptRequestToLlm && <CopyButton text={invocation.promptRequestToLlm} />}
+          <Accordion label={'Expand Prompt'} isOpen={showPromptRequestSentToLLM} onClick={() => setShowPromptRequestSentToLLM(!showPromptRequestSentToLLM)}>
+            <div className="markdown-body mt-4" dangerouslySetInnerHTML={{ __html: parseMarkdown(invocation.promptRequestToLlm ?? 'No Request Logging') }} />
+          </Accordion>
         </div>
         <div className="mb-4">
           <div className="flex justify-between w-full mb-2 gap-2 items-center">
