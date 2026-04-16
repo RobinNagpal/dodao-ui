@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
@@ -72,7 +72,7 @@ async function getEtfRequests(status: EtfGenerationRequestStatus, skip: number =
 
 async function getHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<EtfGenerationRequestsResponse> {
   const url = new URL(req.url);
@@ -120,7 +120,7 @@ async function getHandler(
 
 async function postHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<EtfGenerationRequest[]> {
   const { spaceId } = await params;
@@ -188,5 +188,5 @@ async function postHandler(
   return results;
 }
 
-export const POST = withLoggedInAdmin<EtfGenerationRequest[]>(postHandler);
-export const GET = withLoggedInAdmin<EtfGenerationRequestsResponse>(getHandler);
+export const POST = withAdminOrToken<EtfGenerationRequest[]>(postHandler);
+export const GET = withAdminOrToken<EtfGenerationRequestsResponse>(getHandler);
