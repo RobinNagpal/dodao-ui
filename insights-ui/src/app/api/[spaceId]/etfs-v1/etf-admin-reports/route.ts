@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtils';
@@ -67,7 +67,7 @@ function toMissingFilter(v: string | null): MissingFilter {
 
 const getHandler = async (
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<EtfReportsResponse> => {
   const { spaceId } = await params;
@@ -169,4 +169,4 @@ const getHandler = async (
   };
 };
 
-export const GET = withLoggedInAdmin<EtfReportsResponse>(getHandler);
+export const GET = withAdminOrToken<EtfReportsResponse>(getHandler);
