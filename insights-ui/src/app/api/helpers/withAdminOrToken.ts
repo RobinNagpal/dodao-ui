@@ -18,8 +18,8 @@ export function withAdminOrToken<T>(
   handler: (req: NextRequest, userContext: KoalaGainsJwtTokenPayload | null, params: { params: Promise<any> }) => Promise<T>
 ): any {
   // Build the admin-protected version for when there's no token
-  const adminHandler = withLoggedInAdmin<T>(
-    (req: NextRequest, userContext: KoalaGainsJwtTokenPayload, params: { params: Promise<any> }) => handler(req, userContext, params)
+  const adminHandler = withLoggedInAdmin<T>((req: NextRequest, userContext: KoalaGainsJwtTokenPayload, params: { params: Promise<any> }) =>
+    handler(req, userContext, params)
   );
 
   // Build the token-protected version
