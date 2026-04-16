@@ -6,11 +6,13 @@ import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
+import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
+import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import dynamic from 'next/dynamic';
 
 const RadarChart = dynamic(() => import('@/components/visualizations/RadarChart'), {
   ssr: false,
-  loading: () => <div className="w-full aspect-square bg-gray-800 rounded-lg animate-pulse" />,
+  loading: () => <RadarSkeleton />,
 });
 
 const CATEGORY_NAMES: Record<string, string> = {
@@ -71,6 +73,7 @@ export default function EtfRadarChart({ scores, analysis }: EtfRadarChartProps):
         <div className="text-2xl font-bold" style={{ color: 'var(--primary-color, blue)' }}>
           {scorePercentage.toFixed(0)}%
         </div>
+        <SpiderChartFlyoutMenu />
       </div>
       <RadarChart data={spiderGraph} scorePercentage={scorePercentage} />
     </div>
