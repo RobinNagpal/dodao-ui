@@ -197,13 +197,15 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
   const fin = etf.financialInfo;
   const people = etf.morPeopleInfo;
   const portfolio = etf.morPortfolioInfo;
-  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.CostEfficiencyAndTeam);
+  const assetClass = sa?.assetClass || 'Equity';
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.CostEfficiencyAndTeam, assetClass);
 
   return {
     name: etf.name,
     symbol: etf.symbol,
     exchange: etf.exchange,
     categoryKey: EtfAnalysisCategory.CostEfficiencyAndTeam,
+    assetClass,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     financialInfo: JSON.stringify({
       expenseRatio: fin?.expenseRatio,
@@ -253,13 +255,15 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
   const mor = etf.morAnalyzerInfo;
   const fin = etf.financialInfo;
   const risk = etf.morRiskInfo;
-  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.RiskAnalysis);
+  const assetClass = sa?.assetClass || 'Equity';
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.RiskAnalysis, assetClass);
 
   return {
     name: etf.name,
     symbol: etf.symbol,
     exchange: etf.exchange,
     categoryKey: EtfAnalysisCategory.RiskAnalysis,
+    assetClass,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerRiskMetrics: JSON.stringify({
       beta: fin?.beta,

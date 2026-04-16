@@ -203,75 +203,399 @@
       "categoryKey": "CostEfficiencyAndTeam",
       "categoryName": "Cost, Efficiency & Team",
       "categoryDescription": "Evaluates the ETF's cost structure, operational efficiency, fund management quality, and how well the fund delivers value relative to its fees.",
-      "factors": [
-        {
-          "factorAnalysisKey": "expense_ratio",
-          "factorAnalysisTitle": "Expense Ratio Assessment",
-          "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average and prospectus net expense ratio. Lower expense ratios directly translate to higher net returns for investors over time.",
-          "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-        },
-        {
-          "factorAnalysisKey": "fund_size_liquidity",
-          "factorAnalysisTitle": "Fund Size & Liquidity",
-          "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Larger, more liquid funds typically have tighter spreads, lower trading costs, and reduced risk of closure.",
-          "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-        },
-        {
-          "factorAnalysisKey": "portfolio_turnover",
-          "factorAnalysisTitle": "Portfolio Turnover",
-          "factorAnalysisDescription": "Assesses how frequently the fund trades its holdings. High turnover increases transaction costs and tax drag, reducing net investor returns.",
-          "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-        },
-        {
-          "factorAnalysisKey": "management_quality",
-          "factorAnalysisTitle": "Management & Issuer Quality",
-          "factorAnalysisDescription": "Evaluates the fund management team's tenure, experience, and the issuer's reputation. Longer manager tenure and reputable issuers indicate stable fund operations.",
-          "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-        },
-        {
-          "factorAnalysisKey": "mor_assessment",
-          "factorAnalysisTitle": "Mor Analyst Assessment",
-          "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating from Mor analysts indicates strong fund quality.",
-          "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-        }
-      ]
+      "factorsByAssetClass": {
+        "Equity": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average and prospectus net expense ratio. For passive equity index ETFs, expense ratios above 0.10% are high — leaders like VOO/IVV charge 0.03%. For active equity ETFs, up to 0.50-0.75% is typical. The expense ratio directly explains benchmark tracking drag — if the ETF trails its index by roughly the expense ratio, that's expected, not a flaw.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For equity ETFs, larger funds (>$1B AUM) typically have tighter spreads and lower trading friction. Funds under $100M AUM face closure risk. Very high volume (>1M shares/day) indicates institutional adoption. Check if the bid-ask spread is tight relative to the ETF's price — wider spreads erode real returns.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover",
+            "factorAnalysisDescription": "Assesses how frequently the fund trades its holdings. For passive equity index ETFs, turnover should be low (under 10-20%) since they only trade for index reconstitution. For active equity ETFs, turnover of 30-80% is common. Very high turnover (>100%) increases transaction costs and tax drag for taxable accounts, reducing net investor returns.",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates the fund management team's tenure, experience, and the issuer's reputation. For passive equity ETFs, issuer reputation (Vanguard, iShares, SPDR) matters more than individual manager skill. For active equity ETFs, manager tenure is critical — a 10-year track record with the same manager is much more meaningful than a 2-year record. Longer tenure indicates stability and lets investors judge the actual decision-maker's performance.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating indicates strong fund quality across all dimensions. For equity ETFs, the Process and Parent pillars are especially important — they reflect systematic investment discipline and organizational commitment to investors.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ],
+        "Fixed Income": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. For bond ETFs, expense ratios matter even more than for equities because total returns are lower (2-6% annually), so a 0.50% fee can consume 10-25% of the total return. Passive treasury/aggregate bond ETFs should be under 0.10%. High-yield bond ETFs typically charge 0.30-0.50% due to higher trading complexity. The expense ratio is usually the primary explanation for benchmark tracking drag in bond ETFs.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For bond ETFs, liquidity is critically important because the underlying bonds trade over-the-counter with wide spreads. A bond ETF with low volume (<100K shares/day) or small AUM (<$500M) may trade at persistent premiums or discounts to NAV, directly affecting investor returns. Large bond ETFs (AGG, BND at $100B+) can actually be more liquid than their underlying bonds.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover",
+            "factorAnalysisDescription": "Assesses trading frequency. Bond ETFs inherently have higher turnover than equity ETFs because bonds mature, get called, or are replaced as index composition changes. Turnover of 30-80% is normal for aggregate bond ETFs. Very high turnover (>100%) in a bond ETF increases transaction costs significantly because bond trading costs are much higher than equity trading costs (OTC market with wide bid-ask spreads).",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For bond ETFs, the issuer's fixed-income trading desk quality matters significantly — larger issuers (iShares/BlackRock, Vanguard) have better bond trading infrastructure, leading to tighter tracking and lower transaction costs. For actively managed bond ETFs, manager tenure and the team's credit research capability are critical.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For bond ETFs, the Process pillar (index replication methodology, sampling approach) and Price pillar (expense ratio competitiveness) are especially important. A bond ETF with a Gold rating typically combines low fees with excellent index tracking.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ],
+        "Alternatives": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. Alternative strategy ETFs (covered call, managed futures, derivative income) typically charge 0.30-0.80% — higher than passive index funds but justified if the strategy delivers on its income/protection promise. Compare the expense ratio to total return: if the fund charges 0.50% and delivers 8% total return with half the benchmark's volatility, the fee may be well-spent. Also note if the expense ratio is creeping up as the category becomes more competitive.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For alternative strategy ETFs, liquidity can be a concern because the underlying strategies (options, derivatives) are complex. Very large AUM ($10B+, like JEPI) validates the strategy's scalability. Small alternative ETFs (<$200M) may struggle with options market impact or face closure risk. High daily volume relative to AUM indicates active institutional trading.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover & Strategy Complexity",
+            "factorAnalysisDescription": "Assesses trading frequency and strategy cost. Alternative strategy ETFs often have very high turnover (100-300%+) because they continuously roll options contracts or rebalance derivative positions. This is normal for the strategy type and does not indicate a problem — but it does mean higher hidden trading costs. Compare turnover to category peers: if similar funds have 150% turnover and this fund has 400%, something may be unusual.",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For alternative strategy ETFs, the management team's derivatives expertise is crucial — a covered call strategy's success depends on options pricing and execution skill. Larger issuers (JPMorgan for JEPI, Global X) have dedicated derivatives desks. Manager tenure matters more here than for passive funds because the strategy requires active decision-making on strike selection, roll timing, and position sizing.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For alternative strategy ETFs, many are too new to have full analyst coverage. If a rating exists, the Process pillar is most important — it evaluates whether the derivative/options strategy is well-designed and consistently executed. Note that the Derivative Income category is rapidly growing, so ratings may evolve as Mor develops more expertise in this space.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ],
+        "Commodity": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. Commodity ETFs typically charge 0.20-0.50% for broad commodity exposure and 0.40-0.75% for single-commodity or specialized strategies. Physical commodity ETFs (like gold ETFs holding actual bullion) may charge slightly more due to storage costs. The expense ratio plus contango/roll costs are the two main cost drags for commodity ETFs — evaluate both together.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For commodity ETFs, fund size is important because smaller funds may have difficulty efficiently rolling futures contracts or face higher trading costs in commodity markets. Physical commodity ETFs (gold, silver) benefit from large AUM for secure storage arrangements. ETFs under $200M may face closure risk during commodity bear markets.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover & Roll Costs",
+            "factorAnalysisDescription": "Assesses trading frequency and the impact of futures contract rolling. Futures-based commodity ETFs must regularly roll expiring contracts into the next month, creating implicit costs (contango) or gains (backwardation) not captured by the expense ratio alone. High turnover in commodity ETFs is structural and expected — focus on whether the fund minimizes roll costs through smart contract selection rather than the raw turnover number.",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For commodity ETFs, the issuer's commodity trading infrastructure matters — efficient futures rolling requires experienced execution. Major commodity ETF issuers (Invesco, SPDR, iShares) have dedicated commodity desks. For physical commodity ETFs, the custodian and storage arrangement quality are important safety considerations.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For commodity ETFs, the Process pillar evaluates the futures rolling strategy and the Price pillar assesses total cost of ownership (expense ratio + estimated roll costs). A Gold-rated commodity ETF typically has low fees and an efficient rolling methodology that minimizes contango drag.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ],
+        "Asset Allocation": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its allocation category average. Asset allocation ETFs typically charge 0.15-0.50% depending on complexity. Simple target-date or balanced funds should be on the lower end. Multi-asset funds that include alternatives or active management may charge more. Compare against what it would cost to hold the underlying components separately — if a 60/40 fund charges 0.30% but you could replicate it with VTI (0.03%) + BND (0.03%), the convenience premium is 0.27%.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Asset allocation ETFs may have lower trading volume than pure equity or bond ETFs because they are typically buy-and-hold investments. Lower volume is acceptable if the bid-ask spread remains tight. AUM over $500M provides stability; under $100M may face rebalancing challenges or closure risk.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover & Rebalancing Efficiency",
+            "factorAnalysisDescription": "Assesses trading frequency. Asset allocation ETFs must rebalance between asset classes (stocks, bonds, etc.) periodically, creating some turnover. Turnover of 20-50% is typical for balanced funds. Higher turnover suggests more active tactical allocation shifts. Very low turnover (<10%) may mean the fund is not rebalancing properly. The key question is whether turnover comes from disciplined rebalancing (good) or excessive trading (bad).",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For asset allocation ETFs, the management team's asset allocation skill is the primary value proposition — they decide how much to hold in stocks vs bonds vs other assets. Longer manager tenure allows evaluation of their allocation decisions across different market environments. Major issuers (Vanguard, iShares, BlackRock) with established asset allocation frameworks are preferred.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For asset allocation ETFs, the Process pillar is particularly important — it evaluates the asset allocation methodology, rebalancing discipline, and strategic vs tactical approach. The Parent pillar also matters because organizational investment philosophy shapes allocation decisions.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ],
+        "Currency": [
+          {
+            "factorAnalysisKey": "expense_ratio",
+            "factorAnalysisTitle": "Expense Ratio Assessment",
+            "factorAnalysisDescription": "Compares the ETF's expense ratio against its currency category peers. Currency ETFs typically charge 0.30-0.50% due to the costs of rolling currency futures contracts. Since currency returns can be near zero over long periods, even small expense differences matter significantly. The expense ratio plus futures roll costs represent the total cost of maintaining the currency exposure.",
+            "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
+          },
+          {
+            "factorAnalysisKey": "fund_size_liquidity",
+            "factorAnalysisTitle": "Fund Size & Liquidity",
+            "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Currency ETFs often have lower AUM and volume than equity ETFs because they are used primarily as hedging or trading instruments. Adequate liquidity (>$100M AUM, >50K shares/day) is important for entering and exiting positions without significant market impact. Wide bid-ask spreads in currency ETFs directly reduce returns on short-term trades.",
+            "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
+          },
+          {
+            "factorAnalysisKey": "portfolio_turnover",
+            "factorAnalysisTitle": "Portfolio Turnover & Roll Costs",
+            "factorAnalysisDescription": "Assesses trading frequency and currency futures rolling costs. Currency ETFs using futures contracts must roll monthly, creating inherent turnover. The interest rate differential between the two currencies in the pair creates either a positive carry (earning income) or negative carry (paying a cost). This carry is distinct from the expense ratio and is a major component of total return for currency ETFs.",
+            "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
+          },
+          {
+            "factorAnalysisKey": "management_quality",
+            "factorAnalysisTitle": "Management & Issuer Quality",
+            "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For currency ETFs, the issuer's FX trading desk quality directly affects execution and roll costs. Established currency ETF issuers (Invesco/CurrencyShares, WisdomTree) have the infrastructure for efficient FX futures management. Manager tenure is less critical for passive currency trackers but important for actively managed currency strategy ETFs.",
+            "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
+          },
+          {
+            "factorAnalysisKey": "mor_assessment",
+            "factorAnalysisTitle": "Mor Analyst Assessment",
+            "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. Many currency ETFs may lack full analyst coverage due to the niche nature of the category. If a rating exists, the Price pillar (total cost assessment including roll costs) and Process pillar (currency exposure methodology) are most relevant.",
+            "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
+          }
+        ]
+      }
     },
     {
       "categoryKey": "RiskAnalysis",
       "categoryName": "Risk Analysis",
       "categoryDescription": "Evaluates the ETF's risk profile including volatility, drawdowns, risk-adjusted returns, and downside protection across multiple time periods.",
-      "factors": [
-        {
-          "factorAnalysisKey": "volatility_measures",
-          "factorAnalysisTitle": "Volatility & Standard Deviation",
-          "factorAnalysisDescription": "Measures the fund's price volatility using beta, standard deviation, and ATR. Lower volatility relative to category and benchmark suggests a smoother ride for investors.",
-          "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-        },
-        {
-          "factorAnalysisKey": "risk_adjusted_returns",
-          "factorAnalysisTitle": "Risk-Adjusted Returns",
-          "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios which measure return per unit of risk. Higher ratios mean the fund delivers better returns for the risk taken compared to alternatives.",
-          "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-        },
-        {
-          "factorAnalysisKey": "drawdown_analysis",
-          "factorAnalysisTitle": "Maximum Drawdown & Recovery",
-          "factorAnalysisDescription": "Analyzes the worst peak-to-trough declines and how quickly the fund recovered. Shallower drawdowns and faster recoveries indicate better downside protection.",
-          "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-        },
-        {
-          "factorAnalysisKey": "capture_ratios",
-          "factorAnalysisTitle": "Upside/Downside Capture Ratios",
-          "factorAnalysisDescription": "Measures how much of the market's upside the fund captures vs how much of the downside it absorbs. Ideal funds capture more upside than downside relative to their benchmark.",
-          "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
-        },
-        {
-          "factorAnalysisKey": "risk_vs_category",
-          "factorAnalysisTitle": "Risk Score vs Category",
-          "factorAnalysisDescription": "Compares the fund's overall Mor risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. Consistently below-average risk vs category is favorable.",
-          "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-        }
-      ]
+      "factorsByAssetClass": {
+        "Equity": [
+          {
+            "factorAnalysisKey": "volatility_measures",
+            "factorAnalysisTitle": "Volatility & Standard Deviation",
+            "factorAnalysisDescription": "Measures the fund's price volatility using beta, standard deviation, and ATR. For equity ETFs, beta near 1.0 is expected for broad market funds. Beta significantly above 1.0 (like growth ETFs at 1.2+) means amplified swings — higher highs and lower lows. Beta below 0.7 (like high-dividend or low-volatility ETFs) means dampened moves. Evaluate whether the observed volatility matches what the strategy promises.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios which measure return per unit of risk. For equity ETFs, a Sharpe ratio above 0.5 is decent, above 1.0 is very good. Sortino ratio is more useful because it only penalizes downside volatility, not upside. Compare to the category average — an equity ETF with higher Sharpe than its category is delivering better risk-adjusted value. High-beta growth ETFs naturally have lower Sharpe ratios than low-volatility ETFs.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Maximum Drawdown & Recovery",
+            "factorAnalysisDescription": "Analyzes the worst peak-to-trough declines and recovery time. For broad equity ETFs, drawdowns of -20% to -35% happen roughly once a decade (2008, 2020, 2022). Growth ETFs may drop -30% to -40%. The key question is recovery speed — did the fund recover within 1-2 years? A fund that draws down more than its category average AND recovers slower is a genuine concern. Contextualize ATH distance: being -5% to -10% from ATH is normal for equities.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "capture_ratios",
+            "factorAnalysisTitle": "Upside/Downside Capture Ratios",
+            "factorAnalysisDescription": "Measures how much of the market's upside the fund captures vs how much of the downside it absorbs. For equity ETFs, the ideal is upside capture > downside capture. A passive S&P 500 ETF should have both near 100%. A defensive equity ETF (high-dividend, low-volatility) might show 70% upside / 50% downside — capturing less of the gains but much less of the losses. Active ETFs that show 90% upside / 110% downside are destroying value through poor stock selection.",
+            "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's overall Mor risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. For equity ETFs, consistently below-average risk vs category is favorable. A passive index ETF should show average risk for its category. An actively managed equity ETF with above-average risk should be delivering above-average returns to justify it.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ],
+        "Fixed Income": [
+          {
+            "factorAnalysisKey": "interest_rate_sensitivity",
+            "factorAnalysisTitle": "Interest Rate Sensitivity & Duration Risk",
+            "factorAnalysisDescription": "For bond ETFs, interest rate risk (measured by duration) is the primary risk factor. Beta relative to equities is less meaningful — a bond ETF's beta near 0 simply means it doesn't move with stocks, not that it's low-risk. Instead, evaluate using the annual return pattern: how badly did the fund get hit in 2022 (rising rates) vs how well it did in 2019/2020 (falling rates)? Long-duration bond ETFs (like TLT) can lose -30% in a rising rate year despite being 'safe' government bonds. The magnitude of rate-driven losses should be compared to category peers, not to equities.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, riskAndVolatilityMeasures, riskPeriods"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for bond ETFs. Bond ETFs typically have lower Sharpe ratios than equity ETFs because their returns are lower. A Sharpe above 0.3 is decent for a bond fund. Compare to category average rather than absolute benchmarks. Sortino is particularly useful for bond ETFs because the 2022 rate shock created extreme downside that distorts symmetric volatility measures. A bond ETF that maintained a positive Sortino through 2022-2024 is demonstrating good risk-adjusted performance.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Maximum Drawdown & Recovery",
+            "factorAnalysisDescription": "Analyzes worst declines for bond ETFs. The 2022 rate hike cycle caused historically unprecedented bond losses (AGG -13%, TLT -31%). For bond ETFs, the key question is: was the drawdown in line with the category and duration profile, or did the fund lose more than expected? A bond ETF that lost -15% when its category lost -13% has a problem. A bond ETF that lost -13% in line with its category was simply exposed to the asset class. ATH distance is less meaningful for bond ETFs — ATHs were often set during the 2020 zero-rate era and are not realistic reference points.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "credit_and_default_risk",
+            "factorAnalysisTitle": "Credit & Default Risk Exposure",
+            "factorAnalysisDescription": "Evaluates the credit risk profile of the bond ETF. Treasury bond ETFs have essentially zero credit risk. Investment-grade corporate bond ETFs have moderate credit risk. High-yield (junk) bond ETFs carry significant credit risk that manifests during economic stress. Compare the fund's worst calendar year to its category — if a high-yield ETF lost significantly more than peers during 2020 or 2022, it may have had excessive exposure to lower-rated credits. Use the Mor risk score relative to category to gauge credit positioning.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's Mor risk score against its bond category peers across multiple periods. For bond ETFs, below-average risk vs category means the fund is taking less interest rate or credit risk than peers — which usually means lower returns too. The right question is whether the risk/return trade-off is fair: is the fund taking proportionally less risk for proportionally less return? A fund with below-average risk but average returns is well-managed.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ],
+        "Alternatives": [
+          {
+            "factorAnalysisKey": "volatility_vs_underlying",
+            "factorAnalysisTitle": "Volatility Relative to Underlying Market",
+            "factorAnalysisDescription": "For alternative strategy ETFs (covered call, derivative income), the core value proposition is lower volatility than their underlying market. A covered call ETF on the S&P 500 should have significantly lower volatility than the S&P 500 itself. Beta well below 1.0 (e.g., JEPI at 0.59) confirms the strategy is working. If an alternatives ETF has beta near 1.0 or higher, it's not providing the volatility reduction investors expect. Compare ATR and beta to what the underlying index would deliver.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios. For alternative strategy ETFs, risk-adjusted returns should be the headline metric — these funds explicitly trade absolute return for better risk efficiency. A covered call ETF that delivers Sharpe of 0.8 vs the S&P 500's Sharpe of 0.6 is doing its job, even if the absolute return is lower. Sortino is especially important here because downside protection is the explicit promise. Compare Sharpe/Sortino to both the category average and the underlying benchmark.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Drawdown & Downside Protection",
+            "factorAnalysisDescription": "Analyzes maximum drawdown relative to the reference benchmark. This is the most important risk factor for alternative strategy ETFs — outperforming during drawdowns is their core promise. JEPI losing -3.53% in 2022 while the S&P lost -19.43% is a success story. A fund that promises downside protection but draws down as much as the benchmark is failing at its stated objective. Calculate the protection ratio: fund drawdown / benchmark drawdown. A ratio under 0.50 is excellent, under 0.75 is good, above 0.90 means minimal protection.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "capture_ratios",
+            "factorAnalysisTitle": "Upside/Downside Capture Ratios",
+            "factorAnalysisDescription": "Measures upside vs downside capture relative to the benchmark. For alternative strategy ETFs, the expected pattern is: upside capture 50-80% (giving up some gains) and downside capture 30-60% (protecting against losses). The key metric is the capture ratio spread: (upside capture - downside capture). A positive spread means the fund captures more upside than downside — that's the ideal. JEPI's beta of 0.59 suggests roughly 59% capture of both, but the covered call premium should improve the downside capture.",
+            "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's risk score against other alternative strategy ETFs. The Derivative Income category is growing rapidly (279 funds as of 2025), so category comparison is increasingly meaningful. A fund with below-average risk vs category means it's more conservative than peers — which may mean less income but better protection. Note that risk metrics for new alternative ETFs may be based on limited history and could change significantly as the fund matures.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ],
+        "Commodity": [
+          {
+            "factorAnalysisKey": "volatility_measures",
+            "factorAnalysisTitle": "Volatility & Cyclicality",
+            "factorAnalysisDescription": "Measures the fund's volatility in the context of commodity cycle behavior. Commodity ETFs are inherently more volatile than equity or bond ETFs. A commodity ETF with high ATR and wide price ranges is normal — the question is whether the volatility is in line with the specific commodity's historical behavior. Gold ETFs are relatively low-volatility commodities; oil and natural gas ETFs are extremely volatile. Beta relative to equities shows correlation — commodities ideally have low equity beta (diversification benefit).",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for commodity ETFs. Commodities often have low or negative Sharpe ratios over extended periods because returns are cyclical and can be near zero long-term. A Sharpe above 0 is acceptable for many commodity ETFs. Compare to category peers rather than equity benchmarks. Gold ETFs tend to have better Sharpe ratios than energy or agricultural commodity ETFs due to lower volatility.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Maximum Drawdown & Cycle Recovery",
+            "factorAnalysisDescription": "Analyzes worst declines in the context of commodity super-cycles. Commodity ETFs can experience drawdowns of -40% to -70% during cycle downturns (oil in 2014-2016, 2020). The critical question is recovery: did the commodity recover to prior levels, and how long did it take? Commodities that haven't recovered from cycle lows after 5+ years may face structural demand decline. Compare drawdown severity and recovery speed to the commodity's historical cycle pattern.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "diversification_benefit",
+            "factorAnalysisTitle": "Portfolio Diversification Benefit",
+            "factorAnalysisDescription": "Evaluates how the commodity ETF behaves relative to stocks and bonds. The primary risk benefit of commodities in a portfolio is low or negative correlation with equities. Beta near 0 or negative indicates strong diversification benefit. If the commodity ETF moves in lockstep with equities (high beta), it provides less portfolio protection. Gold ETFs typically show negative equity correlation during crises (strong diversifier); energy ETFs may have higher equity correlation.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, captureRatios"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's Mor risk score against commodity category peers. For commodity ETFs, above-average risk vs category may mean higher leverage, more concentrated commodity exposure, or less efficient futures rolling. Below-average risk with comparable returns indicates superior risk management.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ],
+        "Asset Allocation": [
+          {
+            "factorAnalysisKey": "volatility_vs_components",
+            "factorAnalysisTitle": "Volatility Relative to Pure Components",
+            "factorAnalysisDescription": "Measures whether the asset allocation fund delivers smoother returns than its individual components. A 60/40 fund should have lower volatility than a pure equity fund and lower drawdowns than pure bonds in rate-shock years. Beta should be between the equity beta (~1.0) and bond beta (~0), weighted by allocation. If a balanced fund has equity-level volatility, the allocation may be more aggressive than stated or the bond component isn't providing the expected diversification.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios. Asset allocation funds should ideally have BETTER Sharpe ratios than pure equity or pure bond funds because diversification improves risk-adjusted returns. If a balanced fund's Sharpe ratio is lower than both its equity and bond benchmarks, the allocation isn't adding value. Compare to category average (other balanced/allocation funds) for the most relevant benchmark.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Maximum Drawdown & Protection",
+            "factorAnalysisDescription": "Analyzes worst declines relative to pure equity benchmarks. The primary value of asset allocation is shallower drawdowns. A 60/40 fund that lost -20% in 2022 when equities lost -20% and bonds lost -13% failed at its mandate — it should have lost somewhere in between. Evaluate the 'drawdown reduction ratio': how much less did this fund lose compared to a pure equity fund? Also assess 2022 specifically, when both stocks and bonds fell simultaneously — this was a stress test for all allocation strategies.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "capture_ratios",
+            "factorAnalysisTitle": "Upside/Downside Capture Ratios",
+            "factorAnalysisDescription": "Measures upside vs downside capture relative to the equity benchmark. A well-managed balanced fund should capture 60-80% of equity upside (proportional to equity allocation) but significantly less than 60-80% of equity downside (because bonds dampen losses). If downside capture exceeds upside capture proportional to the equity weight, the allocation is not working as intended.",
+            "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's risk score against allocation category peers. For asset allocation ETFs, risk consistency is more important than absolute risk level — the fund should maintain similar risk positioning over time, reflecting a disciplined allocation approach. Sudden changes in risk score may indicate drift in the allocation or undisciplined rebalancing.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ],
+        "Currency": [
+          {
+            "factorAnalysisKey": "volatility_measures",
+            "factorAnalysisTitle": "Currency Volatility",
+            "factorAnalysisDescription": "Measures the fund's volatility in the context of currency market behavior. Major currency pairs (EUR/USD, GBP/USD) typically have lower volatility than emerging market currencies. ATR relative to price shows daily movement expectations. Beta relative to equities indicates how much the currency position correlates with stock markets — low equity beta is expected and desirable for currency ETFs used as hedging tools.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
+          },
+          {
+            "factorAnalysisKey": "risk_adjusted_returns",
+            "factorAnalysisTitle": "Risk-Adjusted Returns",
+            "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for currency ETFs. Currency returns tend to be mean-reverting with high volatility, leading to low Sharpe ratios over long periods. A Sharpe near 0 is common. Compare to category peers rather than absolute thresholds. Positive carry currencies (higher interest rate currencies) may show better risk-adjusted returns but with more downside tail risk.",
+            "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
+          },
+          {
+            "factorAnalysisKey": "drawdown_analysis",
+            "factorAnalysisTitle": "Maximum Drawdown & Recovery",
+            "factorAnalysisDescription": "Analyzes worst declines for currency ETFs. Currencies can experience sharp, sudden moves (10-20% in months) driven by central bank policy changes, political events, or economic crises. The key risk question is: does the currency pair have a history of mean-reversion (recovers to prior levels) or structural depreciation (persistent one-way decline)? Emerging market currency ETFs carry higher drawdown risk than major currency pair ETFs.",
+            "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
+          },
+          {
+            "factorAnalysisKey": "correlation_profile",
+            "factorAnalysisTitle": "Correlation & Hedging Effectiveness",
+            "factorAnalysisDescription": "Evaluates how the currency ETF's returns correlate with equities and other asset classes. Currency ETFs are often held for hedging or diversification. Low or negative beta to equities suggests the currency position provides portfolio protection during equity selloffs. Safe-haven currencies (USD, JPY, CHF) tend to strengthen during equity crises. Risk-on currencies (AUD, emerging markets) may fall alongside equities, reducing their diversification value.",
+            "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, captureRatios"
+          },
+          {
+            "factorAnalysisKey": "risk_vs_category",
+            "factorAnalysisTitle": "Risk Score vs Category",
+            "factorAnalysisDescription": "Compares the fund's risk score against currency category peers. For currency ETFs, above-average risk vs category may indicate exposure to more volatile currency pairs or use of leverage. Below-average risk with comparable returns indicates a less volatile currency pair or better risk management in the futures rolling process.",
+            "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
+          }
+        ]
+      }
     }
   ]
 }
