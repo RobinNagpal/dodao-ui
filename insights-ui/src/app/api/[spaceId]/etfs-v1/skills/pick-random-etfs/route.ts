@@ -20,7 +20,13 @@ export interface PickRandomEtfsResponse {
   totalPicked: number;
 }
 
-const ASSET_CLASSES = ['Equity', 'Fixed Income', 'Commodity', 'Alternatives'] as const;
+export type EtfAssetClass = 'Equity' | 'Fixed Income' | 'Alternatives' | 'Commodity' | 'Asset Allocation' | 'Currency';
+
+const ALL_ASSET_CLASSES: EtfAssetClass[] = ['Equity', 'Fixed Income', 'Alternatives', 'Commodity', 'Asset Allocation', 'Currency'];
+
+function isValidAssetClass(v: string): v is EtfAssetClass {
+  return ALL_ASSET_CLASSES.some((ac) => ac.toLowerCase() === v.toLowerCase());
+}
 
 /** Parse AUM strings like "$190.08M", "$1.4T", "$500K" into a numeric value for sorting. */
 function parseAum(aum: string | null | undefined): number {
@@ -140,14 +146,18 @@ async function getHandler(
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<PickRandomEtfsResponse> {
   const { spaceId } = await params;
-  const countParam = req.nextUrl.searchParams.get('count');
-  // count per asset class, default 4
-  const _count = countParam ? Math.min(10, Math.max(1, parseInt(countParam, 10))) : 4;
+  const assetClassParam = req.nextUrl.searchParams.get('assetClass');
+
+  // If a specific asset class is requested, only pick from that one
+  const targetClasses: EtfAssetClass[] =
+    assetClassParam && isValidAssetClass(assetClassParam)
+      ? [ALL_ASSET_CLASSES.find((ac) => ac.toLowerCase() === assetClassParam.toLowerCase())!]
+      : ALL_ASSET_CLASSES;
 
   const result: Record<string, PickedEtf[]> = {};
   let totalPicked = 0;
 
-  for (const assetClass of ASSET_CLASSES) {
+  for (const assetClass of targetClasses) {
     const etfs = await prisma.etf.findMany({
       where: {
         spaceId,

@@ -1,56 +1,55 @@
 # ETF Prompt Review - Skill 1: Pick Random ETFs and Fetch Morningstar Data
 
-## Goal
-Pick 4 diverse ETFs from each asset class and fetch fresh Morningstar data for all of them.
-This is the first step in the ETF prompt review workflow.
+Pick 4 diverse ETFs from the specified asset class and fetch all Morningstar data for them.
+
+## Arguments
+The user provides: `<assetClass>` (e.g. "Equity", "Fixed Income", "Alternatives", "Commodity", "Asset Allocation", "Currency")
+
+User input: $ARGUMENTS
 
 ## Procedure
 
-### Step 1: Pick 4 diverse ETFs from each asset class
+### Step 1: Pick 4 diverse ETFs from the asset class
 
-Query the database for ETFs grouped by asset class. The 4 asset classes are:
-- Equity
-- Fixed Income
-- Commodity
-- Alternatives
+Call the pick-random-etfs API for the specified asset class:
 
-For each asset class, pick 4 ETFs with diversity:
-1. **High AUM** - the most famous/well-known fund (largest AUM)
-2. **Low AUM** - a small/niche fund (smallest non-zero AUM)
-3. **New fund** - the most recently launched fund (by inception date)
-4. **Random** - a random pick from the remaining ETFs for variety
-
-Use the API:
 ```
-GET https://koalagains.com/api/koala_gains/etfs-v1/skills/pick-random-etfs?token=<AUTOMATION_SECRET>
+GET https://koalagains.com/api/koala_gains/etfs-v1/skills/pick-random-etfs?assetClass=<ASSET_CLASS>&token=<AUTOMATION_SECRET>
 ```
 
-Record the picked ETFs and explain why each was chosen.
+The API picks 4 ETFs with diversity:
+1. **High AUM** - the most famous/well-known fund
+2. **Low AUM** - a small/niche fund
+3. **New fund** - the most recently launched fund
+4. **Random** - a random pick from the remaining ETFs
+
+Print the picked ETFs with their symbol, name, exchange, AUM, inception, and pick reason.
 
 ### Step 2: Fetch all 4 types of Morningstar data for each picked ETF
 
-For each picked ETF, trigger all 4 Morningstar scrape types (quote, risk, people, portfolio):
+For each of the 4 picked ETFs, call the fetch-mor-info API 4 times (once per kind):
 
 ```
-POST https://koalagains.com/api/koala_gains/etfs-v1/skills/fetch-mor-all-kinds?token=<AUTOMATION_SECRET>
-Body: {"symbol": "<SYMBOL>", "exchange": "<EXCHANGE>"}
+POST https://koalagains.com/api/koala_gains/etfs-v1/exchange/<EXCHANGE>/<SYMBOL>/fetch-mor-info?token=<AUTOMATION_SECRET>
+Content-Type: application/json
+Body: {"kind": "quote"}
 ```
 
-### Step 3: Verify data arrived
+Call it for each kind: `quote`, `risk`, `people`, `portfolio`.
 
-Wait ~60 seconds for callbacks, then verify data is populated:
-```
-GET https://koalagains.com/api/koala_gains/etfs-v1/exchange/<EXCHANGE>/<SYMBOL>/mor-info
-```
+That means 4 ETFs x 4 kinds = 16 API calls total.
 
-Report which ETFs have complete data and which are missing any type.
+**Important**: Do NOT call the `fetch-financial-info` API - financial data is already present for all ETFs.
 
-### Step 4: Output summary
+### Step 3: Report results
 
-Write a summary listing:
-- All picked ETFs grouped by asset class
-- Why each was picked (high-aum, low-aum, new-fund, random)
-- Data completeness status (which mor data types are available)
-- Any ETFs that failed to fetch data
+Print a summary table showing:
+- Each picked ETF (symbol, name, asset class, AUM)
+- Whether all 4 mor data fetch requests succeeded
+- Any errors encountered
 
-This summary will be used as input for the review skill (`/project:etf-review-prompts`).
+The data will arrive via callbacks. No need to wait or verify - the callbacks will populate the data.
+
+### Output
+
+The output should be a clear list of the 4 ETFs picked, ready to be used by subsequent skills (generation request creation, prompt review, etc.).
