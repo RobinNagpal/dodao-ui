@@ -63,6 +63,21 @@ properties:
     type: string
     description: 'JSON string with AUM, beta, 52-week high/low, volume, and holdings count for context.'
 
+  # Asset class identifier — determines which factor set is used and how the model should frame the analysis
+  assetClass:
+    type: string
+    description: 'The ETF asset class (e.g., Equity, Fixed Income, Alternatives, Commodity, Asset Allocation, Currency). Determines analysis tone, thresholds, and factor evaluation approach.'
+
+  # P0 — Yield & income data (critical for bond and income ETFs)
+  yieldAndIncome:
+    type: string
+    description: 'JSON string with dividend yield, SEC yield, TTM yield, payout frequency, dividend TTM, and dividend growth rates. Critical for bond and income ETFs where yield is the primary reason investors buy the fund.'
+
+  # P1 — Additional context for performance analysis
+  fundContext:
+    type: string
+    description: 'JSON string with expense ratio (explains benchmark tracking drag), inception date (handles young fund evaluation), and style box (detects category/style mismatches).'
+
 required:
   - name
   - symbol
@@ -74,3 +89,4 @@ required:
   - morReturns
   - morOverview
   - financialSummary
+  - assetClass

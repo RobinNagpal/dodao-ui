@@ -45,11 +45,16 @@ export interface EtfAnalysisFactorDefinition {
   factorAnalysisMetrics?: string;
 }
 
+export type EtfAssetClass = 'Equity' | 'Fixed Income' | 'Alternatives' | 'Commodity' | 'Asset Allocation' | 'Currency';
+
 export interface EtfCategoryAnalysisFactors {
   categoryKey: EtfAnalysisCategory;
   categoryName: string;
   categoryDescription: string;
-  factors: EtfAnalysisFactorDefinition[];
+  /** Used by categories that have a single set of factors (e.g., CostEfficiencyAndTeam, RiskAnalysis) */
+  factors?: EtfAnalysisFactorDefinition[];
+  /** Used by categories that have asset-class-specific factors (e.g., PerformanceAndReturns) */
+  factorsByAssetClass?: Record<EtfAssetClass, EtfAnalysisFactorDefinition[]>;
 }
 
 export interface EtfAnalysisFactorsConfig {

@@ -1,4 +1,4 @@
-import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { AllExchanges, toExchange, USExchanges } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
@@ -61,7 +61,7 @@ function buildMorEtfRelativePath(params: { exchange: string; symbol: string; kin
 
 async function postHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }
 ): Promise<TriggerMorScrapeResponse> {
   if (!LAMBDA_URL) {
@@ -101,4 +101,4 @@ async function postHandler(
   return { success: true, message, url: morRelativePath, kind };
 }
 
-export const POST = withLoggedInAdmin<TriggerMorScrapeResponse>(postHandler);
+export const POST = withAdminOrToken<TriggerMorScrapeResponse>(postHandler);

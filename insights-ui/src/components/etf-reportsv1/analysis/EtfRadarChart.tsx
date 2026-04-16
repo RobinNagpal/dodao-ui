@@ -3,7 +3,7 @@
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
@@ -22,8 +22,8 @@ const CATEGORY_NAMES: Record<string, string> = {
 };
 
 function getFactorTitle(categoryKey: string, factorKey: string): string {
-  const cat = etfAnalysisFactorsConfig.categories.find((c) => c.categoryKey === categoryKey);
-  const factor = cat?.factors.find((f) => f.factorAnalysisKey === factorKey);
+  const category = categoryKey as EtfAnalysisCategory;
+  const factor = findFactorDefinition(category, factorKey);
   return factor?.factorAnalysisTitle || factorKey;
 }
 
