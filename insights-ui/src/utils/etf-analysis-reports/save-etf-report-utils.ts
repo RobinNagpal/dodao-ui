@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory, EtfCategoryAnalysisResponse, EtfFinalSummaryResponse } from '@/types/etf/etf-analysis-types';
-import { getEtfAnalysisFactorsForCategory } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 
@@ -13,7 +13,6 @@ export async function saveEtfFactorAnalysisResponse(
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
-  const factors = getEtfAnalysisFactorsForCategory(categoryKey);
 
   await prisma.etfCategoryAnalysisResult.upsert({
     where: {
@@ -38,7 +37,7 @@ export async function saveEtfFactorAnalysisResponse(
   });
 
   for (const factor of response.factors) {
-    const factorDef = factors.find((f) => f.factorAnalysisKey === factor.factorAnalysisKey);
+    const factorDef = findFactorDefinition(categoryKey, factor.factorAnalysisKey);
     if (!factorDef) {
       console.warn(`Unknown factor key: ${factor.factorAnalysisKey} for ETF ${symbol}`);
       continue;

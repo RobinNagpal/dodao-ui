@@ -1,5 +1,6 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
-import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
+import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
@@ -7,8 +8,8 @@ import Link from 'next/link';
 const PASS_RESULT = 'Pass';
 
 function getFactorTitle(categoryKey: string, factorKey: string): string {
-  const cat = etfAnalysisFactorsConfig.categories.find((c) => c.categoryKey === categoryKey);
-  const factor = cat?.factors.find((f) => f.factorAnalysisKey === factorKey);
+  const category = categoryKey as EtfAnalysisCategory;
+  const factor = findFactorDefinition(category, factorKey);
   return factor?.factorAnalysisTitle || factorKey;
 }
 
