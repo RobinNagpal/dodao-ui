@@ -36,10 +36,7 @@ const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 /** Data fetchers */
 async function fetchEtfByExchange(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(
-    url
-    // { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } }
-  );
+  const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
   if (!res.ok) {
     // Server error (DB down, etc.) - throw to show error.tsx
     throw new Error(`fetchEtfByExchange failed (${res.status}): ${url}`);
