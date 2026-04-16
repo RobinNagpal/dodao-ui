@@ -12,6 +12,7 @@ import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, to
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -145,6 +146,27 @@ function EtfFinancialInfoSkeleton(): JSX.Element {
   );
 }
 
+/** Matches stock `ChartsInfoSkeleton`: financial table (left) + radar placeholder (right). */
+function EtfChartsInfoSkeleton(): JSX.Element {
+  return (
+    <section className="mb-8">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
+          <EtfFinancialInfoSkeleton />
+        </div>
+        <div className="lg:w-1/2 flex justify-center">
+          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+              <div className="h-8 w-12 rounded bg-gray-800 animate-pulse" />
+            </div>
+            <RadarSkeleton />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* =============================================================================
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
@@ -178,7 +200,7 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
   const d: EtfFastResponse = use(data);
 
   return (
-    <section id="introduction" className="text-left mb-2">
+    <section id="introduction" className="text-left">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
         <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
           {d.name} ({d.symbol})
@@ -187,14 +209,6 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
           <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(d.exchange)}</span>
         </div>
       </div>
-
-      {/* Inception Date */}
-      {d.inception && (
-        <div className="mb-4">
-          <span className="text-sm text-gray-400">Inception Date: </span>
-          <span className="text-sm font-medium">{d.inception}</span>
-        </div>
-      )}
 
       {/* Summary (if available) */}
       {d.summary && d.summary.trim() && (
@@ -223,13 +237,15 @@ function EtfFinancialInfoSection({
   const analysis: EtfAnalysisResponse = use(analysisPromise);
 
   return (
-    <section className="mb-8">
+    <section>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
         </div>
         <div className="lg:w-1/2 flex justify-center">
-          <EtfRadarChart scores={scores} analysis={analysis} />
+          <Suspense fallback={<RadarSkeleton />}>
+            <EtfRadarChart scores={scores} analysis={analysis} />
+          </Suspense>
         </div>
       </div>
     </section>
@@ -353,7 +369,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         {/* Summary info - server rendered, no skeleton needed */}
         <EtfSummaryInfo data={etfInfo} />
 
-        <Suspense fallback={<EtfFinancialInfoSkeleton />}>
+        <Suspense fallback={<EtfChartsInfoSkeleton />}>
           <EtfFinancialInfoSection data={etfInfo} financialInfoPromise={financialInfoPromise} scoresPromise={scoresPromise} analysisPromise={analysisPromise} />
         </Suspense>
 

@@ -25,7 +25,7 @@ export default function EtfAnalysisSections({ data, exchange, symbol }: EtfAnaly
   }
 
   return (
-    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:py-6" itemProp="abstract">
+    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8" itemProp="abstract">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700 px-4">Summary Analysis</h2>
       <div className="space-y-4 px-4">
         {CATEGORY_ORDER.map((categoryKey) => {
@@ -33,7 +33,7 @@ export default function EtfAnalysisSections({ data, exchange, symbol }: EtfAnaly
           const display = CATEGORY_DISPLAY[categoryKey] || { name: categoryKey, order: 99, slug: '' };
           return (
             <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
                   <h3 className="text-lg font-semibold">{display.name}</h3>
                   {categoryResult && (
