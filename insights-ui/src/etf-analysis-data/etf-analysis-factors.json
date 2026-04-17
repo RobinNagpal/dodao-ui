@@ -28,13 +28,13 @@
             "factorAnalysisKey": "benchmark_and_category_comparison",
             "factorAnalysisTitle": "Benchmark & Category Comparison",
             "factorAnalysisDescription": "Compares the ETF's returns against its benchmark index and category average. For passive index ETFs, tight tracking (within 0.5pp) is expected — persistent drag indicates structural cost issues. For active ETFs, evaluate whether the manager's picks added value over the index. Use percentile rank data to show where the fund stands among 100s or 1000s of peers. If the ETF trails its benchmark in every available period (even if within ±2pp each time), flag the persistent pattern.",
-            "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, overviewCategory, indexName, percentileRanks"
+            "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName, percentileRanks"
           },
           {
             "factorAnalysisKey": "price_trend_momentum",
             "factorAnalysisTitle": "Price Trend & Momentum",
-            "factorAnalysisDescription": "Analyzes the ETF's price relative to its moving averages (20, 50, 150, 200-day) and RSI. For equity ETFs, these signals are meaningful. Above MA200 with neutral RSI = healthy uptrend with short-term cooling (not a Fail). Below MA200 with RSI under 40 = genuine weakness. A normal -5% to -10% correction for a beta ~1.0 fund happens roughly once a year and should not be treated as a structural breakdown. Adjust severity for the ETF's beta — higher-beta funds have larger normal swings.",
-            "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, stockPrice, beta"
+            "factorAnalysisDescription": "Analyzes the ETF's price relative to its moving averages (20, 50, 150, 200-day) and RSI. For equity ETFs, these signals are meaningful. Above MA200 with neutral RSI = healthy uptrend with short-term cooling (not a Fail). Below MA200 with RSI under 40 = genuine weakness. A normal -5% to -10% correction for a broad market fund happens roughly once a year and should not be treated as a structural breakdown.",
+            "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, stockPrice"
           }
         ],
         "Fixed Income": [
@@ -65,8 +65,8 @@
           {
             "factorAnalysisKey": "interest_rate_and_environment_resilience",
             "factorAnalysisTitle": "Interest Rate & Environment Resilience",
-            "factorAnalysisDescription": "Assesses how the fund has performed across different interest rate environments by examining annual return patterns. Bond ETFs with longer duration suffer more in rising rate years (e.g., 2022) and gain more in falling rate years. Compare the fund's worst calendar year loss to the category and index — if it was in line, the drawdown was asset-class driven, not fund-specific. Use beta to gauge overall market sensitivity. A beta near 0 means the fund moves independently of equities (typical for bonds). Evaluate whether the fund recovered from drawdown years — did it bounce back in the following year?",
-            "factorAnalysisMetrics": "returnsAnnual, beta, return1y, return3y"
+            "factorAnalysisDescription": "Assesses how the fund has performed across different interest rate environments by examining annual return patterns. Bond ETFs with longer duration suffer more in rising rate years (e.g., 2022) and gain more in falling rate years. Compare the fund's worst calendar year loss to the category and index — if it was in line, the drawdown was asset-class driven, not fund-specific. Evaluate whether the fund recovered from drawdown years — did it bounce back in the following year?",
+            "factorAnalysisMetrics": "returnsAnnual, return1y, return3y"
           }
         ],
         "Alternatives": [
@@ -86,13 +86,13 @@
             "factorAnalysisKey": "category_outperformance",
             "factorAnalysisTitle": "Category Peer Comparison",
             "factorAnalysisDescription": "Compares the fund's returns against its category peers (e.g., Derivative Income, Managed Futures) using trailing returns and percentile ranks. For alternative strategies, category comparison is more meaningful than benchmark comparison because the benchmark (often a pure equity index) is not the fund's performance target. A covered call ETF trailing the S&P 500 is by design — it trades upside for income. Instead, focus on how it ranks vs other funds using the same strategy. Note if the category is growing rapidly (increasing number of investments in category) — new competitors may be offering better terms.",
-            "factorAnalysisMetrics": "returnsTrailing, percentileRanks, numberOfInvestmentsInCategory, overviewCategory"
+            "factorAnalysisMetrics": "returnsTrailing, percentileRanks, numberOfInvestmentsInCategory"
           },
           {
             "factorAnalysisKey": "downside_protection",
             "factorAnalysisTitle": "Downside Protection & Drawdown Behavior",
-            "factorAnalysisDescription": "Evaluates how the fund performs in down markets compared to its reference benchmark and category. For defensive alternative strategies (covered call, low-volatility), outperforming during market drops (e.g., 2022) is the core value proposition. Compare the fund's worst calendar year to the benchmark's worst calendar year. A fund that lost -5% when the benchmark lost -20% is successfully delivering downside protection. Use beta to confirm the defensive profile — a beta significantly below 1.0 supports the claim.",
-            "factorAnalysisMetrics": "returnsAnnual, beta, athChgPercent"
+            "factorAnalysisDescription": "Evaluates how the fund performs in down markets compared to its reference benchmark and category. For defensive alternative strategies (covered call, low-volatility), outperforming during market drops (e.g., 2022) is the core value proposition. Compare the fund's worst calendar year to the benchmark's worst calendar year. A fund that lost -5% when the benchmark lost -20% is successfully delivering downside protection.",
+            "factorAnalysisMetrics": "returnsAnnual"
           },
           {
             "factorAnalysisKey": "price_trend_momentum",
@@ -150,13 +150,13 @@
             "factorAnalysisKey": "benchmark_and_category_comparison",
             "factorAnalysisTitle": "Benchmark & Category Comparison",
             "factorAnalysisDescription": "Compares the fund against its allocation category peers and benchmark. For balanced funds, both the equity and bond components matter. Use percentile rank data to show peer standing. An allocation fund should aim to be in the top half of its category consistently.",
-            "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, overviewCategory, indexName, percentileRanks"
+            "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName, percentileRanks"
           },
           {
             "factorAnalysisKey": "returns_consistency",
             "factorAnalysisTitle": "Returns Consistency & Smoothness",
             "factorAnalysisDescription": "The primary value of an asset allocation fund is smoother, more consistent returns. Evaluate whether the fund avoids the worst drawdowns seen in pure equity funds. A balanced fund that lost -15% in 2022 while equity lost -20% and bonds lost -13% is doing its job. Consistency across 1Y, 3Y, 5Y, 10Y periods is the key metric.",
-            "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual, beta"
+            "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual"
           },
           {
             "factorAnalysisKey": "price_trend_momentum",
