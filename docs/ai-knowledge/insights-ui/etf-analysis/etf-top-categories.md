@@ -63,30 +63,30 @@ Funds that blend equities, bonds, and sometimes alternatives into a single ticke
 
 ## Key Evaluation Parameters for ETFs
 
-The five parameters below are what experienced investors use to evaluate any ETF. Under each parameter, we note whether it is highly relevant, moderately relevant, or less relevant for each of the 15 categories above.
+Five non-overlapping parameters that are critical for evaluating ETFs across every category. Each parameter measures a distinct dimension — cost, operational quality, structural soundness, risk, and tax impact — so no two parameters duplicate what the other captures. Under each parameter, we explain why it matters for each of the 15 categories.
 
 ---
 
-### Parameter 1: Total Return (Price + Distributions)
+### Parameter 1: Expense Ratio
 
-The single most important number — total return including all distributions reinvested over 1, 3, and 5 years. Not yield alone, not price alone. Always compare against the fund's own benchmark, the closest competitor ETF in the same category, and a simple SPY/VOO baseline as the "cost of doing something different."
+The annual management fee charged by the fund, expressed as a percentage of assets. This is the most visible and easily comparable cost of owning an ETF. It compounds every year you hold the fund and directly reduces your net return. Unlike trading costs (covered in Parameter 3), the expense ratio is charged regardless of whether you trade.
 
-**Relevance by category:**
-1. **US Large Cap Blend** — Critical; this is the benchmark category, so even small total-return differences vs. the index signal tracking quality.
-2. **US Large Cap Growth** — Critical; growth funds justify higher expense ratios only if total return exceeds a plain large-cap blend over full cycles.
-3. **US Large Cap Value** — Critical; value strategies can underperform for years, so 5-year total return vs. blend peers is the real scorecard.
-4. **US Mid Cap Blend** — Critical; mid-caps should deliver higher total return than large-caps over long periods to justify the added volatility.
-5. **US Small Cap Blend** — Critical; the small-cap premium only shows up in total return, not in price alone since many small-caps pay no dividends.
-6. **International Developed Markets** — Critical; currency drag and lower growth make total-return comparison vs. a US benchmark essential to justify the allocation.
-7. **Emerging Markets** — Critical; high volatility and political risk mean total return over 5+ years is the only honest measure of whether the risk was worth it.
-8. **Sector — Technology** — Critical; sector bets must be judged on total return vs. broad market to see if the concentration actually paid off.
-9. **Dividend / Equity Income** — Critical and commonly misunderstood; many investors look only at yield and miss that total return (yield + price change) may lag a simple index fund.
-10. **Thematic / Megatrend** — Critical; many thematic funds have compelling narratives but poor total returns, so this parameter is the reality check.
-11. **US Aggregate Bond** — Moderately relevant; bond total returns are lower and more stable, but comparing against the Agg benchmark still matters for tracking error.
-12. **US Treasury / Government Bond** — Moderately relevant; returns are driven by rate changes and maturity profile, so total return matters mainly for duration bets.
-13. **Corporate Bond** — Moderately relevant; total return helps compare credit-risk compensation vs. safer Treasuries over full credit cycles.
-14. **Commodities** — Moderately relevant; commodities have no yield, so total return is entirely price-driven and heavily period-dependent, making short-term comparisons misleading.
-15. **Multi-Asset / Allocation** — Critical; this is the entire point of an allocation fund — deliver a competitive total return at a given risk level without the investor managing pieces separately.
+**Why it matters for each category:**
+1. **US Large Cap Blend** — The most commoditized category where dozens of funds track the same index, so even a 0.01% fee difference is a pure drag with no offsetting benefit.
+2. **US Large Cap Growth** — Growth funds range from 0.04% (passive) to 0.75% (active), and the higher-fee funds must consistently outperform to justify the gap, which most do not.
+3. **US Large Cap Value** — Value factor ETFs span 0.04%–0.35%, and since value strategies are rules-based and easy to index, paying more rarely adds returns.
+4. **US Mid Cap Blend** — Mid-cap indexing is straightforward, so anything above 0.10% needs a clear reason — the strategy is not complex enough to justify high fees.
+5. **US Small Cap Blend** — Higher expense ratios compound painfully on a volatile asset class where long-term returns are only modestly above large-caps; every basis point matters.
+6. **International Developed Markets** — Fund fees range from 0.04% to 0.35% for developed-market exposure, and since these markets are highly efficient, expensive funds rarely add value over cheap ones.
+7. **Emerging Markets** — EM funds charge 0.10%–0.70%, partially justified by operational complexity, but investors should compare within the category since cheap EM funds now exist.
+8. **Sector — Technology** — Tech ETF fees range from 0.08% to 0.50%, and since the major funds hold very similar stocks, the cheaper option usually delivers equivalent performance.
+9. **Dividend / Equity Income** — Dividend strategies are simple enough to index cheaply, so a 0.06% fund often matches a 0.40% fund in net return after fees eat into the yield advantage.
+10. **Thematic / Megatrend** — Thematic funds cluster at 0.40%–0.75%, and since most underperform broad indexes, the high fee is an additional headwind on an already speculative bet.
+11. **US Aggregate Bond** — Bond returns are structurally low (2%–5%), so a 0.10% fee difference can eat 5–10% of your annual return — proportionally far more impactful than in equities.
+12. **US Treasury / Government Bond** — Treasury yields are among the lowest in fixed income, making the expense ratio the single largest controllable drag on performance.
+13. **Corporate Bond** — Investment-grade credit spreads over Treasuries are thin (1%–2%), so fees directly erode the credit premium you are being paid to take on default risk.
+14. **Commodities** — Commodity ETFs charge 0.20%–0.75% with no yield to offset the fee, so the expense ratio is a pure annual loss that compounds against an asset class with no inherent income.
+15. **Multi-Asset / Allocation** — Allocation funds charge 0.10%–0.50% for convenience, and that fee must be compared against building the same allocation yourself with cheaper single-asset ETFs.
 
 ---
 
