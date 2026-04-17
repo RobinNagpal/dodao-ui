@@ -113,26 +113,26 @@ Tracking difference is the gap between the ETF's actual return and its benchmark
 
 ---
 
-### Parameter 3: Liquidity Trifecta — AUM + Daily Volume + Bid-Ask Spread
+### Parameter 3: Liquidity & Fund Viability (AUM, Volume, Spread, Fund Age)
 
-Three metrics that together reveal the true trading cost beyond the expense ratio. AUM below $100M signals closure risk (below $50M, avoid unless you have a specific reason). Low daily volume means market makers keep spreads wide. Consistent premiums or discounts to NAV signal poor market-maker activity or illiquid underlying assets.
+This parameter combines trading friction (bid-ask spread, daily volume, premium/discount to NAV) with structural viability (AUM size, fund age, issuer reputation). Together they answer two questions: "Can I trade this efficiently?" and "Will this fund still exist in 5 years?" A fund that closes forces a taxable liquidation event and transition costs regardless of category. Even in liquid categories, choosing a poorly structured or undersized fund within that category creates real risk. This is distinct from expense ratio (Parameter 1) because these are transactional and structural costs, not annual management fees.
 
-**Relevance by category:**
-1. **US Large Cap Blend** — Less critical; the top funds (SPY, VOO, IVV) are the most liquid securities on Earth, so this is a non-issue for any mainstream fund.
-2. **US Large Cap Growth** — Less critical; major growth ETFs (QQQ, VUG, IWF) have massive AUM and tight spreads.
-3. **US Large Cap Value** — Less critical; large-cap value ETFs (VTV, IWD, SCHV) are highly liquid with tight spreads.
-4. **US Mid Cap Blend** — Moderately relevant; mid-cap ETFs have good liquidity in major funds but spreads widen for niche or newer entrants.
-5. **US Small Cap Blend** — Highly relevant; underlying small-cap stocks are less liquid, so smaller small-cap ETFs can develop wide spreads and persistent NAV discounts.
-6. **International Developed Markets** — Highly relevant; time-zone mismatch between US trading hours and foreign market hours creates structural premiums/discounts that matter for timing.
-7. **Emerging Markets** — Critical; EM underlying stocks can be illiquid or hard to access, causing stale NAV pricing, wide spreads, and significant premiums/discounts.
-8. **Sector — Technology** — Moderately relevant; major sector ETFs are liquid, but niche sub-industry funds (cybersecurity, robotics) can have lower AUM and wider spreads.
-9. **Dividend / Equity Income** — Moderately relevant; mainstream dividend ETFs are liquid, but specialized high-yield or dividend-growth niche funds may have lower volume.
-10. **Thematic / Megatrend** — Critical; many thematic funds have AUM under $200M and daily volume under 100K shares, making entry/exit costs meaningful.
-11. **US Aggregate Bond** — Less critical; the major bond ETFs (AGG, BND) are among the most liquid fixed-income instruments, often more liquid than the underlying bonds.
-12. **US Treasury / Government Bond** — Less critical; Treasury ETFs are extremely liquid with negligible spreads, backed by the most liquid market in the world.
-13. **Corporate Bond** — Moderately relevant; investment-grade corporate ETFs are liquid, but high-yield and niche credit ETFs can have wider spreads, especially in stress periods.
-14. **Commodities** — Highly relevant; gold ETFs (GLD, IAU) are liquid, but broader commodity basket or single-commodity funds (outside gold) can have low AUM and wide spreads.
-15. **Multi-Asset / Allocation** — Moderately relevant; the largest allocation ETFs are liquid enough, but many target-date or tactical allocation funds have surprisingly low AUM.
+**Why it matters for each category:**
+1. **US Large Cap Blend** — The top funds pass easily, but there are dozens of small-AUM S&P 500 clones from minor issuers that could close, forcing unnecessary taxable events for holders.
+2. **US Large Cap Growth** — Mainstream funds are liquid, but newer active-growth ETFs often launch with low AUM and thin volume, risking closure within 2–3 years if they fail to gather assets.
+3. **US Large Cap Value** — Several value-factor ETFs have sub-$200M AUM despite being years old, signaling weak demand that makes them candidates for issuer consolidation or closure.
+4. **US Mid Cap Blend** — The mid-cap space has fewer dominant funds, so investors are more likely to encounter funds with moderate AUM where spread costs and closure risk are meaningful.
+5. **US Small Cap Blend** — Underlying small-cap stocks are inherently less liquid, so ETF spreads widen and NAV discounts persist, especially during market stress when liquidity evaporates fastest.
+6. **International Developed Markets** — Time-zone mismatch between US trading hours and foreign market close creates structural premiums/discounts throughout the day, making trade timing and spread awareness critical.
+7. **Emerging Markets** — EM underlying stocks can be illiquid with capital controls, causing stale NAV pricing and significant premiums/discounts that make entry/exit timing a meaningful cost.
+8. **Sector — Technology** — Major tech ETFs are liquid, but sub-industry funds (cybersecurity, robotics, AI-specific) frequently have AUM under $500M and wider spreads that add real trading costs.
+9. **Dividend / Equity Income** — The category is crowded with niche dividend-strategy funds, many with low AUM, and investors must verify the fund they choose is large enough to survive a multi-year performance drought.
+10. **Thematic / Megatrend** — Many thematic funds have AUM under $200M and daily volume under 100K shares, and the category has the highest closure rate of any ETF type since themes fall out of favor.
+11. **US Aggregate Bond** — Major bond ETFs (AGG, BND) are often more liquid than the underlying bonds, but smaller aggregate funds and those from niche issuers have closure risk that would force taxable liquidation.
+12. **US Treasury / Government Bond** — While mainstream Treasury ETFs are extremely liquid, dozens of duration-specific or TIPS funds from smaller issuers have AUM below $500M and could be consolidated.
+13. **Corporate Bond** — Investment-grade corporate ETFs are liquid in normal markets, but bid-ask spreads blow out during credit stress (2008, 2020), and smaller high-yield funds face both liquidity and closure risk.
+14. **Commodities** — Gold ETFs are liquid, but single-commodity (agricultural, industrial metals) and broad-basket funds frequently have low AUM and wide spreads, with many closures historically.
+15. **Multi-Asset / Allocation** — Many target-date and tactical allocation funds have surprisingly low AUM despite large issuer backing, and the category sees regular fund mergers and closures.
 
 ---
 
