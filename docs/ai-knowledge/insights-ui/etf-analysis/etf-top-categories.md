@@ -136,26 +136,26 @@ This parameter combines trading friction (bid-ask spread, daily volume, premium/
 
 ---
 
-### Parameter 4: Risk-Adjusted Return — Sharpe Ratio + Max Drawdown
+### Parameter 4: Risk Profile (Volatility, Maximum Drawdown, Recovery Time)
 
-Sharpe ratio measures return per unit of volatility — higher is better. Maximum drawdown measures the worst peak-to-trough loss in a period, revealing how painful the ride can get. Together they answer: "Am I being compensated for the risk I am taking?"
+This parameter measures the pain dimension of owning an ETF — how much it swings day-to-day (standard deviation), how far it can fall peak-to-trough (maximum drawdown), and how long it takes to recover to the prior high. Unlike the old "risk-adjusted return" framing, this is purely about risk, not return. Return is already captured by tracking accuracy (Parameter 2) relative to the benchmark. Knowing the risk profile tells you whether you can actually hold this ETF through a full market cycle without panic-selling. This is distinct from all other parameters: it measures neither cost, nor operational quality, nor structural soundness, nor tax impact — it measures volatility and downside.
 
-**Relevance by category:**
-1. **US Large Cap Blend** — Moderately relevant; these are the benchmark, so risk-adjusted return is more useful for comparing against other categories than within this one.
-2. **US Large Cap Growth** — Highly relevant; growth funds have higher volatility, so Sharpe ratio reveals whether the extra return justifies the bigger drawdowns.
-3. **US Large Cap Value** — Highly relevant; value has historically delivered better risk-adjusted returns over full cycles, so Sharpe ratio validates the strategy.
-4. **US Mid Cap Blend** — Highly relevant; mid-caps have higher volatility than large-caps, so max drawdown is essential for sizing the allocation appropriately.
-5. **US Small Cap Blend** — Critical; small-caps have the highest volatility in equity, so max drawdown (often 40%+ in bear markets) determines whether an investor can actually hold through a cycle.
-6. **International Developed Markets** — Highly relevant; currency volatility adds a risk layer, so Sharpe ratio helps compare whether international diversification actually improved risk-adjusted returns.
-7. **Emerging Markets** — Critical; EM drawdowns can be severe (50%+) and recoveries slow, making max drawdown the gating parameter for position sizing.
-8. **Sector — Technology** — Critical; sector concentration amplifies both upside and drawdowns, so risk-adjusted metrics are essential to judge whether concentration paid off.
-9. **Dividend / Equity Income** — Highly relevant; income investors typically have lower risk tolerance, so max drawdown is often more important to them than total return.
-10. **Thematic / Megatrend** — Critical; thematic funds can suffer drawdowns of 60–80% (as seen with ARKK), making max drawdown the single most important filter before entry.
-11. **US Aggregate Bond** — Moderately relevant; bond volatility is structurally lower, but the 2022 bond crash showed that max drawdown matters even here.
-12. **US Treasury / Government Bond** — Moderately relevant; Treasuries are low-volatility by design, but long-duration Treasury ETFs can have 20%+ drawdowns when rates spike.
-13. **Corporate Bond** — Highly relevant; credit spreads blow out in recessions, so max drawdown during 2008 and 2020 is a key differentiator between investment-grade and high-yield.
-14. **Commodities** — Critical; commodities are among the most volatile asset classes with extended drawdowns (oil fell 70%+ in 2020), so Sharpe ratio is essential for allocation decisions.
-15. **Multi-Asset / Allocation** — Highly relevant; the entire selling point is smoother risk-adjusted returns, so a low Sharpe or deep drawdown defeats the purpose of the fund.
+**Why it matters for each category:**
+1. **US Large Cap Blend** — Even the "safest" equity category drew down 34% in March 2020 and 25% in 2022, and investors who did not understand this risk profile sold at the bottom.
+2. **US Large Cap Growth** — Growth drawdowns are amplified vs. blend (Nasdaq-100 fell 33% in 2022 while the S&P 500 fell 25%), so investors must size positions knowing the downside is larger.
+3. **US Large Cap Value** — Value can underperform growth for 5+ years at a stretch (2015–2020), creating a different kind of risk: long-duration underperformance that tempts investors to abandon the strategy.
+4. **US Mid Cap Blend** — Mid-caps have historically drawn down 5–10% more than large-caps in bear markets, and recovery takes longer because mid-cap rallies lag large-cap in early recoveries.
+5. **US Small Cap Blend** — Small-caps have the highest equity volatility (IWM drew down 41% in 2020) and the longest recovery times, making drawdown tolerance the gating factor for position sizing.
+6. **International Developed Markets** — Currency volatility adds a layer of drawdown on top of equity risk, and international funds can underperform US markets for a decade, testing investor patience.
+7. **Emerging Markets** — EM drawdowns are the most severe in equity (50%+ in 2008, 40%+ in 2020) with the slowest recoveries, often taking 5–7 years to reach prior highs.
+8. **Sector — Technology** — Sector concentration amplifies drawdowns dramatically (XLK fell 82% in the dot-com bust, 33% in 2022), and a single regulatory or earnings event can move the sector sharply.
+9. **Dividend / Equity Income** — Income investors typically have low risk tolerance, yet dividend ETFs can still draw down 30%+ in recessions, which is a surprise to investors who expect "safe" income stocks.
+10. **Thematic / Megatrend** — Thematic funds can suffer drawdowns of 60–80% (ARKK fell 78% from peak) with no guarantee of recovery, making risk profile the single most important filter before entry.
+11. **US Aggregate Bond** — Bonds are supposed to be the "safe" allocation, but AGG fell 18% in 2022, the worst bond drawdown in 40 years — investors who skipped risk profiling were blindsided.
+12. **US Treasury / Government Bond** — Short-duration Treasuries are indeed low-risk, but long-duration Treasury ETFs (TLT) can draw down 20–40% when rates spike, making maturity-based risk profiling essential.
+13. **Corporate Bond** — Credit spreads blow out in recessions (high-yield ETFs fell 20%+ in 2020), and the drawdown difference between investment-grade and high-yield is critical for matching risk tolerance.
+14. **Commodities** — Commodities have extreme drawdowns (oil fell 70%+ in 2020, gold fell 45% from 2011–2015) and extended multi-year bear markets that test even conviction-driven holders.
+15. **Multi-Asset / Allocation** — The entire selling point is smoother volatility, so if a 60/40 fund draws down nearly as much as pure equity in a crisis (as happened in 2022), the fund fails its own mandate.
 
 ---
 
