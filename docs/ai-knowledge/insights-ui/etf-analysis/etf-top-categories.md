@@ -159,23 +159,23 @@ This parameter measures the pain dimension of owning an ETF — how much it swin
 
 ---
 
-### Parameter 5: Holdings Overlap & Concentration
+### Parameter 5: Tax Efficiency (Capital Gains, Turnover, Dividend Treatment)
 
-The most under-used parameter, especially for investors building multi-ETF portfolios. Two things to check: top-10 holdings concentration (what percentage of the fund is in just 10 stocks) and overlap with what you already own (buying VGT + QQQ gives you enormous double-exposure to Apple, Microsoft, and Nvidia).
+This parameter measures how much of your return you actually keep after taxes. Key metrics include: capital gains distributions (how often the fund distributes taxable gains to shareholders), portfolio turnover ratio (high turnover generates more short-term gains taxed at ordinary income rates), and dividend tax treatment (qualified dividends are taxed at lower capital-gains rates vs. ordinary income). ETFs are structurally more tax-efficient than mutual funds due to the in-kind creation/redemption mechanism, but tax efficiency varies enormously across ETF categories and strategies. This dimension is distinct from all other parameters: it is not about cost (Parameter 1), operational quality (Parameter 2), structural soundness (Parameter 3), or risk (Parameter 4) — it is about after-tax return.
 
-**Relevance by category:**
-1. **US Large Cap Blend** — Highly relevant; S&P 500 funds now have 30%+ in the top 10 holdings, so adding any other US equity fund likely creates heavy overlap.
-2. **US Large Cap Growth** — Critical; growth funds are extremely concentrated in mega-cap tech, and overlap with a large-cap blend can exceed 60–70% of the portfolio.
-3. **US Large Cap Value** — Moderately relevant; value funds have less concentration than growth, but overlap with a blend fund in financials and healthcare is still significant.
-4. **US Mid Cap Blend** — Less critical; mid-cap holdings rarely overlap with large-cap funds, making this a genuine diversifier by design.
-5. **US Small Cap Blend** — Less critical; minimal overlap with large-cap holdings, though overlap between different small-cap ETFs (IWM vs. VB vs. SCHA) can be very high.
-6. **International Developed Markets** — Less critical for overlap with US funds; but relevant if holding multiple international funds, since top holdings (Nestlé, ASML, Toyota) repeat across them.
-7. **Emerging Markets** — Moderately relevant; top EM holdings (TSMC, Samsung, Tencent) are concentrated, and some EM funds include South Korea while others exclude it, creating hidden differences.
-8. **Sector — Technology** — Critical; tech sector funds overlap heavily with both large-cap blend and large-cap growth funds since tech dominates both categories.
-9. **Dividend / Equity Income** — Highly relevant; dividend funds often hold the same mega-cap dividend payers (JNJ, PG, KO, JPM), creating overlap across different dividend strategies.
-10. **Thematic / Megatrend** — Moderately relevant; thematic funds tend to hold mid-caps and niche names with less overlap to broad indexes, but multiple thematic funds in related themes (AI + semiconductors) can overlap heavily.
-11. **US Aggregate Bond** — Less critical; bond funds are diversified across thousands of issues, and overlap between bond ETFs matters less since individual bonds have low idiosyncratic risk.
-12. **US Treasury / Government Bond** — Less critical; Treasuries are fungible by maturity, so overlap is not meaningful in the equity sense.
-13. **Corporate Bond** — Less critical; like aggregate bond, corporate bond funds hold hundreds of issues and overlap is less impactful.
-14. **Commodities** — Less critical; commodity ETFs either track a single commodity (gold) or a broad basket, and overlap with equity portfolios is structurally near zero.
-15. **Multi-Asset / Allocation** — Highly relevant; allocation funds contain equities internally, so adding one alongside your existing equity ETFs creates hidden overlap that can skew your actual allocation.
+**Why it matters for each category:**
+1. **US Large Cap Blend** — Even among S&P 500 trackers, some distribute small capital gains while others distribute zero due to better in-kind redemption management, compounding into meaningful tax differences over decades.
+2. **US Large Cap Growth** — Growth indexes rebalance by selling winners, and funds that manage this through in-kind transfers rather than market sales avoid distributing capital gains to remaining shareholders.
+3. **US Large Cap Value** — Value indexes have higher turnover than blend (stocks cycle in and out of "value" status), creating more capital-gains events that tax-inefficient funds pass through to holders.
+4. **US Mid Cap Blend** — Mid-cap indexes have higher reconstitution turnover than large-cap as companies grow into large-cap or shrink into small-cap, generating taxable events.
+5. **US Small Cap Blend** — Small-cap funds have the highest turnover in equity (companies get acquired, go bankrupt, or graduate to mid-cap), making capital gains distributions frequent in tax-inefficient funds.
+6. **International Developed Markets** — Foreign tax credits on international dividends add a layer of tax complexity, and funds that recover foreign withholding taxes efficiently deliver materially better after-tax returns.
+7. **Emerging Markets** — EM funds face diverse withholding-tax regimes (China, India, Brazil each have different rules), and the fund's ability to navigate these treaties directly affects after-tax dividend income.
+8. **Sector — Technology** — Tech sector rebalancing generates turnover as companies move between sectors, and concentrated positions in high-growth names create large embedded gains if the fund must sell.
+9. **Dividend / Equity Income** — Dividend ETFs distribute income regularly, and whether those dividends qualify for the lower 15%/20% tax rate vs. ordinary income rates can differ by 10%+ in tax drag.
+10. **Thematic / Megatrend** — Thematic funds have the highest turnover of any equity ETF type (themes evolve, holdings rotate), generating frequent short-term capital gains taxed at ordinary income rates.
+11. **US Aggregate Bond** — Bond interest is taxed as ordinary income (the highest rate), and funds with higher turnover realize capital gains on top of that, making tax efficiency a major differentiator.
+12. **US Treasury / Government Bond** — Treasury interest is exempt from state and local taxes (unlike corporate bonds), and choosing a Treasury ETF that minimizes federal capital gains distributions preserves this tax advantage.
+13. **Corporate Bond** — Corporate bond interest is fully taxable at federal and state level, and high-yield funds with higher turnover add capital gains distributions on top of the already-heavy income tax burden.
+14. **Commodities** — Commodity ETFs structured as grantor trusts (GLD) get long-term capital gains treatment, while those using futures (many commodity-basket funds) issue K-1s with complex tax reporting and potentially unfavorable tax treatment.
+15. **Multi-Asset / Allocation** — Allocation funds rebalance across asset classes, and each rebalance can trigger taxable events — a fund that sells appreciated equities to buy bonds distributes gains that a DIY investor could defer.
