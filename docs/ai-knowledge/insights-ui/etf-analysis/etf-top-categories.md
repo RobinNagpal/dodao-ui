@@ -63,7 +63,7 @@ Funds that blend equities, bonds, and sometimes alternatives into a single ticke
 
 ## Key Evaluation Parameters for ETFs
 
-Five non-overlapping parameters that are critical for evaluating ETFs across every category. Each parameter measures a distinct dimension — cost, operational quality, structural soundness, risk, and tax impact — so no two parameters duplicate what the other captures. Under each parameter, we explain why it matters for each of the 15 categories.
+The five parameters below are what both retail and institutional investors use most frequently to compare and choose between ETFs. They correspond to the main columns and tabs on every major ETF screener (Morningstar, StockAnalysis, etf.com, broker platforms). Each measures a distinct dimension — cost, returns, fund size, risk, and what's inside — so no two parameters overlap. Under each parameter, we explain why it matters for each of the 15 categories.
 
 ---
 
