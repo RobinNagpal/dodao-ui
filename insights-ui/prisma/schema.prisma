@@ -1289,10 +1289,36 @@ model Etf {
   categoryAnalysisResults     EtfCategoryAnalysisResult[]
   analysisCategoryFactorResults EtfAnalysisCategoryFactorResult[]
   cachedScore                 EtfCachedScore?
+  priceHistory                EtfPriceHistory?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
   @@map("etfs")
+}
+
+model EtfPriceHistory {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  // Daily OHLC for short-range views (1M, 6M). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  dailyData          Json     @map("daily_data")
+  lastUpdatedAtDaily DateTime @map("last_updated_at_daily")
+
+  // Weekly OHLC for long-range views (1Y, 3Y, 5Y). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  weeklyData          Json     @map("weekly_data")
+  lastUpdatedAtWeekly DateTime @map("last_updated_at_weekly")
+
+  currency String? @map("currency")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_price_history")
 }
 
 model EtfFinancialInfo {

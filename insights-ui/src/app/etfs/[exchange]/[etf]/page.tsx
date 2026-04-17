@@ -1,11 +1,13 @@
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
+import { PriceHistoryResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/price-history/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
+import PriceChart from '@/components/ticker-reportsv1/PriceChart';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
@@ -98,6 +100,22 @@ async function fetchEtfScores(exchange: string, etf: string): Promise<EtfScoresR
   }
 }
 
+async function fetchEtfPriceHistory(exchange: string, etf: string): Promise<PriceHistoryResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/price-history`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchEtfPriceHistory failed (${res.status}): ${url}`);
+      return null;
+    }
+    const wrapper = (await res.json()) as { priceHistory: PriceHistoryResponse | null };
+    return wrapper.priceHistory;
+  } catch (error) {
+    console.error(`fetchEtfPriceHistory error for ${etf}:`, error);
+    return null;
+  }
+}
+
 /** Metadata */
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const routeParams = await params;
@@ -146,7 +164,26 @@ function EtfFinancialInfoSkeleton(): JSX.Element {
   );
 }
 
-/** Matches stock `ChartsInfoSkeleton`: financial table (left) + radar placeholder (right). */
+function PriceChartSkeleton(): JSX.Element {
+  return (
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-24 rounded bg-gray-800 animate-pulse mt-1" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {['1M', '6M', '1Y', '3Y', '5Y'].map((label) => (
+            <div key={label} className="h-8 w-12 rounded-md bg-gray-800 animate-pulse" />
+          ))}
+        </div>
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+    </section>
+  );
+}
+
+/** Matches stock `ChartsInfoSkeleton`: financial table (left) + radar placeholder (right) + price chart below. */
 function EtfChartsInfoSkeleton(): JSX.Element {
   return (
     <section className="mb-8">
@@ -162,6 +199,9 @@ function EtfChartsInfoSkeleton(): JSX.Element {
             <RadarSkeleton />
           </div>
         </div>
+      </div>
+      <div style={{ minHeight: '320px' }}>
+        <PriceChartSkeleton />
       </div>
     </section>
   );
@@ -225,19 +265,22 @@ function EtfFinancialInfoSection({
   financialInfoPromise,
   scoresPromise,
   analysisPromise,
+  priceHistoryPromise,
 }: {
   data: Promise<EtfFastResponse>;
   financialInfoPromise: Promise<EtfFinancialInfoResponse | null>;
   scoresPromise: Promise<EtfScoresResponse | null>;
   analysisPromise: Promise<EtfAnalysisResponse>;
+  priceHistoryPromise: Promise<PriceHistoryResponse | null>;
 }): JSX.Element {
   const d: EtfFastResponse = use(data);
   const financialData: EtfFinancialInfoResponse | null = use(financialInfoPromise);
   const scores: EtfScoresResponse | null = use(scoresPromise);
   const analysis: EtfAnalysisResponse = use(analysisPromise);
+  const priceHistory: PriceHistoryResponse | null = use(priceHistoryPromise);
 
   return (
-    <section>
+    <section className="mb-8">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
@@ -248,6 +291,9 @@ function EtfFinancialInfoSection({
           </Suspense>
         </div>
       </div>
+
+      {/* Price Chart — rendered below the financial info / radar row. */}
+      {priceHistory && <PriceChart data={priceHistory} />}
     </section>
   );
 }
@@ -309,6 +355,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   const financialInfoPromise = fetchEtfFinancialInfo(exchange, etf);
   const analysisPromise = fetchEtfAnalysis(exchange, etf);
   const scoresPromise = fetchEtfScores(exchange, etf);
+  const priceHistoryPromise = fetchEtfPriceHistory(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -370,7 +417,13 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         <EtfSummaryInfo data={etfInfo} />
 
         <Suspense fallback={<EtfChartsInfoSkeleton />}>
-          <EtfFinancialInfoSection data={etfInfo} financialInfoPromise={financialInfoPromise} scoresPromise={scoresPromise} analysisPromise={analysisPromise} />
+          <EtfFinancialInfoSection
+            data={etfInfo}
+            financialInfoPromise={financialInfoPromise}
+            scoresPromise={scoresPromise}
+            analysisPromise={analysisPromise}
+            priceHistoryPromise={priceHistoryPromise}
+          />
         </Suspense>
 
         <Suspense fallback={null}>

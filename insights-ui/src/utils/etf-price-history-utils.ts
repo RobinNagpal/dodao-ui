@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
-import { TickerV1, TickerV1PriceHistory } from '@prisma/client';
+import { Etf, EtfPriceHistory } from '@prisma/client';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 import {
   DAILY_LOOKBACK_DAYS,
@@ -13,15 +13,16 @@ import {
 } from '@/utils/yahoo-price-history';
 
 /**
- * Ensure price history is available and fresh for a ticker.
+ * Ensure price history is available and fresh for an ETF.
+ * Mirrors `ensurePriceHistoryIsFresh` for stocks — Yahoo Finance serves ETF
+ * OHLC history via the same `chart` endpoint used for equities.
+ *
  * - Daily series: last ~6.5 months (covers the 1M and 6M range tabs).
  * - Weekly series: last ~5 years (covers the 1Y, 3Y and 5Y range tabs).
- *
- * Refreshed when the record is missing or older than the freshness threshold.
  */
-export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<TickerV1PriceHistory | null> {
-  const existing = await prisma.tickerV1PriceHistory.findUnique({
-    where: { tickerId: ticker.id },
+export async function ensureEtfPriceHistoryIsFresh(etf: Etf): Promise<EtfPriceHistory | null> {
+  const existing = await prisma.etfPriceHistory.findUnique({
+    where: { etfId: etf.id },
   });
 
   const needsDaily = !existing || isDataStale(existing.lastUpdatedAtDaily);
@@ -31,7 +32,7 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
     return existing;
   }
 
-  const yahooSymbol = convertToYahooFinanceSymbol(ticker.symbol, ticker.exchange);
+  const yahooSymbol = convertToYahooFinanceSymbol(etf.symbol, etf.exchange);
   const now = new Date();
 
   try {
@@ -48,8 +49,8 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
     const weeklyData = weeklyResult?.points ?? (existing?.weeklyData as unknown as PriceHistoryPoint[] | undefined) ?? [];
     const currency = dailyResult?.currency ?? weeklyResult?.currency ?? existing?.currency ?? null;
 
-    const saved = await prisma.tickerV1PriceHistory.upsert({
-      where: { tickerId: ticker.id },
+    const saved = await prisma.etfPriceHistory.upsert({
+      where: { etfId: etf.id },
       update: {
         dailyData: dailyData as unknown as object,
         lastUpdatedAtDaily: needsDaily ? now : existing!.lastUpdatedAtDaily,
@@ -58,7 +59,7 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
         currency,
       },
       create: {
-        ticker: { connect: { id: ticker.id } },
+        etf: { connect: { id: etf.id } },
         dailyData: dailyData as unknown as object,
         lastUpdatedAtDaily: now,
         weeklyData: weeklyData as unknown as object,
@@ -67,11 +68,11 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
       },
     });
 
-    revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
+    revalidateEtfAndExchangeTag(etf.symbol, etf.exchange);
     return saved;
   } catch (error) {
-    console.error(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}):`, error);
-    // If refresh fails but we have a prior snapshot, fall back to that so the UI still renders.
+    console.error(`Failed to refresh price history for ETF ${etf.symbol} (${etf.exchange}):`, error);
+    // Fall back to prior snapshot if available so the UI still renders.
     return existing;
   }
 }
