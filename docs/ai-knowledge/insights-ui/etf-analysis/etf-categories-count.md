@@ -148,10 +148,4 @@ All ETF Database (etfdb.com) categories with approximate number of US-listed ETF
 
 ---
 
-## Notes
-
-- Counts are approximate and sourced from ETF Database (etfdb.com) category pages as of early 2026.
-- ETFdb maintains ~70 categories total; a few niche categories (e.g., Target Date, Alternatives-Hedge Fund Replication) with very small ETF counts may not be listed above.
-- The remaining ~1,350+ US-listed ETFs not captured above include single-stock ETFs, crypto ETFs, and products in categories too new or niche for ETFdb's established taxonomy.
-- Volatility Hedged Equity (~135 ETFs) is one of the fastest-growing categories, driven by the boom in options-based income ETFs (JEPI, JEPQ, XYLD, etc.).
-- Leveraged and Inverse ETFs (~274 combined) are designed for short-term trading, not long-term holding — daily reset causes performance decay over time.
+**Source:** ETF Database (etfdb.com) category pages, early 2026. ETFdb maintains ~70 categories in total; a few niche categories with very small counts are not listed above. The remaining ~1,350+ US-listed ETFs fall into categories outside this taxonomy (single-stock, crypto, newer structures).
