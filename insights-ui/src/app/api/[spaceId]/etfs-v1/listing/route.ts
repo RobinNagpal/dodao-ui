@@ -23,6 +23,7 @@ export interface EtfListingItem {
   symbol: string;
   name: string;
   exchange: string;
+  inception: string | null;
   aum: string | null;
   expenseRatio: number | null;
   pe: number | null;
@@ -59,6 +60,7 @@ function toEtfListingItem(etf: any): EtfListingItem {
     symbol: etf.symbol,
     name: etf.name,
     exchange: etf.exchange,
+    inception: etf.inception ?? null,
     aum: etf.financialInfo?.aum ?? null,
     expenseRatio: etf.financialInfo?.expenseRatio ?? null,
     pe: etf.financialInfo?.pe ?? null,
