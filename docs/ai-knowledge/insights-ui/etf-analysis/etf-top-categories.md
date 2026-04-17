@@ -90,26 +90,26 @@ The annual management fee charged by the fund, expressed as a percentage of asse
 
 ---
 
-### Parameter 2: Tracking Accuracy (Tracking Difference & Tracking Error)
+### Parameter 2: Performance (Total Return — 1yr, 3yr, 5yr, 10yr)
 
-Tracking difference is the gap between the ETF's actual return and its benchmark's return over a period — it reveals whether the fund delivers what it promises. Tracking error is the volatility (standard deviation) of that gap over time, showing consistency. Two funds can have the same expense ratio but very different tracking accuracy due to sampling methodology, cash drag, rebalancing timing, securities lending income, and index reconstitution handling. This parameter measures operational quality, distinct from the fee itself (Parameter 1).
+The first thing every investor — retail and institutional — looks at after expense ratio: how much money did this fund actually make? Total return includes price appreciation plus all distributions (dividends, interest, capital gains) reinvested. Investors compare an ETF's total return over 1, 3, 5, and 10-year periods against three benchmarks: the fund's own stated index, the closest competitor ETF in the same category, and a simple S&P 500 fund (SPY/VOO) as the baseline "cost of doing something different." This is distinct from expense ratio (Parameter 1) because two funds with the same fee can deliver very different returns due to index construction, rebalancing methodology, and securities lending income.
 
 **Why it matters for each category:**
-1. **US Large Cap Blend** — S&P 500 funds should track near-perfectly, so even a 0.05% annual tracking difference signals operational inefficiency that costs money over decades.
-2. **US Large Cap Growth** — Growth index reconstitutions involve large trades in momentum names, and funds that handle these poorly create tracking drag that compounds over time.
-3. **US Large Cap Value** — Value indexes rebalance into and out of deeply discounted stocks, and execution quality during these rebalances directly affects whether you capture the value premium.
-4. **US Mid Cap Blend** — Mid-cap indexes have more constituents and lower per-stock liquidity than large-cap, making full replication harder and sampling-driven tracking error more common.
-5. **US Small Cap Blend** — Small-cap ETFs often use sampling (holding only a subset of the index), and poor sampling choices cause persistent tracking differences that erode the small-cap premium.
-6. **International Developed Markets** — Time-zone differences between US trading and foreign markets create fair-value pricing gaps, and funds that manage this poorly show higher tracking error and NAV drift.
-7. **Emerging Markets** — EM indexes include illiquid, hard-to-access stocks in markets with capital controls, making accurate replication difficult and tracking difference a key differentiator between funds.
-8. **Sector — Technology** — Sector indexes are concentrated, so a fund that slightly over- or under-weights top holdings during rebalancing creates outsized tracking deviation relative to broad funds.
-9. **Dividend / Equity Income** — Dividend indexes rebalance based on yield thresholds, and funds that lag in adjusting to dividend cuts or initiations fall behind the benchmark.
-10. **Thematic / Megatrend** — Thematic indexes are custom-built with frequent constituent changes as themes evolve, and funds that track these indexes poorly lose the targeted exposure the investor is paying for.
-11. **US Aggregate Bond** — The Bloomberg Aggregate contains thousands of bonds, many illiquid, so all bond ETFs use sampling — the quality of that sampling determines tracking accuracy.
-12. **US Treasury / Government Bond** — Treasury ETFs track specific maturity bands, and roll timing (selling maturing bonds, buying new ones) can cause tracking differences, especially in volatile rate environments.
-13. **Corporate Bond** — Corporate bonds are less liquid than Treasuries with wider bid-ask spreads, so funds that optimize their sampling and trading execution show materially better tracking.
-14. **Commodities** — Commodity ETFs use futures contracts that must be rolled monthly, and the timing and execution of these rolls creates significant tracking difference versus spot price benchmarks.
-15. **Multi-Asset / Allocation** — Allocation funds rebalance across asset classes, and the timing and execution of those rebalances (selling equities to buy bonds, or vice versa) directly affects whether the fund delivers its target allocation returns.
+1. **US Large Cap Blend** — The benchmark category, so even small return differences between S&P 500 funds signal which one is operationally better at capturing the full index return.
+2. **US Large Cap Growth** — Growth funds must justify their existence by outperforming a plain large-cap blend fund over full market cycles; if they don't, the investor is taking extra concentration risk for nothing.
+3. **US Large Cap Value** — Value strategies can underperform growth for 5+ years running, so only 5yr and 10yr total returns reveal whether the value tilt actually paid off across a full cycle.
+4. **US Mid Cap Blend** — Mid-caps should deliver higher total return than large-caps over long periods to compensate for the additional volatility; if they don't, the investor should simplify to large-cap.
+5. **US Small Cap Blend** — The small-cap premium is the entire reason to own these funds, and it only shows up in total return since many small-caps pay no dividends — price alone tells an incomplete story.
+6. **International Developed Markets** — Currency drag and lower earnings growth mean international funds often trail US funds, so total return comparison is essential to justify maintaining the geographic diversification.
+7. **Emerging Markets** — High volatility and political risk mean 5yr+ total return is the only honest measure of whether the risk premium was captured; short-term returns are too noisy to be useful.
+8. **Sector — Technology** — A sector bet must be judged on total return vs. the broad market to determine whether the concentration actually paid off or just added risk without reward.
+9. **Dividend / Equity Income** — The most commonly misunderstood category: investors focus on yield and miss that total return (yield + price change combined) may lag a simple index fund that pays lower dividends.
+10. **Thematic / Megatrend** — Many thematic funds have compelling narratives but terrible total returns, making performance the essential reality check before committing capital to an exciting story.
+11. **US Aggregate Bond** — Bond returns are modest and tightly clustered, so comparing total return within the category reveals which funds are capturing the full yield of the benchmark vs. losing it to operational drag.
+12. **US Treasury / Government Bond** — Duration positioning drives return differences between Treasury funds; comparing 3yr and 5yr total returns shows whether a long-duration bet actually paid more than a short-duration alternative.
+13. **Corporate Bond** — Total return measures whether the extra credit risk over Treasuries was actually compensated; in some periods, corporate bond funds barely beat Treasury funds after defaults and spread compression.
+14. **Commodities** — Commodities have no yield, so total return is entirely price-driven and heavily period-dependent — comparing across multiple time horizons prevents anchoring to a lucky (or unlucky) window.
+15. **Multi-Asset / Allocation** — The entire purpose of an allocation fund is to deliver a competitive total return at a target risk level; if a 60/40 fund trails a simple 60/40 DIY mix, it is not earning its fee.
 
 ---
 
