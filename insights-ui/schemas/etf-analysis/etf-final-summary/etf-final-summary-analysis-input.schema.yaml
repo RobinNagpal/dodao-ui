@@ -1,0 +1,59 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF.'
+  symbol:
+    type: string
+    description: 'ETF ticker symbol (e.g., VTI).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA).'
+  inception:
+    type: string
+    description: 'Inception date (string as stored in DB).'
+  categorySummaries:
+    type: array
+    description: 'One short overall summary per ETF analysis category.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        categoryKey:
+          type: string
+          description: 'Category key (PerformanceAndReturns, CostEfficiencyAndTeam, RiskAnalysis)'
+        overallSummary:
+          type: string
+          description: '3–5 sentence summary for this category.'
+      required:
+        - categoryKey
+        - overallSummary
+  factorResults:
+    type: array
+    description: 'One-line factor results across categories.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        categoryKey:
+          type: string
+        factorAnalysisKey:
+          type: string
+        oneLineExplanation:
+          type: string
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+      required:
+        - categoryKey
+        - factorAnalysisKey
+        - oneLineExplanation
+        - result
+required:
+  - name
+  - symbol
+  - exchange
+  - categorySummaries
+  - factorResults

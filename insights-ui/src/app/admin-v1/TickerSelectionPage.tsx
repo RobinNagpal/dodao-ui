@@ -14,7 +14,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData, UseFetchDataResponse } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 interface TickerSelectionPageProps {
   /** The component to render when tickers are selected */
@@ -52,16 +52,19 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
     'Failed to fetch tickers'
   );
 
-  const selectIndustry = async (industry: TickerV1Industry | null) => {
+  const selectIndustry = useCallback((industry: TickerV1Industry | null) => {
     setSelectedTickers([]);
     setSelectedIndustry(industry);
     setSelectedSubIndustry(null);
-  };
+  }, []);
 
-  const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    setSelectedTickers([]);
-    setSelectedSubIndustry(subIndustry);
-  };
+  const selectSubIndustry = useCallback((subIndustry: TickerV1SubIndustry | null) => {
+    setSelectedSubIndustry((prev) => {
+      if (prev?.subIndustryKey === subIndustry?.subIndustryKey) return prev;
+      setSelectedTickers([]);
+      return subIndustry;
+    });
+  }, []);
 
   useEffect(() => {
     if (selectedIndustry?.industryKey && selectedSubIndustry?.subIndustryKey) {

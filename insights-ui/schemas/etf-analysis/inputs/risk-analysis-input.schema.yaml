@@ -1,0 +1,70 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'The ETF ticker symbol (e.g., SPY).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
+  categoryKey:
+    type: string
+    enum: ['RiskAnalysis']
+    description: 'The analysis category being evaluated.'
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factors to analyze for this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short explanation of what this factor represents and why it matters.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+
+  # From EtfStockAnalyzerInfo — volatility & risk metrics
+  stockAnalyzerRiskMetrics:
+    type: string
+    description: 'JSON string with beta (1y, 2y, 5y), Sharpe ratio, Sortino ratio, ATR, RSI (daily/weekly/monthly), ATH/ATL data with dates and change percentages.'
+
+  # From EtfMorRiskInfo — Mor risk periods (3yr, 5yr, 10yr)
+  morRiskPeriods:
+    type: string
+    description: 'JSON string with risk period data for 3-Yr, 5-Yr, 10-Yr including: portfolio risk score & level, risk vs category, return vs category, risk & volatility measures table, and market volatility measures (capture ratios, drawdown, drawdown dates).'
+
+  # From EtfFinancialInfo — basic risk context
+  financialRiskContext:
+    type: string
+    description: 'JSON string with beta, 52-week high/low, volume for price context.'
+
+  # From EtfMorAnalyzerInfo — category context for comparison
+  categoryContext:
+    type: string
+    description: 'JSON string with Mor category, style box, and overview metrics for peer comparison context.'
+
+required:
+  - name
+  - symbol
+  - exchange
+  - categoryKey
+  - factorAnalysisArray
+  - stockAnalyzerRiskMetrics
+  - morRiskPeriods
+  - financialRiskContext
+  - categoryContext

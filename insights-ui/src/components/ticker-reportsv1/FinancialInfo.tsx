@@ -1,6 +1,5 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
-
-type Num = number | null;
+import { formatCurrency, formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 
 interface FinancialInfoProps {
   data: FinancialInfoResponse;
@@ -19,37 +18,6 @@ export function FinancialCard({ label, value, isLoading = false }: FinancialCard
       {isLoading ? <div className="rounded animate-pulse">--</div> : <div className="text-xs font-semibold">{value}</div>}
     </div>
   );
-}
-
-// Helper to format regular numbers with commas
-function formatNumber(value: Num, decimals: number = 2): string {
-  if (value === null) return 'N/A';
-  return value.toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  });
-}
-
-// Helper to format volume numbers with commas (no decimals, no millions conversion)
-function formatVolume(value: Num): string {
-  if (value === null) return 'N/A';
-  return value.toLocaleString('en-US', {
-    maximumFractionDigits: 0,
-  });
-}
-
-// Helper to format percentage from decimal (Yahoo Finance already gives percentage as decimal)
-function formatPercentageDecimal(value: Num): string {
-  if (value === null) return 'N/A';
-  return `${value.toFixed(2)}%`;
-}
-
-// Helper to format currency
-function formatCurrency(value: Num, currency: string | null): string {
-  if (value === null) return 'N/A';
-  // Only show currency prefix if it's not USD (USD is the default, so we don't show it)
-  const currencyPrefix = currency && currency !== 'USD' ? `${currency} ` : '';
-  return `${currencyPrefix}${formatNumber(value)}`;
 }
 
 export default function FinancialInfo({ data }: FinancialInfoProps): JSX.Element {

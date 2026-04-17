@@ -1,9 +1,8 @@
 import FullPageLoader from '@dodao/web-core/components/core/loaders/FullPageLoading';
-import StyledSelect, { StyledSelectItem } from '@dodao/web-core/components/core/select/StyledSelect';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 export interface SelectIndustryAndSubIndustryProps {
   selectedIndustry?: TickerV1Industry | null;
@@ -12,33 +11,8 @@ export interface SelectIndustryAndSubIndustryProps {
   setSelectedSubIndustry: (subIndustry: TickerV1SubIndustry | null) => any;
 }
 
-function SubIndustriesDropDown(props: {
-  loadingSubIndustries: boolean;
-  selectedItemId: string | undefined;
-  items: StyledSelectItem[];
-  setSelectedItemId: (id?: string | null) => '' | null | Promise<void>;
-}) {
-  return (
-    <StyledSelect
-      label="Sub-Industry"
-      selectedItemId={props.selectedItemId}
-      items={props.items || []}
-      setSelectedItemId={props.setSelectedItemId}
-      className="w-full"
-    />
-  );
-}
-
-function IndustriesDropdown(props: {
-  loadingIndustries: boolean;
-  selectedItemId: string | undefined;
-  items: StyledSelectItem[];
-  setSelectedItemId: (id?: string | null) => '' | null | Promise<void>;
-}) {
-  return (
-    <StyledSelect label="Industry" selectedItemId={props.selectedItemId} items={props.items} setSelectedItemId={props.setSelectedItemId} className="w-full" />
-  );
-}
+const selectClassName =
+  'w-full rounded-md py-1.5 pl-3 pr-10 text-sm shadow-sm ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[var(--bg-color)] text-[var(--text-color)]';
 
 export default function SelectIndustryAndSubIndustry({
   selectedIndustry,
@@ -46,16 +20,12 @@ export default function SelectIndustryAndSubIndustry({
   setSelectedIndustry,
   setSelectedSubIndustry,
 }: SelectIndustryAndSubIndustryProps) {
-  // Fetch industries using useFetchData hook
   const { data: industries, loading: loadingIndustries } = useFetchData<TickerV1Industry[]>(
     `${getBaseUrl()}/api/industries`,
-    {
-      cache: 'no-cache',
-    },
+    { cache: 'no-cache' },
     'Failed to fetch industries'
   );
 
-  // Fetch sub-industries when industry is selected
   const {
     data: subIndustries = [],
     loading: loadingSubIndustries,
@@ -71,66 +41,88 @@ export default function SelectIndustryAndSubIndustry({
       refetchSubIndustries();
     }
   }, [selectedIndustry, refetchSubIndustries]);
-  // Filter out archived industries and sub-industries
-  const activeIndustries = industries?.filter((industry) => !industry.archived) || [];
 
-  const activeSubIndustries = subIndustries.filter((subIndustry) => !subIndustry.archived) || [];
+  const activeIndustries = useMemo(() => industries?.filter((industry) => !industry.archived) || [], [industries]);
+  const activeSubIndustries = useMemo(() => subIndustries.filter((subIndustry) => !subIndustry.archived) || [], [subIndustries]);
 
-  const selectIndustry = async (industryKey?: string | null) => {
-    if (industryKey) {
-      const industry = activeIndustries?.find((i) => i.industryKey === industryKey);
-      setSelectedIndustry(industry || null);
-    } else {
-      setSelectedIndustry(null);
-    }
-  };
+  const handleIndustryChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const key = e.target.value;
+      if (key) {
+        const industry = activeIndustries.find((i) => i.industryKey === key);
+        setSelectedIndustry(industry || null);
+      } else {
+        setSelectedIndustry(null);
+      }
+    },
+    [activeIndustries, setSelectedIndustry]
+  );
 
-  const selectSubIndustry = async (subIndustryKey?: string | null) => {
-    if (subIndustryKey) {
-      const subIndustry = activeSubIndustries.find((s) => s.subIndustryKey === subIndustryKey);
-      setSelectedSubIndustry(subIndustry || null);
-    } else {
-      setSelectedSubIndustry(null);
-    }
-  };
+  const handleSubIndustryChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const key = e.target.value;
+      if (key) {
+        const subIndustry = activeSubIndustries.find((s) => s.subIndustryKey === key);
+        setSelectedSubIndustry(subIndustry || null);
+      } else {
+        setSelectedSubIndustry(null);
+      }
+    },
+    [activeSubIndustries, setSelectedSubIndustry]
+  );
 
   if (loadingIndustries) {
-    return <FullPageLoader />;
+    return (
+      <div className="flex items-center justify-center py-8">
+        <FullPageLoader className="!static !w-auto !h-auto" />
+      </div>
+    );
   }
-
-  const subIndustryDropdownItems = activeSubIndustries.map((subIndustry) => ({
-    id: subIndustry.subIndustryKey,
-    label: subIndustry.name,
-  }));
-  const industriesDropdownItems = activeIndustries?.map((industry) => ({
-    id: industry.industryKey,
-    label: industry.name,
-  }));
 
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        {/* Industry Selection */}
-        <IndustriesDropdown
-          loadingIndustries={loadingIndustries}
-          selectedItemId={selectedIndustry?.industryKey}
-          items={industriesDropdownItems}
-          setSelectedItemId={(id) => selectIndustry(id)}
-        />
-        <SubIndustriesDropDown
-          loadingSubIndustries={loadingSubIndustries}
-          selectedItemId={selectedSubIndustry?.subIndustryKey}
-          items={subIndustryDropdownItems || []}
-          setSelectedItemId={(id) => selectSubIndustry(id)}
-        />
+        <div className="my-2">
+          <label className="block text-sm font-semibold leading-6">Industry</label>
+          <div className="relative mt-2">
+            <select className={selectClassName} value={selectedIndustry?.industryKey ?? ''} onChange={handleIndustryChange}>
+              <option value="">Select…</option>
+              {activeIndustries.map((industry) => (
+                <option key={industry.industryKey} value={industry.industryKey}>
+                  {industry.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="my-2">
+          <label className="block text-sm font-semibold leading-6">Sub-Industry</label>
+          <div className="relative mt-2">
+            <select
+              className={selectClassName}
+              value={selectedSubIndustry?.subIndustryKey ?? ''}
+              onChange={handleSubIndustryChange}
+              disabled={loadingSubIndustries || activeSubIndustries.length === 0}
+            >
+              <option value="">{loadingSubIndustries ? 'Loading…' : 'Select…'}</option>
+              {activeSubIndustries.map((subIndustry) => (
+                <option key={subIndustry.subIndustryKey} value={subIndustry.subIndustryKey}>
+                  {subIndustry.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
+
       <div className="mt-2 p-2 border border-gray-300 rounded-lg">
         <p className="text-xs text-blue-700 dark:text-blue-300">
           Filtering by: {selectedIndustry?.name}
           {' → '}
           {selectedSubIndustry?.name}
         </p>
-      </div>{' '}
+      </div>
     </div>
   );
 }

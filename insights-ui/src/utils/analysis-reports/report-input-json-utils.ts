@@ -302,13 +302,20 @@ export function prepareFairValueInputJson(
   },
   analysisFactors: AnalysisCategoryFactor[],
   valuationSnapshot: FairValueValuationSnapshot
-): FactorAnalysisInputJson & { priorCategoryAnalyses: PriorCategoryAnalysisInput[] } & FairValueValuationSnapshot {
+): FactorAnalysisInputJson & {
+  priorCategoryAnalyses: PriorCategoryAnalysisInput[];
+  valuationReportDateDisplay: string;
+  lastClosePrice: number | null;
+  marketSnapshotFetchedAt: string | null;
+} {
   return {
     ...prepareBaseTickerInputJson(tickerRecord),
     categoryKey: TickerAnalysisCategory.FairValue,
     factorAnalysisArray: prepareFactorAnalysisArray(analysisFactors),
     priorCategoryAnalyses: preparePriorCategoryAnalyses(tickerRecord.categoryAnalysisResults || []),
-    ...valuationSnapshot,
+    valuationReportDateDisplay: valuationSnapshot.valuationReportDateDisplay,
+    lastClosePrice: valuationSnapshot.lastClosePriceUsd,
+    marketSnapshotFetchedAt: valuationSnapshot.marketSnapshotFetchedAt,
   };
 }
 

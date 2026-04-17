@@ -17,7 +17,7 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerV1Industry, TickerV1SubIndustry } from '@prisma/client';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SelectIndustryAndSubIndustry from '../SelectIndustryAndSubIndustry';
 import { CountryCode } from '@/utils/countryExchangeUtils';
 
@@ -43,16 +43,19 @@ export default function TickerManagementPage() {
     `Failed to fetch tickers`
   );
 
-  const selectIndustry = async (industry: TickerV1Industry | null) => {
+  const selectIndustry = useCallback((industry: TickerV1Industry | null) => {
     setSelectedIndustry(industry);
     setSelectedSubIndustry(null);
-    setSelectedTickerIds([]); // Clear selections when changing industry
-  };
+    setSelectedTickerIds([]);
+  }, []);
 
-  const selectSubIndustry = async (subIndustry: TickerV1SubIndustry | null) => {
-    setSelectedSubIndustry(subIndustry);
-    setSelectedTickerIds([]); // Clear selections when changing sub-industry
-  };
+  const selectSubIndustry = useCallback((subIndustry: TickerV1SubIndustry | null) => {
+    setSelectedSubIndustry((prev) => {
+      if (prev?.subIndustryKey === subIndustry?.subIndustryKey) return prev;
+      setSelectedTickerIds([]);
+      return subIndustry;
+    });
+  }, []);
 
   const handleTickerSelectionChange = (tickerIds: string[]) => {
     setSelectedTickerIds(tickerIds);
@@ -79,21 +82,6 @@ export default function TickerManagementPage() {
   return (
     <PageWrapper>
       <AdminNav />
-      <div className="flex justify-end mb-2">
-        <button
-          onClick={() => setShowBulkCsvModal(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 9.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 8.414V13a1 1 0 11-2 0V8.414L7.707 9.707a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Bulk Upload CSV
-        </button>
-      </div>
       <SelectIndustryAndSubIndustry
         selectedIndustry={selectedIndustry}
         selectedSubIndustry={selectedSubIndustry}
@@ -164,7 +152,11 @@ export default function TickerManagementPage() {
             selectedSubIndustryKey={selectedSubIndustry.subIndustryKey}
           />
         )}
-        {loadingTickers && <FullPageLoader />}
+        {loadingTickers && (
+          <div className="flex items-center justify-center py-8">
+            <FullPageLoader className="!static !w-auto !h-auto" />
+          </div>
+        )}
         {selectedIndustry && selectedSubIndustry && !loadingTickers && (
           <Block title="Selected Tickers" className="dark:bg-gray-800">
             <Tooltip.Provider delayDuration={300}>

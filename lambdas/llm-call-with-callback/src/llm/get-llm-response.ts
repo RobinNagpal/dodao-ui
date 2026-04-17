@@ -6,7 +6,11 @@ import { PromptInvocation, PromptInvocationStatus } from "@prisma/client";
 import Ajv, { ErrorObject } from "ajv";
 
 import { GeminiModel, LLMProvider } from "./koalaGainsConstants";
-import { getGroundedResponse } from "./llm-grounding-utils";
+import {
+  getGroundedResponse,
+  getGroundedStructuredResponse,
+  GroundedResponse,
+} from "./llm-grounding-utils";
 
 export interface ValidationResult {
   valid: boolean;
@@ -154,8 +158,12 @@ export async function getLLMResponse<Output>({
   maxRetries = 1,
   isTestInvocation,
   additionalData,
-}: LLMResponseOptions): Promise<Output> {
+}: LLMResponseOptions): Promise<{
+  result: Output;
+  sourceLinks?: Array<{ uri: string; title?: string }>;
+}> {
   let lastResult: unknown | null = null;
+  let sourceLinks: Array<{ uri: string; title?: string }> | undefined;
   const reportType = additionalData?.reportType || "unknown";
   const symbol = additionalData?.symbol || "unknown";
   const generationId = additionalData?.generationRequestId || "unknown";
@@ -163,45 +171,101 @@ export async function getLLMResponse<Output>({
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       let finalPrompt = promptString;
+      let singleCallGroundedResult: Output | null = null;
 
-      // Handle Gemini with grounding - two-step process
+      // Handle Gemini with grounding
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        console.log(
-          `[${reportType}] [${symbol}] [${generationId}] Using Gemini with grounding - performing search first...`
+        // Only use single-call grounded structured output for GEMINI_3_PRO_PREVIEW
+        if (modelName === GeminiModel.GEMINI_3_PRO_PREVIEW) {
+          console.log(
+            `[${reportType}] [${symbol}] [${generationId}] Using Gemini 3 Pro Preview with grounding - trying single-call grounded structured output...`
+          );
+
+          try {
+            const groundedStructured =
+              await getGroundedStructuredResponse<Output>(
+                promptString,
+                modelName,
+                JSON.parse(outputSchemaString)
+              );
+
+            sourceLinks = groundedStructured.sources;
+            singleCallGroundedResult = groundedStructured.result;
+
+            console.log(
+              `[${reportType}] [${symbol}] [${generationId}] ✅ Single-call grounded structured output succeeded`
+            );
+            console.log(
+              `[${reportType}] [${symbol}] [${generationId}] Single-call grounded structured output result:`,
+              singleCallGroundedResult
+            );
+          } catch (singleCallErr) {
+            console.warn(
+              `[${reportType}] [${symbol}] [${generationId}] ⚠️ Single-call grounded structured output failed; falling back to 2-step...`,
+              singleCallErr
+            );
+
+            // Step 1: Get grounded response from Gemini with Google Search
+            const groundedResponse: GroundedResponse =
+              await getGroundedResponse(promptString, modelName);
+
+            // Store source links
+            sourceLinks = groundedResponse.sources;
+
+            // Step 2: Convert grounded text to structured output using LangChain
+            finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
+            console.log(
+              `[${reportType}] [${symbol}] [${generationId}] ✅ Grounded response obtained, now converting to structured output (fallback)`
+            );
+          }
+        } else {
+          // For other models (like GEMINI_2_5_PRO), always use 2-step approach
+          console.log(
+            `[${reportType}] [${symbol}] [${generationId}] Using Gemini with grounding - 2-step approach for model: ${modelName}`
+          );
+
+          // Step 1: Get grounded response from Gemini with Google Search
+          const groundedResponse: GroundedResponse = await getGroundedResponse(
+            promptString,
+            modelName
+          );
+
+          // Store source links
+          sourceLinks = groundedResponse.sources;
+
+          // Step 2: Convert grounded text to structured output using LangChain
+          finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse.text}`;
+          console.log(
+            `[${reportType}] [${symbol}] [${generationId}] ✅ Grounded response obtained, now converting to structured output`
+          );
+        }
+      }
+
+      // If single-call succeeded, we already have Output.
+      // Otherwise, we use LangChain structured output (normal path or fallback path).
+      let result: Output;
+      if (singleCallGroundedResult !== null) {
+        result = singleCallGroundedResult;
+      } else {
+        // Initialize LLM for structured output
+        const llm = initializeLLM(
+          llmProvider === LLMProvider.GEMINI_WITH_GROUNDING
+            ? LLMProvider.GEMINI
+            : llmProvider,
+          modelName
+        );
+        const structured = llm.withStructuredOutput(
+          JSON.parse(outputSchemaString)
         );
 
-        // Step 1: Get grounded response from Gemini with Google Search
-        const groundedResponse = await getGroundedResponse(
-          promptString,
-          GeminiModel.GEMINI_2_5_PRO_GROUNDING
-        );
-
-        // Step 2: Convert the grounded response to structured output
-        finalPrompt = `Please convert the given information into the given schema format.\n\n${groundedResponse}`;
-
+        // Get response from LLM
+        result = (await structured.invoke(finalPrompt)) as Output;
         console.log(
-          `[${reportType}] [${symbol}] [${generationId}] ✅ Grounded response obtained, now converting to structured output`
+          `[${reportType}] [${symbol}] [${generationId}] Response from llm:`,
+          result
         );
       }
 
-      // Initialize LLM for structured output
-      const llm = initializeLLM(
-        llmProvider === LLMProvider.GEMINI_WITH_GROUNDING
-          ? LLMProvider.GEMINI
-          : llmProvider,
-        modelName
-      );
-      const structured = llm.withStructuredOutput(
-        JSON.parse(outputSchemaString)
-      );
-
-      // Get response from LLM
-      const result = (await structured.invoke(finalPrompt)) as Output;
-
-      console.log(
-        `[${reportType}] [${symbol}] [${generationId}] Response from llm:`,
-        result
-      );
       lastResult = result;
 
       // Update invocation status
@@ -214,7 +278,7 @@ export async function getLLMResponse<Output>({
 
       // If test invocation, return early
       if (isTestInvocation) {
-        return result;
+        return { result, sourceLinks };
       }
 
       // Validate output
@@ -227,7 +291,7 @@ export async function getLLMResponse<Output>({
         throw new Error(`Validation failed: ${JSON.stringify(errors)}`);
       }
 
-      return result;
+      return { result, sourceLinks };
     } catch (err: unknown) {
       const isLast = attempt === maxRetries;
       if (!isLast) {
@@ -262,9 +326,9 @@ export async function getLLMResponse<Output>({
   }
   console.error(
     `[${reportType}] [${symbol}] [${generationId}] Failed to get LLM response for request`,
-    prompt
+    promptString
   );
-  throw new Error("Failed to get LLM response for request" + prompt);
+  throw new Error("Failed to get LLM response for request" + promptString);
 }
 
 /**
@@ -273,7 +337,10 @@ export async function getLLMResponse<Output>({
  */
 export async function getLLMResponseInLamnda<Input, Output>(
   params: LLMResponseViaLambda<Input>
-): Promise<Output> {
+): Promise<{
+  result: Output;
+  sourceLinks?: Array<{ uri: string; title?: string }>;
+}> {
   const {
     promptStringToSendToLLM,
     llmProvider,
@@ -298,7 +365,7 @@ export async function getLLMResponseInLamnda<Input, Output>(
     }
 
     // Get LLM response
-    const result = await getLLMResponse<Output>({
+    const llmResult = await getLLMResponse<Output>({
       invocationId: invocation.id,
       llmProvider,
       modelName: model,
@@ -308,7 +375,7 @@ export async function getLLMResponseInLamnda<Input, Output>(
       additionalData: params.additionalData,
     });
 
-    return result;
+    return llmResult;
   } catch (e) {
     const reportType = params.additionalData?.reportType || "unknown";
     const symbol = params.additionalData?.symbol || "unknown";
