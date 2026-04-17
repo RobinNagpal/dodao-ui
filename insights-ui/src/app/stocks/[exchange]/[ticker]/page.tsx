@@ -312,7 +312,7 @@ function PriceChartSkeleton(): JSX.Element {
           <div className="h-4 w-24 rounded bg-gray-800 animate-pulse mt-1" />
         </div>
         <div className="flex flex-wrap gap-2">
-          {['1M', '6M', '1Y', '5Y', 'MAX'].map((label) => (
+          {['1M', '6M', '1Y', '3Y', '5Y'].map((label) => (
             <div key={label} className="h-8 w-12 rounded-md bg-gray-800 animate-pulse" />
           ))}
         </div>

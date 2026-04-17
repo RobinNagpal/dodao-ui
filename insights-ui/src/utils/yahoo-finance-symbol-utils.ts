@@ -22,11 +22,38 @@ export function convertToYahooFinanceSymbol(symbol: string, exchange: string): s
   if (upperExchange === 'TSX') return upperSymbol.replace(/\./g, '-') + '.TO';
   if (upperExchange === 'TSXV') return upperSymbol.replace(/\./g, '-') + '.V';
 
+  // Some exchanges use numeric tickers that Yahoo expects zero-padded.
+  const normalizedSymbol = normalizeNumericSymbolForYahoo(upperSymbol, upperExchange);
+
   const suffix = EXCHANGE_TO_YAHOO_SUFFIX[upperExchange];
-  if (suffix) return upperSymbol + suffix;
+  if (suffix) return normalizedSymbol + suffix;
 
   // US exchanges (and anything unmapped) — return as-is.
-  return upperSymbol;
+  return normalizedSymbol;
+}
+
+function normalizeNumericSymbolForYahoo(symbol: string, exchange: string): string {
+  // Only apply to fully-numeric symbols; leave alphanumeric tickers unchanged.
+  if (!/^\d+$/.test(symbol)) return symbol;
+
+  switch (exchange) {
+    // Hong Kong: 4 digits (e.g., 0700.HK)
+    case 'HKEX':
+      return symbol.padStart(4, '0');
+    // Japan: commonly 4 digits (e.g., 7203.T)
+    case 'TSE':
+      return symbol.padStart(4, '0');
+    // Taiwan: 4 digits (e.g., 2330.TW)
+    case 'TWSE':
+      return symbol.padStart(4, '0');
+    // Korea: 6 digits (e.g., 005930.KS)
+    case 'KOSPI':
+    case 'KOSDAQ':
+    case 'KONEX':
+      return symbol.padStart(6, '0');
+    default:
+      return symbol;
+  }
 }
 
 const EXCHANGE_TO_YAHOO_SUFFIX: Record<string, string> = {
@@ -36,6 +63,8 @@ const EXCHANGE_TO_YAHOO_SUFFIX: Record<string, string> = {
   // UK
   LSE: '.L',
   AIM: '.L',
+  // Pakistan (Karachi / PSX)
+  PSX: '.KA',
   // Japan
   TSE: '.T',
   // Hong Kong

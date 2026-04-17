@@ -4,14 +4,14 @@ import { NextRequest } from 'next/server';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
 import { ensurePriceHistoryIsFresh } from '@/utils/price-history-utils';
 
-export type PriceRangeKey = '1M' | '6M' | '1Y' | '5Y' | 'MAX';
+export type PriceRangeKey = '1M' | '6M' | '1Y' | '3Y' | '5Y';
 
 export interface PriceHistoryResponse {
   symbol: string;
   currency: string | null;
-  // Daily OHLC used by the 1M range tab.
+  // Daily OHLC used by the 1M and 6M range tabs.
   daily: PriceHistoryPoint[];
-  // Weekly OHLC used by the 6M / 1Y / 5Y / MAX range tabs.
+  // Weekly OHLC used by the 1Y, 3Y and 5Y range tabs.
   weekly: PriceHistoryPoint[];
 }
 

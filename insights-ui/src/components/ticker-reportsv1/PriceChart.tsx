@@ -12,12 +12,15 @@ interface PriceChartProps {
   data: PriceHistoryResponse;
 }
 
-const RANGES: PriceRangeKey[] = ['1M', '6M', '1Y', '5Y', 'MAX'];
+const RANGES: PriceRangeKey[] = ['1M', '6M', '1Y', '3Y', '5Y'];
+
+// 1M and 6M use daily points; 1Y / 3Y / 5Y use weekly points.
+const DAILY_RANGES: ReadonlySet<PriceRangeKey> = new Set(['1M', '6M']);
 
 const LINE_COLOR = { border: '#10b981', background: 'rgba(16, 185, 129, 0.1)' };
 
 function filterByRange(points: PriceHistoryPoint[], range: PriceRangeKey): PriceHistoryPoint[] {
-  if (range === 'MAX' || points.length === 0) return points;
+  if (points.length === 0) return points;
 
   const cutoff = new Date();
   switch (range) {
@@ -29,6 +32,9 @@ function filterByRange(points: PriceHistoryPoint[], range: PriceRangeKey): Price
       break;
     case '1Y':
       cutoff.setFullYear(cutoff.getFullYear() - 1);
+      break;
+    case '3Y':
+      cutoff.setFullYear(cutoff.getFullYear() - 3);
       break;
     case '5Y':
       cutoff.setFullYear(cutoff.getFullYear() - 5);
@@ -59,8 +65,7 @@ export default function PriceChart({ data }: PriceChartProps) {
   const [selectedRange, setSelectedRange] = useState<PriceRangeKey>('5Y');
 
   const series = useMemo(() => {
-    // 1M uses daily, everything else uses weekly.
-    const source = selectedRange === '1M' ? data.daily : data.weekly;
+    const source = DAILY_RANGES.has(selectedRange) ? data.daily : data.weekly;
     return filterByRange(source, selectedRange);
   }, [data, selectedRange]);
 
@@ -126,11 +131,11 @@ export default function PriceChart({ data }: PriceChartProps) {
   };
 
   const hasData = series.length > 0;
-  const intervalNote = selectedRange === '1M' ? 'daily' : 'weekly';
+  const intervalNote = DAILY_RANGES.has(selectedRange) ? 'daily' : 'weekly';
   const metaLine = [data.currency, intervalNote].filter(Boolean).join(' • ');
 
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-100">Price History</h3>
