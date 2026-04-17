@@ -1,199 +1,127 @@
 {
   "categoryKey": "PerformanceAndReturns",
   "categoryName": "Performance & Returns",
-  "categoryDescription": "Evaluates the ETF's historical returns, consistency, and how well it has tracked or outperformed its benchmark across multiple time horizons.",
-  "factorsByAssetClass": {
-    "Equity": [
-      {
-        "factorAnalysisKey": "long_term_cagr",
-        "factorAnalysisTitle": "Long-Term CAGR",
-        "factorAnalysisDescription": "Measures the compound annual growth rate over 5, 10, 15, and 20-year periods. Strong long-term CAGR indicates the fund has consistently grown investor capital over extended horizons. If the fund is less than 5 years old, note the limited history and evaluate conservatively using the closest available data.",
-        "factorAnalysisMetrics": "cagr5y, cagr10y, cagr15y, cagr20y"
-      },
-      {
-        "factorAnalysisKey": "short_term_returns",
-        "factorAnalysisTitle": "Short-Term Returns & Momentum",
-        "factorAnalysisDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Distinguishes between recent momentum (1M, 3M) and trailing performance (6M, 1Y). A strong 1Y return with negative recent months suggests a pullback within an uptrend — not the same as broad weakness.",
-        "factorAnalysisMetrics": "return1m, return3m, return6m, returnYtd, return1y"
-      },
-      {
-        "factorAnalysisKey": "returns_consistency",
-        "factorAnalysisTitle": "Returns Consistency",
-        "factorAnalysisDescription": "Assesses how stable returns have been across different time periods and calendar years. Check annual returns for wild swings. A fund with consistent positive years and quick recovery from drawdowns is more reliable. Use percentile rank trends across years to detect deteriorating or improving relative standing.",
-        "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual, percentileRanks"
-      },
-      {
-        "factorAnalysisKey": "benchmark_and_category_comparison",
-        "factorAnalysisTitle": "Benchmark & Category Comparison",
-        "factorAnalysisDescription": "Compares the ETF's returns against its benchmark index and category average. For passive index ETFs, tight tracking (within 0.5pp) is expected — persistent drag indicates structural cost issues. For active ETFs, evaluate whether the manager's picks added value over the index. Use percentile rank data to show where the fund stands among 100s or 1000s of peers. If the ETF trails its benchmark in every available period (even if within ±2pp each time), flag the persistent pattern.",
-        "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName, percentileRanks"
-      },
-      {
-        "factorAnalysisKey": "price_trend_momentum",
-        "factorAnalysisTitle": "Price Trend & Momentum",
-        "factorAnalysisDescription": "Analyzes the ETF's price relative to its moving averages (20, 50, 150, 200-day) and RSI. For equity ETFs, these signals are meaningful. Above MA200 with neutral RSI = healthy uptrend with short-term cooling (not a Fail). Below MA200 with RSI under 40 = genuine weakness. A normal -5% to -10% correction for a broad market fund happens roughly once a year and should not be treated as a structural breakdown.",
-        "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, stockPrice"
-      }
-    ],
-    "Fixed Income": [
-      {
-        "factorAnalysisKey": "tracking_and_benchmark_alignment",
-        "factorAnalysisTitle": "Tracking & Benchmark Alignment",
-        "factorAnalysisDescription": "For bond ETFs, tracking precision is the single most important performance metric. Compare the fund's total return (not price-only return) against its benchmark index across every available period. Calculate the tracking difference (fund return minus index return) for each period. For passive bond ETFs, trailing by up to 0.5pp is typical for treasury/aggregate, and up to 1.0pp is typical for high-yield (due to higher trading costs). Persistent trailing beyond these thresholds is a red flag. If the benchmark identity is unknown (indexName is null), note this limitation.",
-        "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName"
-      },
-      {
-        "factorAnalysisKey": "total_return_compounding",
-        "factorAnalysisTitle": "Total Return Compounding",
-        "factorAnalysisDescription": "Evaluates total return (including income/distributions, not price-only) CAGR across available periods. For bond ETFs, total returns are typically 2-6% annually depending on the sub-type (treasury, aggregate, high-yield, CLO). Judge performance relative to what is normal for the specific bond category, not against equity-like expectations. If the ETF's absolute total returns match its category and index, the returns should be attributed to the asset class environment, not scored as an ETF failure. Use morReturns total return data as the primary source since it includes income.",
-        "factorAnalysisMetrics": "cagr3y, cagr5y, cagr10y, returnsTrailing"
-      },
-      {
-        "factorAnalysisKey": "income_contribution",
-        "factorAnalysisTitle": "Income vs Price Return",
-        "factorAnalysisDescription": "For bond ETFs, most of the total return comes from income (coupon payments distributed as dividends), not price appreciation. Compare the total return figures (from stockAnalyzerReturns return fields) against the price-only change figures (from change fields). The gap represents income contribution. If the price is declining but total return is positive, explain that income is offsetting price loss — this is normal bond ETF behavior, not a red flag. A bond ETF where income contributes 60-90% of total return is typical.",
-        "factorAnalysisMetrics": "return1y, change1y, return5y, change5y, return10y, change10y"
-      },
-      {
-        "factorAnalysisKey": "category_relative_standing",
-        "factorAnalysisTitle": "Category Relative Standing",
-        "factorAnalysisDescription": "Evaluates where the fund ranks among its category peers using percentile and quartile rank data from morReturns. For passive bond ETFs in categories with many active managers, being in the 40th-60th percentile is expected and acceptable. Track the percentile trend over time — is the fund improving, stable, or deteriorating vs peers? A fund that was top quartile and fell to bottom quartile across years is a significant warning signal. Also note the number of investments in the category — being median in a 600-fund category is very different from being median in a 10-fund category.",
-        "factorAnalysisMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory"
-      },
-      {
-        "factorAnalysisKey": "interest_rate_and_environment_resilience",
-        "factorAnalysisTitle": "Interest Rate & Environment Resilience",
-        "factorAnalysisDescription": "Assesses how the fund has performed across different interest rate environments by examining annual return patterns. Bond ETFs with longer duration suffer more in rising rate years (e.g., 2022) and gain more in falling rate years. Compare the fund's worst calendar year loss to the category and index — if it was in line, the drawdown was asset-class driven, not fund-specific. Evaluate whether the fund recovered from drawdown years — did it bounce back in the following year?",
-        "factorAnalysisMetrics": "returnsAnnual, return1y, return3y"
-      }
-    ],
-    "Alternatives": [
-      {
-        "factorAnalysisKey": "total_return_delivery",
-        "factorAnalysisTitle": "Total Return Delivery",
-        "factorAnalysisDescription": "Evaluates the absolute total return the fund has delivered across available periods. For alternative strategies (covered call, derivative income, managed futures, etc.), total return includes both price change and income distributions. Use morReturns total return data. Judge against what's realistic for the strategy type — a covered call fund that delivers 8-15% total return with lower volatility is performing well, even if it trails a pure equity index.",
-        "factorAnalysisMetrics": "return1y, return3y, return5y, cagr3y, cagr5y, returnsTrailing"
-      },
-      {
-        "factorAnalysisKey": "income_vs_price_return",
-        "factorAnalysisTitle": "Income vs Price Return",
-        "factorAnalysisDescription": "For income-focused alternative strategies (covered call, derivative income), a large portion of total return comes from distributions. Compare total return (return fields) to price-only change (change fields) to measure the income contribution. If the share price is declining while total return is positive, explain that distributions are masking price erosion — investors should understand whether they are getting true income or just return of capital. A covered call ETF where 40-60% of total return is income is typical and expected.",
-        "factorAnalysisMetrics": "return1y, change1y, return6m, change6m, returnYtd, changeYtd"
-      },
-      {
-        "factorAnalysisKey": "category_outperformance",
-        "factorAnalysisTitle": "Category Peer Comparison",
-        "factorAnalysisDescription": "Compares the fund's returns against its category peers (e.g., Derivative Income, Managed Futures) using trailing returns and percentile ranks. For alternative strategies, category comparison is more meaningful than benchmark comparison because the benchmark (often a pure equity index) is not the fund's performance target. A covered call ETF trailing the S&P 500 is by design — it trades upside for income. Instead, focus on how it ranks vs other funds using the same strategy. Note if the category is growing rapidly (increasing number of investments in category) — new competitors may be offering better terms.",
-        "factorAnalysisMetrics": "returnsTrailing, percentileRanks, numberOfInvestmentsInCategory"
-      },
-      {
-        "factorAnalysisKey": "downside_protection",
-        "factorAnalysisTitle": "Downside Protection & Drawdown Behavior",
-        "factorAnalysisDescription": "Evaluates how the fund performs in down markets compared to its reference benchmark and category. For defensive alternative strategies (covered call, low-volatility), outperforming during market drops (e.g., 2022) is the core value proposition. Compare the fund's worst calendar year to the benchmark's worst calendar year. A fund that lost -5% when the benchmark lost -20% is successfully delivering downside protection.",
-        "factorAnalysisMetrics": "returnsAnnual"
-      },
-      {
-        "factorAnalysisKey": "price_trend_momentum",
-        "factorAnalysisTitle": "Price Trend & Momentum",
-        "factorAnalysisDescription": "Analyzes the ETF's price relative to its moving averages and RSI. For high-income alternative ETFs, note that the share price naturally erodes as distributions are paid out — a declining price does not necessarily mean poor performance if total return is positive. Interpret moving average signals cautiously for high-distribution funds. Focus more on whether the overall total return trend is healthy rather than pure price momentum.",
-        "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, rsi, stockPrice"
-      }
-    ],
-    "Commodity": [
-      {
-        "factorAnalysisKey": "long_term_cagr",
-        "factorAnalysisTitle": "Long-Term CAGR",
-        "factorAnalysisDescription": "Measures compound annual growth rate over available long-term periods. Commodity returns are highly cyclical and can have extended periods of negative returns. A commodity ETF with a 3-5% long-term CAGR may be performing well for its asset class. Judge against commodity-appropriate expectations, not equity benchmarks.",
-        "factorAnalysisMetrics": "cagr5y, cagr10y, cagr15y, cagr20y"
-      },
-      {
-        "factorAnalysisKey": "short_term_returns",
-        "factorAnalysisTitle": "Short-Term Returns & Momentum",
-        "factorAnalysisDescription": "Evaluates recent performance. Commodity ETFs can have sharp, momentum-driven moves. Short-term trends in commodities are often driven by supply/demand shocks and are less predictable than equity trends. Assess whether recent returns reflect a cyclical swing or a structural shift.",
-        "factorAnalysisMetrics": "return1m, return3m, return6m, returnYtd, return1y"
-      },
-      {
-        "factorAnalysisKey": "benchmark_tracking",
-        "factorAnalysisTitle": "Benchmark Tracking",
-        "factorAnalysisDescription": "Compares the fund's returns against its commodity benchmark index and category average. Commodity ETFs that use futures contracts may suffer from contango (roll cost), which creates persistent tracking drag vs the spot price. If the ETF consistently trails its benchmark, note whether this is due to structural roll costs typical of commodity futures strategies.",
-        "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName"
-      },
-      {
-        "factorAnalysisKey": "returns_consistency",
-        "factorAnalysisTitle": "Returns Consistency",
-        "factorAnalysisDescription": "Commodity returns are inherently volatile and cyclical. Evaluate whether the fund's return pattern shows expected commodity-cycle behavior (boom/bust years) or unusually erratic performance. A commodity ETF with high volatility but strong recovery from cyclical lows is acceptable — persistent long-term decline without recovery is concerning.",
-        "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual"
-      },
-      {
-        "factorAnalysisKey": "price_trend_momentum",
-        "factorAnalysisTitle": "Price Trend & Momentum",
-        "factorAnalysisDescription": "Momentum is particularly meaningful for commodity ETFs because commodities tend to trend. Analyze price vs moving averages and RSI. Commodity ETFs above their MA200 with strong RSI are in confirmed uptrends. Below MA200 with weak RSI suggests a cyclical downturn.",
-        "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, rsi, stockPrice"
-      }
-    ],
-    "Asset Allocation": [
-      {
-        "factorAnalysisKey": "long_term_cagr",
-        "factorAnalysisTitle": "Long-Term CAGR",
-        "factorAnalysisDescription": "Measures compound annual growth rate for balanced/allocation funds. These funds typically target 5-8% long-term returns by blending stocks and bonds. Judge CAGR against balanced fund expectations, not pure equity benchmarks. A 60/40 fund returning 7% CAGR over 10 years is performing well.",
-        "factorAnalysisMetrics": "cagr5y, cagr10y, cagr15y, cagr20y"
-      },
-      {
-        "factorAnalysisKey": "short_term_returns",
-        "factorAnalysisTitle": "Short-Term Returns & Momentum",
-        "factorAnalysisDescription": "Evaluates recent performance. Asset allocation funds should have smoother returns than pure equity or pure bond funds. If a balanced fund shows equity-level volatility in recent months, its allocation may be more aggressive than expected.",
-        "factorAnalysisMetrics": "return1m, return3m, return6m, returnYtd, return1y"
-      },
-      {
-        "factorAnalysisKey": "benchmark_and_category_comparison",
-        "factorAnalysisTitle": "Benchmark & Category Comparison",
-        "factorAnalysisDescription": "Compares the fund against its allocation category peers and benchmark. For balanced funds, both the equity and bond components matter. Use percentile rank data to show peer standing. An allocation fund should aim to be in the top half of its category consistently.",
-        "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName, percentileRanks"
-      },
-      {
-        "factorAnalysisKey": "returns_consistency",
-        "factorAnalysisTitle": "Returns Consistency & Smoothness",
-        "factorAnalysisDescription": "The primary value of an asset allocation fund is smoother, more consistent returns. Evaluate whether the fund avoids the worst drawdowns seen in pure equity funds. A balanced fund that lost -15% in 2022 while equity lost -20% and bonds lost -13% is doing its job. Consistency across 1Y, 3Y, 5Y, 10Y periods is the key metric.",
-        "factorAnalysisMetrics": "return1y, return3y, return5y, return10y, returnsAnnual"
-      },
-      {
-        "factorAnalysisKey": "price_trend_momentum",
-        "factorAnalysisTitle": "Price Trend & Momentum",
-        "factorAnalysisDescription": "Evaluates current price position relative to moving averages. For balanced funds, momentum signals are less sharp than pure equity — interpret moving average breaches with moderate concern rather than alarm.",
-        "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, rsi, stockPrice"
-      }
-    ],
-    "Currency": [
-      {
-        "factorAnalysisKey": "short_term_returns",
-        "factorAnalysisTitle": "Short-Term Returns & Momentum",
-        "factorAnalysisDescription": "Currency ETFs are primarily short-term trading instruments. Recent returns (1M, 3M, 6M) are the most relevant metrics. Currency moves tend to be driven by interest rate differentials, central bank policy, and macro events — not long-term compounding.",
-        "factorAnalysisMetrics": "return1m, return3m, return6m, returnYtd, return1y"
-      },
-      {
-        "factorAnalysisKey": "benchmark_tracking",
-        "factorAnalysisTitle": "Benchmark Tracking",
-        "factorAnalysisDescription": "Compares the fund's returns against its currency benchmark. Currency ETFs should track their underlying currency index closely. Any persistent tracking gap likely comes from expense ratios and roll costs on currency futures.",
-        "factorAnalysisMetrics": "returnsTrailing, returnsAnnual, indexName"
-      },
-      {
-        "factorAnalysisKey": "returns_consistency",
-        "factorAnalysisTitle": "Returns Consistency",
-        "factorAnalysisDescription": "Currency returns can be highly volatile and mean-reverting. Assess whether the fund's return pattern shows normal currency-cycle behavior. Prolonged unidirectional trends in currencies eventually reverse — judge consistency relative to the currency pair's historical behavior.",
-        "factorAnalysisMetrics": "return1y, return3y, return5y, returnsAnnual"
-      },
-      {
-        "factorAnalysisKey": "price_trend_momentum",
-        "factorAnalysisTitle": "Price Trend & Momentum",
-        "factorAnalysisDescription": "Momentum analysis is important for currency ETFs as currencies tend to trend over medium-term periods. Analyze price vs moving averages and RSI to identify current trend direction and strength.",
-        "factorAnalysisMetrics": "ma20, ma50, ma150, ma200, rsi, stockPrice"
-      },
-      {
-        "factorAnalysisKey": "category_relative_standing",
-        "factorAnalysisTitle": "Category Relative Standing",
-        "factorAnalysisDescription": "Evaluates where the fund ranks among its currency category peers using percentile data. Currency ETFs in the same category should perform similarly if tracking the same underlying — large deviations suggest tracking or structural issues.",
-        "factorAnalysisMetrics": "percentileRanks, quartileRanks, returnsTrailing"
-      }
-    ]
-  }
+  "categoryDescription": "Evaluates the ETF's historical returns, consistency, drawdown behavior, income contribution, and how well it has tracked its benchmark or peers across multiple time horizons. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "factors": [
+    {
+      "factorKey": "long_term_cagr",
+      "factorTitle": "Long-Term CAGR",
+      "factorDescription": "Measures compound annual growth rate over 5, 10, 15, and 20-year periods. Shows whether the fund has consistently grown investor capital over extended horizons. For funds younger than 5 years, note the limited history and use only the periods available rather than extrapolating.",
+      "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "short_term_returns",
+      "factorTitle": "Short-Term Returns & Momentum",
+      "factorDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Distinguishes short-term momentum (1M, 3M) from trailing performance (6M, 1Y). A strong 1Y return alongside weak recent months usually reflects a normal pullback within an uptrend rather than broad weakness.",
+      "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "alt-strategies"
+      ]
+    },
+    {
+      "factorKey": "returns_consistency",
+      "factorTitle": "Returns Consistency",
+      "factorDescription": "Assesses how stable returns have been across different periods and calendar years. Flags wild year-to-year swings and tracks whether the fund recovered quickly from drawdown years. Uses percentile-rank trends across years to detect deteriorating or improving relative standing.",
+      "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "benchmark_tracking",
+      "factorTitle": "Benchmark Tracking",
+      "factorDescription": "Compares the fund's returns against its stated benchmark index across every available period. For passive funds, tracking within 0.5pp (equities, core bonds) or 1.0pp (high-yield, specialized) is expected — persistent drag beyond that signals structural cost or replication issues. For active funds, measures whether the manager's picks added value above the index net of fees.",
+      "factorMetrics": "returnsTrailing, returnsAnnual, indexName",
+      "groups": [
+        "broad-equity",
+        "leveraged-inverse",
+        "fixed-income-core"
+      ]
+    },
+    {
+      "factorKey": "category_peer_standing",
+      "factorTitle": "Category Peer Standing",
+      "factorDescription": "Evaluates where the fund ranks among its Mor-category peers using percentile and quartile rank data across 1Y, 3Y, 5Y, and 10Y. Tracks whether the fund's standing is improving, stable, or deteriorating. Always report the peer-group size alongside the rank — median in a 600-fund category is very different from median in a 10-fund category.",
+      "factorMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "drawdown_and_recovery",
+      "factorTitle": "Drawdown & Recovery",
+      "factorDescription": "Analyzes the worst peak-to-trough decline and how quickly the fund recovered to prior highs. Compares drawdown severity to the category average — a fund that drew down more than peers AND recovered more slowly is a genuine concern. Contextualize ATH distance by fund type: being -5% to -10% from ATH is normal for equity, but unusual for core bond funds.",
+      "factorMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate, returnsAnnual",
+      "groups": [
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-credit",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "income_vs_price_return",
+      "factorTitle": "Income vs Price Return",
+      "factorDescription": "Separates income contribution from price return. For bond, muni, and income-focused alternative funds, most of the total return comes from distributions rather than price appreciation. Compares total return (return fields) against price-only change (change fields); the gap is the income contribution. A positive total return alongside a declining share price means income is offsetting price erosion — normal for the fund type, not a red flag.",
+      "factorMetrics": "return1y, change1y, return5y, change5y, return10y, change10y",
+      "groups": [
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies"
+      ]
+    },
+    {
+      "factorKey": "daily_leverage_fidelity",
+      "factorTitle": "Daily Leverage Fidelity & Decay",
+      "factorDescription": "For daily-leveraged or inverse funds, checks whether the realized multi-period return actually matched the daily-leverage target (e.g. 3x, -2x) or whether path-dependency and compounding destroyed the multiple. The long-term return of a leveraged fund is almost never the leverage factor times the underlying's long-term return — the gap is the decay story that must be explained to readers. Flag leveraged/inverse products as short-term trading vehicles only.",
+      "factorMetrics": "return1m, return3m, return1y, return3y, returnsAnnual, beta, beta1y",
+      "groups": [
+        "leveraged-inverse"
+      ]
+    },
+    {
+      "factorKey": "downside_protection",
+      "factorTitle": "Downside Protection Delivery",
+      "factorDescription": "Evaluates how the fund performed during bear markets and broad drawdowns relative to its reference benchmark or category. For alternative strategies and allocation funds, outperforming during market drops is the core value proposition. Compute the protection ratio (fund drawdown / benchmark drawdown) — under 0.50 is excellent, under 0.75 is good, above 0.90 means the fund is not delivering meaningful protection.",
+      "factorMetrics": "returnsAnnual, captureRatios, drawdown",
+      "groups": [
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "rate_environment_resilience",
+      "factorTitle": "Rate Environment Resilience",
+      "factorDescription": "For bond and muni funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration funds suffer more in rising-rate years and gain more in falling-rate years. Compare the fund's worst calendar year to its category and index — if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
+      "factorMetrics": "returnsAnnual, return1y, return3y",
+      "groups": [
+        "fixed-income-core",
+        "muni"
+      ]
+    }
+  ]
 }
