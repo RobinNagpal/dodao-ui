@@ -1,6 +1,13 @@
-# ETF Categories — Complete List with Counts
+# ETF Categories and Classifications
 
-All Morningstar ETF categories used by the KoalaGains ETF analysis pipeline, grouped into 8 analysis buckets that share a common analytical framework. This taxonomy mirrors `insights-ui/src/etf-analysis-data/etf-analysis-categories.json` — each group corresponds to a distinct factor set in the analysis factor files. Counts reflect the number of ETFs assigned to each category by Morningstar.
+Two complementary views of the US ETF universe:
+
+- **Part 1 — Morningstar Categories**: the primary category taxonomy used by the KoalaGains ETF analysis pipeline. All 134 Morningstar categories grouped into 8 analysis buckets, mirroring `insights-ui/src/etf-analysis-data/etf-analysis-categories.json`. Each group corresponds to a distinct factor set in the analysis factor files.
+- **Part 2 — Cross-Cutting Classifications**: orthogonal dimensions that apply across categories — how the fund is managed, how its index is constructed, how it is structured, and what strategic overlay it uses. These are not category assignments; they describe attributes that can appear in many categories (e.g., a "Dividend" strategy can live inside Large Value or Derivative Income).
+
+---
+
+# Part 1 — Morningstar Categories
 
 ---
 
@@ -227,3 +234,150 @@ Funds with a prescribed asset-mix mandate — static allocation (moderate/aggres
 ---
 
 **Source:** Category list and group definitions mirror `insights-ui/src/etf-analysis-data/etf-analysis-categories.json` (introduced in PR #1316). `numberOfStocks` counts are per-category totals from Morningstar.
+
+---
+
+# Part 2 — Cross-Cutting Classifications
+
+These dimensions describe attributes of an ETF that cut across the Morningstar category taxonomy. A single fund can simultaneously be (for example) a Large Blend Morningstar category, passively managed, market-cap weighted, and pursuing a Quality factor strategy.
+
+---
+
+## By Management Style
+
+### Passive (Index-Tracking) ETFs
+Replicate a predefined index with no discretion in security selection. Lowest expense ratios (0.03%–0.10%), mechanical replication, and the vast majority of ETF assets.
+**Top tickers:** SPY, VOO, VTI, IVV
+
+### Active ETFs
+Portfolio managers make discretionary buy/sell decisions to outperform a benchmark. Higher expense ratios (0.30%–0.75%) in exchange for alpha potential, tactical positioning, and downside management. Category exploded after the 2019 SEC ETF Rule.
+**Top tickers:** JEPI, ARKK, AVUV, JEPQ
+
+### Semi-Transparent Active ETFs
+Disclose holdings quarterly rather than daily to protect strategy from front-running. Use proprietary structures (Precidian ActiveShares, Fidelity proxy portfolio) to let market makers price shares without revealing the full portfolio.
+**Top tickers:** FBCG, FBCV, FDG, CFCV
+
+---
+
+## By Index Construction Strategy
+
+### Market-Cap Weighted
+Stocks weighted by market capitalization — largest companies dominate. The most common and liquid structure, self-rebalancing, but can become dangerously concentrated (top 7 stocks reached 30%+ of the S&P 500).
+**Top tickers:** SPY, IVV, VOO, VTI
+
+### Equal-Weight
+Every constituent receives the same weight, reset at each rebalance. Creates a size and value tilt relative to cap-weighted peers. Tends to outperform in broad rallies, underperform when mega-caps lead.
+**Top tickers:** RSP, QQQE, EWSC, RSPT
+
+### Fundamental-Weight
+Stocks weighted by economic fundamentals (revenue, earnings, dividends, book value, cash flow) rather than price. Creates a structural value tilt; rebalances toward cheaper stocks as valuations diverge.
+**Top tickers:** PRF, FNDX, FNDA, FNDE
+
+### Smart Beta (Rules-Based Factor)
+Transparent, rules-based indices targeting specific factor premiums (value, momentum, quality, low volatility, size). Systematic and predetermined — sits between pure passive and active.
+**Top tickers:** MTUM, QUAL, VLUE, USMV
+
+### Multi-Factor
+Combines two or more factor exposures (e.g., value + quality + momentum) in a single fund. Can use "mixing" (blend sleeves) or "integration" (require each stock to score well on multiple factors).
+**Top tickers:** GSLC, LRGF, VFMF, JHML
+
+---
+
+## By Structure & Mechanics
+
+### Currency-Hedged ETFs
+Hold international stocks/bonds but use currency forwards to neutralize FX impact, isolating pure local-market return. Valuable when the US dollar is strengthening; costly when weakening. Hedging decision can account for 5–10% of annual return difference.
+**Top tickers:** HEDJ, DXJ, HEFA, DBEF
+
+### ETFs of ETFs (Multi-Asset / Allocation)
+Hold other ETFs as underlying positions, creating a complete portfolio in a single ticker. Range from static target-risk (60/40) to tactical (actively shifting weights). Add a layer of fees, though many waive underlying ETF fees.
+**Top tickers:** AOR, AOA, AOM, GAL
+
+### Exchange-Traded Notes (ETNs)
+Unsecured debt obligations of a bank that promise the return of an index minus fees — they hold no underlying assets. Perfect tracking and favorable tax treatment for some strategies, but carry issuer credit risk (Lehman ETN holders lost everything in 2008). A shrinking category.
+**Top tickers:** VXX, AMJ, MLPB, OIL
+
+### White-Label / Custom ETFs
+Created by advisors or brands using third-party ETF platforms (Tidal, ETC, Alpha Architect) that handle regulatory and operational infrastructure. Setup cost dropped from tens of millions to under $500K, driving the explosion in niche and thematic ETFs.
+**Top tickers:** Varies — platform providers are identified in fund prospectuses.
+
+---
+
+## By Strategy & Objective
+
+Strategy overlays that appear within many Morningstar categories.
+
+### Dividend ETFs
+Select stocks by dividend yield, growth, or consistency. High-yield variants tilt toward utilities and energy; dividend-growth variants tilt toward industrials and healthcare.
+**Top tickers:** SCHD, VIG, DGRO, HDV
+
+### Dividend Aristocrats / Kings
+Companies with 25+ (Aristocrats) or 50+ (Kings) consecutive years of dividend increases. Most financially disciplined companies in the market — survived every downturn without cutting.
+**Top tickers:** NOBL, KNG, SDY, REGL
+
+### Growth
+Companies with above-average revenue/earnings growth, typically higher valuations. Outperform in expansions and low-rate environments; vulnerable to multiple compression when rates rise.
+**Top tickers:** VUG, IWF, SPYG, QQQ
+
+### Value
+Stocks trading at discounts to fundamentals (low P/E, low P/B, high yield). Outperform during economic recoveries and inflationary periods; can underperform for extended stretches when growth dominates.
+**Top tickers:** VTV, IWD, SPYV, VOOV
+
+### Low Volatility / Min Variance
+Minimize price volatility by picking low-vol stocks or optimizing portfolio-level variance. Smoother ride and better risk-adjusted returns; systematically underperform in strong bull markets.
+**Top tickers:** USMV, SPLV, EFAV, EEMV
+
+### Momentum
+Select stocks with strongest recent price performance (6–12 months). High turnover and prone to sharp drawdowns during momentum reversals.
+**Top tickers:** MTUM, SPMO, PDP, DWAT
+
+### Quality
+Select companies on profitability, earnings stability, balance sheet strength, governance. Most defensive of factor ETFs — outperform during downturns, keep pace in expansions.
+**Top tickers:** QUAL, DGRW, SPHQ, JQUA
+
+### Covered Call / Income
+Hold stocks and systematically sell call options to collect premium. Distribute 7–12% yields; sacrifice strong-rally upside for consistent monthly income. Suitable for income-dependent investors, suboptimal for long-term growth.
+**Top tickers:** JEPI, JEPQ, XYLD, QYLD
+
+### 0DTE / Daily Options Income
+Sell zero-days-to-expiration options for rapid theta decay. Higher income potential than traditional covered-call ETFs, but carry intraday tail risk from sharp market moves.
+**Top tickers:** QDTE, XDTE, TDTE, RDTE
+
+### Buffer / Defined Outcome
+Use options to provide a known outcome range over a set period — protect against the first 9–15% of losses while capping gains. Reset annually per series. Buying mid-period means inheriting current buffer/cap levels, not the original ones.
+**Top tickers:** BJAN, BAPR, PJAN, FJUL
+
+### Put-Write / Options Income
+Systematically sell put options to generate income — get paid to agree to buy stocks at lower prices. Outperform in flat-to-modestly-rising markets; suffer in sharp selloffs.
+**Top tickers:** PUTW, HELO, PPUT, JHEQ
+
+### Thematic / Megatrend
+Target specific themes — AI, clean energy, genomics, space, cybersecurity, robotics. Concentration risk, high turnover, and a history of launching near peak hype. Index methodology is critical — definitions of "AI company" vary wildly across providers.
+**Top tickers:** BOTZ, ICLN, ARKG, HACK
+
+### ESG / Sustainable
+Screen or weight by environmental, social, governance criteria. Range from light exclusions to aggressive portfolio reshaping. Modest performance differences vs. non-ESG, but sector exclusions create meaningful tracking differences during energy rallies.
+**Top tickers:** ESGU, SUSA, VEGN, KRMA
+
+### Tail Risk / Hedging
+Hold out-of-the-money puts on broad indices — crash insurance that pays off dramatically during severe dislocations. Lose money steadily in normal markets; can gain 20–50%+ during sharp selloffs. Designed as a small allocation (2–5%) of a portfolio.
+**Top tickers:** TAIL, CYA, PHDG, CAOS
+
+---
+
+## Quick Reference — Choosing the Right ETF Type
+
+| Investor Goal | Most Relevant ETF Types | Top Starter Tickers |
+|---------------|------------------------|---------------------|
+| Core portfolio building | Broad Equity, Broad Bond, Market-Cap Weighted | VTI, VOO, BND, AGG |
+| Regular income | Dividend, Covered Call, Preferred Stock, MLP | SCHD, JEPI, PFF, AMLP |
+| Inflation protection | TIPS, Commodity, REIT, Gold | TIP, GLD, VNQ, DBC |
+| Reduce volatility | Low Volatility, Buffer, Quality | USMV, SPLV, QUAL, BJAN |
+| Tactical sector bet | Sector, Industry, Single-Country | XLK, XLE, SOXX, EWJ |
+| Factor-based investing | Smart Beta, Multi-Factor, Quality, Momentum, Value | MTUM, QUAL, VTV, GSLC |
+| International diversification | Developed Market, Emerging Market, Currency-Hedged | VEA, VWO, HEDJ, BNDX |
+| Short-term trading / hedging | Leveraged, Inverse, Volatility | TQQQ, SH, SQQQ, UVXY |
+| Cash management | Ultra-Short, Target Maturity, Money Market Alt | BIL, SGOV, MINT, BSCR |
+| Thematic conviction | Thematic, ESG, Cryptocurrency | IBIT, BOTZ, ICLN, ESGU |
+| Crash protection | Tail Risk, Buffer, Inverse | TAIL, CYA, BJAN, SH |
+| Alternative income | 0DTE Options, Put-Write, CLO, Floating Rate | QDTE, JAAA, BKLN, PUTW |
