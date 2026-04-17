@@ -63,11 +63,34 @@ Funds that blend equities, bonds, and sometimes alternatives into a single ticke
 
 ## Key Evaluation Parameters for ETFs
 
-The five parameters below are what both retail and institutional investors use most frequently to compare and choose between ETFs. They correspond to the main columns and tabs on every major ETF screener (Morningstar, StockAnalysis, etf.com, broker platforms). Each measures a distinct dimension — cost, returns, fund size, risk, and what's inside — so no two parameters overlap. Under each parameter, we explain why it matters for each of the 15 categories.
+The five parameters below are what both retail and institutional investors use most frequently to compare and choose between ETFs. They correspond to the main columns and tabs on every major ETF screener (Morningstar, StockAnalysis, etf.com, broker platforms). Each parameter is mutually exclusive — it measures a dimension that none of the other four capture: strategy (the blueprint), cost (the price tag), returns (the track record), size (the vehicle quality), and risk (the pain factor). Under each parameter, we explain why it matters for each of the 15 categories.
 
 ---
 
-### Parameter 1: Expense Ratio
+### Parameter 1: Index & Strategy (What Rules Determine the Portfolio)
+
+The most fundamental differentiator between ETFs. Before comparing cost, returns, or risk, you must understand what the fund is designed to do: what index does it track, how does that index select and weight its constituents, and is the fund passively tracking the index or actively managed? Two funds in the same screener category can follow completely different indexes with different selection rules, producing very different portfolios. For example, within "US Large Cap Blend," an S&P 500 fund (500 stocks, committee-selected) and a CRSP US Large Cap fund (roughly 600 stocks, rules-based) are materially different products. The index methodology determines the holdings, sector weights, reconstitution frequency, and turnover — making this the root parameter from which performance and risk follow.
+
+**Why it matters for each category:**
+1. **US Large Cap Blend** — S&P 500 vs. Russell 1000 vs. CRSP US Large Cap are different indexes with different constituent counts, selection rules, and reconstitution schedules that produce measurably different returns over time.
+2. **US Large Cap Growth** — Growth indexes define "growth" differently: Russell uses price-to-book ratios, S&P uses sales growth and momentum, and CRSP uses multiple factors — resulting in different stocks making the cut.
+3. **US Large Cap Value** — The definition of "value" varies even more than growth: some indexes use price-to-earnings, others use price-to-book, dividend yield, or composite scores, producing portfolios with 30–40% holding differences.
+4. **US Mid Cap Blend** — S&P Mid-Cap 400 (committee-selected, 400 stocks) vs. Russell Mid-Cap (mechanical, ~800 stocks) produces significantly different portfolios with different sector tilts and size breakpoints.
+5. **US Small Cap Blend** — Index methodology matters most here: some small-cap indexes include unprofitable micro-caps and penny stocks while others (like S&P 600) require positive earnings for inclusion, dramatically affecting quality.
+6. **International Developed Markets** — MSCI EAFE vs. FTSE Developed ex-US differ on country classification (South Korea is emerging in MSCI, developed in FTSE), which alone changes the portfolio by 10%+ in emerging-market exposure.
+7. **Emerging Markets** — The South Korea classification difference (MSCI excludes, FTSE includes) and varying China A-share inclusion levels mean EM funds under the same category label can have fundamentally different country allocations.
+8. **Sector — Technology** — GICS sector definitions changed in 2018 (moving Facebook/Google out of Tech into Communication Services), and funds tracking pre- vs. post-reclassification indexes hold materially different portfolios.
+9. **Dividend / Equity Income** — High-dividend-yield indexes (selecting the highest yielders) produce completely different portfolios from dividend-growth indexes (selecting companies with 10+ years of consecutive increases) — same category, opposite strategies.
+10. **Thematic / Megatrend** — Index construction is everything here: an "AI ETF" might hold pure-play AI companies or mostly cloud/semiconductor giants depending on the index provider's definition, and the investing thesis changes entirely.
+11. **US Aggregate Bond** — Bloomberg Aggregate vs. other broad bond indexes differ in their inclusion of securitized debt, weighting methodology, and maturity constraints, affecting both duration and credit exposure.
+12. **US Treasury / Government Bond** — The target maturity band (1–3yr, 3–7yr, 7–10yr, 20+yr) is the strategy decision, and it entirely determines the interest-rate sensitivity and return profile of the fund.
+13. **Corporate Bond** — Investment-grade vs. high-yield is the primary strategy split, but within each, indexes differ on minimum issue size, maturity range, and sector caps, producing different risk/reward profiles.
+14. **Commodities** — Single-commodity (gold only), broad basket (Bloomberg Commodity Index), or roll-optimized (avoiding front-month futures) represent completely different strategies with different return drivers and correlation profiles.
+15. **Multi-Asset / Allocation** — The target equity/bond split (60/40 vs. 80/20), whether it's static or tactical (actively adjusted), and the underlying indexes used for each asset class are the core strategy decisions that define the fund.
+
+---
+
+### Parameter 2: Expense Ratio (Annual Cost)
 
 The annual management fee charged by the fund, expressed as a percentage of assets. This is the most visible and easily comparable cost of owning an ETF. It compounds every year you hold the fund and directly reduces your net return. Unlike trading costs (covered in Parameter 3), the expense ratio is charged regardless of whether you trade.
 
@@ -90,9 +113,9 @@ The annual management fee charged by the fund, expressed as a percentage of asse
 
 ---
 
-### Parameter 2: Performance (Total Return — 1yr, 3yr, 5yr, 10yr)
+### Parameter 3: Performance (Total Return — 1yr, 3yr, 5yr, 10yr)
 
-The first thing every investor — retail and institutional — looks at after expense ratio: how much money did this fund actually make? Total return includes price appreciation plus all distributions (dividends, interest, capital gains) reinvested. Investors compare an ETF's total return over 1, 3, 5, and 10-year periods against three benchmarks: the fund's own stated index, the closest competitor ETF in the same category, and a simple S&P 500 fund (SPY/VOO) as the baseline "cost of doing something different." This is distinct from expense ratio (Parameter 1) because two funds with the same fee can deliver very different returns due to index construction, rebalancing methodology, and securities lending income.
+The first thing every investor — retail and institutional — looks at after expense ratio: how much money did this fund actually make? Total return includes price appreciation plus all distributions (dividends, interest, capital gains) reinvested. Investors compare an ETF's total return over 1, 3, 5, and 10-year periods against three benchmarks: the fund's own stated index, the closest competitor ETF in the same category, and a simple S&P 500 fund (SPY/VOO) as the baseline "cost of doing something different." This is distinct from expense ratio (Parameter 2) because two funds with the same fee can deliver very different returns, and distinct from index & strategy (Parameter 1) because two funds tracking the same index can deliver slightly different actual returns due to execution quality.
 
 **Why it matters for each category:**
 1. **US Large Cap Blend** — The benchmark category, so even small return differences between S&P 500 funds signal which one is operationally better at capturing the full index return.
@@ -113,9 +136,9 @@ The first thing every investor — retail and institutional — looks at after e
 
 ---
 
-### Parameter 3: Fund Size & Liquidity (AUM, Daily Volume, Bid-Ask Spread)
+### Parameter 4: Fund Size & Liquidity (AUM, Daily Volume, Bid-Ask Spread)
 
-AUM (assets under management) is the single most-checked metric after expense ratio and returns on every ETF screener. For retail investors, AUM serves as a trust and popularity signal — a $50B fund feels safer than a $50M fund, and that instinct is largely correct. Large AUM means tighter bid-ask spreads (lower trading cost), higher daily volume (easier to buy and sell), and near-zero risk of fund closure. Funds below $100M AUM are at meaningful risk of being shut down by the issuer, which forces investors into a taxable event. This parameter is distinct from expense ratio (Parameter 1) because it measures the one-time cost of getting in and out and the ongoing survival risk, not the annual management fee.
+AUM (assets under management) is the single most-checked metric after expense ratio and returns on every ETF screener. For retail investors, AUM serves as a trust and popularity signal — a $50B fund feels safer than a $50M fund, and that instinct is largely correct. Large AUM means tighter bid-ask spreads (lower trading cost), higher daily volume (easier to buy and sell), and near-zero risk of fund closure. Funds below $100M AUM are at meaningful risk of being shut down by the issuer, which forces investors into a taxable event. This parameter is distinct from expense ratio (Parameter 2) because it measures the one-time cost of getting in and out and the ongoing survival risk, not the annual management fee.
 
 **Why it matters for each category:**
 1. **US Large Cap Blend** — The top funds (SPY, VOO, IVV) have $300B+ in AUM, but dozens of S&P 500 clones from smaller issuers have under $1B and offer no advantage while carrying higher closure risk.
@@ -136,9 +159,9 @@ AUM (assets under management) is the single most-checked metric after expense ra
 
 ---
 
-### Parameter 4: Risk Profile (Volatility, Maximum Drawdown, Recovery Time)
+### Parameter 5: Risk Profile (Volatility, Maximum Drawdown, Recovery Time)
 
-Every ETF screener shows risk metrics — standard deviation, beta, and max drawdown — and investors who skip this parameter get blindsided by their first bear market. This measures the pain dimension of owning an ETF: how much it swings day-to-day (standard deviation), how far it can fall peak-to-trough (maximum drawdown), and how long it takes to recover to the prior high. Two funds with identical 5-year returns can have wildly different risk profiles — one may have gotten there smoothly while the other fell 50% and recovered. Knowing the risk profile tells you whether you can actually hold this ETF through a full market cycle without panic-selling. This is distinct from performance (Parameter 2) because it measures the journey, not the destination.
+Every ETF screener shows risk metrics — standard deviation, beta, and max drawdown — and investors who skip this parameter get blindsided by their first bear market. This measures the pain dimension of owning an ETF: how much it swings day-to-day (standard deviation), how far it can fall peak-to-trough (maximum drawdown), and how long it takes to recover to the prior high. Two funds with identical 5-year returns can have wildly different risk profiles — one may have gotten there smoothly while the other fell 50% and recovered. Knowing the risk profile tells you whether you can actually hold this ETF through a full market cycle without panic-selling. This is distinct from performance (Parameter 3) because it measures the journey, not the destination.
 
 **Why it matters for each category:**
 1. **US Large Cap Blend** — Even the "safest" equity category drew down 34% in March 2020 and 25% in 2022, and investors who did not understand this risk profile sold at the bottom.
@@ -157,25 +180,3 @@ Every ETF screener shows risk metrics — standard deviation, beta, and max draw
 14. **Commodities** — Commodities have extreme drawdowns (oil fell 70%+ in 2020, gold fell 45% from 2011–2015) and extended multi-year bear markets that test even conviction-driven holders.
 15. **Multi-Asset / Allocation** — The entire selling point is smoother volatility, so if a 60/40 fund draws down nearly as much as pure equity in a crisis (as happened in 2022), the fund fails its own mandate.
 
----
-
-### Parameter 5: Holdings & Portfolio Composition (What's Inside the Fund)
-
-Every ETF screener has a "Holdings" tab, and experienced investors always check it before buying. This parameter answers the most concrete question: "What am I actually owning when I buy this fund?" Key things to check include: number of holdings (10 vs. 500 vs. 3,000), top-10 concentration (what percentage of the fund is in just 10 positions), sector and geographic breakdown, and overlap with other funds you already own. Two ETFs in the same category can look identical on expense ratio and total return but hold very different portfolios underneath. This parameter is distinct from performance (Parameter 2) because it is forward-looking — past returns tell you what happened, but holdings tell you what will drive future returns and risk.
-
-**Why it matters for each category:**
-1. **US Large Cap Blend** — S&P 500 funds now have 30%+ in the top 10 stocks (mostly mega-cap tech), and investors must understand this concentration before assuming they own a "diversified" fund.
-2. **US Large Cap Growth** — Growth funds are extremely concentrated — top-10 holdings can represent 50%+ of the fund, and overlap with a large-cap blend fund often exceeds 60%, creating hidden double-exposure.
-3. **US Large Cap Value** — Value funds overweight financials, healthcare, and energy; understanding this sector tilt is essential because it means your "diversifier" may actually concentrate you in cyclical sectors.
-4. **US Mid Cap Blend** — Different mid-cap ETFs define "mid-cap" differently (some include 400 stocks, others 800), and the holdings composition shows whether you are getting true mid-cap exposure or large-cap spillover.
-5. **US Small Cap Blend** — Small-cap indexes vary widely in quality screening: some include unprofitable micro-caps while others filter them out, and this shows up only in the holdings, not in the category label.
-6. **International Developed Markets** — Country allocation varies significantly between international funds (some are 25% Japan, others are 15%), and top holdings (Nestlé, ASML, Toyota, Shell) repeat across funds, creating unintended country bets.
-7. **Emerging Markets** — Some EM funds include South Korea and others exclude it; some have 30% China exposure and others have 15% — these are fundamentally different portfolios sold under the same "emerging markets" label.
-8. **Sector — Technology** — Tech sector funds overlap heavily with large-cap blend and growth funds since tech dominates all three, so checking holdings reveals whether adding a tech ETF is genuine new exposure or just doubling down.
-9. **Dividend / Equity Income** — Different dividend strategies produce very different portfolios: high-yield funds hold REITs and utilities, dividend-growth funds hold large-cap industrials, and the holdings tell you which bet you are actually making.
-10. **Thematic / Megatrend** — Thematic fund names can be misleading (an "AI ETF" might hold mostly cloud computing companies, not actual AI developers), and only the holdings reveal whether the fund matches the theme you intended.
-11. **US Aggregate Bond** — Bond funds vary in their allocation between Treasuries, corporates, and mortgage-backed securities, and the credit quality and duration breakdown determines the risk/return profile far more than the category label.
-12. **US Treasury / Government Bond** — The duration (maturity) composition is the single most important holding characteristic: a short-duration fund and a long-duration fund are completely different investments despite both being "Treasury ETFs."
-13. **Corporate Bond** — The split between investment-grade and high-yield holdings, and the sector concentration (financials vs. industrials vs. utilities), determines both the yield and the credit risk you are actually taking on.
-14. **Commodities** — Commodity basket ETFs vary enormously in their commodity mix: some are 50% energy, others are 25% gold, and the weighting determines whether you are hedging inflation broadly or making a concentrated energy or metals bet.
-15. **Multi-Asset / Allocation** — Allocation funds contain equities, bonds, and sometimes alternatives internally, so checking the actual equity/bond split and underlying holdings reveals whether the fund matches your target allocation or creates hidden overlap with your other positions.
