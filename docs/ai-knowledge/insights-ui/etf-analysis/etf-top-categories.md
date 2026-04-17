@@ -90,26 +90,26 @@ The annual management fee charged by the fund, expressed as a percentage of asse
 
 ---
 
-### Parameter 2: Expense Ratio vs. What You Get
+### Parameter 2: Tracking Accuracy (Tracking Difference & Tracking Error)
 
-Expense ratio is not evaluated in isolation — it is evaluated relative to what the strategy delivers. A 0.03% passive S&P 500 fund and a 0.75% active fund are not comparable on cost alone; the question is whether the strategy justifies the fee through returns, risk management, or access to otherwise hard-to-reach markets.
+Tracking difference is the gap between the ETF's actual return and its benchmark's return over a period — it reveals whether the fund delivers what it promises. Tracking error is the volatility (standard deviation) of that gap over time, showing consistency. Two funds can have the same expense ratio but very different tracking accuracy due to sampling methodology, cash drag, rebalancing timing, securities lending income, and index reconstitution handling. This parameter measures operational quality, distinct from the fee itself (Parameter 1).
 
-**Relevance by category:**
-1. **US Large Cap Blend** — Critical; this is the most commoditized category, so expense ratio differences of even 0.01% matter since all funds track the same index.
-2. **US Large Cap Growth** — Highly relevant; many growth ETFs are passive and low-cost, so an active growth fund charging 0.50%+ must clearly beat its passive peer.
-3. **US Large Cap Value** — Highly relevant; value factor ETFs range from 0.04% to 0.35%, and the cheap ones often perform just as well.
-4. **US Mid Cap Blend** — Highly relevant; mid-cap indexing is straightforward, so anything above 0.10% needs justification.
-5. **US Small Cap Blend** — Highly relevant; small-cap ETFs have wider fee dispersion (0.04%–0.40%), and higher expense ratios compound painfully on a volatile asset class.
-6. **International Developed Markets** — Highly relevant; developed-market index funds range from 0.04% to 0.35%, and the underlying markets are efficient enough that higher fees rarely add value.
-7. **Emerging Markets** — Moderately relevant; higher fees (0.10%–0.70%) are somewhat justified by harder-to-access markets, but investors should still compare within the category.
-8. **Sector — Technology** — Moderately relevant; sector funds charge 0.08%–0.50%, and the tight competition among tech ETFs means cheaper options often perform identically.
-9. **Dividend / Equity Income** — Highly relevant; dividend strategies are simple enough that a 0.06% fund often matches a 0.40% fund in total return after fees.
-10. **Thematic / Megatrend** — Less critical as a differentiator; thematic funds almost universally charge 0.40%–0.75%, so the bigger question is whether the theme itself delivers, not fee differences within it.
-11. **US Aggregate Bond** — Critical; bond returns are low, so a 0.10% fee difference can eat 10–20% of annual return.
-12. **US Treasury / Government Bond** — Critical; Treasury returns are the lowest in fixed income, making expense ratio the largest controllable drag on performance.
-13. **Corporate Bond** — Highly relevant; yield spreads over Treasuries are thin in investment-grade, so fees directly erode the credit premium you are being paid.
-14. **Commodities** — Moderately relevant; commodity ETFs charge 0.20%–0.75% and returns are unpredictable, so fees matter but are not the primary driver of outcomes.
-15. **Multi-Asset / Allocation** — Highly relevant; allocation funds charge 0.10%–0.50%, and since the investor is paying for convenience, the fee must be compared against DIY-ing the same allocation with cheaper single-asset ETFs.
+**Why it matters for each category:**
+1. **US Large Cap Blend** — S&P 500 funds should track near-perfectly, so even a 0.05% annual tracking difference signals operational inefficiency that costs money over decades.
+2. **US Large Cap Growth** — Growth index reconstitutions involve large trades in momentum names, and funds that handle these poorly create tracking drag that compounds over time.
+3. **US Large Cap Value** — Value indexes rebalance into and out of deeply discounted stocks, and execution quality during these rebalances directly affects whether you capture the value premium.
+4. **US Mid Cap Blend** — Mid-cap indexes have more constituents and lower per-stock liquidity than large-cap, making full replication harder and sampling-driven tracking error more common.
+5. **US Small Cap Blend** — Small-cap ETFs often use sampling (holding only a subset of the index), and poor sampling choices cause persistent tracking differences that erode the small-cap premium.
+6. **International Developed Markets** — Time-zone differences between US trading and foreign markets create fair-value pricing gaps, and funds that manage this poorly show higher tracking error and NAV drift.
+7. **Emerging Markets** — EM indexes include illiquid, hard-to-access stocks in markets with capital controls, making accurate replication difficult and tracking difference a key differentiator between funds.
+8. **Sector — Technology** — Sector indexes are concentrated, so a fund that slightly over- or under-weights top holdings during rebalancing creates outsized tracking deviation relative to broad funds.
+9. **Dividend / Equity Income** — Dividend indexes rebalance based on yield thresholds, and funds that lag in adjusting to dividend cuts or initiations fall behind the benchmark.
+10. **Thematic / Megatrend** — Thematic indexes are custom-built with frequent constituent changes as themes evolve, and funds that track these indexes poorly lose the targeted exposure the investor is paying for.
+11. **US Aggregate Bond** — The Bloomberg Aggregate contains thousands of bonds, many illiquid, so all bond ETFs use sampling — the quality of that sampling determines tracking accuracy.
+12. **US Treasury / Government Bond** — Treasury ETFs track specific maturity bands, and roll timing (selling maturing bonds, buying new ones) can cause tracking differences, especially in volatile rate environments.
+13. **Corporate Bond** — Corporate bonds are less liquid than Treasuries with wider bid-ask spreads, so funds that optimize their sampling and trading execution show materially better tracking.
+14. **Commodities** — Commodity ETFs use futures contracts that must be rolled monthly, and the timing and execution of these rolls creates significant tracking difference versus spot price benchmarks.
+15. **Multi-Asset / Allocation** — Allocation funds rebalance across asset classes, and the timing and execution of those rebalances (selling equities to buy bonds, or vice versa) directly affects whether the fund delivers its target allocation returns.
 
 ---
 
