@@ -541,6 +541,9 @@ model TickerV1 {
   // Relation to stock analyzer scrapper info (one-to-one)
   stockAnalyzerScrapperInfo TickerV1StockAnalyzerScrapperInfo?
 
+  // Relation to price history (one-to-one)
+  priceHistory TickerV1PriceHistory?
+
   // Relation to favourite tickers
   favouriteTickers FavouriteTicker[]
 
@@ -873,6 +876,31 @@ model TickerV1StockAnalyzerScrapperInfo {
 
   @@index([tickerId])
   @@map("ticker_v1_stock_analyzer_scrapper_info")
+}
+
+model TickerV1PriceHistory {
+  id       String @id @default(uuid())
+  tickerId String @unique @map("ticker_id")
+
+  // Daily OHLC for short-range views (1M). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  dailyData          Json     @map("daily_data")
+  lastUpdatedAtDaily DateTime @map("last_updated_at_daily")
+
+  // Weekly OHLC for long-range views (6M, 1Y, 5Y, MAX). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  weeklyData          Json     @map("weekly_data")
+  lastUpdatedAtWeekly DateTime @map("last_updated_at_weekly")
+
+  currency String? @map("currency")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ticker TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@index([tickerId])
+  @@map("ticker_v1_price_history")
 }
 
 // --------------------------

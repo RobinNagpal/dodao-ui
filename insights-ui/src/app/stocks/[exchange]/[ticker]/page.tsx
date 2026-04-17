@@ -1,4 +1,5 @@
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
+import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
 import { TickerIdentifier } from '@/app/api/[spaceId]/tickers-v1/generation-requests/route';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
@@ -10,6 +11,7 @@ import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import CompetitionChartSection from '@/components/ticker-reportsv1/CompetitionChartSection';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
+import PriceChart from '@/components/ticker-reportsv1/PriceChart';
 import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -161,6 +163,24 @@ async function fetchQuarterlyChartData(exchange: string, ticker: string): Promis
   }
 }
 
+async function fetchPriceHistory(exchange: string, ticker: string): Promise<PriceHistoryResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/price-history`;
+
+  try {
+    const res: Response = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchPriceHistory failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    const wrapper = (await res.json()) as { priceHistory: PriceHistoryResponse | null };
+    return wrapper.priceHistory;
+  } catch (error) {
+    console.error(`fetchPriceHistory error for ${ticker}:`, error);
+    return null;
+  }
+}
+
 async function fetchCompetitionData(exchange: string, ticker: string): Promise<CompetitionResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
 
@@ -283,6 +303,25 @@ function QuarterlyChartSkeleton(): JSX.Element {
   );
 }
 
+function PriceChartSkeleton(): JSX.Element {
+  return (
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-24 rounded bg-gray-800 animate-pulse mt-1" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {['1M', '6M', '1Y', '5Y', 'MAX'].map((label) => (
+            <div key={label} className="h-8 w-12 rounded-md bg-gray-800 animate-pulse" />
+          ))}
+        </div>
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+    </section>
+  );
+}
+
 /** Skeleton for TickerChartsInfo: Financial table (left) + Radar chart (right) + Quarterly chart (below) */
 function ChartsInfoSkeleton(): JSX.Element {
   return (
@@ -303,6 +342,11 @@ function ChartsInfoSkeleton(): JSX.Element {
             <RadarSkeleton />
           </div>
         </div>
+      </div>
+
+      {/* Price Chart Skeleton (rendered above the quarterly chart) */}
+      <div style={{ minHeight: '320px' }}>
+        <PriceChartSkeleton />
       </div>
 
       {/* Quarterly Metrics Chart Skeleton */}
@@ -400,14 +444,17 @@ function TickerChartsInfo({
   data,
   financialInfoPromise,
   quarterlyChartPromise,
+  priceHistoryPromise,
 }: {
   data: Promise<TickerV1FastResponse>;
   financialInfoPromise: Promise<FinancialInfoResponse | null>;
   quarterlyChartPromise: Promise<QuarterlyChartDataResponse | null>;
+  priceHistoryPromise: Promise<PriceHistoryResponse | null>;
 }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
   const financialData: FinancialInfoResponse | null = use(financialInfoPromise);
   const quarterlyChartData: QuarterlyChartDataResponse | null = use(quarterlyChartPromise);
+  const priceHistoryData: PriceHistoryResponse | null = use(priceHistoryPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -452,6 +499,9 @@ function TickerChartsInfo({
           </div>
         </div>
       </div>
+
+      {/* Price Chart (rendered above Quarterly Metrics) */}
+      {priceHistoryData && <PriceChart data={priceHistoryData} />}
 
       {/* Quarterly Metrics Chart - skeleton handles CLS during streaming; once resolved, only render when data exists */}
       {quarterlyChartData && <QuarterlyMetricsChart data={quarterlyChartData} />}
@@ -675,6 +725,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
   const similarPromise = retryWithCanonical(fetchSimilar);
   const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
   const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
+  const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);
   const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
   // Derive dates for semantic footer (based solely on tickerData)
@@ -709,7 +760,12 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         <TickerSummaryInfo data={tickerInfo} />
 
         <Suspense fallback={<ChartsInfoSkeleton />}>
-          <TickerChartsInfo data={tickerInfo} financialInfoPromise={financialInfoPromise} quarterlyChartPromise={quarterlyChartPromise} />
+          <TickerChartsInfo
+            data={tickerInfo}
+            financialInfoPromise={financialInfoPromise}
+            quarterlyChartPromise={quarterlyChartPromise}
+            priceHistoryPromise={priceHistoryPromise}
+          />
         </Suspense>
 
         {/* Analysis info - server rendered, no skeleton needed */}
