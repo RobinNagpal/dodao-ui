@@ -390,6 +390,17 @@ export interface EtfMorPortfolioHoldings {
   holdings: EtfMorPortfolioHoldingRow[];
 }
 
+export interface PriceHistoryPoint {
+  date: string; // ISO date (YYYY-MM-DD)
+  open: number | null;
+  high: number | null;
+  low: number | null;
+  close: number | null;
+  volume: number | null;
+}
+
+export type PriceHistoryPointArray = PriceHistoryPoint[];
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
@@ -407,6 +418,8 @@ declare global {
     type RatiosQuarterlyData = RatiosQuarterlyData;
     type KpisAnnualData = KpisAnnualData;
     type KpisQuarterlyData = KpisQuarterlyData;
+    // Price history
+    type PriceHistoryPointArray = PriceHistoryPointArray;
     // LLM grounding sources
     type SourceLinks = SourceLinks;
 
