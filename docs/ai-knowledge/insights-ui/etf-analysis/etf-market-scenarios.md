@@ -249,3 +249,78 @@ Thirty-one recurring market scenarios that meaningfully move specific ETF catego
 **Historical analog:** 2003–2007 BRIC-era rally — VWO rose 300%+ vs. S&P 100%. 2009–2011 post-GFC EM rally driven by China stimulus. 2016–2017 EM rally (VWO +45% vs. SPY +25%) as the dollar weakened and China restimulated. The setup recurs every 5–10 years whenever the dollar weakens and commodities rally simultaneously.
 **Winners:** Broad EM (VWO, EEM, IEMG, SCHE); single-country — China (FXI, MCHI, KWEB, ASHR); Brazil (EWZ); India (INDA, SMIN); frontier markets (FM); EM small caps (EWX); EM local-currency bonds (EMLC, LEMB); commodity-linked EMs; Latin America (ILF).
 **Losers in relative terms:** US mega-cap tech (MGK, QQQ) underperforms; USD (UUP); USD-hedged international (HEFA, DBEF); long US duration if EM rally is driven by global reflation.
+
+---
+
+## Current Probability Assessment (as of 2026-04-18)
+
+Directional estimates of each scenario's likelihood over the ~20-month window from today through end-2027. Buckets: **High** (>40%), **Medium** (20–40%), **Low** (<20%). "Residual impact" flags scenarios where the ETFs listed above have already absorbed most of the move — a fresh episode would be a *new* scenario, not a continuation.
+
+### Already Happened or In Progress — Limited Further ETF Impact
+
+Either actively unfolding now or completed recently enough that the named ETFs have already priced in most of the move. Residual upside/downside from the *same* historical driver is narrow.
+
+| # | Scenario | Status | Residual Impact on Named ETFs |
+|---|---|---|---|
+| 3 | Utilities Boom | In progress — 2024 XLU rally continuing into 2026 on AI power demand | Much priced in; CEG/VST multiples rich. Late-cycle upside shallow. |
+| 5 | Inflation Shock / Bond Rout | Already happened (2022) | TLT/AGG losses taken; a new episode would be a fresh inflation shock. |
+| 9 | Gold Boom | In progress — GLD past $2,700 on central bank buying | Late-stage; miners (GDX) still have operational leverage, physical gold upside narrower. |
+| 11 | Small-Cap Recession | Happened 2022–2023, partially reversed 2024 | IWM underperformance largely played out. |
+| 13 | Biotech Bust | Already happened (2021–2023) | XBI down 60%+ was absorbed; cycle is in recovery. |
+| 19 | Defense Boom | In progress since 2022 | ITA/PPA up 2–3x; structural NATO spend continues but much priced in. |
+| 23 | Fed Pivot / Rate Cut Cycle | In progress — cuts began Sept 2024 | TLT duration rally partly captured; remaining depends on cycle depth. |
+| 24 | Trade War / Tariff Shock | Active — 2025 tariff expansion ongoing | Semis, China ETFs already hit; next leg depends on retaliation / new tranches. |
+| 26 | Corporate Earnings Recession | Already happened (2022–23 tech EPS) | Mega-cap tech EPS re-accelerated; old drawdowns priced. |
+| 27 | Infrastructure Buildout | In progress — IIJA/CHIPS/IRA mid-cycle | PAVE up 60%+; backlog is multi-year but no repeat rerating. |
+| 28 | New Tech Adoption Wave (AI) | In progress | NVDA / SMH / SOXX up huge; late-cycle risk now exceeds early-cycle upside. |
+
+### High Probability — Rest of 2026 through 2027
+
+Strong setup conditions today or cadence that puts the scenario inside the window.
+
+| # | Scenario | Why High | Key ETFs |
+|---|---|---|---|
+| 8 | CRE / REIT Refinancing Crisis | 2020–21 zero-rate loans maturing 2025–2027 — cliff is *inside* the window | VNQ, BXP, REM, KRE, office REITs |
+| 20 | Mega-Cap Concentration Reversal | Top 7 > 30% of SPX — matches 2000 setup | RSP > SPY/QQQ; VLUE, AVUV, EFA |
+| 24 | Trade War Escalation (beyond current) | Already active; further tranches and retaliation very likely | SOXX, SMH, FXI, KWEB, XRT |
+
+### Medium Probability (20–40%)
+
+Recurring patterns with partial setup, or cycles overdue but not yet triggered.
+
+| # | Scenario | Comment |
+|---|---|---|
+| 1 | Tech Sector Crash | Valuation/concentration setup in place; needs catalyst (AI capex miss, antitrust, rate shock) |
+| 4 | Banking Crisis | CRE loan stress + deposit sensitivity — a 2023-style event more likely than 2008-style |
+| 6 | EM Currency Crisis | If USD re-strengthens on tariffs or Fed pause, Turkey/Argentina-style episodes recur |
+| 10 | Crypto Crash | Four-year cycle suggests a post-halving top in 2026; IBIT/FBTC holders at risk |
+| 14 | Geopolitical Oil Spike | Middle East + Russia/Ukraine ongoing; one chokepoint event lights this up |
+| 15 | Semi Downturn | AI capex digestion risk in 2026–27; SOXX/SMH vulnerable if hyperscaler capex plateaus |
+| 16 | HY / Credit Blowout | Spreads tight, duration long since last blowout — overdue |
+| 18 | Agricultural Shock | Climate + geopolitics keep this recurring every 2–3 years |
+| 21 | Yield Curve / Recession Onset | Curve un-inverted on cuts; recession-or-not is the 2026 macro debate |
+| 22 | USD Strength Spike | Tariff + Fed-pause combination could drive a DXY surge |
+| 25 | Yen Carry Unwind | August 2024 was a warning shot; carry is crowded again in low-vol regimes |
+| 29 | Commodity Supercycle | Possibly early — copper, uranium, lithium structural shortages; needs demand confirmation |
+| 31 | EM Rally Cycle | Dollar softening + commodity turn could trigger VWO/EEM outperformance |
+
+### Low Probability (<20%)
+
+Recently happened at scale (fast repeat unlikely) or requires conditions not present today.
+
+| # | Scenario | Why Low |
+|---|---|---|
+| 2 | Oil & Gas Crash | Needs demand shock or OPEC split — not the current regime |
+| 7 | Value Regime (sustained) | Falling rates favor growth; value needs a reflation rerating |
+| 12 | Residential Housing Crash | Low inventory + limited subprime excess = affordability slow-burn, not a crash |
+| 17 | Full Stagflation | Needs fresh supply shock on top of sticky inflation — tail risk, not base case |
+| 30 | Post-Recession Small-Cap Rally | Requires a recession *first* — conditional on #21 triggering |
+
+### Positioning Summary
+
+- **Already-priced — reduce weight in new allocations:** Utilities (3), Defense (19), Infrastructure (27), AI tech wave (28), Gold (9), Fed cuts (23).
+- **Highest asymmetric risk-reward:** Mega-cap reversal (20 → RSP, EFA, AVUV), CRE refi cliff (8 → short VNQ/REM or long TLT as hedge), Crypto cycle top (10).
+- **Tail hedges worth holding:** Yen carry (25 — hedge DXJ), Credit blowout (16 — HYG spread widening), Combined tech concentration crash (1 + 20).
+- **Fully played out — residual downside from listed ETFs is minimal unless a *new* episode begins:** 2022 bond rout (5 → TLT), 2021–23 biotech bust (13 → XBI), 2022–23 tech EPS recession (26 → QQQ), 2022–23 small-cap drawdown (11 → IWM).
+
+*This assessment is dated 2026-04-18 and should be re-reviewed quarterly. Probability buckets are qualitative — historical cadence + current macro setup, not quantitative forecasts.*
