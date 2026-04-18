@@ -386,9 +386,33 @@ Hold out-of-the-money puts on broad indices — crash insurance that pays off dr
 
 # Editorial Note — On the 8-Group Design from PR #1316
 
-An opinionated review of whether the 8 analysis groups introduced in PR #1316 are well-designed, mutually exclusive, and the right cut of the ETF universe for the KoalaGains analysis pipeline.
+## The 8 Groups as Defined in PR #1316
 
-## Overall: Yes, it's a good design
+These are the group names and descriptions introduced in `insights-ui/src/etf-analysis-data/etf-analysis-categories.json` (PR #1316). Each group corresponds to a distinct factor set in the analysis-factor files.
+
+1. **Broad Equity** (`broad-equity`) — Diversified equity funds differentiated by market cap, style (blend/value/growth), and geography (US, foreign, global, emerging, single-region). Analysis focuses on index tracking, style purity, peer-group comparison within cap/style/region, and broad-market beta behavior.
+
+2. **Sector & Thematic Equity** (`sector-thematic-equity`) — Equity funds concentrated in a single sector, industry, or theme (technology, health, financials, real estate, energy, commodity-linked equities, infrastructure, etc.). Analysis focuses on sector cyclicality, concentration risk, top-holding exposure, and peer comparison within the sector or theme.
+
+3. **Leveraged & Inverse Trading** (`leveraged-inverse`) — Daily-rebalanced leveraged, inverse, or multi-asset leveraged funds. Analysis focuses on daily-reset path dependency (decay), suitability strictly as short-term trading vehicles, accuracy of the daily-leverage objective, and holding-period warnings.
+
+4. **Fixed Income — Core & Government** (`fixed-income-core`) — Investment-grade government, corporate, mortgage, TIPS, securitized, and target-maturity bond funds, plus money market. Analysis focuses on duration/rate sensitivity, yield, benchmark tracking, and resilience across interest-rate environments.
+
+5. **Fixed Income — Credit & Income** (`fixed-income-credit`) — Credit-driven and income-focused non-muni bond funds: high yield, bank loan, preferred stock, convertibles, emerging-market debt, multisector, nontraditional, and private debt. Analysis focuses on credit quality, default risk, spread behavior, and downside during credit stress.
+
+6. **Municipal Bonds** (`muni`) — All municipal bond funds — national, state-specific, high-yield muni, and muni target-maturity. Analysis focuses on tax-equivalent yield, issuer credit quality, duration, and state or sector concentration.
+
+7. **Alternative Strategies** (`alt-strategies`) — Non-traditional strategy funds: derivative income, defined outcome, hedge-fund-style strategies (long-short, market-neutral, event-driven, multi-strategy, macro, managed futures, relative-value arbitrage), commodity exposure, digital assets, and single-currency funds. Analysis focuses on whether the strategy delivered on its mandate (lower volatility, downside protection, uncorrelated returns) rather than absolute return vs a pure-equity benchmark.
+
+8. **Allocation & Target-Date** (`allocation-target-date`) — Funds with a prescribed asset-mix mandate — static allocation (moderate/aggressive/conservative), tactical allocation, global allocation variants, and all target-date glide-path funds. Analysis focuses on mandate adherence, tactical or glide-path execution, drawdown reduction vs pure-equity peers, and risk-adjusted returns within the allocation peer group.
+
+---
+
+## My Opinion on the Design
+
+An opinionated review of whether the 8 analysis groups above are well-designed, mutually exclusive, and the right cut of the ETF universe for the KoalaGains analysis pipeline.
+
+### Overall: Yes, it's a good design
 
 The 8 groups are organized around **analytical framework** rather than surface-level asset class. That's the right design principle. "How should an analyst evaluate this fund?" produces more useful groupings than "what asset class does it hold?" — because a gold ETF and a Treasury ETF are both technically non-equity, but you evaluate them with completely different lenses. The PR #1316 grouping captures this distinction correctly.
 
@@ -402,7 +426,7 @@ Concretely, the design nails four non-obvious calls:
 
 4. **Allocation & Target-Date together is natural.** Both are about mandate adherence and drawdown reduction — analytically similar even though the mechanics differ (static ratio vs. glide path).
 
-## Are the groups mutually exclusive? Yes, in practice
+### Are the groups mutually exclusive? Yes, in practice
 
 Each of the 134 Morningstar categories maps to exactly one group in the JSON — the taxonomy is disjoint by construction. Conceptually, a handful of edge cases sit near boundaries but don't actually cross them:
 
@@ -413,7 +437,7 @@ Each of the 134 Morningstar categories maps to exactly one group in the JSON —
 
 No category is ambiguously placed enough to cause analysis errors.
 
-## Where I'd push back
+### Where I'd push back
 
 A few things that are defensible but worth calling out as design trade-offs:
 
@@ -425,6 +449,6 @@ A few things that are defensible but worth calling out as design trade-offs:
 
 4. **Target-Date subcategories fragment the data.** Morningstar splits target-dates by vintage (2030, 2035, ... 2065+), which creates 10 categories with 1-2 ETFs each. This isn't a PR #1316 design choice — it's inherited from Morningstar — but it does bloat the Allocation group. In practice the analysis for a Target-Date 2040 and Target-Date 2045 fund is essentially identical; the factor file can treat them uniformly.
 
-## Do I like the design? Yes
+### Do I like the design? Yes
 
 It's the right shape for a report-generating system. The groups correspond to distinct factor files, which means the prompt can encode category-specific reasoning (e.g., "for alt-strategies, judge against mandate; for fixed-income-core, lead with tracking and duration") without needing 134 separate prompt paths. The split-core-from-credit-from-muni insight alone prevents a lot of bad output — it's the single most valuable design choice in the framework. If the Alt-Strategies group ever becomes a pain point in practice, splitting it is a low-cost future refactor; starting with it unified is the pragmatic call.
