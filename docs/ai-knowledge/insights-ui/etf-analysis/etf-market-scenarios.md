@@ -1,6 +1,6 @@
 # ETF Market Scenarios — Sector and Asset-Class Shocks
 
-Fifteen recurring market scenarios that meaningfully move specific ETF categories. Each entry covers the scenario, its underlying cause, a historical analog, and what actually happened. These scenarios are reference cases the analysis pipeline can pattern-match against when a category is showing unusual drawdowns, rallies, or deviations from peers.
+Twenty-six recurring market scenarios that meaningfully move specific ETF categories. Each entry covers the scenario, its underlying cause, a historical analog, and what actually happened. These scenarios are reference cases the analysis pipeline can pattern-match against when a category is showing unusual drawdowns, rallies, or deviations from peers.
 
 ---
 
@@ -91,3 +91,69 @@ Fifteen recurring market scenarios that meaningfully move specific ETF categorie
 ### 15. Japan Equity Revival
 **Underlying cause:** End of multi-decade deflation, corporate governance reforms forcing buybacks and higher ROE, a weak yen boosting exporters, and high-profile endorsement (Warren Buffett's trading-house stakes).
 **Historical analog:** 2023–2024 Nikkei finally broke its 1989 all-time high after 34 years of underperformance. EWJ rose 40%+ over two years; DXJ (currency-hedged) outperformed further as the yen fell from 115 to 160 vs USD. Trading houses (Mitsubishi, Mitsui) doubled on Buffett's Berkshire Hathaway stakes. The "cheap Japan" trade finally delivered.
+
+---
+
+### 16. Residential Housing Crash
+**Underlying cause:** Over-leverage in mortgage lending, subprime credit excess, speculative buying, or affordability collapse from sharply rising rates. Distinct from commercial real estate stress — this is single-family housing.
+**Historical analog:** 2006–2012 US housing bust. National home prices fell 30%; Arizona, Nevada, and Florida fell 50%+. Homebuilder ETF XHB fell 80% peak-to-trough. Mortgage-backed securities blew up and triggered the GFC. Affordability-driven cycles recur whenever rates rise faster than wage growth.
+
+---
+
+### 17. Biotech Boom & Bust Cycle
+**Underlying cause:** Booms from approval waves, IPO enthusiasm, and speculative early-stage names; busts from drug-pricing regulation, rate hikes hitting pre-revenue companies, or high-profile trial failures.
+**Historical analog:** 2013–2015 biotech boom (IBB tripled). 2015–2016 bust — Hillary Clinton's drug-pricing tweet and the EpiPen scandal pushed XBI down 40%. 2021–2023 biotech bust (XBI fell 60%+) as rising rates killed the pre-revenue model and cash-burn biotechs faced existential pressure.
+
+---
+
+### 18. Geopolitical Oil Price Spike
+**Underlying cause:** War, embargo, or Middle East conflict disrupts supply; OPEC+ cuts quotas deliberately; shipping-chokepoint disruption (Strait of Hormuz, Suez, Red Sea) threatens flow. The inverse of the oil-crash scenario.
+**Historical analog:** 1973 OPEC embargo (oil +300%), 1990 Gulf War (oil doubled in 3 months), 2022 Russia invasion of Ukraine (WTI hit $130). XLE rose 60%+ in 2022 and was the best-performing sector that year. Defense and energy typically rally together in these shocks.
+
+---
+
+### 19. Semiconductor Cycle Downturn
+**Underlying cause:** Inventory overbuild, softening end-demand (PCs, smartphones, autos), or export controls. The semi industry runs a 2–4 year capex cycle that repeatedly produces boom-bust patterns.
+**Historical analog:** 2018–2019 semi downturn (SOXX fell 25% in late 2018 on crypto-mining demand collapse and memory glut). 2022 downturn (SOXX fell 40% as post-COVID pull-forward normalized). Recoveries are typically sharp — SOXX doubled from late 2022 to mid-2024 on AI-driven demand.
+
+---
+
+### 20. High-Yield / Credit Spread Blowout
+**Underlying cause:** Recession fears, sector-specific stress (energy, retail, commercial real estate), or liquidity crunch widens corporate credit spreads sharply — sometimes without a broad equity crash triggering it.
+**Historical analog:** 2015–2016 energy HY stress (HY spread widened from 350bp to 850bp as oil crashed; HYG fell 15%). March 2020 briefly (HY spread hit 1,000bp before Fed intervention). HYG and JNK typically fall 10–20%+; bank-loan funds (BKLN) hold up better due to loan seniority and floating rates.
+
+---
+
+### 21. European Sovereign Debt Crisis
+**Underlying cause:** A peripheral EU country (Greece, Italy, Spain, Portugal) faces a debt-sustainability crisis; yields spike; banks holding the debt get stressed; the euro itself comes under pressure due to EU structural design flaws.
+**Historical analog:** 2010–2012 PIIGS crisis. Greek 10Y yields hit 30%+; Italy needed ECB intervention; Spanish banks were stressed. EWI and EWP fell 50%; VGK fell 25%. Draghi's "whatever it takes" speech in July 2012 marked the bottom. EU fragility means this scenario can recur.
+
+---
+
+### 22. Stagflation
+**Underlying cause:** Inflation stays elevated while growth slows — typically from supply-side shocks (oil, labor, deglobalization) combined with central banks unable to cut rates without reigniting inflation. The nightmare scenario for 60/40 portfolios.
+**Historical analog:** 1973–1980 US stagflation. Real S&P 500 returns were deeply negative after inflation; nominal bonds were destroyed by double-digit CPI. Gold rose 1,500% from $35 to $850. Commodities and hard assets outperformed paper assets for a full decade. Risk of recurrence whenever supply shocks combine with large fiscal deficits.
+
+---
+
+### 23. Agricultural / Food Price Shock
+**Underlying cause:** Drought, war disrupting grain exports, government export bans, biofuel-driven demand, or extreme weather patterns create supply shortages across major food commodities.
+**Historical analog:** 2007–2008 global food crisis (wheat +150%, rice +200%, triggered riots in 30 countries). 2022 Russia–Ukraine war disrupted Black Sea grain (those two countries = 30% of global wheat exports); wheat rallied 40%. Agricultural ETFs (DBA, WEAT, CORN) rally; agribusiness equities (MOO) gain.
+
+---
+
+### 24. Defense Sector Boom
+**Underlying cause:** A major war, geopolitical escalation, or sustained defense-spending commitment (e.g., NATO 2% or 3% GDP targets) drives a multi-year revenue and backlog-growth cycle for defense contractors.
+**Historical analog:** 2022 Russia invasion of Ukraine. ITA (iShares Aerospace & Defense) rose 25% in 2022 while the S&P 500 fell 18%. European defense stocks (Rheinmetall, BAE Systems) went up 2x–3x. PPA, XAR, and ITA entered multi-year uptrends as NATO spending accelerated and munitions restocking ramped up.
+
+---
+
+### 25. Mega-Cap Concentration Reversal
+**Underlying cause:** The top 5–10 stocks in the S&P 500 reach extreme weight (25–35%) during a growth cycle; when they multiple-compress simultaneously (earnings disappointment, antitrust, rate shock), they pull the whole cap-weighted index down even as most stocks hold up.
+**Historical analog:** 2000 dot-com — top 10 stocks were 25%+ of the S&P; Cisco, Intel, Microsoft all fell 60–80%. The S&P took 7 years to recover. As of early 2026, the top 7 exceed 30% of the S&P 500 again — a similar concentration setup. Equal-weight funds (RSP) historically outperform cap-weighted funds during these reversals.
+
+---
+
+### 26. Volatility Spike / Short-Vol Blowup
+**Underlying cause:** Sudden market panic causes VIX to spike 50–100% in a day, liquidating crowded short-volatility positions and creating feedback loops as dealers rebalance gamma.
+**Historical analog:** February 5, 2018 "Volmageddon" — the VIX doubled in a single day; XIV (inverse VIX ETN) lost 96% overnight and was liquidated the next morning. Long-vol products (VXX, UVXY) spiked 100%+. The short-vol trade had been a crowded, leveraged income strategy that was instantly wiped out. Similar mechanics exist today with leveraged vol-targeting and 0DTE short-premium funds.
