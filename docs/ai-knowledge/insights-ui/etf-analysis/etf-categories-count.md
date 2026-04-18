@@ -381,3 +381,50 @@ Hold out-of-the-money puts on broad indices — crash insurance that pays off dr
 | Thematic conviction | Thematic, ESG, Cryptocurrency | IBIT, BOTZ, ICLN, ESGU |
 | Crash protection | Tail Risk, Buffer, Inverse | TAIL, CYA, BJAN, SH |
 | Alternative income | 0DTE Options, Put-Write, CLO, Floating Rate | QDTE, JAAA, BKLN, PUTW |
+
+---
+
+# Editorial Note — On the 8-Group Design from PR #1316
+
+An opinionated review of whether the 8 analysis groups introduced in PR #1316 are well-designed, mutually exclusive, and the right cut of the ETF universe for the KoalaGains analysis pipeline.
+
+## Overall: Yes, it's a good design
+
+The 8 groups are organized around **analytical framework** rather than surface-level asset class. That's the right design principle. "How should an analyst evaluate this fund?" produces more useful groupings than "what asset class does it hold?" — because a gold ETF and a Treasury ETF are both technically non-equity, but you evaluate them with completely different lenses. The PR #1316 grouping captures this distinction correctly.
+
+Concretely, the design nails four non-obvious calls:
+
+1. **Splitting fixed income into Core vs. Credit vs. Muni is right.** Core bonds are analyzed for duration and rate sensitivity; credit bonds are analyzed for default/spread behavior; munis require tax-equivalent-yield math. Mashing them into one "Fixed Income" bucket would produce generic, less useful analysis. The three-way split forces the analyst (and the prompt) to apply the right framework.
+
+2. **Isolating Leveraged & Inverse is essential.** These funds have daily-reset path dependency that makes long-term analysis actively misleading — they need a different evaluation story (suitability, holding-period warning, daily-leverage accuracy) rather than CAGR and drawdown. Putting them with their asset-class siblings would contaminate the analysis. Correct call.
+
+3. **Separating Sector/Thematic from Broad Equity is useful.** The evaluation criteria genuinely differ — concentration risk, sector cyclicality, and thematic-definition quality matter for the former, while style purity and peer comparison matter for the latter. You would ask different questions of XLK vs. VOO.
+
+4. **Allocation & Target-Date together is natural.** Both are about mandate adherence and drawdown reduction — analytically similar even though the mechanics differ (static ratio vs. glide path).
+
+## Are the groups mutually exclusive? Yes, in practice
+
+Each of the 134 Morningstar categories maps to exactly one group in the JSON — the taxonomy is disjoint by construction. Conceptually, a handful of edge cases sit near boundaries but don't actually cross them:
+
+- **Energy Limited Partnership (MLPs)** sits in sector-thematic-equity, though it has income-focused characteristics. Defensible either way; keeping it with equity sectors is the Morningstar-native call.
+- **Equity Precious Metals** (gold miners) is in sector-thematic-equity, while **Commodities Precious Metals** (gold futures) is in alt-strategies. Clean split — miners are equities, commodities are not.
+- **Preferred Stock** is in fixed-income-credit despite being a hybrid — a fair call since coupons dominate the return profile and rate sensitivity is closer to long credit than to equity.
+- **Digital Assets** (spot Bitcoin ETFs) in alt-strategies vs. **Equity Digital Assets** (blockchain stocks) in sector-thematic-equity. Correct separation by what the fund actually holds.
+
+No category is ambiguously placed enough to cause analysis errors.
+
+## Where I'd push back
+
+A few things that are defensible but worth calling out as design trade-offs:
+
+1. **"Alt-Strategies" is the group doing the most work.** It holds 16 categories and 821 ETFs, covering covered-call income (Derivative Income, 202 funds), buffer strategies (Defined Outcome, 337 funds), commodities (broad basket, focused, precious metals — 82 funds), digital assets (91 funds), hedge-fund strategies (long-short, market neutral, event-driven, macro trend), and single-currency funds. These categories share "don't benchmark to pure equity" but the actual evaluation framework differs substantially between, say, a Bitcoin ETF and a merger-arbitrage ETF. If the group ever proves too heterogeneous for a single factor set, the natural split would be: **Options-based Equity Income** (Defined Outcome + Derivative Income + Equity Hedged), **Commodities & Digital Assets**, and **Hedge-fund Strategies** (long-short, market neutral, systematic trend, event-driven, macro, multistrategy, multialternative, RV arbitrage, single currency).
+
+2. **Defined Outcome alone is 337 ETFs — the largest single category in the entire taxonomy.** It has genuinely distinct analysis (buffer level, cap level, outcome-period timing) that doesn't apply to other alt-strategies categories. A case could be made for giving it its own group, but the trade-off is a tiny group that doesn't justify a separate factor file.
+
+3. **Single Currency in alt-strategies is a stretch.** Currency is closer to its own asset class than to hedge-fund strategies. But with only 7 funds, a dedicated group is overkill.
+
+4. **Target-Date subcategories fragment the data.** Morningstar splits target-dates by vintage (2030, 2035, ... 2065+), which creates 10 categories with 1-2 ETFs each. This isn't a PR #1316 design choice — it's inherited from Morningstar — but it does bloat the Allocation group. In practice the analysis for a Target-Date 2040 and Target-Date 2045 fund is essentially identical; the factor file can treat them uniformly.
+
+## Do I like the design? Yes
+
+It's the right shape for a report-generating system. The groups correspond to distinct factor files, which means the prompt can encode category-specific reasoning (e.g., "for alt-strategies, judge against mandate; for fixed-income-core, lead with tracking and duration") without needing 134 separate prompt paths. The split-core-from-credit-from-muni insight alone prevents a lot of bad output — it's the single most valuable design choice in the framework. If the Alt-Strategies group ever becomes a pain point in practice, splitting it is a low-cost future refactor; starting with it unified is the pragmatic call.
