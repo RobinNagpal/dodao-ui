@@ -1,6 +1,6 @@
 # ETF Market Scenarios — Sector and Asset-Class Shocks
 
-Twenty-six recurring market scenarios that meaningfully move specific ETF categories. The list is filtered for events that (a) have happened more than once historically and (b) are structurally likely to recur. One-off events tied to specific policy regimes or unique crises have been excluded in favor of scenarios that an analyst will pattern-match against again. Each entry covers the scenario, its underlying cause, a historical analog, and what actually happened.
+Thirty-one recurring market scenarios that meaningfully move specific ETF categories — both downside shocks and upside rallies. The list is filtered for events that (a) have happened more than once historically and (b) are structurally likely to recur. One-off events tied to specific policy regimes or unique crises have been excluded in favor of scenarios that an analyst will pattern-match against again. Each entry covers the scenario, its underlying cause, a historical analog, and what actually happened.
 
 ---
 
@@ -157,3 +157,33 @@ Twenty-six recurring market scenarios that meaningfully move specific ETF catego
 ### 26. Corporate Earnings Recession
 **Underlying cause:** Corporate earnings decline 10%+ over 2–3 quarters without an official GDP recession — often driven by margin compression from wage costs, input inflation, or demand weakness in specific sectors. The index goes sideways or down even as the economy technically grows.
 **Historical analog:** 2015–2016 earnings recession — S&P 500 EPS fell for five consecutive quarters, driven by the oil bust and a strong dollar hitting multinationals. The index went sideways for 18 months. 2022–2023 mega-cap tech earnings recession — FAANG EPS fell 20%+ while the broader economy grew. More stealthy than GDP recessions, but still a meaningful driver of drawdowns in sector-concentrated ETFs.
+
+---
+
+### 27. Infrastructure Buildout Cycle
+**Underlying cause:** Government-scale capital spending programs on transportation, power grid, water systems, or broadband — triggered by deferred maintenance, geopolitical competition, or climate adaptation. These cycles typically run 5–10 years once initiated and reshape the earnings outlook for industrials, materials, and engineering firms.
+**Historical analog:** 1950s Eisenhower Interstate Highway Act reshaped the US transportation economy for decades. 2021–2022 trio of Infrastructure Investment and Jobs Act ($1.2T) + CHIPS Act ($280B) + IRA ($370B) triggered a multi-year buildout. PAVE rose 60%+ in 2023–2024; CAT, MLM, VMC, and ETN rallied on backlog growth. Cement, aggregates, and engineering firms saw multi-year order-book expansion.
+
+---
+
+### 28. New Technology Adoption Wave (S-Curve Mania)
+**Underlying cause:** A new general-purpose technology hits the steep part of its adoption S-curve, driving massive capex and earnings growth for early winners and adjacent infrastructure providers. The cycle repeats roughly every 8–15 years around a new platform shift.
+**Historical analog:** 1995–2000 internet wave (Nasdaq 5x). 2007–2012 mobile wave (AAPL 10x+). 2015–2020 cloud wave (AMZN, MSFT, CRM). 2022–2025 AI wave — NVDA rose from $13 to $130 (10x), SOXX rose 130%, and the "AI infrastructure" trade dominated. SMH, SOXX, and picks-and-shovels ETFs (utilities, power generators) typically lead.
+
+---
+
+### 29. Commodity Supercycle
+**Underlying cause:** Multi-year structural supply-demand imbalance. Under-investment in capacity during bust years meets surging demand from industrialization, geopolitical restocking, or energy transition. Typically lasts 8–15 years and lifts broad commodity indices, producers, and commodity-linked currencies together.
+**Historical analog:** 2001–2008 commodity supercycle — China's industrialization drove oil from $20 to $147, copper 6x, and corn 3x. DBC peaked in 2008; GSG and DBA had massive rallies. The 1970s stagflation decade was an earlier supercycle. A new cycle may be building from 2020s energy-transition metals demand (copper, lithium, uranium) combined with years of capex cuts in traditional mining.
+
+---
+
+### 30. Post-Recession Small-Cap / Cyclical Rally
+**Underlying cause:** Once a recession bottoms, small caps and cyclicals (industrials, materials, consumer discretionary) rally hardest because they carry the most operational leverage to the earnings recovery. Valuations are typically at cycle-low multiples relative to large caps.
+**Historical analog:** 2009–2013 IWM rose 180% from the March 2009 low, outperforming SPY by 50%. 2020–2021 IWM rose 140% from the March 2020 low. Early-cycle sectors — XLI, XLB, and XLY — consistently led the recovery. This pattern recurs reliably in every business cycle.
+
+---
+
+### 31. Emerging Markets Rally Cycle
+**Underlying cause:** US dollar peaks and weakens, commodity cycle turns up, or China/India growth reaccelerates — these factors often align to drive multi-year EM outperformance over US equities.
+**Historical analog:** 2003–2007 BRIC-era rally — VWO rose 300%+ vs. S&P 100%. 2009–2011 post-GFC EM rally driven by China stimulus. 2016–2017 EM rally (VWO +45% vs. SPY +25%) as the dollar weakened and China restimulated. The setup recurs every 5–10 years whenever the dollar weakens and commodities rally simultaneously.
