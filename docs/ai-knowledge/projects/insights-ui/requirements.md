@@ -11,4 +11,4 @@ This file serves as an index of all planned requirements for the Insights-UI (Ko
 
 | ID | Title | Status | Details |
 | --- | --- | --- | --- |
-| | | | |
+| REQ-001 | Stock Custom Reports ("Random Reports") for V1 Tickers | Draft | [Details](requirements/req-001-stock-custom-reports.md) |
