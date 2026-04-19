@@ -8,51 +8,28 @@
       "factorTitle": "Long-Term CAGR",
       "factorDescription": "Measures compound annual growth rate over 5, 10, 15, and 20-year periods. Shows whether the fund has consistently grown investor capital over extended horizons. For funds younger than 5 years, note the limited history and use only the periods available rather than extrapolating.",
       "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "fixed-income-core",
-        "fixed-income-credit",
-        "muni",
-        "allocation-target-date"
-      ]
+      "groups": ["broad-equity", "sector-thematic-equity", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
     },
     {
       "factorKey": "short_term_returns",
       "factorTitle": "Short-Term Returns & Momentum",
       "factorDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Distinguishes short-term momentum (1M, 3M) from trailing performance (6M, 1Y). A strong 1Y return alongside weak recent months usually reflects a normal pullback within an uptrend rather than broad weakness.",
       "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "alt-strategies"
-      ]
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "alt-strategies"]
     },
     {
       "factorKey": "returns_consistency",
       "factorTitle": "Returns Consistency",
       "factorDescription": "Assesses how stable returns have been across different periods and calendar years. Flags wild year-to-year swings and tracks whether the fund recovered quickly from drawdown years. Uses percentile-rank trends across years to detect deteriorating or improving relative standing.",
       "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "fixed-income-credit",
-        "muni",
-        "alt-strategies",
-        "allocation-target-date"
-      ]
+      "groups": ["broad-equity", "sector-thematic-equity", "fixed-income-credit", "muni", "alt-strategies", "allocation-target-date"]
     },
     {
       "factorKey": "benchmark_tracking",
       "factorTitle": "Benchmark Tracking",
       "factorDescription": "Compares the fund's returns against its stated benchmark index across every available period. For passive funds, tracking within 0.5pp (equities, core bonds) or 1.0pp (high-yield, specialized) is expected — persistent drag beyond that signals structural cost or replication issues. For active funds, measures whether the manager's picks added value above the index net of fees.",
       "factorMetrics": "returnsTrailing, returnsAnnual, indexName",
-      "groups": [
-        "broad-equity",
-        "leveraged-inverse",
-        "fixed-income-core"
-      ]
+      "groups": ["broad-equity", "leveraged-inverse", "fixed-income-core"]
     },
     {
       "factorKey": "category_peer_standing",
@@ -75,53 +52,35 @@
       "factorTitle": "Drawdown & Recovery",
       "factorDescription": "Analyzes the worst peak-to-trough decline and how quickly the fund recovered to prior highs. Compares drawdown severity to the category average — a fund that drew down more than peers AND recovered more slowly is a genuine concern. Contextualize ATH distance by fund type: being -5% to -10% from ATH is normal for equity, but unusual for core bond funds.",
       "factorMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate, returnsAnnual",
-      "groups": [
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "fixed-income-credit",
-        "allocation-target-date"
-      ]
+      "groups": ["sector-thematic-equity", "leveraged-inverse", "fixed-income-credit", "allocation-target-date"]
     },
     {
       "factorKey": "income_vs_price_return",
       "factorTitle": "Income vs Price Return",
       "factorDescription": "Separates income contribution from price return. For bond, muni, and income-focused alternative funds, most of the total return comes from distributions rather than price appreciation. Compares total return (return fields) against price-only change (change fields); the gap is the income contribution. A positive total return alongside a declining share price means income is offsetting price erosion — normal for the fund type, not a red flag.",
       "factorMetrics": "return1y, change1y, return5y, change5y, return10y, change10y",
-      "groups": [
-        "fixed-income-core",
-        "fixed-income-credit",
-        "muni",
-        "alt-strategies"
-      ]
+      "groups": ["fixed-income-core", "fixed-income-credit", "muni", "alt-strategies"]
     },
     {
       "factorKey": "daily_leverage_fidelity",
       "factorTitle": "Daily Leverage Fidelity & Decay",
       "factorDescription": "For daily-leveraged or inverse funds, checks whether the realized multi-period return actually matched the daily-leverage target (e.g. 3x, -2x) or whether path-dependency and compounding destroyed the multiple. The long-term return of a leveraged fund is almost never the leverage factor times the underlying's long-term return — the gap is the decay story that must be explained to readers. Flag leveraged/inverse products as short-term trading vehicles only.",
       "factorMetrics": "return1m, return3m, return1y, return3y, returnsAnnual, beta, beta1y",
-      "groups": [
-        "leveraged-inverse"
-      ]
+      "groups": ["leveraged-inverse"]
     },
     {
       "factorKey": "downside_protection",
       "factorTitle": "Downside Protection Delivery",
       "factorDescription": "Evaluates how the fund performed during bear markets and broad drawdowns relative to its reference benchmark or category. For alternative strategies and allocation funds, outperforming during market drops is the core value proposition. Compute the protection ratio (fund drawdown / benchmark drawdown) — under 0.50 is excellent, under 0.75 is good, above 0.90 means the fund is not delivering meaningful protection.",
       "factorMetrics": "returnsAnnual, captureRatios, drawdown",
-      "groups": [
-        "alt-strategies",
-        "allocation-target-date"
-      ]
+      "groups": ["alt-strategies", "allocation-target-date"]
     },
     {
       "factorKey": "rate_environment_resilience",
       "factorTitle": "Rate Environment Resilience",
       "factorDescription": "For bond and muni funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration funds suffer more in rising-rate years and gain more in falling-rate years. Compare the fund's worst calendar year to its category and index — if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
       "factorMetrics": "returnsAnnual, return1y, return3y",
-      "groups": [
-        "fixed-income-core",
-        "muni"
-      ]
+      "groups": ["fixed-income-core", "muni"]
     }
   ]
 }
