@@ -10,18 +10,28 @@ All paths below are relative to `insights-ui/` unless noted. Conventions in this
 
 Before reading the rest of this checklist, note the real (not assumed) patterns in this repo so the new feature matches:
 
-- **SSR/ISR for detail pages:** sibling `src/app/etfs/[exchange]/[etf]/page.tsx:28-30` uses `dynamic = 'force-static'`, `dynamicParams = true`, `revalidate = false`. It does **not** use `generateStaticParams` — pages render on first hit and stay cached until tagged revalidation invalidates them. Match this pattern.
-- **Cache-tag helpers** live at `src/utils/<feature>-cache-utils.ts` (e.g. `src/utils/etf-cache-utils.ts` — defines `etfAndExchangeTag`, `revalidateEtfListingTag`). Helpers both build tag strings and expose `revalidateXTag()` wrappers around `revalidateTag` from `next/cache`.
-- **Active revalidation:** currently wired up only in a couple of ETF write endpoints (`src/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/fetch-financial-info/route.ts`, `.../mor-info-callback/route.ts`). Most admin mutation routes do **not** call `revalidateTag`. For scenarios, do call it — the feature is content-heavy and users will edit it frequently.
-- **404 pages:** `notFound()` from `next/navigation` (see `src/app/etfs/[exchange]/[etf]/page.tsx:22,57`). There is no `NotFoundError` export in `@dodao/web-core`.
+- **SSR/ISR directives are different for listing vs detail pages.** This pattern is identical across stocks and ETFs:
+  - **Listing pages** (e.g. `src/app/stocks/page.tsx:10-12`, `src/app/etfs/page.tsx`): `dynamic = 'force-static'`, `dynamicParams = true`, `revalidate = 86400` (24-hour ISR — the listing refreshes every 24h even without a tag revalidation).
+  - **Detail pages** (e.g. `src/app/etfs/[exchange]/[etf]/page.tsx:28-30`, `src/app/stocks/[exchange]/[ticker]/page.tsx`): same `force-static` + `dynamicParams = true` but `revalidate = false` — pages render on first hit and stay cached until a tagged `revalidateTag()` call invalidates them.
+  - Neither uses `generateStaticParams`.
+- **Cache-tag helpers** live in `src/utils/<feature>-cache-utils.ts`. Two shapes exist: a feature-focused file (`src/utils/etf-cache-utils.ts` — small, just ETF tags) and a shared aggregator (`src/utils/ticker-v1-cache-utils.ts` — many ticker/industry/portfolio tags in one file). Both are valid; for a brand-new surface a dedicated file is cleaner.
+- **Active revalidation on write:** inconsistently applied across the repo. Some write routes call `revalidateTag()` (e.g. `src/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/fetch-financial-info/route.ts`, `.../mor-info-callback/route.ts`, and `src/app/api/sub-industry-analysis/[buildingBlockKey]/route.ts`). Others **do not** — notably `src/app/api/industries/[id]/route.ts` (PUT/DELETE) does not revalidate. The checklist prescribes calling it; this is stricter than some existing admin routes but matches the sub-industry-analysis and ETF-callback pattern, and matters more here because scenario content is edited by humans (staleness would be visible).
+- **Server-side internal fetches on pages use `getBaseUrlForServerSidePages()`** (from `src/utils/getBaseUrlForServerSidePages.ts`). Both stocks and ETFs detail pages build their `fetch(url, { next: { revalidate, tags } })` URLs with this helper. Do the same on scenario pages.
+- **404 pages:** `notFound()` from `next/navigation` (see `src/app/etfs/[exchange]/[etf]/page.tsx:22,57`, `src/app/stocks/[exchange]/[ticker]/page.tsx`). There is no `NotFoundError` export in `@dodao/web-core`.
+- **Canonical redirect fallback** (stocks detail only, `src/app/stocks/[exchange]/[ticker]/page.tsx:91-117` and `:41,102`): when a ticker isn't found on the provided exchange, stocks tries an uncached re-fetch via `unstable_noStore()` and redirects to the canonical URL. Scenarios have a single-slug identity (no exchange disambiguation) so this fallback is **not needed**.
 - **Admin auth:** `withLoggedInAdmin` lives at `@/app/api/helpers/withLoggedInAdmin`. There is **no layout-level guard** at `src/app/admin-v1/` — each write endpoint must wrap its handler individually, and admin pages themselves are public-routed (auth happens on the API calls they make).
-- **Modal primitive:** only `SingleSectionModal` from `@dodao/web-core/components/core/modals/SingleSectionModal` is in use. There is no full-screen alternative — large forms scroll inside it.
+- **Two admin-UI patterns coexist:**
+  1. `src/app/admin-v1/industry-management/page.tsx` — modal-based CRUD using `SingleSectionModal` (from `@dodao/web-core/components/core/modals/SingleSectionModal`) + `useFetchData` / `usePostData` / `usePutData` / `useDeleteData`.
+  2. `src/app/admin-v1/ticker-management/page.tsx:24-80+` — modal state with **custom inline forms** (`AddTickersForm`, `EditTickersForm`), not `SingleSectionModal`.
+  The scenarios admin should follow pattern #1 (industry-management) — simpler surface and closer match to the data shape.
 - **Fetch/mutation hooks:** `useFetchData`, `usePostData`, `usePutData`, `useDeleteData` from `@dodao/web-core/ui/hooks/fetch/*` — they accept `successMessage` / `errorMessage` props and fire toasts automatically. No separate toast wiring is needed in each form.
-- **Markdown rendering:** `parseMarkdown(text)` at `src/util/parse-markdown.ts` returns HTML; callers inject via `dangerouslySetInnerHTML`. No `MarkdownViewer` component exists.
+- **Markdown rendering:** `parseMarkdown(text)` at `src/util/parse-markdown.ts` returns HTML; callers inject via `dangerouslySetInnerHTML`. Stocks detail page uses this pattern heavily (see `src/app/stocks/[exchange]/[ticker]/page.tsx:21,348`). No `MarkdownViewer` component exists.
 - **Body validation:** `zod` is used in some (not all) routes (e.g. `src/app/api/tickers/[tickerKey]/ticker-financials/route.ts`). Use it for the new scenario write endpoints — form fields are numerous and easy to get wrong.
-- **Per-route sitemaps:** pattern is a static `sitemap.xml` per feature folder (e.g. `src/app/stocks/sitemap.xml`). There is currently no `app/sitemap.ts`, and critically **no `src/app/etfs/sitemap.xml`** either — so adding one for scenarios is consistent with stocks but not required to match the ETF surface. Treat as optional for this PR.
+- **Sitemap pattern:** **dynamic via a route handler**, not a static XML file. `src/app/stocks/sitemap.xml/route.ts` is a GET handler that fetches industries and tickers and streams a sitemap via `SitemapStream`; the `industry-tariff-report` feature does the same. There is currently no `src/app/etfs/sitemap.xml` and no root `app/sitemap.ts`. For scenarios, the right shape is `src/app/etf-scenarios/sitemap.xml/route.ts` that queries `prisma.etfScenario.findMany({ select: { slug, updatedAt } })` and emits one entry per slug. It's still optional for this PR but if added, **follow the dynamic route-handler shape, not a static XML file.**
 - **Seed scripts:** the repo has no `scripts/` directory and no `prisma/seed.ts`. Don't assume one. Importing the 31 scenarios from markdown should happen through an admin-triggered "Import from doc" endpoint (protected by `withLoggedInAdmin`), not a build-time script.
-- **Types for API responses:** existing convention is **co-located with the route file** (e.g. `EtfListingItem`, `EtfListingResponse` are defined inline in `src/app/api/[spaceId]/etfs-v1/listing/route.ts:21-48`, not in `src/types/`). Follow that convention; only promote to `src/types/etfScenarios.ts` if the same type is consumed by both a page and an unrelated component.
+- **Types for API responses:** existing convention is **co-located with the route file** (e.g. `EtfListingItem`, `EtfListingResponse` are defined inline in `src/app/api/[spaceId]/etfs-v1/listing/route.ts:21-48`, not in `src/types/`). Same convention in stocks and industries routes. Follow it.
+- **Metadata helpers:** stocks uses `src/utils/metadata-generators.ts` (exports `generateStockReportArticleSchema`, `generateStockReportBreadcrumbSchema`, and the `generateMetadata` base). ETFs has `src/utils/etf-metadata-generators*`. Create a parallel `src/utils/etf-scenario-metadata-generators.ts` — don't try to extend the stocks file.
+- **Optional SEO override:** stocks tickers carry a `metaDescription` field used as the `<meta name="description">` when present (see `src/app/stocks/[exchange]/[ticker]/page.tsx:217`). Consider adding a nullable `metaDescription String? @db.Text` column to `EtfScenario` for the same reason — scenario summaries are long and the first paragraph of markdown isn't always the right SEO description.
 
 ---
 
@@ -42,6 +52,7 @@ Edit `prisma/schema.prisma` (existing ETF models are around lines 1270–1712; a
     - `outlookMarkdown` — `String @db.Text`
     - `outlookBucket` — enum `EtfScenarioOutlookBucket`
     - `outlookAsOfDate` — `DateTime @db.Date`
+    - `metaDescription` — `String? @db.Text @map("meta_description")` (nullable SEO override, mirrors the stocks `metaDescription` field used at `src/app/stocks/[exchange]/[ticker]/page.tsx:217`)
     - `archived` — `Boolean @default(false)` (matches `TickerV1Industry.archived` at line 478)
     - `spaceId` — `String @default("koala_gains") @map("space_id")`
     - `createdAt` / `updatedAt` — snake-case `@map`
@@ -107,15 +118,23 @@ Split (as elsewhere in the repo): space-scoped reads (`/api/[spaceId]/...`) mirr
 
 ## 4. Server-rendered public pages
 
-Use the existing SSR/ISR pattern from `src/app/etfs/[exchange]/[etf]/page.tsx`:
+Use the same SSR/ISR directives as the sibling stocks/ETFs pages — different values on listing vs detail:
 
+**Listing** — match `src/app/stocks/page.tsx:10-12` and `src/app/etfs/page.tsx`:
+```ts
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 hours
+```
+
+**Detail** — match `src/app/etfs/[exchange]/[etf]/page.tsx:28-30`:
 ```ts
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = false;
 ```
 
-**Do NOT add `generateStaticParams`** — sibling ETF pages deliberately rely on on-demand render + tag revalidation. Stay consistent.
+**Do NOT add `generateStaticParams`** — sibling stocks and ETF pages deliberately rely on on-demand render + tag revalidation.
 
 - [ ] **Listing** — `src/app/etf-scenarios/page.tsx`
   - Server component. Fetch directly via `prisma.etfScenario.findMany` (same pattern as `src/app/etfs/page.tsx`).
@@ -125,14 +144,14 @@ export const revalidate = false;
 
 - [ ] **Detail** — `src/app/etf-scenarios/[slug]/page.tsx`
   - `export async function generateMetadata({ params })` → `generateEtfScenarioDetailMetadata(...)`.
-  - Fetch via `fetch(..., { next: { revalidate: WEEK_IN_SECONDS, tags: [etfScenarioBySlugTag(slug)] } })` — same shape as `fetchEtfByExchange` in `src/app/etfs/[exchange]/[etf]/page.tsx:70-75`.
+  - Fetch via `fetch(${getBaseUrlForServerSidePages()}/api/koala_gains/etf-scenarios/${slug}, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfScenarioBySlugTag(slug)] } })` — same shape as `fetchEtfByExchange` in `src/app/etfs/[exchange]/[etf]/page.tsx:70-75` and the stocks detail page at `src/app/stocks/[exchange]/[ticker]/page.tsx:70,123,134`.
   - `notFound()` from `next/navigation` when null.
   - Layout: breadcrumbs → title → outlook badge → markdown sections (rendered via `parseMarkdown` + `dangerouslySetInnerHTML`) → related-ETFs grid linking to `/etfs/[exchange]/[symbol]`.
-  - Inline `Article` JSON-LD (`datePublished = createdAt`, `dateModified = updatedAt`, `dateline = outlookAsOfDate`).
+  - Inline JSON-LD as a `<script type="application/ld+json">` tag with `JSON.stringify([articleSchema, breadcrumbSchema])` — this matches the exact shape stocks uses at `src/app/stocks/[exchange]/[ticker]/page.tsx:364`. Article schema: `datePublished = createdAt`, `dateModified = updatedAt`, `dateline = outlookAsOfDate`.
 
-- [ ] **`loading.tsx` / `error.tsx` / `not-found.tsx`:** sibling ETF pages do **not** use these. Skip for parity unless the user asks for them.
+- [ ] **`loading.tsx` / `error.tsx` / `not-found.tsx`:** sibling stocks and ETF pages do **not** use these. Skip for parity unless the user asks for them.
 
-- [ ] **Sitemap:** feature-level static `sitemap.xml` files exist for `stocks`, `industry-tariff-report`, etc., but **not for ETFs**. Treat `src/app/etf-scenarios/sitemap.xml` as optional; if added, list all 31 `/etf-scenarios/<slug>` URLs (can be regenerated manually when scenarios change).
+- [ ] **Sitemap (optional):** if added, use a **dynamic route handler** — `src/app/etf-scenarios/sitemap.xml/route.ts` — modelled on `src/app/stocks/sitemap.xml/route.ts`. It should `prisma.etfScenario.findMany({ select: { slug, updatedAt, archived }, where: { archived: false } })` and emit one URL per scenario via `SitemapStream`, with `lastmod = updatedAt`. **Do not write a static XML file** — that would drift the moment a scenario is edited.
 
 ---
 
@@ -246,13 +265,26 @@ src/types/etfScenarios.ts                                           (new, only i
 
 ## 12. Notes on revisions
 
-An earlier revision of this checklist contained a few specific errors — all corrected above:
+Two earlier audits of this checklist found specific errors — all corrected above.
+
+**Round 1 (vs ETF pages):**
 
 - Prescribed `generateStaticParams` for the detail page. Sibling ETF detail pages don't use it (they rely on on-demand render + tag revalidation). **Removed.**
 - Placed cache-tag helpers at `src/util/revalidation-tags.ts`. Actual repo convention is per-feature files at `src/utils/<feature>-cache-utils.ts`. **Corrected.**
 - Referenced `NotFoundError` from `@dodao/web-core`. That export does not exist; pages use `notFound()` from `next/navigation`, API routes throw ordinary `Error` and let `withErrorHandlingV2` serialise. **Corrected.**
 - Suggested a `scripts/seed-etf-scenarios.ts`. There is no `scripts/` directory and no Prisma seed file in this repo. **Replaced** with an admin-gated `POST /api/etf-scenarios/import` endpoint.
 - Proposed a central `src/types/etfScenarios.ts`. Existing convention is to co-locate request/response types with each API route. **Corrected** — only promote types to `src/types/` when shared outside the route file.
-- Mentioned an `app/sitemap.ts`. The repo uses per-feature static `sitemap.xml` files; ETFs doesn't currently have one either. **Marked optional.**
+- Mentioned an `app/sitemap.ts`. The repo uses per-feature sitemaps; no root sitemap exists.
 - Claimed `loading.tsx` / `error.tsx` / `not-found.tsx` were needed. Sibling ETF pages don't use them. **Marked optional.**
 - Implied admin routes inherit a layout-level guard. They don't — every write endpoint must wrap with `withLoggedInAdmin` individually. **Called out explicitly.**
+
+**Round 2 (vs stocks pages):**
+
+- Prescribed `revalidate = false` for the listing page. Stocks listing (`src/app/stocks/page.tsx:10-12`) uses `revalidate = 86400` (24h ISR) and so does the ETFs listing. Only detail pages use `revalidate = false`. **Split the two directives by page type.**
+- Said sitemap was a static XML file. Stocks actually uses a **dynamic route handler** at `src/app/stocks/sitemap.xml/route.ts` that queries the DB at request time via `SitemapStream`. **Corrected** the sitemap guidance to match.
+- Didn't mention `getBaseUrlForServerSidePages()`. Both stocks and ETFs detail pages use it to build server-side internal fetch URLs. **Added** as a verified convention and referenced explicitly in the detail-page fetch example.
+- Didn't call out the two admin UI patterns. `industry-management` uses `SingleSectionModal`; `ticker-management` uses custom inline forms. **Specified** that scenarios follow the `industry-management` modal pattern.
+- Didn't note the stocks canonical-redirect fallback (`unstable_noStore()` + redirect when ticker is found on a different exchange). **Explicitly excluded** — scenarios have a single-slug identity, so the fallback doesn't apply.
+- Missed the optional `metaDescription` SEO override. Stocks detail pages use this at `src/app/stocks/[exchange]/[ticker]/page.tsx:217`. **Added** as a nullable column on the `EtfScenario` model and called out in the conventions section.
+- Described cache-tag helpers as strictly one-file-per-feature. In practice the repo mixes both shapes (`src/utils/etf-cache-utils.ts` is feature-focused; `src/utils/ticker-v1-cache-utils.ts` is a shared aggregator for stocks/industries/portfolios). **Clarified** that either is valid; a dedicated file is preferred for a brand-new surface.
+- Over-stated consistency of revalidation-on-write. `src/app/api/industries/[id]/route.ts` does not call `revalidateTag` on PUT/DELETE. **Flagged** that the checklist prescribes the stricter pattern used by `sub-industry-analysis` and the ETF callback routes, and explained why it matters more for scenarios.
