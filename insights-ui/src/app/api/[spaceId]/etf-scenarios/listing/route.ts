@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
 
 const DEFAULT_PAGE_SIZE = 32;
@@ -100,9 +101,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       scenarioNumber: s.scenarioNumber,
       title: s.title,
       slug: s.slug,
-      direction: s.direction,
-      timeframe: s.timeframe,
-      probabilityBucket: s.probabilityBucket,
+      direction: s.direction as EtfScenarioDirection,
+      timeframe: s.timeframe as EtfScenarioTimeframe,
+      probabilityBucket: s.probabilityBucket as EtfScenarioProbabilityBucket,
       probabilityPercentage: s.probabilityPercentage,
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
       underlyingCause: s.underlyingCause,

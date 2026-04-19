@@ -6,7 +6,8 @@ import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaA
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { EtfScenario, EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenario } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { Loader2 } from 'lucide-react';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 
@@ -105,9 +106,9 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setWinnersMarkdown(data.winnersMarkdown);
         setLosersMarkdown(data.losersMarkdown);
         setOutlookMarkdown(data.outlookMarkdown);
-        setDirection(data.direction);
-        setTimeframe(data.timeframe);
-        setProbabilityBucket(data.probabilityBucket);
+        setDirection(data.direction as EtfScenarioDirection);
+        setTimeframe(data.timeframe as EtfScenarioTimeframe);
+        setProbabilityBucket(data.probabilityBucket as EtfScenarioProbabilityBucket);
         setProbabilityPercentage(typeof data.probabilityPercentage === 'number' ? String(data.probabilityPercentage) : '');
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');

@@ -1,4 +1,4 @@
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 
 const BUCKET_STYLES: Record<EtfScenarioProbabilityBucket, { label: string; className: string }> = {
   HIGH: { label: 'High', className: 'bg-red-500/15 text-red-300 border-red-500/40' },

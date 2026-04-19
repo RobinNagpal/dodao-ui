@@ -6,7 +6,8 @@ import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSec
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { EtfScenarioEtfLink, EtfScenarioRole } from '@prisma/client';
+import { EtfScenarioEtfLink } from '@prisma/client';
+import { EtfScenarioRole } from '@/types/etfScenarioEnums';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

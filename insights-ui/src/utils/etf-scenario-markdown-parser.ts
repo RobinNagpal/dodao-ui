@@ -1,4 +1,4 @@
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 
 export interface ParsedScenarioLink {

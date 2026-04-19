@@ -1,6 +1,6 @@
 'use client';
 
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 
 const DIRECTION_OPTIONS: Array<{ value: EtfScenarioDirection | 'ALL'; label: string }> = [
   { value: 'ALL', label: 'All directions' },

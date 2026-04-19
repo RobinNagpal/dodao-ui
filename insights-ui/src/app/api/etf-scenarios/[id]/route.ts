@@ -3,7 +3,8 @@ import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from 
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { EtfScenario, EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenario } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 import { z } from 'zod';

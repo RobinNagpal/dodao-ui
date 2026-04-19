@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { EtfScenarioListingResponse } from '@/app/api/[spaceId]/etf-scenarios/listing/route';
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import EtfScenarioCard from './EtfScenarioCard';
 import EtfScenarioFiltersBar from './EtfScenarioFiltersBar';
 

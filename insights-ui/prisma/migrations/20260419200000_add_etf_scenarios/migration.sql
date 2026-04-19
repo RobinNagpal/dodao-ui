@@ -1,15 +1,3 @@
--- CreateEnum
-CREATE TYPE "EtfScenarioDirection" AS ENUM ('UPSIDE', 'DOWNSIDE');
-
--- CreateEnum
-CREATE TYPE "EtfScenarioTimeframe" AS ENUM ('FUTURE', 'IN_PROGRESS', 'PAST');
-
--- CreateEnum
-CREATE TYPE "EtfScenarioProbabilityBucket" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
-
--- CreateEnum
-CREATE TYPE "EtfScenarioRole" AS ENUM ('WINNER', 'LOSER', 'MOST_EXPOSED');
-
 -- CreateTable
 CREATE TABLE "etf_scenarios" (
     "id" TEXT NOT NULL,
@@ -21,9 +9,9 @@ CREATE TABLE "etf_scenarios" (
     "winners_markdown" TEXT NOT NULL,
     "losers_markdown" TEXT NOT NULL,
     "outlook_markdown" TEXT NOT NULL,
-    "direction" "EtfScenarioDirection" NOT NULL DEFAULT 'DOWNSIDE',
-    "timeframe" "EtfScenarioTimeframe" NOT NULL DEFAULT 'FUTURE',
-    "probability_bucket" "EtfScenarioProbabilityBucket" NOT NULL DEFAULT 'MEDIUM',
+    "direction" TEXT NOT NULL DEFAULT 'DOWNSIDE',
+    "timeframe" TEXT NOT NULL DEFAULT 'FUTURE',
+    "probability_bucket" TEXT NOT NULL DEFAULT 'MEDIUM',
     "probability_percentage" INTEGER,
     "outlook_as_of_date" DATE NOT NULL,
     "meta_description" TEXT,
@@ -42,7 +30,7 @@ CREATE TABLE "etf_scenario_etf_links" (
     "etf_id" TEXT,
     "symbol" TEXT NOT NULL,
     "exchange" TEXT,
-    "role" "EtfScenarioRole" NOT NULL,
+    "role" TEXT NOT NULL,
     "sort_order" INTEGER NOT NULL DEFAULT 0,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
