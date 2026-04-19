@@ -179,6 +179,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: determine-changed-paths
     if: ${{ needs.determine-changed-paths.outputs.insights_ui_changed == 'true' || needs.determine-changed-paths.outputs.shared_web_core_changed == 'true' }}
+    # Throwaway Postgres used only by the "Prisma migrations apply cleanly" step
+    # below — never touches the real dev/prod database.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: prisma
+          POSTGRES_PASSWORD: prisma
+          POSTGRES_DB: prisma_migration_check
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -213,6 +229,15 @@ jobs:
 
       - name: Insights UI - Install dependencies
         run: cd insights-ui && pnpm install --filter insights-ui
+
+      - name: Insights UI - Check Prisma migrations apply cleanly
+        # Applies every migration in `insights-ui/prisma/migrations/` in order
+        # against a disposable Postgres container. Fails if the new PR
+        # migration (or any existing one) produces invalid SQL or conflicts
+        # with prior state. Does NOT touch the real dev/prod database.
+        env:
+          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/prisma_migration_check
+        run: cd insights-ui && pnpm exec prisma migrate deploy
 
       - name: Insights UI - Run ESLint
         run: cd insights-ui && pnpm lint
