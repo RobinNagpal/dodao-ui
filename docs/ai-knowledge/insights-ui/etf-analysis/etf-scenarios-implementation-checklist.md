@@ -27,7 +27,6 @@ Before reading the rest of this checklist, note the real (not assumed) patterns 
 - **Fetch/mutation hooks:** `useFetchData`, `usePostData`, `usePutData`, `useDeleteData` from `@dodao/web-core/ui/hooks/fetch/*` — they accept `successMessage` / `errorMessage` props and fire toasts automatically. No separate toast wiring is needed in each form.
 - **Markdown rendering:** `parseMarkdown(text)` at `src/util/parse-markdown.ts` returns HTML; callers inject via `dangerouslySetInnerHTML`. Stocks detail page uses this pattern heavily (see `src/app/stocks/[exchange]/[ticker]/page.tsx:21,348`). No `MarkdownViewer` component exists.
 - **Body validation:** `zod` is used in some (not all) routes (e.g. `src/app/api/tickers/[tickerKey]/ticker-financials/route.ts`). Use it for the new scenario write endpoints — form fields are numerous and easy to get wrong.
-- **Sitemap pattern:** **dynamic via a route handler**, not a static XML file. `src/app/stocks/sitemap.xml/route.ts` is a GET handler that fetches industries and tickers and streams a sitemap via `SitemapStream`; the `industry-tariff-report` feature does the same. There is currently no `src/app/etfs/sitemap.xml` and no root `app/sitemap.ts`. For scenarios, the right shape is `src/app/etf-scenarios/sitemap.xml/route.ts` that queries `prisma.etfScenario.findMany({ select: { slug, updatedAt } })` and emits one entry per slug. It's still optional for this PR but if added, **follow the dynamic route-handler shape, not a static XML file.**
 - **Seed scripts:** the repo has no `scripts/` directory and no `prisma/seed.ts`. Don't assume one. Importing the 31 scenarios from markdown should happen through an admin-triggered "Import from doc" endpoint (protected by `withLoggedInAdmin`), not a build-time script.
 - **Types for API responses:** existing convention is **co-located with the route file** (e.g. `EtfListingItem`, `EtfListingResponse` are defined inline in `src/app/api/[spaceId]/etfs-v1/listing/route.ts:21-48`, not in `src/types/`). Same convention in stocks and industries routes. Follow it.
 - **Metadata helpers:** stocks uses `src/utils/metadata-generators.ts` (exports `generateStockReportArticleSchema`, `generateStockReportBreadcrumbSchema`, and the `generateMetadata` base). ETFs has `src/utils/etf-metadata-generators*`. Create a parallel `src/utils/etf-scenario-metadata-generators.ts` — don't try to extend the stocks file.
@@ -151,8 +150,6 @@ export const revalidate = false;
 
 - [ ] **`loading.tsx` / `error.tsx` / `not-found.tsx`:** sibling stocks and ETF pages do **not** use these. Skip for parity unless the user asks for them.
 
-- [ ] **Sitemap (optional):** if added, use a **dynamic route handler** — `src/app/etf-scenarios/sitemap.xml/route.ts` — modelled on `src/app/stocks/sitemap.xml/route.ts`. It should `prisma.etfScenario.findMany({ select: { slug, updatedAt, archived }, where: { archived: false } })` and emit one URL per scenario via `SitemapStream`, with `lastmod = updatedAt`. **Do not write a static XML file** — that would drift the moment a scenario is edited.
-
 ---
 
 ## 5. Components
@@ -274,14 +271,12 @@ Two earlier audits of this checklist found specific errors — all corrected abo
 - Referenced `NotFoundError` from `@dodao/web-core`. That export does not exist; pages use `notFound()` from `next/navigation`, API routes throw ordinary `Error` and let `withErrorHandlingV2` serialise. **Corrected.**
 - Suggested a `scripts/seed-etf-scenarios.ts`. There is no `scripts/` directory and no Prisma seed file in this repo. **Replaced** with an admin-gated `POST /api/etf-scenarios/import` endpoint.
 - Proposed a central `src/types/etfScenarios.ts`. Existing convention is to co-locate request/response types with each API route. **Corrected** — only promote types to `src/types/` when shared outside the route file.
-- Mentioned an `app/sitemap.ts`. The repo uses per-feature sitemaps; no root sitemap exists.
 - Claimed `loading.tsx` / `error.tsx` / `not-found.tsx` were needed. Sibling ETF pages don't use them. **Marked optional.**
 - Implied admin routes inherit a layout-level guard. They don't — every write endpoint must wrap with `withLoggedInAdmin` individually. **Called out explicitly.**
 
 **Round 2 (vs stocks pages):**
 
 - Prescribed `revalidate = false` for the listing page. Stocks listing (`src/app/stocks/page.tsx:10-12`) uses `revalidate = 86400` (24h ISR) and so does the ETFs listing. Only detail pages use `revalidate = false`. **Split the two directives by page type.**
-- Said sitemap was a static XML file. Stocks actually uses a **dynamic route handler** at `src/app/stocks/sitemap.xml/route.ts` that queries the DB at request time via `SitemapStream`. **Corrected** the sitemap guidance to match.
 - Didn't mention `getBaseUrlForServerSidePages()`. Both stocks and ETFs detail pages use it to build server-side internal fetch URLs. **Added** as a verified convention and referenced explicitly in the detail-page fetch example.
 - Didn't call out the two admin UI patterns. `industry-management` uses `SingleSectionModal`; `ticker-management` uses custom inline forms. **Specified** that scenarios follow the `industry-management` modal pattern.
 - Didn't note the stocks canonical-redirect fallback (`unstable_noStore()` + redirect when ticker is found on a different exchange). **Explicitly excluded** — scenarios have a single-slug identity, so the fallback doesn't apply.
