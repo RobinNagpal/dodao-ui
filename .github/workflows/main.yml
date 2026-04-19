@@ -239,6 +239,45 @@ jobs:
           DATABASE_URL: postgresql://prisma:prisma@localhost:5432/prisma_migration_check
         run: cd insights-ui && pnpm exec prisma migrate deploy
 
+      - name: Insights UI - Check new migrations are safe against populated DB
+        # Simulates running the PR's migrations against a production-like DB
+        # that already has data. We apply `origin/main`'s migrations first
+        # (baseline = current prod schema), INSERT one canary row into every
+        # table, then apply the PR's migrations on top. A migration that
+        # would force data destruction (e.g. adding a NOT NULL column with
+        # no default to a populated table, tightening a CHECK constraint,
+        # removing a column referenced by other rows) will be rejected by
+        # PostgreSQL and fail this step — without ever touching the real
+        # dev/prod database.
+        env:
+          PGPASSWORD: prisma
+          DATABASE_URL: postgresql://prisma:prisma@localhost:5432/prisma_populated_check
+        run: |
+          set -e
+          # Second isolated DB so the prior empty-DB check is unaffected.
+          psql -h localhost -U prisma -d postgres -c 'CREATE DATABASE prisma_populated_check;'
+
+          # Fetch main and extract its prisma/ folder (schema + migrations)
+          # so we can run `migrate deploy` using the baseline state.
+          git fetch origin main --depth=1
+          rm -rf /tmp/baseline-prisma && mkdir -p /tmp/baseline-prisma
+          git archive origin/main -- insights-ui/prisma | tar -x --strip-components=2 -C /tmp/baseline-prisma
+
+          cd insights-ui
+
+          # 1) Baseline: apply all migrations from main against the empty DB.
+          pnpm exec prisma migrate deploy --schema=/tmp/baseline-prisma/schema.prisma
+
+          # 2) Seed one canary row into every baseline table so `ALTER TABLE`
+          #    on a populated table can raise data-loss errors.
+          psql -h localhost -U prisma -d prisma_populated_check \
+               -v ON_ERROR_STOP=1 \
+               -f ci/seed-for-migration-check.sql
+
+          # 3) Apply the PR's migrations on top of the populated DB. If any
+          #    new migration would require data destruction, this fails.
+          pnpm exec prisma migrate deploy
+
       - name: Insights UI - Run ESLint
         run: cd insights-ui && pnpm lint
 
