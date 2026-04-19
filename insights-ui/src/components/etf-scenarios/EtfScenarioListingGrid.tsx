@@ -2,25 +2,29 @@
 
 import { useMemo, useState } from 'react';
 import { EtfScenarioListingResponse } from '@/app/api/[spaceId]/etf-scenarios/listing/route';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
 import EtfScenarioCard from './EtfScenarioCard';
 import EtfScenarioFiltersBar from './EtfScenarioFiltersBar';
-import { EtfScenarioOutlookBucket } from '@prisma/client';
 
 export default function EtfScenarioListingGrid({ data }: { data: EtfScenarioListingResponse }): JSX.Element | null {
-  const [bucket, setBucket] = useState<EtfScenarioOutlookBucket | 'ALL'>('ALL');
+  const [direction, setDirection] = useState<EtfScenarioDirection | 'ALL'>('ALL');
+  const [bucket, setBucket] = useState<EtfScenarioProbabilityBucket | 'ALL'>('ALL');
+  const [timeframe, setTimeframe] = useState<EtfScenarioTimeframe | 'ALL'>('ALL');
   const [search, setSearch] = useState<string>('');
 
   const filtered = useMemo(() => {
     const needle = search.trim().toLowerCase();
     return data.scenarios.filter((s) => {
-      if (bucket !== 'ALL' && s.outlookBucket !== bucket) return false;
+      if (direction !== 'ALL' && s.direction !== direction) return false;
+      if (bucket !== 'ALL' && s.probabilityBucket !== bucket) return false;
+      if (timeframe !== 'ALL' && s.timeframe !== timeframe) return false;
       if (needle) {
         const hay = `${s.title} ${s.underlyingCause}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
     });
-  }, [data.scenarios, bucket, search]);
+  }, [data.scenarios, direction, bucket, timeframe, search]);
 
   if (data.scenarios.length === 0) {
     return (
@@ -33,7 +37,16 @@ export default function EtfScenarioListingGrid({ data }: { data: EtfScenarioList
 
   return (
     <div>
-      <EtfScenarioFiltersBar bucket={bucket} onBucketChange={setBucket} search={search} onSearchChange={setSearch} />
+      <EtfScenarioFiltersBar
+        direction={direction}
+        onDirectionChange={setDirection}
+        bucket={bucket}
+        onBucketChange={setBucket}
+        timeframe={timeframe}
+        onTimeframeChange={setTimeframe}
+        search={search}
+        onSearchChange={setSearch}
+      />
 
       <div className="flex items-center justify-between mb-4 mt-2">
         <p className="text-sm text-gray-400">

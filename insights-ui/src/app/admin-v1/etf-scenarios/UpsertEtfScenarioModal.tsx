@@ -6,7 +6,7 @@ import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaA
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { EtfScenario, EtfScenarioOutlookBucket } from '@prisma/client';
+import { EtfScenario, EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 
@@ -17,7 +17,22 @@ interface UpsertEtfScenarioModalProps {
   scenarioId?: string;
 }
 
-const OUTLOOK_OPTIONS: EtfScenarioOutlookBucket[] = ['HIGH', 'MEDIUM', 'LOW', 'IN_PROGRESS'];
+const DIRECTION_OPTIONS: Array<{ value: EtfScenarioDirection; label: string }> = [
+  { value: 'DOWNSIDE', label: 'Downside (risk / crash scenario)' },
+  { value: 'UPSIDE', label: 'Upside (rally / boom scenario)' },
+];
+
+const TIMEFRAME_OPTIONS: Array<{ value: EtfScenarioTimeframe; label: string }> = [
+  { value: 'FUTURE', label: 'Future (hasn’t happened yet)' },
+  { value: 'IN_PROGRESS', label: 'In progress (currently unfolding)' },
+  { value: 'PAST', label: 'Already happened' },
+];
+
+const PROBABILITY_OPTIONS: Array<{ value: EtfScenarioProbabilityBucket; label: string }> = [
+  { value: 'HIGH', label: 'High (>40%)' },
+  { value: 'MEDIUM', label: 'Medium (20–40%)' },
+  { value: 'LOW', label: 'Low (<20%)' },
+];
 
 export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, scenarioId }: UpsertEtfScenarioModalProps): JSX.Element {
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
@@ -28,7 +43,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   const [winnersMarkdown, setWinnersMarkdown] = useState<string>('');
   const [losersMarkdown, setLosersMarkdown] = useState<string>('');
   const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
-  const [outlookBucket, setOutlookBucket] = useState<EtfScenarioOutlookBucket>('MEDIUM');
+  const [direction, setDirection] = useState<EtfScenarioDirection>('DOWNSIDE');
+  const [timeframe, setTimeframe] = useState<EtfScenarioTimeframe>('FUTURE');
+  const [probabilityBucket, setProbabilityBucket] = useState<EtfScenarioProbabilityBucket>('MEDIUM');
+  const [probabilityPercentage, setProbabilityPercentage] = useState<string>('');
   const [outlookAsOfDate, setOutlookAsOfDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [metaDescription, setMetaDescription] = useState<string>('');
   const [archived, setArchived] = useState<boolean>(false);
@@ -60,7 +78,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       setWinnersMarkdown('');
       setLosersMarkdown('');
       setOutlookMarkdown('');
-      setOutlookBucket('MEDIUM');
+      setDirection('DOWNSIDE');
+      setTimeframe('FUTURE');
+      setProbabilityBucket('MEDIUM');
+      setProbabilityPercentage('');
       setOutlookAsOfDate(new Date().toISOString().slice(0, 10));
       setMetaDescription('');
       setArchived(false);
@@ -84,7 +105,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setWinnersMarkdown(data.winnersMarkdown);
         setLosersMarkdown(data.losersMarkdown);
         setOutlookMarkdown(data.outlookMarkdown);
-        setOutlookBucket(data.outlookBucket);
+        setDirection(data.direction);
+        setTimeframe(data.timeframe);
+        setProbabilityBucket(data.probabilityBucket);
+        setProbabilityPercentage(typeof data.probabilityPercentage === 'number' ? String(data.probabilityPercentage) : '');
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');
         setArchived(data.archived);
@@ -104,6 +128,16 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       return;
     }
 
+    let probabilityPercentageValue: number | null = null;
+    if (probabilityPercentage.trim() !== '') {
+      const n = parseInt(probabilityPercentage, 10);
+      if (isNaN(n) || n < 0 || n > 100) {
+        setFormError('Probability percentage must be an integer between 0 and 100.');
+        return;
+      }
+      probabilityPercentageValue = n;
+    }
+
     const payload = {
       scenarioNumber,
       title,
@@ -113,7 +147,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       winnersMarkdown,
       losersMarkdown,
       outlookMarkdown,
-      outlookBucket,
+      direction,
+      timeframe,
+      probabilityBucket,
+      probabilityPercentage: probabilityPercentageValue,
       outlookAsOfDate: new Date(outlookAsOfDate).toISOString(),
       metaDescription: metaDescription || null,
       archived,
@@ -165,6 +202,75 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
           }}
         />
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-gray-300">Direction</span>
+            <select
+              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              value={direction}
+              onChange={(e) => setDirection(e.target.value as EtfScenarioDirection)}
+            >
+              {DIRECTION_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-gray-300">Timeframe</span>
+            <select
+              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              value={timeframe}
+              onChange={(e) => setTimeframe(e.target.value as EtfScenarioTimeframe)}
+            >
+              {TIMEFRAME_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-gray-300">Probability bucket</span>
+            <select
+              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              value={probabilityBucket}
+              onChange={(e) => setProbabilityBucket(e.target.value as EtfScenarioProbabilityBucket)}
+            >
+              {PROBABILITY_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-gray-300">Precise probability % (optional, 0–100)</span>
+            <input
+              type="number"
+              min={0}
+              max={100}
+              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              value={probabilityPercentage}
+              onChange={(e) => setProbabilityPercentage(e.target.value)}
+              placeholder="e.g. 30"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm">
+            <span className="text-gray-300">Outlook as-of date</span>
+            <input
+              type="date"
+              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+              value={outlookAsOfDate}
+              onChange={(e) => setOutlookAsOfDate(e.target.value)}
+            />
+          </label>
+        </div>
+
         <TextareaAutosize
           label="Underlying cause (markdown)"
           modelValue={underlyingCause}
@@ -204,32 +310,6 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
             if (typeof v === 'string') setOutlookMarkdown(v);
           }}
         />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Outlook bucket</span>
-            <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
-              value={outlookBucket}
-              onChange={(e) => setOutlookBucket(e.target.value as EtfScenarioOutlookBucket)}
-            >
-              {OUTLOOK_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Outlook as-of date</span>
-            <input
-              type="date"
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
-              value={outlookAsOfDate}
-              onChange={(e) => setOutlookAsOfDate(e.target.value)}
-            />
-          </label>
-        </div>
 
         <TextareaAutosize
           label="SEO meta description (optional)"

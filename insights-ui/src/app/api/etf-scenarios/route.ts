@@ -4,7 +4,7 @@ import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { EtfScenario, EtfScenarioOutlookBucket, EtfScenarioRole } from '@prisma/client';
+import { EtfScenario, EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
 import { z } from 'zod';
@@ -18,7 +18,10 @@ const createEtfScenarioSchema = z.object({
   winnersMarkdown: z.string().min(1),
   losersMarkdown: z.string().min(1),
   outlookMarkdown: z.string().min(1),
-  outlookBucket: z.nativeEnum(EtfScenarioOutlookBucket),
+  direction: z.nativeEnum(EtfScenarioDirection),
+  timeframe: z.nativeEnum(EtfScenarioTimeframe),
+  probabilityBucket: z.nativeEnum(EtfScenarioProbabilityBucket),
+  probabilityPercentage: z.number().int().min(0).max(100).nullable().optional(),
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
@@ -59,7 +62,10 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
         winnersMarkdown: body.winnersMarkdown,
         losersMarkdown: body.losersMarkdown,
         outlookMarkdown: body.outlookMarkdown,
-        outlookBucket: body.outlookBucket,
+        direction: body.direction,
+        timeframe: body.timeframe,
+        probabilityBucket: body.probabilityBucket,
+        probabilityPercentage: body.probabilityPercentage ?? null,
         outlookAsOfDate: new Date(body.outlookAsOfDate),
         metaDescription: body.metaDescription ?? null,
         archived: body.archived ?? false,

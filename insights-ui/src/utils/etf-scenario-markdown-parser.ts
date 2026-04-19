@@ -1,4 +1,4 @@
-import { EtfScenarioOutlookBucket } from '@prisma/client';
+import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 
 export interface ParsedScenarioLink {
@@ -16,7 +16,10 @@ export interface ParsedScenario {
   winnersMarkdown: string;
   losersMarkdown: string;
   outlookMarkdown: string;
-  outlookBucket: EtfScenarioOutlookBucket;
+  direction: EtfScenarioDirection;
+  timeframe: EtfScenarioTimeframe;
+  probabilityBucket: EtfScenarioProbabilityBucket;
+  probabilityPercentage: number | null;
   outlookAsOfDate: Date;
   links: ParsedScenarioLink[];
 }
@@ -38,17 +41,62 @@ function extractTickers(line: string): string[] {
   return out;
 }
 
-function classifyOutlookBucket(outlook: string): EtfScenarioOutlookBucket {
+function classifyProbabilityBucket(outlook: string, extractedPercentage: number | null): EtfScenarioProbabilityBucket {
+  if (extractedPercentage !== null) {
+    if (extractedPercentage > 40) return 'HIGH';
+    if (extractedPercentage >= 20) return 'MEDIUM';
+    return 'LOW';
+  }
   const lower = outlook.toLowerCase();
-  if (/in progress|already (happened|absorbed|priced)/i.test(outlook)) return 'IN_PROGRESS';
   if (/\bhigh probability\b/i.test(outlook)) return 'HIGH';
   if (/\bmedium probability\b/i.test(outlook)) return 'MEDIUM';
   if (/\blow probability\b/i.test(outlook)) return 'LOW';
-  // Fallback: try first >40%, 20-40%, <20% signals
   if (/>\s*40\s*%|above 40\s*%/.test(lower)) return 'HIGH';
   if (/20\s*[–-]\s*40\s*%|20\s*-\s*40\s*%/.test(lower)) return 'MEDIUM';
   if (/<\s*20\s*%|below 20\s*%/.test(lower)) return 'LOW';
   return 'MEDIUM';
+}
+
+function classifyTimeframe(outlook: string): EtfScenarioTimeframe {
+  if (/already (happened|absorbed|priced|played)/i.test(outlook) || /played out in full|fully played out/i.test(outlook)) return 'PAST';
+  if (/in progress|late-stage|currently (ongoing|underway)|ongoing/i.test(outlook)) return 'IN_PROGRESS';
+  return 'FUTURE';
+}
+
+function classifyDirection(title: string, winners: string, losers: string): EtfScenarioDirection {
+  const lowerTitle = title.toLowerCase();
+  const UPSIDE_KEYWORDS = ['boom', 'rally', 'surge', 'breakout', 'outperform', 'bull run'];
+  const DOWNSIDE_KEYWORDS = ['crash', 'crisis', 'shock', 'rout', 'stagnation', 'collapse', 'bust', 'selloff', 'sell-off', 'downturn', 'contagion'];
+
+  for (const kw of DOWNSIDE_KEYWORDS) {
+    if (lowerTitle.includes(kw)) return 'DOWNSIDE';
+  }
+  for (const kw of UPSIDE_KEYWORDS) {
+    if (lowerTitle.includes(kw)) return 'UPSIDE';
+  }
+
+  // Fallback: compare density of tickers; more losers → downside scenario.
+  const winnersCount = (winners.match(TICKER_PATTERN) ?? []).length;
+  const losersCount = (losers.match(TICKER_PATTERN) ?? []).length;
+  if (losersCount > winnersCount + 2) return 'DOWNSIDE';
+  if (winnersCount > losersCount + 2) return 'UPSIDE';
+  return 'DOWNSIDE';
+}
+
+/** Pulls the first explicit probability percentage out of an outlook block.
+ *  Accepts forms like `~30-35%`, `(~30–35%)`, `45%`, `>40%`, `<20%`. Returns
+ *  the midpoint of a range, the single value, or null if nothing parseable.
+ */
+function extractProbabilityPercentage(outlook: string): number | null {
+  const rangeMatch = outlook.match(/~?\s*(\d{1,3})\s*[-–]\s*(\d{1,3})\s*%/);
+  if (rangeMatch) {
+    const a = parseInt(rangeMatch[1], 10);
+    const b = parseInt(rangeMatch[2], 10);
+    return Math.round((a + b) / 2);
+  }
+  const pointMatch = outlook.match(/~?\s*(\d{1,3})\s*%/);
+  if (pointMatch) return parseInt(pointMatch[1], 10);
+  return null;
 }
 
 function extractOutlookDate(text: string): Date | null {
@@ -93,7 +141,10 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
 
     if (!underlyingCause || !outlookMarkdown) continue;
 
-    const outlookBucket = classifyOutlookBucket(outlookMarkdown);
+    const probabilityPercentage = extractProbabilityPercentage(outlookMarkdown);
+    const probabilityBucket = classifyProbabilityBucket(outlookMarkdown, probabilityPercentage);
+    const timeframe = classifyTimeframe(outlookMarkdown);
+    const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
     // The `as of YYYY-MM-DD` suffix lives inside the Outlook *label* (e.g. `**Outlook (as of 2026-04-19):**`),
     // which is stripped by extractField — so search the whole scenario block, not just the body.
     const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
@@ -132,7 +183,10 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       winnersMarkdown,
       losersMarkdown,
       outlookMarkdown,
-      outlookBucket,
+      direction,
+      timeframe,
+      probabilityBucket,
+      probabilityPercentage,
       outlookAsOfDate,
       links: deduped,
     });

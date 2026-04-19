@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { EtfScenarioDetail, EtfScenarioLinkDto } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
 import { parseMarkdown } from '@/util/parse-markdown';
-import EtfScenarioOutlookBadge from './EtfScenarioOutlookBadge';
-import { outlookBucketLabel } from '@/utils/etf-scenario-metadata-generators';
+import { EtfScenarioDirectionBadge, EtfScenarioProbabilityBadge, EtfScenarioTimeframeBadge } from './EtfScenarioOutlookBadge';
+import { directionLabel, probabilityBucketLabel, timeframeLabel } from '@/utils/etf-scenario-metadata-generators';
 
 function renderMarkdown(md: string) {
   return { __html: parseMarkdown(md) as string };
@@ -49,15 +49,18 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
 
   return (
     <article className="text-[#E5E7EB]">
-      <div className="flex flex-wrap items-center gap-3 mb-4">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-sm font-bold px-2.5 py-0.5 rounded">
           Scenario #{scenario.scenarioNumber}
         </span>
-        <EtfScenarioOutlookBadge bucket={scenario.outlookBucket} asOfDate={scenario.outlookAsOfDate} />
-        <span className="text-xs text-gray-400">
-          Outlook reviewed {asOf} · bucket: {outlookBucketLabel(scenario.outlookBucket)}
-        </span>
+        <EtfScenarioDirectionBadge direction={scenario.direction} />
+        <EtfScenarioProbabilityBadge bucket={scenario.probabilityBucket} percentage={scenario.probabilityPercentage} asOfDate={scenario.outlookAsOfDate} />
+        <EtfScenarioTimeframeBadge timeframe={scenario.timeframe} />
       </div>
+      <p className="text-xs text-gray-400 mb-4">
+        {directionLabel(scenario.direction)} · {probabilityBucketLabel(scenario.probabilityBucket)} · {timeframeLabel(scenario.timeframe)} · outlook reviewed{' '}
+        {asOf}
+      </p>
 
       <h1 className="text-3xl font-bold text-white mb-4">{scenario.title}</h1>
 

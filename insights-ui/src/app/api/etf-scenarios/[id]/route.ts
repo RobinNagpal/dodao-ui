@@ -3,7 +3,7 @@ import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from 
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
-import { EtfScenario, EtfScenarioOutlookBucket } from '@prisma/client';
+import { EtfScenario, EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 import { z } from 'zod';
@@ -17,7 +17,10 @@ const updateEtfScenarioSchema = z.object({
   winnersMarkdown: z.string().min(1).optional(),
   losersMarkdown: z.string().min(1).optional(),
   outlookMarkdown: z.string().min(1).optional(),
-  outlookBucket: z.nativeEnum(EtfScenarioOutlookBucket).optional(),
+  direction: z.nativeEnum(EtfScenarioDirection).optional(),
+  timeframe: z.nativeEnum(EtfScenarioTimeframe).optional(),
+  probabilityBucket: z.nativeEnum(EtfScenarioProbabilityBucket).optional(),
+  probabilityPercentage: z.number().int().min(0).max(100).nullable().optional(),
   outlookAsOfDate: z
     .string()
     .refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date')
@@ -53,7 +56,10 @@ async function putHandler(request: NextRequest, _userContext: DoDaoJwtTokenPaylo
       ...(body.winnersMarkdown !== undefined && { winnersMarkdown: body.winnersMarkdown }),
       ...(body.losersMarkdown !== undefined && { losersMarkdown: body.losersMarkdown }),
       ...(body.outlookMarkdown !== undefined && { outlookMarkdown: body.outlookMarkdown }),
-      ...(body.outlookBucket !== undefined && { outlookBucket: body.outlookBucket }),
+      ...(body.direction !== undefined && { direction: body.direction }),
+      ...(body.timeframe !== undefined && { timeframe: body.timeframe }),
+      ...(body.probabilityBucket !== undefined && { probabilityBucket: body.probabilityBucket }),
+      ...(body.probabilityPercentage !== undefined && { probabilityPercentage: body.probabilityPercentage }),
       ...(body.outlookAsOfDate !== undefined && { outlookAsOfDate: new Date(body.outlookAsOfDate) }),
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),
       ...(body.archived !== undefined && { archived: body.archived }),

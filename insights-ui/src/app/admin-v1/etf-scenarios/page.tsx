@@ -16,11 +16,21 @@ import ManageLinksModal from './ManageLinksModal';
 import UpsertEtfScenarioModal from './UpsertEtfScenarioModal';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
-const OUTLOOK_BADGE: Record<string, string> = {
+const PROBABILITY_BADGE: Record<string, string> = {
   HIGH: 'bg-red-500/15 text-red-300 border-red-500/40',
   MEDIUM: 'bg-amber-500/15 text-amber-300 border-amber-500/40',
   LOW: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40',
-  IN_PROGRESS: 'bg-gray-500/15 text-gray-300 border-gray-500/40',
+};
+
+const DIRECTION_BADGE: Record<string, string> = {
+  UPSIDE: 'bg-sky-500/15 text-sky-300 border-sky-500/40',
+  DOWNSIDE: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/40',
+};
+
+const TIMEFRAME_BADGE: Record<string, string> = {
+  FUTURE: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40',
+  IN_PROGRESS: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/40',
+  PAST: 'bg-gray-500/15 text-gray-300 border-gray-500/40',
 };
 
 export default function EtfScenariosAdminPage(): JSX.Element {
@@ -116,7 +126,9 @@ export default function EtfScenariosAdminPage(): JSX.Element {
               <tr>
                 <th className="px-3 py-2">#</th>
                 <th className="px-3 py-2">Title</th>
-                <th className="px-3 py-2">Outlook</th>
+                <th className="px-3 py-2">Direction</th>
+                <th className="px-3 py-2">Probability</th>
+                <th className="px-3 py-2">Timeframe</th>
                 <th className="px-3 py-2">As of</th>
                 <th className="px-3 py-2">Archived</th>
                 <th className="px-3 py-2 text-right">Actions</th>
@@ -132,7 +144,16 @@ export default function EtfScenariosAdminPage(): JSX.Element {
                     </Link>
                   </td>
                   <td className="px-3 py-2">
-                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${OUTLOOK_BADGE[s.outlookBucket] ?? ''}`}>{s.outlookBucket}</span>
+                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${DIRECTION_BADGE[s.direction] ?? ''}`}>{s.direction}</span>
+                  </td>
+                  <td className="px-3 py-2">
+                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${PROBABILITY_BADGE[s.probabilityBucket] ?? ''}`}>
+                      {s.probabilityBucket}
+                      {typeof s.probabilityPercentage === 'number' ? ` · ~${s.probabilityPercentage}%` : ''}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2">
+                    <span className={`inline-block border rounded-full px-2 py-0.5 text-xs ${TIMEFRAME_BADGE[s.timeframe] ?? ''}`}>{s.timeframe}</span>
                   </td>
                   <td className="px-3 py-2 text-gray-400">{s.outlookAsOfDate.slice(0, 10)}</td>
                   <td className="px-3 py-2 text-gray-400">{s.archived ? 'Yes' : 'No'}</td>

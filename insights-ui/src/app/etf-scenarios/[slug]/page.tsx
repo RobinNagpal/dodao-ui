@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   return generateEtfScenarioDetailMetadata({
     title: scenario.title,
     slug: scenario.slug,
-    outlookBucket: scenario.outlookBucket,
+    probabilityBucket: scenario.probabilityBucket,
     outlookAsOfDate: scenario.outlookAsOfDate.slice(0, 10),
     metaDescription: scenario.metaDescription,
     underlyingCause: scenario.underlyingCause,

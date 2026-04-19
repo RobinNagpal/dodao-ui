@@ -97,7 +97,7 @@ export function generateEtfScenarioListingItemListJsonLd(items: Array<{ slug: st
 interface EtfScenarioDetailMetadataInput {
   title: string;
   slug: string;
-  outlookBucket: string;
+  probabilityBucket: string;
   outlookAsOfDate: string;
   metaDescription?: string | null;
   underlyingCause: string;
@@ -108,7 +108,7 @@ interface EtfScenarioDetailMetadataInput {
 export function generateEtfScenarioDetailMetadata({
   title,
   slug,
-  outlookBucket,
+  probabilityBucket,
   outlookAsOfDate,
   metaDescription,
   underlyingCause,
@@ -117,12 +117,12 @@ export function generateEtfScenarioDetailMetadata({
 }: EtfScenarioDetailMetadataInput): Metadata {
   const year = new Date().getFullYear();
   const canonicalUrl = `${BASE_URL}/etf-scenarios/${slug}`;
-  const bucketLabel = outlookBucketLabel(outlookBucket);
+  const bucketLabel = probabilityBucketLabel(probabilityBucket);
 
   const description =
     metaDescription?.trim() ||
     truncateForMeta(
-      `${title} — ETF scenario analysis: ${underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Outlook ${bucketLabel} as of ${outlookAsOfDate}.`
+      `${title} — ETF scenario analysis: ${underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
     );
 
   return {
@@ -194,7 +194,7 @@ export function generateEtfScenarioDetailBreadcrumbJsonLd({ title, slug }: { tit
   };
 }
 
-export function outlookBucketLabel(bucket: string): string {
+export function probabilityBucketLabel(bucket: string): string {
   switch (bucket) {
     case 'HIGH':
       return 'High (>40%)';
@@ -202,9 +202,31 @@ export function outlookBucketLabel(bucket: string): string {
       return 'Medium (20–40%)';
     case 'LOW':
       return 'Low (<20%)';
-    case 'IN_PROGRESS':
-      return 'In progress / already happened';
     default:
       return bucket;
+  }
+}
+
+export function directionLabel(direction: string): string {
+  switch (direction) {
+    case 'UPSIDE':
+      return 'Upside';
+    case 'DOWNSIDE':
+      return 'Downside';
+    default:
+      return direction;
+  }
+}
+
+export function timeframeLabel(timeframe: string): string {
+  switch (timeframe) {
+    case 'FUTURE':
+      return 'Future';
+    case 'IN_PROGRESS':
+      return 'In progress';
+    case 'PAST':
+      return 'Already happened';
+    default:
+      return timeframe;
   }
 }

@@ -68,7 +68,10 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       winnersMarkdown: scenario.winnersMarkdown,
       losersMarkdown: scenario.losersMarkdown,
       outlookMarkdown: scenario.outlookMarkdown,
-      outlookBucket: scenario.outlookBucket,
+      direction: scenario.direction,
+      timeframe: scenario.timeframe,
+      probabilityBucket: scenario.probabilityBucket,
+      probabilityPercentage: scenario.probabilityPercentage,
       outlookAsOfDate: scenario.outlookAsOfDate,
       spaceId: KoalaGainsSpaceId,
     };

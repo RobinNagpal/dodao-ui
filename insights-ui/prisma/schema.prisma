@@ -1715,11 +1715,21 @@ model EtfCachedScore {
 // ETF Market Scenarios
 // --------------------------
 
-enum EtfScenarioOutlookBucket {
+enum EtfScenarioDirection {
+  UPSIDE
+  DOWNSIDE
+}
+
+enum EtfScenarioTimeframe {
+  FUTURE
+  IN_PROGRESS
+  PAST
+}
+
+enum EtfScenarioProbabilityBucket {
   HIGH
   MEDIUM
   LOW
-  IN_PROGRESS
 }
 
 enum EtfScenarioRole {
@@ -1729,28 +1739,34 @@ enum EtfScenarioRole {
 }
 
 model EtfScenario {
-  id                String   @id @default(uuid())
-  scenarioNumber    Int      @map("scenario_number")
-  title             String   @map("title")
-  slug              String   @map("slug")
-  underlyingCause   String   @map("underlying_cause") @db.Text
-  historicalAnalog  String   @map("historical_analog") @db.Text
-  winnersMarkdown   String   @map("winners_markdown") @db.Text
-  losersMarkdown    String   @map("losers_markdown") @db.Text
-  outlookMarkdown   String   @map("outlook_markdown") @db.Text
-  outlookBucket     EtfScenarioOutlookBucket @map("outlook_bucket")
-  outlookAsOfDate   DateTime @map("outlook_as_of_date") @db.Date
-  metaDescription   String?  @map("meta_description") @db.Text
-  archived          Boolean  @default(false) @map("archived")
-  spaceId           String   @default("koala_gains") @map("space_id")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  id                    String                       @id @default(uuid())
+  scenarioNumber        Int                          @map("scenario_number")
+  title                 String                       @map("title")
+  slug                  String                       @map("slug")
+  underlyingCause       String                       @map("underlying_cause") @db.Text
+  historicalAnalog      String                       @map("historical_analog") @db.Text
+  winnersMarkdown       String                       @map("winners_markdown") @db.Text
+  losersMarkdown        String                       @map("losers_markdown") @db.Text
+  outlookMarkdown       String                       @map("outlook_markdown") @db.Text
+  direction             EtfScenarioDirection         @default(DOWNSIDE) @map("direction")
+  timeframe             EtfScenarioTimeframe         @default(FUTURE) @map("timeframe")
+  probabilityBucket     EtfScenarioProbabilityBucket @default(MEDIUM) @map("probability_bucket")
+  probabilityPercentage Int?                         @map("probability_percentage")
+  outlookAsOfDate       DateTime                     @map("outlook_as_of_date") @db.Date
+  metaDescription       String?                      @map("meta_description") @db.Text
+  archived              Boolean                      @default(false) @map("archived")
+  spaceId               String                       @default("koala_gains") @map("space_id")
+  createdAt             DateTime                     @default(now()) @map("created_at")
+  updatedAt             DateTime                     @updatedAt @map("updated_at")
 
-  etfLinks          EtfScenarioEtfLink[]
+  etfLinks              EtfScenarioEtfLink[]
 
   @@unique([spaceId, scenarioNumber])
   @@unique([spaceId, slug])
   @@index([spaceId, archived])
+  @@index([spaceId, direction])
+  @@index([spaceId, timeframe])
+  @@index([spaceId, probabilityBucket])
   @@map("etf_scenarios")
 }
 

@@ -1,5 +1,11 @@
 -- CreateEnum
-CREATE TYPE "EtfScenarioOutlookBucket" AS ENUM ('HIGH', 'MEDIUM', 'LOW', 'IN_PROGRESS');
+CREATE TYPE "EtfScenarioDirection" AS ENUM ('UPSIDE', 'DOWNSIDE');
+
+-- CreateEnum
+CREATE TYPE "EtfScenarioTimeframe" AS ENUM ('FUTURE', 'IN_PROGRESS', 'PAST');
+
+-- CreateEnum
+CREATE TYPE "EtfScenarioProbabilityBucket" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
 
 -- CreateEnum
 CREATE TYPE "EtfScenarioRole" AS ENUM ('WINNER', 'LOSER', 'MOST_EXPOSED');
@@ -15,7 +21,10 @@ CREATE TABLE "etf_scenarios" (
     "winners_markdown" TEXT NOT NULL,
     "losers_markdown" TEXT NOT NULL,
     "outlook_markdown" TEXT NOT NULL,
-    "outlook_bucket" "EtfScenarioOutlookBucket" NOT NULL,
+    "direction" "EtfScenarioDirection" NOT NULL DEFAULT 'DOWNSIDE',
+    "timeframe" "EtfScenarioTimeframe" NOT NULL DEFAULT 'FUTURE',
+    "probability_bucket" "EtfScenarioProbabilityBucket" NOT NULL DEFAULT 'MEDIUM',
+    "probability_percentage" INTEGER,
     "outlook_as_of_date" DATE NOT NULL,
     "meta_description" TEXT,
     "archived" BOOLEAN NOT NULL DEFAULT false,
@@ -50,6 +59,15 @@ CREATE UNIQUE INDEX "etf_scenarios_space_id_slug_key" ON "etf_scenarios"("space_
 
 -- CreateIndex
 CREATE INDEX "etf_scenarios_space_id_archived_idx" ON "etf_scenarios"("space_id", "archived");
+
+-- CreateIndex
+CREATE INDEX "etf_scenarios_space_id_direction_idx" ON "etf_scenarios"("space_id", "direction");
+
+-- CreateIndex
+CREATE INDEX "etf_scenarios_space_id_timeframe_idx" ON "etf_scenarios"("space_id", "timeframe");
+
+-- CreateIndex
+CREATE INDEX "etf_scenarios_space_id_probability_bucket_idx" ON "etf_scenarios"("space_id", "probability_bucket");
 
 -- CreateIndex
 CREATE INDEX "etf_scenario_etf_links_scenario_id_idx" ON "etf_scenario_etf_links"("scenario_id");
