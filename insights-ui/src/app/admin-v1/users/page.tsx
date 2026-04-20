@@ -54,6 +54,7 @@ export default function Page() {
   const [deleteUserId, setDeleteUserId] = useState<string>('');
   const [roleFilter, setRoleFilter] = useState<string>('All');
   const [isManagerFilter, setIsManagerFilter] = useState<boolean>(false);
+  const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 100;
 
@@ -63,8 +64,9 @@ export default function Page() {
     params.set('limit', String(pageSize));
     if (roleFilter !== 'All') params.set('role', roleFilter);
     if (isManagerFilter) params.set('isManager', 'true');
+    if (isActiveFilter) params.set('isActive', 'true');
     return `${getBaseUrl()}/api/users?${params.toString()}`;
-  }, [currentPage, roleFilter, isManagerFilter]);
+  }, [currentPage, roleFilter, isManagerFilter, isActiveFilter]);
 
   const { data: usersResponse, loading: loadingUsers, reFetchData: refetchUsers } = useFetchData<UsersResponse>(usersApiUrl, {}, 'Failed to load users');
 
@@ -134,6 +136,11 @@ export default function Page() {
     setCurrentPage(1);
   };
 
+  const handleIsActiveFilterChange = (checked: boolean) => {
+    setIsActiveFilter(checked);
+    setCurrentPage(1);
+  };
+
   return (
     <PageWrapper>
       <AdminNav />
@@ -156,6 +163,7 @@ export default function Page() {
           <StyledSelect label="Role" items={roleFilterItems} selectedItemId={roleFilter} setSelectedItemId={handleRoleFilterChange} />
         </div>
         <Checkbox id="isManagerFilter" labelContent="Is Manager" isChecked={isManagerFilter} onChange={handleIsManagerFilterChange} />
+        <Checkbox id="isActiveFilter" labelContent="Is Active" isChecked={isActiveFilter} onChange={handleIsActiveFilterChange} />
       </div>
 
       {loadingUsers ? (
