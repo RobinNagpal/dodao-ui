@@ -1,199 +1,103 @@
 {
   "categoryKey": "RiskAnalysis",
   "categoryName": "Risk Analysis",
-  "categoryDescription": "Evaluates the ETF's risk profile including volatility, drawdowns, risk-adjusted returns, and downside protection across multiple time periods.",
-  "factorsByAssetClass": {
-    "Equity": [
-      {
-        "factorAnalysisKey": "volatility_measures",
-        "factorAnalysisTitle": "Volatility & Standard Deviation",
-        "factorAnalysisDescription": "Measures the fund's price volatility using beta, standard deviation, and ATR. For equity ETFs, beta near 1.0 is expected for broad market funds. Beta significantly above 1.0 (like growth ETFs at 1.2+) means amplified swings — higher highs and lower lows. Beta below 0.7 (like high-dividend or low-volatility ETFs) means dampened moves. Evaluate whether the observed volatility matches what the strategy promises.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios which measure return per unit of risk. For equity ETFs, a Sharpe ratio above 0.5 is decent, above 1.0 is very good. Sortino ratio is more useful because it only penalizes downside volatility, not upside. Compare to the category average — an equity ETF with higher Sharpe than its category is delivering better risk-adjusted value. High-beta growth ETFs naturally have lower Sharpe ratios than low-volatility ETFs.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Maximum Drawdown & Recovery",
-        "factorAnalysisDescription": "Analyzes the worst peak-to-trough declines and recovery time. For broad equity ETFs, drawdowns of -20% to -35% happen roughly once a decade (2008, 2020, 2022). Growth ETFs may drop -30% to -40%. The key question is recovery speed — did the fund recover within 1-2 years? A fund that draws down more than its category average AND recovers slower is a genuine concern. Contextualize ATH distance: being -5% to -10% from ATH is normal for equities.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "capture_ratios",
-        "factorAnalysisTitle": "Upside/Downside Capture Ratios",
-        "factorAnalysisDescription": "Measures how much of the market's upside the fund captures vs how much of the downside it absorbs. For equity ETFs, the ideal is upside capture > downside capture. A passive S&P 500 ETF should have both near 100%. A defensive equity ETF (high-dividend, low-volatility) might show 70% upside / 50% downside — capturing less of the gains but much less of the losses. Active ETFs that show 90% upside / 110% downside are destroying value through poor stock selection.",
-        "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's overall Mor risk score and risk level against its category peers across 3-year, 5-year, and 10-year periods. For equity ETFs, consistently below-average risk vs category is favorable. A passive index ETF should show average risk for its category. An actively managed equity ETF with above-average risk should be delivering above-average returns to justify it.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ],
-    "Fixed Income": [
-      {
-        "factorAnalysisKey": "interest_rate_sensitivity",
-        "factorAnalysisTitle": "Interest Rate Sensitivity & Duration Risk",
-        "factorAnalysisDescription": "For bond ETFs, interest rate risk (measured by duration) is the primary risk factor. Beta relative to equities is less meaningful — a bond ETF's beta near 0 simply means it doesn't move with stocks, not that it's low-risk. Instead, evaluate using the annual return pattern: how badly did the fund get hit in 2022 (rising rates) vs how well it did in 2019/2020 (falling rates)? Long-duration bond ETFs (like TLT) can lose -30% in a rising rate year despite being 'safe' government bonds. The magnitude of rate-driven losses should be compared to category peers, not to equities.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, riskAndVolatilityMeasures, riskPeriods"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for bond ETFs. Bond ETFs typically have lower Sharpe ratios than equity ETFs because their returns are lower. A Sharpe above 0.3 is decent for a bond fund. Compare to category average rather than absolute benchmarks. Sortino is particularly useful for bond ETFs because the 2022 rate shock created extreme downside that distorts symmetric volatility measures. A bond ETF that maintained a positive Sortino through 2022-2024 is demonstrating good risk-adjusted performance.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Maximum Drawdown & Recovery",
-        "factorAnalysisDescription": "Analyzes worst declines for bond ETFs. The 2022 rate hike cycle caused historically unprecedented bond losses (AGG -13%, TLT -31%). For bond ETFs, the key question is: was the drawdown in line with the category and duration profile, or did the fund lose more than expected? A bond ETF that lost -15% when its category lost -13% has a problem. A bond ETF that lost -13% in line with its category was simply exposed to the asset class. ATH distance is less meaningful for bond ETFs — ATHs were often set during the 2020 zero-rate era and are not realistic reference points.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "credit_and_default_risk",
-        "factorAnalysisTitle": "Credit & Default Risk Exposure",
-        "factorAnalysisDescription": "Evaluates the credit risk profile of the bond ETF. Treasury bond ETFs have essentially zero credit risk. Investment-grade corporate bond ETFs have moderate credit risk. High-yield (junk) bond ETFs carry significant credit risk that manifests during economic stress. Compare the fund's worst calendar year to its category — if a high-yield ETF lost significantly more than peers during 2020 or 2022, it may have had excessive exposure to lower-rated credits. Use the Mor risk score relative to category to gauge credit positioning.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's Mor risk score against its bond category peers across multiple periods. For bond ETFs, below-average risk vs category means the fund is taking less interest rate or credit risk than peers — which usually means lower returns too. The right question is whether the risk/return trade-off is fair: is the fund taking proportionally less risk for proportionally less return? A fund with below-average risk but average returns is well-managed.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ],
-    "Alternatives": [
-      {
-        "factorAnalysisKey": "volatility_vs_underlying",
-        "factorAnalysisTitle": "Volatility Relative to Underlying Market",
-        "factorAnalysisDescription": "For alternative strategy ETFs (covered call, derivative income), the core value proposition is lower volatility than their underlying market. A covered call ETF on the S&P 500 should have significantly lower volatility than the S&P 500 itself. Beta well below 1.0 (e.g., JEPI at 0.59) confirms the strategy is working. If an alternatives ETF has beta near 1.0 or higher, it's not providing the volatility reduction investors expect. Compare ATR and beta to what the underlying index would deliver.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios. For alternative strategy ETFs, risk-adjusted returns should be the headline metric — these funds explicitly trade absolute return for better risk efficiency. A covered call ETF that delivers Sharpe of 0.8 vs the S&P 500's Sharpe of 0.6 is doing its job, even if the absolute return is lower. Sortino is especially important here because downside protection is the explicit promise. Compare Sharpe/Sortino to both the category average and the underlying benchmark.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Drawdown & Downside Protection",
-        "factorAnalysisDescription": "Analyzes maximum drawdown relative to the reference benchmark. This is the most important risk factor for alternative strategy ETFs — outperforming during drawdowns is their core promise. JEPI losing -3.53% in 2022 while the S&P lost -19.43% is a success story. A fund that promises downside protection but draws down as much as the benchmark is failing at its stated objective. Calculate the protection ratio: fund drawdown / benchmark drawdown. A ratio under 0.50 is excellent, under 0.75 is good, above 0.90 means minimal protection.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "capture_ratios",
-        "factorAnalysisTitle": "Upside/Downside Capture Ratios",
-        "factorAnalysisDescription": "Measures upside vs downside capture relative to the benchmark. For alternative strategy ETFs, the expected pattern is: upside capture 50-80% (giving up some gains) and downside capture 30-60% (protecting against losses). The key metric is the capture ratio spread: (upside capture - downside capture). A positive spread means the fund captures more upside than downside — that's the ideal. JEPI's beta of 0.59 suggests roughly 59% capture of both, but the covered call premium should improve the downside capture.",
-        "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's risk score against other alternative strategy ETFs. The Derivative Income category is growing rapidly (279 funds as of 2025), so category comparison is increasingly meaningful. A fund with below-average risk vs category means it's more conservative than peers — which may mean less income but better protection. Note that risk metrics for new alternative ETFs may be based on limited history and could change significantly as the fund matures.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ],
-    "Commodity": [
-      {
-        "factorAnalysisKey": "volatility_measures",
-        "factorAnalysisTitle": "Volatility & Cyclicality",
-        "factorAnalysisDescription": "Measures the fund's volatility in the context of commodity cycle behavior. Commodity ETFs are inherently more volatile than equity or bond ETFs. A commodity ETF with high ATR and wide price ranges is normal — the question is whether the volatility is in line with the specific commodity's historical behavior. Gold ETFs are relatively low-volatility commodities; oil and natural gas ETFs are extremely volatile. Beta relative to equities shows correlation — commodities ideally have low equity beta (diversification benefit).",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for commodity ETFs. Commodities often have low or negative Sharpe ratios over extended periods because returns are cyclical and can be near zero long-term. A Sharpe above 0 is acceptable for many commodity ETFs. Compare to category peers rather than equity benchmarks. Gold ETFs tend to have better Sharpe ratios than energy or agricultural commodity ETFs due to lower volatility.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Maximum Drawdown & Cycle Recovery",
-        "factorAnalysisDescription": "Analyzes worst declines in the context of commodity super-cycles. Commodity ETFs can experience drawdowns of -40% to -70% during cycle downturns (oil in 2014-2016, 2020). The critical question is recovery: did the commodity recover to prior levels, and how long did it take? Commodities that haven't recovered from cycle lows after 5+ years may face structural demand decline. Compare drawdown severity and recovery speed to the commodity's historical cycle pattern.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "diversification_benefit",
-        "factorAnalysisTitle": "Portfolio Diversification Benefit",
-        "factorAnalysisDescription": "Evaluates how the commodity ETF behaves relative to stocks and bonds. The primary risk benefit of commodities in a portfolio is low or negative correlation with equities. Beta near 0 or negative indicates strong diversification benefit. If the commodity ETF moves in lockstep with equities (high beta), it provides less portfolio protection. Gold ETFs typically show negative equity correlation during crises (strong diversifier); energy ETFs may have higher equity correlation.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, captureRatios"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's Mor risk score against commodity category peers. For commodity ETFs, above-average risk vs category may mean higher leverage, more concentrated commodity exposure, or less efficient futures rolling. Below-average risk with comparable returns indicates superior risk management.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ],
-    "Asset Allocation": [
-      {
-        "factorAnalysisKey": "volatility_vs_components",
-        "factorAnalysisTitle": "Volatility Relative to Pure Components",
-        "factorAnalysisDescription": "Measures whether the asset allocation fund delivers smoother returns than its individual components. A 60/40 fund should have lower volatility than a pure equity fund and lower drawdowns than pure bonds in rate-shock years. Beta should be between the equity beta (~1.0) and bond beta (~0), weighted by allocation. If a balanced fund has equity-level volatility, the allocation may be more aggressive than stated or the bond component isn't providing the expected diversification.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios. Asset allocation funds should ideally have BETTER Sharpe ratios than pure equity or pure bond funds because diversification improves risk-adjusted returns. If a balanced fund's Sharpe ratio is lower than both its equity and bond benchmarks, the allocation isn't adding value. Compare to category average (other balanced/allocation funds) for the most relevant benchmark.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Maximum Drawdown & Protection",
-        "factorAnalysisDescription": "Analyzes worst declines relative to pure equity benchmarks. The primary value of asset allocation is shallower drawdowns. A 60/40 fund that lost -20% in 2022 when equities lost -20% and bonds lost -13% failed at its mandate — it should have lost somewhere in between. Evaluate the 'drawdown reduction ratio': how much less did this fund lose compared to a pure equity fund? Also assess 2022 specifically, when both stocks and bonds fell simultaneously — this was a stress test for all allocation strategies.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "capture_ratios",
-        "factorAnalysisTitle": "Upside/Downside Capture Ratios",
-        "factorAnalysisDescription": "Measures upside vs downside capture relative to the equity benchmark. A well-managed balanced fund should capture 60-80% of equity upside (proportional to equity allocation) but significantly less than 60-80% of equity downside (because bonds dampen losses). If downside capture exceeds upside capture proportional to the equity weight, the allocation is not working as intended.",
-        "factorAnalysisMetrics": "captureRatios, riskVsCategory, returnVsCategory"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's risk score against allocation category peers. For asset allocation ETFs, risk consistency is more important than absolute risk level — the fund should maintain similar risk positioning over time, reflecting a disciplined allocation approach. Sudden changes in risk score may indicate drift in the allocation or undisciplined rebalancing.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ],
-    "Currency": [
-      {
-        "factorAnalysisKey": "volatility_measures",
-        "factorAnalysisTitle": "Currency Volatility",
-        "factorAnalysisDescription": "Measures the fund's volatility in the context of currency market behavior. Major currency pairs (EUR/USD, GBP/USD) typically have lower volatility than emerging market currencies. ATR relative to price shows daily movement expectations. Beta relative to equities indicates how much the currency position correlates with stock markets — low equity beta is expected and desirable for currency ETFs used as hedging tools.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures"
-      },
-      {
-        "factorAnalysisKey": "risk_adjusted_returns",
-        "factorAnalysisTitle": "Risk-Adjusted Returns",
-        "factorAnalysisDescription": "Evaluates Sharpe and Sortino ratios for currency ETFs. Currency returns tend to be mean-reverting with high volatility, leading to low Sharpe ratios over long periods. A Sharpe near 0 is common. Compare to category peers rather than absolute thresholds. Positive carry currencies (higher interest rate currencies) may show better risk-adjusted returns but with more downside tail risk.",
-        "factorAnalysisMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn"
-      },
-      {
-        "factorAnalysisKey": "drawdown_analysis",
-        "factorAnalysisTitle": "Maximum Drawdown & Recovery",
-        "factorAnalysisDescription": "Analyzes worst declines for currency ETFs. Currencies can experience sharp, sudden moves (10-20% in months) driven by central bank policy changes, political events, or economic crises. The key risk question is: does the currency pair have a history of mean-reversion (recovers to prior levels) or structural depreciation (persistent one-way decline)? Emerging market currency ETFs carry higher drawdown risk than major currency pair ETFs.",
-        "factorAnalysisMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate"
-      },
-      {
-        "factorAnalysisKey": "correlation_profile",
-        "factorAnalysisTitle": "Correlation & Hedging Effectiveness",
-        "factorAnalysisDescription": "Evaluates how the currency ETF's returns correlate with equities and other asset classes. Currency ETFs are often held for hedging or diversification. Low or negative beta to equities suggests the currency position provides portfolio protection during equity selloffs. Safe-haven currencies (USD, JPY, CHF) tend to strengthen during equity crises. Risk-on currencies (AUD, emerging markets) may fall alongside equities, reducing their diversification value.",
-        "factorAnalysisMetrics": "beta, beta1y, beta2y, beta5y, captureRatios"
-      },
-      {
-        "factorAnalysisKey": "risk_vs_category",
-        "factorAnalysisTitle": "Risk Score vs Category",
-        "factorAnalysisDescription": "Compares the fund's risk score against currency category peers. For currency ETFs, above-average risk vs category may indicate exposure to more volatile currency pairs or use of leverage. Below-average risk with comparable returns indicates a less volatile currency pair or better risk management in the futures rolling process.",
-        "factorAnalysisMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods"
-      }
-    ]
-  }
+  "categoryDescription": "Evaluates the ETF's risk profile — how bumpy the ride is, how bad the worst losses have been, and whether the fund is taking on the kind of risk a retail investor should expect for this type of ETF. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "factors": [
+    {
+      "factorKey": "overall_volatility",
+      "factorTitle": "How Bumpy Is the Ride",
+      "factorDescription": "Measures how much the ETF's price jumps around day-to-day and month-to-month. Uses beta (how it moves compared to the broad market) and standard deviation (size of typical swings). A beta of 1.0 means it moves roughly with the market; above 1.2 means bigger swings in both directions; below 0.8 means calmer moves. Check whether the volatility matches what the ETF is supposed to deliver — a 'low-volatility' fund with a high beta is not doing its job.",
+      "factorMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "risk_adjusted_return",
+      "factorTitle": "Are You Paid Fairly for the Risk",
+      "factorDescription": "Looks at the Sharpe ratio, which shows how much return you got for every unit of risk taken. Higher is better. For equity ETFs, a Sharpe above 0.5 is decent and above 1.0 is very good. Bond ETFs and low-return funds naturally have lower Sharpe numbers, so compare against peers in the same category rather than to a fixed threshold. Two funds with identical returns but different Sharpe ratios — the one with the higher Sharpe delivered those returns with less stress along the way.",
+      "factorMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "worst_drawdown",
+      "factorTitle": "Worst Drop and How Long It Took to Recover",
+      "factorDescription": "Shows the biggest peak-to-trough fall the ETF has had, and how long it took to get back to the previous high. For broad equity ETFs, drops of -20% to -35% happen roughly once a decade. Bond ETFs were hit by -10% to -30% drops in 2022. The key question for retail investors: could I emotionally hold this fund through that kind of drop? A fund that fell harder AND recovered slower than its category peers is a bigger concern than the drawdown number alone.",
+      "factorMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "risk_vs_peers",
+      "factorTitle": "Is It Riskier Than Similar Funds",
+      "factorDescription": "Compares the ETF's overall risk score against other funds in the same Mor category. A fund with above-average risk vs its peers should be delivering above-average returns to justify that extra risk — if not, investors are taking on more volatility for nothing. Below-average risk with similar returns is a positive sign of good risk management.",
+      "factorMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods",
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
+    },
+    {
+      "factorKey": "capture_ratios",
+      "factorTitle": "How Much of Market Ups and Downs It Catches",
+      "factorDescription": "Looks at upside capture (what percentage of the benchmark's gains the fund catches) and downside capture (what percentage of the benchmark's losses it absorbs). The ideal pattern is high upside capture and low downside capture — the fund grabs most of the gains but avoids most of the losses. For broad equity index funds both should be near 100%. For alternative strategies like covered call funds, something like 70% upside / 50% downside means the strategy is delivering the protection it promises.",
+      "factorMetrics": "captureRatios, riskVsCategory, returnVsCategory",
+      "groups": ["broad-equity", "alt-strategies"]
+    },
+    {
+      "factorKey": "interest_rate_sensitivity",
+      "factorTitle": "How Much Rate Changes Hurt This Fund",
+      "factorDescription": "For bond and muni ETFs, the main risk is that when interest rates rise, bond prices fall — and the longer the duration (the bond's time to maturity), the worse the hit. Long-duration government bond ETFs like TLT lost around -31% in 2022 when rates spiked. The retail takeaway: look at how badly this fund did in rising-rate years vs falling-rate years. If the 2022 loss was roughly in line with category peers, it's an asset-class issue, not a fund-specific flaw.",
+      "factorMetrics": "beta, beta1y, beta2y, beta5y, riskAndVolatilityMeasures, riskPeriods",
+      "groups": ["fixed-income-core", "muni"]
+    },
+    {
+      "factorKey": "credit_risk",
+      "factorTitle": "Risk That Bonds in the Fund Default",
+      "factorDescription": "Looks at the credit quality of bonds in the ETF. Treasury funds essentially have zero default risk. Investment-grade corporate funds carry mild credit risk. High-yield (junk) bond funds carry real default risk — during recessions they can lose 15-25% as weaker companies default. Muni funds depend on the financial health of state and local issuers. Check if the fund held up similarly to its credit-peer category during stress periods (2020, 2022) — losses far worse than peers suggest excessive exposure to lower-rated credits.",
+      "factorMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods",
+      "groups": ["fixed-income-credit", "muni"]
+    },
+    {
+      "factorKey": "leverage_decay",
+      "factorTitle": "Daily-Reset Decay Warning",
+      "factorDescription": "Leveraged and inverse ETFs reset every day, which means their long-term returns are almost never the leverage factor (2x, 3x, -1x) times the underlying's long-term return. In flat or choppy markets, daily compounding eats away at the value — this is called 'decay.' A 3x S&P 500 ETF can actually lose money over a year even if the S&P went up over that year, if the path was volatile. Retail takeaway: these are short-term trading tools, not long-term holdings. Never hold them through volatile sideways markets.",
+      "factorMetrics": "return1m, return3m, return1y, return3y, returnsAnnual, beta, beta1y",
+      "groups": ["leveraged-inverse"]
+    },
+    {
+      "factorKey": "downside_protection",
+      "factorTitle": "How Well It Holds Up in Market Crashes",
+      "factorDescription": "This is the main value proposition for alternative strategy funds (covered call, managed futures) and allocation funds (60/40, target-date). Measures how much of the benchmark's drop the fund actually absorbed. A covered call ETF that lost only -3% while the S&P lost -19% in 2022 delivered real downside protection. A '60/40' fund that lost -20% when stocks lost -20% failed at its job. The protection ratio (fund drawdown ÷ benchmark drawdown) under 0.50 is excellent, under 0.75 is good, above 0.90 means you're not getting much protection for the fees.",
+      "factorMetrics": "returnsAnnual, captureRatios, drawdown, riskVsCategory, returnVsCategory",
+      "groups": ["alt-strategies", "allocation-target-date"]
+    },
+    {
+      "factorKey": "concentration_risk",
+      "factorTitle": "Risk of Being All-In on One Theme",
+      "factorDescription": "Sector and thematic ETFs put all their eggs in one basket — a single sector (tech, energy, healthcare) or theme. When that sector has a bad year, there's no diversification to cushion the fall. Tech funds dropped around -30% in 2022; energy funds dropped more than -50% in 2020. Check the top-10 holdings weight: if the top 10 make up more than 60% of the fund, the fund's fate is tied to just a handful of names. Retail takeaway: these belong as small slices of a portfolio, not the whole thing.",
+      "factorMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, drawdown",
+      "groups": ["sector-thematic-equity"]
+    }
+  ]
 }
