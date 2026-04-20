@@ -1710,3 +1710,63 @@ model EtfCachedScore {
   @@index([etfId])
   @@map("etf_cached_scores")
 }
+
+// --------------------------
+// ETF Market Scenarios
+// --------------------------
+
+// Direction / timeframe / probability / role are kept as plain TEXT columns;
+// the strict string-literal unions live in `src/types/etfScenarioEnums.ts` so
+// values can be added without a migration.
+
+model EtfScenario {
+  id                    String   @id @default(uuid())
+  scenarioNumber        Int      @map("scenario_number")
+  title                 String   @map("title")
+  slug                  String   @map("slug")
+  underlyingCause       String   @map("underlying_cause") @db.Text
+  historicalAnalog      String   @map("historical_analog") @db.Text
+  winnersMarkdown       String   @map("winners_markdown") @db.Text
+  losersMarkdown        String   @map("losers_markdown") @db.Text
+  outlookMarkdown       String   @map("outlook_markdown") @db.Text
+  direction             String   @default("DOWNSIDE") @map("direction")
+  timeframe             String   @default("FUTURE") @map("timeframe")
+  probabilityBucket     String   @default("MEDIUM") @map("probability_bucket")
+  probabilityPercentage Int?     @map("probability_percentage")
+  outlookAsOfDate       DateTime @map("outlook_as_of_date") @db.Date
+  metaDescription       String?  @map("meta_description") @db.Text
+  archived              Boolean  @default(false) @map("archived")
+  spaceId               String   @default("koala_gains") @map("space_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  etfLinks              EtfScenarioEtfLink[]
+
+  @@unique([spaceId, scenarioNumber])
+  @@unique([spaceId, slug])
+  @@index([spaceId, archived])
+  @@index([spaceId, direction])
+  @@index([spaceId, timeframe])
+  @@index([spaceId, probabilityBucket])
+  @@map("etf_scenarios")
+}
+
+model EtfScenarioEtfLink {
+  id          String   @id @default(uuid())
+  scenarioId  String   @map("scenario_id")
+  etfId       String?  @map("etf_id")
+  symbol      String   @map("symbol")
+  exchange    String?  @map("exchange")
+  role        String   @map("role")
+  sortOrder   Int      @default(0) @map("sort_order")
+  spaceId     String   @default("koala_gains") @map("space_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  scenario    EtfScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  @@unique([scenarioId, symbol, role])
+  @@index([scenarioId])
+  @@index([symbol])
+  @@map("etf_scenario_etf_links")
+}
