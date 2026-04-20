@@ -1,199 +1,87 @@
 {
   "categoryKey": "CostEfficiencyAndTeam",
   "categoryName": "Cost, Efficiency & Team",
-  "categoryDescription": "Evaluates the ETF's cost structure, operational efficiency, fund management quality, and how well the fund delivers value relative to its fees.",
-  "factorsByAssetClass": {
-    "Equity": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average and prospectus net expense ratio. For passive equity index ETFs, expense ratios above 0.10% are high — leaders like VOO/IVV charge 0.03%. For active equity ETFs, up to 0.50-0.75% is typical. The expense ratio directly explains benchmark tracking drag — if the ETF trails its index by roughly the expense ratio, that's expected, not a flaw.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For equity ETFs, larger funds (>$1B AUM) typically have tighter spreads and lower trading friction. Funds under $100M AUM face closure risk. Very high volume (>1M shares/day) indicates institutional adoption. Check if the bid-ask spread is tight relative to the ETF's price — wider spreads erode real returns.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover",
-        "factorAnalysisDescription": "Assesses how frequently the fund trades its holdings. For passive equity index ETFs, turnover should be low (under 10-20%) since they only trade for index reconstitution. For active equity ETFs, turnover of 30-80% is common. Very high turnover (>100%) increases transaction costs and tax drag for taxable accounts, reducing net investor returns.",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates the fund management team's tenure, experience, and the issuer's reputation. For passive equity ETFs, issuer reputation (Vanguard, iShares, SPDR) matters more than individual manager skill. For active equity ETFs, manager tenure is critical — a 10-year track record with the same manager is much more meaningful than a 2-year record. Longer tenure indicates stability and lets investors judge the actual decision-maker's performance.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars (Process, People, Parent, Performance). A Gold/Silver medalist rating indicates strong fund quality across all dimensions. For equity ETFs, the Process and Parent pillars are especially important — they reflect systematic investment discipline and organizational commitment to investors.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ],
-    "Fixed Income": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. For bond ETFs, expense ratios matter even more than for equities because total returns are lower (2-6% annually), so a 0.50% fee can consume 10-25% of the total return. Passive treasury/aggregate bond ETFs should be under 0.10%. High-yield bond ETFs typically charge 0.30-0.50% due to higher trading complexity. The expense ratio is usually the primary explanation for benchmark tracking drag in bond ETFs.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For bond ETFs, liquidity is critically important because the underlying bonds trade over-the-counter with wide spreads. A bond ETF with low volume (<100K shares/day) or small AUM (<$500M) may trade at persistent premiums or discounts to NAV, directly affecting investor returns. Large bond ETFs (AGG, BND at $100B+) can actually be more liquid than their underlying bonds.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover",
-        "factorAnalysisDescription": "Assesses trading frequency. Bond ETFs inherently have higher turnover than equity ETFs because bonds mature, get called, or are replaced as index composition changes. Turnover of 30-80% is normal for aggregate bond ETFs. Very high turnover (>100%) in a bond ETF increases transaction costs significantly because bond trading costs are much higher than equity trading costs (OTC market with wide bid-ask spreads).",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For bond ETFs, the issuer's fixed-income trading desk quality matters significantly — larger issuers (iShares/BlackRock, Vanguard) have better bond trading infrastructure, leading to tighter tracking and lower transaction costs. For actively managed bond ETFs, manager tenure and the team's credit research capability are critical.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For bond ETFs, the Process pillar (index replication methodology, sampling approach) and Price pillar (expense ratio competitiveness) are especially important. A bond ETF with a Gold rating typically combines low fees with excellent index tracking.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ],
-    "Alternatives": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. Alternative strategy ETFs (covered call, managed futures, derivative income) typically charge 0.30-0.80% — higher than passive index funds but justified if the strategy delivers on its income/protection promise. Compare the expense ratio to total return: if the fund charges 0.50% and delivers 8% total return with half the benchmark's volatility, the fee may be well-spent. Also note if the expense ratio is creeping up as the category becomes more competitive.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For alternative strategy ETFs, liquidity can be a concern because the underlying strategies (options, derivatives) are complex. Very large AUM ($10B+, like JEPI) validates the strategy's scalability. Small alternative ETFs (<$200M) may struggle with options market impact or face closure risk. High daily volume relative to AUM indicates active institutional trading.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover & Strategy Complexity",
-        "factorAnalysisDescription": "Assesses trading frequency and strategy cost. Alternative strategy ETFs often have very high turnover (100-300%+) because they continuously roll options contracts or rebalance derivative positions. This is normal for the strategy type and does not indicate a problem — but it does mean higher hidden trading costs. Compare turnover to category peers: if similar funds have 150% turnover and this fund has 400%, something may be unusual.",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For alternative strategy ETFs, the management team's derivatives expertise is crucial — a covered call strategy's success depends on options pricing and execution skill. Larger issuers (JPMorgan for JEPI, Global X) have dedicated derivatives desks. Manager tenure matters more here than for passive funds because the strategy requires active decision-making on strike selection, roll timing, and position sizing.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For alternative strategy ETFs, many are too new to have full analyst coverage. If a rating exists, the Process pillar is most important — it evaluates whether the derivative/options strategy is well-designed and consistently executed. Note that the Derivative Income category is rapidly growing, so ratings may evolve as Mor develops more expertise in this space.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ],
-    "Commodity": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its category average. Commodity ETFs typically charge 0.20-0.50% for broad commodity exposure and 0.40-0.75% for single-commodity or specialized strategies. Physical commodity ETFs (like gold ETFs holding actual bullion) may charge slightly more due to storage costs. The expense ratio plus contango/roll costs are the two main cost drags for commodity ETFs — evaluate both together.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. For commodity ETFs, fund size is important because smaller funds may have difficulty efficiently rolling futures contracts or face higher trading costs in commodity markets. Physical commodity ETFs (gold, silver) benefit from large AUM for secure storage arrangements. ETFs under $200M may face closure risk during commodity bear markets.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover & Roll Costs",
-        "factorAnalysisDescription": "Assesses trading frequency and the impact of futures contract rolling. Futures-based commodity ETFs must regularly roll expiring contracts into the next month, creating implicit costs (contango) or gains (backwardation) not captured by the expense ratio alone. High turnover in commodity ETFs is structural and expected — focus on whether the fund minimizes roll costs through smart contract selection rather than the raw turnover number.",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For commodity ETFs, the issuer's commodity trading infrastructure matters — efficient futures rolling requires experienced execution. Major commodity ETF issuers (Invesco, SPDR, iShares) have dedicated commodity desks. For physical commodity ETFs, the custodian and storage arrangement quality are important safety considerations.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For commodity ETFs, the Process pillar evaluates the futures rolling strategy and the Price pillar assesses total cost of ownership (expense ratio + estimated roll costs). A Gold-rated commodity ETF typically has low fees and an efficient rolling methodology that minimizes contango drag.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ],
-    "Asset Allocation": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its allocation category average. Asset allocation ETFs typically charge 0.15-0.50% depending on complexity. Simple target-date or balanced funds should be on the lower end. Multi-asset funds that include alternatives or active management may charge more. Compare against what it would cost to hold the underlying components separately — if a 60/40 fund charges 0.30% but you could replicate it with VTI (0.03%) + BND (0.03%), the convenience premium is 0.27%.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Asset allocation ETFs may have lower trading volume than pure equity or bond ETFs because they are typically buy-and-hold investments. Lower volume is acceptable if the bid-ask spread remains tight. AUM over $500M provides stability; under $100M may face rebalancing challenges or closure risk.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover & Rebalancing Efficiency",
-        "factorAnalysisDescription": "Assesses trading frequency. Asset allocation ETFs must rebalance between asset classes (stocks, bonds, etc.) periodically, creating some turnover. Turnover of 20-50% is typical for balanced funds. Higher turnover suggests more active tactical allocation shifts. Very low turnover (<10%) may mean the fund is not rebalancing properly. The key question is whether turnover comes from disciplined rebalancing (good) or excessive trading (bad).",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For asset allocation ETFs, the management team's asset allocation skill is the primary value proposition — they decide how much to hold in stocks vs bonds vs other assets. Longer manager tenure allows evaluation of their allocation decisions across different market environments. Major issuers (Vanguard, iShares, BlackRock) with established asset allocation frameworks are preferred.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. For asset allocation ETFs, the Process pillar is particularly important — it evaluates the asset allocation methodology, rebalancing discipline, and strategic vs tactical approach. The Parent pillar also matters because organizational investment philosophy shapes allocation decisions.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ],
-    "Currency": [
-      {
-        "factorAnalysisKey": "expense_ratio",
-        "factorAnalysisTitle": "Expense Ratio Assessment",
-        "factorAnalysisDescription": "Compares the ETF's expense ratio against its currency category peers. Currency ETFs typically charge 0.30-0.50% due to the costs of rolling currency futures contracts. Since currency returns can be near zero over long periods, even small expense differences matter significantly. The expense ratio plus futures roll costs represent the total cost of maintaining the currency exposure.",
-        "factorAnalysisMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory"
-      },
-      {
-        "factorAnalysisKey": "fund_size_liquidity",
-        "factorAnalysisTitle": "Fund Size & Liquidity",
-        "factorAnalysisDescription": "Evaluates AUM, trading volume, and bid-ask spread. Currency ETFs often have lower AUM and volume than equity ETFs because they are used primarily as hedging or trading instruments. Adequate liquidity (>$100M AUM, >50K shares/day) is important for entering and exiting positions without significant market impact. Wide bid-ask spreads in currency ETFs directly reduce returns on short-term trades.",
-        "factorAnalysisMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol"
-      },
-      {
-        "factorAnalysisKey": "portfolio_turnover",
-        "factorAnalysisTitle": "Portfolio Turnover & Roll Costs",
-        "factorAnalysisDescription": "Assesses trading frequency and currency futures rolling costs. Currency ETFs using futures contracts must roll monthly, creating inherent turnover. The interest rate differential between the two currencies in the pair creates either a positive carry (earning income) or negative carry (paying a cost). This carry is distinct from the expense ratio and is a major component of total return for currency ETFs.",
-        "factorAnalysisMetrics": "overviewTurnover, reportedTurnoverPct"
-      },
-      {
-        "factorAnalysisKey": "management_quality",
-        "factorAnalysisTitle": "Management & Issuer Quality",
-        "factorAnalysisDescription": "Evaluates fund management and issuer reputation. For currency ETFs, the issuer's FX trading desk quality directly affects execution and roll costs. Established currency ETF issuers (Invesco/CurrencyShares, WisdomTree) have the infrastructure for efficient FX futures management. Manager tenure is less critical for passive currency trackers but important for actively managed currency strategy ETFs.",
-        "factorAnalysisMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers"
-      },
-      {
-        "factorAnalysisKey": "mor_assessment",
-        "factorAnalysisTitle": "Mor Analyst Assessment",
-        "factorAnalysisDescription": "Reviews the Mor medalist rating and analyst assessment pillars. Many currency ETFs may lack full analyst coverage due to the niche nature of the category. If a rating exists, the Price pillar (total cost assessment including roll costs) and Process pillar (currency exposure methodology) are most relevant.",
-        "factorAnalysisMetrics": "medalistRating, analysisSections, strategyText"
-      }
-    ]
-  }
+  "categoryDescription": "Evaluates the ETF's fees, size, trading activity, and the people running the fund — the slow-leak factors that quietly decide whether long-term returns are delivered to investors or eaten up by costs. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "factors": [
+    {
+      "factorKey": "expense_ratio",
+      "factorTitle": "What You're Paying in Fees",
+      "factorDescription": "Looks at the ETF's expense ratio (annual fee) against what's normal for its category. Rough retail benchmarks: broad index funds should be under 0.10% (VOO is 0.03%), sector and thematic funds 0.10-0.50%, bond funds 0.05-0.30%, muni funds 0.10-0.40%, alternative-strategy funds 0.30-0.80%, leveraged funds 0.80-1.00%, allocation/target-date funds 0.10-0.50%. Fees compound every year — a 0.50% difference over 30 years can quietly erase 15% of your ending balance. The expense ratio also explains most of the tracking gap for passive funds: if the fund trails its index by roughly its expense ratio, that's normal, not a flaw.",
+      "factorMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "fund_size_liquidity",
+      "factorTitle": "Fund Size and How Easy It Is to Trade",
+      "factorDescription": "Checks assets under management (AUM), daily volume, and the bid-ask spread (the gap between buy and sell prices). Bigger, more actively traded funds give retail investors tighter spreads and less slippage. Funds under $100-200M AUM carry real closure risk — if the fund shuts down, you're forced to sell at an inconvenient time with possible tax consequences. Very wide spreads silently eat returns on every trade. For bond and alternative-strategy funds, fund size matters even more because the underlying securities trade in less liquid markets.",
+      "factorMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "portfolio_turnover",
+      "factorTitle": "How Often the Fund Trades Its Holdings",
+      "factorDescription": "Portfolio turnover is the percentage of the fund's holdings that are bought and sold each year. Higher turnover means higher hidden trading costs and more taxable events for investors holding the fund in a taxable account. Rough retail benchmarks: passive index funds 0-20% (low is good), active equity funds 30-80% (normal), bond funds 30-80% (bonds mature, so turnover is natural), alternative-strategy funds often 100-300% (options and futures are rolled constantly — expected for the strategy). The red flag is turnover well above category peers, which usually signals undisciplined trading.",
+      "factorMetrics": "overviewTurnover, reportedTurnoverPct",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "management_quality",
+      "factorTitle": "Who Runs the Fund and for How Long",
+      "factorDescription": "For passive index funds, the issuer's reputation and infrastructure matter more than individual managers — Vanguard, iShares (BlackRock), SPDR (State Street), and Schwab run tight, low-cost operations. For active funds and alternative-strategy funds, manager tenure is critical: a 10-year track record with the same manager tells you a lot more than a 2-year record with a brand-new manager. Short tenure means the performance record wasn't really produced by today's decision-maker. High manager turnover is a yellow flag — it suggests internal instability or the fund searching for a strategy.",
+      "factorMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    },
+    {
+      "factorKey": "mor_assessment",
+      "factorTitle": "Mor Analyst Rating",
+      "factorDescription": "Mor's medalist rating (Gold / Silver / Bronze / Neutral / Negative) is a single-letter summary of their full analyst assessment across five pillars: Process, People, Parent, Performance, and Price. Gold-rated funds typically combine low fees, a strong investment process, and a stable team. Retail takeaway: a Gold or Silver rating is a reliable shortcut when picking funds in a category you don't research yourself. Note that many newer alternative-strategy and niche funds lack analyst coverage — absence of a rating is not a negative signal, just a gap.",
+      "factorMetrics": "medalistRating, analysisSections, strategyText",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
+    }
+  ]
 }

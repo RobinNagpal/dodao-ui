@@ -45,12 +45,10 @@ export interface EtfAnalysisFactorDefinition {
   factorAnalysisMetrics?: string;
 }
 
-export type EtfAssetClass = 'Equity' | 'Fixed Income' | 'Alternatives' | 'Commodity' | 'Asset Allocation' | 'Currency';
-
 /**
- * Group-based factor definition used by the new performance-and-returns config.
- * Each factor declares the ETF groups it applies to; the pipeline selects factors
- * by intersecting the fund's group (derived from EtfStockAnalyzerInfo.category) with these.
+ * Group-based factor definition. Each factor declares the ETF groups it applies
+ * to; the pipeline selects factors by intersecting the fund's group (derived
+ * from EtfStockAnalyzerInfo.category via etf-analysis-categories.json) with these.
  */
 export interface EtfGroupFactorDefinition {
   factorKey: string;
@@ -65,13 +63,6 @@ export interface EtfGroupBasedFactorsConfig {
   categoryName: string;
   categoryDescription: string;
   factors: EtfGroupFactorDefinition[];
-}
-
-export interface EtfAssetClassBasedFactorsConfig {
-  categoryKey: EtfAnalysisCategory;
-  categoryName: string;
-  categoryDescription: string;
-  factorsByAssetClass: Record<EtfAssetClass, EtfAnalysisFactorDefinition[]>;
 }
 
 export interface EtfGroup {
