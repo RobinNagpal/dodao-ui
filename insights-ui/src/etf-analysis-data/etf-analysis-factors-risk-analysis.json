@@ -1,21 +1,38 @@
 {
   "categoryKey": "RiskAnalysis",
   "categoryName": "Risk Analysis",
-  "categoryDescription": "Evaluates the ETF's risk profile — how bumpy the ride is, how bad the worst losses have been, and whether the fund is taking on the kind of risk a retail investor should expect for this type of ETF. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 4 factors from this file.",
+  "categoryDescription": "Evaluates the ETF's risk profile — how bumpy the ride is, how bad the worst losses have been, and whether the fund is taking on the kind of risk a retail investor should expect for this type of ETF. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
   "factors": [
     {
       "factorKey": "overall_volatility",
       "factorTitle": "How Bumpy Is the Ride",
       "factorDescription": "Measures how much the ETF's price jumps around day-to-day and month-to-month. Uses beta (how it moves compared to the broad market) and standard deviation (size of typical swings). A beta of 1.0 means it moves roughly with the market; above 1.2 means bigger swings in both directions; below 0.8 means calmer moves. Check whether the volatility matches what the ETF is supposed to deliver — a 'low-volatility' fund with a high beta is not doing its job.",
       "factorMetrics": "beta, beta1y, beta2y, beta5y, atr, riskAndVolatilityMeasures",
-      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "alt-strategies", "allocation-target-date"]
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
     },
     {
       "factorKey": "risk_adjusted_return",
       "factorTitle": "Are You Paid Fairly for the Risk",
       "factorDescription": "Looks at the Sharpe ratio, which shows how much return you got for every unit of risk taken. Higher is better. For equity ETFs, a Sharpe above 0.5 is decent and above 1.0 is very good. Bond ETFs and low-return funds naturally have lower Sharpe numbers, so compare against peers in the same category rather than to a fixed threshold. Two funds with identical returns but different Sharpe ratios — the one with the higher Sharpe delivered those returns with less stress along the way.",
       "factorMetrics": "sharpe, sortino, portfolioRiskScore, morAnalyzerRiskReturn",
-      "groups": ["broad-equity", "fixed-income-core", "fixed-income-credit", "muni", "alt-strategies", "allocation-target-date"]
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "fixed-income-core",
+        "fixed-income-credit",
+        "muni",
+        "alt-strategies",
+        "allocation-target-date"
+      ]
     },
     {
       "factorKey": "worst_drawdown",
@@ -28,6 +45,7 @@
         "leveraged-inverse",
         "fixed-income-core",
         "fixed-income-credit",
+        "muni",
         "alt-strategies",
         "allocation-target-date"
       ]
@@ -37,7 +55,14 @@
       "factorTitle": "Is It Riskier Than Similar Funds",
       "factorDescription": "Compares the ETF's overall risk score against other funds in the same Mor category. A fund with above-average risk vs its peers should be delivering above-average returns to justify that extra risk — if not, investors are taking on more volatility for nothing. Below-average risk with similar returns is a positive sign of good risk management.",
       "factorMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods",
-      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core", "fixed-income-credit", "muni"]
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
+    },
+    {
+      "factorKey": "capture_ratios",
+      "factorTitle": "How Much of Market Ups and Downs It Catches",
+      "factorDescription": "Looks at upside capture (what percentage of the benchmark's gains the fund catches) and downside capture (what percentage of the benchmark's losses it absorbs). The ideal pattern is high upside capture and low downside capture — the fund grabs most of the gains but avoids most of the losses. For broad equity index funds both should be near 100%. For alternative strategies like covered call funds, something like 70% upside / 50% downside means the strategy is delivering the protection it promises.",
+      "factorMetrics": "captureRatios, riskVsCategory, returnVsCategory",
+      "groups": ["broad-equity", "alt-strategies"]
     },
     {
       "factorKey": "interest_rate_sensitivity",
