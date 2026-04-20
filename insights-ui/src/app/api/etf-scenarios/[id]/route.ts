@@ -1,12 +1,12 @@
 import { prisma } from '@/prisma';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
-import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '../../helpers/withAdminOrToken';
 import { z } from 'zod';
 
 const updateEtfScenarioSchema = z.object({
@@ -37,7 +37,11 @@ async function getHandler(_req: NextRequest, { params }: { params: Promise<{ id:
   return prisma.etfScenario.findUnique({ where: { id } });
 }
 
-async function putHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload, { params }: { params: Promise<{ id: string }> }): Promise<EtfScenario> {
+async function putHandler(
+  request: NextRequest,
+  _userContext: KoalaGainsJwtTokenPayload | null,
+  { params }: { params: Promise<{ id: string }> }
+): Promise<EtfScenario> {
   const { id } = await params;
   const body = updateEtfScenarioSchema.parse(await request.json());
 
@@ -78,7 +82,7 @@ async function putHandler(request: NextRequest, _userContext: DoDaoJwtTokenPaylo
 
 async function deleteHandler(
   _request: NextRequest,
-  _userContext: DoDaoJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<{ success: boolean }> {
   const { id } = await params;
@@ -97,5 +101,5 @@ async function deleteHandler(
 }
 
 export const GET = withErrorHandlingV2<EtfScenario | null>(getHandler);
-export const PUT = withLoggedInAdmin<EtfScenario>(putHandler);
-export const DELETE = withLoggedInAdmin<{ success: boolean }>(deleteHandler);
+export const PUT = withAdminOrToken<EtfScenario>(putHandler);
+export const DELETE = withAdminOrToken<{ success: boolean }>(deleteHandler);
