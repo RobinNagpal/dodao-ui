@@ -24,11 +24,11 @@ export interface EtfScenarioDetail extends Omit<EtfScenario, 'outlookAsOfDate' |
   mostExposed: EtfScenarioLinkDto[];
 }
 
-function toLinkDto(link: EtfScenarioEtfLink): EtfScenarioLinkDto {
+function toLinkDto(link: EtfScenarioEtfLink, resolved?: { id: string; exchange: string }): EtfScenarioLinkDto {
   return {
     symbol: link.symbol,
-    exchange: link.exchange,
-    etfId: link.etfId,
+    exchange: link.exchange ?? resolved?.exchange ?? null,
+    etfId: link.etfId ?? resolved?.id ?? null,
     role: link.role as EtfScenarioRole,
     sortOrder: link.sortOrder,
   };
@@ -51,6 +51,21 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const { etfLinks, outlookAsOfDate, createdAt, updatedAt, ...rest } = scenario;
 
+  const unresolvedSymbols = Array.from(new Set(etfLinks.filter((l) => !l.etfId || !l.exchange).map((l) => l.symbol.toUpperCase())));
+  const resolvedBySymbol = new Map<string, { id: string; exchange: string }>();
+  if (unresolvedSymbols.length) {
+    const matches = await prisma.etf.findMany({
+      where: { spaceId, symbol: { in: unresolvedSymbols } },
+      select: { id: true, symbol: true, exchange: true },
+    });
+    for (const etf of matches) {
+      const key = etf.symbol.toUpperCase();
+      if (!resolvedBySymbol.has(key)) resolvedBySymbol.set(key, { id: etf.id, exchange: etf.exchange });
+    }
+  }
+
+  const mapLink = (l: EtfScenarioEtfLink) => toLinkDto(l, resolvedBySymbol.get(l.symbol.toUpperCase()));
+
   return {
     ...rest,
     direction: rest.direction as EtfScenarioDirection,
@@ -59,9 +74,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     outlookAsOfDate: outlookAsOfDate.toISOString(),
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),
-    winners: etfLinks.filter((l) => l.role === 'WINNER').map(toLinkDto),
-    losers: etfLinks.filter((l) => l.role === 'LOSER').map(toLinkDto),
-    mostExposed: etfLinks.filter((l) => l.role === 'MOST_EXPOSED').map(toLinkDto),
+    winners: etfLinks.filter((l) => l.role === 'WINNER').map(mapLink),
+    losers: etfLinks.filter((l) => l.role === 'LOSER').map(mapLink),
+    mostExposed: etfLinks.filter((l) => l.role === 'MOST_EXPOSED').map(mapLink),
   };
 }
 
