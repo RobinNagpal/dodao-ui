@@ -1,86 +1,51 @@
+import EtfScenariosPageActions from '@/app/etf-scenarios/EtfScenariosPageActions';
 import EtfScenarioListingGrid from '@/components/etf-scenarios/EtfScenarioListingGrid';
 import EtfScenarioPageLayout from '@/components/etf-scenarios/EtfScenarioPageLayout';
-import { EtfScenarioListingResponse, EtfScenarioListingItem } from '@/app/api/[spaceId]/etf-scenarios/listing/route';
+import { EtfScenarioListingResponse } from '@/app/api/[spaceId]/etf-scenarios/listing/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ETF_SCENARIO_LISTING_TAG } from '@/utils/etf-scenario-cache-utils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import {
   generateEtfScenarioListingMetadata,
   generateEtfScenarioListingJsonLd,
   generateEtfScenarioListingBreadcrumbJsonLd,
   generateEtfScenarioListingItemListJsonLd,
 } from '@/utils/etf-scenario-metadata-generators';
-import { prisma } from '@/prisma';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours
 
 const DEFAULT_PAGE_SIZE = 100; // fixed 31-row dataset today; 100 leaves headroom
+const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 export const metadata = generateEtfScenarioListingMetadata();
 
-export default async function EtfScenariosPage() {
-  let data: EtfScenarioListingResponse = {
-    scenarios: [],
-    totalCount: 0,
-    page: 1,
-    pageSize: DEFAULT_PAGE_SIZE,
-    totalPages: 1,
-    filtersApplied: false,
-  };
-
+async function fetchScenarioListing(): Promise<EtfScenarioListingResponse> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etf-scenarios/listing?pageSize=${DEFAULT_PAGE_SIZE}`;
   try {
-    const [rows, totalCount] = await Promise.all([
-      prisma.etfScenario.findMany({
-        where: { spaceId: KoalaGainsSpaceId, archived: false },
-        orderBy: [{ scenarioNumber: 'asc' }],
-        take: DEFAULT_PAGE_SIZE,
-        select: {
-          id: true,
-          scenarioNumber: true,
-          title: true,
-          slug: true,
-          direction: true,
-          timeframe: true,
-          probabilityBucket: true,
-          probabilityPercentage: true,
-          outlookAsOfDate: true,
-          underlyingCause: true,
-          archived: true,
-        },
-      }),
-      prisma.etfScenario.count({ where: { spaceId: KoalaGainsSpaceId, archived: false } }),
-    ]);
-
-    const scenarios: EtfScenarioListingItem[] = rows.map((s) => ({
-      id: s.id,
-      scenarioNumber: s.scenarioNumber,
-      title: s.title,
-      slug: s.slug,
-      direction: s.direction as EtfScenarioListingItem['direction'],
-      timeframe: s.timeframe as EtfScenarioListingItem['timeframe'],
-      probabilityBucket: s.probabilityBucket as EtfScenarioListingItem['probabilityBucket'],
-      probabilityPercentage: s.probabilityPercentage,
-      outlookAsOfDate: s.outlookAsOfDate.toISOString(),
-      underlyingCause: s.underlyingCause,
-      archived: s.archived,
-    }));
-
-    data = {
-      scenarios,
-      totalCount,
-      page: 1,
-      pageSize: DEFAULT_PAGE_SIZE,
-      totalPages: Math.max(1, Math.ceil(totalCount / DEFAULT_PAGE_SIZE)),
-      filtersApplied: false,
-    };
+    const res = await fetch(url, {
+      next: { revalidate: WEEK_IN_SECONDS, tags: [ETF_SCENARIO_LISTING_TAG] },
+    });
+    if (!res.ok) {
+      console.error(`Failed to fetch ETF scenarios listing: HTTP ${res.status}`);
+      return { scenarios: [], totalCount: 0, page: 1, pageSize: DEFAULT_PAGE_SIZE, totalPages: 1, filtersApplied: false };
+    }
+    return (await res.json()) as EtfScenarioListingResponse;
   } catch (e) {
     console.error('Failed to fetch ETF scenarios listing:', e);
+    return { scenarios: [], totalCount: 0, page: 1, pageSize: DEFAULT_PAGE_SIZE, totalPages: 1, filtersApplied: false };
   }
+}
+
+export default async function EtfScenariosPage() {
+  const data = await fetchScenarioListing();
 
   return (
     <EtfScenarioPageLayout
       title="ETF Market Scenarios"
       description="A dated playbook of recurring market scenarios that meaningfully move specific ETF categories — with winners, losers, historical analogs, and a qualitative probability outlook."
+      rightButton={<EtfScenariosPageActions />}
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingJsonLd()) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingBreadcrumbJsonLd()) }} />
