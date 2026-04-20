@@ -16,7 +16,9 @@ function LinkPill({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
     </span>
   );
 
-  if (link.exchange && link.etfId) {
+  // `etfId` is optional (depends on whether we could resolve the symbol in DB),
+  // but we can still route to the ETF page as long as exchange + symbol exist.
+  if (link.exchange) {
     return (
       <Link href={`/etfs/${link.exchange}/${link.symbol}`} className="hover:opacity-80">
         {inner}
