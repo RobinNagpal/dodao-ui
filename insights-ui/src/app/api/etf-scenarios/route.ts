@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
+import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
@@ -52,27 +52,36 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
   const slug = body.slug?.trim() || slugifyScenarioTitle(body.title);
 
-  const created = await prisma.$transaction(async (tx) => {
-    const scenario = await tx.etfScenario.create({
-      data: {
-        scenarioNumber: body.scenarioNumber,
-        title: body.title,
+  const commonData = {
+    scenarioNumber: body.scenarioNumber,
+    title: body.title,
+    underlyingCause: body.underlyingCause,
+    historicalAnalog: body.historicalAnalog,
+    winnersMarkdown: body.winnersMarkdown,
+    losersMarkdown: body.losersMarkdown,
+    outlookMarkdown: body.outlookMarkdown,
+    direction: body.direction,
+    timeframe: body.timeframe,
+    probabilityBucket: body.probabilityBucket,
+    probabilityPercentage: body.probabilityPercentage ?? null,
+    outlookAsOfDate: new Date(body.outlookAsOfDate),
+    metaDescription: body.metaDescription ?? null,
+    archived: body.archived ?? false,
+  };
+
+  const saved = await prisma.$transaction(async (tx) => {
+    const scenario = await tx.etfScenario.upsert({
+      where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
+      create: {
+        id: slug,
         slug,
-        underlyingCause: body.underlyingCause,
-        historicalAnalog: body.historicalAnalog,
-        winnersMarkdown: body.winnersMarkdown,
-        losersMarkdown: body.losersMarkdown,
-        outlookMarkdown: body.outlookMarkdown,
-        direction: body.direction,
-        timeframe: body.timeframe,
-        probabilityBucket: body.probabilityBucket,
-        probabilityPercentage: body.probabilityPercentage ?? null,
-        outlookAsOfDate: new Date(body.outlookAsOfDate),
-        metaDescription: body.metaDescription ?? null,
-        archived: body.archived ?? false,
         spaceId: KoalaGainsSpaceId,
+        ...commonData,
       },
+      update: commonData,
     });
+
+    await tx.etfScenarioEtfLink.deleteMany({ where: { scenarioId: scenario.id } });
 
     if (body.links?.length) {
       await tx.etfScenarioEtfLink.createMany({
@@ -92,7 +101,8 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
   });
 
   revalidateEtfScenarioListingTag();
-  return created;
+  revalidateEtfScenarioBySlugTag(saved.slug);
+  return saved;
 }
 
 export const GET = withErrorHandlingV2<EtfScenario[]>(getHandler);
