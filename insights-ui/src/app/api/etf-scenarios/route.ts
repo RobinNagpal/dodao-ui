@@ -2,12 +2,12 @@ import { prisma } from '@/prisma';
 import { revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
-import { withLoggedInAdmin } from '../helpers/withLoggedInAdmin';
+import { withAdminOrToken } from '../helpers/withAdminOrToken';
 import { z } from 'zod';
 
 const createEtfScenarioSchema = z.object({
@@ -47,7 +47,7 @@ async function getHandler(): Promise<EtfScenario[]> {
   });
 }
 
-async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<EtfScenario> {
+async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null, _dynamic: { params: Promise<any> }): Promise<EtfScenario> {
   const body = createEtfScenarioSchema.parse(await request.json());
 
   const slug = body.slug?.trim() || slugifyScenarioTitle(body.title);
@@ -96,4 +96,4 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
 }
 
 export const GET = withErrorHandlingV2<EtfScenario[]>(getHandler);
-export const POST = withLoggedInAdmin<EtfScenario>(postHandler);
+export const POST = withAdminOrToken<EtfScenario>(postHandler);
