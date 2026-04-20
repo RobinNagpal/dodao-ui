@@ -37,13 +37,19 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const isBusy = fetchingFinancialInfo || triggeringMor || creatingGenRequests || progress !== null;
 
-  async function handleGenerateAnalysis(options?: { performanceAndReturns?: boolean; costEfficiencyAndTeam?: boolean; riskAnalysis?: boolean }) {
+  async function handleGenerateAnalysis(options?: {
+    performanceAndReturns?: boolean;
+    costEfficiencyAndTeam?: boolean;
+    riskAnalysis?: boolean;
+    indexStrategy?: boolean;
+  }) {
     const allTypes = !options;
     const payloads: EtfGenerationRequestPayload[] = selectedEtfs.map((etf) => ({
       etf: { symbol: etf.symbol, exchange: etf.exchange },
       regeneratePerformanceAndReturns: allTypes || (options?.performanceAndReturns ?? false),
       regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
       regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
+      regenerateIndexStrategy: allTypes || (options?.indexStrategy ?? false),
       regenerateFinalSummary: allTypes,
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
