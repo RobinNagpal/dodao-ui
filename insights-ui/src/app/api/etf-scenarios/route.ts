@@ -69,6 +69,18 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     archived: body.archived ?? false,
   };
 
+  const symbols = Array.from(new Set((body.links ?? []).map((l) => l.symbol.toUpperCase())));
+  const knownEtfs = symbols.length
+    ? await prisma.etf.findMany({
+        where: { spaceId: KoalaGainsSpaceId, symbol: { in: symbols } },
+        select: { id: true, symbol: true, exchange: true },
+      })
+    : [];
+  const knownEtfBySymbol = new Map<string, { id: string; symbol: string; exchange: string }>();
+  for (const etf of knownEtfs) {
+    if (!knownEtfBySymbol.has(etf.symbol)) knownEtfBySymbol.set(etf.symbol, etf);
+  }
+
   const saved = await prisma.$transaction(async (tx) => {
     const scenario = await tx.etfScenario.upsert({
       where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
@@ -85,14 +97,19 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
     if (body.links?.length) {
       await tx.etfScenarioEtfLink.createMany({
-        data: body.links.map((link, idx) => ({
-          scenarioId: scenario.id,
-          symbol: link.symbol.toUpperCase(),
-          exchange: link.exchange ?? null,
-          role: link.role,
-          sortOrder: link.sortOrder ?? idx,
-          spaceId: KoalaGainsSpaceId,
-        })),
+        data: body.links.map((link, idx) => {
+          const symbol = link.symbol.toUpperCase();
+          const knownEtf = knownEtfBySymbol.get(symbol);
+          return {
+            scenarioId: scenario.id,
+            symbol,
+            exchange: knownEtf?.exchange ?? link.exchange ?? null,
+            etfId: knownEtf?.id ?? null,
+            role: link.role,
+            sortOrder: link.sortOrder ?? idx,
+            spaceId: KoalaGainsSpaceId,
+          };
+        }),
         skipDuplicates: true,
       });
     }
