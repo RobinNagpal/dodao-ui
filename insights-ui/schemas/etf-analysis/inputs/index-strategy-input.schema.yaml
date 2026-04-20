@@ -1,0 +1,25 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
+  assetClass:
+    type: ['string', 'null']
+    description: 'The ETF asset class (e.g., Equity, Fixed Income).'
+  issuer:
+    type: ['string', 'null']
+    description: 'ETF issuer/provider (e.g., Vanguard, iShares, SPDR).'
+  category:
+    type: ['string', 'null']
+    description: 'ETF category as provided by the data source (e.g., Large Blend).'
+  indexName:
+    type: ['string', 'null']
+    description: 'Index name the ETF aims to track (if known).'
+required:
+  - name
+  - exchange

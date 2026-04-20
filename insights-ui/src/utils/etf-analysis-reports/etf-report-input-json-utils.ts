@@ -302,6 +302,18 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
   };
 }
 
+export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
+  const sa = etf.stockAnalyzerInfo;
+  return {
+    name: etf.name,
+    exchange: etf.exchange,
+    assetClass: sa?.assetClass || null,
+    issuer: sa?.issuer || null,
+    category: sa?.category || null,
+    indexName: sa?.indexName || null,
+  };
+}
+
 export function prepareEtfFinalSummaryInputJson(etf: EtfWithAllData) {
   const categorySummaries = (etf.categoryAnalysisResults || []).map((c) => ({
     categoryKey: c.categoryKey,

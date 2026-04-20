@@ -16,6 +16,7 @@ export interface EtfGenerationRequestPayload {
   regeneratePerformanceAndReturns: boolean;
   regenerateCostEfficiencyAndTeam: boolean;
   regenerateRiskAnalysis: boolean;
+  regenerateIndexStrategy?: boolean;
   regenerateFinalSummary?: boolean;
 }
 
@@ -165,6 +166,7 @@ async function postHandler(
           regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns || existingRequest.regeneratePerformanceAndReturns,
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam || existingRequest.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis || existingRequest.regenerateRiskAnalysis,
+          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy || existingRequest.regenerateIndexStrategy,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
         },
@@ -177,6 +179,7 @@ async function postHandler(
           regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns,
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
+          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy ?? true,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
         },
       });
