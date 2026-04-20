@@ -230,3 +230,20 @@ export function timeframeLabel(timeframe: string): string {
       return timeframe;
   }
 }
+
+export function pricedInBucketLabel(bucket: string): string {
+  switch (bucket) {
+    case 'NOT_PRICED_IN':
+      return 'Not priced in';
+    case 'PARTIALLY_PRICED_IN':
+      return 'Partially priced in';
+    case 'MOSTLY_PRICED_IN':
+      return 'Mostly priced in';
+    case 'FULLY_PRICED_IN':
+      return 'Fully priced in';
+    case 'OVER_PRICED_IN':
+      return 'Over-priced in';
+    default:
+      return bucket;
+  }
+}

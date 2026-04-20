@@ -23,6 +23,19 @@ export const EtfScenarioProbabilityBucket = {
 } as const;
 export type EtfScenarioProbabilityBucket = (typeof EtfScenarioProbabilityBucket)[keyof typeof EtfScenarioProbabilityBucket];
 
+// How much of the scenario is already reflected in current ETF prices.
+// Pairs with probabilityPercentage to signal remaining edge: a 50%-probability
+// scenario that is FULLY_PRICED_IN has no actionable edge; a 20%-probability
+// scenario that is NOT_PRICED_IN can still be a strong trade.
+export const EtfScenarioPricedInBucket = {
+  NOT_PRICED_IN: 'NOT_PRICED_IN',
+  PARTIALLY_PRICED_IN: 'PARTIALLY_PRICED_IN',
+  MOSTLY_PRICED_IN: 'MOSTLY_PRICED_IN',
+  FULLY_PRICED_IN: 'FULLY_PRICED_IN',
+  OVER_PRICED_IN: 'OVER_PRICED_IN',
+} as const;
+export type EtfScenarioPricedInBucket = (typeof EtfScenarioPricedInBucket)[keyof typeof EtfScenarioPricedInBucket];
+
 export const EtfScenarioRole = {
   WINNER: 'WINNER',
   LOSER: 'LOSER',

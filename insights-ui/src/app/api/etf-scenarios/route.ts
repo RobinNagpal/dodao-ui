@@ -5,7 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -23,6 +23,10 @@ const createEtfScenarioSchema = z.object({
   timeframe: z.nativeEnum(EtfScenarioTimeframe),
   probabilityBucket: z.nativeEnum(EtfScenarioProbabilityBucket),
   probabilityPercentage: z.number().int().min(0).max(100).nullable().optional(),
+  pricedInBucket: z.nativeEnum(EtfScenarioPricedInBucket).optional(),
+  expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+  expectedPriceChangeExplanation: z.string().nullable().optional(),
+  priceChangeTimeframeExplanation: z.string().nullable().optional(),
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
@@ -64,6 +68,10 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     timeframe: body.timeframe,
     probabilityBucket: body.probabilityBucket,
     probabilityPercentage: body.probabilityPercentage ?? null,
+    pricedInBucket: body.pricedInBucket ?? EtfScenarioPricedInBucket.PARTIALLY_PRICED_IN,
+    expectedPriceChange: body.expectedPriceChange ?? null,
+    expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
+    priceChangeTimeframeExplanation: body.priceChangeTimeframeExplanation ?? null,
     outlookAsOfDate: new Date(body.outlookAsOfDate),
     metaDescription: body.metaDescription ?? null,
     archived: body.archived ?? false,

@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario, EtfScenarioEtfLink } from '@prisma/client';
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
 
 export interface EtfScenarioLinkDto {
@@ -12,10 +12,12 @@ export interface EtfScenarioLinkDto {
   sortOrder: number;
 }
 
-export interface EtfScenarioDetail extends Omit<EtfScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket'> {
+export interface EtfScenarioDetail
+  extends Omit<EtfScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket' | 'pricedInBucket'> {
   direction: EtfScenarioDirection;
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
+  pricedInBucket: EtfScenarioPricedInBucket;
   outlookAsOfDate: string;
   createdAt: string;
   updatedAt: string;
@@ -71,6 +73,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     direction: rest.direction as EtfScenarioDirection,
     timeframe: rest.timeframe as EtfScenarioTimeframe,
     probabilityBucket: rest.probabilityBucket as EtfScenarioProbabilityBucket,
+    pricedInBucket: rest.pricedInBucket as EtfScenarioPricedInBucket,
     outlookAsOfDate: outlookAsOfDate.toISOString(),
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),

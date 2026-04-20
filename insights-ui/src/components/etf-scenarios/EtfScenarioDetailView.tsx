@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { EtfScenarioDetail, EtfScenarioLinkDto } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { EtfScenarioDirectionBadge, EtfScenarioProbabilityBadge, EtfScenarioTimeframeBadge } from './EtfScenarioOutlookBadge';
-import { directionLabel, probabilityBucketLabel, timeframeLabel } from '@/utils/etf-scenario-metadata-generators';
+import { directionLabel, pricedInBucketLabel, probabilityBucketLabel, timeframeLabel } from '@/utils/etf-scenario-metadata-generators';
 
 function renderMarkdown(md: string) {
   return { __html: parseMarkdown(md) as string };
@@ -44,8 +44,16 @@ function LinkList({ title, links, emptyLabel }: { title: string; links: EtfScena
   );
 }
 
+function formatExpectedPriceChange(value: number | null | undefined): string {
+  if (value === null || value === undefined) return '—';
+  const sign = value > 0 ? '+' : '';
+  return `${sign}${value}%`;
+}
+
 export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScenarioDetail }): JSX.Element {
   const asOf = scenario.outlookAsOfDate.slice(0, 10);
+  const hasPricingContext =
+    scenario.pricedInBucket || scenario.expectedPriceChange !== null || scenario.expectedPriceChangeExplanation || scenario.priceChangeTimeframeExplanation;
 
   return (
     <article className="text-[#E5E7EB]">
@@ -73,6 +81,34 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
         <h2 className="text-lg font-semibold text-white mb-2">Historical analog</h2>
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.historicalAnalog)} />
       </section>
+
+      {hasPricingContext && (
+        <section className="mb-6 bg-[#1F2937] border border-[#374151] rounded-lg p-4">
+          <h2 className="text-lg font-semibold text-white mb-3">Priced-in status & expected move</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">How much is already priced in</p>
+              <p className="text-sm text-white font-semibold">{pricedInBucketLabel(scenario.pricedInBucket)}</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Expected average price change (still to move)</p>
+              <p className="text-sm text-white font-semibold">{formatExpectedPriceChange(scenario.expectedPriceChange)}</p>
+            </div>
+          </div>
+          {scenario.expectedPriceChangeExplanation && (
+            <div className="mb-3">
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Range & reasoning</p>
+              <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.expectedPriceChangeExplanation)} />
+            </div>
+          )}
+          {scenario.priceChangeTimeframeExplanation && (
+            <div>
+              <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">When the move plays out</p>
+              <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.priceChangeTimeframeExplanation)} />
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
