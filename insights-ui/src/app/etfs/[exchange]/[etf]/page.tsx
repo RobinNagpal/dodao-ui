@@ -256,6 +256,13 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary) }} />
         </div>
       )}
+
+      {/* Index & Strategy (if available) */}
+      {d.indexStrategy && d.indexStrategy.trim() && (
+        <div className="mb-2">
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.indexStrategy) }} />
+        </div>
+      )}
     </section>
   );
 }
