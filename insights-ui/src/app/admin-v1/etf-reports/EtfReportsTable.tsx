@@ -55,6 +55,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Performance</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Cost & Team</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Risk</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Index & Strategy</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Summary</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
@@ -109,6 +110,9 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                 <AnalysisPill count={e.riskAnalysisCount} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
+                <StatusPill ok={e.hasIndexStrategy} />
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
                 <SummaryPill ok={e.hasSummary} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
@@ -129,7 +133,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
 
           {etfs.length === 0 && (
             <tr>
-              <td colSpan={12} className="px-4 py-10 text-center text-gray-300">
+              <td colSpan={14} className="px-4 py-10 text-center text-gray-300">
                 No ETFs found.
               </td>
             </tr>
