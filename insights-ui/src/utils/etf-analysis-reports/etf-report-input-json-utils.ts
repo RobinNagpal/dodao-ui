@@ -114,10 +114,14 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
   const mor = etf.morAnalyzerInfo;
   const fin = etf.financialInfo;
   const people = etf.morPeopleInfo;
+  const risk = etf.morRiskInfo;
   const assetClass = sa?.assetClass || 'Equity';
   const fundCategory = sa?.category || null;
   const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
   const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.PerformanceAndReturns, { fundCategory: fundCategory ?? undefined });
+
+  const riskPeriods = (risk?.riskPeriods as Record<string, { marketVolatilityMeasures?: Record<string, unknown> }> | null | undefined) ?? null;
+  const pickMvm = (period: string, key: string): unknown => riskPeriods?.[period]?.marketVolatilityMeasures?.[key] ?? null;
 
   return {
     name: etf.name,
@@ -174,6 +178,10 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       atl: sa?.atl,
       atlDate: sa?.atlDate,
       atlChgPercent: sa?.atlChgPercent,
+      high52wChg: sa?.high52wChg,
+      high52wDate: sa?.high52wDate,
+      low52wChg: sa?.low52wChg,
+      low52wDate: sa?.low52wDate,
     }),
     morReturns: JSON.stringify({
       returnsAnnual: mor?.returnsAnnual,
@@ -204,11 +212,30 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       dividendTtm: fin?.dividendTtm,
       divGrowth3y: sa?.divGrowth3y,
       divGrowth5y: sa?.divGrowth5y,
+      divYears: sa?.divYears,
+      divGrYears: sa?.divGrYears,
     }),
     fundContext: JSON.stringify({
       expenseRatio: fin?.expenseRatio,
       inceptionDate: people?.inceptionDate,
       overviewStyleBox: mor?.overviewStyleBox,
+    }),
+    downsideAndDrawdownContext: JSON.stringify({
+      captureRatios: {
+        '3-Yr': pickMvm('3-Yr', 'captureRatios'),
+        '5-Yr': pickMvm('5-Yr', 'captureRatios'),
+        '10-Yr': pickMvm('10-Yr', 'captureRatios'),
+      },
+      drawdown: {
+        '3-Yr': pickMvm('3-Yr', 'drawdown'),
+        '5-Yr': pickMvm('5-Yr', 'drawdown'),
+        '10-Yr': pickMvm('10-Yr', 'drawdown'),
+      },
+      drawdownDates: {
+        '3-Yr': pickMvm('3-Yr', 'drawdownDates'),
+        '5-Yr': pickMvm('5-Yr', 'drawdownDates'),
+        '10-Yr': pickMvm('10-Yr', 'drawdownDates'),
+      },
     }),
   };
 }

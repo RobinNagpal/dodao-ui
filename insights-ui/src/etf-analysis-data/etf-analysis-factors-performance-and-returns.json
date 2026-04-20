@@ -1,14 +1,14 @@
 {
   "categoryKey": "PerformanceAndReturns",
   "categoryName": "Performance & Returns",
-  "categoryDescription": "Evaluates the ETF's historical returns, consistency, drawdown behavior, income contribution, and how well it has tracked its benchmark or peers across multiple time horizons. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "categoryDescription": "Evaluates the ETF's historical returns, consistency, income contribution, downside-protection mandate delivery, and how well it has tracked its benchmark or peers across multiple time horizons. Maximum-drawdown severity itself is covered in Risk Analysis; this category only uses drawdown data where it is part of a return-focused story (e.g. downside-protection capture ratios, calendar-year recovery). Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
   "factors": [
     {
       "factorKey": "long_term_cagr",
       "factorTitle": "Long-Term CAGR",
-      "factorDescription": "Measures compound annual growth rate over 5, 10, 15, and 20-year periods. Shows whether the fund has consistently grown investor capital over extended horizons. For funds younger than 5 years, note the limited history and use only the periods available rather than extrapolating.",
+      "factorDescription": "Measures compound annual growth rate over 5, 10, 15, and 20-year periods. Shows whether the fund has consistently grown investor capital over extended horizons. For funds younger than 5 years, note the limited history and use only the periods available rather than extrapolating. For daily-leveraged or inverse funds, long-horizon CAGR is the clearest evidence of compounding decay — compare against the unleveraged underlying's CAGR times the stated leverage factor.",
       "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y",
-      "groups": ["broad-equity", "sector-thematic-equity", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
     },
     {
       "factorKey": "short_term_returns",
@@ -27,14 +27,14 @@
     {
       "factorKey": "benchmark_tracking",
       "factorTitle": "Benchmark Tracking",
-      "factorDescription": "Compares the fund's returns against its stated benchmark index across every available period. For passive funds, tracking within 0.5pp (equities, core bonds) or 1.0pp (high-yield, specialized) is expected — persistent drag beyond that signals structural cost or replication issues. For active funds, measures whether the manager's picks added value above the index net of fees.",
+      "factorDescription": "Compares the fund's returns against its stated benchmark index across every available period. For passive funds, tracking within 0.5pp (equities, core bonds) or 1.0pp (high-yield, specialized) is expected — persistent drag beyond that signals structural cost or replication issues. For active funds, measures whether the manager's picks added value above the index net of fees. For sector and thematic ETFs, note whether the benchmark is a narrow sector index (most XL- series SPDRs) or a broader thematic index — tracking tightness expectation is the same.",
       "factorMetrics": "returnsTrailing, returnsAnnual, indexName",
-      "groups": ["broad-equity", "leveraged-inverse", "fixed-income-core"]
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core"]
     },
     {
       "factorKey": "category_peer_standing",
       "factorTitle": "Category Peer Standing",
-      "factorDescription": "Evaluates where the fund ranks among its Mor-category peers using percentile and quartile rank data across 1Y, 3Y, 5Y, and 10Y. Tracks whether the fund's standing is improving, stable, or deteriorating. Always report the peer-group size alongside the rank — median in a 600-fund category is very different from median in a 10-fund category.",
+      "factorDescription": "Evaluates where the fund ranks among its Mor-category peers using percentile and quartile rank data across 1Y, 3Y, 5Y, and 10Y. Tracks whether the fund's standing is improving, stable, or deteriorating. Always report the peer-group size alongside the rank — median in a 600-fund category is very different from median in a 10-fund category. When the peer group is mostly active managers and the fund is a passive index tracker, account for the structural tracking-cost headwind before concluding the fund is underperforming.",
       "factorMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory",
       "groups": [
         "broad-equity",
@@ -48,17 +48,10 @@
       ]
     },
     {
-      "factorKey": "drawdown_and_recovery",
-      "factorTitle": "Drawdown & Recovery",
-      "factorDescription": "Analyzes the worst peak-to-trough decline and how quickly the fund recovered to prior highs. Compares drawdown severity to the category average — a fund that drew down more than peers AND recovered more slowly is a genuine concern. Contextualize ATH distance by fund type: being -5% to -10% from ATH is normal for equity, but unusual for core bond funds.",
-      "factorMetrics": "drawdown, drawdownDates, athChgPercent, athDate, atlChgPercent, atlDate, returnsAnnual",
-      "groups": ["sector-thematic-equity", "leveraged-inverse", "fixed-income-credit", "allocation-target-date"]
-    },
-    {
       "factorKey": "income_vs_price_return",
       "factorTitle": "Income vs Price Return",
-      "factorDescription": "Separates income contribution from price return. For bond, muni, and income-focused alternative funds, most of the total return comes from distributions rather than price appreciation. Compares total return (return fields) against price-only change (change fields); the gap is the income contribution. A positive total return alongside a declining share price means income is offsetting price erosion — normal for the fund type, not a red flag.",
-      "factorMetrics": "return1y, change1y, return5y, change5y, return10y, change10y",
+      "factorDescription": "Separates income contribution from price return. For bond, muni, and income-focused alternative funds, most of the total return comes from distributions rather than price appreciation. Compares total return (return fields) against price-only change (change fields); the gap is the income contribution. A positive total return alongside a declining share price means income is offsetting price erosion — normal for the fund type, not a red flag. For muni funds, also frame the yield in tax-equivalent terms (state a bracket assumption) so retail readers can compare against taxable-bond peers.",
+      "factorMetrics": "return1y, change1y, return5y, change5y, return10y, change10y, dividendYield, overviewSecYield, overviewTtmYield, divYears",
       "groups": ["fixed-income-core", "fixed-income-credit", "muni", "alt-strategies"]
     },
     {
@@ -71,16 +64,16 @@
     {
       "factorKey": "downside_protection",
       "factorTitle": "Downside Protection Delivery",
-      "factorDescription": "Evaluates how the fund performed during bear markets and broad drawdowns relative to its reference benchmark or category. For alternative strategies and allocation funds, outperforming during market drops is the core value proposition. Compute the protection ratio (fund drawdown / benchmark drawdown) — under 0.50 is excellent, under 0.75 is good, above 0.90 means the fund is not delivering meaningful protection.",
-      "factorMetrics": "returnsAnnual, captureRatios, drawdown",
+      "factorDescription": "Evaluates how the fund performed during bear markets and broad drawdowns relative to its reference benchmark or category. For alternative strategies and allocation funds, outperforming during market drops is the core value proposition. Compute the protection ratio (fund drawdown / benchmark drawdown) — under 0.50 is excellent, under 0.75 is good, above 0.90 means the fund is not delivering meaningful protection. Use the per-period captureRatios (upside vs downside capture vs Index) to separately judge whether the fund is giving up too much upside for the downside protection it delivers. If the fund's mandate is diversification rather than standalone downside protection (e.g. commodities), state that explicitly and judge on correlation evidence rather than forcing a Fail.",
+      "factorMetrics": "returnsAnnual, captureRatios, drawdown, drawdownDates",
       "groups": ["alt-strategies", "allocation-target-date"]
     },
     {
       "factorKey": "rate_environment_resilience",
       "factorTitle": "Rate Environment Resilience",
-      "factorDescription": "For bond and muni funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration funds suffer more in rising-rate years and gain more in falling-rate years. Compare the fund's worst calendar year to its category and index — if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
+      "factorDescription": "For bond, muni, credit, and allocation funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration government and muni funds suffer most in rising-rate years and gain most in falling-rate years. Credit-driven funds (high-yield, bank loan, preferred, EM debt) are partly insulated from rates via spread behavior but can still lose in risk-off rate shocks. Allocation funds inherit the rate sensitivity of their bond sleeve — compare the fund's 2022 loss to the mix of equity + bond index losses it would imply. Compare the fund's worst calendar year to its category and index: if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
       "factorMetrics": "returnsAnnual, return1y, return3y",
-      "groups": ["fixed-income-core", "muni"]
+      "groups": ["fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
     }
   ]
 }
