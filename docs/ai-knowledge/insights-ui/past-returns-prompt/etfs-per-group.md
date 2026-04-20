@@ -139,3 +139,22 @@ curl -s "https://koalagains.com/api/koala_gains/etfs-v1/exchange/NYSEARCA/SPY?al
 ```
 
 The `category` string returned by that endpoint must match one of the `categories[].name` entries in `etf-analysis-categories.json`, which in turn maps to a `group` key.
+
+---
+
+## Final 8 picks for prompt analysis
+
+We are generating analysis on these final 8 ETFs — one per group:
+
+| Group | Symbol | Exchange |
+|---|---|---|
+| broad-equity | IWM | NYSEARCA |
+| sector-thematic-equity | XLV | NYSEARCA |
+| leveraged-inverse | SOXL | NYSEARCA |
+| fixed-income-core | AGG | NYSEARCA |
+| fixed-income-credit | HYG | NYSEARCA |
+| muni | TFI | NYSEARCA |
+| alt-strategies | DBC | NYSEARCA |
+| allocation-target-date | AOR | NYSEARCA |
+
+All four Morningstar data kinds (`quote`, `risk`, `people`, `portfolio`) have been triggered for each via `POST /api/koala_gains/etfs-v1/exchange/{EXCHANGE}/{SYMBOL}/fetch-mor-info?token=$AUTOMATION_SECRET` — 32 accepted requests on 2026-04-20.
