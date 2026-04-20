@@ -1,84 +1,102 @@
-import { EtfAnalysisCategory, EtfAnalysisFactorDefinition, EtfAnalysisFactorsConfig, EtfAssetClass } from '@/types/etf/etf-analysis-types';
-import etfAnalysisFactorsConfig from '@/etf-analysis-data/etf-analysis-factors.json';
+import {
+  EtfAnalysisCategory,
+  EtfAnalysisFactorDefinition,
+  EtfAssetClass,
+  EtfAssetClassBasedFactorsConfig,
+  EtfCategoriesConfig,
+  EtfGroupBasedFactorsConfig,
+  EtfGroupFactorDefinition,
+} from '@/types/etf/etf-analysis-types';
+import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
+import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
+import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
+import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 
-function isEtfAnalysisCategory(value: string): value is EtfAnalysisCategory {
-  return (Object.values(EtfAnalysisCategory) as string[]).includes(value);
-}
-
 const VALID_ASSET_CLASSES: EtfAssetClass[] = ['Equity', 'Fixed Income', 'Alternatives', 'Commodity', 'Asset Allocation', 'Currency'];
+const DEFAULT_GROUP_KEY = 'broad-equity';
 
 function isEtfAssetClass(value: string): value is EtfAssetClass {
   return (VALID_ASSET_CLASSES as string[]).includes(value);
 }
 
-function parseEtfAnalysisFactorsConfig(raw: typeof etfAnalysisFactorsConfig): EtfAnalysisFactorsConfig {
+const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
+const performanceAndReturnsConfig = performanceAndReturnsRaw as EtfGroupBasedFactorsConfig;
+const costEfficiencyAndTeamConfig = costEfficiencyAndTeamRaw as EtfAssetClassBasedFactorsConfig;
+const riskAnalysisConfig = riskAnalysisRaw as EtfAssetClassBasedFactorsConfig;
+
+function normalizeGroupFactor(f: EtfGroupFactorDefinition): EtfAnalysisFactorDefinition {
   return {
-    categories: raw.categories.map((c) => {
-      if (!isEtfAnalysisCategory(c.categoryKey)) {
-        throw new Error(`Invalid ETF analysis categoryKey in config: ${c.categoryKey}`);
-      }
-      return {
-        ...c,
-        categoryKey: c.categoryKey,
-      } as EtfAnalysisFactorsConfig['categories'][number];
-    }),
+    factorAnalysisKey: f.factorKey,
+    factorAnalysisTitle: f.factorTitle,
+    factorAnalysisDescription: f.factorDescription,
+    factorAnalysisMetrics: f.factorMetrics,
   };
 }
 
-const typedConfig = parseEtfAnalysisFactorsConfig(etfAnalysisFactorsConfig);
-
 /**
- * Get analysis factors for a category.
- * For categories with asset-class-specific factors (e.g., PerformanceAndReturns),
- * pass the assetClass to get the right set. Falls back to 'Equity' if not provided or unrecognized.
+ * Resolve the ETF group key (e.g. "broad-equity") from the fund's category string
+ * (e.g. "Large Blend") as stored in EtfStockAnalyzerInfo.category. Returns undefined
+ * when the category is unknown so callers can decide how to fall back.
  */
-export function getEtfAnalysisFactorsForCategory(categoryKey: EtfAnalysisCategory, assetClass?: string): EtfAnalysisFactorDefinition[] {
-  const category = typedConfig.categories.find((c) => c.categoryKey === categoryKey);
-  if (!category) {
-    throw new Error(`ETF analysis category not found: ${categoryKey}`);
-  }
+export function getEtfGroupKeyForCategory(category: string | null | undefined): string | undefined {
+  if (!category) return undefined;
+  const match = categoriesConfig.categories.find((c) => c.name === category);
+  return match?.group;
+}
 
-  // If the category has asset-class-specific factors, use them
-  if (category.factorsByAssetClass) {
-    const resolvedAssetClass: EtfAssetClass = assetClass && isEtfAssetClass(assetClass) ? assetClass : 'Equity';
-    const factors = category.factorsByAssetClass[resolvedAssetClass];
-    if (factors) {
-      return factors;
-    }
-    // Fallback to Equity if the specific asset class is not defined
-    return category.factorsByAssetClass['Equity'] || [];
-  }
+function getFactorsForAssetClass(config: EtfAssetClassBasedFactorsConfig, assetClass?: string): EtfAnalysisFactorDefinition[] {
+  const resolved: EtfAssetClass = assetClass && isEtfAssetClass(assetClass) ? assetClass : 'Equity';
+  return config.factorsByAssetClass[resolved] || config.factorsByAssetClass['Equity'] || [];
+}
 
-  // Otherwise use the flat factors array (CostEfficiencyAndTeam, RiskAnalysis)
-  return category.factors || [];
+function getPerformanceFactorsForGroup(groupKey: string): EtfAnalysisFactorDefinition[] {
+  return performanceAndReturnsConfig.factors.filter((f) => f.groups.includes(groupKey)).map(normalizeGroupFactor);
 }
 
 /**
- * Find a factor definition by key across all asset classes for a given category.
- * Used by UI components that need to look up factor titles from stored results.
+ * Get analysis factors for a given category.
+ *
+ * - PerformanceAndReturns uses group-based selection: the fund's EtfStockAnalyzerInfo.category
+ *   is mapped to a group (via etf-analysis-categories.json), then factors whose `groups`
+ *   includes that group are selected.
+ * - CostEfficiencyAndTeam and RiskAnalysis still use asset-class-based selection.
+ */
+export function getEtfAnalysisFactorsForCategory(
+  categoryKey: EtfAnalysisCategory,
+  params: { assetClass?: string; fundCategory?: string } = {}
+): EtfAnalysisFactorDefinition[] {
+  switch (categoryKey) {
+    case EtfAnalysisCategory.PerformanceAndReturns: {
+      const groupKey = getEtfGroupKeyForCategory(params.fundCategory) || DEFAULT_GROUP_KEY;
+      const factors = getPerformanceFactorsForGroup(groupKey);
+      if (factors.length > 0) return factors;
+      return getPerformanceFactorsForGroup(DEFAULT_GROUP_KEY);
+    }
+    case EtfAnalysisCategory.CostEfficiencyAndTeam:
+      return getFactorsForAssetClass(costEfficiencyAndTeamConfig, params.assetClass);
+    case EtfAnalysisCategory.RiskAnalysis:
+      return getFactorsForAssetClass(riskAnalysisConfig, params.assetClass);
+  }
+}
+
+/**
+ * Find a factor definition by key for a given category. Searches across every
+ * group (PerformanceAndReturns) or every asset class (Cost/Risk).
  */
 export function findFactorDefinition(categoryKey: EtfAnalysisCategory, factorKey: string): EtfAnalysisFactorDefinition | undefined {
-  const category = typedConfig.categories.find((c) => c.categoryKey === categoryKey);
-  if (!category) return undefined;
+  if (categoryKey === EtfAnalysisCategory.PerformanceAndReturns) {
+    const found = performanceAndReturnsConfig.factors.find((f) => f.factorKey === factorKey);
+    return found ? normalizeGroupFactor(found) : undefined;
+  }
 
-  // Search in flat factors first
-  if (category.factors) {
-    const found = category.factors.find((f) => f.factorAnalysisKey === factorKey);
+  const config = categoryKey === EtfAnalysisCategory.CostEfficiencyAndTeam ? costEfficiencyAndTeamConfig : riskAnalysisConfig;
+  for (const assetClass of VALID_ASSET_CLASSES) {
+    const factors = config.factorsByAssetClass[assetClass];
+    if (!factors) continue;
+    const found = factors.find((f) => f.factorAnalysisKey === factorKey);
     if (found) return found;
   }
-
-  // Search across all asset class factors
-  if (category.factorsByAssetClass) {
-    for (const assetClass of VALID_ASSET_CLASSES) {
-      const factors = category.factorsByAssetClass[assetClass];
-      if (factors) {
-        const found = factors.find((f) => f.factorAnalysisKey === factorKey);
-        if (found) return found;
-      }
-    }
-  }
-
   return undefined;
 }
 
@@ -97,7 +115,9 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
   const fin = etf.financialInfo;
   const people = etf.morPeopleInfo;
   const assetClass = sa?.assetClass || 'Equity';
-  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.PerformanceAndReturns, assetClass);
+  const fundCategory = sa?.category || null;
+  const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.PerformanceAndReturns, { fundCategory: fundCategory ?? undefined });
 
   return {
     name: etf.name,
@@ -105,6 +125,8 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     exchange: etf.exchange,
     categoryKey: EtfAnalysisCategory.PerformanceAndReturns,
     assetClass,
+    fundCategory,
+    groupKey,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerReturns: JSON.stringify({
       return1m: sa?.return1m,
@@ -198,7 +220,7 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
   const people = etf.morPeopleInfo;
   const portfolio = etf.morPortfolioInfo;
   const assetClass = sa?.assetClass || 'Equity';
-  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.CostEfficiencyAndTeam, assetClass);
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.CostEfficiencyAndTeam, { assetClass });
 
   return {
     name: etf.name,
@@ -256,7 +278,7 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
   const fin = etf.financialInfo;
   const risk = etf.morRiskInfo;
   const assetClass = sa?.assetClass || 'Equity';
-  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.RiskAnalysis, assetClass);
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.RiskAnalysis, { assetClass });
 
   return {
     name: etf.name,
