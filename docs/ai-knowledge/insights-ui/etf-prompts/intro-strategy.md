@@ -14,15 +14,15 @@ ETF being analyzed
 
 What to write
 
-Produce exactly three distinct paragraphs, separated by a blank line. Each paragraph has a specific job described below. Do not use bullet lists, headings, sub-headings, or markdown — output must be plain prose. Total length should be roughly 350–500 words.
+Produce exactly four distinct paragraphs, separated by a blank line. Each paragraph has a specific job described below. Do not use bullet lists, headings, sub-headings, or markdown — output must be plain prose. Total length should be roughly 500–700 words.
 
 Paragraph 1 — Simple Introduction (≈ 80–120 words)
 
 Introduce the ETF in the simplest possible English, as if explaining it to a friend who has never invested before. Say who runs the fund (the issuer), what it invests in (e.g., "shares of large U.S. companies," "U.S. government bonds," "gold mining companies around the world," "a basket of AI-related stocks"), and the basic idea behind it in one or two plain-language sentences (e.g., "it gives you a small slice of America's 500 biggest companies in a single trade"). Avoid technical terms in this paragraph; if any unavoidable term appears, define it in the same sentence. The goal is for a complete beginner to walk away knowing what this fund is, in one short read.
 
-Paragraph 2 — How It Differs From Its Peers (≈ 100–150 words)
+Paragraph 2 — How It Differs From Its Peers (≈ 130–180 words)
 
-Explain how this ETF is different from other funds in the same broad category. You may name specific competitor ETFs (by name and/or ticker) when it makes the contrast clearer for the reader — for example, "unlike SPY and IVV, which weight by market cap, this fund weights every holding equally." Focus on what makes this fund stand out: it might be the underlying index it tracks, the way it weights holdings (e.g., equal-weighted instead of market-cap-weighted), a sector or geographic tilt, a screen it applies (dividend, quality, low-volatility, ESG), an unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), an unusually low or high expense ratio relative to category norms, or simply being one of the largest / oldest / most liquid in its space. Be concrete — say what the difference actually is and why a retail investor would notice it. If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
+Explain how this ETF is different from other funds in the same broad category. Name 2–3 specific competitor ETFs (by full name and ticker) that a retail investor in this category would realistically also consider — applicable across all asset classes (equity sector funds, bond funds, commodity funds, thematic funds, country/region funds, leveraged/inverse funds, etc.). When you name a peer, give enough information about it that the comparison actually lands: at minimum the index it tracks (or its mandate if active), and any other dimension you are comparing on (number of holdings, weighting scheme, expense ratio, structure). For example, "While the Vanguard Consumer Discretionary ETF (VCR), which tracks the MSCI US IMI Consumer Discretionary 25/50 index of roughly 300 large, mid, and small companies, and the Fidelity MSCI Consumer Discretionary Index ETF (FDIS), which tracks the same MSCI index, both cast a wide net, this fund pulls only from the S&P 500 — about 50 large-cap names." Focus on what genuinely makes this fund stand out: the underlying index, weighting (equal-weighted vs. market-cap-weighted), sector/geographic tilt, applied screens (dividend, quality, low-vol, ESG), unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), expense ratio relative to category norms, or being one of the largest / oldest / most liquid in its space. If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
 
 Paragraph 3 — Strategy in Detail (≈ 180–250 words, the longest and most detailed paragraph)
 
@@ -40,9 +40,13 @@ This is the deepest paragraph. Explain how the ETF is actually run day-to-day so
 
 Define any jargon the first time it appears (e.g., "duration — a measure of how sensitive bond prices are to interest-rate changes").
 
+Paragraph 4 — When This ETF Tends to Perform Well vs. Struggle (≈ 100–150 words)
+
+Translate the strategy above into the market and macro conditions under which this ETF is structurally likely to do well, and the conditions under which it is structurally likely to dip. Be specific to the asset class and exposure: for an equity sector fund, talk about the part of the business cycle, consumer trends, interest-rate environment, or commodity prices that help or hurt that sector; for a broad bond fund, talk about interest-rate moves, credit spreads, and inflation expectations; for a commodity fund, talk about supply/demand drivers, the dollar, and the futures curve (contango vs. backwardation) if relevant; for a thematic fund, talk about the adoption cycle of the theme; for a leveraged, inverse, or covered-call fund, explicitly call out path dependence, capped upside, or volatility decay. Frame these as structural tendencies and tailwinds/headwinds, not predictions or forecasts about specific future returns. If the fund is broadly diversified enough that it largely mirrors the overall market, say so.
+
 Style rules
 
 - Plain English throughout; define jargon on first use. Paragraph 1 should be the simplest, accessible to a true beginner.
 - Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison, but do not rank them or recommend one over another.
 - Be concrete and specific: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
-- Preserve the three-paragraph structure with a single blank line between paragraphs. No headings, no bullets, no markdown.
+- Preserve the four-paragraph structure with a single blank line between paragraphs. No headings, no bullets, no markdown.
