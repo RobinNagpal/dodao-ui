@@ -1,126 +1,116 @@
-# ETF Analysis — Implementation Checklist
+# ETF Reports — KoalaGains (Status + Next Tasks)
 
-## 1. Categories & Factors (JSON file, not DB) ✅
+## Status (already done) ✅
 
-- [x] Finalized 3 ETF analysis categories: Performance & Returns, Cost Efficiency & Team, Risk Analysis
-- [x] Categories are static/generic — same for all ETF types (equity, bond, commodity, sector, thematic)
-- [x] Defined 5 analysis factors per category with factorAnalysisKey, title, description, and metrics
-- [x] Stored in `insights-ui/src/etf-analysis-data/etf-analysis-factors.json`
-- [x] Created TypeScript types in `insights-ui/src/types/etf/etf-analysis-types.ts`: `EtfAnalysisCategory` enum, `EtfAnalysisFactorDefinition`, `EtfCategoryAnalysisFactors`, `EtfAnalysisFactorsConfig`, `EtfFactorAnalysisResult`, `EtfCategoryAnalysisResponse`
-- [ ] Add a utility function to load and validate the JSON at runtime
+- [x] All ETF financial-data is fetched and available for report generation.
+- [x] Report generation pipeline is working end-to-end.
+- [x] UI exists for ETF detail report page plus 3 separate category pages.
+- [x] ETF categories are divided into groups in `insights-ui/src/etf-analysis-data/etf-analysis-categories.json`.
+- [x] Analysis factors exist per category:
+  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-performance-and-returns.json`
+  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json`
+  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-risk-analysis.json`
+- [x] Price chart section is done.
+- [x] Introductory paragraphs are done (including index & strategy fields).
 
-## 2. Input/Output Schemas ✅
+## What we need now (new tasks)
 
-- [x] Created 3 input YAML schemas (one per category) in `insights-ui/schemas/etf-analysis/inputs/`:
-  - `performance-and-returns-input.schema.yaml` — uses StockAnalyzer returns/technicals, Mor returns/overview, financial summary
-  - `cost-efficiency-and-team-input.schema.yaml` — uses financial info, StockAnalyzer fund info, Mor analysis, management info, portfolio turnover
-  - `risk-analysis-input.schema.yaml` — uses StockAnalyzer risk metrics, Mor risk periods, financial risk context, category context
-- [x] Created ETF-specific output schema `insights-ui/schemas/etf-analysis/outputs/etf-category-analysis-output.schema.yaml` (same structure as stock output: overallSummary, overallAnalysisDetails, factors with Pass/Fail)
-- [ ] Document example input/output for one ETF category (e.g., SPY Performance & Returns)
+### A) Review and finalize category grouping
 
-## 3. Database — New Tables (schema added, migration pending)
+- [ ] **Audit the current groups** in `etf-analysis-categories.json`.
+  - Confirm each group has a clear investing “intent” (e.g., broad market, sector, dividend, growth, value, bonds, commodities).
+  - Identify overlaps and ambiguous placements (ETFs that could belong to multiple groups).
+  - Decide whether groups are **mutually exclusive** or **multi-tag** (ETF can appear in multiple groups).
+- [ ] **Finalize a stable taxonomy**:
+  - Lock group keys/names and short descriptions (used in prompts + UI).
+  - Define “primary group” selection rules if multi-tag is allowed.
 
-- [x] Created `EtfAnalysisCategory` enum: PerformanceAndReturns, CostEfficiencyAndTeam, RiskAnalysis
-- [x] Created `EtfGenerationRequest` model with per-category regenerate booleans, status, step tracking, timestamps
-- [x] Created `EtfCategoryAnalysisResult` model with summary, overallAnalysisDetails, unique on (spaceId, etfId, categoryKey)
-- [x] Created `EtfAnalysisCategoryFactorResult` model with factorKey, Pass/Fail result, cascading relation to parent result
-- [x] Created `EtfCachedScore` model with per-category scores and finalScore
-- [x] Added relation fields on `Etf` model for all new tables
-- [x] Run Prisma migration and generate client types
+### B) Finalize analysis factors for each category (per group)
 
-## 4. Prompts (done by user on KoalaGains platform)
+We will finalize factors per group for each of the 3 analysis categories:
+`PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`.
 
-- [ ] Write a system prompt for ETF analysis (analyst persona, evaluation framework)
-- [ ] Write one prompt per category that takes ETF data + factors as input and outputs analysis in the YAML schema format
-- [ ] Register each prompt with keys: `US/etfs/performance-returns`, `US/etfs/cost-efficiency-team`, `US/etfs/risk-analysis`
-- [ ] Test each prompt with sample ETF data (SPY, QQQ, BND) before integrating
+- [ ] **Review existing factor JSONs** (3 files above) and decide:
+  - Which factors are universal (apply to all groups).
+  - Which factors must be group-specific (e.g., bond duration/credit risk vs equity growth vs commodity roll yield considerations).
+- [ ] **Create/confirm a mapping**: `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`.
+  - Decide whether we store this mapping in a new JSON (recommended) vs embedding into existing category/group JSON.
+- [ ] **Finalize factor naming + keys** (backward compatibility):
+  - Ensure factor keys are stable and won’t break existing saved results.
+  - Define a versioning approach if we plan to evolve factors.
 
-## 5. Input Preparation Utils ✅
+### C) Review and finalize prompts (per group + category)
 
-- [x] Created `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` with per-category functions:
-  - `preparePerformanceAndReturnsInputJson()` — gathers StockAnalyzer returns/technicals, Mor returns/overview, financial summary
-  - `prepareCostEfficiencyAndTeamInputJson()` — gathers financial info, fund info, Mor analysis, management/people info, portfolio turnover
-  - `prepareRiskAnalysisInputJson()` — gathers risk metrics (beta, Sharpe, Sortino), Mor risk periods, financial risk context
-  - `getEtfAnalysisFactorsForCategory()` — loads factors from JSON config by category
-- [x] Created `src/utils/etf-analysis-reports/get-etf-report-data-utils.ts` with `fetchEtfWithAllData()` and `fetchEtfBySymbolAndExchange()`
-- [x] Created `src/utils/etf-analysis-reports/etf-report-steps-statuses.ts` with `calculateEtfPendingSteps()`
-- [x] Created `src/utils/etf-analysis-reports/etf-report-status-utils.ts` with `markEtfRequestAsInProgress()` and `markEtfRequestAsCompleted()`
-- [x] Added `EtfReportType` enum, `EtfGenerationRequestStatus` enum, `ETF_PROMPT_KEYS` map, `ETF_REPORT_TYPE_TO_CATEGORY` map to types
+- [ ] **Finalize prompt** for:
+  - Performance & Returns
+  - Cost Efficiency & Team
+  - Risk Analysis
+- [ ] **Golden test set**:
+  - Pick 2–3 ETFs per group, run prompts, and validate output quality/consistency.
 
-## 6. Generation Request API Routes ✅
+### D) Build “Most famous ETFs” dataset (per group)
 
-- [x] Created POST `api/[spaceId]/etfs-v1/generation-requests` — creates or updates generation request (merges flags with OR if existing NotStarted request)
-- [x] Created GET `api/[spaceId]/etfs-v1/generation-requests` — lists all requests grouped by status with pagination and counts
-- [x] Created POST `api/[spaceId]/etfs-v1/generation-requests/[requestId]/reload` — resets a failed request to NotStarted
+- [ ] **Identify the most famous ETFs** under each group.
+  - Selection criteria: AUM, liquidity/volume, popularity/recognition, longevity, issuer reputation.
+- [ ] **Add a JSON dataset** in codebase with:
+  - `groupKey -> famousEtfs[]` (symbol, exchange, name, issuer, why-famous, optional AUM/expense ratio snapshot if available).
+  - Keep it editable by humans and suitable for prompt conditioning.
+- [ ] **Add minimal validation/types** for the JSON (runtime validation optional, TS types required).
 
-## 7. Generation Processing Pipeline ✅
+### E) New report section: “Comparison with famous ETFs”
 
-- [x] Created `src/utils/etf-analysis-reports/etf-generation-report-utils.ts` with `triggerEtfGenerationOfAReport()`
-- [x] Defined dependency map (all 3 categories are independent — no dependencies between them)
-- [x] Created `src/utils/etf-analysis-reports/etf-llm-lambda-utils.ts` with ETF-specific callback URL (`etfs-v1/exchange/...`)
-- [x] Created GET `api/[spaceId]/etfs-v1/generate-etf-v1-request` — cron endpoint that processes up to 10 requests
-- [x] Uses same Lambda + callback pattern as stocks with ETF-specific callback URL
+Goal: Compare the current ETF against the group’s famous ETFs and answer: “Why would we choose this ETF over those?”
 
-## 8. Save Report Callback ✅
+- [ ] **Define input schema** for this section:
+  - Current ETF summary (fees, AUM, performance, holdings concentration, tracking, risk metrics).
+  - “Famous ETF set” from the JSON (and optionally their live-fetched stats if available).
+  - Group context (what investors typically want from this group).
+- [ ] **Define output schema** for this section:
+  - Comparisons table/list (current vs each competitor).
+  - “Choose this ETF if…” bullets.
+  - “Prefer competitor if…” bullets.
+  - Final recommendation + rationale + caveats.
+- [ ] **Finalize prompt** for this section.
+- [ ] **Database (Prisma) changes**:
+  - Add a model to store this new section output per ETF (and per group/version).
+  - Decide if results are stored as structured columns vs JSON blob + derived fields.
+- [ ] **Pipeline changes**:
+  - Add this as a new generation step (with dependencies on the 3 category analyses if required).
+  - Add callback saving logic and status tracking.
+- [ ] **UI changes**:
+  - Add new section on ETF report page to display comparisons and “why choose” reasoning.
 
-- [x] Created POST `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/save-report-callback` — receives LLM response, dispatches via ETF_REPORT_TYPE_TO_CATEGORY map
-- [x] Created `src/utils/etf-analysis-reports/save-etf-report-utils.ts` — upserts EtfCategoryAnalysisResult and EtfAnalysisCategoryFactorResult, uses factor keys from JSON config
-- [x] After saving, computes category score (Pass count) and upserts EtfCachedScore with per-category + final scores
-- [x] After saving, marks step as completed in EtfGenerationRequest and triggers next step via `triggerEtfGenerationOfAReport()`
+### F) Competition module (dynamic competitor picking + analysis)
 
-## 9. Cron Job Setup ✅
+Goal: A new “competition section” where competitors are selected based on same category/group and AUM proximity (and optionally liquidity, expense ratio band).
 
-- [x] Added cron job in `vercel.json` — calls `/api/koala_gains/etfs-v1/generate-etf-v1-request` every 3 minutes
-- [x] Timeout handling already implemented in `etf-generation-report-utils.ts` — 5-min timeout marks step as failed
+- [ ] **Competitor selection logic**:
+  - Rules: same group/category, similar AUM size bands, optional issuer diversity.
+  - Cap competitor count (e.g., 5–10) and define tie-breakers.
+- [ ] **Generate competition analysis**:
+  - Narrative + key differentiators (fees, AUM, liquidity, tracking, holdings concentration, risk).
+- [ ] **Define input schema**:
+  - Current ETF + selected competitors with comparable metrics.
+  - Group context and scoring preferences.
+- [ ] **Define output schema**:
+  - Ranked competitor list + rationale.
+  - Chart-ready series (for competition chart).
+  - “Closest substitutes” and “best alternatives for X goal”.
+- [ ] **UI**:
+  - Separate page for competition analysis.
+  - Competition chart similar to what we do for stocks (metric comparisons + tooltips).
+  - “Similar ETFs” section on main ETF page linking to competitors.
+- [ ] **Pipeline + storage**:
+  - Prisma schema additions for competition analysis results.
+  - Add generation step(s) + callback saving + caching.
+- [ ] **Finalize prompt** for competition analysis.
 
-## 10. Admin Page — ETF Reports (extend existing) ✅
+### G) SEO, metadata, and sitemap automation
 
-- [x] Added 3 analysis status columns (Performance, Cost & Team, Risk) to EtfReportsTable showing factor result counts
-- [x] Added "Missing Analysis" filter option in EtfReportsFilters dropdown
-- [x] Added "Generate Analysis" bulk action in BulkActionsBar — creates generation requests for all selected ETFs
-- [x] Added "Generate All Analysis" per-ETF dropdown action in EtfRowActionsDropdown
-- [x] Added "Missing Analysis" category in SelectMissingBar for quick-selecting ETFs without analysis
-- [x] Updated API to return `performanceAnalysisCount`, `costEfficiencyAnalysisCount`, `riskAnalysisCount`
-
-## 11. Admin Page — ETF Generation Requests ✅
-
-- [x] Created new admin page at `admin-v1/etf-generation-requests/page.tsx`
-- [x] Shows requests grouped by status with color-coded borders (blue=InProgress, gray=NotStarted, red=Failed, green=Completed)
-- [x] Per-step status dots (green=done, red=failed, blue=pending, yellow=in-progress, gray=not enabled)
-- [x] "Reload" button for failed requests (calls reload API endpoint)
-- [x] Auto-refresh every 30 seconds when active requests exist, with Pause/Resume toggle
-- [x] Added nav link in AdminNav under "ETF Mgmt" section
-
-## 12. ETF Detail Page — Spider Chart & Analysis
-
-- [x] Added spider/radar chart on the right side using `EtfRadarChart` component (reuses `RadarChart` + `SpiderGraphForTicker`)
-- [x] Moved financial info to left side, spider chart to right side (50/50 lg layout)
-- [x] Added `EtfAnalysisSections` component below chart: shows summary, Pass/Fail factor list with expandable details per category
-- [x] Fetches analysis data via new API routes; shows nothing gracefully when not yet generated
-- [ ] Add admin-only "Generate" / "Regenerate" buttons per category on the detail page
-
-## 13. New ETF Financial Data Debug Page ✅
-
-- [x] Created `etfs/[exchange]/[etf]/financial-data/page.tsx` showing all raw financial data
-- [x] Displays EtfFinancialInfo and EtfStockAnalyzerInfo as structured field tables
-- [x] Displays EtfMorAnalyzerInfo, EtfMorRiskInfo, EtfMorPeopleInfo, EtfMorPortfolioInfo as formatted JSON
-
-## 14. Analysis Results API Routes ✅
-
-- [x] Created GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis` — returns categories with factor results
-- [x] Created GET `api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores` — returns cached scores for spider chart
-
-## 15. SEO & Metadata ✅
-
-- [x] Updated `generateMetadata()` with analysis-specific keywords (performance, risk, expense ratio)
-- [x] Added JSON-LD structured data (Article schema with author, publisher, dates)
-- [x] OpenGraph and Twitter card meta tags already present from initial implementation
-
-## 16. Testing & Validation
-
-- [ ] Test end-to-end: create generation request → cron processes it → callback saves results → detail page shows analysis
-- [ ] Test with different ETF types: equity ETF (SPY), bond ETF (BND), sector ETF (XLF)
-- [ ] Test spider chart with partial data (some categories generated, others not)
-- [ ] Test admin bulk actions with 10+ ETFs
-- [ ] Verify light and dark theme for all new components
-- [ ] Test on mobile, tablet, and desktop
+- [ ] **SEO/metadata review** after new sections:
+  - Ensure titles/descriptions include comparison + competition keywords where appropriate.
+  - Confirm structured data (JSON-LD) remains valid and updated.
+- [ ] **Daily generation + sitemap updates**:
+  - Generate 5–10 ETFs daily.
+  - Push generated ETF URLs to sitemap (or sitemap index) automatically.
+  - Add monitoring/visibility: counts, last-run timestamp, failures.
