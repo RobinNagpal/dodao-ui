@@ -17,27 +17,23 @@
 
 ### A) Review and finalize category grouping
 
-- [ ] **Audit the current groups** in `etf-analysis-categories.json`.
-  - Confirm each group has a clear investing “intent” (e.g., broad market, sector, dividend, growth, value, bonds, commodities).
+- [ ] **Review the current groups** in `etf-analysis-categories.json`.
+  - Confirm each group is relevant and good to go.
   - Identify overlaps and ambiguous placements (ETFs that could belong to multiple groups).
-  - Decide whether groups are **mutually exclusive** or **multi-tag** (ETF can appear in multiple groups).
-- [ ] **Finalize a stable taxonomy**:
-  - Lock group keys/names and short descriptions (used in prompts + UI).
-  - Define “primary group” selection rules if multi-tag is allowed.
+  - Decide whether groups are **mutually exclusive** or **multi-tag**.
+- [ ] **Finalize the final groups**
 
 ### B) Finalize analysis factors for each category (per group)
 
-We will finalize factors per group for each of the 3 analysis categories:
+We will finalize analysis factors per group for each of the 3 analysis categories:
 `PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`.
 
 - [ ] **Review existing factor JSONs** (3 files above) and decide:
   - Which factors are universal (apply to all groups).
-  - Which factors must be group-specific (e.g., bond duration/credit risk vs equity growth vs commodity roll yield considerations).
-- [ ] **Create/confirm a mapping**: `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`.
-  - Decide whether we store this mapping in a new JSON (recommended) vs embedding into existing category/group JSON.
+  - Which factors must be group-specific.
+- [ ] **Confirm a mapping**: `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`.
 - [ ] **Finalize factor naming + keys** (backward compatibility):
   - Ensure factor keys are stable and won’t break existing saved results.
-  - Define a versioning approach if we plan to evolve factors.
 
 ### C) Review and finalize prompts (per group + category)
 
@@ -113,4 +109,3 @@ Goal: A new “competition section” where competitors are selected based on sa
 - [ ] **Daily generation + sitemap updates**:
   - Generate 5–10 ETFs daily.
   - Push generated ETF URLs to sitemap (or sitemap index) automatically.
-  - Add monitoring/visibility: counts, last-run timestamp, failures.
