@@ -6,6 +6,7 @@ A comprehensive financial insights and AI-powered stock analysis platform that d
 
 ### Features
 - **[features/](features/)** - Descriptions of each feature in the Insights-UI platform.
+  - **[features/etf-scenarios.md](features/etf-scenarios.md)** - What an ETF scenario is, the winner/loser/most-exposed model, and how to add/update/remove scenarios and their ETF links.
 
 ### Requirements
 - **[requirements.md](requirements.md)** - Index of all planned requirements.
