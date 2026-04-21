@@ -168,3 +168,45 @@ Goal: Tag each ETF with the investor goals it satisfies, and surface those goals
 - [ ] **Open question — equity goal representation**:
   - Decide how to represent goals for equity-style ETFs (e.g. country/region funds like India / China ETFs) where the "goal" is more thematic/exposure-based than risk-return based.
   - Propose candidate goal labels for equity (e.g. "Emerging-market equity exposure", "Single-country thematic exposure", "Sector tilt").
+
+### M) Automated prompt-improvement loop
+
+Goal: build a lightweight wrapper that iteratively improves the prompts for each evaluation
+category by repeatedly generating a report, critiquing it, and asking Claude to rewrite the
+prompt. Running this loop 5–10 times per (group, category) should converge on higher-quality,
+more consistent prompts.
+
+- [ ] **Loop design** — a small script/CLI that does the following per iteration:
+  1. **Generate** a report for a given `(group, ETF, evaluation category)` using the current
+     prompt.
+  2. **Read** the generated response.
+  3. **Critique** via Claude: ask Claude what is missing, inconsistent, vague, or factually weak
+     in the response, and record those findings.
+  4. **Update the prompt**: ask Claude to rewrite the prompt so it addresses the findings from
+     step 3.
+  5. **Persist** the new prompt version (with a version id + diff + notes).
+  6. Repeat steps 1–5 up to a configurable `N` iterations (default 5, max ~10).
+- [ ] **Sample coverage per run**:
+  - Run the loop across **all groups**.
+  - Within each group, run it over **a few representative ETFs** (e.g. 2–3 per group) so the
+    critique isn't fit to a single ETF.
+- [ ] **Categories covered**: run independently for each of the 3 evaluation categories
+  (`PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`) and later any new
+  sections (e.g. "Comparison with famous ETFs", "Competition").
+- [ ] **Inputs / configuration**:
+  - Which groups, which ETFs per group, which category, how many iterations.
+  - Current prompt file path(s) as the starting point.
+- [ ] **Outputs / artifacts per iteration**:
+  - The generated report.
+  - The critique notes ("what's missing").
+  - The new prompt (with version id and a short changelog entry).
+  - A final summary comparing first vs last iteration.
+- [ ] **Storage layout** for iteration artifacts (suggested):
+  - `tasks/koala-gains/prompt-tuning/<category>/<group>/<iteration>/{prompt.md, report.md, critique.md}`
+    or equivalent under the repo / a dedicated runs directory.
+- [ ] **Light wrapper only** — do NOT build a heavy framework:
+  - Reuse existing generation pipeline / CLI where possible.
+  - The wrapper just orchestrates generate → critique → rewrite → save.
+- [ ] **Stop / review gate**:
+  - After N iterations, stop and present the final prompt for human review before it replaces
+    the live prompt.
