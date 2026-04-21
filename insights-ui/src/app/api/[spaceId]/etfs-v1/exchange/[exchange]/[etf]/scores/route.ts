@@ -7,7 +7,7 @@ export interface EtfScoresResponse {
   performanceAndReturnsScore: number;
   costEfficiencyAndTeamScore: number;
   riskAnalysisScore: number;
-  futurePerformanceOutlookScore: number;
+  futurePerformanceOutlookScore: number | null;
   finalScore: number;
 }
 

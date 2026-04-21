@@ -1702,7 +1702,7 @@ model EtfCachedScore {
   performanceAndReturnsScore Int @map("performance_and_returns_score")
   costEfficiencyAndTeamScore Int @map("cost_efficiency_and_team_score")
   riskAnalysisScore          Int @map("risk_analysis_score")
-  futurePerformanceOutlookScore Int @map("future_performance_outlook_score")
+  futurePerformanceOutlookScore Int? @map("future_performance_outlook_score")
 
   finalScore Int @map("final_score")
 

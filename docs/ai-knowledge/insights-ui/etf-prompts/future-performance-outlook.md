@@ -26,13 +26,11 @@ This category often cannot be completed using ETF snapshot data alone. You are e
 
 Use these blocks in this order when overlapping fields exist:
 
-- `holdingsSnapshot` → quickest positioning view (top holdings, sector exposure, style measures, credit breakdown, strategy/index text).
 - `etfMorPortfolioInfo` → asset allocation, sector exposure, credit quality, fixed-income style (duration/maturity/yield-to-maturity), holdings summary.
 - `etfMorAnalyzerInfo` → Mor overview (SEC/TTM yield, turnover, category/style box), holdings.topHoldings, `strategyText`, and any available analysis sections.
 - `etfStockAnalyzerInfo` → price/technicals (MA20/50/150/200, RSI daily/weekly/monthly, 52w/ATH/ATL distances), liquidity (avgVolume, dollarVol), flags (options/leverage).
 - `etfMorRiskInfo` → drawdown/capture/risk tables that inform regime + volatility fit.
 - `etfFinancialInfo` → AUM, expense ratio, P/E, dividend yield, volume, beta.
-- `marketRegimeContext` and `catalystsCalendar` → only if present; otherwise populate via lookup.
 
 If you cite “the benchmark”, name it explicitly (index name from holdings/strategy blocks when present).
 
@@ -107,7 +105,3 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 - etfMorRiskInfo: {{etfMorRiskInfo}}
 - etfMorPeopleInfo: {{etfMorPeopleInfo}}
 - etfMorPortfolioInfo: {{etfMorPortfolioInfo}}
-- holdingsSnapshot: {{holdingsSnapshot}}
-- marketRegimeContext: {{marketRegimeContext}}
-- catalystsCalendar: {{catalystsCalendar}}
-
