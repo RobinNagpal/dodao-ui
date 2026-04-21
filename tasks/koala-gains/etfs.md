@@ -23,26 +23,63 @@
   - Decide whether groups are **mutually exclusive** or **multi-tag**.
 - [ ] **Finalize the final groups**
 
-### B) Finalize analysis factors for each category (per group)
+### B) Automated loop — finalize analysis factors AND prompts (per group + category)
 
-We will finalize analysis factors per group for each of the 3 analysis categories:
-`PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`.
+_Replaces the previous manual sections for "finalize analysis factors" and "finalize prompts".
+Uses the same iterative loop approach as section M ("Automated prompt-improvement loop"),
+extended to also refine the factor set for each `(group, category)`._
 
-- [ ] **Review existing factor JSONs** (3 files above) and decide:
-  - Which factors are universal (apply to all groups).
-  - Which factors must be group-specific.
-- [ ] **Confirm a mapping**: `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`.
-- [ ] **Finalize factor naming + keys** (backward compatibility):
-  - Ensure factor keys are stable and won’t break existing saved results.
+Goal: build a lightweight automated wrapper that, for each `(group, evaluation category)`,
+iteratively converges on (a) the right set of **analysis factors** and (b) the right
+**prompt**, by generating output over many ETFs in the group and asking Claude to validate
+and refine.
 
-### C) Review and finalize prompts (per group + category)
+Categories in scope: `PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`
+(and any new category added later).
 
-- [ ] **Finalize prompt** for:
-  - Performance & Returns
-  - Cost Efficiency & Team
-  - Risk Analysis
-- [ ] **Golden test set**:
-  - Pick 2–3 ETFs per group, run prompts, and validate output quality/consistency.
+- [ ] **Loop design** — per iteration, per `(group, category)`:
+  1. **Generate** analysis output for several ETFs in the group using the current factor list
+     and current prompt.
+  2. **Validate with Claude**: for each ETF, ask Claude whether the current factors are
+     correct / complete / relevant for that ETF, and collect the findings.
+  3. **Aggregate findings** across the sampled ETFs to distinguish ETF-specific noise from
+     group-level gaps (factors missing for the whole group, factors that don't apply, unclear
+     wording, etc.).
+  4. **Update**: ask Claude to propose an updated factor list AND an updated prompt that
+     addresses the findings.
+  5. **Persist** the new factor JSON + prompt version with a version id + diff + notes.
+  6. Repeat steps 1–5 up to a configurable `N` iterations (default 5, max ~10).
+- [ ] **Sample coverage per run**:
+  - Run across **all groups** defined in `etf-analysis-categories.json`.
+  - Within each group, sample **many ETFs** (not just 2–3) so factor validation reflects the
+    variety inside the group — target e.g. 5–10 ETFs per group.
+- [ ] **Inputs / configuration**:
+  - Groups to cover, ETFs per group, category, iteration count.
+  - Starting factor JSONs:
+    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-performance-and-returns.json`
+    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json`
+    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-risk-analysis.json`
+  - Starting prompt files for each category.
+- [ ] **Outputs / artifacts per iteration**:
+  - Generated reports for each sampled ETF.
+  - Claude's factor-validation notes per ETF + aggregated group-level findings.
+  - New factor JSON (proposed) + new prompt (proposed), each with a changelog entry.
+  - End-of-run summary comparing first vs last iteration (factors added/removed/renamed,
+    prompt diff).
+- [ ] **Storage layout** (suggested):
+  - `tasks/koala-gains/prompt-tuning/<category>/<group>/<iteration>/{factors.json, prompt.md, reports/<etfSymbol>.md, critique.md}`
+- [ ] **Backward-compatibility guardrails**:
+  - Preserve factor **keys** where the concept is unchanged (so existing saved results don't
+    break).
+  - Only rename/remove keys deliberately, and record the migration in the changelog.
+- [ ] **Mapping finalization** — at loop end, produce the final
+  `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`
+  mapping.
+- [ ] **Light wrapper only** — reuse the existing generation pipeline/CLI; the wrapper just
+  orchestrates generate → validate → refine → save.
+- [ ] **Stop / review gate**:
+  - After N iterations, stop and present the final factor JSON + prompt for human review
+    before they replace the live versions.
 
 ### D) Build “Most famous ETFs” dataset (per group)
 
