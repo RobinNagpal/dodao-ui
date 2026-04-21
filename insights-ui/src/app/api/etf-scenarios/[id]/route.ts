@@ -4,7 +4,7 @@ import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
-import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -22,6 +22,10 @@ const updateEtfScenarioSchema = z.object({
   timeframe: z.nativeEnum(EtfScenarioTimeframe).optional(),
   probabilityBucket: z.nativeEnum(EtfScenarioProbabilityBucket).optional(),
   probabilityPercentage: z.number().int().min(0).max(100).nullable().optional(),
+  pricedInBucket: z.nativeEnum(EtfScenarioPricedInBucket).optional(),
+  expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+  expectedPriceChangeExplanation: z.string().nullable().optional(),
+  priceChangeTimeframeExplanation: z.string().nullable().optional(),
   outlookAsOfDate: z
     .string()
     .refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date')
@@ -65,6 +69,10 @@ async function putHandler(
       ...(body.timeframe !== undefined && { timeframe: body.timeframe }),
       ...(body.probabilityBucket !== undefined && { probabilityBucket: body.probabilityBucket }),
       ...(body.probabilityPercentage !== undefined && { probabilityPercentage: body.probabilityPercentage }),
+      ...(body.pricedInBucket !== undefined && { pricedInBucket: body.pricedInBucket }),
+      ...(body.expectedPriceChange !== undefined && { expectedPriceChange: body.expectedPriceChange }),
+      ...(body.expectedPriceChangeExplanation !== undefined && { expectedPriceChangeExplanation: body.expectedPriceChangeExplanation }),
+      ...(body.priceChangeTimeframeExplanation !== undefined && { priceChangeTimeframeExplanation: body.priceChangeTimeframeExplanation }),
       ...(body.outlookAsOfDate !== undefined && { outlookAsOfDate: new Date(body.outlookAsOfDate) }),
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),
       ...(body.archived !== undefined && { archived: body.archived }),
