@@ -117,6 +117,10 @@ Page: https://koalagains.com/admin-v1/etf-generation-requests
 - [ ] **Sort reports by `updatedAt` descending** in each section.
 - [ ] **Add pagination** to each section.
 - [ ] **Add a top filter** that matches generation reports by entered **name** or **symbol**.
+- [ ] **Reload icon + auto-refresh**:
+  - Show a reload icon on the page that refreshes the data on click.
+  - Auto-refresh the page every **30 seconds**.
+  - Provide a control to **stop / start** the auto-refresh.
 
 ### I) Prompt updates
 
@@ -134,3 +138,10 @@ Reorder/extend the ETF details page so sections appear in this order:
 - [ ] **Strategy** with a proper heading.
 - [ ] **Other sections** below.
 - [ ] **Per-category detail pages**: add a dedicated details page for each of the evaluation categories.
+- [ ] **Admin three-dots menu** (per section / evaluation category / report):
+  - Show a three-dots menu visible only to admins.
+  - Menu options let the admin trigger generation of any report from that dropdown.
+  - Triggered reports should be queued/added into the **ETF generation requests** list.
+- [ ] **Admin-only `updatedAt` timestamp**:
+  - Display the `updatedAt` datetime for each section / evaluation category / report.
+  - Visible only to admin users.
