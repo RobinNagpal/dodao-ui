@@ -8,9 +8,7 @@ ETF being analyzed
 - Category: {{category}}
 - Index tracked (if known): {{indexName}}
 
-▎ Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from
-▎ the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do
-▎ not invent or guess — if a fact cannot be reliably verified, omit it rather than fabricate it.
+Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it rather than fabricate it.
 
 What to write
 
@@ -22,7 +20,7 @@ Introduce the ETF in the simplest possible English, as if explaining it to a fri
 
 Paragraph 2 — How It Differs From Its Peers (≈ 130–180 words)
 
-Explain how this ETF is different from other funds in the same broad category. Name 2–3 specific competitor ETFs (by full name and ticker) that a retail investor in this category would realistically also consider — applicable across all asset classes (equity sector funds, bond funds, commodity funds, thematic funds, country/region funds, leveraged/inverse funds, etc.). When you name a peer, give enough information about it that the comparison actually lands: at minimum the index it tracks (or its mandate if active), and any other dimension you are comparing on (number of holdings, weighting scheme, expense ratio, structure). For example, "While the Vanguard Consumer Discretionary ETF (VCR), which tracks the MSCI US IMI Consumer Discretionary 25/50 index of roughly 300 large, mid, and small companies, and the Fidelity MSCI Consumer Discretionary Index ETF (FDIS), which tracks the same MSCI index, both cast a wide net, this fund pulls only from the S&P 500 — about 50 large-cap names." Focus on what genuinely makes this fund stand out: the underlying index, weighting (equal-weighted vs. market-cap-weighted), sector/geographic tilt, applied screens (dividend, quality, low-vol, ESG), unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), expense ratio relative to category norms, or being one of the largest / oldest / most liquid in its space. If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
+Explain how this ETF is different from other funds in the same broad category. Name 2–3 specific competitor ETFs (by full name and ticker) that a retail investor in this category would realistically also consider — applicable across all asset classes (equity sector funds, bond funds, commodity funds, thematic funds, country/region funds, leveraged/inverse funds, etc.). When you name a peer, give enough information about it that the comparison actually lands: at minimum the index it tracks (or its mandate if active), and any other dimension you are comparing on (number of holdings, weighting scheme, expense ratio, structure). Focus on what genuinely makes this fund stand out: the underlying index, weighting (equal-weighted vs. market-cap-weighted), sector/geographic tilt, applied screens (dividend, quality, low-vol, ESG), unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), expense ratio relative to category norms, or being one of the largest / oldest / most liquid in its space. If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
 
 Paragraph 3 — Strategy in Detail (≈ 180–250 words, the longest and most detailed paragraph)
 
