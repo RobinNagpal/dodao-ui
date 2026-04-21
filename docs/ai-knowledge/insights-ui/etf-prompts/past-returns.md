@@ -9,9 +9,16 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 
 - Stay inside this category. Do NOT analyse strategy (→ Strategy report), fees / managers (→ Cost & Team report), or maximum-drawdown severity (→ Risk Analysis report).
 - No forecasts, no price targets, no valuation calls.
-- Treat the data blocks as the latest snapshot. Never invent numbers. If a field is missing, write `data not provided`.
+- Treat the data blocks as the latest snapshot. Never invent numbers.
+- Missing-field rule: if a field/metric is missing, **do not mention it** (do not write “data not provided”, “not available”, “missing”, etc.). Use only what’s present.
 - Every claim must carry at least one numeric anchor from the input. Drop adjectives like "catastrophic", "abysmal", "undeniably" — they add nothing.
 - Do not repeat the same number in more than one paragraph. State it once, then build on it.
+
+## Factor-metric lookup (only when needed)
+
+- If a factor asks for a metric that is not in the provided data blocks, first try to source that metric from reputable public sources (ETF issuer fund page/prospectus, Morningstar, etf.com, Nasdaq, CBOE, index provider, any other source).
+- If you successfully find a metric, use it sparingly and attribute it inline (source name + as-of date if available). Do not paste long URLs; one short source mention is enough.
+- If you cannot find it quickly or confidently, proceed using only provided data and omit that metric entirely (do not mention that it was unavailable).
 
 ## Data source priority (use when sources differ)
 
@@ -48,7 +55,7 @@ The Pass/Fail bar is mandate-based, not an absolute-return bar. Use `strategyTex
 - **Active fund**: **Pass** when the manager has beaten the relevant benchmark or peer median (whichever the factor targets) net of fees over the horizon the factor covers.
 - **Mandate-specific funds** (daily-leveraged / inverse, commodities, defined outcome, covered-call / derivative income, managed futures, long-short, etc.): judge against the stated mandate. Do not force a broad-equity benchmark. A covered-call fund that gave up upside for income and downside protection has *delivered on its mandate* — call that a Pass even when it trails the S&P 500.
 - **Passive fund in an active peer group**: median percentile among active managers is Pass for a low-cost index fund; do not Fail on peer rank alone.
-- **Missing-data discipline**: if a factor's core metric is absent, default to a conservative call (not Pass-by-inertia), say `data not provided`, and decide using the closest related evidence. Do not Fail a factor only because one secondary data point is missing.
+- **Missing-data discipline**: if a factor's core metric is absent, first try the “Factor-metric lookup” section. If still unavailable, make a conservative call using the closest related evidence from the provided data blocks. Do not Fail a factor only because one secondary data point is missing.
 - **Young funds (< 3 years)**: only judge on the periods actually available; don't Fail for missing long-window metrics.
 
 Each factor's own `factorAnalysisDescription` may specialise these rules for its group. When it does, the factor description wins.
@@ -79,7 +86,7 @@ For muni funds, also give a one-line **tax-equivalent-yield** framing — state 
 - Markdown. Wrap numbers, percentages, prices, RSI, moving averages, yields, and asset figures in backticks.
 - Simple, direct English. No dramatic adjectives, no filler, no repetition.
 - Name the index. Name the peer group. Name the fund category.
-- Do not invent context beyond what the data supports. Missing fields → `data not provided`.
+- Do not invent context beyond what the data supports. If a data point isn’t present (and you couldn’t source it via the lookup rule), omit it silently.
 
 ---
 
