@@ -109,3 +109,28 @@ Goal: A new “competition section” where competitors are selected based on sa
 - [ ] **Daily generation + sitemap updates**:
   - Generate 5–10 ETFs daily.
   - Push generated ETF URLs to sitemap (or sitemap index) automatically.
+
+### H) Admin: ETF generation requests page
+
+Page: https://koalagains.com/admin-v1/etf-generation-requests
+
+- [ ] **Sort reports by `updatedAt` descending** in each section.
+- [ ] **Add pagination** to each section.
+- [ ] **Add a top filter** that matches generation reports by entered **name** or **symbol**.
+
+### I) Prompt updates
+
+- [ ] **Include the report-generation date** in the **Final Summary** section of each prompt so the date appears in the generated output.
+
+### J) ETF Details Page layout
+
+Example page: https://koalagains.com/etfs/NASDAQ/QQQI
+
+Reorder/extend the ETF details page so sections appear in this order:
+
+- [ ] **Final Summary** (shown first).
+- [ ] **Stock analysis info (left) + spider chart (right)** in a two-column layout.
+- [ ] **Price chart**.
+- [ ] **Strategy** with a proper heading.
+- [ ] **Other sections** below.
+- [ ] **Per-category detail pages**: add a dedicated details page for each of the evaluation categories.
