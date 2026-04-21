@@ -22,7 +22,7 @@ Introduce the ETF in the simplest possible English, as if explaining it to a fri
 
 Paragraph 2 — How It Differs From Its Peers (≈ 100–150 words)
 
-Explain how this ETF is different from other funds in the same broad category, without naming specific competitor tickers. Focus on what makes this fund stand out: it might be the underlying index it tracks, the way it weights holdings (e.g., equal-weighted instead of market-cap-weighted), a sector or geographic tilt, a screen it applies (dividend, quality, low-volatility, ESG), an unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), an unusually low or high expense ratio relative to category norms, or simply being one of the largest / oldest / most liquid in its space. Be concrete — say what the difference actually is and why a retail investor would notice it (for example, "unlike most large-cap U.S. equity ETFs, this one weights every holding equally, so smaller companies have the same impact as the giants"). If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
+Explain how this ETF is different from other funds in the same broad category. You may name specific competitor ETFs (by name and/or ticker) when it makes the contrast clearer for the reader — for example, "unlike SPY and IVV, which weight by market cap, this fund weights every holding equally." Focus on what makes this fund stand out: it might be the underlying index it tracks, the way it weights holdings (e.g., equal-weighted instead of market-cap-weighted), a sector or geographic tilt, a screen it applies (dividend, quality, low-volatility, ESG), an unusual structure (covered-call overlay, currency-hedged share class, leveraged or inverse exposure), an unusually low or high expense ratio relative to category norms, or simply being one of the largest / oldest / most liquid in its space. Be concrete — say what the difference actually is and why a retail investor would notice it. If the fund is largely indistinguishable from its peers on a particular dimension, say so plainly rather than inventing a difference.
 
 Paragraph 3 — Strategy in Detail (≈ 180–250 words, the longest and most detailed paragraph)
 
@@ -36,13 +36,14 @@ This is the deepest paragraph. Explain how the ETF is actually run day-to-day so
 - Asset-class–specific mechanics — for fixed-income funds, describe the segment (Treasuries, IG corporate, HY, munis, MBS, TIPS), target duration, and credit-quality range; for equity funds, mention any factor tilts (value, quality, momentum, low-vol, dividend); for commodity funds, explain physical vs. futures-based and any roll methodology; for thematic/sector funds, define the theme and inclusion criteria.
 - Distinctive mechanics retail investors often misunderstand — currency hedging, daily-reset leverage/inverse exposure, covered-call income generation, options overlays, single-stock leverage, K-1 vs. 1099 tax treatment, etc.
 - Distribution policy — income-distributing vs. accumulating, and approximate distribution frequency if relevant.
+- Anything else relevant — the points above are a checklist of common areas, not an exhaustive list. If you find any other meaningful information about how this ETF's strategy is run (e.g., proprietary screening rules, ESG exclusion lists, options strategies, derivative usage limits, ESG voting policies, custom benchmarks, sub-advisor arrangements, hedging overlays, tax-optimization techniques, unusual share-class structures, or anything else specific to this fund), include it as well. Do not omit useful strategy details just because they don't fit one of the categories listed above.
 
 Define any jargon the first time it appears (e.g., "duration — a measure of how sensitive bond prices are to interest-rate changes").
 
 Style rules
 
 - Plain English throughout; define jargon on first use. Paragraph 1 should be the simplest, accessible to a true beginner.
-- Neutral and factual — no buy/sell/hold opinions, no return forecasts, no comparisons to specific competitor tickers.
+- Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison, but do not rank them or recommend one over another.
 - Be concrete: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
 - Do not repeat the ETF's name more than two or three times across the whole output.
 - Preserve the three-paragraph structure with a single blank line between paragraphs. No headings, no bullets, no markdown.
