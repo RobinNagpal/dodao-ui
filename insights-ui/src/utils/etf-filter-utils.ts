@@ -21,7 +21,7 @@ export enum EtfFilterType {
   ASSET_CLASS = 'assetClass',
   ISSUER = 'issuer',
   SEARCH = 'search',
-  // Advanced (Morningstar) filters — per period
+  // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
   MOR_UPSIDE_10YR = 'morUpside10yr',
@@ -50,7 +50,7 @@ export enum EtfFilterParamKey {
   ASSET_CLASS = 'assetClass',
   ISSUER = 'issuer',
   SEARCH = 'search',
-  // Advanced (Morningstar) filters — per period
+  // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
   MOR_UPSIDE_10YR = 'morUpside10yr',
@@ -605,7 +605,7 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     });
   }
 
-  // Morningstar advanced filters (per-period)
+  // Mor advanced filters (per-period)
   for (const def of MOR_ADVANCED_FILTERS) {
     const raw = searchParams.get(def.paramKey);
     if (!raw || !raw.trim()) continue;

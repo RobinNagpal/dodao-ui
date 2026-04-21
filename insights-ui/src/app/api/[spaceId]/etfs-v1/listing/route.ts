@@ -116,7 +116,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     etfWhere.stockAnalyzerInfo = { is: stockAnalyzerFilter };
   }
 
-  // When advanced Morningstar filters are active, require morRiskInfo to exist
+  // When advanced Mor filters are active, require morRiskInfo to exist
   if (hasMorFilters) {
     etfWhere.morRiskInfo = { isNot: null };
   }
@@ -126,7 +126,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const sharesOutRange = parseRangeParam(filters[EtfFilterParamKey.SHARES_OUT]);
   const needsPostFilter = aumRange !== null || sharesOutRange !== null || hasMorFilters;
 
-  // Pre-parse active Morningstar advanced filters for post-filtering
+  // Pre-parse active Mor advanced filters for post-filtering
   const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
     ...def,
     raw: filters[def.paramKey]?.trim() || null,
@@ -182,7 +182,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     };
   }
 
-  // Fast path: all filters are DB-level, use Prisma skip/take + count
+  // Fast path: all filters are DB-level, use Prisma skip/take + count for performance
   const [etfs, totalCount] = await Promise.all([
     prisma.etf.findMany({
       where: etfWhere,

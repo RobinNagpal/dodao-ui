@@ -146,6 +146,10 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       atl: sa?.atl,
       atlDate: sa?.atlDate,
       atlChgPercent: sa?.atlChgPercent,
+      high52wChg: sa?.high52wChg,
+      high52wDate: sa?.high52wDate,
+      low52wChg: sa?.low52wChg,
+      low52wDate: sa?.low52wDate,
     }),
     morReturns: JSON.stringify({
       returnsAnnual: mor?.returnsAnnual,
@@ -176,6 +180,8 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       dividendTtm: fin?.dividendTtm,
       divGrowth3y: sa?.divGrowth3y,
       divGrowth5y: sa?.divGrowth5y,
+      divYears: sa?.divYears,
+      divGrYears: sa?.divGrYears,
     }),
     fundContext: JSON.stringify({
       expenseRatio: fin?.expenseRatio,
