@@ -5,6 +5,7 @@ import {
   EtfGroupBasedFactorsConfig,
   EtfGroupFactorDefinition,
 } from '@/types/etf/etf-analysis-types';
+import { serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
 import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
 import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
@@ -335,13 +336,15 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
 
     // Broad blocks: the forward-looking category is explicitly synthesis-heavy,
-    // and upstream data availability varies a lot by ETF type.
-    etfFinancialInfo: fin ? JSON.stringify(fin) : null,
-    etfStockAnalyzerInfo: sa ? JSON.stringify(sa) : null,
-    etfMorAnalyzerInfo: mor ? JSON.stringify(mor) : null,
-    etfMorRiskInfo: risk ? JSON.stringify(risk) : null,
-    etfMorPeopleInfo: people ? JSON.stringify(people) : null,
-    etfMorPortfolioInfo: portfolio ? JSON.stringify(portfolio) : null,
+    // and upstream data availability varies a lot by ETF type. Route through
+    // serializeBigIntFields so BigInt columns (stockAnalyzerInfo.avgVolume,
+    // dollarVol, preVolume) don't break JSON.stringify.
+    etfFinancialInfo: fin ? JSON.stringify(serializeBigIntFields(fin)) : null,
+    etfStockAnalyzerInfo: sa ? JSON.stringify(serializeBigIntFields(sa)) : null,
+    etfMorAnalyzerInfo: mor ? JSON.stringify(serializeBigIntFields(mor)) : null,
+    etfMorRiskInfo: risk ? JSON.stringify(serializeBigIntFields(risk)) : null,
+    etfMorPeopleInfo: people ? JSON.stringify(serializeBigIntFields(people)) : null,
+    etfMorPortfolioInfo: portfolio ? JSON.stringify(serializeBigIntFields(portfolio)) : null,
   };
 }
 
