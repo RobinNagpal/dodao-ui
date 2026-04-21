@@ -44,6 +44,5 @@ Style rules
 
 - Plain English throughout; define jargon on first use. Paragraph 1 should be the simplest, accessible to a true beginner.
 - Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison, but do not rank them or recommend one over another.
-- Be concrete: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
-- Do not repeat the ETF's name more than two or three times across the whole output.
+- Be concrete and specific: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
 - Preserve the three-paragraph structure with a single blank line between paragraphs. No headings, no bullets, no markdown.
