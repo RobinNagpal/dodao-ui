@@ -41,6 +41,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     performanceAndReturns?: boolean;
     costEfficiencyAndTeam?: boolean;
     riskAnalysis?: boolean;
+    futurePerformanceOutlook?: boolean;
     indexStrategy?: boolean;
   }) {
     const allTypes = !options;
@@ -49,6 +50,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       regeneratePerformanceAndReturns: allTypes || (options?.performanceAndReturns ?? false),
       regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
       regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
+      regenerateFuturePerformanceOutlook: allTypes || (options?.futurePerformanceOutlook ?? false),
       regenerateIndexStrategy: allTypes || (options?.indexStrategy ?? false),
       regenerateFinalSummary: allTypes,
     }));
@@ -109,6 +111,9 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ riskAnalysis: true })}>
         Risk Analysis
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ futurePerformanceOutlook: true })}>
+        Future Outlook
       </button>
 
       <div className="h-4 w-px bg-indigo-700/60" />

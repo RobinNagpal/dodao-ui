@@ -1,4 +1,4 @@
-You are analyzing ETF `{{symbol}}` ({{name}}, {{exchange}}) for a retail investor who wants a clear risk read before investing.
+You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear risk read before investing.
 
 Analysis category: **{{categoryKey}}** (Risk Analysis)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**

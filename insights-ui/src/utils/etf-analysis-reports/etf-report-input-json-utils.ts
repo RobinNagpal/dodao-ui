@@ -9,6 +9,7 @@ import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
 import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
 import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
 import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
+import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
@@ -17,11 +18,13 @@ const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
 const performanceAndReturnsConfig = performanceAndReturnsRaw as EtfGroupBasedFactorsConfig;
 const costEfficiencyAndTeamConfig = costEfficiencyAndTeamRaw as EtfGroupBasedFactorsConfig;
 const riskAnalysisConfig = riskAnalysisRaw as EtfGroupBasedFactorsConfig;
+const futurePerformanceOutlookConfig = futurePerformanceOutlookRaw as EtfGroupBasedFactorsConfig;
 
 const CATEGORY_CONFIGS: Record<EtfAnalysisCategory, EtfGroupBasedFactorsConfig> = {
   [EtfAnalysisCategory.PerformanceAndReturns]: performanceAndReturnsConfig,
   [EtfAnalysisCategory.CostEfficiencyAndTeam]: costEfficiencyAndTeamConfig,
   [EtfAnalysisCategory.RiskAnalysis]: riskAnalysisConfig,
+  [EtfAnalysisCategory.FuturePerformanceOutlook]: futurePerformanceOutlookConfig,
 };
 
 function normalizeGroupFactor(f: EtfGroupFactorDefinition): EtfAnalysisFactorDefinition {
@@ -305,6 +308,40 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
       overviewStyleBox: mor?.overviewStyleBox,
       overviewTotalAssets: mor?.overviewTotalAssets,
     }),
+  };
+}
+
+export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
+  const sa = etf.stockAnalyzerInfo;
+  const mor = etf.morAnalyzerInfo;
+  const fin = etf.financialInfo;
+  const risk = etf.morRiskInfo;
+  const people = etf.morPeopleInfo;
+  const portfolio = etf.morPortfolioInfo;
+
+  const assetClass = sa?.assetClass || 'Equity';
+  const fundCategory = sa?.category || null;
+  const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
+  const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.FuturePerformanceOutlook, { fundCategory: fundCategory ?? undefined });
+
+  return {
+    name: etf.name,
+    symbol: etf.symbol,
+    exchange: etf.exchange,
+    categoryKey: EtfAnalysisCategory.FuturePerformanceOutlook,
+    assetClass,
+    fundCategory,
+    groupKey,
+    factorAnalysisArray: prepareFactorAnalysisArray(factors),
+
+    // Broad blocks: the forward-looking category is explicitly synthesis-heavy,
+    // and upstream data availability varies a lot by ETF type.
+    etfFinancialInfo: fin ? JSON.stringify(fin) : null,
+    etfStockAnalyzerInfo: sa ? JSON.stringify(sa) : null,
+    etfMorAnalyzerInfo: mor ? JSON.stringify(mor) : null,
+    etfMorRiskInfo: risk ? JSON.stringify(risk) : null,
+    etfMorPeopleInfo: people ? JSON.stringify(people) : null,
+    etfMorPortfolioInfo: portfolio ? JSON.stringify(portfolio) : null,
   };
 }
 

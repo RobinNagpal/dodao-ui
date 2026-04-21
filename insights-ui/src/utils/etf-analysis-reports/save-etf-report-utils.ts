@@ -112,6 +112,7 @@ async function updateEtfCachedScore(etfId: string, categoryKey: EtfAnalysisCateg
   const performanceExisting = existingScore?.performanceAndReturnsScore || 0;
   const costExisting = existingScore?.costEfficiencyAndTeamScore || 0;
   const riskExisting = existingScore?.riskAnalysisScore || 0;
+  const futureExisting = existingScore?.futurePerformanceOutlookScore || 0;
 
   const scores: Record<string, number> = {};
   switch (categoryKey) {
@@ -124,12 +125,16 @@ async function updateEtfCachedScore(etfId: string, categoryKey: EtfAnalysisCateg
     case EtfAnalysisCategory.RiskAnalysis:
       scores.riskAnalysisScore = categoryScore;
       break;
+    case EtfAnalysisCategory.FuturePerformanceOutlook:
+      scores.futurePerformanceOutlookScore = categoryScore;
+      break;
   }
 
   const finalScore =
     (categoryKey === EtfAnalysisCategory.PerformanceAndReturns ? categoryScore : performanceExisting) +
     (categoryKey === EtfAnalysisCategory.CostEfficiencyAndTeam ? categoryScore : costExisting) +
-    (categoryKey === EtfAnalysisCategory.RiskAnalysis ? categoryScore : riskExisting);
+    (categoryKey === EtfAnalysisCategory.RiskAnalysis ? categoryScore : riskExisting) +
+    (categoryKey === EtfAnalysisCategory.FuturePerformanceOutlook ? categoryScore : futureExisting);
 
   await prisma.etfCachedScore.upsert({
     where: { etfId },
@@ -143,6 +148,7 @@ async function updateEtfCachedScore(etfId: string, categoryKey: EtfAnalysisCateg
       performanceAndReturnsScore: categoryKey === EtfAnalysisCategory.PerformanceAndReturns ? categoryScore : 0,
       costEfficiencyAndTeamScore: categoryKey === EtfAnalysisCategory.CostEfficiencyAndTeam ? categoryScore : 0,
       riskAnalysisScore: categoryKey === EtfAnalysisCategory.RiskAnalysis ? categoryScore : 0,
+      futurePerformanceOutlookScore: categoryKey === EtfAnalysisCategory.FuturePerformanceOutlook ? categoryScore : 0,
       finalScore,
     },
   });

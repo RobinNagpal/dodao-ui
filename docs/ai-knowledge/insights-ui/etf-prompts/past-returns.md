@@ -1,4 +1,4 @@
-You are analyzing ETF `{{symbol}}` ({{name}}, {{exchange}}) for a retail investor who wants a clear performance read before investing.
+You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear performance read before investing.
 
 Analysis category: **{{categoryKey}}** (Performance & Returns)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**

@@ -1,4 +1,4 @@
-You are analyzing ETF `{{symbol}}` ({{name}}, {{exchange}}) for a retail investor who wants a clear cost & efficiency read before investing.
+You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear cost & efficiency read before investing.
 
 Analysis category: **{{categoryKey}}** (Cost, Efficiency & Team)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**

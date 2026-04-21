@@ -1619,6 +1619,7 @@ enum EtfAnalysisCategory {
   PerformanceAndReturns
   CostEfficiencyAndTeam
   RiskAnalysis
+  FuturePerformanceOutlook
 }
 
 model EtfGenerationRequest {
@@ -1629,6 +1630,7 @@ model EtfGenerationRequest {
   regeneratePerformanceAndReturns Boolean @default(false) @map("regenerate_performance_and_returns")
   regenerateCostEfficiencyAndTeam Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
   regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
+  regenerateFuturePerformanceOutlook Boolean @default(false) @map("regenerate_future_performance_outlook")
   regenerateIndexStrategy         Boolean @default(false) @map("regenerate_index_strategy")
   regenerateFinalSummary          Boolean @default(false) @map("regenerate_final_summary")
 
@@ -1700,6 +1702,7 @@ model EtfCachedScore {
   performanceAndReturnsScore Int @map("performance_and_returns_score")
   costEfficiencyAndTeamScore Int @map("cost_efficiency_and_team_score")
   riskAnalysisScore          Int @map("risk_analysis_score")
+  futurePerformanceOutlookScore Int @map("future_performance_outlook_score")
 
   finalScore Int @map("final_score")
 

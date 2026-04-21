@@ -9,9 +9,15 @@ const CATEGORY_DISPLAY: Record<string, { name: string; order: number; slug: stri
   [EtfAnalysisCategory.PerformanceAndReturns]: { name: 'Performance & Returns', order: 1, slug: 'performance-returns' },
   [EtfAnalysisCategory.CostEfficiencyAndTeam]: { name: 'Cost, Efficiency & Team', order: 2, slug: 'cost-efficiency-team' },
   [EtfAnalysisCategory.RiskAnalysis]: { name: 'Risk Analysis', order: 3, slug: 'risk-analysis' },
+  [EtfAnalysisCategory.FuturePerformanceOutlook]: { name: 'Future Performance Outlook', order: 4, slug: 'future-performance-outlook' },
 };
 
-const CATEGORY_ORDER = [EtfAnalysisCategory.PerformanceAndReturns, EtfAnalysisCategory.CostEfficiencyAndTeam, EtfAnalysisCategory.RiskAnalysis];
+const CATEGORY_ORDER = [
+  EtfAnalysisCategory.PerformanceAndReturns,
+  EtfAnalysisCategory.CostEfficiencyAndTeam,
+  EtfAnalysisCategory.RiskAnalysis,
+  EtfAnalysisCategory.FuturePerformanceOutlook,
+];
 
 interface EtfAnalysisSectionsProps {
   data: EtfAnalysisResponse;
