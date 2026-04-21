@@ -3,6 +3,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
+import TextareaAutosize from '@dodao/web-core/components/core/textarea/TextareaAutosize';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -23,6 +24,9 @@ interface AddLinkFormState {
   symbol: string;
   exchange: string;
   role: EtfScenarioRole;
+  roleExplanation: string;
+  expectedPriceChange: string;
+  expectedPriceChangeExplanation: string;
 }
 
 const ROLES: EtfScenarioRole[] = ['WINNER', 'LOSER', 'MOST_EXPOSED'];
@@ -34,7 +38,14 @@ function fetchDetailBySlug(slug: string): Promise<EtfScenarioDetail | null> {
 export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioId, scenarioTitle }: ManageLinksModalProps): JSX.Element {
   const [detail, setDetail] = useState<EtfScenarioDetail | null>(null);
   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
-  const [form, setForm] = useState<AddLinkFormState>({ symbol: '', exchange: '', role: 'WINNER' });
+  const [form, setForm] = useState<AddLinkFormState>({
+    symbol: '',
+    exchange: '',
+    role: 'WINNER',
+    roleExplanation: '',
+    expectedPriceChange: '',
+    expectedPriceChangeExplanation: '',
+  });
   const [formError, setFormError] = useState<string>('');
 
   const { postData, loading: adding } = usePostData<EtfScenarioEtfLink, unknown>({
@@ -77,13 +88,33 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
       return;
     }
 
+    let expectedPriceChangeValue: number | null = null;
+    if (form.expectedPriceChange.trim() !== '') {
+      const n = parseInt(form.expectedPriceChange, 10);
+      if (isNaN(n) || n < -100 || n > 100) {
+        setFormError('Expected price change must be an integer between -100 and 100.');
+        return;
+      }
+      expectedPriceChangeValue = n;
+    }
+
     try {
       await postData(`/api/etf-scenarios/${scenarioId}/links`, {
         symbol,
         exchange: form.exchange.trim() || null,
         role: form.role,
+        roleExplanation: form.roleExplanation.trim() || null,
+        expectedPriceChange: expectedPriceChangeValue,
+        expectedPriceChangeExplanation: form.expectedPriceChangeExplanation.trim() || null,
       });
-      setForm({ symbol: '', exchange: '', role: form.role });
+      setForm({
+        symbol: '',
+        exchange: '',
+        role: form.role,
+        roleExplanation: '',
+        expectedPriceChange: '',
+        expectedPriceChangeExplanation: '',
+      });
       await refreshDetail();
     } catch {
       setFormError('Failed to add link');
@@ -148,6 +179,34 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   Add
                 </Button>
               </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <TextareaAutosize
+                  label="Role explanation (why this ETF is a winner / loser / most-exposed — markdown)"
+                  modelValue={form.roleExplanation}
+                  onUpdate={(v: unknown): void => {
+                    if (typeof v === 'string') setForm((f) => ({ ...f, roleExplanation: v }));
+                  }}
+                />
+                <label className="flex flex-col gap-1 text-sm">
+                  <span className="text-gray-300">Expected price change % (-100 to 100)</span>
+                  <input
+                    type="number"
+                    min={-100}
+                    max={100}
+                    className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                    value={form.expectedPriceChange}
+                    onChange={(e) => setForm((f) => ({ ...f, expectedPriceChange: e.target.value }))}
+                    placeholder="e.g. -25"
+                  />
+                </label>
+              </div>
+              <TextareaAutosize
+                label="Expected price change explanation (size of the move and over what timeframe — markdown)"
+                modelValue={form.expectedPriceChangeExplanation}
+                onUpdate={(v: unknown): void => {
+                  if (typeof v === 'string') setForm((f) => ({ ...f, expectedPriceChangeExplanation: v }));
+                }}
+              />
               {formError && <p className="text-red-500 text-sm">{formError}</p>}
             </div>
 
@@ -161,22 +220,31 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                 ) : (
                   <ul className="space-y-1">
                     {group.items.map((link) => (
-                      <li
-                        key={`${link.symbol}-${link.role}`}
-                        className="flex items-center justify-between bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm"
-                      >
-                        <span>
-                          <span className="font-semibold text-white">{link.symbol}</span>
-                          {link.exchange && <span className="text-gray-400"> · {link.exchange}</span>}
-                          {link.etfId ? (
-                            <span className="ml-2 text-xs text-emerald-400">resolved</span>
-                          ) : (
-                            <span className="ml-2 text-xs text-gray-500">unresolved</span>
-                          )}
-                        </span>
-                        <Button variant="outlined" onClick={() => handleRemove(link)} disabled={removing}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
+                      <li key={`${link.symbol}-${link.role}`} className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span>
+                            <span className="font-semibold text-white">{link.symbol}</span>
+                            {link.exchange && <span className="text-gray-400"> · {link.exchange}</span>}
+                            {link.etfId ? (
+                              <span className="ml-2 text-xs text-emerald-400">resolved</span>
+                            ) : (
+                              <span className="ml-2 text-xs text-gray-500">unresolved</span>
+                            )}
+                            {link.expectedPriceChange !== null && (
+                              <span className={`ml-2 text-xs ${link.expectedPriceChange >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                {link.expectedPriceChange > 0 ? '+' : ''}
+                                {link.expectedPriceChange}%
+                              </span>
+                            )}
+                          </span>
+                          <Button variant="outlined" onClick={() => handleRemove(link)} disabled={removing}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                        {link.roleExplanation && <p className="mt-1 text-xs text-gray-300 whitespace-pre-wrap">{link.roleExplanation}</p>}
+                        {link.expectedPriceChangeExplanation && (
+                          <p className="mt-1 text-xs text-gray-400 whitespace-pre-wrap">{link.expectedPriceChangeExplanation}</p>
+                        )}
                       </li>
                     ))}
                   </ul>

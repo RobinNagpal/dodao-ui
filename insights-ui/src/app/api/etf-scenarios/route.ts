@@ -37,6 +37,9 @@ const createEtfScenarioSchema = z.object({
         exchange: z.string().nullable().optional(),
         role: z.nativeEnum(EtfScenarioRole),
         sortOrder: z.number().int().nonnegative().optional(),
+        roleExplanation: z.string().nullable().optional(),
+        expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+        expectedPriceChangeExplanation: z.string().nullable().optional(),
       })
     )
     .optional(),
@@ -115,6 +118,9 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
             etfId: knownEtf?.id ?? null,
             role: link.role,
             sortOrder: link.sortOrder ?? idx,
+            roleExplanation: link.roleExplanation ?? null,
+            expectedPriceChange: link.expectedPriceChange ?? null,
+            expectedPriceChangeExplanation: link.expectedPriceChangeExplanation ?? null,
             spaceId: KoalaGainsSpaceId,
           };
         }),
