@@ -8,7 +8,8 @@
 ALTER TYPE "EtfAnalysisCategory" ADD VALUE 'FuturePerformanceOutlook';
 
 -- AlterTable
-ALTER TABLE "etf_cached_scores" ADD COLUMN     "future_performance_outlook_score" INTEGER NOT NULL;
+ALTER TABLE "etf_cached_scores"
+ADD COLUMN "future_performance_outlook_score" INTEGER;
 
 -- AlterTable
 ALTER TABLE "etf_generation_requests" ADD COLUMN     "regenerate_future_performance_outlook" BOOLEAN NOT NULL DEFAULT false;
