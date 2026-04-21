@@ -1,415 +1,121 @@
-You are analyzing an ETF for retail investors who want clear and simple insights before investing.
+You are analyzing ETF `{{symbol}}` ({{name}}, {{exchange}}) for a retail investor who wants a clear risk read before investing.
 
-The ETF is:
+Analysis category: **{{categoryKey}}** (Risk Analysis)
+ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
 
-* Name: {{name}}
-* Exchange: {{exchange}}
-* Symbol: {{symbol}}
+This report covers only volatility, drawdown and recovery, risk-adjusted return quality, peer-relative risk positioning, and the group-specific risk driver (rates / credit / leverage / downside protection / capture / concentration). Nothing else.
 
-The analysis category is: **{{categoryKey}}** (Risk Analysis)
+## Scope
 
-This category focuses on the ETF’s risk profile. The goal is to help investors understand how volatile the ETF is, how much downside it has shown, whether it recovers well after declines, and whether the returns earned have been reasonable for the amount of risk taken.
-
-## Scope guardrails (important)
-
-* Focus only on **volatility, drawdowns, downside protection, capture ratios, risk-adjusted returns, and category-relative risk**.
-* Do **not** turn this into a general performance report.
-* Do **not** do a cost or management review here.
-* Do **not** forecast future volatility or future returns.
-* Do **not** repeat the same risk number or opinion more than once.
-* Use the provided data as the main source of truth.
-* If some important fields are missing, and web access is available, try to find only the missing risk-related information from reliable public sources. But do not override clearly provided input data unless the input is obviously incomplete or conflicting.
-* If multiple provided sources differ slightly:
-  * Use **morRiskPeriods** first for category-relative risk, portfolio risk score, risk level, risk vs category, return vs category, volatility measures, capture ratios, and drawdown data.
-  * Use **stockAnalyzerRiskMetrics** first for beta, Sharpe ratio, Sortino ratio, ATR, RSI, ATH/ATL data, and related dates.
-  * Use **financialRiskContext** first for beta, 52-week high/low, and volume context.
-  * Use **categoryContext** first for category name, style box, and peer group context.
-* Treat the input data as the latest available snapshot unless a field clearly shows a different as-of period.
+- Stay inside this category. Do NOT analyse absolute returns (→ Performance report), fees / liquidity (→ Cost & Team report), or strategy merit (→ Strategy report).
+- No forecasts, no future-volatility predictions, no price targets.
+- Treat the data blocks as the latest snapshot. Never invent numbers.
+- Missing-field rule: if a field/metric is missing, **do not mention it** (no "data not provided", "not available", "N/A"). Use only what's present.
+- Every claim needs at least one numeric anchor. Drop adjectives like "terrifying", "devastating", "spectacular".
+- Do not repeat the same number in more than one paragraph. State it once, then build on it.
+- **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails`.
 
 ## Core interpretation principle
 
-Do **not** judge risk in isolation.
+Risk is mandate-relative, not absolute. Before judging:
 
-Always ask:
-* Is this ETF more risky or less risky than its category?
-* Are investors being compensated for that risk?
-* Does the ETF protect capital better or worse than peers during weak markets?
-* Is the downside behavior acceptable for this type of ETF?
+- A high-beta thematic fund is doing its job when swings deliver the promised upside.
+- A leveraged `3x` fund SHOULD have ~3× volatility; materially less is a tracking failure, materially more is a cost problem.
+- A low-vol / min-vol fund with market-like beta is failing at its mandate regardless of Sharpe.
+- A covered-call fund must show asymmetric capture (typically `~70%` up / `~50%` down) to justify its fees.
+- A managed-futures or long-short fund with low Sharpe in an equity bull market may still Pass if the mandate is decorrelation or crisis hedging.
+- A core bond fund that lost in 2022 like its peers was hit by rates, not by a fund-specific flaw.
 
-A volatile ETF should not automatically be judged harshly if:
-* that volatility is normal for its category, and
-* its risk-adjusted results are still strong.
+## Factor-metric lookup (only when needed)
 
-Likewise, a low-volatility ETF should not automatically be praised if:
-* its downside protection is weak, or
-* its returns per unit of risk are poor.
+- If a factor asks for a metric that is not in the provided data blocks, first try reputable public sources (ETF issuer fund page / prospectus, Mor, etf.com, the index provider).
+- If you find a metric, attribute it inline (source + as-of date). Do not paste long URLs.
+- If you cannot find it quickly or confidently, proceed with provided data and omit that metric silently.
 
-## Instructions
+## Data source priority (use when sources differ)
 
-### 1. Write an **overallSummary** (3–5 sentences)
+- `morRiskPeriods` → `portfolioRiskScore`, `riskLevel`, `riskVsCategory`, `returnVsCategory`, risk & volatility measures, `captureRatios`, `drawdown`, `drawdownDates` across 3Y / 5Y / 10Y.
+- `stockAnalyzerRiskMetrics` → `beta`, `beta1y`, `beta2y`, `beta5y`, `sharpe`, `sortino`, `atr`, `rsi`, `rsiW`, `rsiM`, `athChgPercent`, `athDate`, `atlChgPercent`, `atlDate`.
+- `financialRiskContext` → `beta`, 52-week high/low, `volume` for price context.
+- `categoryContext` → Mor category, style box, and peer-group context.
 
-It should:
-* State whether the ETF’s overall risk profile currently looks **strong, weak, or mixed**.
-* Mention the most decision-useful `3–5` risk numbers.
-* Cover both:
-  * absolute risk
-  * category-relative risk
-* End with a plain-English investor takeaway.
-
-Good examples of useful numbers:
-* beta
-* Sharpe ratio
-* Sortino ratio
-* drawdown
-* upside / downside capture ratio
-* risk score
-* risk level
-* ATR
-* distance from ATH or ATL
+When multiple blocks carry the same metric, prefer the source listed first. Always name the fund category and the benchmark stress window (e.g. `2022 rate shock`, `2020 COVID`) when used.
 
 ---
 
-### 2. Write an **overallAnalysisDetails** in **7 paragraphs**, in this exact order, using simple English
+## 1. `overallSummary` (3–5 sentences)
 
-Target about `1800–2300` words total.
+State whether the risk profile is **Strong**, **Mixed**, or **Weak**. Include 3–5 decision-useful risk numbers (beta, Sharpe or Sortino, worst drawdown, capture, riskVsCategory). End with one plain-English takeaway.
 
-#### Paragraph 1) Quick risk check
-Answer these first in a quick and practical way:
-* Is this ETF low risk, moderate risk, or high risk?
-* Is it riskier or safer than its category?
-* Has it historically protected investors well during declines?
-* Do the risk-adjusted return numbers look strong or weak?
+## 2. `overallAnalysisDetails` (4 paragraphs, ~800–1100 words total)
 
-This paragraph should feel like a fast investor snapshot.
+Keep paragraphs tight. Do not pad. Do not restate factor definitions — just apply them.
 
----
+1. **Volatility & risk-adjusted return snapshot.** Beta picture across periods, standard deviation / ATR where useful, Sharpe and Sortino placed against category norms for THIS fund type — equity Sharpe, bond Sharpe, and alt-strategy Sharpe are different scales. One line on whether volatility fits the stated mandate.
+2. **Drawdown, recovery, and peer-relative risk.** Worst drawdown with dates, behaviour in key stress windows (e.g. `2020 COVID`, `2022 rate shock`), `riskVsCategory` and `returnVsCategory` across 3Y / 5Y / 10Y when available. Flag any divergence from peers — the comparative gap matters more than the absolute drawdown number.
+3. **Group-specific risk driver** — use only the lens that fits this group:
+   - `broad-equity`: upside / downside capture vs benchmark.
+   - `sector-thematic-equity`: within-theme concentration (top-10, single-name) and sector-peer drawdown.
+   - `leveraged-inverse`: daily-reset tracking fidelity and path-dependency decay; reinforce short-term-only suitability.
+   - `fixed-income-core`: rate sensitivity / duration behaviour across rate-shock years.
+   - `fixed-income-credit`: credit quality mix and stress-period behaviour vs credit peers.
+   - `muni`: rate sensitivity AND credit-tier mix / issuer concentration.
+   - `alt-strategies`: downside protection delivery and capture asymmetry.
+   - `allocation-target-date`: drawdown reduction vs pure-equity and risk-adjusted return.
+   For bond / muni / allocation funds, RSI and short-term technicals are thin — keep them to a single line or omit.
+4. **Strengths, red flags, and the takeaway.** 2–3 strengths, each backed by a number. 2–3 risks, each backed by a number when possible. Close with one sentence: "Overall, this ETF's risk profile looks strong / mixed / weak because …".
 
-#### Paragraph 2) Volatility profile
-Focus on:
-* `beta`
-* `beta1y`
-* `beta2y`
-* `beta5y`
-* `atr`
-* risk and volatility measures from `morRiskPeriods`
+## 3. Pass / Fail rule — judge each factor against the bar in its own `factorAnalysisDescription`
 
-Explain:
-* how much the ETF tends to move relative to the broader market or benchmark
-* whether volatility looks stable across different periods or not
-* whether recent volatility seems unusually high or normal
-* whether the ETF’s volatility fits its category
+The per-factor description already carries the full logic (Sharpe thresholds, drawdown comparative bars, capture asymmetry bars, protection ratios, credit stress comparisons, duration behaviour, concentration thresholds). Use those bars directly. Three cross-cutting rules for this category:
 
-Important:
-* Explain beta in simple words:
-  * above `1` means the ETF tends to move more than the market
-  * below `1` means it tends to move less than the market
-* Explain ATR in simple words:
-  * ATR shows how much the price tends to swing over short periods
+- **Mandate-based, not broad-equity-based**: never Fail an alt / managed-futures / covered-call / leveraged / bond / allocation fund on equity-benchmark comparison alone. Judge against its own stated mandate and category peers.
+- **Peer-relative losses**: a drawdown, volatility, or 2022-loss number in line with category peers is a Pass on the factor linked to it, even when the absolute magnitude is uncomfortable — the asset class drove the outcome, not the fund.
+- **Young-fund caveat (< 3 years)**: state the limited cycle history explicitly; do not Fail multi-year factors for missing long-window data — judge on the periods actually available.
 
-Do not judge a high beta as automatically bad. Compare it to category context when possible.
+If a factor's core metric is absent, first try the "Factor-metric lookup" rule. If still unavailable, judge from the closest related evidence — do not Fail on one missing secondary data point.
 
----
+## 4. For each item in `factorAnalysisArray` produce
 
-#### Paragraph 3) Risk-adjusted returns
-Focus on:
-* `sharpe`
-* `sortino`
-* `portfolioRiskScore`
-* `morAnalyzerRiskReturn`
-* `returnVsCategory`
+- `factorAnalysisKey` — exact key from the input, unchanged.
+- `oneLineExplanation` — one sentence with the clearest takeaway.
+- `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
+- `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
-Explain:
-* whether the ETF has delivered enough return for the risk taken
-* whether the downside-adjusted return profile looks efficient or weak
-* whether the ETF seems to reward investors fairly for the bumps they had to tolerate
+## 5. Comparison labels
 
-Important:
-* Sharpe ratio = return earned per unit of total risk
-* Sortino ratio = return earned per unit of downside risk
-* Higher is generally better, but judge in context
+Default (equities, alt strategies, allocation):
+- `≥ 2 pp better` than category → **Strong**
+- within `±2 pp` → **In Line**
+- `≥ 2 pp worse` → **Weak**
 
-If category-relative return and risk comparisons are available, explain:
-* whether the ETF is taking more risk for better results
-* or taking more risk without enough payoff
+Narrow thresholds (bonds, muni, and any factor whose description says so):
+- `≥ 0.5 pp better` → **Strong**
+- within `±0.5 pp` → **In Line**
+- `≥ 0.5 pp worse` → **Weak**
+
+For capture ratios, protection ratios, drawdown comparatives, and concentration weights, use the bands defined in each factor's own description.
+
+## 6. Writing rules
+
+- Markdown. Wrap beta, Sharpe, Sortino, drawdowns, capture ratios, risk scores, dates, and percentages in backticks.
+- Simple, direct English. No dramatic adjectives, no filler, no repetition.
+- Name the fund category. Name the benchmark or stress window when referenced.
+- Do not invent context beyond what the data supports. If a data point isn’t present (and lookup didn’t find it), omit it silently.
 
 ---
 
-#### Paragraph 4) Drawdown and recovery behavior
-Focus on:
-* `drawdown`
-* `drawdownDates`
-* `athChgPercent`
-* `athDate`
-* `atlChgPercent`
-* `atlDate`
+### Factors to analyse
 
-Explain:
-* how bad the worst decline has been
-* whether the ETF tends to suffer deep losses or more controlled declines
-* whether it has recovered well after major drops
-* whether current price position versus ATH/ATL gives useful context about recent stress
-
-Important:
-* Explain drawdown in simple words:
-  * drawdown means how far the ETF fell from a peak before recovering
-* A shallower drawdown is usually better
-* But always interpret drawdown relative to category and ETF type
-
-If recovery timing is visible, mention it.  
-If not, explain what the available dates still suggest.
-
----
-
-#### Paragraph 5) Upside and downside capture
-Focus on:
-* `captureRatios`
-* `riskVsCategory`
-* `returnVsCategory`
-
-Explain:
-* how much of the market’s upside the ETF tends to capture
-* how much of the market’s downside it tends to absorb
-* whether the ETF has a favorable balance between upside participation and downside control
-
-Important:
-* Ideal pattern:
-  * reasonably strong upside capture
-  * lower downside capture
-* If downside capture is very high, explain that the ETF tends to fall a lot when markets fall
-* If upside capture is weak, explain that the ETF may lag in strong markets
-
-This paragraph should clearly answer:
-* does the ETF give investors an efficient risk trade-off?
-
----
-
-#### Paragraph 6) Risk score vs category
-Focus on:
-* `riskScore`
-* `riskLevel`
-* `riskVsCategory`
-* `returnVsCategory`
-* `riskPeriods`
-
-Explain:
-* how the ETF ranks against category peers across `3-year`, `5-year`, and `10-year` periods when available
-* whether it is consistently above-average risk, below-average risk, or mixed
-* whether category-relative returns justify that positioning
-
-Important:
-* This paragraph should tie together category comparison across time.
-* If different periods show different signals, explain that clearly.
-* If long-term periods are missing, use the available periods without inventing anything.
-
-A good conclusion here should answer:
-* “Compared with similar ETFs, is this one taking too much risk, a reasonable amount of risk, or unusually well-controlled risk?”
-
----
-
-#### Paragraph 7) Key strengths, key red flags, and final decision framing
-List:
-* `2–3` biggest strengths, each backed by a number
-* `2–3` biggest risks or concerns, each backed by a number when available
-
-Then end with a balanced takeaway:
-* “Overall, this ETF’s risk profile looks strong / mixed / weak because …”
-
-Do not forecast what the ETF will do next.
-Do not turn this into a general return discussion.
-
----
-
-### 3. For each factor in the factorAnalysisArray
-
-For every factor below:
-
-* Use the exact **factorAnalysisKey** from the input.
-* Write a **oneLineExplanation** in 1 sentence with the clearest takeaway.
-* Write a **detailedExplanation** in 1 paragraph.
-  * Use the metrics listed in `factorAnalysisMetrics` where possible.
-  * Also use any other strongly relevant fields from:
-    * `stockAnalyzerRiskMetrics`
-    * `morRiskPeriods`
-    * `financialRiskContext`
-    * `categoryContext`
-  * Explain clearly why the evidence supports the decision.
-* Decide **result** as `"Pass"` or `"Fail"`.
-
-Important decision rules:
-* Be conservative.
-* Mark `"Pass"` only when the ETF looks clearly acceptable or strong for that factor.
-* Do **not** mark `"Fail"` only because one field is missing.
-* If direct data for a factor is missing, use the closest relevant evidence.
-* If a factor is not very relevant for this ETF, keep the same key, explain that limitation in the description, and judge it using the closest relevant risk evidence rather than forcing a weak rating.
-
----
-
-### 4. Comparison rules
-
-For every important opinion, compare the ETF to its category whenever possible.
-
-#### Volatility comparisons
-Use category-relative language such as:
-* ABOVE category risk
-* BELOW category risk
-* IN LINE with category risk
-
-Interpret generally like this:
-* clearly higher risk than category = **Weak**
-* roughly similar risk = **In Line**
-* clearly lower risk with acceptable returns = **Strong**
-
-But do not blindly reward low volatility if returns per unit of risk are poor.
-
-#### Risk-adjusted return comparisons
-If Sharpe / Sortino / category-relative return data is available:
-* higher risk-adjusted return than peers = **Strong**
-* similar = **In Line**
-* weaker = **Weak**
-
-#### Drawdown comparisons
-If peer comparison is available:
-* shallower drawdown than category = positive
-* similar drawdown = neutral
-* deeper drawdown = negative
-
-#### Capture ratio interpretation
-General guide:
-* upside capture strong + downside capture controlled = favorable
-* upside weak + downside high = unfavorable
-* both high or both low = mixed, explain carefully
-
-#### Risk score vs category
-Use multi-period comparison when available:
-* consistently below-average risk vs category = favorable
-* consistently above-average risk vs category = concern
-* mixed across periods = mixed conclusion
-
-If a benchmark or category comparison is unavailable, do not invent one. Use practical judgment from the numbers provided.
-
----
-
-### 5. Missing data rules
-
-* If a data point is missing, write `data not provided`.
-* Never invent numbers.
-* If multiple similar fields exist, use the closest one.
-* If reliable web access is available, you may fill only missing risk-related context from trustworthy public sources.
-* Prefer provided inputs over web data whenever both are available.
-* If peer comparison is missing, still analyze the ETF on an absolute basis using the available values.
-
----
-
-### 6. Writing rules
-
-* Use markdown format.
-* Wrap all important numbers, percentages, ratios, beta values, drawdowns, capture ratios, and risk scores in backticks.
-* Use simple English.
-* Be factual and direct.
-* Give clear opinions, but do not sound dramatic.
-* Explain technical terms briefly when needed.
-* Share enough numbers to justify every conclusion.
-* Do not over-praise or over-criticize the ETF.
-* Keep the tone natural and human.
-
----
-
-### Here are the factors you must analyze:
 {{#each factorAnalysisArray}}
-
-* Title: {{factorAnalysisTitle}}
-  Description: {{factorAnalysisDescription}}
-  Key: {{factorAnalysisKey}}
-  Metrics (if available): {{factorAnalysisMetrics}}
+- **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
+  {{factorAnalysisDescription}}
+  Metrics: {{factorAnalysisMetrics}}
 {{/each}}
 
----
+### Data
 
-### Factor-specific guidance
-
-#### 1) Volatility & Standard Deviation
-Main goal:
-* Judge how unstable or smooth the ETF’s price behavior is.
-
-Look especially at:
-* `beta`
-* `beta1y`
-* `beta2y`
-* `beta5y`
-* `atr`
-* `riskAndVolatilityMeasures`
-
-Do not judge this factor only from one beta number. Use multiple volatility signals if available.
-
----
-
-#### 2) Risk-Adjusted Returns
-Main goal:
-* Judge whether the ETF has earned enough return for the risk investors had to take.
-
-Look especially at:
-* `sharpe`
-* `sortino`
-* `portfolioRiskScore`
-* `morAnalyzerRiskReturn`
-
-A risky ETF can still pass if it has clearly strong risk-adjusted returns.  
-A low-risk ETF should not pass automatically if its reward per unit of risk is weak.
-
----
-
-#### 3) Maximum Drawdown & Recovery
-Main goal:
-* Judge how painful the ETF’s worst declines have been and how well it has bounced back.
-
-Look especially at:
-* `drawdown`
-* `drawdownDates`
-* `athChgPercent`
-* `athDate`
-* `atlChgPercent`
-* `atlDate`
-
-A fund with deep drawdowns or slow recovery should be viewed more cautiously.
-
----
-
-#### 4) Upside/Downside Capture Ratios
-Main goal:
-* Judge whether the ETF participates well in market upside without taking too much downside.
-
-Look especially at:
-* `captureRatios`
-* `riskVsCategory`
-* `returnVsCategory`
-
-A good setup is usually:
-* healthy upside capture
-* lower downside capture
-
-If the ETF captures a lot of downside without delivering clearly better upside, that is a concern.
-
----
-
-#### 5) Risk Score vs Category
-Main goal:
-* Judge how the ETF’s full risk profile compares with similar funds across time.
-
-Look especially at:
-* `riskScore`
-* `riskLevel`
-* `riskVsCategory`
-* `returnVsCategory`
-* `riskPeriods`
-
-Consistency matters here.  
-If the ETF looks risky across several periods without enough return advantage, this factor should usually be weak.
-
----
-
-### Data you can use (provided below)
-
-* Stock Analyzer Risk Metrics: {{stockAnalyzerRiskMetrics}}
-* Mor Risk Periods: {{morRiskPeriods}}
-* Financial Risk Context: {{financialRiskContext}}
-* Category Context: {{categoryContext}}
+- stockAnalyzerRiskMetrics: {{stockAnalyzerRiskMetrics}}
+- morRiskPeriods: {{morRiskPeriods}}
+- financialRiskContext: {{financialRiskContext}}
+- categoryContext: {{categoryContext}}

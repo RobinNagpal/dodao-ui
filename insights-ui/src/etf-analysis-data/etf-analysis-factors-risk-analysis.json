@@ -55,15 +55,7 @@
       "factorTitle": "Is It Riskier Than Similar Funds",
       "factorDescription": "Compares the ETF's overall risk score and risk level against other funds in the same Mor category across 3Y, 5Y, and 10Y windows. The key retail question: is this fund taking more risk than its peers, and if so, is it being rewarded for that extra risk in the return column? Four outcomes: above-average risk with above-average return is an acceptable trade when the ratio is favorable; above-average risk without above-average return is a clear Fail — investors are paying volatility with no payoff; below-average risk with similar-or-better return is a strong sign of disciplined risk management; below-average risk with meaningfully weaker return is neutral — the fund is trading return for safety, which is fine for conservative sleeves. For passive index funds, risk vs category tracks the index — do not Fail a passive fund for having category-like risk when it is doing exactly what it is supposed to do; the right comparison is whether it matches the index within tracking expectations. For young funds (under 3 years) peer comparison is noisier — note the caveat and use the longest available window. Pass when risk is at or below the category median, OR the extra risk is clearly compensated by better category-relative returns over the longest available window. Fail when risk sits consistently above the category median across multiple periods without above-average returns to justify it.",
       "factorMetrics": "riskScore, riskLevel, riskVsCategory, returnVsCategory, riskPeriods",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "fixed-income-core",
-        "fixed-income-credit",
-        "muni",
-        "allocation-target-date"
-      ]
+      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
     },
     {
       "factorKey": "capture_ratios",
