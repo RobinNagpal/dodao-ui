@@ -114,14 +114,10 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
   const mor = etf.morAnalyzerInfo;
   const fin = etf.financialInfo;
   const people = etf.morPeopleInfo;
-  const risk = etf.morRiskInfo;
   const assetClass = sa?.assetClass || 'Equity';
   const fundCategory = sa?.category || null;
   const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
   const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.PerformanceAndReturns, { fundCategory: fundCategory ?? undefined });
-
-  const riskPeriods = (risk?.riskPeriods as Record<string, { marketVolatilityMeasures?: Record<string, unknown> }> | null | undefined) ?? null;
-  const pickMvm = (period: string, key: string): unknown => riskPeriods?.[period]?.marketVolatilityMeasures?.[key] ?? null;
 
   return {
     name: etf.name,
@@ -219,23 +215,6 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       expenseRatio: fin?.expenseRatio,
       inceptionDate: people?.inceptionDate,
       overviewStyleBox: mor?.overviewStyleBox,
-    }),
-    downsideAndDrawdownContext: JSON.stringify({
-      captureRatios: {
-        '3-Yr': pickMvm('3-Yr', 'captureRatios'),
-        '5-Yr': pickMvm('5-Yr', 'captureRatios'),
-        '10-Yr': pickMvm('10-Yr', 'captureRatios'),
-      },
-      drawdown: {
-        '3-Yr': pickMvm('3-Yr', 'drawdown'),
-        '5-Yr': pickMvm('5-Yr', 'drawdown'),
-        '10-Yr': pickMvm('10-Yr', 'drawdown'),
-      },
-      drawdownDates: {
-        '3-Yr': pickMvm('3-Yr', 'drawdownDates'),
-        '5-Yr': pickMvm('5-Yr', 'drawdownDates'),
-        '10-Yr': pickMvm('10-Yr', 'drawdownDates'),
-      },
     }),
   };
 }

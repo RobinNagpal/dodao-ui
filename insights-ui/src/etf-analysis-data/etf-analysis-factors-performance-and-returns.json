@@ -1,7 +1,7 @@
 {
   "categoryKey": "PerformanceAndReturns",
   "categoryName": "Performance & Returns",
-  "categoryDescription": "Evaluates the ETF's historical returns, consistency, income contribution, downside-protection mandate delivery, and how well it has tracked its benchmark or peers across multiple time horizons. Maximum-drawdown severity itself is covered in Risk Analysis; this category only uses drawdown data where it is part of a return-focused story (e.g. downside-protection capture ratios, calendar-year recovery). Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "categoryDescription": "Evaluates the ETF's historical returns, consistency, income contribution, risk-adjusted return quality, technical trend position, and how well it has tracked its benchmark or peers across multiple time horizons. Maximum-drawdown severity, capture ratios, and absolute downside-protection metrics are covered in Risk Analysis — this category stays focused on the return story itself. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
   "factors": [
     {
       "factorKey": "long_term_cagr",
@@ -15,14 +15,14 @@
       "factorTitle": "Short-Term Returns & Momentum",
       "factorDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Distinguishes short-term momentum (1M, 3M) from trailing performance (6M, 1Y). A strong 1Y return alongside weak recent months usually reflects a normal pullback within an uptrend rather than broad weakness.",
       "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y",
-      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "alt-strategies"]
+      "groups": ["broad-equity", "sector-thematic-equity", "alt-strategies"]
     },
     {
       "factorKey": "returns_consistency",
       "factorTitle": "Returns Consistency",
       "factorDescription": "Assesses how stable returns have been across different periods and calendar years. Flags wild year-to-year swings and tracks whether the fund recovered quickly from drawdown years. Uses percentile-rank trends across years to detect deteriorating or improving relative standing.",
       "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks",
-      "groups": ["broad-equity", "sector-thematic-equity", "fixed-income-credit", "muni", "alt-strategies", "allocation-target-date"]
+      "groups": ["broad-equity", "fixed-income-credit", "muni", "alt-strategies", "allocation-target-date"]
     },
     {
       "factorKey": "benchmark_tracking",
@@ -62,18 +62,25 @@
       "groups": ["leveraged-inverse"]
     },
     {
-      "factorKey": "downside_protection",
-      "factorTitle": "Downside Protection Delivery",
-      "factorDescription": "Evaluates how the fund performed during bear markets and broad drawdowns relative to its reference benchmark or category. For alternative strategies and allocation funds, outperforming during market drops is the core value proposition. Compute the protection ratio (fund drawdown / benchmark drawdown) — under 0.50 is excellent, under 0.75 is good, above 0.90 means the fund is not delivering meaningful protection. Use the per-period captureRatios (upside vs downside capture vs Index) to separately judge whether the fund is giving up too much upside for the downside protection it delivers. If the fund's mandate is diversification rather than standalone downside protection (e.g. commodities), state that explicitly and judge on correlation evidence rather than forcing a Fail.",
-      "factorMetrics": "returnsAnnual, captureRatios, drawdown, drawdownDates",
-      "groups": ["alt-strategies", "allocation-target-date"]
-    },
-    {
       "factorKey": "rate_environment_resilience",
       "factorTitle": "Rate Environment Resilience",
       "factorDescription": "For bond, muni, credit, and allocation funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration government and muni funds suffer most in rising-rate years and gain most in falling-rate years. Credit-driven funds (high-yield, bank loan, preferred, EM debt) are partly insulated from rates via spread behavior but can still lose in risk-off rate shocks. Allocation funds inherit the rate sensitivity of their bond sleeve — compare the fund's 2022 loss to the mix of equity + bond index losses it would imply. Compare the fund's worst calendar year to its category and index: if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
       "factorMetrics": "returnsAnnual, return1y, return3y",
       "groups": ["fixed-income-core", "fixed-income-credit", "muni", "allocation-target-date"]
+    },
+    {
+      "factorKey": "technical_trend_position",
+      "factorTitle": "Technical Trend & Momentum Position",
+      "factorDescription": "Reads current price against moving averages (MA20, MA50, MA150, MA200) and RSI levels (daily, weekly, monthly) to judge whether the fund is in an uptrend, downtrend, or sideways range, and whether momentum looks stretched. Price above all four MAs with RSI rising signals broad strength; price below all four with RSI falling signals broad weakness. Monthly RSI above 70 is overbought; below 30 is oversold. Also uses distance from the 52-week high and 52-week low (and ATH/ATL when available) to place the current price in a longer range. For sector and thematic ETFs, trend position matters because sector cycles are the main driver of future return paths. For leveraged and inverse funds, technical position is decision-useful because their core suitability case is short-term directional trading, not buy-and-hold — use this factor to judge whether the current entry looks reasonable rather than to predict future returns.",
+      "factorMetrics": "stockPrice, ma20, ma50, ma150, ma200, ma50ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, high52wChg, low52wChg, athChgPercent, atlChgPercent",
+      "groups": ["sector-thematic-equity", "leveraged-inverse"]
+    },
+    {
+      "factorKey": "risk_adjusted_return_quality",
+      "factorTitle": "Risk-Adjusted Return Quality",
+      "factorDescription": "Asks whether the returns the fund delivered were worth the volatility it took. Uses Sharpe ratio (excess return per unit of total volatility) and Sortino ratio (excess return per unit of downside volatility) to judge return efficiency, with beta alongside to show how much of the return pattern is market-driven vs independent. For allocation and target-date funds, risk-adjusted return is the core value proposition — a moderate allocation fund that matches 60/40 returns with meaningfully lower volatility is doing its job even if the absolute return lags pure equity. For alternative strategies (long-short, market-neutral, derivative income, managed futures), Sharpe and Sortino are the honest scorecard: a low absolute return with a materially better Sharpe than equities can still be a sensible diversifier. Compare to typical category levels — a Sharpe near 1.0 is strong for allocation and bond-like alternatives; below 0.3 for a multi-year period is weak regardless of headline returns.",
+      "factorMetrics": "sharpe, sortino, beta, beta1y, return3y, return5y, return10y",
+      "groups": ["alt-strategies", "allocation-target-date"]
     }
   ]
 }

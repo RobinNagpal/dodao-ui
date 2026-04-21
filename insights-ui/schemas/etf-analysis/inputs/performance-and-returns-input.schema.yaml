@@ -78,11 +78,6 @@ properties:
     type: string
     description: 'JSON string with expense ratio (explains benchmark tracking drag), inception date (handles young fund evaluation), and style box (detects category/style mismatches).'
 
-  # Morningstar per-period capture ratios and drawdown data — needed by the downside_protection factor (alt-strategies, allocation-target-date) and for drawdown/recovery context across any group
-  downsideAndDrawdownContext:
-    type: string
-    description: 'JSON string with per-period (3-Yr, 5-Yr, 10-Yr) captureRatios (upside vs downside vs Index), drawdown (maximum % decline vs Category and Index), and drawdownDates (peak, valley, max duration). Sourced from EtfMorRiskInfo.riskPeriods.marketVolatilityMeasures. Required when the downside_protection factor is in scope; also useful for interpreting calendar-year recovery.'
-
   # Resolved group key — identifies which of the 8 ETF groups (broad-equity, sector-thematic-equity, etc.) the fund belongs to; determines factor selection
   groupKey:
     type: string
