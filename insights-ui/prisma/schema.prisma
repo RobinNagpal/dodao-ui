@@ -1759,16 +1759,19 @@ model EtfScenario {
 }
 
 model EtfScenarioEtfLink {
-  id          String   @id @default(uuid())
-  scenarioId  String   @map("scenario_id")
-  etfId       String?  @map("etf_id")
-  symbol      String   @map("symbol")
-  exchange    String?  @map("exchange")
-  role        String   @map("role")
-  sortOrder   Int      @default(0) @map("sort_order")
-  spaceId     String   @default("koala_gains") @map("space_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id                             String   @id @default(uuid())
+  scenarioId                     String   @map("scenario_id")
+  etfId                          String?  @map("etf_id")
+  symbol                         String   @map("symbol")
+  exchange                       String?  @map("exchange")
+  role                           String   @map("role")
+  sortOrder                      Int      @default(0) @map("sort_order")
+  roleExplanation                String?  @map("role_explanation") @db.Text
+  expectedPriceChange            Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
+  spaceId                        String   @default("koala_gains") @map("space_id")
+  createdAt                      DateTime @default(now()) @map("created_at")
+  updatedAt                      DateTime @updatedAt @map("updated_at")
 
   scenario    EtfScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
 

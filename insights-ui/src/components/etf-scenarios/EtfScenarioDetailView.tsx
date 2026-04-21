@@ -29,12 +29,57 @@ function LinkPill({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
   return inner;
 }
 
+function formatExpectedPriceChange(value: number | null | undefined): string {
+  if (value === null || value === undefined) return '—';
+  const sign = value > 0 ? '+' : '';
+  return `${sign}${value}%`;
+}
+
+function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
+  const hasDetails = link.roleExplanation || link.expectedPriceChange !== null || link.expectedPriceChangeExplanation;
+  const changeColor = link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'text-emerald-300' : 'text-red-300';
+
+  return (
+    <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <LinkPill link={link} />
+        {link.expectedPriceChange !== null && (
+          <span className={`text-xs font-semibold ${changeColor}`}>{formatExpectedPriceChange(link.expectedPriceChange)}</span>
+        )}
+      </div>
+      {hasDetails && (
+        <div className="space-y-1 mt-1">
+          {link.roleExplanation && (
+            <div
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-300"
+              dangerouslySetInnerHTML={renderMarkdown(link.roleExplanation)}
+            />
+          )}
+          {link.expectedPriceChangeExplanation && (
+            <div
+              className="markdown-body prose prose-invert prose-xs max-w-none text-xs text-gray-400"
+              dangerouslySetInnerHTML={renderMarkdown(link.expectedPriceChangeExplanation)}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function LinkList({ title, links, emptyLabel }: { title: string; links: EtfScenarioLinkDto[]; emptyLabel?: string }): JSX.Element {
+  const anyDetailed = links.some((l) => l.roleExplanation || l.expectedPriceChange !== null || l.expectedPriceChangeExplanation);
   return (
     <div>
       <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">{title}</h3>
       {links.length === 0 ? (
         <p className="text-xs text-gray-500">{emptyLabel ?? '—'}</p>
+      ) : anyDetailed ? (
+        <div className="flex flex-col gap-2">
+          {links.map((l) => (
+            <LinkCard key={`${l.symbol}-${l.role}`} link={l} />
+          ))}
+        </div>
       ) : (
         <div className="flex flex-wrap gap-1.5">
           {links.map((l) => (
@@ -44,12 +89,6 @@ function LinkList({ title, links, emptyLabel }: { title: string; links: EtfScena
       )}
     </div>
   );
-}
-
-function formatExpectedPriceChange(value: number | null | undefined): string {
-  if (value === null || value === undefined) return '—';
-  const sign = value > 0 ? '+' : '';
-  return `${sign}${value}%`;
 }
 
 export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScenarioDetail }): JSX.Element {

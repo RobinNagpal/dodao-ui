@@ -10,6 +10,9 @@ export interface EtfScenarioLinkDto {
   etfId: string | null;
   role: EtfScenarioRole;
   sortOrder: number;
+  roleExplanation: string | null;
+  expectedPriceChange: number | null;
+  expectedPriceChangeExplanation: string | null;
 }
 
 export interface EtfScenarioDetail
@@ -33,6 +36,9 @@ function toLinkDto(link: EtfScenarioEtfLink, resolved?: { id: string; exchange: 
     etfId: link.etfId ?? resolved?.id ?? null,
     role: link.role as EtfScenarioRole,
     sortOrder: link.sortOrder,
+    roleExplanation: link.roleExplanation,
+    expectedPriceChange: link.expectedPriceChange,
+    expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
   };
 }
 

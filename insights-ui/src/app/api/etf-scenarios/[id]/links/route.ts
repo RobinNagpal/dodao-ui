@@ -14,6 +14,9 @@ const addLinkSchema = z.object({
   etfId: z.string().nullable().optional(),
   role: z.nativeEnum(EtfScenarioRole),
   sortOrder: z.number().int().nonnegative().optional(),
+  roleExplanation: z.string().nullable().optional(),
+  expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+  expectedPriceChangeExplanation: z.string().nullable().optional(),
 });
 
 export type AddEtfScenarioLinkRequest = z.infer<typeof addLinkSchema>;
@@ -44,12 +47,18 @@ async function postHandler(
       etfId: body.etfId ?? null,
       role: body.role,
       sortOrder: body.sortOrder ?? 0,
+      roleExplanation: body.roleExplanation ?? null,
+      expectedPriceChange: body.expectedPriceChange ?? null,
+      expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
       spaceId: KoalaGainsSpaceId,
     },
     update: {
       exchange: body.exchange ?? null,
       etfId: body.etfId ?? null,
       sortOrder: body.sortOrder ?? 0,
+      roleExplanation: body.roleExplanation ?? null,
+      expectedPriceChange: body.expectedPriceChange ?? null,
+      expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
     },
   });
 
