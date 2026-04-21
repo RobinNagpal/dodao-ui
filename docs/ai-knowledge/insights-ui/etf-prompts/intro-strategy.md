@@ -12,7 +12,7 @@ Some fields above may be missing or null. When that happens, research the ETF on
 
 What to write
 
-Produce exactly four distinct paragraphs, separated by a blank line. Each paragraph has a specific job described below. Do not use bullet lists, headings, sub-headings, or markdown — output must be plain prose. Total length should be roughly 500–700 words.
+Produce exactly four distinct paragraphs followed by a short bulleted "Red Flags & Risks" list, separated by blank lines. Each paragraph has a specific job described below. Do not use headings, sub-headings, or markdown inside the four paragraphs — they must be plain prose. The final Red Flags & Risks section is the only place bullets are allowed. Total length should be roughly 500–750 words.
 
 Paragraph 1 — Simple Introduction (≈ 80–120 words)
 
@@ -42,9 +42,17 @@ Paragraph 4 — When This ETF Tends to Perform Well vs. Struggle (≈ 100–150 
 
 Translate the strategy above into the market and macro conditions under which this ETF is structurally likely to do well, and the conditions under which it is structurally likely to dip. Be specific to the asset class and exposure: for an equity sector fund, talk about the part of the business cycle, consumer trends, interest-rate environment, or commodity prices that help or hurt that sector; for a broad bond fund, talk about interest-rate moves, credit spreads, and inflation expectations; for a commodity fund, talk about supply/demand drivers, the dollar, and the futures curve (contango vs. backwardation) if relevant; for a thematic fund, talk about the adoption cycle of the theme; for a leveraged, inverse, or covered-call fund, explicitly call out path dependence, capped upside, or volatility decay. Frame these as structural tendencies and tailwinds/headwinds, not predictions or forecasts about specific future returns. If the fund is broadly diversified enough that it largely mirrors the overall market, say so.
 
+Red Flags & Risks (3–4 bullets, ETF-specific)
+
+End with a short bulleted list titled exactly "Red Flags & Risks". Surface the major structural risks a retail investor should know about that go beyond the generic "stocks can fall" or "bond prices move with rates" risks they would already face holding the underlying asset class directly. Focus on risks that arise specifically from how this ETF is built, run, or traded — for example NAV erosion in leveraged/inverse or high-distribution funds, contango drag in futures-based commodity funds, capped upside in covered-call funds, concentration in a handful of names, illiquidity or wide bid-ask spreads, premium/discount to NAV, counterparty risk in synthetic/swap-based funds, securities-lending exposure, currency or hedging mismatches, K-1 tax treatment, single-country or single-issuer political risk, small AUM or closure risk, and so on. Do not force-fit examples that don't apply to this fund — pick only the red flags that are genuinely material for this specific ETF.
+
+- Aim for 3–4 bullets. Each bullet should be one or two plain-English sentences naming the specific risk and briefly explaining how it could hurt the investor.
+- If this ETF is genuinely high-quality and structurally clean (e.g., a large, cheap, plain-vanilla, fully-replicated broad-market index fund), it is acceptable to list only 1–2 mild or hypothetical red flags rather than padding the list. Do not invent risks that don't apply.
+- Keep the tone neutral and factual — flag the risk, do not editorialize or tell the investor what to do.
+
 Style rules
 
 - Plain English throughout; define jargon on first use. Paragraph 1 should be the simplest, accessible to a true beginner.
 - Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison, but do not rank them or recommend one over another.
 - Be concrete and specific: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
-- Preserve the four-paragraph structure with a single blank line between paragraphs. No headings, no bullets, no markdown.
+- Preserve the four-paragraph structure with a single blank line between paragraphs, followed by the "Red Flags & Risks" bulleted list as the final section. Bullets are allowed only inside that final section; the four paragraphs themselves stay as plain prose with no headings, no bullets, and no markdown.
