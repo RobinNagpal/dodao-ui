@@ -145,3 +145,26 @@ Reorder/extend the ETF details page so sections appear in this order:
 - [ ] **Admin-only `updatedAt` timestamp**:
   - Display the `updatedAt` datetime for each section / evaluation category / report.
   - Visible only to admin users.
+
+### K) Competition / Similar ETFs
+
+- [ ] **Competition section** for ETFs (mirroring what we have for stocks):
+  - Build the competition section end-to-end.
+  - Include a **competition chart** comparing key metrics across competitors.
+- [ ] **"Other similar ETFs" section** on the main ETF page:
+  - Show a curated/auto-selected set of similar ETFs with quick links and key stats.
+
+### L) Target audience / Goals
+
+Goal: Tag each ETF with the investor goals it satisfies, and surface those goals in the analysis output.
+
+- [ ] **Define a goals/target-audience taxonomy** for ETFs. Examples:
+  - "Fixed income with no downside"
+  - "Fixed income with low risk"
+  - "High yield with moderate or high risk"
+- [ ] **Capture matching goals during ETF analysis**:
+  - When generating an ETF report, determine which goals from the taxonomy this ETF meets.
+  - Persist the matched goals on the ETF record.
+- [ ] **Open question — equity goal representation**:
+  - Decide how to represent goals for equity-style ETFs (e.g. country/region funds like India / China ETFs) where the "goal" is more thematic/exposure-based than risk-return based.
+  - Propose candidate goal labels for equity (e.g. "Emerging-market equity exposure", "Single-country thematic exposure", "Sector tilt").
