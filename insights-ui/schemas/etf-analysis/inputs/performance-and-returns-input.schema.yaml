@@ -81,12 +81,22 @@ properties:
   # P0 — Yield & income data (critical for bond and income ETFs)
   yieldAndIncome:
     type: string
-    description: 'JSON string with dividend yield, SEC yield, TTM yield, payout frequency, dividend TTM, and dividend growth rates. Critical for bond and income ETFs where yield is the primary reason investors buy the fund.'
+    description: 'JSON string with dividend yield, SEC yield, TTM yield, payout frequency, dividend TTM, dividend growth rates (3y/5y), and dividend-paying years (divYears, divGrYears). Critical for bond and income ETFs where yield is the primary reason investors buy the fund.'
 
   # P1 — Additional context for performance analysis
   fundContext:
     type: string
     description: 'JSON string with expense ratio (explains benchmark tracking drag), inception date (handles young fund evaluation), and style box (detects category/style mismatches).'
+
+  # Resolved group key — identifies which of the 8 ETF groups (broad-equity, sector-thematic-equity, etc.) the fund belongs to; determines factor selection
+  groupKey:
+    type: string
+    description: 'ETF analysis group resolved from fundCategory via etf-analysis-categories.json. One of: broad-equity, sector-thematic-equity, leveraged-inverse, fixed-income-core, fixed-income-credit, muni, alt-strategies, allocation-target-date.'
+
+  # Morningstar fund category string as stored on EtfStockAnalyzerInfo.category
+  fundCategory:
+    type: [string, 'null']
+    description: 'Morningstar fund category (e.g. "Large Blend", "Intermediate Core Bond"). Used to map the fund to an analysis group. May be null for uncategorized funds.'
 
 required:
   - name
