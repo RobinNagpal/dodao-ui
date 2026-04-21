@@ -253,10 +253,10 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         </div>
       </div>
 
-      {/* Advanced (Morningstar) Filters */}
+      {/* Advanced (Mor) Filters */}
       <div>
-        <h3 className="text-white font-semibold text-xs mb-1">Advanced Filters (Morningstar)</h3>
-        <p className="text-[#9CA3AF] text-[10px] mb-2">Only ETFs with Morningstar data shown when active</p>
+        <h3 className="text-white font-semibold text-xs mb-1">Advanced Filters (Mor)</h3>
+        <p className="text-[#9CA3AF] text-[10px] mb-2">Only ETFs with Mor data shown when active</p>
 
         {morFiltersByPeriod.map(({ period, filters: periodFilters }) => (
           <div key={period} className="mb-3">

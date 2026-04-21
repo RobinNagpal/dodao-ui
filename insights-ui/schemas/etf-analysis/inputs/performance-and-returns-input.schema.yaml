@@ -93,10 +93,10 @@ properties:
     type: string
     description: 'ETF analysis group resolved from fundCategory via etf-analysis-categories.json. One of: broad-equity, sector-thematic-equity, leveraged-inverse, fixed-income-core, fixed-income-credit, muni, alt-strategies, allocation-target-date.'
 
-  # Morningstar fund category string as stored on EtfStockAnalyzerInfo.category
+  # Mor fund category string as stored on EtfStockAnalyzerInfo.category
   fundCategory:
     type: [string, 'null']
-    description: 'Morningstar fund category (e.g. "Large Blend", "Intermediate Core Bond"). Used to map the fund to an analysis group. May be null for uncategorized funds.'
+    description: 'Fund category (e.g. "Large Blend", "Intermediate Core Bond"). Used to map the fund to an analysis group. May be null for uncategorized funds.'
 
 required:
   - name

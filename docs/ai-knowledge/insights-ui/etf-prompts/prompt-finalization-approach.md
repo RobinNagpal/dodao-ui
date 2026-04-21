@@ -12,7 +12,7 @@ Goal of the loop: produce a prompt that (a) only asks for analysis the input dat
    - `etf-analysis-factors-performance-and-returns.json` (group-based, 5 factors per group)
    - `etf-analysis-factors-cost-efficiency-and-team.json` (asset-class-based)
    - `etf-analysis-factors-risk-analysis.json` (asset-class-based)
-2. **Group / category mapping** — `etf-analysis-categories.json` maps ~130 Morningstar categories (e.g. *Large Blend*, *High Yield Bond*) to 8 groups (`broad-equity`, `sector-thematic-equity`, `leveraged-inverse`, `fixed-income-core`, `fixed-income-credit`, `muni`, `alt-strategies`, `allocation-target-date`).
+2. **Group / category mapping** — `etf-analysis-categories.json` maps ~130 categories (e.g. *Large Blend*, *High Yield Bond*) to 8 groups (`broad-equity`, `sector-thematic-equity`, `leveraged-inverse`, `fixed-income-core`, `fixed-income-credit`, `muni`, `alt-strategies`, `allocation-target-date`).
 3. **Prompt input schema** — `insights-ui/schemas/etf-analysis/inputs/<category>-input.schema.yaml` defines exactly which fields are passed into the prompt.
 4. **Input builder** — `insights-ui/src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` fills the schema fields from the Prisma model (`EtfStockAnalyzerInfo`, `EtfMorAnalyzerInfo`, `EtfFinancialInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`, `EtfMorRiskInfo`).
 5. **Live prompt text** — stored in the DB, keyed by prompt name (e.g. `Past Returns for ETFs`). A frozen copy of what was used lives at `docs/ai-knowledge/insights-ui/etf-prompts/<category>.md`.
@@ -31,7 +31,7 @@ The Past Returns category uses **group-based factor selection**, so we need to c
 
 Example table row for the `broad-equity` group:
 
-| Symbol | Exchange | Name | Morningstar category |
+| Symbol | Exchange | Name | category |
 | --- | --- | --- | --- |
 | SPY | NYSEARCA | SPDR S&P 500 ETF Trust | Large Blend |
 | VTI | NYSEARCA | Vanguard Total Stock Market ETF | Large Blend |
@@ -47,9 +47,9 @@ Pick ETFs that exercise the group's edge cases. For example:
 - `muni` → pick a national fund rather than single-state, so peer standing has a sane denominator.
 - `allocation-target-date` → pick a moderate allocation (AOR) rather than an extreme target-date (2065+), so rate-sensitivity and equity-sleeve behavior are both visible.
 
-### Step 3 — Fetch Morningstar data for each pick
+### Step 3 — Fetch Mor data for each pick
 
-Before generating, make sure the DB has fresh Morningstar data. Four `kind`s are required for Past Returns:
+Before generating, make sure the DB has fresh Mor data. Four `kind`s are required for Past Returns:
 - `quote`
 - `risk`   (this is the source of `riskPeriods` → `marketVolatilityMeasures`)
 - `people`
@@ -152,7 +152,7 @@ Re-run steps 4–6 on the same 8 ETFs (or a fresh 8). The review doc for the sec
 ```
 insights-ui/
   src/etf-analysis-data/
-    etf-analysis-categories.json                   # group <-> Morningstar category mapping
+    etf-analysis-categories.json                   # group <-> category mapping
     etf-analysis-factors-performance-and-returns.json
     etf-analysis-factors-cost-efficiency-and-team.json
     etf-analysis-factors-risk-analysis.json

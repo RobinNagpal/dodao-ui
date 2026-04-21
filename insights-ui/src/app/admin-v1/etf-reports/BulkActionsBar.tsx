@@ -27,7 +27,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' | 'portfolio' }>({
     successMessage: 'Request accepted. Processing in background.',
-    errorMessage: 'Failed to queue Morningstar scrape',
+    errorMessage: 'Failed to queue Mor scrape',
   });
 
   const { postData: createGenerationRequests, loading: creatingGenRequests } = usePostData<unknown, EtfGenerationRequestPayload[]>({

@@ -157,4 +157,4 @@ We are generating analysis on these final 8 ETFs — one per group:
 | alt-strategies | DBC | NYSEARCA |
 | allocation-target-date | AOR | NYSEARCA |
 
-All four Morningstar data kinds (`quote`, `risk`, `people`, `portfolio`) have been triggered for each via `POST /api/koala_gains/etfs-v1/exchange/{EXCHANGE}/{SYMBOL}/fetch-mor-info?token=$AUTOMATION_SECRET` — 32 accepted requests on 2026-04-20.
+All four Mor data kinds (`quote`, `risk`, `people`, `portfolio`) have been triggered for each via `POST /api/koala_gains/etfs-v1/exchange/{EXCHANGE}/{SYMBOL}/fetch-mor-info?token=$AUTOMATION_SECRET` — 32 accepted requests on 2026-04-20.
