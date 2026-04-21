@@ -1,12 +1,12 @@
 {
   "categoryKey": "CostEfficiencyAndTeam",
   "categoryName": "Cost, Efficiency & Team",
-  "categoryDescription": "Evaluates the ETF's fees, size, trading activity, and the people running the fund — the slow-leak factors that quietly decide whether long-term returns are delivered to investors or eaten up by costs. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "categoryDescription": "Evaluates the ETF's fees, fund scale, trading friction, tax drag, NAV execution, management and issuer stability, and operational track record — the slow-leak factors that quietly decide whether long-term returns are delivered to investors or eaten up by costs. Fees are judged in context: a passive index fund must be cheap to be acceptable, while an active, thematic, leveraged, or derivative-income fund must earn its higher fee with demonstrated value-add or structural necessity. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
   "factors": [
     {
       "factorKey": "expense_ratio",
-      "factorTitle": "What You're Paying in Fees",
-      "factorDescription": "Looks at the ETF's expense ratio (annual fee) against what's normal for its category. Rough retail benchmarks: broad index funds should be under 0.10% (VOO is 0.03%), sector and thematic funds 0.10-0.50%, bond funds 0.05-0.30%, muni funds 0.10-0.40%, alternative-strategy funds 0.30-0.80%, leveraged funds 0.80-1.00%, allocation/target-date funds 0.10-0.50%. Fees compound every year — a 0.50% difference over 30 years can quietly erase 15% of your ending balance. The expense ratio also explains most of the tracking gap for passive funds: if the fund trails its index by roughly its expense ratio, that's normal, not a flaw.",
+      "factorTitle": "Expense Ratio in Context",
+      "factorDescription": "Compares the ETF's expense ratio against category norms AND against what the fund structure actually delivers — a low fee is only meaningful in context. Rough retail benchmarks: broad index funds under 0.10% (VOO is 0.03%), sector/thematic 0.10–0.50%, core bond 0.05–0.30%, muni 0.10–0.40%, active/alt-strategy 0.30–0.80%, leveraged/inverse 0.80–1.15%, allocation/target-date 0.10–0.50%. For passive funds the expense ratio is essentially the tracking-drag floor — trailing the index by roughly the expense ratio is normal, not a flaw. For active, thematic, derivative-income, managed-futures, or tactical-allocation funds a higher fee is not itself a failure — but it has to be earned by documented out-performance or mandate delivery (see active_fee_value). For leveraged/inverse funds the headline fee understates the true cost because embedded swap-financing costs sit outside the expense ratio (see leverage_cost_drag). Fees compound: a 0.50% gap over 30 years quietly erases around 15% of an ending balance. Pass when the fee is at or below the category median for the fund's structure (passive / active / leveraged) AND there is no evidence of excess cost drag beyond the fee. Fail when the fee is materially above peer median (more than ~10%) without offsetting value-add, or when a passive fund trails its benchmark by meaningfully more than its expense ratio.",
       "factorMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewCategory",
       "groups": [
         "broad-equity",
@@ -21,8 +21,8 @@
     },
     {
       "factorKey": "fund_size_liquidity",
-      "factorTitle": "Fund Size and How Easy It Is to Trade",
-      "factorDescription": "Checks assets under management (AUM), daily volume, and the bid-ask spread (the gap between buy and sell prices). Bigger, more actively traded funds give retail investors tighter spreads and less slippage. Funds under $100-200M AUM carry real closure risk — if the fund shuts down, you're forced to sell at an inconvenient time with possible tax consequences. Very wide spreads silently eat returns on every trade. For bond and alternative-strategy funds, fund size matters even more because the underlying securities trade in less liquid markets.",
+      "factorTitle": "Fund Size, Trading Activity & Bid-Ask Cost",
+      "factorDescription": "Checks assets under management (AUM), average daily dollar volume, and bid-ask spread — the three execution metrics that determine whether a retail investor actually gets fair prices. AUM thresholds: under $50M with flat-or-declining trend is real closure risk (funds closing force taxable liquidation at inconvenient moments); $50–200M is viable but monitor inflows; above $500M is safe for most categories. Average daily dollar volume should comfortably support normal retail lot sizes; thin volume forces wide limit orders and partial fills. Bid-ask spread in bps: under 5 bps is tight (most broad-equity megafunds), 5–15 bps is typical for sector/thematic and investment-grade credit, 15–30 bps is normal for muni / EM debt / niche alt, above 30 bps is a real round-trip cost. For ETFs holding less-liquid underlyings (high-yield bonds, muni, EM debt, private credit, niche alt), the bid-ask also embeds underlying-market friction and can blow out during stress — cross-reference with premium_discount_nav. Pass when AUM is comfortably above closure threshold for the category, trading volume supports normal retail orders without visible slippage, and bid-ask is within category norms. Fail when AUM is under the risk threshold without strong inflow momentum, OR bid-ask is consistently wide enough to materially tax round-trips, OR daily volume is too thin for retail-sized orders.",
       "factorMetrics": "aum, volume, avgVolume, marketBidAskSpread, dollarVol",
       "groups": [
         "broad-equity",
@@ -37,25 +37,23 @@
     },
     {
       "factorKey": "portfolio_turnover",
-      "factorTitle": "How Often the Fund Trades Its Holdings",
-      "factorDescription": "Portfolio turnover is the percentage of the fund's holdings that are bought and sold each year. Higher turnover means higher hidden trading costs and more taxable events for investors holding the fund in a taxable account. Rough retail benchmarks: passive index funds 0-20% (low is good), active equity funds 30-80% (normal), bond funds 30-80% (bonds mature, so turnover is natural), alternative-strategy funds often 100-300% (options and futures are rolled constantly — expected for the strategy). The red flag is turnover well above category peers, which usually signals undisciplined trading.",
+      "factorTitle": "Portfolio Turnover & Hidden Trading Drag",
+      "factorDescription": "Portfolio turnover is the percentage of holdings bought and sold each year — a proxy for trading costs, tax drag in taxable accounts, and manager discipline. Benchmarks by fund type: passive equity index 0–10% (ultra-low expected), smart-beta / enhanced index 10–40%, sector / thematic 20–60% (periodic methodology rebalances), core bond 30–80% (bonds mature so some turnover is structural), credit / multisector bond 60–150% (spread trading), muni 20–60%, leveraged/inverse often above 1000% (mechanical daily swap resets — the headline number is irrelevant signal), derivative income and covered-call often above 100% (options are rolled constantly — expected for the strategy), managed futures and tactical allocation 100–400% (normal for the mandate). Do not penalize structurally high turnover — for options-based, leveraged, or managed-futures funds it is the strategy, not a defect. Pass when turnover is within the normal band for the fund's stated strategy. Fail when turnover is well above category peers with no mandate explanation, which usually signals undisciplined trading and creates hidden transaction costs and taxable-account drag.",
       "factorMetrics": "overviewTurnover, reportedTurnoverPct",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "fixed-income-core",
-        "fixed-income-credit",
-        "muni",
-        "alt-strategies",
-        "allocation-target-date"
-      ]
+      "groups": ["sector-thematic-equity", "leveraged-inverse", "fixed-income-core"]
     },
     {
       "factorKey": "management_quality",
-      "factorTitle": "Who Runs the Fund and for How Long",
-      "factorDescription": "For passive index funds, the issuer's reputation and infrastructure matter more than individual managers — Vanguard, iShares (BlackRock), SPDR (State Street), and Schwab run tight, low-cost operations. For active funds and alternative-strategy funds, manager tenure is critical: a 10-year track record with the same manager tells you a lot more than a 2-year record with a brand-new manager. Short tenure means the performance record wasn't really produced by today's decision-maker. High manager turnover is a yellow flag — it suggests internal instability or the fund searching for a strategy.",
+      "factorTitle": "Issuer Quality & Manager Tenure",
+      "factorDescription": "For passive broad-index funds the issuer's reputation, scale, and operational infrastructure matter far more than individual managers — Vanguard, iShares (BlackRock), SPDR (State Street), Schwab, Invesco, and Fidelity run tight, low-cost, well-supervised operations; named portfolio managers are largely symbolic for pure-replication index funds. For active equity funds, alt strategies, active credit, and muni funds (especially state-specific or high-yield muni where issuer research drives outcomes), manager tenure is critical: a 10-year track record with the same manager is meaningfully more reliable than a 2-year record with a new manager, because the historical performance wasn't really produced by today's decision-maker. For allocation and target-date funds evaluate both the glide-path architect and the tenure of the team managing the active sleeves. Manager turnover within the past 2–3 years is a yellow flag — it suggests internal instability, strategy drift, or issuer repositioning. Pass when the issuer is established and reputable AND, for non-pure-passive strategies, manager continuity is at least 3–5 years with no recent turnover. Fail when a niche or newer issuer is running a complex active strategy with thin operational history, OR documented manager churn on an active fund without a clear succession story. A small issuer running a well-replicated passive index fund with acceptable AUM and tracking is not a Fail on issuer size alone.",
       "factorMetrics": "issuer, numberOfManagers, longestTenure, averageTenure, advisors, currentManagers",
+      "groups": ["broad-equity", "muni", "allocation-target-date"]
+    },
+    {
+      "factorKey": "fund_track_record_and_stability",
+      "factorTitle": "Fund Track Record & Operational Stability",
+      "factorDescription": "Evaluates how long the fund has been operating, how stable its AUM trajectory has been, and whether its mandate and management setup have stayed continuous. Track-record tiers: over 10 years means the fund has survived multiple market cycles and has a full evaluable history; 5–10 years means one or two cycles — decent signal; 3–5 years gives partial signal; under 3 years is effectively 'new' and retail evaluation must lean on issuer credibility and strategy simplicity rather than track record. AUM trajectory matters on top of current size: a $200M fund growing steadily is structurally more stable than a $200M fund that was $800M three years ago, because closure risk is about the direction of asset flows as much as the absolute level. Mandate stability is the third leg — some funds quietly change their benchmark, strategy, or category label, which breaks the usability of their historical return / risk record and is a real red flag; watch for category changes implied by strategyText that differs from the current fundCategory, or sudden manager turnover that coincides with strategy shifts. For the newest fund types (single-stock leveraged, defined-outcome buffers, spot-digital-asset ETFs) issuer operational history on comparable products is the anchor. Pass when the fund has 5+ years of history with steady or growing AUM and no mandate changes, OR the fund is younger than 5 years but comes from an established issuer running a proven strategy with healthy AUM trajectory. Fail when the fund is under 3 years old from a niche issuer running a complex or speculative strategy without issuer track-record support, OR any fund with documented recent strategy pivots, benchmark changes, or category reclassifications, OR material AUM decline combined with thin current volume. Young funds should NOT be Failed solely on age — use issuer credibility and strategy simplicity as the anchor when track record is short.",
+      "factorMetrics": "inceptionDate, currentManagers, longestTenure, averageTenure, aum, issuer, overviewCategory, strategyText",
       "groups": [
         "broad-equity",
         "sector-thematic-equity",
@@ -68,20 +66,39 @@
       ]
     },
     {
-      "factorKey": "mor_assessment",
-      "factorTitle": "Mor Analyst Rating",
-      "factorDescription": "Mor's medalist rating (Gold / Silver / Bronze / Neutral / Negative) is a single-letter summary of their full analyst assessment across five pillars: Process, People, Parent, Performance, and Price. Gold-rated funds typically combine low fees, a strong investment process, and a stable team. Retail takeaway: a Gold or Silver rating is a reliable shortcut when picking funds in a category you don't research yourself. Note that many newer alternative-strategy and niche funds lack analyst coverage — absence of a rating is not a negative signal, just a gap.",
-      "factorMetrics": "medalistRating, analysisSections, strategyText",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "fixed-income-core",
-        "fixed-income-credit",
-        "muni",
-        "alt-strategies",
-        "allocation-target-date"
-      ]
+      "factorKey": "tax_efficiency_distributions",
+      "factorTitle": "Tax Efficiency & Distribution Quality",
+      "factorDescription": "Measures how much of the ETF's return is lost to tax drag for investors holding in a taxable brokerage account. ETFs are structurally tax-efficient because in-kind creation/redemption keeps capital-gain distributions rare — but not all ETFs are equal. Broad passive equity ETFs (VOO, VTI, IVV) essentially never pay a capital-gains distribution; thematic and actively managed equity ETFs occasionally do, and repeated cap-gain distributions should be a red flag. For derivative-income / covered-call / premium-income funds (JEPI, QYLD, SPYI-style), the headline yield is a mix of ordinary income, qualified dividends, short-term gain, and return-of-capital (ROC) — ROC is tax-deferred but lowers the cost basis so it is not a free lunch; the tax character of the distribution matters as much as the yield number. For alternative strategies (managed futures via commodity pools, certain single-currency funds) K-1 vs 1099 reporting structure materially changes the tax experience. Short-term gain distributed from high-turnover alt-strategy funds is taxed at marginal rates and can quietly erase 1–2% of annual return for high-bracket investors. For funds held in IRAs / 401(k)s this factor is less decisive, but most investor dollars sit in taxable accounts so it still matters. Pass when the fund has no meaningful recent capital-gain distribution history (passive equity) or the distribution character is well-disclosed and reasonable for the strategy (alt / income). Fail when there are material cap-gain distributions in recent years despite a passive structure, OR high-yield income is largely ROC or short-term gain without clear disclosure, OR the fund structure creates unexpected tax reporting burden (K-1) without offsetting benefit.",
+      "factorMetrics": "overviewTurnover, reportedTurnoverPct, dividendYield, overviewSecYield, overviewTtmYield",
+      "groups": ["broad-equity", "alt-strategies"]
+    },
+    {
+      "factorKey": "muni_tax_equivalent_value",
+      "factorTitle": "Muni Tax-Equivalent Value & Credit Mix",
+      "factorDescription": "For muni-bond ETFs the headline SEC yield is not directly comparable to taxable bond peers — convert first to tax-equivalent yield (TEY) using TEY = SEC yield ÷ (1 − marginal tax rate), and state the bracket assumption explicitly. A ~32% federal bracket is a reasonable retail baseline; higher-earner investors in high-tax states (CA, NY, NJ, MA) get additional value from in-state muni funds because the income is also exempt from state tax, though AMT treatment should be noted for private-activity-bond funds. The other half of this factor is issuer credit quality and concentration: the same TEY can come from AAA national issuers or from a high-yield-muni allocation that introduces real default risk masquerading under the 'muni' label; state-specific funds add single-jurisdiction risk (pension stress in IL, NJ; revenue shock in oil-states). Pass when the TEY at the stated bracket is competitive with or better than taxable core bonds of similar duration and credit quality AND the credit-tier mix and issuer concentration are appropriate for the fund's stated credit mandate. Fail when TEY is uncompetitive versus taxable peers after the tax benefit, OR the yield premium is driven by a significant high-yield-muni tilt or concentrated low-rated issuers that the fund label does not make obvious to retail investors.",
+      "factorMetrics": "overviewSecYield, overviewTtmYield, dividendYield, overviewCategory",
+      "groups": ["muni"]
+    },
+    {
+      "factorKey": "leverage_cost_drag",
+      "factorTitle": "All-In Cost of Leveraged Exposure",
+      "factorDescription": "Leveraged and inverse ETFs carry three stacked costs that most retail investors underestimate: (1) the headline expense ratio, typically 0.80–1.15%; (2) embedded financing cost inside the swaps or futures used to achieve the daily leverage — this often adds another 50–150 bps on top of the expense ratio and sits outside the sticker fee; (3) daily-rebalancing friction in volatile markets (volatility drag), which compounds against investors holding for more than a few days. The all-in annual cost drag on a multi-month hold is frequently 2–3% or more — materially higher than the headline fee. This is on top of the path-dependency decay handled in the Performance section and the tracking fidelity handled in Risk (leverage_decay). Pass when the fund is clearly marketed as a short-term trading vehicle, the headline fee is in line with leveraged-peer norms, bid-ask and liquidity support rapid trading, and issuer disclosure on financing costs is transparent. Fail when the headline fee is above peer norms without offsetting liquidity advantages, OR structural issues (wide bid-ask, poor daily-leverage fidelity, thin volume) magnify the true cost. The retail takeaway must always reinforce: not suitable for multi-week holding regardless of how cheap the sticker fee looks.",
+      "factorMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, overviewTurnover, marketBidAskSpread, return1y, returnsAnnual",
+      "groups": ["leveraged-inverse"]
+    },
+    {
+      "factorKey": "premium_discount_nav",
+      "factorTitle": "Premium/Discount to NAV & Execution Reliability",
+      "factorDescription": "ETFs holding less-liquid underlyings (corporate bonds, high-yield, muni, EM debt, niche alternatives, illiquid international equities) can trade at a premium or discount to intraday NAV, and this drift is a real execution cost that sits outside the expense ratio. Tight, symmetric P/D around zero is healthy. Persistently positive premium signals strong inflow demand — good for existing holders but a warning for new buyers who may pay above fair value. Persistently negative discount, or very wide P/D range during market stress, flags execution friction and fair-value pricing mismatches — investors may be forced to sell at a discount during precisely the moments they most want to exit. High-yield bond ETFs widening to around -2% during risk-off days (March 2020, Oct 2022) is expected but relevant; munis and EM debt can widen further. Pass when average P/D sits within roughly ±0.20% for core bond and sizable alt strategies, ±0.50% for niche / EM / high-yield / muni, with no sustained one-sided drift and no blow-outs beyond ~2% in recent stress periods without rapid normalization. Fail when there is chronic one-sided P/D above 0.50% in core strategies, OR observed stress-period blow-outs beyond 2% that did not normalize within days, OR wide P/D combined with thin volume that makes reliable execution difficult.",
+      "factorMetrics": "marketBidAskSpread, stockPrice, aum, volume, avgVolume",
+      "groups": ["fixed-income-core", "fixed-income-credit"]
+    },
+    {
+      "factorKey": "active_fee_value",
+      "factorTitle": "Active-Fee Value-for-Money",
+      "factorDescription": "For actively managed, rules-based, thematic, or non-standard-index ETFs the fee alone does not tell you whether you are getting value — the real question is whether the strategy's value-add survives after fees. A 0.75% active thematic fund that has meaningfully outperformed its sector benchmark net of fees over 3–5 years is fairly priced; a 0.75% fund that tracks a simple rules-based index (or underperforms its passive sibling) is overpriced at any size. For covered-call and derivative-income funds judge the fee against the income and downside protection delivered versus a low-cost equivalent index combined with a covered-call (capture ratios and drawdown vs benchmark are the honest test). For allocation and target-date funds a 0.15–0.35% all-in-one is strong value; 0.60%+ needs demonstrated tactical or glide-path advantage over a simple static blend. For actively managed credit funds (high-yield, bank loan, EM debt, multisector) the manager must beat the category index net of fees — otherwise a low-cost passive credit ETF is the honest alternative. For managed-futures, long-short, market-neutral, and multi-strategy funds, the fee must be earned by demonstrated low correlation, downside protection, or positive returns in equity bear markets — not just absolute return in bull markets. Pass when the fee is justified by documented alpha, risk-adjusted outperformance, or clear mandate delivery (downside protection, income stability, low correlation). Fail when the fee is at or above peer median with no demonstrated edge vs a passive alternative of similar mandate. For funds with less than 3 years of history, judgment must be provisional — note the short track record explicitly and lean on strategy design, issuer track record, and comparable peer products rather than forcing a Fail.",
+      "factorMetrics": "expenseRatio, overviewAdjExpenseRatio, overviewProspectusNetExpenseRatio, return3y, return5y, returnsTrailing, overviewTurnover",
+      "groups": ["sector-thematic-equity", "fixed-income-credit", "alt-strategies", "allocation-target-date"]
     }
   ]
 }
