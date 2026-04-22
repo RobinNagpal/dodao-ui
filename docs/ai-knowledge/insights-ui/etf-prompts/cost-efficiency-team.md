@@ -10,10 +10,12 @@ This report covers only fees, liquidity, trading friction, tax drag, NAV executi
 - Stay inside this category. Do NOT analyse returns (→ Performance report), volatility or drawdowns (→ Risk Analysis report), or strategy merit (→ Strategy report).
 - No forecasts, no price targets, no valuation calls.
 - Treat the data blocks as the latest snapshot. Never invent numbers.
-- Missing-field rule: if a field/metric is missing, **do not mention it** (no "data not provided", "not available", "N/A"). Use only what’s present.
-- Every claim must carry at least one numeric anchor from the input. Drop adjectives like "excellent", "terrible", "undeniably".
-- Do not repeat the same number in more than one paragraph. State it once, then build on it.
-- **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails`.
+- Missing-field rule: if a field/metric is missing, **do not mention it**. Do not write "data not provided", "not available", "N/A", "listed as data not provided", "logged as data not provided", "absent from the provided data", "is absent", "not disclosed", "not listed", "not in the data", "omitted", "unavailable", or "not reported". If the input doesn't carry it and the lookup rule below can't source it, **omit it silently** — no reference to its absence.
+- Every claim must carry at least one numeric anchor from the input. Drop intensifier / marketing adjectives. Banned list includes: "excellent", "terrible", "undeniably", "undeniable", "massive", "razor-thin", "razor-tight", "elite", "pristine", "flawless", "flawlessly", "unmatched", "unparalleled", "staggering", "profound", "industry titan", "seamless", "bulletproof", "rock-solid", "rock-bottom", "colossal", "premier", "cornerstone", "tremendous", "immense", "immensely", "world-renowned", "world-class", "top-tier". These words signal confidence without adding information and feed padding.
+- **State each number once.** Expense ratio, AUM, bid-ask spread, dollar volume, turnover, tenure, inception date — each goes into the report exactly one time with the numeric value. Every subsequent mention must be qualitative ("the low fee", "its deep liquidity", "tight execution") — never reprint the digits.
+- **Number-formatting rule.** AUM, dollar volume, and share counts must be abbreviated with `B`/`M`/`K` suffixes and a currency symbol where applicable (e.g., `` `$113B` ``, `` `$490M daily volume` ``, `` `3.5M shares` ``). Never print raw integers like `2748845514` or `$112998218385`. Fees, spreads, turnover, and tenure keep two decimals of precision as percentages or years (e.g., `` `0.09%` ``, `` `14.8 years` ``).
+- **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails` or in the factor's own `detailedExplanation`.
+- **Do not narrate the grading.** The factor `result` field is the verdict — do not describe the scoring inside `detailedExplanation`. Do not write "we rate this a Pass only because…", "earning a Pass", "easily clears the … test", "fully passes the highest bars", or "fails the … test". State the evidence; the `result` field speaks for itself.
 
 ## Factor-metric lookup (only when needed)
 
@@ -37,9 +39,9 @@ When multiple blocks carry the same metric, prefer the source listed first. Alwa
 
 State whether the cost & efficiency profile is **Strong**, **Mixed**, or **Weak**. Include 3–5 decision-useful numbers (fee, AUM, bid-ask or dollar volume, turnover, tenure or inception). End with one plain-English takeaway.
 
-## 2. `overallAnalysisDetails` (4 paragraphs, ~800–1100 words total)
+## 2. `overallAnalysisDetails` (four distinct paragraphs)
 
-Keep paragraphs tight. Do not pad to hit a word count. Do not restate factor definitions — just apply them.
+The output MUST be four distinct paragraphs separated by blank lines — one per topic below. A single run-on block is a failure even if the content is right. Aim for substance over length — roughly 400–700 words total. Do not pad to hit a word count. Do not restate factor definitions — just apply them.
 
 1. **Fee & liquidity snapshot.** Expense ratio in context (passive vs active vs leveraged — use the bar in the factor), category-relative fee, AUM, bid-ask and dollar volume. One line on whether a retail round-trip is cheap or costly. If `expenseRatio`, `overviewAdjExpenseRatio`, and `overviewProspectusNetExpenseRatio` differ, flag the gap in a single sentence (it usually signals a fee waiver).
 2. **Trading efficiency & group-specific cost lens.** Portfolio turnover in context of the strategy (low is good for passive, mechanically high is expected for leveraged / options / managed-futures). Then cover only the lens that applies to this group: tax-efficiency / ROC / K-1 concerns for taxable-account investors (broad-equity, alt), NAV premium/discount behavior for fixed-income-core / fixed-income-credit, all-in cost of leverage for leveraged-inverse, active-fee value-for-money for sector-thematic / fixed-income-credit / alt / allocation, or tax-equivalent-yield framing with a stated bracket (e.g. `~32%` federal) for muni.
@@ -73,8 +75,8 @@ For AUM, bid-ask, dollar volume, turnover, tenure, track-record length, and P/D,
 
 ## 6. Writing rules
 
-- Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks.
-- Simple, direct English. No dramatic adjectives, no filler, no repetition.
+- Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks. Use abbreviated units (`B`/`M`/`K`) per the number-formatting rule above — never raw integers.
+- Simple, direct English. No dramatic adjectives (see banned list above), no filler, no repetition of numbers.
 - Name the issuer and the fund category when referencing them. Name the benchmark index when quoted from `strategyText`.
 - Do not invent context beyond what the data supports. If a data point isn't present (and you couldn't source it via the lookup rule), omit it silently.
 
