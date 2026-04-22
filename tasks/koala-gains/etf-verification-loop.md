@@ -2,9 +2,10 @@
 
 Automates the two refinement loops described in Phase 3 of `etfs.md`:
 
-- **Loop A — Prompt refinement** (for each evaluation category): pick ETFs → trigger report
-  generation → wait → read the current prompt (markdown file) and the generated output →
-  document findings → edit the prompt file **only if needed**.
+- **Loop A — Prompt refinement** (run once per evaluation category): trigger report
+  generation **for that one category only** against the 16 hardcoded ETFs → wait → read
+  the prompt markdown and the generated output → document findings → edit the prompt
+  file **only if needed**.
 - **Loop B — Analysis-factor refinement**: read the same generated analyses (reuse Loop A's
   output — no re-run needed) → judge whether the factors assigned to each ETF's group are
   actually relevant/useful for that ETF → document findings → edit
@@ -14,9 +15,14 @@ Automates the two refinement loops described in Phase 3 of `etfs.md`:
 record that in the findings doc and move on. Don't edit prompt or factor files just to have
 a diff.
 
-Both loops work entirely on **files in this repo** — prompts live as markdown, factors live
-as JSON. No DB writes. The loops use live APIs only to (a) enqueue generation and (b) read
-the output back.
+The ETF list is hardcoded in `insights-ui/src/etf-analysis-data/sample-etfs.json` (16 ETFs
+— 2 per group × 8 groups). There is no sampling / fetching step anymore; Claude just
+points the existing scripts at that file. Claude's only responsibility is **reviewing the
+prompt file and the generated analyses, writing findings, and (optionally) editing the
+prompt / factor JSON**.
+
+> **For the short operational runbook, see `run-prompt-analysis.md` in the same folder.**
+> This file is reference-level; the short runbook is what Claude follows step-by-step.
 
 ---
 
@@ -38,38 +44,45 @@ All commands below run from `insights-ui/`.
 Prompts live in `docs/ai-knowledge/insights-ui/etf-prompts/`. Claude edits these files
 directly — there is nothing to push through an API.
 
-| Report type (`EtfReportType`)     | Analysis category            | Prompt file                                                    |
-| --------------------------------- | ---------------------------- | -------------------------------------------------------------- |
-| `performance-and-returns`         | `PerformanceAndReturns`      | `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`    |
-| `cost-efficiency-and-team`        | `CostEfficiencyAndTeam`      | `docs/ai-knowledge/insights-ui/etf-prompts/cost-efficiency-team.md` |
-| `risk-analysis`                   | `RiskAnalysis`               | `docs/ai-knowledge/insights-ui/etf-prompts/risk-analysis.md`   |
-| `future-performance-outlook`      | `FuturePerformanceOutlook`   | `docs/ai-knowledge/insights-ui/etf-prompts/future-performance-outlook.md` |
+| Report type (`EtfReportType`) | Analysis category          | Prompt file                                                               |
+| ----------------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| `performance-and-returns`     | `PerformanceAndReturns`    | `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`               |
+| `cost-efficiency-and-team`    | `CostEfficiencyAndTeam`    | `docs/ai-knowledge/insights-ui/etf-prompts/cost-efficiency-team.md`       |
+| `risk-analysis`               | `RiskAnalysis`             | `docs/ai-knowledge/insights-ui/etf-prompts/risk-analysis.md`              |
+| `future-performance-outlook`  | `FuturePerformanceOutlook` | `docs/ai-knowledge/insights-ui/etf-prompts/future-performance-outlook.md` |
 
 Background on the refinement philosophy lives in `etf-prompts/prompt-finalization-approach.md`.
 
-Groups and the "famous" seed ETFs per group live in
-`insights-ui/src/etf-analysis-data/most-famous-etfs-by-group.json`.
+Groups are defined in `insights-ui/src/etf-analysis-data/etf-analysis-categories.json`
+(`groups[]`). The hardcoded sample draws 2 ETFs from each of the 8 groups → 16 ETFs per
+iteration.
+
+---
+
+## Hardcoded ETF list
+
+`insights-ui/src/etf-analysis-data/sample-etfs.json` — flat array of 16 entries, each
+`{symbol, exchange, name, group, groupName, category}`. The two ETFs per group are chosen
+to span different fund categories (e.g. `broad-equity` has Large Blend + Large Growth;
+`leveraged-inverse` has Leveraged Equity + Inverse Equity). If the list ever needs to
+change, edit that JSON and commit it — no script runs.
 
 ---
 
 ## Helper scripts (`src/scripts/etf-verification/`)
 
-| Command                              | Purpose                                                                          |
-| ------------------------------------ | -------------------------------------------------------------------------------- |
-| `yarn etf-verify:sample`             | Sample N famous ETFs per group, write a JSON array                               |
-| `yarn etf-verify:trigger`            | POST to `/api/{space}/etfs-v1/generation-requests` to enqueue reports            |
-| `yarn etf-verify:wait`               | GET `/api/{space}/etfs-v1/generation-requests/by-ids?ids=…` until all settle     |
-| `yarn etf-verify:fetch`              | GET `/api/{space}/etfs-v1/exchange/{exchange}/{symbol}/analysis` → one md per ETF |
+| Command                   | Purpose                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| `yarn etf-verify:trigger` | POST `/generation-requests` to enqueue reports for a **single** category         |
+| `yarn etf-verify:wait`    | GET `/generation-requests/by-ids?ids=…` until all settle                         |
+| `yarn etf-verify:fetch`   | GET `/exchange/{ex}/{sym}/analysis` → one md per ETF, only the category in scope |
 
 ### Which API returns the "output we get"?
 
 `GET /api/{space}/etfs-v1/exchange/{EXCHANGE}/{SYMBOL}/analysis` — returns every
-category analysis the server has stored for that ETF, including summary, overall analysis,
-and per-factor Pass/Fail explanations. `yarn etf-verify:fetch` wraps this call and writes
-one markdown file per ETF into `--out-dir <group>/<SYMBOL>.md` so Claude can read them
-directly.
-
-Compare that markdown against the prompt markdown to judge quality.
+category analysis the server has stored for that ETF. `yarn etf-verify:fetch --category <cat>`
+filters the rendered markdown to a single category so Claude reviews only the slice that
+belongs to the current loop iteration.
 
 ---
 
@@ -89,19 +102,21 @@ Template:
 - **Category in scope:** PerformanceAndReturns | CostEfficiencyAndTeam | RiskAnalysis |
   FuturePerformanceOutlook | (all — for Loop B)
 - **ETFs reviewed:**
-  - broad-equity: SPY, IWF, IWD
-  - fixed-income-core: AGG, BND
-  - muni: MUB, SUB
+  - broad-equity: SPY (Large Blend), IWF (Large Growth)
+  - fixed-income-core: AGG (Intermediate Core Bond), SHY (Short Government)
+  - muni: MUB (Muni National Interm), SUB (Muni National Short)
   - …
 
 ## Per-ETF review
 
 ### SPY (broad-equity — Large Blend)
+
 - **What's good:** …
 - **What's missing / wrong:** …
 - **Verdict:** change needed / no change
 
 ### AGG (fixed-income-core — Intermediate Core Bond)
+
 - **What's good:** …
 - **What's missing / wrong:** …
 - **Verdict:** change needed / no change
@@ -111,10 +126,12 @@ Template:
 ## Final changes
 
 <for Loop A>
+
 - `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md` — <one-line summary>, or
   **"no change — prompt produced solid output across the sampled ETFs."**
 
 <for Loop B>
+
 - `insights-ui/src/etf-analysis-data/etf-analysis-factors-<category>.json` — <one-line summary>, or
   **"no change — factors assigned to each group fit the sampled ETFs."**
 ```
@@ -125,27 +142,34 @@ explicitly.
 
 ---
 
-## Loop A — prompt refinement (file-based)
+## Loop A — prompt refinement (run once per category)
 
-### A1. Pick ETFs
+Work on **one category at a time**. Pick a category (e.g. `performance-and-returns`), run
+the full A1 → A4 sequence, write findings, optionally edit the prompt, then move on to the
+next category.
+
+### A1. Set env + prep iteration dir
 
 ```bash
+export CATEGORY=performance-and-returns    # or cost-efficiency-and-team / risk-analysis / future-performance-outlook
 export ITER=1
-export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)"
+export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
-yarn etf-verify:sample --per-group 3 --out "$ITER_ROOT/sample.json"
 ```
 
-### A2. Enqueue report generation for the 4 evaluation categories
+### A2. Enqueue generation for **this category only**
 
 ```bash
 yarn etf-verify:trigger \
-  --in "$ITER_ROOT/sample.json" \
-  --categories performance-and-returns,cost-efficiency-and-team,risk-analysis,future-performance-outlook \
+  --in "$SAMPLE" \
+  --categories "$CATEGORY" \
   --out "$ITER_ROOT/iter-$ITER/requests.json"
 ```
 
-`requests.json` contains the new generation-request IDs and is only consumed by A3.
+`requests.json` contains the new generation-request IDs and is only consumed by A3. The
+request also leaves `index-strategy` / `final-summary` flags as `false` — exactly one
+category fires.
 
 ### A3. Wait for the queue to settle
 
@@ -159,48 +183,35 @@ yarn etf-verify:wait \
 Pass `--tick` if your environment has no external cron hitting
 `/api/{space}/etfs-v1/generate-etf-v1-request`.
 
-### A4. Read the prompt and the generated output
+### A4. Fetch the analyses for **this category only**
 
 ```bash
 yarn etf-verify:fetch \
-  --in "$ITER_ROOT/sample.json" \
+  --in "$SAMPLE" \
+  --category "$CATEGORY" \
   --out-dir "$ITER_ROOT/iter-$ITER/reports"
 ```
 
-Produces `reports/<group>/<SYMBOL>.md` with all four category sections rendered.
+Produces `reports/<group>/<SYMBOL>.md` — each file contains just the single category
+section Claude needs to review.
 
-Claude then, for **each evaluation category**:
+### A5. Review, write findings, optionally edit the prompt
 
-1. Opens the prompt file from the mapping table (e.g. `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`).
-2. Opens the corresponding section inside each `reports/<group>/<SYMBOL>.md`.
-3. Notes concrete gaps — vague claims, missing metrics, wrong comparisons, boilerplate,
-   group-level blind spots (e.g. "leveraged-inverse reports never mention daily-reset decay"),
-   inconsistencies between factor Pass/Fail and the narrative.
-4. Writes a findings document using the template above:
-   `$ITER_ROOT/iter-$ITER/findings-A-<category>.md`.
+Claude's work — **this is the only manual step in the loop**:
 
-### A5. Edit the prompt file (only if the findings call for it)
+1. Opens the prompt file from the mapping table.
+2. Opens every `reports/<group>/<SYMBOL>.md` produced in A4.
+3. Writes `$ITER_ROOT/iter-$ITER/findings-A-$CATEGORY.md` using the template above.
+4. If the findings identify concrete problems, edits the prompt markdown in-place. Keep
+   placeholders (`{{symbol}}`, `{{categoryKey}}`, …) and overall structure; only change
+   instructions / guardrails.
+5. If the analysis looks good for the sampled ETFs, **do not** edit the prompt. Record "no
+   change" in the findings `Final changes` section.
 
-If the findings doc identified concrete problems, edit the prompt markdown in-place with the
-Edit tool. Keep placeholder names (`{{symbol}}`, `{{categoryKey}}`, …) and overall structure;
-only change the instructions / guardrails. Commit the edit as a normal git diff on this
-branch.
+### A6. Repeat for the next category
 
-If the analysis looks good for the sampled ETFs, do **not** edit the prompt. Record "no
-change" in the findings `Final changes` section and move on.
-
-### A6. Repeat
-
-Re-run A2 → A4 with `ITER=2`, `ITER=3`, … Stop once a full pass produces no meaningful new
-critiques (or after ~3 iterations — whichever comes first).
-
-### Stop / review gate
-
-Before merging, include in the PR description:
-
-- The diff of each prompt file across iterations.
-- One representative "before vs after" report pair per category.
-- Any category where the loop stalled — flag for human review instead of another pass.
+Reset `CATEGORY` and start again from A1. Do all four categories in turn, each in its own
+`$ITER_ROOT` directory so the findings and reports for each category are segregated.
 
 ---
 
@@ -218,14 +229,16 @@ if Loop A hasn't been run):
 
 ```bash
 # Only needed if no reports dir exists yet:
-yarn etf-verify:sample --per-group 5 --out "$ITER_ROOT/sample.json"
-yarn etf-verify:fetch  --in "$ITER_ROOT/sample.json" --out-dir "$ITER_ROOT/reports"
+export CATEGORY=performance-and-returns
+export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
+yarn etf-verify:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
 ```
 
 ### B2. Review factor fit per ETF
 
 For each ETF in `reports/<group>/<SYMBOL>.md`, Claude reads the `#### factor_key — Pass/Fail`
-blocks under every category and judges, specifically for **that ETF in its group**:
+blocks under the category in scope and judges, specifically for **that ETF in its group**:
 
 - Are the factors currently assigned to this group genuinely relevant and useful for this
   ETF?
@@ -235,8 +248,8 @@ blocks under every category and judges, specifically for **that ETF in its group
   output for ETFs in this group?
 
 Write findings using the template above:
-`$ITER_ROOT/iter-$ITER/findings-B-factors.md` — one file covering all four categories, with
-a per-ETF "good / missing / verdict" block plus a final summary per `(group, category)`.
+`$ITER_ROOT/iter-$ITER/findings-B-factors.md` — one file per category, with a per-ETF
+"good / missing / verdict" block plus a final summary per `(group, category)`.
 
 ### B3. Edit the factor JSONs (only if the findings call for it)
 
@@ -267,8 +280,10 @@ findings `Final changes` section.
 
 ## Error handling notes
 
-- `trigger-generation` fails fast if `AUTOMATION_SECRET` is unset or any ETF symbol isn't in
-  the DB. Clean up the sample file before retrying.
+- `trigger-generation` fails fast if `AUTOMATION_SECRET` is unset.
 - `wait-for-generation` reports `Failed` requests with the list of failed steps; re-run
-  `trigger-generation` for those ETFs to retry just the failed categories.
+  `trigger-generation` for those ETFs to retry.
 - Prompt + factor edits are plain git diffs — revert a bad round with `git checkout --`.
+- If a sampled ETF is missing MOR data, the generation-requests POST auto-fires the scrape
+  lambda to backfill on-demand, so the first A2 of the day may take slightly longer while
+  the MOR callbacks settle.

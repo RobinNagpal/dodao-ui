@@ -1,8 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
-import { SPACE_ID, fetchJson, parseArgs, requireAutomationSecret, requireStringArg } from './lib';
-import type { SampledEtf } from './sample-etfs';
+import { SPACE_ID, SampledEtf, fetchJson, parseArgs, requireAutomationSecret, requireStringArg } from './lib';
 
 interface EtfGenerationRequestPayload {
   etf: { symbol: string; exchange: string };

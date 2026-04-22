@@ -84,3 +84,16 @@ export function parsePositiveInt(raw: string | boolean | undefined): number | un
 export async function sleep(ms: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
+
+/**
+ * Row shape of the hardcoded sample ETF JSON (insights-ui/src/etf-analysis-data/sample-etfs.json).
+ * `symbol` and `exchange` drive the API calls; the rest is metadata used to label reports.
+ */
+export interface SampledEtf {
+  symbol: string;
+  exchange: string;
+  name?: string;
+  group?: string;
+  groupName?: string;
+  category?: string;
+}
