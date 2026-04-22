@@ -136,7 +136,7 @@ async function replaceEtfSimilarEtfs(
   const sourceExchangeUpper: string = sourceExchange.trim().toUpperCase();
 
   const seen: Set<string> = new Set<string>();
-  const cleaned: { symbol: string; exchange: string; name: string; reason: string }[] = [];
+  const cleaned: { symbol: string; exchange: string; name: string }[] = [];
 
   for (const entry of similarEtfs) {
     if (!entry || typeof entry.symbol !== 'string' || typeof entry.exchange !== 'string') continue;
@@ -152,7 +152,6 @@ async function replaceEtfSimilarEtfs(
       symbol: symbolUpper,
       exchange: exchangeUpper,
       name: (entry.name ?? '').trim(),
-      reason: (entry.reason ?? '').trim(),
     });
   }
 
@@ -180,7 +179,6 @@ async function replaceEtfSimilarEtfs(
         symbol: c.symbol,
         exchange: c.exchange,
         name: c.name || null,
-        reason: c.reason || null,
         sortOrder: idx,
         matchedEtfId: matchByKey.get(`${c.symbol}|${c.exchange}`) ?? null,
       })),

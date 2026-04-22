@@ -51,7 +51,6 @@ export interface EtfIndexStrategySimilarEtf {
   symbol: string;
   exchange: string;
   name: string;
-  reason: string;
 }
 
 export interface EtfIndexStrategyResponse {

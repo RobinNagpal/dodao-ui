@@ -5,7 +5,6 @@ CREATE TABLE "etf_similar_etfs" (
     "symbol" TEXT NOT NULL,
     "exchange" TEXT NOT NULL,
     "name" TEXT,
-    "reason" TEXT,
     "sort_order" INTEGER NOT NULL DEFAULT 0,
     "matched_etf_id" TEXT,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',

@@ -64,6 +64,5 @@ In addition to the prose above, return a `similarEtfs` array with **at least 6**
 Constraints for each entry:
 - `exchange` must be one of: `BATS`, `NASDAQ`, `NYSE`, `NYSEARCA` (we only cover US-listed ETFs on these exchanges).
 - `symbol` and `exchange` must be uppercase.
-- `reason` must be a single short sentence (≤ 25 words) explaining the substitutability (e.g. "Tracks the same S&P 500 index with identical market-cap weighting.").
 - Do not include the analyzed ETF itself.
 - Do not invent tickers — only include ETFs you can verify exist on one of the listed exchanges.

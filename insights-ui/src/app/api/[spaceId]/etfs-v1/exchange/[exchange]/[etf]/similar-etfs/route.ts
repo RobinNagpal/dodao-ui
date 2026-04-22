@@ -8,7 +8,6 @@ export interface SimilarEtf {
   name: string;
   symbol: string;
   exchange: string;
-  reason: string | null;
   aum: string | null;
   category: string | null;
   assetClass: string | null;
@@ -55,7 +54,6 @@ async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceI
         name: matched.name || s.name || s.symbol,
         symbol: matched.symbol,
         exchange: matched.exchange,
-        reason: s.reason,
         aum: matched.financialInfo?.aum ?? null,
         category: matched.stockAnalyzerInfo?.category ?? null,
         assetClass: matched.stockAnalyzerInfo?.assetClass ?? null,

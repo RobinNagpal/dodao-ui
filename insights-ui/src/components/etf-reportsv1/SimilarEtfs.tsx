@@ -58,7 +58,6 @@ export default function SimilarEtfs({ dataPromise }: SimilarEtfsProps): JSX.Elem
                   </div>
                   {formattedAum !== 'N/A' && <div className="text-sm text-gray-300">AUM: ${formattedAum}</div>}
                 </div>
-                {similarEtf.reason && <p className="text-xs text-gray-400 leading-snug line-clamp-2">{similarEtf.reason}</p>}
               </div>
             </Link>
           );

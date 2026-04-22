@@ -23,14 +23,10 @@ properties:
         name:
           type: string
           description: 'Full name of the similar ETF (e.g., Vanguard S&P 500 ETF).'
-        reason:
-          type: string
-          description: 'One short sentence (≤ 25 words) on why this ETF is a true substitute (e.g., tracks the same index, same category and weighting scheme).'
       required:
         - symbol
         - exchange
         - name
-        - reason
 required:
   - indexStrategy
   - similarEtfs

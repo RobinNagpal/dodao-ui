@@ -1729,7 +1729,6 @@ model EtfSimilarEtf {
   symbol       String  @map("symbol")
   exchange     String  @map("exchange")
   name         String? @map("name")
-  reason       String? @map("reason") @db.Text
   sortOrder    Int     @default(0) @map("sort_order")
   matchedEtfId String? @map("matched_etf_id")
   spaceId      String  @default("koala_gains") @map("space_id")
