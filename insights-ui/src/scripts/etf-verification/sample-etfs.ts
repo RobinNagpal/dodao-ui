@@ -1,24 +1,25 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { parseArgs, parsePositiveInt } from './lib';
+import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
+import { EtfCategoriesConfig } from '@/types/etf/etf-analysis-types';
+import { SPACE_ID, fetchJson, parseArgs, parsePositiveInt, requireAutomationSecret, requireStringArg } from './lib';
 
-interface FamousEtf {
+const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
+
+interface DiverseEtf {
   symbol: string;
-  name: string;
   exchange: string;
-  category: string;
-}
-
-interface FamousGroup {
-  key: string;
   name: string;
-  etfs: FamousEtf[];
+  morCategory: string | null;
+  aum: string | null;
+  aumNumeric: number | null;
 }
 
-interface FamousFile {
-  description: string;
-  groups: FamousGroup[];
+interface DiverseEtfsResponse {
+  groupKey: string;
+  groupName: string;
+  morCategories: string[];
+  etfs: DiverseEtf[];
 }
 
 export interface SampledEtf {
@@ -28,28 +29,69 @@ export interface SampledEtf {
   group: string;
   groupName: string;
   morCategory: string;
+  aum: string | null;
+  aumNumeric: number | null;
 }
 
-async function loadFamousFile(): Promise<FamousFile> {
-  const filePath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../etf-analysis-data/most-famous-etfs-by-group.json');
-  const raw = await readFile(filePath, 'utf-8');
-  return JSON.parse(raw) as FamousFile;
+function pickTwoDifferent(etfs: DiverseEtf[]): DiverseEtf[] {
+  if (etfs.length === 0) return [];
+  if (etfs.length === 1) return [etfs[0]];
+
+  const first = etfs[0];
+  const firstCat = first.morCategory ?? '(unknown)';
+  const firstAum = first.aumNumeric ?? 0;
+
+  // Prefer a second pick with a different morningstar category.
+  const differentCategory = etfs.slice(1).find((e) => (e.morCategory ?? '(unknown)') !== firstCat);
+  if (differentCategory) return [first, differentCategory];
+
+  // Otherwise take one with materially different AUM (>= 3x smaller or larger).
+  const differentAum = etfs.slice(1).find((e) => {
+    const a = e.aumNumeric ?? 0;
+    if (firstAum === 0 || a === 0) return false;
+    const ratio = firstAum > a ? firstAum / a : a / firstAum;
+    return ratio >= 3;
+  });
+  if (differentAum) return [first, differentAum];
+
+  // Fallback: just the next one in the list.
+  return [first, etfs[1]];
 }
 
-export async function sampleEtfs(opts: { perGroup?: number; onlyGroup?: string }): Promise<SampledEtf[]> {
-  const file = await loadFamousFile();
+async function fetchDiverseForGroup(groupKey: string, limit: number): Promise<DiverseEtfsResponse> {
+  const url = `/api/${SPACE_ID}/etfs-v1/groups/${encodeURIComponent(groupKey)}/diverse-etfs?limit=${limit}`;
+  return fetchJson<DiverseEtfsResponse>(url, { authToken: true });
+}
+
+export async function sampleEtfs(opts: { perGroup: number; onlyGroup?: string; poolSize?: number }): Promise<SampledEtf[]> {
+  requireAutomationSecret();
   const result: SampledEtf[] = [];
-  for (const group of file.groups) {
-    if (opts.onlyGroup && group.key !== opts.onlyGroup) continue;
-    const take = opts.perGroup !== undefined ? Math.min(opts.perGroup, group.etfs.length) : group.etfs.length;
-    for (const etf of group.etfs.slice(0, take)) {
+  const poolSize = opts.poolSize ?? Math.max(10, opts.perGroup * 5);
+
+  const groups = opts.onlyGroup ? categoriesConfig.groups.filter((g) => g.key === opts.onlyGroup) : categoriesConfig.groups;
+
+  if (opts.onlyGroup && groups.length === 0) {
+    throw new Error(`Unknown group key "${opts.onlyGroup}". Valid: ${categoriesConfig.groups.map((g) => g.key).join(', ')}`);
+  }
+
+  for (const group of groups) {
+    const resp = await fetchDiverseForGroup(group.key, poolSize);
+    const picks = opts.perGroup === 2 ? pickTwoDifferent(resp.etfs) : resp.etfs.slice(0, opts.perGroup);
+
+    if (picks.length < opts.perGroup) {
+      console.warn(`⚠️  Only found ${picks.length}/${opts.perGroup} ETFs with MOR data for group "${group.key}"`);
+    }
+
+    for (const etf of picks) {
       result.push({
         symbol: etf.symbol,
         exchange: etf.exchange,
         name: etf.name,
         group: group.key,
-        groupName: group.name,
-        morCategory: etf.category,
+        groupName: resp.groupName,
+        morCategory: etf.morCategory ?? '(unknown)',
+        aum: etf.aum,
+        aumNumeric: etf.aumNumeric,
       });
     }
   }
@@ -58,20 +100,17 @@ export async function sampleEtfs(opts: { perGroup?: number; onlyGroup?: string }
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const perGroup = parsePositiveInt(args['per-group']);
+  const perGroup = parsePositiveInt(args['per-group']) ?? 2;
+  const poolSize = parsePositiveInt(args['pool-size']);
   const onlyGroup = typeof args['group'] === 'string' ? args['group'] : undefined;
-  const outPath = typeof args['out'] === 'string' ? args['out'] : undefined;
+  const outPath = requireStringArg(args, 'out');
 
-  const sampled = await sampleEtfs({ perGroup, onlyGroup });
+  const sampled = await sampleEtfs({ perGroup, onlyGroup, poolSize });
   const json = JSON.stringify(sampled, null, 2);
 
-  if (outPath) {
-    await mkdir(path.dirname(outPath), { recursive: true });
-    await writeFile(outPath, json, 'utf-8');
-    console.log(`Wrote ${sampled.length} ETFs across ${new Set(sampled.map((e) => e.group)).size} groups → ${outPath}`);
-  } else {
-    console.log(json);
-  }
+  await mkdir(path.dirname(outPath), { recursive: true });
+  await writeFile(outPath, json, 'utf-8');
+  console.log(`Wrote ${sampled.length} ETFs across ${new Set(sampled.map((e) => e.group)).size} groups → ${outPath}`);
 }
 
 main().catch((err) => {

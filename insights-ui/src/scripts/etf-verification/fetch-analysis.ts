@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import { EtfAnalysisCategory, EtfReportType, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
 import { SPACE_ID, fetchJson, parseArgs, requireStringArg } from './lib';
 import type { SampledEtf } from './sample-etfs';
 
@@ -29,6 +29,27 @@ const CATEGORY_TITLES: Record<string, string> = {
   [EtfAnalysisCategory.FuturePerformanceOutlook]: 'Future Performance Outlook',
 };
 
+const EVALUATION_REPORT_TYPES: readonly EtfReportType[] = [
+  EtfReportType.PERFORMANCE_AND_RETURNS,
+  EtfReportType.COST_EFFICIENCY_AND_TEAM,
+  EtfReportType.RISK_ANALYSIS,
+  EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
+];
+
+function parseCategoryArg(raw: string | undefined): EtfAnalysisCategory | undefined {
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  // Accept either the EtfAnalysisCategory enum value (e.g. "PerformanceAndReturns")
+  // or the EtfReportType kebab value (e.g. "performance-and-returns").
+  if ((Object.values(EtfAnalysisCategory) as string[]).includes(trimmed)) {
+    return trimmed as EtfAnalysisCategory;
+  }
+  if ((EVALUATION_REPORT_TYPES as readonly string[]).includes(trimmed)) {
+    return ETF_REPORT_TYPE_TO_CATEGORY[trimmed as EtfReportType];
+  }
+  throw new Error(`Unknown category "${raw}". Expected one of: ${Object.values(EtfAnalysisCategory).join(', ')} or ${EVALUATION_REPORT_TYPES.join(', ')}`);
+}
+
 interface RenderEtf {
   symbol: string;
   exchange: string;
@@ -37,7 +58,7 @@ interface RenderEtf {
   morCategory: string;
 }
 
-function renderReport(etf: RenderEtf, analysis: AnalysisResponse): string {
+function renderReport(etf: RenderEtf, analysis: AnalysisResponse, onlyCategory: EtfAnalysisCategory | undefined): string {
   const lines: string[] = [];
   lines.push(`# ETF Report — ${etf.exchange}/${etf.symbol}`);
   lines.push('');
@@ -45,12 +66,14 @@ function renderReport(etf: RenderEtf, analysis: AnalysisResponse): string {
   lines.push(`- **Morningstar category:** ${etf.morCategory}`);
   lines.push('');
 
-  if (analysis.categories.length === 0) {
-    lines.push('_No category analyses found for this ETF._');
+  const categories = onlyCategory ? analysis.categories.filter((c) => c.categoryKey === onlyCategory) : analysis.categories;
+
+  if (categories.length === 0) {
+    lines.push(onlyCategory ? `_No \`${onlyCategory}\` analysis found for this ETF._` : '_No category analyses found for this ETF._');
     return lines.join('\n');
   }
 
-  for (const cat of analysis.categories) {
+  for (const cat of categories) {
     const title = CATEGORY_TITLES[cat.categoryKey] ?? cat.categoryKey;
     lines.push(`## ${title}`);
     lines.push('');
@@ -91,6 +114,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const inPath = requireStringArg(args, 'in');
   const outDir = requireStringArg(args, 'out-dir');
+  const onlyCategory = parseCategoryArg(typeof args['category'] === 'string' ? args['category'] : undefined);
 
   const raw = JSON.parse(await readFile(inPath, 'utf-8')) as Partial<SampledEtf>[];
   if (!Array.isArray(raw) || raw.length === 0) {
@@ -118,7 +142,7 @@ async function main() {
     };
     try {
       const analysis = await fetchJson<AnalysisResponse>(`/api/${SPACE_ID}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/analysis`);
-      const report = renderReport(etf, analysis);
+      const report = renderReport(etf, analysis, onlyCategory);
       const groupDir = path.join(outDir, etf.group);
       await mkdir(groupDir, { recursive: true });
       const filePath = path.join(groupDir, `${etf.symbol}.md`);
@@ -134,6 +158,7 @@ async function main() {
   }
 
   const indexLines: string[] = ['# ETF analysis snapshot', ''];
+  if (onlyCategory) indexLines.push(`_Filtered to category: \`${onlyCategory}\`_`, '');
   for (const [group, symbols] of Object.entries(perGroupIndex)) {
     indexLines.push(`## ${group}`);
     indexLines.push('');
