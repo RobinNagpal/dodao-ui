@@ -2,6 +2,7 @@ import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
+import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { EtfGenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -149,6 +150,21 @@ async function postHandler(
       },
       select: { id: true },
     });
+
+    const needsMorData =
+      regenerateOptions.regeneratePerformanceAndReturns ||
+      regenerateOptions.regenerateCostEfficiencyAndTeam ||
+      regenerateOptions.regenerateRiskAnalysis ||
+      (regenerateOptions.regenerateFuturePerformanceOutlook ?? true);
+
+    if (needsMorData) {
+      await ensureMorDataForAnalysis({
+        etfId: etfRecord.id,
+        spaceId,
+        exchange: etf.exchange,
+        symbol: etf.symbol,
+      });
+    }
 
     const existingRequest = await prisma.etfGenerationRequest.findFirst({
       where: {
