@@ -13,7 +13,11 @@
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
-    "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts"
+    "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
+    "etf-verify:sample": "tsx src/scripts/etf-verification/sample-etfs.ts",
+    "etf-verify:trigger": "tsx src/scripts/etf-verification/trigger-generation.ts",
+    "etf-verify:wait": "tsx src/scripts/etf-verification/wait-for-generation.ts",
+    "etf-verify:fetch": "tsx src/scripts/etf-verification/fetch-analysis.ts"
   },
   "engines": {
     "node": ">=23.11.0"
