@@ -16,7 +16,7 @@ trust this file and move.
 
 ## Inputs
 
-**Hardcoded ETF list:** `tasks/koala-gains/etf-verification/sample-etfs.json` — 16 ETFs
+**Hardcoded ETF list:** `insights-ui/src/etf-analysis-data/sample-etfs.json` — 16 ETFs
 (2 per group × 8 groups), each with `{symbol, exchange, name, group, groupName, category}`.
 Use it as-is for every run.
 
@@ -41,7 +41,7 @@ All commands below run from `insights-ui/`.
 export CATEGORY=<category>                                     # the arg the user gave
 export ITER=1
 export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
-export SAMPLE="$PWD/../tasks/koala-gains/etf-verification/sample-etfs.json"
+export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
 ```
 

@@ -15,7 +15,7 @@ Automates the two refinement loops described in Phase 3 of `etfs.md`:
 record that in the findings doc and move on. Don't edit prompt or factor files just to have
 a diff.
 
-The ETF list is hardcoded in `tasks/koala-gains/etf-verification/sample-etfs.json` (16 ETFs
+The ETF list is hardcoded in `insights-ui/src/etf-analysis-data/sample-etfs.json` (16 ETFs
 — 2 per group × 8 groups). There is no sampling / fetching step anymore; Claude just
 points the existing scripts at that file. Claude's only responsibility is **reviewing the
 prompt file and the generated analyses, writing findings, and (optionally) editing the
@@ -61,7 +61,7 @@ iteration.
 
 ## Hardcoded ETF list
 
-`tasks/koala-gains/etf-verification/sample-etfs.json` — flat array of 16 entries, each
+`insights-ui/src/etf-analysis-data/sample-etfs.json` — flat array of 16 entries, each
 `{symbol, exchange, name, group, groupName, category}`. The two ETFs per group are chosen
 to span different fund categories (e.g. `broad-equity` has Large Blend + Large Growth;
 `leveraged-inverse` has Leveraged Equity + Inverse Equity). If the list ever needs to
@@ -154,7 +154,7 @@ next category.
 export CATEGORY=performance-and-returns    # or cost-efficiency-and-team / risk-analysis / future-performance-outlook
 export ITER=1
 export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
-export SAMPLE="$PWD/../tasks/koala-gains/etf-verification/sample-etfs.json"
+export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
 ```
 
@@ -231,7 +231,7 @@ if Loop A hasn't been run):
 # Only needed if no reports dir exists yet:
 export CATEGORY=performance-and-returns
 export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
-export SAMPLE="$PWD/../tasks/koala-gains/etf-verification/sample-etfs.json"
+export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 yarn etf-verify:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
 ```
 

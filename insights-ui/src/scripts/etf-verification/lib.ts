@@ -86,7 +86,7 @@ export async function sleep(ms: number): Promise<void> {
 }
 
 /**
- * Row shape of the hardcoded sample ETF JSON (tasks/koala-gains/etf-verification/sample-etfs.json).
+ * Row shape of the hardcoded sample ETF JSON (insights-ui/src/etf-analysis-data/sample-etfs.json).
  * `symbol` and `exchange` drive the API calls; the rest is metadata used to label reports.
  */
 export interface SampledEtf {
