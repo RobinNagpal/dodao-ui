@@ -11,9 +11,13 @@ This report covers only volatility, drawdown and recovery, risk-adjusted return 
 - No forecasts, no future-volatility predictions, no price targets.
 - Treat the data blocks as the latest snapshot. Never invent numbers.
 - Missing-field rule: if a field/metric is missing, **do not mention it** (no "data not provided", "not available", "N/A"). Use only what's present.
-- Every claim needs at least one numeric anchor. Drop adjectives like "terrifying", "devastating", "spectacular".
-- Do not repeat the same number in more than one paragraph. State it once, then build on it.
-- **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails`.
+- Every claim needs at least one numeric anchor. Drop dramatic / emotional adjectives — this is a non-exhaustive banned list: **terrifying, devastating, catastrophic, brutal, punishing, painful, obliterate, destruction, spectacular, phenomenal, flawless, stellar, elite, textbook, remarkable, exceptional, massive, severe, violent, crushing, wrecked**. If a word adds drama rather than information, drop it. A `-79%` drawdown speaks for itself.
+- **No forward-looking phrasing.** Do not write "investors will / would lag", "the fund's future trajectory", "recovery will be …", "going forward", or any form of prediction. Stay in the past and present tense on the data in front of you.
+- **No-repeat-numbers rule spans the whole report.** If a number (drawdown, beta, Sharpe, capture ratio, date) appears in `overallSummary`, do not also place it in `overallAnalysisDetails`, and do not also place it in a factor block. State it in the most load-bearing slot once, then refer back with framing ("the same drawdown", "the 2022 drop") — never restate the digits. Exception: the numeric anchor inside a factor's own `detailedExplanation` may cite the key metric again when that factor is the primary owner of the metric (e.g., `worst_drawdown` carries the drawdown number; do not then also quote it in summary and in the main paragraph).
+- **Decimal precision.** Round to what a retail reader actually uses: beta / Sharpe / Sortino / alpha → 2 decimals (`0.59`, not `0.59149`). ATR → 2 decimals. Standard deviation and drawdown percentages → 1 decimal or whole (`7.3%`, `-23.9%`, not `7.33%` unless the source is already 2dp). Capture ratios and risk scores → whole numbers. Never paste raw 4–5-decimal DB values.
+- **Backticks are required, not optional.** Every beta, Sharpe, Sortino, alpha, R², drawdown percentage, capture ratio, risk score, standard deviation, ATR, date, and percentage goes inside backticks. A number without backticks is an error — apply this rule to `overallSummary`, every paragraph of `overallAnalysisDetails`, and every `detailedExplanation`.
+- **Paragraph breaks are real blank lines.** The four paragraphs of `overallAnalysisDetails` must be separated by a blank line in the output. Do not emit them as one run-on block. Do not emit literal `\n\n` or `<br>` separators — use an actual newline.
+- **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails` or at the top of a `detailedExplanation`. Go straight to the evidence.
 
 ## Core interpretation principle
 
@@ -98,8 +102,11 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 
 ## 6. Writing rules
 
-- Markdown. Wrap beta, Sharpe, Sortino, drawdowns, capture ratios, risk scores, dates, and percentages in backticks.
-- Simple, direct English. No dramatic adjectives, no filler, no repetition.
+- Markdown. Wrap every beta, Sharpe, Sortino, alpha, R², ATR, standard deviation, drawdown, capture ratio, risk score, date, and percentage in backticks — in the summary, the paragraphs, AND the factor explanations. Numbers without backticks are an error.
+- Simple, direct English. No dramatic adjectives (see Scope for the banned list), no filler, no self-praise of the fund's ride ("smooth", "frictionless", "textbook"). The numbers do the talking.
+- Round ratios to 2 decimals, percentages to 1 decimal or whole, capture ratios / risk scores to whole numbers. Never paste raw 4–5-decimal DB values.
+- State each number once in the report. See the no-repeat-numbers rule in Scope.
+- Separate the four paragraphs of `overallAnalysisDetails` with real blank lines — no run-on blocks, no literal `\n\n`, no `<br>`.
 - Name the fund category. Name the benchmark or stress window when referenced.
 - Do not invent context beyond what the data supports. If a data point isn’t present (and lookup didn’t find it), omit it silently.
 
