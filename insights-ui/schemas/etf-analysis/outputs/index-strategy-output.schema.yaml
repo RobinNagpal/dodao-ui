@@ -5,5 +5,24 @@ properties:
   indexStrategy:
     type: string
     description: 'A concise description of the ETF’s underlying index and strategy (what it tracks, how it is constructed, and any notable methodology/tilts).'
+  similarEtfs:
+    type: array
+    minItems: 6
+    description: 'At least 6 ETFs that are genuine substitutes for the analyzed ETF — same/very-similar underlying index, same category, same broad exposure mechanics. Not just famous or popular peers. All entries must be US-listed on BATS, NASDAQ, NYSE, or NYSEARCA.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        symbol:
+          type: string
+          description: 'Ticker symbol of the similar ETF in uppercase (e.g., VOO, IVV).'
+        exchange:
+          type: string
+          enum: ['BATS', 'NASDAQ', 'NYSE', 'NYSEARCA']
+          description: 'Exchange code in uppercase. Must be one of: BATS, NASDAQ, NYSE, NYSEARCA.'
+      required:
+        - symbol
+        - exchange
 required:
   - indexStrategy
+  - similarEtfs
