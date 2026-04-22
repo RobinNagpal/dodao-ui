@@ -194,3 +194,37 @@ than invent new ones.
     only the mapped assets differ.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
+
+## Login improvements
+
+Goal: grow logged-in users by broadening SSO coverage and nudging highly-engaged anonymous
+visitors into signing up.
+
+- [ ] **Add more SSO providers**:
+  - Add **LinkedIn** SSO (most relevant for our finance/professional audience).
+  - Add **Yahoo** SSO.
+  - Confirm which existing providers we already support and keep the UI tidy (don't let the
+    login sheet become a wall of buttons — prioritize the 3–4 most-used).
+  - Handle account-linking: if a user signs in with a new provider using an email that
+    matches an existing account, link them instead of creating a duplicate.
+- [ ] **Click-count login gate**:
+  - Track the number of "meaningful clicks" per anonymous visitor (e.g. clicks on interactive
+    buttons / CTAs — not every scroll or hover).
+  - After **3 clicks**, the next click on a gated button should trigger a "sign in to
+    continue" prompt instead of performing the action.
+  - Tune the threshold (2 vs 3) behind a config flag so we can A/B it without a deploy.
+  - Persist the counter across sessions (localStorage + optional server-side by device/IP
+    hash) so refresh/re-visit doesn't reset it and bypass the gate.
+  - Define "meaningful click" precisely — likely buttons on stock/ETF report pages (e.g.
+    "view full valuation", "view competition", "add to watchlist") rather than nav links.
+  - Don't gate pure navigation or back-button; only gate value-delivering actions.
+- [ ] **Post-login resume**:
+  - After the user signs in from the gate, complete the action they were trying to take
+    (route them to the clicked page or re-fire the click).
+- [ ] **Telemetry**:
+  - Event for: click counted, gate shown, gate → login conversion, gate dismissed.
+  - Dashboard or admin view to monitor login conversion rate from the gate.
+- [ ] **Open questions**:
+  - Should logged-in users who already converted ever see this gate again? (No — once signed
+    in, the gate is off permanently for that account.)
+  - Do we want a "soft" version (banner / tooltip nudge) before the hard gate at click #3?
