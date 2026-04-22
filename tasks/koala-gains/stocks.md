@@ -40,6 +40,60 @@ usage.
   - Do we want the same mechanism for ETFs later (the ETF side has a separate "daily
     generation" task in SEO phase — decide whether to unify or keep separate).
 
+## Off-hours automated stock recategorization (Claude Code)
+
+Goal: during off-hours, let Claude Code sweep every stock ticker in our universe, verify
+its assigned **category** and **subcategory**, recategorize any that are misplaced, and
+trigger report generation for the newly assigned category/subcategory so reports stay in
+sync.
+
+Runs in the same off-hours window as the report-refresh cron (10 PM – 5 AM), but as a
+**separate scheduled job** so the two don't fight for the window.
+
+- [ ] **Fetch the taxonomy**:
+  - At the start of each run, load the current list of **categories** and **subcategories**
+    from the source of truth (DB / JSON config — confirm which).
+  - Pass the full taxonomy into the Claude prompt as context so classification is consistent
+    across the run.
+- [ ] **Sweep all stock tickers**:
+  - Iterate over every stock in the universe (batched to fit the off-hours window).
+  - Prioritize stocks that haven't been re-classified recently, or stocks flagged by earlier
+    runs as low-confidence.
+  - For each stock, feed Claude: current category/subcategory, company description / profile,
+    sector/industry tags, any existing report snippets.
+- [ ] **Claude decision per stock**:
+  - Output: `{ keep, changeTo: { category, subcategory }, confidence, rationale }`.
+  - If `keep` with high confidence — no-op, just log.
+  - If `changeTo` — update the stock's category/subcategory in the DB and log the old→new
+    transition with rationale.
+  - If `confidence` is low or Claude is uncertain — flag for human review instead of writing
+    the change.
+- [ ] **Trigger reports for new (sub)categories**:
+  - After a recategorization, populate / regenerate the relevant reports for the stock under
+    its new category and subcategory (reusing the existing generation pipeline).
+  - If the new (sub)category is one we have never generated reports for on this stock,
+    kick off the full suite for it.
+- [ ] **Guardrails**:
+  - Hard stop at the end of the off-hours window.
+  - Cap on recategorizations per run to avoid a runaway sweep that moves hundreds of stocks
+    at once — require human review above a threshold.
+  - Batch size + per-stock timeout.
+  - Retry/skip on failure with a failure log.
+- [ ] **Observability**:
+  - Per-run summary: tickers scanned, kept, moved, flagged for review, failed, total time.
+  - Audit trail per stock: old category → new category, confidence, rationale, timestamp.
+  - Admin page or log surface for the flagged-for-review queue.
+- [ ] **Config / toggles**:
+  - Env/config: window (start/end/tz), batch size, confidence threshold for auto-apply vs
+    flag-for-review, max recategorizations per run, enable/disable flag.
+- [ ] **Open questions**:
+  - Should this share the same cron infrastructure as the report-refresh job, or be fully
+    independent?
+  - What's the right cadence — nightly, weekly, or only when the taxonomy itself changes?
+  - How do we prevent thrashing when Claude oscillates between two plausible categories for
+    the same stock across runs? (e.g. hysteresis: require the new category to win twice in a
+    row before applying.)
+
 ## Trends page (stocks)
 
 Goal: a dedicated page where we record long-running **trends** — macro, demographic,
