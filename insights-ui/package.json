@@ -17,9 +17,7 @@
     "etf-verify:sample": "tsx src/scripts/etf-verification/sample-etfs.ts",
     "etf-verify:trigger": "tsx src/scripts/etf-verification/trigger-generation.ts",
     "etf-verify:wait": "tsx src/scripts/etf-verification/wait-for-generation.ts",
-    "etf-verify:fetch": "tsx src/scripts/etf-verification/fetch-analysis.ts",
-    "etf-verify:get-prompt": "tsx src/scripts/etf-verification/get-prompt.ts",
-    "etf-verify:update-prompt": "tsx src/scripts/etf-verification/update-prompt.ts"
+    "etf-verify:fetch": "tsx src/scripts/etf-verification/fetch-analysis.ts"
   },
   "engines": {
     "node": ">=23.11.0"
