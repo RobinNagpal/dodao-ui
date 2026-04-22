@@ -54,10 +54,12 @@ to fill space.
 
 The Pass/Fail bar is mandate-based, not an absolute-return bar. Use `strategyText`, `indexName`, and the factor's own description to work out the mandate first, then judge.
 
-- **Passive index tracker**: if the fund tracks its stated index within `0.5 pp` for equities / core bonds or `1.0 pp` for high-yield, muni, sector, or thematic funds across most periods, it has done its job → **Pass** for tracking-linked factors, even when absolute returns are modest. Low absolute returns reflect the asset class, not fund failure. *Slightly beating the index also counts as Pass.*
+- **Passive index tracker — inside tolerance = Pass.** If the fund tracks its stated index within `0.5 pp` for equities / core bonds or `1.0 pp` for high-yield, muni, sector, or thematic funds across most periods, it has done its job → **Pass** for tracking-linked factors, even when absolute returns are modest. A gap that sits *inside* the tolerance band — for example a high-yield fund trailing its index by `0.93 pp` over 10 years — is a Pass, not a Fail. Low absolute returns reflect the asset class, not fund failure. *Slightly beating the index also counts as Pass.*
 - **Active fund**: **Pass** when the manager has beaten the relevant benchmark or peer median (whichever the factor targets) net of fees over the horizon the factor covers.
-- **Mandate-specific funds** (daily-leveraged / inverse, commodities, defined outcome, covered-call / derivative income, managed futures, long-short, etc.): judge against the stated mandate. Do not force a broad-equity benchmark. A covered-call fund that gave up upside for income and downside protection has *delivered on its mandate* — call that a Pass even when it trails the S&P 500.
+- **Mandate-specific funds** (daily-leveraged / inverse, commodities, defined outcome, covered-call / derivative income, managed futures, long-short, etc.): judge against the stated mandate. Do not force a broad-equity benchmark. A covered-call / derivative-income fund (e.g. `JEPI`) that gave up equity upside for income and downside protection has *delivered on its mandate* → **Pass** on `benchmark_comparison`, `short_term_returns`, and `category_peer_standing` even when it trails the S&P 500 or a growth-leaning active peer group. Trailing the benchmark *is* the strategy.
 - **Passive fund in an active peer group**: median percentile among active managers is Pass for a low-cost index fund; do not Fail on peer rank alone.
+- **Benchmark-matched drawdown ≠ consistency Fail.** If a passive fund's worst calendar year is **In Line** with both its stated index and its category average (e.g. AGG `-13.06%` in 2022 vs index `-12.99%` and category `-13.32%`), that is the asset class moving, not fund failure. Do not Fail `returns_consistency` on an absolute-return swing the mandate required the fund to take.
+- **Technicals are thin for bond / muni / allocation / derivative-income ETFs.** For these groups, **do not Fail** `price_trend_momentum` / `technical_trend_position` on MA crossovers or mid-range RSI alone. Price is driven by rates, spreads, or options premia, not equity-style trend following. Either mark these factors **Pass** with a one-line acknowledgement that MA/RSI are noise in this asset class, or — if the factor is an obvious poor fit — call it out and judge on the closest relevant evidence (drawdown behaviour, yield stability) rather than forcing a Fail. A genuine structural breakdown (price below MAs *and* a confirmed credit/rate stress event) can still Fail; ordinary sub-MA drift cannot.
 - **Missing-data discipline**: if a factor's core metric is absent, first try the “Factor-metric lookup” section. If still unavailable, make a conservative call using the closest related evidence from the provided data blocks. Do not Fail a factor only because one secondary data point is missing.
 - **Young funds (< 3 years)**: only judge on the periods actually available; don't Fail for missing long-window metrics.
 
@@ -90,6 +92,15 @@ For muni funds, also give a one-line **tax-equivalent-yield** framing — state 
 - Simple, direct English. No dramatic adjectives, no filler, no repetition.
 - Name the index. Name the peer group. Name the fund category.
 - Do not invent context beyond what the data supports. If a data point isn’t present (and you couldn’t source it via the lookup rule), omit it silently.
+
+### Pre-emit checklist (common slips — run your draft against this before returning it)
+
+- No raw HTML. Search the draft for `<br`, `<p>`, `<div>`, `<table>` — if present, replace with blank lines / markdown.
+- No missing-field phrases. Search for `not provided`, `technically not provided`, `not available`, `not disclosed`, `not listed`, `unavailable`, `omitted`, `data is missing` — if present, delete the sentence that contains them (do not rephrase — just drop the field).
+- No banned recommendation language. Search for `reliable core`, `core holding`, `core wealth-building`, `highly effective`, `top-tier`, `premier`, `elite`, `formidable`, `crushes`, `dominates` — rewrite or remove.
+- No banned dramatic adjectives / intensifier adverbs. Search for `flawlessly`, `staggering`, `massive`, `extraordinary`, `phenomenal`, `incredible`, `astronomical`, `abysmal`, `catastrophic`, `entirely`, `strictly`, `totally`, `utterly`, `absolutely`, `completely`, `perfectly`, `precisely`, `massively`, `heavily`, `deeply`, `severely`, `undeniably`, `definitively`, `structurally` (when it adds no meaning), `highly` (when it adds no meaning). Remove if the sentence survives without them.
+- No repeated numbers. If the same figure (e.g. a 10Y CAGR) appears in the summary and again in the overall analysis and again in a factor block, cite it once and rely on context in the other two places.
+- `overallAnalysisDetails` is four paragraphs separated by blank lines — not one run-on block and not five+ mini-paragraphs.
 
 ---
 
