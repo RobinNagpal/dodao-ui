@@ -4,10 +4,15 @@ Automates the two refinement loops described in Phase 3 of `etfs.md`:
 
 - **Loop A — Prompt refinement** (for each evaluation category): pick ETFs → trigger report
   generation → wait → read the current prompt (markdown file) and the generated output →
-  edit the prompt file → repeat.
-- **Loop B — Analysis-factor refinement** (no prompt changes): sample ETFs per group → read
-  their factor results → propose factor JSON updates → edit `etf-analysis-factors-*.json` →
-  repeat until the factor set feels right across the group.
+  document findings → edit the prompt file **only if needed**.
+- **Loop B — Analysis-factor refinement**: read the same generated analyses (reuse Loop A's
+  output — no re-run needed) → judge whether the factors assigned to each ETF's group are
+  actually relevant/useful for that ETF → document findings → edit
+  `etf-analysis-factors-*.json` **only if needed**.
+
+"No change" is always a valid outcome — if the analysis looks good for that ETF / group,
+record that in the findings doc and move on. Don't edit prompt or factor files just to have
+a diff.
 
 Both loops work entirely on **files in this repo** — prompts live as markdown, factors live
 as JSON. No DB writes. The loops use live APIs only to (a) enqueue generation and (b) read
@@ -68,6 +73,58 @@ Compare that markdown against the prompt markdown to judge quality.
 
 ---
 
+## Findings document (both loops write this)
+
+Every iteration of either loop writes a single findings markdown so the review is auditable
+and the decision not to change anything is still captured. Suggested location:
+`$ITER_ROOT/iter-$ITER/findings-<loop>-<category-or-"factors">.md`.
+
+Template:
+
+```markdown
+# ETF verification findings — <loop A or B> — <category or "factors"> — iter-<N>
+
+- **Date:** 2026-04-22
+- **Loop:** A (prompt) / B (factors)
+- **Category in scope:** PerformanceAndReturns | CostEfficiencyAndTeam | RiskAnalysis |
+  FuturePerformanceOutlook | (all — for Loop B)
+- **ETFs reviewed:**
+  - broad-equity: SPY, IWF, IWD
+  - fixed-income-core: AGG, BND
+  - muni: MUB, SUB
+  - …
+
+## Per-ETF review
+
+### SPY (broad-equity — Large Blend)
+- **What's good:** …
+- **What's missing / wrong:** …
+- **Verdict:** change needed / no change
+
+### AGG (fixed-income-core — Intermediate Core Bond)
+- **What's good:** …
+- **What's missing / wrong:** …
+- **Verdict:** change needed / no change
+
+…
+
+## Final changes
+
+<for Loop A>
+- `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md` — <one-line summary>, or
+  **"no change — prompt produced solid output across the sampled ETFs."**
+
+<for Loop B>
+- `insights-ui/src/etf-analysis-data/etf-analysis-factors-<category>.json` — <one-line summary>, or
+  **"no change — factors assigned to each group fit the sampled ETFs."**
+```
+
+Keep entries short — the findings file is a record of the review, not a rewrite of the
+report. If no change is made, the `Final changes` section still needs a line stating that
+explicitly.
+
+---
+
 ## Loop A — prompt refinement (file-based)
 
 ### A1. Pick ETFs
@@ -119,12 +176,18 @@ Claude then, for **each evaluation category**:
 3. Notes concrete gaps — vague claims, missing metrics, wrong comparisons, boilerplate,
    group-level blind spots (e.g. "leveraged-inverse reports never mention daily-reset decay"),
    inconsistencies between factor Pass/Fail and the narrative.
+4. Writes a findings document using the template above:
+   `$ITER_ROOT/iter-$ITER/findings-A-<category>.md`.
 
-### A5. Edit the prompt file (if needed)
+### A5. Edit the prompt file (only if the findings call for it)
 
-Claude edits the markdown file in-place with the Edit tool. Keep placeholder names
-(`{{symbol}}`, `{{categoryKey}}`, …) and overall structure — only change the instructions /
-guardrails. Commit the edit as a normal git diff on this branch.
+If the findings doc identified concrete problems, edit the prompt markdown in-place with the
+Edit tool. Keep placeholder names (`{{symbol}}`, `{{categoryKey}}`, …) and overall structure;
+only change the instructions / guardrails. Commit the edit as a normal git diff on this
+branch.
+
+If the analysis looks good for the sampled ETFs, do **not** edit the prompt. Record "no
+change" in the findings `Final changes` section and move on.
 
 ### A6. Repeat
 
@@ -141,59 +204,64 @@ Before merging, include in the PR description:
 
 ---
 
-## Loop B — analysis-factor refinement (no prompt changes)
+## Loop B — analysis-factor review
 
-Factors live in `insights-ui/src/etf-analysis-data/etf-analysis-factors-*.json`. Claude
-edits them in-place; no API required for the edit itself.
+The factors JSONs live in `insights-ui/src/etf-analysis-data/etf-analysis-factors-*.json`
+and are assigned **per group** (each factor lists the groups it applies to). Loop B is pure
+review and optional edit — it does **not** re-trigger generation. Reuse whatever reports
+Loop A already produced (or fetch fresh ones once if none exist).
 
-### B1. Sample 4–5 ETFs per group
+### B1. Read the analyses
 
-```bash
-export FACTOR_ROOT="$PWD/../tasks/koala-gains/etf-verification/factors-$(date +%Y-%m-%d)"
-mkdir -p "$FACTOR_ROOT"
-yarn etf-verify:sample --per-group 5 --out "$FACTOR_ROOT/sample.json"
-```
-
-### B2. Fetch each sampled ETF's current analysis
+Use the reports written by `yarn etf-verify:fetch` (from Loop A, or from a single fetch run
+if Loop A hasn't been run):
 
 ```bash
-yarn etf-verify:fetch \
-  --in "$FACTOR_ROOT/sample.json" \
-  --out-dir "$FACTOR_ROOT/iter-1/reports"
+# Only needed if no reports dir exists yet:
+yarn etf-verify:sample --per-group 5 --out "$ITER_ROOT/sample.json"
+yarn etf-verify:fetch  --in "$ITER_ROOT/sample.json" --out-dir "$ITER_ROOT/reports"
 ```
 
-### B3. Critique factor fit per (group, category)
+### B2. Review factor fit per ETF
 
-For each `(group, category)` combination, Claude reads the corresponding ETFs' factor
-blocks (`#### factor_key — Pass/Fail`) and judges:
+For each ETF in `reports/<group>/<SYMBOL>.md`, Claude reads the `#### factor_key — Pass/Fail`
+blocks under every category and judges, specifically for **that ETF in its group**:
 
-- **Missing:** factors this group/category clearly needs but the current list does not cover
-  (e.g. "muni funds need tax-equivalent yield").
-- **Not applicable:** factors currently assigned to this group that consistently produce
-  vague / inapplicable results across all sampled ETFs.
-- **Wording:** factor titles/descriptions/metrics unclear or wrong for this group.
+- Are the factors currently assigned to this group genuinely relevant and useful for this
+  ETF?
+- Is anything missing — an angle that matters for this group but has no factor today (e.g.
+  "muni funds should score tax-equivalent yield")?
+- Is anything not applicable — a factor that consistently produces vague / inapplicable
+  output for ETFs in this group?
 
-Write findings to `iter-1/factor-critique-<category>.md`.
+Write findings using the template above:
+`$ITER_ROOT/iter-$ITER/findings-B-factors.md` — one file covering all four categories, with
+a per-ETF "good / missing / verdict" block plus a final summary per `(group, category)`.
 
-### B4. Edit the factor JSONs in-place
+### B3. Edit the factor JSONs (only if the findings call for it)
+
+If the findings identify concrete fixes, edit the JSON files in-place:
 
 - `src/etf-analysis-data/etf-analysis-factors-performance-and-returns.json`
 - `src/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json`
 - `src/etf-analysis-data/etf-analysis-factors-risk-analysis.json`
 - `src/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json`
 
-Rules (backward compatibility):
+Rules:
 
 - Preserve `factorKey` values whenever the concept is unchanged.
 - New factors get new snake_case keys.
-- Only rename/remove keys deliberately — note the change in the PR description.
-- `groups` arrays on each factor must reference keys that exist in `etf-analysis-categories.json`.
+- Only rename/remove keys deliberately — note it in the PR description.
+- `groups` arrays on each factor must reference keys that exist in
+  `etf-analysis-categories.json`.
 
-### B5. Re-run and stop when the group-level gaps dry up
+If the factors look fine across the sampled ETFs, do **not** edit. Record "no change" in the
+findings `Final changes` section.
 
-Re-enqueue generation (`etf-verify:trigger` → `etf-verify:wait` → `etf-verify:fetch`) so the
-new factor JSONs are picked up by the next report, then re-evaluate. End when factor
-critiques no longer find group-level gaps.
+> **Verification only — no re-run.** Loop B does not re-trigger generation after editing.
+> The new factors will take effect on the next normal generation (the server statically
+> imports these JSON files, so a prod deploy is still required before end-users see the
+> effect), but that's outside the scope of this review loop.
 
 ---
 
