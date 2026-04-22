@@ -39,3 +39,38 @@ usage.
     tend to go stale fastest?
   - Do we want the same mechanism for ETFs later (the ETF side has a separate "daily
     generation" task in SEO phase — decide whether to unify or keep separate).
+
+## Trends page (stocks)
+
+Goal: a dedicated page where we record long-running **trends** — macro, demographic,
+generational, technological, regulatory — and map each trend to the **stocks** that would
+likely benefit if the trend plays out. The value is in catching trends whose implications are
+**not yet priced in**, so we (and readers) can identify candidates ahead of the move.
+
+- [ ] **Trend entries** — each trend should capture:
+  - Title + short description (e.g. "2026 — aging boomer retirement wave drives healthcare
+    demand", "younger generation prefers experiences over ownership", "shift from ICE to EV",
+    "re-shoring of semiconductor manufacturing", etc.).
+  - Time horizon (near-term / multi-year / structural).
+  - Evidence / sources (news, data, research) supporting the trend.
+  - **Mapped stocks**: tickers that should benefit, with a short thesis per stock.
+  - **"Priced-in?" assessment**: our current view on whether the market has already factored
+    this in, with rationale (valuation multiples, sentiment, flows).
+  - Confidence rating.
+  - Author + `createdAt` / `updatedAt`.
+- [ ] **Page UI**:
+  - Trends index (filter/sort by horizon, confidence, updatedAt, tag).
+  - Trend detail page listing mapped stocks and the thesis.
+  - From a stock's report page, link to the trends that reference it ("this stock appears in
+    the following trends").
+- [ ] **Authoring flow**:
+  - Admin can create/edit trends.
+  - Optional: Claude-assisted draft — given a trend description, suggest candidate stocks +
+    initial thesis + "priced-in?" assessment for human review.
+- [ ] **Storage**:
+  - Prisma model for trends + a join table to stocks (many-to-many with a thesis field).
+- [ ] **Open questions**:
+  - Should trends be shared between stocks and ETFs (single trend mapped to both), or kept
+    as separate datasets? (See ETF-side task for the symmetrical ask.)
+  - How do we revisit / retire trends that played out or failed — lifecycle states
+    (active / played-out / invalidated)?
