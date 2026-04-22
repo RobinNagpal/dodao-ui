@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseArgs } from './lib';
+import { parseArgs, parsePositiveInt } from './lib';
 
 interface FamousEtf {
   symbol: string;
@@ -58,8 +58,7 @@ export async function sampleEtfs(opts: { perGroup?: number; onlyGroup?: string }
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const perGroupRaw = args['per-group'];
-  const perGroup = typeof perGroupRaw === 'string' ? parseInt(perGroupRaw, 10) : undefined;
+  const perGroup = parsePositiveInt(args['per-group']);
   const onlyGroup = typeof args['group'] === 'string' ? args['group'] : undefined;
   const outPath = typeof args['out'] === 'string' ? args['out'] : undefined;
 

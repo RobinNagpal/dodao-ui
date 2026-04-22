@@ -63,12 +63,17 @@ async function main() {
   const categories = parseCategories(typeof args['categories'] === 'string' ? args['categories'] : undefined);
 
   const raw = await readFile(inPath, 'utf-8');
-  const etfs = JSON.parse(raw) as Array<Pick<SampledEtf, 'symbol' | 'exchange'>>;
+  const etfs = JSON.parse(raw) as Array<Partial<Pick<SampledEtf, 'symbol' | 'exchange'>>>;
   if (!Array.isArray(etfs) || etfs.length === 0) {
     throw new Error('--in file must contain a non-empty JSON array of {symbol, exchange} objects');
   }
+  for (const [idx, e] of etfs.entries()) {
+    if (typeof e.symbol !== 'string' || e.symbol.length === 0 || typeof e.exchange !== 'string' || e.exchange.length === 0) {
+      throw new Error(`--in entry at index ${idx} is missing symbol or exchange: ${JSON.stringify(e)}`);
+    }
+  }
 
-  const payloads = etfs.map((e) => buildPayload({ symbol: e.symbol, exchange: e.exchange }, categories));
+  const payloads = etfs.map((e) => buildPayload({ symbol: e.symbol as string, exchange: e.exchange as string }, categories));
   console.log(`Enqueueing generation for ${payloads.length} ETFs, categories: ${categories.join(', ')}`);
 
   const results = await fetchJson<EtfGenerationRequestRow[]>(`/api/${SPACE_ID}/etfs-v1/generation-requests`, {

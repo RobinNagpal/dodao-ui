@@ -19,14 +19,20 @@ below in order. Each iteration is resumable; intermediate artifacts are written 
 
 ## Prerequisites
 
-- `AUTOMATION_SECRET` exported (source `discord-claude-bot/.env`). Needed for any endpoint
-  wrapped in `withAdminOrToken` (currently `generation-requests` and `generate-etf-v1-request`).
+- `AUTOMATION_SECRET` exported (source `discord-claude-bot/.env`). Needed for `trigger-generation`
+  and `wait-for-generation` (both hit `withAdminOrToken` endpoints). Not required for
+  `fetch-analysis`, `get-prompt`, `update-prompt`, or the optional tick endpoint.
 - Optional: `KOALAGAINS_API_BASE` (default `https://koalagains.com`). Set to
   `http://localhost:3000` when running the loop against a local server.
 - Optional: `KOALAGAINS_SPACE_ID` (default `koala_gains`).
 - `yarn` / `tsx` available in `insights-ui/`.
 
 All commands below run from `insights-ui/`.
+
+> **Security caveat for `update-prompt`:** the `POST /api/{space}/prompts/{promptId}/versions`
+> route is currently unauthenticated. Only run this loop in environments where that is
+> acceptable (local dev, or trusted runner against prod). Tightening that route to
+> `withAdminOrToken` is a follow-up.
 
 ---
 
@@ -87,6 +93,10 @@ yarn etf-verify:trigger \
 
 The POST endpoint merges flags into any existing `NotStarted` request for an ETF, so running
 this a second time for the same ETFs does not create duplicates.
+
+**File flow:** `sample.json` is the flat ETF list used by A3 (`fetch-analysis`). The
+`requests.json` written by A1 holds the generation-request IDs and is consumed by A2
+(`wait-for-generation`). Keep them separate — do not feed `requests.json` into `fetch-analysis`.
 
 ### A2. Wait for completion
 

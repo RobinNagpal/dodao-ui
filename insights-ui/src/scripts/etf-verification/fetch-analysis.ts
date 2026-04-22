@@ -29,7 +29,15 @@ const CATEGORY_TITLES: Record<string, string> = {
   [EtfAnalysisCategory.FuturePerformanceOutlook]: 'Future Performance Outlook',
 };
 
-function renderReport(etf: Pick<SampledEtf, 'symbol' | 'exchange' | 'group' | 'groupName' | 'morCategory'>, analysis: AnalysisResponse): string {
+interface RenderEtf {
+  symbol: string;
+  exchange: string;
+  group: string;
+  groupName: string;
+  morCategory: string;
+}
+
+function renderReport(etf: RenderEtf, analysis: AnalysisResponse): string {
   const lines: string[] = [];
   lines.push(`# ETF Report — ${etf.exchange}/${etf.symbol}`);
   lines.push('');
@@ -84,9 +92,9 @@ async function main() {
   const inPath = requireStringArg(args, 'in');
   const outDir = requireStringArg(args, 'out-dir');
 
-  const etfs = JSON.parse(await readFile(inPath, 'utf-8')) as SampledEtf[];
-  if (!Array.isArray(etfs) || etfs.length === 0) {
-    throw new Error('--in must be a non-empty JSON array of sampled ETFs (with group/groupName/morCategory)');
+  const raw = JSON.parse(await readFile(inPath, 'utf-8')) as Partial<SampledEtf>[];
+  if (!Array.isArray(raw) || raw.length === 0) {
+    throw new Error('--in must be a non-empty JSON array of sampled ETFs (with at least {symbol, exchange})');
   }
 
   await mkdir(outDir, { recursive: true });
@@ -95,7 +103,19 @@ async function main() {
   let fail = 0;
   const perGroupIndex: Record<string, string[]> = {};
 
-  for (const etf of etfs) {
+  for (const entry of raw) {
+    if (!entry.symbol || !entry.exchange) {
+      fail++;
+      console.error(`❌ Input entry missing symbol or exchange: ${JSON.stringify(entry)}`);
+      continue;
+    }
+    const etf: RenderEtf = {
+      symbol: entry.symbol,
+      exchange: entry.exchange,
+      group: entry.group ?? 'ungrouped',
+      groupName: entry.groupName ?? entry.group ?? '(unknown group)',
+      morCategory: entry.morCategory ?? '(unknown category)',
+    };
     try {
       const analysis = await fetchJson<AnalysisResponse>(`/api/${SPACE_ID}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/analysis`);
       const report = renderReport(etf, analysis);

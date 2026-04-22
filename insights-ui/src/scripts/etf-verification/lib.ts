@@ -11,12 +11,6 @@ export function requireAutomationSecret(): string {
   return AUTOMATION_SECRET;
 }
 
-export function withToken(url: string): string {
-  if (!AUTOMATION_SECRET) return url;
-  const sep = url.includes('?') ? '&' : '?';
-  return `${url}${sep}token=${encodeURIComponent(AUTOMATION_SECRET)}`;
-}
-
 export interface FetchOpts {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: unknown;
@@ -25,14 +19,17 @@ export interface FetchOpts {
 
 export async function fetchJson<T>(path: string, opts: FetchOpts = {}): Promise<T> {
   const method = opts.method ?? 'GET';
-  const rawUrl = `${API_BASE}${path}`;
-  const url = opts.authToken ? withToken(rawUrl) : rawUrl;
+  const url = `${API_BASE}${path}`;
+  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  if (opts.authToken) {
+    if (!AUTOMATION_SECRET) {
+      throw new Error(`AUTOMATION_SECRET required for ${method} ${path} but not set`);
+    }
+    headers['x-automation-token'] = AUTOMATION_SECRET;
+  }
   const res = await fetch(url, {
     method,
-    headers: {
-      'content-type': 'application/json',
-      ...(opts.authToken && AUTOMATION_SECRET ? { 'x-automation-token': AUTOMATION_SECRET } : {}),
-    },
+    headers,
     body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
   });
   if (!res.ok) {
@@ -47,7 +44,15 @@ export function parseArgs(argv: string[]): Record<string, string | boolean> {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (!a.startsWith('--')) continue;
-    const key = a.slice(2);
+    const body = a.slice(2);
+    const eqIdx = body.indexOf('=');
+    if (eqIdx !== -1) {
+      const key = body.slice(0, eqIdx);
+      const value = body.slice(eqIdx + 1);
+      out[key] = value;
+      continue;
+    }
+    const key = body;
     const next = argv[i + 1];
     if (next === undefined || next.startsWith('--')) {
       out[key] = true;
@@ -65,6 +70,15 @@ export function requireStringArg(args: Record<string, string | boolean>, key: st
     throw new Error(`Missing required arg --${key}`);
   }
   return v;
+}
+
+export function parsePositiveInt(raw: string | boolean | undefined): number | undefined {
+  if (typeof raw !== 'string') return undefined;
+  const n = parseInt(raw, 10);
+  if (!Number.isFinite(n) || n <= 0) {
+    throw new Error(`Expected a positive integer, got "${raw}"`);
+  }
+  return n;
 }
 
 export async function sleep(ms: number): Promise<void> {
