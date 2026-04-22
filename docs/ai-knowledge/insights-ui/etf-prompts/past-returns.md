@@ -8,11 +8,12 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 ## Scope
 
 - Stay inside this category. Do NOT analyse strategy (→ Strategy report), fees / managers (→ Cost & Team report), or maximum-drawdown severity (→ Risk Analysis report).
-- No forecasts, no price targets, no valuation calls.
+- No forecasts, no price targets, no valuation calls. The summary is a description of what the numbers show, not a recommendation. Do not write "reliable core holding", "highly effective tool", "continues to be", "the fund is a … for investors who …", "delivers precisely on its mandate", "core wealth-building holding", or any variant that tells the reader what to do.
 - Treat the data blocks as the latest snapshot. Never invent numbers.
-- Missing-field rule: if a field/metric is missing, **do not mention it** (do not write “data not provided”, “not available”, “missing”, etc.). Use only what’s present.
-- Every claim must carry at least one numeric anchor from the input. Drop adjectives like "catastrophic", "abysmal", "undeniably" — they add nothing.
-- Do not repeat the same number in more than one paragraph. State it once, then build on it.
+- Missing-field rule: if a field/metric is missing, **do not mention it**. Never write "data not provided", "not available", "missing", "omitted", "not disclosed", "not listed", "technically not provided", "not in the data", "unavailable", or any equivalent — if a metric isn't there, simply leave it out. Use only what's present.
+- Every claim must carry at least one numeric anchor from the input. Drop dramatic adjectives — not just "catastrophic", "abysmal", "undeniably", but also "astronomical", "phenomenal", "incredible", "staggering", "flawlessly", "extraordinary", "massive". Also drop intensifier adverbs that do not change the meaning of the sentence: "entirely", "strictly", "totally", "utterly", "absolutely", "completely", "perfectly", "precisely", "massively", "heavily", "deeply", "severely". If removing the word leaves the sentence unchanged in meaning, remove it.
+- Do not repeat the same number in more than one paragraph. State it once, then build on it. A single metric cited in the summary, cited again in the overall analysis, and cited a third time in a factor block is three violations of this rule, not one.
+- Output is Markdown only. Do not emit raw HTML tags like `<br>` — use blank lines between paragraphs.
 
 ## Factor-metric lookup (only when needed)
 
@@ -38,9 +39,11 @@ Always name the actual index from `indexName` when referring to "the benchmark".
 
 State whether the performance profile is **Strong**, **Mixed**, or **Weak**. Include 3–5 decision-useful numbers (absolute + relative). End with one plain-English takeaway.
 
-## 2. `overallAnalysisDetails` (4 paragraphs, ~900–1300 words total)
+## 2. `overallAnalysisDetails` (4 paragraphs)
 
-Keep paragraphs tight. Do not pad to hit a word count.
+Four tight paragraphs is the target. Aim for substance over length — do not pad. If four
+clean paragraphs fit the data in ~400 words, stop there; do not stretch the section just
+to fill space.
 
 1. **Recent returns snapshot.** `1M`, `3M`, `6M`, `YTD`, `1Y` picture. Is the ETF beating or lagging its category and its named index right now? Is momentum accelerating or cooling? One line on whether the latest move looks broad-based or just noise.
 2. **Longer-term record and peer standing.** `3Y` / `5Y` / `10Y` returns and CAGR where available. Fund vs category vs index gaps in percentage points. Percentile-rank trend across years — cite the actual movement (e.g. `14 → 87 → 18`), not just "volatile". If the peer group is mostly active managers and the fund is passive, say so and adjust the tone (median among active managers is a Pass-grade outcome for a passive fund).
