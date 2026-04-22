@@ -123,7 +123,6 @@ export async function saveEtfIndexStrategyResponse(symbol: string, exchange: str
  * - Drops self-references.
  * - Normalizes symbol + exchange to uppercase.
  * - De-duplicates on (symbol, exchange) preserving the first occurrence's order.
- * - Looks each entry up in the `etfs` table to populate `matchedEtfId` when present.
  */
 async function replaceEtfSimilarEtfs(
   sourceEtfId: string,
@@ -155,18 +154,6 @@ async function replaceEtfSimilarEtfs(
     });
   }
 
-  // Look up which of these exist in our DB so we can pre-populate matchedEtfId.
-  const existing = cleaned.length
-    ? await prisma.etf.findMany({
-        where: {
-          spaceId,
-          OR: cleaned.map((c) => ({ symbol: c.symbol, exchange: c.exchange })),
-        },
-        select: { id: true, symbol: true, exchange: true },
-      })
-    : [];
-  const matchByKey: Map<string, string> = new Map<string, string>(existing.map((e) => [`${e.symbol}|${e.exchange}`, e.id]));
-
   await prisma.$transaction(async (tx) => {
     await tx.etfSimilarEtf.deleteMany({ where: { sourceEtfId } });
 
@@ -180,7 +167,6 @@ async function replaceEtfSimilarEtfs(
         exchange: c.exchange,
         name: c.name || null,
         sortOrder: idx,
-        matchedEtfId: matchByKey.get(`${c.symbol}|${c.exchange}`) ?? null,
       })),
     });
   });

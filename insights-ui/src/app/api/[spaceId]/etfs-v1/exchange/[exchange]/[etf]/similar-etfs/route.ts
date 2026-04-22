@@ -5,14 +5,9 @@ import { NextRequest } from 'next/server';
 
 export interface SimilarEtf {
   id: string;
-  name: string;
   symbol: string;
   exchange: string;
-  aum: string | null;
-  category: string | null;
-  assetClass: string | null;
-  cachedScore: { finalScore: number } | null;
-  inDb: boolean;
+  name: string;
 }
 
 const MAX_RESULTS = 6;
@@ -30,37 +25,15 @@ async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceI
   const stored = await prisma.etfSimilarEtf.findMany({
     where: { sourceEtfId: sourceEtf.id },
     orderBy: { sortOrder: 'asc' },
-    include: {
-      matchedEtf: {
-        include: {
-          financialInfo: true,
-          stockAnalyzerInfo: true,
-          cachedScore: true,
-        },
-      },
-    },
+    take: MAX_RESULTS,
   });
 
-  // Show only ETFs that exist in our DB so the cards link to a real page
-  // and can display score / AUM. The LLM is asked for at least 6, so most
-  // should resolve.
-  return stored
-    .filter((s) => s.matchedEtf !== null)
-    .slice(0, MAX_RESULTS)
-    .map((s) => {
-      const matched = s.matchedEtf!;
-      return {
-        id: matched.id,
-        name: matched.name || s.name || s.symbol,
-        symbol: matched.symbol,
-        exchange: matched.exchange,
-        aum: matched.financialInfo?.aum ?? null,
-        category: matched.stockAnalyzerInfo?.category ?? null,
-        assetClass: matched.stockAnalyzerInfo?.assetClass ?? null,
-        cachedScore: matched.cachedScore ? { finalScore: matched.cachedScore.finalScore } : null,
-        inDb: true,
-      };
-    });
+  return stored.map((s) => ({
+    id: s.id,
+    symbol: s.symbol,
+    exchange: s.exchange,
+    name: s.name || s.symbol,
+  }));
 }
 
 export const GET = withErrorHandlingV2<SimilarEtf[]>(getHandler);

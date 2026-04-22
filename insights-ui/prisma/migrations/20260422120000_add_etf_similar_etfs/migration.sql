@@ -6,7 +6,6 @@ CREATE TABLE "etf_similar_etfs" (
     "exchange" TEXT NOT NULL,
     "name" TEXT,
     "sort_order" INTEGER NOT NULL DEFAULT 0,
-    "matched_etf_id" TEXT,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -18,13 +17,7 @@ CREATE TABLE "etf_similar_etfs" (
 CREATE INDEX "etf_similar_etfs_source_etf_id_idx" ON "etf_similar_etfs"("source_etf_id");
 
 -- CreateIndex
-CREATE INDEX "etf_similar_etfs_matched_etf_id_idx" ON "etf_similar_etfs"("matched_etf_id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "etf_similar_etfs_source_etf_id_symbol_exchange_key" ON "etf_similar_etfs"("source_etf_id", "symbol", "exchange");
 
 -- AddForeignKey
 ALTER TABLE "etf_similar_etfs" ADD CONSTRAINT "etf_similar_etfs_source_etf_id_fkey" FOREIGN KEY ("source_etf_id") REFERENCES "etfs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "etf_similar_etfs" ADD CONSTRAINT "etf_similar_etfs_matched_etf_id_fkey" FOREIGN KEY ("matched_etf_id") REFERENCES "etfs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
