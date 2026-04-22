@@ -3,9 +3,11 @@ import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[
 import { PriceHistoryResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/price-history/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
+import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
+import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -97,6 +99,21 @@ async function fetchEtfScores(exchange: string, etf: string): Promise<EtfScoresR
     return (await res.json()) as EtfScoresResponse | null;
   } catch {
     return null;
+  }
+}
+
+async function fetchSimilarEtfs(exchange: string, etf: string): Promise<SimilarEtf[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/similar-etfs`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchSimilarEtfs failed (${res.status}): ${url}`);
+      return [];
+    }
+    return (await res.json()) as SimilarEtf[];
+  } catch (error) {
+    console.error(`fetchSimilarEtfs error for ${etf}:`, error);
+    return [];
   }
 }
 
@@ -363,6 +380,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   const analysisPromise = fetchEtfAnalysis(exchange, etf);
   const scoresPromise = fetchEtfScores(exchange, etf);
   const priceHistoryPromise = fetchEtfPriceHistory(exchange, etf);
+  const similarEtfsPromise = fetchSimilarEtfs(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -436,6 +454,14 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
         </Suspense>
+
+        <div className="mx-auto max-w-7xl">
+          <section className="mb-6">
+            <Suspense fallback={null}>
+              <SimilarEtfs dataPromise={similarEtfsPromise} />
+            </Suspense>
+          </section>
+        </div>
 
         <EtfArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>
