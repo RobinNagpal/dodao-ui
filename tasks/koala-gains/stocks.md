@@ -1,5 +1,35 @@
 # Stock Reports — KoalaGains (Tasks)
 
+## Stock Details Page — layout + per-section detail pages
+
+Restructure the stock report page so heavy sub-reports live on dedicated detail pages and
+the main page is a scannable summary.
+
+- [ ] **Move the competition chart up**:
+  - Relocate the competition chart so it renders directly **under the Business and Moat
+    Analysis** section (currently it sits lower on the page).
+  - Keep any existing "competitors list" / ranked competitor UI together with the chart so
+    the reader sees the moat narrative + competitive positioning in one block.
+- [ ] **Extract a dedicated details page for Financial Statements Analysis**:
+  - Move the full financial-statements analysis (income statement, balance sheet, cash flow
+    deep-dives, ratios, trend tables/charts) onto its own page (pattern: same as the
+    per-category detail pages planned for ETFs).
+  - On the main stock page, keep only a short summary/preview with a "View full financial
+    statements analysis" link to the details page.
+- [ ] **Extract a dedicated details page for Fair Value / Valuation**:
+  - Move the full valuation analysis (DCF, multiples-based valuations, scenario tables,
+    sensitivity analysis, assumptions) onto its own page.
+  - On the main stock page, keep only a short summary (fair-value band, current vs fair
+    value, upside/downside %) with a "View full valuation" link.
+- [ ] **Navigation / linkage**:
+  - Breadcrumbs + back-link from each detail page to the main stock page.
+  - From the main stock page, each extracted section has a visible "full analysis" CTA.
+  - Update sitemap / metadata for the new detail routes.
+- [ ] **SEO**:
+  - Unique titles, descriptions, and JSON-LD per new detail page.
+  - Ensure the main stock page's summaries don't duplicate the full text (avoid duplicate
+    content) — summaries should be genuinely shorter and link out.
+
 ## Off-hours automated report refresh (Claude Code cron)
 
 Goal: keep stock reports fresh by letting **Claude Code** regenerate the oldest ones during
