@@ -10,7 +10,7 @@ interface DiverseEtf {
   symbol: string;
   exchange: string;
   name: string;
-  morCategory: string | null;
+  category: string | null;
   aum: string | null;
   aumNumeric: number | null;
 }
@@ -18,7 +18,7 @@ interface DiverseEtf {
 interface DiverseEtfsResponse {
   groupKey: string;
   groupName: string;
-  morCategories: string[];
+  categories: string[];
   etfs: DiverseEtf[];
 }
 
@@ -28,7 +28,7 @@ export interface SampledEtf {
   name: string;
   group: string;
   groupName: string;
-  morCategory: string;
+  category: string;
   aum: string | null;
   aumNumeric: number | null;
 }
@@ -38,11 +38,11 @@ function pickTwoDifferent(etfs: DiverseEtf[]): DiverseEtf[] {
   if (etfs.length === 1) return [etfs[0]];
 
   const first = etfs[0];
-  const firstCat = first.morCategory ?? '(unknown)';
+  const firstCat = first.category ?? '(unknown)';
   const firstAum = first.aumNumeric ?? 0;
 
-  // Prefer a second pick with a different morningstar category.
-  const differentCategory = etfs.slice(1).find((e) => (e.morCategory ?? '(unknown)') !== firstCat);
+  // Prefer a second pick with a different category.
+  const differentCategory = etfs.slice(1).find((e) => (e.category ?? '(unknown)') !== firstCat);
   if (differentCategory) return [first, differentCategory];
 
   // Otherwise take one with materially different AUM (>= 3x smaller or larger).
@@ -79,7 +79,7 @@ export async function sampleEtfs(opts: { perGroup: number; onlyGroup?: string; p
     const picks = opts.perGroup === 2 ? pickTwoDifferent(resp.etfs) : resp.etfs.slice(0, opts.perGroup);
 
     if (picks.length < opts.perGroup) {
-      console.warn(`⚠️  Only found ${picks.length}/${opts.perGroup} ETFs with MOR data for group "${group.key}"`);
+      console.warn(`⚠️  Only found ${picks.length}/${opts.perGroup} ETFs with a category for group "${group.key}"`);
     }
 
     for (const etf of picks) {
@@ -89,7 +89,7 @@ export async function sampleEtfs(opts: { perGroup: number; onlyGroup?: string; p
         name: etf.name,
         group: group.key,
         groupName: resp.groupName,
-        morCategory: etf.morCategory ?? '(unknown)',
+        category: etf.category ?? '(unknown)',
         aum: etf.aum,
         aumNumeric: etf.aumNumeric,
       });

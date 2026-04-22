@@ -157,10 +157,10 @@ yarn etf-verify:sample \
 ```
 
 The script calls `/groups/{key}/diverse-etfs` for each of the 8 groups and takes 2 ETFs per
-group. The two picks inside a group will differ by Morningstar category where possible; if
-the group only has one category with MOR data, it falls back to two ETFs with materially
-different AUM. Output: `sample.json` with 16 rows, each `{symbol, exchange, name, group,
-groupName, morCategory, aum, aumNumeric}`.
+group. The two picks inside a group will differ by category (from `EtfStockAnalyzerInfo.category`)
+where possible; if the group only has one category with data, it falls back to two ETFs with
+materially different AUM. Output: `sample.json` with 16 rows, each `{symbol, exchange, name,
+group, groupName, category, aum, aumNumeric}`.
 
 ### A2. Enqueue generation for **this category only**
 

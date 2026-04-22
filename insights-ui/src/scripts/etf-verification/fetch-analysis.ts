@@ -55,7 +55,7 @@ interface RenderEtf {
   exchange: string;
   group: string;
   groupName: string;
-  morCategory: string;
+  category: string;
 }
 
 function renderReport(etf: RenderEtf, analysis: AnalysisResponse, onlyCategory: EtfAnalysisCategory | undefined): string {
@@ -63,7 +63,7 @@ function renderReport(etf: RenderEtf, analysis: AnalysisResponse, onlyCategory: 
   lines.push(`# ETF Report — ${etf.exchange}/${etf.symbol}`);
   lines.push('');
   lines.push(`- **Group:** ${etf.groupName} (\`${etf.group}\`)`);
-  lines.push(`- **Morningstar category:** ${etf.morCategory}`);
+  lines.push(`- **Category:** ${etf.category}`);
   lines.push('');
 
   const categories = onlyCategory ? analysis.categories.filter((c) => c.categoryKey === onlyCategory) : analysis.categories;
@@ -138,7 +138,7 @@ async function main() {
       exchange: entry.exchange,
       group: entry.group ?? 'ungrouped',
       groupName: entry.groupName ?? entry.group ?? '(unknown group)',
-      morCategory: entry.morCategory ?? '(unknown category)',
+      category: entry.category ?? '(unknown category)',
     };
     try {
       const analysis = await fetchJson<AnalysisResponse>(`/api/${SPACE_ID}/etfs-v1/exchange/${etf.exchange}/${etf.symbol}/analysis`);
@@ -148,7 +148,7 @@ async function main() {
       const filePath = path.join(groupDir, `${etf.symbol}.md`);
       await writeFile(filePath, report, 'utf-8');
       perGroupIndex[etf.group] = perGroupIndex[etf.group] ?? [];
-      perGroupIndex[etf.group].push(`${etf.symbol} (${etf.morCategory})`);
+      perGroupIndex[etf.group].push(`${etf.symbol} (${etf.category})`);
       ok++;
       console.log(`✅ ${etf.exchange}/${etf.symbol} → ${filePath}`);
     } catch (err) {
