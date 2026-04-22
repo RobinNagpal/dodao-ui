@@ -20,13 +20,9 @@ properties:
           type: string
           enum: ['BATS', 'NASDAQ', 'NYSE', 'NYSEARCA']
           description: 'Exchange code in uppercase. Must be one of: BATS, NASDAQ, NYSE, NYSEARCA.'
-        name:
-          type: string
-          description: 'Full name of the similar ETF (e.g., Vanguard S&P 500 ETF).'
       required:
         - symbol
         - exchange
-        - name
 required:
   - indexStrategy
   - similarEtfs

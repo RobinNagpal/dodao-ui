@@ -50,7 +50,6 @@ export interface EtfFinalSummaryResponse {
 export interface EtfIndexStrategySimilarEtf {
   symbol: string;
   exchange: string;
-  name: string;
 }
 
 export interface EtfIndexStrategyResponse {
