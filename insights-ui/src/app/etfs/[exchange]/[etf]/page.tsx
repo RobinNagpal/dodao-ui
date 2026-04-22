@@ -16,6 +16,7 @@ import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, to
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { splitMarkdownAtParagraph } from '@/utils/etf-display-format-utils';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -255,6 +256,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<EtfFastResponse> }): JSX.
 
 function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Element {
   const d: EtfFastResponse = use(data);
+  const { head: indexStrategyHead } = splitMarkdownAtParagraph(d.indexStrategy, 2);
 
   return (
     <section id="introduction" className="text-left">
@@ -274,12 +276,23 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
         </div>
       )}
 
-      {/* Index & Strategy (if available) */}
-      {d.indexStrategy && d.indexStrategy.trim() && (
+      {/* Index & Strategy — first 2 paragraphs. Remaining paragraphs render below the price chart. */}
+      {indexStrategyHead && (
         <div className="mb-2">
-          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.indexStrategy) }} />
+          <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyHead) }} />
         </div>
       )}
+    </section>
+  );
+}
+
+function EtfIndexStrategyTail({ data }: { data: Promise<EtfFastResponse> }): JSX.Element | null {
+  const d: EtfFastResponse = use(data);
+  const { tail } = splitMarkdownAtParagraph(d.indexStrategy, 2);
+  if (!tail) return null;
+  return (
+    <section id="index-strategy-tail" className="mb-8">
+      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(tail) }} />
     </section>
   );
 }
@@ -450,6 +463,9 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             priceHistoryPromise={priceHistoryPromise}
           />
         </Suspense>
+
+        {/* Remaining Index & Strategy paragraphs, rendered after the price chart. */}
+        <EtfIndexStrategyTail data={etfInfo} />
 
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
