@@ -4,7 +4,6 @@ CREATE TABLE "etf_similar_etfs" (
     "source_etf_id" TEXT NOT NULL,
     "symbol" TEXT NOT NULL,
     "exchange" TEXT NOT NULL,
-    "name" TEXT,
     "sort_order" INTEGER NOT NULL DEFAULT 0,
     "space_id" TEXT NOT NULL DEFAULT 'koala_gains',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1723,13 +1723,12 @@ model EtfCachedScore {
 // Per source-ETF list of similar/peer ETFs produced by the INDEX_STRATEGY LLM step.
 // Symbol + exchange are sufficient to link the card to the peer's report page.
 model EtfSimilarEtf {
-  id          String  @id @default(uuid())
-  sourceEtfId String  @map("source_etf_id")
-  symbol      String  @map("symbol")
-  exchange    String  @map("exchange")
-  name        String? @map("name")
-  sortOrder   Int     @default(0) @map("sort_order")
-  spaceId     String  @default("koala_gains") @map("space_id")
+  id          String @id @default(uuid())
+  sourceEtfId String @map("source_etf_id")
+  symbol      String @map("symbol")
+  exchange    String @map("exchange")
+  sortOrder   Int    @default(0) @map("sort_order")
+  spaceId     String @default("koala_gains") @map("space_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

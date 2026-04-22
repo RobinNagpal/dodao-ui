@@ -18,7 +18,7 @@ async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceI
 
   const sourceEtf = await prisma.etf.findFirst({
     where,
-    select: { id: true },
+    select: { id: true, spaceId: true },
   });
   if (!sourceEtf) return [];
 
@@ -27,12 +27,23 @@ async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceI
     orderBy: { sortOrder: 'asc' },
     take: MAX_RESULTS,
   });
+  if (stored.length === 0) return [];
+
+  // Name lives on the main Etf row — look it up by (symbol, exchange).
+  const etfs = await prisma.etf.findMany({
+    where: {
+      spaceId: sourceEtf.spaceId,
+      OR: stored.map((s) => ({ symbol: s.symbol, exchange: s.exchange })),
+    },
+    select: { symbol: true, exchange: true, name: true },
+  });
+  const nameByKey: Map<string, string> = new Map<string, string>(etfs.map((e) => [`${e.symbol}|${e.exchange}`, e.name]));
 
   return stored.map((s) => ({
     id: s.id,
     symbol: s.symbol,
     exchange: s.exchange,
-    name: s.name || s.symbol,
+    name: nameByKey.get(`${s.symbol}|${s.exchange}`) ?? s.symbol,
   }));
 }
 

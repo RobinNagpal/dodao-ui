@@ -123,6 +123,8 @@ export async function saveEtfIndexStrategyResponse(symbol: string, exchange: str
  * - Drops self-references.
  * - Normalizes symbol + exchange to uppercase.
  * - De-duplicates on (symbol, exchange) preserving the first occurrence's order.
+ * - Only inserts entries that already exist in the `etfs` table (we need a
+ *   report page to link to, and the name comes from `Etf` at read time).
  */
 async function replaceEtfSimilarEtfs(
   sourceEtfId: string,
@@ -135,7 +137,7 @@ async function replaceEtfSimilarEtfs(
   const sourceExchangeUpper: string = sourceExchange.trim().toUpperCase();
 
   const seen: Set<string> = new Set<string>();
-  const cleaned: { symbol: string; exchange: string; name: string }[] = [];
+  const cleaned: { symbol: string; exchange: string }[] = [];
 
   for (const entry of similarEtfs) {
     if (!entry || typeof entry.symbol !== 'string' || typeof entry.exchange !== 'string') continue;
@@ -147,25 +149,34 @@ async function replaceEtfSimilarEtfs(
     const key: string = `${symbolUpper}|${exchangeUpper}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    cleaned.push({
-      symbol: symbolUpper,
-      exchange: exchangeUpper,
-      name: (entry.name ?? '').trim(),
-    });
+    cleaned.push({ symbol: symbolUpper, exchange: exchangeUpper });
   }
+
+  // Only keep entries that actually exist in our Etf table so each card
+  // resolves to a real report page.
+  const existing = cleaned.length
+    ? await prisma.etf.findMany({
+        where: {
+          spaceId,
+          OR: cleaned.map((c) => ({ symbol: c.symbol, exchange: c.exchange })),
+        },
+        select: { symbol: true, exchange: true },
+      })
+    : [];
+  const existingKeys: Set<string> = new Set<string>(existing.map((e) => `${e.symbol}|${e.exchange}`));
+  const toInsert = cleaned.filter((c) => existingKeys.has(`${c.symbol}|${c.exchange}`));
 
   await prisma.$transaction(async (tx) => {
     await tx.etfSimilarEtf.deleteMany({ where: { sourceEtfId } });
 
-    if (cleaned.length === 0) return;
+    if (toInsert.length === 0) return;
 
     await tx.etfSimilarEtf.createMany({
-      data: cleaned.map((c, idx) => ({
+      data: toInsert.map((c, idx) => ({
         sourceEtfId,
         spaceId,
         symbol: c.symbol,
         exchange: c.exchange,
-        name: c.name || null,
         sortOrder: idx,
       })),
     });
