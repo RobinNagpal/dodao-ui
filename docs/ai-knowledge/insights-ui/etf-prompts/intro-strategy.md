@@ -56,3 +56,14 @@ Style rules
 - Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison, but do not rank them or recommend one over another.
 - Be concrete and specific: prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "tracks a popular U.S. equity index."
 - Preserve the four-paragraph structure with a single blank line between paragraphs, followed by the "Red Flags & Risks" bulleted list as the final section. Bullets are allowed only inside that final section; the four paragraphs themselves stay as plain prose with no headings, no bullets, and no markdown.
+
+Similar ETFs (structured output field `similarEtfs`)
+
+In addition to the prose above, return a `similarEtfs` array with **at least 6** ETFs that are genuine substitutes for the analyzed fund — funds tracking the same (or a very close) underlying index, in the same category, with comparable exposure mechanics (weighting, replication, tilts). Do **not** just list the biggest or most famous ETFs in the asset class; prioritize true peers a retail investor would realistically choose between. If the fund is a plain-vanilla index tracker, its closest siblings from other issuers tracking the same/equivalent index must appear.
+
+Constraints for each entry:
+- `exchange` must be one of: `BATS`, `NASDAQ`, `NYSE`, `NYSEARCA` (we only cover US-listed ETFs on these exchanges).
+- `symbol` and `exchange` must be uppercase.
+- `reason` must be a single short sentence (≤ 25 words) explaining the substitutability (e.g. "Tracks the same S&P 500 index with identical market-cap weighting.").
+- Do not include the analyzed ETF itself.
+- Do not invent tickers — only include ETFs you can verify exist on one of the listed exchanges.

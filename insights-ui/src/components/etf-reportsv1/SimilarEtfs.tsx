@@ -22,7 +22,7 @@ export default function SimilarEtfs({ dataPromise }: SimilarEtfsProps): JSX.Elem
   return (
     <div id="similar-etfs" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Similar ETFs</h2>
-      <p className="text-gray-300 mb-4">Based on ETF category and AUM proximity:</p>
+      <p className="text-gray-300 mb-4">True peers tracking the same or a very similar index in the same category:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {similarEtfs.map((similarEtf) => {
           const rawScore: number | null = similarEtf.cachedScore?.finalScore ?? null;
@@ -58,6 +58,7 @@ export default function SimilarEtfs({ dataPromise }: SimilarEtfsProps): JSX.Elem
                   </div>
                   {formattedAum !== 'N/A' && <div className="text-sm text-gray-300">AUM: ${formattedAum}</div>}
                 </div>
+                {similarEtf.reason && <p className="text-xs text-gray-400 leading-snug line-clamp-2">{similarEtf.reason}</p>}
               </div>
             </Link>
           );

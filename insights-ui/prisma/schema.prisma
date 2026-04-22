@@ -1291,6 +1291,8 @@ model Etf {
   analysisCategoryFactorResults EtfAnalysisCategoryFactorResult[]
   cachedScore                 EtfCachedScore?
   priceHistory                EtfPriceHistory?
+  similarEtfs                 EtfSimilarEtf[] @relation("EtfSimilarEtfSource")
+  similarToEtfs               EtfSimilarEtf[] @relation("EtfSimilarEtfMatched")
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1714,6 +1716,34 @@ model EtfCachedScore {
   @@unique([etfId])
   @@index([etfId])
   @@map("etf_cached_scores")
+}
+
+// --------------------------
+// ETF Similar ETFs
+// --------------------------
+// Per source-ETF list of similar/peer ETFs produced by the INDEX_STRATEGY LLM step.
+// `matchedEtfId` is set when the (symbol, exchange, spaceId) pair exists in our `etfs` table.
+model EtfSimilarEtf {
+  id           String  @id @default(uuid())
+  sourceEtfId  String  @map("source_etf_id")
+  symbol       String  @map("symbol")
+  exchange     String  @map("exchange")
+  name         String? @map("name")
+  reason       String? @map("reason") @db.Text
+  sortOrder    Int     @default(0) @map("sort_order")
+  matchedEtfId String? @map("matched_etf_id")
+  spaceId      String  @default("koala_gains") @map("space_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sourceEtf  Etf  @relation("EtfSimilarEtfSource", fields: [sourceEtfId], references: [id], onDelete: Cascade)
+  matchedEtf Etf? @relation("EtfSimilarEtfMatched", fields: [matchedEtfId], references: [id], onDelete: SetNull)
+
+  @@unique([sourceEtfId, symbol, exchange])
+  @@index([sourceEtfId])
+  @@index([matchedEtfId])
+  @@map("etf_similar_etfs")
 }
 
 // --------------------------

@@ -47,8 +47,16 @@ export interface EtfFinalSummaryResponse {
   summary: string;
 }
 
+export interface EtfIndexStrategySimilarEtf {
+  symbol: string;
+  exchange: string;
+  name: string;
+  reason: string;
+}
+
 export interface EtfIndexStrategyResponse {
   indexStrategy: string;
+  similarEtfs: EtfIndexStrategySimilarEtf[];
 }
 
 export interface EtfAnalysisFactorDefinition {

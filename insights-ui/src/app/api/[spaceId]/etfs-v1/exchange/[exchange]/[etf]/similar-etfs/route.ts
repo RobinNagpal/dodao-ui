@@ -1,8 +1,6 @@
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
-import { parseNumericStringValue } from '@/utils/etf-filter-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 export interface SimilarEtf {
@@ -10,76 +8,61 @@ export interface SimilarEtf {
   name: string;
   symbol: string;
   exchange: string;
+  reason: string | null;
   aum: string | null;
   category: string | null;
   assetClass: string | null;
   cachedScore: { finalScore: number } | null;
+  inDb: boolean;
 }
 
 const MAX_RESULTS = 6;
-const CANDIDATE_LIMIT = 100;
 
 async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceId: string; exchange: string; etf: string }> }): Promise<SimilarEtf[]> {
   const { spaceId, exchange, etf } = await context.params;
   const where = getEtfWhereClause({ spaceId, exchange, etf });
 
-  const etfRecord = await prisma.etf.findFirst({
+  const sourceEtf = await prisma.etf.findFirst({
     where,
+    select: { id: true },
+  });
+  if (!sourceEtf) return [];
+
+  const stored = await prisma.etfSimilarEtf.findMany({
+    where: { sourceEtfId: sourceEtf.id },
+    orderBy: { sortOrder: 'asc' },
     include: {
-      financialInfo: true,
-      stockAnalyzerInfo: true,
+      matchedEtf: {
+        include: {
+          financialInfo: true,
+          stockAnalyzerInfo: true,
+          cachedScore: true,
+        },
+      },
     },
   });
-  if (!etfRecord) return [];
 
-  const category: string | null = etfRecord.stockAnalyzerInfo?.category?.trim() || null;
-  const assetClass: string | null = etfRecord.stockAnalyzerInfo?.assetClass?.trim() || null;
-
-  // Use category if present, fallback to assetClass.
-  const stockAnalyzerInfoFilter: Prisma.EtfStockAnalyzerInfoWhereInput | null = category
-    ? { category: { equals: category, mode: 'insensitive' } }
-    : assetClass
-    ? { assetClass: { equals: assetClass, mode: 'insensitive' } }
-    : null;
-
-  if (!stockAnalyzerInfoFilter) return [];
-
-  const candidates = await prisma.etf.findMany({
-    where: {
-      spaceId: where.spaceId,
-      id: { not: etfRecord.id },
-      stockAnalyzerInfo: { is: stockAnalyzerInfoFilter },
-    },
-    include: {
-      financialInfo: true,
-      stockAnalyzerInfo: true,
-      cachedScore: true,
-    },
-    take: CANDIDATE_LIMIT,
-  });
-
-  const currentAum: number | null = parseNumericStringValue(etfRecord.financialInfo?.aum);
-
-  // Rank by AUM proximity when both sides have a parseable AUM; otherwise push to the end.
-  const ranked = candidates
-    .map((c) => {
-      const aumNum: number | null = parseNumericStringValue(c.financialInfo?.aum);
-      const distance: number = currentAum !== null && aumNum !== null ? Math.abs(aumNum - currentAum) : Number.POSITIVE_INFINITY;
-      return { etf: c, distance };
-    })
-    .sort((a, b) => a.distance - b.distance)
-    .slice(0, MAX_RESULTS);
-
-  return ranked.map((r) => ({
-    id: r.etf.id,
-    name: r.etf.name,
-    symbol: r.etf.symbol,
-    exchange: r.etf.exchange,
-    aum: r.etf.financialInfo?.aum ?? null,
-    category: r.etf.stockAnalyzerInfo?.category ?? null,
-    assetClass: r.etf.stockAnalyzerInfo?.assetClass ?? null,
-    cachedScore: r.etf.cachedScore ? { finalScore: r.etf.cachedScore.finalScore } : null,
-  }));
+  // Show only ETFs that exist in our DB so the cards link to a real page
+  // and can display score / AUM. The LLM is asked for at least 6, so most
+  // should resolve.
+  return stored
+    .filter((s) => s.matchedEtf !== null)
+    .slice(0, MAX_RESULTS)
+    .map((s) => {
+      const matched = s.matchedEtf!;
+      return {
+        id: matched.id,
+        name: matched.name || s.name || s.symbol,
+        symbol: matched.symbol,
+        exchange: matched.exchange,
+        reason: s.reason,
+        aum: matched.financialInfo?.aum ?? null,
+        category: matched.stockAnalyzerInfo?.category ?? null,
+        assetClass: matched.stockAnalyzerInfo?.assetClass ?? null,
+        cachedScore: matched.cachedScore ? { finalScore: matched.cachedScore.finalScore } : null,
+        inDb: true,
+      };
+    });
 }
 
 export const GET = withErrorHandlingV2<SimilarEtf[]>(getHandler);

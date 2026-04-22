@@ -1,9 +1,18 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { EtfAnalysisCategory, EtfCategoryAnalysisResponse, EtfFinalSummaryResponse, EtfIndexStrategyResponse } from '@/types/etf/etf-analysis-types';
+import {
+  EtfAnalysisCategory,
+  EtfCategoryAnalysisResponse,
+  EtfFinalSummaryResponse,
+  EtfIndexStrategyResponse,
+  EtfIndexStrategySimilarEtf,
+} from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { USExchanges } from '@/utils/countryExchangeUtils';
+
+const SUPPORTED_SIMILAR_ETF_EXCHANGES: ReadonlySet<string> = new Set<string>([USExchanges.BATS, USExchanges.NASDAQ, USExchanges.NYSE, USExchanges.NYSEARCA]);
 
 export async function saveEtfFactorAnalysisResponse(
   symbol: string,
@@ -101,7 +110,82 @@ export async function saveEtfIndexStrategyResponse(symbol: string, exchange: str
     },
   });
 
+  await replaceEtfSimilarEtfs(etfRecord.id, etfRecord.spaceId, symbol, exchange, response.similarEtfs ?? []);
+
   revalidateEtfAndExchangeTag(symbol, exchange);
+}
+
+/**
+ * Replace the source ETF's stored similar-ETF list with the LLM-provided one.
+ *
+ * - Drops entries whose exchange is not one of the supported US exchanges
+ *   (BATS / NASDAQ / NYSE / NYSEARCA).
+ * - Drops self-references.
+ * - Normalizes symbol + exchange to uppercase.
+ * - De-duplicates on (symbol, exchange) preserving the first occurrence's order.
+ * - Looks each entry up in the `etfs` table to populate `matchedEtfId` when present.
+ */
+async function replaceEtfSimilarEtfs(
+  sourceEtfId: string,
+  spaceId: string,
+  sourceSymbol: string,
+  sourceExchange: string,
+  similarEtfs: ReadonlyArray<EtfIndexStrategySimilarEtf>
+): Promise<void> {
+  const sourceSymbolUpper: string = sourceSymbol.trim().toUpperCase();
+  const sourceExchangeUpper: string = sourceExchange.trim().toUpperCase();
+
+  const seen: Set<string> = new Set<string>();
+  const cleaned: { symbol: string; exchange: string; name: string; reason: string }[] = [];
+
+  for (const entry of similarEtfs) {
+    if (!entry || typeof entry.symbol !== 'string' || typeof entry.exchange !== 'string') continue;
+    const symbolUpper: string = entry.symbol.trim().toUpperCase();
+    const exchangeUpper: string = entry.exchange.trim().toUpperCase();
+    if (!symbolUpper || !exchangeUpper) continue;
+    if (!SUPPORTED_SIMILAR_ETF_EXCHANGES.has(exchangeUpper)) continue;
+    if (symbolUpper === sourceSymbolUpper && exchangeUpper === sourceExchangeUpper) continue;
+    const key: string = `${symbolUpper}|${exchangeUpper}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    cleaned.push({
+      symbol: symbolUpper,
+      exchange: exchangeUpper,
+      name: (entry.name ?? '').trim(),
+      reason: (entry.reason ?? '').trim(),
+    });
+  }
+
+  // Look up which of these exist in our DB so we can pre-populate matchedEtfId.
+  const existing = cleaned.length
+    ? await prisma.etf.findMany({
+        where: {
+          spaceId,
+          OR: cleaned.map((c) => ({ symbol: c.symbol, exchange: c.exchange })),
+        },
+        select: { id: true, symbol: true, exchange: true },
+      })
+    : [];
+  const matchByKey: Map<string, string> = new Map<string, string>(existing.map((e) => [`${e.symbol}|${e.exchange}`, e.id]));
+
+  await prisma.$transaction(async (tx) => {
+    await tx.etfSimilarEtf.deleteMany({ where: { sourceEtfId } });
+
+    if (cleaned.length === 0) return;
+
+    await tx.etfSimilarEtf.createMany({
+      data: cleaned.map((c, idx) => ({
+        sourceEtfId,
+        spaceId,
+        symbol: c.symbol,
+        exchange: c.exchange,
+        name: c.name || null,
+        reason: c.reason || null,
+        sortOrder: idx,
+        matchedEtfId: matchByKey.get(`${c.symbol}|${c.exchange}`) ?? null,
+      })),
+    });
+  });
 }
 
 async function updateEtfCachedScore(etfId: string, categoryKey: EtfAnalysisCategory, categoryScore: number): Promise<void> {
