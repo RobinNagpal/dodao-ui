@@ -1,0 +1,25 @@
+[
+  { "symbol": "SPY", "exchange": "NYSEARCA", "name": "SPDR S&P 500 ETF Trust", "group": "broad-equity", "groupName": "Broad Equity", "category": "Large Blend" },
+  { "symbol": "IWF", "exchange": "NYSEARCA", "name": "iShares Russell 1000 Growth ETF", "group": "broad-equity", "groupName": "Broad Equity", "category": "Large Growth" },
+
+  { "symbol": "XLK", "exchange": "NYSEARCA", "name": "Technology Select Sector SPDR Fund", "group": "sector-thematic-equity", "groupName": "Sector & Thematic Equity", "category": "Technology" },
+  { "symbol": "XLV", "exchange": "NYSEARCA", "name": "Health Care Select Sector SPDR Fund", "group": "sector-thematic-equity", "groupName": "Sector & Thematic Equity", "category": "Health" },
+
+  { "symbol": "TQQQ", "exchange": "NASDAQ", "name": "ProShares UltraPro QQQ", "group": "leveraged-inverse", "groupName": "Leveraged & Inverse Trading", "category": "Trading--Leveraged Equity" },
+  { "symbol": "SQQQ", "exchange": "NASDAQ", "name": "ProShares UltraPro Short QQQ", "group": "leveraged-inverse", "groupName": "Leveraged & Inverse Trading", "category": "Trading--Inverse Equity" },
+
+  { "symbol": "AGG", "exchange": "NYSEARCA", "name": "iShares Core U.S. Aggregate Bond ETF", "group": "fixed-income-core", "groupName": "Fixed Income — Core & Government", "category": "Intermediate Core Bond" },
+  { "symbol": "SHY", "exchange": "NASDAQ", "name": "iShares 1-3 Year Treasury Bond ETF", "group": "fixed-income-core", "groupName": "Fixed Income — Core & Government", "category": "Short Government" },
+
+  { "symbol": "HYG", "exchange": "NYSEARCA", "name": "iShares iBoxx $ High Yield Corporate Bond ETF", "group": "fixed-income-credit", "groupName": "Fixed Income — Credit & Income", "category": "High Yield Bond" },
+  { "symbol": "PFF", "exchange": "NASDAQ", "name": "iShares Preferred and Income Securities ETF", "group": "fixed-income-credit", "groupName": "Fixed Income — Credit & Income", "category": "Preferred Stock" },
+
+  { "symbol": "MUB", "exchange": "NYSEARCA", "name": "iShares National Muni Bond ETF", "group": "muni", "groupName": "Municipal Bonds", "category": "Muni National Interm" },
+  { "symbol": "SUB", "exchange": "NYSEARCA", "name": "iShares Short-Term National Muni Bond ETF", "group": "muni", "groupName": "Municipal Bonds", "category": "Muni National Short" },
+
+  { "symbol": "JEPI", "exchange": "NYSEARCA", "name": "JPMorgan Equity Premium Income ETF", "group": "alt-strategies", "groupName": "Alternative Strategies", "category": "Derivative Income" },
+  { "symbol": "GLD", "exchange": "NYSEARCA", "name": "SPDR Gold Shares", "group": "alt-strategies", "groupName": "Alternative Strategies", "category": "Commodities Focused" },
+
+  { "symbol": "AOA", "exchange": "NYSEARCA", "name": "iShares Core Aggressive Allocation ETF", "group": "allocation-target-date", "groupName": "Allocation & Target-Date", "category": "Aggressive Allocation" },
+  { "symbol": "AOK", "exchange": "NYSEARCA", "name": "iShares Core Conservative Allocation ETF", "group": "allocation-target-date", "groupName": "Allocation & Target-Date", "category": "Conservative Allocation" }
+]

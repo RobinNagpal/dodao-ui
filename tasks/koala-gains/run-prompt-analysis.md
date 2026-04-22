@@ -8,13 +8,19 @@
 - `risk-analysis`
 - `future-performance-outlook`
 
-Claude: do exactly the 5 steps below in order. Do not skip, do not reorder, do not
+Claude: do exactly the 4 steps below in order. Do not skip, do not reorder, do not
 improvise. Background context is in `etf-verification-loop.md` if you need it — otherwise
 trust this file and move.
 
 ---
 
-## Category → prompt file
+## Inputs
+
+**Hardcoded ETF list:** `tasks/koala-gains/etf-verification/sample-etfs.json` — 16 ETFs
+(2 per group × 8 groups), each with `{symbol, exchange, name, group, groupName, category}`.
+Use it as-is for every run.
+
+**Category → prompt file mapping:**
 
 | `<category>`                 | Prompt file to review & possibly edit                                     |
 | ---------------------------- | ------------------------------------------------------------------------- |
@@ -23,34 +29,27 @@ trust this file and move.
 | `risk-analysis`              | `docs/ai-knowledge/insights-ui/etf-prompts/risk-analysis.md`              |
 | `future-performance-outlook` | `docs/ai-knowledge/insights-ui/etf-prompts/future-performance-outlook.md` |
 
----
-
-## Prerequisite
-
-`AUTOMATION_SECRET` exported (source `discord-claude-bot/.env`).
+**Prerequisite:** `AUTOMATION_SECRET` exported (source `discord-claude-bot/.env`).
 
 All commands below run from `insights-ui/`.
 
 ---
 
-## 1. Set env + pick ETFs (script)
+## 1. Set env + prep iteration dir
 
 ```bash
 export CATEGORY=<category>                                     # the arg the user gave
 export ITER=1
 export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export SAMPLE="$PWD/../tasks/koala-gains/etf-verification/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
-
-yarn etf-verify:sample --per-group 2 --out "$ITER_ROOT/sample.json"
 ```
-
-→ 16 ETFs (2 per group × 8 groups), different categories or AUM inside each group.
 
 ## 2. Enqueue generation for just this category (script)
 
 ```bash
 yarn etf-verify:trigger \
-  --in "$ITER_ROOT/sample.json" \
+  --in "$SAMPLE" \
   --categories "$CATEGORY" \
   --out "$ITER_ROOT/iter-$ITER/requests.json"
 ```
@@ -68,7 +67,7 @@ yarn etf-verify:wait \
 
 ```bash
 yarn etf-verify:fetch \
-  --in "$ITER_ROOT/sample.json" \
+  --in "$SAMPLE" \
   --category "$CATEGORY" \
   --out-dir "$ITER_ROOT/iter-$ITER/reports"
 ```
@@ -88,6 +87,7 @@ yarn etf-verify:fetch \
    ## Per-ETF review
 
    ### SYM (group — category)
+
    - **What's good:** …
    - **What's missing / wrong:** …
    - **Verdict:** change needed / no change
@@ -111,8 +111,7 @@ yarn etf-verify:fetch \
 
 After step 5, the branch should contain:
 
-- `tasks/koala-gains/etf-verification/<date>-<category>/sample.json` and
-  `iter-1/{requests.json, reports/, findings-A-<category>.md}`.
+- `tasks/koala-gains/etf-verification/<date>-<category>/iter-1/{requests.json, reports/, findings-A-<category>.md}`.
 - Optionally an edit to the single prompt markdown file.
 
 Commit with a short message (`prompt(etfs): …` or `docs(etfs): iter-N findings for

@@ -1,8 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { EtfAnalysisCategory, EtfReportType, ETF_REPORT_TYPE_TO_CATEGORY } from '@/types/etf/etf-analysis-types';
-import { SPACE_ID, fetchJson, parseArgs, requireStringArg } from './lib';
-import type { SampledEtf } from './sample-etfs';
+import { SPACE_ID, SampledEtf, fetchJson, parseArgs, requireStringArg } from './lib';
 
 interface FactorResult {
   factorKey: string;
