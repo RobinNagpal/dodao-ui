@@ -52,6 +52,12 @@ End with one plain-English takeaway: what the investor should watch next.
 
 Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor definitions.
 
+**Formatting rules for this section (strict):**
+
+- Output exactly **4 distinct paragraphs**, separated by a **blank line**. Do NOT run them together into one block with inline labels like `POSITIONING:` or `REGIME FIT:`.
+- You may open each paragraph with a short bolded lead (e.g. `**Positioning snapshot.**`), but the paragraph break (blank line) between them is required.
+- Do not use a numbered list (`1.`, `2.`, …) that places all four paragraphs on the same line — each paragraph must end with a real line break before the next begins.
+
 1. **Positioning snapshot.** What the fund owns / targets, what that implies (sector/credit/rate/vol exposure), and what the market is currently paying attention to in that exposure. Use top holdings / sector / duration / credit tier where relevant.
 2. **Regime fit & the dominant tailwind/headwind.** Name the current macro regime (growth/inflation/policy/financial conditions) with 2–3 indicators. Explain why that regime helps or hurts this ETF’s exposure profile. If this is a rate/credit fund, make the rate-path/duration or credit-spread lens explicit.
 3. **Setup quality (valuation + technicals + flows).** One valuation/yield framing and one technical framing (trend / stretched / basing). Add one positioning/flow signal if you can source it. Be disciplined: technicals are secondary for long-horizon bond/muni/allocation funds.
@@ -86,6 +92,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 - Use simple, direct English. No hype. No certainty language.
 - Attribute external facts inline with source + as-of date (e.g., “CBOE VIX at `18` (CBOE, Apr 2026)”).
 - Do not paste long URLs. Do not mention missing data.
+- Every sentence must be ordinary readable prose with real spaces between words. Do not emit sequences of words without spaces or concatenated italics (e.g. `_Thefundtradesat..._` is wrong). This applies to both `oneLineExplanation` and `detailedExplanation` in each factor block.
 
 ---
 

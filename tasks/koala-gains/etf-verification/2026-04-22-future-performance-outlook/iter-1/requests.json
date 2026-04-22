@@ -1,0 +1,169 @@
+{
+  "categories": [
+    "future-performance-outlook"
+  ],
+  "etfs": [
+    {
+      "symbol": "SPY",
+      "exchange": "NYSEARCA",
+      "name": "SPDR S&P 500 ETF Trust",
+      "group": "broad-equity",
+      "groupName": "Broad Equity",
+      "category": "Large Blend",
+      "requestId": "8cd4f3e1-3304-49c3-8cd2-d94e24fc0f90"
+    },
+    {
+      "symbol": "IWF",
+      "exchange": "NYSEARCA",
+      "name": "iShares Russell 1000 Growth ETF",
+      "group": "broad-equity",
+      "groupName": "Broad Equity",
+      "category": "Large Growth",
+      "requestId": "88c67d8d-09c8-4f56-a3a2-2fcb132f2209"
+    },
+    {
+      "symbol": "XLK",
+      "exchange": "NYSEARCA",
+      "name": "Technology Select Sector SPDR Fund",
+      "group": "sector-thematic-equity",
+      "groupName": "Sector & Thematic Equity",
+      "category": "Technology",
+      "requestId": "570e2bca-4877-4947-9f85-5cfdd9621e86"
+    },
+    {
+      "symbol": "XLV",
+      "exchange": "NYSEARCA",
+      "name": "Health Care Select Sector SPDR Fund",
+      "group": "sector-thematic-equity",
+      "groupName": "Sector & Thematic Equity",
+      "category": "Health",
+      "requestId": "57bdeded-75c9-40fe-96d3-7fd9f3646926"
+    },
+    {
+      "symbol": "TQQQ",
+      "exchange": "NASDAQ",
+      "name": "ProShares UltraPro QQQ",
+      "group": "leveraged-inverse",
+      "groupName": "Leveraged & Inverse Trading",
+      "category": "Trading--Leveraged Equity",
+      "requestId": "b182e4d6-b5a2-497c-b227-dc2d5b725cab"
+    },
+    {
+      "symbol": "SQQQ",
+      "exchange": "NASDAQ",
+      "name": "ProShares UltraPro Short QQQ",
+      "group": "leveraged-inverse",
+      "groupName": "Leveraged & Inverse Trading",
+      "category": "Trading--Inverse Equity",
+      "requestId": "b4d09a26-9f65-45b7-8e54-10f030dbf397"
+    },
+    {
+      "symbol": "AGG",
+      "exchange": "NYSEARCA",
+      "name": "iShares Core U.S. Aggregate Bond ETF",
+      "group": "fixed-income-core",
+      "groupName": "Fixed Income — Core & Government",
+      "category": "Intermediate Core Bond",
+      "requestId": "ddcbc4d8-aede-4d38-a532-bca64fd56785"
+    },
+    {
+      "symbol": "SHY",
+      "exchange": "NASDAQ",
+      "name": "iShares 1-3 Year Treasury Bond ETF",
+      "group": "fixed-income-core",
+      "groupName": "Fixed Income — Core & Government",
+      "category": "Short Government",
+      "requestId": "10f57aa5-83ef-4734-bc11-2ffa4c1dd4f9"
+    },
+    {
+      "symbol": "HYG",
+      "exchange": "NYSEARCA",
+      "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+      "group": "fixed-income-credit",
+      "groupName": "Fixed Income — Credit & Income",
+      "category": "High Yield Bond",
+      "requestId": "2c00a859-7ca5-479c-80e8-4f7f7cc95cc1"
+    },
+    {
+      "symbol": "PFF",
+      "exchange": "NASDAQ",
+      "name": "iShares Preferred and Income Securities ETF",
+      "group": "fixed-income-credit",
+      "groupName": "Fixed Income — Credit & Income",
+      "category": "Preferred Stock",
+      "requestId": "452eae06-d9b5-4498-af19-49f5a2c8be58"
+    },
+    {
+      "symbol": "MUB",
+      "exchange": "NYSEARCA",
+      "name": "iShares National Muni Bond ETF",
+      "group": "muni",
+      "groupName": "Municipal Bonds",
+      "category": "Muni National Interm",
+      "requestId": "1e6ebe68-5f84-4bed-affa-604cdb32044c"
+    },
+    {
+      "symbol": "SUB",
+      "exchange": "NYSEARCA",
+      "name": "iShares Short-Term National Muni Bond ETF",
+      "group": "muni",
+      "groupName": "Municipal Bonds",
+      "category": "Muni National Short",
+      "requestId": "a88bdf1f-b8ed-46af-8889-c008ad9135fd"
+    },
+    {
+      "symbol": "JEPI",
+      "exchange": "NYSEARCA",
+      "name": "JPMorgan Equity Premium Income ETF",
+      "group": "alt-strategies",
+      "groupName": "Alternative Strategies",
+      "category": "Derivative Income",
+      "requestId": "33f9d78e-74b6-4c5d-84cb-77c865d23733"
+    },
+    {
+      "symbol": "GLD",
+      "exchange": "NYSEARCA",
+      "name": "SPDR Gold Shares",
+      "group": "alt-strategies",
+      "groupName": "Alternative Strategies",
+      "category": "Commodities Focused",
+      "requestId": "bff7d244-974c-42e9-98f0-29d5962da60b"
+    },
+    {
+      "symbol": "AOA",
+      "exchange": "NYSEARCA",
+      "name": "iShares Core Aggressive Allocation ETF",
+      "group": "allocation-target-date",
+      "groupName": "Allocation & Target-Date",
+      "category": "Aggressive Allocation",
+      "requestId": "266bb716-8d5b-4b61-a420-175b1e2fabbb"
+    },
+    {
+      "symbol": "AOK",
+      "exchange": "NYSEARCA",
+      "name": "iShares Core Conservative Allocation ETF",
+      "group": "allocation-target-date",
+      "groupName": "Allocation & Target-Date",
+      "category": "Conservative Allocation",
+      "requestId": "7eb341a4-6a87-43f8-a9ec-1488602ca46e"
+    }
+  ],
+  "requestIds": [
+    "8cd4f3e1-3304-49c3-8cd2-d94e24fc0f90",
+    "88c67d8d-09c8-4f56-a3a2-2fcb132f2209",
+    "570e2bca-4877-4947-9f85-5cfdd9621e86",
+    "57bdeded-75c9-40fe-96d3-7fd9f3646926",
+    "b182e4d6-b5a2-497c-b227-dc2d5b725cab",
+    "b4d09a26-9f65-45b7-8e54-10f030dbf397",
+    "ddcbc4d8-aede-4d38-a532-bca64fd56785",
+    "10f57aa5-83ef-4734-bc11-2ffa4c1dd4f9",
+    "2c00a859-7ca5-479c-80e8-4f7f7cc95cc1",
+    "452eae06-d9b5-4498-af19-49f5a2c8be58",
+    "1e6ebe68-5f84-4bed-affa-604cdb32044c",
+    "a88bdf1f-b8ed-46af-8889-c008ad9135fd",
+    "33f9d78e-74b6-4c5d-84cb-77c865d23733",
+    "bff7d244-974c-42e9-98f0-29d5962da60b",
+    "266bb716-8d5b-4b61-a420-175b1e2fabbb",
+    "7eb341a4-6a87-43f8-a9ec-1488602ca46e"
+  ]
+}
