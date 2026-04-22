@@ -47,30 +47,66 @@ generational, technological, regulatory — and map each trend to the **stocks**
 likely benefit if the trend plays out. The value is in catching trends whose implications are
 **not yet priced in**, so we (and readers) can identify candidates ahead of the move.
 
-- [ ] **Trend entries** — each trend should capture:
-  - Title + short description (e.g. "2026 — aging boomer retirement wave drives healthcare
+The ETF **scenarios** feature (see `insights-ui/prisma/schema.prisma` `EtfScenario` +
+`EtfScenarioEtfLink`, and `src/types/etfScenarioEnums.ts`) already solves a very similar
+shape — probability, timeframe, priced-in, expected price change, winners/losers, historical
+analog. We should **borrow its schema and UI patterns** for the stock-trends feature rather
+than invent new ones.
+
+- [ ] **Trend entries** — each trend should capture (mirrors `EtfScenario` fields where
+  sensible):
+  - **Title** + short description (e.g. "2026 — aging boomer retirement wave drives healthcare
     demand", "younger generation prefers experiences over ownership", "shift from ICE to EV",
     "re-shoring of semiconductor manufacturing", etc.).
-  - Time horizon (near-term / multi-year / structural).
-  - Evidence / sources (news, data, research) supporting the trend.
-  - **Mapped stocks**: tickers that should benefit, with a short thesis per stock.
-  - **"Priced-in?" assessment**: our current view on whether the market has already factored
-    this in, with rationale (valuation multiples, sentiment, flows).
-  - Confidence rating.
-  - Author + `createdAt` / `updatedAt`.
-- [ ] **Page UI**:
-  - Trends index (filter/sort by horizon, confidence, updatedAt, tag).
-  - Trend detail page listing mapped stocks and the thesis.
-  - From a stock's report page, link to the trends that reference it ("this stock appears in
-    the following trends").
+  - **Slug** — stable URL-safe identifier, derived from title on create.
+  - **Underlying cause** (markdown) — why the trend is happening.
+  - **Historical analog** (markdown) — past equivalent shift. Borrowed from scenarios; very
+    high-value for trends (e.g. dot-com adoption curve, boomer housing demand in the 1970s).
+  - **Direction** — `UPSIDE` / `DOWNSIDE` (reuse the scenario enum): does the trend lift or
+    depress mapped stocks?
+  - **Timeframe / lifecycle** — `FUTURE` / `IN_PROGRESS` / `PAST`. Replaces the earlier
+    "active / played-out / invalidated" question — `PAST` ≈ played out.
+  - **Probability bucket** — `HIGH` (>40%) / `MEDIUM` (20–40%) / `LOW` (<20%).
+  - **Probability percentage** (optional int 0–100) — numeric override when we have a
+    sharper estimate.
+  - **Priced-in bucket** — `NOT_PRICED_IN` / `PARTIALLY_PRICED_IN` / `MOSTLY_PRICED_IN` /
+    `FULLY_PRICED_IN` / `OVER_PRICED_IN`.
+  - **Expected price change** (int %) + **expectedPriceChangeExplanation** (markdown) +
+    **priceChangeTimeframeExplanation** (markdown) — same trio scenarios use.
+  - **Outlook** (markdown) + **`outlookAsOfDate`** — "last reviewed" date.
+  - **Evidence / sources** (markdown or structured list).
+  - **Archived** boolean — soft-delete, same pattern as scenarios.
+  - **Author** + `createdAt` / `updatedAt`.
+- [ ] **Mapped stocks** (join table, mirror `EtfScenarioEtfLink`):
+  - `trendId`, `stockId` (nullable), `symbol`, `exchange`.
+  - **Role** — `WINNER` / `LOSER` / `MOST_EXPOSED`. Winners benefit from the trend, losers
+    suffer, most-exposed are high-sensitivity for risk management.
+  - **Role explanation** (markdown) — per-stock thesis.
+  - **Expected price change** (int %) + explanation (markdown) — stock-specific move,
+    separate from the trend-level estimate.
+  - `sortOrder` for display order within a role group.
+- [ ] **Page UI** (mirror the scenarios pages):
+  - **Trends index** — card grid with direction / probability / timeframe badges, one-line
+    excerpt. Client-side filter bar (direction, probability, timeframe, search).
+  - **Trend detail page** — underlying cause, historical analog, priced-in + expected move
+    box, winners/losers side-by-side, most-exposed section, outlook with `outlookAsOfDate`,
+    JSON-LD Article schema.
+  - **From a stock's report page**, link to the trends that reference it ("This stock
+    appears in the following trends").
 - [ ] **Authoring flow**:
-  - Admin can create/edit trends.
+  - Admin upsert modal (pattern: `UpsertEtfScenarioModal.tsx`).
   - Optional: Claude-assisted draft — given a trend description, suggest candidate stocks +
     initial thesis + "priced-in?" assessment for human review.
-- [ ] **Storage**:
-  - Prisma model for trends + a join table to stocks (many-to-many with a thesis field).
+  - Consider bulk markdown import (pattern: `etf-scenario-markdown-parser.ts`).
+- [ ] **Storage + caching**:
+  - Prisma models: `StockTrend` + `StockTrendStockLink` (shapes mirror the scenario models),
+    or a shared `Trend` model if we decide to unify across stocks and ETFs (see below).
+  - Space-scoped (`spaceId`), cache-tag revalidation on create/update.
+  - Zod schemas at API boundaries.
 - [ ] **Open questions**:
-  - Should trends be shared between stocks and ETFs (single trend mapped to both), or kept
-    as separate datasets? (See ETF-side task for the symmetrical ask.)
-  - How do we revisit / retire trends that played out or failed — lifecycle states
-    (active / played-out / invalidated)?
+  - Should trends be **shared** between stocks and ETFs (one trend, linked to both stock and
+    ETF join tables), or **parallel datasets**? (See ETF-side task for the symmetrical ask.)
+    Leaning towards shared, since the underlying cause / historical analog is identical —
+    only the mapped assets differ.
+  - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
+    technological / regulatory) for filtering, beyond what scenarios have?
