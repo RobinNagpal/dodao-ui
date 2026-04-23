@@ -1,0 +1,902 @@
+{
+  "description": "Target investor groups taxonomy — investor archetypes used to frame ETF analysis from the perspective of the people most likely to consider buying the fund. Each group describes the investor's profile (experience, horizon, risk tolerance, primary goal, income need, tax sensitivity, account preference), the analysis angle to take when writing for them, key things they care about, red flags that disqualify a fund for them, and the ETF groups + specific Morningstar categories from etf-analysis-categories.json that fit their goals. Groups are NOT mutually exclusive — a single ETF can be relevant to several investor groups (e.g. a TIPS fund fits both retirement-income-seeker and inflation-real-asset-hedger). The goal-label list mirrors the Phase-2 taxonomy in tasks/koala-gains/etfs.md (e.g. 'Fixed income with low risk', 'High yield with moderate or high risk', 'Single-country thematic exposure').",
+  "investorGroups": [
+    {
+      "key": "first-time-investor",
+      "name": "First-Time / Beginner Investor",
+      "shortDescription": "New to investing, wants the simplest possible exposure to broad markets without making fund-selection mistakes that compound over decades.",
+      "profile": {
+        "experienceLevel": "Beginner",
+        "investmentHorizon": "Long (5-15y)",
+        "riskTolerance": "Moderate",
+        "primaryGoal": "Wealth Accumulation",
+        "incomeNeed": "None",
+        "taxSensitivity": "Low",
+        "accountTypePreference": "Tax-Advantaged",
+        "typicalInvestor": "Someone in their 20s or 30s opening a brokerage or Roth IRA for the first time, contributing monthly, with little appetite for picking individual sub-categories or sectors."
+      },
+      "goalLabels": ["Simple broad-market exposure", "Low-cost long-term growth", "One-fund retirement glide path"],
+      "analysisAngle": "Default to the simplest, cheapest, most diversified option. Explain the fund as if the reader has never bought an ETF before. Always anchor to the boring baseline (a total-market or S&P 500 fund, or a target-date fund) and explain whether this fund adds anything over that baseline that justifies the additional complexity. Avoid jargon; if a term like 'duration' or 'tracking error' is used, define it inline.",
+      "keyConsiderations": [
+        "Expense ratio under ~0.10% for passive broad-equity, under ~0.20% for target-date.",
+        "Fund size large enough that closure is not a concern (>$1B AUM ideal).",
+        "Mandate stability — no recent benchmark or category changes.",
+        "Tracking error vs the index is small and consistent.",
+        "Distribution character is simple (qualified dividends, no surprise capital-gain distributions)."
+      ],
+      "redFlags": [
+        "Daily-leveraged or inverse structure (path-dependent, not for buy-and-hold).",
+        "Single-country, single-sector, single-currency, or single-stock concentration.",
+        "K-1 tax reporting for a beginner taxable account.",
+        "Expense ratio above ~0.50% for what is fundamentally an index product.",
+        "AUM under $100M with declining trend (real closure risk)."
+      ],
+      "etfGroupFit": [
+        { "groupKey": "broad-equity", "fit": "primary", "rationale": "Total-market and S&P 500 trackers are the canonical first-purchase ETF." },
+        { "groupKey": "allocation-target-date", "fit": "primary", "rationale": "A single target-date fund is the simplest one-decision retirement portfolio." },
+        {
+          "groupKey": "fixed-income-core",
+          "fit": "secondary",
+          "rationale": "A small treasury or aggregate-bond sleeve adds resilience once the equity base is in place."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "occasional",
+          "rationale": "Only after a broad-market base exists; a sector fund is a satellite, not a starter holding."
+        },
+        {
+          "groupKey": "fixed-income-credit",
+          "fit": "occasional",
+          "rationale": "Credit risk is hard to evaluate as a beginner — better to wait until the broad base is established."
+        },
+        { "groupKey": "muni", "fit": "occasional", "rationale": "Tax benefits rarely matter for beginners in low-bracket or tax-advantaged accounts." },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "avoid",
+          "rationale": "Complex strategies are easy to misunderstand and create surprise tax or distribution outcomes."
+        },
+        { "groupKey": "leveraged-inverse", "fit": "avoid", "rationale": "Daily reset and decay make these unsuitable for any beginner buy-and-hold context." }
+      ],
+      "highlightedCategories": [
+        { "category": "Large Blend", "group": "broad-equity", "rationale": "S&P 500 / total-market trackers — the textbook first-purchase ETF." },
+        { "category": "Foreign Large Blend", "group": "broad-equity", "rationale": "Adds developed ex-US exposure with one fund." },
+        {
+          "category": "Target-Date 2050",
+          "group": "allocation-target-date",
+          "rationale": "Single-fund retirement glide path for an investor in their 30s — no rebalancing decisions required."
+        },
+        { "category": "Target-Date 2065+", "group": "allocation-target-date", "rationale": "Single-fund glide path for a younger first-time investor." },
+        {
+          "category": "Intermediate Core Bond",
+          "group": "fixed-income-core",
+          "rationale": "The plain-vanilla bond sleeve when a beginner adds fixed income to an equity base."
+        }
+      ]
+    },
+    {
+      "key": "long-term-wealth-builder",
+      "name": "Long-Term Wealth Builder (Buy & Hold)",
+      "shortDescription": "Multi-decade horizon, comfortable with equity volatility, focused on cumulative compounding and minimizing fee drag over 20-30+ years.",
+      "profile": {
+        "experienceLevel": "Intermediate",
+        "investmentHorizon": "Very Long (15y+)",
+        "riskTolerance": "Moderate-High",
+        "primaryGoal": "Wealth Accumulation",
+        "incomeNeed": "None",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Working-age investor 5-30 years from retirement, dollar-cost-averaging into a core portfolio, cares more about the next 25 years than the next 25 weeks."
+      },
+      "goalLabels": ["Core long-term equity growth", "Diversified global exposure", "Low-cost compounding"],
+      "analysisAngle": "Frame everything in cumulative-compounding terms: a 0.30% fee gap is ~9% of an ending balance over 30 years. Emphasize tracking fidelity, mandate stability, and downside drawdown / recovery time. De-emphasize 1-year performance; weight 5-year and 10-year risk-adjusted return. Note dividend reinvestment and the practical difference between a total-return and price index.",
+      "keyConsiderations": [
+        "Cumulative fee drag over 20-30 years vs the lowest-cost peer.",
+        "Tracking error consistency across market regimes.",
+        "Drawdown depth and recovery time in 2008, 2020, 2022.",
+        "Tax efficiency — capital-gain distribution history for taxable accounts.",
+        "Issuer scale and operational stability over decades."
+      ],
+      "redFlags": [
+        "Mandate or benchmark changes mid-life (breaks the historical record).",
+        "Manager or strategy churn within an active core holding.",
+        "Persistent tracking error well above peer median for a passive fund.",
+        "Repeated capital-gain distributions in a passive equity ETF held in a taxable account."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "broad-equity",
+          "fit": "primary",
+          "rationale": "Diversified equity across cap, style, and geography is the core of a multi-decade portfolio."
+        },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "primary",
+          "rationale": "Long-dated target-date funds embed equity-heavy glide paths designed exactly for this horizon."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "secondary",
+          "rationale": "REITs, infrastructure, and broad-tech can supplement a core; narrow themes are satellite, not core."
+        },
+        {
+          "groupKey": "fixed-income-core",
+          "fit": "secondary",
+          "rationale": "A small bond sleeve becomes more relevant as the horizon shortens past 10 years."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "occasional",
+          "rationale": "Most alt strategies dilute long-run equity premium; only useful as small uncorrelated sleeves."
+        },
+        {
+          "groupKey": "fixed-income-credit",
+          "fit": "occasional",
+          "rationale": "Credit adds yield but historically underperforms equity over very long horizons."
+        },
+        { "groupKey": "muni", "fit": "occasional", "rationale": "Only relevant for high-bracket investors funding a taxable bond sleeve." },
+        { "groupKey": "leveraged-inverse", "fit": "avoid", "rationale": "Daily-reset decay makes these structurally unsuitable for buy-and-hold." }
+      ],
+      "highlightedCategories": [
+        { "category": "Large Blend", "group": "broad-equity", "rationale": "Core US large-cap exposure — the historical engine of long-run equity returns." },
+        { "category": "Mid-Cap Blend", "group": "broad-equity", "rationale": "Mid-cap completes the US-equity base alongside large-cap." },
+        {
+          "category": "Small Blend",
+          "group": "broad-equity",
+          "rationale": "Small-cap captures the size premium for long horizons that can absorb volatility."
+        },
+        { "category": "Foreign Large Blend", "group": "broad-equity", "rationale": "Developed ex-US is a long-run diversifier when US valuations stretch." },
+        {
+          "category": "Diversified Emerging Mkts",
+          "group": "broad-equity",
+          "rationale": "EM equity for long-horizon investors comfortable with regime volatility."
+        },
+        {
+          "category": "Real Estate",
+          "group": "sector-thematic-equity",
+          "rationale": "REITs add a long-run income + appreciation stream uncorrelated with the S&P."
+        },
+        {
+          "category": "Target-Date 2045",
+          "group": "allocation-target-date",
+          "rationale": "Auto-rebalancing glide path for a buy-and-hold investor near mid-career."
+        }
+      ]
+    },
+    {
+      "key": "growth-accumulator",
+      "name": "Growth-Focused Accumulator",
+      "shortDescription": "Younger investor with a long horizon and high risk tolerance, willing to accept large drawdowns in pursuit of higher long-run growth — overweight to growth, small-cap, EM, and innovation themes.",
+      "profile": {
+        "experienceLevel": "Intermediate",
+        "investmentHorizon": "Very Long (15y+)",
+        "riskTolerance": "High",
+        "primaryGoal": "Wealth Accumulation",
+        "incomeNeed": "None",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "20s-30s investor with stable income, no near-term capital needs, willing to accept 30-50% peak-to-trough drawdowns in exchange for higher expected returns over 20+ years."
+      },
+      "goalLabels": ["Aggressive equity growth", "Innovation / theme tilt", "High volatility tolerance"],
+      "analysisAngle": "Emphasize factor tilt (growth, small-cap, momentum), top-holding concentration, and drawdown / recovery behavior — this investor needs to know *how* painful the down years will be and how long recovery has historically taken. Reinforce that past bull-run leadership does not guarantee future leadership; address sequence risk only lightly because the horizon is long.",
+      "keyConsiderations": [
+        "Factor exposure (growth vs blend vs value tilt) and how it has driven returns.",
+        "Top-10 holdings concentration — a 'growth' fund that is 50% mega-cap tech is concentrated, not diversified.",
+        "Volatility (std dev) and beta vs the S&P 500.",
+        "Worst 1-year and worst peak-to-trough drawdown, plus recovery time.",
+        "Theme purity — does the fund actually own the names that describe it?"
+      ],
+      "redFlags": [
+        "Thematic fund chasing a recently-hot theme with under 2 years of history.",
+        "Concentration so extreme that 5 holdings drive most of the return.",
+        "High turnover combined with a high expense ratio in a taxable account.",
+        "Daily-leveraged structure used as a 'growth' substitute (decay erases the edge)."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "broad-equity",
+          "fit": "primary",
+          "rationale": "Growth, small-cap, EM, and foreign-growth sub-categories deliver higher expected return at the cost of higher volatility."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "primary",
+          "rationale": "Tech, communications, consumer cyclical, and digital-asset equities give targeted growth tilt."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "secondary",
+          "rationale": "Spot digital-asset and commodities-focused funds can serve as small high-growth satellites."
+        },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "secondary",
+          "rationale": "Aggressive-allocation and far-dated target-date funds align with the high-equity tilt."
+        },
+        {
+          "groupKey": "leveraged-inverse",
+          "fit": "occasional",
+          "rationale": "Only for tactical sub-week trades; unsuitable as a growth holding due to decay."
+        },
+        { "groupKey": "fixed-income-core", "fit": "occasional", "rationale": "Small allocation only; bonds dilute the growth tilt this investor wants." },
+        { "groupKey": "fixed-income-credit", "fit": "avoid", "rationale": "Yield doesn't compound like equity over multi-decade horizons." },
+        { "groupKey": "muni", "fit": "avoid", "rationale": "Tax-exempt income is irrelevant for an accumulator with no income need." }
+      ],
+      "highlightedCategories": [
+        { "category": "Large Growth", "group": "broad-equity", "rationale": "Core US large-cap growth exposure — the cleanest expression of US growth tilt." },
+        { "category": "Mid-Cap Growth", "group": "broad-equity", "rationale": "Mid-cap growth blends scaling-stage businesses with public-market liquidity." },
+        {
+          "category": "Small Growth",
+          "group": "broad-equity",
+          "rationale": "Small growth captures the highest-volatility, highest-upside corner of US equity."
+        },
+        {
+          "category": "Diversified Emerging Mkts",
+          "group": "broad-equity",
+          "rationale": "EM for long-horizon investors who can tolerate currency and policy regime risk."
+        },
+        { "category": "India Equity", "group": "broad-equity", "rationale": "Single-country growth bet for investors with a structural EM thesis." },
+        {
+          "category": "Technology",
+          "group": "sector-thematic-equity",
+          "rationale": "Direct exposure to the secular-growth sector that has driven US-equity returns for two decades."
+        },
+        {
+          "category": "Communications",
+          "group": "sector-thematic-equity",
+          "rationale": "Captures internet platforms, media, and telecom — adjacent to tech without identical concentration."
+        },
+        {
+          "category": "Equity Digital Assets",
+          "group": "sector-thematic-equity",
+          "rationale": "Equity exposure to crypto-economy companies for investors with conviction but not direct-asset risk tolerance."
+        },
+        { "category": "Digital Assets", "group": "alt-strategies", "rationale": "Spot digital-asset ETFs for highest-growth-tilt sleeves." }
+      ]
+    },
+    {
+      "key": "retirement-income-seeker",
+      "name": "Retirement Income Seeker",
+      "shortDescription": "At or near retirement, drawing from the portfolio for living expenses. Prioritizes capital preservation, predictable income, and shallow drawdowns over absolute return.",
+      "profile": {
+        "experienceLevel": "Intermediate",
+        "investmentHorizon": "Medium (1-5y)",
+        "riskTolerance": "Low-Moderate",
+        "primaryGoal": "Capital Preservation",
+        "incomeNeed": "High",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Investor in their 60s-70s living off portfolio distributions, where a single deep drawdown in the wrong year can permanently impair retirement consumption (sequence-of-returns risk)."
+      },
+      "goalLabels": ["Capital preservation", "Steady income", "Fixed income with low risk", "Retirement glide path"],
+      "analysisAngle": "Lead with downside: worst calendar year, worst drawdown, recovery time, and distribution stability. Income consistency matters more than headline yield — a fund that paid every quarter through 2008 and 2020 is more useful than one with a higher headline yield and an erratic record. Address sequence-of-returns risk explicitly: a 30% drawdown in year 1 of retirement is fundamentally different from year 20.",
+      "keyConsiderations": [
+        "Distribution stability and history — quarterly/monthly consistency through stress periods.",
+        "Duration risk and sensitivity to a sudden rate move.",
+        "Worst peak-to-trough drawdown and time-to-recover (a retiree may not have the time).",
+        "Income character — qualified dividends vs ordinary income vs return-of-capital.",
+        "Sequence-of-returns risk — a deep drawdown in year 1-3 of retirement is uniquely damaging."
+      ],
+      "redFlags": [
+        "Daily-leveraged or inverse structure (any holding period).",
+        "Concentrated single-sector or single-country bets.",
+        "High-yield distribution that is largely ROC (lowers cost basis silently).",
+        "Long-duration bond fund without an explicit duration tolerance discussion.",
+        "Active manager with under 3 years tenure on a fund used for income."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "fixed-income-core",
+          "fit": "primary",
+          "rationale": "Investment-grade core, short-term Treasuries, TIPS, and money market are the income / preservation backbone of a retirement portfolio."
+        },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "primary",
+          "rationale": "Retirement-dated and conservative-allocation funds are designed for exactly this glide-path."
+        },
+        {
+          "groupKey": "muni",
+          "fit": "secondary",
+          "rationale": "Tax-equivalent yield is meaningful when retirement income pushes the investor into a high bracket."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "secondary",
+          "rationale": "Derivative-income (covered-call) and defined-outcome buffer funds trade upside for income / downside protection."
+        },
+        {
+          "groupKey": "broad-equity",
+          "fit": "secondary",
+          "rationale": "A modest equity sleeve (especially large value / dividend-tilted) hedges longevity risk without excess drawdown."
+        },
+        {
+          "groupKey": "fixed-income-credit",
+          "fit": "occasional",
+          "rationale": "Some HY / preferred / multisector exposure can boost yield, but credit drawdowns hurt retirees disproportionately."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "occasional",
+          "rationale": "Real estate and utilities can supplement income; growth-tilted sectors don't fit."
+        },
+        { "groupKey": "leveraged-inverse", "fit": "avoid", "rationale": "Volatility decay and path dependency are incompatible with capital preservation." }
+      ],
+      "highlightedCategories": [
+        {
+          "category": "Intermediate Core Bond",
+          "group": "fixed-income-core",
+          "rationale": "The default investment-grade core for a retirement income portfolio."
+        },
+        {
+          "category": "Short-Term Bond",
+          "group": "fixed-income-core",
+          "rationale": "Low-duration income with limited rate sensitivity — useful when rate path is uncertain."
+        },
+        { "category": "Ultrashort Bond", "group": "fixed-income-core", "rationale": "Cash-like ballast for distributions and near-term spending." },
+        {
+          "category": "Inflation-Protected Bond",
+          "group": "fixed-income-core",
+          "rationale": "TIPS protect real purchasing power across the multi-decade retirement horizon."
+        },
+        { "category": "Target-Date Retirement", "group": "allocation-target-date", "rationale": "Designed exactly for the in-retirement glide path." },
+        {
+          "category": "Conservative Allocation",
+          "group": "allocation-target-date",
+          "rationale": "Static conservative blend for investors who want one ticker handling drawdown management."
+        },
+        {
+          "category": "Moderate Allocation",
+          "group": "allocation-target-date",
+          "rationale": "Slightly more equity for early-retirement years where longevity risk dominates sequence risk."
+        },
+        {
+          "category": "Derivative Income",
+          "group": "alt-strategies",
+          "rationale": "Covered-call funds (e.g. JEPI-style) trade upside for steady monthly income."
+        },
+        {
+          "category": "Defined Outcome",
+          "group": "alt-strategies",
+          "rationale": "Buffered funds cap upside in exchange for explicit downside protection — useful near retirement."
+        }
+      ]
+    },
+    {
+      "key": "tax-sensitive-high-earner",
+      "name": "Tax-Sensitive High-Income Investor",
+      "shortDescription": "High federal-bracket investor (often in a high-tax state) for whom after-tax return is the only return that matters. Heavy use of muni bonds and tax-efficient passive equity.",
+      "profile": {
+        "experienceLevel": "Experienced",
+        "investmentHorizon": "Long (5-15y)",
+        "riskTolerance": "Moderate",
+        "primaryGoal": "Tax Optimization",
+        "incomeNeed": "Modest",
+        "taxSensitivity": "High",
+        "accountTypePreference": "Taxable",
+        "typicalInvestor": "Top federal-bracket professional or business owner in a high-tax state (CA, NY, NJ, MA), with a large taxable account where every percent of tax drag compounds."
+      },
+      "goalLabels": ["Tax-equivalent yield", "Tax-efficient equity", "State-specific muni exposure"],
+      "analysisAngle": "State the marginal tax assumption explicitly (e.g. 37% federal + 13.3% CA = ~46% combined). For muni funds compute tax-equivalent yield (TEY = SEC yield / (1 − marginal rate)) and compare to taxable peers of similar duration / credit quality. Flag distribution character (qualified dividend vs ROC vs ordinary) and surface K-1 reporting wherever it appears. For equity sleeves, prefer low-turnover passive index funds over high-turnover active.",
+      "keyConsiderations": [
+        "Tax-equivalent yield at the investor's marginal rate vs taxable bond peers.",
+        "AMT treatment for private-activity-bond muni funds.",
+        "State tax exemption — in-state muni funds give triple-exempt yield in high-tax states.",
+        "Distribution character (qualified dividends, return-of-capital, ordinary income).",
+        "Capital-gain distribution history — a passive ETF should essentially never pay one.",
+        "K-1 vs 1099 reporting for any commodity / MLP / certain alt-strategy funds."
+      ],
+      "redFlags": [
+        "Repeated capital-gain distributions from an ETF marketed as passive.",
+        "K-1 reporting in a fund being considered for a taxable buy-and-hold sleeve.",
+        "Derivative-income fund whose 'yield' is largely return-of-capital without disclosure.",
+        "High-turnover active equity ETF in a taxable account.",
+        "Non-AMT-aware muni allocation for an investor exposed to AMT."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "muni",
+          "fit": "primary",
+          "rationale": "Federally tax-exempt income is the entire reason this group exists; in-state funds add state-tax exemption."
+        },
+        {
+          "groupKey": "broad-equity",
+          "fit": "primary",
+          "rationale": "Low-turnover passive index ETFs are the most tax-efficient way to hold equity in a taxable account."
+        },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "secondary",
+          "rationale": "Useful only when the underlying holdings are tax-efficient passive sleeves."
+        },
+        { "groupKey": "fixed-income-core", "fit": "secondary", "rationale": "Treasuries are state-tax exempt — meaningful for high-state-tax investors." },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "occasional",
+          "rationale": "Acceptable when low-turnover and passive; methodology rebalancing can still cause cap-gain distributions."
+        },
+        {
+          "groupKey": "fixed-income-credit",
+          "fit": "occasional",
+          "rationale": "Yield is taxable at ordinary rates — usually loses to muni TEY at this bracket."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "avoid",
+          "rationale": "K-1 reporting, ROC distributions, and high turnover create tax surprises that erode the after-tax return."
+        },
+        {
+          "groupKey": "leveraged-inverse",
+          "fit": "avoid",
+          "rationale": "High realized short-term gains taxed at ordinary rates — the worst possible structure for taxable accounts."
+        }
+      ],
+      "highlightedCategories": [
+        { "category": "Muni National Interm", "group": "muni", "rationale": "Default national tax-exempt sleeve for federal high-bracket investors." },
+        { "category": "Muni National Long", "group": "muni", "rationale": "Higher TEY for investors who can absorb the duration risk." },
+        { "category": "High Yield Muni", "group": "muni", "rationale": "Boosts TEY when the investor accepts credit risk; flag the credit-quality slip." },
+        { "category": "Muni California Long", "group": "muni", "rationale": "Triple-exempt yield for California residents in the top brackets." },
+        { "category": "Muni New York Long", "group": "muni", "rationale": "Triple-exempt yield for New York residents (especially NYC)." },
+        {
+          "category": "Large Blend",
+          "group": "broad-equity",
+          "rationale": "Total-market and S&P 500 ETFs are highly tax-efficient and rarely distribute capital gains."
+        },
+        {
+          "category": "Foreign Large Blend",
+          "group": "broad-equity",
+          "rationale": "Passive ex-US exposure with foreign-tax-credit pass-through in taxable accounts."
+        },
+        {
+          "category": "Short Government",
+          "group": "fixed-income-core",
+          "rationale": "Treasuries are state-tax exempt — meaningful in high-state-tax jurisdictions."
+        },
+        {
+          "category": "Long Government",
+          "group": "fixed-income-core",
+          "rationale": "State-tax-exempt long-duration government for investors balancing duration and state-tax savings."
+        }
+      ]
+    },
+    {
+      "key": "income-yield-seeker",
+      "name": "Income / High-Yield Seeker",
+      "shortDescription": "Wants the highest sustainable cash distribution the portfolio can produce, accepting credit risk, derivative complexity, or sector concentration to get there.",
+      "profile": {
+        "experienceLevel": "Intermediate",
+        "investmentHorizon": "Medium (1-5y)",
+        "riskTolerance": "Moderate-High",
+        "primaryGoal": "Income Generation",
+        "incomeNeed": "High",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Investor whose portfolio purpose is producing monthly or quarterly cash — semi-retired, FIRE, or someone funding a specific spending program — willing to underweight pure capital appreciation in exchange for distributable yield."
+      },
+      "goalLabels": ["High yield with moderate or high risk", "Monthly income", "Credit-driven income", "Equity-income tilt"],
+      "analysisAngle": "Lead with distribution yield, distribution frequency, and the *sustainability* of the distribution. Decompose the yield into character (qualified dividend / ordinary income / ROC / short-term gain) and the source of return (coupon, option premium, credit spread, REIT FFO). Stress-test distributions against credit drawdowns (2008, 2020, 2022) and option-premium compression in low-vol regimes. A high yield that proved unstable is worse than a lower yield that proved durable.",
+      "keyConsiderations": [
+        "Trailing 12-month distribution yield AND SEC yield (the gap reveals optical yield).",
+        "Distribution character — qualified vs ordinary vs ROC vs short-term gain.",
+        "Distribution stability through 2008, 2020 March, 2022.",
+        "Credit quality mix (HY vs IG, AAA muni vs BB) — yield premium reflects real default risk.",
+        "Concentration risk — REIT, utility, energy MLP, EM debt all carry single-factor exposure.",
+        "For derivative-income funds: cap on upside, behavior in sustained bull markets."
+      ],
+      "redFlags": [
+        "Headline yield meaningfully above SEC yield without disclosed ROC accounting.",
+        "Distribution cut history that the fund's marketing buries.",
+        "Single-issuer or single-country concentration that is not visible from the yield.",
+        "Covered-call strategy whose total return has lagged the underlying by more than the option-premium income.",
+        "High-yield muni labeled as 'muni' but functioning as a credit play."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "fixed-income-credit",
+          "fit": "primary",
+          "rationale": "High-yield, bank loan, EM debt, preferred, and multisector are the canonical taxable-income vehicles."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "primary",
+          "rationale": "Derivative-income and defined-outcome funds engineer high distribution rates by selling options."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "secondary",
+          "rationale": "REITs, utilities, energy LPs, and infrastructure deliver equity income and inflation pass-through."
+        },
+        {
+          "groupKey": "fixed-income-core",
+          "fit": "secondary",
+          "rationale": "Long bond, corporate bond, and TIPS deliver investment-grade income with manageable credit risk."
+        },
+        { "groupKey": "muni", "fit": "secondary", "rationale": "Tax-equivalent yield matters when the investor is in a high bracket." },
+        {
+          "groupKey": "broad-equity",
+          "fit": "occasional",
+          "rationale": "Large value and dividend-tilted blends deliver modest but qualified-dividend income."
+        },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "occasional",
+          "rationale": "Conservative allocation funds blend income sleeves but are not income-optimized by design."
+        },
+        {
+          "groupKey": "leveraged-inverse",
+          "fit": "avoid",
+          "rationale": "Not an income vehicle; daily-reset structure is incompatible with distribution stability."
+        }
+      ],
+      "highlightedCategories": [
+        { "category": "High Yield Bond", "group": "fixed-income-credit", "rationale": "Core taxable high-yield exposure (HYG / JNK style)." },
+        { "category": "Bank Loan", "group": "fixed-income-credit", "rationale": "Floating-rate income that holds up in rising-rate environments." },
+        {
+          "category": "Preferred Stock",
+          "group": "fixed-income-credit",
+          "rationale": "Equity-like instruments paying high stated yields, mostly from financial issuers."
+        },
+        {
+          "category": "Emerging Markets Bond",
+          "group": "fixed-income-credit",
+          "rationale": "Sovereign and quasi-sovereign EM credit with materially higher yields than US IG."
+        },
+        {
+          "category": "Multisector Bond",
+          "group": "fixed-income-credit",
+          "rationale": "Active credit allocation across HY, IG, and EM — manager flexibility for income generation."
+        },
+        {
+          "category": "Derivative Income",
+          "group": "alt-strategies",
+          "rationale": "Covered-call funds (JEPI / QYLD / SPYI) deliver high monthly distributions from option premium."
+        },
+        { "category": "Defined Outcome", "group": "alt-strategies", "rationale": "Buffered structured-payoff funds with defined income and downside profile." },
+        { "category": "Real Estate", "group": "sector-thematic-equity", "rationale": "REIT income from rents — ordinary income but historically sustainable." },
+        { "category": "Utilities", "group": "sector-thematic-equity", "rationale": "Regulated-utility dividend stream, mostly qualified." },
+        {
+          "category": "Energy Limited Partnership",
+          "group": "sector-thematic-equity",
+          "rationale": "MLP distributions with K-1 reporting — high yield but tax-complex."
+        },
+        {
+          "category": "Long-Term Bond",
+          "group": "fixed-income-core",
+          "rationale": "Long-duration IG paper for investors who want yield and accept rate risk."
+        },
+        { "category": "Corporate Bond", "group": "fixed-income-core", "rationale": "IG corporate income without meaningful credit blow-up risk." }
+      ]
+    },
+    {
+      "key": "sector-thematic-conviction",
+      "name": "Sector / Thematic Conviction Investor",
+      "shortDescription": "Has a directional view on a specific sector, theme, region, or commodity and wants the cleanest expression of that thesis.",
+      "profile": {
+        "experienceLevel": "Experienced",
+        "investmentHorizon": "Medium (1-5y)",
+        "riskTolerance": "High",
+        "primaryGoal": "Thematic Exposure",
+        "incomeNeed": "None",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Investor who has formed a specific view (AI infrastructure will outperform, India will outgrow EM, gold will benefit from real-rate path) and wants a single ETF that expresses that view rather than picking individual stocks."
+      },
+      "goalLabels": ["Sector tilt", "Thematic exposure", "Single-country thematic exposure", "Commodity / real-asset exposure"],
+      "analysisAngle": "Focus on theme purity — does the fund actually own the names that match its label? Decompose top holdings, methodology, and how the index defines the theme. Compare against the obvious peers in the same theme (XLK vs VGT vs IYW for tech; KWEB vs MCHI vs FXI for China). Surface concentration, weighting methodology (cap vs equal vs revenue), and rebalancing cadence. Avoid over-weighting historical returns — themes rotate and recent leadership is a poor predictor.",
+      "keyConsiderations": [
+        "Methodology — what does the index actually screen for, and how strict is the filter?",
+        "Theme purity — top-10 holdings vs the stated thesis.",
+        "Peer comparison within the same theme (multiple ETFs often exist).",
+        "Concentration — how much of return is driven by the top 5 names?",
+        "Weighting scheme (market-cap vs equal-weight vs revenue-weight) materially changes risk profile.",
+        "Rebalancing cadence and turnover — high-rebalance themes generate cap gains in taxable accounts."
+      ],
+      "redFlags": [
+        "Theme name that does not match the actual top holdings (e.g. an 'AI' fund holding mostly mega-cap tech).",
+        "Single-stock exposure above ~25% (turns the fund into a single-stock proxy).",
+        "Recent inception (<2 years) for a niche theme without issuer track record.",
+        "AUM under $50M with declining trend (closure risk in a specialty fund is high)."
+      ],
+      "etfGroupFit": [
+        { "groupKey": "sector-thematic-equity", "fit": "primary", "rationale": "Every category in this group is exactly a sector or thematic expression." },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "primary",
+          "rationale": "Spot digital assets, commodities, and single-currency funds are pure thematic real-asset / FX expressions."
+        },
+        {
+          "groupKey": "broad-equity",
+          "fit": "secondary",
+          "rationale": "Single-country and regional funds (China, India, Japan, Latin America) are equity-thematic by definition."
+        },
+        {
+          "groupKey": "leveraged-inverse",
+          "fit": "occasional",
+          "rationale": "Acceptable only as a short-term tactical expression, never as the long-form thematic holding."
+        },
+        { "groupKey": "fixed-income-credit", "fit": "occasional", "rationale": "EM debt and certain credit themes can express a macro view." },
+        { "groupKey": "fixed-income-core", "fit": "occasional", "rationale": "Duration / curve tilts (long government, TIPS) can express macro themes." },
+        { "groupKey": "muni", "fit": "occasional", "rationale": "State-specific muni funds are technically thematic on state-fiscal health." },
+        { "groupKey": "allocation-target-date", "fit": "avoid", "rationale": "Multi-asset blends dilute any single thematic view." }
+      ],
+      "highlightedCategories": [
+        { "category": "Technology", "group": "sector-thematic-equity", "rationale": "Cleanest US-tech thematic expression." },
+        { "category": "Health", "group": "sector-thematic-equity", "rationale": "Healthcare sector tilt — defensive growth with distinct regulatory risk." },
+        { "category": "Financial", "group": "sector-thematic-equity", "rationale": "Bank, broker, and insurance tilt — rate- and cycle-sensitive." },
+        { "category": "Equity Energy", "group": "sector-thematic-equity", "rationale": "Equity expression of the energy thesis (vs commodity exposure)." },
+        { "category": "Real Estate", "group": "sector-thematic-equity", "rationale": "REIT thematic exposure to commercial real estate." },
+        { "category": "Equity Precious Metals", "group": "sector-thematic-equity", "rationale": "Gold-mining equities — leveraged play on the gold price." },
+        { "category": "Infrastructure", "group": "sector-thematic-equity", "rationale": "Listed infrastructure thematic — utilities, pipelines, transport." },
+        { "category": "Equity Digital Assets", "group": "sector-thematic-equity", "rationale": "Equity exposure to crypto-economy companies." },
+        { "category": "China Region", "group": "broad-equity", "rationale": "Single-country China thematic exposure." },
+        { "category": "India Equity", "group": "broad-equity", "rationale": "Single-country India growth thesis." },
+        { "category": "Japan Stock", "group": "broad-equity", "rationale": "Single-country Japan thematic — corporate governance / yen thesis." },
+        { "category": "Latin America Stock", "group": "broad-equity", "rationale": "Regional EM tilt with commodity sensitivity." },
+        { "category": "Digital Assets", "group": "alt-strategies", "rationale": "Spot crypto exposure for direct thematic conviction." },
+        { "category": "Commodities Focused", "group": "alt-strategies", "rationale": "Single-commodity thematic plays (gold, silver, oil, ag)." },
+        {
+          "category": "Commodities Precious Metals",
+          "group": "alt-strategies",
+          "rationale": "Direct precious-metals exposure for inflation / debasement views."
+        },
+        { "category": "Single Currency", "group": "alt-strategies", "rationale": "Direct FX expression for macro currency views." }
+      ]
+    },
+    {
+      "key": "active-trader-speculator",
+      "name": "Active Trader / Tactical Speculator",
+      "shortDescription": "Holds positions for hours to weeks, uses ETFs as expression vehicles for short-term directional or hedging trades. Tolerates structural decay in exchange for liquidity and leverage.",
+      "profile": {
+        "experienceLevel": "Experienced",
+        "investmentHorizon": "Short (<1y)",
+        "riskTolerance": "Very High",
+        "primaryGoal": "Speculation / Trading",
+        "incomeNeed": "None",
+        "taxSensitivity": "Low",
+        "accountTypePreference": "Taxable",
+        "typicalInvestor": "Active trader running directional or pairs trades, hedging an existing book, or expressing tactical macro views with daily-leveraged or single-currency / single-commodity products."
+      },
+      "goalLabels": ["Short-term tactical exposure", "Leveraged directional bet", "Hedging overlay"],
+      "analysisAngle": "Focus on intraday liquidity, bid-ask spread, daily volume, and daily-leverage tracking fidelity. For leveraged products, hammer the holding-period warning: 2-3% all-in annual decay (financing + volatility drag + expense ratio) means these are not buy-and-hold. Address pair-trade construction (TQQQ vs SQQQ, TLT vs TBT) and the impact of overnight gap risk. Tax efficiency is largely irrelevant — short-term gains are short-term gains.",
+      "keyConsiderations": [
+        "Average daily dollar volume — must support entry/exit at intended size without slippage.",
+        "Bid-ask spread in bps — direct round-trip cost for high-frequency trading.",
+        "Daily-leverage tracking fidelity vs the stated multiplier.",
+        "Underlying market hours — single-currency and commodity ETFs may gap on overnight underlying moves.",
+        "Volatility decay magnitude in the recent regime.",
+        "Suitability for pair trades (matched leverage long/short pairs)."
+      ],
+      "redFlags": [
+        "Wide bid-ask that erodes round-trip economics.",
+        "Thin volume that prevents large-order exits without market impact.",
+        "Persistent tracking gap vs the daily-leverage objective.",
+        "Marketing language that downplays the daily-reset / decay mechanism."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "leveraged-inverse",
+          "fit": "primary",
+          "rationale": "Daily-leveraged and inverse funds are the direct expression vehicle for short-term tactical bets."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "primary",
+          "rationale": "Single-currency, commodity, and digital-asset funds give clean tactical exposure to macro factors."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "secondary",
+          "rationale": "Narrow sector ETFs are useful for sector-rotation trades and short-term hedges."
+        },
+        { "groupKey": "broad-equity", "fit": "secondary", "rationale": "Single-country / regional funds enable macro-tactical bets on specific economies." },
+        { "groupKey": "fixed-income-core", "fit": "secondary", "rationale": "Treasury-duration ETFs (TLT, IEF) are standard rate-bet expression vehicles." },
+        { "groupKey": "fixed-income-credit", "fit": "occasional", "rationale": "HY-credit ETFs can express risk-on / risk-off tactical views." },
+        { "groupKey": "muni", "fit": "avoid", "rationale": "Wide bid-ask and slow underlying market make muni ETFs unsuitable for short-term trading." },
+        { "groupKey": "allocation-target-date", "fit": "avoid", "rationale": "Multi-asset blends are too diluted for any tactical thesis." }
+      ],
+      "highlightedCategories": [
+        { "category": "Trading--Leveraged Equity", "group": "leveraged-inverse", "rationale": "TQQQ / SPXL — canonical 3x equity tactical long." },
+        {
+          "category": "Trading--Inverse Equity",
+          "group": "leveraged-inverse",
+          "rationale": "SQQQ / SPXS — canonical short-side equity expression for hedging or directional shorts."
+        },
+        { "category": "Trading--Leveraged Debt", "group": "leveraged-inverse", "rationale": "TMF — leveraged long-duration Treasury bet." },
+        { "category": "Trading--Inverse Debt", "group": "leveraged-inverse", "rationale": "TBT / TBF — short long-duration Treasury (rate hike bet)." },
+        { "category": "Trading--Leveraged Commodities", "group": "leveraged-inverse", "rationale": "BOIL / UCO — leveraged commodity trades." },
+        {
+          "category": "Multi-Asset Leveraged",
+          "group": "leveraged-inverse",
+          "rationale": "Risk-parity-style leveraged multi-asset for sophisticated tactical use."
+        },
+        { "category": "Single Currency", "group": "alt-strategies", "rationale": "Direct USD / yen / euro expression for macro tactical FX." },
+        { "category": "Commodities Focused", "group": "alt-strategies", "rationale": "Single-commodity tactical plays (oil, gas, ag)." },
+        { "category": "Digital Assets", "group": "alt-strategies", "rationale": "Spot crypto for short-term directional bets." },
+        { "category": "Long Government", "group": "fixed-income-core", "rationale": "TLT — the standard tactical duration vehicle without leverage." }
+      ]
+    },
+    {
+      "key": "all-weather-diversifier",
+      "name": "All-Weather Diversifier / Risk-Off Hedger",
+      "shortDescription": "Cares about portfolio-level outcomes more than any one fund's return. Prioritizes low correlation, drawdown reduction, and risk-adjusted return; allocates to alternatives and balanced sleeves.",
+      "profile": {
+        "experienceLevel": "Experienced",
+        "investmentHorizon": "Long (5-15y)",
+        "riskTolerance": "Moderate",
+        "primaryGoal": "Diversification / Hedging",
+        "incomeNeed": "Modest",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Sophisticated investor (often someone with finance background or working with an advisor) building a portfolio that holds up across regimes — not just bull markets — and willing to accept lower expected return for shallower drawdowns."
+      },
+      "goalLabels": ["Low-correlation diversifier", "Drawdown reduction", "All-weather portfolio sleeve", "Risk-off hedge"],
+      "analysisAngle": "Focus on correlation to S&P 500 and to a 60/40 benchmark, drawdown depth in 2008 / 2020 / 2022, and whether the strategy actually delivered its mandate (low correlation, downside protection, uncorrelated returns) — not whether it beat the S&P. Emphasize that the right yardstick for an alt strategy is mandate adherence in stress, not absolute return in a bull market. Address how this fund interacts with a typical equity-heavy portfolio.",
+      "keyConsiderations": [
+        "Realized correlation to S&P 500 across full cycle and in stress periods.",
+        "Maximum drawdown vs an equity benchmark — did it cut drawdown materially?",
+        "Mandate delivery — did the strategy do what it said (managed-futures up in 2022, market-neutral flat through 2020)?",
+        "Risk-adjusted return (Sharpe / Sortino) vs both peers and a passive blend.",
+        "Fee justification — alt-strategy fees only earn their keep if the diversification is real.",
+        "Capacity / scaling — has the strategy degraded as AUM grew?"
+      ],
+      "redFlags": [
+        "Strategy that quietly tracks equities in stress (correlation spike when it matters most).",
+        "High fees on a 'multi-strategy' fund that just delivers equity beta.",
+        "Manager change without succession plan in an active alt sleeve.",
+        "Mandate drift — fund relabels from 'market neutral' to 'long-short' (different risk profile)."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "primary",
+          "rationale": "Static balanced, tactical, and global allocation funds are pre-built diversified sleeves."
+        },
+        {
+          "groupKey": "alt-strategies",
+          "fit": "primary",
+          "rationale": "Managed futures, market neutral, long-short, and multistrategy are the canonical low-correlation diversifiers."
+        },
+        { "groupKey": "fixed-income-core", "fit": "secondary", "rationale": "Treasuries and TIPS provide the classic risk-off ballast in a 60/40 portfolio." },
+        { "groupKey": "broad-equity", "fit": "secondary", "rationale": "Foreign and EM equity diversify the US-equity risk concentration." },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "occasional",
+          "rationale": "Real estate, gold-mining, and infrastructure can serve as thematic diversifiers but carry sector risk."
+        },
+        { "groupKey": "fixed-income-credit", "fit": "occasional", "rationale": "Credit correlates with equity in stress — limited diversification value." },
+        { "groupKey": "muni", "fit": "occasional", "rationale": "Useful when the diversifier need is also tax-efficient." },
+        { "groupKey": "leveraged-inverse", "fit": "avoid", "rationale": "Volatility decay makes these unsuitable as portfolio diversifiers." }
+      ],
+      "highlightedCategories": [
+        { "category": "Tactical Allocation", "group": "allocation-target-date", "rationale": "Active multi-asset that tilts across regimes." },
+        { "category": "Moderate Allocation", "group": "allocation-target-date", "rationale": "Static 60/40-style blend as a single-ticker portfolio." },
+        {
+          "category": "Global Moderate Allocation",
+          "group": "allocation-target-date",
+          "rationale": "Globally diversified balanced blend reducing US-equity concentration."
+        },
+        { "category": "Global Allocation", "group": "allocation-target-date", "rationale": "Flexible cross-asset, cross-region single-ticker allocation." },
+        {
+          "category": "Systematic Trend",
+          "group": "alt-strategies",
+          "rationale": "Managed-futures trend-following — historically uncorrelated and positive in 2008 / 2022."
+        },
+        { "category": "Equity Market Neutral", "group": "alt-strategies", "rationale": "Long/short construction targeting near-zero net market exposure." },
+        { "category": "Long-Short Equity", "group": "alt-strategies", "rationale": "Reduces beta vs long-only equity while retaining stock-selection alpha." },
+        {
+          "category": "Multistrategy",
+          "group": "alt-strategies",
+          "rationale": "Combines uncorrelated alt sleeves into one ticker for portfolio-level diversification."
+        },
+        {
+          "category": "Macro Trading",
+          "group": "alt-strategies",
+          "rationale": "Macro-discretionary or systematic — distinct return drivers from equity / credit."
+        },
+        {
+          "category": "Long Government",
+          "group": "fixed-income-core",
+          "rationale": "Long-duration Treasury — classic risk-off equity hedge in deflation regimes."
+        },
+        {
+          "category": "Inflation-Protected Bond",
+          "group": "fixed-income-core",
+          "rationale": "TIPS hedge inflation regimes that hurt nominal bonds and growth equity."
+        },
+        { "category": "Foreign Large Blend", "group": "broad-equity", "rationale": "Developed-ex-US diversifies US-equity concentration." },
+        { "category": "Diversified Emerging Mkts", "group": "broad-equity", "rationale": "EM equity diversifies developed-market regime risk." }
+      ]
+    },
+    {
+      "key": "inflation-real-asset-hedger",
+      "name": "Inflation & Real-Asset Hedger",
+      "shortDescription": "Worried about CPI / debasement / cost-of-living erosion of purchasing power. Allocates to commodities, real estate, infrastructure, energy equities, gold, and TIPS.",
+      "profile": {
+        "experienceLevel": "Intermediate",
+        "investmentHorizon": "Long (5-15y)",
+        "riskTolerance": "Moderate-High",
+        "primaryGoal": "Diversification / Hedging",
+        "incomeNeed": "Modest",
+        "taxSensitivity": "Moderate",
+        "accountTypePreference": "Either",
+        "typicalInvestor": "Investor explicitly worried about inflation regimes (post-2021 type), sustained debasement, or cost-of-living erosion of the bond and growth-equity portion of their portfolio."
+      },
+      "goalLabels": ["Inflation hedge", "Real-asset exposure", "Commodity / real-estate tilt", "Debasement hedge"],
+      "analysisAngle": "Focus on real-return correlation and inflation beta. Distinguish *direct* inflation hedges (commodities, TIPS, gold) from *equity-style* real-asset proxies (REITs, infrastructure, energy equities, MLPs) — the equity proxies have meaningful equity-market beta and are imperfect hedges in pure inflation shocks. Address regime sensitivity: gold and commodities perform very differently across stagflation, demand-pull, and rate-hike inflation. Surface tax / K-1 complications for commodity pools and MLPs.",
+      "keyConsiderations": [
+        "Direct vs proxy inflation exposure — physical commodities vs producer equities have different betas.",
+        "Inflation beta in actual inflation regimes (2021-2023, 2008 commodity spike).",
+        "Real-rate sensitivity — TIPS lose value when real rates rise even if breakevens hold.",
+        "K-1 vs 1099 reporting for commodity pools, MLPs, and certain alt funds.",
+        "Concentration — a 'commodities' fund may be 80% energy.",
+        "Equity-market beta of REITs, infrastructure, and natural-resource equities (they are not pure inflation hedges)."
+      ],
+      "redFlags": [
+        "Long-duration nominal bond fund being marketed as part of an inflation portfolio.",
+        "Single-commodity fund being used as the broad inflation hedge.",
+        "Equity REIT being treated as a pure inflation hedge despite high equity-market beta.",
+        "Gold-mining ETF treated as gold (mining equities can decouple sharply from spot)."
+      ],
+      "etfGroupFit": [
+        {
+          "groupKey": "alt-strategies",
+          "fit": "primary",
+          "rationale": "Commodities, precious metals, and digital-asset funds are the most direct real-asset / debasement hedges."
+        },
+        {
+          "groupKey": "sector-thematic-equity",
+          "fit": "primary",
+          "rationale": "Real estate, natural resources, infrastructure, energy, and MLPs are the equity-style real-asset proxies."
+        },
+        { "groupKey": "fixed-income-core", "fit": "secondary", "rationale": "TIPS and short-term TIPS are the direct inflation-linked Treasury hedge." },
+        {
+          "groupKey": "broad-equity",
+          "fit": "occasional",
+          "rationale": "Value tilt and EM equity historically perform better than growth in inflation regimes."
+        },
+        { "groupKey": "fixed-income-credit", "fit": "occasional", "rationale": "Bank loans (floating rate) can hold up in rising-rate inflation regimes." },
+        {
+          "groupKey": "allocation-target-date",
+          "fit": "occasional",
+          "rationale": "Most allocation funds underweight real assets; check the actual inflation hedge sleeve."
+        },
+        { "groupKey": "muni", "fit": "avoid", "rationale": "Long-duration nominal munis lose to inflation; not a hedge." },
+        { "groupKey": "leveraged-inverse", "fit": "avoid", "rationale": "Decay structure makes these unsuitable for a multi-year inflation hedge." }
+      ],
+      "highlightedCategories": [
+        { "category": "Commodities Broad Basket", "group": "alt-strategies", "rationale": "Diversified commodity exposure — the direct inflation hedge." },
+        { "category": "Commodities Focused", "group": "alt-strategies", "rationale": "Single-commodity exposure for specific supply / demand views." },
+        { "category": "Commodities Precious Metals", "group": "alt-strategies", "rationale": "Direct gold / silver exposure — the classic debasement hedge." },
+        {
+          "category": "Digital Assets",
+          "group": "alt-strategies",
+          "rationale": "Bitcoin as the modern debasement hedge for investors who accept the volatility."
+        },
+        { "category": "Real Estate", "group": "sector-thematic-equity", "rationale": "REIT income inflation pass-through, with equity-market beta caveat." },
+        { "category": "Global Real Estate", "group": "sector-thematic-equity", "rationale": "Diversifies single-country property regulatory risk." },
+        {
+          "category": "Natural Resources",
+          "group": "sector-thematic-equity",
+          "rationale": "Diversified resource-equity exposure (mining, energy, agriculture)."
+        },
+        { "category": "Equity Energy", "group": "sector-thematic-equity", "rationale": "Energy-equity tilt for oil-price inflation regimes." },
+        { "category": "Equity Precious Metals", "group": "sector-thematic-equity", "rationale": "Gold-miner equity leverage to the gold price." },
+        { "category": "Infrastructure", "group": "sector-thematic-equity", "rationale": "Listed infrastructure with regulated inflation pass-through." },
+        {
+          "category": "Energy Limited Partnership",
+          "group": "sector-thematic-equity",
+          "rationale": "MLPs tied to commodity throughput and inflation pass-through (K-1 caveat)."
+        },
+        {
+          "category": "Inflation-Protected Bond",
+          "group": "fixed-income-core",
+          "rationale": "Direct CPI-linked Treasury exposure — the classic real-yield hedge."
+        },
+        {
+          "category": "Short-Term Inflation-Protected Bond",
+          "group": "fixed-income-core",
+          "rationale": "TIPS without long-duration real-rate risk — purer near-term inflation hedge."
+        }
+      ]
+    }
+  ]
+}

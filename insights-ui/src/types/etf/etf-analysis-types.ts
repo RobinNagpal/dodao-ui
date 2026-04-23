@@ -113,3 +113,73 @@ export interface EtfCategoryAnalysisResponse {
   overallAnalysisDetails: string;
   factors: EtfFactorAnalysisResult[];
 }
+
+/**
+ * Target investor groups taxonomy. Each group is an investor archetype that an ETF
+ * analysis can be written from the perspective of. Groups map onto the ETF groups
+ * (and optionally specific Morningstar categories) defined in etf-analysis-categories.json.
+ */
+
+export type EtfInvestorExperienceLevel = 'Beginner' | 'Intermediate' | 'Experienced';
+
+export type EtfInvestorHorizon = 'Short (<1y)' | 'Medium (1-5y)' | 'Long (5-15y)' | 'Very Long (15y+)';
+
+export type EtfInvestorRiskTolerance = 'Low' | 'Low-Moderate' | 'Moderate' | 'Moderate-High' | 'High' | 'Very High';
+
+export type EtfInvestorPrimaryGoal =
+  | 'Wealth Accumulation'
+  | 'Income Generation'
+  | 'Capital Preservation'
+  | 'Tax Optimization'
+  | 'Speculation / Trading'
+  | 'Diversification / Hedging'
+  | 'Thematic Exposure';
+
+export type EtfInvestorIncomeNeed = 'None' | 'Modest' | 'High';
+
+export type EtfInvestorTaxSensitivity = 'Low' | 'Moderate' | 'High';
+
+export type EtfInvestorAccountPreference = 'Taxable' | 'Tax-Advantaged' | 'Either';
+
+export interface EtfInvestorProfile {
+  experienceLevel: EtfInvestorExperienceLevel;
+  investmentHorizon: EtfInvestorHorizon;
+  riskTolerance: EtfInvestorRiskTolerance;
+  primaryGoal: EtfInvestorPrimaryGoal;
+  incomeNeed: EtfInvestorIncomeNeed;
+  taxSensitivity: EtfInvestorTaxSensitivity;
+  accountTypePreference: EtfInvestorAccountPreference;
+  typicalInvestor: string;
+}
+
+export type EtfGroupFitLevel = 'primary' | 'secondary' | 'occasional' | 'avoid';
+
+export interface EtfInvestorGroupGroupFit {
+  groupKey: string;
+  fit: EtfGroupFitLevel;
+  rationale: string;
+}
+
+export interface EtfInvestorGroupCategoryHighlight {
+  category: string;
+  group: string;
+  rationale: string;
+}
+
+export interface EtfTargetInvestorGroup {
+  key: string;
+  name: string;
+  shortDescription: string;
+  profile: EtfInvestorProfile;
+  goalLabels: string[];
+  analysisAngle: string;
+  keyConsiderations: string[];
+  redFlags: string[];
+  etfGroupFit: EtfInvestorGroupGroupFit[];
+  highlightedCategories: EtfInvestorGroupCategoryHighlight[];
+}
+
+export interface EtfTargetInvestorGroupsConfig {
+  description: string;
+  investorGroups: EtfTargetInvestorGroup[];
+}
