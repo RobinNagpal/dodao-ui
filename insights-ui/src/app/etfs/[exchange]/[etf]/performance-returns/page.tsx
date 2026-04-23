@@ -127,6 +127,8 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
         categoryBadgeText={CATEGORY_NAME}
         categoryBadgeClassName={BADGE_CLASS}
         updatedAt={modifiedDate}
+        assetClass={etfData.stockAnalyzerInfo?.assetClass}
+        fundCategory={etfData.stockAnalyzerInfo?.category}
       />
     </PageWrapper>
   );

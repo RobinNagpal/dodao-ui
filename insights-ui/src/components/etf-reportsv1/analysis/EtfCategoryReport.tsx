@@ -1,4 +1,5 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
+import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -22,6 +23,8 @@ export interface EtfCategoryReportProps {
   categoryBadgeText: string;
   categoryBadgeClassName: string;
   updatedAt?: string;
+  assetClass?: string | null;
+  fundCategory?: string | null;
 }
 
 export default function EtfCategoryReport({
@@ -33,6 +36,8 @@ export default function EtfCategoryReport({
   categoryBadgeText,
   categoryBadgeClassName,
   updatedAt,
+  assetClass,
+  fundCategory,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -67,6 +72,7 @@ export default function EtfCategoryReport({
                   {formattedModifiedDate}
                 </time>
               </div>
+              <EtfMetadataBadges assetClass={assetClass} category={fundCategory} className="mt-3" />
             </div>
             <Link href={`/etfs/${exchange}/${symbol}`} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
               View Full Report →

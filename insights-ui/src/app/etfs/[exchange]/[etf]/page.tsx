@@ -10,6 +10,7 @@ import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysis
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
+import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
@@ -287,6 +288,8 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
           <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(d.exchange)}</span>
         </div>
       </div>
+
+      <EtfMetadataBadges assetClass={d.stockAnalyzerInfo?.assetClass} category={d.stockAnalyzerInfo?.category} className="mb-4" />
 
       {/* Summary (if available) */}
       {d.summary && d.summary.trim() && (
