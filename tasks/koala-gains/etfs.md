@@ -43,6 +43,18 @@ Reorder/extend the ETF details page so sections appear in this order:
 - [ ] **Admin-only `updatedAt` timestamp**:
   - Display the `updatedAt` datetime for each section / evaluation category / report.
   - Visible only to admin users.
+- [ ] **ETF holdings section**:
+  - Show the ETF's underlying **holdings** on the details page (ticker, name, weight %,
+    sector, optional country/region).
+  - Sort by weight descending; show a clear default of top N (e.g. 10 or 25) with a "view
+    all holdings" expand / link to a full list.
+  - Include summary stats above the table: total holdings count, top-10 concentration %,
+    sector/geography breakdown (mini bar or pie).
+  - Link each holding's ticker to our stock report page where one exists; otherwise show as
+    plain text.
+  - Handle ETFs where we don't yet have holdings data (graceful empty state, don't break
+    the page).
+  - Confirm the data source (existing ingestion vs new) and refresh cadence.
 
 ### 1.2) Competition + Similar ETFs
 
