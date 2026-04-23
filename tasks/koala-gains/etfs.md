@@ -126,6 +126,79 @@ Page: https://koalagains.com/admin-v1/etf-generation-requests
   - Auto-refresh the page every **30 seconds**.
   - Provide a control to **stop / start** the auto-refresh.
 
+### 1.5) Custom Reports ("random reports") per ETF
+
+Mirror of the stock Custom Reports feature — see the stock design doc
+`docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
+(PR #1318) for the full spec; the ETF version should reuse the same shape, just scoped to
+an `Etf` instead of a `TickerV1`.
+
+Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
+single ETF — e.g. "Why is QQQI's premium to NAV widening?", "How does this sector ETF hold
+up in a 50% China-tariff scenario?", "What happens to this fund if 10y yields spike?". Each
+ETF has **0..N** Custom Reports; each is a one-shot prompt → one-shot answer with
+regeneration history.
+
+- [ ] **Data model** (new Prisma tables, mirror the stock ones):
+  - `EtfCustomReport` — one row per report on an ETF; `title`, `userQuestion`, optional
+    `templateKey`, denormalized `latestAnswerMarkdown` / `latestAnswerJson` /
+    `latestSources` / `latestRunId`, `status` (`NotStarted` / `InProgress` / `Completed` /
+    `Failed`), `archived` soft-delete, audit fields.
+  - `EtfCustomReportRun` — one row per LLM invocation; links to `PromptInvocation`; keeps
+    history so we can compare answers over time.
+  - Optional `EtfCustomReportTemplate` — curated pre-written prompts with placeholders
+    (e.g. "Explain a premium/discount-to-NAV change") users can pick from.
+  - Backref `Etf.customReports`.
+- [ ] **API** — under an ETF-scoped namespace, same shape as the stock routes:
+  - `GET` list, `POST` create (kicks off first Run), `GET /[reportId]` detail with all Runs,
+    `POST /[reportId]/regenerate`, `PATCH /[reportId]` (title / archive).
+  - Admin route for curated ETF templates.
+  - Thin handlers; work in `src/utils/analysis-reports/etf-custom-report-utils.ts`.
+- [ ] **Prompt infra reuse**:
+  - Go through `getLLMResponseForPromptViaInvocation` with a single generic system prompt
+    (e.g. `promptKey: 'US/etfs-v1/custom-report'`).
+  - `inputJson` carries ETF context (symbol / name / issuer / category-group / strategy,
+    holdings summary, 30d price move, recent news) **plus** the user's question or resolved
+    template.
+  - Get `Prompt` / `PromptVersion` / `PromptInvocation` versioning, status, model id, error
+    capture, raw I/O for free.
+- [ ] **Output shape** the LLM must return:
+  - `answerMarkdown` — long-form rendering on the detail page.
+  - `answerJson`: `{ summary, keyPoints[], verdict?: 'Bullish'|'Bearish'|'Neutral',
+    confidence?: 'Low'|'Medium'|'High', sources?: { title, url }[] }`.
+- [ ] **UI**:
+  - Add a **"Custom Reports"** section to the ETF detail page (section 1.1) — `[+ New
+    Report]` button, card grid of existing reports, empty state.
+  - New sub-page `app/etfs/[exchange]/[symbol]/custom-reports/[reportId]/page.tsx` with full
+    markdown render, sources list, "Regenerate" (permission-gated), collapsed history panel.
+  - **New-report modal** with two tabs: **From template** (dropdown + preview) and
+    **Free-form** (title + question textarea). Optimistic UI, poll until `Completed`.
+  - Admin CRUD page for curated ETF templates.
+- [ ] **Generation flow** (v1 = synchronous inside the POST handler):
+  1. Load ETF; insert Report (`NotStarted`) + first Run (`InProgress`); return
+     `201 { reportId, runId }`.
+  2. `await` `getLLMResponseForPromptViaInvocation`.
+  3. On success: populate Run, flip Report to `Completed`, update denormalized latest-*
+     fields + `latestRunId`.
+  4. On failure: store `errorMessage`, mark Run `Failed`; keep prior successful answer if
+     one existed, else mark Report `Failed`.
+- [ ] **Permissions / quotas / abuse**:
+  - Space-scoped via existing membership check.
+  - Per-user quota: cap N Custom Reports per ETF per user per day (config-driven).
+  - Hard output-length cap in the system prompt; no recursive web-research tools in v1.
+  - Archive-only (no row deletion) in v1; only creator or admin can edit/archive.
+- [ ] **Phased rollout** (mirrors the stock phasing):
+  - **P0**: schema + migration + admin curated-template CRUD.
+  - **P1**: list + detail + create-from-template modal on the ETF detail page.
+  - **P2**: free-form prompt behind a feature flag; per-user quota enforced.
+  - **P3**: streaming answers, web-search citations, history diff view.
+- [ ] **Open questions**:
+  - Should stock and ETF Custom Reports share a **single** `CustomReport(+Run)` table with a
+    polymorphic `subjectType` + `subjectId` column, or stay as two parallel table families?
+    Parallel is simpler; unified is DRYer and lets cross-asset reports happen later.
+  - ETF-specific template examples to seed (premium/NAV, holdings concentration, tracking
+    error, sector-rotation scenarios).
+
 ---
 
 ## Phase 2 — Target audience / Goals

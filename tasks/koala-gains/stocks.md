@@ -195,6 +195,85 @@ than invent new ones.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
 
+## Custom Reports ("random reports") per stock
+
+Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
+(PR #1318). Summary below; read the doc before implementing.
+
+Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
+single ticker — e.g. "Why did Beta Farms (BYRN) drop in Q1 2026 and will it drop further?",
+"Is the recent insider selling a red flag?", "How exposed is this ticker to a 50% tariff on
+Chinese imports?". Each ticker has **0..N** Custom Reports; each is a one-shot prompt → one-shot
+answer with regeneration history.
+
+- [ ] **Data model** (new Prisma tables — see §5 of the design doc):
+  - `TickerV1CustomReport` — one row per report on a ticker; holds `title`, `userQuestion`,
+    optional `templateKey`, denormalized `latestAnswerMarkdown` / `latestAnswerJson` /
+    `latestSources` / `latestRunId`, `status` (`NotStarted` / `InProgress` / `Completed` /
+    `Failed`), `archived` soft-delete, audit fields.
+  - `TickerV1CustomReportRun` — one row per LLM invocation; links to `PromptInvocation`;
+    keeps history so we can compare answers over time.
+  - Optional `TickerV1CustomReportTemplate` — curated pre-written prompts with placeholders
+    (e.g. "Explain a recent stock drop") that users can pick from.
+  - Backref `TickerV1.customReports`.
+- [ ] **API** — under the existing per-report namespace
+  `/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/custom-reports`:
+  - `GET` list, `POST` create (kicks off first Run), `GET /[reportId]` detail with all Runs,
+    `POST /[reportId]/regenerate`, `PATCH /[reportId]` (title / archive).
+  - Admin route for curated templates: `/api/[spaceId]/tickers-v1/custom-report-templates`.
+  - Handlers stay thin; work goes into `src/utils/analysis-reports/custom-report-utils.ts`.
+- [ ] **Prompt infra reuse**:
+  - All LLM calls go through `getLLMResponseForPromptViaInvocation` with a single generic
+    system prompt registered as `promptKey: 'US/public-equities-v1/custom-report'`.
+  - The `inputJson` carries ticker context (symbol/name/industry, cached financials, latest
+    summary, 30d price move, recent news) **plus** the user's question or resolved template.
+  - We get `Prompt` / `PromptVersion` / `PromptInvocation` versioning, status, model id,
+    error capture, raw I/O for free.
+- [ ] **Output shape** the LLM must return:
+  - `answerMarkdown` — long-form rendering on the detail page.
+  - `answerJson`: `{ summary, keyPoints[], verdict?: 'Bullish'|'Bearish'|'Neutral',
+    confidence?: 'Low'|'Medium'|'High', sources?: { title, url }[] }`.
+- [ ] **UI**:
+  - Add a **"Custom Reports"** section to the V1 stock detail page
+    (`app/stocks/[exchange]/[ticker]/page.tsx`): `[+ New Report]` button, card grid of
+    existing reports (title, `answerJson.summary`, verdict pill, `updatedAt`), empty state
+    with Beta Farms example.
+  - New sub-page `app/stocks/[exchange]/[ticker]/custom-reports/[reportId]/page.tsx` —
+    full markdown render, sources list, "Regenerate" (permission-gated), collapsed history
+    panel of prior Runs.
+  - **New-report modal** with two tabs: **From template** (dropdown with preview of
+    substituted prompt) and **Free-form** (title + question textarea). Submit optimistically,
+    show `InProgress`, poll until `Completed`.
+  - Admin CRUD page for curated templates.
+- [ ] **Generation flow** (v1 = synchronous inside the POST handler, matches
+  `future-risk/route.ts`):
+  1. Load ticker; insert Report (`NotStarted`) + first Run (`InProgress`); return
+     `201 { reportId, runId }`.
+  2. `await` `getLLMResponseForPromptViaInvocation`.
+  3. On success: populate Run fields, flip Report to `Completed`, update denormalized latest-*
+     fields and `latestRunId`.
+  4. On failure: store `errorMessage`, mark Run `Failed`; keep prior successful answer if one
+     existed, else mark Report `Failed`.
+- [ ] **Permissions / quotas / abuse**:
+  - Space-scoped via existing membership check (same as other V1 POST routes).
+  - Per-user quota: cap N Custom Reports per ticker per user per day (config-driven).
+  - Hard output-length cap in the system prompt; no recursive web-research tools in v1.
+  - Archive-only (no row deletion) in v1; only creator or admin can edit/archive.
+- [ ] **Why not extend `TickerV1GenerationRequest`**:
+  - That model is a fixed set of boolean flags for the closed list of canonical sections.
+  - Custom Reports are open-ended, per-row ids, per-report status, multiple runs — a dedicated
+    pair of tables is cleaner and keeps the batch regen pipeline focused.
+- [ ] **Phased rollout** (from §12):
+  - **P0**: schema + migration + admin curated-template CRUD (no user-facing UI yet).
+  - **P1**: list + detail + create-from-template modal on the V1 ticker page.
+  - **P2**: free-form prompt behind a feature flag; per-user quota enforced.
+  - **P3**: streaming answers, web-search citations, history diff view.
+- [ ] **Open questions to resolve before P1**:
+  - Streaming vs spinner-then-render (rec: spinner for v1).
+  - Free-form vs templates-only at launch (rec: ship both, free-form behind flag).
+  - Citations — synthesize-only for v1; web-search citations need separate design.
+  - Cross-ticker reports are explicitly out of scope here.
+
 ## Login improvements
 
 Goal: grow logged-in users by broadening SSO coverage and nudging highly-engaged anonymous
