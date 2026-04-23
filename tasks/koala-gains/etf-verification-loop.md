@@ -69,18 +69,18 @@ change, edit that JSON and commit it — no script runs.
 
 ---
 
-## Helper scripts (`src/scripts/etf-verification/`)
+## Helper scripts (`src/scripts/etfs/`)
 
 | Command                   | Purpose                                                                          |
 | ------------------------- | -------------------------------------------------------------------------------- |
-| `yarn etf-verify:trigger` | POST `/generation-requests` to enqueue reports for a **single** category         |
-| `yarn etf-verify:wait`    | GET `/generation-requests/by-ids?ids=…` until all settle                         |
-| `yarn etf-verify:fetch`   | GET `/exchange/{ex}/{sym}/analysis` → one md per ETF, only the category in scope |
+| `yarn etfs:trigger` | POST `/generation-requests` to enqueue reports for a **single** category         |
+| `yarn etfs:wait`    | GET `/generation-requests/by-ids?ids=…` until all settle                         |
+| `yarn etfs:fetch`   | GET `/exchange/{ex}/{sym}/analysis` → one md per ETF, only the category in scope |
 
 ### Which API returns the "output we get"?
 
 `GET /api/{space}/etfs-v1/exchange/{EXCHANGE}/{SYMBOL}/analysis` — returns every
-category analysis the server has stored for that ETF. `yarn etf-verify:fetch --category <cat>`
+category analysis the server has stored for that ETF. `yarn etfs:fetch --category <cat>`
 filters the rendered markdown to a single category so Claude reviews only the slice that
 belongs to the current loop iteration.
 
@@ -161,7 +161,7 @@ mkdir -p "$ITER_ROOT/iter-$ITER"
 ### A2. Enqueue generation for **this category only**
 
 ```bash
-yarn etf-verify:trigger \
+yarn etfs:trigger \
   --in "$SAMPLE" \
   --categories "$CATEGORY" \
   --out "$ITER_ROOT/iter-$ITER/requests.json"
@@ -174,7 +174,7 @@ category fires.
 ### A3. Wait for the queue to settle
 
 ```bash
-yarn etf-verify:wait \
+yarn etfs:wait \
   --in "$ITER_ROOT/iter-$ITER/requests.json" \
   --interval-sec 20 \
   --timeout-min 90
@@ -186,7 +186,7 @@ Pass `--tick` if your environment has no external cron hitting
 ### A4. Fetch the analyses for **this category only**
 
 ```bash
-yarn etf-verify:fetch \
+yarn etfs:fetch \
   --in "$SAMPLE" \
   --category "$CATEGORY" \
   --out-dir "$ITER_ROOT/iter-$ITER/reports"
@@ -224,7 +224,7 @@ Loop A already produced (or fetch fresh ones once if none exist).
 
 ### B1. Read the analyses
 
-Use the reports written by `yarn etf-verify:fetch` (from Loop A, or from a single fetch run
+Use the reports written by `yarn etfs:fetch` (from Loop A, or from a single fetch run
 if Loop A hasn't been run):
 
 ```bash
@@ -232,7 +232,7 @@ if Loop A hasn't been run):
 export CATEGORY=performance-and-returns
 export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
-yarn etf-verify:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
+yarn etfs:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
 ```
 
 ### B2. Review factor fit per ETF

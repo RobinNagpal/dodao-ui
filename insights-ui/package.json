@@ -14,9 +14,9 @@
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
-    "etf-verify:trigger": "tsx src/scripts/etf-verification/trigger-generation.ts",
-    "etf-verify:wait": "tsx src/scripts/etf-verification/wait-for-generation.ts",
-    "etf-verify:fetch": "tsx src/scripts/etf-verification/fetch-analysis.ts"
+    "etfs:trigger": "tsx src/scripts/etfs/trigger-generation.ts",
+    "etfs:wait": "tsx src/scripts/etfs/wait-for-generation.ts",
+    "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts"
   },
   "engines": {
     "node": ">=23.11.0"
