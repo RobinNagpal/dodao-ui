@@ -30,6 +30,26 @@
             "Concentrated single-theme funds (one sector or one country).",
             "K-1 reporting or unusual non-1099 distributions.",
             "Sub-3-year track record from a niche issuer."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Lowest-fee S&P 500 wrapper at 0.03% — the canonical first index ETF for a beginner."
+            },
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Total US market in one ticker at 0.03% — broader than the S&P 500 with the same set-and-forget simplicity."
+            },
+            {
+              "symbol": "AOR",
+              "name": "iShares Core Growth Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~60/40 stock/bond allocation in a single ticker — true single-fund target-date alternative."
+            }
           ]
         },
         {
@@ -57,6 +77,26 @@
             "Material AUM decline combined with thin volume (closure risk).",
             "Frequent capital-gain distributions in passive-style funds.",
             "Headline fee well above category median without demonstrated alpha."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "0.03% fee compounds to large savings over 30 years vs higher-fee peers, with a stable total-market mandate."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Same total-US exposure at 0.03% with iShares’ multi-decade operational track record as a benchmark-stable mandate."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Adds developed-international plus EM at 0.05% — completes the global compounding sleeve over multi-decade horizons."
+            }
           ]
         },
         {
@@ -83,6 +123,26 @@
             "Sub-3-year history with no comparable issuer track record on similar strategies.",
             "Headline fee above active-thematic peer median without demonstrated alpha.",
             "Persistent benchmark drift from the stated index."
+          ],
+          "etfs": [
+            {
+              "symbol": "VUG",
+              "name": "Vanguard Growth ETF",
+              "exchange": "NYSEARCA",
+              "why": "Cheap large-cap growth tilt at 0.04% capturing the long-run growth factor without active-management fees."
+            },
+            {
+              "symbol": "QQQM",
+              "name": "Invesco NASDAQ 100 ETF",
+              "exchange": "NASDAQ",
+              "why": "Lower-fee QQQ alternative (0.15%) suited to buy-and-hold investors seeking innovation/tech tilt."
+            },
+            {
+              "symbol": "VWO",
+              "name": "Vanguard FTSE Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "EM equity exposure at 0.08% adding higher long-term growth potential from emerging economies."
+            }
           ]
         },
         {
@@ -109,6 +169,26 @@
             "Long-duration bond exposure when rate outlook is rising.",
             "New large equity-concentration positions inside the de-risking window.",
             "Aggressive target-date dated 10+ years past expected retirement."
+          ],
+          "etfs": [
+            {
+              "symbol": "AOM",
+              "name": "iShares Core Moderate Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~40/60 stock/bond mix that fits the pre-retirement glide-path in a single holding."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Cheap (0.03%) broad IG core bond fund to scale up as equity is gradually trimmed inside the de-risking window."
+            },
+            {
+              "symbol": "BSV",
+              "name": "Vanguard Short-Term Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG bond exposure that limits drawdown if rates spike during the fragile pre-retirement years."
+            }
           ]
         },
         {
@@ -136,6 +216,26 @@
             "Long-duration bond exposure when rates may rise.",
             "Headline yield from concentrated low-rated credit.",
             "Recent dividend cuts or skipped distributions."
+          ],
+          "etfs": [
+            {
+              "symbol": "AOK",
+              "name": "iShares Core Conservative Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~30/70 stock/bond mix designed for retirees prioritizing preservation alongside steady distribution."
+            },
+            {
+              "symbol": "SCHD",
+              "name": "Schwab US Dividend Equity ETF",
+              "exchange": "NYSEARCA",
+              "why": "Quality-screened dividend equity sleeve with sustainable distribution character preferred for retiree taxable accounts."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified IG core bond exposure at 0.03% provides the preservation anchor inside the income portfolio."
+            }
           ]
         },
         {
@@ -163,6 +263,26 @@
             "Concentrated low-rated issuer exposure inside a generically named credit fund.",
             "Active credit fund failing to beat its passive peer net of fees.",
             "Declining distribution trend masked by NAV-eroding payouts."
+          ],
+          "etfs": [
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Equity-overlay covered-call strategy distributing high monthly income (~7-8%) — flagship retail yield-supplement vehicle."
+            },
+            {
+              "symbol": "HYG",
+              "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Liquid US high-yield corporate bond exposure delivering above-market credit yield in a transparent wrapper."
+            },
+            {
+              "symbol": "PFF",
+              "name": "iShares Preferred and Income Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified preferred-securities yield (~6%) with monthly distributions — broad issuer mix limits single-name risk."
+            }
           ]
         },
         {
@@ -190,6 +310,26 @@
             "Sub-3-year history on a strategy with no comparable issuer track record.",
             "Headline fee well above peers in the same theme without methodology advantage.",
             "Thin AUM with declining trend — closure risk during the holding period."
+          ],
+          "etfs": [
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Cleanest cap-weighted US tech exposure at 0.09% — canonical AI/tech-thesis vehicle with deep liquidity."
+            },
+            {
+              "symbol": "XLE",
+              "name": "Energy Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Pure-play US energy exposure at 0.09% — standard wrapper for the energy mispricing thesis."
+            },
+            {
+              "symbol": "INDA",
+              "name": "iShares MSCI India ETF",
+              "exchange": "BATS",
+              "why": "Single-country India exposure for the demographic-tailwind thesis with deep US-listed liquidity."
+            }
           ]
         },
         {
@@ -216,6 +356,26 @@
             "Self-graded ESG screens with weak or vague criteria (greenwashing risk).",
             "Holdings that contradict the fund's stated ESG mission.",
             "Material fee premium vs the unscreened equivalent without methodology advantage."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGV",
+              "name": "Vanguard ESG US Stock ETF",
+              "exchange": "BATS",
+              "why": "Low-fee (0.09%) FTSE-screened ESG US large/mid/small exposure with broad diversification."
+            },
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap exposure with documented third-party screen — defensible methodology."
+            },
+            {
+              "symbol": "ICLN",
+              "name": "iShares Global Clean Energy ETF",
+              "exchange": "NASDAQ",
+              "why": "Pure-thematic global renewable-energy exposure for impact-focused investors wanting visible mission alignment."
+            }
           ]
         },
         {
@@ -242,6 +402,26 @@
             "Marketing or fund material that downplays daily-reset risk.",
             "Headline expense ratio above leveraged-peer norms.",
             "Wide bid-ask combined with thin volume."
+          ],
+          "etfs": [
+            {
+              "symbol": "TQQQ",
+              "name": "ProShares UltraPro QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-leveraged Nasdaq 100 — canonical retail tactical-bet vehicle with the deepest leveraged-ETF options market."
+            },
+            {
+              "symbol": "SOXL",
+              "name": "Direxion Daily Semiconductor Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged semiconductor exposure for sector-momentum trades — high-volatility expression of the AI/chips thesis."
+            },
+            {
+              "symbol": "SQQQ",
+              "name": "ProShares UltraPro Short QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-inverse Nasdaq 100 for retail short-side bets without locating shares to borrow."
+            }
           ]
         }
       ]
@@ -275,6 +455,26 @@
             "Material recent capital-gain distributions in a passive-style fund.",
             "Active or thematic strategy with high turnover dragging after-tax return.",
             "Distribution character largely ROC or short-term gain without disclosure."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Heritage capital-gain distributions near zero — ideal for HNW taxable accounts at top federal+state+NIIT bracket."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares total-US wrapper with strong tax-efficiency record at 0.03% — clean alternative-issuer to VTI."
+            },
+            {
+              "symbol": "IXUS",
+              "name": "iShares Core MSCI Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "International exposure at 0.07% with foreign-tax-credit pass-through — material pickup at top brackets in taxable accounts."
+            }
           ]
         },
         {
@@ -301,6 +501,26 @@
             "High-yield muni exposure inside a generically named muni fund without disclosure.",
             "Private-activity-bond concentration triggering AMT for high-bracket investors.",
             "Single-state muni with documented pension or revenue-base distress."
+          ],
+          "etfs": [
+            {
+              "symbol": "CMF",
+              "name": "iShares California Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "California-resident muni exposure stacking state-tax exemption on top of the federal exemption for top-bracket CA residents."
+            },
+            {
+              "symbol": "NYF",
+              "name": "iShares New York Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "New York-resident muni exposure stacking NY state-tax exemption — same stacked-TEY logic for NY top-bracket residents."
+            },
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — fallback for residents without an in-state muni ETF or seeking broader diversification."
+            }
           ]
         },
         {
@@ -327,6 +547,26 @@
             "Fund labeled 'inflation hedge' but historically tracking equity beta.",
             "Unhedged single-currency or single-commodity concentration sized larger than satellite.",
             "K-1 reporting without offsetting tax or hedging benefit."
+          ],
+          "etfs": [
+            {
+              "symbol": "GLD",
+              "name": "SPDR Gold Shares",
+              "exchange": "NYSEARCA",
+              "why": "Spot-backed gold with deep liquidity — canonical inflation/disinflation real-asset diversifier in a 1099 wrapper."
+            },
+            {
+              "symbol": "PDBC",
+              "name": "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified commodities (energy/metals/ag) in a 1099 wrapper avoiding K-1 friction at HNW reporting scale."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — public real-estate sleeve complementing direct private holdings."
+            }
           ]
         },
         {
@@ -353,6 +593,26 @@
             "Defined-outcome fund where the cap and floor have already been breached mid-cycle.",
             "Counterparty / credit exposure that adds risk beyond the concentrated position.",
             "Methodology that doesn't explain how downside protection is funded."
+          ],
+          "etfs": [
+            {
+              "symbol": "BUFR",
+              "name": "FT Vest Laddered Buffer ETF",
+              "exchange": "BATS",
+              "why": "Laddered S&P 500 buffered-equity sleeve with rolling downside protection — used to step out of a concentrated single-stock without immediate gain realization."
+            },
+            {
+              "symbol": "PJAN",
+              "name": "Innovator U.S. Equity Power Buffer ETF – January",
+              "exchange": "BATS",
+              "why": "Single-outcome-period defined buffer (~9% downside protection, capped upside) — one rung of a customized buffered-equity ladder."
+            },
+            {
+              "symbol": "USMV",
+              "name": "iShares MSCI USA Min Vol Factor ETF",
+              "exchange": "BATS",
+              "why": "Low-volatility US equity diversifier providing broad equity exposure with materially reduced volatility vs a concentrated single holding."
+            }
           ]
         },
         {
@@ -379,6 +639,26 @@
             "Distribution funded mostly by ROC without explicit disclosure.",
             "Capture ratio that gives up most upside without delivering matching income.",
             "Strategy that significantly underperforms the underlying index in flat markets."
+          ],
+          "etfs": [
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "S&P 500 covered-call overlay with ~7-8% distribution — flagship equity-overlay product for monthly income supplement."
+            },
+            {
+              "symbol": "JEPQ",
+              "name": "JPMorgan Nasdaq Equity Premium Income ETF",
+              "exchange": "NASDAQ",
+              "why": "Same overlay applied to Nasdaq 100 — higher option premium and richer monthly income for tech-heavy equity sleeves."
+            },
+            {
+              "symbol": "QYLD",
+              "name": "Global X NASDAQ 100 Covered Call ETF",
+              "exchange": "NASDAQ",
+              "why": "At-the-money Nasdaq 100 covered-call writing — pure income-maximizer trading off most of the upside."
+            }
           ]
         },
         {
@@ -405,6 +685,26 @@
             "Fund too small to absorb HNW position sizes without market impact.",
             "Wrong benchmark family forcing tracking-error commentary.",
             "Distribution mechanics that complicate capital-call funding."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest S&P 500 wrapper at 0.03% — workhorse public-equity beta with ample bid-ask depth for capital-call funding."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad developed-international beta at 0.07% with institutional-scale liquidity for the ex-US sleeve."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core fixed income at 0.03% — bond-side liquid-beta complement to the equity-private allocation."
+            }
           ]
         },
         {
@@ -431,6 +731,26 @@
             "Self-graded ESG screens with weak or vague criteria.",
             "Holdings that contradict the fund's stated mission alignment.",
             "Material fee premium vs the unscreened equivalent without methodology advantage."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGV",
+              "name": "Vanguard ESG US Stock ETF",
+              "exchange": "BATS",
+              "why": "Vanguard’s screened US equity at 0.09% — broad diversification with FTSE ESG screen suitable for family-IPS use."
+            },
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap with documented third-party screen — defensible for family-office due-diligence files."
+            },
+            {
+              "symbol": "ESGD",
+              "name": "iShares ESG Aware MSCI EAFE ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated developed-international exposure to apply the same screen across the international sleeve."
+            }
           ]
         },
         {
@@ -457,6 +777,26 @@
             "Recent benchmark or strategy changes that break the multi-decade record.",
             "Issuer operational concerns over long horizons.",
             "High-turnover strategy that breaks tax-deferral within the trust."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Total-US exposure with mandate stability and Vanguard’s multi-decade operational track record — fits 30-50 year trust horizons."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares total-US alternative — diversifies fund-issuer concentration alongside VTI; both have stable benchmark mandates."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Broad ex-US equity exposure at 0.05% to round out the multi-generational global equity sleeve."
+            }
           ]
         }
       ]
@@ -490,6 +830,26 @@
             "Fund too small for institutional-scale allocation without dominant-holder risk.",
             "Methodology drift that breaks IPS benchmark consistency.",
             "Concentration / closure risk from a single large investor's outflow."
+          ],
+          "etfs": [
+            {
+              "symbol": "TLT",
+              "name": "iShares 20+ Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Long-duration Treasury exposure at scale — workhorse for pension long-end duration matching with deep institutional liquidity."
+            },
+            {
+              "symbol": "EDV",
+              "name": "Vanguard Extended Duration Treasury ETF",
+              "exchange": "NYSEARCA",
+              "why": "STRIPS-based ~25-year duration for the longest portion of the LDI curve where TLT alone is insufficient."
+            },
+            {
+              "symbol": "LTPZ",
+              "name": "PIMCO 15+ Year US TIPS Index ETF",
+              "exchange": "NYSEARCA",
+              "why": "Long-duration TIPS for inflation-linked liability matching — direct real-rate exposure for cost-of-living-adjusted obligations."
+            }
           ]
         },
         {
@@ -516,6 +876,26 @@
             "ESG-labeled funds with weak self-graded screens (greenwashing risk).",
             "Methodology drift breaking IPS benchmark consistency.",
             "Insufficient liquidity to fund the annual distribution at scale."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Liquid US equity beta at 0.03% — efficient core for endowment public sleeve alongside the illiquid private book."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "NYSEARCA",
+              "why": "Developed-international beta at 0.07% for the international piece of the endowment liquid sleeve."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "IG core bond exposure at 0.03% as the diversifying fixed-income sleeve supporting the spending policy."
+            }
           ]
         },
         {
@@ -542,6 +922,26 @@
             "Wrong benchmark family forcing attribution adjustments.",
             "Limited capacity making the institution a dominant holder.",
             "Issuer or fund-family operational concerns at institutional scale."
+          ],
+          "etfs": [
+            {
+              "symbol": "IVV",
+              "name": "iShares Core S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares S&P 500 wrapper at 0.03% — institutional staple with deep capacity and securities-lending revenue offset."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EAFE-tracking developed-international beta with institutional-scale capacity for $50M+ allocations."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EM-tracking institutional EM beta with $90B+ AUM — capacity to absorb pension/endowment block sizes."
+            }
           ]
         },
         {
@@ -568,6 +968,26 @@
             "Self-graded ESG screens unsuitable for fiduciary use.",
             "Exclusion-list gaps that the IPS specifically prohibits.",
             "Capacity insufficient for the institutional allocation size."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap with auditable third-party screen — fiduciary-grade documentation for IPS files."
+            },
+            {
+              "symbol": "ESGD",
+              "name": "iShares ESG Aware MSCI EAFE ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated developed-international screen for the institutional ex-US sleeve, matching the US screen methodology."
+            },
+            {
+              "symbol": "SUSA",
+              "name": "iShares MSCI USA ESG Select ETF",
+              "exchange": "NYSEARCA",
+              "why": "Higher-conviction MSCI ESG US screen for IPSes requiring deeper exclusions than the broader ESGU mandate."
+            }
           ]
         },
         {
@@ -594,6 +1014,26 @@
             "Strategy that quietly tracks equities in bull markets but fails in bear markets.",
             "Fee at or above peer median with no demonstrated low correlation.",
             "Mandate drift — recent strategy or benchmark change."
+          ],
+          "etfs": [
+            {
+              "symbol": "DBMF",
+              "name": "iMGP DBi Managed Futures Strategy ETF",
+              "exchange": "NYSEARCA",
+              "why": "Replicates a managed-futures hedge-fund composite — designed to deliver positive return in equity drawdowns."
+            },
+            {
+              "symbol": "QAI",
+              "name": "NYLI Hedge Multi-Strategy Tracker ETF",
+              "exchange": "NYSEARCA",
+              "why": "Multi-strategy hedge-fund replicator providing low-correlation institutional alts exposure in a liquid wrapper."
+            },
+            {
+              "symbol": "MNA",
+              "name": "NYLI Merger Arbitrage ETF",
+              "exchange": "NYSEARCA",
+              "why": "Merger-arbitrage strategy delivering structurally low equity-correlation returns suitable for the diversifier sleeve."
+            }
           ]
         },
         {
@@ -620,6 +1060,26 @@
             "Material overlap with directly held private real assets.",
             "Commodity exposure delivered via equity proxies that track stocks more than spot.",
             "Capacity insufficient for the institutional allocation size."
+          ],
+          "etfs": [
+            {
+              "symbol": "TIP",
+              "name": "iShares TIPS Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad TIPS exposure providing direct CPI linkage at institutional scale — cleanest measured-inflation hedge."
+            },
+            {
+              "symbol": "DBC",
+              "name": "Invesco DB Commodity Index Tracking Fund",
+              "exchange": "NYSEARCA",
+              "why": "Diversified commodity-futures basket for unanticipated-inflation hedging where institutions can absorb K-1 reporting."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Public US REIT exposure at 0.13% — equity-real-asset complement to the TIPS and commodity legs."
+            }
           ]
         },
         {
@@ -646,6 +1106,26 @@
             "Wrong benchmark family forcing attribution mismatch.",
             "Limited capacity at institutional scale.",
             "Currency-hedging methodology that materially deviates from the underlying spot."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EAFE-tracking developed-international beta with $100B+ AUM — institutional capacity for $50M-$5B blocks."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EM-tracking institutional EM exposure at $90B+ AUM with broad country-tier inclusion."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "FTSE-based total ex-US (developed + EM) at 0.05% — for IPSes that prefer the FTSE benchmark family."
+            }
           ]
         },
         {
@@ -672,6 +1152,26 @@
             "Insufficient dollar volume for institutional-block trades.",
             "Material premium-discount drift during normal conditions.",
             "Capacity that would make the institution a dominant holder."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "$400B+ AUM with the deepest bid-ask in the equity wrapper market — absorbs $50-500M block trades for capital-call funding."
+            },
+            {
+              "symbol": "IVV",
+              "name": "iShares Core S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares S&P 500 alternative at similar scale — diversifies fund-issuer concentration in the rebalancing reservoir."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond exposure at $110B+ AUM — bond-side rebalancing buffer when private-credit calls land."
+            }
           ]
         }
       ]
@@ -705,6 +1205,26 @@
             "Duration creep — fund labeled 'ultra-short' holding 18+ month paper.",
             "Material credit-quality drift below IG.",
             "NAV instability beyond expected ultra-short range."
+          ],
+          "etfs": [
+            {
+              "symbol": "BIL",
+              "name": "SPDR Bloomberg 1-3 Month T-Bill ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pure 1-3 month T-bill exposure for treasury cash parking with same-day liquidity and minimal NAV variance."
+            },
+            {
+              "symbol": "ICSH",
+              "name": "iShares Ultra Short-Term Bond ETF",
+              "exchange": "BATS",
+              "why": "Active ultra-short IG bond fund with target ~0.5y duration — modest yield pickup over money-market funds."
+            },
+            {
+              "symbol": "JPST",
+              "name": "JPMorgan Ultra-Short Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "JP Morgan’s flagship ultra-short IG fund offering yield pickup over T-bills with daily corporate-scale liquidity."
+            }
           ]
         },
         {
@@ -731,6 +1251,26 @@
             "Any sub-investment-grade exposure inside the wrapper.",
             "Long duration exposure incompatible with the policy.",
             "Unclear regulatory look-through treatment."
+          ],
+          "etfs": [
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond benchmark exposure at $110B+ AUM — institutional liquidity for insurance/treasury allocations."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Vanguard’s IG core bond at 0.03% with similar broad mandate — alternative wrapper to AGG for issuer diversification."
+            },
+            {
+              "symbol": "IUSB",
+              "name": "iShares Core Total USD Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Broader USD IG bond exposure including some non-Agg sectors — slight diversification within the IG sleeve."
+            }
           ]
         },
         {
@@ -757,6 +1297,26 @@
             "Wrapper structure that loses HQLA Level-1 treatment under regulator look-through.",
             "Securities-lending program that pulls shares out of HQLA buffer.",
             "Composition drift away from pure treasury into agency or IG corporate."
+          ],
+          "etfs": [
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-3 year treasury exposure for the HQLA Level-1 buffer — deep liquidity and pure-treasury composition."
+            },
+            {
+              "symbol": "BIL",
+              "name": "SPDR Bloomberg 1-3 Month T-Bill ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pure short T-bill exposure — most liquid HQLA Level-1 holding and tightest NAV-stability profile."
+            },
+            {
+              "symbol": "GBIL",
+              "name": "Goldman Sachs Access Treasury 0-1 Year ETF",
+              "exchange": "NYSEARCA",
+              "why": "Goldman’s 0-1 year treasury wrapper providing sub-1y HQLA Level-1 exposure with low expense ratio."
+            }
           ]
         },
         {
@@ -783,6 +1343,26 @@
             "High-yield muni exposure inside a generically named muni fund.",
             "Single-state concentration with documented credit distress.",
             "Unclear NAIC treatment of the muni wrapper."
+          ],
+          "etfs": [
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — workhorse for P&C insurance after-tax muni allocation with broad credit diversification."
+            },
+            {
+              "symbol": "VTEB",
+              "name": "Vanguard Tax-Exempt Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Vanguard’s national IG muni at 0.05% — alternative wrapper for issuer diversification within the muni sleeve."
+            },
+            {
+              "symbol": "SUB",
+              "name": "iShares Short-Term National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Short-duration national muni for insurers preferring lower duration risk in the after-tax muni sleeve."
+            }
           ]
         },
         {
@@ -809,6 +1389,26 @@
             "Duration mismatch with the targeted liability profile.",
             "Material drift below IG composition.",
             "Insufficient capacity for insurance-scale allocations."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEI",
+              "name": "iShares 3-7 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate-duration treasury (~5y) matching common life-insurance and long-tail P&C liability profiles."
+            },
+            {
+              "symbol": "IEF",
+              "name": "iShares 7-10 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "7-10 year treasury exposure for the longer end of the intermediate-duration liability profile."
+            },
+            {
+              "symbol": "VCIT",
+              "name": "Vanguard Intermediate-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate IG corporate exposure providing yield pickup over comparable-duration treasury within IG-only mandates."
+            }
           ]
         },
         {
@@ -835,6 +1435,26 @@
             "Wrapper that obscures the inflation-accrual tax treatment.",
             "Duration that mismatches the inflation-linked liability.",
             "Insufficient capacity for insurance-scale allocations."
+          ],
+          "etfs": [
+            {
+              "symbol": "TIP",
+              "name": "iShares TIPS Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad intermediate-duration TIPS exposure — direct CPI linkage at institutional scale with deep liquidity."
+            },
+            {
+              "symbol": "SCHP",
+              "name": "Schwab US TIPS ETF",
+              "exchange": "NYSEARCA",
+              "why": "Schwab’s TIPS wrapper at 0.03% — lowest-cost IG-only inflation linkage for cost-conscious treasury teams."
+            },
+            {
+              "symbol": "VTIP",
+              "name": "Vanguard Short-Term Inflation-Protected Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration TIPS for insurers preferring lower duration risk while preserving direct CPI linkage."
+            }
           ]
         },
         {
@@ -861,6 +1481,26 @@
             "Material BBB tilt that increases downgrade-to-HY risk.",
             "Spread behavior worse than peers in past credit stress.",
             "Unclear NAIC / Basel look-through treatment."
+          ],
+          "etfs": [
+            {
+              "symbol": "VCSH",
+              "name": "Vanguard Short-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG corporate exposure capturing typical 30-100 bp pickup over comparable-duration treasury."
+            },
+            {
+              "symbol": "IGSB",
+              "name": "iShares 1-5 Year Investment Grade Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-5 year IG corporate alternative with the same yield-pickup mandate — issuer-diversifies the credit sleeve."
+            },
+            {
+              "symbol": "SLQD",
+              "name": "iShares 0-5 Year Investment Grade Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Even shorter 0-5y IG corporate for treasuries wanting minimal duration alongside the credit-spread pickup."
+            }
           ]
         }
       ]
@@ -894,6 +1534,26 @@
             "Niche issuer with no analyst coverage or wholesaler relationship.",
             "Active or thematic strategy that complicates the model-portfolio thesis.",
             "Closure risk that would force a cross-account taxable transition for many clients."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Cheapest broad US workhorse at 0.03% with maximum TAMP/custody-platform availability for model portfolios."
+            },
+            {
+              "symbol": "IXUS",
+              "name": "iShares Core MSCI Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Total ex-US (developed + EM) at 0.07% — single-fund international building block simplifying the model."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond benchmark exposure at 0.03% — bond-side workhorse with TAMP-friendly fact sheet."
+            }
           ]
         },
         {
@@ -920,6 +1580,26 @@
             "Fund tracking the same index as the existing holding (wash-sale violation risk).",
             "Material tracking-error difference that materially shifts portfolio risk during the swap.",
             "One side of the pair has thin AUM or wide bid-ask, defeating the harvest math."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the CRSP US Total Market index — pairs with ITOT (different index) for wash-sale-safe US-equity TLH."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the S&P US Total Market index — TLH partner to VTI delivering nearly identical exposure on a different benchmark."
+            },
+            {
+              "symbol": "SCHB",
+              "name": "Schwab US Broad Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the Dow Jones US Broad Stock Market index — third differentiated US-total benchmark for rolling TLH cycles."
+            }
           ]
         },
         {
@@ -946,6 +1626,26 @@
             "Distribution funded substantially by ROC without clear advisor-facing disclosure.",
             "Long-duration bond exposure incompatible with retiree drawdown tolerance.",
             "Active fund failing to beat its passive peer net of fees over 5+ years."
+          ],
+          "etfs": [
+            {
+              "symbol": "SCHD",
+              "name": "Schwab US Dividend Equity ETF",
+              "exchange": "NYSEARCA",
+              "why": "Quality-screened dividend-equity sleeve with sustainable distribution character — popular advisor pick for retiree models."
+            },
+            {
+              "symbol": "VYM",
+              "name": "Vanguard High Dividend Yield ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad large-cap dividend exposure at 0.06% — defensible building block with intuitive client-communication story."
+            },
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Equity-overlay covered-call wrapper for the income-supplement piece — explains the upside-cap tradeoff to retiree clients."
+            }
           ]
         },
         {
@@ -972,6 +1672,26 @@
             "Duration creep beyond the conservative-tier target.",
             "Credit-quality drift below IG.",
             "Wide bid-ask amplified across many client accounts."
+          ],
+          "etfs": [
+            {
+              "symbol": "BSV",
+              "name": "Vanguard Short-Term Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG bond at 0.04% — workhorse short-bond sleeve for conservative-tier models across many client accounts."
+            },
+            {
+              "symbol": "VCSH",
+              "name": "Vanguard Short-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short IG corporate exposure capturing modest credit pickup over treasury inside the conservative sleeve."
+            },
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-3 year treasury alternative for the most defensive end of the bond sleeve in retiree-tier models."
+            }
           ]
         },
         {
@@ -998,6 +1718,26 @@
             "Wrong benchmark family creating attribution mismatch.",
             "Material premium-discount drift in EM during stress windows.",
             "Wrapper structure that loses foreign-tax-credit creditability."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "NYSEARCA",
+              "why": "Developed-international workhorse at 0.07% — TAMP-friendly large-AUM building block for growth-tier models."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "EM equity exposure at 0.09% with $90B+ AUM and broad TAMP availability for cross-account allocation."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Single-fund total ex-US (developed + EM) at 0.05% — for advisors preferring one-ticker international simplicity."
+            }
           ]
         },
         {
@@ -1024,6 +1764,26 @@
             "Theme drift — fund name and top holdings don't align.",
             "Headline fee well above peers in the same theme without methodology advantage.",
             "Closure risk that would force a cross-account taxable transition."
+          ],
+          "etfs": [
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — most common real-estate satellite tilt in advisor model portfolios."
+            },
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Cheap (0.09%) cap-weighted US tech tilt — defensible methodology for client-facing model documentation."
+            },
+            {
+              "symbol": "IGF",
+              "name": "iShares Global Infrastructure ETF",
+              "exchange": "NASDAQ",
+              "why": "Global infrastructure exposure for the diversification-and-inflation tilt rationale at 5-15% sleeve sizes."
+            }
           ]
         },
         {
@@ -1050,6 +1810,26 @@
             "Self-graded ESG screens with weak or vague criteria.",
             "Holdings that contradict the fund's stated mission.",
             "Material fee premium without methodology advantage."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap with auditable third-party screen — defensible advisor anchor for the ESG variant."
+            },
+            {
+              "symbol": "ESGD",
+              "name": "iShares ESG Aware MSCI EAFE ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated developed-international screen substituting for IEFA in the ESG client-model variant."
+            },
+            {
+              "symbol": "ESGV",
+              "name": "Vanguard ESG US Stock ETF",
+              "exchange": "BATS",
+              "why": "Vanguard’s screened US equity at 0.09% — alternative-issuer ESG building block for fee-conscious advisors."
+            }
           ]
         },
         {
@@ -1076,6 +1856,26 @@
             "High-yield muni exposure inside a generically named muni fund.",
             "Single-state muni with documented credit distress.",
             "Wide bid-ask amplified across many client accounts."
+          ],
+          "etfs": [
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — workhorse for high-bracket client muni sleeves with broad TAMP availability."
+            },
+            {
+              "symbol": "VTEB",
+              "name": "Vanguard Tax-Exempt Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Vanguard’s national IG muni at 0.05% — alternative wrapper for fund-issuer diversification across client accounts."
+            },
+            {
+              "symbol": "SUB",
+              "name": "iShares Short-Term National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Short-duration national muni for the conservative-tier-with-muni client sub-models that need lower duration risk."
+            }
           ]
         },
         {
@@ -1102,6 +1902,26 @@
             "K-1 reporting for client accounts where the advisor avoids K-1s.",
             "Fund labeled inflation-hedge but historically tracking equity beta.",
             "Material commodity-spot vs equity-proxy mismatch."
+          ],
+          "etfs": [
+            {
+              "symbol": "SCHP",
+              "name": "Schwab US TIPS ETF",
+              "exchange": "NYSEARCA",
+              "why": "Low-cost (0.03%) TIPS exposure for the measured-CPI portion of the real-asset diversification sleeve."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — equity-correlated real-asset complement at 5-10% sleeve sizes."
+            },
+            {
+              "symbol": "PDBC",
+              "name": "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF",
+              "exchange": "NASDAQ",
+              "why": "1099-reporting commodity exposure avoiding K-1 friction — preferred by advisors keeping client tax simple."
+            }
           ]
         },
         {
@@ -1128,6 +1948,26 @@
             "Defined-outcome fund where the cap and floor have already been breached mid-cycle.",
             "Capture ratio that gives up most upside without delivering matching income.",
             "Distribution funded mostly by ROC without explicit disclosure."
+          ],
+          "etfs": [
+            {
+              "symbol": "BUFR",
+              "name": "FT Vest Laddered Buffer ETF",
+              "exchange": "BATS",
+              "why": "Laddered S&P 500 buffered-equity sleeve providing rolling downside protection for retiree-tier models."
+            },
+            {
+              "symbol": "PJAN",
+              "name": "Innovator U.S. Equity Power Buffer ETF – January",
+              "exchange": "BATS",
+              "why": "Single-outcome-period S&P 500 buffer with defined floor/cap — one rung of a custom advisor-built buffered ladder."
+            },
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Covered-call equity overlay for the derivative-income piece of retiree models — flagship income-supplement vehicle."
+            }
           ]
         }
       ]
@@ -1161,6 +2001,26 @@
             "Options market thin or non-existent.",
             "High borrow cost or limited shortable supply.",
             "Wide premium / discount drift during normal conditions."
+          ],
+          "etfs": [
+            {
+              "symbol": "SPY",
+              "name": "SPDR S&P 500 ETF Trust",
+              "exchange": "NYSEARCA",
+              "why": "Largest, most-liquid S&P 500 wrapper with the deepest options market — desk-standard equity-beta vehicle."
+            },
+            {
+              "symbol": "QQQ",
+              "name": "Invesco QQQ Trust",
+              "exchange": "NASDAQ",
+              "why": "Nasdaq 100 wrapper with deep options market — standard tech/growth-beta expression for desk transition trades."
+            },
+            {
+              "symbol": "IWM",
+              "name": "iShares Russell 2000 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Russell 2000 small-cap wrapper with deep options market — small-cap-beta workhorse for desk-block trades."
+            }
           ]
         },
         {
@@ -1187,6 +2047,26 @@
             "Borrow cost on the short leg that erodes the trade economics.",
             "Methodology mismatch between the two sector funds invalidating the thesis.",
             "Material option-market thinness on either leg."
+          ],
+          "etfs": [
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard tech-sector wrapper with tight bid-ask and deep options market — common long leg of pair trades."
+            },
+            {
+              "symbol": "XLE",
+              "name": "Energy Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard energy-sector wrapper — deep options and reliable borrow inventory for the short side of pairs."
+            },
+            {
+              "symbol": "XLF",
+              "name": "Financial Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard financial-sector wrapper completing the desk’s core sector-rotation toolkit alongside XLK/XLE."
+            }
           ]
         },
         {
@@ -1213,6 +2093,26 @@
             "Material premium / discount drift in HY ETF during normal conditions.",
             "Options market thin on the HY ETF leg.",
             "High borrow cost on the short leg."
+          ],
+          "etfs": [
+            {
+              "symbol": "HYG",
+              "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest HY wrapper with the deepest options market — standard HY leg for credit-spread directional trades."
+            },
+            {
+              "symbol": "LQD",
+              "name": "iShares iBoxx $ Investment Grade Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest IG corporate wrapper — standard IG leg for credit-spread relative-value pair trades vs HY."
+            },
+            {
+              "symbol": "JNK",
+              "name": "SPDR Bloomberg High Yield Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Alternative HY wrapper — secondary leg for HYG-only desks or for HY pair-trade construction."
+            }
           ]
         },
         {
@@ -1239,6 +2139,26 @@
             "Bid-ask widening in stress vs the underlying treasury market.",
             "Options market thin on chosen treasury ETF.",
             "Material premium / discount drift in stress windows."
+          ],
+          "etfs": [
+            {
+              "symbol": "TLT",
+              "name": "iShares 20+ Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Long-end Treasury wrapper with deep options market — workhorse for long-duration directional bets."
+            },
+            {
+              "symbol": "IEF",
+              "name": "iShares 7-10 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate Treasury wrapper for belly-of-curve expression and curve-shape trades."
+            },
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-end Treasury wrapper for front-end-of-curve expression and butterfly trade construction."
+            }
           ]
         },
         {
@@ -1265,6 +2185,26 @@
             "Material contango friction eroding the trade thesis.",
             "K-1 reporting where the desk's tax structure can't accept it.",
             "Limited options market on the chosen commodity ETF."
+          ],
+          "etfs": [
+            {
+              "symbol": "GLD",
+              "name": "SPDR Gold Shares",
+              "exchange": "NYSEARCA",
+              "why": "Spot-backed gold with the deepest options market — standard gold-directional vehicle in a 1099 wrapper."
+            },
+            {
+              "symbol": "USO",
+              "name": "United States Oil Fund LP",
+              "exchange": "NYSEARCA",
+              "why": "Front-month WTI futures wrapper — standard crude-oil expression for desks without commodity prime brokerage."
+            },
+            {
+              "symbol": "DBC",
+              "name": "Invesco DB Commodity Index Tracking Fund",
+              "exchange": "NYSEARCA",
+              "why": "Diversified commodity-futures basket for broad commodity directional bets across energy/metals/ag."
+            }
           ]
         },
         {
@@ -1291,6 +2231,26 @@
             "Documented tracking failures on the daily-leverage objective.",
             "Wide bid-ask combined with thin volume.",
             "Marketing that downplays daily-reset risk."
+          ],
+          "etfs": [
+            {
+              "symbol": "TQQQ",
+              "name": "ProShares UltraPro QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-leveraged Nasdaq 100 — most-liquid leveraged ETF with deep options for capital-efficient bets."
+            },
+            {
+              "symbol": "SOXL",
+              "name": "Direxion Daily Semiconductor Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged semiconductor exposure — focused-sector leverage with deep options for tactical chip-cycle trades."
+            },
+            {
+              "symbol": "FAS",
+              "name": "Direxion Daily Financial Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged financials — sector-leverage tool for financial-tilt expressions inside short-horizon hedges."
+            }
           ]
         },
         {
@@ -1317,6 +2277,26 @@
             "Documented tracking failures on the daily-inverse objective.",
             "Wide bid-ask defeating the hedge economics.",
             "Material daily-reset decay over the intended hedge horizon."
+          ],
+          "etfs": [
+            {
+              "symbol": "SH",
+              "name": "ProShares Short S&P 500",
+              "exchange": "NYSEARCA",
+              "why": "1x daily-inverse S&P 500 — cleanest inverse-hedge vehicle with minimal daily-reset decay over short windows."
+            },
+            {
+              "symbol": "SDS",
+              "name": "ProShares UltraShort S&P 500",
+              "exchange": "NYSEARCA",
+              "why": "2x daily-inverse S&P 500 — capital-efficient inverse hedge accepting modest decay for higher beta-to-underlying."
+            },
+            {
+              "symbol": "SQQQ",
+              "name": "ProShares UltraPro Short QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-inverse Nasdaq 100 — capital-efficient hedge for tech-tilt portfolios needing concentrated short exposure."
+            }
           ]
         },
         {
@@ -1343,6 +2323,26 @@
             "Material basis vs spot crypto in normal conditions.",
             "Custodian concentration risk inside the ETF wrapper.",
             "Limited options market for the chosen spot-crypto ETF."
+          ],
+          "etfs": [
+            {
+              "symbol": "IBIT",
+              "name": "iShares Bitcoin Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "BlackRock’s spot-bitcoin ETF — fastest-growing AUM with rapidly developing options market for tactical positions."
+            },
+            {
+              "symbol": "FBTC",
+              "name": "Fidelity Wise Origin Bitcoin Fund",
+              "exchange": "BATS",
+              "why": "Fidelity’s spot-bitcoin alternative — second-largest spot-BTC ETF for issuer/custodian diversification."
+            },
+            {
+              "symbol": "ETHA",
+              "name": "iShares Ethereum Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "BlackRock’s spot-ether ETF — primary spot-ETH wrapper for tactical Ethereum directional positions."
+            }
           ]
         }
       ]

@@ -151,6 +151,14 @@ export interface EtfInvestorProfile {
   typicalInvestor: string;
 }
 
+/** A specific ETF recommended for a given goal. */
+export interface EtfInvestorGoalEtf {
+  symbol: string;
+  name: string;
+  exchange: string;
+  why: string;
+}
+
 /** A specific goal an investor pursues when buying ETFs. */
 export interface EtfInvestorGoal {
   key: string;
@@ -160,6 +168,7 @@ export interface EtfInvestorGoal {
   analysisAngle: string;
   keyConsiderations: string[];
   redFlags: string[];
+  etfs: EtfInvestorGoalEtf[];
 }
 
 /** A type of investor (retail, HNW, pension, etc.) with the goals they pursue. */
