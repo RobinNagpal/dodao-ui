@@ -250,6 +250,78 @@ analysis output.
   - Propose candidate goal labels for equity (e.g. "Emerging-market equity exposure",
     "Single-country thematic exposure", "Sector tilt").
 
+### 2.1) Target-investor groups (data model + prompt wiring)
+
+Goal: tag each ETF with the **target investor groups** it fits — i.e. which kinds of
+investors (by goals / risk profile / mandate) should realistically consider this ETF.
+This is a concrete, persisted extension of the taxonomy above, covering **both retail
+and institutional** investors.
+
+Key shape:
+- **Many-to-many** — one ETF maps to **multiple** target groups, and one target group
+  maps to **many** ETFs.
+- A target group can also be linked to an ETF **category-group** (e.g. the whole
+  "short-duration treasuries" group fits "capital-preservation" target investors), so
+  matches can be inferred at the group level and then refined per ETF.
+- Covers retail personas (e.g. "Income-focused retiree", "Young DCA investor",
+  "High-yield / high-risk speculator") **and** institutional personas (e.g. "Corporate
+  treasury — cash management", "Pension fund — liability-matching", "Insurance — core
+  fixed income", "Endowment — long-duration equity growth").
+
+- [ ] **Decide granularity — group-level vs. category-level vs. per-ETF**:
+  - Open question: do target-groups attach to each **category-group** in
+    `etf-analysis-categories.json`, to each **individual ETF**, or **both** (category
+    sets the default, ETF can override / extend)?
+  - Resolve this before finalizing the Prisma schema.
+- [ ] **Define the target-group taxonomy** (seed data):
+  - Retail buckets — income, growth, capital preservation, speculation, thematic
+    exposure, tax-advantaged (munis), ESG, etc. Each bucket has a `key`, human label,
+    short description, and a risk/goal profile.
+  - Institutional buckets — corporate treasury, insurance general account, pension
+    (DB / DC), endowment, sovereign wealth, asset manager sleeve, family office,
+    RIA model-portfolio bucket, etc.
+  - Mark each bucket as `retail` | `institutional` | `both` via an
+    `investorType` enum so UI + prompts can filter.
+- [ ] **Prisma schema** — add new models for target groups and the many-to-many links:
+  - `EtfTargetGroup` — one row per target-group taxonomy entry. Fields: `id`, `key`
+    (stable slug), `label`, `description`, `investorType` enum
+    (`RETAIL` | `INSTITUTIONAL` | `BOTH`), `riskProfile` (e.g.
+    `LOW` | `MEDIUM` | `HIGH`), `goalProfile` (e.g. `INCOME` | `GROWTH` |
+    `PRESERVATION` | `SPECULATION` | `THEMATIC` | `TAX_ADVANTAGED` | `ESG` |
+    `LIABILITY_MATCHING` | `CASH_MANAGEMENT`), `displayOrder`, audit fields.
+  - `EtfEtfTargetGroupLink` — many-to-many between `Etf` and `EtfTargetGroup`.
+    Fields: `etfId`, `targetGroupId`, `source` enum (`MANUAL` | `PROMPT` |
+    `CATEGORY_GROUP`), `confidence` (`LOW` | `MEDIUM` | `HIGH`), optional
+    `rationale` text, audit fields.
+  - `EtfCategoryGroupTargetGroupLink` (only if we decide category-level attachment
+    is in scope) — many-to-many between an ETF category-group (from
+    `etf-analysis-categories.json`) and `EtfTargetGroup`.
+  - Backrefs: `Etf.targetGroups`, `EtfTargetGroup.etfs`.
+  - Seed the taxonomy via a migration / seed script so the list is versioned in the
+    repo, not typed into prod.
+- [ ] **Wire into prompts** so the LLM produces and reasons about target groups:
+  - Extend the ETF analysis prompt(s) (at minimum the Summary / Final-Summary prompt,
+    and ideally Index-&-Strategy + Performance + Risk) so the model is told the full
+    target-group taxonomy and asked to return the list of matching groups for this
+    ETF **with a 1-line rationale each**, plus a confidence tag.
+  - Update the output schema / JSON contract of those prompts to include a
+    `targetGroups: [{ key, rationale, confidence }]` array.
+  - On save, resolve `key` → `EtfTargetGroup.id` and upsert the
+    `EtfEtfTargetGroupLink` rows with `source = PROMPT`.
+  - Separately, allow an admin to manually add / remove target-group links
+    (`source = MANUAL`) that the prompt run won't overwrite.
+- [ ] **Surface target groups in the UI** (detail page + filters):
+  - Show matched target-groups as chips on the ETF detail page (section 1.1), grouped
+    by retail vs. institutional, each with its rationale in a tooltip / expandable row.
+  - Add a **"Find ETFs for this investor profile"** filter on ETF list / search pages
+    driven by `EtfTargetGroup.key`.
+- [ ] **Validation + QA loop**:
+  - Spot-check the prompt output across a handful of ETFs per category-group and
+    confirm the target-group assignments are sensible before turning on bulk
+    backfill.
+  - Add the target-group assignment into the **automated factor/prompt tuning loop**
+    (Phase 3.2) so we can iterate on it alongside the analysis factors.
+
 ---
 
 ## Phase 3 — Prompt and analysis-factor improvements
