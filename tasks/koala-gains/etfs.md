@@ -229,6 +229,47 @@ regeneration history.
   - ETF-specific template examples to seed (premium/NAV, holdings concentration, tracking
     error, sector-rotation scenarios).
 
+### 1.6) ETFs list page — default to complete-data only + admin toggle
+
+Goal: the public ETFs list page should only show ETFs that are **actually ready to read**
+— every analysis category generated, every data field populated — so first-time visitors
+don't click into half-empty reports. Admins need to see the full inventory (including
+in-progress / failed / missing-data ETFs) to drive the generation queue, so we expose
+that via a toggle instead of dropping the data from the page entirely.
+
+- [ ] **Define "complete" precisely** — an ETF qualifies for the default list only if:
+  - All core data fields are populated (name, issuer, category-group, AUM, expense
+    ratio, holdings if we ingest them, price series, etc. — enumerate the required
+    set during implementation).
+  - Every evaluation-category report is generated and non-failed: **Performance**,
+    **Cost & Team**, **Risk**, **Summary**, **Index & Strategy**, **Future Outlook**
+    (i.e. the full set referenced in 1.4's header-columns task).
+  - **Final Summary** + `introParagraph` (3.3.d) are generated.
+  - Once 2.1 ships: at least one matched `EtfEtfTargetGroupLink` row exists.
+  - Persist this as a derived boolean (e.g. `Etf.isComplete`) updated by the
+    generation pipeline whenever a report/field lands, so the list query is a cheap
+    index lookup rather than a multi-join per request.
+- [ ] **Default public list** filters to `isComplete = true`:
+  - Apply this filter to the list page, to the sitemap (Phase 4), and to any
+    featured/trending rails that draw from the ETF pool.
+  - Keep pagination, sort, and search behavior the same — they just operate on the
+    filtered pool.
+- [ ] **Admin toggle** to reveal incomplete ETFs:
+  - Visible only to admin users. Label: something like **"Include incomplete
+    ETFs"** (default: off).
+  - When on, the list shows **all** ETFs regardless of `isComplete`, and each row
+    renders a compact **completeness indicator** (e.g. a 6-dot status strip — one
+    dot per report type + data — with tooltip on hover showing what's missing).
+  - Provide quick-action links from each incomplete row into the **admin ETF
+    generation requests page** (1.4) to enqueue the missing report type(s).
+  - Persist the admin toggle state in local storage so it survives reloads within
+    the session.
+- [ ] **Non-admin behavior for incomplete ETFs**:
+  - They remain reachable by direct URL (don't 404), but omitted from the default
+    list, sitemap, and search results.
+  - On their detail page, show a neutral "report in progress" state for the
+    missing sections rather than broken / empty components.
+
 ---
 
 ## Phase 2 — Target audience / Goals
