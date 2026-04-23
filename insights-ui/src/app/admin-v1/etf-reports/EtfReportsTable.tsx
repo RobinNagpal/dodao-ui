@@ -19,7 +19,7 @@ function ReportStatusPill({ status, count }: { status: EtfReportStatus; count?: 
   if (status === 'failed') {
     return <span className="px-2 py-1 rounded-full text-xs bg-orange-900 text-orange-200">Failed</span>;
   }
-  return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-200">Missing</span>;
+  return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-200">No</span>;
 }
 
 export interface EtfReportsTableProps {
@@ -60,9 +60,9 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Performance</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Cost & Team</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Risk</th>
+            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Future Outlook</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Summary</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Index & Strategy</th>
-            <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Future Outlook</th>
             <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
           </tr>
         </thead>
@@ -116,13 +116,13 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                 <ReportStatusPill status={e.reportStatuses.risk} count={e.riskAnalysisCount} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
+                <ReportStatusPill status={e.reportStatuses.futureOutlook} count={e.futureOutlookAnalysisCount} />
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
                 <ReportStatusPill status={e.reportStatuses.summary} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <ReportStatusPill status={e.reportStatuses.indexStrategy} />
-              </td>
-              <td className="px-4 py-3 text-sm text-center">
-                <ReportStatusPill status={e.reportStatuses.futureOutlook} count={e.futureOutlookAnalysisCount} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <div className="flex items-center justify-center gap-2">
