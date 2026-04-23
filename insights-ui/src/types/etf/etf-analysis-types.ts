@@ -146,14 +146,6 @@ export interface EtfInvestorProfile {
   typicalInvestor: string;
 }
 
-export type EtfGroupFitLevel = 'primary' | 'secondary' | 'occasional' | 'avoid';
-
-export interface EtfInvestorGroupGroupFit {
-  groupKey: string;
-  fit: EtfGroupFitLevel;
-  rationale: string;
-}
-
 export interface EtfInvestorGroupCategoryHighlight {
   category: string;
   group: string;
@@ -168,7 +160,6 @@ export interface EtfTargetInvestorGroup {
   analysisAngle: string;
   keyConsiderations: string[];
   redFlags: string[];
-  etfGroupFit: EtfInvestorGroupGroupFit[];
   highlightedCategories: EtfInvestorGroupCategoryHighlight[];
 }
 
