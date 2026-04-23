@@ -8,11 +8,11 @@ import {
   EtfMorPortfolioBondBreakdown,
   EtfMorPortfolioFixedIncomeStyle,
   EtfMorPortfolioHoldings,
-  EtfMorPortfolioHoldingRow,
   EtfMorPortfolioSectorExposure,
   EtfMorPortfolioSectorExposureRow,
   EtfMorPortfolioStyleMeasures,
 } from '@/types/prismaTypes';
+import { buildEtfHoldingColumnDefs } from '@/utils/etf-holdings-utils';
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle?: string }): JSX.Element {
   return (
@@ -450,84 +450,6 @@ function MorPortfolioBondBreakdownBlock({ data }: { data: EtfMorPortfolioBondBre
   );
 }
 
-type HoldingColumnDef = { label: string; field: keyof EtfMorPortfolioHoldingRow };
-
-const HOLDING_FIELD_ORDER: Array<keyof EtfMorPortfolioHoldingRow> = [
-  'portfolioWeightPct',
-  'firstBought',
-  'marketValue',
-  'currency',
-  'oneYearReturn',
-  'forwardPE',
-  'maturityDate',
-  'couponRate',
-  'sector',
-];
-
-const HOLDING_FIELD_LABELS: Record<keyof EtfMorPortfolioHoldingRow, string> = {
-  name: 'Name',
-  portfolioWeightPct: 'Weight %',
-  firstBought: 'First bought',
-  marketValue: 'Market value',
-  marketValueAsOfDate: 'Market value as of',
-  currency: 'Cur',
-  oneYearReturn: '1Y return',
-  forwardPE: 'Fwd P/E',
-  maturityDate: 'Maturity',
-  couponRate: 'Coupon %',
-  sector: 'Sector',
-};
-
-function holdingHeaderToField(header: string): keyof EtfMorPortfolioHoldingRow | null {
-  const h = header.toLowerCase().replace(/\s+/g, ' ').trim();
-  if (h === 'holdings' || h === 'name') return 'name';
-  if (h === '% portfolio weight' || h === 'portfolio weight' || h === 'weight %' || h === 'weight') return 'portfolioWeightPct';
-  if (h === 'first bought') return 'firstBought';
-  if (h.startsWith('market value')) return 'marketValue';
-  if (h === 'cur' || h === 'currency') return 'currency';
-  if (h === '1-year return' || h === '1 year return' || h === '1y return') return 'oneYearReturn';
-  if (h === 'forward p/e' || h === 'fwd p/e') return 'forwardPE';
-  if (h === 'maturity date' || h === 'maturity') return 'maturityDate';
-  if (h === 'coupon rate' || h === 'coupon' || h === 'coupon %') return 'couponRate';
-  if (h === 'sector') return 'sector';
-  return null;
-}
-
-function buildHoldingColumnDefs(data: EtfMorPortfolioHoldings): HoldingColumnDef[] {
-  const list = Array.isArray(data.holdings) ? data.holdings : [];
-  const hasValue = (field: keyof EtfMorPortfolioHoldingRow): boolean => list.some((row) => row[field] != null && String(row[field]).trim() !== '');
-
-  const defs: HoldingColumnDef[] = [];
-  const seen = new Set<keyof EtfMorPortfolioHoldingRow>();
-  const push = (field: keyof EtfMorPortfolioHoldingRow, label?: string): void => {
-    if (seen.has(field)) return;
-    if (field !== 'name' && !hasValue(field)) return;
-    seen.add(field);
-    defs.push({ field, label: label ?? HOLDING_FIELD_LABELS[field] });
-  };
-
-  push('name');
-
-  // If the scraper captured the MOR column order, prefer it so the
-  // table matches what the user sees on MOR.com. Skip premium /
-  // unknown columns that don't map to a known field.
-  if (Array.isArray(data.columns) && data.columns.length > 0) {
-    for (const header of data.columns) {
-      const field = holdingHeaderToField(header);
-      if (!field || field === 'name') continue;
-      push(field, HOLDING_FIELD_LABELS[field]);
-    }
-  }
-
-  // Backfill any fields that have values but weren't in the header list
-  // (e.g. scraped currency that lambda inferred but header omitted).
-  for (const field of HOLDING_FIELD_ORDER) {
-    push(field);
-  }
-
-  return defs;
-}
-
 function MorPortfolioHoldingsBlock({ data }: { data: EtfMorPortfolioHoldings | null }): JSX.Element | null {
   if (!data) return null;
   const summary = data.summary ?? {};
@@ -544,7 +466,7 @@ function MorPortfolioHoldingsBlock({ data }: { data: EtfMorPortfolioHoldings | n
   ];
 
   const list = Array.isArray(data.holdings) ? data.holdings : [];
-  const colDefs = buildHoldingColumnDefs(data);
+  const colDefs = buildEtfHoldingColumnDefs(data, list);
 
   const holdingRows = list.map((h) => {
     const row: Record<string, unknown> = {};
