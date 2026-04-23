@@ -1,5 +1,6 @@
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
+import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/portfolio-holdings/route';
 import { PriceHistoryResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/price-history/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
@@ -7,6 +8,7 @@ import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
+import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
@@ -115,6 +117,22 @@ async function fetchSimilarEtfs(exchange: string, etf: string): Promise<SimilarE
   } catch (error) {
     console.error(`fetchSimilarEtfs error for ${etf}:`, error);
     return [];
+  }
+}
+
+async function fetchEtfPortfolioHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse['holdings']> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/portfolio-holdings`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchEtfPortfolioHoldings failed (${res.status}): ${url}`);
+      return null;
+    }
+    const wrapper = (await res.json()) as EtfPortfolioHoldingsResponse;
+    return wrapper.holdings;
+  } catch (error) {
+    console.error(`fetchEtfPortfolioHoldings error for ${etf}:`, error);
+    return null;
   }
 }
 
@@ -375,6 +393,21 @@ function EtfAnalysisSection({
   return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} />;
 }
 
+const HOLDINGS_PREVIEW_LIMIT = 10;
+
+function EtfHoldingsSection({
+  holdingsPromise,
+  exchange,
+  symbol,
+}: {
+  holdingsPromise: Promise<EtfPortfolioHoldingsResponse['holdings']>;
+  exchange: string;
+  symbol: string;
+}): JSX.Element | null {
+  const holdings = use(holdingsPromise);
+  return <EtfHoldings data={holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${symbol}/holdings`} />;
+}
+
 /** PAGE */
 export default async function EtfDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   // Main ETF data (promise for selective Suspense usage)
@@ -394,6 +427,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   const scoresPromise = fetchEtfScores(exchange, etf);
   const priceHistoryPromise = fetchEtfPriceHistory(exchange, etf);
   const similarEtfsPromise = fetchSimilarEtfs(exchange, etf);
+  const portfolioHoldingsPromise = fetchEtfPortfolioHoldings(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -466,6 +500,10 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         {/* Remaining Index & Strategy paragraphs, rendered after the price chart. */}
         <EtfIndexStrategyTail data={etfInfo} />
+
+        <Suspense fallback={null}>
+          <EtfHoldingsSection holdingsPromise={portfolioHoldingsPromise} exchange={exchange} symbol={etf} />
+        </Suspense>
 
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
