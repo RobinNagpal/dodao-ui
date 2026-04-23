@@ -584,6 +584,83 @@ Tasks:
     slot in this order (suggested: right after Final Summary + Intro, before
     charts — or just after charts — pick one and document it).
 
+#### 3.3.e) Improve Strategy section — split into structured fields + per-group shape
+
+Goal: today the **Strategy** section is stored as **one** free-form field that packs
+roughly five different things into a single blob:
+
+1. **Intro** — what the fund is (overlaps with 3.3.d's `introParagraph`).
+2. **Peer / competitive context** — how it sits versus peers in the same group.
+3. **Strategy proper** — index, mandate, how exposure is actually delivered.
+4. **Up/down conditions** — which macro, rate, or market conditions make it rise
+   or fall.
+5. **Three major risks** — the top risks associated with the fund.
+
+Treating these as one blob makes the section hard to render cleanly, hard to reuse
+(e.g. in competition tables, in the "Is this ETF right for you?" panel, in
+per-category detail pages), and hard to validate in the prompt-tuning loop.
+
+- [ ] **Break Strategy into 5–6 structured fields** on the ETF analysis output
+  (names are indicative — finalize during implementation):
+  - `strategyIntro` — consolidate with the 3.3.d `introParagraph` if the content
+    overlaps; otherwise keep as a short strategy-focused intro.
+  - `peerContext` — 1–2 paragraphs on where the fund sits relative to its group /
+    Morningstar category peers (ties into 3.3.a + 3.3.b).
+  - `strategyDescription` — the index / mandate / replication approach.
+  - `upDownConditions` — structured rather than prose:
+    `{ upsideDrivers: string[], downsideDrivers: string[], sensitivity:
+    { rates?: 'High'|'Medium'|'Low', usdStrength?: ..., oilPrice?: ..., etc. } }`.
+  - `topRisks` — an array of exactly N (default 3) risks, each
+    `{ title, description, severity: 'High'|'Medium'|'Low' }`.
+  - (Optional) `keyMetrics` — small K/V block (index, rebalance cadence, currency
+    hedging, leverage factor, options-overlay details, etc.) so the UI can render
+    it as a quick-facts panel.
+- [ ] **Check which fields apply to which groups** — **not every field is
+  universal**:
+  - Equity ETFs: all of the above apply; `upDownConditions.sensitivity` leans on
+    sectors / factors / regions.
+  - Fixed-income ETFs: `upDownConditions.sensitivity` must include
+    duration / credit-quality / curve-shape fields; `topRisks` shape differs
+    (credit risk, duration risk, convexity risk).
+  - Commodities ETFs: contango/backwardation, spot vs futures, roll yield.
+  - Leveraged / inverse / options-income ETFs: volatility drag, decay, strike
+    selection, call-overwrite cadence — these deserve their own fields.
+  - Currency ETFs: rate differentials, carry.
+  - Catalog the full set of groups from `etf-analysis-categories.json` and mark
+    which fields are **required**, **optional**, or **n/a** per group.
+- [ ] **Pick a storage shape** (open decision — pick one, document the rationale):
+  - **Option A — single `strategy` JSON column** on `Etf` / the analysis record,
+    with a TypeScript discriminated union keyed by `strategyType` / group. Zod
+    schema per group validates shape before save.
+  - **Option B — one `EtfStrategy` table** with the common fields as columns, plus
+    a small `details` JSON column for group-specific extras.
+  - **Option C — multiple tables per group family** (`EtfEquityStrategy`,
+    `EtfFixedIncomeStrategy`, …). Cleanest schema, most migration cost.
+  - Default recommendation: **Option A** (JSON + Zod) to start, revisit to
+    Option B if querying structured sub-fields becomes common.
+- [ ] **Prompt changes to emit the structured shape**:
+  - Update the Strategy prompt to return each field separately instead of one
+    markdown blob.
+  - Add a Zod-validated JSON contract so prompt regressions fail loudly instead
+    of silently producing malformed strategy sections.
+  - Run this through the **automated factor/prompt tuning loop** (section 3.2)
+    per group so the shape converges.
+- [ ] **UI rendering** — once fields are separate, the detail page can:
+  - Render **Strategy** as a tight 2–3-paragraph block (from
+    `strategyDescription` + `peerContext`) per 3.3.d's layout goals.
+  - Render **up/down conditions** as a small two-column list or sensitivity table.
+  - Render **top risks** as a compact card list with severity badges.
+  - Hoist a 1-line "strategy TL;DR" up near Final Summary if needed.
+- [ ] **Migration / backfill**:
+  - Keep the legacy single-field Strategy readable during transition (read-only
+    fallback) until all ETFs are regenerated into the new shape.
+  - After backfill, remove the legacy field.
+- [ ] **Decide placement** — sibling section vs. expansion of 3.3.d:
+  - Either (a) restructure the existing **Strategy** section on the detail page
+    using these new fields (preferred, aligns with 3.3.d), or (b) add a new
+    sibling section **"Improve Strategy"** next to Final Summary that renders the
+    structured output. Pick one during implementation; don't ship both.
+
 ### 3.4) Misc prompt updates
 
 - [ ] **Include the report-generation date** in the **Final Summary** section of each prompt
