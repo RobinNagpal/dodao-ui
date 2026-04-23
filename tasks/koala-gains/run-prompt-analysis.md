@@ -8,9 +8,15 @@
 - `risk-analysis`
 - `future-performance-outlook`
 
-Claude: do exactly the 4 steps below in order. Do not skip, do not reorder, do not
-improvise. Background context is in `etf-verification-loop.md` if you need it — otherwise
-trust this file and move.
+Claude: do exactly the 5 steps below in order. Do not skip, do not reorder, do not
+improvise. Background context on the original prompt + factor audit loops is in
+`etf-verification-loop.md` in this folder — this runbook is the retail-review loop and
+is self-contained.
+
+> **Important — the prompt is NOT reviewed in this runbook.** Claude's job here is to
+> review the **generated analyses** through a retail-investor lens and emit a review
+> file. The prompt itself is edited in a **separate follow-up conversation** driven by
+> the user, after they read the review. Do not edit the prompt file in this run.
 
 ---
 
@@ -20,9 +26,10 @@ trust this file and move.
 (2 per group × 8 groups), each with `{symbol, exchange, name, group, groupName, category}`.
 Use it as-is for every run.
 
-**Category → prompt file mapping:**
+**Category → prompt file mapping** (for reference / the follow-up conversation — **not**
+edited in this runbook):
 
-| `<category>`                 | Prompt file to review & possibly edit                                     |
+| `<category>`                 | Prompt file                                                               |
 | ---------------------------- | ------------------------------------------------------------------------- |
 | `performance-and-returns`    | `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`               |
 | `cost-efficiency-and-team`   | `docs/ai-knowledge/insights-ui/etf-prompts/cost-efficiency-team.md`       |
@@ -72,47 +79,118 @@ yarn etf-verify:fetch \
   --out-dir "$ITER_ROOT/iter-$ITER/reports"
 ```
 
-## 5. Review + write findings + (maybe) edit prompt (Claude)
+## 5. Retail-investor review of the 16 analyses (Claude)
 
-1. Open the prompt file from the table above.
-2. Open every `reports/<group>/<SYMBOL>.md` produced in step 4.
-3. Write `$ITER_ROOT/iter-$ITER/findings-A-$CATEGORY.md` using this template:
+> **Read every `reports/<group>/<SYMBOL>.md` produced in step 4. Forget the prompt.
+> Review the analyses only.**
 
-   ```markdown
-   # ETF prompt review — $CATEGORY — iter-$ITER
+Follow these instructions verbatim — they are the review brief the user wants executed
+every iteration:
 
-   - **Date:** <YYYY-MM-DD>
-   - **ETFs reviewed:** list `<group>: SYM1 (cat), SYM2 (cat)` for all 8 groups
+```
+Make a new review file where you analyze and review the all 16 ETFs analysis for
+<CATEGORY>.
 
-   ## Per-ETF review
+Forget the prompt context. You just need to review the analysis of these ETFs:
 
-   ### SYM (group — category)
+- Is this analysis relevant for this ETF?
+- Is this analysis useful for the retail investor who wants to invest in this ETF?
+- Is this analysis good if someone is reading this and has to make a decision on
+  whether they want to invest in this ETF or not?
 
-   - **What's good:** …
-   - **What's missing / wrong:** …
-   - **Verdict:** change needed / no change
+Don't cross-check the numbers. Most numbers and data points are correct. See if we
+are presenting decisive information for those numbers. If we are explaining the
+numbers well or not.
 
-   <repeat for each of the 16 ETFs>
+If we are saying this xyz ETF has return abc number of return in past, then is this
+number good? That's the main question.
 
-   ## Final changes
+Review these all 16 ETFs analyses from every angle of a retail investor who wants
+to invest into ETFs. Then list findings for each of the 16 ETFs. Per ETF, write
+6-7 main sentences only, covering both good and bad things about the analysis we
+have.
+```
 
-   - `<prompt file path>` — <one-line summary>,
-     or **"no change — prompt produced solid output across the sampled ETFs."**
-   ```
+### Output file
 
-4. If the findings identify concrete problems, edit the prompt markdown in-place. Keep
-   placeholders (`{{symbol}}`, `{{categoryKey}}`, …) and overall structure — only
-   change instructions / guardrails.
-5. If the analysis looks good, **do not edit**. Record "no change" in `Final changes`.
+Write the review to:
+
+```
+$ITER_ROOT/iter-$ITER/retail-investor-review.md
+```
+
+Recommended structure:
+
+```markdown
+# Retail-investor review — <category> analyses — iter-<N>
+
+- **Date:** <YYYY-MM-DD>
+- **Lens:** retail investor deciding whether to buy this ETF. Is the analysis
+  decisive? Are the numbers explained (good / bad / typical)? What's missing for
+  the decision?
+- **Not checking:** raw numbers (assumed correct), prompt-rule violations, factor
+  fit (those have their own loops).
+
+## Per-ETF review
+
+### SYM (group — category)
+
+1. …one sentence…
+2. …
+3. …
+4. …
+5. …
+6. …
+7. (optional)
+
+<repeat for all 16 ETFs, grouped by the 8 group headings from `sample-etfs.json`>
+
+## Cross-cutting takeaways
+
+- 4–6 bullets summarising the patterns that repeat across ETFs (common missing
+  context, contradictions between the Pass/Fail list and the narrative, missing
+  retail comparisons, missing tax notes, readability issues, etc.).
+```
+
+### What Claude does NOT do in this step
+
+- Do NOT edit the prompt markdown.
+- Do NOT edit the factor JSON.
+- Do NOT cross-check numbers against external sources.
+- Do NOT restructure the review into a prompt-rules audit — this review is purely
+  retail-decision-usefulness. The prompt-side audit is a different loop (see
+  `etf-verification-loop.md` → Loop A).
 
 ---
 
-## End-of-task output
+## End-of-task output (what this branch should contain)
 
-After step 5, the branch should contain:
+```
+tasks/koala-gains/etf-verification/<date>-<category>/iter-1/
+├── requests.json                      # from step 2
+├── reports/                           # from step 4 (16 markdowns)
+│   ├── broad-equity/{SYM}.md
+│   ├── sector-thematic-equity/{SYM}.md
+│   ├── leveraged-inverse/{SYM}.md
+│   ├── fixed-income-core/{SYM}.md
+│   ├── fixed-income-credit/{SYM}.md
+│   ├── muni/{SYM}.md
+│   ├── alt-strategies/{SYM}.md
+│   └── allocation-target-date/{SYM}.md
+└── retail-investor-review.md          # from step 5
+```
 
-- `tasks/koala-gains/etf-verification/<date>-<category>/iter-1/{requests.json, reports/, findings-A-<category>.md}`.
-- Optionally an edit to the single prompt markdown file.
+Commit with `docs(etfs): iter-<N> retail-investor review of 16 <category> analyses`
+and push.
 
-Commit with a short message (`prompt(etfs): …` or `docs(etfs): iter-N findings for
-$CATEGORY`) and push. Open a PR if one doesn't exist on this branch yet.
+---
+
+## What happens next (not part of this runbook)
+
+The **user** reads `retail-investor-review.md` and starts a **follow-up conversation**
+that asks Claude to translate the review findings into concrete edits to the prompt
+markdown file for that category. That follow-up is where §6 of
+`etf-verification-loop.md` (prompt tightening) happens.
+
+This split exists on purpose: a clean review is hard to write when the author is
+already thinking about prompt edits. Separating the two steps keeps each one honest.
