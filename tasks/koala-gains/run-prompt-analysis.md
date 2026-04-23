@@ -9,9 +9,9 @@
 - `future-performance-outlook`
 
 Claude: do exactly the 5 steps below in order. Do not skip, do not reorder, do not
-improvise. Background context is in `etf-verification-loop.md` and the full iteration
-knowledge doc at
-`docs/ai-knowledge/insights-ui/etf-prompts/etf-prompt-iteration-workflow.md`.
+improvise. Background context on the original prompt + factor audit loops is in
+`etf-verification-loop.md` in this folder — this runbook is the retail-review loop and
+is self-contained.
 
 > **Important — the prompt is NOT reviewed in this runbook.** Claude's job here is to
 > review the **generated analyses** through a retail-investor lens and emit a review
