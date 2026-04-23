@@ -19,7 +19,7 @@ function ReportStatusPill({ status, count }: { status: EtfReportStatus; count?: 
   if (status === 'failed') {
     return <span className="px-2 py-1 rounded-full text-xs bg-orange-900 text-orange-200">Failed</span>;
   }
-  return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-200">Missing</span>;
+  return <span className="px-2 py-1 rounded-full text-xs bg-red-900 text-red-200">No</span>;
 }
 
 export interface EtfReportsTableProps {
