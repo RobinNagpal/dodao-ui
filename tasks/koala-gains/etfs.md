@@ -125,6 +125,36 @@ Page: https://koalagains.com/admin-v1/etf-generation-requests
   - Show a reload icon on the page that refreshes the data on click.
   - Auto-refresh the page every **30 seconds**.
   - Provide a control to **stop / start** the auto-refresh.
+- [ ] **Header columns — include every report type** (page: `https://koalagains.com/admin-v1/etf-reports`):
+  - Today the table header only shows **Performance**, **Cost & Team**, and **Risk**.
+  - Add the missing report-type columns so the header covers **all** types we generate:
+    **Performance**, **Cost & Team**, **Risk**, **Summary**, **Index & Strategy**, and
+    **Future Outlook** (Future Outlook is currently absent from the header).
+  - Each column should reflect the per-ETF status for that specific report type
+    (generated / missing / in-progress / failed).
+- [ ] **"Select missing" dropdown — split the generic option into per-report-type options**:
+  - Current behavior: the dropdown has a single **"Missing Analysis"** option that selects
+    every ETF missing **any** of the 4 report types it knows about. This is too coarse and
+    also out of sync with the full set of report types.
+  - Remove the generic **"Missing Analysis"** entry.
+  - Replace it with **one option per report type**, each of which selects only the ETFs
+    missing **that specific** report type:
+    - Missing Performance
+    - Missing Cost & Team
+    - Missing Risk
+    - Missing Summary
+    - Missing Index & Strategy
+    - Missing Future Outlook
+  - Add a new **"Missing All Analysis"** option that selects only ETFs where **all** of the
+    above report types are missing (i.e. the ETF has nothing generated yet).
+- [ ] **Per-ETF "Generate All Analysis" — actually generate every report type**:
+  - Current behavior: when an admin opens the per-ETF actions menu, the **"Generate All
+    Analysis"** option only kicks off a subset of the report types.
+  - Fix so that **"Generate All Analysis"** for a single ETF enqueues generation requests for
+    **every** report type we support (Performance, Cost & Team, Risk, Summary, Index &
+    Strategy, Future Outlook), not just the ones it currently covers.
+  - Keep the existing per-type generation options alongside it (so admins can still generate
+    just one report type for an ETF).
 
 ### 1.5) Custom Reports ("random reports") per ETF
 
