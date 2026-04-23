@@ -146,12 +146,6 @@ export interface EtfInvestorProfile {
   typicalInvestor: string;
 }
 
-export interface EtfInvestorGroupCategoryHighlight {
-  category: string;
-  group: string;
-  rationale: string;
-}
-
 export interface EtfTargetInvestorGroup {
   key: string;
   name: string;
@@ -160,7 +154,6 @@ export interface EtfTargetInvestorGroup {
   analysisAngle: string;
   keyConsiderations: string[];
   redFlags: string[];
-  highlightedCategories: EtfInvestorGroupCategoryHighlight[];
 }
 
 export interface EtfTargetInvestorGroupsConfig {
