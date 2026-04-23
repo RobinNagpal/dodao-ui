@@ -1,5 +1,5 @@
 {
-  "description": "Target investor-group taxonomy used to write ETF analyses from the perspective of who the potential investors are — essentially an investor-goal / persona library. Each entry is an audience + goal pair (e.g., 'HNW: State-Tax-Exempt Muni Income', 'Pension: Liability-Driven Investing', 'RIA: Tax-Loss-Harvesting Partner Pairs') rather than a generic audience label, so retail and institutional channels are both captured at the level of the specific outcome they're trying to achieve. Note: the word 'group' here is a generic 'investor archetype'; it is NOT a mapping back to the 8 ETF category-groups defined in etf-analysis-categories.json. Determining which of these investor goals a given ETF actually satisfies is done during ETF analysis (Phase 2 of tasks/koala-gains/etfs.md), not pre-baked into this file. Each entry describes the investor's profile (horizon, risk tolerance, primary goal, income need, tax sensitivity), the analysis angle to take when writing for them, key things they care about, and red flags that disqualify a fund for them. Conforms to EtfTargetInvestorGroupsConfig in src/types/etf/etf-analysis-types.ts.",
+  "description": "Target investor-group taxonomy used to write ETF analyses from the perspective of who the potential investors are — essentially an investor-goal / persona library. Two shapes appear in the investorGroups array: (1) flat goal-persona entries with key/name/shortDescription/profile/analysisAngle/keyConsiderations/redFlags (used for retail goals like first-time-investor, growth-accumulator, retirement-income-seeker, plus single-purpose institutional ones like institutional-trading-desk and insurance-corporate-treasury); and (2) audience entries with key/name/shortDescription/goals[], where the goals[] array holds nested goal-persona entries — used for broad audiences (HNW / family office, pension / endowment / foundation, RIA / financial advisor) that have multiple distinct goals worth analyzing separately. Note: the word 'group' here is a generic 'investor archetype'; it is NOT a mapping back to the 8 ETF category-groups defined in etf-analysis-categories.json. Determining which of these investor goals a given ETF actually satisfies is done during ETF analysis (Phase 2 of tasks/koala-gains/etfs.md), not pre-baked into this file. Conforms to EtfTargetInvestorGroupsConfig in src/types/etf/etf-analysis-types.ts.",
   "investorGroups": [
     {
       "key": "first-time-investor",
@@ -417,237 +417,258 @@
       ]
     },
     {
-      "key": "hnw-tax-efficient-public-equity-sleeve",
-      "name": "HNW: Tax-Efficient Public-Equity Beta Sleeve",
-      "shortDescription": "High-net-worth or family-office investor seeking tax-efficient compounding of US and international equity exposure inside taxable accounts — ETFs are the wrapper for the public-equity beta sleeve while private allocations carry the alpha mandate.",
-      "profile": {
-        "investmentHorizon": "Very Long (15y+)",
-        "riskTolerance": "Moderate-High",
-        "primaryGoal": "Wealth Accumulation",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "High",
-        "typicalInvestor": "HNW individual ($5M-$50M investable) or single-family office at the top federal + state + NIIT bracket; alpha mandate sits in PE / hedge funds / direct real estate; ETFs serve only as the efficient-beta sleeve."
-      },
-      "analysisAngle": "After-tax return at the top marginal rate is the only metric that matters. Capital-gain distribution history must be near zero. At >$1M positions, direct indexing with daily harvesting often beats an index ETF — the ETF must justify its wrapper. Foreign-tax-credit pickup is a real consideration for international sleeves held in taxable accounts.",
-      "keyConsiderations": [
-        "Capital-gain distribution history (passive ETFs near zero; thematic and active can surprise).",
-        "After-tax return at top federal + state + NIIT bracket, not headline return.",
-        "Foreign-tax-credit pickup for international ETFs held in taxable accounts.",
-        "Direct-indexing breakeven analysis for $1M+ positions.",
-        "Wrapper cost stacking when the ETF sits inside a SMA / UMA."
-      ],
-      "redFlags": [
-        "Material recent capital-gain distributions in a passive-style fund.",
-        "Active or thematic strategy with high turnover dragging after-tax return.",
-        "Distribution character largely ROC or short-term gain without disclosure."
+      "key": "high-net-worth-individual",
+      "name": "High-Net-Worth Individual / Family Office",
+      "shortDescription": "Wealthy individual or single-family office investing $5M-$500M+ across asset classes — uses ETFs for tax-efficient beta, satellite exposures, and overlays alongside private investments. Different HNW investors emphasize different goals: efficient public-equity beta in taxable accounts, state-tax-exempt muni income at the top federal/state bracket, or diversifying real-asset and alternatives overlays alongside their private allocations.",
+      "goals": [
+        {
+          "key": "tax-efficient-public-equity-sleeve",
+          "name": "Tax-Efficient Public-Equity Beta Sleeve",
+          "shortDescription": "High-net-worth or family-office investor seeking tax-efficient compounding of US and international equity exposure inside taxable accounts — ETFs are the wrapper for the public-equity beta sleeve while private allocations carry the alpha mandate.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW individual ($5M-$50M investable) or single-family office at the top federal + state + NIIT bracket; alpha mandate sits in PE / hedge funds / direct real estate; ETFs serve only as the efficient-beta sleeve."
+          },
+          "analysisAngle": "After-tax return at the top marginal rate is the only metric that matters. Capital-gain distribution history must be near zero. At >$1M positions, direct indexing with daily harvesting often beats an index ETF — the ETF must justify its wrapper. Foreign-tax-credit pickup is a real consideration for international sleeves held in taxable accounts.",
+          "keyConsiderations": [
+            "Capital-gain distribution history (passive ETFs near zero; thematic and active can surprise).",
+            "After-tax return at top federal + state + NIIT bracket, not headline return.",
+            "Foreign-tax-credit pickup for international ETFs held in taxable accounts.",
+            "Direct-indexing breakeven analysis for $1M+ positions.",
+            "Wrapper cost stacking when the ETF sits inside a SMA / UMA."
+          ],
+          "redFlags": [
+            "Material recent capital-gain distributions in a passive-style fund.",
+            "Active or thematic strategy with high turnover dragging after-tax return.",
+            "Distribution character largely ROC or short-term gain without disclosure."
+          ]
+        },
+        {
+          "key": "state-tax-exempt-muni-income",
+          "name": "State-Tax-Exempt Muni Income",
+          "shortDescription": "High-bracket resident of a high-tax state (CA, NY, NJ, MA, IL) seeking muni income with state-tax exemption stacked on top of the federal exemption — AMT awareness for private-activity-bond exposure.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor in a top federal bracket who is also a high-tax-state resident; significant taxable-account fixed-income that needs to maximize after-tax yield via in-state muni exposure."
+          },
+          "analysisAngle": "TEY at the explicit federal + state + NIIT bracket is the comparison metric. State-specific muni funds add the state-tax exemption — for a CA resident in the top bracket the math frequently dominates national muni and taxable IG. AMT exposure on private-activity-bond muni funds must be flagged. Credit quality and concentration matter — high-yield muni introduces real default risk that the muni label doesn't make obvious.",
+          "keyConsiderations": [
+            "Tax-equivalent yield at federal + state + NIIT bracket for in-state vs national muni.",
+            "AMT exposure on private-activity-bond muni funds.",
+            "Single-jurisdiction credit risk in state-specific muni (pension stress, revenue shock).",
+            "Issuer credit-tier mix — IG-only vs HY-muni tilt.",
+            "Duration positioning relative to rate outlook."
+          ],
+          "redFlags": [
+            "High-yield muni exposure inside a generically named muni fund without disclosure.",
+            "Private-activity-bond concentration triggering AMT for high-bracket investors.",
+            "Single-state muni with documented pension or revenue-base distress."
+          ]
+        },
+        {
+          "key": "real-asset-and-alternatives-overlay",
+          "name": "Real-Asset and Alternatives Overlay",
+          "shortDescription": "HNW or family-office investor adding diversifying real-asset, defined-outcome, derivative-income, or commodity exposure on top of a public-equity + muni core — often complementing direct private real estate or commodity holdings.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor or family office whose constructed portfolio already covers public-equity beta and tax-efficient fixed income, looking for inflation hedges, downside structure, or uncorrelated return streams via accessible ETF wrappers."
+          },
+          "analysisAngle": "Sizing matters — these are diversifying sleeves, not core holdings. Defined-outcome and derivative-income funds must be evaluated on the upside-cap vs income-payout tradeoff. Commodity and precious-metals funds must be checked for K-1 vs 1099 reporting since K-1 creates real friction at HNW scale. Real-asset equity proxies (REITs, infrastructure, natural resources) carry equity-correlation risk that should be disclosed. Discuss complement to private allocations, not substitute.",
+          "keyConsiderations": [
+            "K-1 vs 1099 reporting (commodity pools, MLPs).",
+            "Upside-cap vs income-payout tradeoff for defined-outcome and derivative-income funds.",
+            "Equity-correlation in 'real asset' equity proxies during stress.",
+            "Sizing relative to existing private real-estate / private-PE allocations.",
+            "Currency-hedging methodology for non-USD alts."
+          ],
+          "redFlags": [
+            "Fund labeled 'inflation hedge' but historically tracking equity beta.",
+            "Unhedged single-currency or single-commodity concentration sized larger than satellite.",
+            "K-1 reporting without offsetting tax or hedging benefit."
+          ]
+        }
       ]
     },
     {
-      "key": "hnw-state-tax-exempt-muni-income",
-      "name": "HNW: State-Tax-Exempt Muni Income",
-      "shortDescription": "High-bracket resident of a high-tax state (CA, NY, NJ, MA, IL) seeking muni income with state-tax exemption stacked on top of the federal exemption — AMT awareness for private-activity-bond exposure.",
-      "profile": {
-        "investmentHorizon": "Long (5-15y)",
-        "riskTolerance": "Moderate",
-        "primaryGoal": "Tax Optimization",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "High",
-        "typicalInvestor": "HNW investor in a top federal bracket who is also a high-tax-state resident; significant taxable-account fixed-income that needs to maximize after-tax yield via in-state muni exposure."
-      },
-      "analysisAngle": "TEY at the explicit federal + state + NIIT bracket is the comparison metric. State-specific muni funds add the state-tax exemption — for a CA resident in the top bracket the math frequently dominates national muni and taxable IG. AMT exposure on private-activity-bond muni funds must be flagged. Credit quality and concentration matter — high-yield muni introduces real default risk that the muni label doesn't make obvious.",
-      "keyConsiderations": [
-        "Tax-equivalent yield at federal + state + NIIT bracket for in-state vs national muni.",
-        "AMT exposure on private-activity-bond muni funds.",
-        "Single-jurisdiction credit risk in state-specific muni (pension stress, revenue shock).",
-        "Issuer credit-tier mix — IG-only vs HY-muni tilt.",
-        "Duration positioning relative to rate outlook."
-      ],
-      "redFlags": [
-        "High-yield muni exposure inside a generically named muni fund without disclosure.",
-        "Private-activity-bond concentration triggering AMT for high-bracket investors.",
-        "Single-state muni with documented pension or revenue-base distress."
+      "key": "pension-endowment-foundation",
+      "name": "Pension / Endowment / Foundation (incl. Union Pensions)",
+      "shortDescription": "Long-horizon institutional pool — corporate or public pension, Taft-Hartley / union pension, university endowment, charitable foundation, sovereign wealth fund — governed by an Investment Policy Statement with defined liabilities or spending mandates. Different mandates drive different goals: liability-driven investing (LDI) for defined-benefit pensions, sustainable spending-policy support for endowments and foundations, and a liquid-beta sleeve to complement illiquid private allocations.",
+      "goals": [
+        {
+          "key": "pension-liability-driven-investing",
+          "name": "Liability-Driven Investing (LDI)",
+          "shortDescription": "Defined-benefit pension plan (corporate, public, or Taft-Hartley union) matching long-duration nominal or real liabilities with treasuries, STRIPS, and TIPS — duration matching matters more than nominal yield.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Defined-benefit pension plan (corporate, public, or multi-employer / Taft-Hartley union) with a known actuarial liability stream, funded-ratio focused, governed by an IPS that specifies duration target and surplus risk tolerance."
+          },
+          "analysisAngle": "Duration matching is the primary lens. Long treasuries, STRIPS, and long-TIPS are the workhorse instruments. Discuss key-rate-duration profile, convexity, and the surplus-volatility tradeoff. Securities-lending revenue and institutional-share-class fees change the math — avoid retail fee commentary. Capacity matters: the fund must absorb $50-500M allocations without market impact.",
+          "keyConsiderations": [
+            "Key-rate-duration and convexity profile vs the liability stream.",
+            "Securities-lending revenue (institutional pools earn back basis points).",
+            "Capacity to absorb $50-500M allocations without market impact.",
+            "Liability-discount-curve sensitivity and surplus volatility.",
+            "Counterparty / collateral structure for treasury STRIPS or futures-based duration."
+          ],
+          "redFlags": [
+            "Fund too small for institutional-scale allocation without dominant-holder risk.",
+            "Methodology drift that breaks IPS benchmark consistency over multiple years.",
+            "Concentration / closure risk from a single large investor's outflow."
+          ]
+        },
+        {
+          "key": "endowment-foundation-spending-policy-support",
+          "name": "Spending-Policy Support",
+          "shortDescription": "University endowment or charitable foundation distributing ~5% per year while preserving real capital across generations — needs a portfolio that sustainably supports spending without eroding the corpus.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "University endowment ($500M-$50B+), private foundation, or community foundation. Spending policy is the binding constraint (typically 4-5% rolling-average); IPS often includes ESG / SRI / mission-aligned screens; large allocations to private equity and real assets are typical."
+          },
+          "analysisAngle": "The portfolio must sustainably distribute ~5%/year while preserving real (inflation-adjusted) capital — this is a real-return mandate. ETFs are typically the liquid-beta sleeve and rebalancing buffer alongside the illiquid private book. Discuss real-return coverage, ESG / SRI screen compatibility, capacity, and securities-lending revenue. Avoid retail-style fee comparisons.",
+          "keyConsiderations": [
+            "Long-run real return coverage of the spending rate.",
+            "ESG / SRI / mission-aligned screen compatibility (foundations especially).",
+            "Capacity for institutional-scale allocations without dominant-holder risk.",
+            "Liquid-beta provision alongside illiquid private allocations.",
+            "Rebalancing-band depth — can the ETF be sold at scale to fund distributions?"
+          ],
+          "redFlags": [
+            "ESG-labeled funds with weak self-graded screens (greenwashing risk for foundations).",
+            "Methodology drift breaking IPS benchmark consistency.",
+            "Insufficient liquidity to fund the annual distribution at scale."
+          ]
+        },
+        {
+          "key": "institutional-liquid-beta-sleeve",
+          "name": "Liquid-Beta Sleeve Alongside Privates",
+          "shortDescription": "Pension, endowment, foundation, or sovereign wealth fund needing a low-cost liquid index sleeve providing US, international, and EM equity beta + investment-grade core fixed income alongside an illiquid private-allocation book.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Pension plan, endowment, foundation, or sovereign wealth fund whose IPS calls for a defined liquid-beta exposure mix to complement private equity, private real estate, and private credit. Typically uses institutional ETF share classes or separate accounts."
+          },
+          "analysisAngle": "This is a building-block role — the ETFs serve as cheap, transparent, scalable beta exposure for the IPS-mandated mix. Tracking fidelity to the policy benchmark, AUM/capacity, and securities-lending revenue dominate. Discuss policy benchmark fit (e.g., S&P 500 vs Russell 1000 vs MSCI USA) — the wrong benchmark family breaks attribution.",
+          "keyConsiderations": [
+            "Tracking fidelity to the IPS-mandated benchmark.",
+            "Securities-lending revenue offset against the institutional fee.",
+            "Capacity for institutional allocation sizes without market impact.",
+            "Benchmark family compatibility (S&P, Russell, MSCI, FTSE) with the IPS.",
+            "Operational stability — issuer custody, counterparty, settlement reliability."
+          ],
+          "redFlags": [
+            "Wrong benchmark family forcing attribution adjustments.",
+            "Limited capacity making the institution a dominant holder.",
+            "Issuer or fund-family operational concerns at institutional scale."
+          ]
+        }
       ]
     },
     {
-      "key": "hnw-real-asset-and-alternatives-overlay",
-      "name": "HNW: Real-Asset and Alternatives Overlay",
-      "shortDescription": "HNW or family-office investor adding diversifying real-asset, defined-outcome, derivative-income, or commodity exposure on top of a public-equity + muni core — often complementing direct private real estate or commodity holdings.",
-      "profile": {
-        "investmentHorizon": "Long (5-15y)",
-        "riskTolerance": "Moderate-High",
-        "primaryGoal": "Diversification / Hedging",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "High",
-        "typicalInvestor": "HNW investor or family office whose constructed portfolio already covers public-equity beta and tax-efficient fixed income, looking for inflation hedges, downside structure, or uncorrelated return streams via accessible ETF wrappers."
-      },
-      "analysisAngle": "Sizing matters — these are diversifying sleeves, not core holdings. Defined-outcome and derivative-income funds must be evaluated on the upside-cap vs income-payout tradeoff. Commodity and precious-metals funds must be checked for K-1 vs 1099 reporting since K-1 creates real friction at HNW scale. Real-asset equity proxies (REITs, infrastructure, natural resources) carry equity-correlation risk that should be disclosed. Discuss complement to private allocations, not substitute.",
-      "keyConsiderations": [
-        "K-1 vs 1099 reporting (commodity pools, MLPs).",
-        "Upside-cap vs income-payout tradeoff for defined-outcome and derivative-income funds.",
-        "Equity-correlation in 'real asset' equity proxies during stress.",
-        "Sizing relative to existing private real-estate / private-PE allocations.",
-        "Currency-hedging methodology for non-USD alts."
-      ],
-      "redFlags": [
-        "Fund labeled 'inflation hedge' but historically tracking equity beta.",
-        "Unhedged single-currency or single-commodity concentration sized larger than satellite.",
-        "K-1 reporting without offsetting tax or hedging benefit."
-      ]
-    },
-    {
-      "key": "pef-pension-liability-driven-investing",
-      "name": "Pension: Liability-Driven Investing (LDI)",
-      "shortDescription": "Defined-benefit pension plan (corporate, public, or Taft-Hartley union) matching long-duration nominal or real liabilities with treasuries, STRIPS, and TIPS — duration matching matters more than nominal yield.",
-      "profile": {
-        "investmentHorizon": "Very Long (15y+)",
-        "riskTolerance": "Low-Moderate",
-        "primaryGoal": "Capital Preservation",
-        "incomeNeed": "High",
-        "taxSensitivity": "Low",
-        "typicalInvestor": "Defined-benefit pension plan (corporate, public, or multi-employer / Taft-Hartley union) with a known actuarial liability stream, funded-ratio focused, governed by an IPS that specifies duration target and surplus risk tolerance."
-      },
-      "analysisAngle": "Duration matching is the primary lens. Long treasuries, STRIPS, and long-TIPS are the workhorse instruments. Discuss key-rate-duration profile, convexity, and the surplus-volatility tradeoff. Securities-lending revenue and institutional-share-class fees change the math — avoid retail fee commentary. Capacity matters: the fund must absorb $50-500M allocations without market impact.",
-      "keyConsiderations": [
-        "Key-rate-duration and convexity profile vs the liability stream.",
-        "Securities-lending revenue (institutional pools earn back basis points).",
-        "Capacity to absorb $50-500M allocations without market impact.",
-        "Liability-discount-curve sensitivity and surplus volatility.",
-        "Counterparty / collateral structure for treasury STRIPS or futures-based duration."
-      ],
-      "redFlags": [
-        "Fund too small for institutional-scale allocation without dominant-holder risk.",
-        "Methodology drift that breaks IPS benchmark consistency over multiple years.",
-        "Concentration / closure risk from a single large investor's outflow."
-      ]
-    },
-    {
-      "key": "pef-endowment-foundation-spending-policy-support",
-      "name": "Endowment / Foundation: Spending-Policy Support",
-      "shortDescription": "University endowment or charitable foundation distributing ~5% per year while preserving real capital across generations — needs a portfolio that sustainably supports spending without eroding the corpus.",
-      "profile": {
-        "investmentHorizon": "Very Long (15y+)",
-        "riskTolerance": "Moderate",
-        "primaryGoal": "Capital Preservation",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "Low",
-        "typicalInvestor": "University endowment ($500M-$50B+), private foundation, or community foundation. Spending policy is the binding constraint (typically 4-5% rolling-average); IPS often includes ESG / SRI / mission-aligned screens; large allocations to private equity and real assets are typical."
-      },
-      "analysisAngle": "The portfolio must sustainably distribute ~5%/year while preserving real (inflation-adjusted) capital — this is a real-return mandate. ETFs are typically the liquid-beta sleeve and rebalancing buffer alongside the illiquid private book. Discuss real-return coverage, ESG / SRI screen compatibility, capacity, and securities-lending revenue. Avoid retail-style fee comparisons.",
-      "keyConsiderations": [
-        "Long-run real return coverage of the spending rate.",
-        "ESG / SRI / mission-aligned screen compatibility (foundations especially).",
-        "Capacity for institutional-scale allocations without dominant-holder risk.",
-        "Liquid-beta provision alongside illiquid private allocations.",
-        "Rebalancing-band depth — can the ETF be sold at scale to fund distributions?"
-      ],
-      "redFlags": [
-        "ESG-labeled funds with weak self-graded screens (greenwashing risk for foundations).",
-        "Methodology drift breaking IPS benchmark consistency.",
-        "Insufficient liquidity to fund the annual distribution at scale."
-      ]
-    },
-    {
-      "key": "pef-institutional-liquid-beta-sleeve",
-      "name": "Institutional: Liquid-Beta Sleeve Alongside Privates",
-      "shortDescription": "Pension, endowment, foundation, or sovereign wealth fund needing a low-cost liquid index sleeve providing US, international, and EM equity beta + investment-grade core fixed income alongside an illiquid private-allocation book.",
-      "profile": {
-        "investmentHorizon": "Very Long (15y+)",
-        "riskTolerance": "Moderate",
-        "primaryGoal": "Diversification / Hedging",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "Low",
-        "typicalInvestor": "Pension plan, endowment, foundation, or sovereign wealth fund whose IPS calls for a defined liquid-beta exposure mix to complement private equity, private real estate, and private credit. Typically uses institutional ETF share classes or separate accounts."
-      },
-      "analysisAngle": "This is a building-block role — the ETFs serve as cheap, transparent, scalable beta exposure for the IPS-mandated mix. Tracking fidelity to the policy benchmark, AUM/capacity, and securities-lending revenue dominate. Discuss policy benchmark fit (e.g., S&P 500 vs Russell 1000 vs MSCI USA) — the wrong benchmark family breaks attribution.",
-      "keyConsiderations": [
-        "Tracking fidelity to the IPS-mandated benchmark.",
-        "Securities-lending revenue offset against the institutional fee.",
-        "Capacity for institutional allocation sizes without market impact.",
-        "Benchmark family compatibility (S&P, Russell, MSCI, FTSE) with the IPS.",
-        "Operational stability — issuer custody, counterparty, settlement reliability."
-      ],
-      "redFlags": [
-        "Wrong benchmark family forcing attribution adjustments.",
-        "Limited capacity making the institution a dominant holder.",
-        "Issuer or fund-family operational concerns at institutional scale."
-      ]
-    },
-    {
-      "key": "ria-passive-core-model-building-blocks",
-      "name": "RIA: Passive Core Model-Portfolio Building Blocks",
-      "shortDescription": "Independent RIA or financial planner constructing risk-tier model portfolios across many client accounts — needs cheap, broad, well-tracked passive ETFs as the workhorse holdings.",
-      "profile": {
-        "investmentHorizon": "Long (5-15y)",
-        "riskTolerance": "Moderate",
-        "primaryGoal": "Diversification / Hedging",
-        "incomeNeed": "Modest",
-        "taxSensitivity": "Moderate",
-        "typicalInvestor": "Independent RIA or fee-only planner managing $50M-$5B in client AUM, using 3-5 risk-tier models (Conservative / Moderate / Growth / Aggressive), rebalancing quarterly. Selects ETFs as building blocks rather than standalone hero positions."
-      },
-      "analysisAngle": "Selection logic optimizes for use as a building block — fact-sheet clarity for client meetings, bid-ask tightness across client-block trades, fee compounding on top of the advisor's own AUM fee. Issuer brand, analyst coverage, and rep support matter for due-diligence defensibility. Active or thematic funds complicate the simple 'we use low-cost passive' narrative the advisor is selling.",
-      "keyConsiderations": [
-        "Bid-ask tightness amplified across many client-block trades.",
-        "Fact-sheet clarity for client meetings and due-diligence files.",
-        "Compatibility with major TAMP / custody platforms (Schwab, Fidelity, Pershing, Envestnet).",
-        "All-in cost story (ETF fee + advisor AUM fee) for the end-client narrative.",
-        "Issuer scale and rep support for ongoing due diligence."
-      ],
-      "redFlags": [
-        "Niche issuer with no analyst coverage or wholesaler relationship.",
-        "Active or thematic strategy that complicates the model-portfolio thesis.",
-        "Closure risk that would force a cross-account taxable transition for many clients."
-      ]
-    },
-    {
-      "key": "ria-tax-loss-harvesting-partner-pairs",
-      "name": "RIA: Tax-Loss-Harvesting Partner Pairs",
-      "shortDescription": "Advisor needs wash-sale-safe ETF pairs (e.g., VTI ↔ ITOT, IEFA ↔ VEA, SPY ↔ IVV ↔ VOO) to enable client-level tax-loss harvesting on a rolling basis without losing market exposure.",
-      "profile": {
-        "investmentHorizon": "Long (5-15y)",
-        "riskTolerance": "Moderate",
-        "primaryGoal": "Tax Optimization",
-        "incomeNeed": "None",
-        "taxSensitivity": "High",
-        "typicalInvestor": "RIA or financial planner systematically harvesting losses in taxable client accounts — needs ETFs that track materially different indices to satisfy IRS wash-sale rules while delivering nearly identical exposure."
-      },
-      "analysisAngle": "The test is benchmark differentiation — two ETFs tracking the same benchmark are wash-sale violations; tracking different benchmarks is the safe path. Discuss the canonical TLH pairs and the differentiation rationale (S&P 500 vs CRSP US Total Market vs Russell 1000). Tracking-error similarity to keep portfolio risk constant during the swap matters as much as the differentiation itself.",
-      "keyConsiderations": [
-        "Benchmark differentiation sufficient to satisfy wash-sale rules.",
-        "Tracking-error similarity to keep portfolio risk profile constant during the swap.",
-        "Bid-ask cost of the round-trip swap.",
-        "Both sides of the pair must have sufficient AUM and liquidity for client-block trades.",
-        "Documented TLH-pair fact sheets for due-diligence and client communication."
-      ],
-      "redFlags": [
-        "Fund tracking the same index as the existing holding (wash-sale violation risk).",
-        "Material tracking-error difference that materially shifts portfolio risk during the swap.",
-        "One side of the pair has thin AUM or wide bid-ask, defeating the harvest math."
-      ]
-    },
-    {
-      "key": "ria-retiree-income-tier-models",
-      "name": "RIA: Retiree-Tier Income & Conservative Models",
-      "shortDescription": "Advisor constructing income and conservative-tier model portfolios for retiree clients — needs sustainable income, lower drawdown floor, and an intuitive risk story for client conversations.",
-      "profile": {
-        "investmentHorizon": "Long (5-15y)",
-        "riskTolerance": "Low-Moderate",
-        "primaryGoal": "Income Generation",
-        "incomeNeed": "High",
-        "taxSensitivity": "Moderate",
-        "typicalInvestor": "RIA or planner managing retiree client portfolios with defined withdrawal needs, building income-tier or conservative-tier models that prioritize distribution stability and downside protection over growth."
-      },
-      "analysisAngle": "Distribution character matters as much as headline yield for client communication. Drawdown floor — 'what's the worst 12-month decline?' — is the question retiree clients ask. Derivative-income funds (JEPI / JEPQ-style) are common in this tier; advisors must understand the upside-cap tradeoff and explain it clearly. Sequence-of-returns risk is the dominant concern.",
-      "keyConsiderations": [
-        "Distribution character (qualified dividend / ordinary income / ROC) for client tax communication.",
-        "Worst-12-month drawdown a retiree client could survive.",
-        "Capture-ratio analysis for derivative-income funds (upside-cap vs income payout).",
-        "Duration risk in the bond sleeve.",
-        "Manager continuity for active income strategies."
-      ],
-      "redFlags": [
-        "Distribution funded substantially by ROC without clear advisor-facing disclosure.",
-        "Long-duration bond exposure incompatible with retiree drawdown tolerance.",
-        "Active fund failing to beat its passive peer net of fees over 5+ years."
+      "key": "financial-advisor-ria",
+      "name": "Financial Advisor / RIA",
+      "shortDescription": "Registered Investment Advisor or financial planner constructing model portfolios across many client accounts — selects ETFs as building blocks rather than as standalone hero positions. Goals depend on the client tier: low-cost passive building blocks for the core models, wash-sale-safe partner pairs for client-level tax-loss harvesting, and income-and-conservative tier models for retiree clients.",
+      "goals": [
+        {
+          "key": "passive-core-model-building-blocks",
+          "name": "Passive Core Model-Portfolio Building Blocks",
+          "shortDescription": "Independent RIA or financial planner constructing risk-tier model portfolios across many client accounts — needs cheap, broad, well-tracked passive ETFs as the workhorse holdings.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Independent RIA or fee-only planner managing $50M-$5B in client AUM, using 3-5 risk-tier models (Conservative / Moderate / Growth / Aggressive), rebalancing quarterly. Selects ETFs as building blocks rather than standalone hero positions."
+          },
+          "analysisAngle": "Selection logic optimizes for use as a building block — fact-sheet clarity for client meetings, bid-ask tightness across client-block trades, fee compounding on top of the advisor's own AUM fee. Issuer brand, analyst coverage, and rep support matter for due-diligence defensibility. Active or thematic funds complicate the simple 'we use low-cost passive' narrative the advisor is selling.",
+          "keyConsiderations": [
+            "Bid-ask tightness amplified across many client-block trades.",
+            "Fact-sheet clarity for client meetings and due-diligence files.",
+            "Compatibility with major TAMP / custody platforms (Schwab, Fidelity, Pershing, Envestnet).",
+            "All-in cost story (ETF fee + advisor AUM fee) for the end-client narrative.",
+            "Issuer scale and rep support for ongoing due diligence."
+          ],
+          "redFlags": [
+            "Niche issuer with no analyst coverage or wholesaler relationship.",
+            "Active or thematic strategy that complicates the model-portfolio thesis.",
+            "Closure risk that would force a cross-account taxable transition for many clients."
+          ]
+        },
+        {
+          "key": "tax-loss-harvesting-partner-pairs",
+          "name": "Tax-Loss-Harvesting Partner Pairs",
+          "shortDescription": "Advisor needs wash-sale-safe ETF pairs (e.g., VTI ↔ ITOT, IEFA ↔ VEA, SPY ↔ IVV ↔ VOO) to enable client-level tax-loss harvesting on a rolling basis without losing market exposure.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "None",
+            "taxSensitivity": "High",
+            "typicalInvestor": "RIA or financial planner systematically harvesting losses in taxable client accounts — needs ETFs that track materially different indices to satisfy IRS wash-sale rules while delivering nearly identical exposure."
+          },
+          "analysisAngle": "The test is benchmark differentiation — two ETFs tracking the same benchmark are wash-sale violations; tracking different benchmarks is the safe path. Discuss the canonical TLH pairs and the differentiation rationale (S&P 500 vs CRSP US Total Market vs Russell 1000). Tracking-error similarity to keep portfolio risk constant during the swap matters as much as the differentiation itself.",
+          "keyConsiderations": [
+            "Benchmark differentiation sufficient to satisfy wash-sale rules.",
+            "Tracking-error similarity to keep portfolio risk profile constant during the swap.",
+            "Bid-ask cost of the round-trip swap.",
+            "Both sides of the pair must have sufficient AUM and liquidity for client-block trades.",
+            "Documented TLH-pair fact sheets for due-diligence and client communication."
+          ],
+          "redFlags": [
+            "Fund tracking the same index as the existing holding (wash-sale violation risk).",
+            "Material tracking-error difference that materially shifts portfolio risk during the swap.",
+            "One side of the pair has thin AUM or wide bid-ask, defeating the harvest math."
+          ]
+        },
+        {
+          "key": "retiree-income-tier-models",
+          "name": "Retiree-Tier Income & Conservative Models",
+          "shortDescription": "Advisor constructing income and conservative-tier model portfolios for retiree clients — needs sustainable income, lower drawdown floor, and an intuitive risk story for client conversations.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA or planner managing retiree client portfolios with defined withdrawal needs, building income-tier or conservative-tier models that prioritize distribution stability and downside protection over growth."
+          },
+          "analysisAngle": "Distribution character matters as much as headline yield for client communication. Drawdown floor — 'what's the worst 12-month decline?' — is the question retiree clients ask. Derivative-income funds (JEPI / JEPQ-style) are common in this tier; advisors must understand the upside-cap tradeoff and explain it clearly. Sequence-of-returns risk is the dominant concern.",
+          "keyConsiderations": [
+            "Distribution character (qualified dividend / ordinary income / ROC) for client tax communication.",
+            "Worst-12-month drawdown a retiree client could survive.",
+            "Capture-ratio analysis for derivative-income funds (upside-cap vs income payout).",
+            "Duration risk in the bond sleeve.",
+            "Manager continuity for active income strategies."
+          ],
+          "redFlags": [
+            "Distribution funded substantially by ROC without clear advisor-facing disclosure.",
+            "Long-duration bond exposure incompatible with retiree drawdown tolerance.",
+            "Active fund failing to beat its passive peer net of fees over 5+ years."
+          ]
+        }
       ]
     }
   ]

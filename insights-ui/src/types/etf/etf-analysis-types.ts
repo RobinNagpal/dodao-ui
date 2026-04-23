@@ -146,7 +146,12 @@ export interface EtfInvestorProfile {
   typicalInvestor: string;
 }
 
-export interface EtfTargetInvestorGroup {
+/**
+ * A single goal-persona — concrete enough to write ETF analysis against.
+ * Used both as a top-level entry (for goals that don't need an audience wrapper,
+ * e.g., first-time-investor) and as a nested entry inside an audience's goals[].
+ */
+export interface EtfInvestorGoal {
   key: string;
   name: string;
   shortDescription: string;
@@ -154,6 +159,29 @@ export interface EtfTargetInvestorGroup {
   analysisAngle: string;
   keyConsiderations: string[];
   redFlags: string[];
+}
+
+/**
+ * A broad audience that contains multiple distinct goals worth analyzing
+ * separately (e.g., HNW, pension/endowment/foundation, RIA). The audience
+ * itself has only descriptive metadata; the analytical detail lives in goals[].
+ */
+export interface EtfInvestorAudience {
+  key: string;
+  name: string;
+  shortDescription: string;
+  goals: EtfInvestorGoal[];
+}
+
+/**
+ * Heterogeneous: an entry is either a flat goal-persona (EtfInvestorGoal shape)
+ * or an audience wrapper with nested goals (EtfInvestorAudience shape). Discriminate
+ * by the presence of a `goals` array.
+ */
+export type EtfTargetInvestorGroup = EtfInvestorGoal | EtfInvestorAudience;
+
+export function isEtfInvestorAudience(group: EtfTargetInvestorGroup): group is EtfInvestorAudience {
+  return Array.isArray((group as EtfInvestorAudience).goals);
 }
 
 export interface EtfTargetInvestorGroupsConfig {
