@@ -8,6 +8,28 @@ interface MissingCategory {
   filter: (e: EtfReportRow) => boolean;
 }
 
+const isReportMissing = (status: 'generated' | 'missing' | 'in-progress' | 'failed'): boolean => status !== 'generated';
+
+const reportTypeCategories: MissingCategory[] = [
+  { key: 'missingPerformance', label: 'Missing Performance', filter: (e) => isReportMissing(e.reportStatuses.performance) },
+  { key: 'missingCostEfficiencyAndTeam', label: 'Missing Cost & Team', filter: (e) => isReportMissing(e.reportStatuses.costEfficiencyAndTeam) },
+  { key: 'missingRisk', label: 'Missing Risk', filter: (e) => isReportMissing(e.reportStatuses.risk) },
+  { key: 'missingSummary', label: 'Missing Summary', filter: (e) => isReportMissing(e.reportStatuses.summary) },
+  { key: 'missingIndexStrategy', label: 'Missing Index & Strategy', filter: (e) => isReportMissing(e.reportStatuses.indexStrategy) },
+  { key: 'missingFutureOutlook', label: 'Missing Future Outlook', filter: (e) => isReportMissing(e.reportStatuses.futureOutlook) },
+  {
+    key: 'missingAllAnalysis',
+    label: 'Missing All Analysis',
+    filter: (e) =>
+      isReportMissing(e.reportStatuses.performance) &&
+      isReportMissing(e.reportStatuses.costEfficiencyAndTeam) &&
+      isReportMissing(e.reportStatuses.risk) &&
+      isReportMissing(e.reportStatuses.summary) &&
+      isReportMissing(e.reportStatuses.indexStrategy) &&
+      isReportMissing(e.reportStatuses.futureOutlook),
+  },
+];
+
 const categories: MissingCategory[] = [
   { key: 'financialInfo', label: 'Financial Info', filter: (e) => !e.hasFinancialInfo },
   { key: 'stockAnalyzer', label: 'Stock Analyzer', filter: (e) => !e.hasStockAnalyzerInfo },
@@ -15,12 +37,7 @@ const categories: MissingCategory[] = [
   { key: 'morRisk', label: 'MOR Risk', filter: (e) => !e.hasMorRiskInfo },
   { key: 'morPeople', label: 'MOR People', filter: (e) => !e.hasMorPeopleInfo },
   { key: 'morPortfolio', label: 'MOR Portfolio', filter: (e) => !e.hasMorPortfolioInfo },
-  { key: 'summary', label: 'Missing Summary', filter: (e) => !e.hasSummary },
-  {
-    key: 'analysis',
-    label: 'Missing Analysis',
-    filter: (e) => e.performanceAnalysisCount === 0 || e.costEfficiencyAnalysisCount === 0 || e.riskAnalysisCount === 0,
-  },
+  ...reportTypeCategories,
 ];
 
 export interface SelectMissingBarProps {
@@ -36,7 +53,7 @@ export default function SelectMissingBar({ etfs, onSelectIds }: SelectMissingBar
   const buttonClass = 'px-3 py-1.5 text-xs font-medium rounded-md transition-colors bg-gray-700 text-gray-200 hover:bg-gray-600';
 
   return (
-    <div className="flex items-center gap-3 px-6 py-3 bg-amber-900/30 border-b border-amber-700/40">
+    <div className="flex flex-wrap items-center gap-3 px-6 py-3 bg-amber-900/30 border-b border-amber-700/40">
       <span className="text-sm font-medium text-amber-200">Select missing</span>
       <div className="h-4 w-px bg-amber-700/50" />
       {activeCats.map((cat) => {

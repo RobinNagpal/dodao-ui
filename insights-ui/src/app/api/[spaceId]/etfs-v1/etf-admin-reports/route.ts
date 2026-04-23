@@ -1,8 +1,20 @@
 import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
+
+export type EtfReportStatus = 'generated' | 'missing' | 'in-progress' | 'failed';
+
+export interface EtfReportStatuses {
+  performance: EtfReportStatus;
+  costEfficiencyAndTeam: EtfReportStatus;
+  risk: EtfReportStatus;
+  futureOutlook: EtfReportStatus;
+  indexStrategy: EtfReportStatus;
+  summary: EtfReportStatus;
+}
 
 export interface EtfReportRow {
   id: string;
@@ -20,6 +32,8 @@ export interface EtfReportRow {
   performanceAnalysisCount: number;
   costEfficiencyAnalysisCount: number;
   riskAnalysisCount: number;
+  futureOutlookAnalysisCount: number;
+  reportStatuses: EtfReportStatuses;
 }
 
 export interface EtfReportsResponse {
@@ -64,6 +78,41 @@ function toMissingFilter(v: string | null): MissingFilter {
   if (normalized === 'mor') return 'mor';
   if (normalized === 'analysis') return 'analysis';
   return '';
+}
+
+type LatestRequestSummary = {
+  status: string;
+  regeneratePerformanceAndReturns: boolean;
+  regenerateCostEfficiencyAndTeam: boolean;
+  regenerateRiskAnalysis: boolean;
+  regenerateFuturePerformanceOutlook: boolean;
+  regenerateIndexStrategy: boolean;
+  regenerateFinalSummary: boolean;
+  completedSteps: string[];
+  failedSteps: string[];
+};
+
+type RegenerateFlagKey =
+  | 'regeneratePerformanceAndReturns'
+  | 'regenerateCostEfficiencyAndTeam'
+  | 'regenerateRiskAnalysis'
+  | 'regenerateFuturePerformanceOutlook'
+  | 'regenerateIndexStrategy'
+  | 'regenerateFinalSummary';
+
+function computeReportStatus(hasData: boolean, step: EtfReportType, flag: RegenerateFlagKey, latestRequest: LatestRequestSummary | undefined): EtfReportStatus {
+  if (hasData) return 'generated';
+  if (!latestRequest) return 'missing';
+
+  if (latestRequest.failedSteps.includes(step)) return 'failed';
+
+  const wasRequested = latestRequest[flag];
+  const alreadyCompleted = latestRequest.completedSteps.includes(step);
+  const activeStatus = latestRequest.status === EtfGenerationRequestStatus.InProgress || latestRequest.status === EtfGenerationRequestStatus.NotStarted;
+
+  if (wasRequested && !alreadyCompleted && activeStatus) return 'in-progress';
+
+  return 'missing';
 }
 
 const getHandler = async (
@@ -125,6 +174,21 @@ const getHandler = async (
         analysisCategoryFactorResults: {
           select: { categoryKey: true },
         },
+        generationRequests: {
+          orderBy: { updatedAt: 'desc' },
+          take: 1,
+          select: {
+            status: true,
+            regeneratePerformanceAndReturns: true,
+            regenerateCostEfficiencyAndTeam: true,
+            regenerateRiskAnalysis: true,
+            regenerateFuturePerformanceOutlook: true,
+            regenerateIndexStrategy: true,
+            regenerateFinalSummary: true,
+            completedSteps: true,
+            failedSteps: true,
+          },
+        },
       },
       orderBy: [{ symbol: 'asc' }, { exchange: 'asc' }],
       skip: (page - 1) * limit,
@@ -145,6 +209,34 @@ const getHandler = async (
   return {
     etfs: supportedEtfs.map((e) => {
       const factorResults = e.analysisCategoryFactorResults || [];
+      const performanceAnalysisCount = factorResults.filter((r) => r.categoryKey === 'PerformanceAndReturns').length;
+      const costEfficiencyAnalysisCount = factorResults.filter((r) => r.categoryKey === 'CostEfficiencyAndTeam').length;
+      const riskAnalysisCount = factorResults.filter((r) => r.categoryKey === 'RiskAnalysis').length;
+      const futureOutlookAnalysisCount = factorResults.filter((r) => r.categoryKey === 'FuturePerformanceOutlook').length;
+      const hasIndexStrategy = Boolean(e.indexStrategy && e.indexStrategy.trim());
+      const hasSummary = Boolean(e.summary && e.summary.trim());
+
+      const latestRequest = e.generationRequests[0];
+
+      const reportStatuses: EtfReportStatuses = {
+        performance: computeReportStatus(performanceAnalysisCount > 0, EtfReportType.PERFORMANCE_AND_RETURNS, 'regeneratePerformanceAndReturns', latestRequest),
+        costEfficiencyAndTeam: computeReportStatus(
+          costEfficiencyAnalysisCount > 0,
+          EtfReportType.COST_EFFICIENCY_AND_TEAM,
+          'regenerateCostEfficiencyAndTeam',
+          latestRequest
+        ),
+        risk: computeReportStatus(riskAnalysisCount > 0, EtfReportType.RISK_ANALYSIS, 'regenerateRiskAnalysis', latestRequest),
+        futureOutlook: computeReportStatus(
+          futureOutlookAnalysisCount > 0,
+          EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
+          'regenerateFuturePerformanceOutlook',
+          latestRequest
+        ),
+        indexStrategy: computeReportStatus(hasIndexStrategy, EtfReportType.INDEX_STRATEGY, 'regenerateIndexStrategy', latestRequest),
+        summary: computeReportStatus(hasSummary, EtfReportType.FINAL_SUMMARY, 'regenerateFinalSummary', latestRequest),
+      };
+
       return {
         id: e.id,
         symbol: e.symbol,
@@ -156,11 +248,13 @@ const getHandler = async (
         hasMorRiskInfo: !!e.morRiskInfo,
         hasMorPeopleInfo: !!e.morPeopleInfo,
         hasMorPortfolioInfo: !!e.morPortfolioInfo,
-        hasIndexStrategy: Boolean(e.indexStrategy && e.indexStrategy.trim()),
-        hasSummary: Boolean(e.summary && e.summary.trim()),
-        performanceAnalysisCount: factorResults.filter((r) => r.categoryKey === 'PerformanceAndReturns').length,
-        costEfficiencyAnalysisCount: factorResults.filter((r) => r.categoryKey === 'CostEfficiencyAndTeam').length,
-        riskAnalysisCount: factorResults.filter((r) => r.categoryKey === 'RiskAnalysis').length,
+        hasIndexStrategy,
+        hasSummary,
+        performanceAnalysisCount,
+        costEfficiencyAnalysisCount,
+        riskAnalysisCount,
+        futureOutlookAnalysisCount,
+        reportStatuses,
       };
     }),
     // totalCount comes from the DB query; UI can still show a correct pager even if we
