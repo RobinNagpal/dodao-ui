@@ -20,7 +20,7 @@ export const HOLDING_FIELD_LABELS: Record<keyof EtfMorPortfolioHoldingRow, strin
   firstBought: 'First bought',
   marketValue: 'Market value',
   marketValueAsOfDate: 'Market value as of',
-  currency: 'Cur',
+  currency: 'Currency',
   oneYearReturn: '1Y return',
   forwardPE: 'Fwd P/E',
   maturityDate: 'Maturity',
