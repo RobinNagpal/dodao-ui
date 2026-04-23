@@ -120,8 +120,6 @@ export interface EtfCategoryAnalysisResponse {
  * (and optionally specific Morningstar categories) defined in etf-analysis-categories.json.
  */
 
-export type EtfInvestorExperienceLevel = 'Beginner' | 'Intermediate' | 'Experienced';
-
 export type EtfInvestorHorizon = 'Short (<1y)' | 'Medium (1-5y)' | 'Long (5-15y)' | 'Very Long (15y+)';
 
 export type EtfInvestorRiskTolerance = 'Low' | 'Low-Moderate' | 'Moderate' | 'Moderate-High' | 'High' | 'Very High';
@@ -139,16 +137,12 @@ export type EtfInvestorIncomeNeed = 'None' | 'Modest' | 'High';
 
 export type EtfInvestorTaxSensitivity = 'Low' | 'Moderate' | 'High';
 
-export type EtfInvestorAccountPreference = 'Taxable' | 'Tax-Advantaged' | 'Either';
-
 export interface EtfInvestorProfile {
-  experienceLevel: EtfInvestorExperienceLevel;
   investmentHorizon: EtfInvestorHorizon;
   riskTolerance: EtfInvestorRiskTolerance;
   primaryGoal: EtfInvestorPrimaryGoal;
   incomeNeed: EtfInvestorIncomeNeed;
   taxSensitivity: EtfInvestorTaxSensitivity;
-  accountTypePreference: EtfInvestorAccountPreference;
   typicalInvestor: string;
 }
 
@@ -171,7 +165,6 @@ export interface EtfTargetInvestorGroup {
   name: string;
   shortDescription: string;
   profile: EtfInvestorProfile;
-  goalLabels: string[];
   analysisAngle: string;
   keyConsiderations: string[];
   redFlags: string[];
