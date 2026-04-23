@@ -1,6 +1,7 @@
 'use client';
 
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
+import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import Link from 'next/link';
@@ -50,6 +51,7 @@ export default function EtfAnalysisSections({ data, exchange, symbol }: EtfAnaly
                       {categoryResult.factorResults?.filter((fr) => fr.result === 'Pass').length || 0}/{categoryResult.factorResults?.length || 0}
                     </div>
                   )}
+                  {categoryResult?.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
                 </div>
                 {categoryResult && display.slug && (
                   <Link
