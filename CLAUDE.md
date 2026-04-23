@@ -240,6 +240,15 @@ Currently documented:
 * `docs/ai-knowledge/projects/insights-ui/`
 * `docs/ai-knowledge/projects/simulations/`
 
+### Topical Knowledge
+
+Use **`docs/ai-knowledge/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/ai-knowledge/insights-ui/AIKnowledge.md`](docs/ai-knowledge/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
+
+* `etf-analysis/` — ETF analysis pipeline: how to enqueue reports (`generate-etf-reports.md`), market scenarios catalog, scenarios-page implementation plan
+* `etf-prompts/` — Source-of-truth prompt text for each ETF analysis category
+* `etf-prompt-improvement/` — Iterative prompt-tuning review notes
+* `downside-analysis/` — Equity downside / drawdown framework with the 31-stock case study
+
 ### How to Use the Knowledge Base
 
 1. **Before coding:** Read relevant `code-knowledge` docs
@@ -256,6 +265,7 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 * `docs/ai-knowledge/AIKnowledge.md` (full index)
 * `docs/ai-knowledge/code-knowledge/AIKnowledge.md` (coding patterns index)
 * `docs/ai-knowledge/projects/AIKnowledge.md` (project docs index)
+* `docs/ai-knowledge/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, downside analysis, tariffs)
 * `docs/ai-knowledge/code-knowledge/build-process.md`
 * `docs/ai-knowledge/code-knowledge/monorepo-structure.md`
 
