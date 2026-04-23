@@ -307,3 +307,82 @@ visitors into signing up.
   - Should logged-in users who already converted ever see this gate again? (No — once signed
     in, the gate is off permanently for that account.)
   - Do we want a "soft" version (banner / tooltip nudge) before the hard gate at click #3?
+
+## SEO Fixes
+
+### "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`
+
+Goal: resolve the Google Search Console indexing issue affecting URLs in
+`https://koalagains.com/stocks/business-and-moat-sitemap.xml`. We already requested
+validation once, and Search Console came back with:
+
+> Some fixes failed for Page indexing issues for pages in sitemap
+> `/stocks/business-and-moat-sitemap.xml` on site `koalagains.com`.
+> You requested that Google validate your fix for: Page indexing issues on your
+> property, koalagains.com. The fix requested was for the following issue:
+> **"Crawled — currently not indexed"**. Some of your pages are still affected by
+> this issue.
+
+"Crawled — currently not indexed" means Googlebot **fetched** the page but chose
+**not** to include it in the index. This is almost always a content-quality,
+duplication, or signal-weight problem — not a robots/noindex bug — so the fix has to
+be more than a re-submission.
+
+- [ ] **Pull the affected URLs from Search Console**:
+  - Export the current list of URLs marked "Crawled — currently not indexed" under
+    this sitemap.
+  - Save it to `tasks/koala-gains/seo/crawled-not-indexed-business-and-moat.csv`
+    (or similar) so we can diff against future validation runs.
+- [ ] **Sample + audit the affected pages** (10–20 representative URLs):
+  - Do they render real, meaningful content server-side, or is the main analysis
+    text injected via client-side JS after load? (SSR / RSC check.)
+  - How much **unique** text is above the fold vs. repeated across stocks (same
+    boilerplate intro / same section headings / same disclaimer blocks)?
+  - Do these pages have a strong `<title>` and `<meta name="description">` tailored
+    to the specific ticker?
+  - Do they link out to other related pages (other sections of the same report,
+    competitors, similar stocks)?
+  - Are there any soft-404 signals (empty body, "report coming soon", error
+    fallbacks)?
+- [ ] **Likely causes to rule out / fix** (check each):
+  - **Thin or duplicative content** — if the Business & Moat pages share large
+    boilerplate across many tickers, Google sees them as near-duplicates.
+    Beef up per-ticker unique text and trim shared scaffolding.
+  - **Weak canonical signals** — confirm each URL sets a canonical pointing to
+    itself, and that we don't accidentally canonicalize to the parent stock page.
+  - **Orphan pages / poor internal linking** — these URLs should be linked from
+    the main stock report page, from the Stocks list, and from sibling section
+    pages. Check crawl depth is ≤ 3 clicks from home.
+  - **Render-blocked content** — verify the main report text is in the initial
+    SSR/RSC payload (fetch the URL without JS and confirm the analysis is there).
+  - **Slow TTFB / LCP** — Core Web Vitals failures can downrank to "not indexed"
+    in practice; spot-check a handful on PageSpeed Insights.
+  - **Duplicate titles / meta descriptions** — run a crawl (Screaming Frog or
+    similar) and flag pages with identical titles/meta.
+  - **Sitemap hygiene** — make sure the sitemap only contains URLs that actually
+    return 200, are canonical, and are expected to rank (no drafts / incomplete
+    reports — ties into 1.6 `isComplete` for ETFs; do the same for stocks).
+- [ ] **Implement fixes, priority order**:
+  1. Ship unique per-ticker content improvements (reduce boilerplate, surface
+     more ticker-specific analysis).
+  2. Tighten titles / meta descriptions to be ticker-specific.
+  3. Improve internal linking (related competitors, valuation page, financial
+     statements page — ties into the details-page extraction tasks above).
+  4. Confirm SSR / canonical / sitemap hygiene.
+- [ ] **Re-submit validation**:
+  - In Search Console, re-run "Validate fix" only **after** the content /
+    canonical / linking changes are live and Googlebot has had a chance to
+    re-crawl at least a few of the sample URLs.
+  - Track the status; if another round fails, use the newly returned affected
+    URLs to iterate.
+- [ ] **Monitor + prevent regressions**:
+  - Add a weekly (or per-deploy) report that lists: total Business & Moat URLs in
+    the sitemap, how many are actually indexed, and the delta week-over-week.
+  - Add a pre-publish guard: only include a stock's Business & Moat page in the
+    sitemap once its content crosses a minimum length / completeness threshold
+    (mirrors the ETF `isComplete` pattern in `etfs.md` 1.6).
+- [ ] **Generalize the fix**:
+  - If this sitemap has the problem, the other per-section sitemaps (financial
+    statements, valuation, etc.) are likely at risk too. After fixing Business &
+    Moat, check Search Console for the same status on the other stock sitemaps
+    and apply the same checklist.
