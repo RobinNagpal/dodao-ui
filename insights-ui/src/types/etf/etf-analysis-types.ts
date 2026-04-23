@@ -113,3 +113,73 @@ export interface EtfCategoryAnalysisResponse {
   overallAnalysisDetails: string;
   factors: EtfFactorAnalysisResult[];
 }
+
+/**
+ * ETF investor taxonomy. Two-level structure:
+ *   - Level 1: EtfInvestor — a type of investor (retail, HNW, pension, etc.).
+ *     Types are intentionally non-overlapping (each defined by a distinct funding
+ *     source / governance / regulatory context).
+ *   - Level 2: EtfInvestorGoal — a specific goal an investor of that type pursues
+ *     when buying ETFs (e.g., "tax-efficient public-equity beta sleeve",
+ *     "liability-driven investing"). Goals can recur across types but are framed
+ *     for that type's specific perspective.
+ */
+
+export type EtfInvestorHorizon = 'Short (<1y)' | 'Medium (1-5y)' | 'Long (5-15y)' | 'Very Long (15y+)';
+
+export type EtfInvestorRiskTolerance = 'Low' | 'Low-Moderate' | 'Moderate' | 'Moderate-High' | 'High' | 'Very High';
+
+export type EtfInvestorPrimaryGoal =
+  | 'Wealth Accumulation'
+  | 'Income Generation'
+  | 'Capital Preservation'
+  | 'Tax Optimization'
+  | 'Speculation / Trading'
+  | 'Diversification / Hedging'
+  | 'Thematic Exposure';
+
+export type EtfInvestorIncomeNeed = 'None' | 'Modest' | 'High';
+
+export type EtfInvestorTaxSensitivity = 'Low' | 'Moderate' | 'High';
+
+export interface EtfInvestorProfile {
+  investmentHorizon: EtfInvestorHorizon;
+  riskTolerance: EtfInvestorRiskTolerance;
+  primaryGoal: EtfInvestorPrimaryGoal;
+  incomeNeed: EtfInvestorIncomeNeed;
+  taxSensitivity: EtfInvestorTaxSensitivity;
+  typicalInvestor: string;
+}
+
+/** A specific ETF recommended for a given goal. */
+export interface EtfInvestorGoalEtf {
+  symbol: string;
+  name: string;
+  exchange: string;
+  why: string;
+}
+
+/** A specific goal an investor pursues when buying ETFs. */
+export interface EtfInvestorGoal {
+  key: string;
+  name: string;
+  shortDescription: string;
+  profile: EtfInvestorProfile;
+  analysisAngle: string;
+  keyConsiderations: string[];
+  redFlags: string[];
+  etfs: EtfInvestorGoalEtf[];
+}
+
+/** A type of investor (retail, HNW, pension, etc.) with the goals they pursue. */
+export interface EtfInvestor {
+  key: string;
+  name: string;
+  shortDescription: string;
+  etfInvestorGoals: EtfInvestorGoal[];
+}
+
+export interface EtfInvestorTaxonomyConfig {
+  description: string;
+  investors: EtfInvestor[];
+}
