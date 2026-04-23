@@ -1,5 +1,3 @@
-'use client';
-
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
