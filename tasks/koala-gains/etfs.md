@@ -1,17 +1,7 @@
-# ETF Reports — KoalaGains (Status + Next Tasks)
+# ETF Reports — KoalaGains (Next Tasks)
 
-## Status (already done) ✅
-
-- [x] All ETF financial-data is fetched and available for report generation.
-- [x] Report generation pipeline is working end-to-end.
-- [x] UI exists for ETF detail report page plus 3 separate category pages.
-- [x] ETF categories are divided into groups in `insights-ui/src/etf-analysis-data/etf-analysis-categories.json`.
-- [x] Analysis factors exist per category:
-  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-performance-and-returns.json`
-  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json`
-  - `insights-ui/src/etf-analysis-data/etf-analysis-factors-risk-analysis.json`
-- [x] Price chart section is done.
-- [x] Introductory paragraphs are done (including index & strategy fields).
+> Completed ETF work has been moved to [`etf-closed-tasks.md`](./etf-closed-tasks.md).
+> This file tracks only what's still open.
 
 ## Priority order
 
@@ -28,33 +18,14 @@
 
 Example page: https://koalagains.com/etfs/NASDAQ/QQQI
 
-Reorder/extend the ETF details page so sections appear in this order:
+Reorder/extend the ETF details page so sections appear in this order. Final Summary,
+"other sections below", per-category detail pages, the admin three-dots menu, the
+admin-only `updatedAt` timestamp, and the ETF holdings section are already shipped
+(see `etf-closed-tasks.md`). Still open:
 
-- [ ] **Final Summary** (shown first).
 - [ ] **Stock analysis info (left) + spider chart (right)** in a two-column layout.
 - [ ] **Price chart**.
 - [ ] **Strategy** with a proper heading.
-- [ ] **Other sections** below.
-- [ ] **Per-category detail pages**: add a dedicated details page for each of the evaluation categories.
-- [ ] **Admin three-dots menu** (per section / evaluation category / report):
-  - Show a three-dots menu visible only to admins.
-  - Menu options let the admin trigger generation of any report from that dropdown.
-  - Triggered reports should be queued/added into the **ETF generation requests** list.
-- [ ] **Admin-only `updatedAt` timestamp**:
-  - Display the `updatedAt` datetime for each section / evaluation category / report.
-  - Visible only to admin users.
-- [ ] **ETF holdings section**:
-  - Show the ETF's underlying **holdings** on the details page (ticker, name, weight %,
-    sector, optional country/region).
-  - Sort by weight descending; show a clear default of top N (e.g. 10 or 25) with a "view
-    all holdings" expand / link to a full list.
-  - Include summary stats above the table: total holdings count, top-10 concentration %,
-    sector/geography breakdown (mini bar or pie).
-  - Link each holding's ticker to our stock report page where one exists; otherwise show as
-    plain text.
-  - Handle ETFs where we don't yet have holdings data (graceful empty state, don't break
-    the page).
-  - Confirm the data source (existing ingestion vs new) and refresh cadence.
 
 ### 1.2) Competition + Similar ETFs
 
@@ -75,14 +46,12 @@ liquidity, expense-ratio band), plus a lightweight "similar ETFs" block on the m
   - Chart-ready series (for competition chart).
   - "Closest substitutes" and "best alternatives for X goal".
 - [ ] **Finalize prompt** for competition analysis.
-- [ ] **Pipeline + storage**:
-  - Prisma schema additions for competition analysis results.
-  - Add generation step(s) + callback saving + caching.
 - [ ] **UI**:
   - Separate page for competition analysis.
   - **Competition chart** similar to what we do for stocks (metric comparisons + tooltips).
-  - **"Other similar ETFs" section** on the main ETF page — curated/auto-selected set with
-    quick links and key stats, linking to the full competition page.
+
+> Pipeline + storage and the "Other similar ETFs" section on the main ETF page are
+> already shipped (see `etf-closed-tasks.md`).
 
 ### 1.3) Famous ETFs dataset + "Comparison with famous ETFs" section
 
@@ -116,45 +85,15 @@ that answers: "Why would we choose this ETF over those?"
 
 ### 1.4) Admin — ETF generation requests page
 
-Page: https://koalagains.com/admin-v1/etf-generation-requests
+Page: https://koalagains.com/admin-v1/etf-generation-requests (+ `/admin-v1/etf-reports`)
+
+Reload icon + auto-refresh, header columns covering every report type, the per-report-type
+"Select missing" split, and per-ETF "Generate All Analysis" are already shipped (see
+`etf-closed-tasks.md`). Still open:
 
 - [ ] **Sort reports by `updatedAt` descending** in each section.
 - [ ] **Add pagination** to each section.
 - [ ] **Add a top filter** that matches generation reports by entered **name** or **symbol**.
-- [ ] **Reload icon + auto-refresh**:
-  - Show a reload icon on the page that refreshes the data on click.
-  - Auto-refresh the page every **30 seconds**.
-  - Provide a control to **stop / start** the auto-refresh.
-- [ ] **Header columns — include every report type** (page: `https://koalagains.com/admin-v1/etf-reports`):
-  - Today the table header only shows **Performance**, **Cost & Team**, and **Risk**.
-  - Add the missing report-type columns so the header covers **all** types we generate:
-    **Performance**, **Cost & Team**, **Risk**, **Summary**, **Index & Strategy**, and
-    **Future Outlook** (Future Outlook is currently absent from the header).
-  - Each column should reflect the per-ETF status for that specific report type
-    (generated / missing / in-progress / failed).
-- [ ] **"Select missing" dropdown — split the generic option into per-report-type options**:
-  - Current behavior: the dropdown has a single **"Missing Analysis"** option that selects
-    every ETF missing **any** of the 4 report types it knows about. This is too coarse and
-    also out of sync with the full set of report types.
-  - Remove the generic **"Missing Analysis"** entry.
-  - Replace it with **one option per report type**, each of which selects only the ETFs
-    missing **that specific** report type:
-    - Missing Performance
-    - Missing Cost & Team
-    - Missing Risk
-    - Missing Summary
-    - Missing Index & Strategy
-    - Missing Future Outlook
-  - Add a new **"Missing All Analysis"** option that selects only ETFs where **all** of the
-    above report types are missing (i.e. the ETF has nothing generated yet).
-- [ ] **Per-ETF "Generate All Analysis" — actually generate every report type**:
-  - Current behavior: when an admin opens the per-ETF actions menu, the **"Generate All
-    Analysis"** option only kicks off a subset of the report types.
-  - Fix so that **"Generate All Analysis"** for a single ETF enqueues generation requests for
-    **every** report type we support (Performance, Cost & Team, Risk, Summary, Index &
-    Strategy, Future Outlook), not just the ones it currently covers.
-  - Keep the existing per-type generation options alongside it (so admins can still generate
-    just one report type for an ETF).
 
 ### 1.5) Custom Reports ("random reports") per ETF
 
@@ -367,68 +306,9 @@ Key shape:
 
 ## Phase 3 — Prompt and analysis-factor improvements
 
-### 3.1) Review and finalize category grouping (prerequisite)
-
-- [ ] **Review the current groups** in `etf-analysis-categories.json`:
-  - Confirm each group is relevant and good to go.
-  - Identify overlaps and ambiguous placements (ETFs that could belong to multiple groups).
-  - Decide whether groups are **mutually exclusive** or **multi-tag**.
-- [ ] **Finalize the final groups**.
-
-### 3.2) Automated loop — finalize analysis factors AND prompts (per group + category)
-
-Goal: build a lightweight automated wrapper that, for each `(group, evaluation category)`,
-iteratively converges on (a) the right set of **analysis factors** and (b) the right
-**prompt**, by generating output over many ETFs in the group and asking Claude to validate
-and refine.
-
-Categories in scope: `PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnalysis`
-(and any new category added later — e.g. competition, famous-ETF comparison).
-
-- [ ] **Loop design** — per iteration, per `(group, category)`:
-  1. **Generate** analysis output for several ETFs in the group using the current factor list
-     and current prompt.
-  2. **Validate with Claude**: for each ETF, ask Claude whether the current factors are
-     correct / complete / relevant for that ETF, and whether the report is missing anything,
-     inconsistent, vague, or factually weak. Record findings.
-  3. **Aggregate findings** across the sampled ETFs to distinguish ETF-specific noise from
-     group-level gaps (factors missing for the whole group, factors that don't apply, unclear
-     wording, etc.).
-  4. **Update**: ask Claude to propose an updated factor list AND an updated prompt that
-     addresses the findings.
-  5. **Persist** the new factor JSON + prompt version with a version id + diff + notes.
-  6. Repeat steps 1–5 up to a configurable `N` iterations (default 5, max ~10).
-- [ ] **Sample coverage per run**:
-  - Run across **all groups** defined in `etf-analysis-categories.json`.
-  - Within each group, sample **many ETFs** (target 5–10 per group) so factor validation
-    reflects the variety inside the group.
-- [ ] **Inputs / configuration**:
-  - Groups to cover, ETFs per group, category, iteration count.
-  - Starting factor JSONs:
-    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-performance-and-returns.json`
-    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json`
-    - `insights-ui/src/etf-analysis-data/etf-analysis-factors-risk-analysis.json`
-  - Starting prompt files for each category.
-- [ ] **Outputs / artifacts per iteration**:
-  - Generated reports for each sampled ETF.
-  - Claude's factor-validation notes per ETF + aggregated group-level findings.
-  - New factor JSON (proposed) + new prompt (proposed), each with a changelog entry.
-  - End-of-run summary comparing first vs last iteration (factors added/removed/renamed,
-    prompt diff).
-- [ ] **Storage layout** (suggested):
-  - `tasks/koala-gains/prompt-tuning/<category>/<group>/<iteration>/{factors.json, prompt.md, reports/<etfSymbol>.md, critique.md}`
-- [ ] **Backward-compatibility guardrails**:
-  - Preserve factor **keys** where the concept is unchanged (so existing saved results don't
-    break).
-  - Only rename/remove keys deliberately, and record the migration in the changelog.
-- [ ] **Mapping finalization** — at loop end, produce the final
-  `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`
-  mapping.
-- [ ] **Light wrapper only** — reuse the existing generation pipeline/CLI; the wrapper just
-  orchestrates generate → validate → refine → save.
-- [ ] **Stop / review gate**:
-  - After N iterations, stop and present the final factor JSON + prompt for human review
-    before they replace the live versions.
+> 3.1 (review + finalize category grouping) and 3.2 (automated factor/prompt tuning loop)
+> are already shipped — see `etf-closed-tasks.md`. The tuning loop is still referenced
+> from the open sub-items below (3.3.*) as the validation harness for new prompt changes.
 
 ### 3.3) Improve ETF report quality
 
