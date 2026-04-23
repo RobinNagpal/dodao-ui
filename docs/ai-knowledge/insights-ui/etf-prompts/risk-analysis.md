@@ -18,6 +18,8 @@ This report covers only volatility, drawdown and recovery, risk-adjusted return 
 - **Backticks are required, not optional.** Every beta, Sharpe, Sortino, alpha, R², drawdown percentage, capture ratio, risk score, standard deviation, ATR, date, and percentage goes inside backticks. A number without backticks is an error — apply this rule to `overallSummary`, every paragraph of `overallAnalysisDetails`, and every `detailedExplanation`.
 - **Paragraph breaks are real blank lines.** The four paragraphs of `overallAnalysisDetails` must be separated by a blank line in the output. Do not emit them as one run-on block. Do not emit literal `\n\n` or `<br>` separators — use an actual newline.
 - **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails` or at the top of a `detailedExplanation`. Go straight to the evidence.
+- **Every cited number needs a good / bad / average frame for THIS kind of fund.** Do not leave a Sharpe, Sortino, beta, drawdown, capture ratio, standard deviation, alpha, R², ATR, or risk score stranded. Every number must sit next to a peer / category / index comparison number AND a plain-English direction word (`better than`, `in line with`, `worse than`, `higher than`, `lower than`, `above`, `below`). Abstract labels — Morningstar risk score of `15`, portfolio risk score of `246`, risk level `Extreme` / `Above Avg.` / `Conservative` — must be translated into retail language on first mention (e.g. `15 → Conservative`, `246 → Extreme`, `Above Avg.` risk → `takes more risk than the typical peer`). A number without its good / bad / average frame is an error.
+- **Stay inside the risk lens.** Do not quote distribution yield, SEC yield, tax-equivalent yield, expense ratio, AUM, bid-ask, trading volume as a liquidity argument, or any fee number — those belong to the Performance and Cost & Team reports. This report's job is purely: how bumpy, how bad the worst drops, how well did it hold up vs peers during stress, was the return worth the risk, and the group-specific risk driver.
 
 ## Core interpretation principle
 
@@ -49,7 +51,7 @@ When multiple blocks carry the same metric, prefer the source listed first. Alwa
 
 ## 1. `overallSummary` (3–5 sentences)
 
-State whether the risk profile is **Strong**, **Mixed**, or **Weak**. Include 3–5 decision-useful risk numbers (beta, Sharpe or Sortino, worst drawdown, capture, riskVsCategory). End with one plain-English takeaway.
+State whether the risk profile is **Strong**, **Mixed**, or **Weak** — pick exactly one word; never compound ("mixed to strong", "strong but mixed", etc. are not allowed). Include 3–5 decision-useful risk numbers (beta, Sharpe or Sortino, worst drawdown, capture, riskVsCategory), each paired with the benchmark or category number it should be compared against — a lone number with no comparison anchor is an error even in the summary. End with one plain-English takeaway that explicitly names the target retail investor for this fund's risk profile — e.g. "a core-holding equity exposure suitable for the full market cycle", "a tactical short-horizon trading tool, not a buy-and-hold asset", "a capital-preservation sleeve for conservative portfolios", "a bond-heavy conservative allocation that is still vulnerable to simultaneous rate shocks", "a portfolio hedge that pays off when equities drop but requires patience in up markets". One sentence, plain English, no adjectives.
 
 ## 2. `overallAnalysisDetails` (4 paragraphs, ~800–1100 words total)
 
@@ -67,7 +69,7 @@ Keep paragraphs tight. Do not pad. Do not restate factor definitions — just ap
    - `alt-strategies`: downside protection delivery and capture asymmetry.
    - `allocation-target-date`: drawdown reduction vs pure-equity and risk-adjusted return.
    For bond / muni / allocation funds, RSI and short-term technicals are thin — keep them to a single line or omit.
-4. **Strengths, red flags, and the takeaway.** 2–3 strengths, each backed by a number. 2–3 risks, each backed by a number when possible. Close with one sentence: "Overall, this ETF's risk profile looks strong / mixed / weak because …".
+4. **Strengths, red flags, the takeaway, and retail fit.** 2–3 strengths, each backed by a peer-relative number (the number AND the comparison it beats). 2–3 risks, each backed by a peer-relative number when possible. If the fund has a concentration, leverage, thematic-sleeve, or alt-hedge risk profile, add one sentence naming a position-sizing or holding-period constraint from a risk-only standpoint — e.g. "single-name concentration above `15%` makes this a portfolio slice, not a core holding", "daily-reset decay keeps suitable holding periods in days-to-weeks, not months", "commodity / alt exposures typically sit at `5–10%` of a diversified portfolio". Where the fund sits in an obvious retail decision pair (e.g. broad-equity index variants, short Treasury vs short muni, aggressive allocation vs pure equity, 3× leveraged vs 1× equivalent, covered-call income vs dividend equity), add one sentence comparing the RISK difference only — do not cross into fees, returns, or yield. Close with one sentence: "Overall, this ETF's risk profile looks strong / mixed / weak because …". **Self-consistency rule:** if a factor verdict was `Pass` or the metric was labeled `In Line`, do not call that same metric a weakness here; if a factor verdict was `Fail`, do not call it a strength here.
 
 ## 3. Pass / Fail rule — judge each factor against the bar in its own `factorAnalysisDescription`
 
@@ -82,8 +84,8 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 ## 4. For each item in `factorAnalysisArray` produce
 
 - `factorAnalysisKey` — exact key from the input, unchanged.
-- `oneLineExplanation` — one sentence with the clearest takeaway.
-- `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
+- `oneLineExplanation` — one sentence with the clearest takeaway, stated in terms a retail reader can act on (not a metric definition).
+- `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
 ## 5. Comparison labels
@@ -108,6 +110,8 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 - State each number once in the report. See the no-repeat-numbers rule in Scope.
 - Separate the four paragraphs of `overallAnalysisDetails` with real blank lines — no run-on blocks, no literal `\n\n`, no `<br>`.
 - Name the fund category. Name the benchmark or stress window when referenced.
+- Every number gets a good / bad / average frame for this kind of fund — see Scope. A Sharpe alone, a drawdown alone, a Morningstar risk score alone with no peer/category/benchmark anchor and no direction word is an error.
+- Single-word verdict (Strong / Mixed / Weak) in the summary, never compound. See Section 1.
 - Do not invent context beyond what the data supports. If a data point isn’t present (and lookup didn’t find it), omit it silently.
 
 ---
