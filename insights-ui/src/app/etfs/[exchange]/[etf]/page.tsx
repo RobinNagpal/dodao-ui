@@ -5,6 +5,7 @@ import { PriceHistoryResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exch
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
+import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
@@ -269,7 +270,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<EtfFastResponse> }): JSX.
           { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
         ];
 
-  return <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />;
+  return <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />;
 }
 
 function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Element {
