@@ -661,6 +661,50 @@ per-category detail pages), and hard to validate in the prompt-tuning loop.
     sibling section **"Improve Strategy"** next to Final Summary that renders the
     structured output. Pick one during implementation; don't ship both.
 
+#### 3.3.f) Final Summary — simplify input schema + finalize prompt
+
+Goal: the **Final Summary** generation currently receives the **entire** set of
+analysis factors (every factor from Performance, Cost & Team, Risk, Future Outlook,
+Index & Strategy, etc.) as its input. That's far more context than it needs — Final
+Summary is a synthesis, not a re-analysis, so it should only consume the
+**per-category overall analysis** and produce a clean top-level verdict from that.
+This both shrinks the prompt (cheaper + faster) and reduces the model's temptation
+to re-derive / second-guess category conclusions.
+
+- [ ] **Slim the Final Summary input schema**:
+  - Remove all per-factor detail (factor keys, per-factor scores, per-factor
+    narratives, raw numerical inputs) from the Final Summary prompt input.
+  - Pass **only** the per-category `overallAnalysis` (one synthesized paragraph
+    per evaluation category: Performance, Cost & Team, Risk, Future Outlook,
+    Index & Strategy, etc.) plus the small set of identity fields the prompt
+    actually needs (symbol, name, issuer, category-group, Morningstar category,
+    matched target-groups).
+  - Document the new contract — `{ etfIdentity, perCategoryOverallAnalysis:
+    Record<categoryKey, string>, matchedTargetGroups, generationDate }` — and
+    enforce it with a Zod schema.
+- [ ] **Stop re-fetching what we don't need**:
+  - Update the Final Summary generation call site so it doesn't load full factor
+    JSON from the DB just to throw it away; fetch only the `overallAnalysis`
+    fields.
+- [ ] **Finalize the Final Summary prompt**:
+  - Rewrite the prompt around the slimmed input — it can reference each
+    category's `overallAnalysis` by key and weave them into a single verdict
+    without inventing or re-ranking underlying factors.
+  - Keep alignment with the surrounding report-quality tasks:
+    - Include the report-generation date (3.4 bullet).
+    - Name the category / Morningstar category when it compares (3.3.a / 3.3.b).
+    - Emit the per-target-group verdict block (3.3.c).
+    - Emit the `introParagraph` alongside, if we bundle intro generation here
+      (3.3.d).
+  - Run the finalized prompt through the **automated factor/prompt tuning loop**
+    (3.2) so the synthesis quality is tracked over iterations.
+- [ ] **Validation**:
+  - Spot-check across several ETFs from different groups that the slimmed input
+    still produces Final Summaries at least as good as the current version, and
+    no worse on category-accuracy or target-audience fit.
+  - Regression watch: confirm no Final Summary relies on a factor-level detail
+    that only existed in the old input schema.
+
 ### 3.4) Misc prompt updates
 
 - [ ] **Include the report-generation date** in the **Final Summary** section of each prompt
