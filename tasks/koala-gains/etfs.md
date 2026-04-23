@@ -528,6 +528,62 @@ paragraphs and neither gets a confident answer.
     each open the same ETF report and within 30 seconds point to the line that tells
     them whether to buy or skip — with a named rationale.
 
+#### 3.3.d) Report layout — Final Summary + Intro, then charts, then Strategy, then analysis
+
+Goal: revisit how **Final Summary** and **Strategy** are displayed on the ETF detail
+page so the top of the page reads well. Two failure modes today:
+
+1. If we show **only Final Summary** at the top and nothing about the ETF itself, the
+   reader has no idea what the fund is before the verdict — it feels jarring and is
+   hard to follow.
+2. If we put **Strategy at the top too**, before the charts, the pre-chart block
+   becomes a wall of text and the page feels long and bureaucratic.
+
+Proposed structure (refines the layout already in section 1.1):
+
+1. **Final Summary** — the existing verdict block (already generated).
+2. **Intro paragraph** — **new field** — a short, 1-paragraph, plain-English
+   description of *what the ETF is*: issuer, what it tracks / holds, basic shape
+   (equity/fixed-income/sector/thematic), who it's built for. This is the "so what
+   is this thing?" block that currently doesn't exist.
+3. **Charts** — price chart, spider chart, any headline visuals.
+4. **Strategy** — 2–3 paragraphs (not a full essay) explaining the fund's
+   strategy, index, rebalance approach, and how it actually delivers its
+   exposure.
+5. **Evaluation-category blocks** — ratings + narrative for each analysis
+   category (Performance, Cost & Team, Risk, Future Outlook, etc.).
+
+Tasks:
+
+- [ ] **Add `introParagraph`** as a new field on the ETF analysis output:
+  - Short (≈80–150 words), plain-English, no jargon, no verdict language.
+  - Must describe the ETF in its own right (issuer, strategy family, what it holds,
+    headline stats) — **not** opinionate. Verdict lives in Final Summary.
+  - Persist on the `Etf` (or the Final-Summary record) so it's available to the
+    detail page and to SEO metadata.
+- [ ] **Update the generation prompt(s)** to produce `introParagraph` alongside
+  Final Summary:
+  - Decide whether it comes out of the Final-Summary prompt or a new tiny "intro"
+    prompt; prefer bundling with Final Summary to keep one round-trip.
+  - Extend the output JSON schema accordingly; backfill across existing ETFs after
+    rollout.
+- [ ] **Revise Strategy so it's not long-form at the top**:
+  - Target: 2–3 focused paragraphs, not an essay.
+  - Place it **after** the charts, not before.
+  - If the existing Strategy content is longer, move the deep-dive into the
+    **per-category detail page** (section 1.1) and keep only the summary on the
+    main detail page.
+- [ ] **Update the detail-page component order** (section 1.1) to match:
+  Final Summary → Intro paragraph → Charts → Strategy → Evaluation categories →
+  other sections (competition, similar, famous-ETF comparison, target-audience
+  panel, etc.).
+- [ ] **Cross-check with section 1.1 and 3.3.c**:
+  - Reconcile this ordering with the ordering currently listed in 1.1 so there is
+    one canonical layout, not two.
+  - Make sure the **"Is this ETF right for you?"** panel from 3.3.c has a clear
+    slot in this order (suggested: right after Final Summary + Intro, before
+    charts — or just after charts — pick one and document it).
+
 ### 3.4) Misc prompt updates
 
 - [ ] **Include the report-generation date** in the **Final Summary** section of each prompt
