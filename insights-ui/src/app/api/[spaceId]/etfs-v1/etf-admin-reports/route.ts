@@ -130,6 +130,9 @@ const getHandler = async (
   const exchange: AllExchanges | '' = exchangeRaw && isExchange(exchangeRaw) ? exchangeRaw : '';
   const q = searchParams.get('q');
   const missing = toMissingFilter(searchParams.get('missing'));
+  const updatedBeforeRaw = (searchParams.get('updatedBefore') ?? '').trim();
+  const updatedBeforeDate = updatedBeforeRaw && /^\d{4}-\d{2}-\d{2}$/.test(updatedBeforeRaw) ? new Date(`${updatedBeforeRaw}T00:00:00.000Z`) : null;
+  const updatedBeforeWhere: any = updatedBeforeDate && !Number.isNaN(updatedBeforeDate.getTime()) ? { updatedAt: { lt: updatedBeforeDate } } : null;
 
   const searchWhere = buildSearchWhere(q);
 
@@ -153,6 +156,7 @@ const getHandler = async (
     ...(exchange ? { exchange } : {}),
     ...(searchWhere ? searchWhere : {}),
     ...(missingWhere ? missingWhere : {}),
+    ...(updatedBeforeWhere ? updatedBeforeWhere : {}),
   };
 
   const [etfs, totalCount, distinctExchanges] = await Promise.all([

@@ -20,6 +20,7 @@ export default function EtfReportsPage(): JSX.Element {
   const [exchange, setExchange] = useState<AllExchanges | ''>('');
   const [missing, setMissing] = useState<'' | 'stockAnalyze' | 'mor' | 'analysis'>('');
   const [search, setSearch] = useState<string>('');
+  const [updatedBefore, setUpdatedBefore] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const pageSize = 100;
 
@@ -27,11 +28,11 @@ export default function EtfReportsPage(): JSX.Element {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [exchange, missing, debouncedSearch]);
+  }, [exchange, missing, debouncedSearch, updatedBefore]);
 
   useEffect(() => {
     setSelectedIds(new Set());
-  }, [currentPage, exchange, missing, debouncedSearch]);
+  }, [currentPage, exchange, missing, debouncedSearch, updatedBefore]);
 
   const apiUrl = useMemo(() => {
     const params = new URLSearchParams();
@@ -40,8 +41,9 @@ export default function EtfReportsPage(): JSX.Element {
     if (exchange) params.set('exchange', exchange);
     if (missing) params.set('missing', missing);
     if (debouncedSearch.trim()) params.set('q', debouncedSearch.trim());
+    if (updatedBefore) params.set('updatedBefore', updatedBefore);
     return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/etf-admin-reports?${params.toString()}`;
-  }, [currentPage, exchange, missing, debouncedSearch]);
+  }, [currentPage, exchange, missing, debouncedSearch, updatedBefore]);
 
   const { data: response, loading, reFetchData } = useFetchData<EtfReportsResponse>(apiUrl, {}, 'Failed to load ETFs');
 
@@ -96,6 +98,8 @@ export default function EtfReportsPage(): JSX.Element {
             onMissingChange={setMissing}
             search={search}
             onSearchChange={setSearch}
+            updatedBefore={updatedBefore}
+            onUpdatedBeforeChange={setUpdatedBefore}
           />
         </div>
       </div>

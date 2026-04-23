@@ -11,6 +11,8 @@ export interface EtfReportsFiltersProps {
   onMissingChange: (value: '' | 'stockAnalyze' | 'mor' | 'analysis') => void;
   search: string;
   onSearchChange: (value: string) => void;
+  updatedBefore: string;
+  onUpdatedBeforeChange: (value: string) => void;
 }
 
 function toExchangeItems(exchanges: ReadonlyArray<AllExchanges>): StyledSelectItem[] {
@@ -32,13 +34,15 @@ export default function EtfReportsFilters({
   onMissingChange,
   search,
   onSearchChange,
+  updatedBefore,
+  onUpdatedBeforeChange,
 }: EtfReportsFiltersProps): JSX.Element {
   const items = toExchangeItems(availableExchanges);
   const selectedId = exchange || 'All';
   const selectedMissing = missing || 'All';
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-end">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-end">
       <div className="w-56">
         <StyledSelect
           label="Exchange"
@@ -54,6 +58,29 @@ export default function EtfReportsFilters({
           selectedItemId={selectedMissing}
           setSelectedItemId={(id: string | null) => onMissingChange(id && id !== 'All' ? (id as 'stockAnalyze' | 'mor' | 'analysis') : '')}
         />
+      </div>
+      <div className="w-56">
+        <label className="block text-sm font-medium text-gray-300 mb-1" title="Show ETFs whose last updatedAt is before this date">
+          Updated before
+        </label>
+        <div className="flex items-center gap-1">
+          <input
+            type="date"
+            value={updatedBefore}
+            onChange={(e) => onUpdatedBeforeChange(e.target.value)}
+            className="w-full px-3 py-2 bg-gray-800 text-gray-200 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          {updatedBefore && (
+            <button
+              type="button"
+              onClick={() => onUpdatedBeforeChange('')}
+              className="px-2 py-2 text-xs text-gray-300 hover:text-white"
+              title="Clear date filter"
+            >
+              ×
+            </button>
+          )}
+        </div>
       </div>
       <div className="w-80">
         <label className="block text-sm font-medium text-gray-300 mb-1">Search</label>
