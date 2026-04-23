@@ -389,7 +389,14 @@ Categories in scope: `PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnal
   - After N iterations, stop and present the final factor JSON + prompt for human review
     before they replace the live versions.
 
-### 3.3) Improve ETF report quality — explicit category context
+### 3.3) Improve ETF report quality
+
+Umbrella for report-quality fixes that go beyond factor/prompt tuning. Sub-items below
+share a common goal: a reader should be able to **finish an ETF report and know whether
+they should buy it or not**, for their specific profile, against a clearly named
+benchmark.
+
+#### 3.3.a) Explicit category context
 
 Goal: fix a recurring quality issue where ETF reports (especially **Risk**, but also
 **Performance**, **Cost & Team**, and **Final Summary**) make a lot of statements like
@@ -449,6 +456,77 @@ category name **and** its quantitative baseline so every comparison is grounded.
   - On the ETF detail page (section 1.1), link every category mention to that
     page so the reader can see exactly what "the category" is.
   - Add category pages to the sitemap generation in Phase 4.
+
+#### 3.3.b) Handle Morningstar categories as a first-class concept
+
+Goal: Morningstar categories (e.g. "Large Blend", "Intermediate Core Bond", "Foreign
+Large Growth") are the de-facto industry taxonomy that investors, issuers, and
+screeners already use. Our internal category-groups are useful, but reports that
+reference "the category" without reconciling against Morningstar feel amateur. We
+should treat Morningstar category as a **first-class field** on each ETF, expose it in
+the UI, and use it in prompts alongside (or in place of) our internal group where
+appropriate.
+
+- [ ] **Capture the Morningstar category on each ETF**:
+  - Add a `morningstarCategory` field (and optional `morningstarCategoryId`) to the
+    `Etf` Prisma model.
+  - Source this from our existing data provider / scraping pipeline (confirm which
+    source actually carries it — check `scraping-lambdas` outputs).
+  - Backfill historic ETFs and keep it updated on refresh.
+- [ ] **Resolve the relationship to our internal category-groups**:
+  - Decide whether our internal groups are a **superset**, a **re-mapping**, or a
+    **complementary tag** to Morningstar categories.
+  - Persist a `morningstarCategory -> internalGroupKey` mapping so we can pivot
+    reports either way without re-querying every run.
+  - Flag ETFs where Morningstar assigns them to a category that doesn't match our
+    internal group (audit + reconcile).
+- [ ] **Use Morningstar categories in prompts**:
+  - When Option B in 3.3.a applies (cite category + numbers), prefer the
+    **Morningstar category name** in the user-facing text because readers
+    recognize it. Keep the internal group for our own analytics.
+  - Compute per-Morningstar-category aggregates (median expense ratio, median
+    drawdown, etc.) the same way we do for internal groups in 3.3.a, or at least
+    define which one is the source of truth for the comparison numbers.
+- [ ] **Surface Morningstar category in the UI**:
+  - Show it on the ETF detail page header next to ticker / issuer / internal group.
+  - Link it to the category page (3.3.a) — either the same page shared across
+    Morningstar + internal, or a sibling page scoped to the Morningstar category.
+
+#### 3.3.c) Cross-check reports against the target-audience feature
+
+Goal: once the **target-investor-groups** feature (see section 2.1) is live, the
+reports themselves must let each targeted segment — specific slices of retail, plus
+specific slices of institutional — walk away with a clear **"yes, this fits me"** or
+**"no, skip this one"** verdict. Today the reports are written in a generic voice; a
+retiree looking for income and a pension fund doing liability-matching read the same
+paragraphs and neither gets a confident answer.
+
+- [ ] **Make target-audience a live input to the prompts**:
+  - Pass the **matched target-groups** (`EtfEtfTargetGroupLink` rows from 2.1) into
+    the analysis prompts as structured input, not just as tags stored on the side.
+  - Extend the **Final Summary** prompt so it ends with a **per-target-group verdict
+    block**: for each matched target-group, emit `{ targetGroupKey, fit:
+    'Good'|'Acceptable'|'Poor', reason, cautions[] }`.
+  - Where the report already says things like "this is suitable for income
+    investors", require the prompt to name the **exact target-group key**, not a
+    generic persona.
+- [ ] **Cross-check existing reports after target-groups ships**:
+  - After 2.1 is merged and back-filled, run a pass across generated reports to
+    verify every matched target-group is actually addressed in the narrative.
+  - Flag reports where the matched target-groups don't appear (or appear only as
+    vague hand-waving) and route them back through regeneration.
+  - Add this check to the **automated factor/prompt tuning loop** (3.2) so future
+    regressions are caught.
+- [ ] **Surface per-audience verdicts in the UI**:
+  - Add a **"Is this ETF right for you?"** panel to the ETF detail page (section
+    1.1) that lists each matched target-group with its fit verdict + one-line
+    rationale from the prompt output.
+  - Group retail vs. institutional verdicts separately (retail block visible by
+    default, institutional block collapsible).
+- [ ] **Definition of done** for this sub-section:
+  - A retail retiree, a young DCA investor, and a corporate-treasury analyst can
+    each open the same ETF report and within 30 seconds point to the line that tells
+    them whether to buy or skip — with a named rationale.
 
 ### 3.4) Misc prompt updates
 
