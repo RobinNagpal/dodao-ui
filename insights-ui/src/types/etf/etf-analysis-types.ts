@@ -115,9 +115,14 @@ export interface EtfCategoryAnalysisResponse {
 }
 
 /**
- * Target investor groups taxonomy. Each group is an investor archetype that an ETF
- * analysis can be written from the perspective of. Groups map onto the ETF groups
- * (and optionally specific Morningstar categories) defined in etf-analysis-categories.json.
+ * ETF investor taxonomy. Two-level structure:
+ *   - Level 1: EtfInvestor — a type of investor (retail, HNW, pension, etc.).
+ *     Types are intentionally non-overlapping (each defined by a distinct funding
+ *     source / governance / regulatory context).
+ *   - Level 2: EtfInvestorGoal — a specific goal an investor of that type pursues
+ *     when buying ETFs (e.g., "tax-efficient public-equity beta sleeve",
+ *     "liability-driven investing"). Goals can recur across types but are framed
+ *     for that type's specific perspective.
  */
 
 export type EtfInvestorHorizon = 'Short (<1y)' | 'Medium (1-5y)' | 'Long (5-15y)' | 'Very Long (15y+)';
@@ -146,11 +151,7 @@ export interface EtfInvestorProfile {
   typicalInvestor: string;
 }
 
-/**
- * A single goal-persona — concrete enough to write ETF analysis against.
- * Used both as a top-level entry (for goals that don't need an audience wrapper,
- * e.g., first-time-investor) and as a nested entry inside an audience's goals[].
- */
+/** A specific goal an investor pursues when buying ETFs. */
 export interface EtfInvestorGoal {
   key: string;
   name: string;
@@ -161,30 +162,15 @@ export interface EtfInvestorGoal {
   redFlags: string[];
 }
 
-/**
- * A broad audience that contains multiple distinct goals worth analyzing
- * separately (e.g., HNW, pension/endowment/foundation, RIA). The audience
- * itself has only descriptive metadata; the analytical detail lives in goals[].
- */
-export interface EtfInvestorAudience {
+/** A type of investor (retail, HNW, pension, etc.) with the goals they pursue. */
+export interface EtfInvestor {
   key: string;
   name: string;
   shortDescription: string;
-  goals: EtfInvestorGoal[];
+  etfInvestorGoals: EtfInvestorGoal[];
 }
 
-/**
- * Heterogeneous: an entry is either a flat goal-persona (EtfInvestorGoal shape)
- * or an audience wrapper with nested goals (EtfInvestorAudience shape). Discriminate
- * by the presence of a `goals` array.
- */
-export type EtfTargetInvestorGroup = EtfInvestorGoal | EtfInvestorAudience;
-
-export function isEtfInvestorAudience(group: EtfTargetInvestorGroup): group is EtfInvestorAudience {
-  return Array.isArray((group as EtfInvestorAudience).goals);
-}
-
-export interface EtfTargetInvestorGroupsConfig {
+export interface EtfInvestorTaxonomyConfig {
   description: string;
-  investorGroups: EtfTargetInvestorGroup[];
+  investors: EtfInvestor[];
 }
