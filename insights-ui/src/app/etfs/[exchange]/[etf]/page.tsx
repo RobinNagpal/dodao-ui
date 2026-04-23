@@ -6,7 +6,6 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
-import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
@@ -293,7 +292,6 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
       {d.summary && d.summary.trim() && (
         <div className="mb-2" itemProp="description">
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(d.summary) }} />
-          <AdminTimestamp date={d.updatedAt} label="Final Summary updated" className="text-xs text-gray-400 block mt-1" />
         </div>
       )}
 
@@ -301,7 +299,6 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
       {indexStrategyHead && (
         <div className="mb-2">
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyHead) }} />
-          <AdminTimestamp date={d.updatedAt} label="Index & Strategy updated" className="text-xs text-gray-400 block mt-1" />
         </div>
       )}
     </section>
