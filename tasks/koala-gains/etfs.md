@@ -389,7 +389,68 @@ Categories in scope: `PerformanceAndReturns`, `CostEfficiencyAndTeam`, `RiskAnal
   - After N iterations, stop and present the final factor JSON + prompt for human review
     before they replace the live versions.
 
-### 3.3) Misc prompt updates
+### 3.3) Improve ETF report quality — explicit category context
+
+Goal: fix a recurring quality issue where ETF reports (especially **Risk**, but also
+**Performance**, **Cost & Team**, and **Final Summary**) make a lot of statements like
+*"this ETF underperforms its category on drawdowns"* or *"fees are slightly above the
+category average"* without ever telling the reader **which category** the ETF is being
+compared against, or **what the category's actual numbers are**. This makes the
+comparison feel vague and unprofessional — the user sees "vs. category" everywhere but
+has no idea what the category is or how it stacks up quantitatively.
+
+Fix this end-to-end: either stop referencing the category entirely, or surface the
+category name **and** its quantitative baseline so every comparison is grounded.
+
+- [ ] **Audit every category reference** in existing outputs:
+  - Scan recent reports across Performance, Cost & Team, Risk, and Final Summary for
+    phrases like "vs. category", "category average", "above/below its category",
+    "compared to peers in its category", etc.
+  - Catalog how often each prompt leans on an un-named / un-quantified category
+    comparison.
+- [ ] **Decide the policy per prompt** (discuss + commit to one path per section):
+  - **Option A — drop category references**: rewrite prompts so they only make
+    comparisons against concrete, named benchmarks (SPY, AGG, the fund's index, a
+    named peer) and never against an abstract "category" the reader can't see.
+  - **Option B — show the category + its numbers**: every time a prompt says "vs.
+    category", require it to state:
+    1. the **category name** (exact group from `etf-analysis-categories.json`), and
+    2. the **quantitative baseline** it's comparing against (e.g. category median /
+       average / percentile for that specific metric — expense ratio, max drawdown,
+       Sharpe, 3yr return, etc.).
+  - Default recommendation: **Option B** for Performance & Risk (the comparison is
+    informative when grounded), **Option A** for Cost & Team where category means
+    less.
+- [ ] **Data the prompt needs for Option B** — before the prompt can cite real
+  category numbers, the generation pipeline must pass them in:
+  - Compute per-category aggregates (median / average / percentile buckets) for the
+    metrics we actually quote — expense ratio, AUM, flows, max drawdown, volatility,
+    Sharpe, 1yr / 3yr / 5yr return, yield, etc.
+  - Persist these on the category-group record (or in a sibling
+    `EtfCategoryGroupStats` table) so the generation run can hydrate the prompt
+    input with `{ categoryName, categoryStats: { ... } }`.
+  - Keep `categoryStatsAsOf` on the record so the prompt can cite "as of
+    YYYY-MM-DD".
+- [ ] **Update the prompts** to enforce the new rule:
+  - Add an explicit instruction: *"Any comparison phrased as 'vs. category',
+    'category average', 'above/below category', etc. MUST either (a) be removed, or
+    (b) name the exact category and cite its numeric baseline with units and an
+    as-of date. Never say 'vs. category' without both."*
+  - Extend the output JSON schema so every category-comparison claim carries the
+    `categoryName`, the `metric`, the ETF's `value`, the `categoryValue`, and a
+    `source` (e.g. `"internal-aggregate-2026-04"`).
+  - Run this through the **automated factor/prompt tuning loop** (Section 3.2) so
+    regressions get caught.
+- [ ] **Surface the category in the UI** — a category page:
+  - New route `app/etfs/categories/[categoryKey]/page.tsx` showing: category label,
+    plain-English description, member-ETF list, the aggregate stats used in
+    prompts, and sparklines / distributions for expense ratio, return, drawdown,
+    etc.
+  - On the ETF detail page (section 1.1), link every category mention to that
+    page so the reader can see exactly what "the category" is.
+  - Add category pages to the sitemap generation in Phase 4.
+
+### 3.4) Misc prompt updates
 
 - [ ] **Include the report-generation date** in the **Final Summary** section of each prompt
   so the date appears in the generated output.
