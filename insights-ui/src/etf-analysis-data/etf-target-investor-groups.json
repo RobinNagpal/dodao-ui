@@ -742,7 +742,7 @@
             {
               "symbol": "IEFA",
               "name": "iShares Core MSCI EAFE ETF",
-              "exchange": "NYSEARCA",
+              "exchange": "BATS",
               "why": "Broad developed-international beta at 0.07% with institutional-scale liquidity for the ex-US sleeve."
             },
             {
@@ -933,7 +933,7 @@
             {
               "symbol": "IEFA",
               "name": "iShares Core MSCI EAFE ETF",
-              "exchange": "NYSEARCA",
+              "exchange": "BATS",
               "why": "Developed-international beta at 0.07% for the international piece of the endowment liquid sleeve."
             },
             {
@@ -979,7 +979,7 @@
             {
               "symbol": "IEFA",
               "name": "iShares Core MSCI EAFE ETF",
-              "exchange": "NYSEARCA",
+              "exchange": "BATS",
               "why": "MSCI EAFE-tracking developed-international beta with institutional-scale capacity for $50M+ allocations."
             },
             {
@@ -1111,7 +1111,7 @@
             {
               "symbol": "IEFA",
               "name": "iShares Core MSCI EAFE ETF",
-              "exchange": "NYSEARCA",
+              "exchange": "BATS",
               "why": "MSCI EAFE-tracking developed-international beta with $100B+ AUM — institutional capacity for $50M-$5B blocks."
             },
             {
@@ -1815,7 +1815,7 @@
             {
               "symbol": "IEFA",
               "name": "iShares Core MSCI EAFE ETF",
-              "exchange": "NYSEARCA",
+              "exchange": "BATS",
               "why": "Developed-international workhorse at 0.07% — TAMP-friendly large-AUM building block for growth-tier models."
             },
             {
