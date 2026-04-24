@@ -97,3 +97,21 @@ export interface SampledEtf {
   groupName?: string;
   category?: string;
 }
+
+/**
+ * Instruction block prepended to every ETF prompt returned by `etfs:prompt`.
+ * ETF inputs fan out across many Morningstar-sourced sub-objects (morOverview,
+ * morAnalysis, morRiskPeriods, etfMorPortfolioInfo, ...) and those labels leak
+ * into the generated analysis unless the LLM is told not to reference them.
+ * The stock CLI does not prepend this — stock prompts are already tighter and
+ * don't benefit from the extra reminder.
+ */
+export const AGENT_PROMPT_PREAMBLE = `Important output rules (read first):
+
+- Do NOT mention any field name or data-source label from the input data blocks below (e.g. morOverview, morAnalysis, stockAnalyzerReturns, financialSummary, etfMorPortfolioInfo, morRiskPeriods). Use the values, never the schema.
+- If a specific metric is missing from the data we provide, source it yourself from reputable public sources (issuer fund page or prospectus, Morningstar, etf.com, SEC filings, index provider). Do NOT write phrases like "not available", "not provided", "data is missing", or any variant — either use the value you source or simply leave the claim out.
+- Generate the analysis in plain investor-facing English on the basis of the values you have (ours + what you source). Never reference the input schema back to the reader.
+
+---
+
+`;

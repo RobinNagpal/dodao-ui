@@ -1,7 +1,18 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
-import { API_BASE, AUTOMATION_SECRET, SPACE_ID, fetchJson, parseArgs, parsePositiveInt, requireAutomationSecret, requireStringArg, sleep } from './lib';
+import {
+  AGENT_PROMPT_PREAMBLE,
+  API_BASE,
+  AUTOMATION_SECRET,
+  SPACE_ID,
+  fetchJson,
+  parseArgs,
+  parsePositiveInt,
+  requireAutomationSecret,
+  requireStringArg,
+  sleep,
+} from './lib';
 
 interface EnsureMorInfoResponse {
   triggeredKinds: string[];
@@ -23,7 +34,11 @@ const VALID_REPORT_TYPES: readonly EtfReportType[] = [
   EtfReportType.FINAL_SUMMARY,
 ];
 
-const DEFAULT_MOR_WAIT_MS = 10_000;
+// Raised to 20s after the SPUS test run — at 10s the first prompt's `morReturns`
+// field still came back empty because the four Morningstar scrape callbacks
+// hadn't all landed yet. 20s covers the slow tail without being painful for the
+// one-time wait on the first report of a run.
+const DEFAULT_MOR_WAIT_MS = 20_000;
 
 function toEtfReportType(raw: string): EtfReportType {
   const matched = VALID_REPORT_TYPES.find((t) => t === raw);
@@ -74,13 +89,18 @@ async function main(): Promise<void> {
     }
   );
 
+  // Prepend the agent-facing output rules. These sit above the per-category template so
+  // the LLM reads the schema-agnostic instructions (don't leak field names, self-source
+  // missing metrics) before the category-specific rules kick in.
+  const finalPrompt = AGENT_PROMPT_PREAMBLE + response.prompt;
+
   if (outPath) {
     await mkdir(path.dirname(outPath), { recursive: true });
-    await writeFile(outPath, response.prompt, 'utf-8');
-    console.error(`Wrote prompt (${response.prompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType} | ${response.promptKey}]`);
+    await writeFile(outPath, finalPrompt, 'utf-8');
+    console.error(`Wrote prompt (${finalPrompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType} | ${response.promptKey}]`);
   } else {
-    console.error(`Generated ETF prompt for ${symbol} ${exchange} ${reportType} (${response.prompt.length} chars, key=${response.promptKey}).`);
-    process.stdout.write(response.prompt);
+    console.error(`Generated ETF prompt for ${symbol} ${exchange} ${reportType} (${finalPrompt.length} chars, key=${response.promptKey}).`);
+    process.stdout.write(finalPrompt);
   }
 }
 
