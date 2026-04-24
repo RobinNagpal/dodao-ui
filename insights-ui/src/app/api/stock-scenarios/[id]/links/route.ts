@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ScenarioRole } from '@/types/scenarioEnums';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
@@ -12,7 +12,13 @@ import { withLoggedInAdmin } from '../../../helpers/withLoggedInAdmin';
 
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
-  exchange: z.string().min(1),
+  // Symbol can be anything non-empty so admins can tag tickers that aren't
+  // in TickerV1 yet (those save with `tickerId: null` and render as plain
+  // text). Exchange must be one of the supported exchanges.
+  exchange: z
+    .string()
+    .min(1)
+    .refine((v) => isExchange(v.toUpperCase()), 'exchange must be one of the supported exchanges'),
   role: z.nativeEnum(ScenarioRole),
   sortOrder: z.number().int().nonnegative().optional(),
   roleExplanation: z.string().nullable().optional(),
@@ -102,6 +108,9 @@ async function deleteHandler(
 
   if (!symbolParam || !exchangeParam || !isScenarioRole(roleParam)) {
     throw new Error('symbol, exchange, and role (WINNER|LOSER|MOST_EXPOSED) query params are required');
+  }
+  if (!isExchange(exchangeParam.toUpperCase())) {
+    throw new Error(`exchange "${exchangeParam}" is not one of the supported exchanges`);
   }
 
   const scenario = await prisma.stockScenario.findUnique({ where: { id: scenarioId } });

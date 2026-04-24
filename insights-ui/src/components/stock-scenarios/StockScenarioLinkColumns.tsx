@@ -18,6 +18,13 @@ function LinkPill({ link }: { link: StockScenarioLinkDto }): JSX.Element {
     </span>
   );
 
+  // tickerId === null means the (symbol, exchange) pair isn't in TickerV1 yet —
+  // the public stock detail page would 404 on it. Render as plain text instead
+  // so authors can still tag the ticker and admins can later add it to TickerV1.
+  if (!link.tickerId) {
+    return inner;
+  }
+
   return (
     <Link href={`/stocks/${link.exchange}/${link.symbol}`} className="hover:opacity-80">
       {inner}

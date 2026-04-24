@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ScenarioDirection, ScenarioPricedInBucket, ScenarioProbabilityBucket, ScenarioRole, ScenarioTimeframe } from '@/types/scenarioEnums';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { slugifyScenarioTitle } from '@/utils/scenario-slug';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
@@ -37,7 +37,14 @@ const createStockScenarioSchema = z.object({
     .array(
       z.object({
         symbol: z.string().min(1),
-        exchange: z.string().min(1, 'exchange is required on stock scenario links'),
+        // Exchange must be one of the supported exchanges (US/Canada/UK/India/etc.).
+        // The symbol stays free-form so admins can tag tickers that aren't in
+        // TickerV1 yet — those save with `tickerId: null` and render as plain
+        // text in the public detail view.
+        exchange: z
+          .string()
+          .min(1, 'exchange is required on stock scenario links')
+          .refine((v) => isExchange(v.toUpperCase()), 'exchange must be one of the supported exchanges'),
         role: z.nativeEnum(ScenarioRole),
         sortOrder: z.number().int().nonnegative().optional(),
         roleExplanation: z.string().nullable().optional(),
