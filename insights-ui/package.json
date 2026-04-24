@@ -17,8 +17,12 @@
     "etfs:trigger": "tsx src/scripts/etfs/trigger-generation.ts",
     "etfs:wait": "tsx src/scripts/etfs/wait-for-generation.ts",
     "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts",
+    "etfs:prompt": "tsx src/scripts/etfs/get-report-prompt.ts",
+    "etfs:save": "tsx src/scripts/etfs/save-report.ts",
     "stocks:trigger": "tsx src/scripts/tickers/trigger-generation.ts",
-    "stocks:add": "tsx src/scripts/tickers/add-stock.ts"
+    "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
+    "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
+    "stocks:save": "tsx src/scripts/tickers/save-report.ts"
   },
   "engines": {
     "node": ">=23.11.0"

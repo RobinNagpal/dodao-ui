@@ -15,3 +15,4 @@ Topical reference docs for the Insights-UI (KoalaGains) app — patterns, prompt
 - **[tariffs-functionality.md](tariffs-functionality.md)** — Comprehensive overview of the tariffs analysis subsystem: pipeline, data structures, UI components, S3 storage, admin flow.
 - **[tariff-usecases.md](tariff-usecases.md)** — Catalog of real-world use cases for people who need tariff information; informs feature prioritization.
 - **[new-tariff-features.md](new-tariff-features.md)** — Highest-value tariff features to implement next, with market mapping.
+- **[automated-report-generation.md](automated-report-generation.md)** — Four CLI scripts (`stocks:prompt`, `stocks:save`, `etfs:prompt`, `etfs:save`) that let Claude drive stock + ETF report generation one report type at a time: ask server for prompt → call LLM → hand JSON back to server to save.
