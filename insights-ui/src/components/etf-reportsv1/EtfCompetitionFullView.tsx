@@ -1,5 +1,5 @@
 import CompetitorCard from '@/components/competition/CompetitorCard';
-import EtfCompetitionQuadrantChart from '@/components/etf-reportsv1/EtfCompetitionQuadrantChart';
+import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
@@ -75,96 +75,15 @@ export default function EtfCompetitionFullView({ data }: EtfCompetitionFullViewP
         <div className="prose prose-invert max-w-none">
           {quadrantDataPoints.length >= 2 ? (
             <section className="mb-6">
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-                <div className="lg:w-1/2">
-                  <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
-                  <p className="text-color leading-relaxed mb-5" itemProp="abstract">
-                    {executiveSummary}
-                  </p>
-
-                  <div className="space-y-2.5">
-                    {quadrantDataPoints.map((dp) => {
-                      const href = !dp.isMainEtf && dp.exchange ? `/etfs/${dp.exchange.toUpperCase()}/${dp.symbol.toUpperCase()}` : null;
-                      const content = (
-                        <>
-                          <span
-                            className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 mt-1.5"
-                            style={{
-                              backgroundColor: dp.isMainEtf
-                                ? '#f59e0b'
-                                : dp.classification === 'Top Pick'
-                                ? '#34d399'
-                                : dp.classification === 'Return Focused'
-                                ? '#818cf8'
-                                : dp.classification === 'Cost Efficient'
-                                ? '#38bdf8'
-                                : '#fb7185',
-                            }}
-                          />
-                          <div className="min-w-0">
-                            <div className="flex items-baseline gap-2 flex-wrap">
-                              <span className={dp.isMainEtf ? 'font-semibold text-amber-400' : 'text-gray-200 group-hover:text-[#F59E0B] transition-colors'}>
-                                {dp.name}
-                              </span>
-                              <span className={dp.isMainEtf ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.symbol})</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
-                              <span>{dp.classification}</span>
-                              <span>·</span>
-                              <span>Returns {dp.returnsScore.toFixed(0)}%</span>
-                              <span>·</span>
-                              <span>Efficiency {dp.efficiencyScore.toFixed(0)}%</span>
-                            </div>
-                          </div>
-                        </>
-                      );
-
-                      return href ? (
-                        <Link key={dp.symbol} href={href} className="flex items-start gap-2.5 text-sm group">
-                          {content}
-                        </Link>
-                      ) : (
-                        <div key={dp.symbol} className="flex items-start gap-2.5 text-sm">
-                          {content}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="lg:w-1/2">
-                  <EtfCompetitionQuadrantChart dataPoints={quadrantDataPoints} mainEtfSymbol={etf.symbol} />
-                </div>
-              </div>
-
-              {/* Server-rendered table for SEO — search engines can't read canvas charts. */}
-              <div className="sr-only" aria-hidden="false">
-                <table>
-                  <caption>
-                    Returns vs Efficiency comparison of {etf.name} ({etf.symbol}) and peer ETFs
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th>Fund</th>
-                      <th>Symbol</th>
-                      <th>Returns Score</th>
-                      <th>Efficiency Score</th>
-                      <th>Classification</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {quadrantDataPoints.map((dp) => (
-                      <tr key={dp.symbol}>
-                        <td>{dp.name}</td>
-                        <td>{dp.symbol}</td>
-                        <td>{dp.returnsScore.toFixed(0)}%</td>
-                        <td>{dp.efficiencyScore.toFixed(0)}%</td>
-                        <td>{dp.classification}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <EtfCompetitionQuadrantWithLegend
+                dataPoints={quadrantDataPoints}
+                mainEtfSymbol={etf.symbol}
+                mainEtfName={etf.name}
+                heading="Executive Summary"
+                headingAs="h2"
+                description={executiveSummary}
+                descriptionItemProp="abstract"
+              />
             </section>
           ) : (
             <section className="mb-6">

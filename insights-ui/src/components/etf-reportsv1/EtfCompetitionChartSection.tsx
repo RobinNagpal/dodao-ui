@@ -1,6 +1,4 @@
-'use client';
-
-import EtfCompetitionQuadrantChart from '@/components/etf-reportsv1/EtfCompetitionQuadrantChart';
+import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
 import Link from 'next/link';
@@ -13,10 +11,10 @@ export interface EtfCompetitionChartSectionProps {
 }
 
 /**
- * Compact Competition section rendered on the ETF detail page. Shows the
- * Returns × Efficiency quadrant chart + a short peer list and links out to
- * the full `/etfs/{exchange}/{etf}/competition` page for the long analysis.
- * Intentionally mirrors the ticker detail page's `CompetitionChartSection`.
+ * Compact Competition section rendered on the ETF detail page. Renders as a
+ * Server Component — only the inner Chart.js canvas ships as client JS, so the
+ * peer-list legend, heading, SEO table, and "View Full Analysis" link are all
+ * present in the initial server HTML (good for SEO + first paint).
  */
 export default function EtfCompetitionChartSection({ dataPromise, exchange, etf }: EtfCompetitionChartSectionProps): JSX.Element | null {
   const data = use(dataPromise);
@@ -46,68 +44,14 @@ export default function EtfCompetitionChartSection({ dataPromise, exchange, etf 
           </Link>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <div className="lg:w-1/2">
-            <h3 className="text-lg font-semibold text-color mb-3">Returns vs Efficiency</h3>
-            <p className="text-sm text-gray-400 mb-4">
-              Compare {mainEtf.name} ({mainEtf.symbol}) against peer ETFs on past returns + future outlook (vertical) vs cost efficiency + risk (horizontal).
-            </p>
-
-            <div className="space-y-2.5">
-              {quadrantDataPoints.map((dp) => {
-                const href = !dp.isMainEtf && dp.exchange ? `/etfs/${dp.exchange.toUpperCase()}/${dp.symbol.toUpperCase()}` : null;
-
-                const content = (
-                  <>
-                    <span
-                      className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 mt-1.5"
-                      style={{
-                        backgroundColor: dp.isMainEtf
-                          ? '#f59e0b'
-                          : dp.classification === 'Top Pick'
-                          ? '#34d399'
-                          : dp.classification === 'Return Focused'
-                          ? '#818cf8'
-                          : dp.classification === 'Cost Efficient'
-                          ? '#38bdf8'
-                          : '#fb7185',
-                      }}
-                    />
-                    <div className="min-w-0">
-                      <div className="flex items-baseline gap-2 flex-wrap">
-                        <span className={dp.isMainEtf ? 'font-semibold text-amber-400' : 'text-gray-200 group-hover:text-[#F59E0B] transition-colors'}>
-                          {dp.name}
-                        </span>
-                        <span className={dp.isMainEtf ? 'text-amber-400 text-xs' : 'text-gray-500 text-xs'}>({dp.symbol})</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
-                        <span>{dp.classification}</span>
-                        <span>·</span>
-                        <span>Returns {dp.returnsScore.toFixed(0)}%</span>
-                        <span>·</span>
-                        <span>Efficiency {dp.efficiencyScore.toFixed(0)}%</span>
-                      </div>
-                    </div>
-                  </>
-                );
-
-                return href ? (
-                  <Link key={dp.symbol} href={href} className="flex items-start gap-2.5 text-sm group">
-                    {content}
-                  </Link>
-                ) : (
-                  <div key={dp.symbol} className="flex items-start gap-2.5 text-sm">
-                    {content}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="lg:w-1/2">
-            <EtfCompetitionQuadrantChart dataPoints={quadrantDataPoints} mainEtfSymbol={mainEtf.symbol} />
-          </div>
-        </div>
+        <EtfCompetitionQuadrantWithLegend
+          dataPoints={quadrantDataPoints}
+          mainEtfSymbol={mainEtf.symbol}
+          mainEtfName={mainEtf.name}
+          heading="Returns vs Efficiency"
+          headingAs="h3"
+          description={`Compare ${mainEtf.name} (${mainEtf.symbol}) against peer ETFs on past returns + future outlook (vertical) vs cost efficiency + risk (horizontal).`}
+        />
       </div>
     </section>
   );
