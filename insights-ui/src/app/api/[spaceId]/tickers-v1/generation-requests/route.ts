@@ -1,3 +1,4 @@
+import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
@@ -177,7 +178,7 @@ async function getHandler(
 
 async function postHandler(
   req: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload,
+  _userContext: KoalaGainsJwtTokenPayload | null,
   { params }: { params: Promise<{ spaceId: string }> }
 ): Promise<TickerV1GenerationRequest[]> {
   const { spaceId } = await params;
@@ -265,5 +266,5 @@ async function postHandler(
   return results;
 }
 
-export const POST = withLoggedInAdmin<TickerV1GenerationRequest[]>(postHandler);
+export const POST = withAdminOrToken<TickerV1GenerationRequest[]>(postHandler);
 export const GET = withLoggedInAdmin<GenerationRequestsResponse>(getHandler);

@@ -312,6 +312,11 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         alert(`Row ${i + 1}: Please provide both Company Name and Symbol.`);
         return;
       }
+      if (!t.websiteUrl.trim()) {
+        // eslint-disable-next-line no-alert
+        alert(`Row ${i + 1}: Please provide the company Website URL (required).`);
+        return;
+      }
     }
 
     await batchSubmit(entries);
@@ -344,8 +349,8 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <div>
           <h2 className="text-xl font-semibold">Add New Tickers</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>exchange required</strong>; websiteUrl &amp; stockAnalyzeUrl
-            optional)
+            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>exchange, name, symbol, websiteUrl required</strong>;
+            stockAnalyzeUrl optional)
           </p>
         </div>
         <div className="flex items-center gap-2">

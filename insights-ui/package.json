@@ -16,7 +16,9 @@
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
     "etfs:trigger": "tsx src/scripts/etfs/trigger-generation.ts",
     "etfs:wait": "tsx src/scripts/etfs/wait-for-generation.ts",
-    "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts"
+    "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts",
+    "stocks:trigger": "tsx src/scripts/tickers/trigger-generation.ts",
+    "stocks:add": "tsx src/scripts/tickers/add-stock.ts"
   },
   "engines": {
     "node": ">=23.11.0"
