@@ -83,7 +83,13 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
   /** ---------- CSV Utilities ---------- */
   const validateHeaders = (headers: string[]): string | null => {
     const lower = headers.map((x) => x.toLowerCase().trim());
-    const mustHave: ReadonlyArray<'exchange' | 'name' | 'symbol'> = ['exchange', 'name', 'symbol'] as const;
+    const mustHave: ReadonlyArray<'exchange' | 'name' | 'symbol' | 'websiteurl' | 'stockanalyzeurl'> = [
+      'exchange',
+      'name',
+      'symbol',
+      'websiteurl',
+      'stockanalyzeurl',
+    ] as const;
     const missing = mustHave.filter((h) => !lower.includes(h));
     if (missing.length > 0) {
       return `Missing required headers: ${missing.join(', ')}`;
@@ -102,7 +108,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
       const websiteUrl = (row.websiteUrl ?? '').trim();
       const stockAnalyzeUrl = (row.stockAnalyzeUrl ?? '').trim();
 
-      if (!exchangeRaw || !name || !symbol) {
+      if (!exchangeRaw || !name || !symbol || !websiteUrl || !stockAnalyzeUrl) {
         invalidCount++;
         continue;
       }
@@ -116,7 +122,11 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
     }
 
     if (rows.length > 0 && invalidCount > 0) {
-      setCsvError(`${invalidCount} row${invalidCount === 1 ? '' : 's'} ignored due to missing/invalid required fields (exchange, name, symbol).`);
+      setCsvError(
+        `${invalidCount} row${
+          invalidCount === 1 ? '' : 's'
+        } ignored due to missing/invalid required fields (exchange, name, symbol, websiteUrl, stockAnalyzeUrl).`
+      );
     }
 
     return valid;
@@ -312,6 +322,16 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         alert(`Row ${i + 1}: Please provide both Company Name and Symbol.`);
         return;
       }
+      if (!t.websiteUrl.trim()) {
+        // eslint-disable-next-line no-alert
+        alert(`Row ${i + 1}: Please provide the company Website URL (required).`);
+        return;
+      }
+      if (!t.stockAnalyzeUrl.trim()) {
+        // eslint-disable-next-line no-alert
+        alert(`Row ${i + 1}: Please provide the Stock Analyze URL (required).`);
+        return;
+      }
     }
 
     await batchSubmit(entries);
@@ -344,8 +364,7 @@ export default function AddTickersForm({ onSuccess, onCancel, selectedIndustryKe
         <div>
           <h2 className="text-xl font-semibold">Add New Tickers</h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>exchange required</strong>; websiteUrl &amp; stockAnalyzeUrl
-            optional)
+            CSV format: <code>exchange, name, symbol, websiteUrl, stockAnalyzeUrl</code> (<strong>all columns required</strong>)
           </p>
         </div>
         <div className="flex items-center gap-2">

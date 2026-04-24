@@ -3,7 +3,7 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { Prisma, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { TickerWithIndustryNames } from '@/types/ticker-typesv1';
-import { AllExchanges, getExchangeFilterClause, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { AllExchanges, EXCHANGES, getExchangeFilterClause, isExchange, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 
 /** ---------- Types ---------- */
@@ -14,9 +14,9 @@ interface NewTickerRequest {
   exchange: string;
   industryKey: string;
   subIndustryKey: string;
-  websiteUrl?: string;
-  summary?: string;
+  websiteUrl: string;
   stockAnalyzeUrl: string;
+  summary?: string;
 }
 
 interface ErrorTicker {
@@ -163,34 +163,60 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
     // Skip those already marked as same-request duplicates
     if (errorTickers.some((e) => e.input === raw)) continue;
 
-    // Basic validation
-    if (!raw.name || !raw.symbol || !raw.exchange || !raw.industryKey || !raw.subIndustryKey) {
+    // Basic validation — websiteUrl and stockAnalyzeUrl are both required; summary remains optional.
+    if (
+      !raw.name ||
+      !raw.symbol ||
+      !raw.exchange ||
+      !raw.industryKey ||
+      !raw.subIndustryKey ||
+      !raw.websiteUrl ||
+      !raw.websiteUrl.trim() ||
+      !raw.stockAnalyzeUrl ||
+      !raw.stockAnalyzeUrl.trim()
+    ) {
       errorTickers.push({
         input: raw,
-        reason: 'Missing required fields: name, symbol, exchange, industryKey, subIndustryKey',
+        reason: 'Missing required fields: name, symbol, exchange, industryKey, subIndustryKey, websiteUrl, stockAnalyzeUrl',
       });
       continue;
     }
 
     const name = raw.name.trim();
     const symbol = raw.symbol.toUpperCase().trim();
-    const exchange = raw.exchange.trim();
+    const exchange = raw.exchange.trim().toUpperCase();
     const industryKey = raw.industryKey.trim();
     const subIndustryKey = raw.subIndustryKey.trim();
-    const websiteUrl = normStr(raw.websiteUrl);
+    const websiteUrl = raw.websiteUrl.trim();
     const summary = normStr(raw.summary);
-    const stockAnalyzeUrl = normStr(raw.stockAnalyzeUrl);
+    const stockAnalyzeUrl = raw.stockAnalyzeUrl.trim();
 
-    // Validate stockAnalyzeUrl format if provided
-    if (stockAnalyzeUrl) {
-      const validationError = validateStockAnalyzeUrl(symbol, exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl);
-      if (validationError) {
-        errorTickers.push({
-          input: raw,
-          reason: `Invalid stockAnalyzeUrl format: ${validationError}`,
-        });
-        continue;
-      }
+    // Validate exchange against the predefined list
+    if (!isExchange(exchange)) {
+      errorTickers.push({
+        input: raw,
+        reason: `Invalid exchange "${raw.exchange}". Supported: ${EXCHANGES.join(', ')}`,
+      });
+      continue;
+    }
+
+    // Validate websiteUrl format (must be an absolute http(s) URL)
+    if (!/^https?:\/\/\S+$/i.test(websiteUrl)) {
+      errorTickers.push({
+        input: raw,
+        reason: `Invalid websiteUrl "${websiteUrl}": must be an absolute URL starting with http:// or https://`,
+      });
+      continue;
+    }
+
+    // Validate stockAnalyzeUrl format
+    const stockUrlError = validateStockAnalyzeUrl(symbol, exchange as AllExchanges, stockAnalyzeUrl);
+    if (stockUrlError) {
+      errorTickers.push({
+        input: raw,
+        reason: `Invalid stockAnalyzeUrl format: ${stockUrlError}`,
+      });
+      continue;
     }
 
     try {
