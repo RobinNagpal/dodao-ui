@@ -524,6 +524,7 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                 <div
                   className={`flex items-center gap-2 mb-2 ${
                     categoryKey === TickerAnalysisCategory.BusinessAndMoat ||
+                    categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis ||
                     categoryKey === TickerAnalysisCategory.PastPerformance ||
                     categoryKey === TickerAnalysisCategory.FutureGrowth
                       ? 'justify-between'
@@ -545,6 +546,16 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                   {categoryKey === TickerAnalysisCategory.BusinessAndMoat && (
                     <Link
                       href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/business-and-moat`}
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+                    >
+                      View Detailed Analysis →
+                    </Link>
+                  )}
+
+                  {categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/financial-statement-analysis`}
                       className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
                       style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
@@ -597,9 +608,13 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
     [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
   };
 
-  // Filter out PastPerformance and FutureGrowth — they now have their own dedicated pages
+  // Filter out categories that have their own dedicated detail pages
   const categoriesToShow = Object.values(TickerAnalysisCategory).filter(
-    (key) => key !== TickerAnalysisCategory.BusinessAndMoat && key !== TickerAnalysisCategory.PastPerformance && key !== TickerAnalysisCategory.FutureGrowth
+    (key) =>
+      key !== TickerAnalysisCategory.BusinessAndMoat &&
+      key !== TickerAnalysisCategory.FinancialStatementAnalysis &&
+      key !== TickerAnalysisCategory.PastPerformance &&
+      key !== TickerAnalysisCategory.FutureGrowth
   );
 
   return (
