@@ -50,6 +50,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
     { key: 'generateRiskAnalysis', label: 'Generate Risk Analysis', disabled: isBusyAll },
     { key: 'generateFutureOutlook', label: 'Generate Future Outlook', disabled: isBusyAll },
     { key: 'generateIndexStrategy', label: 'Generate Index & Strategy', disabled: isBusyAll },
+    { key: 'generateCompetition', label: 'Generate Competition', disabled: isBusyAll },
     { key: 'generateFinalSummary', label: 'Generate Final Summary', disabled: isBusyAll },
     { key: 'financial', label: 'Financial Info', disabled: isBusyAll },
     { key: 'morAnalyzer', label: 'Mor Analyzer', disabled: isBusyAll },
@@ -72,6 +73,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: true,
               regenerateIndexStrategy: true,
+              regenerateCompetition: true,
               regenerateFinalSummary: true,
             },
           ]);
@@ -137,6 +139,20 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
               regenerateIndexStrategy: true,
+              regenerateFinalSummary: false,
+            },
+          ]);
+          onDone();
+        } else if (key === 'generateCompetition') {
+          await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
+            {
+              etf: { symbol: etf.symbol, exchange: etf.exchange },
+              regeneratePerformanceAndReturns: false,
+              regenerateCostEfficiencyAndTeam: false,
+              regenerateRiskAnalysis: false,
+              regenerateFuturePerformanceOutlook: false,
+              regenerateIndexStrategy: false,
+              regenerateCompetition: true,
               regenerateFinalSummary: false,
             },
           ]);
