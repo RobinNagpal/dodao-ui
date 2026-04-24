@@ -45,6 +45,14 @@ export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfRepo
   }
 
   if (
+    request.regenerateCompetition &&
+    !request.completedSteps.includes(EtfReportType.COMPETITION) &&
+    !request.failedSteps.includes(EtfReportType.COMPETITION)
+  ) {
+    pendingSteps.push(EtfReportType.COMPETITION);
+  }
+
+  if (
     request.regenerateFinalSummary &&
     !request.completedSteps.includes(EtfReportType.FINAL_SUMMARY) &&
     !request.failedSteps.includes(EtfReportType.FINAL_SUMMARY)

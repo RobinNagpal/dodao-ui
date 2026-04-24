@@ -1,0 +1,39 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+description: |
+  Output for the ETF competition analysis. Mirrors the ticker competition output
+  but intentionally omits the top-level `summary` field — the long-form
+  `overallAnalysisDetails` body carries the full read.
+properties:
+  overallAnalysisDetails:
+    type: string
+    description: '3-4 markdown paragraphs explaining how this ETF compares against its closest peer ETFs (same index/category/exposure mechanics). Cover mandate fit, fees, tracking behaviour, risk/return profile, and who each peer actually fits.'
+  competitionAnalysisArray:
+    type: array
+    description: 'Array of per-peer ETF comparisons. Aim for 4-6 genuine substitutes (same/very-similar underlying index, same category, same broad exposure mechanics) — not just famous or popular peers.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        companyName:
+          type: string
+          description: 'Full name of the peer ETF (field named companyName to stay shape-compatible with the shared competitor rendering used on the stocks page).'
+        companySymbol:
+          type: string
+          description: 'Ticker symbol of the peer ETF (uppercase).'
+        exchangeSymbol:
+          type: string
+          description: 'Exchange code of the peer ETF (e.g., NYSEARCA, NASDAQ, BATS, NYSE).'
+        exchangeName:
+          type: string
+          description: 'Readable exchange name (e.g., NASDAQ Global Select, NYSE Arca).'
+        detailedComparison:
+          type: string
+          description: '2-3 markdown paragraphs analysing how this peer compares with the target ETF. Cover AUM/liquidity, expense ratio, tracked index, tracking difference, relative return/drawdown behaviour, and who the peer actually fits better (or worse) than the target.'
+      required:
+        - companyName
+        - detailedComparison
+required:
+  - overallAnalysisDetails
+  - competitionAnalysisArray

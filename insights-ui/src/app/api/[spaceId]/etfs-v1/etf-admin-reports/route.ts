@@ -13,6 +13,7 @@ export interface EtfReportStatuses {
   risk: EtfReportStatus;
   futureOutlook: EtfReportStatus;
   indexStrategy: EtfReportStatus;
+  competition: EtfReportStatus;
   summary: EtfReportStatus;
 }
 
@@ -87,6 +88,7 @@ type LatestRequestSummary = {
   regenerateRiskAnalysis: boolean;
   regenerateFuturePerformanceOutlook: boolean;
   regenerateIndexStrategy: boolean;
+  regenerateCompetition: boolean;
   regenerateFinalSummary: boolean;
   completedSteps: string[];
   failedSteps: string[];
@@ -98,6 +100,7 @@ type RegenerateFlagKey =
   | 'regenerateRiskAnalysis'
   | 'regenerateFuturePerformanceOutlook'
   | 'regenerateIndexStrategy'
+  | 'regenerateCompetition'
   | 'regenerateFinalSummary';
 
 function computeReportStatus(hasData: boolean, step: EtfReportType, flag: RegenerateFlagKey, latestRequest: LatestRequestSummary | undefined): EtfReportStatus {
@@ -175,6 +178,7 @@ const getHandler = async (
         morRiskInfo: { select: { id: true } },
         morPeopleInfo: { select: { id: true } },
         morPortfolioInfo: { select: { id: true } },
+        vsCompetition: { select: { id: true } },
         analysisCategoryFactorResults: {
           select: { categoryKey: true },
         },
@@ -188,6 +192,7 @@ const getHandler = async (
             regenerateRiskAnalysis: true,
             regenerateFuturePerformanceOutlook: true,
             regenerateIndexStrategy: true,
+            regenerateCompetition: true,
             regenerateFinalSummary: true,
             completedSteps: true,
             failedSteps: true,
@@ -219,6 +224,7 @@ const getHandler = async (
       const futureOutlookAnalysisCount = factorResults.filter((r) => r.categoryKey === 'FuturePerformanceOutlook').length;
       const hasIndexStrategy = Boolean(e.indexStrategy && e.indexStrategy.trim());
       const hasSummary = Boolean(e.summary && e.summary.trim());
+      const hasVsCompetition = !!e.vsCompetition;
 
       const latestRequest = e.generationRequests[0];
 
@@ -238,6 +244,7 @@ const getHandler = async (
           latestRequest
         ),
         indexStrategy: computeReportStatus(hasIndexStrategy, EtfReportType.INDEX_STRATEGY, 'regenerateIndexStrategy', latestRequest),
+        competition: computeReportStatus(hasVsCompetition, EtfReportType.COMPETITION, 'regenerateCompetition', latestRequest),
         summary: computeReportStatus(hasSummary, EtfReportType.FINAL_SUMMARY, 'regenerateFinalSummary', latestRequest),
       };
 

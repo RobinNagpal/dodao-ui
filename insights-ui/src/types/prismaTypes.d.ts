@@ -404,6 +404,10 @@ export type PriceHistoryPointArray = PriceHistoryPoint[];
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
+    // ETF peer entries stored in `etf_vs_competition.competition_analysis`. Same shape
+    // as the ticker `CompetitionAnalysis` — a competitor record produced by the LLM
+    // with no relation-derived fields like `existsInSystem` or `etfData`.
+    type EtfCompetitionAnalysis = CompetitionAnalysisType;
     type TopCompaniesToConsider = CompetitionAnalysisType;
     // Stock analyzer types
     type StockFundamentalsSummary = StockFundamentalsSummary;

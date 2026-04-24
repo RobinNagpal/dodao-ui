@@ -8,10 +8,12 @@ import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
+import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
+import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -134,6 +136,22 @@ async function fetchEtfPortfolioHoldings(exchange: string, etf: string): Promise
     return wrapper.holdings;
   } catch (error) {
     console.error(`fetchEtfPortfolioHoldings error for ${etf}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetch ETF competition data. The `etf_vs_competition` table is seeded by a future
+ * LLM pipeline step; while the API route / generator are still being wired up,
+ * any non-OK response is treated as "no data yet" and the section renders nothing.
+ */
+async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCompetitionResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/competition`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) return null;
+    return (await res.json()) as EtfCompetitionResponse | null;
+  } catch {
     return null;
   }
 }
@@ -432,6 +450,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   const priceHistoryPromise = fetchEtfPriceHistory(exchange, etf);
   const similarEtfsPromise = fetchSimilarEtfs(exchange, etf);
   const portfolioHoldingsPromise = fetchEtfPortfolioHoldings(exchange, etf);
+  const competitionPromise = fetchEtfCompetition(exchange, etf);
 
   // Derive dates for semantic footer (based solely on etfData)
   const now = new Date();
@@ -511,6 +530,10 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
         </Suspense>
 
         <div className="mx-auto max-w-7xl">

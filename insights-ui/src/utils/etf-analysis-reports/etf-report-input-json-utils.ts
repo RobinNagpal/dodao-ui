@@ -360,6 +360,27 @@ export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
   };
 }
 
+/**
+ * Build the Competition-analysis LLM input. Intentionally minimal — per the prompt
+ * contract, no financial data is passed; the LLM is expected to source peer facts
+ * from reputable public sources given just ETF identity and taxonomy context.
+ */
+export function prepareEtfCompetitionInputJson(etf: EtfWithAllData) {
+  const sa = etf.stockAnalyzerInfo;
+  const fundCategory = sa?.category || null;
+  const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
+  return {
+    name: etf.name,
+    symbol: etf.symbol,
+    exchange: etf.exchange,
+    assetClass: sa?.assetClass || null,
+    category: fundCategory,
+    groupKey,
+    indexName: sa?.indexName || null,
+    issuer: sa?.issuer || null,
+  };
+}
+
 export function prepareEtfFinalSummaryInputJson(etf: EtfWithAllData) {
   const categorySummaries = (etf.categoryAnalysisResults || []).map((c) => ({
     categoryKey: c.categoryKey,

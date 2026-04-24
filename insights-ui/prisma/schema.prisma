@@ -1292,6 +1292,7 @@ model Etf {
   cachedScore                 EtfCachedScore?
   priceHistory                EtfPriceHistory?
   similarEtfs                 EtfSimilarEtf[] @relation("EtfSimilarEtfSource")
+  vsCompetition               EtfVsCompetition?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1633,6 +1634,7 @@ model EtfGenerationRequest {
   regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
   regenerateFuturePerformanceOutlook Boolean @default(false) @map("regenerate_future_performance_outlook")
   regenerateIndexStrategy         Boolean @default(false) @map("regenerate_index_strategy")
+  regenerateCompetition           Boolean @default(false) @map("regenerate_competition")
   regenerateFinalSummary          Boolean @default(false) @map("regenerate_final_summary")
 
   status String @default("NotStarted") @map("status")
@@ -1715,6 +1717,33 @@ model EtfCachedScore {
   @@unique([etfId])
   @@index([etfId])
   @@map("etf_cached_scores")
+}
+
+// --------------------------
+// ETF Competition Analysis
+// --------------------------
+// Mirrors TickerV1VsCompetition for ETFs but without the `summary` field —
+// the long-form narrative lives in `overall_analysis_details` and the
+// per-peer array is stored as JSONB[] whose element shape is declared in
+// `src/types/prismaTypes.d.ts` via the `EtfCompetitionAnalysis` JSON type.
+model EtfVsCompetition {
+  id                       String   @id @default(uuid())
+  overallAnalysisDetails   String   @map("overall_analysis_details")
+  /// [EtfCompetitionAnalysis]
+  competitionAnalysisArray Json[]   @map("competition_analysis")
+  etfId                    String   @unique @map("etf_id")
+  spaceId                  String   @default("koala_gains") @map("space_id")
+  createdAt                DateTime @default(now()) @map("created_at")
+  updatedAt                DateTime @updatedAt @map("updated_at")
+  createdBy                String?  @map("created_by")
+  updatedBy                String?  @map("updated_by")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, etfId])
+  @@index([spaceId, etfId])
+  @@index([etfId])
+  @@map("etf_vs_competition")
 }
 
 // --------------------------
