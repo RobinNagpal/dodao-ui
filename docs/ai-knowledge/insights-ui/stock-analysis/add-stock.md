@@ -23,22 +23,21 @@ Every stock must provide **all** of these:
 | Exchange | `--exchange` | `exchange` | **Must be in the predefined list** (see below). Upper-cased automatically. |
 | Industry key | `--industry` | `industryKey` | FK into `TickerV1Industry`. Must already exist. |
 | Sub-industry key | `--sub-industry` | `subIndustryKey` | FK into `TickerV1SubIndustry`. Must already exist under the chosen industry. |
-| Website URL | `--website` | `websiteUrl` | **Mandatory.** Must start with `http://` or `https://`. |
+| Website URL | `--website` | `websiteUrl` | **Mandatory.** Must be an absolute URL starting with `http://` or `https://`. |
+| Stock-analyze URL | `--stock-analyze-url` | `stockAnalyzeUrl` | **Mandatory.** Must match the per-exchange format produced by `generateExpectedStockAnalyzeUrl` (see `src/utils/stockAnalyzeUrlValidation.ts`). The CLI uses `validateStockAnalyzeUrl` to check; the server re-validates on POST. |
 
 Optional fields:
 
 | Field | CLI flag | JSON key | Notes |
 | --- | --- | --- | --- |
 | Short summary | `--summary` | `summary` | Free text shown on the stock page. |
-| Stock-analyze URL | `--stock-analyze-url` | `stockAnalyzeUrl` | If omitted, auto-generated from `symbol` + `exchange` using the per-exchange path segment (see `src/utils/stockAnalyzeUrlValidation.ts`). |
 
-### Why website is required
+### Why both URLs are required
 
-The CLI enforces `websiteUrl` before sending, and the POST handler in
-`src/app/api/[spaceId]/tickers-v1/route.ts` also rejects payloads with a
-missing/empty `websiteUrl`. This keeps CLI-added and UI-added stocks consistent —
-the company's website is used throughout the analysis prompts and on the stock
-detail page, so every record needs one.
+- **`websiteUrl`** — the company's official website is used throughout the analysis prompts (for sourcing business-model / product context) and on the stock detail page. Every record needs one.
+- **`stockAnalyzeUrl`** — this is the canonical link into the external stock-analyze site that backs the per-stock data tabs; the DB column is non-nullable and most UI links assume it's present. Requiring it at the API boundary prevents half-populated rows from sneaking in through scripts.
+
+The CLI and POST handler both enforce presence *and* format for these two fields.
 
 ## Exchange validation
 
@@ -70,8 +69,17 @@ yarn stocks:add \
   --industry consumer-discretionary \
   --sub-industry consumer-electronics \
   --website https://www.apple.com \
+  --stock-analyze-url https://stockanalysis.com/stocks/AAPL/ \
   --summary "Designer & manufacturer of iPhones, Macs, and services."
 ```
+
+> The `--stock-analyze-url` value must match the format produced by
+> `generateExpectedStockAnalyzeUrl(symbol, exchange)`. For US stock exchanges
+> (NASDAQ / NYSE / NYSEAMERICAN) that's `{BASE}/stocks/{SYMBOL}/`; other
+> exchanges use `{BASE}/quote/{segment}/{SYMBOL}/` with per-exchange segments
+> defined in `src/utils/stockAnalyzeUrlValidation.ts`. The CLI needs
+> `NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL` set in its env to validate — otherwise
+> the expected-format error message will show a relative path.
 
 ## Batch example (JSON input)
 
@@ -85,7 +93,8 @@ yarn stocks:add \
     "exchange": "NASDAQ",
     "industryKey": "consumer-discretionary",
     "subIndustryKey": "consumer-electronics",
-    "websiteUrl": "https://www.apple.com"
+    "websiteUrl": "https://www.apple.com",
+    "stockAnalyzeUrl": "https://stockanalysis.com/stocks/AAPL/"
   },
   {
     "name": "Shopify Inc.",
@@ -94,6 +103,7 @@ yarn stocks:add \
     "industryKey": "technology",
     "subIndustryKey": "software-application",
     "websiteUrl": "https://www.shopify.com",
+    "stockAnalyzeUrl": "https://stockanalysis.com/quote/tsx/SHOP/",
     "summary": "Canadian multinational e-commerce company."
   }
 ]
@@ -108,7 +118,8 @@ Batch behavior:
 - Default inter-call delay: **500 ms** (tuned for sequential DB writes, not LLM
   calls). Override with `--delay-ms 250`.
 - Pre-validation failures (missing required fields, unknown exchange, bad
-  `websiteUrl`) are collected and **skipped**, never posted to the API.
+  `websiteUrl` format, `stockAnalyzeUrl` that doesn't match the expected
+  per-exchange format) are collected and **skipped**, never posted to the API.
 - Server-side failures (duplicates, FK violations on industry/sub-industry) are
   logged per row and **do not abort the run**.
 - Hard limit: **100 stocks** per invocation.
@@ -156,10 +167,12 @@ adopts `withAdminOrToken`, no script change is needed.
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
 | `Missing required field(s): websiteUrl` | Input lacks a website URL. | Provide `--website` / `websiteUrl`. |
+| `Missing required field(s): stockAnalyzeUrl` | Input lacks the stock-analyze URL. | Provide `--stock-analyze-url` / `stockAnalyzeUrl`. |
 | `Invalid exchange "NYSEArca". Supported: BATS, NASDAQ, ...` | Exchange typo or wrong casing. | Use one of the values in the `EXCHANGES` list (upper-case variants are accepted; the CLI normalizes). |
 | `Ticker AAPL already exists on NASDAQ` | Stock is already in the DB. | Nothing to do; use `yarn stocks:trigger` to regenerate reports. |
 | `Foreign key constraint violated on industryKey` | The industry/sub-industry key doesn't exist. | Confirm the keys via the admin industries page or by querying `TickerV1Industry`/`TickerV1SubIndustry`. |
-| `websiteUrl must start with http:// or https://` | Missing protocol on the website URL. | Prepend `https://`. |
+| `websiteUrl must be an absolute URL starting with http:// or https://` | Missing protocol on the website URL. | Prepend `https://`. |
+| `stockAnalyzeUrl is invalid: Invalid stockAnalyzeUrl format. Expected: .../stocks/AAPL/` | The URL doesn't match the per-exchange format `generateExpectedStockAnalyzeUrl` produces. | Use the URL shape from the error message (US exchanges use `/stocks/<SYM>/`; others use `/quote/<segment>/<SYM>/`). Make sure `NEXT_PUBLIC_STOCK_ANALYZE_BASE_URL` is set in the CLI's env so the expected format resolves correctly. |
 
 ## Where to read further
 

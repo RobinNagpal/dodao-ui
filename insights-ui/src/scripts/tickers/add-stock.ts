@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { AllExchanges, EXCHANGES, isExchange } from '@/utils/countryExchangeUtils';
-import { generateExpectedStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
+import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { SPACE_ID, fetchJson, parseArgs, parsePositiveInt, requireAutomationSecret, sleep } from './lib';
 
 interface NewStockInput {
@@ -14,8 +14,8 @@ interface NewStockInput {
   industryKey: string;
   subIndustryKey: string;
   websiteUrl: string;
+  stockAnalyzeUrl: string;
   summary?: string;
-  stockAnalyzeUrl?: string;
 }
 
 interface ValidatedStock {
@@ -68,7 +68,8 @@ async function resolveInputs(args: Record<string, string | boolean>): Promise<Ne
     typeof args['exchange'] === 'string' ||
     typeof args['industry'] === 'string' ||
     typeof args['sub-industry'] === 'string' ||
-    typeof args['website'] === 'string';
+    typeof args['website'] === 'string' ||
+    typeof args['stock-analyze-url'] === 'string';
 
   if (inPath && hasInline) {
     throw new Error('Pass either --in <path> OR inline flags (--name/--symbol/--exchange/...), not both');
@@ -82,8 +83,8 @@ async function resolveInputs(args: Record<string, string | boolean>): Promise<Ne
       industryKey: asString(args, 'industry'),
       subIndustryKey: asString(args, 'sub-industry'),
       websiteUrl: asString(args, 'website'),
+      stockAnalyzeUrl: asString(args, 'stock-analyze-url'),
       summary: typeof args['summary'] === 'string' ? args['summary'] : undefined,
-      stockAnalyzeUrl: typeof args['stock-analyze-url'] === 'string' ? args['stock-analyze-url'] : undefined,
     };
     return [inline];
   }
@@ -91,7 +92,7 @@ async function resolveInputs(args: Record<string, string | boolean>): Promise<Ne
   if (!inPath) {
     throw new Error(
       'Missing required input: pass --in <path> or inline flags ' +
-        '(--name --symbol --exchange --industry --sub-industry --website [--summary] [--stock-analyze-url])'
+        '(--name --symbol --exchange --industry --sub-industry --website --stock-analyze-url [--summary])'
     );
   }
 
@@ -113,8 +114,8 @@ async function resolveInputs(args: Record<string, string | boolean>): Promise<Ne
       industryKey: stringField(obj, 'industryKey'),
       subIndustryKey: stringField(obj, 'subIndustryKey'),
       websiteUrl: stringField(obj, 'websiteUrl'),
+      stockAnalyzeUrl: stringField(obj, 'stockAnalyzeUrl'),
       summary: typeof obj.summary === 'string' ? obj.summary : undefined,
-      stockAnalyzeUrl: typeof obj.stockAnalyzeUrl === 'string' ? obj.stockAnalyzeUrl : undefined,
     };
   });
 }
@@ -135,9 +136,8 @@ interface ValidationFailure {
 }
 
 /**
- * Validates a single stock input against required fields and the predefined
- * exchange list. `stockAnalyzeUrl` is auto-generated when absent so the CLI
- * never POSTs a null value for a field the schema marks non-nullable.
+ * Validates a single stock input against required fields, the predefined
+ * exchange list, and URL formats for websiteUrl + stockAnalyzeUrl.
  */
 function validate(input: NewStockInput): ValidatedStock | ValidationFailure {
   const name = (input.name ?? '').trim();
@@ -146,8 +146,8 @@ function validate(input: NewStockInput): ValidatedStock | ValidationFailure {
   const industryKey = (input.industryKey ?? '').trim();
   const subIndustryKey = (input.subIndustryKey ?? '').trim();
   const websiteUrl = (input.websiteUrl ?? '').trim();
+  const stockAnalyzeUrl = (input.stockAnalyzeUrl ?? '').trim();
   const summary = input.summary?.trim();
-  const providedStockAnalyzeUrl = input.stockAnalyzeUrl?.trim();
 
   const missing: string[] = [];
   if (!name) missing.push('name');
@@ -156,6 +156,7 @@ function validate(input: NewStockInput): ValidatedStock | ValidationFailure {
   if (!industryKey) missing.push('industryKey');
   if (!subIndustryKey) missing.push('subIndustryKey');
   if (!websiteUrl) missing.push('websiteUrl');
+  if (!stockAnalyzeUrl) missing.push('stockAnalyzeUrl');
   if (missing.length) {
     return { input, reason: `Missing required field(s): ${missing.join(', ')}` };
   }
@@ -164,12 +165,14 @@ function validate(input: NewStockInput): ValidatedStock | ValidationFailure {
     return { input, reason: `Invalid exchange "${input.exchange}". Supported: ${EXCHANGES.join(', ')}` };
   }
 
-  if (!/^https?:\/\//i.test(websiteUrl)) {
-    return { input, reason: `websiteUrl must start with http:// or https:// (got "${websiteUrl}")` };
+  if (!/^https?:\/\/\S+$/i.test(websiteUrl)) {
+    return { input, reason: `websiteUrl must be an absolute URL starting with http:// or https:// (got "${websiteUrl}")` };
   }
 
-  const stockAnalyzeUrl =
-    providedStockAnalyzeUrl && providedStockAnalyzeUrl.length > 0 ? providedStockAnalyzeUrl : generateExpectedStockAnalyzeUrl(symbol, exchange as AllExchanges);
+  const stockUrlError = validateStockAnalyzeUrl(symbol, exchange as AllExchanges, stockAnalyzeUrl);
+  if (stockUrlError) {
+    return { input, reason: `stockAnalyzeUrl is invalid: ${stockUrlError}` };
+  }
 
   return {
     name,

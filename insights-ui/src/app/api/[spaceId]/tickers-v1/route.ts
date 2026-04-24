@@ -14,9 +14,9 @@ interface NewTickerRequest {
   exchange: string;
   industryKey: string;
   subIndustryKey: string;
-  websiteUrl?: string;
-  summary?: string;
+  websiteUrl: string;
   stockAnalyzeUrl: string;
+  summary?: string;
 }
 
 interface ErrorTicker {
@@ -163,11 +163,21 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
     // Skip those already marked as same-request duplicates
     if (errorTickers.some((e) => e.input === raw)) continue;
 
-    // Basic validation — websiteUrl is required; stockAnalyzeUrl and summary remain optional.
-    if (!raw.name || !raw.symbol || !raw.exchange || !raw.industryKey || !raw.subIndustryKey || !raw.websiteUrl || !raw.websiteUrl.trim()) {
+    // Basic validation — websiteUrl and stockAnalyzeUrl are both required; summary remains optional.
+    if (
+      !raw.name ||
+      !raw.symbol ||
+      !raw.exchange ||
+      !raw.industryKey ||
+      !raw.subIndustryKey ||
+      !raw.websiteUrl ||
+      !raw.websiteUrl.trim() ||
+      !raw.stockAnalyzeUrl ||
+      !raw.stockAnalyzeUrl.trim()
+    ) {
       errorTickers.push({
         input: raw,
-        reason: 'Missing required fields: name, symbol, exchange, industryKey, subIndustryKey, websiteUrl',
+        reason: 'Missing required fields: name, symbol, exchange, industryKey, subIndustryKey, websiteUrl, stockAnalyzeUrl',
       });
       continue;
     }
@@ -177,9 +187,9 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
     const exchange = raw.exchange.trim().toUpperCase();
     const industryKey = raw.industryKey.trim();
     const subIndustryKey = raw.subIndustryKey.trim();
-    const websiteUrl = normStr(raw.websiteUrl);
+    const websiteUrl = raw.websiteUrl.trim();
     const summary = normStr(raw.summary);
-    const stockAnalyzeUrl = normStr(raw.stockAnalyzeUrl);
+    const stockAnalyzeUrl = raw.stockAnalyzeUrl.trim();
 
     // Validate exchange against the predefined list
     if (!isExchange(exchange)) {
@@ -190,16 +200,23 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
       continue;
     }
 
-    // Validate stockAnalyzeUrl format if provided
-    if (stockAnalyzeUrl) {
-      const validationError = validateStockAnalyzeUrl(symbol, exchange as AllExchanges, stockAnalyzeUrl);
-      if (validationError) {
-        errorTickers.push({
-          input: raw,
-          reason: `Invalid stockAnalyzeUrl format: ${validationError}`,
-        });
-        continue;
-      }
+    // Validate websiteUrl format (must be an absolute http(s) URL)
+    if (!/^https?:\/\/\S+$/i.test(websiteUrl)) {
+      errorTickers.push({
+        input: raw,
+        reason: `Invalid websiteUrl "${websiteUrl}": must be an absolute URL starting with http:// or https://`,
+      });
+      continue;
+    }
+
+    // Validate stockAnalyzeUrl format
+    const stockUrlError = validateStockAnalyzeUrl(symbol, exchange as AllExchanges, stockAnalyzeUrl);
+    if (stockUrlError) {
+      errorTickers.push({
+        input: raw,
+        reason: `Invalid stockAnalyzeUrl format: ${stockUrlError}`,
+      });
+      continue;
     }
 
     try {
