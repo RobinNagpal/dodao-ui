@@ -1,0 +1,11 @@
+import { FairValueResponse, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { fetchPerformanceCategoryByTicker } from '@/utils/performance-api-utils';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
+
+async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId: string; ticker: string }> }): Promise<FairValueResponse> {
+  const { spaceId, ticker } = await context.params;
+  return fetchPerformanceCategoryByTicker(spaceId, ticker, TickerAnalysisCategory.FairValue);
+}
+
+export const GET = withErrorHandlingV2<FairValueResponse>(getHandler);
