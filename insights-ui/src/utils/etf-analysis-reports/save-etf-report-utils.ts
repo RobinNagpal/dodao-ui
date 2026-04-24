@@ -23,63 +23,69 @@ export async function saveEtfFactorAnalysisResponse(
   const spaceId = KoalaGainsSpaceId;
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
-  await prisma.etfCategoryAnalysisResult.upsert({
-    where: {
-      spaceId_etfId_categoryKey: {
-        spaceId,
-        etfId: etfRecord.id,
-        categoryKey,
-      },
-    },
-    update: {
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      etfId: etfRecord.id,
-      categoryKey,
-      summary: response.overallSummary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
-    },
-  });
-
-  for (const factor of response.factors) {
+  // Keep only factors whose keys are recognized for this category. Unknown keys
+  // are logged and dropped so they can't become stale rows on a replace.
+  const validFactors = response.factors.filter((factor) => {
     const factorDef = findFactorDefinition(categoryKey, factor.factorAnalysisKey);
     if (!factorDef) {
       console.warn(`Unknown factor key: ${factor.factorAnalysisKey} for ETF ${symbol}`);
-      continue;
+      return false;
     }
+    return true;
+  });
 
-    await prisma.etfAnalysisCategoryFactorResult.upsert({
+  // Replace the category's factor results atomically: the current prompt
+  // invocation is the source of truth, so any factor rows from a previous run
+  // (e.g. when the group config included more factors) must be cleared before
+  // we insert the new set. Without this, the listing page shows stale factors
+  // that were not part of the latest LLM response.
+  await prisma.$transaction(async (tx) => {
+    await tx.etfCategoryAnalysisResult.upsert({
       where: {
-        spaceId_etfId_factorKey: {
+        spaceId_etfId_categoryKey: {
           spaceId,
           etfId: etfRecord.id,
-          factorKey: factor.factorAnalysisKey,
+          categoryKey,
         },
       },
       update: {
-        categoryKey,
-        oneLineExplanation: factor.oneLineExplanation,
-        detailedExplanation: factor.detailedExplanation,
-        result: factor.result,
+        summary: response.overallSummary,
+        overallAnalysisDetails: response.overallAnalysisDetails,
         updatedAt: new Date(),
       },
       create: {
         spaceId,
         etfId: etfRecord.id,
         categoryKey,
-        factorKey: factor.factorAnalysisKey,
-        oneLineExplanation: factor.oneLineExplanation,
-        detailedExplanation: factor.detailedExplanation,
-        result: factor.result,
+        summary: response.overallSummary,
+        overallAnalysisDetails: response.overallAnalysisDetails,
       },
     });
-  }
 
-  const score = response.factors.filter((f) => f.result && f.result.toLowerCase().includes('pass')).length;
+    await tx.etfAnalysisCategoryFactorResult.deleteMany({
+      where: {
+        spaceId,
+        etfId: etfRecord.id,
+        categoryKey,
+      },
+    });
+
+    if (validFactors.length > 0) {
+      await tx.etfAnalysisCategoryFactorResult.createMany({
+        data: validFactors.map((factor) => ({
+          spaceId,
+          etfId: etfRecord.id,
+          categoryKey,
+          factorKey: factor.factorAnalysisKey,
+          oneLineExplanation: factor.oneLineExplanation,
+          detailedExplanation: factor.detailedExplanation,
+          result: factor.result,
+        })),
+      });
+    }
+  });
+
+  const score = validFactors.filter((f) => f.result && f.result.toLowerCase().includes('pass')).length;
   await updateEtfCachedScore(etfRecord.id, categoryKey, score);
 
   // Per-ETF detail tag plus listing tag — score change affects the listing-page ranking.
