@@ -12,6 +12,7 @@ import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitio
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
+import EtfStickyNav, { EtfStickyNavItem } from '@/components/etf-reportsv1/EtfStickyNav';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
@@ -430,6 +431,22 @@ function EtfHoldingsSection({
   return <EtfHoldings data={holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${symbol}/holdings`} />;
 }
 
+/**
+ * Potential nav targets, in page order. Sections that don't render on a given ETF
+ * (e.g. no competition data, no strategy tail) are filtered out client-side by
+ * `EtfStickyNav` which checks `document.getElementById` for each id.
+ */
+const ETF_PAGE_NAV_ITEMS: ReadonlyArray<EtfStickyNavItem> = [
+  { id: 'introduction', label: 'Overview' },
+  { id: 'etf-financial-info', label: 'Key Metrics' },
+  { id: 'price-chart', label: 'Price' },
+  { id: 'etf-holdings', label: 'Top Holdings' },
+  { id: 'competition', label: 'Competition' },
+  { id: 'summary-analysis', label: 'Analysis' },
+  { id: 'index-strategy-tail', label: 'Strategy' },
+  { id: 'similar-etfs', label: 'Similar ETFs' },
+];
+
 /** PAGE */
 export default async function EtfDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
   // Main ETF data (promise for selective Suspense usage)
@@ -507,6 +524,8 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
       <article itemScope itemType="https://schema.org/Article">
         {/* Hidden datePublished for schema - machine readable only */}
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+
+        <EtfStickyNav items={ETF_PAGE_NAV_ITEMS} />
 
         {/* Summary info - server rendered, no skeleton needed */}
         <EtfSummaryInfo data={etfInfo} />
