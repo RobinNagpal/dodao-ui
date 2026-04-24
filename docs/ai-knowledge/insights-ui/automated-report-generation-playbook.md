@@ -22,11 +22,19 @@ set -a; source /home/ubuntu/discord-claude-bot/.env; set +a
 export PATH="/home/ubuntu/.nvm/versions/node/v23.11.1/bin:$PATH"
 ```
 
-Then `cd` into `insights-ui/` before running `yarn …`. Use absolute paths for the prompt/response files so you can sanity-check them later.
+Then `cd` into `insights-ui/` before running `yarn …`. Use the standard path layout so a later inspector can find the artifacts without guessing:
+
+- ETFs: `/tmp/etfs/<EXCHANGE>/<SYMBOL>/`
+- Stocks: `/tmp/stocks/<EXCHANGE>/<SYMBOL>/`
 
 ```bash
-mkdir -p /tmp/<symbol>-reports
+# ETF example
+mkdir -p /tmp/etfs/NYSEARCA/SPUS
+# Stock example
+mkdir -p /tmp/stocks/NASDAQ/AAPL
 ```
+
+Name each file `<NN>-<report-type>.prompt.txt` and `<NN>-<report-type>.response.json` so they sort in execution order.
 
 ## ETF loop (7 report types)
 
@@ -44,33 +52,33 @@ For **each** report type, do three things:
 
 ### Step 1 — get the prompt
 
-**First report only** — do not pass `--skip-mor-check`. The script will call `ensure-mor-info`, trigger the Morningstar scrape lambda for any missing MOR kinds, and sleep `10s`:
+**First report only** — do not pass `--skip-mor-check`. The script will call `ensure-mor-info`, trigger the Morningstar scrape lambda for any missing MOR kinds, and sleep `20s` (default):
 
 ```bash
 yarn etfs:prompt --symbol SPUS --exchange NYSEARCA \
   --report-type performance-and-returns \
-  --out /tmp/SPUS-reports/01-performance-and-returns.prompt.txt
+  --out /tmp/etfs/NYSEARCA/SPUS/01-performance-and-returns.prompt.txt
 ```
 
-**Reports 2–7** — add `--skip-mor-check`. The scrape has already been fired, and waiting another `10s` per report is wasted time:
+**Reports 2–7** — add `--skip-mor-check`. The scrape has already been fired, and waiting another `20s` per report is wasted time:
 
 ```bash
 yarn etfs:prompt --symbol SPUS --exchange NYSEARCA \
   --report-type cost-efficiency-and-team \
-  --out /tmp/SPUS-reports/02-cost-efficiency-and-team.prompt.txt \
+  --out /tmp/etfs/NYSEARCA/SPUS/02-cost-efficiency-and-team.prompt.txt \
   --skip-mor-check
 ```
 
 ### Step 2 — act as the LLM
 
-Read the prompt file. It describes everything you need: the factor list, the output JSON schema, the input data blocks, the style rules. Write the response JSON to disk.
+Read the prompt file. It describes everything you need: the agent preamble (output rules), the factor list, the output JSON schema, the input data blocks, the style rules. Write the response JSON to disk.
 
 ### Step 3 — save
 
 ```bash
 yarn etfs:save --symbol SPUS --exchange NYSEARCA \
   --report-type performance-and-returns \
-  --in /tmp/SPUS-reports/01-performance-and-returns.response.json
+  --in /tmp/etfs/NYSEARCA/SPUS/01-performance-and-returns.response.json
 ```
 
 Expect `{"success": true}`. If the save errors, read the error carefully — it almost always points at a JSON parse issue or a missing schema field.
@@ -208,24 +216,17 @@ The tsx script itself will surface the error position (line/column) on failure, 
 
 ### 2. The first prompt may arrive with partial MOR data
 
-The `ensure-mor-info` lambda is fire-and-forget; callbacks upsert the four tables (`EtfMorAnalyzerInfo`, `EtfMorRiskInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`) asynchronously. With `--wait-ms 10000` (the default), the first report's data block can still have:
-
-```
-morReturns: {}
-morOverview: {"indexName":"…"}   // only the index name made it in
-```
-
-Rather than re-run, proceed — the prompt's missing-field rule tells the LLM to silently omit metrics that aren't there. By the second prompt (`--skip-mor-check`), the rest of the MOR data is typically in the DB, which is why the loop order starts with `performance-and-returns` (most resilient to thin data) rather than `risk-analysis` (needs `morRiskPeriods`).
-
-If a later report genuinely needs MOR data that still isn't there, bump the wait:
+The `ensure-mor-info` lambda is fire-and-forget; callbacks upsert the four tables (`EtfMorAnalyzerInfo`, `EtfMorRiskInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`) asynchronously. The default wait is `20s` — raised from `10s` after the SPUS test run, where `morReturns` was still empty at the 10-second mark. If a later report still shows missing MOR data, bump the wait:
 
 ```bash
 yarn etfs:prompt … --wait-ms 30000
 ```
 
-### 3. Prompts can be huge (tens of KB)
+The prompt's agent preamble tells the LLM to self-source missing metrics from public sources rather than leaving gaps, so a thin data block is a soft degrade, not a hard blocker.
 
-`future-performance-outlook` came back at `63,609 chars` for SPUS. This is fine for the CLI — it just writes to stdout or `--out`. It becomes a problem only if you're piping the prompt into a downstream LLM with a small context window. Write to `--out <path>` always, even if you're reading it back in the same step.
+### 3. Prompts can still run to tens of KB
+
+`future-performance-outlook` used to come back at `~63KB` for SPUS because the input JSON included the full `EtfMorPortfolioInfo.holdings` list (often hundreds of rows). The prepare function now trims that to the top `10` holdings (see `trimPortfolioHoldings` in `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`), which brings the prompt well under `~40KB`. It is still the largest of the ETF reports — write to `--out <path>` always, even if you plan to read it back in the same step.
 
 ### 4. `final-summary` must be last
 
@@ -248,7 +249,7 @@ cd /home/ubuntu/discord-claude-bot/insights-ui/worktrees/<branch>/insights-ui
 
 SYMBOL=SPUS
 EXCHANGE=NYSEARCA
-DIR=/tmp/${SYMBOL}-reports
+DIR=/tmp/etfs/${EXCHANGE}/${SYMBOL}
 mkdir -p "$DIR"
 
 # Report 1 — includes MOR check + 10s wait

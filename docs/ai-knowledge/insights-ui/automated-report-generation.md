@@ -64,8 +64,27 @@ yarn etfs:save --symbol SPY --exchange NYSEARCA \
 
 `yarn etfs:prompt` extra flags:
 
-- `--wait-ms 10000` — override the post-MOR-trigger sleep.
+- `--wait-ms 20000` — override the post-MOR-trigger sleep. The default is `20s`; at `10s` the first prompt's `morReturns` field was still empty because not all four Morningstar callbacks had landed.
 - `--skip-mor-check` — skip the MOR check entirely (use when you know the data is fresh and want to avoid the extra round-trip).
+
+## Where to store prompt/response files
+
+Use a predictable folder-per-symbol layout so a later inspector can find the artifacts without guessing:
+
+- ETFs: `/tmp/etfs/<EXCHANGE>/<SYMBOL>/` (e.g. `/tmp/etfs/NYSEARCA/SPUS/`)
+- Stocks: `/tmp/stocks/<EXCHANGE>/<SYMBOL>/` (e.g. `/tmp/stocks/NASDAQ/AAPL/`)
+
+Inside, name files `<NN>-<report-type>.prompt.txt` and `<NN>-<report-type>.response.json` so they sort in execution order.
+
+## Agent-facing preamble on every prompt
+
+Both `stocks:prompt` and `etfs:prompt` prepend a short hardcoded instruction block (`AGENT_PROMPT_PREAMBLE` in each script's `lib.ts`) to whatever the server returns. The rules are:
+
+1. Do not mention any input field name or data-source label (e.g. `morOverview`, `morAnalysis`, `stockAnalyzerReturns`) back to the reader — use the values, not the schema.
+2. If a specific metric is missing, source it yourself from reputable public sources; do not write "not available" / "data is missing" or any variant.
+3. Generate analysis in plain investor-facing English; never reference the input schema.
+
+These rules sit above the per-category prompt template. If you need to change them, edit `AGENT_PROMPT_PREAMBLE` in both `src/scripts/tickers/lib.ts` and `src/scripts/etfs/lib.ts`.
 
 ## How it works under the hood
 

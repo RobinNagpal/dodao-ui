@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ReportType } from '@/types/ticker-typesv1';
-import { API_BASE, AUTOMATION_SECRET, SPACE_ID, fetchJson, parseArgs, requireStringArg } from './lib';
+import { AGENT_PROMPT_PREAMBLE, API_BASE, AUTOMATION_SECRET, SPACE_ID, fetchJson, parseArgs, requireStringArg } from './lib';
 
 interface GeneratePromptResponse {
   prompt: string;
@@ -47,15 +47,20 @@ async function main(): Promise<void> {
     }
   );
 
+  // Prepend the agent-facing output rules. These sit above the per-category template so
+  // the LLM reads the schema-agnostic instructions (don't leak field names, self-source
+  // missing metrics) before the category-specific rules kick in.
+  const finalPrompt = AGENT_PROMPT_PREAMBLE + response.prompt;
+
   if (outPath) {
     await mkdir(path.dirname(outPath), { recursive: true });
-    await writeFile(outPath, response.prompt, 'utf-8');
-    console.error(`Wrote prompt (${response.prompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType}]`);
+    await writeFile(outPath, finalPrompt, 'utf-8');
+    console.error(`Wrote prompt (${finalPrompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType}]`);
   } else {
     // Prompt goes to stdout so it can be piped directly into the LLM call. Metadata
     // goes to stderr to avoid polluting the captured prompt.
-    console.error(`Generated prompt for ${symbol} ${exchange} ${reportType} (${response.prompt.length} chars).`);
-    process.stdout.write(response.prompt);
+    console.error(`Generated prompt for ${symbol} ${exchange} ${reportType} (${finalPrompt.length} chars).`);
+    process.stdout.write(finalPrompt);
   }
 }
 
