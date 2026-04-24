@@ -1,16 +1,16 @@
 'use client';
 
 import AdminNav from '@/app/admin-v1/AdminNav';
+import { useDebouncedValue } from '@/app/admin-v1/etf-reports/useDebouncedValue';
 import { EtfGenerationRequestsResponse, EtfGenerationRequestWithEtf } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
-import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ArrowPathIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 const ETF_REGENERATE_FIELDS = [
   'regeneratePerformanceAndReturns',
@@ -61,33 +61,61 @@ function StatusDot({ isEnabled, stepName, completedSteps, failedSteps, inProgres
 }
 
 const REFRESH_SECONDS = 30;
+const PAGE_SIZE = 50;
 
-function SectionHeader({
-  title,
-  count,
-  totalCount,
-  onShowMore,
-  hasMore,
-}: {
-  title: string;
-  count: number;
+interface SectionPaginationProps {
+  currentPage: number;
   totalCount: number;
-  onShowMore?: () => void;
-  hasMore: boolean;
-}): JSX.Element {
+  rowsOnPage: number;
+  onPageChange: (page: number) => void;
+}
+
+function SectionPagination({ currentPage, totalCount, rowsOnPage, onPageChange }: SectionPaginationProps): JSX.Element | null {
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  if (totalPages <= 1) return null;
+
+  const rangeStart = (currentPage - 1) * PAGE_SIZE + 1;
+  const rangeEnd = (currentPage - 1) * PAGE_SIZE + rowsOnPage;
+
+  return (
+    <div className="flex items-center justify-between px-2 py-3 mt-3 border-t border-gray-700/60">
+      <span className="text-sm text-gray-400">
+        Showing {rangeStart}
+        {'–'}
+        {rangeEnd} of {totalCount}
+      </span>
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+          disabled={currentPage === 1}
+          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          title="Previous page"
+        >
+          <ChevronLeftIcon className="h-5 w-5" />
+        </button>
+        <span className="text-sm text-gray-300">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-md text-gray-300 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          title="Next page"
+        >
+          <ChevronRightIcon className="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ title, totalCount }: { title: string; totalCount: number }): JSX.Element {
   return (
     <div className="flex items-baseline justify-between mb-2">
       <h3 className="text-xl font-semibold">{title}</h3>
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-400">
-          Showing {count} of {totalCount}
-        </span>
-        {hasMore && onShowMore && (
-          <Button onClick={onShowMore} variant="text" className="text-blue-400 hover:text-blue-300">
-            Show More
-          </Button>
-        )}
-      </div>
+      <span className="text-sm text-gray-400">
+        {totalCount} total item{totalCount === 1 ? '' : 's'}
+      </span>
     </div>
   );
 }
@@ -185,59 +213,48 @@ function EtfRequestsTable({
 }
 
 export default function EtfGenerationRequestsPage(): JSX.Element {
-  const [inProgressPagination, setInProgressPagination] = useState({ skip: 0, take: 15 });
-  const [failedPagination, setFailedPagination] = useState({ skip: 0, take: 15 });
-  const [notStartedPagination, setNotStartedPagination] = useState({ skip: 0, take: 15 });
-  const [completedPagination, setCompletedPagination] = useState({ skip: 0, take: 15 });
+  const [inProgressPage, setInProgressPage] = useState(1);
+  const [failedPage, setFailedPage] = useState(1);
+  const [notStartedPage, setNotStartedPage] = useState(1);
+  const [completedPage, setCompletedPage] = useState(1);
 
-  const [accumulatedInProgress, setAccumulatedInProgress] = useState<EtfGenerationRequestWithEtf[]>([]);
-  const [accumulatedFailed, setAccumulatedFailed] = useState<EtfGenerationRequestWithEtf[]>([]);
-  const [accumulatedNotStarted, setAccumulatedNotStarted] = useState<EtfGenerationRequestWithEtf[]>([]);
-  const [accumulatedCompleted, setAccumulatedCompleted] = useState<EtfGenerationRequestWithEtf[]>([]);
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebouncedValue(search, 350);
 
-  const params = new URLSearchParams();
-  params.append('inProgressSkip', inProgressPagination.skip.toString());
-  params.append('inProgressTake', inProgressPagination.take.toString());
-  params.append('failedSkip', failedPagination.skip.toString());
-  params.append('failedTake', failedPagination.take.toString());
-  params.append('notStartedSkip', notStartedPagination.skip.toString());
-  params.append('notStartedTake', notStartedPagination.take.toString());
-  params.append('completedSkip', completedPagination.skip.toString());
-  params.append('completedTake', completedPagination.take.toString());
-  const apiUrl = `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests?${params.toString()}`;
+  // Reset all sections to page 1 whenever the active search term changes.
+  useEffect(() => {
+    setInProgressPage(1);
+    setFailedPage(1);
+    setNotStartedPage(1);
+    setCompletedPage(1);
+  }, [debouncedSearch]);
+
+  const apiUrl = useMemo(() => {
+    const params = new URLSearchParams();
+    params.append('inProgressSkip', String((inProgressPage - 1) * PAGE_SIZE));
+    params.append('inProgressTake', String(PAGE_SIZE));
+    params.append('failedSkip', String((failedPage - 1) * PAGE_SIZE));
+    params.append('failedTake', String(PAGE_SIZE));
+    params.append('notStartedSkip', String((notStartedPage - 1) * PAGE_SIZE));
+    params.append('notStartedTake', String(PAGE_SIZE));
+    params.append('completedSkip', String((completedPage - 1) * PAGE_SIZE));
+    params.append('completedTake', String(PAGE_SIZE));
+    const trimmed = debouncedSearch.trim();
+    if (trimmed) params.append('q', trimmed);
+    return `${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests?${params.toString()}`;
+  }, [inProgressPage, failedPage, notStartedPage, completedPage, debouncedSearch]);
 
   const { data, loading, reFetchData } = useFetchData<EtfGenerationRequestsResponse>(apiUrl, {}, 'Failed to fetch ETF generation requests');
-
-  useEffect(() => {
-    if (!data) return;
-    if (inProgressPagination.skip === 0) setAccumulatedInProgress(data.inProgress || []);
-    if (failedPagination.skip === 0) setAccumulatedFailed(data.failed || []);
-    if (notStartedPagination.skip === 0) setAccumulatedNotStarted(data.notStarted || []);
-    if (completedPagination.skip === 0) setAccumulatedCompleted(data.completed || []);
-
-    if (inProgressPagination.skip > 0 && data.inProgress) setAccumulatedInProgress((p) => [...p, ...data.inProgress]);
-    if (failedPagination.skip > 0 && data.failed) setAccumulatedFailed((p) => [...p, ...data.failed]);
-    if (notStartedPagination.skip > 0 && data.notStarted) setAccumulatedNotStarted((p) => [...p, ...data.notStarted]);
-    if (completedPagination.skip > 0 && data.completed) setAccumulatedCompleted((p) => [...p, ...data.completed]);
-  }, [data, inProgressPagination.skip, failedPagination.skip, notStartedPagination.skip, completedPagination.skip]);
 
   const hasActive = (data?.counts?.notStarted ?? 0) > 0 || (data?.counts?.inProgress ?? 0) > 0;
   const [secondsLeft, setSecondsLeft] = useState(REFRESH_SECONDS);
   const [isPaused, setIsPaused] = useState(false);
 
-  function resetPagination() {
-    setInProgressPagination({ skip: 0, take: 15 });
-    setFailedPagination({ skip: 0, take: 15 });
-    setNotStartedPagination({ skip: 0, take: 15 });
-    setCompletedPagination({ skip: 0, take: 15 });
-    setAccumulatedInProgress([]);
-    setAccumulatedFailed([]);
-    setAccumulatedNotStarted([]);
-    setAccumulatedCompleted([]);
-  }
-
   function handleManualRefresh() {
-    resetPagination();
+    setInProgressPage(1);
+    setFailedPage(1);
+    setNotStartedPage(1);
+    setCompletedPage(1);
     reFetchData();
     setSecondsLeft(REFRESH_SECONDS);
   }
@@ -268,6 +285,41 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
     }, 1_000);
     return () => clearInterval(timerId);
   }, [hasActive, isPaused, reFetchData]);
+
+  const sections = [
+    {
+      title: 'In Progress',
+      rows: data?.inProgress ?? [],
+      border: 'border-blue-500',
+      count: data?.counts?.inProgress ?? 0,
+      currentPage: inProgressPage,
+      setPage: setInProgressPage,
+    },
+    {
+      title: 'Not Started',
+      rows: data?.notStarted ?? [],
+      border: 'border-gray-500',
+      count: data?.counts?.notStarted ?? 0,
+      currentPage: notStartedPage,
+      setPage: setNotStartedPage,
+    },
+    {
+      title: 'Failed',
+      rows: data?.failed ?? [],
+      border: 'border-red-500',
+      count: data?.counts?.failed ?? 0,
+      currentPage: failedPage,
+      setPage: setFailedPage,
+    },
+    {
+      title: 'Completed',
+      rows: data?.completed ?? [],
+      border: 'border-green-500',
+      count: data?.counts?.completed ?? 0,
+      currentPage: completedPage,
+      setPage: setCompletedPage,
+    },
+  ];
 
   return (
     <div className="mt-12 px-4 text-color">
@@ -302,6 +354,23 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
         </div>
       </div>
 
+      <div className="bg-gray-800 rounded-lg p-4 mb-4">
+        <label className="block text-sm font-medium text-gray-300 mb-1">Search</label>
+        <div className="flex items-center gap-2">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by ETF symbol or name…"
+            className="w-full max-w-md px-3 py-2 bg-gray-900 text-gray-200 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          {search && (
+            <button type="button" onClick={() => setSearch('')} className="px-2 py-2 text-xs text-gray-300 hover:text-white" title="Clear search">
+              ×
+            </button>
+          )}
+        </div>
+      </div>
+
       <div className="p-2 bg-gray-800 rounded-lg mb-4">
         <div className="flex items-center gap-6 text-sm">
           <span className="font-semibold">Legend:</span>
@@ -328,51 +397,19 @@ export default function EtfGenerationRequestsPage(): JSX.Element {
         </div>
       </div>
 
-      {[
-        {
-          title: 'In Progress',
-          rows: accumulatedInProgress,
-          border: 'border-blue-500',
-          count: data?.counts?.inProgress,
-          onMore: () => setInProgressPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
-        },
-        {
-          title: 'Not Started',
-          rows: accumulatedNotStarted,
-          border: 'border-gray-500',
-          count: data?.counts?.notStarted,
-          onMore: () => setNotStartedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
-        },
-        {
-          title: 'Failed',
-          rows: accumulatedFailed,
-          border: 'border-red-500',
-          count: data?.counts?.failed,
-          onMore: () => setFailedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
-        },
-        {
-          title: 'Completed',
-          rows: accumulatedCompleted,
-          border: 'border-green-500',
-          count: data?.counts?.completed,
-          onMore: () => setCompletedPagination((p) => ({ skip: p.skip + p.take, take: p.take })),
-        },
-      ].map(({ title, rows, border, count, onMore }) => (
+      {sections.map(({ title, rows, border, count, currentPage, setPage }) => (
         <div key={title} className="mb-6">
           <div className={`bg-gray-800 border ${border} rounded-lg p-4`}>
-            <SectionHeader
-              title={`${title} Requests`}
-              count={rows.length}
-              totalCount={count || rows.length}
-              onShowMore={onMore}
-              hasMore={rows.length < (count || 0)}
-            />
+            <SectionHeader title={`${title} Requests`} totalCount={count} />
             {loading && rows.length === 0 ? (
               <div className="py-8">Loading...</div>
             ) : rows.length === 0 ? (
               <div className="py-4">No {title.toLowerCase()} requests.</div>
             ) : (
-              <EtfRequestsTable rows={rows} onReloadRequest={handleReloadRequest} />
+              <>
+                <EtfRequestsTable rows={rows} onReloadRequest={handleReloadRequest} />
+                <SectionPagination currentPage={currentPage} totalCount={count} rowsOnPage={rows.length} onPageChange={setPage} />
+              </>
             )}
           </div>
         </div>

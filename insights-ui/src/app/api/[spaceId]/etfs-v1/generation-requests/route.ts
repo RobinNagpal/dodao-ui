@@ -51,9 +51,37 @@ export interface EtfGenerationRequestsResponse {
   };
 }
 
-async function getEtfRequests(status: EtfGenerationRequestStatus, skip: number = 0, take: number = 15): Promise<EtfGenerationRequestWithEtf[]> {
+function buildEtfSearchWhere(qRaw: string | null): { etf: object } | null {
+  const q = (qRaw ?? '').trim();
+  if (!q) return null;
+
+  const tokens = q
+    .split(/\s+/g)
+    .map((t) => t.trim())
+    .filter(Boolean)
+    .slice(0, 10);
+
+  if (!tokens.length) return null;
+
+  return {
+    etf: {
+      is: {
+        AND: tokens.map((token) => ({
+          OR: [{ symbol: { contains: token, mode: 'insensitive' } }, { name: { contains: token, mode: 'insensitive' } }],
+        })),
+      },
+    },
+  };
+}
+
+async function getEtfRequests(
+  status: EtfGenerationRequestStatus,
+  skip: number = 0,
+  take: number = 50,
+  searchWhere: object | null = null
+): Promise<EtfGenerationRequestWithEtf[]> {
   const requests = await prisma.etfGenerationRequest.findMany({
-    where: { status },
+    where: { status, ...(searchWhere ?? {}) },
     orderBy: { updatedAt: 'desc' },
     skip,
     take,
@@ -82,24 +110,26 @@ async function getHandler(
   const url = new URL(req.url);
 
   const inProgressSkip = parseInt(url.searchParams.get('inProgressSkip') || '0', 10);
-  const inProgressTake = parseInt(url.searchParams.get('inProgressTake') || '15', 10);
+  const inProgressTake = parseInt(url.searchParams.get('inProgressTake') || '50', 10);
   const failedSkip = parseInt(url.searchParams.get('failedSkip') || '0', 10);
-  const failedTake = parseInt(url.searchParams.get('failedTake') || '15', 10);
+  const failedTake = parseInt(url.searchParams.get('failedTake') || '50', 10);
   const notStartedSkip = parseInt(url.searchParams.get('notStartedSkip') || '0', 10);
-  const notStartedTake = parseInt(url.searchParams.get('notStartedTake') || '15', 10);
+  const notStartedTake = parseInt(url.searchParams.get('notStartedTake') || '50', 10);
   const completedSkip = parseInt(url.searchParams.get('completedSkip') || '0', 10);
-  const completedTake = parseInt(url.searchParams.get('completedTake') || '15', 10);
+  const completedTake = parseInt(url.searchParams.get('completedTake') || '50', 10);
+
+  const searchWhere = buildEtfSearchWhere(url.searchParams.get('q'));
 
   const [inProgressRequests, failedRequests, notStartedRequests, completedRequests, inProgressCount, failedCount, notStartedCount, completedCount] =
     await Promise.all([
-      getEtfRequests(EtfGenerationRequestStatus.InProgress, inProgressSkip, inProgressTake),
-      getEtfRequests(EtfGenerationRequestStatus.Failed, failedSkip, failedTake),
-      getEtfRequests(EtfGenerationRequestStatus.NotStarted, notStartedSkip, notStartedTake),
-      getEtfRequests(EtfGenerationRequestStatus.Completed, completedSkip, completedTake),
-      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.InProgress } }),
-      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.Failed } }),
-      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.NotStarted } }),
-      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.Completed } }),
+      getEtfRequests(EtfGenerationRequestStatus.InProgress, inProgressSkip, inProgressTake, searchWhere),
+      getEtfRequests(EtfGenerationRequestStatus.Failed, failedSkip, failedTake, searchWhere),
+      getEtfRequests(EtfGenerationRequestStatus.NotStarted, notStartedSkip, notStartedTake, searchWhere),
+      getEtfRequests(EtfGenerationRequestStatus.Completed, completedSkip, completedTake, searchWhere),
+      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.InProgress, ...(searchWhere ?? {}) } }),
+      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.Failed, ...(searchWhere ?? {}) } }),
+      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.NotStarted, ...(searchWhere ?? {}) } }),
+      prisma.etfGenerationRequest.count({ where: { status: EtfGenerationRequestStatus.Completed, ...(searchWhere ?? {}) } }),
     ]);
 
   return {
