@@ -7,6 +7,7 @@ import {
   EtfIndexStrategyResponse,
   EtfIndexStrategySimilarEtf,
 } from '@/types/etf/etf-analysis-types';
+import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag, revalidateEtfListingTag } from '@/utils/etf-cache-utils';
@@ -95,6 +96,45 @@ export async function saveEtfFinalSummaryResponse(symbol: string, exchange: stri
     data: {
       summary: response.summary,
       updatedAt: new Date(),
+    },
+  });
+
+  revalidateEtfAndExchangeTag(symbol, exchange);
+}
+
+/**
+ * LLM response shape for the Competition analysis. Matches
+ * `schemas/etf-analysis/outputs/competition-output.schema.yaml` — no top-level
+ * `summary` field, just the long-form body + per-peer array.
+ */
+export interface EtfCompetitionLlmResponse {
+  overallAnalysisDetails: string;
+  competitionAnalysisArray: CompetitionAnalysis[];
+}
+
+export async function saveEtfCompetitionResponse(symbol: string, exchange: string, response: EtfCompetitionLlmResponse): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
+
+  const competitionArray = Array.isArray(response.competitionAnalysisArray) ? response.competitionAnalysisArray : [];
+
+  await prisma.etfVsCompetition.upsert({
+    where: {
+      spaceId_etfId: {
+        spaceId,
+        etfId: etfRecord.id,
+      },
+    },
+    update: {
+      overallAnalysisDetails: response.overallAnalysisDetails,
+      competitionAnalysisArray: competitionArray,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      etfId: etfRecord.id,
+      overallAnalysisDetails: response.overallAnalysisDetails,
+      competitionAnalysisArray: competitionArray,
     },
   });
 

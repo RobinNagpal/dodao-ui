@@ -1,17 +1,8 @@
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
 import { EtfGenerationRequest } from '@prisma/client';
 
-/**
- * Prisma's generated `EtfGenerationRequest` type will include `regenerateCompetition`
- * once the accompanying schema migration lands. Until then we read the field through
- * this forward-compatible view so the admin UI can treat Competition as a first-class
- * step without a compilation error.
- */
-type EtfGenerationRequestForSteps = EtfGenerationRequest & { regenerateCompetition?: boolean };
-
 export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfReportType[] {
   const pendingSteps: EtfReportType[] = [];
-  const r = request as EtfGenerationRequestForSteps;
 
   if (
     request.regeneratePerformanceAndReturns &&
@@ -53,7 +44,11 @@ export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfRepo
     pendingSteps.push(EtfReportType.INDEX_STRATEGY);
   }
 
-  if (r.regenerateCompetition && !request.completedSteps.includes(EtfReportType.COMPETITION) && !request.failedSteps.includes(EtfReportType.COMPETITION)) {
+  if (
+    request.regenerateCompetition &&
+    !request.completedSteps.includes(EtfReportType.COMPETITION) &&
+    !request.failedSteps.includes(EtfReportType.COMPETITION)
+  ) {
     pendingSteps.push(EtfReportType.COMPETITION);
   }
 

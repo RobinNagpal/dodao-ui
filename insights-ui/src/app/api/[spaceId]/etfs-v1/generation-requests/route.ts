@@ -19,6 +19,7 @@ export interface EtfGenerationRequestPayload {
   regenerateRiskAnalysis: boolean;
   regenerateFuturePerformanceOutlook?: boolean;
   regenerateIndexStrategy?: boolean;
+  regenerateCompetition?: boolean;
   regenerateFinalSummary?: boolean;
 }
 
@@ -29,12 +30,6 @@ export interface EtfGenerationRequestWithEtf extends EtfGenerationRequest {
     name: string;
   };
   pendingSteps?: EtfReportType[];
-  /**
-   * Forward-compatible flag for the Competition step. Populated once the accompanying
-   * schema migration adds the column to `etf_generation_requests`; until then the
-   * field is always undefined at runtime and the admin UI falls back to "not enabled".
-   */
-  regenerateCompetition?: boolean;
 }
 
 export interface EtfGenerationRequestsResponse {
@@ -191,6 +186,7 @@ async function postHandler(
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis || existingRequest.regenerateRiskAnalysis,
           regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook || existingRequest.regenerateFuturePerformanceOutlook,
           regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy || existingRequest.regenerateIndexStrategy,
+          regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
         },
@@ -205,6 +201,7 @@ async function postHandler(
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
           regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook ?? true,
           regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy ?? true,
+          regenerateCompetition: regenerateOptions.regenerateCompetition ?? true,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
         },
       });

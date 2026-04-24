@@ -141,9 +141,9 @@ async function fetchEtfPortfolioHoldings(exchange: string, etf: string): Promise
 }
 
 /**
- * Fetch ETF competition data. The backing API is added alongside the Prisma model
- * for `etf_vs_competition` — until that lands we return null and the section
- * renders nothing.
+ * Fetch ETF competition data. The `etf_vs_competition` table is seeded by a future
+ * LLM pipeline step; while the API route / generator are still being wired up,
+ * any non-OK response is treated as "no data yet" and the section renders nothing.
  */
 async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCompetitionResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/competition`;
