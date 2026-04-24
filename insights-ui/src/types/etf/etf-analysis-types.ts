@@ -52,6 +52,15 @@ export interface EtfFinalSummaryResponse {
   summary: string;
 }
 
+/** The four category pass counts surfaced by the ETF cached-score row. */
+export interface EtfCompetitorCachedScore {
+  performanceAndReturnsScore: number;
+  costEfficiencyAndTeamScore: number;
+  riskAnalysisScore: number;
+  futurePerformanceOutlookScore: number | null;
+  finalScore: number;
+}
+
 /**
  * ETF competitor record — mirrors the ticker `CompetitorTicker` shape but scoped to ETFs.
  * `companyName` is used as the peer name so the record stays shape-compatible with the
@@ -70,6 +79,7 @@ export interface EtfCompetitor {
     name: string;
     symbol: string;
     exchange: string;
+    cachedScoreEntry?: EtfCompetitorCachedScore | null;
   };
 }
 
@@ -92,6 +102,7 @@ export interface EtfCompetitionResponse {
     name: string;
     symbol: string;
     exchange: string;
+    cachedScoreEntry?: EtfCompetitorCachedScore | null;
     createdAt?: string | Date;
     updatedAt?: string | Date;
   };

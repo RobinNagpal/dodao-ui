@@ -8,7 +8,7 @@ import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
-import EtfCompetitionSection from '@/components/etf-reportsv1/EtfCompetitionSection';
+import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
@@ -533,7 +533,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         </Suspense>
 
         <Suspense fallback={null}>
-          <EtfCompetitionSection dataPromise={competitionPromise} />
+          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
         </Suspense>
 
         <div className="mx-auto max-w-7xl">
