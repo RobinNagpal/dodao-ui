@@ -44,6 +44,7 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
   const limit = Math.min(200, Math.max(1, parseInt(searchParams.get('limit') || '100', 10)));
   const roleParam = searchParams.get('role');
   const isManagerParam = searchParams.get('isManager');
+  const isActiveParam = searchParams.get('isActive');
 
   const where: Record<string, unknown> = {
     spaceId: KoalaGainsSpaceId,
@@ -55,6 +56,10 @@ async function getHandler(req: NextRequest, userContext: KoalaGainsJwtTokenPaylo
 
   if (isManagerParam === 'true') {
     where.portfolioManagerProfile = { isNot: null };
+  }
+
+  if (isActiveParam === 'true') {
+    where.OR = [{ favouriteTickers: { some: {} } }, { tickerNotes: { some: {} } }];
   }
 
   const [users, totalCount] = await Promise.all([

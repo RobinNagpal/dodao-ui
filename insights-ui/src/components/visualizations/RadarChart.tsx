@@ -47,7 +47,7 @@ const RadarChart: React.FC<RadarChartProps> = ({ data, scorePercentage }) => {
   const shouldShowFactorDetails = (): boolean => {
     const keys = Object.keys(data);
     const v1Keys = ['BusinessAndMoat', 'FinancialStatementAnalysis', 'PastPerformance', 'FutureGrowth', 'FairValue'];
-    const etfKeys = ['PerformanceAndReturns', 'CostEfficiencyAndTeam', 'RiskAnalysis'];
+    const etfKeys = ['PerformanceAndReturns', 'CostEfficiencyAndTeam', 'RiskAnalysis', 'FuturePerformanceOutlook'];
     return keys.some((key) => v1Keys.includes(key) || etfKeys.includes(key));
   };
 

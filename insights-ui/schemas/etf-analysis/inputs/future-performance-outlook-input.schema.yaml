@@ -1,0 +1,97 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'The ETF ticker symbol (e.g., SPY).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
+
+  categoryKey:
+    type: string
+    enum: ['FuturePerformanceOutlook']
+    description: 'The analysis category being evaluated.'
+
+  factorAnalysisArray:
+    type: array
+    description: 'Array of factors to analyze for this category.'
+    items:
+      type: object
+      properties:
+        factorAnalysisKey:
+          type: string
+          description: 'Unique identifier of the factor.'
+        factorAnalysisTitle:
+          type: string
+          description: 'Readable title of the factor.'
+        factorAnalysisDescription:
+          type: string
+          description: 'Short explanation of what this factor represents and why it matters.'
+        factorAnalysisMetrics:
+          type: string
+          description: 'Comma-separated list of key metrics used for evaluating this factor.'
+      required:
+        - factorAnalysisKey
+        - factorAnalysisTitle
+        - factorAnalysisDescription
+
+  # Asset class identifier — kept for analytical context and prompt framing
+  assetClass:
+    type: string
+    description: 'The ETF asset class (e.g., Equity, Fixed Income, Alternatives, Commodity, Asset Allocation, Currency).'
+
+  # Fund category — the Mor category string for this ETF (e.g., Large Blend, High Yield Bond).
+  fundCategory:
+    type: ['string', 'null']
+    description: 'The Mor fund category (e.g., Large Blend, Technology, High Yield Bond). Provides peer-comparison context.'
+
+  # ETF group — derived from fundCategory via etf-analysis-categories.json and drives which factors are selected.
+  groupKey:
+    type: string
+    description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-core, alt-strategies).'
+
+  # From EtfFinancialInfo — baseline fund stats (cost, size, simple valuation/yield, liquidity)
+  etfFinancialInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfFinancialInfo (aum, expenseRatio, pe, sharesOut, dividendTtm, dividendYield, payoutFrequency, payoutRatio, volume, yearHigh/yearLow, beta, holdings).'
+
+  # From EtfStockAnalyzerInfo — price, technicals, momentum, liquidity, issuer/category tags
+  etfStockAnalyzerInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfStockAnalyzerInfo (stockPrice, MAs, RSI, ATR, beta windows, 52w/ATH/ATL distances & dates, issuer/category, avgVolume/relVolume/dollarVol, options/leverage/region/country, etc.).'
+
+  # From EtfMorAnalyzerInfo — overview, returns, holdings snapshot, and Morningstar analysis sections (when available)
+  etfMorAnalyzerInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfMorAnalyzerInfo (overview metrics like SEC/TTM yield, turnover, style box; annual/trailing returns; holdings.topHoldings; strategyText; analysis sections if available).'
+
+  # From EtfMorRiskInfo — risk tables useful for volatility regime + drawdown context
+  etfMorRiskInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfMorRiskInfo (riskPeriods for 3/5/10-yr: risk score/level, risk vs category, capture ratios, drawdowns/dates, risk & volatility measures).'
+
+  # From EtfMorPeopleInfo — used for catalyst risk and process/people stability context
+  etfMorPeopleInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfMorPeopleInfo (inception date, managers, tenure, advisors, current managers list).'
+
+  # From EtfMorPortfolioInfo — the richest source for holdings mix + style/sector/credit positioning
+  etfMorPortfolioInfo:
+    type: ['string', 'null']
+    description: 'JSON string from EtfMorPortfolioInfo (asset allocation, style measures, sector exposure, fixed income style, bond breakdown/credit quality, holdings summary and detail, turnover/ESG fields when present).'
+
+required:
+  - name
+  - symbol
+  - exchange
+  - categoryKey
+  - factorAnalysisArray
+  - assetClass
+  - fundCategory
+  - groupKey

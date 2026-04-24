@@ -19,6 +19,7 @@ const CATEGORY_NAMES: Record<string, string> = {
   [EtfAnalysisCategory.PerformanceAndReturns]: 'Performance & Returns',
   [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'Cost & Team',
   [EtfAnalysisCategory.RiskAnalysis]: 'Risk Analysis',
+  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'Future Outlook',
 };
 
 function getFactorTitle(categoryKey: string, factorKey: string): string {
@@ -31,7 +32,12 @@ export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: 
   if (!scores && (!analysis || analysis.categories.length === 0)) return null;
 
   const graph: SpiderGraphForTicker = {};
-  const categories = [EtfAnalysisCategory.PerformanceAndReturns, EtfAnalysisCategory.CostEfficiencyAndTeam, EtfAnalysisCategory.RiskAnalysis];
+  const categories = [
+    EtfAnalysisCategory.PerformanceAndReturns,
+    EtfAnalysisCategory.CostEfficiencyAndTeam,
+    EtfAnalysisCategory.RiskAnalysis,
+    EtfAnalysisCategory.FuturePerformanceOutlook,
+  ];
 
   for (const cat of categories) {
     const categoryResult = analysis?.categories.find((c) => c.categoryKey === cat);

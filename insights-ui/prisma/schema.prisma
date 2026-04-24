@@ -541,6 +541,9 @@ model TickerV1 {
   // Relation to stock analyzer scrapper info (one-to-one)
   stockAnalyzerScrapperInfo TickerV1StockAnalyzerScrapperInfo?
 
+  // Relation to price history (one-to-one)
+  priceHistory TickerV1PriceHistory?
+
   // Relation to favourite tickers
   favouriteTickers FavouriteTicker[]
 
@@ -873,6 +876,31 @@ model TickerV1StockAnalyzerScrapperInfo {
 
   @@index([tickerId])
   @@map("ticker_v1_stock_analyzer_scrapper_info")
+}
+
+model TickerV1PriceHistory {
+  id       String @id @default(uuid())
+  tickerId String @unique @map("ticker_id")
+
+  // Daily OHLC for short-range views (1M). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  dailyData          Json     @map("daily_data")
+  lastUpdatedAtDaily DateTime @map("last_updated_at_daily")
+
+  // Weekly OHLC for long-range views (6M, 1Y, 5Y, MAX). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  weeklyData          Json     @map("weekly_data")
+  lastUpdatedAtWeekly DateTime @map("last_updated_at_weekly")
+
+  currency String? @map("currency")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  ticker TickerV1 @relation(fields: [tickerId], references: [id], onDelete: Cascade)
+
+  @@index([tickerId])
+  @@map("ticker_v1_price_history")
 }
 
 // --------------------------
@@ -1246,6 +1274,7 @@ model Etf {
   exchange      String   @map("exchange")
   inception     String?  @map("inception")
   summary       String?  @map("summary")
+  indexStrategy String?  @map("index_strategy")
   spaceId       String   @default("koala_gains") @map("space_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
@@ -1261,10 +1290,37 @@ model Etf {
   categoryAnalysisResults     EtfCategoryAnalysisResult[]
   analysisCategoryFactorResults EtfAnalysisCategoryFactorResult[]
   cachedScore                 EtfCachedScore?
+  priceHistory                EtfPriceHistory?
+  similarEtfs                 EtfSimilarEtf[] @relation("EtfSimilarEtfSource")
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
   @@map("etfs")
+}
+
+model EtfPriceHistory {
+  id    String @id @default(uuid())
+  etfId String @unique @map("etf_id")
+
+  // Daily OHLC for short-range views (1M, 6M). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  dailyData          Json     @map("daily_data")
+  lastUpdatedAtDaily DateTime @map("last_updated_at_daily")
+
+  // Weekly OHLC for long-range views (1Y, 3Y, 5Y). Array of PriceHistoryPoint.
+  /// [PriceHistoryPointArray]
+  weeklyData          Json     @map("weekly_data")
+  lastUpdatedAtWeekly DateTime @map("last_updated_at_weekly")
+
+  currency String? @map("currency")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@index([etfId])
+  @@map("etf_price_history")
 }
 
 model EtfFinancialInfo {
@@ -1564,6 +1620,7 @@ enum EtfAnalysisCategory {
   PerformanceAndReturns
   CostEfficiencyAndTeam
   RiskAnalysis
+  FuturePerformanceOutlook
 }
 
 model EtfGenerationRequest {
@@ -1574,6 +1631,8 @@ model EtfGenerationRequest {
   regeneratePerformanceAndReturns Boolean @default(false) @map("regenerate_performance_and_returns")
   regenerateCostEfficiencyAndTeam Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
   regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
+  regenerateFuturePerformanceOutlook Boolean @default(false) @map("regenerate_future_performance_outlook")
+  regenerateIndexStrategy         Boolean @default(false) @map("regenerate_index_strategy")
   regenerateFinalSummary          Boolean @default(false) @map("regenerate_final_summary")
 
   status String @default("NotStarted") @map("status")
@@ -1644,6 +1703,7 @@ model EtfCachedScore {
   performanceAndReturnsScore Int @map("performance_and_returns_score")
   costEfficiencyAndTeamScore Int @map("cost_efficiency_and_team_score")
   riskAnalysisScore          Int @map("risk_analysis_score")
+  futurePerformanceOutlookScore Int? @map("future_performance_outlook_score")
 
   finalScore Int @map("final_score")
 
@@ -1655,4 +1715,95 @@ model EtfCachedScore {
   @@unique([etfId])
   @@index([etfId])
   @@map("etf_cached_scores")
+}
+
+// --------------------------
+// ETF Similar ETFs
+// --------------------------
+// Per source-ETF list of similar/peer ETFs produced by the INDEX_STRATEGY LLM step.
+// Symbol + exchange are sufficient to link the card to the peer's report page.
+model EtfSimilarEtf {
+  id          String @id @default(uuid())
+  sourceEtfId String @map("source_etf_id")
+  symbol      String @map("symbol")
+  exchange    String @map("exchange")
+  sortOrder   Int    @default(0) @map("sort_order")
+  spaceId     String @default("koala_gains") @map("space_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sourceEtf Etf @relation("EtfSimilarEtfSource", fields: [sourceEtfId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceEtfId, symbol, exchange])
+  @@index([sourceEtfId])
+  @@map("etf_similar_etfs")
+}
+
+// --------------------------
+// ETF Market Scenarios
+// --------------------------
+
+// Direction / timeframe / probability / role are kept as plain TEXT columns;
+// the strict string-literal unions live in `src/types/etfScenarioEnums.ts` so
+// values can be added without a migration.
+
+model EtfScenario {
+  id                             String   @id @default(uuid())
+  scenarioNumber                 Int      @map("scenario_number")
+  title                          String   @map("title")
+  slug                           String   @map("slug")
+  underlyingCause                String   @map("underlying_cause") @db.Text
+  historicalAnalog               String   @map("historical_analog") @db.Text
+  winnersMarkdown                String   @map("winners_markdown") @db.Text
+  losersMarkdown                 String   @map("losers_markdown") @db.Text
+  outlookMarkdown                String   @map("outlook_markdown") @db.Text
+  direction                      String   @default("DOWNSIDE") @map("direction")
+  timeframe                      String   @default("FUTURE") @map("timeframe")
+  probabilityBucket              String   @default("MEDIUM") @map("probability_bucket")
+  probabilityPercentage          Int?     @map("probability_percentage")
+  pricedInBucket                 String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
+  expectedPriceChange            Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
+  priceChangeTimeframeExplanation String? @map("price_change_timeframe_explanation") @db.Text
+  outlookAsOfDate                DateTime @map("outlook_as_of_date") @db.Date
+  metaDescription                String?  @map("meta_description") @db.Text
+  archived                       Boolean  @default(false) @map("archived")
+  spaceId                        String   @default("koala_gains") @map("space_id")
+  createdAt                      DateTime @default(now()) @map("created_at")
+  updatedAt                      DateTime @updatedAt @map("updated_at")
+
+  etfLinks              EtfScenarioEtfLink[]
+
+  @@unique([spaceId, scenarioNumber])
+  @@unique([spaceId, slug])
+  @@index([spaceId, archived])
+  @@index([spaceId, direction])
+  @@index([spaceId, timeframe])
+  @@index([spaceId, probabilityBucket])
+  @@index([spaceId, pricedInBucket])
+  @@map("etf_scenarios")
+}
+
+model EtfScenarioEtfLink {
+  id                             String   @id @default(uuid())
+  scenarioId                     String   @map("scenario_id")
+  etfId                          String?  @map("etf_id")
+  symbol                         String   @map("symbol")
+  exchange                       String?  @map("exchange")
+  role                           String   @map("role")
+  sortOrder                      Int      @default(0) @map("sort_order")
+  roleExplanation                String?  @map("role_explanation") @db.Text
+  expectedPriceChange            Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
+  spaceId                        String   @default("koala_gains") @map("space_id")
+  createdAt                      DateTime @default(now()) @map("created_at")
+  updatedAt                      DateTime @updatedAt @map("updated_at")
+
+  scenario    EtfScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  @@unique([scenarioId, symbol, role])
+  @@index([scenarioId])
+  @@index([symbol])
+  @@map("etf_scenario_etf_links")
 }

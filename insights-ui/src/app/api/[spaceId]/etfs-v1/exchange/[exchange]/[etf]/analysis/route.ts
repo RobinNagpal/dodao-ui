@@ -15,6 +15,7 @@ export interface EtfCategoryAnalysisResultResponse {
   summary: string;
   overallAnalysisDetails: string;
   factorResults: EtfFactorResultResponse[];
+  updatedAt: string;
 }
 
 export interface EtfAnalysisResponse {
@@ -54,6 +55,7 @@ async function getHandler(_req: NextRequest, context: { params: Promise<{ spaceI
       summary: r.summary,
       overallAnalysisDetails: r.overallAnalysisDetails,
       factorResults: r.factorResults,
+      updatedAt: r.updatedAt.toISOString(),
     })),
   });
 }

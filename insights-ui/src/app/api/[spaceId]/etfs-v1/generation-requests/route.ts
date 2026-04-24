@@ -2,6 +2,7 @@ import { withAdminOrToken } from '@/app/api/helpers/withAdminOrToken';
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
+import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { EtfGenerationRequest } from '@prisma/client';
 import { NextRequest } from 'next/server';
@@ -16,6 +17,8 @@ export interface EtfGenerationRequestPayload {
   regeneratePerformanceAndReturns: boolean;
   regenerateCostEfficiencyAndTeam: boolean;
   regenerateRiskAnalysis: boolean;
+  regenerateFuturePerformanceOutlook?: boolean;
+  regenerateIndexStrategy?: boolean;
   regenerateFinalSummary?: boolean;
 }
 
@@ -148,6 +151,21 @@ async function postHandler(
       select: { id: true },
     });
 
+    const needsMorData =
+      regenerateOptions.regeneratePerformanceAndReturns ||
+      regenerateOptions.regenerateCostEfficiencyAndTeam ||
+      regenerateOptions.regenerateRiskAnalysis ||
+      (regenerateOptions.regenerateFuturePerformanceOutlook ?? true);
+
+    if (needsMorData) {
+      await ensureMorDataForAnalysis({
+        etfId: etfRecord.id,
+        spaceId,
+        exchange: etf.exchange,
+        symbol: etf.symbol,
+      });
+    }
+
     const existingRequest = await prisma.etfGenerationRequest.findFirst({
       where: {
         etfId: etfRecord.id,
@@ -165,6 +183,8 @@ async function postHandler(
           regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns || existingRequest.regeneratePerformanceAndReturns,
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam || existingRequest.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis || existingRequest.regenerateRiskAnalysis,
+          regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook || existingRequest.regenerateFuturePerformanceOutlook,
+          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy || existingRequest.regenerateIndexStrategy,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
         },
@@ -177,6 +197,8 @@ async function postHandler(
           regeneratePerformanceAndReturns: regenerateOptions.regeneratePerformanceAndReturns,
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
+          regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook ?? true,
+          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy ?? true,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
         },
       });

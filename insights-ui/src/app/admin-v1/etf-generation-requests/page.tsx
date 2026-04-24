@@ -16,6 +16,8 @@ const ETF_REGENERATE_FIELDS = [
   'regeneratePerformanceAndReturns',
   'regenerateCostEfficiencyAndTeam',
   'regenerateRiskAnalysis',
+  'regenerateFuturePerformanceOutlook',
+  'regenerateIndexStrategy',
   'regenerateFinalSummary',
 ] as const;
 
@@ -25,6 +27,8 @@ const ETF_FIELD_LABELS: Record<EtfRegenerateField, string> = {
   regeneratePerformanceAndReturns: 'Performance',
   regenerateCostEfficiencyAndTeam: 'Cost & Team',
   regenerateRiskAnalysis: 'Risk',
+  regenerateFuturePerformanceOutlook: 'Future Outlook',
+  regenerateIndexStrategy: 'Index & Strategy',
   regenerateFinalSummary: 'Final Summary',
 };
 
@@ -32,6 +36,8 @@ const ETF_FIELD_TO_STEP_MAP: Record<EtfRegenerateField, EtfReportType> = {
   regeneratePerformanceAndReturns: EtfReportType.PERFORMANCE_AND_RETURNS,
   regenerateCostEfficiencyAndTeam: EtfReportType.COST_EFFICIENCY_AND_TEAM,
   regenerateRiskAnalysis: EtfReportType.RISK_ANALYSIS,
+  regenerateFuturePerformanceOutlook: EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
+  regenerateIndexStrategy: EtfReportType.INDEX_STRATEGY,
   regenerateFinalSummary: EtfReportType.FINAL_SUMMARY,
 };
 

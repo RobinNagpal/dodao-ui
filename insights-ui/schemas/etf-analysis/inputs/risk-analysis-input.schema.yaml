@@ -38,6 +38,21 @@ properties:
         - factorAnalysisTitle
         - factorAnalysisDescription
 
+  # Asset class identifier — kept for analytical context and prompt framing
+  assetClass:
+    type: string
+    description: 'The ETF asset class (e.g., Equity, Fixed Income, Alternatives, Commodity, Asset Allocation, Currency). Informs analysis tone and thresholds; factor selection itself is driven by groupKey.'
+
+  # Fund category — the Mor category string for this ETF (e.g., Large Blend, High Yield Bond).
+  fundCategory:
+    type: ['string', 'null']
+    description: 'The Mor fund category (e.g., Large Blend, Technology, High Yield Bond). Provides peer-comparison context.'
+
+  # ETF group — derived from fundCategory via etf-analysis-categories.json and drives which factors are selected.
+  groupKey:
+    type: string
+    description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-core, alt-strategies). Determines which factors from the category config apply to this fund.'
+
   # From EtfStockAnalyzerInfo — volatility & risk metrics
   stockAnalyzerRiskMetrics:
     type: string
@@ -64,6 +79,9 @@ required:
   - exchange
   - categoryKey
   - factorAnalysisArray
+  - assetClass
+  - fundCategory
+  - groupKey
   - stockAnalyzerRiskMetrics
   - morRiskPeriods
   - financialRiskContext

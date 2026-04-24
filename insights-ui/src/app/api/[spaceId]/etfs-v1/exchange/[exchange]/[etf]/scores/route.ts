@@ -7,6 +7,7 @@ export interface EtfScoresResponse {
   performanceAndReturnsScore: number;
   costEfficiencyAndTeamScore: number;
   riskAnalysisScore: number;
+  futurePerformanceOutlookScore: number | null;
   finalScore: number;
 }
 
@@ -34,6 +35,7 @@ async function getHandler(
     performanceAndReturnsScore: cached.performanceAndReturnsScore,
     costEfficiencyAndTeamScore: cached.costEfficiencyAndTeamScore,
     riskAnalysisScore: cached.riskAnalysisScore,
+    futurePerformanceOutlookScore: cached.futurePerformanceOutlookScore,
     finalScore: cached.finalScore,
   };
 }

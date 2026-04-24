@@ -27,7 +27,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const { postData: triggerMorScrape, loading: triggeringMor } = usePostData<TriggerMorResponse, { kind: 'quote' | 'risk' | 'people' | 'portfolio' }>({
     successMessage: 'Request accepted. Processing in background.',
-    errorMessage: 'Failed to queue Morningstar scrape',
+    errorMessage: 'Failed to queue Mor scrape',
   });
 
   const { postData: createGenerationRequests, loading: creatingGenRequests } = usePostData<unknown, EtfGenerationRequestPayload[]>({
@@ -37,13 +37,21 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
 
   const isBusy = fetchingFinancialInfo || triggeringMor || creatingGenRequests || progress !== null;
 
-  async function handleGenerateAnalysis(options?: { performanceAndReturns?: boolean; costEfficiencyAndTeam?: boolean; riskAnalysis?: boolean }) {
+  async function handleGenerateAnalysis(options?: {
+    performanceAndReturns?: boolean;
+    costEfficiencyAndTeam?: boolean;
+    riskAnalysis?: boolean;
+    futurePerformanceOutlook?: boolean;
+    indexStrategy?: boolean;
+  }) {
     const allTypes = !options;
     const payloads: EtfGenerationRequestPayload[] = selectedEtfs.map((etf) => ({
       etf: { symbol: etf.symbol, exchange: etf.exchange },
       regeneratePerformanceAndReturns: allTypes || (options?.performanceAndReturns ?? false),
       regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
       regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
+      regenerateFuturePerformanceOutlook: allTypes || (options?.futurePerformanceOutlook ?? false),
+      regenerateIndexStrategy: allTypes || (options?.indexStrategy ?? false),
       regenerateFinalSummary: allTypes,
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
@@ -103,6 +111,9 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ riskAnalysis: true })}>
         Risk Analysis
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ futurePerformanceOutlook: true })}>
+        Future Outlook
       </button>
 
       <div className="h-4 w-px bg-indigo-700/60" />

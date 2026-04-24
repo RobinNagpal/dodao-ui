@@ -132,7 +132,7 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
   }
 
   return (
-    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4">
+    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mb">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-100">

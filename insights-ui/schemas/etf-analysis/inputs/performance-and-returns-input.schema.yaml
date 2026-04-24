@@ -63,15 +63,25 @@ properties:
     type: string
     description: 'JSON string with AUM, beta, 52-week high/low, volume, and holdings count for context.'
 
-  # Asset class identifier — determines which factor set is used and how the model should frame the analysis
+  # Asset class identifier — kept for analytical context and prompt framing
   assetClass:
     type: string
-    description: 'The ETF asset class (e.g., Equity, Fixed Income, Alternatives, Commodity, Asset Allocation, Currency). Determines analysis tone, thresholds, and factor evaluation approach.'
+    description: 'The ETF asset class (e.g., Equity, Fixed Income, Alternatives, Commodity, Asset Allocation, Currency). Informs analysis tone and thresholds; factor selection itself is driven by groupKey.'
+
+  # Fund category — the Mor category string for this ETF (e.g., Large Blend, High Yield Bond).
+  fundCategory:
+    type: ['string', 'null']
+    description: 'The Mor fund category (e.g., Large Blend, Technology, High Yield Bond). Provides peer-comparison context.'
+
+  # ETF group — derived from fundCategory via etf-analysis-categories.json and drives which factors are selected.
+  groupKey:
+    type: string
+    description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-core, alt-strategies). Determines which factors from the category config apply to this fund.'
 
   # P0 — Yield & income data (critical for bond and income ETFs)
   yieldAndIncome:
     type: string
-    description: 'JSON string with dividend yield, SEC yield, TTM yield, payout frequency, dividend TTM, and dividend growth rates. Critical for bond and income ETFs where yield is the primary reason investors buy the fund.'
+    description: 'JSON string with dividend yield, SEC yield, TTM yield, payout frequency, dividend TTM, dividend growth rates (3y/5y), and dividend-paying years (divYears, divGrYears). Critical for bond and income ETFs where yield is the primary reason investors buy the fund.'
 
   # P1 — Additional context for performance analysis
   fundContext:
@@ -90,3 +100,5 @@ required:
   - morOverview
   - financialSummary
   - assetClass
+  - fundCategory
+  - groupKey

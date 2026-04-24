@@ -1,48 +1,10 @@
 import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
+import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';
 
 interface EtfFinancialInfoProps {
   data: EtfFinancialInfoResponse;
-}
-
-function parseNumericString(value: string | null): number | null {
-  if (!value) return null;
-  const raw = value.trim();
-  if (!raw) return null;
-
-  // Supports values like:
-  // - "$47.46B", "257.25M", "1.60M", "259,668"
-  // Keep parsing tolerant because we store "display strings" in DB.
-  const cleaned = raw.replace(/,/g, '').replace(/^\$/, '').trim();
-  const match = cleaned.match(/^([+-]?\d+(?:\.\d+)?)\s*([KMBT])?$/i);
-  if (!match) return null;
-
-  const num = Number(match[1]);
-  if (!Number.isFinite(num)) return null;
-
-  const suffix = (match[2] || '').toUpperCase();
-  const mult = suffix === 'K' ? 1_000 : suffix === 'M' ? 1_000_000 : suffix === 'B' ? 1_000_000_000 : suffix === 'T' ? 1_000_000_000_000 : 1;
-  return num * mult;
-}
-
-function formatCompactAmount(value: string | null): string {
-  const n = parseNumericString(value);
-  if (n === null) return 'N/A';
-  const prefix = (value ?? '').trim().startsWith('$') ? '$' : '';
-  if (n >= 1_000_000_000) return `${prefix}${(n / 1_000_000_000).toFixed(2)}B`;
-  if (n >= 1_000_000) return `${prefix}${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `${prefix}${(n / 1_000).toFixed(2)}K`;
-  return `${prefix}${n.toFixed(2)}`;
-}
-
-function formatCompactMillions(value: string | null): string {
-  const n = parseNumericString(value);
-  if (n === null) return 'N/A';
-  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(2)}B`;
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(2)}K`;
-  return `${n.toFixed(2)}`;
 }
 
 // Helper to format integer

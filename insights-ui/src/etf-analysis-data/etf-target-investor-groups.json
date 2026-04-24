@@ -1,0 +1,2535 @@
+{
+  "description": "ETF investor taxonomy used to write ETF analyses from the perspective of who the potential investors are. Two-level structure: top level is investor type (EtfInvestor — name, shortDescription, etfInvestorGoals[]); second level is goals an investor of that type pursues when buying ETFs (each goal has profile, analysisAngle, keyConsiderations, redFlags). 6 investor types — retail individual, HNW / family office, pension / endowment / foundation / sovereign, insurance / bank / corporate treasury, financial advisor / RIA / wealth manager, hedge fund / asset manager / trading desk — intentionally non-overlapping (each defined by a distinct funding source / governance / regulatory context). Goals are limited to realistic, commonly seen ETF use-cases for each type; goals can recur across types (e.g., real-asset hedge appears in retail-via-ETFs, HNW overlay, and pension/endowment) but each instance is framed for that type's specific perspective. Conforms to EtfInvestorTaxonomyConfig in src/types/etf/etf-analysis-types.ts.",
+  "investors": [
+    {
+      "key": "retail-individual",
+      "name": "Retail / Individual Investor",
+      "shortDescription": "Person investing personal savings in a brokerage or tax-advantaged retirement account — DIY or self-directed, with goals ranging from a first index fund to active trading. Distinct from HNW because portfolio scale typically sits below $5M and direct-indexing / SMA / private-allocation infrastructure is not in play; distinct from intermediated channels (advisor, hedge fund) because the investor makes their own selection.",
+      "etfInvestorGoals": [
+        {
+          "key": "simple-broad-market-start",
+          "name": "Simple Broad-Market Start",
+          "shortDescription": "Beginner who wants the simplest, lowest-cost path to broad-market exposure without complexity — typically a single S&P 500 / total-market fund or a target-date fund.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Someone in their 20s-30s opening their first brokerage or Roth IRA, who has heard of the S&P 500 but not much else, contributing monthly into a 'set it and forget it' allocation."
+          },
+          "analysisAngle": "Frame everything in plain language. Default to the simplest, cheapest, most diversified option (broad-market index ETF or target-date fund). Spell out fee impact in dollar terms over 30 years. Explicitly warn against complex / leveraged / single-theme products even if recent performance has been strong.",
+          "keyConsiderations": [
+            "Expense ratio under 0.10% materially compounds over decades.",
+            "Broad diversification (500+ holdings) so no single stock can wreck the portfolio.",
+            "Issuer reputation (Vanguard, iShares, SPDR, Schwab, Fidelity) over chasing performance.",
+            "Tradability and liquidity — no surprises selling during a downturn."
+          ],
+          "redFlags": [
+            "Daily-reset leveraged or inverse exposure.",
+            "Concentrated single-theme funds (one sector or one country).",
+            "K-1 reporting or unusual non-1099 distributions.",
+            "Sub-3-year track record from a niche issuer."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Lowest-fee S&P 500 wrapper at 0.03% — the canonical first index ETF for a beginner."
+            },
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Total US market in one ticker at 0.03% — broader than the S&P 500 with the same set-and-forget simplicity."
+            },
+            {
+              "symbol": "AOR",
+              "name": "iShares Core Growth Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~60/40 stock/bond allocation in a single ticker — true single-fund target-date alternative."
+            }
+          ]
+        },
+        {
+          "key": "multi-decade-buy-and-hold",
+          "name": "Multi-Decade Buy-and-Hold Compounding",
+          "shortDescription": "Investor with a 15-30+ year horizon focused on cumulative compounding and minimizing fee drag — willing to ride out drawdowns to maximize the terminal balance.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Mid-career professional (30s-50s) saving consistently into a 401(k) and a taxable brokerage, willing to ride out drawdowns, optimizing for the 30-year terminal balance."
+          },
+          "analysisAngle": "Emphasize cumulative compounding over decades — even tiny fee differences become large. Focus on mandate stability (a fund that quietly changes its benchmark breaks the multi-decade thesis), tracking quality, drawdown depth and recovery time, and tax efficiency in taxable accounts. Discourage strategy churn and chasing recent outperformance.",
+          "keyConsiderations": [
+            "Fee drag compounding over 20-30 years vs the cheapest peer.",
+            "Mandate and benchmark stability across multiple market cycles.",
+            "Drawdown depth and recovery time in 2008, 2020, 2022.",
+            "Tax efficiency for taxable-account holdings (low capital-gain distributions).",
+            "Coverage of US large/mid/small + international + emerging markets."
+          ],
+          "redFlags": [
+            "Recent benchmark or strategy changes that break the historical record.",
+            "Material AUM decline combined with thin volume (closure risk).",
+            "Frequent capital-gain distributions in passive-style funds.",
+            "Headline fee well above category median without demonstrated alpha."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "0.03% fee compounds to large savings over 30 years vs higher-fee peers, with a stable total-market mandate."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Same total-US exposure at 0.03% with iShares’ multi-decade operational track record as a benchmark-stable mandate."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Adds developed-international plus EM at 0.05% — completes the global compounding sleeve over multi-decade horizons."
+            }
+          ]
+        },
+        {
+          "key": "growth-tilted-accumulation",
+          "name": "Growth-Tilted Accumulation",
+          "shortDescription": "Younger or aggressive investor with a long horizon and high risk tolerance, willing to accept large drawdowns in pursuit of higher long-run growth — overweight to growth, small-cap, EM, and innovation themes.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Investor in 20s-40s with stable income, no near-term withdrawal needs, comfortable seeing 30-50% drawdowns and able to stay invested through them."
+          },
+          "analysisAngle": "Volatility tolerance is the unlock — focus on whether the fund's drawdown depth and recovery time are acceptable for someone NOT yet near withdrawal. Discuss factor tilt (growth vs value, large vs small), sector concentration, top-holding exposure, and historical drawdown vs benchmark. Don't penalize narrower mandates as long as concentration risk is disclosed.",
+          "keyConsiderations": [
+            "Drawdown depth vs benchmark and recovery time.",
+            "Factor tilt — growth vs value, large vs small.",
+            "Sector and top-holding concentration risk.",
+            "Methodology stability so the historical return profile remains relevant.",
+            "Foreign and emerging-market exposure for higher long-term growth."
+          ],
+          "redFlags": [
+            "Sub-3-year history with no comparable issuer track record on similar strategies.",
+            "Headline fee above active-thematic peer median without demonstrated alpha.",
+            "Persistent benchmark drift from the stated index."
+          ],
+          "etfs": [
+            {
+              "symbol": "VUG",
+              "name": "Vanguard Growth ETF",
+              "exchange": "NYSEARCA",
+              "why": "Cheap large-cap growth tilt at 0.04% capturing the long-run growth factor without active-management fees."
+            },
+            {
+              "symbol": "QQQM",
+              "name": "Invesco NASDAQ 100 ETF",
+              "exchange": "NASDAQ",
+              "why": "Lower-fee QQQ alternative (0.15%) suited to buy-and-hold investors seeking innovation/tech tilt."
+            },
+            {
+              "symbol": "VWO",
+              "name": "Vanguard FTSE Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "EM equity exposure at 0.08% adding higher long-term growth potential from emerging economies."
+            }
+          ]
+        },
+        {
+          "key": "pre-retirement-de-risking",
+          "name": "Pre-Retirement De-Risking (3-10 Years Out)",
+          "shortDescription": "Investor 3-10 years from retirement, still accumulating but in the fragile pre-retirement window — gliding equity exposure down and bond allocation up to protect against a late-cycle drawdown.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Investor in 50s-early 60s within 3-10 years of stopping wages, with a meaningful nest egg already accumulated and limited capacity to recover from a major drawdown right before retirement."
+          },
+          "analysisAngle": "Sequence-of-returns risk on the upcoming withdrawal years dominates everything. Focus on shifting the equity / bond mix down the glide path, drawdown floor, duration positioning of the bond sleeve, and tax-aware location of holdings (bonds in tax-deferred, equities in taxable). Discourage chasing late-cycle equity returns.",
+          "keyConsiderations": [
+            "Glide-path equity / bond mix appropriate for current years-to-retirement.",
+            "Drawdown floor — what's the worst the bond and equity sleeves did together?",
+            "Duration positioning relative to the rate outlook.",
+            "Tax-location of holdings (bonds in tax-deferred, equities in taxable).",
+            "Avoidance of new high-volatility positions this close to drawdown."
+          ],
+          "redFlags": [
+            "Long-duration bond exposure when rate outlook is rising.",
+            "New large equity-concentration positions inside the de-risking window.",
+            "Aggressive target-date dated 10+ years past expected retirement."
+          ],
+          "etfs": [
+            {
+              "symbol": "AOM",
+              "name": "iShares Core Moderate Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~40/60 stock/bond mix that fits the pre-retirement glide-path in a single holding."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Cheap (0.03%) broad IG core bond fund to scale up as equity is gradually trimmed inside the de-risking window."
+            },
+            {
+              "symbol": "BSV",
+              "name": "Vanguard Short-Term Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG bond exposure that limits drawdown if rates spike during the fragile pre-retirement years."
+            }
+          ]
+        },
+        {
+          "key": "retirement-income-with-preservation",
+          "name": "Retirement Income with Capital Preservation",
+          "shortDescription": "Pre-retiree or retiree prioritizing capital preservation and steady income over growth — drawing from the portfolio to fund living expenses.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Investor 60+ either approaching or in retirement, with a known annual withdrawal need, who cannot afford a large drawdown right before drawing income."
+          },
+          "analysisAngle": "Sequence-of-returns risk is the dominant concern. Focus on duration risk, distribution stability and character, drawdown floor, and whether the fund's worst 12-month drawdown is survivable for someone drawing income from it. Distribution character (qualified vs ROC) matters for tax planning.",
+          "keyConsiderations": [
+            "Worst-12-month drawdown an income-drawing investor could survive.",
+            "Distribution stability and character (qualified, ROC, ordinary income).",
+            "Duration and interest-rate sensitivity for bond holdings.",
+            "Manager continuity for active income strategies.",
+            "Glide path appropriate for the investor's current retirement phase."
+          ],
+          "redFlags": [
+            "Distribution funded substantially by ROC without disclosure.",
+            "Long-duration bond exposure when rates may rise.",
+            "Headline yield from concentrated low-rated credit.",
+            "Recent dividend cuts or skipped distributions."
+          ],
+          "etfs": [
+            {
+              "symbol": "AOK",
+              "name": "iShares Core Conservative Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~30/70 stock/bond mix designed for retirees prioritizing preservation alongside steady distribution."
+            },
+            {
+              "symbol": "SCHD",
+              "name": "Schwab US Dividend Equity ETF",
+              "exchange": "NYSEARCA",
+              "why": "Quality-screened dividend equity sleeve with sustainable distribution character preferred for retiree taxable accounts."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified IG core bond exposure at 0.03% provides the preservation anchor inside the income portfolio."
+            }
+          ]
+        },
+        {
+          "key": "high-current-yield-income",
+          "name": "High Current Yield Income",
+          "shortDescription": "Investor prioritizing current cash flow — willing to accept credit risk and complexity in exchange for above-market yield from credit, preferred, or derivative-income wrappers.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Investor of any age (often 40s-70s) deliberately tilting toward yield — supplementing wages, funding lifestyle, or building a yield-only portfolio. Comfortable with credit risk and willing to study distribution mechanics."
+          },
+          "analysisAngle": "Yield without distribution-character analysis is meaningless. Decompose every distribution into qualified, ordinary, short-term gain, and ROC. For credit funds focus on default risk and downside in March 2020 / Oct 2022 stress. For derivative-income funds focus on whether the strategy gave up upside that wasn't fully replaced by income.",
+          "keyConsiderations": [
+            "Distribution character (qualified vs ordinary vs ROC).",
+            "Sustainability of the headline yield through credit cycles.",
+            "Downside in credit-stress windows (March 2020, Oct 2022).",
+            "Underlying credit quality and concentration.",
+            "Capture-ratio analysis for derivative-income funds."
+          ],
+          "redFlags": [
+            "Yield largely funded by ROC without clear disclosure.",
+            "Concentrated low-rated issuer exposure inside a generically named credit fund.",
+            "Active credit fund failing to beat its passive peer net of fees.",
+            "Declining distribution trend masked by NAV-eroding payouts."
+          ],
+          "etfs": [
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Equity-overlay covered-call strategy distributing high monthly income (~7-8%) — flagship retail yield-supplement vehicle."
+            },
+            {
+              "symbol": "HYG",
+              "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Liquid US high-yield corporate bond exposure delivering above-market credit yield in a transparent wrapper."
+            },
+            {
+              "symbol": "PFF",
+              "name": "iShares Preferred and Income Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified preferred-securities yield (~6%) with monthly distributions — broad issuer mix limits single-name risk."
+            }
+          ]
+        },
+        {
+          "key": "sector-thematic-conviction",
+          "name": "Sector / Thematic Conviction Expression",
+          "shortDescription": "Investor with a directional view on a specific sector, theme, region, or asset — using ETFs to implement the thesis cheaply and liquidly without picking individual stocks.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "High",
+            "primaryGoal": "Thematic Exposure",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Investor who has formed a view ('AI will dominate the next decade', 'energy is mispriced', 'India's demographic tailwind is real') and wants the cleanest, cheapest ETF to implement that thesis without picking individual stocks."
+          },
+          "analysisAngle": "Theme purity is the test — is the fund actually delivering the exposure its name promises? Focus on top-holding concentration, methodology specifics, peer comparison within the sector or theme, and tracking fidelity vs the most recognized benchmark. Concentration is not a flaw here — it's the point — but it must be disclosed.",
+          "keyConsiderations": [
+            "Top-holding concentration and whether it matches the stated thesis.",
+            "Methodology — passive index vs rules-based vs active selection.",
+            "Peer comparison within the same sector or theme.",
+            "Tracking fidelity vs the recognized benchmark in the space.",
+            "Liquidity for entering and exiting full-conviction positions."
+          ],
+          "redFlags": [
+            "Theme drift — fund name and top holdings don't align.",
+            "Sub-3-year history on a strategy with no comparable issuer track record.",
+            "Headline fee well above peers in the same theme without methodology advantage.",
+            "Thin AUM with declining trend — closure risk during the holding period."
+          ],
+          "etfs": [
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Cleanest cap-weighted US tech exposure at 0.09% — canonical AI/tech-thesis vehicle with deep liquidity."
+            },
+            {
+              "symbol": "XLE",
+              "name": "Energy Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Pure-play US energy exposure at 0.09% — standard wrapper for the energy mispricing thesis."
+            },
+            {
+              "symbol": "INDA",
+              "name": "iShares MSCI India ETF",
+              "exchange": "BATS",
+              "why": "Single-country India exposure for the demographic-tailwind thesis with deep US-listed liquidity."
+            }
+          ]
+        },
+        {
+          "key": "retail-leveraged-or-active-trading",
+          "name": "Leveraged or Active Trading (Retail)",
+          "shortDescription": "Self-directed retail trader using leveraged (TQQQ, SOXL, FAS), inverse (SQQQ, SH), or active sector ETFs for short-horizon directional bets — typically days to weeks.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Self-directed retail trader using a brokerage app (Robinhood, Fidelity, Schwab) for short-term directional bets — comfortable with daily-leveraged products and inverse ETFs, often holding for days to a few weeks."
+          },
+          "analysisAngle": "Path-dependency decay is the central warning — leveraged products are unsuitable for any multi-week hold regardless of how cheap the sticker fee. Discuss bid-ask, daily-leverage fidelity, embedded swap-financing cost on top of the headline expense ratio, and the documented decay over multi-week holds. Reinforce explicitly: these are trading vehicles, not buy-and-hold.",
+          "keyConsiderations": [
+            "Daily-leverage fidelity (does 3x deliver 3x intraday?).",
+            "Bid-ask spread for retail-block trades.",
+            "All-in cost (expense ratio + embedded swap-financing).",
+            "Documented decay over multi-week holds (volatility drag).",
+            "Options market for hedging the position."
+          ],
+          "redFlags": [
+            "Marketing or fund material that downplays daily-reset risk.",
+            "Headline expense ratio above leveraged-peer norms.",
+            "Wide bid-ask combined with thin volume."
+          ],
+          "etfs": [
+            {
+              "symbol": "TQQQ",
+              "name": "ProShares UltraPro QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-leveraged Nasdaq 100 — canonical retail tactical-bet vehicle with the deepest leveraged-ETF options market."
+            },
+            {
+              "symbol": "SOXL",
+              "name": "Direxion Daily Semiconductor Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged semiconductor exposure for sector-momentum trades — high-volatility expression of the AI/chips thesis."
+            },
+            {
+              "symbol": "SQQQ",
+              "name": "ProShares UltraPro Short QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-inverse Nasdaq 100 for retail short-side bets without locating shares to borrow."
+            }
+          ]
+        },
+        {
+          "key": "short-medium-term-savings-goal",
+          "name": "Short-to-Medium-Term Savings Goal",
+          "shortDescription": "Saver working toward a known major purchase 2-7 years out (house down payment, wedding, car) — needs return above cash without exposing the spend date to a 30%+ equity drawdown.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Saver in 20s-40s working toward a known goal (down payment, wedding, car) on a 2-7 year horizon — needs return above cash without exposing the spend date to a major drawdown."
+          },
+          "analysisAngle": "The known spend date dominates everything. Risk capacity is high enough to take some equity exposure but not enough for a 50% equity drawdown right before the goal date. Focus on conservative balanced funds, short-duration bonds, and TIPS for inflation defense. Discourage all-equity allocations for sub-5y horizons regardless of recent performance.",
+          "keyConsiderations": [
+            "Worst-12-month drawdown an investor could survive without delaying the goal.",
+            "Glide-path positioning — equity weight should decline as the spend date approaches.",
+            "Inflation defense for the savings target value (especially housing-cost-inflated goals).",
+            "Tax efficiency in taxable brokerage accounts where most non-retirement savings sits.",
+            "Liquidity at the spend date — bid-ask, T+1 settlement, no surprise distributions."
+          ],
+          "redFlags": [
+            "100% equity allocation for sub-3-year horizons.",
+            "Long-duration bond exposure when the spend date is near.",
+            "High-yield credit dressed as 'short-term bond' delivering surprise drawdown."
+          ],
+          "etfs": [
+            {
+              "symbol": "AOK",
+              "name": "iShares Core Conservative Allocation ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pre-built ~30/70 stock/bond mix providing modest growth above cash while limiting drawdown ahead of a known spend date."
+            },
+            {
+              "symbol": "BSV",
+              "name": "Vanguard Short-Term Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG bond exposure at 0.04% — workhorse for the bond sleeve as the spend date approaches."
+            },
+            {
+              "symbol": "VTIP",
+              "name": "Vanguard Short-Term Inflation-Protected Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Direct CPI linkage to defend the real value of the savings target against inflation through the holding window."
+            }
+          ]
+        },
+        {
+          "key": "retail-crypto-allocation",
+          "name": "Retail Crypto Allocation via ETF",
+          "shortDescription": "Self-directed retail investor wanting a small (1-5%) bitcoin/ether sleeve as a portfolio satellite — uses spot-crypto ETFs to avoid wallet/custody operational risk inside a brokerage account.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Retail investor convinced bitcoin/ether deserves a small portfolio sleeve as a long-term asymmetric bet — wants the convenience of the brokerage wrapper instead of self-custody or exchange wallets."
+          },
+          "analysisAngle": "Position sizing is the central discipline — 1-5% is the financial-planner consensus for a portfolio satellite, not a core holding. ETF wrapper avoids self-custody risk but adds custodian counterparty and management-fee drag vs spot. Discuss issuer scale, custodian (Coinbase Prime is dominant), and fee level. Frame crypto as a speculative long-term asymmetric bet — not a yield play and not a core holding.",
+          "keyConsiderations": [
+            "Position sizing — 1-5% as a satellite, not a core holding.",
+            "Issuer/custodian counterparty exposure inside the wrapper.",
+            "Fee level vs spot-crypto holding cost.",
+            "Tax treatment in taxable brokerage account vs IRA placement.",
+            "Volatility tolerance — crypto routinely sees 50-80% drawdowns."
+          ],
+          "redFlags": [
+            "Position sizing above 10% turning the satellite into a core risk.",
+            "Futures-based crypto wrapper carrying contango friction vs a spot-backed alternative.",
+            "Concentrated custodian exposure inside a single ETF wrapper."
+          ],
+          "etfs": [
+            {
+              "symbol": "IBIT",
+              "name": "iShares Bitcoin Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "Largest spot-bitcoin ETF with the deepest liquidity and rapidly developing options market — default retail spot-BTC choice."
+            },
+            {
+              "symbol": "FBTC",
+              "name": "Fidelity Wise Origin Bitcoin Fund",
+              "exchange": "BATS",
+              "why": "Fidelity spot-bitcoin alternative offering issuer/custodian diversification away from BlackRock."
+            },
+            {
+              "symbol": "ETHA",
+              "name": "iShares Ethereum Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "BlackRock spot-ether ETF — primary spot-ETH wrapper for retail wanting Ethereum exposure alongside bitcoin."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "high-net-worth-individual",
+      "name": "High-Net-Worth Individual / Family Office",
+      "shortDescription": "Wealthy individual, single-family office, or multi-family office client investing $5M-$500M+ across asset classes. Distinct from retail because of scale (direct indexing / SMA / UMA infrastructure available), top federal+state+NIIT bracket, access to private allocations, and intergenerational planning. Distinct from institutional because the capital is family-owned (not subject to IPS / regulatory mandates).",
+      "etfInvestorGoals": [
+        {
+          "key": "tax-efficient-public-equity-sleeve",
+          "name": "Tax-Efficient Public-Equity Beta Sleeve",
+          "shortDescription": "Tax-efficient compounding of US and international equity exposure inside taxable accounts — ETFs are the wrapper for the public-equity beta sleeve while private allocations carry the alpha mandate.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW individual ($5M-$50M investable) or single-family office at the top federal + state + NIIT bracket; alpha mandate sits in PE / hedge funds / direct real estate; ETFs serve only as the efficient-beta sleeve."
+          },
+          "analysisAngle": "After-tax return at the top marginal rate is the only metric that matters. Capital-gain distribution history must be near zero. At >$1M positions, direct indexing with daily harvesting often beats an index ETF — the ETF must justify its wrapper. Foreign-tax-credit pickup is a real consideration for international sleeves held in taxable accounts.",
+          "keyConsiderations": [
+            "Capital-gain distribution history (passive ETFs near zero; thematic and active can surprise).",
+            "After-tax return at top federal + state + NIIT bracket, not headline return.",
+            "Foreign-tax-credit pickup for international ETFs held in taxable accounts.",
+            "Direct-indexing breakeven analysis for $1M+ positions.",
+            "Wrapper cost stacking when the ETF sits inside a SMA / UMA."
+          ],
+          "redFlags": [
+            "Material recent capital-gain distributions in a passive-style fund.",
+            "Active or thematic strategy with high turnover dragging after-tax return.",
+            "Distribution character largely ROC or short-term gain without disclosure."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Heritage capital-gain distributions near zero — ideal for HNW taxable accounts at top federal+state+NIIT bracket."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares total-US wrapper with strong tax-efficiency record at 0.03% — clean alternative-issuer to VTI."
+            },
+            {
+              "symbol": "IXUS",
+              "name": "iShares Core MSCI Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "International exposure at 0.07% with foreign-tax-credit pass-through — material pickup at top brackets in taxable accounts."
+            }
+          ]
+        },
+        {
+          "key": "state-tax-exempt-muni-income",
+          "name": "State-Tax-Exempt Muni Income",
+          "shortDescription": "High-bracket resident of a high-tax state (CA, NY, NJ, MA, IL) seeking muni income with state-tax exemption stacked on top of the federal exemption — AMT awareness for private-activity-bond exposure.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor in a top federal bracket who is also a high-tax-state resident; significant taxable-account fixed-income that needs to maximize after-tax yield via in-state muni exposure."
+          },
+          "analysisAngle": "TEY at the explicit federal + state + NIIT bracket is the comparison metric. State-specific muni funds add the state-tax exemption — for a CA resident in the top bracket the math frequently dominates national muni and taxable IG. AMT exposure on private-activity-bond muni funds must be flagged. High-yield muni introduces real default risk that the muni label doesn't make obvious.",
+          "keyConsiderations": [
+            "Tax-equivalent yield at federal + state + NIIT bracket for in-state vs national muni.",
+            "AMT exposure on private-activity-bond muni funds.",
+            "Single-jurisdiction credit risk in state-specific muni (pension stress, revenue shock).",
+            "Issuer credit-tier mix — IG-only vs HY-muni tilt.",
+            "Duration positioning relative to rate outlook."
+          ],
+          "redFlags": [
+            "High-yield muni exposure inside a generically named muni fund without disclosure.",
+            "Private-activity-bond concentration triggering AMT for high-bracket investors.",
+            "Single-state muni with documented pension or revenue-base distress."
+          ],
+          "etfs": [
+            {
+              "symbol": "CMF",
+              "name": "iShares California Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "California-resident muni exposure stacking state-tax exemption on top of the federal exemption for top-bracket CA residents."
+            },
+            {
+              "symbol": "NYF",
+              "name": "iShares New York Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "New York-resident muni exposure stacking NY state-tax exemption — same stacked-TEY logic for NY top-bracket residents."
+            },
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — fallback for residents without an in-state muni ETF or seeking broader diversification."
+            }
+          ]
+        },
+        {
+          "key": "real-asset-and-alternatives-overlay",
+          "name": "Real-Asset and Alternatives Overlay",
+          "shortDescription": "Diversifying real-asset, defined-outcome, derivative-income, or commodity exposure on top of a public-equity + muni core — often complementing direct private real estate or commodity holdings.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor or family office whose constructed portfolio already covers public-equity beta and tax-efficient fixed income, looking for inflation hedges, downside structure, or uncorrelated return streams via accessible ETF wrappers."
+          },
+          "analysisAngle": "Sizing matters — these are diversifying sleeves, not core holdings. Defined-outcome and derivative-income funds must be evaluated on the upside-cap vs income-payout tradeoff. Commodity and precious-metals funds must be checked for K-1 vs 1099 reporting since K-1 creates real friction at HNW scale. Real-asset equity proxies carry equity-correlation risk that should be disclosed.",
+          "keyConsiderations": [
+            "K-1 vs 1099 reporting (commodity pools, MLPs).",
+            "Upside-cap vs income-payout tradeoff for defined-outcome and derivative-income funds.",
+            "Equity-correlation in 'real asset' equity proxies during stress.",
+            "Sizing relative to existing private real-estate / private-PE allocations.",
+            "Currency-hedging methodology for non-USD alts."
+          ],
+          "redFlags": [
+            "Fund labeled 'inflation hedge' but historically tracking equity beta.",
+            "Unhedged single-currency or single-commodity concentration sized larger than satellite.",
+            "K-1 reporting without offsetting tax or hedging benefit."
+          ],
+          "etfs": [
+            {
+              "symbol": "GLD",
+              "name": "SPDR Gold Shares",
+              "exchange": "NYSEARCA",
+              "why": "Spot-backed gold with deep liquidity — canonical inflation/disinflation real-asset diversifier in a 1099 wrapper."
+            },
+            {
+              "symbol": "PDBC",
+              "name": "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF",
+              "exchange": "NASDAQ",
+              "why": "Diversified commodities (energy/metals/ag) in a 1099 wrapper avoiding K-1 friction at HNW reporting scale."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — public real-estate sleeve complementing direct private holdings."
+            }
+          ]
+        },
+        {
+          "key": "concentrated-position-diversification",
+          "name": "Concentrated-Position Diversification",
+          "shortDescription": "Founder, executive, or HNW investor with a large single-stock or single-sector position seeking structured diversification via defined-outcome / options-based ETFs without immediate taxable sale.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "Founder, executive, or HNW investor whose net worth is dominated by a concentrated single-stock holding (often with a low cost basis triggering large taxable gains on sale) and who is seeking diversification without immediately realizing the gain."
+          },
+          "analysisAngle": "The concentration risk vs the tax cost of selling is the central tradeoff. Defined-outcome ETFs (buffered equity), covered-call wrappers, and exchange funds offer different paths. Discuss the upside-cap, downside-floor, and rolling-window mechanics of defined-outcome products. For options-based hedges, discuss roll cost and how the strategy behaves across volatility regimes.",
+          "keyConsiderations": [
+            "Outcome-period mechanics (entry / exit window) of defined-outcome ETFs.",
+            "Upside-cap and downside-floor levels relative to current concentration.",
+            "Roll cost of options overlays across volatility regimes.",
+            "Tax-cost vs concentration-risk tradeoff of immediate sale.",
+            "Issuer counterparty exposure for derivative-based structures."
+          ],
+          "redFlags": [
+            "Defined-outcome fund where the cap and floor have already been breached mid-cycle.",
+            "Counterparty / credit exposure that adds risk beyond the concentrated position.",
+            "Methodology that doesn't explain how downside protection is funded."
+          ],
+          "etfs": [
+            {
+              "symbol": "BUFR",
+              "name": "FT Vest Laddered Buffer ETF",
+              "exchange": "BATS",
+              "why": "Laddered S&P 500 buffered-equity sleeve with rolling downside protection — used to step out of a concentrated single-stock without immediate gain realization."
+            },
+            {
+              "symbol": "PJAN",
+              "name": "Innovator U.S. Equity Power Buffer ETF – January",
+              "exchange": "BATS",
+              "why": "Single-outcome-period defined buffer (~9% downside protection, capped upside) — one rung of a customized buffered-equity ladder."
+            },
+            {
+              "symbol": "USMV",
+              "name": "iShares MSCI USA Min Vol Factor ETF",
+              "exchange": "BATS",
+              "why": "Low-volatility US equity diversifier providing broad equity exposure with materially reduced volatility vs a concentrated single holding."
+            }
+          ]
+        },
+        {
+          "key": "derivative-income-yield-supplement",
+          "name": "Derivative-Income Yield Supplement",
+          "shortDescription": "HNW investor or retiree using covered-call or option-overwrite ETFs (JEPI, JEPQ, QYLD) to supplement income from the public-equity sleeve, accepting an upside cap.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "HNW investor or retiree seeking enhanced current yield from the equity sleeve via covered-call or option-overwrite strategies — accepts that the strategy gives up some upside in exchange for monthly income."
+          },
+          "analysisAngle": "The capture ratio is the honest test — does the strategy deliver upside-capped equity returns plus durable monthly income? Decompose distribution into qualified dividend, ordinary income, and ROC; ROC is tax-deferred but lowers basis. Compare to a simple low-cost index + manual covered-call write.",
+          "keyConsiderations": [
+            "Capture ratio (% of upside captured vs % of downside) over 3-5 years.",
+            "Distribution character (qualified, ordinary, ROC).",
+            "Implied vol environment in which the strategy works best.",
+            "Total cost vs a manual covered-call equivalent.",
+            "Manager continuity for actively managed overwrite strategies."
+          ],
+          "redFlags": [
+            "Distribution funded mostly by ROC without explicit disclosure.",
+            "Capture ratio that gives up most upside without delivering matching income.",
+            "Strategy that significantly underperforms the underlying index in flat markets."
+          ],
+          "etfs": [
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "S&P 500 covered-call overlay with ~7-8% distribution — flagship equity-overlay product for monthly income supplement."
+            },
+            {
+              "symbol": "JEPQ",
+              "name": "JPMorgan Nasdaq Equity Premium Income ETF",
+              "exchange": "NASDAQ",
+              "why": "Same overlay applied to Nasdaq 100 — higher option premium and richer monthly income for tech-heavy equity sleeves."
+            },
+            {
+              "symbol": "QYLD",
+              "name": "Global X NASDAQ 100 Covered Call ETF",
+              "exchange": "NASDAQ",
+              "why": "At-the-money Nasdaq 100 covered-call writing — pure income-maximizer trading off most of the upside."
+            }
+          ]
+        },
+        {
+          "key": "liquid-beta-sleeve-alongside-privates",
+          "name": "Liquid-Beta Sleeve Alongside Private Allocations",
+          "shortDescription": "Public-market beta sleeve providing liquid US, international, and EM equity + IG bond exposure alongside an illiquid PE / hedge-fund / direct-real-estate book — also serves as the rebalancing buffer.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor or family office whose alpha mandate sits in private allocations; the public ETF sleeve provides liquid beta and the rebalancing reservoir to fund capital calls, distributions, and tax payments."
+          },
+          "analysisAngle": "This is a building-block role — the ETFs serve as cheap, transparent, scalable beta exposure. Tracking fidelity to the policy benchmark, AUM/capacity, bid-ask, and tax efficiency dominate. Discuss benchmark fit (S&P 500 vs Russell 1000 vs MSCI USA), and explicitly call out that the ETF must have enough liquidity to fund capital calls without market impact.",
+          "keyConsiderations": [
+            "Tracking fidelity to the chosen policy benchmark.",
+            "Bid-ask depth for funding capital calls without market impact.",
+            "Tax efficiency for the taxable-account public sleeve.",
+            "Benchmark family compatibility (S&P, Russell, MSCI, FTSE).",
+            "AUM scale appropriate for HNW position sizes."
+          ],
+          "redFlags": [
+            "Fund too small to absorb HNW position sizes without market impact.",
+            "Wrong benchmark family forcing tracking-error commentary.",
+            "Distribution mechanics that complicate capital-call funding."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest S&P 500 wrapper at 0.03% — workhorse public-equity beta with ample bid-ask depth for capital-call funding."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "BATS",
+              "why": "Broad developed-international beta at 0.07% with institutional-scale liquidity for the ex-US sleeve."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core fixed income at 0.03% — bond-side liquid-beta complement to the equity-private allocation."
+            }
+          ]
+        },
+        {
+          "key": "multi-generational-trust-portfolio",
+          "name": "Multi-Generational Trust Portfolio Construction",
+          "shortDescription": "Family-office investor managing wealth through generation-skipping trusts, GRATs, IDGTs, or dynasty trusts — needs ETFs whose mandate stability and tax efficiency hold across 30-50+ year horizons.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "Family office or HNW family using trust structures (generation-skipping, GRAT, IDGT, dynasty trust) to transfer wealth across generations — relevant horizon is 30-50+ years and the trustee's fiduciary duty drives selection."
+          },
+          "analysisAngle": "Mandate stability over 30-50+ years is the structural bet — a fund that quietly changes its benchmark mid-trust breaks the rationale. Discuss step-up-in-basis at death (favors holding low-basis appreciated positions until trust unwinds vs realizing during life). Trustee fiduciary duty and prudent-investor-rule compatibility matter. Issuer operational stability over multi-decade horizons is the other anchor.",
+          "keyConsiderations": [
+            "Mandate and benchmark stability over multi-decade trust horizons.",
+            "Trustee fiduciary duty and prudent-investor-rule compatibility.",
+            "Issuer operational stability over 30-50+ years.",
+            "Tax efficiency for held-to-trust-termination positions.",
+            "Step-up-in-basis interaction with trust structure (varies by trust type)."
+          ],
+          "redFlags": [
+            "Recent benchmark or strategy changes that break the multi-decade record.",
+            "Issuer operational concerns over long horizons.",
+            "High-turnover strategy that breaks tax-deferral within the trust."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Total-US exposure with mandate stability and Vanguard’s multi-decade operational track record — fits 30-50 year trust horizons."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares total-US alternative — diversifies fund-issuer concentration alongside VTI; both have stable benchmark mandates."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Broad ex-US equity exposure at 0.05% to round out the multi-generational global equity sleeve."
+            }
+          ]
+        },
+        {
+          "key": "charitable-giving-daf-funding",
+          "name": "Charitable Giving / DAF Appreciated-Securities Funding",
+          "shortDescription": "HNW or family-office donor funding a Donor-Advised Fund (Schwab/Fidelity/Vanguard Charitable) with long-term-held appreciated ETF shares — gets the FMV deduction while extinguishing the embedded capital gain.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "None",
+            "taxSensitivity": "High",
+            "typicalInvestor": "HNW investor or family office with appreciated long-term-held ETF positions in taxable accounts who funds a DAF (Schwab Charitable, Fidelity Charitable, Vanguard Charitable) annually — captures the FMV deduction while avoiding the capital gain."
+          },
+          "analysisAngle": "The optimal donation candidate is a long-term-held ETF with the largest unrealized gain — donor receives the FMV deduction (subject to AGI limits) while extinguishing the embedded gain. Discuss long-term-held qualification, AGI deduction limits (30% for appreciated public securities), and basis-reset by repurchasing the same ETF after the gift. DAF sponsors accept all major ETF shares in-kind, making this nearly frictionless.",
+          "keyConsiderations": [
+            "Long-term-held qualification (12+ months) for FMV deduction vs basis-only.",
+            "Embedded unrealized gain — bigger gain = more tax-leakage avoided.",
+            "AGI deduction limit (30% for appreciated public securities, 5-year carryforward).",
+            "Cost-basis reset by repurchasing the same ETF after the gift (not a wash-sale).",
+            "DAF sponsor support for in-kind ETF transfers (Schwab/Fidelity/Vanguard all accept)."
+          ],
+          "redFlags": [
+            "Donating short-term-held positions (only basis is deductible — wastes the strategy).",
+            "Donating positions with embedded losses (better to sell, harvest the loss, donate cash).",
+            "Hitting the AGI deduction limit and losing deduction value beyond carryforward window."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Common HNW long-term-held position carrying frequent material unrealized gains — DAF sponsors accept in-kind transfer."
+            },
+            {
+              "symbol": "SPY",
+              "name": "SPDR S&P 500 ETF Trust",
+              "exchange": "NYSEARCA",
+              "why": "Universally accepted by every DAF sponsor with frictionless in-kind transfer mechanics — the most liquid donation vehicle."
+            },
+            {
+              "symbol": "QQQ",
+              "name": "Invesco QQQ Trust",
+              "exchange": "NASDAQ",
+              "why": "Tech-heavy positions accumulated over the past decade often carry the largest unrealized gains — high-impact DAF funding vehicle."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pension-endowment-foundation-sovereign",
+      "name": "Pension / Endowment / Foundation / Sovereign Wealth Fund",
+      "shortDescription": "Long-horizon, tax-exempt institutional pool governed by an Investment Policy Statement: corporate or public defined-benefit pension, Taft-Hartley / union pension, university endowment, charitable foundation, sovereign wealth fund. Distinct from corporate treasury because the mandate is long-horizon investment (not operating cash) and equity / private-asset allocation is part of the strategy. Distinct from HNW because the capital is institutional / fiduciary.",
+      "etfInvestorGoals": [
+        {
+          "key": "pension-liability-driven-investing",
+          "name": "Pension Liability-Driven Investing (LDI)",
+          "shortDescription": "Defined-benefit pension plan matching long-duration nominal or real liabilities with treasuries, STRIPS, and TIPS — duration matching matters more than nominal yield.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Defined-benefit pension plan (corporate, public, multi-employer / Taft-Hartley union) with a known actuarial liability stream, funded-ratio focused, governed by an IPS that specifies duration target and surplus risk tolerance."
+          },
+          "analysisAngle": "Duration matching is the primary lens. Long treasuries, STRIPS, and long-TIPS are the workhorse instruments. Discuss key-rate-duration profile, convexity, and the surplus-volatility tradeoff. Securities-lending revenue and institutional-share-class fees change the math — avoid retail fee commentary. Capacity matters: the fund must absorb $50-500M allocations without market impact.",
+          "keyConsiderations": [
+            "Key-rate-duration and convexity profile vs the liability stream.",
+            "Securities-lending revenue (institutional pools earn back basis points).",
+            "Capacity to absorb $50-500M allocations without market impact.",
+            "Liability-discount-curve sensitivity and surplus volatility.",
+            "Counterparty / collateral structure for STRIPS or futures-based duration."
+          ],
+          "redFlags": [
+            "Fund too small for institutional-scale allocation without dominant-holder risk.",
+            "Methodology drift that breaks IPS benchmark consistency.",
+            "Concentration / closure risk from a single large investor's outflow."
+          ],
+          "etfs": [
+            {
+              "symbol": "TLT",
+              "name": "iShares 20+ Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Long-duration Treasury exposure at scale — workhorse for pension long-end duration matching with deep institutional liquidity."
+            },
+            {
+              "symbol": "EDV",
+              "name": "Vanguard Extended Duration Treasury ETF",
+              "exchange": "NYSEARCA",
+              "why": "STRIPS-based ~25-year duration for the longest portion of the LDI curve where TLT alone is insufficient."
+            },
+            {
+              "symbol": "LTPZ",
+              "name": "PIMCO 15+ Year US TIPS Index ETF",
+              "exchange": "NYSEARCA",
+              "why": "Long-duration TIPS for inflation-linked liability matching — direct real-rate exposure for cost-of-living-adjusted obligations."
+            }
+          ]
+        },
+        {
+          "key": "endowment-foundation-spending-policy-support",
+          "name": "Endowment / Foundation Spending-Policy Support",
+          "shortDescription": "University endowment or charitable foundation distributing ~5% per year while preserving real capital across generations — needs a portfolio that sustainably supports spending without eroding the corpus.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "University endowment ($500M-$50B+), private foundation, or community foundation. Spending policy is the binding constraint (typically 4-5% rolling-average); IPS often includes ESG / SRI / mission-aligned screens; large allocations to private equity and real assets are typical."
+          },
+          "analysisAngle": "The portfolio must sustainably distribute ~5%/year while preserving real (inflation-adjusted) capital — this is a real-return mandate. ETFs are typically the liquid-beta sleeve and rebalancing buffer alongside the illiquid private book. Discuss real-return coverage, ESG / SRI screen compatibility, capacity, and securities-lending revenue.",
+          "keyConsiderations": [
+            "Long-run real return coverage of the spending rate.",
+            "ESG / SRI / mission-aligned screen compatibility.",
+            "Capacity for institutional-scale allocations without dominant-holder risk.",
+            "Liquid-beta provision alongside illiquid private allocations.",
+            "Rebalancing-band depth — can the ETF be sold at scale to fund distributions?"
+          ],
+          "redFlags": [
+            "ESG-labeled funds with weak self-graded screens (greenwashing risk).",
+            "Methodology drift breaking IPS benchmark consistency.",
+            "Insufficient liquidity to fund the annual distribution at scale."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Liquid US equity beta at 0.03% — efficient core for endowment public sleeve alongside the illiquid private book."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "BATS",
+              "why": "Developed-international beta at 0.07% for the international piece of the endowment liquid sleeve."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "IG core bond exposure at 0.03% as the diversifying fixed-income sleeve supporting the spending policy."
+            }
+          ]
+        },
+        {
+          "key": "institutional-liquid-beta-sleeve",
+          "name": "Institutional Liquid-Beta Sleeve",
+          "shortDescription": "Pension, endowment, foundation, or sovereign wealth fund needing a low-cost liquid index sleeve providing US, international, and EM equity beta + IG core fixed income alongside an illiquid private-allocation book.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Pension plan, endowment, foundation, or sovereign wealth fund whose IPS calls for a defined liquid-beta exposure mix to complement private equity, private real estate, and private credit. Typically uses institutional ETF share classes or separate accounts."
+          },
+          "analysisAngle": "This is a building-block role — the ETFs serve as cheap, transparent, scalable beta exposure for the IPS-mandated mix. Tracking fidelity to the policy benchmark, AUM/capacity, and securities-lending revenue dominate. Discuss policy benchmark fit (e.g., S&P 500 vs Russell 1000 vs MSCI USA) — the wrong benchmark family breaks attribution.",
+          "keyConsiderations": [
+            "Tracking fidelity to the IPS-mandated benchmark.",
+            "Securities-lending revenue offset against the institutional fee.",
+            "Capacity for institutional allocation sizes without market impact.",
+            "Benchmark family compatibility (S&P, Russell, MSCI, FTSE) with the IPS.",
+            "Operational stability — issuer custody, counterparty, settlement reliability."
+          ],
+          "redFlags": [
+            "Wrong benchmark family forcing attribution adjustments.",
+            "Limited capacity making the institution a dominant holder.",
+            "Issuer or fund-family operational concerns at institutional scale."
+          ],
+          "etfs": [
+            {
+              "symbol": "IVV",
+              "name": "iShares Core S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares S&P 500 wrapper at 0.03% — institutional staple with deep capacity and securities-lending revenue offset."
+            },
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "BATS",
+              "why": "MSCI EAFE-tracking developed-international beta with institutional-scale capacity for $50M+ allocations."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EM-tracking institutional EM beta with $90B+ AUM — capacity to absorb pension/endowment block sizes."
+            }
+          ]
+        },
+        {
+          "key": "ips-mandated-esg-sri-screened",
+          "name": "IPS-Mandated ESG / SRI / Mission-Aligned Screening",
+          "shortDescription": "Institutional pool whose IPS requires ESG, SRI, Taft-Hartley labor-friendly, or mission-aligned screens — needs ETFs that meet the screen with documented third-party-rated methodology.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Pension plan (especially Taft-Hartley with labor screens), university endowment with student-pressure-driven divestment, charitable foundation with mission alignment, or sovereign wealth fund with national policy constraints. IPS spells out the screen explicitly."
+          },
+          "analysisAngle": "Screen rigor at institutional level requires third-party-rated methodology with auditable exclusion lists. Self-graded screens are unacceptable for fiduciary use. Discuss screen provider (MSCI ESG, Sustainalytics, ISS), exclusion-list overlap with the IPS, sector tilt vs the unscreened benchmark, and tracking-error attribution. Capacity must accommodate institutional allocation sizes.",
+          "keyConsiderations": [
+            "Screen methodology — third-party rated, auditable exclusion list.",
+            "Screen-provider overlap with the IPS-mandated criteria.",
+            "Sector tilt and tracking error vs the unscreened parent index.",
+            "Capacity for institutional allocation sizes.",
+            "Documentation suitable for fiduciary review."
+          ],
+          "redFlags": [
+            "Self-graded ESG screens unsuitable for fiduciary use.",
+            "Exclusion-list gaps that the IPS specifically prohibits.",
+            "Capacity insufficient for the institutional allocation size."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap with auditable third-party screen — fiduciary-grade documentation for IPS files."
+            },
+            {
+              "symbol": "ESGD",
+              "name": "iShares ESG Aware MSCI EAFE ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated developed-international screen for the institutional ex-US sleeve, matching the US screen methodology."
+            },
+            {
+              "symbol": "SUSA",
+              "name": "iShares MSCI USA ESG Select ETF",
+              "exchange": "NYSEARCA",
+              "why": "Higher-conviction MSCI ESG US screen for IPSes requiring deeper exclusions than the broader ESGU mandate."
+            }
+          ]
+        },
+        {
+          "key": "institutional-real-asset-inflation-hedge",
+          "name": "Institutional Real-Asset / Inflation Hedge",
+          "shortDescription": "Pension or endowment adding TIPS, commodities, real estate, or infrastructure exposure to defend real spending power against inflation — sized as a portfolio sleeve, often complementing direct private real-asset allocations.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Pension or endowment CIO building a real-asset sleeve to defend the real value of liabilities (pension) or spending policy (endowment). Often complemented by direct private real estate, farmland, or infrastructure holdings."
+          },
+          "analysisAngle": "Real-return correlation across inflation regimes drives selection. TIPS hedge measured CPI directly; commodities and gold hedge different drivers; equity-real-asset proxies (REITs, infra) carry equity beta that should be netted against the institutional equity allocation. Discuss overlap with directly held private real assets to avoid duplicate exposure.",
+          "keyConsiderations": [
+            "Real-return correlation in measured inflation regimes.",
+            "Overlap with directly held private real estate / infrastructure / farmland.",
+            "Composition tradeoff (commodities vs TIPS vs equity-heavy real assets).",
+            "Capacity for institutional-scale allocations.",
+            "Operational compatibility with the institution's custodian and reporting."
+          ],
+          "redFlags": [
+            "Material overlap with directly held private real assets.",
+            "Commodity exposure delivered via equity proxies that track stocks more than spot.",
+            "Capacity insufficient for the institutional allocation size."
+          ],
+          "etfs": [
+            {
+              "symbol": "TIP",
+              "name": "iShares TIPS Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad TIPS exposure providing direct CPI linkage at institutional scale — cleanest measured-inflation hedge."
+            },
+            {
+              "symbol": "DBC",
+              "name": "Invesco DB Commodity Index Tracking Fund",
+              "exchange": "NYSEARCA",
+              "why": "Diversified commodity-futures basket for unanticipated-inflation hedging where institutions can absorb K-1 reporting."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Public US REIT exposure at 0.13% — equity-real-asset complement to the TIPS and commodity legs."
+            }
+          ]
+        },
+        {
+          "key": "emerging-markets-international-at-scale",
+          "name": "Global / EM Diversification at Institutional Scale",
+          "shortDescription": "Institutional pool building developed-international and EM equity exposure at $50M-$5B allocation sizes — needs ETFs with capacity, tracking fidelity, and operational stability to handle the scale.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Pension, endowment, foundation, or sovereign wealth fund whose IPS targets a defined developed-international and EM equity weight — typically 15-30% of the equity allocation, sized in the hundreds of millions to billions."
+          },
+          "analysisAngle": "Capacity and tracking fidelity dominate. Discuss benchmark family (MSCI EAFE vs FTSE Developed; MSCI EM vs FTSE EM) and explicit currency-hedging methodology if applicable. Discuss country-tier allocation (frontier inclusion, China A-share inclusion). Operational reliability — settlement across time zones, tax-treaty structure — matters at this scale.",
+          "keyConsiderations": [
+            "Benchmark family compatibility (MSCI vs FTSE) with the IPS.",
+            "Capacity for $50M-$5B allocations without market impact.",
+            "Currency-hedging methodology if the fund hedges.",
+            "Country-tier inclusion (frontier, China A-share) vs the IPS target.",
+            "Operational reliability for cross-time-zone settlement and tax treaties."
+          ],
+          "redFlags": [
+            "Wrong benchmark family forcing attribution mismatch.",
+            "Limited capacity at institutional scale.",
+            "Currency-hedging methodology that materially deviates from the underlying spot."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "BATS",
+              "why": "MSCI EAFE-tracking developed-international beta with $100B+ AUM — institutional capacity for $50M-$5B blocks."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "MSCI EM-tracking institutional EM exposure at $90B+ AUM with broad country-tier inclusion."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "FTSE-based total ex-US (developed + EM) at 0.05% — for IPSes that prefer the FTSE benchmark family."
+            }
+          ]
+        },
+        {
+          "key": "public-private-allocation-rebalancing-buffer",
+          "name": "Public/Private Allocation Rebalancing Buffer",
+          "shortDescription": "Institutional pool using broad index ETFs as the liquid 'rebalancing reservoir' that absorbs private-side capital calls or distributions without forcing a strategic-mix shift.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Institutional CIO managing a portfolio with 30-60% private allocations (PE, real estate, credit) — uses public ETF positions as the liquid buffer that absorbs private-side capital calls and distributions without forcing a strategic-mix shift."
+          },
+          "analysisAngle": "Liquidity at scale is the central requirement — the ETF must absorb $50-500M in/out trades without market impact. Discuss bid-ask, dollar volume, premium-discount drift in stress, and capacity headroom. Tracking fidelity to the strategic-mix benchmark matters because the buffer should NOT introduce attribution mismatch when held longer than expected.",
+          "keyConsiderations": [
+            "Bid-ask depth for $50-500M institutional-block trades.",
+            "Average daily dollar volume sufficient for rapid in-and-out.",
+            "Premium-discount drift in stress windows (March 2020 / Oct 2022).",
+            "Tracking fidelity to the strategic-mix benchmark.",
+            "Capacity headroom — would a single trade make the institution a dominant holder?"
+          ],
+          "redFlags": [
+            "Insufficient dollar volume for institutional-block trades.",
+            "Material premium-discount drift during normal conditions.",
+            "Capacity that would make the institution a dominant holder."
+          ],
+          "etfs": [
+            {
+              "symbol": "VOO",
+              "name": "Vanguard S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "$400B+ AUM with the deepest bid-ask in the equity wrapper market — absorbs $50-500M block trades for capital-call funding."
+            },
+            {
+              "symbol": "IVV",
+              "name": "iShares Core S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares S&P 500 alternative at similar scale — diversifies fund-issuer concentration in the rebalancing reservoir."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond exposure at $110B+ AUM — bond-side rebalancing buffer when private-credit calls land."
+            }
+          ]
+        },
+        {
+          "key": "cash-equitization-transition-management",
+          "name": "Cash Equitization & Transition Management",
+          "shortDescription": "Institutional CIO using SPY / IVV / AGG as bridge exposure during manager transitions, contribution timing gaps, or to neutralize the cash-drag on uninvested funds pending strategic deployment.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Institutional CIO, transition manager, or asset-allocation team needing same-day broad-market beta exposure for cash sitting in custody — typically held days to weeks during manager hire/fire transitions or contribution-timing gaps."
+          },
+          "analysisAngle": "The role is to neutralize uninvested-cash drag against the policy benchmark for a defined short window. Bid-ask, dollar volume, and policy-benchmark fidelity dominate; securities-lending revenue and fee compounding barely matter at short horizons. The fund must absorb $50M-$1B in/out without market impact and unwind cleanly when the strategic allocation is funded.",
+          "keyConsiderations": [
+            "Bid-ask depth for $50M-$1B institutional-block in-and-out trades.",
+            "Policy-benchmark fidelity (S&P 500 vs Russell 1000 vs MSCI USA depending on IPS).",
+            "Premium-discount drift in stress windows when transitions land at bad times.",
+            "Unwind mechanics — same-day liquidity to fund the strategic allocation when ready.",
+            "Operational compatibility with custodian and external transition manager."
+          ],
+          "redFlags": [
+            "Insufficient dollar volume making the institution a dominant short-term holder.",
+            "Wrong benchmark family creating attribution mismatch on the bridge sleeve.",
+            "Premium-discount drift during the brief holding period."
+          ],
+          "etfs": [
+            {
+              "symbol": "SPY",
+              "name": "SPDR S&P 500 ETF Trust",
+              "exchange": "NYSEARCA",
+              "why": "Largest, most-liquid S&P 500 wrapper at $400B+ AUM — institutional-default cash-equitization vehicle with deepest bid-ask."
+            },
+            {
+              "symbol": "IVV",
+              "name": "iShares Core S&P 500 ETF",
+              "exchange": "NYSEARCA",
+              "why": "iShares S&P 500 alternative at $500B+ AUM — same liquidity profile with alternative-issuer custody."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond exposure at $110B+ AUM — bond-side equitization for fixed-income manager transitions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "insurance-bank-corporate-treasury",
+      "name": "Insurance General Account / Bank / Corporate Treasury",
+      "shortDescription": "Regulated balance-sheet investor — insurance company general account, bank treasury, or corporate operating-cash treasury — constrained by external regulation (NAIC for insurers, Basel III / HQLA for banks) or board-approved IPS to investment-grade short-to-intermediate-duration fixed income. Distinct from pension/endowment because the mandate is balance-sheet preservation (not long-horizon investment) and equity exposure is typically prohibited.",
+      "etfInvestorGoals": [
+        {
+          "key": "operating-cash-management-ultra-short",
+          "name": "Operating-Cash Management (Ultra-Short)",
+          "shortDescription": "Corporate treasury or insurance operating-cash sleeve held in sub-1-year treasury or ultra-short bond ETFs (BIL, ICSH, JPST, GSY) — balances cash yield against same-day-liquidity needs.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Low",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Corporate treasury team or insurance operating-cash desk parking funds for known near-term needs (payroll, capex, claims settlement). Uses sub-1y treasury or ultra-short ETFs as a step up from money-market funds."
+          },
+          "analysisAngle": "Ultra-short duration and IG-only credit are the constraints. Discuss yield pickup vs Treasury bills and money-market funds, NAV stability ($ of NAV variance per $100), and same-day liquidity. Bid-ask matters at corporate scale. Avoid duration creep — funds labeled 'ultra-short' but holding 18+ month paper miss the mandate.",
+          "keyConsiderations": [
+            "Effective duration well under 1 year (target ~0.3 years for true ultra-short).",
+            "IG-only credit composition with no high-yield drift.",
+            "NAV stability ($ NAV variance per $100 invested).",
+            "Bid-ask depth for corporate-scale block trades.",
+            "Yield pickup vs Treasury bills and money-market funds."
+          ],
+          "redFlags": [
+            "Duration creep — fund labeled 'ultra-short' holding 18+ month paper.",
+            "Material credit-quality drift below IG.",
+            "NAV instability beyond expected ultra-short range."
+          ],
+          "etfs": [
+            {
+              "symbol": "BIL",
+              "name": "SPDR Bloomberg 1-3 Month T-Bill ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pure 1-3 month T-bill exposure for treasury cash parking with same-day liquidity and minimal NAV variance."
+            },
+            {
+              "symbol": "ICSH",
+              "name": "iShares Ultra Short-Term Bond ETF",
+              "exchange": "BATS",
+              "why": "Active ultra-short IG bond fund with target ~0.5y duration — modest yield pickup over money-market funds."
+            },
+            {
+              "symbol": "JPST",
+              "name": "JPMorgan Ultra-Short Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "JP Morgan’s flagship ultra-short IG fund offering yield pickup over T-bills with daily corporate-scale liquidity."
+            }
+          ]
+        },
+        {
+          "key": "regulated-investment-grade-core-fixed-income",
+          "name": "Regulated Investment-Grade Core Fixed Income",
+          "shortDescription": "Insurance general account, bank treasury, or large-corporate treasury holding IG core bond exposure (treasury, IG corporate, agency MBS) inside NAIC / Basel / IPS constraints.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Low",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Insurance general account, bank treasury (Available-for-Sale book), or corporate treasury holding IG core bond exposure inside an IPS that limits to IG and target duration ≤ 3-5 years."
+          },
+          "analysisAngle": "Regulatory constraints dominate every decision. For insurers, NAIC ratings drive RBC charges; for banks, HQLA classification and Basel III apply; for corporates, the IPS limits to IG short-to-intermediate. Focus on look-through credit quality, duration profile, NAIC / Basel treatment of the wrapper, and AUM/liquidity at mandate scale. Avoid yield-pickup strategies — these holders are constrained.",
+          "keyConsiderations": [
+            "Underlying credit quality (95%+ IG for most policies).",
+            "Duration profile compatible with policy (often ≤ 3-5 years).",
+            "NAIC / Basel / IPS look-through treatment of the wrapper.",
+            "AUM and bid-ask depth at mandate scale ($50-500M positions).",
+            "Distribution mechanics — monthly cash flow and accrual treatment."
+          ],
+          "redFlags": [
+            "Any sub-investment-grade exposure inside the wrapper.",
+            "Long duration exposure incompatible with the policy.",
+            "Unclear regulatory look-through treatment."
+          ],
+          "etfs": [
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond benchmark exposure at $110B+ AUM — institutional liquidity for insurance/treasury allocations."
+            },
+            {
+              "symbol": "BND",
+              "name": "Vanguard Total Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Vanguard’s IG core bond at 0.03% with similar broad mandate — alternative wrapper to AGG for issuer diversification."
+            },
+            {
+              "symbol": "IUSB",
+              "name": "iShares Core Total USD Bond Market ETF",
+              "exchange": "NASDAQ",
+              "why": "Broader USD IG bond exposure including some non-Agg sectors — slight diversification within the IG sleeve."
+            }
+          ]
+        },
+        {
+          "key": "hqla-eligible-short-government",
+          "name": "HQLA-Eligible Short Government Exposure",
+          "shortDescription": "Bank treasury holding short-term US treasury ETFs (SHY, BIL, GBIL) as part of the High-Quality Liquid Assets (HQLA) buffer required under Basel III LCR.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Low",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Bank treasury team building the HQLA buffer required for Basel III LCR (Liquidity Coverage Ratio) compliance — wants treasury exposure with full HQLA Level-1 treatment via the wrapper."
+          },
+          "analysisAngle": "HQLA Level-1 treatment of the ETF wrapper is the gating question. Confirm look-through with regulator. Discuss bid-ask at bank-block scale, duration positioning vs LCR runoff assumptions, and pure-treasury composition (no agency / IG corporate). Securities-lending policy — borrowed-out shares may not count as HQLA.",
+          "keyConsiderations": [
+            "HQLA Level-1 look-through treatment confirmed with regulator.",
+            "Bid-ask depth at bank-block trade size.",
+            "Pure-treasury composition (no agency or IG corporate dilution).",
+            "Securities-lending policy — borrowed-out shares may not count toward HQLA.",
+            "Duration positioning vs LCR 30-day runoff assumptions."
+          ],
+          "redFlags": [
+            "Wrapper structure that loses HQLA Level-1 treatment under regulator look-through.",
+            "Securities-lending program that pulls shares out of HQLA buffer.",
+            "Composition drift away from pure treasury into agency or IG corporate."
+          ],
+          "etfs": [
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-3 year treasury exposure for the HQLA Level-1 buffer — deep liquidity and pure-treasury composition."
+            },
+            {
+              "symbol": "BIL",
+              "name": "SPDR Bloomberg 1-3 Month T-Bill ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pure short T-bill exposure — most liquid HQLA Level-1 holding and tightest NAV-stability profile."
+            },
+            {
+              "symbol": "GBIL",
+              "name": "Goldman Sachs Access Treasury 0-1 Year ETF",
+              "exchange": "NYSEARCA",
+              "why": "Goldman’s 0-1 year treasury wrapper providing sub-1y HQLA Level-1 exposure with low expense ratio."
+            }
+          ]
+        },
+        {
+          "key": "insurance-after-tax-muni-yield",
+          "name": "Insurance General-Account After-Tax Muni Yield",
+          "shortDescription": "Insurance general account (especially P&C) holding muni bond ETFs to capture after-tax yield where the IPS permits — competes against IG corporate and Treasury after the corporate-tax adjustment.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "Insurance general account (typically P&C insurer) where the IPS allows muni allocation and the after-tax muni yield exceeds the after-tax taxable IG alternative."
+          },
+          "analysisAngle": "After-corporate-tax yield is the comparison metric — adjust both muni and IG corporate yields to after-tax-of-21% federal. Discuss credit-tier mix, single-state concentration risk, AMT exposure on private-activity bonds (corporate AMT was repealed but state-level treatment varies), and NAIC treatment of muni inside the wrapper.",
+          "keyConsiderations": [
+            "After-corporate-tax yield vs IG corporate alternative.",
+            "Credit-tier mix — IG-only vs HY-muni tilt.",
+            "Single-state concentration risk for state-specific muni funds.",
+            "AMT or state-tax treatment of private-activity bonds.",
+            "NAIC look-through treatment of the muni-fund wrapper."
+          ],
+          "redFlags": [
+            "High-yield muni exposure inside a generically named muni fund.",
+            "Single-state concentration with documented credit distress.",
+            "Unclear NAIC treatment of the muni wrapper."
+          ],
+          "etfs": [
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — workhorse for P&C insurance after-tax muni allocation with broad credit diversification."
+            },
+            {
+              "symbol": "VTEB",
+              "name": "Vanguard Tax-Exempt Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Vanguard’s national IG muni at 0.05% — alternative wrapper for issuer diversification within the muni sleeve."
+            },
+            {
+              "symbol": "SUB",
+              "name": "iShares Short-Term National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Short-duration national muni for insurers preferring lower duration risk in the after-tax muni sleeve."
+            }
+          ]
+        },
+        {
+          "key": "insurance-intermediate-liability-matching",
+          "name": "Insurance Intermediate-Duration Liability Matching",
+          "shortDescription": "Insurance general account matching intermediate-duration liability cash flows with intermediate treasury, IG corporate, and securitized exposure — duration target typically 3-7 years.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Insurance general account (life insurer or long-tail P&C) building intermediate-duration fixed-income exposure to match liability cash flows that extend 3-7 years out, inside NAIC RBC constraints."
+          },
+          "analysisAngle": "Duration matching to the liability profile is the test. Discuss key-rate-duration profile, IG composition (treasury / agency / IG corporate / securitized weights), NAIC RBC charge per asset class, and the wrapper's RBC look-through treatment. Capacity matters at insurance-allocation scale ($100M-$1B positions).",
+          "keyConsiderations": [
+            "Key-rate-duration profile vs the liability cash flow.",
+            "IG composition mix (treasury / agency / IG corporate / securitized).",
+            "NAIC RBC charge per asset class inside the wrapper.",
+            "Capacity at insurance-allocation scale ($100M-$1B positions).",
+            "Wrapper structure compatible with liability accounting."
+          ],
+          "redFlags": [
+            "Duration mismatch with the targeted liability profile.",
+            "Material drift below IG composition.",
+            "Insufficient capacity for insurance-scale allocations."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEI",
+              "name": "iShares 3-7 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate-duration treasury (~5y) matching common life-insurance and long-tail P&C liability profiles."
+            },
+            {
+              "symbol": "IEF",
+              "name": "iShares 7-10 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "7-10 year treasury exposure for the longer end of the intermediate-duration liability profile."
+            },
+            {
+              "symbol": "VCIT",
+              "name": "Vanguard Intermediate-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate IG corporate exposure providing yield pickup over comparable-duration treasury within IG-only mandates."
+            }
+          ]
+        },
+        {
+          "key": "inflation-protected-fixed-income-treasury",
+          "name": "Inflation-Protected Fixed Income (TIPS)",
+          "shortDescription": "Insurance or treasury holding TIPS exposure to defend the real value of nominal liabilities or to hedge inflation-linked claim costs — typically intermediate-duration TIPS (TIP, SCHP).",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Insurance general account hedging inflation-linked claim costs (e.g., medical or auto bodily-injury reserves) or corporate treasury hedging inflation-sensitive liabilities. Uses TIPS for direct CPI linkage."
+          },
+          "analysisAngle": "Direct CPI linkage is the hedging mechanism. Discuss real yield vs nominal, breakeven inflation vs market-implied, NAIC treatment of TIPS inside the wrapper, and the asymmetric tax treatment of inflation accruals (taxable when accrued). For short-duration TIPS, discuss the lower duration risk vs reduced inflation pickup.",
+          "keyConsiderations": [
+            "Real yield vs nominal-yield-curve equivalent.",
+            "Breakeven inflation vs market-implied expectations.",
+            "NAIC look-through treatment of TIPS inside the wrapper.",
+            "Inflation-accrual tax treatment for taxable holders.",
+            "Duration positioning vs the inflation-linked liability."
+          ],
+          "redFlags": [
+            "Wrapper that obscures the inflation-accrual tax treatment.",
+            "Duration that mismatches the inflation-linked liability.",
+            "Insufficient capacity for insurance-scale allocations."
+          ],
+          "etfs": [
+            {
+              "symbol": "TIP",
+              "name": "iShares TIPS Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad intermediate-duration TIPS exposure — direct CPI linkage at institutional scale with deep liquidity."
+            },
+            {
+              "symbol": "SCHP",
+              "name": "Schwab US TIPS ETF",
+              "exchange": "NYSEARCA",
+              "why": "Schwab’s TIPS wrapper at 0.03% — lowest-cost IG-only inflation linkage for cost-conscious treasury teams."
+            },
+            {
+              "symbol": "VTIP",
+              "name": "Vanguard Short-Term Inflation-Protected Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration TIPS for insurers preferring lower duration risk while preserving direct CPI linkage."
+            }
+          ]
+        },
+        {
+          "key": "short-corporate-credit-yield-pickup",
+          "name": "Short-Corporate-Credit Yield Pickup over Treasury",
+          "shortDescription": "Treasury or insurance team adding a short-duration IG corporate bond ETF (VCSH, IGSB) sleeve to capture the modest credit-spread pickup over treasury within an IG-only IPS.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Corporate treasury, insurance general account, or bank treasury that holds a baseline of treasury exposure and adds a short-duration IG corporate sleeve to capture the credit-spread pickup over comparable-duration treasury — keeps the IPS's IG-only mandate."
+          },
+          "analysisAngle": "The yield pickup vs comparable-duration treasury is the entire rationale. Discuss the typical IG corporate spread over treasury (30-100 bp), credit-tier mix inside the IG bucket (A vs BBB tilt), and the spread behavior in credit-stress windows. Confirm the wrapper is NAIC / Basel acceptable. The sleeve becomes a real cost in stress when spreads widen.",
+          "keyConsiderations": [
+            "Yield pickup vs comparable-duration treasury (typical 30-100 bp).",
+            "Credit-tier mix inside the IG bucket (A vs BBB tilt).",
+            "Spread behavior in credit-stress windows (March 2020, Oct 2022).",
+            "NAIC / Basel look-through treatment of the wrapper.",
+            "Duration matched to the comparable treasury sleeve."
+          ],
+          "redFlags": [
+            "Material BBB tilt that increases downgrade-to-HY risk.",
+            "Spread behavior worse than peers in past credit stress.",
+            "Unclear NAIC / Basel look-through treatment."
+          ],
+          "etfs": [
+            {
+              "symbol": "VCSH",
+              "name": "Vanguard Short-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG corporate exposure capturing typical 30-100 bp pickup over comparable-duration treasury."
+            },
+            {
+              "symbol": "IGSB",
+              "name": "iShares 1-5 Year Investment Grade Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-5 year IG corporate alternative with the same yield-pickup mandate — issuer-diversifies the credit sleeve."
+            },
+            {
+              "symbol": "SLQD",
+              "name": "iShares 0-5 Year Investment Grade Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Even shorter 0-5y IG corporate for treasuries wanting minimal duration alongside the credit-spread pickup."
+            }
+          ]
+        },
+        {
+          "key": "agency-mbs-mortgage-allocation",
+          "name": "Agency MBS Allocation",
+          "shortDescription": "Insurance general account or bank treasury holding agency MBS exposure (MBB, VMBS, SPMB) for the mortgage sleeve of an IG fixed-income mandate — captures the spread-and-prepayment dynamic of agency mortgages.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Insurance general account, bank treasury (Available-for-Sale book), or large corporate treasury holding agency-MBS exposure as the mortgage-securitized sleeve of a diversified IG fixed-income mandate."
+          },
+          "analysisAngle": "Agency MBS carries explicit (Ginnie Mae) or implicit (Fannie/Freddie) government guarantee, so credit risk is minimal — the entire risk is prepayment/extension and option-adjusted spread. Discuss effective duration (changes materially with rate moves), negative convexity from the prepayment option, HQLA Level-2A treatment for banks, and NAIC RBC charge for insurers (typically very favorable). Capacity matters at insurance/bank allocation scale.",
+          "keyConsiderations": [
+            "Effective duration profile — varies with rate environment due to prepayment.",
+            "Negative convexity from prepayment option — extension risk in rising-rate regimes.",
+            "HQLA Level-2A treatment for bank-treasury holders.",
+            "NAIC RBC treatment for insurance holders (typically very favorable for agency MBS).",
+            "Capacity for $100M+ allocation sizes without market impact."
+          ],
+          "redFlags": [
+            "Material non-agency MBS exposure inside a generically named 'MBS' fund.",
+            "Convexity-mismatch surprises in fast-moving rate regimes.",
+            "Insufficient capacity for institution-scale allocations."
+          ],
+          "etfs": [
+            {
+              "symbol": "MBB",
+              "name": "iShares MBS ETF",
+              "exchange": "NASDAQ",
+              "why": "Largest agency-MBS ETF at $35B+ AUM — institutional-scale liquidity for insurance/bank mortgage allocation."
+            },
+            {
+              "symbol": "VMBS",
+              "name": "Vanguard Mortgage-Backed Securities ETF",
+              "exchange": "NASDAQ",
+              "why": "Vanguard's agency-MBS wrapper at 0.04% — alternative-issuer with similar mandate to MBB for fund-issuer diversification."
+            },
+            {
+              "symbol": "SPMB",
+              "name": "SPDR Portfolio Mortgage Backed Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "SPDR low-fee (0.04%) agency-MBS exposure — third-issuer alternative diversifying across MBB and VMBS."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "financial-advisor-ria",
+      "name": "Financial Advisor / RIA / Wealth Manager",
+      "shortDescription": "Registered Investment Advisor, fee-only financial planner, wealth manager, or wirehouse advisor managing client AUM through model portfolios — typically $50M-$5B in client AUM split into 3-5 risk-tier models, rebalanced quarterly. Distinct from retail because the advisor is the buyer making product decisions across many client accounts; distinct from HNW because the underlying capital belongs to many different clients with different tax / risk profiles.",
+      "etfInvestorGoals": [
+        {
+          "key": "passive-core-model-building-blocks",
+          "name": "Passive Core Model-Portfolio Building Blocks",
+          "shortDescription": "Cheap, broad, well-tracked passive ETFs as the workhorse holdings in risk-tier model portfolios — fact-sheet clarity, tight bid-ask, and TAMP availability matter.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "Independent RIA or fee-only planner managing $50M-$5B in client AUM, using 3-5 risk-tier models, rebalancing quarterly. Selects ETFs as building blocks rather than standalone hero positions."
+          },
+          "analysisAngle": "Selection logic optimizes for use as a building block — fact-sheet clarity for client meetings, bid-ask tightness across client-block trades, fee compounding on top of the advisor's own AUM fee. Issuer brand, analyst coverage, and rep support matter for due-diligence defensibility. Active or thematic funds complicate the simple 'we use low-cost passive' narrative the advisor is selling.",
+          "keyConsiderations": [
+            "Bid-ask tightness amplified across many client-block trades.",
+            "Fact-sheet clarity for client meetings and due-diligence files.",
+            "Compatibility with major TAMP / custody platforms (Schwab, Fidelity, Pershing, Envestnet).",
+            "All-in cost story (ETF fee + advisor AUM fee) for the end-client narrative.",
+            "Issuer scale and rep support for ongoing due diligence."
+          ],
+          "redFlags": [
+            "Niche issuer with no analyst coverage or wholesaler relationship.",
+            "Active or thematic strategy that complicates the model-portfolio thesis.",
+            "Closure risk that would force a cross-account taxable transition for many clients."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Cheapest broad US workhorse at 0.03% with maximum TAMP/custody-platform availability for model portfolios."
+            },
+            {
+              "symbol": "IXUS",
+              "name": "iShares Core MSCI Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Total ex-US (developed + EM) at 0.07% — single-fund international building block simplifying the model."
+            },
+            {
+              "symbol": "AGG",
+              "name": "iShares Core US Aggregate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "IG core bond benchmark exposure at 0.03% — bond-side workhorse with TAMP-friendly fact sheet."
+            }
+          ]
+        },
+        {
+          "key": "tax-loss-harvesting-partner-pairs",
+          "name": "Tax-Loss-Harvesting Partner Pairs",
+          "shortDescription": "Advisor needs wash-sale-safe ETF pairs (e.g., VTI ↔ ITOT, IEFA ↔ VEA, SPY ↔ IVV ↔ VOO) to enable client-level tax-loss harvesting on a rolling basis without losing market exposure.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "None",
+            "taxSensitivity": "High",
+            "typicalInvestor": "RIA or financial planner systematically harvesting losses in taxable client accounts — needs ETFs that track materially different indices to satisfy IRS wash-sale rules while delivering nearly identical exposure."
+          },
+          "analysisAngle": "The test is benchmark differentiation — two ETFs tracking the same benchmark are wash-sale violations; tracking different benchmarks is the safe path. Discuss the canonical TLH pairs and the differentiation rationale (S&P 500 vs CRSP US Total Market vs Russell 1000). Tracking-error similarity to keep portfolio risk constant during the swap matters as much as the differentiation itself.",
+          "keyConsiderations": [
+            "Benchmark differentiation sufficient to satisfy wash-sale rules.",
+            "Tracking-error similarity to keep portfolio risk profile constant during the swap.",
+            "Bid-ask cost of the round-trip swap.",
+            "Both sides of the pair must have sufficient AUM and liquidity for client-block trades.",
+            "Documented TLH-pair fact sheets for due-diligence and client communication."
+          ],
+          "redFlags": [
+            "Fund tracking the same index as the existing holding (wash-sale violation risk).",
+            "Material tracking-error difference that materially shifts portfolio risk during the swap.",
+            "One side of the pair has thin AUM or wide bid-ask, defeating the harvest math."
+          ],
+          "etfs": [
+            {
+              "symbol": "VTI",
+              "name": "Vanguard Total Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the CRSP US Total Market index — pairs with ITOT (different index) for wash-sale-safe US-equity TLH."
+            },
+            {
+              "symbol": "ITOT",
+              "name": "iShares Core S&P Total US Stock Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the S&P US Total Market index — TLH partner to VTI delivering nearly identical exposure on a different benchmark."
+            },
+            {
+              "symbol": "SCHB",
+              "name": "Schwab US Broad Market ETF",
+              "exchange": "NYSEARCA",
+              "why": "Tracks the Dow Jones US Broad Stock Market index — third differentiated US-total benchmark for rolling TLH cycles."
+            }
+          ]
+        },
+        {
+          "key": "retiree-tier-income-models",
+          "name": "Retiree-Tier Income & Conservative Models",
+          "shortDescription": "Advisor constructing income and conservative-tier model portfolios for retiree clients — sustainable income, lower drawdown floor, and intuitive risk story for client conversations.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA or planner managing retiree client portfolios with defined withdrawal needs, building income-tier or conservative-tier models that prioritize distribution stability and downside protection over growth."
+          },
+          "analysisAngle": "Distribution character matters as much as headline yield for client communication. Drawdown floor — 'what's the worst 12-month decline?' — is the question retiree clients ask. Derivative-income funds (JEPI / JEPQ-style) are common in this tier; advisors must understand the upside-cap tradeoff and explain it clearly. Sequence-of-returns risk is the dominant concern.",
+          "keyConsiderations": [
+            "Distribution character (qualified, ordinary, ROC) for client tax communication.",
+            "Worst-12-month drawdown a retiree client could survive.",
+            "Capture-ratio analysis for derivative-income funds (upside-cap vs income payout).",
+            "Duration risk in the bond sleeve.",
+            "Manager continuity for active income strategies."
+          ],
+          "redFlags": [
+            "Distribution funded substantially by ROC without clear advisor-facing disclosure.",
+            "Long-duration bond exposure incompatible with retiree drawdown tolerance.",
+            "Active fund failing to beat its passive peer net of fees over 5+ years."
+          ],
+          "etfs": [
+            {
+              "symbol": "SCHD",
+              "name": "Schwab US Dividend Equity ETF",
+              "exchange": "NYSEARCA",
+              "why": "Quality-screened dividend-equity sleeve with sustainable distribution character — popular advisor pick for retiree models."
+            },
+            {
+              "symbol": "VYM",
+              "name": "Vanguard High Dividend Yield ETF",
+              "exchange": "NYSEARCA",
+              "why": "Broad large-cap dividend exposure at 0.06% — defensible building block with intuitive client-communication story."
+            },
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Equity-overlay covered-call wrapper for the income-supplement piece — explains the upside-cap tradeoff to retiree clients."
+            }
+          ]
+        },
+        {
+          "key": "conservative-tier-short-duration-bonds",
+          "name": "Conservative-Tier Short-Duration Bond Sleeves",
+          "shortDescription": "Advisor building short-duration IG bond sleeves for near-retiree or conservative-tier models — reduces duration risk and drawdown floor for clients close to or in withdrawal.",
+          "profile": {
+            "investmentHorizon": "Medium (1-5y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA building conservative-tier or near-retiree model portfolios — wants short-duration IG exposure as the bond sleeve to limit drawdown if rates spike or equities sell off."
+          },
+          "analysisAngle": "Short duration limits drawdown when rates rise or equities sell off — that's the role. Discuss effective duration (target ~1-3 years), credit quality (IG-only), and yield pickup vs cash. Distribution mechanics for client tax planning. Bid-ask matters across many client accounts.",
+          "keyConsiderations": [
+            "Effective duration in the 1-3 year target range.",
+            "IG-only credit composition.",
+            "Yield pickup vs cash and money-market funds.",
+            "Distribution mechanics for client tax planning.",
+            "Bid-ask depth for cross-account client-block trades."
+          ],
+          "redFlags": [
+            "Duration creep beyond the conservative-tier target.",
+            "Credit-quality drift below IG.",
+            "Wide bid-ask amplified across many client accounts."
+          ],
+          "etfs": [
+            {
+              "symbol": "BSV",
+              "name": "Vanguard Short-Term Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-duration IG bond at 0.04% — workhorse short-bond sleeve for conservative-tier models across many client accounts."
+            },
+            {
+              "symbol": "VCSH",
+              "name": "Vanguard Short-Term Corporate Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short IG corporate exposure capturing modest credit pickup over treasury inside the conservative sleeve."
+            },
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "1-3 year treasury alternative for the most defensive end of the bond sleeve in retiree-tier models."
+            }
+          ]
+        },
+        {
+          "key": "growth-tier-international-emerging-markets",
+          "name": "Growth-Tier International & Emerging-Markets Tilt",
+          "shortDescription": "Advisor building international and EM equity sleeves for growth-tier client models — captures higher long-run growth and diversifies US-only concentration.",
+          "profile": {
+            "investmentHorizon": "Very Long (15y+)",
+            "riskTolerance": "High",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "None",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA building growth-tier or aggressive-tier client models — wants meaningful international and EM equity exposure for diversification and long-run growth."
+          },
+          "analysisAngle": "Diversification benefit and long-run growth are the rationale. Discuss benchmark family (MSCI vs FTSE), country-tier inclusion (China A-share, frontier), currency-hedged vs unhedged variants, and foreign-tax-credit pickup if held in client taxable accounts. Bid-ask matters across many accounts.",
+          "keyConsiderations": [
+            "Benchmark family compatibility with the model's policy mix.",
+            "Country-tier inclusion (China A-share, frontier).",
+            "Currency-hedged vs unhedged variant choice.",
+            "Foreign-tax-credit pickup in taxable client accounts.",
+            "Bid-ask depth for cross-account client-block trades."
+          ],
+          "redFlags": [
+            "Wrong benchmark family creating attribution mismatch.",
+            "Material premium-discount drift in EM during stress windows.",
+            "Wrapper structure that loses foreign-tax-credit creditability."
+          ],
+          "etfs": [
+            {
+              "symbol": "IEFA",
+              "name": "iShares Core MSCI EAFE ETF",
+              "exchange": "BATS",
+              "why": "Developed-international workhorse at 0.07% — TAMP-friendly large-AUM building block for growth-tier models."
+            },
+            {
+              "symbol": "IEMG",
+              "name": "iShares Core MSCI Emerging Markets ETF",
+              "exchange": "NYSEARCA",
+              "why": "EM equity exposure at 0.09% with $90B+ AUM and broad TAMP availability for cross-account allocation."
+            },
+            {
+              "symbol": "VXUS",
+              "name": "Vanguard Total International Stock ETF",
+              "exchange": "NASDAQ",
+              "why": "Single-fund total ex-US (developed + EM) at 0.05% — for advisors preferring one-ticker international simplicity."
+            }
+          ]
+        },
+        {
+          "key": "sector-thematic-satellite-tilt",
+          "name": "Sector / Thematic Satellite Tilt",
+          "shortDescription": "Advisor adding sector or thematic ETFs as satellite tilts in client models to differentiate the offering from a pure passive-index portfolio — REITs, infrastructure, broad tech, or specific themes.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate-High",
+            "primaryGoal": "Thematic Exposure",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA wanting to differentiate the model offering from pure passive-index by adding 5-15% in sector or thematic satellite tilts (REITs, infrastructure, broad tech, specific themes)."
+          },
+          "analysisAngle": "Satellite sizing (typically 5-15% per tilt) is the design constraint. Discuss the diversification or alpha thesis behind each tilt, methodology rigor (passive index vs rules-based vs active), tracking-error attribution vs the policy benchmark, and bid-ask at cross-account scale. Discuss the client-communication story — why this tilt is in the model.",
+          "keyConsiderations": [
+            "Satellite sizing (typically 5-15%) appropriate for the tier.",
+            "Diversification or alpha thesis behind the tilt.",
+            "Methodology rigor (passive index vs rules-based vs active).",
+            "Tracking-error attribution vs the policy benchmark.",
+            "Bid-ask depth for cross-account scale."
+          ],
+          "redFlags": [
+            "Theme drift — fund name and top holdings don't align.",
+            "Headline fee well above peers in the same theme without methodology advantage.",
+            "Closure risk that would force a cross-account taxable transition."
+          ],
+          "etfs": [
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — most common real-estate satellite tilt in advisor model portfolios."
+            },
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Cheap (0.09%) cap-weighted US tech tilt — defensible methodology for client-facing model documentation."
+            },
+            {
+              "symbol": "IGF",
+              "name": "iShares Global Infrastructure ETF",
+              "exchange": "NASDAQ",
+              "why": "Global infrastructure exposure for the diversification-and-inflation tilt rationale at 5-15% sleeve sizes."
+            }
+          ]
+        },
+        {
+          "key": "esg-sri-client-model-variant",
+          "name": "ESG / SRI Client-Model Variant",
+          "shortDescription": "Advisor building an ESG or SRI variant of the standard model portfolio for clients who request values-aligned investing — needs ETFs with documented third-party-rated screens.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Wealth Accumulation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA building an ESG / SRI client-model variant alongside the standard model — typically maintains the same risk profile but substitutes screened ETFs for the unscreened equivalents."
+          },
+          "analysisAngle": "Screen rigor and tracking-error attribution are the central questions. Third-party-rated methodology (MSCI ESG, Sustainalytics) is the advisor's defensibility anchor. Discuss exclusion-list transparency, sector tilt vs the unscreened parent index, fee premium, and the client-communication story — why this screen, what's excluded, what tradeoff is accepted.",
+          "keyConsiderations": [
+            "Screen methodology — third-party rated, auditable exclusion list.",
+            "Sector tilt vs the unscreened parent index.",
+            "Tracking-error attribution and risk-profile preservation vs the standard model.",
+            "Fee premium vs the unscreened equivalent.",
+            "Client-communication story for the screen rationale."
+          ],
+          "redFlags": [
+            "Self-graded ESG screens with weak or vague criteria.",
+            "Holdings that contradict the fund's stated mission.",
+            "Material fee premium without methodology advantage."
+          ],
+          "etfs": [
+            {
+              "symbol": "ESGU",
+              "name": "iShares ESG Aware MSCI USA ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated US large/mid-cap with auditable third-party screen — defensible advisor anchor for the ESG variant."
+            },
+            {
+              "symbol": "ESGD",
+              "name": "iShares ESG Aware MSCI EAFE ETF",
+              "exchange": "NASDAQ",
+              "why": "MSCI ESG-rated developed-international screen substituting for IEFA in the ESG client-model variant."
+            },
+            {
+              "symbol": "ESGV",
+              "name": "Vanguard ESG US Stock ETF",
+              "exchange": "BATS",
+              "why": "Vanguard’s screened US equity at 0.09% — alternative-issuer ESG building block for fee-conscious advisors."
+            }
+          ]
+        },
+        {
+          "key": "muni-sleeve-high-bracket-clients",
+          "name": "Muni Sleeve for High-Bracket Client Sub-Models",
+          "shortDescription": "Advisor building muni bond ETF sleeves for high-bracket clients holding in taxable accounts — competes against IG corporate alternative on after-tax basis.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Tax Optimization",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "RIA building a muni bond sleeve for high-bracket client sub-models held in taxable accounts — typically substitutes muni for the taxable IG bond sleeve when after-tax muni yield wins."
+          },
+          "analysisAngle": "Tax-equivalent yield vs taxable IG alternative drives selection. Discuss bracket assumptions (federal + state + NIIT), state-specific vs national muni, AMT exposure on private-activity bonds, and credit-tier mix. Bid-ask depth at cross-account scale matters. Distinguish IG muni from HY muni explicitly in client communication.",
+          "keyConsiderations": [
+            "Tax-equivalent yield at the client's marginal bracket.",
+            "State-specific vs national muni choice for in-state-resident clients.",
+            "AMT exposure on private-activity-bond muni funds.",
+            "Credit-tier mix (IG-only vs HY-muni tilt).",
+            "Bid-ask depth at cross-account client-block scale."
+          ],
+          "redFlags": [
+            "High-yield muni exposure inside a generically named muni fund.",
+            "Single-state muni with documented credit distress.",
+            "Wide bid-ask amplified across many client accounts."
+          ],
+          "etfs": [
+            {
+              "symbol": "MUB",
+              "name": "iShares National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "National IG muni at 0.05% — workhorse for high-bracket client muni sleeves with broad TAMP availability."
+            },
+            {
+              "symbol": "VTEB",
+              "name": "Vanguard Tax-Exempt Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Vanguard’s national IG muni at 0.05% — alternative wrapper for fund-issuer diversification across client accounts."
+            },
+            {
+              "symbol": "SUB",
+              "name": "iShares Short-Term National Muni Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Short-duration national muni for the conservative-tier-with-muni client sub-models that need lower duration risk."
+            }
+          ]
+        },
+        {
+          "key": "inflation-real-asset-diversification-sleeve",
+          "name": "Inflation / Real-Asset Diversification Sleeve",
+          "shortDescription": "Advisor adding a real-asset sleeve (TIPS, REITs, commodities, infrastructure) as a diversifier in moderate / aggressive client models — typically 5-10% of the portfolio.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Moderate",
+            "primaryGoal": "Diversification / Hedging",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA adding a 5-10% real-asset / inflation-hedge sleeve to moderate or aggressive client models for diversification and inflation defense."
+          },
+          "analysisAngle": "Sized as a diversifying sleeve, not a core holding. Discuss the composition tradeoff (TIPS for measured CPI, commodities for unanticipated inflation, REITs for equity-correlated real-asset exposure). Watch for K-1 reporting on commodity pools — many advisors avoid K-1s entirely for client simplicity. Tracking-error attribution vs the policy benchmark.",
+          "keyConsiderations": [
+            "Composition tradeoff (TIPS, commodities, REITs, infrastructure).",
+            "K-1 vs 1099 reporting (advisors often avoid K-1 for client simplicity).",
+            "Real-return correlation in measured inflation regimes.",
+            "Tracking-error attribution vs the policy benchmark.",
+            "Sizing relative to the diversification benefit."
+          ],
+          "redFlags": [
+            "K-1 reporting for client accounts where the advisor avoids K-1s.",
+            "Fund labeled inflation-hedge but historically tracking equity beta.",
+            "Material commodity-spot vs equity-proxy mismatch."
+          ],
+          "etfs": [
+            {
+              "symbol": "SCHP",
+              "name": "Schwab US TIPS ETF",
+              "exchange": "NYSEARCA",
+              "why": "Low-cost (0.03%) TIPS exposure for the measured-CPI portion of the real-asset diversification sleeve."
+            },
+            {
+              "symbol": "VNQ",
+              "name": "Vanguard Real Estate ETF",
+              "exchange": "NYSEARCA",
+              "why": "Diversified US REIT exposure at 0.13% — equity-correlated real-asset complement at 5-10% sleeve sizes."
+            },
+            {
+              "symbol": "PDBC",
+              "name": "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF",
+              "exchange": "NASDAQ",
+              "why": "1099-reporting commodity exposure avoiding K-1 friction — preferred by advisors keeping client tax simple."
+            }
+          ]
+        },
+        {
+          "key": "defined-outcome-derivative-income-retiree",
+          "name": "Defined-Outcome / Derivative-Income for Retiree Tier",
+          "shortDescription": "Advisor adding buffered-equity (defined-outcome) or covered-call (derivative-income) ETFs to retiree-tier models for downside protection or yield supplement — explains upside-cap tradeoff to clients.",
+          "profile": {
+            "investmentHorizon": "Long (5-15y)",
+            "riskTolerance": "Low-Moderate",
+            "primaryGoal": "Capital Preservation",
+            "incomeNeed": "High",
+            "taxSensitivity": "Moderate",
+            "typicalInvestor": "RIA building retiree-tier models that include defined-outcome (buffered) ETFs for downside protection or covered-call ETFs for yield supplement — accepts the upside cap as the tradeoff."
+          },
+          "analysisAngle": "Upside-cap vs downside-floor tradeoff is the central client conversation. For defined-outcome, discuss outcome-period mechanics (entry / exit window) and what happens if the cap is breached mid-cycle. For covered-call, discuss capture ratio, distribution character, and whether the income is durable. Both require careful client-communication discipline.",
+          "keyConsiderations": [
+            "Upside-cap vs downside-floor tradeoff for defined-outcome funds.",
+            "Outcome-period mechanics (entry / exit window).",
+            "Capture ratio for covered-call funds.",
+            "Distribution character (qualified, ordinary, ROC) for client tax communication.",
+            "Issuer counterparty exposure for derivative-based structures."
+          ],
+          "redFlags": [
+            "Defined-outcome fund where the cap and floor have already been breached mid-cycle.",
+            "Capture ratio that gives up most upside without delivering matching income.",
+            "Distribution funded mostly by ROC without explicit disclosure."
+          ],
+          "etfs": [
+            {
+              "symbol": "BUFR",
+              "name": "FT Vest Laddered Buffer ETF",
+              "exchange": "BATS",
+              "why": "Laddered S&P 500 buffered-equity sleeve providing rolling downside protection for retiree-tier models."
+            },
+            {
+              "symbol": "PJAN",
+              "name": "Innovator U.S. Equity Power Buffer ETF – January",
+              "exchange": "BATS",
+              "why": "Single-outcome-period S&P 500 buffer with defined floor/cap — one rung of a custom advisor-built buffered ladder."
+            },
+            {
+              "symbol": "JEPI",
+              "name": "JPMorgan Equity Premium Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Covered-call equity overlay for the derivative-income piece of retiree models — flagship income-supplement vehicle."
+            }
+          ]
+        },
+        {
+          "key": "client-cash-sweep-alternative-yield",
+          "name": "Client Cash-Sweep Alternative for Higher Yield",
+          "shortDescription": "Advisor moving client cash from default brokerage sweep accounts (paying ~0.5%) into ultra-short Treasury or money-market ETFs (SGOV, JPST, BOXX) yielding ~4-5% — captures 300-400 bp without taking duration risk.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Low",
+            "primaryGoal": "Income Generation",
+            "incomeNeed": "Modest",
+            "taxSensitivity": "High",
+            "typicalInvestor": "RIA seeing client cash sitting in custodian sweep accounts paying <1% while Treasury bills yield 4-5%+ — moves cash into liquid ultra-short ETFs to capture the yield without duration risk. Critical post-2023 as client awareness of sweep underpayment grew (with related lawsuits at major custodians)."
+          },
+          "analysisAngle": "The yield gap between custodian sweep (~0.5%) and Treasury yield (~4-5%) is the entire rationale — capturing it across many client accounts is a clear advisor value-add. Discuss SGOV/BIL/USFR for treasury-only exposure (state-tax-exempt income for clients), JPST for slightly higher yield with modest credit, and BOXX as a tax-deferred alternative using box-spread mechanics. Same-day liquidity matters for cash-equivalent classification in client portfolio reporting.",
+          "keyConsiderations": [
+            "Yield pickup vs custodian sweep account — typically 300-400 bp in current rate environment.",
+            "Treasury exposure for state-tax exemption in client taxable accounts (SGOV, BIL, USFR).",
+            "BOXX as a capital-gain-only structure for after-tax yield maximization in taxable accounts.",
+            "Same-day liquidity for cash-classification in client portfolio reporting.",
+            "Bid-ask depth for cross-account client-block trades."
+          ],
+          "redFlags": [
+            "Duration creep in 'cash-equivalent' wrappers extending past ~6 months.",
+            "Material BBB or HY drift in funds labeled 'ultra-short'.",
+            "Wrapper structure that loses cash-equivalent classification on the custodian platform."
+          ],
+          "etfs": [
+            {
+              "symbol": "SGOV",
+              "name": "iShares 0-3 Month Treasury Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Pure 0-3 month Treasury exposure — cleanest cash-sweep alternative with state-tax-exempt income and minimal NAV variance."
+            },
+            {
+              "symbol": "JPST",
+              "name": "JPMorgan Ultra-Short Income ETF",
+              "exchange": "NYSEARCA",
+              "why": "Active ultra-short IG fund delivering modest yield pickup over T-bills with daily liquidity for advisor block trades."
+            },
+            {
+              "symbol": "BOXX",
+              "name": "Alpha Architect 1-3 Month Box ETF",
+              "exchange": "BATS",
+              "why": "Box-spread structure converting yield into capital gains — top-bracket-client favorite for after-tax yield maximization."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "hedge-fund-asset-manager-trading-desk",
+      "name": "Hedge Fund / Asset Manager / Trading Desk",
+      "shortDescription": "Professional trading entity using ETFs as efficient wrappers for short-term beta, hedging, basket trades, transition management, and pair trades — hedge fund PM, proprietary trading desk, mutual fund manager, fund-of-funds allocator. Distinct from RIA / wealth manager because the holding period is hours to weeks (not years), tax considerations are minimal (pass-through), and ETF selection optimizes for liquidity / borrow / options-market depth rather than long-term portfolio fit.",
+      "etfInvestorGoals": [
+        {
+          "key": "short-term-equity-beta-wrapper",
+          "name": "Short-Term Equity Beta Wrapper",
+          "shortDescription": "SPY / QQQ / IWM as short-horizon equity beta wrappers for transition management, beta exposure between trades, or expressing a directional equity view.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund PM, mutual fund transition manager, or proprietary trading desk needing efficient equity-beta wrapper exposure for hours to weeks."
+          },
+          "analysisAngle": "Bid-ask, dollar volume, and options-market depth dominate. SPY / IVV / VOO compete on liquidity and borrow availability; QQQ vs QQQM differs on options market. Discuss creation-redemption efficiency and AP friction, and securities-borrow availability for the short-side trade. Premium / discount drift in stress windows (March 2020) is a real cost.",
+          "keyConsiderations": [
+            "Average daily dollar volume in $hundreds of millions.",
+            "Options-market depth for hedging overlays.",
+            "Securities-borrow availability and cost for short positions.",
+            "Creation-redemption baskets and AP friction during stress.",
+            "Premium / discount drift in stress windows."
+          ],
+          "redFlags": [
+            "Options market thin or non-existent.",
+            "High borrow cost or limited shortable supply.",
+            "Wide premium / discount drift during normal conditions."
+          ],
+          "etfs": [
+            {
+              "symbol": "SPY",
+              "name": "SPDR S&P 500 ETF Trust",
+              "exchange": "NYSEARCA",
+              "why": "Largest, most-liquid S&P 500 wrapper with the deepest options market — desk-standard equity-beta vehicle."
+            },
+            {
+              "symbol": "QQQ",
+              "name": "Invesco QQQ Trust",
+              "exchange": "NASDAQ",
+              "why": "Nasdaq 100 wrapper with deep options market — standard tech/growth-beta expression for desk transition trades."
+            },
+            {
+              "symbol": "IWM",
+              "name": "iShares Russell 2000 ETF",
+              "exchange": "NYSEARCA",
+              "why": "Russell 2000 small-cap wrapper with deep options market — small-cap-beta workhorse for desk-block trades."
+            }
+          ]
+        },
+        {
+          "key": "sector-relative-value-pair-trade",
+          "name": "Sector Relative-Value Pair Trade",
+          "shortDescription": "Long / short pair trades expressed via sector ETFs (e.g., long XLK / short XLE) — relies on tight bid-ask, deep options markets, and reliable shortable inventory.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund PM (long-short, multi-strategy) or proprietary desk expressing a sector relative-value view via long one sector ETF and short another — typically holds for days to months."
+          },
+          "analysisAngle": "Both legs of the pair must have tight bid-ask, deep options, and reliable borrow. Sector-fund methodology differences (XLK vs VGT) can change the trade thesis if the funds tilt to different sub-sectors. Discuss top-holding overlap with the index target. Borrow cost on the short leg is the marginal cost.",
+          "keyConsiderations": [
+            "Bid-ask tightness on both legs of the pair.",
+            "Options-market depth on both sides for hedging.",
+            "Securities-borrow availability and cost on the short leg.",
+            "Methodology overlap between competing sector funds (XLK vs VGT).",
+            "Top-holding overlap with the trade thesis."
+          ],
+          "redFlags": [
+            "Borrow cost on the short leg that erodes the trade economics.",
+            "Methodology mismatch between the two sector funds invalidating the thesis.",
+            "Material option-market thinness on either leg."
+          ],
+          "etfs": [
+            {
+              "symbol": "XLK",
+              "name": "Technology Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard tech-sector wrapper with tight bid-ask and deep options market — common long leg of pair trades."
+            },
+            {
+              "symbol": "XLE",
+              "name": "Energy Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard energy-sector wrapper — deep options and reliable borrow inventory for the short side of pairs."
+            },
+            {
+              "symbol": "XLF",
+              "name": "Financial Select Sector SPDR Fund",
+              "exchange": "NYSEARCA",
+              "why": "Standard financial-sector wrapper completing the desk’s core sector-rotation toolkit alongside XLK/XLE."
+            }
+          ]
+        },
+        {
+          "key": "credit-spread-expression",
+          "name": "Credit-Spread Expression",
+          "shortDescription": "HYG / JNK / LQD as the standard wrappers for credit-spread directional bets — long HYG / short LQD for spread tightening, vice versa for widening.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund credit PM, macro PM, or proprietary desk expressing a credit-spread view via HY vs IG ETFs — holds for days to months, often with options overlays."
+          },
+          "analysisAngle": "Bid-ask of HY ETFs in stress is the central friction — HYG can move to -2% premium / discount in March 2020 / Oct 2022. Discuss options-market depth (HYG has the deepest), borrow availability, and the underlying-bond illiquidity that the ETF wrapper actually traverses through creation-redemption. CDX vs ETF as expression mechanism comparison.",
+          "keyConsiderations": [
+            "HY ETF bid-ask behavior in credit-stress windows.",
+            "Options-market depth for hedging the position.",
+            "Borrow availability for the short leg.",
+            "Underlying-bond liquidity flowing through creation-redemption.",
+            "CDX index alternative as a competing expression mechanism."
+          ],
+          "redFlags": [
+            "Material premium / discount drift in HY ETF during normal conditions.",
+            "Options market thin on the HY ETF leg.",
+            "High borrow cost on the short leg."
+          ],
+          "etfs": [
+            {
+              "symbol": "HYG",
+              "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest HY wrapper with the deepest options market — standard HY leg for credit-spread directional trades."
+            },
+            {
+              "symbol": "LQD",
+              "name": "iShares iBoxx $ Investment Grade Corporate Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Largest IG corporate wrapper — standard IG leg for credit-spread relative-value pair trades vs HY."
+            },
+            {
+              "symbol": "JNK",
+              "name": "SPDR Bloomberg High Yield Bond ETF",
+              "exchange": "NYSEARCA",
+              "why": "Alternative HY wrapper — secondary leg for HYG-only desks or for HY pair-trade construction."
+            }
+          ]
+        },
+        {
+          "key": "rate-duration-tactical-bet",
+          "name": "Rate / Duration Tactical Bet",
+          "shortDescription": "TLT / IEF / SHY for tactical rate / duration / curve bets — long TLT for falling rates, short TLT for rising, butterfly trades for curve shape.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Macro PM or proprietary rates desk expressing a rate / duration / curve view via treasury ETFs — typically for days to months, often with futures overlays."
+          },
+          "analysisAngle": "Treasury futures vs ETF as expression is the central comparison — futures have lower frictions but less convex options markets; TLT options are deep. Discuss key-rate-duration profile, convexity at long-end, and bid-ask. For curve trades, butterfly construction across SHY / IEF / TLT.",
+          "keyConsiderations": [
+            "Bid-ask depth for institutional-block trades.",
+            "Options-market depth for hedging or expressing volatility.",
+            "Key-rate-duration profile and convexity.",
+            "Treasury futures alternative comparison.",
+            "Curve-trade construction across multiple treasury ETFs."
+          ],
+          "redFlags": [
+            "Bid-ask widening in stress vs the underlying treasury market.",
+            "Options market thin on chosen treasury ETF.",
+            "Material premium / discount drift in stress windows."
+          ],
+          "etfs": [
+            {
+              "symbol": "TLT",
+              "name": "iShares 20+ Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Long-end Treasury wrapper with deep options market — workhorse for long-duration directional bets."
+            },
+            {
+              "symbol": "IEF",
+              "name": "iShares 7-10 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Intermediate Treasury wrapper for belly-of-curve expression and curve-shape trades."
+            },
+            {
+              "symbol": "SHY",
+              "name": "iShares 1-3 Year Treasury Bond ETF",
+              "exchange": "NASDAQ",
+              "why": "Short-end Treasury wrapper for front-end-of-curve expression and butterfly trade construction."
+            }
+          ]
+        },
+        {
+          "key": "macro-commodity-directional-bet",
+          "name": "Macro Commodity Directional Bet",
+          "shortDescription": "Commodity ETFs (USO / UNG / DBC / GLD / SLV) for macro directional bets on energy, metals, or broad commodities — alternative to futures for desks without commodity prime-brokerage.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Macro PM or proprietary desk expressing a commodity directional view — often used as an alternative to commodity futures for desks without commodity prime-brokerage access."
+          },
+          "analysisAngle": "Futures vs ETF as expression is the comparison. ETF wrappers carry roll cost (contango / backwardation), tax structure (K-1 vs 1099), and tracking error vs spot. Discuss options-market depth, borrow availability, and the contango-friction history of the chosen ETF. GLD / SLV are spot-backed; USO / UNG are futures-rolled.",
+          "keyConsiderations": [
+            "Roll cost in contango vs spot tracking.",
+            "K-1 vs 1099 tax structure (most commodity pools are K-1).",
+            "Options-market depth for hedging.",
+            "Borrow availability for the short side.",
+            "Spot-backed vs futures-rolled methodology choice."
+          ],
+          "redFlags": [
+            "Material contango friction eroding the trade thesis.",
+            "K-1 reporting where the desk's tax structure can't accept it.",
+            "Limited options market on the chosen commodity ETF."
+          ],
+          "etfs": [
+            {
+              "symbol": "GLD",
+              "name": "SPDR Gold Shares",
+              "exchange": "NYSEARCA",
+              "why": "Spot-backed gold with the deepest options market — standard gold-directional vehicle in a 1099 wrapper."
+            },
+            {
+              "symbol": "USO",
+              "name": "United States Oil Fund LP",
+              "exchange": "NYSEARCA",
+              "why": "Front-month WTI futures wrapper — standard crude-oil expression for desks without commodity prime brokerage."
+            },
+            {
+              "symbol": "DBC",
+              "name": "Invesco DB Commodity Index Tracking Fund",
+              "exchange": "NYSEARCA",
+              "why": "Diversified commodity-futures basket for broad commodity directional bets across energy/metals/ag."
+            }
+          ]
+        },
+        {
+          "key": "leveraged-tactical-short-term-hedge",
+          "name": "Leveraged Tactical Short-Term Hedge",
+          "shortDescription": "Daily-leveraged ETFs (TQQQ, SOXL, FAS) for short-horizon tactical hedging or capital-efficient directional bets — explicit understanding of daily-reset path dependency.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund PM or proprietary desk using daily-leveraged ETFs for capital-efficient tactical bets — explicit understanding that the products are unsuitable for multi-week holds."
+          },
+          "analysisAngle": "Daily-reset path dependency drives every judgment. Suitable for hours to days, NOT weeks. Discuss bid-ask, options-market depth, embedded swap-financing cost, and leverage-fidelity (does 3x deliver 3x intraday?). Capital-efficiency vs futures or options as alternative expressions.",
+          "keyConsiderations": [
+            "Daily-leverage fidelity (does 3x deliver 3x intraday?).",
+            "Embedded swap-financing cost on top of the headline expense ratio.",
+            "Bid-ask spread at desk-block trade size.",
+            "Options-market depth for hedging the leveraged position.",
+            "Capital-efficiency vs futures / options alternatives."
+          ],
+          "redFlags": [
+            "Documented tracking failures on the daily-leverage objective.",
+            "Wide bid-ask combined with thin volume.",
+            "Marketing that downplays daily-reset risk."
+          ],
+          "etfs": [
+            {
+              "symbol": "TQQQ",
+              "name": "ProShares UltraPro QQQ",
+              "exchange": "NASDAQ",
+              "why": "3x daily-leveraged Nasdaq 100 — most-liquid leveraged ETF with deep options for capital-efficient bets."
+            },
+            {
+              "symbol": "SOXL",
+              "name": "Direxion Daily Semiconductor Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged semiconductor exposure — focused-sector leverage with deep options for tactical chip-cycle trades."
+            },
+            {
+              "symbol": "FAS",
+              "name": "Direxion Daily Financial Bull 3X Shares",
+              "exchange": "NYSEARCA",
+              "why": "3x leveraged financials — sector-leverage tool for financial-tilt expressions inside short-horizon hedges."
+            }
+          ]
+        },
+        {
+          "key": "crypto-digital-asset-tactical-position",
+          "name": "Crypto / Digital-Asset Tactical Position",
+          "shortDescription": "Spot-bitcoin (IBIT, FBTC) or spot-ether ETFs as wrappers for short-term tactical crypto positions — alternative to direct spot-crypto exposure for funds without crypto custody infrastructure.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund macro PM or crypto-focused fund taking tactical spot-bitcoin or spot-ether exposure via the ETF wrapper — alternative to direct crypto custody."
+          },
+          "analysisAngle": "Spot-crypto vs ETF wrapper is the comparison. ETF avoids custody / cold-storage operational risk but adds custodian counterparty exposure. Discuss bid-ask, options-market depth (rapidly developing for IBIT / FBTC), creation-redemption efficiency, and basis vs spot crypto. Trading hours mismatch with 24/7 spot crypto.",
+          "keyConsiderations": [
+            "Custodian counterparty inside the ETF wrapper.",
+            "Bid-ask depth at desk-block trade size.",
+            "Options-market depth (rapidly developing for spot-BTC ETFs).",
+            "Basis vs underlying spot crypto.",
+            "Trading-hours mismatch (24/7 spot vs ETF market hours)."
+          ],
+          "redFlags": [
+            "Material basis vs spot crypto in normal conditions.",
+            "Custodian concentration risk inside the ETF wrapper.",
+            "Limited options market for the chosen spot-crypto ETF."
+          ],
+          "etfs": [
+            {
+              "symbol": "IBIT",
+              "name": "iShares Bitcoin Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "BlackRock’s spot-bitcoin ETF — fastest-growing AUM with rapidly developing options market for tactical positions."
+            },
+            {
+              "symbol": "FBTC",
+              "name": "Fidelity Wise Origin Bitcoin Fund",
+              "exchange": "BATS",
+              "why": "Fidelity’s spot-bitcoin alternative — second-largest spot-BTC ETF for issuer/custodian diversification."
+            },
+            {
+              "symbol": "ETHA",
+              "name": "iShares Ethereum Trust ETF",
+              "exchange": "NASDAQ",
+              "why": "BlackRock’s spot-ether ETF — primary spot-ETH wrapper for tactical Ethereum directional positions."
+            }
+          ]
+        },
+        {
+          "key": "volatility-vix-tactical-expression",
+          "name": "Volatility / VIX Tactical Expression",
+          "shortDescription": "VXX, UVXY (long-vol) or SVXY (short-vol) for tactical VIX-direction views or dedicated tail-risk hedges — explicit volatility exposure rather than implicit option overlays.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Hedge fund volatility PM, macro PM, or proprietary desk expressing a VIX-direction view or hedging tail risk via dedicated vol products — typically held hours to days due to severe roll cost in contango."
+          },
+          "analysisAngle": "VIX-futures roll cost is the central friction — the VIX futures curve is normally in contango, so long-vol products (VXX, UVXY) bleed in stable markets while short-vol (SVXY) earns the carry. Daily-reset path dependency applies to the leveraged and inverse versions. Discuss bid-ask, options-market depth, and the front-month vs constant-maturity exposure choice. VIX futures direct is the alternative for desks with futures access.",
+          "keyConsiderations": [
+            "Roll cost in contango — typical 5-10% per month drag on long-vol positions.",
+            "Daily-reset path dependency for leveraged/inverse versions (UVXY, SVXY).",
+            "Bid-ask spread at desk-block trade size.",
+            "Options-market depth for hedging or expressing vol-of-vol.",
+            "VIX futures direct as the alternative for desks with futures access."
+          ],
+          "redFlags": [
+            "Multi-week holds on long-vol products in stable-market regimes.",
+            "Leveraged/inverse vol products held beyond a few days.",
+            "Material premium-discount drift in stress events when the hedge is needed most."
+          ],
+          "etfs": [
+            {
+              "symbol": "VXX",
+              "name": "iPath Series B S&P 500 VIX Short-Term Futures ETN",
+              "exchange": "BATS",
+              "why": "Standard front-month VIX expression — workhorse for short-horizon long-vol bets and tactical equity tail hedges."
+            },
+            {
+              "symbol": "UVXY",
+              "name": "ProShares Ultra VIX Short-Term Futures ETF",
+              "exchange": "BATS",
+              "why": "1.5x leveraged VIX exposure for capital-efficient long-vol bets — extreme decay outside hours-to-days holds."
+            },
+            {
+              "symbol": "SVXY",
+              "name": "ProShares Short VIX Short-Term Futures ETF",
+              "exchange": "BATS",
+              "why": "Short-vol exposure capturing the contango carry — high-conviction tactical bet on calm markets with severe stress-event risk."
+            }
+          ]
+        },
+        {
+          "key": "single-country-regional-tactical-bet",
+          "name": "Single-Country / Regional Tactical Bet",
+          "shortDescription": "Single-country ETFs (FXI, EWJ, EWZ, INDA) for tactical macro views — China stimulus, Japan reflation, Brazil commodity-cycle, India growth — without setting up local-market trading infrastructure.",
+          "profile": {
+            "investmentHorizon": "Short (<1y)",
+            "riskTolerance": "Very High",
+            "primaryGoal": "Speculation / Trading",
+            "incomeNeed": "None",
+            "taxSensitivity": "Low",
+            "typicalInvestor": "Macro hedge fund PM or asset-manager regional desk taking a tactical single-country position — uses US-listed country ETFs as alternative to setting up local-market broker relationships and currency-hedging infrastructure."
+          },
+          "analysisAngle": "Bid-ask depth, options-market availability, and reliable shortable inventory determine viability for desk-block trades. Currency exposure is typically unhedged — that's an additional macro variable embedded in the trade. Discuss tax-treaty structure (FTC pass-through), settlement timing across time zones, and creation-redemption efficiency during local-market closures. China-exposure ETFs (FXI vs KWEB) carry methodology differences worth flagging (state-owned vs internet-platform tilts).",
+          "keyConsiderations": [
+            "Bid-ask depth and average daily dollar volume at desk-block scale.",
+            "Options-market depth for hedging or expressing volatility.",
+            "Borrow availability and cost on the short leg for pair construction.",
+            "Currency exposure (typically unhedged) as an embedded macro variable.",
+            "Methodology differences between competing single-country ETFs (FXI vs KWEB for China)."
+          ],
+          "redFlags": [
+            "Wide bid-ask combined with thin options market on the chosen wrapper.",
+            "High borrow cost or limited shortable supply for the short leg.",
+            "Material premium-discount drift during local-market closures."
+          ],
+          "etfs": [
+            {
+              "symbol": "FXI",
+              "name": "iShares China Large-Cap ETF",
+              "exchange": "NASDAQ",
+              "why": "Standard cap-weighted China large-cap exposure — workhorse for state-owned-enterprise China bets with deep options market."
+            },
+            {
+              "symbol": "EWJ",
+              "name": "iShares MSCI Japan ETF",
+              "exchange": "NYSEARCA",
+              "why": "Standard MSCI Japan exposure — workhorse for Japan reflation and yield-curve-control trades with deep desk liquidity."
+            },
+            {
+              "symbol": "EWZ",
+              "name": "iShares MSCI Brazil ETF",
+              "exchange": "NYSEARCA",
+              "why": "Standard MSCI Brazil exposure — commodity-cycle and Latin-America-macro tactical wrapper with reliable shortable inventory."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,12 +2,15 @@ export enum EtfAnalysisCategory {
   PerformanceAndReturns = 'PerformanceAndReturns',
   CostEfficiencyAndTeam = 'CostEfficiencyAndTeam',
   RiskAnalysis = 'RiskAnalysis',
+  FuturePerformanceOutlook = 'FuturePerformanceOutlook',
 }
 
 export enum EtfReportType {
   PERFORMANCE_AND_RETURNS = 'performance-and-returns',
   COST_EFFICIENCY_AND_TEAM = 'cost-efficiency-and-team',
   RISK_ANALYSIS = 'risk-analysis',
+  FUTURE_PERFORMANCE_OUTLOOK = 'future-performance-outlook',
+  INDEX_STRATEGY = 'index-strategy',
   FINAL_SUMMARY = 'final-summary',
 }
 
@@ -22,6 +25,10 @@ export const ETF_REPORT_TYPE_TO_CATEGORY: Record<EtfReportType, EtfAnalysisCateg
   [EtfReportType.PERFORMANCE_AND_RETURNS]: EtfAnalysisCategory.PerformanceAndReturns,
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: EtfAnalysisCategory.CostEfficiencyAndTeam,
   [EtfReportType.RISK_ANALYSIS]: EtfAnalysisCategory.RiskAnalysis,
+  [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: EtfAnalysisCategory.FuturePerformanceOutlook,
+  // INDEX_STRATEGY is saved directly on the ETF record (not a category analysis).
+  // We still provide a placeholder mapping to satisfy the Record<> type; it is not used.
+  [EtfReportType.INDEX_STRATEGY]: EtfAnalysisCategory.PerformanceAndReturns,
   // FINAL_SUMMARY is saved directly on the ETF record (not a category analysis).
   // We still provide a placeholder mapping to satisfy the Record<> type; it is not used.
   [EtfReportType.FINAL_SUMMARY]: EtfAnalysisCategory.PerformanceAndReturns,
@@ -31,11 +38,23 @@ export const ETF_PROMPT_KEYS: Record<EtfReportType, string> = {
   [EtfReportType.PERFORMANCE_AND_RETURNS]: 'US/etfs/performance-returns',
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: 'US/etfs/cost-efficiency-team',
   [EtfReportType.RISK_ANALYSIS]: 'US/etfs/risk-analysis',
+  [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'US/etfs/future-performance-outlook',
+  [EtfReportType.INDEX_STRATEGY]: 'US/etfs/index-strategy',
   [EtfReportType.FINAL_SUMMARY]: 'US/etfs/final-summary',
 };
 
 export interface EtfFinalSummaryResponse {
   summary: string;
+}
+
+export interface EtfIndexStrategySimilarEtf {
+  symbol: string;
+  exchange: string;
+}
+
+export interface EtfIndexStrategyResponse {
+  indexStrategy: string;
+  similarEtfs: EtfIndexStrategySimilarEtf[];
 }
 
 export interface EtfAnalysisFactorDefinition {
@@ -45,20 +64,41 @@ export interface EtfAnalysisFactorDefinition {
   factorAnalysisMetrics?: string;
 }
 
-export type EtfAssetClass = 'Equity' | 'Fixed Income' | 'Alternatives' | 'Commodity' | 'Asset Allocation' | 'Currency';
+/**
+ * Group-based factor definition. Each factor declares the ETF groups it applies
+ * to; the pipeline selects factors by intersecting the fund's group (derived
+ * from EtfStockAnalyzerInfo.category via etf-analysis-categories.json) with these.
+ */
+export interface EtfGroupFactorDefinition {
+  factorKey: string;
+  factorTitle: string;
+  factorDescription: string;
+  factorMetrics?: string;
+  groups: string[];
+}
 
-export interface EtfCategoryAnalysisFactors {
+export interface EtfGroupBasedFactorsConfig {
   categoryKey: EtfAnalysisCategory;
   categoryName: string;
   categoryDescription: string;
-  /** Used by categories that have a single set of factors (e.g., CostEfficiencyAndTeam, RiskAnalysis) */
-  factors?: EtfAnalysisFactorDefinition[];
-  /** Used by categories that have asset-class-specific factors (e.g., PerformanceAndReturns) */
-  factorsByAssetClass?: Record<EtfAssetClass, EtfAnalysisFactorDefinition[]>;
+  factors: EtfGroupFactorDefinition[];
 }
 
-export interface EtfAnalysisFactorsConfig {
-  categories: EtfCategoryAnalysisFactors[];
+export interface EtfGroup {
+  key: string;
+  name: string;
+  description: string;
+}
+
+export interface EtfCategoryToGroup {
+  name: string;
+  numberOfStocks: number;
+  group: string;
+}
+
+export interface EtfCategoriesConfig {
+  groups: EtfGroup[];
+  categories: EtfCategoryToGroup[];
 }
 
 export interface EtfFactorAnalysisResult {
@@ -72,4 +112,74 @@ export interface EtfCategoryAnalysisResponse {
   overallSummary: string;
   overallAnalysisDetails: string;
   factors: EtfFactorAnalysisResult[];
+}
+
+/**
+ * ETF investor taxonomy. Two-level structure:
+ *   - Level 1: EtfInvestor — a type of investor (retail, HNW, pension, etc.).
+ *     Types are intentionally non-overlapping (each defined by a distinct funding
+ *     source / governance / regulatory context).
+ *   - Level 2: EtfInvestorGoal — a specific goal an investor of that type pursues
+ *     when buying ETFs (e.g., "tax-efficient public-equity beta sleeve",
+ *     "liability-driven investing"). Goals can recur across types but are framed
+ *     for that type's specific perspective.
+ */
+
+export type EtfInvestorHorizon = 'Short (<1y)' | 'Medium (1-5y)' | 'Long (5-15y)' | 'Very Long (15y+)';
+
+export type EtfInvestorRiskTolerance = 'Low' | 'Low-Moderate' | 'Moderate' | 'Moderate-High' | 'High' | 'Very High';
+
+export type EtfInvestorPrimaryGoal =
+  | 'Wealth Accumulation'
+  | 'Income Generation'
+  | 'Capital Preservation'
+  | 'Tax Optimization'
+  | 'Speculation / Trading'
+  | 'Diversification / Hedging'
+  | 'Thematic Exposure';
+
+export type EtfInvestorIncomeNeed = 'None' | 'Modest' | 'High';
+
+export type EtfInvestorTaxSensitivity = 'Low' | 'Moderate' | 'High';
+
+export interface EtfInvestorProfile {
+  investmentHorizon: EtfInvestorHorizon;
+  riskTolerance: EtfInvestorRiskTolerance;
+  primaryGoal: EtfInvestorPrimaryGoal;
+  incomeNeed: EtfInvestorIncomeNeed;
+  taxSensitivity: EtfInvestorTaxSensitivity;
+  typicalInvestor: string;
+}
+
+/** A specific ETF recommended for a given goal. */
+export interface EtfInvestorGoalEtf {
+  symbol: string;
+  name: string;
+  exchange: string;
+  why: string;
+}
+
+/** A specific goal an investor pursues when buying ETFs. */
+export interface EtfInvestorGoal {
+  key: string;
+  name: string;
+  shortDescription: string;
+  profile: EtfInvestorProfile;
+  analysisAngle: string;
+  keyConsiderations: string[];
+  redFlags: string[];
+  etfs: EtfInvestorGoalEtf[];
+}
+
+/** A type of investor (retail, HNW, pension, etc.) with the goals they pursue. */
+export interface EtfInvestor {
+  key: string;
+  name: string;
+  shortDescription: string;
+  etfInvestorGoals: EtfInvestorGoal[];
+}
+
+export interface EtfInvestorTaxonomyConfig {
+  description: string;
+  investors: EtfInvestor[];
 }
