@@ -3,6 +3,64 @@
 > Completed ETF work has been moved to [`etf-closed-tasks.md`](./etf-closed-tasks.md).
 > This file tracks only what's still open.
 
+## Top priorities (active work)
+
+Work at the top of the stack right now. Everything here supersedes the phase-ordered
+list below — these are the four things to actually push on next.
+
+- [ ] **1. End-to-end QA of the competition workflow + UI**
+  - The whole Competition + Similar ETFs pipeline (section 1.2) has shipped — see
+    `etf-closed-tasks.md`. Before moving on, actually exercise it in production:
+  - Pick a handful of ETFs across different groups (equity, fixed-income, thematic,
+    leveraged/inverse, etc.) and verify the competitor selection, the competition
+    analysis narrative, the competition chart, the separate competition page, and
+    the "Other similar ETFs" section on the main ETF page all render correctly and
+    with plausible data.
+  - Spot-check edge cases: ETFs with very few peers, ETFs in sparse categories, new
+    / low-AUM ETFs, ETFs where an obvious competitor is missing.
+  - File issues for any bad selections, broken charts, or weak narrative — feed
+    those back into the prompt / selection logic rather than shipping more features
+    on top.
+- [ ] **2. Finalize the Admin ETF generation requests page** (currently in progress)
+  - Most of 1.4 has landed (reload + auto-refresh, header columns, per-report-type
+    "Missing" options, per-ETF "Generate All Analysis", sort/pagination/top-filter)
+    — full list in `etf-closed-tasks.md`.
+  - This item is the wrap-up pass: make sure the page is pleasant to operate day to
+    day, catch anything rough edges that shipped with the recent batch, and
+    reconcile the page behavior with what `etf-reports` and `etf-generation-requests`
+    both expose.
+- [ ] **3. Claude-Code pipeline to auto-generate stock + ETF reports with the
+  Sonnet model**
+  - Build an off-hours pipeline where Claude Code (running the **Sonnet** model, not
+    a heavier model) is the generator for both stock and ETF reports.
+  - Scope: pick the next batch of tickers/ETFs that need new or refreshed reports,
+    invoke the right prompts through Claude Code, persist the output through the
+    existing generation pipeline + callbacks, and log per-run results.
+  - Leverages the `Prompt` / `PromptVersion` / `PromptInvocation` infra so we get
+    versioning, status, raw I/O, and error capture for free.
+  - Ties in with the stock "off-hours Claude Code cron" (see `stocks.md`) and the
+    ETF generation-requests queue (1.4) — the goal is one shared runner that
+    drains both queues.
+  - Definition of done: a scheduled run that, with no human in the loop, produces
+    a night's worth of refreshed reports across stocks + ETFs using Sonnet, with
+    logs we can review the next morning.
+- [ ] **4. Split the Index & Strategy field into multiple structured fields**
+  - Today **Index & Strategy** is a single blob that crams intro + strategy + other
+    context into one field, which makes it hard to lay out cleanly on the detail
+    page.
+  - Break it into a set of separate fields — at minimum an `introParagraph` + a
+    `strategy` field, plus a couple more to-be-decided fields (likely candidates:
+    `indexMethodology`, `rebalanceApproach`, `replicationStyle`, `keyConstraints`
+    — finalize during implementation).
+  - Related to, but distinct from, the broader Strategy-section restructuring in
+    3.3.e: that task is about the `Strategy` section as a whole; this task is
+    specifically about the **Index & Strategy** feed / data shape.
+  - Update the prompt, the output JSON contract, persistence, and the detail-page
+    rendering together so the UI can present each sub-field with its own heading
+    / layout slot. Run through the 3.2 tuning loop to sanity-check the split.
+
+---
+
 ## Priority order
 
 1. **Complete the ETF UI** — ETF details page, competition, similar ETFs, famous-ETFs comparison, admin pages.
@@ -14,44 +72,9 @@
 
 ## Phase 1 — Complete the ETF UI
 
-### 1.1) ETF Details Page layout
-
-Example page: https://koalagains.com/etfs/NASDAQ/QQQI
-
-Reorder/extend the ETF details page so sections appear in this order. Final Summary,
-"other sections below", per-category detail pages, the admin three-dots menu, the
-admin-only `updatedAt` timestamp, and the ETF holdings section are already shipped
-(see `etf-closed-tasks.md`). Still open:
-
-- [ ] **Stock analysis info (left) + spider chart (right)** in a two-column layout.
-- [ ] **Price chart**.
-- [ ] **Strategy** with a proper heading.
-
-### 1.2) Competition + Similar ETFs
-
-Goal: build a competition section for ETFs (mirroring what we have for stocks) where
-competitors are selected based on same category/group and AUM proximity (and optionally
-liquidity, expense-ratio band), plus a lightweight "similar ETFs" block on the main ETF page.
-
-- [ ] **Competitor selection logic**:
-  - Rules: same group/category, similar AUM size bands, optional issuer diversity.
-  - Cap competitor count (e.g., 5–10) and define tie-breakers.
-- [ ] **Generate competition analysis**:
-  - Narrative + key differentiators (fees, AUM, liquidity, tracking, holdings concentration, risk).
-- [ ] **Define input schema**:
-  - Current ETF + selected competitors with comparable metrics.
-  - Group context and scoring preferences.
-- [ ] **Define output schema**:
-  - Ranked competitor list + rationale.
-  - Chart-ready series (for competition chart).
-  - "Closest substitutes" and "best alternatives for X goal".
-- [ ] **Finalize prompt** for competition analysis.
-- [ ] **UI**:
-  - Separate page for competition analysis.
-  - **Competition chart** similar to what we do for stocks (metric comparisons + tooltips).
-
-> Pipeline + storage and the "Other similar ETFs" section on the main ETF page are
-> already shipped (see `etf-closed-tasks.md`).
+> **1.1 ETF Details Page layout**, **1.2 Competition + Similar ETFs**, and **1.4 Admin
+> ETF generation requests page** have all shipped and moved to `etf-closed-tasks.md`.
+> The remaining Phase 1 items are listed below.
 
 ### 1.3) Famous ETFs dataset + "Comparison with famous ETFs" section
 
@@ -82,18 +105,6 @@ that answers: "Why would we choose this ETF over those?"
   - New generation step (dependencies on the 3 category analyses if required).
   - Callback saving + status tracking.
 - [ ] **UI**: new section on ETF report page showing comparisons and "why choose" reasoning.
-
-### 1.4) Admin — ETF generation requests page
-
-Page: https://koalagains.com/admin-v1/etf-generation-requests (+ `/admin-v1/etf-reports`)
-
-Reload icon + auto-refresh, header columns covering every report type, the per-report-type
-"Select missing" split, and per-ETF "Generate All Analysis" are already shipped (see
-`etf-closed-tasks.md`). Still open:
-
-- [ ] **Sort reports by `updatedAt` descending** in each section.
-- [ ] **Add pagination** to each section.
-- [ ] **Add a top filter** that matches generation reports by entered **name** or **symbol**.
 
 ### 1.5) Custom Reports ("random reports") per ETF
 

@@ -22,9 +22,12 @@ still pending. Organized under the same headings as `etfs.md` for traceability.
 
 ## Phase 1 — Complete the ETF UI
 
-### 1.1) ETF Details Page layout — completed items
+### 1.1) ETF Details Page layout ✅
 
 - [x] **Final Summary** (shown first).
+- [x] **Stock analysis info (left) + spider chart (right)** in a two-column layout.
+- [x] **Price chart**.
+- [x] **Strategy** with a proper heading.
 - [x] **Other sections** below.
 - [x] **Per-category detail pages**: dedicated details page for each of the evaluation
   categories.
@@ -47,18 +50,36 @@ still pending. Organized under the same headings as `etfs.md` for traceability.
   - Graceful empty state for ETFs without holdings data.
   - Data source + refresh cadence confirmed.
 
-### 1.2) Competition + Similar ETFs — completed items
+### 1.2) Competition + Similar ETFs ✅
 
+- [x] **Competitor selection logic** — same group/category, AUM bands, optional issuer
+  diversity, capped count, tie-breakers defined.
+- [x] **Generate competition analysis** — narrative + key differentiators (fees, AUM,
+  liquidity, tracking, holdings concentration, risk).
+- [x] **Input schema** — current ETF + selected competitors with comparable metrics,
+  group context, scoring preferences.
+- [x] **Output schema** — ranked competitor list + rationale, chart-ready series,
+  "closest substitutes" + "best alternatives for X goal".
+- [x] **Finalized prompt** for competition analysis.
 - [x] **Pipeline + storage**:
   - Prisma schema additions for competition / similar-ETF analysis results.
   - Generation step(s) + callback saving + caching wired up.
-- [x] **"Other similar ETFs" section** on the main ETF page — curated/auto-selected set
-  with quick links and key stats, linking to the full competition page.
+- [x] **UI**:
+  - Separate page for competition analysis.
+  - **Competition chart** (metric comparisons + tooltips, mirroring stocks).
+  - **"Other similar ETFs" section** on the main ETF page — curated/auto-selected set
+    with quick links and key stats, linking to the full competition page.
 
-### 1.4) Admin — ETF generation requests page — completed items
+> See the top-priorities block in `etfs.md` for the end-to-end QA task against this
+> shipped workflow.
+
+### 1.4) Admin — ETF generation requests page ✅
 
 Page: https://koalagains.com/admin-v1/etf-generation-requests (+ `/admin-v1/etf-reports`)
 
+- [x] **Sort reports by `updatedAt` descending** in each section.
+- [x] **Pagination** in each section.
+- [x] **Top filter** that matches generation reports by **name** or **symbol**.
 - [x] **Reload icon + auto-refresh**:
   - Reload icon refreshes the data on click.
   - Auto-refresh every **30 seconds**.
