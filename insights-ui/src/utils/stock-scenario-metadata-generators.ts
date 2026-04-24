@@ -56,7 +56,8 @@ export function generateStockScenarioListingJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Stock Market Scenarios — Sector Shock Playbook',
-    description: 'Recurring market scenarios that move specific stock baskets, with winners, losers, and dated probability outlooks across supported countries.',
+    description:
+      'Recurring market scenarios that move specific stock baskets, with winners, losers, and dated probability outlooks across supported countries.',
     url: `${BASE_URL}/stock-scenarios`,
     publisher: {
       '@type': 'Organization',

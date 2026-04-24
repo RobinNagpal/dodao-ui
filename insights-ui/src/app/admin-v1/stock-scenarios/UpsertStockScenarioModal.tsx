@@ -144,10 +144,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
 
   const archivedItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => [{ id: 'archived', name: 'archived', label: 'Archived' }], []);
 
-  const countryItems: CheckboxItem[] = useMemo<CheckboxItem[]>(
-    () => ALL_SUPPORTED_COUNTRIES.map((c) => ({ id: c, name: c, label: c })),
-    []
-  );
+  const countryItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => ALL_SUPPORTED_COUNTRIES.map((c) => ({ id: c, name: c, label: c })), []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -298,11 +295,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
 
         <div>
           <p className="text-sm text-gray-300 mb-1">Countries in scope (at least one required)</p>
-          <Checkboxes
-            items={countryItems}
-            selectedItemIds={countries}
-            onChange={(ids: string[]) => setCountries(ids as SupportedCountries[])}
-          />
+          <Checkboxes items={countryItems} selectedItemIds={countries} onChange={(ids: string[]) => setCountries(ids as SupportedCountries[])} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -67,9 +67,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // Resolve any links that don't have `tickerId` set yet against the TickerV1
   // table by (symbol, exchange) — matches the unique constraint
   // `@@unique([spaceId, symbol, exchange])` on tickers_v1.
-  const unresolved = stockLinks
-    .filter((l) => !l.tickerId)
-    .map((l) => ({ symbol: l.symbol.toUpperCase(), exchange: l.exchange.toUpperCase() }));
+  const unresolved = stockLinks.filter((l) => !l.tickerId).map((l) => ({ symbol: l.symbol.toUpperCase(), exchange: l.exchange.toUpperCase() }));
 
   const resolved = new Map<string, string>();
   if (unresolved.length) {

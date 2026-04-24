@@ -23,7 +23,14 @@ export interface ImportStockScenariosResponse {
   skipped: number;
   resolvedTickers: number;
   unresolvedTickers: string[];
-  scenarios: Array<{ scenarioNumber: number; title: string; slug: string; action: 'created' | 'updated' | 'skipped'; countries: SupportedCountries[]; note?: string }>;
+  scenarios: Array<{
+    scenarioNumber: number;
+    title: string;
+    slug: string;
+    action: 'created' | 'updated' | 'skipped';
+    countries: SupportedCountries[];
+    note?: string;
+  }>;
 }
 
 async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayload): Promise<ImportStockScenariosResponse> {
@@ -36,9 +43,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
   }
 
   // Collect every (symbol, exchange) pair we'll try to resolve to a TickerV1 id.
-  const pairs = Array.from(
-    new Set(parsed.flatMap((s) => s.links.map((l) => `${l.symbol.toUpperCase()}|${l.exchange.toUpperCase()}`)))
-  );
+  const pairs = Array.from(new Set(parsed.flatMap((s) => s.links.map((l) => `${l.symbol.toUpperCase()}|${l.exchange.toUpperCase()}`))));
   const knownTickers = pairs.length
     ? await prisma.tickerV1.findMany({
         where: {

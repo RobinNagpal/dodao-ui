@@ -29,9 +29,7 @@ const createStockScenarioSchema = z.object({
   expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
   expectedPriceChangeExplanation: z.string().nullable().optional(),
   priceChangeTimeframeExplanation: z.string().nullable().optional(),
-  countries: z
-    .array(z.nativeEnum(SupportedCountries))
-    .min(1, 'countries[] must list at least one supported country'),
+  countries: z.array(z.nativeEnum(SupportedCountries)).min(1, 'countries[] must list at least one supported country'),
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
@@ -59,11 +57,7 @@ async function getHandler(): Promise<StockScenario[]> {
   });
 }
 
-async function postHandler(
-  request: NextRequest,
-  _userContext: KoalaGainsJwtTokenPayload | null,
-  _dynamic: { params: Promise<any> }
-): Promise<StockScenario> {
+async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload | null, _dynamic: { params: Promise<any> }): Promise<StockScenario> {
   const body = createStockScenarioSchema.parse(await request.json());
 
   const slug = body.slug?.trim() || slugifyScenarioTitle(body.title);
@@ -78,9 +72,7 @@ async function postHandler(
   }));
   const mismatches = scenarioLinkCountryMismatch(normalizedLinks, body.countries);
   if (mismatches.length) {
-    throw new Error(
-      `Link country mismatch: ${serializeLinkMismatches(mismatches)}. Fix the scenario's countries[] or the link's exchange, then retry.`
-    );
+    throw new Error(`Link country mismatch: ${serializeLinkMismatches(mismatches)}. Fix the scenario's countries[] or the link's exchange, then retry.`);
   }
 
   // Resolve (symbol, exchange) to a TickerV1 id where we can. Unresolved

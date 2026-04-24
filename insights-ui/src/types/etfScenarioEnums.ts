@@ -1,13 +1,7 @@
 // Aliases into the shared scenario enum module so ETF-scenario callers keep
 // compiling without changes. New code should import from `./scenarioEnums`
 // directly.
-import {
-  ScenarioDirection,
-  ScenarioPricedInBucket,
-  ScenarioProbabilityBucket,
-  ScenarioRole,
-  ScenarioTimeframe,
-} from './scenarioEnums';
+import { ScenarioDirection, ScenarioPricedInBucket, ScenarioProbabilityBucket, ScenarioRole, ScenarioTimeframe } from './scenarioEnums';
 
 export const EtfScenarioDirection = ScenarioDirection;
 export type EtfScenarioDirection = ScenarioDirection;

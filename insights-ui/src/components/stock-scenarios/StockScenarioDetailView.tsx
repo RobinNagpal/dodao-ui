@@ -37,7 +37,10 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         <p className="text-xs text-gray-400 mb-4">
           <span className="uppercase tracking-wide text-[11px] text-gray-500 mr-2">Countries in scope</span>
           {scenario.countries.map((c) => (
-            <span key={c} className="inline-block text-[10px] uppercase tracking-wide text-gray-300 bg-[#111827] border border-[#374151] rounded px-1.5 py-0.5 mr-1">
+            <span
+              key={c}
+              className="inline-block text-[10px] uppercase tracking-wide text-gray-300 bg-[#111827] border border-[#374151] rounded px-1.5 py-0.5 mr-1"
+            >
               {c}
             </span>
           ))}
@@ -100,12 +103,7 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.outlookMarkdown)} />
       </section>
 
-      <StockScenarioLinkColumns
-        winners={scenario.winners}
-        losers={scenario.losers}
-        mostExposed={scenario.mostExposed}
-        scenarioCountries={scenario.countries}
-      />
+      <StockScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} mostExposed={scenario.mostExposed} scenarioCountries={scenario.countries} />
     </article>
   );
 }

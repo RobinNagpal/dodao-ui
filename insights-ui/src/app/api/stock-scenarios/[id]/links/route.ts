@@ -36,10 +36,7 @@ async function postHandler(
   const symbol = body.symbol.toUpperCase();
   const exchange = body.exchange.toUpperCase();
 
-  const mismatches = scenarioLinkCountryMismatch(
-    [{ symbol, exchange }],
-    scenario.countries as SupportedCountries[]
-  );
+  const mismatches = scenarioLinkCountryMismatch([{ symbol, exchange }], scenario.countries as SupportedCountries[]);
   if (mismatches.length) {
     throw new Error(`Link country mismatch: ${serializeLinkMismatches(mismatches)}.`);
   }
