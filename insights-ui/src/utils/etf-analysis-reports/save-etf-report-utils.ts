@@ -110,7 +110,7 @@ export async function saveEtfFinalSummaryResponse(symbol: string, exchange: stri
 
 /**
  * LLM response shape for the Competition analysis. Matches
- * `schemas/etf-analysis/outputs/competition-output.schema.yaml` — no top-level
+ * `schemas/etf-analysis/outputs/etf-competition-output.schema.yaml` — no top-level
  * `summary` field, just the long-form body + per-peer array.
  */
 export interface EtfCompetitionLlmResponse {
