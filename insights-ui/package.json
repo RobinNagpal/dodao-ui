@@ -14,6 +14,7 @@
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
+    "import:stock-scenarios": "tsx src/scripts/import-stock-scenarios.ts",
     "etfs:trigger": "tsx src/scripts/etfs/trigger-generation.ts",
     "etfs:wait": "tsx src/scripts/etfs/wait-for-generation.ts",
     "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts",

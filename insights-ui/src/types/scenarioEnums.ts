@@ -1,0 +1,44 @@
+// Scenario enums shared between ETF and Stock scenario features.
+// The database persists these as plain TEXT columns so that adding / removing
+// values does not require a schema migration; zod and callers still get a
+// strict string-literal union via `z.nativeEnum(<const object>)`.
+
+export const ScenarioDirection = {
+  UPSIDE: 'UPSIDE',
+  DOWNSIDE: 'DOWNSIDE',
+} as const;
+export type ScenarioDirection = (typeof ScenarioDirection)[keyof typeof ScenarioDirection];
+
+export const ScenarioTimeframe = {
+  FUTURE: 'FUTURE',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PAST: 'PAST',
+} as const;
+export type ScenarioTimeframe = (typeof ScenarioTimeframe)[keyof typeof ScenarioTimeframe];
+
+export const ScenarioProbabilityBucket = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW',
+} as const;
+export type ScenarioProbabilityBucket = (typeof ScenarioProbabilityBucket)[keyof typeof ScenarioProbabilityBucket];
+
+// How much of the scenario is already reflected in current prices. Pairs with
+// probabilityPercentage to signal remaining edge: a 50%-probability scenario
+// that is FULLY_PRICED_IN has no actionable edge; a 20%-probability scenario
+// that is NOT_PRICED_IN can still be a strong trade.
+export const ScenarioPricedInBucket = {
+  NOT_PRICED_IN: 'NOT_PRICED_IN',
+  PARTIALLY_PRICED_IN: 'PARTIALLY_PRICED_IN',
+  MOSTLY_PRICED_IN: 'MOSTLY_PRICED_IN',
+  FULLY_PRICED_IN: 'FULLY_PRICED_IN',
+  OVER_PRICED_IN: 'OVER_PRICED_IN',
+} as const;
+export type ScenarioPricedInBucket = (typeof ScenarioPricedInBucket)[keyof typeof ScenarioPricedInBucket];
+
+export const ScenarioRole = {
+  WINNER: 'WINNER',
+  LOSER: 'LOSER',
+  MOST_EXPOSED: 'MOST_EXPOSED',
+} as const;
+export type ScenarioRole = (typeof ScenarioRole)[keyof typeof ScenarioRole];

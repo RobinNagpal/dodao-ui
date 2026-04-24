@@ -30,6 +30,7 @@ const stockIndustryMgmtSection: AdminNavSection = {
     { name: 'Industry Analysis', href: '/admin-v1/industry-analysis-management' },
     { name: 'Ticker Management', href: '/admin-v1/ticker-management' },
     { name: 'Analysis Factors', href: '/admin-v1/analysis-factors' },
+    { name: 'Stock Scenarios', href: '/admin-v1/stock-scenarios' },
   ],
 };
 
