@@ -99,18 +99,3 @@ export interface SampledTicker {
   summary?: string;
   stockAnalyzeUrl?: string;
 }
-
-/**
- * Instruction block prepended to every prompt returned by the get-report-prompt scripts.
- * Shared by the stock and ETF CLIs so the caller-facing rules are the same in both flows.
- * The rules here sit above whatever the per-category prompt template tells the LLM.
- */
-export const AGENT_PROMPT_PREAMBLE = `Important output rules (read first):
-
-- Do NOT mention any field name or data-source label from the input data blocks below (e.g. morOverview, morAnalysis, stockAnalyzerReturns, financialSummary, etfMorPortfolioInfo, morRiskPeriods). Use the values, never the schema.
-- If a specific metric is missing from the data we provide, source it yourself from reputable public sources (issuer fund page or prospectus, Morningstar, etf.com, SEC filings, index provider). Do NOT write phrases like "not available", "not provided", "data is missing", or any variant — either use the value you source or simply leave the claim out.
-- Generate the analysis in plain investor-facing English on the basis of the values you have (ours + what you source). Never reference the input schema back to the reader.
-
----
-
-`;

@@ -99,9 +99,12 @@ export interface SampledEtf {
 }
 
 /**
- * Instruction block prepended to every prompt returned by the get-report-prompt scripts.
- * Shared by the stock and ETF CLIs so the caller-facing rules are the same in both flows.
- * The rules here sit above whatever the per-category prompt template tells the LLM.
+ * Instruction block prepended to every ETF prompt returned by `etfs:prompt`.
+ * ETF inputs fan out across many Morningstar-sourced sub-objects (morOverview,
+ * morAnalysis, morRiskPeriods, etfMorPortfolioInfo, ...) and those labels leak
+ * into the generated analysis unless the LLM is told not to reference them.
+ * The stock CLI does not prepend this — stock prompts are already tighter and
+ * don't benefit from the extra reminder.
  */
 export const AGENT_PROMPT_PREAMBLE = `Important output rules (read first):
 
