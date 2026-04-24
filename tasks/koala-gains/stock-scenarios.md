@@ -70,11 +70,16 @@ Edit `insights-ui/prisma/schema.prisma` — add models **after** the existing `E
   tickers instead of ETFs:
   - `id`, `scenarioId`, `tickerKey` (nullable String — the existing ticker identity in
     `TickerV1` / stock tables; confirm the correct FK field name before writing the
-    migration), `symbol`, `exchange` (nullable), `role`, `sortOrder`
+    migration), `symbol`, `exchange` (**non-null for stocks** — see multi-exchange note
+    below), `role`, `sortOrder`
   - `roleExplanation`, `expectedPriceChange`, `expectedPriceChangeExplanation`
   - `spaceId`, `createdAt`, `updatedAt`
   - Relation back to `StockScenario` with `onDelete: Cascade`
-  - `@@unique([scenarioId, symbol, role])`, `@@index([scenarioId])`, `@@index([symbol])`
+  - **Uniqueness differs from ETFs**: use `@@unique([scenarioId, symbol, exchange, role])`
+    (ETFs use `(scenarioId, symbol, role)`). The same symbol can legally appear on two
+    exchanges in different countries — e.g. Unilever (`ULVR` on LSE + `UN` on NYSE) — and
+    we need to allow both rows without collision.
+  - `@@index([scenarioId])`, `@@index([symbol])`, `@@index([symbol, exchange])`
   - `@@map("stock_scenario_stock_links")`
 - [ ] **Back-ref on the stock model** — add `scenarioLinks StockScenarioStockLink[]` to
   whichever model represents a tradable stock ticker today (verify: `TickerV1`, `Ticker`,
@@ -135,6 +140,14 @@ use the **same values**.
   diverge over time and force double-maintenance.
 - [ ] Country values stay in `countryExchangeUtils.ts` (`SupportedCountries` enum). Do not
   duplicate into the scenarios enum module — import from the utils file everywhere.
+- [ ] **Label helpers** — `src/utils/etf-scenario-metadata-generators.ts` currently exports
+  `directionLabel()`, `timeframeLabel()`, `probabilityBucketLabel()`,
+  `pricedInBucketLabel()`. Lift these into a shared module (e.g.
+  `src/utils/scenario-labels.ts`) so both ETF and stock views reuse the same text — do
+  NOT copy-paste into a stock-specific generator.
+- [ ] **Slug helper** — `src/utils/etf-scenario-slug.ts` exports `slugifyScenarioTitle`.
+  Rename the module to `src/utils/scenario-slug.ts` (or add a thin re-export) so both
+  features share one slug algorithm.
 
 ### 1.4) Cache-tag helpers
 
@@ -147,6 +160,12 @@ use the **same values**.
 - [ ] The listing tag is country-agnostic (one tag for all countries) — filtering by
   country is done client-side on the SSR payload, so no per-country cache variants are
   needed at this scale. Revisit only if the scenario count grows past ~200.
+- [ ] **Server-action wrappers** in `src/utils/cache-actions.ts` (the `'use server'` file
+  that the page-actions dropdown calls into):
+  - `revalidateStockScenariosListingCache()`
+  - `revalidateStockScenarioCache(slug: string)`
+  Mirrors the existing `revalidateEtfScenariosListingCache` / `revalidateEtfScenarioCache`
+  exports. The `StockScenariosPageActions` dropdown (§1.6) calls these from the client.
 
 ### 1.5) API routes
 
@@ -167,6 +186,16 @@ post via `token=<AUTOMATION_SECRET>`).
   Resolve `tickerKey` + `exchange` on read from the symbol. Return `scenario.countries`
   so the client filter bar knows which options are enabled. Always return all 15 links —
   country filtering on the detail view is client-side against the resolved `exchange`.
+  **Support `?allowNull=true`** (matches ETF detail route) so the public page's `fetch()`
+  wrapper can receive `null` for a missing slug instead of a thrown error; the page
+  maps that to `notFound()`.
+- [ ] Define the DTOs inline in each route file (`StockScenarioListingItem`,
+  `StockScenarioListingResponse`, `StockScenarioLinkDto`, `StockScenarioDetail`) — match
+  the ETF convention of co-locating request/response types with the route (see
+  `EtfScenarioDetail` and `EtfScenarioLinkDto` in
+  `src/app/api/[spaceId]/etf-scenarios/[slug]/route.ts`). Only promote to
+  `src/types/stockScenarios.ts` if both a non-route component and a page need the same
+  shape.
 
 **Admin (write)**
 - [ ] `src/app/api/stock-scenarios/route.ts` — `POST` upsert-by-slug (mirror of
@@ -182,13 +211,21 @@ post via `token=<AUTOMATION_SECRET>`).
 - [ ] **Automation auth parity**: POST / PUT / DELETE / link-mgmt accept the
   `AUTOMATION_SECRET` via `token=` query or `x-automation-token` header, same as
   ETF scenarios (see `withAdminOrToken`).
-- [ ] **Symbol → ticker resolution**: backend looks up each link's `symbol` against the
-  stock table (`spaceId + symbol`) and populates `tickerKey` + `exchange`. Clients do NOT
-  pass those fields manually — same rule as ETF scenarios.
-- [ ] **`countries[]` validation**: reject writes where any link's resolved exchange maps
-  to a country not present in the scenario's `countries[]` (see §1.2). Return the
-  offending symbol / exchange / country triple in the error so the admin can fix the
-  declaration.
+- [ ] **Symbol + exchange → ticker resolution** (differs from ETFs): because the same
+  symbol can exist on multiple exchanges across countries (ADRs, dual listings, and
+  symbol collisions like `UN` — Unilever NYSE vs U-Haul UHAL), the link payload MUST
+  include `exchange` for every link. Server validates `(symbol, exchange)` against the
+  stock table and populates `tickerKey`. If `exchange` is omitted or not found, reject
+  the write. This is the critical deviation from ETF scenarios (where `symbol` alone is
+  unique within the ETF universe and the backend auto-fills `exchange`).
+- [ ] **`countries[]` validation**: reject writes where any link's exchange maps to a
+  country not present in the scenario's `countries[]` (via `EXCHANGE_TO_COUNTRY`; see
+  §1.2). Return the offending symbol / exchange / country triple in the error so the
+  admin can fix the declaration.
+- [ ] **Resolution failures**: if `(symbol, exchange)` doesn't resolve to a row in the
+  stock table, still allow the write (store `tickerKey = null`) but flag it in the
+  response so the admin knows the ticker pill will render as plain text — matches the
+  ETF behaviour for unresolved symbols.
 
 ### 1.6) Public pages
 
@@ -210,10 +247,21 @@ Follow the SSR/ISR directives that `/etf-scenarios` already uses.
   string so the selection survives reload and share-links.
 - [ ] `src/app/stock-scenarios/StockScenariosPageActions.tsx` — admin cache-flush dropdown
   (mirror the ETF version).
-- [ ] Metadata generators: `src/utils/stock-scenario-metadata-generators.ts` (mirror
-  `etf-scenario-metadata-generators.ts`) — title, description, breadcrumbs, `Article`
-  JSON-LD with `datePublished = createdAt`, `dateModified = updatedAt`, `dateline =
-  outlookAsOfDate`.
+- [ ] Metadata generators: `src/utils/stock-scenario-metadata-generators.ts` — mirror
+  the **full set** of exports in `etf-scenario-metadata-generators.ts`:
+  - `generateStockScenarioListingMetadata()` — base `<title>` / description / OG tags.
+  - `generateStockScenarioListingJsonLd()` — `WebPage`/`CollectionPage` schema.
+  - `generateStockScenarioListingBreadcrumbJsonLd()` — breadcrumb chain.
+  - `generateStockScenarioListingItemListJsonLd(items)` — `ItemList` with every
+    scenario's slug + title + number.
+  - `generateStockScenarioDetailMetadata({ ... })` — per-slug title / description / OG.
+  - `generateStockScenarioDetailArticleJsonLd({ ... })` — `Article` with
+    `datePublished = createdAt`, `dateModified = updatedAt`, `dateline =
+    outlookAsOfDate`.
+  - `generateStockScenarioDetailBreadcrumbJsonLd({ title, slug })`.
+- [ ] **Skip** `loading.tsx` / `error.tsx` / `not-found.tsx` at the route level — ETF
+  scenarios doesn't have them and the pattern across sibling stocks/ETFs pages is to
+  rely on Next.js defaults. Add only if the user asks.
 
 ### 1.7) Components
 
@@ -224,6 +272,13 @@ Under `src/components/stock-scenarios/`:
 - [ ] `StockScenarioCard.tsx` — in addition to the ETF card content, show small country
   pills (one per entry in `countries[]`) so readers can see at a glance which markets the
   scenario applies to.
+- [ ] `StockScenarioOutlookBadge.tsx` (or reuse ETF version) — exports
+  `StockScenarioDirectionBadge`, `StockScenarioProbabilityBadge`,
+  `StockScenarioTimeframeBadge`. The ETF file
+  (`src/components/etf-scenarios/EtfScenarioOutlookBadge.tsx`) is already generic in
+  everything but name; the cleanest option is to rename it to
+  `components/scenarios/ScenarioOutlookBadge.tsx` and share. Duplicating is
+  explicitly a last resort.
 - [ ] `StockScenarioDetailView.tsx` — three-column Winners / Losers / Most-exposed grid.
   If **any** link in a column has `roleExplanation`, `expectedPriceChange`, or
   `expectedPriceChangeExplanation` populated, the column flips from compact pills to a
@@ -265,7 +320,38 @@ Follow the `SingleSectionModal` pattern already used by `/admin-v1/etf-scenarios
   frontmatter line (comma-separated) — add to
   `src/utils/stock-scenario-markdown-parser.ts` when it's built.
 - [ ] `src/app/admin-v1/AdminNav.tsx` — add a **Stock Scenarios** link next to the
-  existing **ETF Scenarios** entry.
+  existing `{ name: 'ETF Scenarios', href: '/admin-v1/etf-scenarios' }` entry (line 41
+  today), so the two live side-by-side in the same section.
+
+### 1.9) Markdown parser (`src/utils/stock-scenario-markdown-parser.ts`)
+
+The ETF parser (`src/utils/etf-scenario-markdown-parser.ts`, 196 lines) extracts tickers
+from winners/losers markdown using a capitalised-word regex + a STOPWORDS set. For
+stocks:
+
+- [ ] **Exchange-qualified tickers**: non-US tickers routinely collide with common words
+  (e.g. `IT` = Gartner on NYSE AND an Indian listing on NSE). Require exchange qualifier
+  in source markdown: `NSE:RELIANCE`, `LSE:ULVR`, etc. Update the extractor to parse
+  `{EXCHANGE}:{SYMBOL}` as a single token and emit both fields into the `ParsedLink`.
+- [ ] **Expand `STOPWORDS`** to include country names that collide with tickers
+  (`US`, `UK`, `IN`, `CA`, `JP`, `KR`, `HK`, `TW`, `AU`, `PK`). Test against a sample of
+  real scenario markdown before shipping.
+- [ ] **Frontmatter field**: parse a `Countries:` line (comma-separated
+  `SupportedCountries` values) out of each scenario block, validate, and emit as
+  `countries[]` on `ParsedScenario`.
+
+### 1.10) Automation import script (`src/scripts/import-stock-scenarios.ts`)
+
+Mirror `src/scripts/import-etf-scenarios.ts`:
+
+- [ ] Reads a markdown file (default
+  `docs/ai-knowledge/insights-ui/stock-analysis/stock-market-scenarios.md` — create this
+  directory during Phase 3 seeding), parses via the new parser, POSTs each scenario to
+  `/api/stock-scenarios?token=<AUTOMATION_SECRET>`.
+- [ ] Honours env vars: `SCENARIOS_API_BASE`, `AUTOMATION_SECRET`, `SCENARIOS_MD_PATH`,
+  `SCENARIOS_FALLBACK_DATE`.
+- [ ] Wire into `package.json` scripts as `stock-scenarios:import` (ETF equivalent is
+  already wired).
 
 ---
 
@@ -368,3 +454,29 @@ The ETF scenarios are currently hand-authored. For stock scenarios:
   the viewer's locale / prior visits, or always start with "All countries"? Defaulting
   is more relevant but risks hiding scenarios a user would otherwise discover. Start
   with "All countries" and revisit once we have usage data.
+- [ ] **Which stock model is the FK target?** The schema has both `Ticker` and `TickerV1`
+  families (see `insights-ui/prisma/schema.prisma` around `TickerV1Industry`, etc.).
+  Confirm whether `StockScenarioStockLink.tickerKey` should FK to `TickerV1`, `Ticker`,
+  or resolve loosely by `(symbol, exchange)` without an FK. The ETF side uses a strict
+  FK to `Etf`; we should decide before the migration.
+- [ ] **ADR + dual-listing handling** — e.g. Alibaba trades as `BABA` on NYSE and
+  `9988` on HKEX. For an "Asia consumer demand" scenario, does the link-row represent
+  both listings, the primary, or are they two rows (one per country)? Two-row is more
+  honest but may double-count in listings. Pin a rule before seeding.
+- [ ] **Markdown source format for non-US tickers** — the current ETF parser reads bare
+  uppercase tokens. Our spec in §1.9 requires `EXCHANGE:SYMBOL` qualifiers for non-US
+  markets, but that breaks drop-in compatibility with the ETF parser. Decide whether to
+  (a) require qualifiers universally (even US) so the parser is uniform, or (b)
+  auto-assume `NASDAQ` / `NYSE` when no qualifier is present.
+- [ ] **Shared Scenario enums vs split** — §1.3 suggests renaming `etfScenarioEnums.ts`
+  to a neutral `scenarioEnums.ts`. This is technically a breaking import across the
+  existing ETF code surface. Confirm the rename is acceptable (the re-export shim makes
+  it safe, but grep-for-enums becomes noisier).
+- [ ] **Sitemap entries** — ETF scenarios are not in any `sitemap*.ts` today. Should
+  `/stock-scenarios` and each detail page be added to a sitemap for SEO, or inherit the
+  same "no sitemap" posture as ETF scenarios for now? Recommend adding; the traffic
+  potential is higher.
+- [ ] **Per-symbol reverse-link cache tag** — §Phase 2 mentions "a new per-symbol tag".
+  Decide the tag name shape (e.g. `stock_scenario_for_symbol:<EXCHANGE>:<SYMBOL>`) and
+  which writes invalidate it (every link add/remove on a scenario touches the tags for
+  the old AND new symbol, which is cheap since we only have 15 per scenario).
