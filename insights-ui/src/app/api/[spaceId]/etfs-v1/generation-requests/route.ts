@@ -29,6 +29,12 @@ export interface EtfGenerationRequestWithEtf extends EtfGenerationRequest {
     name: string;
   };
   pendingSteps?: EtfReportType[];
+  /**
+   * Forward-compatible flag for the Competition step. Populated once the accompanying
+   * schema migration adds the column to `etf_generation_requests`; until then the
+   * field is always undefined at runtime and the admin UI falls back to "not enabled".
+   */
+  regenerateCompetition?: boolean;
 }
 
 export interface EtfGenerationRequestsResponse {

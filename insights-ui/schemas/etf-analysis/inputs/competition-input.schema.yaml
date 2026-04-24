@@ -1,0 +1,37 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+description: |
+  Input for the ETF competition analysis. Only identity/context fields are passed
+  in — no financial data. The LLM is expected to look up peer ETFs and fund-level
+  facts from reputable public sources (issuer fund pages, Morningstar, etf.com,
+  index providers, etc.) and build the comparison from there.
+properties:
+  name:
+    type: string
+    description: 'The full name of the ETF being analysed (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'The ETF ticker symbol (e.g., SPY).'
+  exchange:
+    type: string
+    description: 'Exchange code (e.g., NYSEARCA, NASDAQ, BATS, NYSE).'
+  assetClass:
+    type: ['string', 'null']
+    description: 'The ETF asset class (e.g., Equity, Fixed Income, Commodity).'
+  category:
+    type: ['string', 'null']
+    description: 'ETF category as provided by the data source (e.g., Large Blend, High Yield Bond).'
+  groupKey:
+    type: ['string', 'null']
+    description: 'ETF group key the fund maps to in our taxonomy (e.g., broad-equity, fixed-income-core).'
+  indexName:
+    type: ['string', 'null']
+    description: 'Index name the ETF aims to track (if known).'
+  issuer:
+    type: ['string', 'null']
+    description: 'ETF issuer/provider (e.g., Vanguard, iShares, SPDR).'
+required:
+  - name
+  - symbol
+  - exchange

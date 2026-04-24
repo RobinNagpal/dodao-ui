@@ -1,10 +1,9 @@
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
+import CompetitorCard from '@/components/competition/CompetitorCard';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
-import { slugify } from '@dodao/web-core/utils/auth/slugify';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import React from 'react';
 import AddTickerAdminButton from './AddTickerAdminButton';
@@ -251,46 +250,17 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
               <h2 className="text-xl font-semibold text-color mb-3">Competitor Details</h2>
               <ul className="space-y-3 mt-2">
                 {competitorTickers.map((competitor, index) => {
-                  const tickerLink =
+                  const href =
                     competitor.existsInSystem && competitor.tickerData
                       ? `/stocks/${competitor.tickerData.exchange.toUpperCase()}/${competitor.tickerData.symbol.toUpperCase()}`
                       : null;
                   return (
-                    <li key={`${competitor.companyName}-${index}`} className="bg-gray-800 p-4 rounded-md">
-                      <div className="flex flex-col gap-y-2">
-                        <div className="flex items-center justify-between">
-                          {tickerLink ? (
-                            <Link
-                              href={tickerLink}
-                              title="View detailed report"
-                              className="flex gap-x-2 items-center text-[#F59E0B] hover:text-[#F97316] transition-colors"
-                            >
-                              <h3 className="font-semibold">{competitor.companyName}</h3>
-                              <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" />
-                            </Link>
-                          ) : (
-                            <h3 className="font-semibold">{competitor.companyName}</h3>
-                          )}
-                          <div className="flex">
-                            <div className="flex items-center gap-x-2">
-                              {competitor.companySymbol && (
-                                <span className="text-sm text-gray-400">
-                                  {competitor.companySymbol} • {competitor.exchangeName?.toUpperCase()}
-                                </span>
-                              )}
-                            </div>
-                            <AddTickerAdminButton competitor={competitor} />
-                          </div>
-                        </div>
-                        {competitor.detailedComparison && (
-                          <div
-                            id={slugify(competitor.companyName)}
-                            className="markdown markdown-body"
-                            dangerouslySetInnerHTML={{ __html: parseMarkdown(competitor.detailedComparison) }}
-                          />
-                        )}
-                      </div>
-                    </li>
+                    <CompetitorCard
+                      key={`${competitor.companyName}-${index}`}
+                      competitor={competitor}
+                      href={href}
+                      actionSlot={<AddTickerAdminButton competitor={competitor} />}
+                    />
                   );
                 })}
               </ul>

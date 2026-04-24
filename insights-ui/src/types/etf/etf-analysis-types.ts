@@ -11,6 +11,7 @@ export enum EtfReportType {
   RISK_ANALYSIS = 'risk-analysis',
   FUTURE_PERFORMANCE_OUTLOOK = 'future-performance-outlook',
   INDEX_STRATEGY = 'index-strategy',
+  COMPETITION = 'competition',
   FINAL_SUMMARY = 'final-summary',
 }
 
@@ -29,6 +30,9 @@ export const ETF_REPORT_TYPE_TO_CATEGORY: Record<EtfReportType, EtfAnalysisCateg
   // INDEX_STRATEGY is saved directly on the ETF record (not a category analysis).
   // We still provide a placeholder mapping to satisfy the Record<> type; it is not used.
   [EtfReportType.INDEX_STRATEGY]: EtfAnalysisCategory.PerformanceAndReturns,
+  // COMPETITION lives in its own table (mirroring TickerV1VsCompetition), not a category analysis.
+  // Placeholder mapping to satisfy the Record<> type; it is not used.
+  [EtfReportType.COMPETITION]: EtfAnalysisCategory.PerformanceAndReturns,
   // FINAL_SUMMARY is saved directly on the ETF record (not a category analysis).
   // We still provide a placeholder mapping to satisfy the Record<> type; it is not used.
   [EtfReportType.FINAL_SUMMARY]: EtfAnalysisCategory.PerformanceAndReturns,
@@ -40,11 +44,57 @@ export const ETF_PROMPT_KEYS: Record<EtfReportType, string> = {
   [EtfReportType.RISK_ANALYSIS]: 'US/etfs/risk-analysis',
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'US/etfs/future-performance-outlook',
   [EtfReportType.INDEX_STRATEGY]: 'US/etfs/index-strategy',
+  [EtfReportType.COMPETITION]: 'US/etfs/competition',
   [EtfReportType.FINAL_SUMMARY]: 'US/etfs/final-summary',
 };
 
 export interface EtfFinalSummaryResponse {
   summary: string;
+}
+
+/**
+ * ETF competitor record — mirrors the ticker `CompetitorTicker` shape but scoped to ETFs.
+ * `companyName` is used as the peer name so the record stays shape-compatible with the
+ * shared `CompetitorCard` rendering used on the stock competition page.
+ */
+export interface EtfCompetitor {
+  companyName: string;
+  companySymbol?: string;
+  exchangeSymbol?: string;
+  exchangeName?: string;
+  detailedComparison?: string;
+  /** True when the peer ETF exists in our system and can be linked to. */
+  existsInSystem?: boolean;
+  etfData?: {
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+  };
+}
+
+/**
+ * ETF competition analysis payload — mirrors `TickerV1VsCompetition` (without the
+ * `summary` field). `overallAnalysisDetails` is the long-form markdown body; the
+ * per-competitor array is sent to the rendering layer via `EtfCompetitionResponse`.
+ */
+export interface EtfVsCompetition {
+  overallAnalysisDetails: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
+
+export interface EtfCompetitionResponse {
+  vsCompetition: EtfVsCompetition | null;
+  competitors: EtfCompetitor[];
+  etf?: {
+    id: string;
+    name: string;
+    symbol: string;
+    exchange: string;
+    createdAt?: string | Date;
+    updatedAt?: string | Date;
+  };
 }
 
 export interface EtfIndexStrategySimilarEtf {
