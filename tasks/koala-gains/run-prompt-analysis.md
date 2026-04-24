@@ -55,7 +55,7 @@ mkdir -p "$ITER_ROOT/iter-$ITER"
 ## 2. Enqueue generation for just this category (script)
 
 ```bash
-yarn etf-verify:trigger \
+yarn etfs:trigger \
   --in "$SAMPLE" \
   --categories "$CATEGORY" \
   --out "$ITER_ROOT/iter-$ITER/requests.json"
@@ -64,7 +64,7 @@ yarn etf-verify:trigger \
 ## 3. Wait for the queue to settle (script)
 
 ```bash
-yarn etf-verify:wait \
+yarn etfs:wait \
   --in "$ITER_ROOT/iter-$ITER/requests.json" \
   --interval-sec 20 \
   --timeout-min 90
@@ -73,7 +73,7 @@ yarn etf-verify:wait \
 ## 4. Fetch analyses, filtered to this category (script)
 
 ```bash
-yarn etf-verify:fetch \
+yarn etfs:fetch \
   --in "$SAMPLE" \
   --category "$CATEGORY" \
   --out-dir "$ITER_ROOT/iter-$ITER/reports"
