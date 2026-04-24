@@ -44,12 +44,6 @@ const PRICED_IN_OPTIONS: Array<{ value: ScenarioPricedInBucket; label: string }>
   { value: 'OVER_PRICED_IN', label: 'Over-priced in (market over-reacted)' },
 ];
 
-interface StockScenarioForUpsert extends Omit<StockScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt'> {
-  outlookAsOfDate: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, scenarioId }: UpsertStockScenarioModalProps): JSX.Element {
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
@@ -118,7 +112,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
     setLoadingExisting(true);
     fetch(`${getBaseUrl()}/api/stock-scenarios/${scenarioId}`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((data: StockScenarioForUpsert | null) => {
+      .then((data: StockScenario | null) => {
         if (!data) {
           setFormError('Failed to load scenario');
           return;

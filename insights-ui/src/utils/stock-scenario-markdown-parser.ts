@@ -1,5 +1,5 @@
 import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
-import { EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { AllExchanges, EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/scenario-slug';
 
 export interface ParsedStockScenarioLink {
@@ -140,7 +140,7 @@ function inferCountriesFromLinks(links: ParsedStockScenarioLink[]): SupportedCou
   const out: SupportedCountries[] = [];
   for (const link of links) {
     if (!isExchange(link.exchange)) continue;
-    const country = EXCHANGE_TO_COUNTRY[link.exchange];
+    const country = EXCHANGE_TO_COUNTRY[link.exchange as AllExchanges];
     if (!seen.has(country)) {
       seen.add(country);
       out.push(country);

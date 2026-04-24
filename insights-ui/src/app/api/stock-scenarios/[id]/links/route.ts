@@ -88,6 +88,10 @@ async function postHandler(
   return link;
 }
 
+function isScenarioRole(value: string | null): value is ScenarioRole {
+  return value === 'WINNER' || value === 'LOSER' || value === 'MOST_EXPOSED';
+}
+
 async function deleteHandler(
   request: NextRequest,
   _userContext: DoDaoJwtTokenPayload,
@@ -97,10 +101,10 @@ async function deleteHandler(
   const { searchParams } = new URL(request.url);
   const symbolParam = searchParams.get('symbol');
   const exchangeParam = searchParams.get('exchange');
-  const roleParam = searchParams.get('role') as ScenarioRole | null;
+  const roleParam = searchParams.get('role');
 
-  if (!symbolParam || !exchangeParam || !roleParam) {
-    throw new Error('symbol, exchange, and role query params are required');
+  if (!symbolParam || !exchangeParam || !isScenarioRole(roleParam)) {
+    throw new Error('symbol, exchange, and role (WINNER|LOSER|MOST_EXPOSED) query params are required');
   }
 
   const scenario = await prisma.stockScenario.findUnique({ where: { id: scenarioId } });

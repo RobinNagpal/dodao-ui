@@ -62,7 +62,7 @@ async function getHandler(): Promise<StockScenario[]> {
 async function postHandler(
   request: NextRequest,
   _userContext: KoalaGainsJwtTokenPayload | null,
-  _dynamic: { params: Promise<unknown> }
+  _dynamic: { params: Promise<any> }
 ): Promise<StockScenario> {
   const body = createStockScenarioSchema.parse(await request.json());
 
@@ -83,9 +83,9 @@ async function postHandler(
     );
   }
 
-  // Resolve (symbol, exchange) to a TickerV1 id when possible.
-  const lookupKeys = Array.from(new Set(normalizedLinks.map((l) => `${l.symbol}|${l.exchange}`)));
-  const knownTickers = lookupKeys.length
+  // Resolve (symbol, exchange) to a TickerV1 id where we can. Unresolved
+  // pairs still save (tickerId=null) — the UI renders them as plain pills.
+  const knownTickers = normalizedLinks.length
     ? await prisma.tickerV1.findMany({
         where: {
           spaceId: KoalaGainsSpaceId,
