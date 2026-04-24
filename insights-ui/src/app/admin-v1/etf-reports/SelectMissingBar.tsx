@@ -17,6 +17,7 @@ const reportTypeCategories: MissingCategory[] = [
   { key: 'missingSummary', label: 'Missing Summary', filter: (e) => isReportMissing(e.reportStatuses.summary) },
   { key: 'missingIndexStrategy', label: 'Missing Index & Strategy', filter: (e) => isReportMissing(e.reportStatuses.indexStrategy) },
   { key: 'missingFutureOutlook', label: 'Missing Future Outlook', filter: (e) => isReportMissing(e.reportStatuses.futureOutlook) },
+  { key: 'missingCompetition', label: 'Missing Competition', filter: (e) => isReportMissing(e.reportStatuses.competition) },
   {
     key: 'missingAllAnalysis',
     label: 'Missing All Analysis',
@@ -26,7 +27,8 @@ const reportTypeCategories: MissingCategory[] = [
       isReportMissing(e.reportStatuses.risk) &&
       isReportMissing(e.reportStatuses.summary) &&
       isReportMissing(e.reportStatuses.indexStrategy) &&
-      isReportMissing(e.reportStatuses.futureOutlook),
+      isReportMissing(e.reportStatuses.futureOutlook) &&
+      isReportMissing(e.reportStatuses.competition),
   },
 ];
 

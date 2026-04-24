@@ -24,6 +24,7 @@ type GenerateKey =
   | 'risk-analysis'
   | 'future-performance-outlook'
   | 'index-strategy'
+  | 'competition'
   | 'final-summary';
 
 const REPORT_OPTIONS: Array<{ key: GenerateKey; label: string }> = [
@@ -33,6 +34,7 @@ const REPORT_OPTIONS: Array<{ key: GenerateKey; label: string }> = [
   { key: 'risk-analysis', label: 'Generate Risk Analysis' },
   { key: 'future-performance-outlook', label: 'Generate Future Outlook' },
   { key: 'index-strategy', label: 'Generate Index & Strategy' },
+  { key: 'competition', label: 'Generate Competition' },
   { key: 'final-summary', label: 'Generate Final Summary' },
 ];
 
@@ -45,6 +47,7 @@ function buildPayload(etf: EtfIdentifier, key: GenerateKey): EtfGenerationReques
     regenerateRiskAnalysis: all || key === 'risk-analysis',
     regenerateFuturePerformanceOutlook: all || key === 'future-performance-outlook',
     regenerateIndexStrategy: all || key === 'index-strategy',
+    regenerateCompetition: all || key === 'competition',
     regenerateFinalSummary: all || key === 'final-summary',
   };
 }
