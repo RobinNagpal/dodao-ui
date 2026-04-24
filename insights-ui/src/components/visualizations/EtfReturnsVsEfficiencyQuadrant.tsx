@@ -86,6 +86,8 @@ const QuadrantBackgroundPlugin: Plugin<'scatter'> = {
   },
 };
 
+type GroupedEtfPoint = { x: number; y: number; symbols: string[]; names: string[]; isMainEtf: boolean };
+
 const SymbolLabelPlugin: Plugin<'scatter'> = {
   id: 'etfSymbolLabels',
   afterDatasetsDraw: (chart: Chart<'scatter'>) => {
@@ -97,14 +99,14 @@ const SymbolLabelPlugin: Plugin<'scatter'> = {
     chart.data.datasets.forEach((dataset, datasetIndex) => {
       const meta = chart.getDatasetMeta(datasetIndex);
       meta.data.forEach((point, index) => {
-        const raw = dataset.data[index] as { x: number; y: number; symbol?: string; isMainEtf?: boolean };
-        if (!raw?.symbol) return;
+        const raw = dataset.data[index] as GroupedEtfPoint;
+        if (!raw?.symbols?.length) return;
 
         const { x, y } = point.getProps(['x', 'y']);
         const isMain = Boolean(raw.isMainEtf);
 
         ctx.fillStyle = isMain ? '#fbbf24' : '#d1d5db';
-        ctx.fillText(raw.symbol, x, y + (isMain ? 22 : 18));
+        ctx.fillText(raw.symbols.join(', '), x, y + (isMain ? 22 : 18));
       });
     });
 
@@ -114,21 +116,39 @@ const SymbolLabelPlugin: Plugin<'scatter'> = {
 
 export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymbol: _mainEtfSymbol }: EtfReturnsVsEfficiencyQuadrantProps): JSX.Element | null {
   const chartData = useMemo((): ChartData<'scatter'> => {
-    const grouped: Record<EtfCompetitorClassification, Array<{ x: number; y: number; symbol: string; name: string; isMainEtf: boolean }>> = {
+    const groupsByKey = new Map<string, { cls: EtfCompetitorClassification; point: GroupedEtfPoint }>();
+
+    for (const dp of dataPoints) {
+      const key = `${Math.round(dp.efficiencyScore)},${Math.round(dp.returnsScore)}`;
+      const existing = groupsByKey.get(key);
+      if (!existing) {
+        groupsByKey.set(key, {
+          cls: dp.classification,
+          point: { x: dp.efficiencyScore, y: dp.returnsScore, symbols: [dp.symbol], names: [dp.name], isMainEtf: dp.isMainEtf },
+        });
+        continue;
+      }
+      const p = existing.point;
+      if (dp.isMainEtf) {
+        p.symbols.unshift(dp.symbol);
+        p.names.unshift(dp.name);
+        p.isMainEtf = true;
+        p.x = dp.efficiencyScore;
+        p.y = dp.returnsScore;
+      } else {
+        p.symbols.push(dp.symbol);
+        p.names.push(dp.name);
+      }
+    }
+
+    const grouped: Record<EtfCompetitorClassification, GroupedEtfPoint[]> = {
       'Top Pick': [],
       'Return Focused': [],
       'Cost Efficient': [],
       Underperform: [],
     };
-
-    for (const dp of dataPoints) {
-      grouped[dp.classification].push({
-        x: dp.efficiencyScore,
-        y: dp.returnsScore,
-        symbol: dp.symbol,
-        name: dp.name,
-        isMainEtf: dp.isMainEtf,
-      });
+    for (const { cls, point } of groupsByKey.values()) {
+      grouped[cls].push(point);
     }
 
     return {
@@ -183,12 +203,22 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
           displayColors: false,
           callbacks: {
             title: (items: TooltipItem<'scatter'>[]) => {
-              const raw = items[0]?.raw as { name?: string; symbol?: string };
-              return raw?.name || raw?.symbol || '';
+              const raw = items[0]?.raw as GroupedEtfPoint | undefined;
+              if (!raw) return '';
+              if (raw.names.length > 1) return `${raw.names.length} ETFs at this position`;
+              return raw.names[0] || raw.symbols[0] || '';
             },
             label: (item: TooltipItem<'scatter'>) => {
-              const raw = item.raw as { x: number; y: number; symbol?: string };
-              return [`Returns: ${raw.y.toFixed(0)}%`, `Efficiency: ${raw.x.toFixed(0)}%`, `(${item.dataset.label})`];
+              const raw = item.raw as GroupedEtfPoint;
+              const lines: string[] = [];
+              if (raw.names.length > 1) {
+                for (let i = 0; i < raw.names.length; i++) {
+                  lines.push(`• ${raw.names[i]} (${raw.symbols[i]})`);
+                }
+                lines.push('');
+              }
+              lines.push(`Returns: ${raw.y.toFixed(0)}%`, `Efficiency: ${raw.x.toFixed(0)}%`, `(${item.dataset.label})`);
+              return lines;
             },
           },
         },
