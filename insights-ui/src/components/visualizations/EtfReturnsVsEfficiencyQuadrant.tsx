@@ -154,8 +154,8 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
       scales: {
         x: {
           type: 'linear',
-          min: 0,
-          max: 100,
+          min: -8,
+          max: 108,
           title: { display: false },
           grid: { color: 'rgba(55, 65, 81, 0.2)' },
           ticks: { display: false },
@@ -163,8 +163,8 @@ export default function EtfReturnsVsEfficiencyQuadrant({ dataPoints, mainEtfSymb
         },
         y: {
           type: 'linear',
-          min: 0,
-          max: 100,
+          min: -8,
+          max: 108,
           title: { display: false },
           grid: { color: 'rgba(55, 65, 81, 0.2)' },
           ticks: { display: false },
