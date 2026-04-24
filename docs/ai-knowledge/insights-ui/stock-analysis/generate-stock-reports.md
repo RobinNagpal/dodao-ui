@@ -138,9 +138,71 @@ does not itself execute LLM calls. To drain the queue:
   (not token-gated today) picks up to 10 pending requests per call and kicks
   them off.
 
-Unlike the ETF pipeline, there is no `by-ids` polling endpoint for tickers, so
-the trigger script does not ship with a `stocks:wait` companion. Check status
-via the admin page or by querying the generation-requests list.
+## Polling request status (the `by-ids` endpoint)
+
+To watch progress on specific request IDs (e.g. the ones `trigger-generation.ts`
+wrote to `triggered.json`), there is a dedicated lookup route that mirrors the
+ETF pipeline's endpoint:
+
+```
+GET /api/[spaceId]/tickers-v1/generation-requests/by-ids?ids=<comma-separated-ids>
+```
+
+- **Auth:** `withAdminOrToken` — admin JWT or `x-automation-token` /
+  `?token=<AUTOMATION_SECRET>` query param. Same secret the trigger script
+  uses, so no extra setup.
+- **Response shape:**
+
+  ```ts
+  interface TickerGenerationRequestsByIdsResponse {
+    requests: Array<TickerV1GenerationRequest & {
+      ticker: { symbol: string; exchange: string; name: string };
+      pendingSteps: ReportType[];     // derived via calculatePendingSteps
+    }>;
+    missingIds: string[];             // ids that didn't resolve to a row
+  }
+  ```
+
+  Each row also carries the raw `status` (`NotStarted` / `InProgress` /
+  `Completed` / `Failed`), `completedSteps`, `failedSteps`, and
+  `inProgressStep` columns from the Prisma model, which is everything you
+  need to diagnose stuck or failed reports.
+
+### Quick-debug recipes (for Claude or a human)
+
+```bash
+# 1. Take every requestId out of triggered.json and inspect the whole batch
+jq -r '.requestIds | join(",")' /tmp/triggered.json | \
+  xargs -I{} curl -s \
+    -H "x-automation-token: $AUTOMATION_SECRET" \
+    "https://koalagains.com/api/koala_gains/tickers-v1/generation-requests/by-ids?ids={}" | \
+  jq '{
+    statuses: (.requests | group_by(.status) | map({(.[0].status): length}) | add),
+    missing:  .missingIds,
+    failed:   [.requests[] | select(.status=="Failed") | {symbol: .ticker.symbol, failedSteps, inProgressStep, lastInvocationTime}],
+    pending:  [.requests[] | select(.status!="Completed") | {symbol: .ticker.symbol, status, pendingSteps, inProgressStep}]
+  }'
+
+# 2. Poll a single request every 20s until it settles
+while :; do
+  curl -s -H "x-automation-token: $AUTOMATION_SECRET" \
+    "https://koalagains.com/api/koala_gains/tickers-v1/generation-requests/by-ids?ids=<REQUEST_ID>" \
+    | jq '.requests[0] | {status, pendingSteps, inProgressStep, failedSteps, completedSteps}'
+  sleep 20
+done
+```
+
+If the route returns a row whose `pendingSteps` array is empty but whose
+`status` is still `InProgress`, the request has actually finished but the
+"mark completed" sweep hasn't run yet — tick the processor
+(`GET /api/[spaceId]/tickers-v1/generate-ticker-v1-request`) and it will
+flip to `Completed` on the next pass.
+
+There is no `stocks:wait` companion script today (unlike
+`yarn etfs:wait`). If you need one, model it on
+`src/scripts/etfs/wait-for-generation.ts` — the only things that change are
+the endpoint path (above), the response field name (`ticker` instead of
+`etf`), and the tick endpoint (`generate-ticker-v1-request`).
 
 ## Common failure modes
 
@@ -151,10 +213,15 @@ via the admin page or by querying the generation-requests list.
 | `HTTP 401/403` | Token mismatch between client and `AUTOMATION_SECRET` on the server. | Confirm the env var matches the deployed server's secret. |
 | `Refusing to enqueue N tickers` | `--in` contains > 50 entries. | Split the file. |
 | Multiple `FAIL` lines, exit code 1 | Some stocks missing from prod. | Check the `failedTickers` block in the `--out` file; add them with `yarn stocks:add`, then re-run. |
+| `by-ids` returns rows stuck in `InProgress` with an old `lastInvocationTime` | Lambda callback didn't complete or callback-url timed out. | Tick the processor again; if the `inProgressStep` is repeatedly the same, that step's LLM prompt is broken — inspect that specific report's pipeline. |
+| `by-ids` returns the id under `missingIds` | Row was deleted or the id was typed wrong. | Re-run `yarn stocks:trigger` (it will create a fresh request) and capture the new id. |
 
 ## Where to read further
 
-- Endpoint: `src/app/api/[spaceId]/tickers-v1/generation-requests/route.ts`
+- Trigger endpoint: `src/app/api/[spaceId]/tickers-v1/generation-requests/route.ts`
+- **Lookup by ids:** `src/app/api/[spaceId]/tickers-v1/generation-requests/by-ids/route.ts`
+- Processor tick: `src/app/api/[spaceId]/tickers-v1/generate-ticker-v1-request/route.ts`
+- Pending-step calculation: `src/utils/analysis-reports/report-steps-statuses.ts` (`calculatePendingSteps`)
 - Trigger script: `src/scripts/tickers/trigger-generation.ts`
 - Shared CLI helpers: `src/scripts/tickers/lib.ts`
 - Report types enum: `src/types/ticker-typesv1.ts` (`ReportType`)
