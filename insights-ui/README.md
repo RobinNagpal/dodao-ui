@@ -74,4 +74,4 @@ KoalaGains is an AI-powered financial insights and stock analysis platform that 
 
 ## Project Structure
 
-This project is part of the [DoDAO UI monorepo](../). It uses shared packages from `@dodao/web-core` and follows the conventions documented in `docs/ai-knowledge/`.
+This project is a part of the [DoDAO UI monorepo](../). It uses shared packages from `@dodao/web-core` and follows the conventions documented in `docs/ai-knowledge/`.

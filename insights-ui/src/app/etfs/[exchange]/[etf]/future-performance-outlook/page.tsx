@@ -127,6 +127,8 @@ export default async function FuturePerformanceOutlookPage({ params }: { params:
         categoryBadgeText={CATEGORY_NAME}
         categoryBadgeClassName={BADGE_CLASS}
         updatedAt={modifiedDate}
+        assetClass={etfData.stockAnalyzerInfo?.assetClass}
+        fundCategory={etfData.stockAnalyzerInfo?.category}
       />
     </PageWrapper>
   );
