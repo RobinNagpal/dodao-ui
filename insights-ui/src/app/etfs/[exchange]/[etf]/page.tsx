@@ -521,20 +521,20 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           />
         </Suspense>
 
-        {/* Remaining Index & Strategy paragraphs, rendered after the price chart. */}
-        <EtfIndexStrategyTail data={etfInfo} />
-
         <Suspense fallback={null}>
           <EtfHoldingsSection holdingsPromise={portfolioHoldingsPromise} exchange={exchange} symbol={etf} />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
         </Suspense>
 
         <Suspense fallback={null}>
           <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
         </Suspense>
 
-        <Suspense fallback={null}>
-          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
-        </Suspense>
+        {/* Remaining Index & Strategy paragraphs, rendered near the end as the deep-dive narrative. */}
+        <EtfIndexStrategyTail data={etfInfo} />
 
         <div className="mx-auto max-w-7xl">
           <section className="mb-6">
