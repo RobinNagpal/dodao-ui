@@ -84,6 +84,8 @@ const QuadrantBackgroundPlugin: Plugin<'scatter'> = {
   },
 };
 
+type GroupedTickerPoint = { x: number; y: number; tickers: string[]; companyNames: string[]; isMainTicker: boolean };
+
 const TickerLabelPlugin: Plugin<'scatter'> = {
   id: 'tickerLabels',
   afterDatasetsDraw: (chart: Chart<'scatter'>) => {
@@ -95,14 +97,14 @@ const TickerLabelPlugin: Plugin<'scatter'> = {
     chart.data.datasets.forEach((dataset, datasetIndex) => {
       const meta = chart.getDatasetMeta(datasetIndex);
       meta.data.forEach((point, index) => {
-        const raw = dataset.data[index] as { x: number; y: number; ticker?: string; isMainTicker?: boolean };
-        if (!raw?.ticker) return;
+        const raw = dataset.data[index] as GroupedTickerPoint;
+        if (!raw?.tickers?.length) return;
 
         const { x, y } = point.getProps(['x', 'y']);
         const isMain = raw.isMainTicker;
 
         ctx.fillStyle = isMain ? '#fbbf24' : '#d1d5db';
-        ctx.fillText(raw.ticker, x, y + (isMain ? 22 : 18));
+        ctx.fillText(raw.tickers.join(', '), x, y + (isMain ? 22 : 18));
       });
     });
 
@@ -112,21 +114,40 @@ const TickerLabelPlugin: Plugin<'scatter'> = {
 
 export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _mainTickerSymbol }: QualityVsValueQuadrantProps): JSX.Element | null {
   const chartData = useMemo((): ChartData<'scatter'> => {
-    const grouped: Record<string, Array<{ x: number; y: number; ticker: string; companyName: string; isMainTicker: boolean }>> = {
+    type Classification = 'High Quality' | 'Investable' | 'Value Play' | 'Underperform';
+    const groupsByKey = new Map<string, { cls: Classification; point: GroupedTickerPoint }>();
+
+    for (const dp of dataPoints) {
+      const key = `${Math.round(dp.valueScore)},${Math.round(dp.qualityScore)}`;
+      const existing = groupsByKey.get(key);
+      if (!existing) {
+        groupsByKey.set(key, {
+          cls: dp.classification,
+          point: { x: dp.valueScore, y: dp.qualityScore, tickers: [dp.ticker], companyNames: [dp.companyName], isMainTicker: dp.isMainTicker },
+        });
+        continue;
+      }
+      const p = existing.point;
+      if (dp.isMainTicker) {
+        p.tickers.unshift(dp.ticker);
+        p.companyNames.unshift(dp.companyName);
+        p.isMainTicker = true;
+        p.x = dp.valueScore;
+        p.y = dp.qualityScore;
+      } else {
+        p.tickers.push(dp.ticker);
+        p.companyNames.push(dp.companyName);
+      }
+    }
+
+    const grouped: Record<Classification, GroupedTickerPoint[]> = {
       'High Quality': [],
       Investable: [],
       'Value Play': [],
       Underperform: [],
     };
-
-    for (const dp of dataPoints) {
-      grouped[dp.classification].push({
-        x: dp.valueScore,
-        y: dp.qualityScore,
-        ticker: dp.ticker,
-        companyName: dp.companyName,
-        isMainTicker: dp.isMainTicker,
-      });
+    for (const { cls, point } of groupsByKey.values()) {
+      grouped[cls].push(point);
     }
 
     return {
@@ -154,8 +175,8 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
       scales: {
         x: {
           type: 'linear',
-          min: 0,
-          max: 100,
+          min: -8,
+          max: 108,
           title: { display: false },
           grid: { color: 'rgba(55, 65, 81, 0.2)' },
           ticks: { display: false },
@@ -163,8 +184,8 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
         },
         y: {
           type: 'linear',
-          min: 0,
-          max: 100,
+          min: -8,
+          max: 108,
           title: { display: false },
           grid: { color: 'rgba(55, 65, 81, 0.2)' },
           ticks: { display: false },
@@ -183,12 +204,22 @@ export default function QualityVsValueQuadrant({ dataPoints, mainTickerSymbol: _
           displayColors: false,
           callbacks: {
             title: (items: TooltipItem<'scatter'>[]) => {
-              const raw = items[0]?.raw as { companyName?: string; ticker?: string };
-              return raw?.companyName || raw?.ticker || '';
+              const raw = items[0]?.raw as GroupedTickerPoint | undefined;
+              if (!raw) return '';
+              if (raw.companyNames.length > 1) return `${raw.companyNames.length} stocks at this position`;
+              return raw.companyNames[0] || raw.tickers[0] || '';
             },
             label: (item: TooltipItem<'scatter'>) => {
-              const raw = item.raw as { x: number; y: number; ticker?: string };
-              return [`Quality: ${raw.y.toFixed(0)}%`, `Value: ${raw.x.toFixed(0)}%`, `(${item.dataset.label})`];
+              const raw = item.raw as GroupedTickerPoint;
+              const lines: string[] = [];
+              if (raw.companyNames.length > 1) {
+                for (let i = 0; i < raw.companyNames.length; i++) {
+                  lines.push(`• ${raw.companyNames[i]} (${raw.tickers[i]})`);
+                }
+                lines.push('');
+              }
+              lines.push(`Quality: ${raw.y.toFixed(0)}%`, `Value: ${raw.x.toFixed(0)}%`, `(${item.dataset.label})`);
+              return lines;
             },
           },
         },
