@@ -1,12 +1,15 @@
-import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
+import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioRole, ScenarioTimeframe } from '@/types/scenarioEnums';
 import { AllExchanges, EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/scenario-slug';
 
 export interface ParsedStockScenarioLink {
   symbol: string;
   exchange: string;
-  role: 'WINNER' | 'LOSER' | 'MOST_EXPOSED';
+  role: ScenarioRole;
   sortOrder: number;
+  expectedPriceChange: number | null;
+  expectedPriceChangeExplanation: string | null;
+  roleExplanation: string | null;
 }
 
 export interface ParsedStockScenario {
@@ -33,6 +36,13 @@ export interface ParsedStockScenario {
 // tags, role labels) to make heuristics reliable.
 const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 
+// Per-stock bullet line. Captures (in order): exchange, symbol, signed price
+// change %, free-text price-change explanation (timeframe + rationale), and
+// the role explanation that follows the em-dash (or `-` / `:`) separator.
+// All fields after the bold ticker are optional; if a section uses bullets
+// without numbers, the price-change fields stay null.
+const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,3})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
+
 function extractQualifiedTickers(text: string): Array<{ symbol: string; exchange: string }> {
   const out: Array<{ symbol: string; exchange: string }> = [];
   const seen = new Set<string>();
@@ -46,6 +56,57 @@ function extractQualifiedTickers(text: string): Array<{ symbol: string; exchange
     out.push({ symbol, exchange });
   }
   return out;
+}
+
+function extractBulletLinks(section: string, role: ScenarioRole): ParsedStockScenarioLink[] {
+  const links: ParsedStockScenarioLink[] = [];
+  const seen = new Set<string>();
+  for (const rawLine of section.split('\n')) {
+    const line = rawLine.trim();
+    const m = line.match(BULLET_LINE_PATTERN);
+    if (!m) continue;
+    const exchange = m[1];
+    if (!isExchange(exchange)) continue;
+    const symbol = m[2];
+    const key = `${symbol}|${exchange}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    let expectedPriceChange: number | null = null;
+    if (m[3] !== undefined) {
+      const v = parseInt(m[3], 10);
+      if (!Number.isNaN(v) && v >= -100 && v <= 100) expectedPriceChange = v;
+    }
+
+    links.push({
+      symbol,
+      exchange,
+      role,
+      sortOrder: links.length,
+      expectedPriceChange,
+      expectedPriceChangeExplanation: m[4]?.trim() || null,
+      roleExplanation: m[5]?.trim() || null,
+    });
+  }
+  return links;
+}
+
+// Bullet form (one ticker per line, supports per-stock price target and
+// rationale) is the recommended format. Inline form ("NYSE:TEVA (Teva — ...)"
+// inside a paragraph) still works for short scenarios but cannot carry the
+// expectedPriceChange / explanation fields. Bullet form takes precedence
+// when both appear in the same section.
+function extractRoleLinks(section: string, role: ScenarioRole): ParsedStockScenarioLink[] {
+  const bulletLinks = extractBulletLinks(section, role);
+  if (bulletLinks.length > 0) return bulletLinks;
+  return extractQualifiedTickers(section).map((r, i) => ({
+    ...r,
+    role,
+    sortOrder: i,
+    expectedPriceChange: null,
+    expectedPriceChangeExplanation: null,
+    roleExplanation: null,
+  }));
 }
 
 function classifyProbabilityBucket(outlook: string, extractedPercentage: number | null): ScenarioProbabilityBucket {
@@ -185,20 +246,16 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
     const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
 
-    const winnersRefs = extractQualifiedTickers(winnersMarkdown);
-    const losersRefs = extractQualifiedTickers(losersMarkdown);
+    const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
+    const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
 
-    let mostExposedRefs: Array<{ symbol: string; exchange: string }> = [];
+    let mostExposedLinks: ParsedStockScenarioLink[] = [];
     const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
     if (mostExposedMatch) {
-      mostExposedRefs = extractQualifiedTickers(mostExposedMatch[1]);
+      mostExposedLinks = extractRoleLinks(mostExposedMatch[1], ScenarioRole.MOST_EXPOSED);
     }
 
-    const links: ParsedStockScenarioLink[] = [
-      ...winnersRefs.map((r, i) => ({ ...r, role: 'WINNER' as const, sortOrder: i })),
-      ...losersRefs.map((r, i) => ({ ...r, role: 'LOSER' as const, sortOrder: i })),
-      ...mostExposedRefs.map((r, i) => ({ ...r, role: 'MOST_EXPOSED' as const, sortOrder: i })),
-    ];
+    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];
 
     const seen = new Set<string>();
     const deduped = links.filter((l) => {

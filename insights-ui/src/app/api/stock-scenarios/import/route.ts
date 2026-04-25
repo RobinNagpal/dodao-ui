@@ -87,6 +87,9 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       exchange: l.exchange.toUpperCase(),
       role: l.role,
       sortOrder: l.sortOrder,
+      roleExplanation: l.roleExplanation,
+      expectedPriceChange: l.expectedPriceChange,
+      expectedPriceChangeExplanation: l.expectedPriceChangeExplanation,
     }));
     const mismatches = scenarioLinkCountryMismatch(normalizedLinks, countries);
     if (mismatches.length) {
@@ -146,6 +149,9 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
               exchange: link.exchange,
               role: link.role,
               sortOrder: link.sortOrder,
+              roleExplanation: link.roleExplanation,
+              expectedPriceChange: link.expectedPriceChange,
+              expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
               spaceId: KoalaGainsSpaceId,
             };
           }),
