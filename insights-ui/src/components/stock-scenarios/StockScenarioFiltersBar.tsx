@@ -51,8 +51,8 @@ export default function StockScenarioFiltersBar({
   onSearchChange,
 }: StockScenarioFiltersBarProps): JSX.Element {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 bg-[#1F2937] border border-[#374151] rounded-lg p-3 mb-4">
-      <label className="flex flex-col gap-1 text-xs text-gray-300">
+    <div className="bg-[#1F2937] border border-[#374151] rounded-lg p-3 mb-4 flex flex-col gap-3">
+      <label className="flex flex-col gap-1 text-xs text-gray-300 sm:max-w-xs">
         <span className="uppercase tracking-wide text-[11px] text-gray-400">Country</span>
         <select className={SELECT_CLASSES} value={country} onChange={(e) => onCountryChange(e.target.value as SupportedCountries | 'ALL')}>
           <option value="ALL">All countries</option>
@@ -64,49 +64,51 @@ export default function StockScenarioFiltersBar({
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 text-xs text-gray-300">
-        <span className="uppercase tracking-wide text-[11px] text-gray-400">Direction</span>
-        <select className={SELECT_CLASSES} value={direction} onChange={(e) => onDirectionChange(e.target.value as ScenarioDirection | 'ALL')}>
-          {DIRECTION_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <label className="flex flex-col gap-1 text-xs text-gray-300">
+          <span className="uppercase tracking-wide text-[11px] text-gray-400">Direction</span>
+          <select className={SELECT_CLASSES} value={direction} onChange={(e) => onDirectionChange(e.target.value as ScenarioDirection | 'ALL')}>
+            {DIRECTION_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label className="flex flex-col gap-1 text-xs text-gray-300">
-        <span className="uppercase tracking-wide text-[11px] text-gray-400">Probability</span>
-        <select className={SELECT_CLASSES} value={bucket} onChange={(e) => onBucketChange(e.target.value as ScenarioProbabilityBucket | 'ALL')}>
-          {BUCKET_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+        <label className="flex flex-col gap-1 text-xs text-gray-300">
+          <span className="uppercase tracking-wide text-[11px] text-gray-400">Probability</span>
+          <select className={SELECT_CLASSES} value={bucket} onChange={(e) => onBucketChange(e.target.value as ScenarioProbabilityBucket | 'ALL')}>
+            {BUCKET_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label className="flex flex-col gap-1 text-xs text-gray-300">
-        <span className="uppercase tracking-wide text-[11px] text-gray-400">Timeframe</span>
-        <select className={SELECT_CLASSES} value={timeframe} onChange={(e) => onTimeframeChange(e.target.value as ScenarioTimeframe | 'ALL')}>
-          {TIMEFRAME_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </label>
+        <label className="flex flex-col gap-1 text-xs text-gray-300">
+          <span className="uppercase tracking-wide text-[11px] text-gray-400">Timeframe</span>
+          <select className={SELECT_CLASSES} value={timeframe} onChange={(e) => onTimeframeChange(e.target.value as ScenarioTimeframe | 'ALL')}>
+            {TIMEFRAME_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label className="flex flex-col gap-1 text-xs text-gray-300">
-        <span className="uppercase tracking-wide text-[11px] text-gray-400">Search</span>
-        <input
-          type="search"
-          className={SELECT_CLASSES}
-          placeholder="Filter by title or keyword…"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
-      </label>
+        <label className="flex flex-col gap-1 text-xs text-gray-300">
+          <span className="uppercase tracking-wide text-[11px] text-gray-400">Search</span>
+          <input
+            type="search"
+            className={SELECT_CLASSES}
+            placeholder="Filter by title or keyword…"
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+        </label>
+      </div>
     </div>
   );
 }

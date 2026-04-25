@@ -21,9 +21,7 @@ function defaultBreadcrumbs(): BreadcrumbsOjbect[] {
 export default function StockScenarioPageLayout({ title, description, breadcrumbs, rightButton, children }: StockScenarioPageLayoutProps) {
   return (
     <PageWrapper>
-      <div className="overflow-x-auto">
-        <Breadcrumbs breadcrumbs={breadcrumbs ?? defaultBreadcrumbs()} rightButton={rightButton} />
-      </div>
+      <Breadcrumbs breadcrumbs={breadcrumbs ?? defaultBreadcrumbs()} rightButton={rightButton} />
 
       <div className="w-full mb-8">
         <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
