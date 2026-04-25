@@ -249,10 +249,19 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
     const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
 
+    // Most exposed prefers a top-level `**Most exposed:**` section so it can
+    // carry per-stock detail in bullet form. Older docs that inline it inside
+    // the Outlook paragraph still parse via the legacy fallback.
+    const mostExposedMarkdown = extractField(body, 'Most exposed');
     let mostExposedLinks: ParsedStockScenarioLink[] = [];
-    const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-    if (mostExposedMatch) {
-      mostExposedLinks = extractRoleLinks(mostExposedMatch[1], ScenarioRole.MOST_EXPOSED);
+    if (mostExposedMarkdown) {
+      mostExposedLinks = extractRoleLinks(mostExposedMarkdown, ScenarioRole.MOST_EXPOSED);
+    }
+    if (mostExposedLinks.length === 0) {
+      const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
+      if (mostExposedMatch) {
+        mostExposedLinks = extractRoleLinks(mostExposedMatch[1], ScenarioRole.MOST_EXPOSED);
+      }
     }
 
     const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];

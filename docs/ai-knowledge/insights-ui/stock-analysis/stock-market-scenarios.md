@@ -6,59 +6,70 @@ Recurring policy, macro, and industry scenarios that meaningfully move specific 
 
 The goal is named, dated, and numerically defended impact. Vague themes ("AI boom benefits chips") are not scenarios — they are tags. Every scenario in this catalog must carry a concrete catalyst, a dated analog, and per-stock impact estimates with timeframes. Authors who skip these steps produce content that looks plausible but cannot survive the next quarterly re-review.
 
-### 1. Pin down the catalyst
+**Cap each bucket at 5.** Five winners, five losers, five most-exposed. If you have ten plausible names, the ranking work _is_ the value-add — pick the five with the strongest, most-defensible exposure and explain why those five and not the others. A bucket with twelve names tells the reader you didn't finish the analysis.
 
-- What specific decision or event triggers the move? Examples: an executive order with a docket number, an FOMC dot-plot shift, a CMS NPRM, a tariff schedule update, an FDA approval / refusal, a court ruling.
-- The catalyst must have a verifiable source — link to the federal register entry, the central bank statement, the company filing, the court order, the rulemaking docket.
-- If the catalyst is "expected but not yet confirmed", say so explicitly in the **Outlook** section and reflect it in the probability number.
+**Work iteratively, in four phases.** Each phase is a stop-worthy save point. Finish one, commit / push / re-import the markdown, then move to the next. This keeps the diff small and lets you ship partial scenarios for review without holding work back until everything is perfect.
 
-### 2. Find a dated historical analog
+### Phase 1 — Scenario research (no per-stock detail yet)
 
-- For every scenario, locate at least one prior episode where the same kind of catalyst hit the same kinds of names.
-- Pull the trading-day reaction: what did the most-exposed names do in the 5/30/90 days after the analog event? Cite numbers — `PFE -5%, MRK -6%, LLY -3% over the first three trading days` is useful; `pharma sold off` is not.
-- If you cannot find an analog, this probably is not yet a scenario — write it up as a "watch" instead, or hold off.
+The goal of Phase 1 is the **scenario skeleton**: the catalyst, a dated analog, the outlook, and the country scoping. **Do not name winners / losers / most-exposed yet** — leave those sections empty (or as TODOs). Phase 1 should be defensible on its own; if you cannot fill these in, the scenario is not ready.
 
-### 3. Sources for per-stock impact magnitude
+1. **Pin the catalyst.** What specific decision or event triggers the move? Examples: an executive order with a docket number, an FOMC dot-plot shift, a CMS NPRM, a tariff schedule update, an FDA approval / refusal, a court ruling. The catalyst must have a verifiable source — link to the federal register entry, the central bank statement, the company filing, the court order, the rulemaking docket. If the catalyst is "expected but not yet confirmed", say so explicitly and reflect it in the probability number.
+2. **Find a dated historical analog.** Locate at least one prior episode where the same kind of catalyst hit the same kinds of names. Pull the trading-day reaction: what did the most-exposed names do in the 5 / 30 / 90 days after the analog event? Cite numbers — `PFE -5%, MRK -6%, LLY -3% over the first three trading days` is useful; `pharma sold off` is not. If you cannot find an analog, this probably is not yet a scenario — write it up as a "watch" instead, or hold off.
+3. **Draft the Outlook block.** Probability bucket (`High` >40%, `Medium` 20–40%, `Low` <20%) with a percentage band, timeframe (`3-6m` / `6-12m` / `12-18m` / `18-36m`), priced-in status (`not priced in` / `partially` / `mostly` / `fully` / `over-priced`), and a "signals to watch" sub-list. Update the `**Outlook (as of YYYY-MM-DD):**` line whenever you touch the outlook block.
+4. **Scope the countries.** List in `**Countries:**` only the countries where a tagged ticker meaningfully trades. If you tag European pharma via US ADRs (`NASDAQ:AZN`, `NYSE:GSK`), keep the scenario `**Countries:** US` — the exchange is what matters, not the domicile. The import rejects links where the exchange's country is not in `**Countries:**`.
 
-Use these in priority order. Higher = more credible:
+**Save point:** commit Phase 1 as "scenario skeleton — catalyst + analog + outlook" and re-run `pnpm import:stock-scenarios` if the row should be visible to admins for review. The buckets are still empty; that's fine.
 
-1. **Sell-side notes published after the analog event** (Citi, Goldman, Morgan Stanley, JPM, Bernstein, BofA sector teams). Look for: PT changes, EPS sensitivity tables, "what-if Phase 2" callouts.
-2. **Company 10-K and 10-Q risk factors and segment reporting** — gives revenue exposure (% Medicare, % drug X, % country / region).
-3. **Government rulemaking dockets** — distinguish what is **proposed** vs **finalized** vs **implemented**. Effective dates matter.
-4. **Earnings-call transcripts** — management guidance changes are the cleanest signal of how the named company is preparing.
-5. **Options-implied vol / skew on the analog event** — useful sanity check that the market is taking the catalyst seriously.
+### Phase 2 — Top 5 winners
 
-Avoid: blog speculation, threadbois on X, anonymous Reddit sentiment, AI-summary articles that recycle other AI summaries, headlines without a primary source.
+Now and only now do you start naming names. The rule is: identify _every_ plausible winner first (long-list, may be 10–20), then rank by defensibility of upside, then keep the top 5.
 
-### 4. Convert exposure to a price-change estimate
+1. **Source the long-list.** Sell-side sector notes published after the analog event (Citi, Goldman, Morgan Stanley, JPM, Bernstein, BofA), 10-K / 10-Q segment reporting, government rulemaking dockets (proposed vs finalized vs implemented), earnings-call transcripts, options-implied vol / skew on the analog event. Avoid blog speculation, threadboi tweets, anonymous Reddit sentiment, AI-summary recyclers, headlines without a primary source.
+2. **Convert exposure to a price-change estimate.** For each candidate, estimate `expectedPriceChange` and `expectedPriceChangeExplanation`:
+   - Start with **revenue exposure × consensus EPS sensitivity** from the 10-K / sell-side note.
+   - **Cross-check against the analog episode's actual drawdown / rally** for that ticker.
+   - **Bound by probability:** if the scenario is `Medium (20–40%)`, the estimate is roughly `prob × full-impact`. Stating a +25% target on a 25%-probability scenario is double-counting.
+   - **Round to integers.** Don't claim precision you don't have.
+   - The **explanation** should cite the band (`+8 to +14%`), the timeframe (`12–18m`), and the catalyst that drives it (`Phase 2 Part D extension`).
+3. **Rank and trim to 5.** Drop candidates that are diversified-conglomerate-style ("technically exposed but the segment is 4% of revenue"), drop ones whose entire upside is already in consensus, drop ones with credible offsetting headwinds. Keep the 5 cleanest exposures.
+4. **Write the bullets.** One bullet per winner, in bullet form (see "Per-stock bullet form" below) so the per-stock fields are captured.
 
-For each tagged ticker, estimate `expectedPriceChange` and `expectedPriceChangeExplanation` honestly:
+**Save point:** commit Phase 2 as "winners bucket — top 5 with price targets" and re-import. Losers and most-exposed are still pending; that's fine.
 
-- Start with **revenue exposure × consensus EPS sensitivity** (from the 10-K / sell-side note). Example: a name with 35% Medicare brand revenue and a 30% MFN haircut is looking at a ~10% revenue impact on the affected book.
-- **Cross-check against the analog episode's actual drawdown** for that ticker. If the 2020 attempt sent LLY down 3% over three days on lower stakes, the 2025/2026 round at higher stakes should be a multiple of that.
-- **Bound by probability**: if the scenario is `Medium (20–40%)`, the price-change estimate is roughly `prob × full-impact`. Stating a -25% target on a 25% scenario is double-counting.
-- **Round to integers**. Don't claim precision you don't have.
-- The **explanation** should cite the band (`-12 to -25%`), the timeframe (`12–18 months`), and the catalyst that drives it (`Phase 2 Part D extension`). If you only have a band, write the band into the explanation and use the midpoint for the integer.
+### Phase 3 — Top 5 losers
 
-### 5. Time horizons
+Same workflow as Phase 2, applied to losers. Long-list every plausible loser, rank by defensibility of downside, keep the top 5. The price-change estimates here are negative; otherwise the rules in Phase 2 apply identically. If the scenario is `UPSIDE` overall, the losers list may be shorter than 5 (or empty) — but if you have downside names worth tagging, prefer five.
 
-Use specific milestones tied to the catalyst:
+**Save point:** commit Phase 3 as "losers bucket — top 5 with price targets" and re-import.
 
-- Rulemaking timelines have public dates (NPRM → final rule → effective). Cite them.
-- Avoid open-ended "long term" / "eventually". Pick a window: `3–6m`, `6–12m`, `12–18m`, `18–36m`.
-- The expected-price-change explanation should reference the same window so the reader sees the price target and the timeframe together.
+### Phase 4 — Top 5 most exposed (right now)
 
-### 6. Country scoping
+The most-exposed bucket is **not** "winners + losers combined". It is "the 5 names whose share price is most-immediately sensitive to the **next** catalyst on the calendar". A name can be:
 
-- List in `**Countries:**` only the countries where a tagged ticker meaningfully trades.
-- If you tag European pharma via US ADRs (e.g. `NASDAQ:AZN`, `NYSE:GSK`), you can keep the scenario `**Countries:** US`. The exchange is what matters, not the underlying domicile.
-- The import rejects links where the exchange's country is not in the `**Countries:**` list. If you genuinely need a multi-country scenario, list every country whose exchange you reference.
+- A subset of the losers list (most common — the losers with the nearest-dated trigger).
+- A name that's also in the winners list, if the next-catalyst leg is the one that proves the bet.
+- A name that's not in either bucket, if the exposure is real but the directional case is too noisy for a defensible target.
 
-### 7. Re-review cadence
+Each most-exposed bullet **must** include the same per-stock fields as winners / losers — the next-leg price-change estimate, the catalyst that drives it, and the rationale. A most-exposed bucket that's just `NYSE:LLY, NYSE:NVO, NYSE:MRK` with no detail is not done — readers can't tell which one to watch first.
 
-- Re-read every scenario quarterly. Outlooks decay quickly: a scenario that was `High (~55-65%, 12-18m)` six months ago may now be `In progress, partially priced in` and need an updated `**Most exposed right now:**` line.
+Place this as a **top-level** `**Most exposed:**` section (not inside the Outlook paragraph) so the parser captures the per-stock detail:
+
+```
+**Most exposed:**
+
+- **NYSE:LLY** (-8%, next leg on Phase 2 GLP-1 announcement) — Consensus already cut 15% on Phase 1; the unpriced leg is Phase 2 Part D inclusion.
+- **NYSE:NVO** (-8%, same Phase 2 trigger, plus EUR/USD amplifier) — ...
+```
+
+**Save point:** commit Phase 4 as "most-exposed bucket — top 5 with next-leg targets" and re-import. Scenario is now complete.
+
+### Re-review cadence
+
+- Re-read every scenario quarterly. Outlooks decay quickly: a scenario that was `High (~55-65%, 12-18m)` six months ago may now be `In progress, partially priced in` and need an updated **Most exposed** bucket.
 - Update the `**Outlook (as of YYYY-MM-DD):**` line every time you touch the outlook block.
 - If a scenario has fully played out, change the `**Outlook**` to "already happened" / "fully priced in" — the parser will reclassify the timeframe to `PAST`.
+- When a most-exposed name's next-leg catalyst has fired, that name typically rotates _out_ of most-exposed (it's now priced in) and the next nearest-dated name rotates in.
 
 ## Format conventions (required by `src/utils/stock-scenario-markdown-parser.ts`)
 
@@ -67,6 +78,8 @@ Use specific milestones tied to the catalyst:
 - Each scenario ends with an explicit `**Countries:**` line listing the supported countries whose markets the scenario covers. Exchanges of listed tickers must fall within those countries, or the import will reject the link.
 - Outlook buckets are qualitative: **High** (>40%), **Medium** (20–40%), **Low** (<20%), plus **In progress / Already happened** where the move is largely absorbed.
 - Scenarios are separated by `---` on its own line.
+- **Cap each bucket at 5 names**: top 5 winners, top 5 losers, top 5 most-exposed. The parser does not enforce this — it's a content rule that keeps each scenario actionable.
+- The **Most exposed** section must be a top-level `**Most exposed:**` field (peer of Winners / Losers / Outlook), in bullet form, so the parser captures per-stock price targets and rationale. Older scenarios that listed most-exposed inline inside the Outlook paragraph still parse via a legacy fallback, but new scenarios should use the top-level form.
 - Re-review quarterly.
 
 ### Per-stock bullet form (recommended)
@@ -103,13 +116,10 @@ A bullet with just a ticker (`- **NYSE:TEVA**`) parses correctly and saves with 
 **Winners:**
 
 - **NYSE:TEVA** (+10%, 12-18m as Medicare substitution accelerates) — Largest pure-play global generics maker. Every Medicare-covered brand that goes generic flows through Teva first; consensus 2027 EPS could move 6–8% higher if Phase 2 Part D extension reaches GLP-1s and oral oncology.
-- **NASDAQ:VTRS** (+8%, 12-18m) — Inherited Mylan's US generic portfolio plus biosimilars optionality (insulin, adalimumab, etc.). 2027 EPS sensitivity ~5% per 100bps of branded-to-generic substitution share gain.
 - **NYSE:AMRX** (+14%, 12m, small-cap leverage to substitution volumes) — US-focused generic pipeline tilted toward biosimilars. Small revenue base means each MFN-driven prescription mandate flows directly to the top line; the highest-beta winner in the cohort.
-- **NYSE:MCK** (+4%, 12-18m) — Drug distribution volumes rise as prescription counts increase under lower out-of-pocket pricing; modest margin tailwind. Distributors are paid on volume, not list price, so MFN is a quiet positive.
-- **NYSE:COR** (+4%, 12-18m) — Same dynamic as MCK. Cencora (formerly AmerisourceBergen) participates in the volume tailwind without rebate-spread exposure.
-- **NYSE:CAH** (+4%, 12-18m) — Same dynamic as the other two distributors; smallest of the big-three but identical exposure shape.
+- **NASDAQ:VTRS** (+8%, 12-18m) — Inherited Mylan's US generic portfolio plus biosimilars optionality (insulin, adalimumab, etc.). 2027 EPS sensitivity ~5% per 100bps of branded-to-generic substitution share gain.
 - **NASDAQ:VRTX** (+6%, 12-18m, relative outperformance vs sector) — Cystic fibrosis franchise is orphan-designated end-to-end; orphan drugs are statutorily excluded from MFN scoping. The "sector down, Vertex flat" trade.
-- **NASDAQ:REGN** (+5%, 12-18m) — Pipeline is orphan-tilted, which insulates much of forward revenue from MFN. EYLEA still faces its own competitive pressure unrelated to MFN.
+- **NYSE:MCK** (+4%, 12-18m) — Drug distribution volumes rise as prescription counts increase under lower out-of-pocket pricing; modest margin tailwind. Distributors are paid on volume, not list price, so MFN is a quiet positive.
 
 **Losers:**
 
@@ -117,17 +127,16 @@ A bullet with just a ticker (`- **NYSE:TEVA**`) parses correctly and saves with 
 - **NYSE:NVO** (-18%, 12-18m) — Novo Nordisk ADR. Ozempic / Wegovy run the same 70–80% transatlantic price gap as Mounjaro. ADR amplifies on EUR/USD if Novo's hedging unwinds.
 - **NYSE:MRK** (-14%, 12-18m, Phase 2 includes Keytruda) — Merck. Keytruda is the world's #1 drug by revenue and an explicit MFN-Phase-2 target. Patent cliff in 2028 already pressuring the multiple; MFN compounds the post-IRA repricing risk.
 - **NYSE:BMY** (-12%, 12m, Eliquis already in IRA negotiation) — Bristol-Myers Squibb. Eliquis is in Round 1 of IRA Medicare negotiation effective January 2026; MFN compounds that hit, especially for any future Eliquis-class follow-ons.
-- **NYSE:PFE** (-12%, 12-18m) — Pfizer. Eliquis co-marketer plus Ibrance and Xeljanz, both Part D blockbusters with no orphan carve-out. Pipeline depth is shallow relative to LLY / MRK.
 - **NYSE:ABBV** (-12%, 12-18m) — AbbVie. Skyrizi and Rinvoq pick up the load after Humira biosimilars; both are Part D blockbusters, both MFN-eligible. Mature dividend means equity has limited valuation cushion.
-- **NYSE:JNJ** (-8%, 12-18m, lower concentration but real exposure) — Johnson & Johnson. Stelara, Darzalex, Imbruvica all Part D / Part B exposed. Diversified-conglomerate tag dampens the equity move but the MedCo segment carries the full hit.
-- **NASDAQ:AZN** (-10%, 12m) — AstraZeneca ADR. Tagrisso (oncology) and Farxiga (cardio-renal) are top US revenue contributors; UK VPAS already compressed European pricing, so US Medicare cuts have outsized share-of-EBIT impact.
-- **NYSE:GSK** (-8%, 12-18m) — GSK ADR. Shingrix Part D and Trelegy Part D both exposed. Lower revenue concentration vs AZN, hence a smaller move.
-- **NYSE:NVS** (-10%, 12-18m) — Novartis ADR. Entresto and Cosentyx are top-line contributors, both with high US Medicare share.
-- **NYSE:SNY** (-8%, 12-18m) — Sanofi ADR. Dupixent US co-marketer (with REGN); Dupixent is the single most exposed asset on Sanofi's P&L.
-- **NYSE:UNH** (-6%, 12-18m, PBM rebate-spread compression) — UnitedHealth. OptumRx's economics depend on the gap between list price and net price; MFN-style list-price caps shrink that spread directly. Secondary effect; smaller than the brand-pharma names.
-- **NYSE:CI** (-6%, 12-18m) — Cigna. Express Scripts faces the same rebate-spread compression as OptumRx.
-- **NYSE:CVS** (-6%, 12-18m) — CVS Health. Caremark same rebate-spread dynamic. Retail-pharmacy exposure adds a small offset (more dispensing volume) but does not net out the PBM hit.
 
-**Outlook (as of 2026-04-25):** Phase 1 implementation is already in progress — the HHS rulemaking on Part B MFN reimbursement is through public comment and first payment-model adjustments land in mid-2026. High probability (~55–65%) that the most-severe sub-cases — broad Phase 2 Part D extension including GLP-1 inclusion — reach implementation over the next 12–18 months and remain in force. The executive order is in effect, statutory backing is firmer than the 2020 attempt, and 2026 is a midterm year in which visible drug-price reductions are politically rewarded. The main tail risk is judicial: pharma is litigating on First Amendment / non-delegation grounds, but the IRA Medicare negotiation has already survived analogous challenges, so a broad injunction against MFN looks unlikely. **Priced-in status:** partially. Consensus 2026 EPS has been cut 8–15% for LLY / MRK / BMY / JNJ since the May 2025 EO, but the Phase 2 Part D extension is not yet in base-case street models — a credible Phase 2 announcement could add another 5–10% downside leg. **Signals to watch:** HHS Phase 1 drug list publication, CMS Part B payment-model NPRM timing, pharma Q2/Q3 2026 revenue-guidance revisions, litigation docket in D.D.C. and the Fifth Circuit, any bipartisan Senate pushback on Phase 2 scope. **Most exposed right now:** NYSE:LLY, NYSE:NVO, NYSE:MRK, NYSE:BMY, NYSE:JNJ.
+**Most exposed:**
+
+- **NYSE:LLY** (-8%, next leg on Phase 2 GLP-1 inclusion announcement) — Consensus already cut ~15% since the May 2025 EO on Phase 1 risk; the unpriced leg is a credible Phase 2 Part D announcement that explicitly names semaglutide / tirzepatide. Highest near-dated sensitivity in the cohort.
+- **NYSE:NVO** (-8%, same Phase 2 trigger, plus EUR/USD amplifier) — Twin to LLY on the GLP-1 mix; ADR adds currency risk on top if Novo's hedging unwinds. Will move on the same headlines as LLY.
+- **NYSE:MRK** (-7%, Keytruda Phase 2 inclusion) — Street has not baked in MFN re-pricing of Keytruda specifically. Any HHS Phase 2 list that names Keytruda is a clean -5 to -10% leg from current prices.
+- **NYSE:BMY** (-6%, Eliquis MFN stack on top of IRA) — IRA negotiated price effective January 2026; a Phase 2 announcement that re-prices Eliquis below the IRA number compounds the hit and resets the franchise terminal value.
+- **NYSE:JNJ** (-5%, Stelara / Darzalex / Imbruvica) — Stelara LOE already expected; MFN brings the revenue decline forward 2–4 quarters and forces a re-rating of the MedCo segment that the diversified-conglomerate tag had been masking.
+
+**Outlook (as of 2026-04-25):** Phase 1 implementation is already in progress — the HHS rulemaking on Part B MFN reimbursement is through public comment and first payment-model adjustments land in mid-2026. High probability (~55–65%) that the most-severe sub-cases — broad Phase 2 Part D extension including GLP-1 inclusion — reach implementation over the next 12–18 months and remain in force. The executive order is in effect, statutory backing is firmer than the 2020 attempt, and 2026 is a midterm year in which visible drug-price reductions are politically rewarded. The main tail risk is judicial: pharma is litigating on First Amendment / non-delegation grounds, but the IRA Medicare negotiation has already survived analogous challenges, so a broad injunction against MFN looks unlikely. **Priced-in status:** partially. Consensus 2026 EPS has been cut 8–15% for LLY / MRK / BMY / JNJ since the May 2025 EO, but the Phase 2 Part D extension is not yet in base-case street models — a credible Phase 2 announcement could add another 5–10% downside leg. **Signals to watch:** HHS Phase 1 drug list publication, CMS Part B payment-model NPRM timing, pharma Q2/Q3 2026 revenue-guidance revisions, litigation docket in D.D.C. and the Fifth Circuit, any bipartisan Senate pushback on Phase 2 scope.
 
 **Countries:** US
