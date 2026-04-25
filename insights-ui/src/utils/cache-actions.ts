@@ -9,6 +9,7 @@ import {
 } from '@/utils/ticker-v1-cache-utils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
+import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
 import { prisma } from '@/prisma';
@@ -62,4 +63,14 @@ export async function revalidateEtfScenariosListingCache() {
 export async function revalidateEtfScenarioCache(slug: string) {
   revalidateEtfScenarioBySlugTag(slug);
   return { success: true, message: `Revalidated ETF scenario cache for ${slug}` };
+}
+
+export async function revalidateStockScenariosListingCache() {
+  revalidateStockScenarioListingTag();
+  return { success: true, message: 'Revalidated Stock scenarios listing cache' };
+}
+
+export async function revalidateStockScenarioCache(slug: string) {
+  revalidateStockScenarioBySlugTag(slug);
+  return { success: true, message: `Revalidated Stock scenario cache for ${slug}` };
 }

@@ -1836,3 +1836,75 @@ model EtfScenarioEtfLink {
   @@index([symbol])
   @@map("etf_scenario_etf_links")
 }
+
+// Stock scenarios mirror the ETF scenario shape but are country-scoped.
+// Stocks trade on exchanges in specific countries, so every scenario declares
+// the SupportedCountries set it applies to (see
+// `src/utils/countryExchangeUtils.ts`). Unlike ETFs, a single symbol can live
+// on multiple exchanges (dual listings, ADRs), so the link uniqueness key
+// includes `exchange`.
+model StockScenario {
+  id                              String   @id @default(uuid())
+  scenarioNumber                  Int      @map("scenario_number")
+  title                           String   @map("title")
+  slug                            String   @map("slug")
+  underlyingCause                 String   @map("underlying_cause") @db.Text
+  historicalAnalog                String   @map("historical_analog") @db.Text
+  winnersMarkdown                 String   @map("winners_markdown") @db.Text
+  losersMarkdown                  String   @map("losers_markdown") @db.Text
+  outlookMarkdown                 String   @map("outlook_markdown") @db.Text
+  direction                       String   @default("DOWNSIDE") @map("direction")
+  timeframe                       String   @default("FUTURE") @map("timeframe")
+  probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")
+  probabilityPercentage           Int?     @map("probability_percentage")
+  pricedInBucket                  String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
+  expectedPriceChange             Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation  String?  @map("expected_price_change_explanation") @db.Text
+  priceChangeTimeframeExplanation String?  @map("price_change_timeframe_explanation") @db.Text
+  countries                       String[] @map("countries")
+  outlookAsOfDate                 DateTime @map("outlook_as_of_date") @db.Date
+  metaDescription                 String?  @map("meta_description") @db.Text
+  archived                        Boolean  @default(false) @map("archived")
+  spaceId                         String   @default("koala_gains") @map("space_id")
+  createdAt                       DateTime @default(now()) @map("created_at")
+  updatedAt                       DateTime @updatedAt @map("updated_at")
+
+  stockLinks StockScenarioStockLink[]
+
+  @@unique([spaceId, scenarioNumber])
+  @@unique([spaceId, slug])
+  @@index([spaceId, archived])
+  @@index([spaceId, direction])
+  @@index([spaceId, timeframe])
+  @@index([spaceId, probabilityBucket])
+  @@index([spaceId, pricedInBucket])
+  @@map("stock_scenarios")
+}
+
+// Loose link from a stock scenario to a TickerV1 row. We store `symbol` +
+// `exchange` verbatim on the link and resolve `tickerId` at write time against
+// TickerV1's `@@unique([spaceId, symbol, exchange])`. Unresolved links still
+// render as plain text in the UI (matches the ETF behaviour).
+model StockScenarioStockLink {
+  id                             String   @id @default(uuid())
+  scenarioId                     String   @map("scenario_id")
+  tickerId                       String?  @map("ticker_id")
+  symbol                         String   @map("symbol")
+  exchange                       String   @map("exchange")
+  role                           String   @map("role")
+  sortOrder                      Int      @default(0) @map("sort_order")
+  roleExplanation                String?  @map("role_explanation") @db.Text
+  expectedPriceChange            Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
+  spaceId                        String   @default("koala_gains") @map("space_id")
+  createdAt                      DateTime @default(now()) @map("created_at")
+  updatedAt                      DateTime @updatedAt @map("updated_at")
+
+  scenario StockScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+
+  @@unique([scenarioId, symbol, exchange, role])
+  @@index([scenarioId])
+  @@index([symbol])
+  @@index([symbol, exchange])
+  @@map("stock_scenario_stock_links")
+}
