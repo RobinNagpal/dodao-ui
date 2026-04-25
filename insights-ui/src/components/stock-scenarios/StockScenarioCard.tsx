@@ -20,21 +20,11 @@ export default function StockScenarioCard({ scenario }: { scenario: StockScenari
         {scenario.archived && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">Archived</span>}
       </div>
 
-      <div className="flex flex-wrap gap-1.5 mb-2">
+      <div className="flex flex-wrap gap-1.5 mb-3">
         <StockScenarioDirectionBadge direction={scenario.direction} />
         <StockScenarioProbabilityBadge bucket={scenario.probabilityBucket} percentage={scenario.probabilityPercentage} />
         <StockScenarioTimeframeBadge timeframe={scenario.timeframe} />
       </div>
-
-      {scenario.countries.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-3">
-          {scenario.countries.map((c) => (
-            <span key={c} className="text-[10px] uppercase tracking-wide text-gray-300 bg-[#111827] border border-[#374151] rounded px-1.5 py-0.5">
-              {c}
-            </span>
-          ))}
-        </div>
-      )}
 
       <h3 className="text-white text-base font-medium mb-2 line-clamp-2 min-h-[3rem]">{scenario.title}</h3>
 

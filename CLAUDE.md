@@ -244,7 +244,7 @@ Currently documented:
 
 Use **`docs/ai-knowledge/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/ai-knowledge/insights-ui/AIKnowledge.md`](docs/ai-knowledge/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
 
-* `etf-analysis/` — ETF analysis pipeline: how to enqueue reports (`generate-etf-reports.md`), market scenarios catalog, scenarios-page implementation plan
+* `etf-analysis/` — ETF analysis pipeline: how to enqueue reports (`generate-etf-reports.md`)
 * `etf-prompts/` — Source-of-truth prompt text for each ETF analysis category
 * `etf-prompt-improvement/` — Iterative prompt-tuning review notes
 * `downside-analysis/` — Equity downside / drawdown framework with the 31-stock case study
