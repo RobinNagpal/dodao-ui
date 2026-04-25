@@ -1,4 +1,4 @@
-import { ScenarioDirection, ScenarioPricedInBucket, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
+import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
@@ -36,14 +36,6 @@ const PROBABILITY_OPTIONS: Array<{ value: ScenarioProbabilityBucket; label: stri
   { value: 'LOW', label: 'Low (<20%)' },
 ];
 
-const PRICED_IN_OPTIONS: Array<{ value: ScenarioPricedInBucket; label: string }> = [
-  { value: 'NOT_PRICED_IN', label: 'Not priced in (market ignoring)' },
-  { value: 'PARTIALLY_PRICED_IN', label: 'Partially priced in' },
-  { value: 'MOSTLY_PRICED_IN', label: 'Mostly priced in' },
-  { value: 'FULLY_PRICED_IN', label: 'Fully priced in (no edge left)' },
-  { value: 'OVER_PRICED_IN', label: 'Over-priced in (market over-reacted)' },
-];
-
 export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, scenarioId }: UpsertStockScenarioModalProps): JSX.Element {
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
@@ -55,10 +47,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
   const [timeframe, setTimeframe] = useState<ScenarioTimeframe>('FUTURE');
   const [probabilityBucket, setProbabilityBucket] = useState<ScenarioProbabilityBucket>('MEDIUM');
   const [probabilityPercentage, setProbabilityPercentage] = useState<string>('');
-  const [pricedInBucket, setPricedInBucket] = useState<ScenarioPricedInBucket>('PARTIALLY_PRICED_IN');
-  const [expectedPriceChange, setExpectedPriceChange] = useState<string>('');
-  const [expectedPriceChangeExplanation, setExpectedPriceChangeExplanation] = useState<string>('');
-  const [priceChangeTimeframeExplanation, setPriceChangeTimeframeExplanation] = useState<string>('');
   const [countries, setCountries] = useState<SupportedCountries[]>([]);
   const [outlookAsOfDate, setOutlookAsOfDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [metaDescription, setMetaDescription] = useState<string>('');
@@ -93,10 +81,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       setTimeframe('FUTURE');
       setProbabilityBucket('MEDIUM');
       setProbabilityPercentage('');
-      setPricedInBucket('PARTIALLY_PRICED_IN');
-      setExpectedPriceChange('');
-      setExpectedPriceChangeExplanation('');
-      setPriceChangeTimeframeExplanation('');
       setCountries([]);
       setOutlookAsOfDate(new Date().toISOString().slice(0, 10));
       setMetaDescription('');
@@ -123,10 +107,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         setTimeframe(data.timeframe as ScenarioTimeframe);
         setProbabilityBucket(data.probabilityBucket as ScenarioProbabilityBucket);
         setProbabilityPercentage(typeof data.probabilityPercentage === 'number' ? String(data.probabilityPercentage) : '');
-        setPricedInBucket((data.pricedInBucket as ScenarioPricedInBucket) ?? 'PARTIALLY_PRICED_IN');
-        setExpectedPriceChange(typeof data.expectedPriceChange === 'number' ? String(data.expectedPriceChange) : '');
-        setExpectedPriceChangeExplanation(data.expectedPriceChangeExplanation ?? '');
-        setPriceChangeTimeframeExplanation(data.priceChangeTimeframeExplanation ?? '');
         setCountries((data.countries ?? []) as SupportedCountries[]);
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');
@@ -163,16 +143,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       probabilityPercentageValue = n;
     }
 
-    let expectedPriceChangeValue: number | null = null;
-    if (expectedPriceChange.trim() !== '') {
-      const n = parseInt(expectedPriceChange, 10);
-      if (isNaN(n) || n < -100 || n > 100) {
-        setFormError('Expected price change must be an integer between -100 and 100.');
-        return;
-      }
-      expectedPriceChangeValue = n;
-    }
-
     const payload = {
       scenarioNumber,
       title,
@@ -184,10 +154,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       timeframe,
       probabilityBucket,
       probabilityPercentage: probabilityPercentageValue,
-      pricedInBucket,
-      expectedPriceChange: expectedPriceChangeValue,
-      expectedPriceChangeExplanation: expectedPriceChangeExplanation || null,
-      priceChangeTimeframeExplanation: priceChangeTimeframeExplanation || null,
       countries,
       outlookAsOfDate: new Date(outlookAsOfDate).toISOString(),
       metaDescription: metaDescription || null,
@@ -313,51 +279,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
             />
           </label>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Priced in</span>
-            <select
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
-              value={pricedInBucket}
-              onChange={(e) => setPricedInBucket(e.target.value as ScenarioPricedInBucket)}
-            >
-              {PRICED_IN_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-sm">
-            <span className="text-gray-300">Expected price change % (average still to move, -100 to 100)</span>
-            <input
-              type="number"
-              min={-100}
-              max={100}
-              className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
-              value={expectedPriceChange}
-              onChange={(e) => setExpectedPriceChange(e.target.value)}
-              placeholder="e.g. -15"
-            />
-          </label>
-        </div>
-
-        <TextareaAutosize
-          label="Expected price change explanation (markdown; describe the range and the reasoning)"
-          modelValue={expectedPriceChangeExplanation}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setExpectedPriceChangeExplanation(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Price change timeframe explanation (markdown; describe start and end of the move in words)"
-          modelValue={priceChangeTimeframeExplanation}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setPriceChangeTimeframeExplanation(v);
-          }}
-        />
 
         <TextareaAutosize
           label="Underlying cause (markdown)"

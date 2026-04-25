@@ -1855,10 +1855,6 @@ model StockScenario {
   timeframe                       String   @default("FUTURE") @map("timeframe")
   probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")
   probabilityPercentage           Int?     @map("probability_percentage")
-  pricedInBucket                  String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
-  expectedPriceChange             Int?     @map("expected_price_change")
-  expectedPriceChangeExplanation  String?  @map("expected_price_change_explanation") @db.Text
-  priceChangeTimeframeExplanation String?  @map("price_change_timeframe_explanation") @db.Text
   countries                       String[] @map("countries")
   outlookAsOfDate                 DateTime @map("outlook_as_of_date") @db.Date
   metaDescription                 String?  @map("meta_description") @db.Text
@@ -1875,7 +1871,6 @@ model StockScenario {
   @@index([spaceId, direction])
   @@index([spaceId, timeframe])
   @@index([spaceId, probabilityBucket])
-  @@index([spaceId, pricedInBucket])
   @@map("stock_scenarios")
 }
 

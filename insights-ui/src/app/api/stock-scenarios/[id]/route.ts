@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
-import { ScenarioDirection, ScenarioPricedInBucket, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
+import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { slugifyScenarioTitle } from '@/utils/scenario-slug';
@@ -21,10 +21,6 @@ const updateStockScenarioSchema = z.object({
   timeframe: z.nativeEnum(ScenarioTimeframe).optional(),
   probabilityBucket: z.nativeEnum(ScenarioProbabilityBucket).optional(),
   probabilityPercentage: z.number().int().min(0).max(100).nullable().optional(),
-  pricedInBucket: z.nativeEnum(ScenarioPricedInBucket).optional(),
-  expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
-  expectedPriceChangeExplanation: z.string().nullable().optional(),
-  priceChangeTimeframeExplanation: z.string().nullable().optional(),
   countries: z.array(z.nativeEnum(SupportedCountries)).min(1).optional(),
   outlookAsOfDate: z
     .string()
@@ -68,10 +64,6 @@ async function putHandler(
       ...(body.timeframe !== undefined && { timeframe: body.timeframe }),
       ...(body.probabilityBucket !== undefined && { probabilityBucket: body.probabilityBucket }),
       ...(body.probabilityPercentage !== undefined && { probabilityPercentage: body.probabilityPercentage }),
-      ...(body.pricedInBucket !== undefined && { pricedInBucket: body.pricedInBucket }),
-      ...(body.expectedPriceChange !== undefined && { expectedPriceChange: body.expectedPriceChange }),
-      ...(body.expectedPriceChangeExplanation !== undefined && { expectedPriceChangeExplanation: body.expectedPriceChangeExplanation }),
-      ...(body.priceChangeTimeframeExplanation !== undefined && { priceChangeTimeframeExplanation: body.priceChangeTimeframeExplanation }),
       ...(body.countries !== undefined && { countries: body.countries }),
       ...(body.outlookAsOfDate !== undefined && { outlookAsOfDate: new Date(body.outlookAsOfDate) }),
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),

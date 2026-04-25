@@ -80,6 +80,16 @@ A scenario is not done until every section below is populated with concrete numb
   the timeframe phrasing from this paragraph.>
 ```
 
+### Stock vs ETF: where priced-in / expected-move lives
+
+Stock scenarios carry priced-in bucket and expected price change **only at the
+per-ticker level** — there is no scenario-level priced-in field on
+`StockScenario`. Each winner/loser/most-exposed bullet states its own bucket and
+expected % move; the scenario as a whole does not have a single combined value.
+ETF scenarios still carry these at the scenario level on `EtfScenario`. Don't
+write a "Priced-in" or "Expected move" line above the Winners list for a stock
+draft — the parser ignores it and the schema has no column for it.
+
 ### Per-stock bullet syntax (Winners / Losers / Most exposed)
 
 The bullet line is parsed by `BULLET_LINE_PATTERN` in `insights-ui/src/utils/stock-scenario-markdown-parser.ts` (and the matching ETF parser). To carry a per-stock price target and explanation:

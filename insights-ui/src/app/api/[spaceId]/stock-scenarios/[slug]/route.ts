@@ -18,14 +18,10 @@ export interface StockScenarioLinkDto {
 }
 
 export interface StockScenarioDetail
-  extends Omit<
-    StockScenario,
-    'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket' | 'pricedInBucket' | 'countries'
-  > {
+  extends Omit<StockScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket' | 'countries'> {
   direction: ScenarioDirection;
   timeframe: ScenarioTimeframe;
   probabilityBucket: ScenarioProbabilityBucket;
-  pricedInBucket: ScenarioPricedInBucket;
   countries: SupportedCountries[];
   outlookAsOfDate: string;
   createdAt: string;
@@ -95,7 +91,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     direction: rest.direction as ScenarioDirection,
     timeframe: rest.timeframe as ScenarioTimeframe,
     probabilityBucket: rest.probabilityBucket as ScenarioProbabilityBucket,
-    pricedInBucket: rest.pricedInBucket as ScenarioPricedInBucket,
     countries: countries as SupportedCountries[],
     outlookAsOfDate: outlookAsOfDate.toISOString(),
     createdAt: createdAt.toISOString(),
