@@ -98,8 +98,17 @@ The parser splits each bullet into:
 - **`expectedPriceChange`** — the signed integer in `(+N%, ...)`. Range `-100..100`. Optional.
 - **`expectedPriceChangeExplanation`** — the comma-separated text inside the parenthetical. Use this for the timeframe + the rationale that defends the number. Optional.
 - **`roleExplanation`** — everything after the em-dash separator (`—`). The "why this stock is a winner / loser" sentence. Optional but strongly recommended.
+- **`pricedInBucket`** — detected from either the parenthetical or the role explanation, using the phrases below (case-insensitive). Defaults to `partially priced in` if no phrase is present. The matched phrase is stripped from the text so it doesn't render twice.
 
-A bullet with just a ticker (`- **NYSE:TEVA**`) parses correctly and saves with all three fields null. Skip the parenthetical entirely if you don't have a defended number — leave the field unset rather than guessing.
+Supported priced-in phrases (use one per bullet, anywhere in the parenthetical or the explanation):
+
+- `not priced in` (also: `unpriced`) → **NOT_PRICED_IN**
+- `partially priced in` → **PARTIALLY_PRICED_IN** _(default)_
+- `mostly priced in` → **MOSTLY_PRICED_IN**
+- `fully priced in` → **FULLY_PRICED_IN**
+- `over-priced` (also: `over priced in`) → **OVER_PRICED_IN**
+
+A bullet with just a ticker (`- **NYSE:TEVA**`) parses correctly and saves with `expectedPriceChange`, `expectedPriceChangeExplanation`, and `roleExplanation` null and `pricedInBucket` = `PARTIALLY_PRICED_IN`. Skip the parenthetical entirely if you don't have a defended number — leave the field unset rather than guessing.
 
 ### Seed flow
 
@@ -131,11 +140,11 @@ A bullet with just a ticker (`- **NYSE:TEVA**`) parses correctly and saves with 
 
 **Most exposed:**
 
-- **NYSE:LLY** (-8%, next leg on Phase 2 GLP-1 inclusion announcement) — Consensus already cut ~15% since the May 2025 EO on Phase 1 risk; the unpriced leg is a credible Phase 2 Part D announcement that explicitly names semaglutide / tirzepatide. Highest near-dated sensitivity in the cohort.
-- **NYSE:NVO** (-8%, same Phase 2 trigger, plus EUR/USD amplifier) — Twin to LLY on the GLP-1 mix; ADR adds currency risk on top if Novo's hedging unwinds. Will move on the same headlines as LLY.
-- **NYSE:MRK** (-7%, Keytruda Phase 2 inclusion) — Street has not baked in MFN re-pricing of Keytruda specifically. Any HHS Phase 2 list that names Keytruda is a clean -5 to -10% leg from current prices.
-- **NYSE:BMY** (-6%, Eliquis MFN stack on top of IRA) — IRA negotiated price effective January 2026; a Phase 2 announcement that re-prices Eliquis below the IRA number compounds the hit and resets the franchise terminal value.
-- **NYSE:JNJ** (-5%, Stelara / Darzalex / Imbruvica) — Stelara LOE already expected; MFN brings the revenue decline forward 2–4 quarters and forces a re-rating of the MedCo segment that the diversified-conglomerate tag had been masking.
+- **NYSE:LLY** (-8%, next leg on Phase 2 GLP-1 inclusion announcement, partially priced in) — Consensus already cut ~15% since the May 2025 EO on Phase 1 risk; the unpriced leg is a credible Phase 2 Part D announcement that explicitly names semaglutide / tirzepatide. Highest near-dated sensitivity in the cohort.
+- **NYSE:NVO** (-8%, same Phase 2 trigger, plus EUR/USD amplifier, partially priced in) — Twin to LLY on the GLP-1 mix; ADR adds currency risk on top if Novo's hedging unwinds. Will move on the same headlines as LLY.
+- **NYSE:MRK** (-7%, Keytruda Phase 2 inclusion, not priced in) — Street has not baked in MFN re-pricing of Keytruda specifically. Any HHS Phase 2 list that names Keytruda is a clean -5 to -10% leg from current prices.
+- **NYSE:BMY** (-6%, Eliquis MFN stack on top of IRA, partially priced in) — IRA negotiated price effective January 2026; a Phase 2 announcement that re-prices Eliquis below the IRA number compounds the hit and resets the franchise terminal value.
+- **NYSE:JNJ** (-5%, Stelara / Darzalex / Imbruvica, mostly priced in) — Stelara LOE already expected; MFN brings the revenue decline forward 2–4 quarters and forces a re-rating of the MedCo segment that the diversified-conglomerate tag had been masking.
 
 **Outlook (as of 2026-04-25):** Phase 1 implementation is already in progress — the HHS rulemaking on Part B MFN reimbursement is through public comment and first payment-model adjustments land in mid-2026. High probability (~55–65%) that the most-severe sub-cases — broad Phase 2 Part D extension including GLP-1 inclusion — reach implementation over the next 12–18 months and remain in force. The executive order is in effect, statutory backing is firmer than the 2020 attempt, and 2026 is a midterm year in which visible drug-price reductions are politically rewarded. The main tail risk is judicial: pharma is litigating on First Amendment / non-delegation grounds, but the IRA Medicare negotiation has already survived analogous challenges, so a broad injunction against MFN looks unlikely. **Priced-in status:** partially. Consensus 2026 EPS has been cut 8–15% for LLY / MRK / BMY / JNJ since the May 2025 EO, but the Phase 2 Part D extension is not yet in base-case street models — a credible Phase 2 announcement could add another 5–10% downside leg. **Signals to watch:** HHS Phase 1 drug list publication, CMS Part B payment-model NPRM timing, pharma Q2/Q3 2026 revenue-guidance revisions, litigation docket in D.D.C. and the Fifth Circuit, any bipartisan Senate pushback on Phase 2 scope.
 

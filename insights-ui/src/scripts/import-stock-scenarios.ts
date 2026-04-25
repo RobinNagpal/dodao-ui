@@ -23,8 +23,6 @@ function toRequestBody(s: ParsedStockScenario) {
     slug: s.slug,
     underlyingCause: s.underlyingCause,
     historicalAnalog: s.historicalAnalog,
-    winnersMarkdown: s.winnersMarkdown,
-    losersMarkdown: s.losersMarkdown,
     outlookMarkdown: s.outlookMarkdown,
     direction: s.direction,
     timeframe: s.timeframe,
@@ -40,6 +38,7 @@ function toRequestBody(s: ParsedStockScenario) {
       roleExplanation: l.roleExplanation,
       expectedPriceChange: l.expectedPriceChange,
       expectedPriceChangeExplanation: l.expectedPriceChangeExplanation,
+      pricedInBucket: l.pricedInBucket,
     })),
   };
 }

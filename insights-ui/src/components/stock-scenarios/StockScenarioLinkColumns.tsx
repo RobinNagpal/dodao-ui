@@ -3,8 +3,25 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { StockScenarioLinkDto } from '@/app/api/[spaceId]/stock-scenarios/[slug]/route';
+import { ScenarioPricedInBucket } from '@/types/scenarioEnums';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { AllExchanges, ALL_SUPPORTED_COUNTRIES, EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
+
+const PRICED_IN_LABEL: Record<ScenarioPricedInBucket, string> = {
+  NOT_PRICED_IN: 'Not priced in',
+  PARTIALLY_PRICED_IN: 'Partially priced in',
+  MOSTLY_PRICED_IN: 'Mostly priced in',
+  FULLY_PRICED_IN: 'Fully priced in',
+  OVER_PRICED_IN: 'Over-priced',
+};
+
+const PRICED_IN_CLASS: Record<ScenarioPricedInBucket, string> = {
+  NOT_PRICED_IN: 'bg-emerald-900/40 text-emerald-200 border-emerald-700/60',
+  PARTIALLY_PRICED_IN: 'bg-sky-900/40 text-sky-200 border-sky-700/60',
+  MOSTLY_PRICED_IN: 'bg-amber-900/40 text-amber-200 border-amber-700/60',
+  FULLY_PRICED_IN: 'bg-gray-800 text-gray-300 border-gray-600',
+  OVER_PRICED_IN: 'bg-rose-900/40 text-rose-200 border-rose-700/60',
+};
 
 function renderMarkdown(md: string) {
   return { __html: parseMarkdown(md) as string };
@@ -41,6 +58,8 @@ function formatExpectedPriceChange(value: number | null | undefined): string {
 function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   const hasDetails = link.roleExplanation || link.expectedPriceChange !== null || link.expectedPriceChangeExplanation;
   const changeColor = link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'text-emerald-300' : 'text-red-300';
+  const pricedInLabel = PRICED_IN_LABEL[link.pricedInBucket];
+  const pricedInClass = PRICED_IN_CLASS[link.pricedInBucket];
 
   return (
     <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">
@@ -49,6 +68,14 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
         {link.expectedPriceChange !== null && (
           <span className={`text-xs font-semibold ${changeColor}`}>{formatExpectedPriceChange(link.expectedPriceChange)}</span>
         )}
+      </div>
+      <div className="mb-1">
+        <span
+          className={`inline-block text-[10px] uppercase tracking-wide border rounded px-1.5 py-0.5 ${pricedInClass}`}
+          title="How much of this scenario is already reflected in this stock's price"
+        >
+          {pricedInLabel}
+        </span>
       </div>
       {hasDetails && (
         <div className="space-y-1 mt-1">
@@ -83,7 +110,9 @@ function LinkList({
   countryFilter: SupportedCountries | 'ALL';
   emptyLabel: string;
 }): JSX.Element {
-  const anyDetailed = links.some((l) => l.roleExplanation || l.expectedPriceChange !== null || l.expectedPriceChangeExplanation);
+  // Every stock link carries a priced-in bucket, so always use the card
+  // layout here — the pill variant would hide the bucket badge.
+  const anyDetailed = links.length > 0;
   return (
     <div>
       <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">

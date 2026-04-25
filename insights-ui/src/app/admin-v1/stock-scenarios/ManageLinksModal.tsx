@@ -1,6 +1,6 @@
 import type { StockScenarioDetail, StockScenarioLinkDto } from '@/app/api/[spaceId]/stock-scenarios/[slug]/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ScenarioRole } from '@/types/scenarioEnums';
+import { ScenarioPricedInBucket, ScenarioRole } from '@/types/scenarioEnums';
 import { EXCHANGES } from '@/utils/countryExchangeUtils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
@@ -28,9 +28,26 @@ interface AddLinkFormState {
   roleExplanation: string;
   expectedPriceChange: string;
   expectedPriceChangeExplanation: string;
+  pricedInBucket: ScenarioPricedInBucket;
 }
 
 const ROLES: ScenarioRole[] = ['WINNER', 'LOSER', 'MOST_EXPOSED'];
+
+const PRICED_IN_BUCKETS: ScenarioPricedInBucket[] = [
+  ScenarioPricedInBucket.NOT_PRICED_IN,
+  ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
+  ScenarioPricedInBucket.MOSTLY_PRICED_IN,
+  ScenarioPricedInBucket.FULLY_PRICED_IN,
+  ScenarioPricedInBucket.OVER_PRICED_IN,
+];
+
+const PRICED_IN_LABEL: Record<ScenarioPricedInBucket, string> = {
+  NOT_PRICED_IN: 'Not priced in',
+  PARTIALLY_PRICED_IN: 'Partially priced in',
+  MOSTLY_PRICED_IN: 'Mostly priced in',
+  FULLY_PRICED_IN: 'Fully priced in',
+  OVER_PRICED_IN: 'Over-priced',
+};
 
 function fetchDetailBySlug(slug: string): Promise<StockScenarioDetail | null> {
   return fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/stock-scenarios/${slug}?allowNull=true`).then((r) => (r.ok ? r.json() : null));
@@ -46,6 +63,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     roleExplanation: '',
     expectedPriceChange: '',
     expectedPriceChangeExplanation: '',
+    pricedInBucket: ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
   });
   const [formError, setFormError] = useState<string>('');
 
@@ -108,6 +126,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
         roleExplanation: form.roleExplanation.trim() || null,
         expectedPriceChange: expectedPriceChangeValue,
         expectedPriceChangeExplanation: form.expectedPriceChangeExplanation.trim() || null,
+        pricedInBucket: form.pricedInBucket,
       });
       setForm({
         symbol: '',
@@ -116,6 +135,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
         roleExplanation: '',
         expectedPriceChange: '',
         expectedPriceChangeExplanation: '',
+        pricedInBucket: form.pricedInBucket,
       });
       await refreshDetail();
     } catch (err) {
@@ -218,6 +238,20 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   />
                 </label>
               </div>
+              <label className="flex flex-col gap-1 text-sm">
+                <span className="text-gray-300">How much is already priced in</span>
+                <select
+                  className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                  value={form.pricedInBucket}
+                  onChange={(e) => setForm((f) => ({ ...f, pricedInBucket: e.target.value as ScenarioPricedInBucket }))}
+                >
+                  {PRICED_IN_BUCKETS.map((b) => (
+                    <option key={b} value={b}>
+                      {PRICED_IN_LABEL[b]}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <TextareaAutosize
                 label="Expected price change explanation (size of the move and over what timeframe — markdown)"
                 modelValue={form.expectedPriceChangeExplanation}
@@ -254,6 +288,9 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                                 {link.expectedPriceChange}%
                               </span>
                             )}
+                            <span className="ml-2 text-[10px] uppercase tracking-wide text-gray-300 bg-gray-800 border border-gray-600 rounded px-1.5 py-0.5">
+                              {PRICED_IN_LABEL[link.pricedInBucket]}
+                            </span>
                           </span>
                           <Button variant="outlined" onClick={() => handleRemove(link)} disabled={removing}>
                             <Trash2 className="h-3.5 w-3.5" />

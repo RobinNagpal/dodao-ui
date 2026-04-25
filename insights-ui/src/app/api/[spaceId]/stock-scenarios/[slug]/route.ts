@@ -14,6 +14,7 @@ export interface StockScenarioLinkDto {
   roleExplanation: string | null;
   expectedPriceChange: number | null;
   expectedPriceChangeExplanation: string | null;
+  pricedInBucket: ScenarioPricedInBucket;
 }
 
 export interface StockScenarioDetail
@@ -44,6 +45,7 @@ function toLinkDto(link: StockScenarioStockLink, resolvedTickerId?: string | nul
     roleExplanation: link.roleExplanation,
     expectedPriceChange: link.expectedPriceChange,
     expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
+    pricedInBucket: link.pricedInBucket as ScenarioPricedInBucket,
   };
 }
 

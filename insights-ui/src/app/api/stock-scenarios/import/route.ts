@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ScenarioPricedInBucket } from '@/types/scenarioEnums';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { parseStockScenariosMarkdown } from '@/utils/stock-scenario-markdown-parser';
@@ -90,6 +91,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       roleExplanation: l.roleExplanation,
       expectedPriceChange: l.expectedPriceChange,
       expectedPriceChangeExplanation: l.expectedPriceChangeExplanation,
+      pricedInBucket: l.pricedInBucket,
     }));
     const mismatches = scenarioLinkCountryMismatch(normalizedLinks, countries);
     if (mismatches.length) {
@@ -115,8 +117,6 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       slug: scenario.slug,
       underlyingCause: scenario.underlyingCause,
       historicalAnalog: scenario.historicalAnalog,
-      winnersMarkdown: scenario.winnersMarkdown,
-      losersMarkdown: scenario.losersMarkdown,
       outlookMarkdown: scenario.outlookMarkdown,
       direction: scenario.direction,
       timeframe: scenario.timeframe,
@@ -152,6 +152,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
               roleExplanation: link.roleExplanation,
               expectedPriceChange: link.expectedPriceChange,
               expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
+              pricedInBucket: link.pricedInBucket ?? ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
               spaceId: KoalaGainsSpaceId,
             };
           }),

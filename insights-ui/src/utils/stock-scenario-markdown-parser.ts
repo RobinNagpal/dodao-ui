@@ -1,4 +1,4 @@
-import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioRole, ScenarioTimeframe } from '@/types/scenarioEnums';
+import { ScenarioDirection, ScenarioPricedInBucket, ScenarioProbabilityBucket, ScenarioRole, ScenarioTimeframe } from '@/types/scenarioEnums';
 import { AllExchanges, EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/scenario-slug';
 
@@ -10,6 +10,7 @@ export interface ParsedStockScenarioLink {
   expectedPriceChange: number | null;
   expectedPriceChangeExplanation: string | null;
   roleExplanation: string | null;
+  pricedInBucket: ScenarioPricedInBucket | null;
 }
 
 export interface ParsedStockScenario {
@@ -18,8 +19,6 @@ export interface ParsedStockScenario {
   slug: string;
   underlyingCause: string;
   historicalAnalog: string;
-  winnersMarkdown: string;
-  losersMarkdown: string;
   outlookMarkdown: string;
   direction: ScenarioDirection;
   timeframe: ScenarioTimeframe;
@@ -58,6 +57,39 @@ function extractQualifiedTickers(text: string): Array<{ symbol: string; exchange
   return out;
 }
 
+// Match priced-in phrases anywhere in a bullet's text (explanation or role
+// clause). Order matters — "over-priced" must be tested before "priced" /
+// "partially priced", and "not priced" before bare "priced". The matched
+// phrase is stripped from the text it came from so it doesn't render twice.
+const PRICED_IN_PATTERNS: Array<{ pattern: RegExp; bucket: ScenarioPricedInBucket }> = [
+  { pattern: /\b(?:over[- ]?priced(?: in)?)\b/i, bucket: ScenarioPricedInBucket.OVER_PRICED_IN },
+  { pattern: /\bfully priced(?: in)?\b/i, bucket: ScenarioPricedInBucket.FULLY_PRICED_IN },
+  { pattern: /\bmostly priced(?: in)?\b/i, bucket: ScenarioPricedInBucket.MOSTLY_PRICED_IN },
+  { pattern: /\bpartially priced(?: in)?\b/i, bucket: ScenarioPricedInBucket.PARTIALLY_PRICED_IN },
+  { pattern: /\b(?:not priced(?: in)?|unpriced|no[t]? priced)\b/i, bucket: ScenarioPricedInBucket.NOT_PRICED_IN },
+];
+
+interface PricedInDetection {
+  bucket: ScenarioPricedInBucket | null;
+  stripped: string;
+}
+
+// Scan `text` for a priced-in phrase. Returns the matched bucket (or null) and
+// the original text with the phrase removed, so it isn't rendered twice.
+function detectPricedIn(text: string): PricedInDetection {
+  for (const { pattern, bucket } of PRICED_IN_PATTERNS) {
+    if (pattern.test(text)) {
+      const stripped = text
+        .replace(pattern, '')
+        .replace(/\s{2,}/g, ' ')
+        .replace(/\s*,\s*,/g, ',')
+        .replace(/^[\s,;]+|[\s,;]+$/g, '');
+      return { bucket, stripped };
+    }
+  }
+  return { bucket: null, stripped: text };
+}
+
 function extractBulletLinks(section: string, role: ScenarioRole): ParsedStockScenarioLink[] {
   const links: ParsedStockScenarioLink[] = [];
   const seen = new Set<string>();
@@ -78,14 +110,35 @@ function extractBulletLinks(section: string, role: ScenarioRole): ParsedStockSce
       if (!Number.isNaN(v) && v >= -100 && v <= 100) expectedPriceChange = v;
     }
 
+    // Priced-in phrase may live in either the parenthetical explanation or
+    // the role clause. Check explanation first; fall back to role clause.
+    let pricedInBucket: ScenarioPricedInBucket | null = null;
+    let expectedPriceChangeExplanation = m[4]?.trim() || null;
+    let roleExplanation = m[5]?.trim() || null;
+    if (expectedPriceChangeExplanation) {
+      const det = detectPricedIn(expectedPriceChangeExplanation);
+      if (det.bucket) {
+        pricedInBucket = det.bucket;
+        expectedPriceChangeExplanation = det.stripped || null;
+      }
+    }
+    if (!pricedInBucket && roleExplanation) {
+      const det = detectPricedIn(roleExplanation);
+      if (det.bucket) {
+        pricedInBucket = det.bucket;
+        roleExplanation = det.stripped || null;
+      }
+    }
+
     links.push({
       symbol,
       exchange,
       role,
       sortOrder: links.length,
       expectedPriceChange,
-      expectedPriceChangeExplanation: m[4]?.trim() || null,
-      roleExplanation: m[5]?.trim() || null,
+      expectedPriceChangeExplanation,
+      roleExplanation,
+      pricedInBucket,
     });
   }
   return links;
@@ -106,6 +159,7 @@ function extractRoleLinks(section: string, role: ScenarioRole): ParsedStockScena
     expectedPriceChange: null,
     expectedPriceChangeExplanation: null,
     roleExplanation: null,
+    pricedInBucket: null,
   }));
 }
 
@@ -283,8 +337,6 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
       slug: slugifyScenarioTitle(title),
       underlyingCause,
       historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
       outlookMarkdown,
       direction,
       timeframe,

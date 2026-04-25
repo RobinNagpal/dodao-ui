@@ -1850,8 +1850,6 @@ model StockScenario {
   slug                            String   @map("slug")
   underlyingCause                 String   @map("underlying_cause") @db.Text
   historicalAnalog                String   @map("historical_analog") @db.Text
-  winnersMarkdown                 String   @map("winners_markdown") @db.Text
-  losersMarkdown                  String   @map("losers_markdown") @db.Text
   outlookMarkdown                 String   @map("outlook_markdown") @db.Text
   direction                       String   @default("DOWNSIDE") @map("direction")
   timeframe                       String   @default("FUTURE") @map("timeframe")
@@ -1896,6 +1894,7 @@ model StockScenarioStockLink {
   roleExplanation                String?  @map("role_explanation") @db.Text
   expectedPriceChange            Int?     @map("expected_price_change")
   expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
+  pricedInBucket                 String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
   spaceId                        String   @default("koala_gains") @map("space_id")
   createdAt                      DateTime @default(now()) @map("created_at")
   updatedAt                      DateTime @updatedAt @map("updated_at")
@@ -1906,5 +1905,6 @@ model StockScenarioStockLink {
   @@index([scenarioId])
   @@index([symbol])
   @@index([symbol, exchange])
+  @@index([pricedInBucket])
   @@map("stock_scenario_stock_links")
 }

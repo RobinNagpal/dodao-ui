@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ScenarioRole } from '@/types/scenarioEnums';
+import { ScenarioPricedInBucket, ScenarioRole } from '@/types/scenarioEnums';
 import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
@@ -24,6 +24,7 @@ const addLinkSchema = z.object({
   roleExplanation: z.string().nullable().optional(),
   expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
   expectedPriceChangeExplanation: z.string().nullable().optional(),
+  pricedInBucket: z.nativeEnum(ScenarioPricedInBucket).nullable().optional(),
 });
 
 export type AddStockScenarioLinkRequest = z.infer<typeof addLinkSchema>;
@@ -74,6 +75,7 @@ async function postHandler(
       roleExplanation: body.roleExplanation ?? null,
       expectedPriceChange: body.expectedPriceChange ?? null,
       expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
+      pricedInBucket: body.pricedInBucket ?? ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
       spaceId: KoalaGainsSpaceId,
     },
     update: {
@@ -82,6 +84,7 @@ async function postHandler(
       roleExplanation: body.roleExplanation ?? null,
       expectedPriceChange: body.expectedPriceChange ?? null,
       expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
+      pricedInBucket: body.pricedInBucket ?? ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
     },
   });
 
