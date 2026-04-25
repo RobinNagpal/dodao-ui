@@ -50,8 +50,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
   const [slug, setSlug] = useState<string>('');
   const [underlyingCause, setUnderlyingCause] = useState<string>('');
   const [historicalAnalog, setHistoricalAnalog] = useState<string>('');
-  const [winnersMarkdown, setWinnersMarkdown] = useState<string>('');
-  const [losersMarkdown, setLosersMarkdown] = useState<string>('');
   const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
   const [direction, setDirection] = useState<ScenarioDirection>('DOWNSIDE');
   const [timeframe, setTimeframe] = useState<ScenarioTimeframe>('FUTURE');
@@ -90,8 +88,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       setSlug('');
       setUnderlyingCause('');
       setHistoricalAnalog('');
-      setWinnersMarkdown('');
-      setLosersMarkdown('');
       setOutlookMarkdown('');
       setDirection('DOWNSIDE');
       setTimeframe('FUTURE');
@@ -122,8 +118,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         setSlug(data.slug);
         setUnderlyingCause(data.underlyingCause);
         setHistoricalAnalog(data.historicalAnalog);
-        setWinnersMarkdown(data.winnersMarkdown);
-        setLosersMarkdown(data.losersMarkdown);
         setOutlookMarkdown(data.outlookMarkdown);
         setDirection(data.direction as ScenarioDirection);
         setTimeframe(data.timeframe as ScenarioTimeframe);
@@ -150,8 +144,8 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
     e.preventDefault();
     setFormError('');
 
-    if (!title || !underlyingCause || !historicalAnalog || !winnersMarkdown || !losersMarkdown || !outlookMarkdown) {
-      setFormError('All markdown fields plus title are required.');
+    if (!title || !underlyingCause || !historicalAnalog || !outlookMarkdown) {
+      setFormError('Title, underlying cause, historical analog, and outlook are required.');
       return;
     }
     if (countries.length === 0) {
@@ -185,8 +179,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       slug: slug || undefined,
       underlyingCause,
       historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
       outlookMarkdown,
       direction,
       timeframe,
@@ -380,22 +372,6 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
           modelValue={historicalAnalog}
           onUpdate={(v: unknown): void => {
             if (typeof v === 'string') setHistoricalAnalog(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Winners (markdown)"
-          modelValue={winnersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setWinnersMarkdown(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Losers (markdown)"
-          modelValue={losersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setLosersMarkdown(v);
           }}
         />
 

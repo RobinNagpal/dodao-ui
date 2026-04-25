@@ -18,8 +18,6 @@ const createStockScenarioSchema = z.object({
   slug: z.string().min(3).optional(),
   underlyingCause: z.string().min(1),
   historicalAnalog: z.string().min(1),
-  winnersMarkdown: z.string().min(1),
-  losersMarkdown: z.string().min(1),
   outlookMarkdown: z.string().min(1),
   direction: z.nativeEnum(ScenarioDirection),
   timeframe: z.nativeEnum(ScenarioTimeframe),
@@ -50,6 +48,7 @@ const createStockScenarioSchema = z.object({
         roleExplanation: z.string().nullable().optional(),
         expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
         expectedPriceChangeExplanation: z.string().nullable().optional(),
+        pricedInBucket: z.nativeEnum(ScenarioPricedInBucket).nullable().optional(),
       })
     )
     .optional(),
@@ -103,8 +102,6 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     title: body.title,
     underlyingCause: body.underlyingCause,
     historicalAnalog: body.historicalAnalog,
-    winnersMarkdown: body.winnersMarkdown,
-    losersMarkdown: body.losersMarkdown,
     outlookMarkdown: body.outlookMarkdown,
     direction: body.direction,
     timeframe: body.timeframe,
@@ -146,6 +143,7 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
           roleExplanation: link.roleExplanation ?? null,
           expectedPriceChange: link.expectedPriceChange ?? null,
           expectedPriceChangeExplanation: link.expectedPriceChangeExplanation ?? null,
+          pricedInBucket: link.pricedInBucket ?? ScenarioPricedInBucket.PARTIALLY_PRICED_IN,
           spaceId: KoalaGainsSpaceId,
         })),
         skipDuplicates: true,

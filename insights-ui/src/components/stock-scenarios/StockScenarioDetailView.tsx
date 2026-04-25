@@ -87,17 +87,6 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         </section>
       )}
 
-      <section className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h2 className="text-lg font-semibold text-emerald-300 mb-2">Winners</h2>
-          <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.winnersMarkdown)} />
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-red-300 mb-2">Losers</h2>
-          <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.losersMarkdown)} />
-        </div>
-      </section>
-
       <section className="mb-6">
         <h2 className="text-lg font-semibold text-white mb-2">Outlook (as of {asOf})</h2>
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.outlookMarkdown)} />
