@@ -1795,6 +1795,7 @@ model EtfScenario {
   expectedPriceChange            Int?     @map("expected_price_change")
   expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
   priceChangeTimeframeExplanation String? @map("price_change_timeframe_explanation") @db.Text
+  countries                      String[] @map("countries")
   outlookAsOfDate                DateTime @map("outlook_as_of_date") @db.Date
   metaDescription                String?  @map("meta_description") @db.Text
   archived                       Boolean  @default(false) @map("archived")

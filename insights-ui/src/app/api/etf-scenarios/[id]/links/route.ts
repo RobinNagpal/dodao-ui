@@ -1,6 +1,8 @@
 import { prisma } from '@/prisma';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EtfScenarioEtfLink } from '@prisma/client';
 import { EtfScenarioRole } from '@/types/etfScenarioEnums';
@@ -10,7 +12,12 @@ import { z } from 'zod';
 
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
-  exchange: z.string().nullable().optional(),
+  // Exchange is required so every link maps to a country we can validate
+  // against the scenario's countries[]. Same enum the stock-scenario links use.
+  exchange: z
+    .string()
+    .min(1, 'exchange is required on ETF scenario links')
+    .refine((v) => isExchange(v.toUpperCase()), 'exchange must be one of the supported exchanges'),
   etfId: z.string().nullable().optional(),
   role: z.nativeEnum(EtfScenarioRole),
   sortOrder: z.number().int().nonnegative().optional(),
@@ -32,19 +39,39 @@ async function postHandler(
   const scenario = await prisma.etfScenario.findUnique({ where: { id: scenarioId } });
   if (!scenario) throw new Error(`Scenario not found: ${scenarioId}`);
 
+  const symbol = body.symbol.toUpperCase();
+  const exchange = body.exchange.toUpperCase();
+
+  const mismatches = scenarioLinkCountryMismatch([{ symbol, exchange }], scenario.countries as SupportedCountries[]);
+  if (mismatches.length) {
+    throw new Error(`Link country mismatch: ${serializeLinkMismatches(mismatches)}.`);
+  }
+
+  // Resolve etfId via (symbol, exchange) so dual-listed ETFs map to the
+  // correct row. Unresolved links still save (etfId=null) — the public
+  // detail view renders them as plain pills.
+  let resolvedEtfId: string | null = body.etfId ?? null;
+  if (!resolvedEtfId) {
+    const etf = await prisma.etf.findFirst({
+      where: { spaceId: KoalaGainsSpaceId, symbol, exchange },
+      select: { id: true },
+    });
+    resolvedEtfId = etf?.id ?? null;
+  }
+
   const link = await prisma.etfScenarioEtfLink.upsert({
     where: {
       scenarioId_symbol_role: {
         scenarioId,
-        symbol: body.symbol.toUpperCase(),
+        symbol,
         role: body.role,
       },
     },
     create: {
       scenarioId,
-      symbol: body.symbol.toUpperCase(),
-      exchange: body.exchange ?? null,
-      etfId: body.etfId ?? null,
+      symbol,
+      exchange,
+      etfId: resolvedEtfId,
       role: body.role,
       sortOrder: body.sortOrder ?? 0,
       roleExplanation: body.roleExplanation ?? null,
@@ -53,8 +80,8 @@ async function postHandler(
       spaceId: KoalaGainsSpaceId,
     },
     update: {
-      exchange: body.exchange ?? null,
-      etfId: body.etfId ?? null,
+      exchange,
+      etfId: resolvedEtfId,
       sortOrder: body.sortOrder ?? 0,
       roleExplanation: body.roleExplanation ?? null,
       expectedPriceChange: body.expectedPriceChange ?? null,

@@ -5,6 +5,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -26,6 +27,7 @@ const updateEtfScenarioSchema = z.object({
   expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
   expectedPriceChangeExplanation: z.string().nullable().optional(),
   priceChangeTimeframeExplanation: z.string().nullable().optional(),
+  countries: z.array(z.nativeEnum(SupportedCountries)).min(1).optional(),
   outlookAsOfDate: z
     .string()
     .refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date')
@@ -73,6 +75,7 @@ async function putHandler(
       ...(body.expectedPriceChange !== undefined && { expectedPriceChange: body.expectedPriceChange }),
       ...(body.expectedPriceChangeExplanation !== undefined && { expectedPriceChangeExplanation: body.expectedPriceChangeExplanation }),
       ...(body.priceChangeTimeframeExplanation !== undefined && { priceChangeTimeframeExplanation: body.priceChangeTimeframeExplanation }),
+      ...(body.countries !== undefined && { countries: body.countries }),
       ...(body.outlookAsOfDate !== undefined && { outlookAsOfDate: new Date(body.outlookAsOfDate) }),
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),
       ...(body.archived !== undefined && { archived: body.archived }),

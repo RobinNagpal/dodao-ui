@@ -8,6 +8,7 @@ import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { Loader2 } from 'lucide-react';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 
@@ -60,6 +61,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   const [expectedPriceChange, setExpectedPriceChange] = useState<string>('');
   const [expectedPriceChangeExplanation, setExpectedPriceChangeExplanation] = useState<string>('');
   const [priceChangeTimeframeExplanation, setPriceChangeTimeframeExplanation] = useState<string>('');
+  const [countries, setCountries] = useState<SupportedCountries[]>([]);
   const [outlookAsOfDate, setOutlookAsOfDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [metaDescription, setMetaDescription] = useState<string>('');
   const [archived, setArchived] = useState<boolean>(false);
@@ -99,6 +101,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       setExpectedPriceChange('');
       setExpectedPriceChangeExplanation('');
       setPriceChangeTimeframeExplanation('');
+      setCountries([]);
       setOutlookAsOfDate(new Date().toISOString().slice(0, 10));
       setMetaDescription('');
       setArchived(false);
@@ -130,6 +133,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setExpectedPriceChange(typeof data.expectedPriceChange === 'number' ? String(data.expectedPriceChange) : '');
         setExpectedPriceChangeExplanation(data.expectedPriceChangeExplanation ?? '');
         setPriceChangeTimeframeExplanation(data.priceChangeTimeframeExplanation ?? '');
+        setCountries((data.countries ?? []) as SupportedCountries[]);
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');
         setArchived(data.archived);
@@ -139,6 +143,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   }, [isOpen, scenarioId]);
 
   const archivedItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => [{ id: 'archived', name: 'archived', label: 'Archived' }], []);
+  const countryItems: CheckboxItem[] = useMemo<CheckboxItem[]>(() => ALL_SUPPORTED_COUNTRIES.map((c) => ({ id: c, name: c, label: c })), []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -146,6 +151,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
 
     if (!title || !underlyingCause || !historicalAnalog || !winnersMarkdown || !losersMarkdown || !outlookMarkdown) {
       setFormError('All markdown fields plus title are required.');
+      return;
+    }
+    if (countries.length === 0) {
+      setFormError('Select at least one supported country — scenarios must be scoped to a market.');
       return;
     }
 
@@ -186,6 +195,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       expectedPriceChange: expectedPriceChangeValue,
       expectedPriceChangeExplanation: expectedPriceChangeExplanation || null,
       priceChangeTimeframeExplanation: priceChangeTimeframeExplanation || null,
+      countries,
       outlookAsOfDate: new Date(outlookAsOfDate).toISOString(),
       metaDescription: metaDescription || null,
       archived,
@@ -236,6 +246,11 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
             if (typeof v === 'string') setSlug(v);
           }}
         />
+
+        <div>
+          <p className="text-sm text-gray-300 mb-1">Countries in scope (at least one required)</p>
+          <Checkboxes items={countryItems} selectedItemIds={countries} onChange={(ids: string[]) => setCountries(ids as SupportedCountries[])} />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <label className="flex flex-col gap-1 text-sm">

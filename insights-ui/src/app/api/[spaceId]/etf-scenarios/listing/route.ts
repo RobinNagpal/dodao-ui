@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
@@ -15,6 +16,7 @@ export interface EtfScenarioListingItem {
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
+  countries: SupportedCountries[];
   outlookAsOfDate: string;
   underlyingCause: string;
   archived: boolean;
@@ -54,6 +56,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const search = searchParams.get('search')?.trim() || null;
   const includeArchivedParam = searchParams.get('includeArchived');
   const includeArchived = includeArchivedParam === 'true';
+  const country = toSupportedCountry(searchParams.get('country'));
 
   const where: Prisma.EtfScenarioWhereInput = {
     spaceId,
@@ -63,12 +66,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   if (isDirection(directionParam)) where.direction = directionParam;
   if (isTimeframe(timeframeParam)) where.timeframe = timeframeParam;
   if (isProbabilityBucket(bucketParam)) where.probabilityBucket = bucketParam;
+  if (country) where.countries = { has: country };
 
   if (search) {
     where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { underlyingCause: { contains: search, mode: 'insensitive' } }];
   }
 
-  const filtersApplied = !!directionParam || !!timeframeParam || !!bucketParam || !!search;
+  const filtersApplied = !!directionParam || !!timeframeParam || !!bucketParam || !!search || !!country;
 
   const [scenarios, totalCount] = await Promise.all([
     prisma.etfScenario.findMany({
@@ -85,6 +89,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         timeframe: true,
         probabilityBucket: true,
         probabilityPercentage: true,
+        countries: true,
         outlookAsOfDate: true,
         underlyingCause: true,
         archived: true,
@@ -105,6 +110,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       timeframe: s.timeframe as EtfScenarioTimeframe,
       probabilityBucket: s.probabilityBucket as EtfScenarioProbabilityBucket,
       probabilityPercentage: s.probabilityPercentage,
+      countries: s.countries as SupportedCountries[],
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
       underlyingCause: s.underlyingCause,
       archived: s.archived,
