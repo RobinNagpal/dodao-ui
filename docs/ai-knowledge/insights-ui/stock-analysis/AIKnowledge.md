@@ -6,7 +6,8 @@ Runbooks and reference docs for the stock (ticker / equity) analysis pipeline �
 
 - **[generate-stock-reports.md](generate-stock-reports.md)** — How to enqueue stock analysis reports with `yarn stocks:trigger` (single ticker or batch, all reports or a subset), and how authentication works against the generation-requests endpoint.
 - **[add-stock.md](add-stock.md)** — How to add new stocks to the database with `yarn stocks:add`, including exchange validation against the predefined list, required fields, and the stockAnalyzeUrl auto-generation.
-- **[stock-market-scenarios.md](stock-market-scenarios.md)** — Catalog of policy / macro / industry scenarios that move specific stocks (winners, losers, most-exposed). Source-of-truth markdown consumed by `yarn import:stock-scenarios`; tickers are exchange-qualified and each entry is country-scoped.
+
+Stock market scenarios live in the `StockScenario` Prisma model (see `insights-ui/prisma/schema.prisma`) and are managed through the admin UI at `/admin-v1/stock-scenarios` — there is no longer a markdown catalog.
 
 ## Where to read further
 
