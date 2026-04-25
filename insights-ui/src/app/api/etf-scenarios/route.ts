@@ -6,8 +6,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
-import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
+import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -29,7 +28,6 @@ const createEtfScenarioSchema = z.object({
   expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
   expectedPriceChangeExplanation: z.string().nullable().optional(),
   priceChangeTimeframeExplanation: z.string().nullable().optional(),
-  countries: z.array(z.nativeEnum(SupportedCountries)).min(1, 'countries[] must list at least one supported country'),
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
@@ -37,13 +35,13 @@ const createEtfScenarioSchema = z.object({
     .array(
       z.object({
         symbol: z.string().min(1),
-        // Exchange is required so that we can map every link to a country and
-        // verify it falls inside scenario.countries[]. The same enum is used
-        // for stock-scenario links (see countryExchangeUtils.EXCHANGES).
+        // Exchange is required and must belong to the ETF-specific exchange
+        // surface (see etfCountryExchangeUtils.ETF_EXCHANGES). Country is
+        // derived from the exchange — no separate countries field on the row.
         exchange: z
           .string()
           .min(1, 'exchange is required on ETF scenario links')
-          .refine((v) => isExchange(v.toUpperCase()), 'exchange must be one of the supported exchanges'),
+          .refine((v) => isEtfExchange(v.toUpperCase()), 'exchange must be one of the supported ETF exchanges'),
         role: z.nativeEnum(EtfScenarioRole),
         sortOrder: z.number().int().nonnegative().optional(),
         roleExplanation: z.string().nullable().optional(),
@@ -68,18 +66,11 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
   const slug = body.slug?.trim() || slugifyScenarioTitle(body.title);
 
-  // Validate every link's exchange resolves to a country in scenario.countries[].
-  // Mirrors the stock-scenario flow: aggregate all mismatches into one error
-  // so admins can fix the whole scenario in one pass.
   const normalizedLinks = (body.links ?? []).map((l) => ({
     ...l,
     symbol: l.symbol.toUpperCase(),
     exchange: l.exchange.toUpperCase(),
   }));
-  const mismatches = scenarioLinkCountryMismatch(normalizedLinks, body.countries);
-  if (mismatches.length) {
-    throw new Error(`Link country mismatch: ${serializeLinkMismatches(mismatches)}. Fix the scenario's countries[] or the link's exchange, then retry.`);
-  }
 
   const commonData = {
     scenarioNumber: body.scenarioNumber,
@@ -97,7 +88,6 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     expectedPriceChange: body.expectedPriceChange ?? null,
     expectedPriceChangeExplanation: body.expectedPriceChangeExplanation ?? null,
     priceChangeTimeframeExplanation: body.priceChangeTimeframeExplanation ?? null,
-    countries: body.countries,
     outlookAsOfDate: new Date(body.outlookAsOfDate),
     metaDescription: body.metaDescription ?? null,
     archived: body.archived ?? false,

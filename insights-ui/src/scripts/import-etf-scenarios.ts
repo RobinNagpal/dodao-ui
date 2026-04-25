@@ -28,7 +28,6 @@ function toRequestBody(s: ParsedScenario) {
     timeframe: s.timeframe,
     probabilityBucket: s.probabilityBucket,
     probabilityPercentage: s.probabilityPercentage,
-    countries: s.countries,
     outlookAsOfDate: s.outlookAsOfDate.toISOString(),
     // The API requires exchange on every link. Drop bare-symbol legacy links
     // here — they have to be re-authored with `EXCHANGE:SYMBOL` qualifiers

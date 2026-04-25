@@ -1,5 +1,5 @@
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { isExchange, SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 
 export interface ParsedScenarioLink {
@@ -26,7 +26,6 @@ export interface ParsedScenario {
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
-  countries: SupportedCountries[];
   outlookAsOfDate: Date;
   links: ParsedScenarioLink[];
 }
@@ -49,11 +48,12 @@ function extractTickers(line: string): ExtractedTicker[] {
   const seen = new Set<string>();
 
   // Pass 1: pick up qualified `EXCHANGE:SYMBOL` tokens so they're preferred
-  // over a bare match that would extract just the SYMBOL part.
+  // over a bare match that would extract just the SYMBOL part. Only ETF
+  // exchanges qualify — `isEtfExchange` rejects stock-only venues.
   for (const m of line.matchAll(QUALIFIED_TICKER_PATTERN)) {
     const exchange = m[1];
     const symbol = m[2];
-    if (!isExchange(exchange)) continue;
+    if (!isEtfExchange(exchange)) continue;
     if (seen.has(symbol)) continue;
     seen.add(symbol);
     out.push({ symbol, exchange });
@@ -141,27 +141,6 @@ function extractField(block: string, label: string): string {
   return match ? match[1].trim() : '';
 }
 
-/**
- * Parse a `Countries:` line into a SupportedCountries[]. Returns an empty
- * array when nothing parseable is found; callers fall back to ['US'] for
- * historical ETF docs that pre-date this field.
- */
-function extractCountries(block: string): SupportedCountries[] {
-  const m = block.match(/\*\*Countries[^*]*?\*\*:?\s*([^\n]+)/i);
-  if (!m) return [];
-  const parts = m[1].split(/[,;]/).map((p) => p.trim());
-  const out: SupportedCountries[] = [];
-  const seen = new Set<SupportedCountries>();
-  for (const p of parts) {
-    const c = toSupportedCountry(p);
-    if (c && !seen.has(c)) {
-      seen.add(c);
-      out.push(c);
-    }
-  }
-  return out;
-}
-
 /** Parses the scenarios markdown document into a structured array. */
 export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): ParsedScenario[] {
   const scenarios: ParsedScenario[] = [];
@@ -195,11 +174,6 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     const probabilityBucket = classifyProbabilityBucket(outlookMarkdown, probabilityPercentage);
     const timeframe = classifyTimeframe(outlookMarkdown);
     const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
-    // **Countries:** US, Canada — admin-authored docs may live anywhere in the
-    // scenario body. Fall back to ['US'] so legacy docs without the line still
-    // parse (every existing ETF scenario was authored US-only before this).
-    const parsedCountries = extractCountries(body);
-    const countries: SupportedCountries[] = parsedCountries.length ? parsedCountries : [SupportedCountries.US];
     // The `as of YYYY-MM-DD` suffix lives inside the Outlook *label* (e.g. `**Outlook (as of 2026-04-19):**`),
     // which is stripped by extractField — so search the whole scenario block, not just the body.
     const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
@@ -242,7 +216,6 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       timeframe,
       probabilityBucket,
       probabilityPercentage,
-      countries,
       outlookAsOfDate,
       links: deduped,
     });

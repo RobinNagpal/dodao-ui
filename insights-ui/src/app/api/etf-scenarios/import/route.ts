@@ -72,7 +72,6 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       timeframe: scenario.timeframe,
       probabilityBucket: scenario.probabilityBucket,
       probabilityPercentage: scenario.probabilityPercentage,
-      countries: scenario.countries,
       outlookAsOfDate: scenario.outlookAsOfDate,
       spaceId: KoalaGainsSpaceId,
     };

@@ -24,19 +24,23 @@ yarn lint-fix
 yarn prettier-fix
 ```
 
-### 3) Verify Build
+### 3) Verify Type Check
 
-Confirm the project builds successfully before committing:
+Confirm the project type-checks successfully before committing:
 
 ```bash
-yarn build
+yarn compile
 ```
 
-**Important:** Do not proceed until the build completes without errors.
+`yarn compile` runs `prisma generate && tsc` — same type-safety guarantees as
+a full build, but skips the Next.js bundle/page-data step (which fails locally
+without production env vars and offers no extra signal for code review).
+
+**Important:** Do not proceed until `yarn compile` completes without errors.
 
 ### 4) Commit and Push Changes (Mandatory)
 
-After checks and build pass, commit and push your changes:
+After checks pass, commit and push your changes:
 
 ```bash
 git add .
@@ -131,7 +135,7 @@ git branch --show-current  # Must NOT be main
 Then do your work, and when finished:
 ```bash
 # 1. Quality checks
-yarn lint && yarn prettier-check && yarn build
+yarn lint && yarn prettier-check && yarn compile
 
 # 2. Commit and push
 git add .

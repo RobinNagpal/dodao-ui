@@ -1,5 +1,4 @@
 import { prisma } from '@/prisma';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario, EtfScenarioEtfLink } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
@@ -17,12 +16,11 @@ export interface EtfScenarioLinkDto {
 }
 
 export interface EtfScenarioDetail
-  extends Omit<EtfScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket' | 'pricedInBucket' | 'countries'> {
+  extends Omit<EtfScenario, 'outlookAsOfDate' | 'createdAt' | 'updatedAt' | 'direction' | 'timeframe' | 'probabilityBucket' | 'pricedInBucket'> {
   direction: EtfScenarioDirection;
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
   pricedInBucket: EtfScenarioPricedInBucket;
-  countries: SupportedCountries[];
   outlookAsOfDate: string;
   createdAt: string;
   updatedAt: string;
@@ -59,7 +57,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     throw new Error(`Scenario not found: ${slug}`);
   }
 
-  const { etfLinks, outlookAsOfDate, createdAt, updatedAt, countries, ...rest } = scenario;
+  const { etfLinks, outlookAsOfDate, createdAt, updatedAt, ...rest } = scenario;
 
   const unresolvedSymbols = Array.from(new Set(etfLinks.filter((l) => !l.etfId || !l.exchange).map((l) => l.symbol.toUpperCase())));
   const resolvedBySymbol = new Map<string, { id: string; exchange: string }>();
@@ -82,7 +80,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     timeframe: rest.timeframe as EtfScenarioTimeframe,
     probabilityBucket: rest.probabilityBucket as EtfScenarioProbabilityBucket,
     pricedInBucket: rest.pricedInBucket as EtfScenarioPricedInBucket,
-    countries: countries as SupportedCountries[],
     outlookAsOfDate: outlookAsOfDate.toISOString(),
     createdAt: createdAt.toISOString(),
     updatedAt: updatedAt.toISOString(),

@@ -1,6 +1,6 @@
 import type { EtfScenarioDetail, EtfScenarioLinkDto } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { EXCHANGES } from '@/utils/countryExchangeUtils';
+import { ETF_EXCHANGES } from '@/utils/etfCountryExchangeUtils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
@@ -146,12 +146,6 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
           </div>
         ) : (
           <>
-            {detail && detail.countries.length > 0 && (
-              <p className="text-xs text-gray-400">
-                This scenario is scoped to: <span className="text-gray-200 font-medium">{detail.countries.join(', ')}</span>. Links on any other country&apos;s
-                exchanges will be rejected.
-              </p>
-            )}
             <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-3 space-y-2">
               <h3 className="text-sm font-semibold text-white">Add link</h3>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
@@ -169,7 +163,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                     value={form.exchange}
                     onChange={(e) => setForm((f) => ({ ...f, exchange: e.target.value }))}
                   >
-                    {EXCHANGES.map((ex) => (
+                    {ETF_EXCHANGES.map((ex) => (
                       <option key={ex} value={ex}>
                         {ex}
                       </option>

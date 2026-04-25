@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
-import { SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { toSupportedCountry } from '@/utils/countryExchangeUtils';
+import { getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
@@ -16,7 +17,6 @@ export interface EtfScenarioListingItem {
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
-  countries: SupportedCountries[];
   outlookAsOfDate: string;
   underlyingCause: string;
   archived: boolean;
@@ -66,7 +66,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   if (isDirection(directionParam)) where.direction = directionParam;
   if (isTimeframe(timeframeParam)) where.timeframe = timeframeParam;
   if (isProbabilityBucket(bucketParam)) where.probabilityBucket = bucketParam;
-  if (country) where.countries = { has: country };
+  if (country) {
+    // Country isn't stored on the scenario row — derive it via the link
+    // exchanges. A scenario shows up under "Canada" iff it has at least one
+    // link on a Canadian ETF exchange (TSX/TSXV/NEOE).
+    const exchanges = getEtfExchangesByCountry(country);
+    if (exchanges.length) where.etfLinks = { some: { exchange: { in: exchanges } } };
+  }
 
   if (search) {
     where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { underlyingCause: { contains: search, mode: 'insensitive' } }];
@@ -89,7 +95,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         timeframe: true,
         probabilityBucket: true,
         probabilityPercentage: true,
-        countries: true,
         outlookAsOfDate: true,
         underlyingCause: true,
         archived: true,
@@ -110,7 +115,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       timeframe: s.timeframe as EtfScenarioTimeframe,
       probabilityBucket: s.probabilityBucket as EtfScenarioProbabilityBucket,
       probabilityPercentage: s.probabilityPercentage,
-      countries: s.countries as SupportedCountries[],
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
       underlyingCause: s.underlyingCause,
       archived: s.archived,

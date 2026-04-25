@@ -1,8 +1,7 @@
 import { prisma } from '@/prisma';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
-import { scenarioLinkCountryMismatch, serializeLinkMismatches } from '@/utils/scenario-country-validation';
+import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EtfScenarioEtfLink } from '@prisma/client';
 import { EtfScenarioRole } from '@/types/etfScenarioEnums';
@@ -12,12 +11,14 @@ import { z } from 'zod';
 
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
-  // Exchange is required so every link maps to a country we can validate
-  // against the scenario's countries[]. Same enum the stock-scenario links use.
+  // Exchange must be one of the ETF-specific exchanges (NYSEARCA / BATS /
+  // NASDAQ / TSX / TSXV / ...). The country a scenario covers is derived
+  // from this exchange via ETF_EXCHANGE_TO_COUNTRY — no countries column
+  // on the scenario row.
   exchange: z
     .string()
     .min(1, 'exchange is required on ETF scenario links')
-    .refine((v) => isExchange(v.toUpperCase()), 'exchange must be one of the supported exchanges'),
+    .refine((v) => isEtfExchange(v.toUpperCase()), 'exchange must be one of the supported ETF exchanges'),
   etfId: z.string().nullable().optional(),
   role: z.nativeEnum(EtfScenarioRole),
   sortOrder: z.number().int().nonnegative().optional(),
@@ -41,11 +42,6 @@ async function postHandler(
 
   const symbol = body.symbol.toUpperCase();
   const exchange = body.exchange.toUpperCase();
-
-  const mismatches = scenarioLinkCountryMismatch([{ symbol, exchange }], scenario.countries as SupportedCountries[]);
-  if (mismatches.length) {
-    throw new Error(`Link country mismatch: ${serializeLinkMismatches(mismatches)}.`);
-  }
 
   // Resolve etfId via (symbol, exchange) so dual-listed ETFs map to the
   // correct row. Unresolved links still save (etfId=null) — the public
