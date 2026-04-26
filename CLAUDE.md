@@ -275,6 +275,24 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 
 ---
 
+## Reuse Before Creating (Mandatory)
+
+**Before creating any new file or component, search the codebase for an existing one that does the same or similar job.** Duplicating an existing helper, hook, or component fragments the codebase and forces every future change to be applied in multiple places.
+
+### Process
+
+1. Pick 2–3 keywords describing the behavior you need (e.g. an admin-only timestamp → search for `AdminTimestamp`, `Updated`, `dateModified`, `PrivateWrapper`).
+2. Use Grep / file search across `src/` for those keywords. Look at component names, prop names, and the rendered text. Don't stop at the first miss — try synonyms.
+3. If a match exists:
+   - **Reuse it as-is** if its API fits your need.
+   - **Extend it** (add an optional prop) if a small tweak makes it fit instead of duplicating.
+   - **Restructure / move it** (e.g. into a shared `components/auth/` folder) if it lives in a project-specific spot but is genuinely reusable. Update all existing import paths in the same change.
+4. Only create a new file when there is no existing equivalent and the behavior is genuinely different.
+
+If you create a new file by mistake, delete it as soon as you discover the duplicate, switch all callers to the canonical one, and keep the change in a single commit so reviewers see the consolidation.
+
+---
+
 ## Best Practices
 
 1. Test locally before pushing
@@ -284,6 +302,7 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 5. Monitor build status after pushing
 6. Fix failures quickly to avoid blocking others
 7. Always commit and push your changes. Always. Always (Mandatory)
+8. Always cross-check for an existing file/component before creating a new one (see the **Reuse Before Creating** section above)
 
 ---
 
