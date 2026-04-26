@@ -15,6 +15,16 @@ export interface StockScenarioLinkDto {
   expectedPriceChange: number | null;
   expectedPriceChangeExplanation: string | null;
   pricedInBucket: ScenarioPricedInBucket;
+  marketCap: number | null;
+  pe: number | null;
+  finalScore: number | null;
+}
+
+interface ResolvedTicker {
+  tickerId: string;
+  marketCap: number | null;
+  pe: number | null;
+  finalScore: number | null;
 }
 
 export interface StockScenarioDetail
@@ -31,17 +41,20 @@ export interface StockScenarioDetail
   mostExposed: StockScenarioLinkDto[];
 }
 
-function toLinkDto(link: StockScenarioStockLink, resolvedTickerId?: string | null): StockScenarioLinkDto {
+function toLinkDto(link: StockScenarioStockLink, resolved: ResolvedTicker | undefined): StockScenarioLinkDto {
   return {
     symbol: link.symbol,
     exchange: link.exchange,
-    tickerId: link.tickerId ?? resolvedTickerId ?? null,
+    tickerId: link.tickerId ?? resolved?.tickerId ?? null,
     role: link.role as ScenarioRole,
     sortOrder: link.sortOrder,
     roleExplanation: link.roleExplanation,
     expectedPriceChange: link.expectedPriceChange,
     expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
     pricedInBucket: link.pricedInBucket as ScenarioPricedInBucket,
+    marketCap: resolved?.marketCap ?? null,
+    pe: resolved?.pe ?? null,
+    finalScore: resolved?.finalScore ?? null,
   };
 }
 
@@ -62,22 +75,32 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const { stockLinks, outlookAsOfDate, createdAt, updatedAt, countries, ...rest } = scenario;
 
-  // Resolve any links that don't have `tickerId` set yet against the TickerV1
-  // table by (symbol, exchange) — matches the unique constraint
-  // `@@unique([spaceId, symbol, exchange])` on tickers_v1.
-  const unresolved = stockLinks.filter((l) => !l.tickerId).map((l) => ({ symbol: l.symbol.toUpperCase(), exchange: l.exchange.toUpperCase() }));
+  // Bulk-fetch every link's TickerV1 row (matches the unique constraint
+  // `@@unique([spaceId, symbol, exchange])` on tickers_v1) so we can:
+  //   1. resolve `tickerId` for legacy links that saved with tickerId=null
+  //   2. surface market cap / PE / final score on the link cards
+  // One query covers all links — no N+1, no per-link round-trips.
+  const linkKeys = stockLinks.map((l) => ({ symbol: l.symbol.toUpperCase(), exchange: l.exchange.toUpperCase() }));
 
-  const resolved = new Map<string, string>();
-  if (unresolved.length) {
+  const resolved = new Map<string, ResolvedTicker>();
+  if (linkKeys.length) {
     const tickers = await prisma.tickerV1.findMany({
-      where: {
-        spaceId,
-        OR: unresolved.map((u) => ({ symbol: u.symbol, exchange: u.exchange })),
+      where: { spaceId, OR: linkKeys },
+      select: {
+        id: true,
+        symbol: true,
+        exchange: true,
+        financialInfo: { select: { marketCap: true, pe: true } },
+        cachedScoreEntry: { select: { finalScore: true } },
       },
-      select: { id: true, symbol: true, exchange: true },
     });
     for (const t of tickers) {
-      resolved.set(`${t.symbol.toUpperCase()}|${t.exchange.toUpperCase()}`, t.id);
+      resolved.set(`${t.symbol.toUpperCase()}|${t.exchange.toUpperCase()}`, {
+        tickerId: t.id,
+        marketCap: t.financialInfo?.marketCap ?? null,
+        pe: t.financialInfo?.pe ?? null,
+        finalScore: t.cachedScoreEntry?.finalScore ?? null,
+      });
     }
   }
 
