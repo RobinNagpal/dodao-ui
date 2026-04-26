@@ -13,14 +13,15 @@ Claude runs one stock or ETF through all of its report types by looping: **get p
 
 For ETFs there is one extra step: before the first report, Claude asks the server to make sure Morningstar (MOR) data is fresh. If any of the four MOR tables (quote, risk, people, portfolio) is empty, the server fires the Morningstar scrape lambda. Because that lambda is fire-and-forget, the script then waits 20 seconds so the rows are in the DB before the prompt is built.
 
-## The four scripts
+## The five scripts
 
 | Script | What it does |
 | --- | --- |
-| `yarn stocks:prompt` | Returns the final prompt for one stock + one report type. |
-| `yarn stocks:save`   | Takes the LLM's JSON and saves the stock report. |
-| `yarn etfs:prompt`   | Checks MOR data (triggers scrape + waits if missing), then returns the ETF prompt. |
-| `yarn etfs:save`     | Takes the LLM's JSON and saves the ETF report. |
+| `yarn stocks:prompt`       | Returns the final prompt for one stock + one report type. |
+| `yarn stocks:save`         | Takes the LLM's JSON and saves the stock report. |
+| `yarn stocks:list-oldest`  | Returns the N stocks whose saved report for a given type is the oldest — feeds a refresh batch. |
+| `yarn etfs:prompt`         | Checks MOR data (triggers scrape + waits if missing), then returns the ETF prompt. |
+| `yarn etfs:save`           | Takes the LLM's JSON and saves the ETF report. |
 
 Report type slugs:
 
@@ -34,6 +35,7 @@ Report type slugs:
 | "generate reports for `AAPL NASDAQ`" | Stock loop, all 8 stock report types |
 | "generate reports for `SPUS NYSEARCA`" | ETF loop, all 7 ETF report types |
 | "regenerate just `competition` for `SPY NYSEARCA`" | One-shot: prompt → LLM → save |
+| "refresh the 5 stocks with the oldest business-and-moat reports" | `stocks:list-oldest` → for each, run the full 8-report stock loop |
 | "test the scripts" | Pick one ETF + one stock, run one report each as a smoke test |
 
 ## Setup (once per session)
@@ -134,6 +136,25 @@ yarn stocks:save --symbol AAPL --exchange NASDAQ \
   --report-type fair-value \
   --in /tmp/stocks/NASDAQ/AAPL/05-fair-value.response.json
 ```
+
+## Refresh batch — N stocks with the oldest reports
+
+To refresh the oldest stocks for a given report type:
+
+1. **Pick the batch.** `yarn stocks:list-oldest --report-type business-and-moat --limit 5` returns the 5 tickers whose saved business-and-moat report is the oldest, ordered oldest first. Defaults are `business-and-moat` and `5`. Supported `--report-type` values: `business-and-moat`, `financial-analysis`, `past-performance`, `future-growth`, `fair-value`. Tickers without any saved row for that category are excluded (the endpoint surfaces stale reports, not missing ones), as are tickers with an in-flight generation request.
+
+   ```json
+   {
+     "reportType": "business-and-moat",
+     "limit": 5,
+     "items": [
+       { "tickerId": "…", "symbol": "AAPL", "exchange": "NASDAQ", "name": "Apple Inc.", "reportLastUpdatedAt": "2025-08-12T17:14:02.119Z" },
+       …
+     ]
+   }
+   ```
+
+2. **Run the per-stock loop.** For each `(symbol, exchange)` in `items`, run the full 8-report stock loop documented below (prompt → act-as-LLM → save). There is no batch driver — Claude is the orchestrator and the LLM in the loop. Process each stock as its own block of tool calls so you can read the prompt and write the response file between them.
 
 ## Response JSON shape — per report type
 
@@ -348,6 +369,9 @@ For stocks, the analysis route is `/api/koala_gains/tickers-v1/exchange/$EXCHANG
 - `stocks:save` → `POST /api/<spaceId>/tickers-v1/exchange/<exchange>/<ticker>/save-json-report` with `{ llmResponse, reportType }`.
   - Validates the JSON against the per-report schema in `schemas/analysis-factors/…`.
   - Writes to `TickerV1CategoryAnalysisResult` + `TickerV1AnalysisCategoryFactorResult` (factor reports), `TickerV1VsCompetition` (competition), `TickerV1FutureRisk` (future-risk), or the base `TickerV1` row (final-summary).
+- `stocks:list-oldest` → `GET /api/<spaceId>/tickers-v1/oldest-by-report-type?reportType=<slug>&limit=<N>`.
+  - Handler: `getOldestStocksByReportType()` in `src/utils/oldest-reports-utils.ts`. Joins `tickers_v1` to `ticker_v1_category_analysis_results`, filters by `category_key`, orders by `updated_at ASC`, excludes pending generation requests.
+  - Token-gated (`withAdminOrToken`).
 
 ### ETFs
 
@@ -369,12 +393,13 @@ For stocks, the analysis route is `/api/koala_gains/tickers-v1/exchange/$EXCHANG
 
 ## Files
 
-- Scripts: `src/scripts/tickers/get-report-prompt.ts`, `src/scripts/tickers/save-report.ts`, `src/scripts/etfs/get-report-prompt.ts`, `src/scripts/etfs/save-report.ts`
+- Scripts: `src/scripts/tickers/get-report-prompt.ts`, `src/scripts/tickers/save-report.ts`, `src/scripts/tickers/list-oldest.ts`, `src/scripts/etfs/get-report-prompt.ts`, `src/scripts/etfs/save-report.ts`
 - ETF endpoints: `src/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/generate-prompt/route.ts`, `src/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/ensure-mor-info/route.ts`
 - ETF prompt utility: `src/utils/etf-analysis-reports/etf-prompt-generator-utils.ts`
 - ETF input-JSON preparers (including `trimPortfolioHoldings`): `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`
 - Stock prompt utility: `src/utils/analysis-reports/prompt-generator-utils.ts`
 - Stock save endpoint: `src/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/save-json-report/route.ts`
+- Stock oldest-by-report-type endpoint + util: `src/app/api/[spaceId]/tickers-v1/oldest-by-report-type/route.ts`, `src/utils/oldest-reports-utils.ts`
 - Shared CLI helpers: `src/scripts/tickers/lib.ts`, `src/scripts/etfs/lib.ts` (the ETF one also carries `AGENT_PROMPT_PREAMBLE`)
 
 ## Neighbouring docs

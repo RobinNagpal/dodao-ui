@@ -23,7 +23,8 @@
     "stocks:trigger": "tsx src/scripts/tickers/trigger-generation.ts",
     "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
-    "stocks:save": "tsx src/scripts/tickers/save-report.ts"
+    "stocks:save": "tsx src/scripts/tickers/save-report.ts",
+    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts"
   },
   "engines": {
     "node": ">=23.11.0"
