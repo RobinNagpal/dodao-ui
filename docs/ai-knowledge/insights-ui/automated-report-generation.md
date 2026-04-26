@@ -139,15 +139,9 @@ yarn stocks:save --symbol AAPL --exchange NASDAQ \
 
 ## Refresh batch — N stocks with the oldest reports
 
-Use this when a user asks to "refresh the oldest stocks" or "regenerate the N stocks whose business-and-moat reports are oldest". The pattern is:
+To refresh the oldest stocks for a given report type:
 
-1. **Pick the batch** — `yarn stocks:list-oldest` returns the N tickers whose saved report for the given type is the oldest. Defaults: `--report-type business-and-moat`, `--limit 5`.
-
-   ```bash
-   yarn stocks:list-oldest --report-type business-and-moat --limit 5
-   ```
-
-   Output (stdout):
+1. **Pick the batch.** `yarn stocks:list-oldest --report-type business-and-moat --limit 5` returns the 5 tickers whose saved business-and-moat report is the oldest, ordered oldest first. Defaults are `business-and-moat` and `5`. Supported `--report-type` values: `business-and-moat`, `financial-analysis`, `past-performance`, `future-growth`, `fair-value`. Tickers without any saved row for that category are excluded (the endpoint surfaces stale reports, not missing ones), as are tickers with an in-flight generation request.
 
    ```json
    {
@@ -160,19 +154,7 @@ Use this when a user asks to "refresh the oldest stocks" or "regenerate the N st
    }
    ```
 
-   Supported `--report-type` values are the five factor categories: `business-and-moat`, `financial-analysis`, `past-performance`, `future-growth`, `fair-value`. The endpoint returns oldest first, excludes tickers without a saved row for that category (no row ≠ "old"), and skips tickers with a pending generation request so we don't double up on in-flight work.
-
-2. **Loop the per-stock flow.** For each `(symbol, exchange)` in `items`, run the full stock loop documented below — all 8 report types, in order, prompt → act-as-LLM → save. There is no "batch run" script; Claude is the orchestrator and the LLM in the loop, exactly like the single-stock case.
-
-   ```bash
-   for ROW in $(yarn -s stocks:list-oldest --limit 5 | jq -c '.items[]'); do
-     SYMBOL=$(echo "$ROW" | jq -r '.symbol')
-     EXCHANGE=$(echo "$ROW" | jq -r '.exchange')
-     # …then the per-stock prompt → LLM → save loop documented in the next section…
-   done
-   ```
-
-   In a real Claude session, do this without `for` loops: read the JSON, then process each stock as its own block of tool calls so you can read each prompt and write each response file between calls.
+2. **Run the per-stock loop.** For each `(symbol, exchange)` in `items`, run the full 8-report stock loop documented below (prompt → act-as-LLM → save). There is no batch driver — Claude is the orchestrator and the LLM in the loop. Process each stock as its own block of tool calls so you can read the prompt and write the response file between them.
 
 ## Response JSON shape — per report type
 
