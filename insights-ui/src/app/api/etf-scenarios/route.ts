@@ -6,7 +6,8 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
+import { EtfSupportedCountry, isEtfExchange, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { etfScenarioLinkCountryMismatch, serializeEtfLinkMismatches } from '@/utils/etf-scenario-country-validation';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -31,13 +32,21 @@ const createEtfScenarioSchema = z.object({
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
+  // Countries the scenario is scoped to. ETF coverage is currently US + Canada;
+  // we validate against ETF_SUPPORTED_COUNTRIES (a subset of stock's
+  // SupportedCountries) so admins can't create scenarios in markets we don't
+  // ship ETF data for.
+  countries: z
+    .array(z.string().refine((v) => isEtfSupportedCountry(v), 'country must be one of the supported ETF countries (US / Canada)'))
+    .min(1, 'at least one country must be declared'),
   links: z
     .array(
       z.object({
         symbol: z.string().min(1),
         // Exchange is required and must belong to the ETF-specific exchange
-        // surface (see etfCountryExchangeUtils.ETF_EXCHANGES). Country is
-        // derived from the exchange — no separate countries field on the row.
+        // surface (see etfCountryExchangeUtils.ETF_EXCHANGES). The link's
+        // exchange country must also be in scenario.countries — enforced
+        // below via etfScenarioLinkCountryMismatch.
         exchange: z
           .string()
           .min(1, 'exchange is required on ETF scenario links')
@@ -72,6 +81,12 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     exchange: l.exchange.toUpperCase(),
   }));
 
+  const scenarioCountries = body.countries as EtfSupportedCountry[];
+  const mismatches = etfScenarioLinkCountryMismatch(normalizedLinks, scenarioCountries);
+  if (mismatches.length > 0) {
+    throw new Error(`Link country mismatch: ${serializeEtfLinkMismatches(mismatches)}. Fix the scenario's countries[] or the link's exchange, then retry.`);
+  }
+
   const commonData = {
     scenarioNumber: body.scenarioNumber,
     title: body.title,
@@ -91,6 +106,7 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     outlookAsOfDate: new Date(body.outlookAsOfDate),
     metaDescription: body.metaDescription ?? null,
     archived: body.archived ?? false,
+    countries: scenarioCountries,
   };
 
   const knownEtfs = normalizedLinks.length

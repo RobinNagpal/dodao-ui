@@ -1,7 +1,8 @@
 import { prisma } from '@/prisma';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
+import { EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
+import { etfScenarioLinkCountryMismatch, serializeEtfLinkMismatches } from '@/utils/etf-scenario-country-validation';
 import { DoDaoJwtTokenPayload } from '@dodao/web-core/types/auth/Session';
 import { EtfScenarioEtfLink } from '@prisma/client';
 import { EtfScenarioRole } from '@/types/etfScenarioEnums';
@@ -12,9 +13,9 @@ import { z } from 'zod';
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
   // Exchange must be one of the ETF-specific exchanges (NYSEARCA / BATS /
-  // NASDAQ / TSX / TSXV / ...). The country a scenario covers is derived
-  // from this exchange via ETF_EXCHANGE_TO_COUNTRY — no countries column
-  // on the scenario row.
+  // NASDAQ / NYSE / TSX / TSXV / NEOE). Below we additionally enforce that
+  // the exchange's country is in scenario.countries — see the mismatch
+  // check after we load the scenario.
   exchange: z
     .string()
     .min(1, 'exchange is required on ETF scenario links')
@@ -42,6 +43,11 @@ async function postHandler(
 
   const symbol = body.symbol.toUpperCase();
   const exchange = body.exchange.toUpperCase();
+
+  const mismatches = etfScenarioLinkCountryMismatch([{ symbol, exchange }], scenario.countries as EtfSupportedCountry[]);
+  if (mismatches.length > 0) {
+    throw new Error(`Link country mismatch: ${serializeEtfLinkMismatches(mismatches)}.`);
+  }
 
   // Resolve etfId via (symbol, exchange) so dual-listed ETFs map to the
   // correct row. Unresolved links still save (etfId=null) — the public

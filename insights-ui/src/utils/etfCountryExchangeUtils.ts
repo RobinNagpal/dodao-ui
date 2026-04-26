@@ -1,20 +1,32 @@
 /**
- * ETF-specific exchange constants & helpers.
+ * ETF-specific country & exchange constants (mirrors `countryExchangeUtils.ts`
+ * for stocks, but kept deliberately separate).
  *
- * Why a separate file (mirroring `countryExchangeUtils.ts`):
- * stocks and ETFs don't trade on the exact same exchange surface — most US
- * ETFs live on NYSEARCA / BATS while stocks split across NYSE / NASDAQ /
- * NYSEAMERICAN, and other countries' ETF markets are smaller subsets of
- * their stock-listing venues. Keeping ETF exchanges in their own enum lets
- * the admin UI present only valid ETF venues and lets the API reject
- * stock-only exchanges before they reach the DB.
+ * Why a distinct setup:
+ *  - Country list — ETFs currently launch only in the US and Canada in our
+ *    coverage. Stocks support 10+ countries; piggy-backing on that list would
+ *    let admins create scenarios in markets we have no ETF data for.
+ *  - Exchange list — most US ETFs trade on NYSEARCA/BATS while stocks split
+ *    across NYSE/NASDAQ/NYSEAMERICAN, and Canadian ETFs include NEOE which
+ *    isn't in the stock enum. A separate enum lets the UI present only valid
+ *    ETF venues and lets the API reject stock-only exchanges.
  *
- * Country is *not* stored on the scenario row — it's derived from a link's
- * exchange via `ETF_EXCHANGE_TO_COUNTRY`. UI filtering by country is done by
- * mapping the selected country back to its set of ETF exchanges (via
- * `getEtfExchangesByCountry`) and filtering links on those exchanges.
+ * Country codes themselves are reused from `SupportedCountries` so the values
+ * stored in the DB match the stock side ("US", "Canada").
  */
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+
+/** ---------- Supported countries ---------- */
+
+export type EtfSupportedCountry = SupportedCountries.US | SupportedCountries.Canada;
+
+export const ETF_SUPPORTED_COUNTRIES: EtfSupportedCountry[] = [SupportedCountries.US, SupportedCountries.Canada];
+
+export const isEtfSupportedCountry = (val: string): val is EtfSupportedCountry => {
+  return (ETF_SUPPORTED_COUNTRIES as readonly string[]).includes(val);
+};
+
+/** ---------- Exchanges ---------- */
 
 export enum EtfUSExchanges {
   NYSEARCA = 'NYSEARCA',
@@ -29,35 +41,7 @@ export enum EtfCanadaExchanges {
   NEOE = 'NEOE',
 }
 
-export enum EtfUKExchanges {
-  LSE = 'LSE',
-}
-
-export enum EtfIndiaExchanges {
-  NSE = 'NSE',
-  BSE = 'BSE',
-}
-
-export enum EtfJapanExchanges {
-  TSE = 'TSE',
-}
-
-export enum EtfHongKongExchanges {
-  HKEX = 'HKEX',
-}
-
-export enum EtfAustraliaExchanges {
-  ASX = 'ASX',
-}
-
-export type AllEtfExchanges =
-  | EtfUSExchanges
-  | EtfCanadaExchanges
-  | EtfUKExchanges
-  | EtfIndiaExchanges
-  | EtfJapanExchanges
-  | EtfHongKongExchanges
-  | EtfAustraliaExchanges;
+export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges;
 
 export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfUSExchanges.NYSEARCA,
@@ -67,30 +51,14 @@ export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfCanadaExchanges.TSX,
   EtfCanadaExchanges.TSXV,
   EtfCanadaExchanges.NEOE,
-  EtfUKExchanges.LSE,
-  EtfIndiaExchanges.NSE,
-  EtfIndiaExchanges.BSE,
-  EtfJapanExchanges.TSE,
-  EtfHongKongExchanges.HKEX,
-  EtfAustraliaExchanges.ASX,
 ] as const;
 
-export const ETF_COUNTRY_TO_EXCHANGES: Record<SupportedCountries, AllEtfExchanges[]> = {
+export const ETF_COUNTRY_TO_EXCHANGES: Record<EtfSupportedCountry, AllEtfExchanges[]> = {
   [SupportedCountries.US]: Object.values(EtfUSExchanges),
   [SupportedCountries.Canada]: Object.values(EtfCanadaExchanges),
-  [SupportedCountries.UK]: Object.values(EtfUKExchanges),
-  [SupportedCountries.India]: Object.values(EtfIndiaExchanges),
-  [SupportedCountries.Japan]: Object.values(EtfJapanExchanges),
-  [SupportedCountries.HongKong]: Object.values(EtfHongKongExchanges),
-  [SupportedCountries.Australia]: Object.values(EtfAustraliaExchanges),
-  // Countries below have no listed ETF exchanges yet — kept as empty arrays
-  // so the type stays exhaustive over SupportedCountries.
-  [SupportedCountries.Pakistan]: [],
-  [SupportedCountries.Taiwan]: [],
-  [SupportedCountries.Korea]: [],
 };
 
-export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, SupportedCountries> = {
+export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountry> = {
   [EtfUSExchanges.NYSEARCA]: SupportedCountries.US,
   [EtfUSExchanges.BATS]: SupportedCountries.US,
   [EtfUSExchanges.NASDAQ]: SupportedCountries.US,
@@ -98,12 +66,6 @@ export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, SupportedCountries
   [EtfCanadaExchanges.TSX]: SupportedCountries.Canada,
   [EtfCanadaExchanges.TSXV]: SupportedCountries.Canada,
   [EtfCanadaExchanges.NEOE]: SupportedCountries.Canada,
-  [EtfUKExchanges.LSE]: SupportedCountries.UK,
-  [EtfIndiaExchanges.NSE]: SupportedCountries.India,
-  [EtfIndiaExchanges.BSE]: SupportedCountries.India,
-  [EtfJapanExchanges.TSE]: SupportedCountries.Japan,
-  [EtfHongKongExchanges.HKEX]: SupportedCountries.HongKong,
-  [EtfAustraliaExchanges.ASX]: SupportedCountries.Australia,
 };
 
 export const isEtfExchange = (val: string): val is AllEtfExchanges => {
@@ -115,12 +77,20 @@ export const toEtfExchange = (val?: string | null): AllEtfExchanges => {
   return isEtfExchange(normalized) ? normalized : EtfUSExchanges.NYSEARCA;
 };
 
-export const getEtfCountryByExchange = (exchange: AllEtfExchanges): SupportedCountries => {
+export const getEtfCountryByExchange = (exchange: AllEtfExchanges): EtfSupportedCountry => {
   const country = ETF_EXCHANGE_TO_COUNTRY[exchange];
-  if (!country) throw new Error(`ETF exchange ${exchange} not mapped to a country`);
+  if (!country) throw new Error(`ETF exchange ${exchange} not mapped to a supported country`);
   return country;
 };
 
-export const getEtfExchangesByCountry = (country: SupportedCountries): AllEtfExchanges[] => {
+export const getEtfExchangesByCountry = (country: EtfSupportedCountry): AllEtfExchanges[] => {
   return ETF_COUNTRY_TO_EXCHANGES[country] ?? [];
+};
+
+/** Narrow an arbitrary country string (e.g. from a query param) to an ETF
+ *  supported country, or undefined if unsupported. */
+export const toEtfSupportedCountry = (val: string | null | undefined): EtfSupportedCountry | undefined => {
+  if (!val) return undefined;
+  const trimmed = val.trim();
+  return isEtfSupportedCountry(trimmed) ? trimmed : undefined;
 };

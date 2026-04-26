@@ -1,5 +1,6 @@
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
-import { isEtfExchange } from '@/utils/etfCountryExchangeUtils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { AllEtfExchanges, ETF_EXCHANGE_TO_COUNTRY, EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 
 export interface ParsedScenarioLink {
@@ -27,6 +28,7 @@ export interface ParsedScenario {
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
   outlookAsOfDate: Date;
+  countries: EtfSupportedCountry[];
   links: ParsedScenarioLink[];
 }
 
@@ -203,6 +205,17 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       return true;
     });
 
+    // Derive scenario.countries from the qualified link exchanges. Bare-symbol
+    // links contribute nothing here; if every link is bare we default to US so
+    // legacy docs (which were authored US-only) keep importing.
+    const derivedCountries = new Set<EtfSupportedCountry>();
+    for (const l of deduped) {
+      if (!l.exchange) continue;
+      if (!isEtfExchange(l.exchange)) continue;
+      derivedCountries.add(ETF_EXCHANGE_TO_COUNTRY[l.exchange as AllEtfExchanges]);
+    }
+    const countries: EtfSupportedCountry[] = derivedCountries.size > 0 ? Array.from(derivedCountries) : [SupportedCountries.US];
+
     scenarios.push({
       scenarioNumber,
       title,
@@ -217,6 +230,7 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       probabilityBucket,
       probabilityPercentage,
       outlookAsOfDate,
+      countries,
       links: deduped,
     });
   }

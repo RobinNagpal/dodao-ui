@@ -1,6 +1,5 @@
 import { prisma } from '@/prisma';
-import { toSupportedCountry } from '@/utils/countryExchangeUtils';
-import { getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
+import { EtfSupportedCountry, toEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { Prisma } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
@@ -20,6 +19,7 @@ export interface EtfScenarioListingItem {
   outlookAsOfDate: string;
   underlyingCause: string;
   archived: boolean;
+  countries: EtfSupportedCountry[];
 }
 
 export interface EtfScenarioListingResponse {
@@ -56,7 +56,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const search = searchParams.get('search')?.trim() || null;
   const includeArchivedParam = searchParams.get('includeArchived');
   const includeArchived = includeArchivedParam === 'true';
-  const country = toSupportedCountry(searchParams.get('country'));
+  const country = toEtfSupportedCountry(searchParams.get('country'));
 
   const where: Prisma.EtfScenarioWhereInput = {
     spaceId,
@@ -66,13 +66,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   if (isDirection(directionParam)) where.direction = directionParam;
   if (isTimeframe(timeframeParam)) where.timeframe = timeframeParam;
   if (isProbabilityBucket(bucketParam)) where.probabilityBucket = bucketParam;
-  if (country) {
-    // Country isn't stored on the scenario row — derive it via the link
-    // exchanges. A scenario shows up under "Canada" iff it has at least one
-    // link on a Canadian ETF exchange (TSX/TSXV/NEOE).
-    const exchanges = getEtfExchangesByCountry(country);
-    if (exchanges.length) where.etfLinks = { some: { exchange: { in: exchanges } } };
-  }
+  if (country) where.countries = { has: country };
 
   if (search) {
     where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { underlyingCause: { contains: search, mode: 'insensitive' } }];
@@ -98,6 +92,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         outlookAsOfDate: true,
         underlyingCause: true,
         archived: true,
+        countries: true,
       },
     }),
     prisma.etfScenario.count({ where }),
@@ -118,6 +113,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
       underlyingCause: s.underlyingCause,
       archived: s.archived,
+      countries: s.countries as EtfSupportedCountry[],
     })),
     totalCount,
     page,

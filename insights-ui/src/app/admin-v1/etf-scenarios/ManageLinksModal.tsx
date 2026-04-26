@@ -146,6 +146,12 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
           </div>
         ) : (
           <>
+            {detail && detail.countries.length > 0 && (
+              <p className="text-xs text-gray-400">
+                This scenario is scoped to: <span className="text-gray-200 font-medium">{detail.countries.join(', ')}</span>. Links on any other country&apos;s
+                ETF exchanges will be rejected.
+              </p>
+            )}
             <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-3 space-y-2">
               <h3 className="text-sm font-semibold text-white">Add link</h3>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">

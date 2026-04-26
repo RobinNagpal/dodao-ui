@@ -5,6 +5,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -32,6 +33,14 @@ const updateEtfScenarioSchema = z.object({
     .optional(),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
+  // Updating countries does not re-validate existing links here — the link
+  // mismatch check is enforced on link create/update routes. Admins narrowing
+  // the scope (e.g. dropping US) should expect existing US links to start
+  // throwing on subsequent edits until they're cleaned up.
+  countries: z
+    .array(z.string().refine((v) => isEtfSupportedCountry(v), 'country must be one of the supported ETF countries (US / Canada)'))
+    .min(1)
+    .optional(),
 });
 
 export type UpdateEtfScenarioRequest = z.infer<typeof updateEtfScenarioSchema>;
@@ -76,6 +85,7 @@ async function putHandler(
       ...(body.outlookAsOfDate !== undefined && { outlookAsOfDate: new Date(body.outlookAsOfDate) }),
       ...(body.metaDescription !== undefined && { metaDescription: body.metaDescription }),
       ...(body.archived !== undefined && { archived: body.archived }),
+      ...(body.countries !== undefined && { countries: body.countries }),
     },
   });
 
