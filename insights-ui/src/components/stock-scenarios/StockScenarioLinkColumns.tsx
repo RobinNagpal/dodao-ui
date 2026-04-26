@@ -6,6 +6,7 @@ import { StockScenarioLinkDto } from '@/app/api/[spaceId]/stock-scenarios/[slug]
 import { ScenarioPricedInBucket } from '@/types/scenarioEnums';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { AllExchanges, ALL_SUPPORTED_COUNTRIES, EXCHANGE_TO_COUNTRY, isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getScoreColorClasses } from '@/utils/score-utils';
 
 const PRICED_IN_LABEL: Record<ScenarioPricedInBucket, string> = {
   NOT_PRICED_IN: 'Not priced in',
@@ -55,11 +56,33 @@ function formatExpectedPriceChange(value: number | null | undefined): string {
   return `${sign}${value}%`;
 }
 
+// Market cap arrives as a raw USD number from TickerV1FinancialInfo. Render
+// `$X.XB` / `$X.XM` / `$X.XK` so the card stays compact regardless of size.
+function formatMarketCapShort(value: number | null | undefined): string {
+  if (value === null || value === undefined || !isFinite(value)) return '—';
+  const abs = Math.abs(value);
+  if (abs >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
+  if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+  if (abs >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+  if (abs >= 1e3) return `$${(value / 1e3).toFixed(1)}K`;
+  return `$${value.toFixed(0)}`;
+}
+
+// PE is shown as a hyphen for negative values too: a negative PE ratio means
+// the company is unprofitable, and the number itself isn't meaningful — best
+// to flag it as "not applicable" rather than print misleading data.
+function formatPe(value: number | null | undefined): string {
+  if (value === null || value === undefined || !isFinite(value) || value < 0) return '—';
+  return value.toFixed(1);
+}
+
 function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   const hasDetails = link.roleExplanation || link.expectedPriceChange !== null || link.expectedPriceChangeExplanation;
   const changeColor = link.expectedPriceChange === null ? '' : link.expectedPriceChange >= 0 ? 'text-emerald-300' : 'text-red-300';
   const pricedInLabel = PRICED_IN_LABEL[link.pricedInBucket];
   const pricedInClass = PRICED_IN_CLASS[link.pricedInBucket];
+  const score = link.finalScore;
+  const scoreClasses = score !== null ? getScoreColorClasses(score) : null;
 
   return (
     <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">
@@ -76,6 +99,30 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
         >
           {pricedInLabel}
         </span>
+      </div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-gray-400 mb-1">
+        <span title="Market cap">
+          <span className="text-gray-500">Mkt cap </span>
+          <span className="font-mono tabular-nums text-gray-200">{formatMarketCapShort(link.marketCap)}</span>
+        </span>
+        <span title="Price-to-earnings ratio (— for negative or unavailable)">
+          <span className="text-gray-500">PE </span>
+          <span className="font-mono tabular-nums text-gray-200">{formatPe(link.pe)}</span>
+        </span>
+        {score !== null && scoreClasses ? (
+          <span
+            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded ${scoreClasses.bgColorClass} bg-opacity-15 ${scoreClasses.textColorClass}`}
+            title={`KoalaGains score (${scoreClasses.scoreLabel})`}
+          >
+            <span className="text-[10px] uppercase tracking-wide">Score</span>
+            <span className="font-mono tabular-nums font-semibold">{score}/25</span>
+          </span>
+        ) : (
+          <span title="KoalaGains score not available yet">
+            <span className="text-gray-500">Score </span>
+            <span className="font-mono tabular-nums text-gray-200">—</span>
+          </span>
+        )}
       </div>
       {hasDetails && (
         <div className="space-y-1 mt-1">
