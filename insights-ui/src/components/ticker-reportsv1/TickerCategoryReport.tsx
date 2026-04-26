@@ -1,4 +1,3 @@
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
@@ -88,12 +87,10 @@ export default function TickerCategoryReport({
                 >
                   {passCount}/{totalCount}
                 </div>
-                <PrivateWrapper>
-                  <span className="text-muted-foreground">•</span>
-                  <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
-                    {formattedModifiedDate}
-                  </time>
-                </PrivateWrapper>
+                <span className="text-muted-foreground">•</span>
+                <time dateTime={modifiedDate.toISOString()} className="text-muted-foreground text-sm" itemProp="dateModified">
+                  {formattedModifiedDate}
+                </time>
               </div>
             </div>
 
@@ -169,18 +166,16 @@ export default function TickerCategoryReport({
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <PrivateWrapper>
-              <div className="text-sm text-muted-foreground">
-                <span>Last updated by </span>
-                <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                  <span itemProp="name">KoalaGains</span>
-                </span>
-                <span> on </span>
-                <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
-              </div>
-            </PrivateWrapper>
+            <div className="text-sm text-muted-foreground">
+              <span>Last updated by </span>
+              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <span itemProp="name">KoalaGains</span>
+              </span>
+              <span> on </span>
+              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                {formattedModifiedDate}
+              </time>
+            </div>
             <div className="flex gap-2">
               <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
                 Stock Analysis
