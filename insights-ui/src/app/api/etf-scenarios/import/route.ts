@@ -73,6 +73,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       probabilityBucket: scenario.probabilityBucket,
       probabilityPercentage: scenario.probabilityPercentage,
       outlookAsOfDate: scenario.outlookAsOfDate,
+      countries: scenario.countries,
       spaceId: KoalaGainsSpaceId,
     };
 
@@ -88,12 +89,16 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       if (scenario.links.length) {
         await tx.etfScenarioEtfLink.createMany({
           data: scenario.links.map((link) => {
-            const knownEtf = knownEtfBySymbol.get(link.symbol.toUpperCase());
-            if (!knownEtf) unresolvedTickers.add(link.symbol.toUpperCase());
+            const symbol = link.symbol.toUpperCase();
+            const knownEtf = knownEtfBySymbol.get(symbol);
+            if (!knownEtf) unresolvedTickers.add(symbol);
+            // Prefer the exchange the markdown qualified (e.g. `TSX:HXQ`),
+            // otherwise fall back to whatever exchange the known ETF lives on.
+            const exchange = link.exchange?.toUpperCase() ?? knownEtf?.exchange ?? null;
             return {
               scenarioId: row.id,
-              symbol: link.symbol.toUpperCase(),
-              exchange: knownEtf?.exchange ?? null,
+              symbol,
+              exchange,
               etfId: knownEtf?.id ?? null,
               role: link.role,
               sortOrder: link.sortOrder,

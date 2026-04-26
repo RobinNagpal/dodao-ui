@@ -1,5 +1,6 @@
 import type { EtfScenarioDetail, EtfScenarioLinkDto } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { ETF_EXCHANGES } from '@/utils/etfCountryExchangeUtils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Input from '@dodao/web-core/components/core/input/Input';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
@@ -40,7 +41,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
   const [form, setForm] = useState<AddLinkFormState>({
     symbol: '',
-    exchange: '',
+    exchange: 'NYSEARCA',
     role: 'WINNER',
     roleExplanation: '',
     expectedPriceChange: '',
@@ -83,8 +84,9 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     setFormError('');
     if (!scenarioId) return;
     const symbol = form.symbol.trim().toUpperCase();
-    if (!symbol) {
-      setFormError('Symbol is required');
+    const exchange = form.exchange.trim().toUpperCase();
+    if (!symbol || !exchange) {
+      setFormError('Symbol and exchange are both required.');
       return;
     }
 
@@ -101,7 +103,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     try {
       await postData(`/api/etf-scenarios/${scenarioId}/links`, {
         symbol,
-        exchange: form.exchange.trim() || null,
+        exchange,
         role: form.role,
         roleExplanation: form.roleExplanation.trim() || null,
         expectedPriceChange: expectedPriceChangeValue,
@@ -109,15 +111,16 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
       });
       setForm({
         symbol: '',
-        exchange: '',
+        exchange: form.exchange,
         role: form.role,
         roleExplanation: '',
         expectedPriceChange: '',
         expectedPriceChangeExplanation: '',
       });
       await refreshDetail();
-    } catch {
-      setFormError('Failed to add link');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to add link';
+      setFormError(message);
     }
   };
 
@@ -143,6 +146,12 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
           </div>
         ) : (
           <>
+            {detail && detail.countries.length > 0 && (
+              <p className="text-xs text-gray-400">
+                This scenario is scoped to: <span className="text-gray-200 font-medium">{detail.countries.join(', ')}</span>. Links on any other country&apos;s
+                ETF exchanges will be rejected.
+              </p>
+            )}
             <div className="rounded-lg border border-gray-700/50 bg-gray-900/40 p-3 space-y-2">
               <h3 className="text-sm font-semibold text-white">Add link</h3>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
@@ -153,13 +162,20 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                     if (typeof v === 'string') setForm((f) => ({ ...f, symbol: v }));
                   }}
                 />
-                <Input
-                  label="Exchange (optional)"
-                  modelValue={form.exchange}
-                  onUpdate={(v: unknown) => {
-                    if (typeof v === 'string') setForm((f) => ({ ...f, exchange: v }));
-                  }}
-                />
+                <label className="flex flex-col gap-1 text-sm">
+                  <span className="text-gray-300">Exchange</span>
+                  <select
+                    className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
+                    value={form.exchange}
+                    onChange={(e) => setForm((f) => ({ ...f, exchange: e.target.value }))}
+                  >
+                    {ETF_EXCHANGES.map((ex) => (
+                      <option key={ex} value={ex}>
+                        {ex}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label className="flex flex-col gap-1 text-sm">
                   <span className="text-gray-300">Role</span>
                   <select

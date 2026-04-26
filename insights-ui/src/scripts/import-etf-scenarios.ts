@@ -28,8 +28,12 @@ function toRequestBody(s: ParsedScenario) {
     timeframe: s.timeframe,
     probabilityBucket: s.probabilityBucket,
     probabilityPercentage: s.probabilityPercentage,
+    countries: s.countries,
     outlookAsOfDate: s.outlookAsOfDate.toISOString(),
-    links: s.links.map((l) => ({ symbol: l.symbol, role: l.role, sortOrder: l.sortOrder })),
+    // The API requires exchange on every link. Drop bare-symbol legacy links
+    // here — they have to be re-authored with `EXCHANGE:SYMBOL` qualifiers
+    // (or added through the admin UI which has an exchange dropdown).
+    links: s.links.filter((l) => !!l.exchange).map((l) => ({ symbol: l.symbol, exchange: l.exchange!, role: l.role, sortOrder: l.sortOrder })),
   };
 }
 

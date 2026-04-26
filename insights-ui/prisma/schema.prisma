@@ -1798,6 +1798,7 @@ model EtfScenario {
   outlookAsOfDate                DateTime @map("outlook_as_of_date") @db.Date
   metaDescription                String?  @map("meta_description") @db.Text
   archived                       Boolean  @default(false) @map("archived")
+  countries                      String[] @map("countries")
   spaceId                        String   @default("koala_gains") @map("space_id")
   createdAt                      DateTime @default(now()) @map("created_at")
   updatedAt                      DateTime @updatedAt @map("updated_at")

@@ -1,8 +1,15 @@
 import { EtfScenarioDirection, EtfScenarioProbabilityBucket, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { AllEtfExchanges, ETF_EXCHANGE_TO_COUNTRY, EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { slugifyScenarioTitle } from '@/utils/etf-scenario-slug';
 
 export interface ParsedScenarioLink {
   symbol: string;
+  // Optional: only set when the markdown qualifies the ticker as
+  // `EXCHANGE:SYMBOL`. Legacy ETF docs use bare symbols and leave this null —
+  // the API now requires exchange on links, so admins should re-author those
+  // docs (or add the links via the admin UI which has an exchange dropdown).
+  exchange: string | null;
   role: 'WINNER' | 'LOSER' | 'MOST_EXPOSED';
   sortOrder: number;
 }
@@ -21,22 +28,46 @@ export interface ParsedScenario {
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
   outlookAsOfDate: Date;
+  countries: EtfSupportedCountry[];
   links: ParsedScenarioLink[];
 }
 
 const TICKER_PATTERN = /\b([A-Z]{2,5})\b/g;
+// Optional `EXCHANGE:SYMBOL` qualifier — admins can author Canadian / non-US
+// ETF scenarios using this form so the parser knows the exchange. When the
+// qualifier is present, it overrides the bare-symbol extraction for that
+// ticker. See QUALIFIED_TICKER_PATTERN in stock-scenario-markdown-parser.ts.
+const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 const STOPWORDS = new Set(['AI', 'US', 'EV', 'DOJ', 'OPEC', 'FERC', 'PPA', 'PMI', 'TTM', 'PPE', 'GDP', 'EPS', 'PE', 'ETF', 'ETFs', 'EM', 'CPI', 'MLP', 'MLPs']);
 
-function extractTickers(line: string): string[] {
-  const out: string[] = [];
+interface ExtractedTicker {
+  symbol: string;
+  exchange: string | null;
+}
+
+function extractTickers(line: string): ExtractedTicker[] {
+  const out: ExtractedTicker[] = [];
   const seen = new Set<string>();
-  const matches = line.matchAll(TICKER_PATTERN);
-  for (const m of matches) {
+
+  // Pass 1: pick up qualified `EXCHANGE:SYMBOL` tokens so they're preferred
+  // over a bare match that would extract just the SYMBOL part. Only ETF
+  // exchanges qualify — `isEtfExchange` rejects stock-only venues.
+  for (const m of line.matchAll(QUALIFIED_TICKER_PATTERN)) {
+    const exchange = m[1];
+    const symbol = m[2];
+    if (!isEtfExchange(exchange)) continue;
+    if (seen.has(symbol)) continue;
+    seen.add(symbol);
+    out.push({ symbol, exchange });
+  }
+
+  // Pass 2: bare-symbol fallback for legacy docs (no exchange qualifier).
+  for (const m of line.matchAll(TICKER_PATTERN)) {
     const t = m[1];
     if (STOPWORDS.has(t)) continue;
     if (seen.has(t)) continue;
     seen.add(t);
-    out.push(t);
+    out.push({ symbol: t, exchange: null });
   }
   return out;
 }
@@ -153,16 +184,16 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     const losersTickers = extractTickers(losersMarkdown);
 
     // Try to extract the "Most exposed ETFs right now" subsection from within outlook.
-    let mostExposedTickers: string[] = [];
+    let mostExposedTickers: ExtractedTicker[] = [];
     const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed ETFs[^*]*?\*\*:?\s*([\s\S]*?)$/i);
     if (mostExposedMatch) {
       mostExposedTickers = extractTickers(mostExposedMatch[1]);
     }
 
     const links: ParsedScenarioLink[] = [
-      ...winnersTickers.map((symbol, i) => ({ symbol, role: 'WINNER' as const, sortOrder: i })),
-      ...losersTickers.map((symbol, i) => ({ symbol, role: 'LOSER' as const, sortOrder: i })),
-      ...mostExposedTickers.map((symbol, i) => ({ symbol, role: 'MOST_EXPOSED' as const, sortOrder: i })),
+      ...winnersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'WINNER' as const, sortOrder: i })),
+      ...losersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'LOSER' as const, sortOrder: i })),
+      ...mostExposedTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'MOST_EXPOSED' as const, sortOrder: i })),
     ];
 
     // Dedupe on (symbol, role)
@@ -173,6 +204,17 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       seen.add(key);
       return true;
     });
+
+    // Derive scenario.countries from the qualified link exchanges. Bare-symbol
+    // links contribute nothing here; if every link is bare we default to US so
+    // legacy docs (which were authored US-only) keep importing.
+    const derivedCountries = new Set<EtfSupportedCountry>();
+    for (const l of deduped) {
+      if (!l.exchange) continue;
+      if (!isEtfExchange(l.exchange)) continue;
+      derivedCountries.add(ETF_EXCHANGE_TO_COUNTRY[l.exchange as AllEtfExchanges]);
+    }
+    const countries: EtfSupportedCountry[] = derivedCountries.size > 0 ? Array.from(derivedCountries) : [SupportedCountries.US];
 
     scenarios.push({
       scenarioNumber,
@@ -188,6 +230,7 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
       probabilityBucket,
       probabilityPercentage,
       outlookAsOfDate,
+      countries,
       links: deduped,
     });
   }
