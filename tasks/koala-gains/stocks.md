@@ -1,5 +1,35 @@
 # Stock Reports — KoalaGains (Tasks)
 
+## Stock Details Page — layout + per-section detail pages
+
+Restructure the stock report page so heavy sub-reports live on dedicated detail pages and
+the main page is a scannable summary.
+
+- [ ] **Move the competition chart up**:
+  - Relocate the competition chart so it renders directly **under the Business and Moat
+    Analysis** section (currently it sits lower on the page).
+  - Keep any existing "competitors list" / ranked competitor UI together with the chart so
+    the reader sees the moat narrative + competitive positioning in one block.
+- [ ] **Extract a dedicated details page for Financial Statements Analysis**:
+  - Move the full financial-statements analysis (income statement, balance sheet, cash flow
+    deep-dives, ratios, trend tables/charts) onto its own page (pattern: same as the
+    per-category detail pages planned for ETFs).
+  - On the main stock page, keep only a short summary/preview with a "View full financial
+    statements analysis" link to the details page.
+- [ ] **Extract a dedicated details page for Fair Value / Valuation**:
+  - Move the full valuation analysis (DCF, multiples-based valuations, scenario tables,
+    sensitivity analysis, assumptions) onto its own page.
+  - On the main stock page, keep only a short summary (fair-value band, current vs fair
+    value, upside/downside %) with a "View full valuation" link.
+- [ ] **Navigation / linkage**:
+  - Breadcrumbs + back-link from each detail page to the main stock page.
+  - From the main stock page, each extracted section has a visible "full analysis" CTA.
+  - Update sitemap / metadata for the new detail routes.
+- [ ] **SEO**:
+  - Unique titles, descriptions, and JSON-LD per new detail page.
+  - Ensure the main stock page's summaries don't duplicate the full text (avoid duplicate
+    content) — summaries should be genuinely shorter and link out.
+
 ## Off-hours automated report refresh (Claude Code cron)
 
 Goal: keep stock reports fresh by letting **Claude Code** regenerate the oldest ones during
@@ -164,3 +194,195 @@ than invent new ones.
     only the mapped assets differ.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
+
+## Custom Reports ("random reports") per stock
+
+Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
+(PR #1318). Summary below; read the doc before implementing.
+
+Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
+single ticker — e.g. "Why did Beta Farms (BYRN) drop in Q1 2026 and will it drop further?",
+"Is the recent insider selling a red flag?", "How exposed is this ticker to a 50% tariff on
+Chinese imports?". Each ticker has **0..N** Custom Reports; each is a one-shot prompt → one-shot
+answer with regeneration history.
+
+- [ ] **Data model** (new Prisma tables — see §5 of the design doc):
+  - `TickerV1CustomReport` — one row per report on a ticker; holds `title`, `userQuestion`,
+    optional `templateKey`, denormalized `latestAnswerMarkdown` / `latestAnswerJson` /
+    `latestSources` / `latestRunId`, `status` (`NotStarted` / `InProgress` / `Completed` /
+    `Failed`), `archived` soft-delete, audit fields.
+  - `TickerV1CustomReportRun` — one row per LLM invocation; links to `PromptInvocation`;
+    keeps history so we can compare answers over time.
+  - Optional `TickerV1CustomReportTemplate` — curated pre-written prompts with placeholders
+    (e.g. "Explain a recent stock drop") that users can pick from.
+  - Backref `TickerV1.customReports`.
+- [ ] **API** — under the existing per-report namespace
+  `/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/custom-reports`:
+  - `GET` list, `POST` create (kicks off first Run), `GET /[reportId]` detail with all Runs,
+    `POST /[reportId]/regenerate`, `PATCH /[reportId]` (title / archive).
+  - Admin route for curated templates: `/api/[spaceId]/tickers-v1/custom-report-templates`.
+  - Handlers stay thin; work goes into `src/utils/analysis-reports/custom-report-utils.ts`.
+- [ ] **Prompt infra reuse**:
+  - All LLM calls go through `getLLMResponseForPromptViaInvocation` with a single generic
+    system prompt registered as `promptKey: 'US/public-equities-v1/custom-report'`.
+  - The `inputJson` carries ticker context (symbol/name/industry, cached financials, latest
+    summary, 30d price move, recent news) **plus** the user's question or resolved template.
+  - We get `Prompt` / `PromptVersion` / `PromptInvocation` versioning, status, model id,
+    error capture, raw I/O for free.
+- [ ] **Output shape** the LLM must return:
+  - `answerMarkdown` — long-form rendering on the detail page.
+  - `answerJson`: `{ summary, keyPoints[], verdict?: 'Bullish'|'Bearish'|'Neutral',
+    confidence?: 'Low'|'Medium'|'High', sources?: { title, url }[] }`.
+- [ ] **UI**:
+  - Add a **"Custom Reports"** section to the V1 stock detail page
+    (`app/stocks/[exchange]/[ticker]/page.tsx`): `[+ New Report]` button, card grid of
+    existing reports (title, `answerJson.summary`, verdict pill, `updatedAt`), empty state
+    with Beta Farms example.
+  - New sub-page `app/stocks/[exchange]/[ticker]/custom-reports/[reportId]/page.tsx` —
+    full markdown render, sources list, "Regenerate" (permission-gated), collapsed history
+    panel of prior Runs.
+  - **New-report modal** with two tabs: **From template** (dropdown with preview of
+    substituted prompt) and **Free-form** (title + question textarea). Submit optimistically,
+    show `InProgress`, poll until `Completed`.
+  - Admin CRUD page for curated templates.
+- [ ] **Generation flow** (v1 = synchronous inside the POST handler, matches
+  `future-risk/route.ts`):
+  1. Load ticker; insert Report (`NotStarted`) + first Run (`InProgress`); return
+     `201 { reportId, runId }`.
+  2. `await` `getLLMResponseForPromptViaInvocation`.
+  3. On success: populate Run fields, flip Report to `Completed`, update denormalized latest-*
+     fields and `latestRunId`.
+  4. On failure: store `errorMessage`, mark Run `Failed`; keep prior successful answer if one
+     existed, else mark Report `Failed`.
+- [ ] **Permissions / quotas / abuse**:
+  - Space-scoped via existing membership check (same as other V1 POST routes).
+  - Per-user quota: cap N Custom Reports per ticker per user per day (config-driven).
+  - Hard output-length cap in the system prompt; no recursive web-research tools in v1.
+  - Archive-only (no row deletion) in v1; only creator or admin can edit/archive.
+- [ ] **Why not extend `TickerV1GenerationRequest`**:
+  - That model is a fixed set of boolean flags for the closed list of canonical sections.
+  - Custom Reports are open-ended, per-row ids, per-report status, multiple runs — a dedicated
+    pair of tables is cleaner and keeps the batch regen pipeline focused.
+- [ ] **Phased rollout** (from §12):
+  - **P0**: schema + migration + admin curated-template CRUD (no user-facing UI yet).
+  - **P1**: list + detail + create-from-template modal on the V1 ticker page.
+  - **P2**: free-form prompt behind a feature flag; per-user quota enforced.
+  - **P3**: streaming answers, web-search citations, history diff view.
+- [ ] **Open questions to resolve before P1**:
+  - Streaming vs spinner-then-render (rec: spinner for v1).
+  - Free-form vs templates-only at launch (rec: ship both, free-form behind flag).
+  - Citations — synthesize-only for v1; web-search citations need separate design.
+  - Cross-ticker reports are explicitly out of scope here.
+
+## Login improvements
+
+Goal: grow logged-in users by broadening SSO coverage and nudging highly-engaged anonymous
+visitors into signing up.
+
+- [ ] **Add more SSO providers**:
+  - Add **LinkedIn** SSO (most relevant for our finance/professional audience).
+  - Add **Yahoo** SSO.
+  - Confirm which existing providers we already support and keep the UI tidy (don't let the
+    login sheet become a wall of buttons — prioritize the 3–4 most-used).
+  - Handle account-linking: if a user signs in with a new provider using an email that
+    matches an existing account, link them instead of creating a duplicate.
+- [ ] **Click-count login gate**:
+  - Track the number of "meaningful clicks" per anonymous visitor (e.g. clicks on interactive
+    buttons / CTAs — not every scroll or hover).
+  - After **3 clicks**, the next click on a gated button should trigger a "sign in to
+    continue" prompt instead of performing the action.
+  - Tune the threshold (2 vs 3) behind a config flag so we can A/B it without a deploy.
+  - Persist the counter across sessions (localStorage + optional server-side by device/IP
+    hash) so refresh/re-visit doesn't reset it and bypass the gate.
+  - Define "meaningful click" precisely — likely buttons on stock/ETF report pages (e.g.
+    "view full valuation", "view competition", "add to watchlist") rather than nav links.
+  - Don't gate pure navigation or back-button; only gate value-delivering actions.
+- [ ] **Post-login resume**:
+  - After the user signs in from the gate, complete the action they were trying to take
+    (route them to the clicked page or re-fire the click).
+- [ ] **Telemetry**:
+  - Event for: click counted, gate shown, gate → login conversion, gate dismissed.
+  - Dashboard or admin view to monitor login conversion rate from the gate.
+- [ ] **Open questions**:
+  - Should logged-in users who already converted ever see this gate again? (No — once signed
+    in, the gate is off permanently for that account.)
+  - Do we want a "soft" version (banner / tooltip nudge) before the hard gate at click #3?
+
+## SEO Fixes
+
+### "Crawled — currently not indexed" on `business-and-moat-sitemap.xml`
+
+Goal: resolve the Google Search Console indexing issue affecting URLs in
+`https://koalagains.com/stocks/business-and-moat-sitemap.xml`. We already requested
+validation once, and Search Console came back with:
+
+> Some fixes failed for Page indexing issues for pages in sitemap
+> `/stocks/business-and-moat-sitemap.xml` on site `koalagains.com`.
+> You requested that Google validate your fix for: Page indexing issues on your
+> property, koalagains.com. The fix requested was for the following issue:
+> **"Crawled — currently not indexed"**. Some of your pages are still affected by
+> this issue.
+
+"Crawled — currently not indexed" means Googlebot **fetched** the page but chose
+**not** to include it in the index. This is almost always a content-quality,
+duplication, or signal-weight problem — not a robots/noindex bug — so the fix has to
+be more than a re-submission.
+
+- [ ] **Pull the affected URLs from Search Console**:
+  - Export the current list of URLs marked "Crawled — currently not indexed" under
+    this sitemap.
+  - Save it to `tasks/koala-gains/seo/crawled-not-indexed-business-and-moat.csv`
+    (or similar) so we can diff against future validation runs.
+- [ ] **Sample + audit the affected pages** (10–20 representative URLs):
+  - Do they render real, meaningful content server-side, or is the main analysis
+    text injected via client-side JS after load? (SSR / RSC check.)
+  - How much **unique** text is above the fold vs. repeated across stocks (same
+    boilerplate intro / same section headings / same disclaimer blocks)?
+  - Do these pages have a strong `<title>` and `<meta name="description">` tailored
+    to the specific ticker?
+  - Do they link out to other related pages (other sections of the same report,
+    competitors, similar stocks)?
+  - Are there any soft-404 signals (empty body, "report coming soon", error
+    fallbacks)?
+- [ ] **Likely causes to rule out / fix** (check each):
+  - **Thin or duplicative content** — if the Business & Moat pages share large
+    boilerplate across many tickers, Google sees them as near-duplicates.
+    Beef up per-ticker unique text and trim shared scaffolding.
+  - **Weak canonical signals** — confirm each URL sets a canonical pointing to
+    itself, and that we don't accidentally canonicalize to the parent stock page.
+  - **Orphan pages / poor internal linking** — these URLs should be linked from
+    the main stock report page, from the Stocks list, and from sibling section
+    pages. Check crawl depth is ≤ 3 clicks from home.
+  - **Render-blocked content** — verify the main report text is in the initial
+    SSR/RSC payload (fetch the URL without JS and confirm the analysis is there).
+  - **Slow TTFB / LCP** — Core Web Vitals failures can downrank to "not indexed"
+    in practice; spot-check a handful on PageSpeed Insights.
+  - **Duplicate titles / meta descriptions** — run a crawl (Screaming Frog or
+    similar) and flag pages with identical titles/meta.
+  - **Sitemap hygiene** — make sure the sitemap only contains URLs that actually
+    return 200, are canonical, and are expected to rank (no drafts / incomplete
+    reports — ties into 1.6 `isComplete` for ETFs; do the same for stocks).
+- [ ] **Implement fixes, priority order**:
+  1. Ship unique per-ticker content improvements (reduce boilerplate, surface
+     more ticker-specific analysis).
+  2. Tighten titles / meta descriptions to be ticker-specific.
+  3. Improve internal linking (related competitors, valuation page, financial
+     statements page — ties into the details-page extraction tasks above).
+  4. Confirm SSR / canonical / sitemap hygiene.
+- [ ] **Re-submit validation**:
+  - In Search Console, re-run "Validate fix" only **after** the content /
+    canonical / linking changes are live and Googlebot has had a chance to
+    re-crawl at least a few of the sample URLs.
+  - Track the status; if another round fails, use the newly returned affected
+    URLs to iterate.
+- [ ] **Monitor + prevent regressions**:
+  - Add a weekly (or per-deploy) report that lists: total Business & Moat URLs in
+    the sitemap, how many are actually indexed, and the delta week-over-week.
+  - Add a pre-publish guard: only include a stock's Business & Moat page in the
+    sitemap once its content crosses a minimum length / completeness threshold
+    (mirrors the ETF `isComplete` pattern in `etfs.md` 1.6).
+- [ ] **Generalize the fix**:
+  - If this sitemap has the problem, the other per-section sitemaps (financial
+    statements, valuation, etc.) are likely at risk too. After fixing Business &
+    Moat, check Search Console for the same status on the other stock sitemaps
+    and apply the same checklist.
