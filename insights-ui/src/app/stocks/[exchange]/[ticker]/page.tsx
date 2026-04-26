@@ -1,3 +1,4 @@
+import AdminOnlyUpdatedAt from '@/components/auth/AdminOnlyUpdatedAt';
 import { FinancialInfoResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/financial-info/route';
 import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { QuarterlyChartDataResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/quarterly-chart-data/route';
@@ -541,6 +542,7 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                         {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
                       </div>
                     )}
+                    {categoryResult && <AdminOnlyUpdatedAt updatedAt={categoryResult.updatedAt} />}
                   </div>
 
                   {categoryKey === TickerAnalysisCategory.BusinessAndMoat && (
@@ -636,6 +638,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
                 >
                   {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
                 </div>
+                <AdminOnlyUpdatedAt updatedAt={categoryResult.updatedAt} />
               </div>
 
               {categoryResult.summary && (
