@@ -220,6 +220,55 @@ that via a toggle instead of dropping the data from the page entirely.
   - On their detail page, show a neutral "report in progress" state for the
     missing sections rather than broken / empty components.
 
+### 1.7) Populate Canadian ETFs from Stock Analyzer
+
+Goal: expand the ETF inventory beyond US-listed funds by ingesting **all Canadian
+ETFs** from **Stock Analyzer** (stockanalysis.com), so TSX / NEO / Cboe Canada-listed
+funds show up alongside US listings in the same pipeline.
+
+- [ ] **Source the full Canadian ETF universe from Stock Analyzer**:
+  - Pull the complete list of Canadian ETFs (e.g. via
+    `stockanalysis.com/list/exchange-traded-funds/` filtered to Canada, or the
+    Canadian-specific page if one exists).
+  - Capture per-ETF: symbol, exchange (TSX / NEO / Cboe Canada), name, issuer,
+    category, AUM, expense ratio, inception, currency, and anything else Stock
+    Analyzer surfaces that we already use for US ETFs.
+  - Land the raw extract in the `scraping-lambdas` repo (or wherever the existing
+    ETF scraping lives) — keep the implementation consistent with how US ETFs
+    are pulled today.
+- [ ] **Schema / model adjustments to support Canadian ETFs**:
+  - Confirm the `Etf` model has fields that already accommodate non-US listings
+    (exchange, currency, country) — extend if not.
+  - Make sure unique keys handle the same ticker on different exchanges (e.g.
+    a US `XYZ` and a TSX `XYZ.TO` must coexist).
+  - Decide URL/slug shape for Canadian ETFs (likely
+    `/etfs/TSX/<symbol>`, `/etfs/NEO/<symbol>`, `/etfs/CBOE/<symbol>`) and align
+    with the existing exchange-prefixed routes.
+- [ ] **Wire Canadian ETFs into the existing pipeline**:
+  - Map each ingested ETF to a category-group from
+    `etf-analysis-categories.json` (extend the categories if Canadian-specific
+    ones are needed — e.g. Canadian fixed-income, currency-hedged S&P/TSX
+    products).
+  - Run them through the standard generation flow (Performance, Cost & Team,
+    Risk, Summary, Index & Strategy, Future Outlook) so reports are produced
+    on the same cadence as US ETFs.
+  - Respect the `Etf.isComplete` rule from 1.6 — Canadian ETFs only appear on
+    the public list once their data + reports are fully populated.
+- [ ] **Backfill + ongoing refresh**:
+  - One-shot backfill for the full Canadian ETF list.
+  - Add to the off-hours / scheduled refresh so new Canadian ETFs (and updates
+    to existing ones) flow in automatically.
+- [ ] **Validation**:
+  - Spot-check a sample of Canadian ETFs end-to-end (data populated, reports
+    generated, detail page renders, holdings present where available).
+  - Confirm sitemap + SEO metadata are correct for the Canadian URLs (no
+    accidental cross-links to US-only canonicals).
+- [ ] **Open questions**:
+  - Holdings data for Canadian ETFs — does Stock Analyzer expose them, or do
+    we need a secondary source (issuer site, FTP feed)?
+  - Currency display — are Canadian-ETF prices shown in CAD by default, with
+    a USD toggle, or both?
+
 ---
 
 ## Phase 2 — Target audience / Goals
