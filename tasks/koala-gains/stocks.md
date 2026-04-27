@@ -251,6 +251,72 @@ than invent new ones.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
 
+## 10-bagger shortlist — small-cap candidates filtered by Business & Moat
+
+Goal: build a shortlist of potential **10-baggers** — stocks with a credible path to a
+~10x return — biased toward **small-caps**, where the upside math actually works. Use
+our existing **Business & Moat** score as the first-pass filter, then evaluate the
+survivors through a structured 10-bagger lens.
+
+- [ ] **Cast the initial pool** (cheap filter, run from the existing data):
+  - **Market cap**: small-cap band (e.g. roughly $300M – $2B; tune the upper bound
+    once we see how many candidates pass the moat filter).
+  - **Business & Moat score ≥ 4** (out of 5) from the existing per-ticker analysis.
+  - **Liquidity floor**: minimum average daily $-volume so the pick is actually
+    investable (e.g. ≥ $1M ADV) — drop OTC / dark stocks unless explicitly
+    desired.
+  - **Data completeness**: only include tickers where the Business & Moat report
+    is fully generated and recent (mirror the ETF `isComplete` pattern).
+- [ ] **Evaluate each candidate through the 10-bagger lens** (qualitative + a few
+  quantitative checks per ticker):
+  - **TAM / runway** — is the addressable market at least 10x the company's
+    current revenue? Without big TAM there's no 10x.
+  - **Unit economics + margin expansion path** — gross margin trend, operating
+    leverage on next-stage revenue, free-cash-flow inflection.
+  - **Reinvestment runway** — high incremental ROIC + room to redeploy
+    incremental capital at similar returns.
+  - **Founder / owner-operator quality** — founder still in the seat, insider
+    ownership, capital-allocation track record, alignment.
+  - **Niche dominance** — clear category leadership in a specific niche, not
+    a marginal player in a crowded one.
+  - **Optionality** — adjacent products / geographies / customer segments the
+    business can credibly expand into.
+  - **Customer / supplier / regulatory concentration risks** — fewer the
+    better; flag any single-point dependency.
+  - **Catalyst / inflection** — what specific change in the next 12–24 months
+    plausibly re-rates the multiple?
+  - **Why hasn't this rerated already?** — a real 10-bagger setup needs an
+    answer here (under-followed, micro-cap stigma, recent spin-out, recent
+    IPO lockup, post-restructuring, etc.).
+- [ ] **Scoring + shortlist**:
+  - Score each candidate 1–5 on the lens dimensions above; require an average
+    threshold (e.g. ≥ 3.5) before it makes the shortlist.
+  - Hand-pick the top **~10 names** for the published list — keep it short on
+    purpose; a shortlist of 50 isn't a shortlist.
+- [ ] **Output / surface**:
+  - Decide where the shortlist lives — a curated content page (e.g.
+    `/stocks/10-baggers` or under a "Watchlist" surface), with one card per name
+    showing Business & Moat score, market cap, and a 1-paragraph "why this could
+    10x" summary.
+  - Each card links to the existing stock report page (Business & Moat,
+    Valuation, Custom Reports) for the full analysis.
+  - Include the methodology (filters + lens) on the page so the picks are
+    transparent.
+- [ ] **Refresh cadence**:
+  - Re-run the filter + lens evaluation on a regular cadence (likely quarterly,
+    after the Business & Moat scores are themselves refreshed) on the off-hours
+    Claude-Code runner — don't let the list go stale.
+  - Track entries that get added / removed / promoted / cut, so the list has a
+    visible track record over time.
+- [ ] **Open questions**:
+  - Should the lens evaluation produce a **persisted** structured field on each
+    `TickerV1` (e.g. `tenBaggerScore` + per-dimension subscores) so it can be
+    queried / sorted independently of being on the shortlist? Likely yes — the
+    score is useful even for stocks that don't make the top 10.
+  - Do we want a "honorable mentions" tier (next 10) or a single hard cut?
+  - Geographic scope — US only at first, or also include Canadian small-caps once
+    `etfs.md` 1.7 unlocks the broader Canadian universe?
+
 ## Custom Reports ("random reports") per stock
 
 Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
