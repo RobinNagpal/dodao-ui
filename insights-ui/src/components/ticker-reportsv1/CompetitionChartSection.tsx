@@ -44,7 +44,7 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
     const { qualityScore, valueScore } = computeQuadrantScores(cached);
     quadrantDataPoints.push({
       ticker: competitor.tickerData!.symbol,
-      companyName: competitor.companyName,
+      companyName: competitor.competitorName,
       qualityScore,
       valueScore,
       classification: classifyStock(qualityScore, valueScore),

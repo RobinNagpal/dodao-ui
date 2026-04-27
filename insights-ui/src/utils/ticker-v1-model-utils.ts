@@ -52,11 +52,13 @@ export interface CompetitorTickerCachedScore {
 }
 
 export interface CompetitorTicker {
-  companyName: string;
-  companySymbol?: string;
+  competitorName: string;
+  tickerSymbol?: string;
   exchangeSymbol?: string;
-  exchangeName?: string;
-  detailedComparison?: string;
+  shortDescription?: string;
+  currency?: string;
+  marketCap?: string;
+  financialDataSummary?: string;
   existsInSystem?: boolean;
   tickerData?: {
     id: string;
@@ -140,7 +142,7 @@ export async function getCompetitorTickers(
   const competitionArray = tickerRecord.vsCompetition.competitionAnalysisArray;
 
   // Collect all symbols to query in a single batch (instead of N+1 queries)
-  const symbolsToCheck = competitionArray.map((c) => c.companySymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);
+  const symbolsToCheck = competitionArray.map((c) => c.tickerSymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);
 
   // Single batch query for all competitor tickers
   const existingTickers =
@@ -174,15 +176,17 @@ export async function getCompetitorTickers(
 
   // Build competitor list using the pre-fetched data
   return competitionArray.map((competition) => {
-    const symbolUpper = competition.companySymbol?.toUpperCase();
+    const symbolUpper = competition.tickerSymbol?.toUpperCase();
     const existingTicker = symbolUpper ? tickerMap.get(symbolUpper) : undefined;
 
     return {
-      companyName: competition.companyName,
-      companySymbol: competition.companySymbol,
+      competitorName: competition.competitorName,
+      tickerSymbol: competition.tickerSymbol,
       exchangeSymbol: competition.exchangeSymbol,
-      exchangeName: competition.exchangeName,
-      detailedComparison: competition.detailedComparison,
+      shortDescription: competition.shortDescription,
+      currency: competition.currency,
+      marketCap: competition.marketCap,
+      financialDataSummary: competition.financialDataSummary,
       existsInSystem: !!existingTicker,
       tickerData: existingTicker
         ? {

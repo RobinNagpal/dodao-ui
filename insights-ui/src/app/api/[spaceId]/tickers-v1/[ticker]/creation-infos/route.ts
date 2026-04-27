@@ -41,7 +41,7 @@ async function findByCompanySymbolCI(symbol: string): Promise<TickerV1VsCompetit
     WHERE EXISTS (
       SELECT 1
       FROM unnest(t.competition_analysis) AS elem
-      WHERE (elem ->> 'companySymbol') ILIKE ${symbol}
+      WHERE (elem ->> 'tickerSymbol') ILIKE ${symbol}
     )
   `);
 

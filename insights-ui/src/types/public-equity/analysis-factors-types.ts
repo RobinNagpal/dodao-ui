@@ -21,11 +21,13 @@ export interface UpsertAnalysisFactorsRequest {
 }
 
 export interface CompetitionAnalysis {
-  companyName: string;
-  companySymbol?: string;
+  tickerSymbol?: string;
   exchangeSymbol?: string;
-  exchangeName?: string;
-  detailedComparison?: string;
+  competitorName: string;
+  shortDescription?: string;
+  currency?: string;
+  marketCap?: string;
+  financialDataSummary?: string;
 }
 
 export type CompetitionAnalysisArray = CompetitionAnalysis[];

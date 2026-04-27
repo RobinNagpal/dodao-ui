@@ -22,15 +22,15 @@ export interface TickerCreationPageProps {
 }
 
 function getCompetitionAnalysis(symbol: string, tickerCompetition: TickerV1VsCompetitionWithRelations): JSX.Element | null {
-  const competition = tickerCompetition.competitionAnalysisArray.find((c) => c.companySymbol?.toLowerCase() === symbol.toLowerCase()) || null;
+  const competition = tickerCompetition.competitionAnalysisArray.find((c) => c.tickerSymbol?.toLowerCase() === symbol.toLowerCase()) || null;
 
   return (
     competition && (
       <div>
         <div className="font-bold mt-2">
-          {competition.companyName} - {competition.companySymbol} ({competition.exchangeName} - {competition.exchangeSymbol})
+          {competition.competitorName} - {competition.tickerSymbol} ({competition.exchangeSymbol})
         </div>
-        <div>{competition.detailedComparison}</div>
+        <div>{competition.financialDataSummary}</div>
       </div>
     )
   );
@@ -71,13 +71,13 @@ export default function TickerCreationPage({ symbol, exchange }: TickerCreationP
   });
 
   const onOpenFromCard = (tc: TickerV1VsCompetitionWithRelations): void => {
-    const tickerToAdd = tc.competitionAnalysisArray.find((c) => c.companySymbol?.toLowerCase() === symbol.toLowerCase()) || null;
+    const tickerToAdd = tc.competitionAnalysisArray.find((c) => c.tickerSymbol?.toLowerCase() === symbol.toLowerCase()) || null;
     if (!tickerToAdd) return;
 
     // Seed defaults from the chosen card, fall back to props if needed
     const seededExchange = toExchange(tickerToAdd?.exchangeSymbol);
-    const seededName = tickerToAdd.companyName ?? '';
-    const seededSymbol = tickerToAdd.companySymbol?.toUpperCase() || '';
+    const seededName = tickerToAdd.competitorName ?? '';
+    const seededSymbol = tickerToAdd.tickerSymbol?.toUpperCase() || '';
 
     setActive(tc);
     setForm({

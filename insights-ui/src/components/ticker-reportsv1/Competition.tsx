@@ -46,11 +46,11 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   const competitorList =
     competitorTickers.length > 0
       ? competitorTickers.length === 1
-        ? competitorTickers[0].companyName
+        ? competitorTickers[0].competitorName
         : `${competitorTickers
             .slice(0, -1)
-            .map((c) => c.companyName)
-            .join(', ')} and ${competitorTickers[competitorTickers.length - 1].companyName}`
+            .map((c) => c.competitorName)
+            .join(', ')} and ${competitorTickers[competitorTickers.length - 1].competitorName}`
       : 'its key industry peers';
 
   const analysisTitle = `${tickerData.name} (${ticker}) Competitive Analysis`;
@@ -79,7 +79,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
     const { qualityScore, valueScore } = computeQuadrantScores(cached);
     quadrantDataPoints.push({
       ticker: competitor.tickerData!.symbol,
-      companyName: competitor.companyName,
+      companyName: competitor.competitorName,
       qualityScore,
       valueScore,
       classification: classifyStock(qualityScore, valueScore),
@@ -256,7 +256,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
                       : null;
                   return (
                     <CompetitorCard
-                      key={`${competitor.companyName}-${index}`}
+                      key={`${competitor.competitorName}-${index}`}
                       competitor={competitor}
                       href={href}
                       actionSlot={<AddTickerAdminButton competitor={competitor} />}

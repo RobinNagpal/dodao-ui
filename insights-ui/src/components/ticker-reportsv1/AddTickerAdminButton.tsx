@@ -13,8 +13,8 @@ interface AddTickerAdminButtonProps {
 export default function AddTickerAdminButton({ competitor }: AddTickerAdminButtonProps) {
   return (
     <PrivateWrapper>
-      {!competitor.existsInSystem && competitor.companySymbol && (
-        <Link className="ml-2" href={`/stocks/${competitor.exchangeSymbol || 'NYSE'}/${competitor.companySymbol}/create`}>
+      {!competitor.existsInSystem && competitor.tickerSymbol && competitor.tickerSymbol !== 'PRIVATE' && (
+        <Link className="ml-2" href={`/stocks/${competitor.exchangeSymbol || 'NYSE'}/${competitor.tickerSymbol}/create`}>
           <DocumentPlusIcon width={25} height={25} />
         </Link>
       )}

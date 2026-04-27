@@ -8,13 +8,14 @@ import { prepareBaseTickerInputJson } from '@/utils/analysis-reports/report-inpu
 
 export interface CompetitionAnalysisResponse {
   summary: string;
-  overallAnalysisDetails: string;
   competitionAnalysisArray: Array<{
-    companyName: string;
-    companySymbol?: string;
+    tickerSymbol?: string;
     exchangeSymbol?: string;
-    exchangeName?: string;
-    detailedComparison: string;
+    competitorName: string;
+    shortDescription?: string;
+    currency?: string;
+    marketCap?: string;
+    financialDataSummary?: string;
   }>;
 }
 

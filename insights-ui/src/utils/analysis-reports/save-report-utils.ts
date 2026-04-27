@@ -188,13 +188,14 @@ export async function saveCompetitionAnalysisResponse(
   exchange: string,
   response: {
     summary: string;
-    overallAnalysisDetails: string;
     competitionAnalysisArray: Array<{
-      companyName: string;
-      companySymbol?: string;
+      tickerSymbol?: string;
       exchangeSymbol?: string;
-      exchangeName?: string;
-      detailedComparison: string;
+      competitorName: string;
+      shortDescription?: string;
+      currency?: string;
+      marketCap?: string;
+      financialDataSummary?: string;
     }>;
   }
 ): Promise<void> {
@@ -211,7 +212,7 @@ export async function saveCompetitionAnalysisResponse(
     },
     update: {
       summary: response.summary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
+      overallAnalysisDetails: '',
       competitionAnalysisArray: response.competitionAnalysisArray,
       updatedAt: new Date(),
     },
@@ -219,7 +220,7 @@ export async function saveCompetitionAnalysisResponse(
       spaceId,
       tickerId: tickerRecord.id,
       summary: response.summary,
-      overallAnalysisDetails: response.overallAnalysisDetails,
+      overallAnalysisDetails: '',
       competitionAnalysisArray: response.competitionAnalysisArray,
       updatedAt: new Date(),
       createdAt: new Date(),
@@ -312,7 +313,7 @@ function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competit
     return { comp1: defaultComp1, comp2: defaultComp2, comp3: defaultComp3, totalCount: 3 };
   }
 
-  const allCompetitors = tickerRecord.vsCompetition.competitionAnalysisArray.filter((comp: CompetitionAnalysis) => comp.companyName && comp.companySymbol);
+  const allCompetitors = tickerRecord.vsCompetition.competitionAnalysisArray.filter((comp: CompetitionAnalysis) => comp.competitorName && comp.tickerSymbol);
 
   const competitors = allCompetitors.slice(0, 3); // Get first 3
   const totalCount = allCompetitors.length;
@@ -323,7 +324,7 @@ function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competit
 
   if (competitors.length === 1) {
     return {
-      comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
+      comp1: `${competitors[0].competitorName} (${competitors[0].tickerSymbol})`,
       comp2: defaultComp2,
       comp3: defaultComp3,
       totalCount,
@@ -332,17 +333,17 @@ function getTopCompetitors(tickerRecord: TickerV1 & { vsCompetition?: { competit
 
   if (competitors.length === 2) {
     return {
-      comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
-      comp2: `${competitors[1].companyName} (${competitors[1].companySymbol})`,
+      comp1: `${competitors[0].competitorName} (${competitors[0].tickerSymbol})`,
+      comp2: `${competitors[1].competitorName} (${competitors[1].tickerSymbol})`,
       comp3: defaultComp3,
       totalCount,
     };
   }
 
   return {
-    comp1: `${competitors[0].companyName} (${competitors[0].companySymbol})`,
-    comp2: `${competitors[1].companyName} (${competitors[1].companySymbol})`,
-    comp3: `${competitors[2].companyName} (${competitors[2].companySymbol})`,
+    comp1: `${competitors[0].competitorName} (${competitors[0].tickerSymbol})`,
+    comp2: `${competitors[1].competitorName} (${competitors[1].tickerSymbol})`,
+    comp3: `${competitors[2].competitorName} (${competitors[2].tickerSymbol})`,
     totalCount,
   };
 }

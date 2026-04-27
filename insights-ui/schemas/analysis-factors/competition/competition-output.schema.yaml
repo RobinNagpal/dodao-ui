@@ -5,34 +5,36 @@ properties:
   summary:
     type: string
     description: '3–5 sentence conclusion on how the stock compares to its peers. Must highlight its relative strengths, weaknesses, and competitive positioning within its industry.'
-  overallAnalysisDetails:
-    type: string
-    description: 'Write 3-4 paragraphs explaining why it’s how overall this particular company compares to the comperetion.'
   competitionAnalysisArray:
     type: array
     description: 'Array of competitor comparisons.'
     items:
       type: object
       properties:
-        companyName:
+        tickerSymbol:
           type: string
-          description: 'Full name of the competitor company.'
-        companySymbol:
-          type: string
-          description: 'Ticker symbol of the competitor company.'
+          description: "Ticker symbol of the competitor company, or 'PRIVATE' if not publicly listed."
         exchangeSymbol:
           type: string
-          description: 'Exchange symbol (e.g., NASDAQ, NYSE) of the competitor.'
-        exchangeName:
+          description: "Exchange symbol (e.g., NASDAQ, NYSE) of the competitor, or 'PRIVATE' if not publicly listed."
+        competitorName:
           type: string
-          description: 'Readable exchange name (e.g., NASDAQ Global Select, NYSE Main Market).'
-        detailedComparison:
+          description: 'Full name of the competitor company.'
+        shortDescription:
           type: string
-          description: '2–3 paragraphs analyzing how this competitor compares with the target stock. Cover relative market cap, growth, profitability, risk, and positioning.'
+          description: 'One-sentence description of the competitor and its key differentiator.'
+        currency:
+          type: string
+          description: "Currency for financial figures (e.g., 'USD')."
+        marketCap:
+          type: string
+          description: "Market capitalisation as a human-readable string (e.g., '\\$X.XB') or 'PRIVATE' if not publicly listed."
+        financialDataSummary:
+          type: string
+          description: 'One paragraph summarizing this competitor relative to the target stock — cover key financials, market position, and competitive dynamics.'
       required:
-        - companyName
-        - detailedComparison
+        - competitorName
+        - financialDataSummary
 required:
   - summary
-  - overallAnalysisDetails
   - competitionAnalysisArray

@@ -1,7 +1,6 @@
 import { prisma } from '@/prisma';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
-import type { EtfCompetitionResponse, EtfCompetitor } from '@/types/etf/etf-analysis-types';
-import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
+import type { EtfCompetitionAnalysisItem, EtfCompetitionResponse, EtfCompetitor } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -25,7 +24,7 @@ async function getHandler(
     return { vsCompetition: null, competitors: [], etf: undefined };
   }
 
-  const competitionArray = (etfRecord.vsCompetition?.competitionAnalysisArray ?? []) as unknown as CompetitionAnalysis[];
+  const competitionArray = (etfRecord.vsCompetition?.competitionAnalysisArray ?? []) as unknown as EtfCompetitionAnalysisItem[];
   const competitors = await hydrateEtfCompetitors(competitionArray);
 
   return {
@@ -62,7 +61,7 @@ async function getHandler(
  * UI can link to its report and plot its cached score on the quadrant chart.
  * Single batched query — no N+1.
  */
-async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[]): Promise<EtfCompetitor[]> {
+async function hydrateEtfCompetitors(competitionArray: EtfCompetitionAnalysisItem[]): Promise<EtfCompetitor[]> {
   if (!competitionArray.length) return [];
 
   const symbolsToCheck = competitionArray.map((c) => c.companySymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);

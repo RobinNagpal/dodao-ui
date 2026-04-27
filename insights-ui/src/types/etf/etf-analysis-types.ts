@@ -62,6 +62,19 @@ export interface EtfCompetitorCachedScore {
 }
 
 /**
+ * Raw JSON shape stored in the ETF competition_analysis DB column.
+ * ETFs pre-date the ticker competition schema migration, so they still
+ * use the legacy field names (companyName / companySymbol / detailedComparison).
+ */
+export interface EtfCompetitionAnalysisItem {
+  companyName: string;
+  companySymbol?: string;
+  exchangeSymbol?: string;
+  exchangeName?: string;
+  detailedComparison?: string;
+}
+
+/**
  * ETF competitor record — mirrors the ticker `CompetitorTicker` shape but scoped to ETFs.
  * `companyName` is used as the peer name so the record stays shape-compatible with the
  * shared `CompetitorCard` rendering used on the stock competition page.

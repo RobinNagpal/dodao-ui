@@ -170,7 +170,7 @@ export default async function CompetitionPage({ params }: { params: RouteParams 
 
   const country: SupportedCountries = getCountryByExchange(tickerData.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
 
-  const competitorNames: string[] = competitionData.competitorTickers?.map((c) => c.companyName) || [];
+  const competitorNames: string[] = competitionData.competitorTickers?.map((c) => c.competitorName) || [];
 
   const articleSchema = generateCompetitionArticleSchema(tickerData, competitorNames, competitionData.vsCompetition);
   const breadcrumbSchema = generateCompetitionBreadcrumbSchema(tickerData, country);
