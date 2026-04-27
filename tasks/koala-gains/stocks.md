@@ -70,6 +70,55 @@ usage.
   - Do we want the same mechanism for ETFs later (the ETF side has a separate "daily
     generation" task in SEO phase — decide whether to unify or keep separate).
 
+### Use the internet for missing + latest info during Claude Code generation
+
+Goal: when Claude Code regenerates a stock report on the off-hours runner, it should
+**actively use the internet** to (a) fill in any **missing** data points the prompt
+input lacks, and (b) pull the **latest** information (recent earnings, guidance,
+filings, executive changes, news, regulatory actions) before producing the report.
+Today the prompt is mostly fed pre-cached fields — that's why reports go stale fast
+and why some sections read like they were written from incomplete data.
+
+- [ ] **Update the report-generation prompts** (Business & Moat, Valuation, Financial
+  Statements, Future Outlook, Custom Reports — every long-form section) to include
+  an explicit instruction along the lines of:
+  *"If any input field you need is missing, blank, or stale, **use the internet** to
+  find it. Always also search for the **latest** information on this ticker —
+  recent earnings, guidance, 8-K filings, executive changes, lawsuits, regulatory
+  actions, material news in the last 90 days — and incorporate it before writing
+  the section. Cite the source URL for every internet-sourced fact."*
+- [ ] **Make sure the Claude Code invocation actually has web access**:
+  - Confirm the Claude Code session running on the off-hours runner has web /
+    fetch tools enabled — if it's running headless without web access, the prompt
+    instruction is a no-op.
+  - If we're running through `getLLMResponseForPromptViaInvocation` rather than
+    Claude Code, verify that path also exposes web search / fetch.
+- [ ] **Output contract additions**:
+  - Each section should return a `sources: { url, title, accessedAt }[]` array
+    alongside the existing markdown / structured output, so we can render
+    citations on the page and audit which claims came from the internet.
+  - For numeric or factual claims sourced online, include the **as-of date** in
+    the prose so readers don't assume a stale figure is current.
+- [ ] **Guardrails on internet use**:
+  - Restrict to reputable sources where possible: SEC EDGAR, company IR pages,
+    primary news outlets, official regulators. De-prioritize forum posts,
+    aggregators, and obvious AI-spam pages.
+  - Don't let internet-sourced text dominate the report — the analysis voice
+    should still be ours; the internet is an input, not a copy-paste source.
+  - Cap per-run wall-clock for internet calls so a single slow site doesn't blow
+    the off-hours window budget (ties into the cron's per-stock timeout).
+- [ ] **Track internet-augmented vs. pre-cached generation**:
+  - Persist a flag on each generated report indicating whether the run used
+    internet augmentation, plus a count of unique URLs cited.
+  - Surface it in the admin generation-requests view so we can see which reports
+    leaned on the internet vs. cached data only.
+- [ ] **Validate**:
+  - Spot-check a handful of regenerated reports — confirm latest earnings /
+    recent material news appear, sources resolve, and the prompt didn't
+    hallucinate citations.
+  - Compare a pre- and post-change report on the same ticker to confirm
+    freshness improved without quality regressing.
+
 ## Off-hours automated stock recategorization (Claude Code)
 
 Goal: during off-hours, let Claude Code sweep every stock ticker in our universe, verify
@@ -123,6 +172,62 @@ Runs in the same off-hours window as the report-refresh cron (10 PM – 5 AM), b
   - How do we prevent thrashing when Claude oscillates between two plausible categories for
     the same stock across runs? (e.g. hysteresis: require the new category to win twice in a
     row before applying.)
+
+## Stock scenarios — finish + roll out
+
+Goal: bring the **stock scenarios** feature to 100% complete and ship it publicly. ETF
+scenarios already exist end-to-end (`EtfScenario` + `EtfScenarioEtfLink` in
+`insights-ui/prisma/schema.prisma`, plus the `app/etf-scenarios`, `admin-v1/etf-scenarios`,
+`api/[spaceId]/etf-scenarios`, and `components/etf-scenarios` trees). The stock equivalent
+is partially done — finish parity and launch.
+
+- [ ] **Reach feature parity with ETF scenarios**:
+  - Confirm the stock-side Prisma models exist (`StockScenario` / `TickerV1Scenario` +
+    join table to stock tickers); add or finish whatever is missing so the shape mirrors
+    `EtfScenario` / `EtfScenarioEtfLink` (direction, timeframe, probabilityBucket,
+    probabilityPercentage, pricedInBucket, expectedPriceChange, role, historical analog,
+    archived flag, etc.).
+  - Public list page `app/stock-scenarios/` mirroring `app/etf-scenarios/` (filters,
+    cards, detail page).
+  - Admin tree `app/admin-v1/stock-scenarios/` with create / edit / archive flows
+    (mirror `UpsertEtfScenarioModal` + the etf-scenario admin pages).
+  - API routes under `app/api/[spaceId]/stock-scenarios/` — list, get, create,
+    update, archive, link/unlink stocks.
+  - Components folder `components/stock-scenarios/` with the same primitives as
+    `components/etf-scenarios/`.
+  - Optional bulk markdown import (mirror `etf-scenario-markdown-parser.ts`) so we can
+    seed scenarios from a markdown file.
+- [ ] **Add a sitemap for stock scenarios**:
+  - New sitemap file (e.g. `app/stocks/stock-scenarios-sitemap.xml/route.ts` or a
+    sibling under the existing stock sitemaps) that lists every public,
+    non-archived `StockScenario` URL.
+  - Wire it into the parent sitemap index alongside the other stock sitemaps.
+  - Confirm canonical, lastmod, and change-frequency are set correctly per entry.
+- [ ] **Surface stock scenarios on the home page**:
+  - Add a stock-scenarios entry point to the home page (e.g. a card / tile next to
+    the existing ETF scenarios entry, or a combined "Scenarios" section that
+    branches into stocks vs. ETFs).
+  - Pull a small set of featured / most-recent / highest-confidence scenarios for
+    the home-page preview.
+- [ ] **Link from the stocks pages**:
+  - Add a "Scenarios" link in the main stocks navigation / list page header.
+  - On each stock detail page, surface the scenarios this stock is tagged into
+    (mirror how the ETF detail page shows linked ETF scenarios) — chips / cards
+    with a click-through to the scenario detail page.
+- [ ] **Roll-out**:
+  - Seed the production DB with an initial batch of stock scenarios so the public
+    pages aren't empty on day one.
+  - Sanity-check the sitemap is picked up by Search Console (and that the new
+    URLs aren't subject to the same "Crawled — currently not indexed" issue
+    captured under SEO Fixes — pre-empt by ensuring real per-scenario content,
+    unique titles/meta, and internal links).
+  - Announce the feature (release notes / blog / homepage banner if appropriate).
+- [ ] **Definition of done**:
+  - A logged-out visitor can land on the home page, click into stock scenarios,
+    browse the list, open a detail page, and from there click through to the
+    related stocks — all SSR'd, indexable, and listed in the sitemap.
+  - An admin can create / edit / archive a stock scenario end-to-end via
+    `admin-v1/stock-scenarios` without touching the DB directly.
 
 ## Trends page (stocks)
 
@@ -194,6 +299,211 @@ than invent new ones.
     only the mapped assets differ.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
+
+## 10-bagger shortlist — small-cap candidates filtered by Business & Moat
+
+Goal: build a shortlist of potential **10-baggers** — stocks with a credible path to a
+~10x return — biased toward **small-caps**, where the upside math actually works. Use
+our existing **Business & Moat** score as the first-pass filter, then evaluate the
+survivors through a structured 10-bagger lens.
+
+- [ ] **Cast the initial pool** (cheap filter, run from the existing data):
+  - **Market cap**: small-cap band (e.g. roughly $300M – $2B; tune the upper bound
+    once we see how many candidates pass the moat filter).
+  - **Business & Moat score ≥ 4** (out of 5) from the existing per-ticker analysis.
+  - **Liquidity floor**: minimum average daily $-volume so the pick is actually
+    investable (e.g. ≥ $1M ADV) — drop OTC / dark stocks unless explicitly
+    desired.
+  - **Data completeness**: only include tickers where the Business & Moat report
+    is fully generated and recent (mirror the ETF `isComplete` pattern).
+- [ ] **Evaluate each candidate through the 10-bagger lens** (qualitative + a few
+  quantitative checks per ticker):
+  - **TAM / runway** — is the addressable market at least 10x the company's
+    current revenue? Without big TAM there's no 10x.
+  - **Unit economics + margin expansion path** — gross margin trend, operating
+    leverage on next-stage revenue, free-cash-flow inflection.
+  - **Reinvestment runway** — high incremental ROIC + room to redeploy
+    incremental capital at similar returns.
+  - **Founder / owner-operator quality** — founder still in the seat, insider
+    ownership, capital-allocation track record, alignment.
+  - **Niche dominance** — clear category leadership in a specific niche, not
+    a marginal player in a crowded one.
+  - **Optionality** — adjacent products / geographies / customer segments the
+    business can credibly expand into.
+  - **Customer / supplier / regulatory concentration risks** — fewer the
+    better; flag any single-point dependency.
+  - **Catalyst / inflection** — what specific change in the next 12–24 months
+    plausibly re-rates the multiple?
+  - **Why hasn't this rerated already?** — a real 10-bagger setup needs an
+    answer here (under-followed, micro-cap stigma, recent spin-out, recent
+    IPO lockup, post-restructuring, etc.).
+- [ ] **Scoring + shortlist**:
+  - Score each candidate 1–5 on the lens dimensions above; require an average
+    threshold (e.g. ≥ 3.5) before it makes the shortlist.
+  - Hand-pick the top **~10 names** for the published list — keep it short on
+    purpose; a shortlist of 50 isn't a shortlist.
+- [ ] **Output / surface**:
+  - Decide where the shortlist lives — a curated content page (e.g.
+    `/stocks/10-baggers` or under a "Watchlist" surface), with one card per name
+    showing Business & Moat score, market cap, and a 1-paragraph "why this could
+    10x" summary.
+  - Each card links to the existing stock report page (Business & Moat,
+    Valuation, Custom Reports) for the full analysis.
+  - Include the methodology (filters + lens) on the page so the picks are
+    transparent.
+- [ ] **Refresh cadence**:
+  - Re-run the filter + lens evaluation on a regular cadence (likely quarterly,
+    after the Business & Moat scores are themselves refreshed) on the off-hours
+    Claude-Code runner — don't let the list go stale.
+  - Track entries that get added / removed / promoted / cut, so the list has a
+    visible track record over time.
+- [ ] **Open questions**:
+  - Should the lens evaluation produce a **persisted** structured field on each
+    `TickerV1` (e.g. `tenBaggerScore` + per-dimension subscores) so it can be
+    queried / sorted independently of being on the shortlist? Likely yes — the
+    score is useful even for stocks that don't make the top 10.
+  - Do we want a "honorable mentions" tier (next 10) or a single hard cut?
+  - Geographic scope — US only at first, or also include Canadian small-caps once
+    `etfs.md` 1.7 unlocks the broader Canadian universe?
+
+## Founder & management team — LinkedIn-sourced info
+
+Goal: founders and management teams are one of the most-cited reasons a great
+business stays great (or a mediocre one re-rates). For every stock we cover, surface
+the **founder + key executives** with their LinkedIn profiles, tenure, and a short
+human-readable bio, so readers can size up the people running the business at a
+glance. This also feeds the **founder / owner-operator quality** dimension of the
+10-bagger lens above.
+
+- [ ] **Data shape — per stock** (extend the existing ticker model):
+  - `keyPeople: { role, name, title, linkedinUrl, photoUrl?, tenureSinceYear?,
+    isFounder: boolean, bio: string, source }[]`.
+  - At minimum capture: **founder(s)**, **CEO**, **CFO**, **COO/President**, plus
+    any board chair / lead-director if distinct from CEO.
+  - `source` records where each row came from (e.g. company website, 10-K, proxy
+    statement, manual curation, scraping-lambdas extractor) so we can re-validate
+    later.
+  - Audit fields (`updatedAt`, `verifiedAt`) so we know how stale a row is.
+- [ ] **Acquisition strategy** (be deliberate — LinkedIn ToS bans scraping):
+  - **Do not scrape LinkedIn directly.** Instead, build a LinkedIn-URL **resolver**
+    that (a) takes the canonical name + company from official sources, then
+    (b) accepts a `linkedinUrl` either through a public company page that already
+    links it, an admin curation tool, or a paid people-data provider (PDL,
+    Clearbit, Crunchbase, etc.) that has its own LinkedIn licensing.
+  - Primary structured sources: company **About / Leadership** page, latest
+    **10-K / 20-F / proxy statement**, IR site, press releases.
+  - Use the existing `scraping-lambdas` infra to ingest the structured
+    leadership tables from these sources; LinkedIn URL is enriched on top, not the
+    primary key.
+- [ ] **Surfacing on the stock page**:
+  - Add a **"Leadership"** block to the stock detail page (place next to or under
+    Business & Moat — that's where the analysis already references management).
+  - Card per person: photo (where licensed), name, title, "Founder" badge if
+    applicable, tenure, 1–2 sentence bio, LinkedIn icon link (rel=`nofollow noopener
+    external`).
+  - Compact mode for the main stock page; full list on the per-section detail
+    page (mirrors the holdings pattern).
+- [ ] **Use the data in analysis**:
+  - Pass the leadership block into the **Business & Moat** prompt input (founder
+    presence, tenure, insider ownership signals) so the moat narrative grounds
+    its team-quality claims in actual data, not inference.
+  - Feed the same data into the **10-bagger lens** scoring (founder / owner-
+    operator dimension).
+- [ ] **Refresh + verification**:
+  - Schedule a quarterly re-ingest on the off-hours Claude-Code runner so people
+    who join / leave / change titles flow in.
+  - Provide an admin verification UI (mirror the per-ETF generation-requests page
+    pattern) that flags rows older than N months for human review.
+- [ ] **Open questions / risks**:
+  - **Compliance** — confirm with legal that storing publicly-listed LinkedIn
+    URLs (just the URL, not scraped profile content) is fine. Do not cache
+    photo / bio HTML pulled from LinkedIn — use issuer-supplied or licensed
+    photos.
+  - **Coverage** — what's the minimum set of people required before we render
+    the block? (e.g. CEO + at least one founder if applicable.) Suppress the
+    block entirely below threshold rather than rendering a half-empty card grid.
+  - **De-duplication** — same person can be on multiple boards / multiple
+    tickers (parent + sub); decide whether to model `Person` as its own table
+    with stock links, or denormalize per ticker.
+
+## Social media content — convert reports into posts
+
+Goal: turn the work we already produce (stock reports, **stock scenarios**, the
+10-bagger shortlist, founder/management profiles, trends) into a steady cadence of
+**social media content** that drives traffic back to KoalaGains. The content engine
+should be cheap to run (built on top of artifacts we already generate) and consistent
+enough that we ship something useful every week without a one-off scramble.
+
+This task is paired with the ETF-side equivalent in `etfs.md` — they should share the
+templates, queue, and posting infra. Don't build two parallel systems.
+
+- [ ] **Content sources we can mine** (today + planned):
+  - **Stock scenarios** (the new feature being finished + rolled out — see "Stock
+    scenarios — finish + roll out" above): each scenario card / detail page is a
+    natural post — direction, timeframe, priced-in bucket, expected move, winners
+    / losers — formatted for a hook + 3–5 bullet points + chart.
+  - **10-bagger shortlist**: a quarterly "10 small-caps we think can 10x" thread is
+    one of the highest-share post shapes for retail finance; the lens scoring +
+    one-paragraph "why this could 10x" maps cleanly onto a numbered post.
+  - **Founder / management team profiles**: short LinkedIn-style "founder spotlight"
+    posts pulling from the new `keyPeople` data.
+  - **Off-hours-refreshed reports**: when a Business & Moat / Valuation / Custom
+    Report regenerates, the diff (verdict change, fair-value change, new risks
+    flagged) is itself post-worthy.
+  - **Stock trends** (once the trends page ships): each trend → multiple posts
+    (the trend itself, the winners list, the losers list, an "is it priced in?"
+    angle).
+- [ ] **Content templates** — codify a small set of repeatable shapes so we're not
+  reinventing every post:
+  - **Scenario card post** — hook, one-line setup, direction + timeframe +
+    probability + priced-in, 1–3 bullets on the thesis, link to scenario detail.
+  - **Top-N post** (10-baggers, top dividend payers, top moats by sector, etc.) —
+    numbered list, one line per name, link to the curated list page.
+  - **Founder spotlight** — photo, name + title + tenure, 2–3 sentence bio, why
+    they matter, link to the stock report.
+  - **Verdict-change post** — "We updated our view on X" — old verdict → new
+    verdict, what triggered the change, link to the report.
+  - **Trend post** — trend title + historical analog, 2–3 winners, link to the
+    trend page.
+- [ ] **Platform mix** (pick a primary + secondary, don't try to be everywhere):
+  - **Primary**: LinkedIn (matches the audience for value-investing + the
+    "leadership" angle from the founder data) and **X/Twitter** (the standard
+    finance-twitter loop).
+  - **Secondary**: Reddit (relevant subs only — `r/investing`, `r/stocks`,
+    `r/CanadianInvestor` once 1.7 unlocks Canadian coverage), Threads, YouTube
+    Shorts / Instagram Reels for chart-driven scenarios.
+  - Don't ship all of these at once — start with LinkedIn + X, add a third only
+    once the first two are humming.
+- [ ] **Production pipeline**:
+  - Build a small **post-draft generator** that, given a source artifact (scenario
+    id, ticker id, trend id, shortlist id), renders a draft post per template via
+    the existing prompt infra (`getLLMResponseForPromptViaInvocation`).
+  - Drafts land in a lightweight **content queue** (a new admin page) where a
+    human reviews, edits, picks platforms, schedules, and approves.
+  - Approved posts are pushed to a scheduling tool (Buffer / Hootsuite / Hypefury,
+    or a thin in-house scheduler) — start with whatever's cheapest, swap later.
+  - Every post carries a UTM-tagged link back to the relevant KoalaGains page so
+    we can attribute traffic.
+- [ ] **Cadence + governance**:
+  - Target a **minimum** weekly cadence (e.g. 1 scenario post + 1 founder
+    spotlight + 1 verdict-change or top-N post per week) on each primary platform
+    once the queue is live.
+  - One person owns the queue per week — don't let it become a free-for-all.
+  - Compliance pass on every post — no investment-advice phrasing, disclaimers
+    where appropriate, claims grounded in the underlying report.
+- [ ] **Measurement**:
+  - Per-platform impressions / engagement / clicks tracked in one dashboard.
+  - Per-source-artifact attribution: which scenario / stock / founder profile
+    actually drove sessions.
+  - Feed the winners back into the off-hours runner — if a scenario gets
+    high engagement, prioritize refreshing/expanding it.
+- [ ] **Open questions**:
+  - Build vs. buy on the scheduler — the cheapest path is probably an existing
+    SaaS until volume justifies our own.
+  - Voice / tone — single editorial voice across platforms, or platform-tailored?
+    Default: shared core + platform-specific opener.
+  - Cross-link with the ETF social pipeline (`etfs.md`) — confirmed shared queue
+    + shared templates; only the source artifacts differ.
 
 ## Custom Reports ("random reports") per stock
 
