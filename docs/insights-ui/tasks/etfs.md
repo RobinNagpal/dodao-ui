@@ -604,6 +604,52 @@ to re-derive / second-guess category conclusions.
 
 ---
 
+### 3.5) Comparison "base" per ETF group — open questions
+
+Goal: pick the right **comparison base** for each ETF group so reports always have a
+named benchmark to anchor performance / risk / cost claims (ties into 3.3.a). Equity has
+S&P Global as the working answer; the other groups are still undecided.
+
+- [ ] **Fixed-income base — pick one (or a small set)**:
+  - Candidates: AGG / BND (broad US aggregate), ICE BofA index family, Bloomberg Global
+    Aggregate, or per-segment indices keyed on duration / credit quality (treasuries
+    short / intermediate / long, IG corporate, HY, muni, EM debt).
+  - Decide whether one base covers the whole `fixed-income-*` group or each subgroup
+    needs its own; the "right" answer is probably 3–4 bases keyed to duration + credit.
+- [ ] **Per-group base selection — record the call**:
+  - For every group in `etf-analysis-categories.json` (broad equity, sectors, factor /
+    style, fixed-income-core, muni, leveraged-inverse, commodities, alternatives,
+    crypto, multi-asset, currency, etc.), pick a **primary base** + an optional
+    **secondary** base, plus a one-line rationale.
+  - Equity sub-groups: confirm S&P Global also covers sector / style / factor ETFs, or
+    spec a sector-specific benchmark (e.g. each S&P Select sector index for the matching
+    sector ETF group).
+  - Commodities: GSCI / Bloomberg Commodity Index, or per-commodity base (USO ↔ WTI
+    spot, GLD ↔ gold spot)?
+  - Alternatives / multi-asset / managed-futures: there isn't a clean public benchmark —
+    decide between (a) a 60/40 or risk-parity proxy, (b) the relevant HFR sub-index,
+    (c) skip the base and lean on category aggregates from 3.3.a.
+  - Crypto: BTC / ETH spot, or a crypto-index ETF, or both?
+  - Currency: DXY for USD, vs. trade-weighted indices for cross-currency funds.
+- [ ] **How the base is used in the report** — tighten the contract:
+  - Performance comparisons over fixed windows (1y / 3y / 5y total return, max drawdown,
+    Sharpe) computed **vs. the chosen base** for that group, alongside the category
+    aggregates from 3.3.a.
+  - Where it makes sense, surface beta / tracking error / correlation **vs. the base**
+    (most useful for equity + fixed-income; less for alternatives / crypto).
+- [ ] **Storage**:
+  - Likely a new JSON next to the existing analysis data (e.g.
+    `insights-ui/src/etf-analysis-data/etf-comparison-bases.json`) keyed by group, with
+    `{ primary: { symbol, name, source }, secondary?, rationale }`.
+  - Reference the JSON from the generation pipeline so prompts get
+    `{ comparisonBase: { symbol, name, ... } }` injected.
+- [ ] **Prompt impact**:
+  - Once bases are settled, every prompt that uses "vs. category" / "vs. peers" gets
+    paired with "vs. {comparisonBase.name} ({comparisonBase.symbol})" so reports anchor
+    on a real index, not a vague peer set.
+
+---
+
 ## Phase 4 — SEO, metadata, and sitemap automation
 
 - [ ] **SEO/metadata review** after new sections:
