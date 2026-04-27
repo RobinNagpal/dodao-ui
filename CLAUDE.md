@@ -241,17 +241,20 @@ Use **`docs/ai-knowledge/projects/`** for project-specific docs. Each project ma
 
 Currently documented:
 
-* `docs/ai-knowledge/projects/insights-ui/`
+* `docs/ai-knowledge/insights-ui/` — KoalaGains topical knowledge + active task lists (`tasks/`).
 * `docs/ai-knowledge/projects/simulations/`
 
 ### Topical Knowledge
 
 Use **`docs/ai-knowledge/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/ai-knowledge/insights-ui/AIKnowledge.md`](docs/ai-knowledge/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
 
-* `etf-analysis/` — ETF analysis pipeline: how to enqueue reports (`generate-etf-reports.md`)
+* `etf-analysis/` — ETF analysis pipeline + ETF Scenarios system (`generate-etf-reports.md`, `etf-scenarios.md`)
+* `stock-analysis/` — `yarn stocks:add` / `yarn stocks:trigger` runbooks
 * `etf-prompts/` — Source-of-truth prompt text for each ETF analysis category
 * `etf-prompt-improvement/` — Iterative prompt-tuning review notes
 * `downside-analysis/` — Equity downside / drawdown framework with the 31-stock case study
+* `tariffs/` — Tariffs subsystem reference (`tariffs-functionality.md`, `tariff-usecases.md`)
+* `tasks/` — Active KoalaGains task lists (open + closed): ETFs, stocks, tariffs, scenarios, prompt tuning
 
 ### How to Use the Knowledge Base
 

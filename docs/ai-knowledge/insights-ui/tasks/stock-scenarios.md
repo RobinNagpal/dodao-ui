@@ -1,8 +1,7 @@
 # Stock Scenarios — KoalaGains (Tasks)
 
 Goal: build a **Stock Scenarios** feature for KoalaGains, mirroring the existing ETF
-Scenarios feature (see [`etf-scenarios.md`](../../docs/ai-knowledge/projects/insights-ui/features/etf-scenarios.md)
-and [`etf-scenarios-implementation-checklist.md`](../../docs/ai-knowledge/insights-ui/etf-analysis/etf-scenarios-implementation-checklist.md)).
+Scenarios feature (see [`etf-scenarios.md`](../etf-analysis/etf-scenarios.md)).
 
 Each scenario carries a probability outlook, a priced-in assessment, an expected residual
 price move, and explicit lists of the **stocks** most exposed to it. The page should read

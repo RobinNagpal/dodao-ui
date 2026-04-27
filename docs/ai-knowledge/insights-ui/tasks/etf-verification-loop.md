@@ -153,7 +153,7 @@ next category.
 ```bash
 export CATEGORY=performance-and-returns    # or cost-efficiency-and-team / risk-analysis / future-performance-outlook
 export ITER=1
-export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export ITER_ROOT="$PWD/../docs/ai-knowledge/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
 ```
@@ -230,7 +230,7 @@ if Loop A hasn't been run):
 ```bash
 # Only needed if no reports dir exists yet:
 export CATEGORY=performance-and-returns
-export ITER_ROOT="$PWD/../tasks/koala-gains/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export ITER_ROOT="$PWD/../docs/ai-knowledge/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 yarn etfs:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
 ```

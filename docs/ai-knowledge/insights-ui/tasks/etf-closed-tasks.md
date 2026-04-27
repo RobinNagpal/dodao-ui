@@ -152,7 +152,7 @@ The whole workflow described in `etfs.md` section 3.2 is implemented:
   aggregated findings, new factor JSON + new prompt, changelog entries, end-of-run
   summary.
 - [x] **Storage layout** —
-  `tasks/koala-gains/prompt-tuning/<category>/<group>/<iteration>/...`
+  `docs/ai-knowledge/insights-ui/tasks/prompt-tuning/<category>/<group>/<iteration>/...`
 - [x] **Backward-compatibility guardrails** — stable keys, deliberate renames only.
 - [x] **Mapping finalization** — final
   `groupKey -> { performanceAndReturnsFactors, costEfficiencyAndTeamFactors, riskAnalysisFactors }`
