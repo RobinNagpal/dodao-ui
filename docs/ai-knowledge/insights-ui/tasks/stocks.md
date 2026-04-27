@@ -507,8 +507,7 @@ templates, queue, and posting infra. Don't build two parallel systems.
 
 ## Custom Reports ("random reports") per stock
 
-Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
-(PR #1318). Summary below; read the doc before implementing.
+Source: PR #1318 description has the full spec. Summary below; read the PR before implementing.
 
 Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
 single ticker — e.g. "Why did Beta Farms (BYRN) drop in Q1 2026 and will it drop further?",
@@ -641,7 +640,7 @@ be more than a re-submission.
 - [ ] **Pull the affected URLs from Search Console**:
   - Export the current list of URLs marked "Crawled — currently not indexed" under
     this sitemap.
-  - Save it to `tasks/koala-gains/seo/crawled-not-indexed-business-and-moat.csv`
+  - Save it to `docs/ai-knowledge/insights-ui/tasks/seo/crawled-not-indexed-business-and-moat.csv`
     (or similar) so we can diff against future validation runs.
 - [ ] **Sample + audit the affected pages** (10–20 representative URLs):
   - Do they render real, meaningful content server-side, or is the main analysis

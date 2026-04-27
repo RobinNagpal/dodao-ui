@@ -90,10 +90,8 @@ phase-ordered list below.
 
 ### 1.5) Custom Reports ("random reports") per ETF
 
-Mirror of the stock Custom Reports feature — see the stock design doc
-`docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
-(PR #1318) for the full spec; the ETF version should reuse the same shape, just scoped to
-an `Etf` instead of a `TickerV1`.
+Mirror of the stock Custom Reports feature — see PR #1318 for the full spec; the ETF
+version should reuse the same shape, just scoped to an `Etf` instead of a `TickerV1`.
 
 Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
 single ETF — e.g. "Why is QQQI's premium to NAV widening?", "How does this sector ETF hold
