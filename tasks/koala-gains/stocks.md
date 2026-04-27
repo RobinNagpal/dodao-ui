@@ -124,6 +124,62 @@ Runs in the same off-hours window as the report-refresh cron (10 PM – 5 AM), b
     the same stock across runs? (e.g. hysteresis: require the new category to win twice in a
     row before applying.)
 
+## Stock scenarios — finish + roll out
+
+Goal: bring the **stock scenarios** feature to 100% complete and ship it publicly. ETF
+scenarios already exist end-to-end (`EtfScenario` + `EtfScenarioEtfLink` in
+`insights-ui/prisma/schema.prisma`, plus the `app/etf-scenarios`, `admin-v1/etf-scenarios`,
+`api/[spaceId]/etf-scenarios`, and `components/etf-scenarios` trees). The stock equivalent
+is partially done — finish parity and launch.
+
+- [ ] **Reach feature parity with ETF scenarios**:
+  - Confirm the stock-side Prisma models exist (`StockScenario` / `TickerV1Scenario` +
+    join table to stock tickers); add or finish whatever is missing so the shape mirrors
+    `EtfScenario` / `EtfScenarioEtfLink` (direction, timeframe, probabilityBucket,
+    probabilityPercentage, pricedInBucket, expectedPriceChange, role, historical analog,
+    archived flag, etc.).
+  - Public list page `app/stock-scenarios/` mirroring `app/etf-scenarios/` (filters,
+    cards, detail page).
+  - Admin tree `app/admin-v1/stock-scenarios/` with create / edit / archive flows
+    (mirror `UpsertEtfScenarioModal` + the etf-scenario admin pages).
+  - API routes under `app/api/[spaceId]/stock-scenarios/` — list, get, create,
+    update, archive, link/unlink stocks.
+  - Components folder `components/stock-scenarios/` with the same primitives as
+    `components/etf-scenarios/`.
+  - Optional bulk markdown import (mirror `etf-scenario-markdown-parser.ts`) so we can
+    seed scenarios from a markdown file.
+- [ ] **Add a sitemap for stock scenarios**:
+  - New sitemap file (e.g. `app/stocks/stock-scenarios-sitemap.xml/route.ts` or a
+    sibling under the existing stock sitemaps) that lists every public,
+    non-archived `StockScenario` URL.
+  - Wire it into the parent sitemap index alongside the other stock sitemaps.
+  - Confirm canonical, lastmod, and change-frequency are set correctly per entry.
+- [ ] **Surface stock scenarios on the home page**:
+  - Add a stock-scenarios entry point to the home page (e.g. a card / tile next to
+    the existing ETF scenarios entry, or a combined "Scenarios" section that
+    branches into stocks vs. ETFs).
+  - Pull a small set of featured / most-recent / highest-confidence scenarios for
+    the home-page preview.
+- [ ] **Link from the stocks pages**:
+  - Add a "Scenarios" link in the main stocks navigation / list page header.
+  - On each stock detail page, surface the scenarios this stock is tagged into
+    (mirror how the ETF detail page shows linked ETF scenarios) — chips / cards
+    with a click-through to the scenario detail page.
+- [ ] **Roll-out**:
+  - Seed the production DB with an initial batch of stock scenarios so the public
+    pages aren't empty on day one.
+  - Sanity-check the sitemap is picked up by Search Console (and that the new
+    URLs aren't subject to the same "Crawled — currently not indexed" issue
+    captured under SEO Fixes — pre-empt by ensuring real per-scenario content,
+    unique titles/meta, and internal links).
+  - Announce the feature (release notes / blog / homepage banner if appropriate).
+- [ ] **Definition of done**:
+  - A logged-out visitor can land on the home page, click into stock scenarios,
+    browse the list, open a detail page, and from there click through to the
+    related stocks — all SSR'd, indexable, and listed in the sitemap.
+  - An admin can create / edit / archive a stock scenario end-to-end via
+    `admin-v1/stock-scenarios` without touching the DB directly.
+
 ## Trends page (stocks)
 
 Goal: a dedicated page where we record long-running **trends** — macro, demographic,
