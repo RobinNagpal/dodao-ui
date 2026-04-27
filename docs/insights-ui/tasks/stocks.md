@@ -178,56 +178,112 @@ Runs in the same off-hours window as the report-refresh cron (10 PM – 5 AM), b
 Goal: bring the **stock scenarios** feature to 100% complete and ship it publicly. ETF
 scenarios already exist end-to-end (`EtfScenario` + `EtfScenarioEtfLink` in
 `insights-ui/prisma/schema.prisma`, plus the `app/etf-scenarios`, `admin-v1/etf-scenarios`,
-`api/[spaceId]/etf-scenarios`, and `components/etf-scenarios` trees). The stock equivalent
-is partially done — finish parity and launch.
+`api/[spaceId]/etf-scenarios`, and `components/etf-scenarios` trees).
 
-- [ ] **Reach feature parity with ETF scenarios**:
-  - Confirm the stock-side Prisma models exist (`StockScenario` / `TickerV1Scenario` +
-    join table to stock tickers); add or finish whatever is missing so the shape mirrors
-    `EtfScenario` / `EtfScenarioEtfLink` (direction, timeframe, probabilityBucket,
-    probabilityPercentage, pricedInBucket, expectedPriceChange, role, historical analog,
-    archived flag, etc.).
-  - Public list page `app/stock-scenarios/` mirroring `app/etf-scenarios/` (filters,
-    cards, detail page).
-  - Admin tree `app/admin-v1/stock-scenarios/` with create / edit / archive flows
-    (mirror `UpsertEtfScenarioModal` + the etf-scenario admin pages).
-  - API routes under `app/api/[spaceId]/stock-scenarios/` — list, get, create,
-    update, archive, link/unlink stocks.
-  - Components folder `components/stock-scenarios/` with the same primitives as
-    `components/etf-scenarios/`.
-  - Optional bulk markdown import (mirror `etf-scenario-markdown-parser.ts`) so we can
-    seed scenarios from a markdown file.
-- [ ] **Add a sitemap for stock scenarios**:
-  - New sitemap file (e.g. `app/stocks/stock-scenarios-sitemap.xml/route.ts` or a
-    sibling under the existing stock sitemaps) that lists every public,
-    non-archived `StockScenario` URL.
-  - Wire it into the parent sitemap index alongside the other stock sitemaps.
-  - Confirm canonical, lastmod, and change-frequency are set correctly per entry.
-- [ ] **Surface stock scenarios on the home page**:
-  - Add a stock-scenarios entry point to the home page (e.g. a card / tile next to
-    the existing ETF scenarios entry, or a combined "Scenarios" section that
-    branches into stocks vs. ETFs).
-  - Pull a small set of featured / most-recent / highest-confidence scenarios for
-    the home-page preview.
-- [ ] **Link from the stocks pages**:
-  - Add a "Scenarios" link in the main stocks navigation / list page header.
-  - On each stock detail page, surface the scenarios this stock is tagged into
-    (mirror how the ETF detail page shows linked ETF scenarios) — chips / cards
-    with a click-through to the scenario detail page.
-- [ ] **Roll-out**:
-  - Seed the production DB with an initial batch of stock scenarios so the public
-    pages aren't empty on day one.
-  - Sanity-check the sitemap is picked up by Search Console (and that the new
-    URLs aren't subject to the same "Crawled — currently not indexed" issue
-    captured under SEO Fixes — pre-empt by ensuring real per-scenario content,
-    unique titles/meta, and internal links).
-  - Announce the feature (release notes / blog / homepage banner if appropriate).
-- [ ] **Definition of done**:
-  - A logged-out visitor can land on the home page, click into stock scenarios,
-    browse the list, open a detail page, and from there click through to the
-    related stocks — all SSR'd, indexable, and listed in the sitemap.
-  - An admin can create / edit / archive a stock scenario end-to-end via
-    `admin-v1/stock-scenarios` without touching the DB directly.
+**Phase 1 (foundation) shipped 2026-04-24** — Prisma models (`StockScenario` +
+`StockScenarioStockLink` with country scope), public listing + detail pages under
+`src/app/stock-scenarios/`, admin CRUD + import under `src/app/admin-v1/stock-scenarios/`,
+public + admin API routes under `/api/[spaceId]/stock-scenarios/` and `/api/stock-scenarios/`,
+component suite under `src/components/stock-scenarios/`, markdown parser
+(`stock-scenario-markdown-parser.ts`) and `stock-scenarios:import` script. Phase 2/3/4
+below are the remaining open work.
+
+- [ ] **Phase 2 — reverse link on stock report pages**:
+  - New public API: `/api/[spaceId]/stock-scenarios/for-symbol?symbol=...` returning
+    `StockScenarioStockLink` rows for a given symbol.
+  - On `src/app/stocks/[exchange]/[ticker]/page.tsx`, fetch and render a "This stock
+    appears in the following scenarios" block: scenario title (link to
+    `/stock-scenarios/<slug>`), direction + timeframe + probability badges, role
+    (`WINNER` / `LOSER` / `MOST_EXPOSED`), and the link's `expectedPriceChange` so the
+    reader sees the per-stock estimate.
+  - Cache-tag the fetch with `stockScenarioBySlugTag` + a new per-symbol tag so
+    revalidating a scenario also updates any stock pages that referenced it.
+  - The ETF-side symmetrical reverse link was deferred; ship it for stocks because
+    individual tickers sit in many more scenarios than any one ETF does.
+- [ ] **Phase 3 — seed content**:
+  - Draft a first batch of ~15–30 stock scenarios as markdown matching
+    `stock-scenario-markdown-parser.ts`. Each needs title, underlying cause, historical
+    analog, direction, timeframe, probability bucket (+ optional %), priced-in bucket,
+    expected price change + explanation + timeframe explanation, winners/losers
+    narrative, outlook + `outlookAsOfDate`.
+  - **Exactly 5 winners + 5 losers + 5 most-exposed per scenario** (same convention as
+    ETF scenarios — if you reach for a sixth, drop the weakest existing one). The
+    five-per-role rule applies per scenario overall, not per country.
+  - Prefer pure-play / sector-specific tickers over diversified giants (AAPL, MSFT,
+    GOOGL) when both would qualify — same rationale as the ETF rule favouring XLE/XOP
+    over SPY.
+  - Each scenario must declare `countries[]` — pick the smallest correct set (a US
+    regional-banks scenario is `["US"]`, not `["US", "Canada"]` even if Canadian banks
+    are loosely correlated).
+  - Import via the admin "Import from doc" button.
+- [ ] **Phase 4 — Claude-assisted draft + auto-refresh outlook** (follow-up):
+  - **Claude-assisted draft** — given a scenario description, ask Claude to suggest
+    candidate stocks for each role + a first-pass role explanation + priced-in
+    assessment. Human reviews and publishes. Reuse the `AUTOMATION_SECRET` path via
+    `POST /api/stock-scenarios`.
+  - **Auto-refresh outlook** — scheduled job that re-visits `outlookAsOfDate` on
+    scenarios older than N weeks and asks Claude whether the thesis is still intact /
+    needs a probability or priced-in update.
+- [ ] **Surface + roll-out** (cross-cuts Phase 2):
+  - Home-page entry point (card / tile next to the ETF scenarios entry, or a combined
+    "Scenarios" section that branches into stocks vs ETFs); show featured / most-recent
+    / highest-confidence scenarios.
+  - "Scenarios" link in the main stocks navigation / list page header.
+  - Add a stock-scenarios sitemap (e.g. `app/stocks/stock-scenarios-sitemap.xml/route.ts`),
+    wire it into the parent sitemap index, and pre-empt the "Crawled — currently not
+    indexed" issue (see SEO Fixes) by shipping unique per-scenario titles/meta and
+    real internal links.
+  - Definition of done: a logged-out visitor can reach the listing from the home page,
+    open a detail page, and click through to a related stock — all SSR'd, indexable,
+    and in the sitemap; admin can create / edit / archive end-to-end via
+    `admin-v1/stock-scenarios`.
+
+### Open questions (decide before Phase 2/3/4 land)
+
+- [ ] **Shared scenarios table vs parallel tables with ETFs?** Underlying cause and
+  historical analog are identical between an ETF and stock counterpart of the same
+  scenario; only winner/loser/most-exposed lists differ. Option A (parallel tables) is
+  simpler and matches today's code. Option B (shared `Scenario` table + `ScenarioEtfLink`
+  + `ScenarioStockLink`) is one source of truth for the narrative but requires migrating
+  the existing `EtfScenario` data and updating every caller. Pick before any further
+  schema work — hard to walk back. Same question is flagged on the Trends task.
+- [ ] **Scenario numbering across asset classes** — if shared, a single `scenarioNumber`
+  is natural; if parallel, decide whether stock scenarios restart at 1 or continue the
+  ETF sequence.
+- [ ] **Cross-asset link on scenario detail page** — only meaningful in Option B; the
+  detail page can show "Stocks in this scenario" + "ETFs in this scenario" side-by-side.
+- [ ] **Ticker resolution edge cases** — stocks change tickers / merge / delist more
+  often than ETFs. Decide how the link row handles a delisted ticker: keep as plain text,
+  auto-archive, or flag for review.
+- [ ] **Mapping to sub-industries** — should each scenario carry an optional list of
+  relevant sub-industries so the stock detail page can flag "any scenario tagged to this
+  ticker's sub-industry even if the ticker itself isn't in the 15-row list"? Breadth vs
+  noise tradeoff.
+- [ ] **Country scope changes over time** — admins editing `countries[]` in place is
+  fine when adding (link-validation makes the new country additive), but *removing* a
+  country leaves orphan links. Spec the server to either reject the removal or
+  auto-archive the now-out-of-scope links.
+- [ ] **Default country filter** — start with "All countries" on the listing page;
+  revisit once we have usage data on whether locale-defaulting helps or hides discovery.
+- [ ] **Which stock model is the FK target?** The schema has both `Ticker` and
+  `TickerV1` families. Confirm whether `StockScenarioStockLink.tickerKey` should FK to
+  `TickerV1`, `Ticker`, or resolve loosely by `(symbol, exchange)` without an FK. ETF
+  side uses a strict FK to `Etf`; pick before any migration.
+- [ ] **ADR + dual-listing handling** — e.g. Alibaba (`BABA` on NYSE, `9988` on HKEX).
+  Does a link-row represent both listings, the primary, or two rows (one per country)?
+  Two-row is more honest but risks double-counting in listings.
+- [ ] **Markdown source format for non-US tickers** — the ETF parser reads bare
+  uppercase tokens. Non-US scenarios need `EXCHANGE:SYMBOL` qualifiers, which breaks
+  drop-in compatibility. Decide between (a) qualifiers everywhere for uniformity, or
+  (b) auto-assume `NASDAQ` / `NYSE` when no qualifier is present.
+- [ ] **Shared scenario enums** — renaming `etfScenarioEnums.ts` → `scenarioEnums.ts`
+  is a breaking import across the existing ETF code; a re-export shim makes it safe but
+  grep-for-enums becomes noisier. Confirm before flipping.
+- [ ] **Sitemap entries** — ETF scenarios are currently not in any `sitemap*.ts`.
+  Recommend adding for stock scenarios since traffic potential is higher.
+- [ ] **Per-symbol reverse-link cache tag** — settle the tag-name shape (e.g.
+  `stock_scenario_for_symbol:<EXCHANGE>:<SYMBOL>`); every link add/remove invalidates
+  the tags for the old AND new symbol, cheap given the 15-row cap.
 
 ## Trends page (stocks)
 
