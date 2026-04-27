@@ -113,10 +113,3 @@ Now there are two ways to invalidate this tag causing it to fetch refreshed data
      });
    }
    ```
-
-# Checklist
-
-- [ ] I understand why my data is not loading again when I navigate to the page
-- [ ] I know the difference in `revalidatePath` and `revalidateTag`
-- [ ] I clearly know when and how to use `revalidatePath` and `revalidateTag`
-- [ ] I know how to add tags for the entities I am fetching

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Development workflow guidelines for the DoDAO UI monorepo. For full architecture and project context, see [AIKnowledge.md](AIKnowledge.md).
+Development workflow guidelines for the DoDAO UI monorepo. For full architecture and project context, see [docs/README.md](docs/README.md).
 
 ## Required Workflow (Before and After Coding)
 
@@ -237,7 +237,7 @@ Use **`docs/projects/`** for project-specific docs. Each project may include:
 * `requirements/`
 * `todos.md`
 * `todos/`
-* `AIKnowledge.md`
+* `README.md`
 
 Currently documented:
 
@@ -246,7 +246,7 @@ Currently documented:
 
 ### Topical Knowledge
 
-Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/insights-ui/AIKnowledge.md`](docs/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
+Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/insights-ui/README.md`](docs/insights-ui/README.md) for the index. Each subfolder also has its own `README.md`. Subareas:
 
 * `etf-analysis/` — ETF analysis pipeline + ETF Scenarios system (`generate-etf-reports.md`, `etf-scenarios.md`)
 * `stock-analysis/` — `yarn stocks:add` / `yarn stocks:trigger` runbooks
@@ -263,15 +263,15 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 4. **When defining requirements:** Add specs to `requirements/` and update `requirements.md`
 5. **After completing features:** Document them in `features/`
 
-Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKnowledge.md`, `insights-ui/AIKnowledge.md`).
+Each project may also have its own top-level `AIKnowledge.md` in the project root (e.g., `simulations/AIKnowledge.md`, `insights-ui/AIKnowledge.md`).
 
 
 ## Additional Resources
 
-* `docs/AIKnowledge.md` (full index)
-* `docs/code-knowledge/AIKnowledge.md` (coding patterns index)
-* `docs/projects/AIKnowledge.md` (project docs index)
-* `docs/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, tariffs)
+* `docs/README.md` (full index)
+* `docs/code-knowledge/README.md` (coding patterns index)
+* `docs/projects/README.md` (project docs index)
+* `docs/insights-ui/README.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, tariffs)
 * `docs/code-knowledge/build-process.md`
 * `docs/code-knowledge/monorepo-structure.md`
 

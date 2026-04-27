@@ -15,7 +15,7 @@ This folder contains the common coding patterns, conventions, and best practices
 ### UI Patterns
 - **[UIIInstructions.md](UIIInstructions.md)** - React/Next.js UI development guidelines covering component patterns, data fetching hooks (`useFetchData`, `usePostData`, `usePutData`), server-side rendering, breadcrumbs, modals, loading states, and authentication with `useAuthGuard`.
 - **[Loaders.md](Loaders.md)** - Loading component patterns including FullPageLoader, PageLoading, LoadingSpinner, and SpinnerWithText usage guidelines.
-- **[ServerSideComponents.md](ServerSideComponents.md)** - Server-side rendering concepts in Next.js with video explanations.
+- **[ServerSideComponents.md](ServerSideComponents.md)** - When to use server vs. client components in the App Router, and how that interacts with our standard page structure.
 - **[SpacingRecommendations.md](SpacingRecommendations.md)** - UI spacing guidelines using a 16px base unit, Tailwind spacing classes, and responsive design considerations.
 
 ### UI Components

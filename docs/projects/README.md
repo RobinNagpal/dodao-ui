@@ -14,4 +14,4 @@ Alerting system for DeFi protocols and crypto markets. See [defi-alerts/tasks.md
 Social/news content management interface. See [x-news/tasks.md](x-news/tasks.md) for the active task list.
 
 ### Insights-UI (KoalaGains)
-KoalaGains documentation lives under [`../insights-ui/`](../insights-ui/) instead of in this folder — see [`../insights-ui/AIKnowledge.md`](../insights-ui/AIKnowledge.md) for topical knowledge (ETF + stock pipelines, prompts, tariffs) and [`../insights-ui/tasks/`](../insights-ui/tasks/) for the active task lists.
+KoalaGains documentation lives under [`../insights-ui/`](../insights-ui/) instead of in this folder — see [`../insights-ui/README.md`](../insights-ui/README.md) for topical knowledge (ETF + stock pipelines, prompts, tariffs) and [`../insights-ui/tasks/`](../insights-ui/tasks/) for the active task lists.

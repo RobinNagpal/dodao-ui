@@ -1,10 +1,11 @@
-## Server Side Rendering (SSR) in Nextjs
+## Server-Side Rendering in Next.js
 
-Nextjs supports server side rendering. This means that the UI is rendered on the server and then sent to the client 
-which makes the rendering of the components faster.
+Next.js renders React components on the server by default in the App Router. Server components fetch data and render HTML on the server, which is then streamed to the client. This avoids shipping component code + data-fetching logic to the browser, which makes the initial render faster.
 
-Here is a video explanation on a top level [What is SSR & how to achieve it?](https://drive.google.com/file/d/1Qj7JJLJB4gx0pgH_4T-vpNG3-pREIlE1/view?usp=sharing):
+### When to use a server vs. client component
 
-Here is a coding example of [Converting Client Side to Server Side Rendering](https://drive.google.com/file/d/1jqD-EZL70sYXH-A7NnL7EQ9A1Mr09rjz/view?usp=sharing).
+- **Default to server components.** Pages and most layout-level components should be server components.
+- Use a client component (`'use client'`) only when you need interactivity (`onClick`, `onChange`, hooks like `useState` / `useEffect`, browser APIs).
+- Keep client components small and push them down the tree — wrap an interactive widget in a client component, but keep the surrounding page server-rendered.
 
-[![What is SSR and how to achieve it?](https://miro.medium.com/v2/resize:fit:1400/1*7TEKaVM6HhAHl0uDc4kjSw.gif)](https://drive.google.com/file/d/1Qj7JJLJB4gx0pgH_4T-vpNG3-pREIlE1/view?usp=sharing)
+See [ui/page-structure.md](ui/page-structure.md) for our standard server-component page shape (`PageWrapper`, `Breadcrumbs`, `generateMetadata`, async params).

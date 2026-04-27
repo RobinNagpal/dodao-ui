@@ -17,31 +17,24 @@ See: `shared/web-core/src/components/core/loaders/FullPageLoading.tsx`.
 We Use it mostly in case we are navigating to a new route and it should mostly be used at the layout level.
 
 ### PageLoading
-When to use - ????
 
-See `shared/web-core/src/components/core/loaders/PageLoading.tsx` .
+A loader sized to a single page region (not full screen). Use it inside a `PageWrapper` while the page's main data is fetching.
+
+See `shared/web-core/src/components/core/loaders/PageLoading.tsx`.
 
 ### LoadingSpinner
-When to use - ????
 
-See: `shared/web-core/src/components/core/loaders/LoadingSpinner.tsx`
+A small inline spinner. Use it inside buttons, table rows, or other small UI surfaces where a full-page loader would be excessive.
 
+See `shared/web-core/src/components/core/loaders/LoadingSpinner.tsx`.
 
 ### SpinnerWithText
-When to use - ????
 
-See: `shared/web-core/src/components/core/loaders/SpinnerWithText.tsx`
+A spinner paired with a status message. Use it for longer-running operations where the user needs to know what is happening (e.g. "Generating report…").
 
-# Specific Loaders
-We do have very specific loaders which can be renamed or updated to solve the same purpose but be a bit more generic
-for better code reusability
+See `shared/web-core/src/components/core/loaders/SpinnerWithText.tsx`.
 
-- See: `shared/web-core/src/components/core/loaders/TidbitDetailsLoader.tsx`
-- See: `shared/web-core/src/components/core/loaders/TidbitsGridLoader.tsx`
+## Consistency rules
 
-
-## Todos
-- [ ] We need to be consistent with loaders usage like use the specified loader for the particular purpose
-- [ ] Avoid creating same loaders
-- [ ] Some loaders like `SectionLoader, RowLoading, Cardloader` are almost same and are not used elsewhere we need to either remove them or think of improving them
-- [ ] We should be consitent with usage of icon  like right now we have spinner and icon one of them should be used only for consistency
+- Use the loader that matches the surface (full page, page region, inline) — don't introduce a new one that duplicates an existing one.
+- Reuse the existing spinner icon across all loaders rather than mixing icon styles.

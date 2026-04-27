@@ -1,16 +1,10 @@
-I have a react nextjs app which uses the new app router.
+# UI / React Conventions (Next.js App Router)
 
-Create a component for .......
+Rules for any new React component or page in this monorepo.
 
-Also, create a checklist of the rules that were applicable to the
-component, and the ones you have followed in the code output.
-
-Make sure to keep it consistent with the existing code.
-
-Rules
-- The code has very strict types and all types and mentioned explicitly 
-- For colors we use special theme classes which uses CSS variables. Below I am passing the theme-styles.scss 
-- For making a server side component and request I use normal fetch without any cache. Here is an example 
+- Strict types — all types are mentioned explicitly.
+- For colors, use the theme classes that map onto CSS variables (see [HowThemeAndCssWorks.md](HowThemeAndCssWorks.md) and [ui/theme-colors.md](ui/theme-colors.md)). Never hardcode color values.
+- For server-side fetches in server components, use `fetch` with `{ cache: 'no-cache' }`. Example:
 ```ts
 export default async function TickerDetailsPage({ params }: { params: Promise<{ tickerKey: string }> }) {
   const { tickerKey } = await params;

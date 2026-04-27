@@ -64,8 +64,7 @@ in `academy-ui/src/components/bytes/View/SwiperByteView/SwiperlByteStepperItemVi
 
 
 # How Theme Works
-- Read [UnderstandingSpace.md](../../UnderstandingSpace.md) to understand how the space works.
-- Space has a theme object that contains all the colors that we can customize.
+- Each space has a theme object that contains all the colors that we can customize.
     ```typescript
     export interface ThemeColors {
       primaryColor: string;
@@ -115,10 +114,3 @@ in `academy-ui/src/components/bytes/View/SwiperByteView/SwiperlByteStepperItemVi
 - WE SHOULD NEVER ADD ANY COLOR DIRECTLY IN THE CSS/SCSS FILES. ALWAYS USE THE CSS VARIABLES. Only exception is 
 #CCC(Gray) color which looks fine in most of the cases. This is also just for exceptional cases. Otherwise, always use
 CSS variables.
-
-
-# Checklist
-- [ ] I understand what is SCSS and how it works.
-- [ ] I understand what is CSS Modules and how it works and we should not use StyledComponents.
-- [ ] I understand how the theme works and how to use the theme colors in the CSS/SCSS files.
-- [ ] I understand that we should never add any color directly in the CSS/SCSS files. Always use the CSS variables.

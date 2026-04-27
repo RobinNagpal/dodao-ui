@@ -1,16 +1,10 @@
-# About Rest
+# API Route Conventions
 
-In REST i.e. API we normally use the same route and different HTTP functions related to an entity. We try to have this
-consistency, but many times its not possible.
+We follow standard REST conventions: one route path per entity, different HTTP methods for different operations.
 
-# Basic Rules
+## Standard CRUD shape
 
-Read about REST conventions here
-
-- https://medium.com/@nadinCodeHat/rest-api-naming-conventions-and-best-practices-1c4e781eb6a5
-- https://restfulapi.net/resource-naming/
-
-This means the routes which we should have are
+For each entity, the routes we should have are:
 
 - `GET - /api/[spaceId]/programs` This should return the list of programs
 - `POST - /api/[spaceId]/programs` - can be used for adding a new program

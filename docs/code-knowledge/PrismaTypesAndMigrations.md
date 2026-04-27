@@ -66,8 +66,3 @@ There are two ways to revert the changes you made to the database:
    Deleting the columns, rows, or tables from the database is important because if you don't delete them, the next migration will fail
 3. Delete the migration file from the `prisma/migrations` folder.
 4. Now you can run `npx prisma migrate dev` again to create a new migration
-
-
-# Checklist
-- [ ] Understand the JSON types in Prisma and how concrete types are used in the code
-- [ ] Understand how migrations work in Prisma

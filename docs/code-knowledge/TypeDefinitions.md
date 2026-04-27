@@ -3,14 +3,11 @@
 - Types make sure that the code is self-documented.
 
 # Important rules for type definitions
-- [ ] Never use the type `any` in the code.
-- [ ] When ever we have multiple string values which we compare, always use enum. Create the enum in the `types` folder.
-      We keep it string in the database, but in the code we use enum. Keeping it string in Database allows more flexibility.
-
-
+- Never use the type `any` in the code.
+- Whenever we have multiple string values which we compare, always use an enum. Create the enum in the `types` folder. We keep it as a string in the database, but in the code we use an enum. Keeping it as a string in the database allows more flexibility.
 
 # Request and Response Types
-- [ ] Earlier we used to use `graphql` types, but now we are not using `graphql` so we should not use `graphql` types.
+- We do not use `graphql` types anywhere — define request/response types explicitly.
 
 ### Response Types
 - We use `prisma` which generates types for us. We should use those in the API code, when saving or fetching data from 
@@ -61,6 +58,6 @@ async function postHandler(req: NextRequest, context: { params: Promise<{ spaceI
 export const POST = withErrorHandlingV2(postHandler);
 ```
 
-- [ ] Make sure to use strict types for request and response.
-- [ ] In Next.js 15+, route handler params must be typed as `Promise<>` and awaited.
-- [ ] Use `withErrorHandlingV2` from `@dodao/web-core` for all API routes. Do not use the older `withErrorHandling` or `withErrorHandlingV1` middlewares.
+- Use strict types for request and response.
+- In Next.js 15+, route handler params must be typed as `Promise<>` and awaited.
+- Use `withErrorHandlingV2` from `@dodao/web-core` for all API routes. Do not use the older `withErrorHandling` or `withErrorHandlingV1` middlewares.
