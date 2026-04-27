@@ -263,8 +263,6 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 4. **When defining requirements:** Add specs to `requirements/` and update `requirements.md`
 5. **After completing features:** Document them in `features/`
 
-Each project may also have its own top-level `AIKnowledge.md` in the project root (e.g., `simulations/AIKnowledge.md`, `insights-ui/AIKnowledge.md`).
-
 
 ## Additional Resources
 
