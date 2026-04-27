@@ -1364,6 +1364,7 @@ model EtfStockAnalyzerInfo {
   assetClass String? @map("asset_class")
 
   stockPrice String? @map("stock_price")
+  // Daily price change (i.e. "Price Change 1D") as displayed by source — kept as a
   percentChange String? @map("percent_change")
 
   isinNumber String? @map("isin_number")
@@ -1467,6 +1468,9 @@ model EtfStockAnalyzerInfo {
   category String? @map("category")
 
   chgOpenPercent String? @map("chg_open_percent")
+  // Where the current price sits inside the 52-week low–high band, as a percent string
+  // (e.g. "79.41%"). 0% = at 52w low, 100% = at 52w high.
+  positionInRange String? @map("position_in_range")
   open Float? @map("open")
   low  Float? @map("low")
   high Float? @map("high")
@@ -1798,7 +1802,7 @@ model EtfScenario {
   outlookAsOfDate                DateTime @map("outlook_as_of_date") @db.Date
   metaDescription                String?  @map("meta_description") @db.Text
   archived                       Boolean  @default(false) @map("archived")
-  countries                      String[] @map("countries")
+  countries                      String[] @default(["US"]) @map("countries")
   spaceId                        String   @default("koala_gains") @map("space_id")
   createdAt                      DateTime @default(now()) @map("created_at")
   updatedAt                      DateTime @updatedAt @map("updated_at")

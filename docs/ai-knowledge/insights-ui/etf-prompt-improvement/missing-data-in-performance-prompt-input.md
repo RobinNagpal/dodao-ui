@@ -27,7 +27,7 @@ The prompt should include a rule like:
 return1m, return3m, return6m, returnYtd, return1y, return3y, return5y, return10y, return15y, return20y, cagr1y, cagr3y, cagr5y, cagr10y, cagr15y, cagr20y, change1m, change3m, change6m, changeYtd, change1y, change3y, change5y, change10y
 
 ### From EtfStockAnalyzerInfo → `stockAnalyzerTechnicals`
-stockPrice, percentChange, ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, ath, athDate, athChgPercent, atl, atlDate, atlChgPercent
+stockPrice, change1d, ma20, ma50, ma150, ma200, ma20ChgPercent, ma50ChgPercent, ma150ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, ath, athDate, athChgPercent, atl, atlDate, atlChgPercent
 
 ### From EtfMorAnalyzerInfo → `morReturns`
 returnsAnnual, returnsTrailing (includes fund price/NAV, category, index, quartile/percentile ranks)

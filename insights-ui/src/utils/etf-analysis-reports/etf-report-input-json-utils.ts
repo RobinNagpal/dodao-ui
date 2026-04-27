@@ -157,7 +157,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     }),
     stockAnalyzerTechnicals: JSON.stringify({
       stockPrice: sa?.stockPrice,
-      percentChange: sa?.percentChange,
+      change1d: sa?.percentChange,
       ma20: sa?.ma20,
       ma50: sa?.ma50,
       ma150: sa?.ma150,
