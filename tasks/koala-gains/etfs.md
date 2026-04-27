@@ -5,31 +5,10 @@
 
 ## Top priorities (active work)
 
-Work at the top of the stack right now. Everything here supersedes the phase-ordered
-list below — these are the four things to actually push on next.
+Work at the top of the stack right now — the items to push on next, ahead of the
+phase-ordered list below.
 
-- [ ] **1. End-to-end QA of the competition workflow + UI**
-  - The whole Competition + Similar ETFs pipeline (section 1.2) has shipped — see
-    `etf-closed-tasks.md`. Before moving on, actually exercise it in production:
-  - Pick a handful of ETFs across different groups (equity, fixed-income, thematic,
-    leveraged/inverse, etc.) and verify the competitor selection, the competition
-    analysis narrative, the competition chart, the separate competition page, and
-    the "Other similar ETFs" section on the main ETF page all render correctly and
-    with plausible data.
-  - Spot-check edge cases: ETFs with very few peers, ETFs in sparse categories, new
-    / low-AUM ETFs, ETFs where an obvious competitor is missing.
-  - File issues for any bad selections, broken charts, or weak narrative — feed
-    those back into the prompt / selection logic rather than shipping more features
-    on top.
-- [ ] **2. Finalize the Admin ETF generation requests page** (currently in progress)
-  - Most of 1.4 has landed (reload + auto-refresh, header columns, per-report-type
-    "Missing" options, per-ETF "Generate All Analysis", sort/pagination/top-filter)
-    — full list in `etf-closed-tasks.md`.
-  - This item is the wrap-up pass: make sure the page is pleasant to operate day to
-    day, catch anything rough edges that shipped with the recent batch, and
-    reconcile the page behavior with what `etf-reports` and `etf-generation-requests`
-    both expose.
-- [ ] **3. Claude-Code pipeline to auto-generate stock + ETF reports with the
+- [ ] **1. Claude-Code pipeline to auto-generate stock + ETF reports with the
   Sonnet model**
   - Build an off-hours pipeline where Claude Code (running the **Sonnet** model, not
     a heavier model) is the generator for both stock and ETF reports.
@@ -39,12 +18,12 @@ list below — these are the four things to actually push on next.
   - Leverages the `Prompt` / `PromptVersion` / `PromptInvocation` infra so we get
     versioning, status, raw I/O, and error capture for free.
   - Ties in with the stock "off-hours Claude Code cron" (see `stocks.md`) and the
-    ETF generation-requests queue (1.4) — the goal is one shared runner that
-    drains both queues.
+    ETF generation-requests queue (1.4, closed) — the goal is one shared runner
+    that drains both queues.
   - Definition of done: a scheduled run that, with no human in the loop, produces
     a night's worth of refreshed reports across stocks + ETFs using Sonnet, with
     logs we can review the next morning.
-- [ ] **5. Use the internet for missing + latest info during Claude Code generation**
+- [ ] **2. Use the internet for missing + latest info during Claude Code generation**
   - When Claude Code regenerates an ETF report on the off-hours runner, it should
     **actively use the internet** to (a) fill in any **missing** data points the
     prompt input lacks (issuer, AUM, expense ratio, holdings concentration,
@@ -53,8 +32,8 @@ list below — these are the four things to actually push on next.
     changes, 19a-1 distributions, regulatory actions, material news in the last
     90 days) before producing the report.
   - Update every report-generation prompt (Performance, Cost & Team, Risk,
-    Summary, Index & Strategy, Future Outlook, Famous-ETF comparison, Custom
-    Reports) to include an explicit instruction along the lines of:
+    Summary, Index & Strategy, Future Outlook, Custom Reports) to include an
+    explicit instruction along the lines of:
     *"If any input field you need is missing, blank, or stale, **use the
     internet** to find it. Always also search for the **latest** information on
     this ETF — recent prospectus supplements, fund-fact-sheet updates, PM
@@ -72,11 +51,11 @@ list below — these are the four things to actually push on next.
     filings, primary news outlets, official regulators); cap wall-clock per
     internet call so a slow site doesn't blow the off-hours window; track an
     `internetAugmented` flag + unique-URL count per run and surface it in the
-    admin generation-requests view (1.4) for auditability.
+    admin generation-requests view for auditability.
   - Pairs with the stock-side equivalent in `stocks.md` ("Use the internet for
     missing + latest info during Claude Code generation") — share the same
     web-tool config + citation contract so we maintain one pipeline, not two.
-- [ ] **4. Split the Index & Strategy field into multiple structured fields**
+- [ ] **3. Split the Index & Strategy field into multiple structured fields**
   - Today **Index & Strategy** is a single blob that crams intro + strategy + other
     context into one field, which makes it hard to lay out cleanly on the detail
     page.
@@ -89,54 +68,25 @@ list below — these are the four things to actually push on next.
     specifically about the **Index & Strategy** feed / data shape.
   - Update the prompt, the output JSON contract, persistence, and the detail-page
     rendering together so the UI can present each sub-field with its own heading
-    / layout slot. Run through the 3.2 tuning loop to sanity-check the split.
-
----
-
-## Priority order
-
-1. **Complete the ETF UI** — ETF details page, competition, similar ETFs, famous-ETFs comparison, admin pages.
-2. **Target audience / Goals**.
-3. **Prompt and analysis-factor improvements** (automated loop) — includes category-grouping review.
-4. **SEO, metadata, and sitemap automation**.
+    / layout slot. Run through the 3.2 tuning loop (closed) to sanity-check the
+    split.
+- [ ] **4. ETFs list page — `isComplete` filter + admin toggle**
+  - Detail in section **1.6** below — surfaced here because it's active work and
+    determines what first-time visitors see by default on the public ETFs list.
+  - Make sure the `Etf.isComplete` derivation, the public default filter, the
+    admin "include incomplete ETFs" toggle, and the per-row missing-data
+    indicators all ship together rather than landing piecemeal.
 
 ---
 
 ## Phase 1 — Complete the ETF UI
 
-> **1.1 ETF Details Page layout**, **1.2 Competition + Similar ETFs**, and **1.4 Admin
-> ETF generation requests page** have all shipped and moved to `etf-closed-tasks.md`.
-> The remaining Phase 1 items are listed below.
-
-### 1.3) Famous ETFs dataset + "Comparison with famous ETFs" section
-
-Goal: for each group, maintain a hand-curated set of "famous" ETFs, and generate a section
-that answers: "Why would we choose this ETF over those?"
-
-- [ ] **Famous-ETF dataset**:
-  - Identify the most famous ETFs under each group (AUM, liquidity/volume, popularity,
-    longevity, issuer reputation).
-  - Add a JSON dataset `groupKey -> famousEtfs[]` (symbol, exchange, name, issuer, why-famous,
-    optional AUM/expense ratio snapshot).
-  - Editable by humans, suitable for prompt conditioning.
-  - TS types required; runtime validation optional.
-- [ ] **Section input schema**:
-  - Current ETF summary (fees, AUM, performance, holdings concentration, tracking, risk).
-  - "Famous ETF set" from the JSON (optionally with live-fetched stats).
-  - Group context (what investors typically want from this group).
-- [ ] **Section output schema**:
-  - Comparisons table/list (current vs each famous ETF).
-  - "Choose this ETF if…" bullets.
-  - "Prefer competitor if…" bullets.
-  - Final recommendation + rationale + caveats.
-- [ ] **Finalize prompt** for this section.
-- [ ] **Database (Prisma) changes**:
-  - Model to store this section's output per ETF (per group/version).
-  - Decide structured columns vs JSON blob + derived fields.
-- [ ] **Pipeline changes**:
-  - New generation step (dependencies on the 3 category analyses if required).
-  - Callback saving + status tracking.
-- [ ] **UI**: new section on ETF report page showing comparisons and "why choose" reasoning.
+> **1.1 ETF Details Page layout**, **1.2 Competition + Similar ETFs**, **1.4 Admin
+> ETF generation requests page**, and **1.7 Populate Canadian ETFs from Stock
+> Analyzer** have all shipped and moved to `etf-closed-tasks.md`. The earlier
+> **1.3 Famous ETFs comparison** task was descoped and removed. The remaining
+> Phase 1 items below are: **1.5 Custom Reports**, **1.6 ETFs list page**, and
+> **1.8 Active-ETF management team**.
 
 ### 1.5) Custom Reports ("random reports") per ETF
 
@@ -227,7 +177,6 @@ that via a toggle instead of dropping the data from the page entirely.
     **Cost & Team**, **Risk**, **Summary**, **Index & Strategy**, **Future Outlook**
     (i.e. the full set referenced in 1.4's header-columns task).
   - **Final Summary** + `introParagraph` (3.3.d) are generated.
-  - Once 2.1 ships: at least one matched `EtfEtfTargetGroupLink` row exists.
   - Persist this as a derived boolean (e.g. `Etf.isComplete`) updated by the
     generation pipeline whenever a report/field lands, so the list query is a cheap
     index lookup rather than a multi-join per request.
@@ -251,55 +200,6 @@ that via a toggle instead of dropping the data from the page entirely.
     list, sitemap, and search results.
   - On their detail page, show a neutral "report in progress" state for the
     missing sections rather than broken / empty components.
-
-### 1.7) Populate Canadian ETFs from Stock Analyzer
-
-Goal: expand the ETF inventory beyond US-listed funds by ingesting **all Canadian
-ETFs** from **Stock Analyzer** (stockanalysis.com), so TSX / NEO / Cboe Canada-listed
-funds show up alongside US listings in the same pipeline.
-
-- [ ] **Source the full Canadian ETF universe from Stock Analyzer**:
-  - Pull the complete list of Canadian ETFs (e.g. via
-    `stockanalysis.com/list/exchange-traded-funds/` filtered to Canada, or the
-    Canadian-specific page if one exists).
-  - Capture per-ETF: symbol, exchange (TSX / NEO / Cboe Canada), name, issuer,
-    category, AUM, expense ratio, inception, currency, and anything else Stock
-    Analyzer surfaces that we already use for US ETFs.
-  - Land the raw extract in the `scraping-lambdas` repo (or wherever the existing
-    ETF scraping lives) — keep the implementation consistent with how US ETFs
-    are pulled today.
-- [ ] **Schema / model adjustments to support Canadian ETFs**:
-  - Confirm the `Etf` model has fields that already accommodate non-US listings
-    (exchange, currency, country) — extend if not.
-  - Make sure unique keys handle the same ticker on different exchanges (e.g.
-    a US `XYZ` and a TSX `XYZ.TO` must coexist).
-  - Decide URL/slug shape for Canadian ETFs (likely
-    `/etfs/TSX/<symbol>`, `/etfs/NEO/<symbol>`, `/etfs/CBOE/<symbol>`) and align
-    with the existing exchange-prefixed routes.
-- [ ] **Wire Canadian ETFs into the existing pipeline**:
-  - Map each ingested ETF to a category-group from
-    `etf-analysis-categories.json` (extend the categories if Canadian-specific
-    ones are needed — e.g. Canadian fixed-income, currency-hedged S&P/TSX
-    products).
-  - Run them through the standard generation flow (Performance, Cost & Team,
-    Risk, Summary, Index & Strategy, Future Outlook) so reports are produced
-    on the same cadence as US ETFs.
-  - Respect the `Etf.isComplete` rule from 1.6 — Canadian ETFs only appear on
-    the public list once their data + reports are fully populated.
-- [ ] **Backfill + ongoing refresh**:
-  - One-shot backfill for the full Canadian ETF list.
-  - Add to the off-hours / scheduled refresh so new Canadian ETFs (and updates
-    to existing ones) flow in automatically.
-- [ ] **Validation**:
-  - Spot-check a sample of Canadian ETFs end-to-end (data populated, reports
-    generated, detail page renders, holdings present where available).
-  - Confirm sitemap + SEO metadata are correct for the Canadian URLs (no
-    accidental cross-links to US-only canonicals).
-- [ ] **Open questions**:
-  - Holdings data for Canadian ETFs — does Stock Analyzer expose them, or do
-    we need a secondary source (issuer site, FTP feed)?
-  - Currency display — are Canadian-ETF prices shown in CAD by default, with
-    a USD toggle, or both?
 
 ### 1.8) Active-ETF management team — LinkedIn-sourced info
 
@@ -357,99 +257,6 @@ ingestion infra, and refresh cadence wherever it makes sense.
   - **Index ETFs** — confirm we never render the team block for purely passive
     products even if data exists; the goal is to highlight where the team
     *actually* drives outcomes.
-
----
-
-## Phase 2 — Target audience / Goals
-
-Goal: Tag each ETF with the investor goals it satisfies, and surface those goals in the
-analysis output.
-
-- [ ] **Define a goals/target-audience taxonomy** for ETFs. Examples:
-  - "Fixed income with no downside"
-  - "Fixed income with low risk"
-  - "High yield with moderate or high risk"
-- [ ] **Capture matching goals during ETF analysis**:
-  - When generating an ETF report, determine which goals from the taxonomy this ETF meets.
-  - Persist the matched goals on the ETF record.
-- [ ] **Open question — equity goal representation**:
-  - Decide how to represent goals for equity-style ETFs (e.g. country/region funds like
-    India / China ETFs) where the "goal" is more thematic/exposure-based than risk-return
-    based.
-  - Propose candidate goal labels for equity (e.g. "Emerging-market equity exposure",
-    "Single-country thematic exposure", "Sector tilt").
-
-### 2.1) Target-investor groups (data model + prompt wiring)
-
-Goal: tag each ETF with the **target investor groups** it fits — i.e. which kinds of
-investors (by goals / risk profile / mandate) should realistically consider this ETF.
-This is a concrete, persisted extension of the taxonomy above, covering **both retail
-and institutional** investors.
-
-Key shape:
-- **Many-to-many** — one ETF maps to **multiple** target groups, and one target group
-  maps to **many** ETFs.
-- A target group can also be linked to an ETF **category-group** (e.g. the whole
-  "short-duration treasuries" group fits "capital-preservation" target investors), so
-  matches can be inferred at the group level and then refined per ETF.
-- Covers retail personas (e.g. "Income-focused retiree", "Young DCA investor",
-  "High-yield / high-risk speculator") **and** institutional personas (e.g. "Corporate
-  treasury — cash management", "Pension fund — liability-matching", "Insurance — core
-  fixed income", "Endowment — long-duration equity growth").
-
-- [ ] **Decide granularity — group-level vs. category-level vs. per-ETF**:
-  - Open question: do target-groups attach to each **category-group** in
-    `etf-analysis-categories.json`, to each **individual ETF**, or **both** (category
-    sets the default, ETF can override / extend)?
-  - Resolve this before finalizing the Prisma schema.
-- [ ] **Define the target-group taxonomy** (seed data):
-  - Retail buckets — income, growth, capital preservation, speculation, thematic
-    exposure, tax-advantaged (munis), ESG, etc. Each bucket has a `key`, human label,
-    short description, and a risk/goal profile.
-  - Institutional buckets — corporate treasury, insurance general account, pension
-    (DB / DC), endowment, sovereign wealth, asset manager sleeve, family office,
-    RIA model-portfolio bucket, etc.
-  - Mark each bucket as `retail` | `institutional` | `both` via an
-    `investorType` enum so UI + prompts can filter.
-- [ ] **Prisma schema** — add new models for target groups and the many-to-many links:
-  - `EtfTargetGroup` — one row per target-group taxonomy entry. Fields: `id`, `key`
-    (stable slug), `label`, `description`, `investorType` enum
-    (`RETAIL` | `INSTITUTIONAL` | `BOTH`), `riskProfile` (e.g.
-    `LOW` | `MEDIUM` | `HIGH`), `goalProfile` (e.g. `INCOME` | `GROWTH` |
-    `PRESERVATION` | `SPECULATION` | `THEMATIC` | `TAX_ADVANTAGED` | `ESG` |
-    `LIABILITY_MATCHING` | `CASH_MANAGEMENT`), `displayOrder`, audit fields.
-  - `EtfEtfTargetGroupLink` — many-to-many between `Etf` and `EtfTargetGroup`.
-    Fields: `etfId`, `targetGroupId`, `source` enum (`MANUAL` | `PROMPT` |
-    `CATEGORY_GROUP`), `confidence` (`LOW` | `MEDIUM` | `HIGH`), optional
-    `rationale` text, audit fields.
-  - `EtfCategoryGroupTargetGroupLink` (only if we decide category-level attachment
-    is in scope) — many-to-many between an ETF category-group (from
-    `etf-analysis-categories.json`) and `EtfTargetGroup`.
-  - Backrefs: `Etf.targetGroups`, `EtfTargetGroup.etfs`.
-  - Seed the taxonomy via a migration / seed script so the list is versioned in the
-    repo, not typed into prod.
-- [ ] **Wire into prompts** so the LLM produces and reasons about target groups:
-  - Extend the ETF analysis prompt(s) (at minimum the Summary / Final-Summary prompt,
-    and ideally Index-&-Strategy + Performance + Risk) so the model is told the full
-    target-group taxonomy and asked to return the list of matching groups for this
-    ETF **with a 1-line rationale each**, plus a confidence tag.
-  - Update the output schema / JSON contract of those prompts to include a
-    `targetGroups: [{ key, rationale, confidence }]` array.
-  - On save, resolve `key` → `EtfTargetGroup.id` and upsert the
-    `EtfEtfTargetGroupLink` rows with `source = PROMPT`.
-  - Separately, allow an admin to manually add / remove target-group links
-    (`source = MANUAL`) that the prompt run won't overwrite.
-- [ ] **Surface target groups in the UI** (detail page + filters):
-  - Show matched target-groups as chips on the ETF detail page (section 1.1), grouped
-    by retail vs. institutional, each with its rationale in a tooltip / expandable row.
-  - Add a **"Find ETFs for this investor profile"** filter on ETF list / search pages
-    driven by `EtfTargetGroup.key`.
-- [ ] **Validation + QA loop**:
-  - Spot-check the prompt output across a handful of ETFs per category-group and
-    confirm the target-group assignments are sensible before turning on bulk
-    backfill.
-  - Add the target-group assignment into the **automated factor/prompt tuning loop**
-    (Phase 3.2) so we can iterate on it alongside the analysis factors.
 
 ---
 
@@ -564,28 +371,31 @@ appropriate.
 
 #### 3.3.c) Cross-check reports against the target-audience feature
 
-Goal: once the **target-investor-groups** feature (see section 2.1) is live, the
+Goal: if/when a **target-investor-groups** feature is brought back into scope, the
 reports themselves must let each targeted segment — specific slices of retail, plus
 specific slices of institutional — walk away with a clear **"yes, this fits me"** or
 **"no, skip this one"** verdict. Today the reports are written in a generic voice; a
 retiree looking for income and a pension fund doing liability-matching read the same
-paragraphs and neither gets a confident answer.
+paragraphs and neither gets a confident answer. (Note: the dedicated
+target-investor-groups data model is not currently on the roadmap — this sub-section
+is a placeholder for the prompt-quality work that would be needed once it is.)
 
 - [ ] **Make target-audience a live input to the prompts**:
-  - Pass the **matched target-groups** (`EtfEtfTargetGroupLink` rows from 2.1) into
-    the analysis prompts as structured input, not just as tags stored on the side.
+  - Pass the **matched target-groups** into the analysis prompts as structured input,
+    not just as tags stored on the side.
   - Extend the **Final Summary** prompt so it ends with a **per-target-group verdict
     block**: for each matched target-group, emit `{ targetGroupKey, fit:
     'Good'|'Acceptable'|'Poor', reason, cautions[] }`.
   - Where the report already says things like "this is suitable for income
     investors", require the prompt to name the **exact target-group key**, not a
     generic persona.
-- [ ] **Cross-check existing reports after target-groups ships**:
-  - After 2.1 is merged and back-filled, run a pass across generated reports to
-    verify every matched target-group is actually addressed in the narrative.
+- [ ] **Cross-check existing reports after target-groups data lands**:
+  - Once the target-group data model + back-fill exist, run a pass across generated
+    reports to verify every matched target-group is actually addressed in the
+    narrative.
   - Flag reports where the matched target-groups don't appear (or appear only as
     vague hand-waving) and route them back through regeneration.
-  - Add this check to the **automated factor/prompt tuning loop** (3.2) so future
+  - Add this check to the **automated factor/prompt tuning loop** (closed) so future
     regressions are caught.
 - [ ] **Surface per-audience verdicts in the UI**:
   - Add a **"Is this ETF right for you?"** panel to the ETF detail page (section
@@ -645,8 +455,7 @@ Tasks:
     main detail page.
 - [ ] **Update the detail-page component order** (section 1.1) to match:
   Final Summary → Intro paragraph → Charts → Strategy → Evaluation categories →
-  other sections (competition, similar, famous-ETF comparison, target-audience
-  panel, etc.).
+  other sections (competition, similar ETFs, etc.).
 - [ ] **Cross-check with section 1.1 and 3.3.c**:
   - Reconcile this ordering with the ordering currently listed in 1.1 so there is
     one canonical layout, not two.
@@ -796,11 +605,11 @@ to re-derive / second-guess category conclusions.
 ## Social media content — convert ETF reports + scenarios into posts
 
 Goal: turn the work we already produce (ETF reports, **ETF scenarios**, competition
-+ similar-ETF analysis, famous-ETF comparisons, target-investor-group fit, active-ETF
-team profiles, ETF trends) into a steady cadence of **social media content** that
-drives traffic back to KoalaGains. The content engine should be cheap to run (built
-on top of artifacts we already generate) and consistent enough that we ship something
-useful every week without a one-off scramble.
++ similar-ETF analysis, active-ETF team profiles, ETF trends) into a steady cadence
+of **social media content** that drives traffic back to KoalaGains. The content
+engine should be cheap to run (built on top of artifacts we already generate) and
+consistent enough that we ship something useful every week without a one-off
+scramble.
 
 Paired with the stock-side task in `stocks.md` — share templates, queue, and
 posting infra. Don't build two parallel systems; only the source artifacts differ.
@@ -810,15 +619,9 @@ posting infra. Don't build two parallel systems; only the source artifacts diffe
     each scenario card / detail page is a natural post — direction, timeframe,
     probability, priced-in bucket, expected move, winners/losers list — a great
     fit for hook + bullets + chart.
-  - **Competition / similar-ETF analysis** (1.2): "If you own X, also look at Y" —
-    cheaper-fee alternative, lower-risk substitute, narrower-mandate alternative,
-    etc. Each comparison row is post-worthy.
-  - **"Choose this ETF if…" output** from the famous-ETF comparison (1.3): when
-    we ship that section, "VOO vs SPY vs IVV in 2026" style posts write
-    themselves from the structured output.
-  - **Target-investor-group fit** (2.1): per-persona "best ETFs for the income
-    retiree / young DCA investor / corporate treasury" lists pulled directly from
-    the matched-target-group rows.
+  - **Competition / similar-ETF analysis** (1.2, closed): "If you own X, also look
+    at Y" — cheaper-fee alternative, lower-risk substitute, narrower-mandate
+    alternative, etc. Each comparison row is post-worthy.
   - **Active-ETF investment team profiles** (1.8): short LinkedIn-style "PM
     spotlight" posts using the `keyPeople` data — strongest on LinkedIn given the
     audience overlap.
@@ -831,8 +634,6 @@ posting infra. Don't build two parallel systems; only the source artifacts diffe
     `EtfScenario`.
   - **"Cheaper / safer / narrower alternative to X"** — pull straight from the
     competition + similar-ETF output.
-  - **"Best ETFs for {investor profile}"** — sourced from target-investor-group
-    matches; one post per persona.
   - **PM spotlight** (active ETFs only — never for index/passive funds).
   - **Trend post** — trend + 2–3 ETF winners + link to the trend page.
 - [ ] **Platform mix**: same primary (LinkedIn + X), same secondary tier as the
@@ -853,16 +654,12 @@ posting infra. Don't build two parallel systems; only the source artifacts diffe
 - [ ] **Measurement**:
   - Per-platform engagement + per-ETF-artifact attribution into the same
     dashboard the stock side uses.
-  - High-engagement scenarios / target-group lists feed back into off-hours
-    refresh prioritization (don't let a hit post link to a stale report).
+  - High-engagement scenarios feed back into off-hours refresh prioritization
+    (don't let a hit post link to a stale report).
 - [ ] **Open questions**:
   - Active-ETF PM spotlights are LinkedIn-leaning; check whether they pull
     enough engagement on X to be worth cross-posting or should stay
     LinkedIn-only.
-  - Whether the "Best ETFs for {persona}" posts should link to a target-group
-    landing page (filter pre-applied on the ETF list — see 2.1) rather than
-    individual ETF reports — that page may need to ship before the post format
-    is worthwhile.
   - Cross-link with the stock social pipeline (`stocks.md`): confirmed shared
     queue + templates; ETF differs only in the input adapter.
 

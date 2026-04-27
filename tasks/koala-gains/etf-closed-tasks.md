@@ -69,9 +69,11 @@ still pending. Organized under the same headings as `etfs.md` for traceability.
   - **Competition chart** (metric comparisons + tooltips, mirroring stocks).
   - **"Other similar ETFs" section** on the main ETF page — curated/auto-selected set
     with quick links and key stats, linking to the full competition page.
-
-> See the top-priorities block in `etfs.md` for the end-to-end QA task against this
-> shipped workflow.
+- [x] **End-to-end QA in production** — exercised the full workflow across ETFs from
+  different groups (equity, fixed-income, thematic, leveraged/inverse), spot-checked
+  edge cases (sparse categories, low-AUM ETFs, missing competitors), and confirmed
+  competitor selection, narrative, chart, separate competition page, and the "Other
+  similar ETFs" section all render with plausible data.
 
 ### 1.4) Admin — ETF generation requests page ✅
 
@@ -98,6 +100,27 @@ Page: https://koalagains.com/admin-v1/etf-generation-requests (+ `/admin-v1/etf-
   - Now enqueues generation requests for **every** supported report type (Performance,
     Cost & Team, Risk, Summary, Index & Strategy, Future Outlook).
   - Existing per-type generation options retained alongside it.
+- [x] **Wrap-up pass** — page is pleasant to operate day-to-day; rough edges from the
+  recent batch reconciled; behavior between `etf-reports` and `etf-generation-requests`
+  is consistent.
+
+### 1.7) Populate Canadian ETFs from Stock Analyzer ✅
+
+- [x] **Sourced the full Canadian ETF universe from Stock Analyzer** — TSX / NEO /
+  Cboe Canada listings ingested with symbol, exchange, name, issuer, category, AUM,
+  expense ratio, inception, and currency, alongside US ETFs in the same pipeline.
+- [x] **Schema / model adjustments** — `Etf` accommodates non-US listings (exchange,
+  currency, country); unique keys handle the same ticker on different exchanges; URL
+  shape settled for Canadian listings.
+- [x] **Wired Canadian ETFs into the generation pipeline** — mapped to category-groups
+  in `etf-analysis-categories.json` and run through the standard report flow
+  (Performance, Cost & Team, Risk, Summary, Index & Strategy, Future Outlook), gated
+  on the `Etf.isComplete` rule before appearing on the public list.
+- [x] **Backfill + ongoing refresh** — one-shot Canadian backfill done; new Canadian
+  ETFs and updates flow in via the off-hours / scheduled refresh.
+- [x] **Validation** — sample of Canadian ETFs spot-checked end-to-end (data, reports,
+  detail page, holdings where available), sitemap + SEO metadata correct for Canadian
+  URLs.
 
 ---
 
