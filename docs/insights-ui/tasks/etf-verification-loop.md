@@ -41,15 +41,15 @@ All commands below run from `insights-ui/`.
 
 ## Evaluation categories → prompt file mapping
 
-Prompts live in `docs/ai-knowledge/insights-ui/etf-prompts/`. Claude edits these files
+Prompts live in `docs/insights-ui/etf-prompts/`. Claude edits these files
 directly — there is nothing to push through an API.
 
 | Report type (`EtfReportType`) | Analysis category          | Prompt file                                                               |
 | ----------------------------- | -------------------------- | ------------------------------------------------------------------------- |
-| `performance-and-returns`     | `PerformanceAndReturns`    | `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`               |
-| `cost-efficiency-and-team`    | `CostEfficiencyAndTeam`    | `docs/ai-knowledge/insights-ui/etf-prompts/cost-efficiency-team.md`       |
-| `risk-analysis`               | `RiskAnalysis`             | `docs/ai-knowledge/insights-ui/etf-prompts/risk-analysis.md`              |
-| `future-performance-outlook`  | `FuturePerformanceOutlook` | `docs/ai-knowledge/insights-ui/etf-prompts/future-performance-outlook.md` |
+| `performance-and-returns`     | `PerformanceAndReturns`    | `docs/insights-ui/etf-prompts/past-returns.md`               |
+| `cost-efficiency-and-team`    | `CostEfficiencyAndTeam`    | `docs/insights-ui/etf-prompts/cost-efficiency-team.md`       |
+| `risk-analysis`               | `RiskAnalysis`             | `docs/insights-ui/etf-prompts/risk-analysis.md`              |
+| `future-performance-outlook`  | `FuturePerformanceOutlook` | `docs/insights-ui/etf-prompts/future-performance-outlook.md` |
 
 Background on the refinement philosophy lives in `etf-prompts/prompt-finalization-approach.md`.
 
@@ -127,7 +127,7 @@ Template:
 
 <for Loop A>
 
-- `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md` — <one-line summary>, or
+- `docs/insights-ui/etf-prompts/past-returns.md` — <one-line summary>, or
   **"no change — prompt produced solid output across the sampled ETFs."**
 
 <for Loop B>
@@ -153,7 +153,7 @@ next category.
 ```bash
 export CATEGORY=performance-and-returns    # or cost-efficiency-and-team / risk-analysis / future-performance-outlook
 export ITER=1
-export ITER_ROOT="$PWD/../docs/ai-knowledge/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export ITER_ROOT="$PWD/../docs/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
 ```
@@ -230,7 +230,7 @@ if Loop A hasn't been run):
 ```bash
 # Only needed if no reports dir exists yet:
 export CATEGORY=performance-and-returns
-export ITER_ROOT="$PWD/../docs/ai-knowledge/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export ITER_ROOT="$PWD/../docs/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 yarn etfs:fetch --in "$SAMPLE" --category "$CATEGORY" --out-dir "$ITER_ROOT/reports"
 ```

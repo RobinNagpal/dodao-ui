@@ -249,7 +249,7 @@ This platform represents the future of financial technology, combining artificia
 
 ## 📚 Development Guidelines
 
-For AI-assisted development and coding patterns specific to this project, refer to the comprehensive knowledge base in **[../docs/ai-knowledge/](../docs/ai-knowledge/)**. This includes:
+For AI-assisted development and coding patterns specific to this project, refer to the comprehensive knowledge base in **[../docs/](../docs/)**. This includes:
 
 - **Backend Instructions** - Next.js API development patterns for financial data processing
 - **UI Instructions** - React/Next.js UI patterns for data visualization and user interfaces

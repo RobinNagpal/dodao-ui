@@ -31,10 +31,10 @@ edited in this runbook):
 
 | `<category>`                 | Prompt file                                                               |
 | ---------------------------- | ------------------------------------------------------------------------- |
-| `performance-and-returns`    | `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`               |
-| `cost-efficiency-and-team`   | `docs/ai-knowledge/insights-ui/etf-prompts/cost-efficiency-team.md`       |
-| `risk-analysis`              | `docs/ai-knowledge/insights-ui/etf-prompts/risk-analysis.md`              |
-| `future-performance-outlook` | `docs/ai-knowledge/insights-ui/etf-prompts/future-performance-outlook.md` |
+| `performance-and-returns`    | `docs/insights-ui/etf-prompts/past-returns.md`               |
+| `cost-efficiency-and-team`   | `docs/insights-ui/etf-prompts/cost-efficiency-team.md`       |
+| `risk-analysis`              | `docs/insights-ui/etf-prompts/risk-analysis.md`              |
+| `future-performance-outlook` | `docs/insights-ui/etf-prompts/future-performance-outlook.md` |
 
 **Prerequisite:** `AUTOMATION_SECRET` exported (source `discord-claude-bot/.env`).
 
@@ -47,7 +47,7 @@ All commands below run from `insights-ui/`.
 ```bash
 export CATEGORY=<category>                                     # the arg the user gave
 export ITER=1
-export ITER_ROOT="$PWD/../docs/ai-knowledge/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
+export ITER_ROOT="$PWD/../docs/insights-ui/tasks/etf-verification/$(date +%Y-%m-%d)-$CATEGORY"
 export SAMPLE="$PWD/src/etf-analysis-data/sample-etfs.json"
 mkdir -p "$ITER_ROOT/iter-$ITER"
 ```
@@ -166,7 +166,7 @@ Recommended structure:
 ## End-of-task output (what this branch should contain)
 
 ```
-docs/ai-knowledge/insights-ui/tasks/etf-verification/<date>-<category>/iter-1/
+docs/insights-ui/tasks/etf-verification/<date>-<category>/iter-1/
 ├── requests.json                      # from step 2
 ├── reports/                           # from step 4 (16 markdowns)
 │   ├── broad-equity/{SYM}.md

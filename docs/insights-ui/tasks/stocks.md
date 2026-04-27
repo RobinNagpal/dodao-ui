@@ -640,7 +640,7 @@ be more than a re-submission.
 - [ ] **Pull the affected URLs from Search Console**:
   - Export the current list of URLs marked "Crawled — currently not indexed" under
     this sitemap.
-  - Save it to `docs/ai-knowledge/insights-ui/tasks/seo/crawled-not-indexed-business-and-moat.csv`
+  - Save it to `docs/insights-ui/tasks/seo/crawled-not-indexed-business-and-moat.csv`
     (or similar) so we can diff against future validation runs.
 - [ ] **Sample + audit the affected pages** (10–20 representative URLs):
   - Do they render real, meaningful content server-side, or is the main analysis

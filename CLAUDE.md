@@ -216,12 +216,12 @@ Common utilities, components, and libraries used across projects.
 
 ## AI Knowledge Base (MUST READ)
 
-**Before starting any coding or knowledge task, always check `docs/ai-knowledge/`.**
+**Before starting any coding or knowledge task, always check `docs/`.**
 This is the main source for coding patterns, project requirements, and implementation plans.
 
 ### Code Knowledge
 
-Use **`docs/ai-knowledge/code-knowledge/`** for shared coding conventions:
+Use **`docs/code-knowledge/`** for shared coding conventions:
 
 * Backend instructions (Next.js API patterns)
 * UI instructions (React/Next.js patterns)
@@ -230,7 +230,7 @@ Use **`docs/ai-knowledge/code-knowledge/`** for shared coding conventions:
 
 ### Project Knowledge
 
-Use **`docs/ai-knowledge/projects/`** for project-specific docs. Each project may include:
+Use **`docs/projects/`** for project-specific docs. Each project may include:
 
 * `features/`
 * `requirements.md`
@@ -241,12 +241,12 @@ Use **`docs/ai-knowledge/projects/`** for project-specific docs. Each project ma
 
 Currently documented:
 
-* `docs/ai-knowledge/insights-ui/` — KoalaGains topical knowledge + active task lists (`tasks/`).
-* `docs/ai-knowledge/projects/simulations/`
+* `docs/insights-ui/` — KoalaGains topical knowledge + active task lists (`tasks/`).
+* `docs/projects/simulations/`
 
 ### Topical Knowledge
 
-Use **`docs/ai-knowledge/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/ai-knowledge/insights-ui/AIKnowledge.md`](docs/ai-knowledge/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
+Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsystems that aren't tied to a single feature spec — pipelines, prompts, runbooks, and analysis methodology. See [`docs/insights-ui/AIKnowledge.md`](docs/insights-ui/AIKnowledge.md) for the index. Each subfolder also has its own `AIKnowledge.md`. Subareas:
 
 * `etf-analysis/` — ETF analysis pipeline + ETF Scenarios system (`generate-etf-reports.md`, `etf-scenarios.md`)
 * `stock-analysis/` — `yarn stocks:add` / `yarn stocks:trigger` runbooks
@@ -269,12 +269,12 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 
 ## Additional Resources
 
-* `docs/ai-knowledge/AIKnowledge.md` (full index)
-* `docs/ai-knowledge/code-knowledge/AIKnowledge.md` (coding patterns index)
-* `docs/ai-knowledge/projects/AIKnowledge.md` (project docs index)
-* `docs/ai-knowledge/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, downside analysis, tariffs)
-* `docs/ai-knowledge/code-knowledge/build-process.md`
-* `docs/ai-knowledge/code-knowledge/monorepo-structure.md`
+* `docs/AIKnowledge.md` (full index)
+* `docs/code-knowledge/AIKnowledge.md` (coding patterns index)
+* `docs/projects/AIKnowledge.md` (project docs index)
+* `docs/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, downside analysis, tariffs)
+* `docs/code-knowledge/build-process.md`
+* `docs/code-knowledge/monorepo-structure.md`
 
 ---
 

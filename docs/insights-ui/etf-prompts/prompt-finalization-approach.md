@@ -15,7 +15,7 @@ Goal of the loop: produce a prompt that (a) only asks for analysis the input dat
 2. **Group / category mapping** — `etf-analysis-categories.json` maps ~130 categories (e.g. *Large Blend*, *High Yield Bond*) to 8 groups (`broad-equity`, `sector-thematic-equity`, `leveraged-inverse`, `fixed-income-core`, `fixed-income-credit`, `muni`, `alt-strategies`, `allocation-target-date`).
 3. **Prompt input schema** — `insights-ui/schemas/etf-analysis/inputs/<category>-input.schema.yaml` defines exactly which fields are passed into the prompt.
 4. **Input builder** — `insights-ui/src/utils/etf-analysis-reports/etf-report-input-json-utils.ts` fills the schema fields from the Prisma model (`EtfStockAnalyzerInfo`, `EtfMorAnalyzerInfo`, `EtfFinancialInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`, `EtfMorRiskInfo`).
-5. **Live prompt text** — stored in the DB, keyed by prompt name (e.g. `Past Returns for ETFs`). A frozen copy of what was used lives at `docs/ai-knowledge/insights-ui/etf-prompts/<category>.md`.
+5. **Live prompt text** — stored in the DB, keyed by prompt name (e.g. `Past Returns for ETFs`). A frozen copy of what was used lives at `docs/insights-ui/etf-prompts/<category>.md`.
 
 ---
 
@@ -27,7 +27,7 @@ The Past Returns category uses **group-based factor selection**, so we need to c
 
 - For each of the 8 groups, pick 3–4 real ETFs (different issuers, different subcategories inside the group where possible).
 - Verify each ETF's `category` field via `https://koalagains.com/etfs/<EXCHANGE>/<SYMBOL>/financial-data` — the page surfaces `EtfStockAnalyzerInfo.category`, which is what the group-mapping logic reads.
-- Write the picks to `docs/ai-knowledge/insights-ui/past-returns-prompt/etfs-per-group.md` (template — one table per group).
+- Write the picks to `docs/insights-ui/past-returns-prompt/etfs-per-group.md` (template — one table per group).
 
 Example table row for the `broad-equity` group:
 
@@ -93,7 +93,7 @@ Fetch invocations for the prompt ID (prompt `ba7c2d75-…` for Past Returns) and
 - **Other observations**
 
 Save per-ETF reviews plus a cross-cutting "prompt improvements" list to:
-`docs/ai-knowledge/insights-ui/etf-prompt-improvement/<category>-review-<YYYY-MM-DD>.md`
+`docs/insights-ui/etf-prompt-improvement/<category>-review-<YYYY-MM-DD>.md`
 (Example: `past-returns-review-2026-04-20.md`.)
 
 ### Step 6 — Inspect input data for gaps or scope leaks
@@ -130,7 +130,7 @@ Edit the live prompt (DB) using the review from step 5. Typical improvements:
 - Tell it how to handle missing data once, at the top, rather than per-paragraph.
 - Split the `overallAnalysisDetails` output into named paragraphs with a prescribed order.
 
-After editing the live prompt, save a frozen copy of the new version to `docs/ai-knowledge/insights-ui/etf-prompts/<category>.md`. This keeps the doc tree in sync with what the model actually sees.
+After editing the live prompt, save a frozen copy of the new version to `docs/insights-ui/etf-prompts/<category>.md`. This keeps the doc tree in sync with what the model actually sees.
 
 ### Step 9 — Close the loop
 
@@ -163,7 +163,7 @@ insights-ui/
     cost-efficiency-and-team-input.schema.yaml
     risk-analysis-input.schema.yaml
 
-docs/ai-knowledge/insights-ui/
+docs/insights-ui/
   etf-prompts/
     past-returns.md                                # frozen copy of the live prompt
     prompt-finalization-approach.md                # this document

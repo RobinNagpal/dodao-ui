@@ -211,7 +211,7 @@ This platform represents the future of business education, combining traditional
 
 ## 📚 Development Guidelines
 
-For AI-assisted development and coding patterns specific to this project, refer to the comprehensive knowledge base in **[../docs/ai-knowledge/](../docs/ai-knowledge/)**. This includes:
+For AI-assisted development and coding patterns specific to this project, refer to the comprehensive knowledge base in **[../docs/](../docs/)**. This includes:
 
 - **Backend Instructions** - Next.js API development patterns used in this project
 - **UI Instructions** - React/Next.js UI patterns including the useAuthGuard hook

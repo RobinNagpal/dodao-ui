@@ -11,7 +11,7 @@ Common coding patterns, conventions, and best practices used across the monorepo
 KoalaGains (Insights-UI) topical knowledge — ETF + stock pipelines, prompts, downside-analysis framework, tariffs subsystem, and the active task lists that drive ongoing work. See [insights-ui/AIKnowledge.md](insights-ui/AIKnowledge.md).
 
 ### [projects/](projects/)
-Per-project documentation for the rest of the monorepo (e.g. simulations). See [projects/AIKnowledge.md](projects/AIKnowledge.md).
+Per-project documentation and task lists for the other apps in the monorepo: `simulations/`, `defi-alerts/`, `x-news/`. See [projects/AIKnowledge.md](projects/AIKnowledge.md).
 
 ---
 

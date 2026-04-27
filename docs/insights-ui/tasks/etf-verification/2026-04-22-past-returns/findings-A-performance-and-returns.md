@@ -3,7 +3,7 @@
 - **Date:** 2026-04-22
 - **Loop:** A (prompt refinement)
 - **Category in scope:** PerformanceAndReturns (`performance-and-returns`)
-- **Prompt file:** `docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`
+- **Prompt file:** `docs/insights-ui/etf-prompts/past-returns.md`
 - **Run:** 16 ETFs across all 8 groups, regenerated via
   `POST /api/koala_gains/etfs-v1/generation-requests`. All 16 completed within ~8 minutes;
   0 failed.
@@ -187,7 +187,7 @@ where the pattern appeared.
 
 ## Final changes
 
-- **`docs/ai-knowledge/insights-ui/etf-prompts/past-returns.md`** — apply four targeted
+- **`docs/insights-ui/etf-prompts/past-returns.md`** — apply four targeted
   tightenings:
   1. **Expand the banned-adjective list** to include the intensifier adverbs that showed
      up repeatedly: "entirely", "strictly", "totally", "utterly", "absolutely",

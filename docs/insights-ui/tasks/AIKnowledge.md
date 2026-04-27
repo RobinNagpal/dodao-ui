@@ -11,6 +11,7 @@ Active KoalaGains task lists — open work, closed work, prompt-tuning logs, and
 - **[stock-scenarios.md](stock-scenarios.md)** — Open work on the stock-scenarios surface.
 - **[reit-details-page.md](reit-details-page.md)** — Checklist for the REIT details page work.
 - **[etfs-open-questions.md](etfs-open-questions.md)** — Outstanding questions/ambiguities on the ETF side that block decisions.
+- **[koala-gains-ui.md](koala-gains-ui.md)** — Cross-cutting UI fixes / cleanups for the koala-gains app (notifications, user-tickers page, etc.).
 
 ## Closed / archive
 

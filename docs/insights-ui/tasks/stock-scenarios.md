@@ -54,7 +54,7 @@ exposed tickers**, each with a clear mechanical reason and an estimated % move.
 > match the schema; run `yarn prisma migrate deploy` (or `migrate dev`) on a
 > developer DB before merging to catch any divergence. Seed content (§Phase 3)
 > is still empty — create
-> `docs/ai-knowledge/insights-ui/stock-analysis/stock-market-scenarios.md`
+> `docs/insights-ui/stock-analysis/stock-market-scenarios.md`
 > before running the automation script.
 
 ### 1.1) Prisma schema
@@ -367,7 +367,7 @@ stocks:
 Mirror `src/scripts/import-etf-scenarios.ts`:
 
 - [x] Reads a markdown file (default
-  `docs/ai-knowledge/insights-ui/stock-analysis/stock-market-scenarios.md` — create this
+  `docs/insights-ui/stock-analysis/stock-market-scenarios.md` — create this
   directory during Phase 3 seeding), parses via the new parser, POSTs each scenario to
   `/api/stock-scenarios?token=<AUTOMATION_SECRET>`.
 - [x] Honours env vars: `SCENARIOS_API_BASE`, `AUTOMATION_SECRET`, `SCENARIOS_MD_PATH`,
