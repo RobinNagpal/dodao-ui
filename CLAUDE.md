@@ -252,7 +252,6 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 * `stock-analysis/` — `yarn stocks:add` / `yarn stocks:trigger` runbooks
 * `etf-prompts/` — Source-of-truth prompt text for each ETF analysis category
 * `etf-prompt-improvement/` — Iterative prompt-tuning review notes
-* `downside-analysis/` — Equity downside / drawdown framework with the 31-stock case study
 * `tariffs/` — Tariffs subsystem reference (`tariffs-functionality.md`, `tariff-usecases.md`)
 * `tasks/` — Active KoalaGains task lists (open + closed): ETFs, stocks, tariffs, scenarios, prompt tuning
 
@@ -272,7 +271,7 @@ Each project may also have a top-level `AIKnowledge.md` (e.g., `simulations/AIKn
 * `docs/AIKnowledge.md` (full index)
 * `docs/code-knowledge/AIKnowledge.md` (coding patterns index)
 * `docs/projects/AIKnowledge.md` (project docs index)
-* `docs/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, downside analysis, tariffs)
+* `docs/insights-ui/AIKnowledge.md` (Insights-UI topical knowledge index — ETF pipeline, prompts, tariffs)
 * `docs/code-knowledge/build-process.md`
 * `docs/code-knowledge/monorepo-structure.md`
 

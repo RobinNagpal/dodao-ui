@@ -8,7 +8,6 @@ Topical reference docs for the Insights-UI (KoalaGains) app — patterns, prompt
 - **[stock-analysis/](stock-analysis/)** — Runbooks for adding new stocks (`yarn stocks:add`) and triggering stock report generation (`yarn stocks:trigger`). See [stock-analysis/AIKnowledge.md](stock-analysis/AIKnowledge.md).
 - **[etf-prompts/](etf-prompts/)** — Source-of-truth prompt text for each ETF analysis category (past returns, cost & efficiency, risk, future outlook, intro/strategy, competition) plus the prompt-finalization approach. See [etf-prompts/AIKnowledge.md](etf-prompts/AIKnowledge.md).
 - **[etf-prompt-improvement/](etf-prompt-improvement/)** — Iterative prompt-review notes, factor-set reviews, and per-ETF audits captured during the prompt-tuning loop. See [etf-prompt-improvement/AIKnowledge.md](etf-prompt-improvement/AIKnowledge.md).
-- **[downside-analysis/](downside-analysis/)** — Equity downside / drawdown framework with per-ticker case studies (the 31-stock study). See [downside-analysis/AIKnowledge.md](downside-analysis/AIKnowledge.md).
 - **[tariffs/](tariffs/)** — Reference docs for the tariffs subsystem: pipeline, data structures, UI components, S3 storage, admin flow, and the use-case catalog that drives feature prioritization.
 - **[tasks/](tasks/)** — Active KoalaGains task lists (open + closed work, per surface): ETFs, stocks, tariffs, scenarios, prompt tuning, plus open questions and per-page checklists.
 

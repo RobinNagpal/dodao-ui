@@ -8,7 +8,7 @@ This directory contains comprehensive development guidelines, coding patterns, p
 Common coding patterns, conventions, and best practices used across the monorepo. Acts as an index pointing to the pattern files in this directory. See [code-knowledge/AIKnowledge.md](code-knowledge/AIKnowledge.md).
 
 ### [insights-ui/](insights-ui/)
-KoalaGains (Insights-UI) topical knowledge — ETF + stock pipelines, prompts, downside-analysis framework, tariffs subsystem, and the active task lists that drive ongoing work. See [insights-ui/AIKnowledge.md](insights-ui/AIKnowledge.md).
+KoalaGains (Insights-UI) topical knowledge — ETF + stock pipelines, prompts, tariffs subsystem, and the active task lists that drive ongoing work. See [insights-ui/AIKnowledge.md](insights-ui/AIKnowledge.md).
 
 ### [projects/](projects/)
 Per-project documentation and task lists for the other apps in the monorepo: `simulations/`, `defi-alerts/`, `x-news/`. See [projects/AIKnowledge.md](projects/AIKnowledge.md).
@@ -34,6 +34,5 @@ See [insights-ui/AIKnowledge.md](insights-ui/AIKnowledge.md) for the full index.
 - **Stock analysis** — [insights-ui/stock-analysis/AIKnowledge.md](insights-ui/stock-analysis/AIKnowledge.md) — `yarn stocks:add`, `yarn stocks:trigger`, and the `StockScenario` admin surface.
 - **ETF prompts** — [insights-ui/etf-prompts/AIKnowledge.md](insights-ui/etf-prompts/AIKnowledge.md) — source-of-truth prompt text per category plus the prompt-finalization approach.
 - **ETF prompt improvement** — [insights-ui/etf-prompt-improvement/AIKnowledge.md](insights-ui/etf-prompt-improvement/AIKnowledge.md) — iterative review notes from the prompt-tuning loop.
-- **Downside analysis** — [insights-ui/downside-analysis/AIKnowledge.md](insights-ui/downside-analysis/AIKnowledge.md) — equity downside / drawdown framework with the 31-stock case study.
 - **Tariffs** — [insights-ui/tariffs/AIKnowledge.md](insights-ui/tariffs/AIKnowledge.md) — pipeline + use-case catalog. Backlog of next-up tariff features lives in [insights-ui/tasks/optional_tariff_features.md](insights-ui/tasks/optional_tariff_features.md).
 - **Active task lists** — [insights-ui/tasks/AIKnowledge.md](insights-ui/tasks/AIKnowledge.md) — open + closed work for ETFs, stocks, tariffs, scenarios, and the prompt-tuning loop.
