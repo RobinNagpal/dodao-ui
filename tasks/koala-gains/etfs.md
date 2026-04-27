@@ -44,6 +44,38 @@ list below — these are the four things to actually push on next.
   - Definition of done: a scheduled run that, with no human in the loop, produces
     a night's worth of refreshed reports across stocks + ETFs using Sonnet, with
     logs we can review the next morning.
+- [ ] **5. Use the internet for missing + latest info during Claude Code generation**
+  - When Claude Code regenerates an ETF report on the off-hours runner, it should
+    **actively use the internet** to (a) fill in any **missing** data points the
+    prompt input lacks (issuer, AUM, expense ratio, holdings concentration,
+    Morningstar category, PM identity, etc.), and (b) pull the **latest**
+    information (recent prospectus supplements, fund-fact-sheet updates, PM
+    changes, 19a-1 distributions, regulatory actions, material news in the last
+    90 days) before producing the report.
+  - Update every report-generation prompt (Performance, Cost & Team, Risk,
+    Summary, Index & Strategy, Future Outlook, Famous-ETF comparison, Custom
+    Reports) to include an explicit instruction along the lines of:
+    *"If any input field you need is missing, blank, or stale, **use the
+    internet** to find it. Always also search for the **latest** information on
+    this ETF — recent prospectus supplements, fund-fact-sheet updates, PM
+    changes, distributions, news in the last 90 days — and incorporate it
+    before writing the section. Cite the source URL for every internet-sourced
+    fact."*
+  - Confirm the Claude Code invocation actually has web access on the runner;
+    a prompt instruction is a no-op if the session is headless without web /
+    fetch tools.
+  - Extend the output contract with a `sources: { url, title, accessedAt }[]`
+    array per section so we can render citations on the detail page and audit
+    which claims came from the internet, and include as-of dates inline for any
+    numeric / factual claim.
+  - Guardrails: restrict to reputable sources (issuer site, SEC EDGAR fund
+    filings, primary news outlets, official regulators); cap wall-clock per
+    internet call so a slow site doesn't blow the off-hours window; track an
+    `internetAugmented` flag + unique-URL count per run and surface it in the
+    admin generation-requests view (1.4) for auditability.
+  - Pairs with the stock-side equivalent in `stocks.md` ("Use the internet for
+    missing + latest info during Claude Code generation") — share the same
+    web-tool config + citation contract so we maintain one pipeline, not two.
 - [ ] **4. Split the Index & Strategy field into multiple structured fields**
   - Today **Index & Strategy** is a single blob that crams intro + strategy + other
     context into one field, which makes it hard to lay out cleanly on the detail

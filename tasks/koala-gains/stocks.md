@@ -70,6 +70,55 @@ usage.
   - Do we want the same mechanism for ETFs later (the ETF side has a separate "daily
     generation" task in SEO phase — decide whether to unify or keep separate).
 
+### Use the internet for missing + latest info during Claude Code generation
+
+Goal: when Claude Code regenerates a stock report on the off-hours runner, it should
+**actively use the internet** to (a) fill in any **missing** data points the prompt
+input lacks, and (b) pull the **latest** information (recent earnings, guidance,
+filings, executive changes, news, regulatory actions) before producing the report.
+Today the prompt is mostly fed pre-cached fields — that's why reports go stale fast
+and why some sections read like they were written from incomplete data.
+
+- [ ] **Update the report-generation prompts** (Business & Moat, Valuation, Financial
+  Statements, Future Outlook, Custom Reports — every long-form section) to include
+  an explicit instruction along the lines of:
+  *"If any input field you need is missing, blank, or stale, **use the internet** to
+  find it. Always also search for the **latest** information on this ticker —
+  recent earnings, guidance, 8-K filings, executive changes, lawsuits, regulatory
+  actions, material news in the last 90 days — and incorporate it before writing
+  the section. Cite the source URL for every internet-sourced fact."*
+- [ ] **Make sure the Claude Code invocation actually has web access**:
+  - Confirm the Claude Code session running on the off-hours runner has web /
+    fetch tools enabled — if it's running headless without web access, the prompt
+    instruction is a no-op.
+  - If we're running through `getLLMResponseForPromptViaInvocation` rather than
+    Claude Code, verify that path also exposes web search / fetch.
+- [ ] **Output contract additions**:
+  - Each section should return a `sources: { url, title, accessedAt }[]` array
+    alongside the existing markdown / structured output, so we can render
+    citations on the page and audit which claims came from the internet.
+  - For numeric or factual claims sourced online, include the **as-of date** in
+    the prose so readers don't assume a stale figure is current.
+- [ ] **Guardrails on internet use**:
+  - Restrict to reputable sources where possible: SEC EDGAR, company IR pages,
+    primary news outlets, official regulators. De-prioritize forum posts,
+    aggregators, and obvious AI-spam pages.
+  - Don't let internet-sourced text dominate the report — the analysis voice
+    should still be ours; the internet is an input, not a copy-paste source.
+  - Cap per-run wall-clock for internet calls so a single slow site doesn't blow
+    the off-hours window budget (ties into the cron's per-stock timeout).
+- [ ] **Track internet-augmented vs. pre-cached generation**:
+  - Persist a flag on each generated report indicating whether the run used
+    internet augmentation, plus a count of unique URLs cited.
+  - Surface it in the admin generation-requests view so we can see which reports
+    leaned on the internet vs. cached data only.
+- [ ] **Validate**:
+  - Spot-check a handful of regenerated reports — confirm latest earnings /
+    recent material news appear, sources resolve, and the prompt didn't
+    hallucinate citations.
+  - Compare a pre- and post-change report on the same ticker to confirm
+    freshness improved without quality regressing.
+
 ## Off-hours automated stock recategorization (Claude Code)
 
 Goal: during off-hours, let Claude Code sweep every stock ticker in our universe, verify
