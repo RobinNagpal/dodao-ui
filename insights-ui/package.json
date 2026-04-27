@@ -20,6 +20,7 @@
     "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts",
     "etfs:prompt": "tsx src/scripts/etfs/get-report-prompt.ts",
     "etfs:save": "tsx src/scripts/etfs/save-report.ts",
+    "etfs:csv-to-sql": "tsx src/scripts/etfs/csv-to-sql.ts",
     "stocks:trigger": "tsx src/scripts/tickers/trigger-generation.ts",
     "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",

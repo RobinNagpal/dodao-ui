@@ -1364,7 +1364,9 @@ model EtfStockAnalyzerInfo {
   assetClass String? @map("asset_class")
 
   stockPrice String? @map("stock_price")
-  percentChange String? @map("percent_change")
+  // Daily price change (i.e. "Price Change 1D") as displayed by source — kept as a
+  // percent-formatted string (e.g. "0.51%") to match the rest of the change_* fields.
+  change1d   String? @map("change_1d")
 
   isinNumber String? @map("isin_number")
   cusipNumber String? @map("cusip_number")
@@ -1467,6 +1469,9 @@ model EtfStockAnalyzerInfo {
   category String? @map("category")
 
   chgOpenPercent String? @map("chg_open_percent")
+  // Where the current price sits inside the 52-week low–high band, as a percent string
+  // (e.g. "79.41%"). 0% = at 52w low, 100% = at 52w high.
+  positionInRange String? @map("position_in_range")
   open Float? @map("open")
   low  Float? @map("low")
   high Float? @map("high")
