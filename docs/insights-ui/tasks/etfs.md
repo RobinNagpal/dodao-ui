@@ -76,6 +76,21 @@ phase-ordered list below.
   - Make sure the `Etf.isComplete` derivation, the public default filter, the
     admin "include incomplete ETFs" toggle, and the per-row missing-data
     indicators all ship together rather than landing piecemeal.
+- [ ] **5. ETF discoverability + internal linking**
+  - Once the ETFs list page (item 4 / §1.6) is finalized, wire it into the rest
+    of the site so ETF pages aren't an island.
+  - **Home page → ETFs**: the main thing — pick the entry points (hero / nav /
+    a featured-ETFs rail / "browse by category-group") so a first-time visitor
+    on the home page can reach the ETFs list and a few representative ETF
+    detail pages in one click.
+  - **ETF detail page → stock reports**: for each holding that's a stock we
+    already cover, link the ticker through to its stock report; otherwise leave
+    it as plain text. Graceful when most holdings aren't covered.
+  - **Stock detail page → ETF reports**: on a stock report, list the ETFs that
+    hold this ticker (with weight if available) and link each to its ETF
+    detail page. Cap to top N by weight to avoid clutter.
+  - Also revisit cross-links from category / scenario / trends pages into the
+    ETFs they reference so the link graph is dense rather than star-shaped.
 
 ---
 
