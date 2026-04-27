@@ -29,7 +29,7 @@ const EXCHANGE_TO_URL_SEGMENT: Record<AllExchanges, string> = {
   // Canada Exchanges
   [CanadaExchanges.TSX]: 'tsx',
   [CanadaExchanges.TSXV]: 'tsxv',
-  [CanadaExchanges.NEO]: 'cboe',
+  [CanadaExchanges.NEO]: 'neo',
 
   // Pakistan Exchange
   [PakistanExchanges.PSX]: 'psx',

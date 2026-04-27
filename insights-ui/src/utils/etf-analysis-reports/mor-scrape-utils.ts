@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { AllExchanges, toExchange, USExchanges } from '@/utils/countryExchangeUtils';
+import { AllExchanges, CanadaExchanges, toExchange, USExchanges } from '@/utils/countryExchangeUtils';
 
 export type MorKind = 'quote' | 'risk' | 'people' | 'portfolio';
 
@@ -17,7 +17,7 @@ export interface TriggerMorScrapeResult {
   kind: MorKind;
 }
 
-type MorEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats';
+type MorEtfExchangeSegment = 'xnys' | 'xnas' | 'arcx' | 'bats' | 'xtse' | 'neoe';
 
 function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment {
   switch (exchange) {
@@ -29,6 +29,10 @@ function toMorEtfExchangeSegment(exchange: AllExchanges): MorEtfExchangeSegment 
       return 'arcx';
     case USExchanges.BATS:
       return 'bats';
+    case CanadaExchanges.TSX:
+      return 'xtse';
+    case CanadaExchanges.NEO:
+      return 'neoe';
     default:
       throw new Error(`Unsupported exchange: ${exchange}`);
   }

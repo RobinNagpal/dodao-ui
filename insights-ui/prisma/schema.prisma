@@ -1365,8 +1365,7 @@ model EtfStockAnalyzerInfo {
 
   stockPrice String? @map("stock_price")
   // Daily price change (i.e. "Price Change 1D") as displayed by source — kept as a
-  // percent-formatted string (e.g. "0.51%") to match the rest of the change_* fields.
-  change1d   String? @map("change_1d")
+  percentChange String? @map("percent_change")
 
   isinNumber String? @map("isin_number")
   cusipNumber String? @map("cusip_number")
