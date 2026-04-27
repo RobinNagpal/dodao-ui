@@ -6,7 +6,7 @@ import { parseScenariosMarkdown, ParsedScenario } from '@/utils/etf-scenario-mar
 
 const DEFAULT_MARKDOWN_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  '../../../docs/ai-knowledge/insights-ui/etf-analysis/etf-market-scenarios.md'
+  '../../../docs/insights-ui/etf-analysis/etf-market-scenarios.md'
 );
 
 const API_BASE = (process.env.SCENARIOS_API_BASE ?? 'https://koalagains.com').replace(/\/+$/, '');

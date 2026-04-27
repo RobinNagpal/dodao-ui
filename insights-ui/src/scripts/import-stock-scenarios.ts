@@ -8,7 +8,7 @@ import { parseStockScenariosMarkdown, ParsedStockScenario } from '@/utils/stock-
 // hasn't been created yet, point at it via `SCENARIOS_MD_PATH`.
 const DEFAULT_MARKDOWN_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
-  '../../../docs/ai-knowledge/insights-ui/stock-analysis/stock-market-scenarios.md'
+  '../../../docs/insights-ui/stock-analysis/stock-market-scenarios.md'
 );
 
 const API_BASE = (process.env.SCENARIOS_API_BASE ?? 'https://koalagains.com').replace(/\/+$/, '');
