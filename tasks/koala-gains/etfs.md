@@ -761,6 +761,79 @@ to re-derive / second-guess category conclusions.
 
 ---
 
+## Social media content — convert ETF reports + scenarios into posts
+
+Goal: turn the work we already produce (ETF reports, **ETF scenarios**, competition
++ similar-ETF analysis, famous-ETF comparisons, target-investor-group fit, active-ETF
+team profiles, ETF trends) into a steady cadence of **social media content** that
+drives traffic back to KoalaGains. The content engine should be cheap to run (built
+on top of artifacts we already generate) and consistent enough that we ship something
+useful every week without a one-off scramble.
+
+Paired with the stock-side task in `stocks.md` — share templates, queue, and
+posting infra. Don't build two parallel systems; only the source artifacts differ.
+
+- [ ] **Content sources we can mine** (today + planned):
+  - **ETF scenarios** (already shipped — `EtfScenario` + `EtfScenarioEtfLink`):
+    each scenario card / detail page is a natural post — direction, timeframe,
+    probability, priced-in bucket, expected move, winners/losers list — a great
+    fit for hook + bullets + chart.
+  - **Competition / similar-ETF analysis** (1.2): "If you own X, also look at Y" —
+    cheaper-fee alternative, lower-risk substitute, narrower-mandate alternative,
+    etc. Each comparison row is post-worthy.
+  - **"Choose this ETF if…" output** from the famous-ETF comparison (1.3): when
+    we ship that section, "VOO vs SPY vs IVV in 2026" style posts write
+    themselves from the structured output.
+  - **Target-investor-group fit** (2.1): per-persona "best ETFs for the income
+    retiree / young DCA investor / corporate treasury" lists pulled directly from
+    the matched-target-group rows.
+  - **Active-ETF investment team profiles** (1.8): short LinkedIn-style "PM
+    spotlight" posts using the `keyPeople` data — strongest on LinkedIn given the
+    audience overlap.
+  - **ETF trends** (Trends page below): each trend → multiple posts (the trend
+    itself, ETF winners, ETF losers, "priced-in?" angle).
+  - **Verdict / Final-Summary changes** when an ETF is regenerated (3.3.f): the
+    diff itself is post-worthy.
+- [ ] **Content templates** — share with the stock pipeline; ETF-specific shapes:
+  - **Scenario card post** — same shape as stock-side, sourced from
+    `EtfScenario`.
+  - **"Cheaper / safer / narrower alternative to X"** — pull straight from the
+    competition + similar-ETF output.
+  - **"Best ETFs for {investor profile}"** — sourced from target-investor-group
+    matches; one post per persona.
+  - **PM spotlight** (active ETFs only — never for index/passive funds).
+  - **Trend post** — trend + 2–3 ETF winners + link to the trend page.
+- [ ] **Platform mix**: same primary (LinkedIn + X), same secondary tier as the
+  stock side. Stock + ETF content shares the same queue and the same week's
+  schedule — alternate / interleave so the audience sees both flavors and the
+  feed isn't all one asset class.
+- [ ] **Production pipeline**:
+  - Reuse the **post-draft generator** + **content queue** built for the stock
+    side (`stocks.md`); only the input adapter differs (ETF artifact id →
+    template inputs).
+  - Drafts → human review → schedule → publish → UTM-attributed traffic.
+- [ ] **Cadence + governance**:
+  - Mix into the same minimum-weekly cadence target as stocks — e.g. of the N
+    posts per week, ~half are ETF-sourced and ~half stock-sourced; tune by what
+    actually performs.
+  - Compliance pass on every post — no advice phrasing, disclaimers where
+    appropriate, claims grounded in the underlying ETF report.
+- [ ] **Measurement**:
+  - Per-platform engagement + per-ETF-artifact attribution into the same
+    dashboard the stock side uses.
+  - High-engagement scenarios / target-group lists feed back into off-hours
+    refresh prioritization (don't let a hit post link to a stale report).
+- [ ] **Open questions**:
+  - Active-ETF PM spotlights are LinkedIn-leaning; check whether they pull
+    enough engagement on X to be worth cross-posting or should stay
+    LinkedIn-only.
+  - Whether the "Best ETFs for {persona}" posts should link to a target-group
+    landing page (filter pre-applied on the ETF list — see 2.1) rather than
+    individual ETF reports — that page may need to ship before the post format
+    is worthwhile.
+  - Cross-link with the stock social pipeline (`stocks.md`): confirmed shared
+    queue + templates; ETF differs only in the input adapter.
+
 ## Trends page (ETFs)
 
 Goal: a dedicated page where we record long-running **trends** — macro, demographic,

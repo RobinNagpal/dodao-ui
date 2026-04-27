@@ -377,6 +377,85 @@ glance. This also feeds the **founder / owner-operator quality** dimension of th
     tickers (parent + sub); decide whether to model `Person` as its own table
     with stock links, or denormalize per ticker.
 
+## Social media content — convert reports into posts
+
+Goal: turn the work we already produce (stock reports, **stock scenarios**, the
+10-bagger shortlist, founder/management profiles, trends) into a steady cadence of
+**social media content** that drives traffic back to KoalaGains. The content engine
+should be cheap to run (built on top of artifacts we already generate) and consistent
+enough that we ship something useful every week without a one-off scramble.
+
+This task is paired with the ETF-side equivalent in `etfs.md` — they should share the
+templates, queue, and posting infra. Don't build two parallel systems.
+
+- [ ] **Content sources we can mine** (today + planned):
+  - **Stock scenarios** (the new feature being finished + rolled out — see "Stock
+    scenarios — finish + roll out" above): each scenario card / detail page is a
+    natural post — direction, timeframe, priced-in bucket, expected move, winners
+    / losers — formatted for a hook + 3–5 bullet points + chart.
+  - **10-bagger shortlist**: a quarterly "10 small-caps we think can 10x" thread is
+    one of the highest-share post shapes for retail finance; the lens scoring +
+    one-paragraph "why this could 10x" maps cleanly onto a numbered post.
+  - **Founder / management team profiles**: short LinkedIn-style "founder spotlight"
+    posts pulling from the new `keyPeople` data.
+  - **Off-hours-refreshed reports**: when a Business & Moat / Valuation / Custom
+    Report regenerates, the diff (verdict change, fair-value change, new risks
+    flagged) is itself post-worthy.
+  - **Stock trends** (once the trends page ships): each trend → multiple posts
+    (the trend itself, the winners list, the losers list, an "is it priced in?"
+    angle).
+- [ ] **Content templates** — codify a small set of repeatable shapes so we're not
+  reinventing every post:
+  - **Scenario card post** — hook, one-line setup, direction + timeframe +
+    probability + priced-in, 1–3 bullets on the thesis, link to scenario detail.
+  - **Top-N post** (10-baggers, top dividend payers, top moats by sector, etc.) —
+    numbered list, one line per name, link to the curated list page.
+  - **Founder spotlight** — photo, name + title + tenure, 2–3 sentence bio, why
+    they matter, link to the stock report.
+  - **Verdict-change post** — "We updated our view on X" — old verdict → new
+    verdict, what triggered the change, link to the report.
+  - **Trend post** — trend title + historical analog, 2–3 winners, link to the
+    trend page.
+- [ ] **Platform mix** (pick a primary + secondary, don't try to be everywhere):
+  - **Primary**: LinkedIn (matches the audience for value-investing + the
+    "leadership" angle from the founder data) and **X/Twitter** (the standard
+    finance-twitter loop).
+  - **Secondary**: Reddit (relevant subs only — `r/investing`, `r/stocks`,
+    `r/CanadianInvestor` once 1.7 unlocks Canadian coverage), Threads, YouTube
+    Shorts / Instagram Reels for chart-driven scenarios.
+  - Don't ship all of these at once — start with LinkedIn + X, add a third only
+    once the first two are humming.
+- [ ] **Production pipeline**:
+  - Build a small **post-draft generator** that, given a source artifact (scenario
+    id, ticker id, trend id, shortlist id), renders a draft post per template via
+    the existing prompt infra (`getLLMResponseForPromptViaInvocation`).
+  - Drafts land in a lightweight **content queue** (a new admin page) where a
+    human reviews, edits, picks platforms, schedules, and approves.
+  - Approved posts are pushed to a scheduling tool (Buffer / Hootsuite / Hypefury,
+    or a thin in-house scheduler) — start with whatever's cheapest, swap later.
+  - Every post carries a UTM-tagged link back to the relevant KoalaGains page so
+    we can attribute traffic.
+- [ ] **Cadence + governance**:
+  - Target a **minimum** weekly cadence (e.g. 1 scenario post + 1 founder
+    spotlight + 1 verdict-change or top-N post per week) on each primary platform
+    once the queue is live.
+  - One person owns the queue per week — don't let it become a free-for-all.
+  - Compliance pass on every post — no investment-advice phrasing, disclaimers
+    where appropriate, claims grounded in the underlying report.
+- [ ] **Measurement**:
+  - Per-platform impressions / engagement / clicks tracked in one dashboard.
+  - Per-source-artifact attribution: which scenario / stock / founder profile
+    actually drove sessions.
+  - Feed the winners back into the off-hours runner — if a scenario gets
+    high engagement, prioritize refreshing/expanding it.
+- [ ] **Open questions**:
+  - Build vs. buy on the scheduler — the cheapest path is probably an existing
+    SaaS until volume justifies our own.
+  - Voice / tone — single editorial voice across platforms, or platform-tailored?
+    Default: shared core + platform-specific opener.
+  - Cross-link with the ETF social pipeline (`etfs.md`) — confirmed shared queue
+    + shared templates; only the source artifacts differ.
+
 ## Custom Reports ("random reports") per stock
 
 Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`
