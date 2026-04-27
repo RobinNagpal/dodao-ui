@@ -317,6 +317,66 @@ survivors through a structured 10-bagger lens.
   - Geographic scope — US only at first, or also include Canadian small-caps once
     `etfs.md` 1.7 unlocks the broader Canadian universe?
 
+## Founder & management team — LinkedIn-sourced info
+
+Goal: founders and management teams are one of the most-cited reasons a great
+business stays great (or a mediocre one re-rates). For every stock we cover, surface
+the **founder + key executives** with their LinkedIn profiles, tenure, and a short
+human-readable bio, so readers can size up the people running the business at a
+glance. This also feeds the **founder / owner-operator quality** dimension of the
+10-bagger lens above.
+
+- [ ] **Data shape — per stock** (extend the existing ticker model):
+  - `keyPeople: { role, name, title, linkedinUrl, photoUrl?, tenureSinceYear?,
+    isFounder: boolean, bio: string, source }[]`.
+  - At minimum capture: **founder(s)**, **CEO**, **CFO**, **COO/President**, plus
+    any board chair / lead-director if distinct from CEO.
+  - `source` records where each row came from (e.g. company website, 10-K, proxy
+    statement, manual curation, scraping-lambdas extractor) so we can re-validate
+    later.
+  - Audit fields (`updatedAt`, `verifiedAt`) so we know how stale a row is.
+- [ ] **Acquisition strategy** (be deliberate — LinkedIn ToS bans scraping):
+  - **Do not scrape LinkedIn directly.** Instead, build a LinkedIn-URL **resolver**
+    that (a) takes the canonical name + company from official sources, then
+    (b) accepts a `linkedinUrl` either through a public company page that already
+    links it, an admin curation tool, or a paid people-data provider (PDL,
+    Clearbit, Crunchbase, etc.) that has its own LinkedIn licensing.
+  - Primary structured sources: company **About / Leadership** page, latest
+    **10-K / 20-F / proxy statement**, IR site, press releases.
+  - Use the existing `scraping-lambdas` infra to ingest the structured
+    leadership tables from these sources; LinkedIn URL is enriched on top, not the
+    primary key.
+- [ ] **Surfacing on the stock page**:
+  - Add a **"Leadership"** block to the stock detail page (place next to or under
+    Business & Moat — that's where the analysis already references management).
+  - Card per person: photo (where licensed), name, title, "Founder" badge if
+    applicable, tenure, 1–2 sentence bio, LinkedIn icon link (rel=`nofollow noopener
+    external`).
+  - Compact mode for the main stock page; full list on the per-section detail
+    page (mirrors the holdings pattern).
+- [ ] **Use the data in analysis**:
+  - Pass the leadership block into the **Business & Moat** prompt input (founder
+    presence, tenure, insider ownership signals) so the moat narrative grounds
+    its team-quality claims in actual data, not inference.
+  - Feed the same data into the **10-bagger lens** scoring (founder / owner-
+    operator dimension).
+- [ ] **Refresh + verification**:
+  - Schedule a quarterly re-ingest on the off-hours Claude-Code runner so people
+    who join / leave / change titles flow in.
+  - Provide an admin verification UI (mirror the per-ETF generation-requests page
+    pattern) that flags rows older than N months for human review.
+- [ ] **Open questions / risks**:
+  - **Compliance** — confirm with legal that storing publicly-listed LinkedIn
+    URLs (just the URL, not scraped profile content) is fine. Do not cache
+    photo / bio HTML pulled from LinkedIn — use issuer-supplied or licensed
+    photos.
+  - **Coverage** — what's the minimum set of people required before we render
+    the block? (e.g. CEO + at least one founder if applicable.) Suppress the
+    block entirely below threshold rather than rendering a half-empty card grid.
+  - **De-duplication** — same person can be on multiple boards / multiple
+    tickers (parent + sub); decide whether to model `Person` as its own table
+    with stock links, or denormalize per ticker.
+
 ## Custom Reports ("random reports") per stock
 
 Source: design doc `docs/ai-knowledge/projects/insights-ui/requirements/req-001-stock-custom-reports.md`

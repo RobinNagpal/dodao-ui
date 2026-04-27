@@ -269,6 +269,63 @@ funds show up alongside US listings in the same pipeline.
   - Currency display — are Canadian-ETF prices shown in CAD by default, with
     a USD toggle, or both?
 
+### 1.8) Active-ETF management team — LinkedIn-sourced info
+
+Goal: for **actively-managed** ETFs, surface the **portfolio managers + key
+investment team** with their LinkedIn profiles, tenure on the fund, and a short bio.
+Active-ETF outcomes are driven by the people running the strategy, so showing the
+team is essential context for readers. Skip this surface for **passive / index
+ETFs** — for those, the index methodology matters far more than any one person, so
+the leadership block would be noise.
+
+This is the ETF-side parallel of the stock task in `stocks.md` — share data shapes,
+ingestion infra, and refresh cadence wherever it makes sense.
+
+- [ ] **Eligibility — active ETFs only**:
+  - Add an `Etf.isActive` (or reuse an existing flag like `managementStyle =
+    'ACTIVE' | 'PASSIVE' | 'SEMI_ACTIVE'`) so we can filter cleanly.
+  - Render the leadership block only when active (or semi-active where a named
+    PM is publicly disclosed); suppress entirely otherwise.
+- [ ] **Data shape — per ETF** (mirror the stock model from `stocks.md`):
+  - `keyPeople: { role, name, title, linkedinUrl, photoUrl?, fundTenureSinceYear?,
+    isLeadPM: boolean, bio, source }[]`.
+  - Roles: **Lead PM**, **co-PMs**, optional **head of strategy / sector lead**.
+  - `source`, `updatedAt`, `verifiedAt` audit fields (same as stocks).
+- [ ] **Acquisition strategy** (no LinkedIn scraping):
+  - Primary sources: ETF **prospectus**, **Statement of Additional Information
+    (SAI)**, issuer **Leadership** / **Strategy team** page, fund fact sheets.
+  - Build the LinkedIn URL on top via the same resolver pattern used for stocks
+    — admin curation, paid people-data provider, or links the issuer publishes.
+  - Reuse the `scraping-lambdas` extractor that pulls the leadership table from
+    a structured page; ETF differs only in source URLs and field labels.
+- [ ] **Surfacing on the ETF detail page**:
+  - Add a **"Investment Team"** block on the active-ETF detail page (place under
+    Strategy or alongside Cost & Team — that's where the analysis already
+    references team quality).
+  - Card per person: photo (where licensed), name, title, "Lead PM" badge,
+    fund-tenure, 1–2 sentence bio, LinkedIn icon link (rel=`nofollow noopener
+    external`).
+- [ ] **Use the data in analysis**:
+  - Pass the team block into the **Cost & Team** prompt input so the team
+    narrative cites actual PM tenure / experience instead of vague language.
+  - Once 3.3.f is in place, the per-category `overallAnalysis` for Cost & Team
+    can reference these structured fields in the Final Summary.
+- [ ] **Refresh + verification**:
+  - Quarterly re-ingest on the same off-hours runner used for stocks — issuers
+    publish PM changes via prospectus supplements; pick those up.
+  - Admin verification UI flags rows older than N months for human review.
+- [ ] **Open questions / risks**:
+  - **Compliance** — same constraint as stocks: store the public LinkedIn URL,
+    do not cache scraped LinkedIn HTML / photos.
+  - **Coverage threshold** — minimum set of people required to render the block
+    (e.g. at least one named PM); below threshold, suppress.
+  - **Cross-fund PMs** — same PM often runs multiple ETFs at the same issuer.
+    Decide whether to model `Person` as its own table with ETF links (and
+    optionally cross-link to stock leadership rows), or denormalize per ETF.
+  - **Index ETFs** — confirm we never render the team block for purely passive
+    products even if data exists; the goal is to highlight where the team
+    *actually* drives outcomes.
+
 ---
 
 ## Phase 2 — Target audience / Goals
