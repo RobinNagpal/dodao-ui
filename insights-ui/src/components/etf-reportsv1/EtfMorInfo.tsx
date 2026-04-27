@@ -605,13 +605,16 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
                 { label: 'NAV', value: analyzer?.overviewNav },
                 { label: '1-Day Return', value: analyzer?.overviewOneDayReturn },
                 { label: 'Total Assets', value: analyzer?.overviewTotalAssets },
+                { label: 'Investment Size', value: analyzer?.overviewInvestmentSize },
                 { label: 'Adj. Expense Ratio', value: analyzer?.overviewAdjExpenseRatio },
                 { label: 'Prospectus Net Expense Ratio', value: analyzer?.overviewProspectusNetExpenseRatio },
+                { label: 'MER', value: analyzer?.overviewMer },
                 { label: 'Category', value: analyzer?.overviewCategory },
                 { label: 'Style Box', value: analyzer?.overviewStyleBox },
                 { label: 'SEC Yield', value: analyzer?.overviewSecYield },
                 { label: 'TTM Yield', value: analyzer?.overviewTtmYield },
                 { label: 'Turnover', value: analyzer?.overviewTurnover },
+                { label: 'Risk Level', value: analyzer?.overviewRiskLevel },
                 { label: 'Status', value: analyzer?.overviewStatus },
                 { label: 'Market NAV', value: analyzer?.marketNav },
                 { label: 'Open Price', value: analyzer?.marketOpenPrice },
@@ -619,6 +622,9 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
                 { label: 'Volume / Avg', value: analyzer?.marketVolumeAvg },
                 { label: 'Day Range', value: analyzer?.marketDayRange },
                 { label: 'Year Range', value: analyzer?.marketYearRange },
+                { label: 'Prospectus Benchmark', value: analyzer?.marketProspectusBenchmark },
+                { label: 'Discount', value: analyzer?.marketDiscount },
+                { label: 'Premium', value: analyzer?.marketPremium },
               ]}
             />
             {analyzer?.strategyText && <TextCard title="Investment Strategy" content={analyzer.strategyText} className="mt-4" />}
@@ -666,6 +672,7 @@ export default function EtfMorInfo({ data }: { data: EtfMorInfoOptionalWrapper }
                 { label: 'Number of Managers', value: people?.numberOfManagers },
                 { label: 'Longest Tenure', value: people?.longestTenure },
                 { label: 'Advisors', value: people?.advisors },
+                { label: 'Sub-Advisors', value: people?.subAdvisors },
                 { label: 'Average Tenure', value: people?.averageTenure },
               ]}
             />
