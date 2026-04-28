@@ -282,6 +282,10 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Critical view:** This is probably the strongest of the three ideas. It solves a real procurement question, but it needs reliable import volume, average unit value, tariff, freight, and country-risk data. Tariff alone is not enough to recommend a better sourcing country.
 
+**Adds value?** **Yes — strong.** This answers a question users cannot easily answer with a Google search: "Which country should I source this from?" Combining tariff, import volume, average unit value, and freight in one view is a real time-saver.
+
+**Best target audience:** U.S. importers in the $1M–$100M annual import range, procurement teams at mid-size retailers, sourcing consultants, contract manufacturers qualifying new suppliers, and private-label brands exploring supplier diversification away from China.
+
 **Example report:** [`import-sourcing-coffee-example.md`](./import-sourcing-coffee-example.md) — what this view should look like for U.S. coffee buyers across Brazil, Colombia, Vietnam, Honduras, Mexico, etc.
 
 ### 3. Export market opportunity comparison
@@ -294,4 +298,36 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Critical view:** Useful, but harder than the import comparison. Export opportunity depends on demand, local competition, distribution access, regulations, currency, and non-tariff barriers. This should be framed as "market discovery" rather than a confident export recommendation.
 
+**Adds value?** **Partial.** Useful as a starting point for market discovery, not as a stand-alone recommendation. Tariff differences alone don't pick an export market — demand, distribution, currency, and non-tariff barriers matter more. If we frame it as "shortlist of markets worth investigating," it adds value. If we present it as "go sell here," it will mislead users.
+
+**Best target audience:** SMB manufacturers and agribusiness exporters exploring new markets, trade consultants building client shortlists, industry associations and export-promotion agencies, and U.S. companies trying to shift away from low-margin destinations.
+
 **Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
+
+### 4. Bonded warehouse / FTZ calculator
+
+**What to show:** A simple tool where a user enters import value, expected holding period, share of goods that may be re-exported, and rough warehouse/FTZ fees. The output shows whether using a bonded warehouse or foreign-trade zone improves cash flow or duty timing compared with paying duty at entry.
+
+**Target audience:** Mid-size importers ($1M–$50M annual import value), finance teams modeling cash flow, businesses with seasonal inventory, and importers with a meaningful re-export share.
+
+**Why it helps:** Most importers don't know if FTZ or bonded warehouse is worth the setup cost. A back-of-envelope calculator helps them decide whether to talk to a customs broker about it, instead of ignoring the option or jumping in blindly.
+
+**Critical view:** A generic calculator can mislead. Real FTZ economics depend on warehouse rent, broker fees, weekly entry savings, compliance burden, and merchandise processing fees — not just duty timing. We should clearly mark this as a directional estimate, not a financial decision.
+
+**Adds value?** **Conditional — yes only if we keep it honest.** Useful as a "should I look into this?" gate. Most importers either don't know FTZ exists or assume it's only for big players. A simple calculator that says "yes, worth investigating" or "no, your volume is too small" saves users a meeting with a broker.
+
+**Best target audience:** Mid-size importers with annual import value above ~$1M considering FTZ setup, businesses with seasonal stock or high re-export share, e-commerce sellers with returns flow, and finance teams comparing cash-flow scenarios.
+
+### 5. Duty drawback eligibility checker
+
+**What to show:** A short questionnaire where the user describes their goods, what they do with them (re-export, destroy, use in manufacturing), and rough volume. The tool tells them which type of drawback may apply (manufacturing, unused merchandise, rejected merchandise) and a rough estimate of recoverable duties.
+
+**Target audience:** Importers who also export — contract manufacturers, distributors with international resale, pharmaceutical and electronics companies with returns flow, and businesses near border zones.
+
+**Why it helps:** Drawback can recover up to 99% of duties paid on goods that are later exported or destroyed, but the rules are complex and most small importers leave money on the table. A simple checker that flags eligibility and shows rough recovery numbers can prompt users to start a real claim with a broker.
+
+**Critical view:** Drawback applies to a small share of importers — those who actually re-export or destroy goods. For pure domestic-sale importers, it's irrelevant. The eligibility rules also have time limits (typically 5 years), recordkeeping requirements, and proof-of-export documentation that a checker can't fully validate. We must be clear this is a screening tool, not a claim filing.
+
+**Adds value?** **Limited but real for the right user.** Niche feature — most importers won't qualify. But for the subset who do (manufacturers with export sales, distributors handling returns), it can flag meaningful recoverable duties they didn't know about. Worth building as a lightweight screener, not a flagship feature.
+
+**Best target audience:** Contract manufacturers selling to overseas buyers, distributors and resellers with international customers, pharma and electronics importers handling returns or rejects, and e-commerce sellers shipping to Canada/Mexico/EU customers from U.S. inventory.
