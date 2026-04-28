@@ -51,10 +51,8 @@ async function main(): Promise<void> {
   if (outPath) {
     await mkdir(path.dirname(outPath), { recursive: true });
     await writeFile(outPath, response.prompt, 'utf-8');
-    // Write the output schema to a companion .schema.json file so callers can reference
-    // the expected response shape without re-parsing the prompt text.
-    const schemaOutPath = outPath.replace(/\.txt$/, '.schema.json').replace(/([^.]+)$/, 'schema.json');
     if (response.schema) {
+      const schemaOutPath = outPath.replace(/\.txt$/, '.schema.json');
       await writeFile(schemaOutPath, response.schema, 'utf-8');
     }
     console.error(`Wrote prompt (${response.prompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType}]`);
