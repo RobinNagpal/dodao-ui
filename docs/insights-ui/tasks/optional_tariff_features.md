@@ -255,6 +255,23 @@ Realistically, these features are relevant only if the app can show sourced, pro
 
 **Critical view:** Helpful as an educational checklist, but not a strong standalone product feature. Many recommendations will be common knowledge for brokers and compliance teams, and some options depend on strict legal eligibility.
 
+**Review of the generated example reports (bedsheets-india, sneakers-vietnam, t-shirts-bangladesh, wooden-furniture-indonesia, toys-china):**
+
+After reading all five, the honest problem is that they are not very useful in their current form. Here is why:
+
+1. **Same advice, every file.** Every report lists the same 7–8 strategies: First Sale Rule, bonded warehouse, FTZ, duty drawback, tariff engineering, move sourcing to Mexico, supplier relocation. The product and country change, but the options don't. A user who reads two of these reports will immediately notice the pattern. It feels like a template with product names swapped in.
+
+2. **The math is made up.** Every example uses "$10,000 import value" and then calculates savings from there. Real importers have their own volumes, freight costs, and supplier contracts. The numbers don't help them — they just look precise. If a user imports $2M/year or $50k/year, the math is irrelevant to them.
+
+3. **"Move to Mexico" is listed as easy.** In almost every report, sourcing from Mexico under USMCA appears as a top option. But moving a supply chain from Vietnam, Bangladesh, or Indonesia to Mexico takes years, requires qualified suppliers, and costs far more than the duty savings for most small importers. Listing it as a simple option undermines trust.
+
+4. **The people who need this already know it or can't use it alone.** Experienced importers and customs brokers already know these strategies. New importers need a broker to actually apply them — rules-of-origin, CBP binding rulings, first sale documentation are not things you do yourself from a webpage. So neither audience gets real value.
+
+5. **No real data, no sources.** The duty rates cited are current as of April 2026, but there is no link to CBP, Federal Register, or any verifiable source. If a rate is wrong or expires, users acting on it could get hurt. Without sourced, verifiable data, these reports are just AI summaries — not something users would trust for actual import decisions.
+
+**What would make this valuable:**
+The strongest version of this feature is probably the **import sourcing comparison** (feature #2 below), not the reduction-strategies checklist. A page that answers "where do most U.S. companies import cotton T-shirts from, and what does each country's total landed cost look like?" is something a user cannot easily find with a Google search. A checklist of tariff reduction options they can.
+
 ### 2. Import sourcing comparison for U.S. buyers
 
 **What to show:** When a user selects a product or HTS code, show the top 5 countries the U.S. imports it from, then compare tariff rate, other import duties, average buying/import cost, trade volume, and risk notes.
