@@ -42,10 +42,10 @@ additionalProperties: false
 properties:
   overallSummary:
     type: string
-    description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
+    description: '3–5 sentence summary of the category analysis. Summarize the key points from overallAnalysisDetails and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
   overallAnalysisDetails:
     type: string
-    description: 'In 3-4 Paragraphs discuss in detail about the category being discusses. Explain the most important things that are needed to understand that particular stock for that category. More details are shared in the prompt'
+    description: 'A detailed multi-paragraph analysis (typically 7–9 paragraphs, 1800–2500 words) following the structure and order specified in the prompt. Cover all key sub-topics for this category in the order laid out in the prompt instructions.'
   factors:
     type: array
     description: 'Array of factor-level analyses.'
@@ -57,10 +57,10 @@ properties:
           description: 'Must match the key from the input factorAnalysisArray.'
         oneLineExplanation:
           type: string
-          description: '1–2 sentence quick takeaway that gives the key insight from this factor'
+          description: '1 sentence giving the key takeaway or insight from this factor.'
         detailedExplanation:
           type: string
-          description: '1–2 paragraphs of investor-focused analysis for this factor. Directly analyze the company's performance based on this factor using available data and reasoning. The explanation must clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
+          description: '1 paragraph of investor-focused analysis for this factor. Directly analyze the company's performance using available data. Clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
         result:
           type: string
           enum: ['Pass', 'Fail']
@@ -87,22 +87,25 @@ properties:
   finalSummary:
     type: string
     description: >-
-      The final stock summary text. It must be 6–7 short lines, each line a clear
-      sentence. The first line should give the overall verdict (Positive, Negative,
-      or Mixed). The following lines should briefly justify the verdict using the
-      provided categorySummaries and supporting factor one-line explanations. The
-      style should be clear, concise, and suitable for retail investors.
+      Plain text, two paragraphs of 3–4 lines each. Paragraph 1: describe the
+      company's business model and rate its current state (excellent / very good /
+      good / fair / bad / very bad) with a brief supporting reason. Paragraph 2:
+      how the company compares with its competition and a conservative, actionable
+      investor takeaway sentence (e.g. "Suitable for long-term investors seeking
+      growth" or "High risk — best to avoid until profitability improves").
   metaDescription:
     type: string
     description: >-
-      A concise meta description for SEO purposes, summarizing the key points about
-      the stock in 1-2 sentences. Should be under 160 characters and highlight the
-      overall verdict and main factors.
+      A concise SEO meta description (maximum 160 characters, no introductory
+      text) that is compelling and informative for search engines. Include key
+      information about the company and its overall analysis conclusion.
   aboutReport:
     type: string
     description: >-
-      A 2-3 sentence summary for the stock analysis report. Should be compelling,
-      SEO-friendly, and provide a unique introduction for investors.
+      A unique 2–3 sentence introduction for the stock analysis report, rewritten
+      from the base stock information with varied structure and vocabulary to avoid
+      duplicate content penalties. Tone must be professional, insightful, and
+      authoritative.
 required:
   - finalSummary
   - metaDescription
@@ -119,13 +122,13 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–5 sentence conclusion on how the stock compares to its peers. Highlight relative strengths, weaknesses, and competitive positioning.'
+    description: '3–5 sentences summarizing the target company's position relative to its peers. Highlight whether it is stronger, weaker, or mixed vs. competitors. End with a clear investor takeaway.'
   overallAnalysisDetails:
     type: string
-    description: '3–4 paragraphs explaining overall how this company compares to competition.'
+    description: '3–4 paragraphs with a high-level overview of how the company compares to its competition. Must not repeat information or data points already covered in the competitionAnalysisArray entries.'
   competitionAnalysisArray:
     type: array
-    description: 'Array of competitor comparisons.'
+    description: 'Array of competitor comparisons — 6 to 8 competitors including public, private, and international peers.'
     items:
       type: object
       properties:
@@ -134,16 +137,16 @@ properties:
           description: 'Full name of the competitor company.'
         companySymbol:
           type: string
-          description: 'Ticker symbol of the competitor company.'
+          description: 'Ticker symbol of the competitor company (if available).'
         exchangeSymbol:
           type: string
-          description: 'Exchange symbol (e.g., NASDAQ, NYSE, TSX) of the competitor.'
+          description: 'Exchange symbol (e.g., NASDAQ, NYSE, TSX) of the competitor (if available).'
         exchangeName:
           type: string
-          description: 'Readable exchange name.'
+          description: 'Readable exchange name (if available).'
         detailedComparison:
           type: string
-          description: 'Exactly 7 paragraphs comparing this competitor with the target stock.'
+          description: 'Exactly 7 paragraphs: (1) overall comparison summary, (2) Business & Moat head-to-head with winner named, (3) Financial Statement Analysis head-to-head with winner named, (4) Past Performance head-to-head with winner named, (5) Future Growth head-to-head with winner named, (6) Fair Value head-to-head with winner named, (7) overall winner declaration with evidence-based reasoning.'
       required:
         - companyName
         - detailedComparison
@@ -163,10 +166,10 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–4 sentences highlighting the most important future risks investors should be aware of.'
+    description: '3–4 sentences highlighting the top risks facing the company. Must conclude with a direct investor takeaway (e.g., "Investors should watch for X and Y risks over the next few years").'
   detailedAnalysis:
     type: string
-    description: '3–4 paragraphs covering macro, industry, competitive, regulatory, and company-specific risks.'
+    description: '3–4 forward-looking paragraphs (focused on 2025 and beyond) identifying the top 3–5 risks. Cover: macro risks (interest rates, inflation, economic cycles), industry risks (competition, technological disruption, regulation), and company-specific risks (debt, concentration, management decisions, etc.).'
 required:
   - summary
   - detailedAnalysis
