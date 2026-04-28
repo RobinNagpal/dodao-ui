@@ -55,6 +55,40 @@ async function loadOutputSchemaAsPromptText(schemaFilePath: string): Promise<str
   return `\nreturn output in json\noutput schema:\n${withoutMetadata}`;
 }
 
+/**
+ * Builds a "Saving the Result" block that tells an LLM agent exactly how to
+ * persist its JSON output via the save-json-report endpoint.
+ *
+ * The block embeds the real exchange, ticker, spaceId, and reportType values
+ * so the agent can construct the API call without any guesswork.
+ */
+function buildSaveInstructions(symbol: string, exchange: string, reportType: ReportType, spaceId: string): string {
+  return `
+
+---
+## Saving the Result
+
+Once you have produced the JSON object matching the output schema above, save it by
+making the following HTTP request:
+
+POST /api/${spaceId}/tickers-v1/exchange/${encodeURIComponent(exchange)}/${encodeURIComponent(symbol)}/save-json-report
+
+Request body (Content-Type: application/json):
+{
+  "reportType": "${reportType}",
+  "llmResponse": <your complete JSON output>
+}
+
+How the fields map:
+- "reportType"   → always "${reportType}" for this prompt (identifies which report is being saved)
+- "llmResponse"  → the complete JSON object you generated, matching the output schema above
+
+The server will validate "llmResponse" against the output schema before persisting it.
+Do not modify the structure — send the exact JSON object your analysis produced.
+---
+`;
+}
+
 export interface GeneratedPromptResult {
   prompt: string;
   inputJson: any;
@@ -178,8 +212,11 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
   const relativeSchemaPath = SCHEMA_PATHS[reportType];
   const schema = relativeSchemaPath ? await loadOutputSchemaAsPromptText(path.join(process.cwd(), relativeSchemaPath)) : '';
 
-  // Prepend internet instruction and append output schema to every prompt
-  finalPrompt = INTERNET_INSTRUCTION + finalPrompt + schema;
+  // Build save instructions so the agent knows how to persist the result
+  const saveInstructions = buildSaveInstructions(symbol, exchange, reportType, spaceId);
+
+  // Prepend internet instruction; append output schema then save instructions
+  finalPrompt = INTERNET_INSTRUCTION + finalPrompt + schema + saveInstructions;
 
   return {
     prompt: finalPrompt,
