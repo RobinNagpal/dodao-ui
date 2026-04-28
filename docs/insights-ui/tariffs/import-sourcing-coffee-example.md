@@ -6,6 +6,24 @@
 
 ---
 
+## How this report adds value (and who it's for)
+
+This is **more than a tariff comparison** — it is a one-page import guide for a U.S. coffee buyer. It combines tariff math, freight, hidden fees, harvest timing, quality grading, certifications, country pros/cons, scam defense, and supplier channels in one place, so the reader can decide where to source without bouncing across 10 different websites.
+
+**Who benefits the most:**
+
+- **New / first-time U.S. importers** who don't yet know which country fits their product, brand, and budget.
+- **Mid-size importers ($1M–$50M annual import value)** who already buy from one country and want to evaluate diversification (e.g., reduce China / Vietnam risk, or hedge a Brazil frost year).
+- **Procurement teams at retailers and private-label brands** who need a quick read on each origin's price, quality range, and risk before involving a broker.
+- **Specialty roasters and small DTC brands** picking single-origin lots — needing a country profile that covers cup quality, certifications, and lead time, not just duty.
+- **Sourcing consultants and trade advisors** building a shortlist for a client.
+- **Finance / cash-flow teams** modeling landed cost scenarios under different tariff conditions (e.g., Section 122 expiry).
+- **Students and educators** in supply chain, trade, or commodities programs.
+
+**What this report deliberately does NOT do:** it does not file your customs entry, classify a borderline HTS code for you, negotiate with a supplier, or replace a licensed customs broker / Q-grader. It gets you to the point where you know **what to ask** and **whom to call** — the rest is execution.
+
+---
+
 ## What you should be able to learn from this report
 
 By the time you finish reading, you should be able to answer:
@@ -581,3 +599,77 @@ This is the most important section. Find your buyer profile in the left column; 
 8. A documentation checklist generator per country and shipment type.
 9. A real-time freshness indicator (last data update + flag if older than 30 days).
 10. A short narrative summary like Sections 11 and 16 above, written in plain English.
+
+---
+
+## 19. Similar Resources Online (and How This Report Differs)
+
+For users who want to cross-check our numbers — and for us to understand how our content is different — here are the well-known places where pieces of this information already live. **No single one of them combines tariff math + landed cost + country pros/cons + supplier channels + scam defense in one view, which is the gap this report fills.**
+
+### Tariff and customs data (official)
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| USITC HTS Search (`hts.usitc.gov`) | Official HTS codes and U.S. duty rates | No FOB price, freight, country quality, or buyer guidance |
+| CBP (`cbp.gov`) | Rulings, enforcement notices, ISF/entry rules | Customs procedure only — no sourcing comparison |
+| Federal Register | Section 232/301/122 announcements | Raw legal text — no "what does this mean for my coffee" interpretation |
+| WTO Tariff & Trade Data (`wto.org` → tariff data) | Global tariff and import data, MFN/preferential | Multilateral, not U.S.-buyer-specific; no FOB or freight |
+| ITC Market Access Map (`macmap.org`) | Tariffs + non-tariff measures by country | Operational compliance focus; no "who should buy" guidance |
+
+### Coffee origin and quality info
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| Sweet Maria's (`sweetmarias.com`) | Detailed origin and farm profiles, cup notes | No tariff math, no landed-cost calculator, retail-volume oriented |
+| Royal Coffee NY (`royalcoffee.com`) | Importer-side origin and lot info | Importer commerce site; not a buyer's decision tool |
+| Cafe Imports (`cafeimports.com`) | Origin guides, farm stories, cup profiles | Story-led; no tariff or landed-cost comparison |
+| Genuine Origin (`genuineorigin.com`) | Cooperative-direct sourcing info | Limited countries; no comparison framework |
+| InterAmerican Coffee, Olam, ECOM, Volcafé sites | Trader-side origin pages | B2B promotional; no neutral comparison |
+
+### Production, trade volumes, and policy data
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| USDA FAS — Coffee World Markets and Trade (`fas.usda.gov`) | Production, exports, consumption by country | Macro data; no buyer-level landed-cost or supplier guidance |
+| ICO — International Coffee Organization (`ico.org`) | Global market reports, country statistics | Aggregate, monthly; not actionable for a single shipment |
+| World Bank Pink Sheet (`worldbank.org`) | Commodity prices over time | Price-only; no tariff, freight, or quality |
+| Statista coffee dashboards | Market size and consumption charts | High-level; behind paywall |
+| NCA — National Coffee Association (`ncausa.org`) | U.S. consumer trends, industry advocacy | Demand-side, not sourcing |
+
+### Specialty and certifications
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| Specialty Coffee Association (`sca.coffee`) | Cupping protocols, Q-grading, education | Quality-only; no trade or tariff side |
+| Cup of Excellence (`cupofexcellence.org`) | Auction results from prize lots | Top 1% specialty only; not a buying guide |
+| Fair Trade USA, USDA Organic, Rainforest Alliance, Bird Friendly | Certification rules and certified-supplier lists | Certification-specific; no cost or country comparison |
+| Anacafé (Guatemala), FNC (Colombia), IHCAFE (Honduras), Cecafé (Brazil) | National coffee body directories | Single-country focus |
+
+### Logistics and freight
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| Freightos / Xeneta indexes | Container freight rates by lane | Freight-only; no duty or origin comparison |
+| Flexport / Maersk / Hapag-Lloyd dashboards | Shipping schedules and rates | Customer logistics tool; no sourcing comparison |
+| Customs broker websites (Livingston, Expeditors, KGH) | Compliance how-tos | Compliance-only; no sourcing decision |
+
+### News and analysis
+
+| Resource | What it covers | What it's missing vs this report |
+|---|---|---|
+| Daily Coffee News (`dailycoffeenews.com`) | Industry news, roaster stories | Editorial; no buying framework |
+| Perfect Daily Grind (`perfectdailygrind.com`) | Origin features, education | Story-led; not decision-grade |
+| Roast Magazine | Industry trade pieces | Roaster audience |
+| Bloomberg, Reuters commodities desks | Spot-price moves and market shocks | Real-time financial; not a buyer's guide |
+
+### What our report does that none of the above does in one place
+
+1. **Combines** tariff math (MFN + Section 122 + FTA), freight, hidden customs fees, FOB price, and quality range — across 10 origins side by side.
+2. **Translates** tariff and trade-program rules into "who should buy from where" by buyer type.
+3. **Lists country pros AND cons honestly**, including political and climate risks, not just marketing-friendly origin stories.
+4. **Provides supplier-channel guidance** (which exporters / coops / national bodies are real first contacts).
+5. **Calls out common scams and defenses** specific to coffee imports.
+6. **Aggregates documentation requirements** per country in one checklist.
+7. **Stays plain-English** so a first-time importer can understand it without a customs background.
+
+If a reader still has to leave this page to get an answer to "where should I source my coffee from, and what will it cost me landed," we have not done our job — that is the bar this section is here to enforce.
