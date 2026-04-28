@@ -292,6 +292,8 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Example report:** [`import-sourcing-coffee-example.md`](./import-sourcing-coffee-example.md) — what this view should look like for U.S. coffee buyers across Brazil, Colombia, Vietnam, Honduras, Mexico, etc.
 
+**Review of the coffee example report:** Verdict — strong, ship it (with minor surgery); this is the most useful example in the PR and the right depth bar for everything else. The hidden-costs breakdown, harvest/payment timing, scam defenses, supplier channels, and three-axis decision matrix (buyer type × optimization goal × risk tolerance) genuinely combine in one page what currently requires bouncing across USDA FAS, SCA, Sweet Maria's, broker sites, and freight indexes — §19's similar-resources comparison makes the differentiation explicit and credible. Real concerns: every dollar figure / FOB range / defect count / freight rate is unsourced (same gap as every other report in the PR), and §18 ("What the App Should Show") is product-spec content leaking into a user-facing page and should be fenced or moved into this task file. With sources added and §18 relocated, this is the only example in the PR that a real importer could plausibly act on, and it should be the model the soybeans report and the five product-reduction reports get rewritten against.
+
 ### 3. Export market opportunity comparison
 
 **What to show:** For a product and exporting country, show potential destination countries where the product may sell at a higher price, along with destination import duties, tariff barriers, demand/trade volume, and likely margin impact.
@@ -309,6 +311,8 @@ The strongest version of this feature is probably the **import sourcing comparis
 **Overall relevance — weaker than the importer case.** Most exporters are manufacturers who already know their product, costs, and main markets, so the information gap we'd be filling is small. Established trade associations (USSEC, USMEF, USAPEEC, FAS Country Guides, trade.gov) already cover destination markets well, and the real export blockers are non-tariff (SPS, labeling, distribution) — hard for AI to deliver credibly. Compared to **#2 Import sourcing comparison**, this feature is significantly less relevant and should be deprioritized; if built, it should be a small "market-discovery shortlist" for first-time SMB exporters, not a flagship feature.
 
 **Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
+
+**Review of the soybeans example report:** Verdict — relevant feature, thin example. The 10-market table plus the "China is volume, not margin" worked example answer a question Google won't easily surface ("where does my tonne earn the most?"), so the feature idea clearly adds real value. But only 4 of 10 markets get worked margin math, and the per-country pros/cons profiles, harvest/payment timing, buyer-channel guidance, and non-GMO/identity-preserved logistics that make the coffee example so useful are all missing — and every dollar figure is unsourced. As shipped, it is a useful structural template for the feature, not a report an exporter could actually decide on; coffee-report depth is the bar to hit before this is user-facing.
 
 ### 4. Bonded warehouse / FTZ calculator
 

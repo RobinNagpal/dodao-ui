@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionAnalysisArray } from '@/types/public-equity/analysis-factors-types';
@@ -28,87 +29,71 @@ import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-respon
 import path from 'path';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
-// JSON schema to append to factor-based analysis prompts
-const FACTOR_ANALYSIS_JSON_SCHEMA = `
+const INTERNET_INSTRUCTION = `Use internet to validate the information and make sure to return the result based on the latest information.
 
-return output in json
-output schema:
-type: object
-additionalProperties: false
-properties:
-  overallSummary:
-    type: string
-    description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
-  overallAnalysisDetails:
-    type: string
-    description: 'In 3-4 Paragraphs discuss in detail about the category being discusses. Explain the most important things that are needed to understand that particular stock for that category. More details are shared in the prompt'
-  factors:
-    type: array
-    description: 'Array of factor-level analyses.'
-    items:
-      type: object
-      properties:
-        factorAnalysisKey:
-          type: string
-          description: 'Must match the key from the input factorAnalysisArray.'
-        oneLineExplanation:
-          type: string
-          description: '1–2 sentence quick takeaway that gives the key insight from this factor'
-        detailedExplanation:
-          type: string
-          description: '1–2 paragraphs of investor-focused analysis for this factor. Directly analyze the company's performance based on this factor using available data and reasoning. The explanation must clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
-        result:
-          type: string
-          enum: ['Pass', 'Fail']
-          description: 'The final judgment for this factor. Be conservative — only companies with strong fundamentals should get "Pass". A "Fail" should come with clear reasoning in the detailedExplanation.'
-      required:
-        - factorAnalysisKey
-        - oneLineExplanation
-        - detailedExplanation
-        - result
-required:
-  - overallSummary
-  - overallAnalysisDetails
-  - factors
 `;
 
-// JSON schema to append to final summary prompt
-const FINAL_SUMMARY_JSON_SCHEMA = `
+// YAML schema file paths relative to process.cwd()
+const SCHEMA_PATHS: Partial<Record<ReportType, string>> = {
+  [ReportType.FINANCIAL_ANALYSIS]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
+  [ReportType.BUSINESS_AND_MOAT]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
+  [ReportType.PAST_PERFORMANCE]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
+  [ReportType.FUTURE_GROWTH]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
+  [ReportType.FAIR_VALUE]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
+  [ReportType.COMPETITION]: 'schemas/analysis-factors/competition/competition-output.schema.yaml',
+  [ReportType.FUTURE_RISK]: 'schemas/analysis-factors/future-risk/future-risk-output.schema.yaml',
+  [ReportType.FINAL_SUMMARY]: 'schemas/analysis-factors/final-summary/final-summary-analysis-output.schema.yaml',
+};
 
-return output in json
-output schema:
-type: object
-additionalProperties: false
-properties:
-  finalSummary:
-    type: string
-    description: >-
-      The final stock summary text. It must be 6–7 short lines, each line a clear
-      sentence. The first line should give the overall verdict (Positive, Negative,
-      or Mixed). The following lines should briefly justify the verdict using the
-      provided categorySummaries and supporting factor one-line explanations. The
-      style should be clear, concise, and suitable for retail investors.
-  metaDescription:
-    type: string
-    description: >-
-      A concise meta description for SEO purposes, summarizing the key points about
-      the stock in 1-2 sentences. Should be under 160 characters and highlight the
-      overall verdict and main factors.
-  aboutReport:
-    type: string
-    description: >-
-      A 2-3 sentence summary for the stock analysis report. Should be compelling,
-      SEO-friendly, and provide a unique introduction for investors.
-required:
-  - finalSummary
-  - metaDescription
-  - aboutReport
+/**
+ * Reads an output schema YAML file and formats it as the schema block appended to prompts.
+ * Strips the $schema metadata line so only the actual schema definition is included.
+ */
+async function loadOutputSchemaAsPromptText(schemaFilePath: string): Promise<string> {
+  const raw = await readFile(schemaFilePath, 'utf-8');
+  const withoutMetadata = raw.replace(/^\$schema:[^\n]*\n?/, '');
+  return `\nreturn output in json\noutput schema:\n${withoutMetadata}`;
+}
+
+/**
+ * Builds a "Saving the Result" block that tells an LLM agent exactly how to
+ * persist its JSON output via the save-json-report endpoint.
+ *
+ * The block embeds the real exchange, ticker, spaceId, and reportType values
+ * so the agent can construct the API call without any guesswork.
+ */
+function buildSaveInstructions(symbol: string, exchange: string, reportType: ReportType, spaceId: string): string {
+  return `
+
+---
+## Saving the Result
+
+Once you have produced the JSON object matching the output schema above, save it by
+making the following HTTP request:
+
+POST /api/${spaceId}/tickers-v1/exchange/${encodeURIComponent(exchange)}/${encodeURIComponent(symbol)}/save-json-report
+
+Request body (Content-Type: application/json):
+{
+  "reportType": "${reportType}",
+  "llmResponse": <your complete JSON output>
+}
+
+How the fields map:
+- "reportType"   → always "${reportType}" for this prompt (identifies which report is being saved)
+- "llmResponse"  → the complete JSON object you generated, matching the output schema above
+
+The server will validate "llmResponse" against the output schema before persisting it.
+Do not modify the structure — send the exact JSON object your analysis produced.
+---
 `;
+}
 
 export interface GeneratedPromptResult {
   prompt: string;
   inputJson: any;
   reportType: ReportType;
+  schema: string;
 }
 
 /**
@@ -223,22 +208,20 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
   const templateContent = prompt.activePromptVersion.promptTemplate;
   let finalPrompt = compileTemplate(templateContent, inputJson || {});
 
-  // Append JSON schema instructions based on report type
-  if (
-    reportType === ReportType.FINANCIAL_ANALYSIS ||
-    reportType === ReportType.BUSINESS_AND_MOAT ||
-    reportType === ReportType.PAST_PERFORMANCE ||
-    reportType === ReportType.FUTURE_GROWTH ||
-    reportType === ReportType.FAIR_VALUE
-  ) {
-    finalPrompt += FACTOR_ANALYSIS_JSON_SCHEMA;
-  } else if (reportType === ReportType.FINAL_SUMMARY) {
-    finalPrompt += FINAL_SUMMARY_JSON_SCHEMA;
-  }
+  // Load output schema from the canonical YAML file and append to prompt
+  const relativeSchemaPath = SCHEMA_PATHS[reportType];
+  const schema = relativeSchemaPath ? await loadOutputSchemaAsPromptText(path.join(process.cwd(), relativeSchemaPath)) : '';
+
+  // Build save instructions so the agent knows how to persist the result
+  const saveInstructions = buildSaveInstructions(symbol, exchange, reportType, spaceId);
+
+  // Prepend internet instruction; append output schema then save instructions
+  finalPrompt = INTERNET_INSTRUCTION + finalPrompt + schema + saveInstructions;
 
   return {
     prompt: finalPrompt,
     inputJson,
     reportType,
+    schema,
   };
 }

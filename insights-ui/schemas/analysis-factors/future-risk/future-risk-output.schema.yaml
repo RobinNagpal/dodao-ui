@@ -4,10 +4,10 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–4 sentences highlighting the most important future risks investors should be aware of. Keep it concise and retail-investor friendly.'
+    description: '3–4 sentences highlighting the top risks facing the company. Must conclude with a direct investor takeaway (e.g., "Investors should watch for X and Y risks over the next few years").'
   detailedAnalysis:
     type: string
-    description: '3–4 paragraphs explaining the potential risks the company may face in the future. Cover industry-specific risks, macroeconomic challenges, competitive pressures, regulatory risks, balance sheet vulnerabilities, and structural changes. Be critical, balanced, and forward-looking.'
+    description: '3–4 forward-looking paragraphs (focused on 2025 and beyond) identifying the top 3–5 risks. Cover: macro risks (interest rates, inflation, economic cycles), industry risks (competition, technological disruption, regulation), and company-specific risks (debt, concentration, management decisions, etc.).'
 required:
   - summary
   - detailedAnalysis

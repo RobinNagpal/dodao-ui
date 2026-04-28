@@ -6,6 +6,7 @@ import { API_BASE, AUTOMATION_SECRET, SPACE_ID, fetchJson, parseArgs, requireStr
 interface GeneratePromptResponse {
   prompt: string;
   reportType: ReportType;
+  schema: string;
 }
 
 const VALID_REPORT_TYPES: readonly ReportType[] = [
@@ -50,6 +51,12 @@ async function main(): Promise<void> {
   if (outPath) {
     await mkdir(path.dirname(outPath), { recursive: true });
     await writeFile(outPath, response.prompt, 'utf-8');
+    // Write the output schema to a companion .schema.json file so callers can reference
+    // the expected response shape without re-parsing the prompt text.
+    const schemaOutPath = outPath.replace(/\.txt$/, '.schema.json').replace(/([^.]+)$/, 'schema.json');
+    if (response.schema) {
+      await writeFile(schemaOutPath, response.schema, 'utf-8');
+    }
     console.error(`Wrote prompt (${response.prompt.length} chars) → ${outPath} [${API_BASE} | ${symbol} ${exchange} ${reportType}]`);
   } else {
     // Prompt goes to stdout so it can be piped directly into the LLM call. Metadata

@@ -16,11 +16,18 @@ import { loadSchema, validateData } from '@/util/get-llm-response';
 import path from 'path';
 import { FinalSummaryResponse } from '../final-summary/route';
 import { CompetitionAnalysisResponse } from '../competition/route';
+import { saveFutureRiskResponse } from '@/utils/analysis-reports/save-report-utils';
+
+export interface FutureRiskResponse {
+  summary: string;
+  detailedAnalysis: string;
+}
 
 // Union type for all possible LLM responses
 export type LLMResponse =
   | LLMFactorAnalysisResponse // For BUSINESS_AND_MOAT, PAST_PERFORMANCE, FUTURE_GROWTH, FINANCIAL_ANALYSIS, FAIR_VALUE
   | CompetitionAnalysisResponse // For COMPETITION
+  | FutureRiskResponse // For FUTURE_RISK
   | FinalSummaryResponse; // For FINAL_SUMMARY
 
 export interface SaveJsonReportRequest {
@@ -84,6 +91,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     case ReportType.COMPETITION:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'competition', 'competition-output.schema.yaml');
       break;
+    case ReportType.FUTURE_RISK:
+      schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'future-risk', 'future-risk-output.schema.yaml');
+      break;
     case ReportType.FINAL_SUMMARY:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'final-summary', 'final-summary-analysis-output.schema.yaml');
       break;
@@ -145,6 +155,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       break;
     case ReportType.COMPETITION:
       await saveCompetitionAnalysisResponse(ticker, exchange, llmResponse as CompetitionAnalysisResponse);
+      break;
+    case ReportType.FUTURE_RISK:
+      await saveFutureRiskResponse(ticker, exchange, llmResponse as FutureRiskResponse);
       break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse as LLMFactorAnalysisResponse, TickerAnalysisCategory.FairValue);
