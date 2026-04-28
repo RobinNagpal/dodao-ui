@@ -255,6 +255,10 @@ Realistically, these features are relevant only if the app can show sourced, pro
 
 **Critical view:** Helpful as an educational checklist, but not a strong standalone product feature. Many recommendations will be common knowledge for brokers and compliance teams, and some options depend on strict legal eligibility.
 
+**Adds value?** **Limited — mostly as an educational / SEO layer.** The strategies (FTA eligibility, rules of origin, duty drawback, FTZ, bonded warehouse, classification review, supplier shift, import timing) are well-documented across CBP, broker websites, and trade publications. We won't be the only place users can read about them. The idea has value for awareness — new importers don't know these levers exist — but applying any of them needs a customs broker, so we can't replace that step. Of the four ideas in this document, this is the weakest as a standalone interactive feature, though it can still pull SEO traffic and act as a top-of-funnel lead-in to the other three.
+
+**Best target audience:** New importers and first-time SMB importers, e-commerce and DTC brands that recently started sourcing overseas, students or educators in supply chain / trade programs, and SEO traffic from product-specific searches like "how to reduce tariff on X from Y." Not the right fit for experienced importers, customs brokers, or large multinationals — they already know all of this.
+
 **Review of the generated example reports (bedsheets-india, sneakers-vietnam, t-shirts-bangladesh, wooden-furniture-indonesia, toys-china):**
 
 After reading all five, the honest problem is that they are not very useful in their current form. Here is why:
