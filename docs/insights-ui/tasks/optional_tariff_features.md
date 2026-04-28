@@ -341,3 +341,99 @@ The strongest version of this feature is probably the **import sourcing comparis
 **Adds value?** **Limited but real for the right user.** Niche feature — most importers won't qualify. But for the subset who do (manufacturers with export sales, distributors handling returns), it can flag meaningful recoverable duties they didn't know about. Worth building as a lightweight screener, not a flagship feature.
 
 **Best target audience:** Contract manufacturers selling to overseas buyers, distributors and resellers with international customers, pharma and electronics importers handling returns or rejects, and e-commerce sellers shipping to Canada/Mexico/EU customers from U.S. inventory.
+
+## Five more ideas — vetted against the same three questions
+
+The first five ideas above were generated before we critically asked "would users actually come for this, and is the answer a confident yes?" After re-reading them, only #2 (import sourcing comparison) and arguably #4 (FTZ calculator) survive that bar.
+
+The five ideas below are picked specifically because each one anchors to a demand signal we can already see, not a hypothesis. The two strongest signals available to us are:
+
+1. **KoalaGains already has investors on it** — our stock and ETF analysis pages have an existing audience. Anything that adds a tariff lens to a stock or ETF page is in front of users who are already here.
+2. **Tariff news cycles drive predictable, repeatable searches** — every Section 232 / EO / retaliation announcement creates a wave of "what does this mean for [ticker]," "what does this mean for [industry]," "is this going to stick" queries. We can verify this in Google Trends and in our own tariffs-page traffic spikes.
+
+Both of these are observed, not predicted. The five ideas below all leverage one or both. Ideas that depend on attracting a brand-new audience (e.g., compliance officers, brokers, exporters) are excluded — we have no evidence those users come to KoalaGains today.
+
+### 6. Per-stock tariff exposure card (added to every ticker page)
+
+**What to show:** On every public-company ticker page that KoalaGains already publishes, add a tariff-exposure block: estimated share of COGS sourced from tariff-affected countries, key supplier countries disclosed in 10-K/10-Q/earnings calls, product lines hit by current and proposed duties, exposure to retaliatory tariffs in major export markets, and a directional EPS / gross-margin sensitivity range. Every claim links back to the disclosure sentence it came from.
+
+**Target audience:** Equity investors (retail and institutional), buy-side analysts, sell-side analysts updating sector notes during tariff events, financial journalists writing same-day stock stories.
+
+**Why it helps:** When a tariff event hits, the very first question every investor asks is "how exposed is the stock I own?" Today that question requires reading a 10-K, calling IR, or waiting for a sell-side note. Putting a sourced exposure card directly on the ticker page captures that query at the moment users want it — and KoalaGains' ticker pages already rank for many of those searches.
+
+**Critical view:** Estimating exposure from public filings is imperfect — companies disclose sourcing inconsistently, and EPS impact depends on pass-through ability and contract structure that filings rarely reveal. We must mark this as a directional, disclosure-anchored estimate, not a precise forecast. Refresh cadence is also a real risk: 10-Ks are annual, so we'd need to layer in 8-Ks and earnings-call transcripts to keep estimates current during fast-moving tariff cycles.
+
+**Adds value?** **Yes — strong, and very differentiated.** Stock investors are already KoalaGains' core audience, and no major stock-research site (Yahoo Finance, Seeking Alpha, Morningstar, Stockanalysis.com) shows per-ticker tariff exposure as a first-class block. SEO upside is large because every "[ticker] tariff impact" search becomes addressable. Repeat usage is high during tariff news cycles — the same investor checks 5–20 tickers in a single afternoon when a new tariff is announced.
+
+**Best target audience:** Active retail investors with concentrated portfolios checking tariff exposure of specific holdings, hedge-fund and asset-manager analysts running quick screens, sell-side equity research desks using KoalaGains as a starting point, and financial journalists writing same-day tariff stories.
+
+### 7. Per-ETF tariff exposure heatmap
+
+**What to show:** For any major ETF (SPY, QQQ, IWM, XLI, IYT, EWZ, FXI, EWG, EWY, ITA, ITB, etc.), aggregate the ticker-level tariff exposure from idea #6 across holdings, weighted by position size. Output: ETF-level "tariff sensitivity" score, top 10 most-exposed holdings, breakdown by tariff regime (China 301, EU steel, Mexico autos, Section 232, etc.), and a comparison to a benchmark ETF or peer set.
+
+**Target audience:** ETF investors (retail and advisor-channel), passive-fund holders deciding whether to rotate during tariff cycles, multi-asset allocators at family offices, RIAs running ETF model portfolios, and CIOs comparing fund options.
+
+**Why it helps:** Most ETF investors don't realize how much tariff risk is hidden in their broad-market funds — SPY has meaningful indirect exposure through industrials, semis, and autos; sector ETFs concentrate that exposure dramatically. KoalaGains already publishes ETF analysis as a core surface, so adding tariff exposure is a "free with what we already have" feature once idea #6 exists. The aggregation logic is straightforward: weight per-ticker exposure by holding %.
+
+**Critical view:** Aggregating ticker-level estimates compounds the imprecision of each one. We must publish methodology clearly, include confidence bands, and avoid "fund X loses Y%" framing. Holdings also shift over time, so we'd need to refresh on the issuer's published cadence (typically daily for transparent ETFs, monthly for some others). For ETFs of ETFs and synthetic / derivative-heavy products, the model may simply not apply and we should say so.
+
+**Adds value?** **Yes — strong differentiation.** No major ETF-research site (ETF.com, VettaFi, Morningstar ETF) publishes a tariff-exposure heatmap. KoalaGains is uniquely positioned because it has both the stock-level and ETF-level analysis pipelines already. The cross-link from ticker pages to the ETFs that hold them, with shared tariff context, is also a strong internal-link / SEO play.
+
+**Best target audience:** Retail ETF investors building DIY portfolios, RIAs and advisors managing ETF model portfolios for clients, family-office allocators, and CIOs comparing tariff exposure across overlapping fund options.
+
+### 8. Multi-importer tariff comparison for a single product
+
+**What to show:** Pick a product (HS6 or finer), then see a side-by-side table of how the U.S., EU, UK, Japan, China, India, Canada, Mexico, Brazil, Australia, etc., each tariff that product on imports — MFN rate, preferential rates by FTA, recent rate changes with effective dates, key non-tariff barriers (TRQs, anti-dumping orders, licensing), and import volume. Adds a "demand context" column with destination-market import value so "lowest tariff" doesn't mislead users into shipping to a market with no demand.
+
+**Target audience:** Cross-border e-commerce sellers picking fulfillment markets, retailers and brands setting up regional distribution centers, trade consultants advising mid-market multinationals, policy researchers, and large exporters comparing destination markets.
+
+**Why it helps:** This answers "if I'm shipping product X, where in the world does it land cheapest, and where is there actually demand?" That's a real question for retailers with global e-commerce, brands deciding whether to set up an EU vs UK warehouse post-Brexit, and DTC sellers picking new markets. Existing tools (USITC, Trade Tariff UK, EU TARIC, Canada Tariff Finder) answer "what is the tariff in country Y?" one country at a time — they don't compare 10 importers in one view, and none of them pair the tariff with destination demand data.
+
+**Critical view:** Different from idea #2 (which compares source countries for a U.S. buyer) — this is the exporter's-eye view. The risk is that without volume and demand data alongside, "lowest tariff" misleads. We must always pair the tariff with import value and trend, and we should flag known non-tariff barriers (e.g., EU REACH for chemicals, Japan's quota for rice). Data freshness is critical because rate phasing under FTAs is common.
+
+**Adds value?** **Yes — particularly for cross-border e-commerce and regional-distribution decisions.** A single page replaces 10 government-portal lookups. Evergreen SEO content for every "[product] tariff [country]" query, and the page structure scales: same template works for thousands of HS codes.
+
+**Best target audience:** Cross-border e-commerce operators picking fulfillment markets, retailers and brands setting up regional distribution centers, trade consultants servicing mid-market clients, policy and research teams at NGOs / think tanks, and exporters at U.S. SMB manufacturers comparing destinations.
+
+### 9. Tariff news / executive order impact explainer
+
+**What to show:** A "paste any tariff news article, EO text, USTR press release, or Federal Register notice → get a structured impact analysis" tool. Output: products affected (HS codes parsed from the source), countries affected, effective dates, magnitude vs prior rate, U.S. industries impacted (linked to existing KoalaGains industry reports), public companies that benefit/lose by ticker (linked to idea #6 cards), historical precedent (linked to idea #10), and likely retaliation lanes. Every conclusion links to the exact sentence in the source that drives it.
+
+**Target audience:** Financial journalists writing same-day tariff stories, retail and institutional investors reacting to news, corporate strategy and government-affairs teams briefing executives, sell-side analysts updating notes, and trade lawyers / consultants briefing clients.
+
+**Why it helps:** Tariff news breaks fast and is dense with HS codes, dates, country lists, and exemption schedules. Most readers cannot parse what the text actually means within an hour. A tool that converts unstructured tariff text into a structured, sourced impact view is genuinely time-saving and high-frequency. Every major tariff news cycle (Section 232 announcements, EO signings, retaliation announcements, WTO rulings) creates a wave of users with this exact need — a wave we've observed in our tariffs-page traffic during real events.
+
+**Critical view:** Quality is bounded by the input — a vague news article gives a vague output, and we must show source evidence (which sentence drives each conclusion) rather than appearing to extract truth that isn't in the text. Very fresh EOs may also reference HS codes or country lists that haven't been mapped to industries yet, and we should fail gracefully ("partial mapping") rather than guess.
+
+**Adds value?** **Yes — high, and specifically high during news cycles.** This is a category nobody else covers well. It's also a strong top-of-funnel feature: a journalist or investor pastes a news link, gets an analysis, and discovers the rest of KoalaGains' tariff content (per-stock exposure, industry reports, history tracker). Each tariff news cycle creates a fresh batch of inbound users.
+
+**Best target audience:** Financial journalists at Bloomberg/Reuters/Politico/CNBC writing same-day tariff stories, retail investors reacting to news on the day, corporate-affairs and government-relations teams at multinationals, sell-side equity research desks updating sector notes, and trade lawyers/consultants briefing clients within hours of a major announcement.
+
+### 10. Historical tariff outcome tracker
+
+**What to show:** A curated, structured database of major tariff events from roughly 1980 to today: what triggered each one, which products and countries it covered, the magnitude of the rate change, how long it lasted, what retaliation followed, how it was resolved (negotiated rollback, WTO ruling, expiration, escalation, replacement by quota), and what happened to affected industries and stocks during and after. For any current tariff event, surface the closest 3–5 historical analogs.
+
+**Target audience:** Corporate strategy and government-affairs teams doing scenario planning, sell-side analysts writing context-rich sector notes, investors trying to handicap tariff durability, policy researchers and academic teams, trade lawyers building precedent arguments, and journalists writing long-form feature pieces.
+
+**Why it helps:** Every tariff news cycle drives the question "is this going to stick or get rolled back?" The best available answer is history — most tariffs of the past 40 years have a closest analog (Reagan steel VRAs, Bush Section 201 steel safeguards, Trump 1.0 Section 301, EU-U.S. Boeing/Airbus disputes, the WTO China rare-earths case, etc.). KoalaGains is well-positioned for this because we already produce structured industry impact reports — the historical layer is curation plus structured AI summarization on top of established academic and government sources (USTR archives, WTO disputes database, Peterson Institute papers, CBO reports).
+
+**Critical view:** History is not destiny, and political conditions differ across decades. We must avoid "this tariff will last X years" framing and instead present "the closest precedents and how they played out, with the political context that drove each outcome." Sourcing has to be real (peer-reviewed papers, USTR archives, WTO documents) — pure AI summarization without primary sources would destroy the credibility that makes this feature defensible.
+
+**Adds value?** **Yes — strong for the right user, and defensible.** Lower volume than ideas #6/#7/#9 but much higher engagement when used. Builds editorial credibility and is highly linkable from journalism, academic content, and sell-side notes. Hard to replicate without genuine historical research, which means it's a moat for users who care about depth.
+
+**Best target audience:** Corporate strategy and government-affairs teams at large multinationals doing tariff scenario planning, sell-side equity analysts writing context-rich notes during major tariff cycles, academic and think-tank researchers, trade lawyers building precedent arguments, and journalists writing 1,500+ word feature pieces.
+
+## Quick comparison: original 5 vs new 5
+
+| # | Idea | User signal we can verify | Verdict |
+|---|---|---|---|
+| 1 | Tariff reduction suggestions | Generic SEO traffic; advice already widely available | Weak — keep as SEO layer only |
+| 2 | Import sourcing comparison | Real procurement question; not easily Google-able | **Strong — build** |
+| 3 | Export market opportunity | Most exporters are domain experts already | Weak — deprioritize |
+| 4 | FTZ / bonded warehouse calculator | Mid-size importers do ask "is this worth it" | Has potential — build small |
+| 5 | Duty drawback eligibility checker | Niche audience that does qualify | Limited — niche tool |
+| 6 | Per-stock tariff exposure card | Existing investor audience + tariff news cycles | **Strong — build first** |
+| 7 | Per-ETF tariff exposure heatmap | Existing ETF audience; differentiated content | **Strong — natural extension of #6** |
+| 8 | Multi-importer tariff comparison | Cross-border e-commerce + regional distribution decisions | Strong — build after #6/#7 |
+| 9 | Tariff news / EO explainer | News-cycle traffic spikes we already see | **Strong — high-leverage** |
+| 10 | Historical tariff outcome tracker | "Will it stick?" question at every cycle | Strong but slower payoff — defensible moat |
