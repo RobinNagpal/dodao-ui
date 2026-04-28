@@ -306,6 +306,8 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Best target audience:** SMB manufacturers and agribusiness exporters exploring new markets, trade consultants building client shortlists, industry associations and export-promotion agencies, and U.S. companies trying to shift away from low-margin destinations.
 
+**Overall relevance — weaker than the importer case.** Most exporters are manufacturers who already know their product, costs, and main markets, so the information gap we'd be filling is small. Established trade associations (USSEC, USMEF, USAPEEC, FAS Country Guides, trade.gov) already cover destination markets well, and the real export blockers are non-tariff (SPS, labeling, distribution) — hard for AI to deliver credibly. Compared to **#2 Import sourcing comparison**, this feature is significantly less relevant and should be deprioritized; if built, it should be a small "market-discovery shortlist" for first-time SMB exporters, not a flagship feature.
+
 **Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
 
 ### 4. Bonded warehouse / FTZ calculator
