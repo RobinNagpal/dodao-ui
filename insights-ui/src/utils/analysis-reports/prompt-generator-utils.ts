@@ -28,6 +28,10 @@ import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-respon
 import path from 'path';
 import { AnalysisCategoryFactor } from '@prisma/client';
 
+const INTERNET_INSTRUCTION = `Use internet to validate the information and make sure to return the result based on the latest information.
+
+`;
+
 // JSON schema to append to factor-based analysis prompts
 const FACTOR_ANALYSIS_JSON_SCHEMA = `
 
@@ -105,10 +109,74 @@ required:
   - aboutReport
 `;
 
+// JSON schema to append to competition prompts
+const COMPETITION_JSON_SCHEMA = `
+
+return output in json
+output schema:
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '3–5 sentence conclusion on how the stock compares to its peers. Highlight relative strengths, weaknesses, and competitive positioning.'
+  overallAnalysisDetails:
+    type: string
+    description: '3–4 paragraphs explaining overall how this company compares to competition.'
+  competitionAnalysisArray:
+    type: array
+    description: 'Array of competitor comparisons.'
+    items:
+      type: object
+      properties:
+        companyName:
+          type: string
+          description: 'Full name of the competitor company.'
+        companySymbol:
+          type: string
+          description: 'Ticker symbol of the competitor company.'
+        exchangeSymbol:
+          type: string
+          description: 'Exchange symbol (e.g., NASDAQ, NYSE, TSX) of the competitor.'
+        exchangeName:
+          type: string
+          description: 'Readable exchange name.'
+        detailedComparison:
+          type: string
+          description: 'Exactly 7 paragraphs comparing this competitor with the target stock.'
+      required:
+        - companyName
+        - detailedComparison
+required:
+  - summary
+  - overallAnalysisDetails
+  - competitionAnalysisArray
+`;
+
+// JSON schema to append to future-risk prompts
+const FUTURE_RISK_JSON_SCHEMA = `
+
+return output in json
+output schema:
+type: object
+additionalProperties: false
+properties:
+  summary:
+    type: string
+    description: '3–4 sentences highlighting the most important future risks investors should be aware of.'
+  detailedAnalysis:
+    type: string
+    description: '3–4 paragraphs covering macro, industry, competitive, regulatory, and company-specific risks.'
+required:
+  - summary
+  - detailedAnalysis
+`;
+
 export interface GeneratedPromptResult {
   prompt: string;
   inputJson: any;
   reportType: ReportType;
+  schema: string;
 }
 
 /**
@@ -223,22 +291,27 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
   const templateContent = prompt.activePromptVersion.promptTemplate;
   let finalPrompt = compileTemplate(templateContent, inputJson || {});
 
-  // Append JSON schema instructions based on report type
-  if (
-    reportType === ReportType.FINANCIAL_ANALYSIS ||
-    reportType === ReportType.BUSINESS_AND_MOAT ||
-    reportType === ReportType.PAST_PERFORMANCE ||
-    reportType === ReportType.FUTURE_GROWTH ||
-    reportType === ReportType.FAIR_VALUE
-  ) {
-    finalPrompt += FACTOR_ANALYSIS_JSON_SCHEMA;
-  } else if (reportType === ReportType.FINAL_SUMMARY) {
-    finalPrompt += FINAL_SUMMARY_JSON_SCHEMA;
-  }
+  // Map each report type to its output JSON schema
+  const schemaByReportType: Partial<Record<ReportType, string>> = {
+    [ReportType.FINANCIAL_ANALYSIS]: FACTOR_ANALYSIS_JSON_SCHEMA,
+    [ReportType.BUSINESS_AND_MOAT]: FACTOR_ANALYSIS_JSON_SCHEMA,
+    [ReportType.PAST_PERFORMANCE]: FACTOR_ANALYSIS_JSON_SCHEMA,
+    [ReportType.FUTURE_GROWTH]: FACTOR_ANALYSIS_JSON_SCHEMA,
+    [ReportType.FAIR_VALUE]: FACTOR_ANALYSIS_JSON_SCHEMA,
+    [ReportType.COMPETITION]: COMPETITION_JSON_SCHEMA,
+    [ReportType.FUTURE_RISK]: FUTURE_RISK_JSON_SCHEMA,
+    [ReportType.FINAL_SUMMARY]: FINAL_SUMMARY_JSON_SCHEMA,
+  };
+
+  const schema = schemaByReportType[reportType] ?? '';
+
+  // Prepend internet instruction and append output schema to every prompt
+  finalPrompt = INTERNET_INSTRUCTION + finalPrompt + schema;
 
   return {
     prompt: finalPrompt,
     inputJson,
     reportType,
+    schema,
   };
 }
