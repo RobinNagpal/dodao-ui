@@ -86,6 +86,7 @@ export type PastPerformanceResponse = PerformanceResponse;
 export type FuturePerformanceResponse = PerformanceResponse;
 export type BusinessAndMoatResponse = PerformanceResponse;
 export type FinancialStatementAnalysisResponse = PerformanceResponse;
+export type FairValueResponse = PerformanceResponse;
 
 export interface IndustryWithSubIndustries extends TickerV1Industry {
   subIndustries: TickerV1SubIndustry[];

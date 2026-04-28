@@ -6,10 +6,7 @@ import { parseStockScenariosMarkdown, ParsedStockScenario } from '@/utils/stock-
 
 // Default markdown location mirrors the ETF script layout. If the seed doc
 // hasn't been created yet, point at it via `SCENARIOS_MD_PATH`.
-const DEFAULT_MARKDOWN_PATH = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../../docs/insights-ui/stock-analysis/stock-market-scenarios.md'
-);
+const DEFAULT_MARKDOWN_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../docs/insights-ui/stock-analysis/stock-market-scenarios.md');
 
 const API_BASE = (process.env.SCENARIOS_API_BASE ?? 'https://koalagains.com').replace(/\/+$/, '');
 const AUTOMATION_SECRET = process.env.AUTOMATION_SECRET ?? '';

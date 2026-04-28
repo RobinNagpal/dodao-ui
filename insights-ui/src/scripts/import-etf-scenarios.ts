@@ -4,10 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { parseScenariosMarkdown, ParsedScenario } from '@/utils/etf-scenario-markdown-parser';
 
-const DEFAULT_MARKDOWN_PATH = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../../docs/insights-ui/etf-analysis/etf-market-scenarios.md'
-);
+const DEFAULT_MARKDOWN_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../docs/insights-ui/etf-analysis/etf-market-scenarios.md');
 
 const API_BASE = (process.env.SCENARIOS_API_BASE ?? 'https://koalagains.com').replace(/\/+$/, '');
 const AUTOMATION_SECRET = process.env.AUTOMATION_SECRET ?? '';

@@ -527,7 +527,8 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                     categoryKey === TickerAnalysisCategory.BusinessAndMoat ||
                     categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis ||
                     categoryKey === TickerAnalysisCategory.PastPerformance ||
-                    categoryKey === TickerAnalysisCategory.FutureGrowth
+                    categoryKey === TickerAnalysisCategory.FutureGrowth ||
+                    categoryKey === TickerAnalysisCategory.FairValue
                       ? 'justify-between'
                       : ''
                   }`}
@@ -584,6 +585,16 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                       Show Detailed Future Analysis →
                     </Link>
                   )}
+
+                  {categoryKey === TickerAnalysisCategory.FairValue && (
+                    <Link
+                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/fair-value`}
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+                    >
+                      View Detailed Fair Value →
+                    </Link>
+                  )}
                 </div>
                 <div
                   className="text-gray-300 markdown markdown-body"
@@ -616,7 +627,8 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
       key !== TickerAnalysisCategory.BusinessAndMoat &&
       key !== TickerAnalysisCategory.FinancialStatementAnalysis &&
       key !== TickerAnalysisCategory.PastPerformance &&
-      key !== TickerAnalysisCategory.FutureGrowth
+      key !== TickerAnalysisCategory.FutureGrowth &&
+      key !== TickerAnalysisCategory.FairValue
   );
 
   return (
