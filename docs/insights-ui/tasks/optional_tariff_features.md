@@ -292,6 +292,8 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Example report:** [`import-sourcing-coffee-example.md`](./import-sourcing-coffee-example.md) — what this view should look like for U.S. coffee buyers across Brazil, Colombia, Vietnam, Honduras, Mexico, etc.
 
+**Review of the coffee example report:** Verdict — strong, ship it (with minor surgery); this is the most useful example in the PR and the right depth bar for everything else. The hidden-costs breakdown, harvest/payment timing, scam defenses, supplier channels, and three-axis decision matrix (buyer type × optimization goal × risk tolerance) genuinely combine in one page what currently requires bouncing across USDA FAS, SCA, Sweet Maria's, broker sites, and freight indexes — §19's similar-resources comparison makes the differentiation explicit and credible. Real concerns: every dollar figure / FOB range / defect count / freight rate is unsourced (same gap as every other report in the PR), and §18 ("What the App Should Show") is product-spec content leaking into a user-facing page and should be fenced or moved into this task file. With sources added and §18 relocated, this is the only example in the PR that a real importer could plausibly act on, and it should be the model the soybeans report and the five product-reduction reports get rewritten against.
+
 ### 3. Export market opportunity comparison
 
 **What to show:** For a product and exporting country, show potential destination countries where the product may sell at a higher price, along with destination import duties, tariff barriers, demand/trade volume, and likely margin impact.
