@@ -238,3 +238,43 @@ Because your product produces AI-authored, decision-oriented outputs, the highes
 - **Rules-of-origin caution:** wherever preferential rates are implied, provide a rules-of-origin note that rules differ across agreements/partners and are product-specific. citeturn6view0
 
 If you implement only one “quality investment” early, make it the “Freshness + evidence” panel—because it increases trust in *every* page you already have, and it also makes your future ingestion/simulation features much easier to justify.
+
+## Additional optional tariff ideas
+
+These three ideas are useful because they move the app from "tariff report" toward "decision support." They map mainly to the highest-criticality use cases in `tariff-usecases.md`: importers/exporters, procurement teams, customs brokers, small businesses, manufacturers, retail buyers, and sourcing consultants.
+
+Realistically, these features are relevant only if the app can show sourced, product-level data. If they stay as generic AI advice, serious importers/exporters will not trust them for decisions.
+
+### 1. Tariff reduction suggestions for a product + country
+
+**What to show:** For a selected product or HTS code and origin country, show practical ways tariffs might be reduced: FTA eligibility, rules-of-origin checks, duty drawback, bonded warehouse / FTZ usage, alternative classification review, supplier relocation, or import timing.
+
+**Target audience:** New importers, SMBs, e-commerce sellers, procurement teams, customs brokers.
+
+**Why it helps:** Experienced teams may already know these options, but new users often do not. This can become a simple educational layer that explains legal ways to reduce landed cost and when to talk to a broker.
+
+**Critical view:** Helpful as an educational checklist, but not a strong standalone product feature. Many recommendations will be common knowledge for brokers and compliance teams, and some options depend on strict legal eligibility.
+
+### 2. Import sourcing comparison for U.S. buyers
+
+**What to show:** When a user selects a product or HTS code, show the top 5 countries the U.S. imports it from, then compare tariff rate, other import duties, average buying/import cost, trade volume, and risk notes.
+
+**Target audience:** U.S. importers, procurement teams, retail buyers, manufacturers, sourcing consultants.
+
+**Why it helps:** This is likely high-interest because it directly answers: "Can I source this cheaper from another country?" It turns tariff data into supplier-country comparison and landed-cost exploration.
+
+**Critical view:** This is probably the strongest of the three ideas. It solves a real procurement question, but it needs reliable import volume, average unit value, tariff, freight, and country-risk data. Tariff alone is not enough to recommend a better sourcing country.
+
+**Example report:** [`import-sourcing-coffee-example.md`](./import-sourcing-coffee-example.md) — what this view should look like for U.S. coffee buyers across Brazil, Colombia, Vietnam, Honduras, Mexico, etc.
+
+### 3. Export market opportunity comparison
+
+**What to show:** For a product and exporting country, show potential destination countries where the product may sell at a higher price, along with destination import duties, tariff barriers, demand/trade volume, and likely margin impact.
+
+**Target audience:** Exporters, SMB manufacturers, agribusiness exporters, trade consultants, industry associations.
+
+**Why it helps:** This helps exporters discover better markets, not just understand U.S. tariffs. Interest should be strongest from businesses trying to expand sales or shift away from low-margin markets.
+
+**Critical view:** Useful, but harder than the import comparison. Export opportunity depends on demand, local competition, distribution access, regulations, currency, and non-tariff barriers. This should be framed as "market discovery" rather than a confident export recommendation.
+
+**Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
