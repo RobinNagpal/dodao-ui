@@ -22,7 +22,7 @@ properties:
           description: '1 sentence giving the key takeaway or insight from this factor.'
         detailedExplanation:
           type: string
-          description: '1 paragraph of investor-focused analysis for this factor. Directly analyze the company's performance using available data. Clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
+          description: "1 paragraph of investor-focused analysis for this factor. Directly analyze the company's performance using available data. Clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths."
         result:
           type: string
           enum: ['Pass', 'Fail']

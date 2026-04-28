@@ -4,7 +4,7 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–5 sentences summarizing the target company''s position relative to its peers. Highlight whether it is stronger, weaker, or mixed vs. competitors. End with a clear investor takeaway.'
+    description: "3–5 sentences summarizing the target company's position relative to its peers. Highlight whether it is stronger, weaker, or mixed vs. competitors. End with a clear investor takeaway."
   overallAnalysisDetails:
     type: string
     description: '3–4 paragraphs with a high-level overview of how the company compares to its competition. Must not repeat information or data points already covered in the competitionAnalysisArray entries.'
