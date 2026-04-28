@@ -4,10 +4,10 @@ additionalProperties: false
 properties:
   overallSummary:
     type: string
-    description: '3–5 sentence final summary of how the stock performs in this category. Must highlight the most important strengths and weaknesses, and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
+    description: '3–5 sentence summary of the category analysis. Summarize the key points from overallAnalysisDetails and conclude with a clear investor takeaway (positive, negative, or mixed). Keep language simple and concise for retail investors.'
   overallAnalysisDetails:
     type: string
-    description: 'In 3-4 Paragraphs discuss in detail about the category being discusses. Explain the most important things that are needed to understand that particular stock for that category. More details are shared in the prompt'
+    description: 'A detailed multi-paragraph analysis (typically 7–9 paragraphs, 1800–2500 words) following the structure and order specified in the prompt. Cover all key sub-topics for this category in the order laid out in the prompt instructions.'
   factors:
     type: array
     description: 'Array of factor-level analyses.'
@@ -19,10 +19,10 @@ properties:
           description: 'Must match the key from the input factorAnalysisArray.'
         oneLineExplanation:
           type: string
-          description: '1–2 sentence quick takeaway that gives the key insight from this factor'
+          description: '1 sentence giving the key takeaway or insight from this factor.'
         detailedExplanation:
           type: string
-          description: '1–2 paragraphs of investor-focused analysis for this factor. Directly analyze the company’s performance based on this factor using available data and reasoning. The explanation must clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
+          description: '1 paragraph of investor-focused analysis for this factor. Directly analyze the company's performance using available data. Clearly justify the Pass/Fail result, be critical in tone, and highlight risks or weaknesses along with strengths.'
         result:
           type: string
           enum: ['Pass', 'Fail']

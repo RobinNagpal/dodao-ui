@@ -5,22 +5,25 @@ properties:
   finalSummary:
     type: string
     description: >-
-      The final stock summary text. It must be 6–7 short lines, each line a clear
-      sentence. The first line should give the overall verdict (Positive, Negative,
-      or Mixed). The following lines should briefly justify the verdict using the
-      provided categorySummaries and supporting factor one-line explanations. The
-      style should be clear, concise, and suitable for retail investors.
+      Plain text, two paragraphs of 3–4 lines each. Paragraph 1: describe the
+      company's business model and rate its current state (excellent / very good /
+      good / fair / bad / very bad) with a brief supporting reason. Paragraph 2:
+      how the company compares with its competition and a conservative, actionable
+      investor takeaway sentence (e.g. "Suitable for long-term investors seeking
+      growth" or "High risk — best to avoid until profitability improves").
   metaDescription:
     type: string
     description: >-
-      A concise meta description for SEO purposes, summarizing the key points about
-      the stock in 1-2 sentences. Should be under 160 characters and highlight the
-      overall verdict and main factors.
+      A concise SEO meta description (maximum 160 characters, no introductory
+      text) that is compelling and informative for search engines. Include key
+      information about the company and its overall analysis conclusion.
   aboutReport:
     type: string
     description: >-
-      A 2-3 sentence summary for the stock analysis report. Should be compelling,
-      SEO-friendly, and provide a unique introduction for investors.
+      A unique 2–3 sentence introduction for the stock analysis report, rewritten
+      from the base stock information with varied structure and vocabulary to avoid
+      duplicate content penalties. Tone must be professional, insightful, and
+      authoritative.
 required:
   - finalSummary
   - metaDescription

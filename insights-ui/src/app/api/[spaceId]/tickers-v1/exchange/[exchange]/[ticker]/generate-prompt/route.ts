@@ -18,6 +18,7 @@ export interface GeneratePromptRequest {
 export interface GeneratePromptResponse {
   prompt: string;
   reportType: ReportType;
+  schema: string;
 }
 
 async function handler(request: NextRequest, { params }: RouteParams): Promise<GeneratePromptResponse> {
@@ -34,6 +35,7 @@ async function handler(request: NextRequest, { params }: RouteParams): Promise<G
   return {
     prompt: result.prompt,
     reportType: result.reportType,
+    schema: result.schema,
   };
 }
 
