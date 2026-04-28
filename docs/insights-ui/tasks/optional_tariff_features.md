@@ -308,6 +308,8 @@ The strongest version of this feature is probably the **import sourcing comparis
 
 **Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
 
+**Review of the soybeans example report:** Verdict — relevant feature, thin example. The 10-market table plus the "China is volume, not margin" worked example answer a question Google won't easily surface ("where does my tonne earn the most?"), so the feature idea clearly adds real value. But only 4 of 10 markets get worked margin math, and the per-country pros/cons profiles, harvest/payment timing, buyer-channel guidance, and non-GMO/identity-preserved logistics that make the coffee example so useful are all missing — and every dollar figure is unsourced. As shipped, it is a useful structural template for the feature, not a report an exporter could actually decide on; coffee-report depth is the bar to hit before this is user-facing.
+
 ### 4. Bonded warehouse / FTZ calculator
 
 **What to show:** A simple tool where a user enters import value, expected holding period, share of goods that may be re-exported, and rough warehouse/FTZ fees. The output shows whether using a bonded warehouse or foreign-trade zone improves cash flow or duty timing compared with paying duty at entry.
