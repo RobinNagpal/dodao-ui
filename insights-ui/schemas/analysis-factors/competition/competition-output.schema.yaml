@@ -4,13 +4,13 @@ additionalProperties: false
 properties:
   summary:
     type: string
-    description: '3–5 sentence conclusion on how the stock compares to its peers. Must highlight its relative strengths, weaknesses, and competitive positioning within its industry.'
+    description: '3–5 sentences summarizing the target company''s position relative to its peers. Highlight whether it is stronger, weaker, or mixed vs. competitors. End with a clear investor takeaway.'
   overallAnalysisDetails:
     type: string
-    description: 'Write 3-4 paragraphs explaining why it’s how overall this particular company compares to the comperetion.'
+    description: '3–4 paragraphs with a high-level overview of how the company compares to its competition. Must not repeat information or data points already covered in the competitionAnalysisArray entries.'
   competitionAnalysisArray:
     type: array
-    description: 'Array of competitor comparisons.'
+    description: 'Array of competitor comparisons — 6 to 8 competitors including public, private, and international peers.'
     items:
       type: object
       properties:
@@ -19,16 +19,16 @@ properties:
           description: 'Full name of the competitor company.'
         companySymbol:
           type: string
-          description: 'Ticker symbol of the competitor company.'
+          description: 'Ticker symbol of the competitor company (if available).'
         exchangeSymbol:
           type: string
-          description: 'Exchange symbol (e.g., NASDAQ, NYSE) of the competitor.'
+          description: 'Exchange symbol (e.g., NASDAQ, NYSE, TSX) of the competitor (if available).'
         exchangeName:
           type: string
-          description: 'Readable exchange name (e.g., NASDAQ Global Select, NYSE Main Market).'
+          description: 'Readable exchange name (if available).'
         detailedComparison:
           type: string
-          description: '2–3 paragraphs analyzing how this competitor compares with the target stock. Cover relative market cap, growth, profitability, risk, and positioning.'
+          description: 'Exactly 7 paragraphs: (1) overall comparison summary, (2) Business & Moat head-to-head with winner named, (3) Financial Statement Analysis head-to-head with winner named, (4) Past Performance head-to-head with winner named, (5) Future Growth head-to-head with winner named, (6) Fair Value head-to-head with winner named, (7) overall winner declaration with evidence-based reasoning.'
       required:
         - companyName
         - detailedComparison
