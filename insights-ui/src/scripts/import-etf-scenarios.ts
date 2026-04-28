@@ -4,10 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { parseScenariosMarkdown, ParsedScenario } from '@/utils/etf-scenario-markdown-parser';
 
-const DEFAULT_MARKDOWN_PATH = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../../docs/ai-knowledge/insights-ui/etf-analysis/etf-market-scenarios.md'
-);
+const DEFAULT_MARKDOWN_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../docs/insights-ui/etf-analysis/etf-market-scenarios.md');
 
 const API_BASE = (process.env.SCENARIOS_API_BASE ?? 'https://koalagains.com').replace(/\/+$/, '');
 const AUTOMATION_SECRET = process.env.AUTOMATION_SECRET ?? '';
@@ -28,8 +25,12 @@ function toRequestBody(s: ParsedScenario) {
     timeframe: s.timeframe,
     probabilityBucket: s.probabilityBucket,
     probabilityPercentage: s.probabilityPercentage,
+    countries: s.countries,
     outlookAsOfDate: s.outlookAsOfDate.toISOString(),
-    links: s.links.map((l) => ({ symbol: l.symbol, role: l.role, sortOrder: l.sortOrder })),
+    // The API requires exchange on every link. Drop bare-symbol legacy links
+    // here — they have to be re-authored with `EXCHANGE:SYMBOL` qualifiers
+    // (or added through the admin UI which has an exchange dropdown).
+    links: s.links.filter((l) => !!l.exchange).map((l) => ({ symbol: l.symbol, exchange: l.exchange!, role: l.role, sortOrder: l.sortOrder })),
   };
 }
 

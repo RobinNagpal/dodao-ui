@@ -25,29 +25,29 @@ You should be know the following things to be able to contribute to this reposit
 
 - [ ] Understand the monorepo structure. More details in [ProjectStructure.md](docs/ProjectStructure.md)
 - [ ] Understand how postgres is setup using docker-compose. See [LocalDatabaseSetup.md](docs/LocalDatabaseSetup.md) &  See [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
-- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/ai-knowledge/code-knowledge/PrismaTypesAndMigrations.md)
-- [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/ai-knowledge/code-knowledge/PrismaTypesAndMigrations.md)
-- [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/ai-knowledge/code-knowledge/TypeDefinitions.md)
+- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/code-knowledge/PrismaTypesAndMigrations.md)
+- [ ] Understand how to declare types for JSON fields in Prisma. More details in [PrismaTypesAndMigrations.md](docs/code-knowledge/PrismaTypesAndMigrations.md)
+- [ ] Understand how to create new entities and declare types for them. More details in [TypeDefinitions.md](docs/code-knowledge/TypeDefinitions.md)
 - [ ] Understand what is a space. More details in [UnderstandingSpace.md](docs/UnderstandingSpace.md)
 
 
 ### API
-- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/ai-knowledge/code-knowledge/PrismaTypesAndMigrations.md)
+- [ ] Understand how migrations work. More details in [PrismaTypesAndMigrations.md](docs/code-knowledge/PrismaTypesAndMigrations.md)
 - [ ] Understand how to declare new types for entities, request and response types
-- [ ] Understand how strict types need to be used for request and responses. See [TypeDefinitions.md](docs/ai-knowledge/code-knowledge/TypeDefinitions.md)
-- [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/ai-knowledge/code-knowledge/AddingAPIRoutes.md)
-- [ ] Understand how to handle errors in the API. More details in [ErrorHandling.md](docs/ai-knowledge/code-knowledge/ErrorHandling.md)
+- [ ] Understand how strict types need to be used for request and responses. See [TypeDefinitions.md](docs/code-knowledge/TypeDefinitions.md)
+- [ ] Understand how to add new routes. More details in [AddingAPIRoutes.md](docs/code-knowledge/AddingAPIRoutes.md)
+- [ ] Understand how to handle errors in the API. More details in [ErrorHandling.md](docs/code-knowledge/ErrorHandling.md)
 
 
 ### UI
 - [ ] Understand how loading of the space works. See second half of this video [Video](https://drive.google.com/file/d/1Gg-KWR_OqEPLIjDMUIZmslXuZ0CUpAnZ/view?usp=sharing)
 - [ ] Understand how notifications need to be shown
 - [ ] Understand how strict types need to be used for request and responses
-- [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/ai-knowledge/code-knowledge/SpacingRecommendations.md)
+- [ ] Understand the spacing recommendations. More details in [SpacingRecommendations.md](docs/code-knowledge/SpacingRecommendations.md)
 - [ ] Making sure the UI works for various themes.
-- [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/ai-knowledge/code-knowledge/ServerSideComponents.md).
-- [ ] Understand how to handle errors in the UI. More details in [ErrorHandling.md](docs/ai-knowledge/code-knowledge/ErrorHandling.md)
-- [ ] Understand how theme and CSS works. More details in [HowThemeAndCssWorks.md](docs/ai-knowledge/code-knowledge/HowThemeAndCssWorks.md)
+- [ ] Understand what is server side rendering and what are server side components in Next.js [ServerSideComponents.md](docs/code-knowledge/ServerSideComponents.md).
+- [ ] Understand how to handle errors in the UI. More details in [ErrorHandling.md](docs/code-knowledge/ErrorHandling.md)
+- [ ] Understand how theme and CSS works. More details in [HowThemeAndCssWorks.md](docs/code-knowledge/HowThemeAndCssWorks.md)
 
 ### Base Application
 We have a base application in the repository. See here on the things you can work on in the base application
@@ -71,9 +71,9 @@ Checklist for contribution to Tidbits Hub:
 
 ### AI Development Guidelines
 For AI-assisted development and coding patterns, refer to our comprehensive knowledge base:
-- **[AI Knowledge Base](docs/ai-knowledge/)** - Complete development guidelines and patterns
-  - [Backend Instructions](docs/ai-knowledge/code-knowledge/BackendInstructions.md) - Next.js API development patterns
-  - [UI Instructions](docs/ai-knowledge/code-knowledge/UIIInstructions.md) - React/Next.js UI development patterns
-  - [UI Components](docs/ai-knowledge/code-knowledge/ui/) - Specific component guidelines (buttons, forms, page structure, themes)
+- **[AI Knowledge Base](docs/)** - Complete development guidelines and patterns
+  - [Backend Instructions](docs/code-knowledge/BackendInstructions.md) - Next.js API development patterns
+  - [UI Instructions](docs/code-knowledge/UIIInstructions.md) - React/Next.js UI development patterns
+  - [UI Components](docs/code-knowledge/ui/) - Specific component guidelines (buttons, forms, page structure, themes)
 
 These documents contain the latest coding patterns, best practices, and examples used across all projects in this repository.

@@ -14,11 +14,17 @@
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
+    "import:stock-scenarios": "tsx src/scripts/import-stock-scenarios.ts",
     "etfs:trigger": "tsx src/scripts/etfs/trigger-generation.ts",
     "etfs:wait": "tsx src/scripts/etfs/wait-for-generation.ts",
     "etfs:fetch": "tsx src/scripts/etfs/fetch-analysis.ts",
+    "etfs:prompt": "tsx src/scripts/etfs/get-report-prompt.ts",
+    "etfs:save": "tsx src/scripts/etfs/save-report.ts",
     "stocks:trigger": "tsx src/scripts/tickers/trigger-generation.ts",
-    "stocks:add": "tsx src/scripts/tickers/add-stock.ts"
+    "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
+    "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
+    "stocks:save": "tsx src/scripts/tickers/save-report.ts",
+    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts"
   },
   "engines": {
     "node": ">=23.11.0"

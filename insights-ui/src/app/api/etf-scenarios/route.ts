@@ -6,6 +6,8 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { EtfScenario } from '@prisma/client';
 import { EtfScenarioDirection, EtfScenarioPricedInBucket, EtfScenarioProbabilityBucket, EtfScenarioRole, EtfScenarioTimeframe } from '@/types/etfScenarioEnums';
+import { EtfSupportedCountry, isEtfExchange, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { etfScenarioLinkCountryMismatch, serializeEtfLinkMismatches } from '@/utils/etf-scenario-country-validation';
 import { NextRequest } from 'next/server';
 import { withAdminOrToken } from '../helpers/withAdminOrToken';
 import { z } from 'zod';
@@ -30,11 +32,25 @@ const createEtfScenarioSchema = z.object({
   outlookAsOfDate: z.string().refine((s) => !isNaN(Date.parse(s)), 'outlookAsOfDate must be an ISO date'),
   metaDescription: z.string().nullable().optional(),
   archived: z.boolean().optional(),
+  // Countries the scenario is scoped to. ETF coverage is currently US + Canada;
+  // we validate against ETF_SUPPORTED_COUNTRIES (a subset of stock's
+  // SupportedCountries) so admins can't create scenarios in markets we don't
+  // ship ETF data for.
+  countries: z
+    .array(z.string().refine((v) => isEtfSupportedCountry(v), 'country must be one of the supported ETF countries (US / Canada)'))
+    .min(1, 'at least one country must be declared'),
   links: z
     .array(
       z.object({
         symbol: z.string().min(1),
-        exchange: z.string().nullable().optional(),
+        // Exchange is required and must belong to the ETF-specific exchange
+        // surface (see etfCountryExchangeUtils.ETF_EXCHANGES). The link's
+        // exchange country must also be in scenario.countries — enforced
+        // below via etfScenarioLinkCountryMismatch.
+        exchange: z
+          .string()
+          .min(1, 'exchange is required on ETF scenario links')
+          .refine((v) => isEtfExchange(v.toUpperCase()), 'exchange must be one of the supported ETF exchanges'),
         role: z.nativeEnum(EtfScenarioRole),
         sortOrder: z.number().int().nonnegative().optional(),
         roleExplanation: z.string().nullable().optional(),
@@ -59,6 +75,18 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
   const slug = body.slug?.trim() || slugifyScenarioTitle(body.title);
 
+  const normalizedLinks = (body.links ?? []).map((l) => ({
+    ...l,
+    symbol: l.symbol.toUpperCase(),
+    exchange: l.exchange.toUpperCase(),
+  }));
+
+  const scenarioCountries = body.countries as EtfSupportedCountry[];
+  const mismatches = etfScenarioLinkCountryMismatch(normalizedLinks, scenarioCountries);
+  if (mismatches.length > 0) {
+    throw new Error(`Link country mismatch: ${serializeEtfLinkMismatches(mismatches)}. Fix the scenario's countries[] or the link's exchange, then retry.`);
+  }
+
   const commonData = {
     scenarioNumber: body.scenarioNumber,
     title: body.title,
@@ -78,18 +106,21 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
     outlookAsOfDate: new Date(body.outlookAsOfDate),
     metaDescription: body.metaDescription ?? null,
     archived: body.archived ?? false,
+    countries: scenarioCountries,
   };
 
-  const symbols = Array.from(new Set((body.links ?? []).map((l) => l.symbol.toUpperCase())));
-  const knownEtfs = symbols.length
+  const knownEtfs = normalizedLinks.length
     ? await prisma.etf.findMany({
-        where: { spaceId: KoalaGainsSpaceId, symbol: { in: symbols } },
+        where: {
+          spaceId: KoalaGainsSpaceId,
+          OR: normalizedLinks.map((l) => ({ symbol: l.symbol, exchange: l.exchange })),
+        },
         select: { id: true, symbol: true, exchange: true },
       })
     : [];
-  const knownEtfBySymbol = new Map<string, { id: string; symbol: string; exchange: string }>();
+  const knownEtfByKey = new Map<string, { id: string; symbol: string; exchange: string }>();
   for (const etf of knownEtfs) {
-    if (!knownEtfBySymbol.has(etf.symbol)) knownEtfBySymbol.set(etf.symbol, etf);
+    knownEtfByKey.set(`${etf.symbol.toUpperCase()}|${etf.exchange.toUpperCase()}`, etf);
   }
 
   const saved = await prisma.$transaction(async (tx) => {
@@ -106,15 +137,14 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
     await tx.etfScenarioEtfLink.deleteMany({ where: { scenarioId: scenario.id } });
 
-    if (body.links?.length) {
+    if (normalizedLinks.length) {
       await tx.etfScenarioEtfLink.createMany({
-        data: body.links.map((link, idx) => {
-          const symbol = link.symbol.toUpperCase();
-          const knownEtf = knownEtfBySymbol.get(symbol);
+        data: normalizedLinks.map((link, idx) => {
+          const knownEtf = knownEtfByKey.get(`${link.symbol}|${link.exchange}`);
           return {
             scenarioId: scenario.id,
-            symbol,
-            exchange: knownEtf?.exchange ?? link.exchange ?? null,
+            symbol: link.symbol,
+            exchange: link.exchange,
             etfId: knownEtf?.id ?? null,
             role: link.role,
             sortOrder: link.sortOrder ?? idx,

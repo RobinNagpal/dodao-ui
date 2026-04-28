@@ -29,6 +29,7 @@ export enum USExchanges {
 export enum CanadaExchanges {
   TSX = 'TSX',
   TSXV = 'TSXV',
+  NEO = 'NEO',
 }
 
 export enum IndiaExchanges {
@@ -90,6 +91,7 @@ export const EXCHANGES: ReadonlyArray<AllExchanges> = [
   USExchanges.OTCMKTS,
   CanadaExchanges.TSX,
   CanadaExchanges.TSXV,
+  CanadaExchanges.NEO,
   IndiaExchanges.BSE,
   IndiaExchanges.NSE,
   UKExchanges.LSE,
@@ -128,6 +130,7 @@ export const EXCHANGE_TO_COUNTRY: Record<AllExchanges, SupportedCountries> = {
   [USExchanges.OTCMKTS]: SupportedCountries.US,
   [CanadaExchanges.TSX]: SupportedCountries.Canada,
   [CanadaExchanges.TSXV]: SupportedCountries.Canada,
+  [CanadaExchanges.NEO]: SupportedCountries.Canada,
   [IndiaExchanges.BSE]: SupportedCountries.India,
   [IndiaExchanges.NSE]: SupportedCountries.India,
   [UKExchanges.LSE]: SupportedCountries.UK,

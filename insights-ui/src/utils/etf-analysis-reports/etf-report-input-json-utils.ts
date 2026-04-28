@@ -85,6 +85,31 @@ function prepareFactorAnalysisArray(factors: EtfAnalysisFactorDefinition[]) {
   }));
 }
 
+const PORTFOLIO_HOLDINGS_TOP_N = 10;
+
+/**
+ * Returns a shallow clone of `morPortfolioInfo` with the inner holdings list capped
+ * at the top N entries. The raw holdings array for a broad-index ETF can contain
+ * hundreds of rows and blow the prompt size past `60KB`, even though only the
+ * largest positions drive the analysis. Everything else on the record is kept intact.
+ */
+function trimPortfolioHoldings(portfolio: EtfWithAllData['morPortfolioInfo']): EtfWithAllData['morPortfolioInfo'] {
+  if (!portfolio) return portfolio;
+
+  const holdingsJson = portfolio.holdings as { summary?: unknown; columns?: unknown; holdings?: unknown } | null;
+  if (!holdingsJson || !Array.isArray(holdingsJson.holdings) || holdingsJson.holdings.length <= PORTFOLIO_HOLDINGS_TOP_N) {
+    return portfolio;
+  }
+
+  return {
+    ...portfolio,
+    holdings: {
+      ...holdingsJson,
+      holdings: holdingsJson.holdings.slice(0, PORTFOLIO_HOLDINGS_TOP_N),
+    } as typeof portfolio.holdings,
+  };
+}
+
 export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
   const mor = etf.morAnalyzerInfo;
@@ -132,7 +157,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     }),
     stockAnalyzerTechnicals: JSON.stringify({
       stockPrice: sa?.stockPrice,
-      percentChange: sa?.percentChange,
+      change1d: sa?.percentChange,
       ma20: sa?.ma20,
       ma50: sa?.ma50,
       ma150: sa?.ma150,
@@ -318,7 +343,9 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
   const fin = etf.financialInfo;
   const risk = etf.morRiskInfo;
   const people = etf.morPeopleInfo;
-  const portfolio = etf.morPortfolioInfo;
+  // The raw holdings list can run to hundreds of rows; trim to the top positions so
+  // the resulting prompt stays within a reasonable size budget for downstream LLMs.
+  const portfolio = trimPortfolioHoldings(etf.morPortfolioInfo);
 
   const assetClass = sa?.assetClass || 'Equity';
   const fundCategory = sa?.category || null;

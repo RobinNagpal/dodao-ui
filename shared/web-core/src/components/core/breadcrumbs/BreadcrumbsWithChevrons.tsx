@@ -18,8 +18,8 @@ interface BreadcrumbsWithChevronsProps {
 export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hideHomeIcon = false }: BreadcrumbsWithChevronsProps) {
   return breadcrumbs.length === 0 ? null : (
     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
-      <nav className="flex" aria-label="Breadcrumb">
-        <ol role="list" className="flex items-center space-x-4">
+      <nav className="flex min-w-0" aria-label="Breadcrumb">
+        <ol role="list" className="flex flex-wrap items-center gap-x-4 gap-y-2">
           {/* Home icon - hidden only on mobile */}
           <li className={hideHomeIcon ? 'hidden sm:block' : ''}>
             <Link className="cursor-pointer" href={'/'}>
@@ -31,13 +31,13 @@ export default function BreadcrumbsWithChevrons({ breadcrumbs, rightButton, hide
             const isFirstBreadcrumb = index === 0;
 
             return (
-              <li key={breadcrumb.name}>
-                <div className="flex items-center">
+              <li key={breadcrumb.name} className="min-w-0">
+                <div className="flex items-center min-w-0">
                   {/* Show chevron on desktop always, on mobile only if not first breadcrumb when home is hidden */}
                   <ChevronRightIcon className={`h-5 w-5 flex-shrink-0 ${hideHomeIcon && isFirstBreadcrumb ? 'hidden sm:block' : ''}`} aria-hidden="true" />
                   <Link
                     href={breadcrumb.href}
-                    className={`${hideHomeIcon && isFirstBreadcrumb ? 'sm:ml-4' : 'ml-4'} text-sm font-medium ${
+                    className={`${hideHomeIcon && isFirstBreadcrumb ? 'sm:ml-4' : 'ml-4'} text-sm font-medium break-words ${
                       breadcrumb.current ? 'cursor-default' : 'cursor-pointer link-color'
                     }`}
                     aria-current={breadcrumb.current ? 'page' : undefined}

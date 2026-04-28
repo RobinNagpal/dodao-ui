@@ -46,8 +46,8 @@ export default function ImportEtfScenariosModal({ isOpen, onClose, onSuccess }: 
     <SingleSectionModal open={isOpen} onClose={onClose} title="Import ETF Scenarios from markdown">
       <div className="text-left mt-3 max-h-[75vh] overflow-y-auto pr-1 space-y-3">
         <p className="text-xs text-gray-400">
-          Paste the entire content of <code>etf-market-scenarios.md</code>. Scenarios are matched by <code>scenarioNumber</code> — existing rows are updated in
-          place, and all winner / loser / most-exposed links are rebuilt from the doc.
+          Paste an ETF scenarios markdown document. Scenarios are matched by <code>scenarioNumber</code> — existing rows are updated in place, and all winner /
+          loser / most-exposed links are rebuilt from the doc.
         </p>
 
         <label className="flex flex-col gap-1 text-sm max-w-xs">

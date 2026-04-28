@@ -196,6 +196,7 @@ export interface EtfMorPeopleSummary {
   numberOfManagers?: string;
   longestTenure?: string;
   advisors?: string;
+  subAdvisors?: string;
   averageTenure?: string;
 }
 
