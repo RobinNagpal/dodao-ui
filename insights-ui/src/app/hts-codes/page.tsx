@@ -1,7 +1,7 @@
+import type { TariffSectionListItem } from '@/app/api/tariff-calculator/sections/route';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { chapterDetailHref } from '@/utils/tariff-calculator/chapter-slug';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ChevronRight } from 'lucide-react';
@@ -26,41 +26,26 @@ export const metadata: Metadata = {
   keywords: ['HTS codes', 'HTSUS', 'harmonized tariff schedule', 'US tariffs', 'duty rates', 'tariff calculator'],
 };
 
-interface SectionWithChapters {
-  id: string;
-  number: number;
-  romanNumeral: string;
-  title: string;
-  chapters: { id: string; number: number; title: string }[];
-}
-
-async function loadSections(): Promise<SectionWithChapters[]> {
-  // Wrapped so `next build` can collect page data without DATABASE_URL.
-  // The page renders an empty state at build time and re-fetches at
-  // request time once the live DB is reachable.
+async function fetchSections(): Promise<TariffSectionListItem[]> {
+  // Falls back to [] when the API is unreachable (e.g. `next build` without
+  // DATABASE_URL). The page renders the empty state in that case and
+  // re-fetches at request time once the live API is reachable.
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/sections`;
   try {
-    return await prisma.tariffSection.findMany({
-      where: { spaceId: KoalaGainsSpaceId },
-      orderBy: { number: 'asc' },
-      select: {
-        id: true,
-        number: true,
-        romanNumeral: true,
-        title: true,
-        chapters: {
-          orderBy: { number: 'asc' },
-          select: { id: true, number: true, title: true },
-        },
-      },
-    });
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) {
+      console.error(`Failed to fetch tariff sections: HTTP ${res.status}`);
+      return [];
+    }
+    return (await res.json()) as TariffSectionListItem[];
   } catch (e) {
-    console.error('Failed to load tariff sections:', e);
+    console.error('Failed to fetch tariff sections:', e);
     return [];
   }
 }
 
 export default async function HtsCodesIndexPage() {
-  const sections = await loadSections();
+  const sections = await fetchSections();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },

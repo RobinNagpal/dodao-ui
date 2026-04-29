@@ -1,38 +1,21 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
-import { z } from 'zod';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 
-// Idempotent upsert of HTSUS sections (1..22 / I..XXII) and the chapters
-// that belong to each. Source of truth is the public list at
-// https://hts.usitc.gov/. The body shape mirrors that page: each section
-// row contains its arabic number, roman numeral, title, and the chapter
-// rows nested under it. Re-running the route with the same payload is a
-// no-op for unchanged rows; titles can be edited and will overwrite.
+// HTSUS sections (I..XXII) and their chapters. The GET response is the
+// shape consumed by the public /hts-codes index page; POST is an admin-only
+// idempotent upsert that mirrors the section/chapter list at hts.usitc.gov.
 
-const chapterInputSchema = z.object({
-  number: z.number().int().min(1).max(99),
-  title: z.string().trim().min(1),
-});
-
-const sectionInputSchema = z.object({
-  number: z.number().int().min(1).max(22),
-  romanNumeral: z
-    .string()
-    .trim()
-    .regex(/^[IVX]+$/, 'romanNumeral must be uppercase Roman numerals (I, II, ..., XXII)'),
-  title: z.string().trim().min(1),
-  notes: z.string().optional(),
-  chapters: z.array(chapterInputSchema).min(1),
-});
-
-const upsertBodySchema = z.object({
-  sections: z.array(sectionInputSchema).min(1),
-});
-
-export type UpsertTariffSectionsRequest = z.infer<typeof upsertBodySchema>;
+export interface TariffSectionListItem {
+  id: string;
+  number: number;
+  romanNumeral: string;
+  title: string;
+  chapters: { id: string; number: number; title: string }[];
+}
 
 export interface UpsertTariffSectionsResponse {
   sections: { number: number; action: 'created' | 'updated'; chapters: { number: number; action: 'created' | 'updated' }[] }[];
@@ -40,8 +23,95 @@ export interface UpsertTariffSectionsResponse {
   totalChapters: number;
 }
 
+export interface UpsertTariffSectionsRequest {
+  sections: SectionInput[];
+}
+
+interface ChapterInput {
+  number: number;
+  title: string;
+}
+
+interface SectionInput {
+  number: number;
+  romanNumeral: string;
+  title: string;
+  notes?: string;
+  chapters: ChapterInput[];
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function validateChapter(raw: unknown, sectionNumber: number, idx: number): ChapterInput {
+  if (!isObject(raw)) throw new Error(`section ${sectionNumber} chapters[${idx}] must be an object`);
+  const { number, title } = raw;
+  if (typeof number !== 'number' || !Number.isInteger(number) || number < 1 || number > 99) {
+    throw new Error(`section ${sectionNumber} chapters[${idx}].number must be an integer between 1 and 99`);
+  }
+  if (typeof title !== 'string' || title.trim().length === 0) {
+    throw new Error(`section ${sectionNumber} chapters[${idx}].title must be a non-empty string`);
+  }
+  return { number, title: title.trim() };
+}
+
+function validateSection(raw: unknown, idx: number): SectionInput {
+  if (!isObject(raw)) throw new Error(`sections[${idx}] must be an object`);
+  const { number, romanNumeral, title, notes, chapters } = raw;
+  if (typeof number !== 'number' || !Number.isInteger(number) || number < 1 || number > 22) {
+    throw new Error(`sections[${idx}].number must be an integer between 1 and 22`);
+  }
+  if (typeof romanNumeral !== 'string' || !/^[IVX]+$/.test(romanNumeral.trim())) {
+    throw new Error(`sections[${idx}].romanNumeral must be uppercase Roman numerals (I, II, ..., XXII)`);
+  }
+  if (typeof title !== 'string' || title.trim().length === 0) {
+    throw new Error(`sections[${idx}].title must be a non-empty string`);
+  }
+  if (notes !== undefined && notes !== null && typeof notes !== 'string') {
+    throw new Error(`sections[${idx}].notes must be a string when provided`);
+  }
+  if (!Array.isArray(chapters) || chapters.length === 0) {
+    throw new Error(`sections[${idx}].chapters must be a non-empty array`);
+  }
+  return {
+    number,
+    romanNumeral: romanNumeral.trim(),
+    title: title.trim(),
+    notes: typeof notes === 'string' ? notes : undefined,
+    chapters: chapters.map((c, ci) => validateChapter(c, number, ci)),
+  };
+}
+
+function validateUpsertBody(raw: unknown): UpsertTariffSectionsRequest {
+  if (!isObject(raw)) throw new Error('Request body must be an object');
+  const { sections } = raw;
+  if (!Array.isArray(sections) || sections.length === 0) {
+    throw new Error('sections must be a non-empty array');
+  }
+  return { sections: sections.map((s, i) => validateSection(s, i)) };
+}
+
+async function getHandler(): Promise<TariffSectionListItem[]> {
+  const sections = await prisma.tariffSection.findMany({
+    where: { spaceId: KoalaGainsSpaceId },
+    orderBy: { number: 'asc' },
+    select: {
+      id: true,
+      number: true,
+      romanNumeral: true,
+      title: true,
+      chapters: {
+        orderBy: { number: 'asc' },
+        select: { id: true, number: true, title: true },
+      },
+    },
+  });
+  return sections;
+}
+
 async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtTokenPayload): Promise<UpsertTariffSectionsResponse> {
-  const body = upsertBodySchema.parse(await request.json());
+  const body = validateUpsertBody(await request.json());
 
   // Catch duplicate chapter numbers across the whole payload up-front so
   // we don't half-write before failing on a unique-constraint violation.
@@ -112,4 +182,5 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
   };
 }
 
+export const GET = withErrorHandlingV2<TariffSectionListItem[]>(getHandler);
 export const POST = withLoggedInAdmin<UpsertTariffSectionsResponse>(postHandler);

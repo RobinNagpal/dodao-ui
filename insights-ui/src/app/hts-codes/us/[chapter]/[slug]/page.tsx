@@ -1,7 +1,8 @@
+import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[number]/route';
+import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { chapterDetailHref, chapterNumberSlug, chapterTitleSlug } from '@/utils/tariff-calculator/chapter-slug';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
@@ -17,20 +18,6 @@ interface RouteParams {
   slug: string;
 }
 
-interface HtsRow {
-  id: string;
-  htsNumber: string | null;
-  htsCode10: string | null;
-  indent: number;
-  description: string;
-  unitOfQuantity: string[];
-  generalRateOfDuty: string | null;
-  specialRateOfDuty: string | null;
-  column2RateOfDuty: string | null;
-  quotaQuantity: string | null;
-  additionalDuties: string | null;
-}
-
 function parseChapterNumber(raw: string): number | null {
   if (!/^\d{1,2}$/.test(raw)) return null;
   const n = parseInt(raw, 10);
@@ -38,33 +25,42 @@ function parseChapterNumber(raw: string): number | null {
   return n;
 }
 
-async function loadChapter(chapterNumber: number) {
-  // Wrapped so `next build` can collect page data without DATABASE_URL —
-  // the page renders empty rows on failure and re-fetches at request time.
+async function fetchChapterDetail(chapterNumber: number): Promise<TariffChapterDetail | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters/${chapterNumberSlug(chapterNumber)}`;
   try {
-    return await prisma.tariffChapter.findUnique({
-      where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },
-      include: { section: { select: { number: true, romanNumeral: true, title: true } } },
-    });
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) {
+      if (res.status !== 404) console.error(`Failed to fetch chapter ${chapterNumber}: HTTP ${res.status}`);
+      return null;
+    }
+    return (await res.json()) as TariffChapterDetail | null;
   } catch (e) {
-    console.error('Failed to load tariff chapter:', e);
+    console.error(`Failed to fetch chapter ${chapterNumber}:`, e);
     return null;
   }
 }
 
-export async function generateStaticParams(): Promise<RouteParams[]> {
-  // Returning [] on DB error lets `next build` complete without DATABASE_URL.
-  // `dynamicParams = true` means each chapter is generated on first request.
+async function fetchChapterList(): Promise<TariffChapterListItem[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters`;
   try {
-    const chapters = await prisma.tariffChapter.findMany({
-      where: { spaceId: KoalaGainsSpaceId },
-      select: { number: true, title: true },
-    });
-    return chapters.map((c) => ({ chapter: chapterNumberSlug(c.number), slug: chapterTitleSlug(c.title) }));
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) {
+      console.error(`Failed to fetch chapter list: HTTP ${res.status}`);
+      return [];
+    }
+    return (await res.json()) as TariffChapterListItem[];
   } catch (e) {
-    console.error('Failed to enumerate tariff chapters for generateStaticParams:', e);
+    console.error('Failed to fetch chapter list:', e);
     return [];
   }
+}
+
+export async function generateStaticParams(): Promise<RouteParams[]> {
+  // Returning [] when the API is unreachable lets `next build` complete
+  // without DATABASE_URL. `dynamicParams = true` means each chapter is
+  // generated on first request once the live API is reachable.
+  const chapters = await fetchChapterList();
+  return chapters.map((c) => ({ chapter: chapterNumberSlug(c.number), slug: chapterTitleSlug(c.title) }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<RouteParams> }): Promise<Metadata> {
@@ -72,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<RouteParams
   const chapterNumber = parseChapterNumber(chapterRaw);
   if (chapterNumber === null) return { title: 'HTS Codes | KoalaGains' };
 
-  const chapter = await loadChapter(chapterNumber);
+  const chapter = await fetchChapterDetail(chapterNumber);
   if (!chapter) return { title: 'HTS Codes | KoalaGains' };
 
   const padded = chapterNumberSlug(chapter.number);
@@ -102,7 +98,7 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
   const chapterNumber = parseChapterNumber(chapterRaw);
   if (chapterNumber === null) notFound();
 
-  const chapter = await loadChapter(chapterNumber);
+  const chapter = await fetchChapterDetail(chapterNumber);
   if (!chapter) notFound();
 
   // Canonicalize the URL: if the slug doesn't match the chapter title's slug,
@@ -112,29 +108,7 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
     redirect(chapterDetailHref(chapter.number, chapter.title));
   }
 
-  let rows: HtsRow[] = [];
-  try {
-    rows = await prisma.htsCode.findMany({
-      where: { chapterId: chapter.id },
-      orderBy: { sortOrder: 'asc' },
-      select: {
-        id: true,
-        htsNumber: true,
-        htsCode10: true,
-        indent: true,
-        description: true,
-        unitOfQuantity: true,
-        generalRateOfDuty: true,
-        specialRateOfDuty: true,
-        column2RateOfDuty: true,
-        quotaQuantity: true,
-        additionalDuties: true,
-      },
-    });
-  } catch (e) {
-    console.error('Failed to load HTS rows for chapter:', e);
-  }
-
+  const rows = chapter.rows;
   const padded = chapterNumberSlug(chapter.number);
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
