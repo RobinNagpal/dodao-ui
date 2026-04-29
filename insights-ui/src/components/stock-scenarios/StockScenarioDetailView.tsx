@@ -51,8 +51,8 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         )}
       </header>
 
-      <section className="mb-8" aria-labelledby="underlying-cause-heading">
-        <h2 id="underlying-cause-heading" className="text-xl font-semibold text-white mb-3">
+      <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-6" aria-labelledby="underlying-cause-heading">
+        <h2 id="underlying-cause-heading" className="text-xl font-bold text-white mb-4 pb-2 border-b border-gray-700">
           Underlying cause
         </h2>
         <div
@@ -62,15 +62,15 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         />
       </section>
 
-      <section className="mb-8" aria-labelledby="historical-analog-heading">
-        <h2 id="historical-analog-heading" className="text-xl font-semibold text-white mb-3">
+      <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-6" aria-labelledby="historical-analog-heading">
+        <h2 id="historical-analog-heading" className="text-xl font-bold text-white mb-4 pb-2 border-b border-gray-700">
           Historical analog
         </h2>
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.historicalAnalog)} />
       </section>
 
-      <section className="mb-8" aria-labelledby="outlook-heading">
-        <h2 id="outlook-heading" className="text-xl font-semibold text-white mb-3">
+      <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-6" aria-labelledby="outlook-heading">
+        <h2 id="outlook-heading" className="text-xl font-bold text-white mb-4 pb-2 border-b border-gray-700">
           Outlook <span className="text-sm font-normal text-gray-400">(as of {asOf})</span>
         </h2>
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.outlookMarkdown)} />

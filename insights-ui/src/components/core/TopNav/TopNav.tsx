@@ -107,18 +107,18 @@ export default function TopNav() {
                           transition
                           className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                         >
-                          <div className="p-2">
+                          <div className="p-2.5">
                             {reportsDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-2.5 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-0.5 text-xs text-gray-600 dark:text-gray-400">{item.description}</p>
+                                  <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{item.description}</p>
                                 </div>
                               </div>
                             ))}
@@ -147,7 +147,7 @@ export default function TopNav() {
                             {genaiDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-2.5 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
