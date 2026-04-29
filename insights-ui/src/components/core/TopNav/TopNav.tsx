@@ -28,6 +28,7 @@ interface GenAIItem {
 const reportsDropdown: ReportItem[] = [
   { name: 'Crowdfunding Reports', href: '/crowd-funding', description: 'Detailed crowdfunding analysis', isNew: false },
   { name: 'Stock Reports', href: '/stocks', description: 'Value investing insights', isNew: true },
+  { name: 'Stock Scenarios', href: '/stock-scenarios', description: 'Stocks that win or lose per scenario', isNew: true },
   { name: 'Tariff Reports', href: '/tariff-reports', description: 'Trade tariff impact analysis', isNew: false },
   { name: 'Daily Top Gainers', href: '/daily-top-movers/top-gainers/country/US', description: 'Top performing stocks today', isNew: true },
   { name: 'Daily Top Losers', href: '/daily-top-movers/top-losers/country/US', description: 'Biggest stock declines today', isNew: true },
@@ -106,18 +107,18 @@ export default function TopNav() {
                           transition
                           className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs -translate-x-1/2 overflow-hidden rounded-3xl bg-white shadow-lg outline outline-1 outline-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
                         >
-                          <div className="p-3">
+                          <div className="p-2.5">
                             {reportsDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
                                     {item.name}
                                     <span className="absolute inset-0" />
                                   </Link>
-                                  <p className="mt-1 text-gray-600 dark:text-gray-400">{item.description}</p>
+                                  <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">{item.description}</p>
                                 </div>
                               </div>
                             ))}
@@ -146,7 +147,7 @@ export default function TopNav() {
                             {genaiDropdown.map((item) => (
                               <div
                                 key={item.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-white/5"
                               >
                                 <div className="flex-auto">
                                   <Link href={item.href} className="block font-semibold text-gray-900 dark:text-white" onClick={() => close()}>
