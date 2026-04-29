@@ -26,17 +26,41 @@ export const metadata: Metadata = {
   keywords: ['HTS codes', 'HTSUS', 'harmonized tariff schedule', 'US tariffs', 'duty rates', 'tariff calculator'],
 };
 
-export default async function HtsCodesIndexPage() {
-  const sections = await prisma.tariffSection.findMany({
-    where: { spaceId: KoalaGainsSpaceId },
-    orderBy: { number: 'asc' },
-    include: {
-      chapters: {
-        orderBy: { number: 'asc' },
-        select: { id: true, number: true, title: true },
+interface SectionWithChapters {
+  id: string;
+  number: number;
+  romanNumeral: string;
+  title: string;
+  chapters: { id: string; number: number; title: string }[];
+}
+
+async function loadSections(): Promise<SectionWithChapters[]> {
+  // Wrapped so `next build` can collect page data without DATABASE_URL.
+  // The page renders an empty state at build time and re-fetches at
+  // request time once the live DB is reachable.
+  try {
+    return await prisma.tariffSection.findMany({
+      where: { spaceId: KoalaGainsSpaceId },
+      orderBy: { number: 'asc' },
+      select: {
+        id: true,
+        number: true,
+        romanNumeral: true,
+        title: true,
+        chapters: {
+          orderBy: { number: 'asc' },
+          select: { id: true, number: true, title: true },
+        },
       },
-    },
-  });
+    });
+  } catch (e) {
+    console.error('Failed to load tariff sections:', e);
+    return [];
+  }
+}
+
+export default async function HtsCodesIndexPage() {
+  const sections = await loadSections();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },

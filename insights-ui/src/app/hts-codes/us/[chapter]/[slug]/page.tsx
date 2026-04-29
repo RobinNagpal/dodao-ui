@@ -39,18 +39,32 @@ function parseChapterNumber(raw: string): number | null {
 }
 
 async function loadChapter(chapterNumber: number) {
-  return prisma.tariffChapter.findUnique({
-    where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },
-    include: { section: { select: { number: true, romanNumeral: true, title: true } } },
-  });
+  // Wrapped so `next build` can collect page data without DATABASE_URL —
+  // the page renders empty rows on failure and re-fetches at request time.
+  try {
+    return await prisma.tariffChapter.findUnique({
+      where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },
+      include: { section: { select: { number: true, romanNumeral: true, title: true } } },
+    });
+  } catch (e) {
+    console.error('Failed to load tariff chapter:', e);
+    return null;
+  }
 }
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
-  const chapters = await prisma.tariffChapter.findMany({
-    where: { spaceId: KoalaGainsSpaceId },
-    select: { number: true, title: true },
-  });
-  return chapters.map((c) => ({ chapter: chapterNumberSlug(c.number), slug: chapterTitleSlug(c.title) }));
+  // Returning [] on DB error lets `next build` complete without DATABASE_URL.
+  // `dynamicParams = true` means each chapter is generated on first request.
+  try {
+    const chapters = await prisma.tariffChapter.findMany({
+      where: { spaceId: KoalaGainsSpaceId },
+      select: { number: true, title: true },
+    });
+    return chapters.map((c) => ({ chapter: chapterNumberSlug(c.number), slug: chapterTitleSlug(c.title) }));
+  } catch (e) {
+    console.error('Failed to enumerate tariff chapters for generateStaticParams:', e);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<RouteParams> }): Promise<Metadata> {
@@ -98,23 +112,28 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
     redirect(chapterDetailHref(chapter.number, chapter.title));
   }
 
-  const rows: HtsRow[] = await prisma.htsCode.findMany({
-    where: { chapterId: chapter.id },
-    orderBy: { sortOrder: 'asc' },
-    select: {
-      id: true,
-      htsNumber: true,
-      htsCode10: true,
-      indent: true,
-      description: true,
-      unitOfQuantity: true,
-      generalRateOfDuty: true,
-      specialRateOfDuty: true,
-      column2RateOfDuty: true,
-      quotaQuantity: true,
-      additionalDuties: true,
-    },
-  });
+  let rows: HtsRow[] = [];
+  try {
+    rows = await prisma.htsCode.findMany({
+      where: { chapterId: chapter.id },
+      orderBy: { sortOrder: 'asc' },
+      select: {
+        id: true,
+        htsNumber: true,
+        htsCode10: true,
+        indent: true,
+        description: true,
+        unitOfQuantity: true,
+        generalRateOfDuty: true,
+        specialRateOfDuty: true,
+        column2RateOfDuty: true,
+        quotaQuantity: true,
+        additionalDuties: true,
+      },
+    });
+  } catch (e) {
+    console.error('Failed to load HTS rows for chapter:', e);
+  }
 
   const padded = chapterNumberSlug(chapter.number);
   const breadcrumbs: BreadcrumbsOjbect[] = [
