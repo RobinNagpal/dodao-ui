@@ -2,7 +2,6 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
-import { Prisma, TariffChapter, TariffSection } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 
@@ -10,30 +9,35 @@ import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 // shape consumed by the public /hts-codes index page; POST is an admin-only
 // idempotent upsert that mirrors the section/chapter list at hts.usitc.gov.
 
-export type TariffSectionListItem = Prisma.TariffSectionGetPayload<{
-  select: {
-    id: true;
-    number: true;
-    romanNumeral: true;
-    title: true;
-    chapters: { select: { id: true; number: true; title: true } };
-  };
-}>;
-
-export type ChapterInput = Pick<TariffChapter, 'number' | 'title'>;
-export type SectionInput = Pick<TariffSection, 'number' | 'romanNumeral' | 'title'> & {
-  notes?: string;
-  chapters: ChapterInput[];
-};
-
-export interface UpsertTariffSectionsRequest {
-  sections: SectionInput[];
+export interface TariffSectionListItem {
+  id: string;
+  number: number;
+  romanNumeral: string;
+  title: string;
+  chapters: { id: string; number: number; title: string }[];
 }
 
 export interface UpsertTariffSectionsResponse {
   sections: { number: number; action: 'created' | 'updated'; chapters: { number: number; action: 'created' | 'updated' }[] }[];
   totalSections: number;
   totalChapters: number;
+}
+
+export interface UpsertTariffSectionsRequest {
+  sections: SectionInput[];
+}
+
+interface ChapterInput {
+  number: number;
+  title: string;
+}
+
+interface SectionInput {
+  number: number;
+  romanNumeral: string;
+  title: string;
+  notes?: string;
+  chapters: ChapterInput[];
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {
