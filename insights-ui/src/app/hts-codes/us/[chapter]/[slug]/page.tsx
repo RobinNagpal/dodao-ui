@@ -41,6 +41,7 @@ function parseChapterNumber(raw: string): number | null {
 async function loadChapter(chapterNumber: number) {
   return prisma.tariffChapter.findUnique({
     where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },
+    include: { section: { select: { number: true, romanNumeral: true, title: true } } },
   });
 }
 
@@ -127,7 +128,10 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
         <header className="mb-6">
-          <div className="text-sm text-muted-foreground mb-1">{chapter.section}</div>
+          <div className="text-sm text-muted-foreground mb-1">
+            <span className="font-mono tabular-nums mr-2">Section {chapter.section.romanNumeral}</span>
+            {chapter.section.title}
+          </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             <span className="font-mono tabular-nums text-muted-foreground mr-3">Ch. {padded}</span>
             {chapter.title}

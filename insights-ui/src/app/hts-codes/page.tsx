@@ -26,44 +26,17 @@ export const metadata: Metadata = {
   keywords: ['HTS codes', 'HTSUS', 'harmonized tariff schedule', 'US tariffs', 'duty rates', 'tariff calculator'],
 };
 
-interface ChapterRow {
-  id: string;
-  number: number;
-  title: string;
-  section: string;
-}
-
-interface SectionGroup {
-  section: string;
-  // Chapter number of the lowest-numbered chapter in the section. Drives the
-  // section sort order so sections render in HTSUS canonical order (I..XXII).
-  firstChapterNumber: number;
-  chapters: ChapterRow[];
-}
-
-function groupBySection(chapters: ChapterRow[]): SectionGroup[] {
-  const map = new Map<string, SectionGroup>();
-  for (const chapter of chapters) {
-    let group = map.get(chapter.section);
-    if (!group) {
-      group = { section: chapter.section, firstChapterNumber: chapter.number, chapters: [] };
-      map.set(chapter.section, group);
-    }
-    group.chapters.push(chapter);
-    if (chapter.number < group.firstChapterNumber) {
-      group.firstChapterNumber = chapter.number;
-    }
-  }
-  return [...map.values()].sort((a, b) => a.firstChapterNumber - b.firstChapterNumber);
-}
-
 export default async function HtsCodesIndexPage() {
-  const chapters = await prisma.tariffChapter.findMany({
+  const sections = await prisma.tariffSection.findMany({
     where: { spaceId: KoalaGainsSpaceId },
     orderBy: { number: 'asc' },
-    select: { id: true, number: true, title: true, section: true },
+    include: {
+      chapters: {
+        orderBy: { number: 'asc' },
+        select: { id: true, number: true, title: true },
+      },
+    },
   });
-  const groups = groupBySection(chapters);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -82,34 +55,42 @@ export default async function HtsCodesIndexPage() {
           </p>
         </header>
 
-        {groups.length === 0 ? (
+        {sections.length === 0 ? (
           <div className="text-center py-16 background-color rounded-lg border border-color">
-            <h2 className="text-lg font-medium">No HTS chapters loaded yet</h2>
+            <h2 className="text-lg font-medium">No HTS sections loaded yet</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Run <code className="font-mono">yarn hts:import-chapter</code> to ingest a chapter from the HTSUS CSV.
+              POST the section/chapter index to <code className="font-mono">/api/tariff-calculator/sections</code>, then run{' '}
+              <code className="font-mono">yarn hts:import-chapter</code> per chapter.
             </p>
           </div>
         ) : (
           <div className="space-y-10">
-            {groups.map((group) => (
-              <section key={group.section}>
-                <h2 className="text-xl font-semibold mb-4 border-b border-color pb-2">{group.section}</h2>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {group.chapters.map((chapter) => (
-                    <li key={chapter.id}>
-                      <Link
-                        href={chapterDetailHref(chapter.number, chapter.title)}
-                        className="group flex items-center justify-between gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary-color hover:shadow-sm"
-                      >
-                        <span className="flex items-baseline gap-3 min-w-0">
-                          <span className="font-mono text-sm text-muted-foreground tabular-nums">{chapter.number.toString().padStart(2, '0')}</span>
-                          <span className="font-medium truncate">{chapter.title}</span>
-                        </span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+            {sections.map((section) => (
+              <section key={section.id}>
+                <h2 className="text-xl font-semibold mb-4 border-b border-color pb-2">
+                  <span className="font-mono tabular-nums text-muted-foreground mr-3">Section {section.romanNumeral}</span>
+                  {section.title}
+                </h2>
+                {section.chapters.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No chapters loaded for this section yet.</p>
+                ) : (
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {section.chapters.map((chapter) => (
+                      <li key={chapter.id}>
+                        <Link
+                          href={chapterDetailHref(chapter.number, chapter.title)}
+                          className="group flex items-center justify-between gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary-color hover:shadow-sm"
+                        >
+                          <span className="flex items-baseline gap-3 min-w-0">
+                            <span className="font-mono text-sm text-muted-foreground tabular-nums">{chapter.number.toString().padStart(2, '0')}</span>
+                            <span className="font-medium truncate">{chapter.title}</span>
+                          </span>
+                          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             ))}
           </div>

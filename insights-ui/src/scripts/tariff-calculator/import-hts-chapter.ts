@@ -58,8 +58,6 @@ async function main() {
   if (!Number.isFinite(chapterNumber) || chapterNumber < 1 || chapterNumber > 99) {
     throw new Error(`--chapter must be an integer 1..99, got "${chapterNumberRaw}"`);
   }
-  const title = requireStringArg(args, 'title');
-  const section = requireStringArg(args, 'section');
 
   console.log(`📄 Reading CSV: ${csvPath}`);
   const csvText = await readFile(csvPath, 'utf-8');
@@ -71,12 +69,18 @@ async function main() {
   const rows = parsed.data;
   console.log(`✅ Parsed ${rows.length} CSV rows`);
 
-  const chapter = await prisma.tariffChapter.upsert({
+  // Chapter shells (number, title, section FK) are populated via the
+  // sections POST route ahead of time. The CSV ingest only fills in HTS
+  // rows and never creates the chapter itself.
+  const chapter = await prisma.tariffChapter.findUnique({
     where: { spaceId_number: { spaceId: SPACE_ID, number: chapterNumber } },
-    create: { spaceId: SPACE_ID, number: chapterNumber, title, section },
-    update: { title, section },
   });
-  console.log(`📚 Chapter ${chapterNumber} upserted: id=${chapter.id}`);
+  if (!chapter) {
+    throw new Error(
+      `Chapter ${chapterNumber} not found. Seed the section/chapter index first via POST /api/tariff-calculator/sections, then re-run this script.`
+    );
+  }
+  console.log(`📚 Chapter ${chapterNumber} found: ${chapter.title} (id=${chapter.id})`);
 
   // Wipe the chapter's existing rows so re-runs are idempotent. Cascade
   // takes care of children via the parent self-relation (SET NULL).
