@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 // Chapter detail used by /hts-codes/us/[chapter]/[slug] — returns the
@@ -8,33 +9,34 @@ import { NextRequest } from 'next/server';
 // null when the chapter number is invalid or no row exists for it; the
 // page renders notFound() in that case.
 
-export interface TariffChapterRow {
-  id: string;
-  htsNumber: string | null;
-  htsCode10: string | null;
-  indent: number;
-  description: string;
-  unitOfQuantity: string[];
-  generalRateOfDuty: string | null;
-  specialRateOfDuty: string | null;
-  column2RateOfDuty: string | null;
-  quotaQuantity: string | null;
-  additionalDuties: string | null;
-}
-
-export interface TariffChapterDetail {
-  id: string;
-  number: number;
-  title: string;
-  notes: string | null;
-  additionalUsNotes: string | null;
-  section: {
-    number: number;
-    romanNumeral: string;
-    title: string;
+export type TariffChapterRow = Prisma.HtsCodeGetPayload<{
+  select: {
+    id: true;
+    htsNumber: true;
+    htsCode10: true;
+    indent: true;
+    description: true;
+    unitOfQuantity: true;
+    generalRateOfDuty: true;
+    specialRateOfDuty: true;
+    column2RateOfDuty: true;
+    quotaQuantity: true;
+    additionalDuties: true;
   };
-  rows: TariffChapterRow[];
-}
+}>;
+
+type ChapterWithSection = Prisma.TariffChapterGetPayload<{
+  select: {
+    id: true;
+    number: true;
+    title: true;
+    notes: true;
+    additionalUsNotes: true;
+    section: { select: { number: true; romanNumeral: true; title: true } };
+  };
+}>;
+
+export type TariffChapterDetail = ChapterWithSection & { rows: TariffChapterRow[] };
 
 function parseChapterNumber(raw: string): number | null {
   if (!/^\d{1,2}$/.test(raw)) return null;
@@ -50,7 +52,14 @@ async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ number
 
   const chapter = await prisma.tariffChapter.findUnique({
     where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: chapterNumber } },
-    include: { section: { select: { number: true, romanNumeral: true, title: true } } },
+    select: {
+      id: true,
+      number: true,
+      title: true,
+      notes: true,
+      additionalUsNotes: true,
+      section: { select: { number: true, romanNumeral: true, title: true } },
+    },
   });
   if (!chapter) return null;
 
@@ -72,15 +81,7 @@ async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ number
     },
   });
 
-  return {
-    id: chapter.id,
-    number: chapter.number,
-    title: chapter.title,
-    notes: chapter.notes,
-    additionalUsNotes: chapter.additionalUsNotes,
-    section: chapter.section,
-    rows,
-  };
+  return { ...chapter, rows };
 }
 
 export const GET = withErrorHandlingV2<TariffChapterDetail | null>(getHandler);
