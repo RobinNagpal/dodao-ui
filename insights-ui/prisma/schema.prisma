@@ -1915,3 +1915,284 @@ model StockScenarioStockLink {
   @@index([pricedInBucket])
   @@map("stock_scenario_stock_links")
 }
+
+// ============================================================================
+// Tariff Calculator
+// ----------------------------------------------------------------------------
+// Backs a Flexport-style U.S. import duty calculator. Two upstream sources:
+//
+//   1. HTSUS CSV (https://hts.usitc.gov/) — the official U.S. tariff schedule.
+//      Loaded chapter-by-chapter from CSVs with columns:
+//        HTS Number, Indent, Description, Unit of Quantity,
+//        General Rate of Duty, Special Rate of Duty, Column 2 Rate of Duty,
+//        Quota Quantity, Additional Duties.
+//      Hierarchical: heading rows have no HTS number, only an indent level.
+//
+//   2. Flexport candidate-codes API
+//      (GET https://tariffs.flexport.com/api/public/v1/candidate-codes/<HTS10>)
+//      Returns the COMMODITY_CODE entry for that HTS plus the Chapter 99
+//      SPECIAL_CODE entries that may apply on top (Section 301, IEEPA,
+//      Section 232, etc.). Each entry carries: rateInfo (5 numeric fields +
+//      computationCode), specialRates by FTA SPI, countryScope, applicability
+//      conditions, line-split rules, fee/PGA flags, and (for commodity codes
+//      only) historical tradeAnalytics by country-of-origin.
+//
+// Calculation flow at request time:
+//   - User picks an HTS10 + country of origin + shipment value (+ optional
+//     fields: mode of transport, date of loading, U.S. content %, etc.).
+//   - Resolve the candidate set via HtsCandidateLink → FlexportCode.
+//   - For each candidate, evaluate countryScope + applicabilityConditions
+//     against the user inputs to decide if it applies, then add its rateInfo
+//     (or specialRates[spi] when an FTA is claimed) to the running total.
+// ============================================================================
+
+// One row per CSV row. CSV rows include both leaf 10-digit codes and
+// intermediate heading/group rows that have only an indent — so htsNumber
+// is nullable. The CSV's nested headings are preserved via parentId.
+model HtsCode {
+  id          String  @id @default(uuid())
+  // 4/6/8/10-digit code with dots, e.g. "0101.21.00.10". Null for header
+  // rows that exist only to group the rows below them.
+  htsNumber   String? @map("hts_number")
+  // 10-digit form with no separators ("0101210010"). Set for leaf rows so
+  // we can join 1:1 against the Flexport API key (which is dotless HTS10).
+  htsCode10   String? @map("hts_code_10")
+  // 2-digit chapter, parsed from the source CSV file name. Used for
+  // chapter-scoped rendering and for chunked refresh.
+  chapter     Int     @map("chapter")
+  // CSV "Indent" column: 0..6. Drives display indentation in the viewer.
+  indent      Int     @map("indent")
+  description String  @map("description") @db.Text
+  // CSV "Unit of Quantity" cell is itself a JSON-encoded array
+  // (e.g. ["No.","kg"]); decoded into a string array on ingest.
+  unitOfQuantity    String[] @default([]) @map("unit_of_quantity")
+  generalRateOfDuty String?  @map("general_rate_of_duty") @db.Text
+  specialRateOfDuty String?  @map("special_rate_of_duty") @db.Text
+  column2RateOfDuty String?  @map("column2_rate_of_duty") @db.Text
+  quotaQuantity     String?  @map("quota_quantity") @db.Text
+  additionalDuties  String?  @map("additional_duties") @db.Text
+
+  // Self-relation for the indent hierarchy. parentId points at the
+  // nearest ancestor row whose indent is exactly `indent - 1`.
+  parentId String?   @map("parent_id")
+  parent   HtsCode?  @relation("HtsCodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children HtsCode[] @relation("HtsCodeHierarchy")
+
+  // CSV row order within its chapter. Hierarchy reconstruction depends on
+  // walking rows in this order, so it is preserved verbatim from the CSV.
+  sortOrder Int @map("sort_order")
+
+  // Populated by the Flexport candidate-codes ingest job for leaf 10-digit
+  // rows. Empty for header rows.
+  candidateLinks HtsCandidateLink[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, htsNumber])
+  @@unique([spaceId, htsCode10])
+  @@index([spaceId, chapter, sortOrder])
+  @@index([spaceId, parentId])
+  @@map("hts_codes")
+}
+
+enum FlexportCodeType {
+  COMMODITY_CODE
+  SPECIAL_CODE
+}
+
+// Mirrors the `__typename` of Flexport's countryScope union.
+enum CountryScopeKind {
+  ALL        @map("all")
+  ONLY       @map("only")
+  ALL_EXCEPT @map("allExcept")
+}
+
+// A Flexport "candidate code" — either the COMMODITY_CODE for an HTS10
+// (one row per HTS) or a Chapter 99 SPECIAL_CODE that may apply on top
+// (Section 301, IEEPA, Section 232, etc.).
+//
+// Identity is (code, variant). Some codes return multiple variants
+// (e.g. "99030101" with variants "a" and "b") that share descriptions
+// but differ in applicabilityConditions. Variant is stored as "" instead
+// of NULL so the unique constraint treats absent-variant rows as equal.
+//
+// Stored once per (code, variant) and joined to HTS codes via
+// HtsCandidateLink — Chapter 99 codes apply to many HTS codes, and
+// duplicating their definitions per HTS would explode storage.
+model FlexportCode {
+  id              String           @id @default(uuid())
+  code            String           @map("code")
+  variant         String           @default("") @map("variant")
+  type            FlexportCodeType @map("type")
+  // High-level Chapter 99 grouping (e.g. "Section 301", "IEEPA CN").
+  // Null on COMMODITY_CODE rows.
+  category        String?          @map("category")
+  // Short display label (e.g. "IEEPA Reciprocal 50%"). Empty for many rows.
+  label           String?          @map("label") @db.Text
+  // One-line description used in calculator line items.
+  lineDescription String           @map("line_description") @db.Text
+  // Long-form description with the full HTSUS parent path.
+  fullDescription String           @map("full_description") @db.Text
+  // ISO timestamps. effectiveTo uses far-future "9999-12-31" as
+  // "no expiry" — preserved verbatim, do not coerce to NULL.
+  effectiveFrom   DateTime         @map("effective_from")
+  effectiveTo     DateTime         @map("effective_to")
+  rateDescription String           @map("rate_description") @db.Text
+
+  // Numeric duty components. All five fields are always present in the
+  // API, so they live as columns rather than JSON. Stored as strings to
+  // preserve the upstream representation (Flexport sends them as strings,
+  // and rounding behaviour at calculation time is opinionated).
+  ratePrimary     String @map("rate_primary")
+  rateSecondary   String @map("rate_secondary")
+  rateOther       String @map("rate_other")
+  ratePenalty     String @map("rate_penalty")
+  computationCode String @map("computation_code")
+
+  // countryScope is a tagged union of {all} | {only, countries[]} |
+  // {allExcept, excluded[]}. Normalized into a kind + flat string array so
+  // the calculator can filter candidate codes by country with a single
+  // index on countryScopeKind.
+  countryScopeKind      CountryScopeKind @map("country_scope_kind")
+  // For ONLY → list of usCustomsCountryCode that the code applies to.
+  // For ALL_EXCEPT → excluded countries. Empty for ALL.
+  countryScopeCountries String[]         @default([]) @map("country_scope_countries")
+
+  // FTA / preference rate overrides — array of {spi, rateDescription,
+  // rateInfo}. Schema is stable across the entire dataset, so it lives in
+  // a typed JSON column rather than a separate child table.
+  /// [FlexportSpecialRates]
+  specialRates Json @map("special_rates") @db.JsonB
+
+  // Predicate list that gates whether this code applies (mode of
+  // transport, U.S. content %, date of loading, existing HTS codes on
+  // the entry, FTA SPI claimed, etc.). Seven distinct __typename
+  // shapes (Equals, NotEquals, Less, Greater, Between, SomeSpiApplied,
+  // ExistingEntryContainSomeCode). Stored as typed JSON because the
+  // structure is read-only at calculation time and never queried in SQL.
+  /// [FlexportApplicabilityConditions]
+  applicabilityConditions Json @map("applicability_conditions") @db.JsonB
+
+  // Optional rule that splits a single declared HTS line into multiple
+  // sub-lines based on a numeric field (e.g. when U.S. content % is
+  // between 20 and 100, split off the U.S. portion). Null when the code
+  // does not split.
+  /// [FlexportLineSplitConditions]
+  lineSplitConditions Json?   @map("line_split_conditions") @db.JsonB
+  lineSplitField      String? @map("line_split_field")
+
+  // Cross-references: parent codes (parents in the Flexport hierarchy),
+  // codes that exclude this one when present, codes this one replaces,
+  // and an open "related" pointer. Stored as typed JSON because each is
+  // a small array of {code, variant} pairs that the calculator UI
+  // dereferences via FlexportCode lookups, never via SQL joins.
+  /// [FlexportCodeRefs]
+  parentCodes Json @map("parent_codes") @db.JsonB
+  /// [FlexportCodeRefs]
+  excludedByCodes Json @map("excluded_by_codes") @db.JsonB
+  /// [FlexportCodeRefs]
+  replacesCodes Json @map("replaces_codes") @db.JsonB
+  /// [FlexportCodeRefs]
+  relatedCodes         Json?    @map("related_codes") @db.JsonB
+  relatesToCodesDigits String[] @default([]) @map("relates_to_codes_digits")
+
+  feeFlags       String[] @default([]) @map("fee_flags")
+  pgaFlags       String[] @default([]) @map("pga_flags")
+  tags           String[] @default([]) @map("tags")
+  unitsOfMeasure String[] @default([]) @map("units_of_measure")
+
+  flagsForAntiDumping    Boolean @default(false) @map("flags_for_anti_dumping")
+  flagsForCountervailing Boolean @default(false) @map("flags_for_countervailing")
+  // When true the calculator must prompt the user to disambiguate between
+  // multiple variants of the same code (e.g. variant "a" vs "b").
+  requiresUserChoice     Boolean @default(false) @map("requires_user_choice")
+  priority               Int     @map("priority")
+
+  // Historical import data by country-of-origin × SPI × year, populated
+  // only on COMMODITY_CODE rows (SPECIAL_CODE rows always have an empty
+  // analytics array in the upstream API). Typed JSON because the calculator
+  // reads the entire array at once and never aggregates it in SQL.
+  /// [FlexportTradeAnalytics]
+  tradeAnalytics Json @default("[]") @map("trade_analytics") @db.JsonB
+
+  links HtsCandidateLink[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, code, variant])
+  @@index([spaceId, type])
+  @@index([spaceId, category])
+  @@index([countryScopeKind])
+  @@map("flexport_codes")
+}
+
+// Join table linking each queried HTS10 to the candidate codes the
+// Flexport API returns for it. The same candidate code (e.g. a Chapter 99
+// IEEPA code) appears for many HTS codes, so this is a true many-to-many.
+//
+// fetchedAt records the timestamp of the API response that produced the
+// link, so we can identify links that need refreshing without re-running
+// the entire ingest.
+model HtsCandidateLink {
+  id             String @id @default(uuid())
+  htsCodeId      String @map("hts_code_id")
+  // Denormalized 10-digit HTS for cheap "candidates for this HTS"
+  // lookups without joining HtsCode.
+  htsCode10      String @map("hts_code_10")
+  flexportCodeId String @map("flexport_code_id")
+
+  fetchedAt DateTime @default(now()) @map("fetched_at")
+
+  htsCode      HtsCode      @relation(fields: [htsCodeId], references: [id], onDelete: Cascade)
+  flexportCode FlexportCode @relation(fields: [flexportCodeId], references: [id], onDelete: Cascade)
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([htsCodeId, flexportCodeId])
+  @@index([htsCode10])
+  @@index([flexportCodeId])
+  @@map("hts_candidate_links")
+}
+
+// Lookup for the U.S. Customs country codes referenced by
+// FlexportCode.countryScopeCountries and the tradeAnalytics
+// countryOfOrigin field. Tiny seed table (~250 rows); kept relational so
+// the calculator can render human-readable names without bundling a static
+// JSON map.
+model TariffCountry {
+  id                 String   @id @default(uuid())
+  customsCountryCode String   @unique @map("customs_country_code")
+  countryName        String   @map("country_name")
+  // ISO 3166-1 alpha-2; usually equal to customsCountryCode but not
+  // always (Flexport uses a U.S.-Customs-specific codeset).
+  iso2               String?  @map("iso2")
+  spaceId            String   @default("koala_gains") @map("space_id")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("tariff_countries")
+}
+
+// Lookup for the Special Program Indicator (FTA / preference program)
+// codes referenced by FlexportCode.specialRates[].spi (e.g. "AU" =
+// Australia FTA, "KR" = US-Korea FTA, "S" / "S+" = AGOA tiers, "P" =
+// CBI). Names come from the HTSUS preface; tiny seed table (~30 rows).
+model TariffSpi {
+  id           String   @id @default(uuid())
+  spi          String   @unique @map("spi")
+  programName  String   @map("program_name") @db.Text
+  // Optional list of countries the program applies to (some SPIs cover
+  // a group of countries, e.g. "S" for AGOA-eligible nations).
+  countryCodes String[] @default([]) @map("country_codes")
+  spaceId      String   @default("koala_gains") @map("space_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("tariff_spis")
+}

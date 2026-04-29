@@ -402,6 +402,147 @@ export interface PriceHistoryPoint {
 
 export type PriceHistoryPointArray = PriceHistoryPoint[];
 
+// =====================================================
+// Tariff calculator JSON shapes
+// Mirror the Flexport candidate-codes API response. See the
+// `FlexportCode` and `HtsCandidateLink` models in
+// `prisma/schema.prisma` for where each shape is stored.
+// =====================================================
+
+// Numeric duty components that appear inline on every entry in
+// `FlexportCode.specialRates`. Stored as strings to preserve the
+// upstream representation; the calculator parses them at compute time.
+export interface FlexportRateInfo {
+  primaryRate: string;
+  secondaryRate: string;
+  otherRate: string;
+  penaltyRate: string;
+  computationCode: string;
+}
+
+// One FTA / preference-program rate override.
+export interface FlexportSpecialRate {
+  spi: string;
+  rateDescription: string;
+  rateInfo: FlexportRateInfo;
+}
+
+export type FlexportSpecialRates = FlexportSpecialRate[];
+
+// `applicabilityConditions` is a tagged union; seven shapes observed.
+// Each carries a `fieldKey` identifying the calculator input the rule
+// reads from (e.g. MODE_OF_TRANSPORT, US_CONTENT_PERCENTAGE).
+export interface FlexportApplicabilityEquals {
+  __typename: 'CustomsTariffEquals';
+  fieldKey: string;
+  fieldShouldEqual: string;
+}
+export interface FlexportApplicabilityNotEquals {
+  __typename: 'CustomsTariffNotEquals';
+  fieldKey: string;
+  fieldShouldNotEqual: string;
+}
+export interface FlexportApplicabilityLess {
+  __typename: 'CustomsTariffLess';
+  fieldKey: string;
+  threshold: string;
+  includingThreshold: boolean;
+}
+export interface FlexportApplicabilityGreater {
+  __typename: 'CustomsTariffGreater';
+  fieldKey: string;
+  threshold: string;
+  includingThreshold: boolean;
+}
+export interface FlexportApplicabilityBetween {
+  __typename: 'CustomsTariffBetween';
+  fieldKey: string;
+  lowerBound: string;
+  upperBound: string;
+  includingBounds: boolean;
+}
+export interface FlexportApplicabilitySomeSpiApplied {
+  __typename: 'CustomsTariffSomeSpiApplied';
+  fieldKey: string;
+  programCodes: string[];
+}
+export interface FlexportApplicabilityExistingEntryContainSomeCode {
+  __typename: 'CustomsTariffExistingEntryContainSomeCode';
+  fieldKey: string;
+  codes: string[];
+}
+
+export type FlexportApplicabilityCondition =
+  | FlexportApplicabilityEquals
+  | FlexportApplicabilityNotEquals
+  | FlexportApplicabilityLess
+  | FlexportApplicabilityGreater
+  | FlexportApplicabilityBetween
+  | FlexportApplicabilitySomeSpiApplied
+  | FlexportApplicabilityExistingEntryContainSomeCode;
+
+export type FlexportApplicabilityConditions = FlexportApplicabilityCondition[];
+
+// `lineSplitConditions` reuses the same Less/Greater/Between predicate
+// shapes as the applicability list, so we narrow to the numeric ones.
+export type FlexportLineSplitCondition = FlexportApplicabilityLess | FlexportApplicabilityGreater | FlexportApplicabilityBetween;
+
+export type FlexportLineSplitConditions = FlexportLineSplitCondition[];
+
+// {code, variant} pair used by parentCodes / excludedByCodes /
+// replacesCodes / relatedCodes.
+export interface FlexportCodeRef {
+  code: string;
+  variant: string | null;
+}
+
+export type FlexportCodeRefs = FlexportCodeRef[];
+
+// Trade analytics — one row per HTS10 × country-of-origin × SPI × year,
+// populated only on COMMODITY_CODE entries. `importPrograms` breaks the
+// row down by FTA / preference program claimed.
+export interface FlexportCustomsTariffSpi {
+  specialProgramIndicator: string;
+  agreementName: string;
+  generalNote: string;
+  countriesOfOrigin: string[];
+  excludeMpf: boolean;
+}
+
+export interface FlexportImportProgram {
+  programName: string;
+  programIndicator: string;
+  generalNote: string;
+  countriesOfOrigin: string[];
+  customsTariffSpi: FlexportCustomsTariffSpi;
+}
+
+export interface FlexportImportProgramRow {
+  importProgram: FlexportImportProgram;
+  customsValue: number;
+  calculatedDuty: number;
+  dutyRate: number;
+  percentOfLineValue: number;
+}
+
+export interface FlexportCountryOfOrigin {
+  countryName: string;
+  usCustomsCountryCode: string;
+}
+
+export interface FlexportTradeAnalyticsRow {
+  analyticsLevel: string;
+  countryOfOrigin: FlexportCountryOfOrigin;
+  htsCode: string;
+  date: string;
+  totalCustomsValue: number;
+  totalCalculatedDuty: number;
+  totalDutyRate: number;
+  importPrograms: FlexportImportProgramRow[];
+}
+
+export type FlexportTradeAnalytics = FlexportTradeAnalyticsRow[];
+
 declare global {
   namespace PrismaJson {
     type CompetitionAnalysis = CompetitionAnalysisType;
@@ -452,5 +593,12 @@ declare global {
     type EtfMorPortfolioSectorExposure = EtfMorPortfolioSectorExposure;
     type EtfMorPortfolioBondBreakdown = EtfMorPortfolioBondBreakdown;
     type EtfMorPortfolioHoldings = EtfMorPortfolioHoldings;
+
+    // Tariff calculator (Flexport candidate-codes API)
+    type FlexportSpecialRates = FlexportSpecialRates;
+    type FlexportApplicabilityConditions = FlexportApplicabilityConditions;
+    type FlexportLineSplitConditions = FlexportLineSplitConditions;
+    type FlexportCodeRefs = FlexportCodeRefs;
+    type FlexportTradeAnalytics = FlexportTradeAnalytics;
   }
 }
