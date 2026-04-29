@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import EtfScenariosPageActions from '@/app/etf-scenarios/EtfScenariosPageActions';
 import EtfScenarioListingGrid from '@/components/etf-scenarios/EtfScenarioListingGrid';
 import EtfScenarioPageLayout from '@/components/etf-scenarios/EtfScenarioPageLayout';
@@ -65,7 +66,9 @@ export default async function EtfScenariosPage() {
           }}
         />
       )}
-      <EtfScenarioListingGrid data={data} />
+      <Suspense fallback={null}>
+        <EtfScenarioListingGrid data={data} />
+      </Suspense>
     </EtfScenarioPageLayout>
   );
 }
