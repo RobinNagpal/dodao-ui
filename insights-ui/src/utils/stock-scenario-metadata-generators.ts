@@ -23,6 +23,7 @@ export function generateStockScenarioListingMetadata(): Metadata {
     title,
     description,
     alternates: { canonical: url },
+    robots: { index: true, follow: true },
     keywords: [
       'stock scenarios',
       'sector shock analysis',
@@ -42,11 +43,13 @@ export function generateStockScenarioListingMetadata(): Metadata {
       url,
       siteName: SITE_NAME,
       type: 'website',
+      images: [{ url: LOGO_URL }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [LOGO_URL],
     },
   };
 }
@@ -131,6 +134,7 @@ export function generateStockScenarioDetailMetadata({
     title: `${title} — Stock Scenario Analysis (${year}) | ${SITE_NAME}`,
     description,
     alternates: { canonical: canonicalUrl },
+    robots: { index: true, follow: true },
     keywords: [title, `${title} stocks`, `${title} winners`, `${title} losers`, 'stock scenarios', 'sector rotation', 'market scenario analysis', SITE_NAME],
     openGraph: {
       title: `${title} — Stock Scenario Analysis | ${SITE_NAME}`,
@@ -140,11 +144,15 @@ export function generateStockScenarioDetailMetadata({
       type: 'article',
       publishedTime: createdTime ?? updatedTime,
       modifiedTime: updatedTime ?? createdTime,
+      authors: [SITE_NAME],
+      section: 'Stock Scenarios',
+      images: [{ url: LOGO_URL }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} — Stock Scenario Analysis | ${SITE_NAME}`,
       description,
+      images: [LOGO_URL],
     },
   };
 }

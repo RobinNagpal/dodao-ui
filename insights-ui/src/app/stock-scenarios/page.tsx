@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import StockScenariosPageActions from '@/app/stock-scenarios/StockScenariosPageActions';
 import { StockScenarioListingResponse } from '@/app/api/[spaceId]/stock-scenarios/listing/route';
 import StockScenarioListingGrid from '@/components/stock-scenarios/StockScenarioListingGrid';
@@ -65,7 +66,9 @@ export default async function StockScenariosPage() {
           }}
         />
       )}
-      <StockScenarioListingGrid data={data} />
+      <Suspense fallback={null}>
+        <StockScenarioListingGrid data={data} />
+      </Suspense>
     </StockScenarioPageLayout>
   );
 }

@@ -67,11 +67,7 @@ export default async function StockScenarioDetailPage({ params }: { params: Rout
   ];
 
   return (
-    <StockScenarioPageLayout
-      title={scenario.title}
-      description={`Scenario #${scenario.scenarioNumber} — outlook last reviewed ${scenario.outlookAsOfDate.slice(0, 10)}.`}
-      breadcrumbs={breadcrumbs}
-    >
+    <StockScenarioPageLayout breadcrumbs={breadcrumbs}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
