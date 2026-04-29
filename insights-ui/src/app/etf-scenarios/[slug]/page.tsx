@@ -67,11 +67,7 @@ export default async function EtfScenarioDetailPage({ params }: { params: RouteP
   ];
 
   return (
-    <EtfScenarioPageLayout
-      title={scenario.title}
-      description={`Scenario #${scenario.scenarioNumber} — outlook last reviewed ${scenario.outlookAsOfDate.slice(0, 10)}.`}
-      breadcrumbs={breadcrumbs}
-    >
+    <EtfScenarioPageLayout breadcrumbs={breadcrumbs}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
