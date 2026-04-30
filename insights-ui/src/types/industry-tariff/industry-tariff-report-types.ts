@@ -1,1 +1,0 @@
-// Industry Tariff Report Types

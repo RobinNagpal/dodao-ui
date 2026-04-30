@@ -287,7 +287,7 @@ Find the three *Established Players* in the ${subAreaInfo} sector  **but output 
 - Make sure the companies are active and are being publicly traded as of ${date} on Nasdaq or NYSE.
 - The company should be traded on US exchanges i.e. Nasdaq or NYSE.
 - Dont return duplicate companies.
-- Ignore companies like ${tariffIndustry.companiesToIgnore.join(', ')} as they are no longer active.
+- Ignore companies like ${(tariffIndustry.companiesToIgnore ?? []).join(', ')} as they are no longer active.
 - Make sure the company is not bankrupt or not active.
 - Try to find three established players that fall under this category of ${subArea.oneLineSummary} sector.
 
@@ -416,7 +416,7 @@ Find the *New Challengers* in the ${subAreaInfo} sector **but output only** each
 - Dont return duplicate companies.
 - The companies should have unique edge over established players which creates probability of huge success in the future.
 - Make sure to select the best of the best new players and they not be old established players.
-- Ignore challengers like ${tariffIndustry.companiesToIgnore.join(', ')} as they no longer active.
+- Ignore challengers like ${(tariffIndustry.companiesToIgnore ?? []).join(', ')} as they no longer active.
 - Make sure the new challenger is not in the established players list i.e. ${establishedPlayers
     .map((ep) => `${ep.companyName} (${ep.companyTicker})`)
     .join(', ')}
