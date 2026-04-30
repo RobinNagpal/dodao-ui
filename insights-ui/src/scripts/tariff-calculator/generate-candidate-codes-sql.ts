@@ -453,8 +453,18 @@ async function main(): Promise<void> {
   let failures = 0;
 
   for (const hts10 of targets) {
+    let upstream: UpstreamCandidateCode[];
     try {
-      const upstream = await fetchWithRetry(hts10, 3);
+      upstream = await fetchWithRetry(hts10, 3);
+    } catch (err) {
+      failures += 1;
+      const message = describeFetchError(err);
+      out.push(`-- !! ${hts10}: upstream fetch failed — ${message}`);
+      console.error(`  ✗ ${hts10}: fetch failed — ${message}`);
+      await sleep(args.delayMs);
+      continue;
+    }
+    try {
       out.push(`-- ============================================================`);
       out.push(`-- HTS ${hts10} — ${upstream.length} candidate codes`);
       out.push(`-- ============================================================`);
@@ -467,8 +477,8 @@ async function main(): Promise<void> {
     } catch (err) {
       failures += 1;
       const message = describeFetchError(err);
-      out.push(`-- !! ${hts10}: upstream fetch failed — ${message}`);
-      console.error(`  ✗ ${hts10}: ${message}`);
+      out.push(`-- !! ${hts10}: SQL render failed — ${message}`);
+      console.error(`  ✗ ${hts10}: SQL render failed — ${message}`);
     }
     await sleep(args.delayMs);
   }

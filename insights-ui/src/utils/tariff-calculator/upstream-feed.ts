@@ -110,6 +110,43 @@ function baseUrl(): string {
   return process.env.TARIFF_CANDIDATE_CODES_BASE_URL?.replace(/\/$/, '') ?? DEFAULT_BASE_URL;
 }
 
+// The upstream sometimes sends `null` where the schema declares an array
+// (e.g. specialRates, applicabilityConditions, excludedByCodes, tradeAnalytics).
+// Normalize at the boundary so consumers can treat these fields as always-array.
+function arr<T>(v: T[] | null | undefined): T[] {
+  return Array.isArray(v) ? v : [];
+}
+
+function normalizeCandidate(raw: UpstreamCandidateCode): UpstreamCandidateCode {
+  return {
+    ...raw,
+    unitsOfMeasure: arr(raw.unitsOfMeasure),
+    tags: arr(raw.tags),
+    pgaFlags: arr(raw.pgaFlags),
+    feeFlags: arr(raw.feeFlags),
+    parentCodes: arr(raw.parentCodes),
+    excludedByCodes: arr(raw.excludedByCodes),
+    replacesCodes: arr(raw.replacesCodes),
+    relatedCodes: arr(raw.relatedCodes),
+    specialRates: arr(raw.specialRates),
+    applicabilityConditions: arr(raw.applicabilityConditions),
+    tradeAnalytics: arr(raw.tradeAnalytics).map((ta) => ({
+      ...ta,
+      importPrograms: arr(ta.importPrograms).map((p) => ({
+        ...p,
+        importProgram: {
+          ...p.importProgram,
+          countriesOfOrigin: arr(p.importProgram.countriesOfOrigin),
+          customsTariffSpi: {
+            ...p.importProgram.customsTariffSpi,
+            countriesOfOrigin: arr(p.importProgram.customsTariffSpi.countriesOfOrigin),
+          },
+        },
+      })),
+    })),
+  };
+}
+
 // `hts10` is the 10-digit HTSUS code with no separators. The upstream
 // endpoint returns 404 for non-existent codes; we throw so callers can map
 // that to a 404 response.
@@ -126,7 +163,7 @@ export async function fetchCandidateCodes(hts10: string): Promise<UpstreamCandid
   if (!Array.isArray(json)) {
     throw new Error(`Upstream candidate-codes response for ${hts10} is not an array`);
   }
-  return json as UpstreamCandidateCode[];
+  return (json as UpstreamCandidateCode[]).map(normalizeCandidate);
 }
 
 // Conversion helpers that translate upstream discriminated unions into the
