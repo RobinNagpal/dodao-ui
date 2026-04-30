@@ -1,26 +1,8 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { HtsCode } from '@prisma/client';
 import { NextRequest } from 'next/server';
-
-// Chapter detail used by /hts-codes/us/[chapter]/[slug] — returns the
-// chapter + its parent section + every HTSUS row in CSV order. Returns
-// null when the chapter number is invalid or no row exists for it; the
-// page renders notFound() in that case.
-
-export interface TariffChapterRow {
-  id: string;
-  htsNumber: string | null;
-  htsCode10: string | null;
-  indent: number;
-  description: string;
-  unitOfQuantity: string[];
-  generalRateOfDuty: string | null;
-  specialRateOfDuty: string | null;
-  column2RateOfDuty: string | null;
-  quotaQuantity: string | null;
-  additionalDuties: string | null;
-}
 
 export interface TariffChapterDetail {
   id: string;
@@ -33,7 +15,7 @@ export interface TariffChapterDetail {
     romanNumeral: string;
     title: string;
   };
-  rows: TariffChapterRow[];
+  rows: HtsCode[];
 }
 
 function parseChapterNumber(raw: string): number | null {
@@ -57,19 +39,6 @@ async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ number
   const rows = await prisma.htsCode.findMany({
     where: { chapterId: chapter.id },
     orderBy: { sortOrder: 'asc' },
-    select: {
-      id: true,
-      htsNumber: true,
-      htsCode10: true,
-      indent: true,
-      description: true,
-      unitOfQuantity: true,
-      generalRateOfDuty: true,
-      specialRateOfDuty: true,
-      column2RateOfDuty: true,
-      quotaQuantity: true,
-      additionalDuties: true,
-    },
   });
 
   return {

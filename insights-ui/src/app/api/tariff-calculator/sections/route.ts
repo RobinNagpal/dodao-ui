@@ -6,10 +6,6 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
 
-// HTSUS sections (I..XXII) and their chapters. The GET response is the
-// shape consumed by the public /hts-codes index page; POST is an admin-only
-// idempotent upsert that mirrors the section/chapter list at hts.usitc.gov.
-
 export interface TariffSectionListItem {
   id: string;
   number: number;
