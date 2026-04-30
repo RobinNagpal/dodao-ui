@@ -4,12 +4,7 @@
 // host is overridable via TARIFF_CANDIDATE_CODES_BASE_URL when we eventually
 // proxy or replace it.
 
-// Type-only import: we use the Prisma enum names purely as string-union
-// types here. Importing them as runtime values means the module crashes at
-// load time on machines where `prisma generate` hasn't been run, even though
-// no Prisma client method is being called. Returning the literal strings
-// satisfies the same types without that runtime coupling.
-import type { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
+import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 
 const DEFAULT_BASE_URL = 'https://tariffs.flexport.com';
 const USER_AGENT = 'Mozilla/5.0 (compatible; KoalaGains-TariffCalculator/1.0; +https://koalagains.com)';
@@ -138,35 +133,35 @@ export async function fetchCandidateCodes(hts10: string): Promise<UpstreamCandid
 // flattened (kind + sparse columns) shape the schema uses.
 
 export function mapCodeType(t: 'COMMODITY_CODE' | 'SPECIAL_CODE'): TariffCandidateCodeType {
-  return t === 'COMMODITY_CODE' ? 'COMMODITY_CODE' : 'SPECIAL_CODE';
+  return t === 'COMMODITY_CODE' ? TariffCandidateCodeType.COMMODITY_CODE : TariffCandidateCodeType.SPECIAL_CODE;
 }
 
 export function mapCountryScope(scope: UpstreamCountryScope): { type: TariffCountryScopeType; countries: string[] } {
   switch (scope.__typename) {
     case 'all':
-      return { type: 'ALL', countries: [] };
+      return { type: TariffCountryScopeType.ALL, countries: [] };
     case 'only':
-      return { type: 'ONLY', countries: scope.countries };
+      return { type: TariffCountryScopeType.ONLY, countries: scope.countries };
     case 'allExcept':
-      return { type: 'ALL_EXCEPT', countries: scope.excluded };
+      return { type: TariffCountryScopeType.ALL_EXCEPT, countries: scope.excluded };
   }
 }
 
 export function mapApplicabilityKind(typename: UpstreamApplicabilityCondition['__typename']): TariffApplicabilityConditionKind {
   switch (typename) {
     case 'CustomsTariffEquals':
-      return 'EQUALS';
+      return TariffApplicabilityConditionKind.EQUALS;
     case 'CustomsTariffGreater':
-      return 'GREATER';
+      return TariffApplicabilityConditionKind.GREATER;
     case 'CustomsTariffLess':
-      return 'LESS';
+      return TariffApplicabilityConditionKind.LESS;
     case 'CustomsTariffSomeSpiApplied':
-      return 'SOME_SPI_APPLIED';
+      return TariffApplicabilityConditionKind.SOME_SPI_APPLIED;
   }
 }
 
 export const RELATED_KIND_BY_FIELD: Record<'excludedByCodes' | 'replacesCodes' | 'relatedCodes', TariffRelatedCodeKind> = {
-  excludedByCodes: 'EXCLUDED_BY',
-  replacesCodes: 'REPLACES',
-  relatedCodes: 'RELATED',
+  excludedByCodes: TariffRelatedCodeKind.EXCLUDED_BY,
+  replacesCodes: TariffRelatedCodeKind.REPLACES,
+  relatedCodes: TariffRelatedCodeKind.RELATED,
 };
