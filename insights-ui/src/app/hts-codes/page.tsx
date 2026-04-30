@@ -98,14 +98,14 @@ export default async function HtsCodesIndexPage() {
                       {section.chapters.map((chapter) => (
                         <li key={chapter.id}>
                           <Link
-                            href={chapterDetailHref(chapter.number, chapter.title)}
-                            className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary-color hover:shadow-sm"
+                            href={chapterDetailHref(section.number, chapter.number, chapter.title)}
+                            className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-indigo-400 hover:bg-block-bg-color hover:shadow-md"
                           >
-                            <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0">
+                            <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0 group-hover:text-indigo-300">
                               {chapter.number.toString().padStart(2, '0')}
                             </span>
-                            <span className="font-medium flex-1">{chapter.title}</span>
-                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5" />
+                            <span className="font-medium flex-1 group-hover:text-indigo-300">{chapter.title}</span>
+                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-indigo-300" />
                           </Link>
                         </li>
                       ))}

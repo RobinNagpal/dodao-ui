@@ -1,7 +1,7 @@
 import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[number]/route';
 import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { chapterDetailHref, chapterNumberSlug, chapterTitleSlug } from '@/utils/tariff-calculator/chapter-slug';
+import { chapterDetailHref, chapterUrlSegment, parseChapterSegment, parseSectionSegment, sectionUrlSegment } from '@/utils/tariff-calculator/chapter-slug';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -14,19 +14,12 @@ export const dynamicParams = true;
 export const revalidate = 86400; // 24h
 
 interface RouteParams {
+  section: string;
   chapter: string;
-  slug: string;
-}
-
-function parseChapterNumber(raw: string): number | null {
-  if (!/^\d{1,2}$/.test(raw)) return null;
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n) || n < 1 || n > 99) return null;
-  return n;
 }
 
 async function fetchChapterDetail(chapterNumber: number): Promise<TariffChapterDetail | null> {
-  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters/${chapterNumberSlug(chapterNumber)}`;
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters/${chapterNumber.toString().padStart(2, '0')}`;
   try {
     const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) {
@@ -60,21 +53,25 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   // without DATABASE_URL. `dynamicParams = true` means each chapter is
   // generated on first request once the live API is reachable.
   const chapters = await fetchChapterList();
-  return chapters.map((c) => ({ chapter: chapterNumberSlug(c.number), slug: chapterTitleSlug(c.title) }));
+  return chapters.map((c) => ({
+    section: sectionUrlSegment(c.sectionNumber),
+    chapter: chapterUrlSegment(c.number, c.title),
+  }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<RouteParams> }): Promise<Metadata> {
-  const { chapter: chapterRaw } = await params;
-  const chapterNumber = parseChapterNumber(chapterRaw);
-  if (chapterNumber === null) return { title: 'HTS Codes | KoalaGains' };
+  const { section: sectionRaw, chapter: chapterRaw } = await params;
+  const sectionNumber = parseSectionSegment(sectionRaw);
+  const chapterNumber = parseChapterSegment(chapterRaw);
+  if (sectionNumber === null || chapterNumber === null) return { title: 'HTS Codes | KoalaGains' };
 
   const chapter = await fetchChapterDetail(chapterNumber);
-  if (!chapter) return { title: 'HTS Codes | KoalaGains' };
+  if (!chapter || chapter.section.number !== sectionNumber) return { title: 'HTS Codes | KoalaGains' };
 
-  const padded = chapterNumberSlug(chapter.number);
+  const padded = chapter.number.toString().padStart(2, '0');
   const title = `Chapter ${padded} — ${chapter.title} | HTS Codes | KoalaGains`;
   const description = `HTSUS Chapter ${padded}: ${chapter.title}. Browse every HTS code in this chapter with general rate, special rate, column 2 rate, units of measure, and applicable additional duties.`;
-  const canonical = `https://koalagains.com${chapterDetailHref(chapter.number, chapter.title)}`;
+  const canonical = `https://koalagains.com${chapterDetailHref(chapter.section.number, chapter.number, chapter.title)}`;
   return {
     title,
     description,
@@ -94,26 +91,29 @@ function UnitCell({ units }: { units: string[] }) {
 }
 
 export default async function HtsChapterDetailPage({ params }: { params: Promise<RouteParams> }) {
-  const { chapter: chapterRaw, slug } = await params;
-  const chapterNumber = parseChapterNumber(chapterRaw);
-  if (chapterNumber === null) notFound();
+  const { section: sectionRaw, chapter: chapterRaw } = await params;
+  const sectionNumber = parseSectionSegment(sectionRaw);
+  const chapterNumber = parseChapterSegment(chapterRaw);
+  if (sectionNumber === null || chapterNumber === null) notFound();
 
   const chapter = await fetchChapterDetail(chapterNumber);
   if (!chapter) notFound();
 
-  // Canonicalize the URL: if the slug doesn't match the chapter title's slug,
-  // redirect so search engines see only one URL per chapter.
-  const canonicalSlug = chapterTitleSlug(chapter.title);
-  if (slug !== canonicalSlug) {
-    redirect(chapterDetailHref(chapter.number, chapter.title));
+  // Canonicalize the URL: redirect when the section segment doesn't match the
+  // chapter's actual section, or when the chapter slug differs from the
+  // canonical form (so search engines see one URL per chapter).
+  const canonicalHref = chapterDetailHref(chapter.section.number, chapter.number, chapter.title);
+  const currentHref = `/hts-codes/us/${sectionRaw}/${chapterRaw}`;
+  if (currentHref !== canonicalHref) {
+    redirect(canonicalHref);
   }
 
   const rows = chapter.rows;
-  const padded = chapterNumberSlug(chapter.number);
+  const padded = chapter.number.toString().padStart(2, '0');
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
     { name: 'HTS Codes', href: '/hts-codes', current: false },
-    { name: `Chapter ${padded}`, href: chapterDetailHref(chapter.number, chapter.title), current: true },
+    { name: `Chapter ${padded}`, href: canonicalHref, current: true },
   ];
 
   return (
@@ -126,13 +126,9 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
             {chapter.section.title}
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            <span className="font-mono tabular-nums text-muted-foreground mr-3">Ch. {padded}</span>
+            <span className="font-mono tabular-nums text-muted-foreground mr-3">Chapter {padded}</span>
             {chapter.title}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {rows.length.toLocaleString()} {rows.length === 1 ? 'row' : 'rows'} from the HTSUS CSV — leaf rows have a 10-digit code; intermediate rows are
-            descriptive headers used to nest the codes below them.
-          </p>
         </header>
 
         {(chapter.notes || chapter.additionalUsNotes) && (
