@@ -13,12 +13,16 @@
 // outside the chapter we were asked to emit.
 //
 // Usage:
-//   yarn tariffs:gen-candidate-codes-sql --chapter 22 --out chapter22.sql
+//   yarn tariffs:gen-candidate-codes-sql --chapter 22
 //   yarn tariffs:gen-candidate-codes-sql --chapter 9 --limit 5      # quick test
 //   yarn tariffs:gen-candidate-codes-sql --chapter 1 --delay-ms 500
+//   yarn tariffs:gen-candidate-codes-sql --chapter 22 --out custom.sql
+//   yarn tariffs:gen-candidate-codes-sql --chapter 22 --stdout      # pipe instead
 //
-// Output goes to --out if given, otherwise stdout. Stats and progress go to
-// stderr.
+// By default the SQL is written to
+// `generated-sql/tariff-candidate-codes-chapter-<N>.sql` (relative to cwd).
+// Pass `--out <path>` to override, or `--stdout` to dump to stdout. Stats
+// and progress always go to stderr.
 
 import 'dotenv/config';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -37,6 +41,7 @@ import {
 interface CliArgs {
   chapter: number;
   out: string | null;
+  stdout: boolean;
   limit: number | null;
   delayMs: number;
 }
@@ -66,6 +71,10 @@ function parseArgs(argv: string[]): CliArgs {
   }
 
   const out = flags.get('out') ?? null;
+  const stdout = flags.get('stdout') === 'true';
+  if (out && stdout) {
+    throw new Error('Pass either --out <path> or --stdout, not both.');
+  }
   const limitRaw = flags.get('limit');
   const limit = limitRaw ? Number.parseInt(limitRaw, 10) : null;
   if (limitRaw && (!Number.isInteger(limit) || limit! < 1)) {
@@ -77,7 +86,7 @@ function parseArgs(argv: string[]): CliArgs {
     throw new Error(`--delay-ms must be a non-negative integer (got "${delayRaw}")`);
   }
 
-  return { chapter, out, limit, delayMs };
+  return { chapter, out, stdout, limit, delayMs };
 }
 
 // ---------------------------------------------------------------------------
@@ -488,14 +497,15 @@ async function main(): Promise<void> {
   out.push(`-- Summary: ${processedLines} HTS lines, ${totalCandidates} candidate codes, ${failures} failures.`);
 
   const sql = out.join('\n');
-  if (args.out) {
-    const absPath = path.resolve(args.out);
+  if (args.stdout) {
+    process.stdout.write(sql);
+    if (!sql.endsWith('\n')) process.stdout.write('\n');
+  } else {
+    const outPath = args.out ?? path.join('generated-sql', `tariff-candidate-codes-chapter-${chapter.number}.sql`);
+    const absPath = path.resolve(outPath);
     await mkdir(path.dirname(absPath), { recursive: true });
     await writeFile(absPath, sql, 'utf-8');
     console.error(`Wrote SQL → ${absPath}`);
-  } else {
-    process.stdout.write(sql);
-    if (!sql.endsWith('\n')) process.stdout.write('\n');
   }
 
   console.error(`Done: ${processedLines} HTS lines, ${totalCandidates} candidate codes, ${failures} failures.`);
