@@ -367,6 +367,50 @@ async function sleep(ms: number): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Node's global fetch throws `TypeError: fetch failed` for any transport
+// error and stashes the real reason (DNS, TLS, ECONNRESET, proxy refusal,
+// etc.) on `err.cause`. Walk the chain so the operator can actually see what
+// went wrong instead of staring at "fetch failed".
+function describeFetchError(err: unknown): string {
+  if (!(err instanceof Error)) return String(err);
+  const parts: string[] = [`${err.name}: ${err.message}`];
+  let cause: unknown = err.cause;
+  while (cause) {
+    if (cause instanceof Error) {
+      const code = (cause as Error & { code?: string }).code;
+      parts.push(`cause: ${cause.name}: ${cause.message}${code ? ` [${code}]` : ''}`);
+      cause = cause.cause;
+    } else {
+      parts.push(`cause: ${String(cause)}`);
+      cause = undefined;
+    }
+  }
+  return parts.join(' | ');
+}
+
+// Retry the upstream fetch a few times with backoff to ride out transient
+// network blips (TLS handshake glitch, brief DNS hiccup). We do not retry
+// `Invalid HTS 10-digit code` or HTTP errors — those are deterministic.
+async function fetchWithRetry(hts10: string, maxAttempts: number): Promise<UpstreamCandidateCode[]> {
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await fetchCandidateCodes(hts10);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const retryable = message === 'fetch failed' || message.includes('ECONNRESET') || message.includes('ETIMEDOUT');
+      if (!retryable || attempt === maxAttempts) {
+        throw err;
+      }
+      lastErr = err;
+      const backoffMs = 500 * attempt;
+      console.error(`    retrying ${hts10} (attempt ${attempt + 1}/${maxAttempts}) in ${backoffMs}ms — ${describeFetchError(err)}`);
+      await sleep(backoffMs);
+    }
+  }
+  throw lastErr;
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -410,7 +454,7 @@ async function main(): Promise<void> {
 
   for (const hts10 of targets) {
     try {
-      const upstream = await fetchCandidateCodes(hts10);
+      const upstream = await fetchWithRetry(hts10, 3);
       out.push(`-- ============================================================`);
       out.push(`-- HTS ${hts10} — ${upstream.length} candidate codes`);
       out.push(`-- ============================================================`);
@@ -422,7 +466,7 @@ async function main(): Promise<void> {
       console.error(`  ✓ ${hts10} (${upstream.length} candidates) [${processedLines}/${targets.length}]`);
     } catch (err) {
       failures += 1;
-      const message = err instanceof Error ? err.message : String(err);
+      const message = describeFetchError(err);
       out.push(`-- !! ${hts10}: upstream fetch failed — ${message}`);
       console.error(`  ✗ ${hts10}: ${message}`);
     }
