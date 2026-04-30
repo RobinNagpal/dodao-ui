@@ -4,11 +4,6 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { HtsCode } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
-// Chapter detail used by /hts-codes/us/[chapter]/[slug] — returns the
-// chapter + its parent section + every HTSUS row in CSV order. Returns
-// null when the chapter number is invalid or no row exists for it; the
-// page renders notFound() in that case.
-
 export interface TariffChapterDetail {
   id: string;
   number: number;

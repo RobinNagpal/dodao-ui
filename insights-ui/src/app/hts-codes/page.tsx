@@ -28,9 +28,6 @@ export const metadata: Metadata = {
 };
 
 async function fetchSections(): Promise<TariffSectionListItem[]> {
-  // Falls back to [] when the API is unreachable (e.g. `next build` without
-  // DATABASE_URL). The page renders the empty state in that case and
-  // re-fetches at request time once the live API is reachable.
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/sections`;
   try {
     const res = await fetch(url, { next: { revalidate: 86400, tags: [TARIFF_SECTIONS_LISTING_TAG] } });

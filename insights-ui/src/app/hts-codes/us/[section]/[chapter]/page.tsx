@@ -50,9 +50,6 @@ async function fetchChapterList(): Promise<TariffChapterListItem[]> {
 }
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
-  // Returning [] when the API is unreachable lets `next build` complete
-  // without DATABASE_URL. `dynamicParams = true` means each chapter is
-  // generated on first request once the live API is reachable.
   const chapters = await fetchChapterList();
   return chapters.map((c) => ({
     section: sectionUrlSegment(c.sectionNumber),
