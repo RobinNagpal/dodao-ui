@@ -156,7 +156,7 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
           <div className="text-center py-16 background-color rounded-lg border border-color">
             <h2 className="text-lg font-medium">No rows ingested for this chapter</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Run <code className="font-mono">yarn hts:import-chapter</code> with this chapter&apos;s CSV.
+              Run <code className="font-mono">yarn hts:generate-sql</code> and apply the generated SQL file to load this chapter&apos;s rows.
             </p>
           </div>
         ) : (

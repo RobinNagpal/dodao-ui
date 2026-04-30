@@ -69,7 +69,7 @@ export default async function HtsCodesIndexPage() {
             <h2 className="text-lg font-medium">No HTS sections loaded yet</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               POST the section/chapter index to <code className="font-mono">/api/tariff-calculator/sections</code>, then run{' '}
-              <code className="font-mono">yarn hts:import-chapter</code> per chapter.
+              <code className="font-mono">yarn hts:generate-sql</code> and apply the generated SQL file to the database.
             </p>
           </div>
         ) : (
