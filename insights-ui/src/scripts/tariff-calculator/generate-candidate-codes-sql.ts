@@ -161,10 +161,13 @@ function emitCandidateBlock(ctx: BlockContext, c: UpstreamCandidateCode): string
   lines.push(`-- Candidate ${code}${variant ? `:${variant}` : ''} (${c.type})`);
   lines.push(`DO $$`);
   lines.push(`DECLARE`);
-  lines.push(`  v_hts_code_id    UUID;`);
-  lines.push(`  v_candidate_id   UUID;`);
+  // Primary keys on these tables are TEXT (Prisma `String @id @default(uuid())`
+  // maps to TEXT, not native UUID). Declaring TEXT keeps `id = v_*` comparisons
+  // sane — a UUID-typed local would fail with `operator does not exist: text = uuid`.
+  lines.push(`  v_hts_code_id    TEXT;`);
+  lines.push(`  v_candidate_id   TEXT;`);
   if (c.tradeAnalytics.length > 0) {
-    lines.push(`  v_trade_analytic_id UUID;`);
+    lines.push(`  v_trade_analytic_id TEXT;`);
   }
   lines.push(`BEGIN`);
   lines.push(`  SELECT id INTO v_hts_code_id`);
