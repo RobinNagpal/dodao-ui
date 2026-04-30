@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
+import { revalidateTariffSectionsListingTag } from '@/utils/tariff-calculator/cache-tags';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 import { withLoggedInAdmin } from '../../helpers/withLoggedInAdmin';
@@ -174,6 +175,8 @@ async function postHandler(request: NextRequest, _userContext: KoalaGainsJwtToke
 
     results.push({ number: section.number, action: existingSection ? 'updated' : 'created', chapters: chapterResults });
   }
+
+  revalidateTariffSectionsListingTag();
 
   return {
     sections: results,
