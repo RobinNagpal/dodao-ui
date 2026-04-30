@@ -1915,3 +1915,142 @@ model StockScenarioStockLink {
   @@index([pricedInBucket])
   @@map("stock_scenario_stock_links")
 }
+
+// ============================================================================
+// Tariff Calculator
+// ----------------------------------------------------------------------------
+// Stores the U.S. Harmonized Tariff Schedule (HTSUS) so the calculator can
+// resolve duties without re-fetching upstream data on every request.
+//
+// Source: official HTSUS at https://hts.usitc.gov/. The site exposes a
+// per-chapter CSV with these columns:
+//   HTS Number, Indent, Description, Unit of Quantity,
+//   General Rate of Duty, Special Rate of Duty, Column 2 Rate of Duty,
+//   Quota Quantity, Additional Duties.
+// CSV rows are hierarchical — some rows have no HTS number and exist only
+// to indent the rows below them ("Live horses, asses, mules and hinnies:").
+//
+// Three tables:
+//   - TariffSection holds one row per HTSUS section (1..22 / I..XXII).
+//     Sections group chapters and have a stable canonical order, so they
+//     are normalized into their own table to drive the listing-page
+//     grouping and any future per-section pages.
+//   - TariffChapter holds one row per HTSUS chapter (1..99) with the
+//     chapter title, an FK to its section, and the chapter-level legal
+//     text shown alongside it (general "Note" + "Additional U.S. Notes"
+//     from the HTSUS PDF).
+//   - HtsCode holds one row per CSV row, FK'd to its chapter, with a
+//     self-relation that preserves the indent hierarchy. The chapter-level
+//     `chapter` integer that used to live on HtsCode now lives once on
+//     TariffChapter — non-key facts about a chapter (title, section, notes)
+//     would otherwise be repeated on every row of that chapter.
+// ============================================================================
+
+// One row per HTSUS section (1..22 / I..XXII). Section data is small and
+// stable; storing it once means chapter rows don't repeat the section
+// title and the listing page can rely on `number` for canonical ordering
+// instead of inferring it from the lowest chapter number.
+model TariffSection {
+  id String @id @default(uuid())
+  // Arabic section number 1..22. Unique within a space.
+  number       Int     @map("number")
+  // Roman-numeral form ("I".."XXII"). Stored alongside `number` because
+  // the HTSUS displays the roman numeral and we want to render it
+  // verbatim without a derivation step.
+  romanNumeral String  @map("roman_numeral")
+  // Section title from the HTSUS, e.g. "Live Animals; Animal Products".
+  title        String  @map("title") @db.Text
+  // Optional section-level note text from the HTSUS PDF. Backfilled
+  // later; not produced by the seed route.
+  notes        String? @map("notes") @db.Text
+
+  chapters TariffChapter[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, number])
+  @@map("tariff_sections")
+}
+
+// One row per HTSUS chapter (1..99). Notes / Additional U.S. Notes come
+// from the chapter PDF on hts.usitc.gov and are optional — the seed route
+// fills `number`, `title`, and `sectionId`; the long-form note bodies and
+// the per-row HTS codes are added by the CSV ingest script later.
+model TariffChapter {
+  id     String @id @default(uuid())
+  // Two-digit chapter number (1..99). Unique within a space.
+  number Int    @map("number")
+  // Chapter title from the HTSUS, e.g. "Live Animals" or "Articles of
+  // apparel and clothing accessories, knitted or crocheted".
+  title  String @map("title") @db.Text
+  // Chapter-level "Note" text from the HTSUS PDF (definitions and
+  // exclusions that apply to the whole chapter). Optional — backfilled
+  // later from the PDF; the CSV doesn't carry it.
+  notes             String? @map("notes") @db.Text
+  // Chapter-level "Additional U.S. Notes" text (U.S.-specific notes that
+  // sit alongside the WCO notes). Optional, same provenance as `notes`.
+  additionalUsNotes String? @map("additional_us_notes") @db.Text
+
+  sectionId String        @map("section_id")
+  section   TariffSection @relation(fields: [sectionId], references: [id])
+
+  htsCodes HtsCode[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, number])
+  @@index([sectionId])
+  @@map("tariff_chapters")
+}
+
+// One row per CSV row. CSV rows include both leaf 10-digit codes and
+// intermediate heading/group rows that have only an indent — so htsNumber
+// is nullable. The CSV's nested headings are preserved via parentId.
+model HtsCode {
+  id        String  @id @default(uuid())
+  // 4/6/8/10-digit code with dots, e.g. "0101.21.00.10". Null for header
+  // rows that exist only to group the rows below them.
+  htsNumber String? @map("hts_number")
+  // 10-digit form with no separators ("0101210010"). Set for leaf rows
+  // that have a full 10-digit code; useful as a stable join key for any
+  // future per-line data we ingest from upstream APIs.
+  htsCode10 String? @map("hts_code_10")
+  // CSV "Indent" column: 0..6. Drives display indentation in the viewer.
+  indent      Int    @map("indent")
+  description String @map("description") @db.Text
+  // CSV "Unit of Quantity" cell is itself a JSON-encoded array
+  // (e.g. ["No.","kg"]); decoded into a string array on ingest.
+  unitOfQuantity    String[] @default([]) @map("unit_of_quantity")
+  generalRateOfDuty String?  @map("general_rate_of_duty") @db.Text
+  specialRateOfDuty String?  @map("special_rate_of_duty") @db.Text
+  column2RateOfDuty String?  @map("column2_rate_of_duty") @db.Text
+  quotaQuantity     String?  @map("quota_quantity") @db.Text
+  additionalDuties  String?  @map("additional_duties") @db.Text
+
+  chapterId String        @map("chapter_id")
+  chapter   TariffChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  // Self-relation for the indent hierarchy. parentId points at the
+  // nearest ancestor row whose indent is exactly `indent - 1`.
+  parentId String?   @map("parent_id")
+  parent   HtsCode?  @relation("HtsCodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children HtsCode[] @relation("HtsCodeHierarchy")
+
+  // CSV row order within its chapter. Hierarchy reconstruction depends on
+  // walking rows in this order, so it is preserved verbatim from the CSV.
+  sortOrder Int @map("sort_order")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, htsNumber])
+  @@unique([spaceId, htsCode10])
+  @@index([chapterId, sortOrder])
+  @@index([spaceId, parentId])
+  @@map("hts_codes")
+}
