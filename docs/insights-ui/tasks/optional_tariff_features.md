@@ -238,3 +238,510 @@ Because your product produces AI-authored, decision-oriented outputs, the highes
 - **Rules-of-origin caution:** wherever preferential rates are implied, provide a rules-of-origin note that rules differ across agreements/partners and are product-specific. citeturn6view0
 
 If you implement only one “quality investment” early, make it the “Freshness + evidence” panel—because it increases trust in *every* page you already have, and it also makes your future ingestion/simulation features much easier to justify.
+
+## Additional optional tariff ideas
+
+These three ideas are useful because they move the app from "tariff report" toward "decision support." They map mainly to the highest-criticality use cases in `tariff-usecases.md`: importers/exporters, procurement teams, customs brokers, small businesses, manufacturers, retail buyers, and sourcing consultants.
+
+Realistically, these features are relevant only if the app can show sourced, product-level data. If they stay as generic AI advice, serious importers/exporters will not trust them for decisions.
+
+### 1. Tariff reduction suggestions for a product + country
+
+**What to show:** For a selected product or HTS code and origin country, show practical ways tariffs might be reduced: FTA eligibility, rules-of-origin checks, duty drawback, bonded warehouse / FTZ usage, alternative classification review, supplier relocation, or import timing.
+
+**Target audience:** New importers, SMBs, e-commerce sellers, procurement teams, customs brokers.
+
+**Why it helps:** Experienced teams may already know these options, but new users often do not. This can become a simple educational layer that explains legal ways to reduce landed cost and when to talk to a broker.
+
+**Critical view:** Helpful as an educational checklist, but not a strong standalone product feature. Many recommendations will be common knowledge for brokers and compliance teams, and some options depend on strict legal eligibility.
+
+**Adds value?** **Limited — mostly as an educational / SEO layer.** The strategies (FTA eligibility, rules of origin, duty drawback, FTZ, bonded warehouse, classification review, supplier shift, import timing) are well-documented across CBP, broker websites, and trade publications. We won't be the only place users can read about them. The idea has value for awareness — new importers don't know these levers exist — but applying any of them needs a customs broker, so we can't replace that step. Of the four ideas in this document, this is the weakest as a standalone interactive feature, though it can still pull SEO traffic and act as a top-of-funnel lead-in to the other three.
+
+**Best target audience:** New importers and first-time SMB importers, e-commerce and DTC brands that recently started sourcing overseas, students or educators in supply chain / trade programs, and SEO traffic from product-specific searches like "how to reduce tariff on X from Y." Not the right fit for experienced importers, customs brokers, or large multinationals — they already know all of this.
+
+**Review of the generated example reports (bedsheets-india, sneakers-vietnam, t-shirts-bangladesh, wooden-furniture-indonesia, toys-china):**
+
+After reading all five, the honest problem is that they are not very useful in their current form. Here is why:
+
+1. **Same advice, every file.** Every report lists the same 7–8 strategies: First Sale Rule, bonded warehouse, FTZ, duty drawback, tariff engineering, move sourcing to Mexico, supplier relocation. The product and country change, but the options don't. A user who reads two of these reports will immediately notice the pattern. It feels like a template with product names swapped in.
+
+2. **The math is made up.** Every example uses "$10,000 import value" and then calculates savings from there. Real importers have their own volumes, freight costs, and supplier contracts. The numbers don't help them — they just look precise. If a user imports $2M/year or $50k/year, the math is irrelevant to them.
+
+3. **"Move to Mexico" is listed as easy.** In almost every report, sourcing from Mexico under USMCA appears as a top option. But moving a supply chain from Vietnam, Bangladesh, or Indonesia to Mexico takes years, requires qualified suppliers, and costs far more than the duty savings for most small importers. Listing it as a simple option undermines trust.
+
+4. **The people who need this already know it or can't use it alone.** Experienced importers and customs brokers already know these strategies. New importers need a broker to actually apply them — rules-of-origin, CBP binding rulings, first sale documentation are not things you do yourself from a webpage. So neither audience gets real value.
+
+5. **No real data, no sources.** The duty rates cited are current as of April 2026, but there is no link to CBP, Federal Register, or any verifiable source. If a rate is wrong or expires, users acting on it could get hurt. Without sourced, verifiable data, these reports are just AI summaries — not something users would trust for actual import decisions.
+
+**What would make this valuable:**
+The strongest version of this feature is probably the **import sourcing comparison** (feature #2 below), not the reduction-strategies checklist. A page that answers "where do most U.S. companies import cotton T-shirts from, and what does each country's total landed cost look like?" is something a user cannot easily find with a Google search. A checklist of tariff reduction options they can.
+
+### 2. Import sourcing comparison for U.S. buyers
+
+**What to show:** When a user selects a product or HTS code, show the top 5 countries the U.S. imports it from, then compare tariff rate, other import duties, average buying/import cost, trade volume, and risk notes.
+
+**Target audience:** U.S. importers, procurement teams, retail buyers, manufacturers, sourcing consultants.
+
+**Why it helps:** This is likely high-interest because it directly answers: "Can I source this cheaper from another country?" It turns tariff data into supplier-country comparison and landed-cost exploration.
+
+**Critical view:** This is probably the strongest of the three ideas. It solves a real procurement question, but it needs reliable import volume, average unit value, tariff, freight, and country-risk data. Tariff alone is not enough to recommend a better sourcing country.
+
+**Adds value?** **Yes — strong.** This answers a question users cannot easily answer with a Google search: "Which country should I source this from?" Combining tariff, import volume, average unit value, and freight in one view is a real time-saver.
+
+**Best target audience:** U.S. importers in the $1M–$100M annual import range, procurement teams at mid-size retailers, sourcing consultants, contract manufacturers qualifying new suppliers, and private-label brands exploring supplier diversification away from China.
+
+**Example report:** [`import-sourcing-coffee-example.md`](./import-sourcing-coffee-example.md) — what this view should look like for U.S. coffee buyers across Brazil, Colombia, Vietnam, Honduras, Mexico, etc.
+
+**Review of the coffee example report:** Verdict — strong, ship it (with minor surgery); this is the most useful example in the PR and the right depth bar for everything else. The hidden-costs breakdown, harvest/payment timing, scam defenses, supplier channels, and three-axis decision matrix (buyer type × optimization goal × risk tolerance) genuinely combine in one page what currently requires bouncing across USDA FAS, SCA, Sweet Maria's, broker sites, and freight indexes — §19's similar-resources comparison makes the differentiation explicit and credible. Real concerns: every dollar figure / FOB range / defect count / freight rate is unsourced (same gap as every other report in the PR), and §18 ("What the App Should Show") is product-spec content leaking into a user-facing page and should be fenced or moved into this task file. With sources added and §18 relocated, this is the only example in the PR that a real importer could plausibly act on, and it should be the model the soybeans report and the five product-reduction reports get rewritten against.
+
+### 3. Export market opportunity comparison
+
+**What to show:** For a product and exporting country, show potential destination countries where the product may sell at a higher price, along with destination import duties, tariff barriers, demand/trade volume, and likely margin impact.
+
+**Target audience:** Exporters, SMB manufacturers, agribusiness exporters, trade consultants, industry associations.
+
+**Why it helps:** This helps exporters discover better markets, not just understand U.S. tariffs. Interest should be strongest from businesses trying to expand sales or shift away from low-margin markets.
+
+**Critical view:** Useful, but harder than the import comparison. Export opportunity depends on demand, local competition, distribution access, regulations, currency, and non-tariff barriers. This should be framed as "market discovery" rather than a confident export recommendation.
+
+**Adds value?** **Partial.** Useful as a starting point for market discovery, not as a stand-alone recommendation. Tariff differences alone don't pick an export market — demand, distribution, currency, and non-tariff barriers matter more. If we frame it as "shortlist of markets worth investigating," it adds value. If we present it as "go sell here," it will mislead users.
+
+**Best target audience:** SMB manufacturers and agribusiness exporters exploring new markets, trade consultants building client shortlists, industry associations and export-promotion agencies, and U.S. companies trying to shift away from low-margin destinations.
+
+**Overall relevance — weaker than the importer case.** Most exporters are manufacturers who already know their product, costs, and main markets, so the information gap we'd be filling is small. Established trade associations (USSEC, USMEF, USAPEEC, FAS Country Guides, trade.gov) already cover destination markets well, and the real export blockers are non-tariff (SPS, labeling, distribution) — hard for AI to deliver credibly. Compared to **#2 Import sourcing comparison**, this feature is significantly less relevant and should be deprioritized; if built, it should be a small "market-discovery shortlist" for first-time SMB exporters, not a flagship feature.
+
+**Example report:** [`export-opportunity-soybeans-example.md`](./export-opportunity-soybeans-example.md) — what this view should look like for U.S. soybean exporters across China, Mexico, EU, Japan, Indonesia, etc.
+
+**Review of the soybeans example report:** Verdict — relevant feature, thin example. The 10-market table plus the "China is volume, not margin" worked example answer a question Google won't easily surface ("where does my tonne earn the most?"), so the feature idea clearly adds real value. But only 4 of 10 markets get worked margin math, and the per-country pros/cons profiles, harvest/payment timing, buyer-channel guidance, and non-GMO/identity-preserved logistics that make the coffee example so useful are all missing — and every dollar figure is unsourced. As shipped, it is a useful structural template for the feature, not a report an exporter could actually decide on; coffee-report depth is the bar to hit before this is user-facing.
+
+### 4. Bonded warehouse / FTZ calculator
+
+**What to show:** A simple tool where a user enters import value, expected holding period, share of goods that may be re-exported, and rough warehouse/FTZ fees. The output shows whether using a bonded warehouse or foreign-trade zone improves cash flow or duty timing compared with paying duty at entry.
+
+**Target audience:** Mid-size importers ($1M–$50M annual import value), finance teams modeling cash flow, businesses with seasonal inventory, and importers with a meaningful re-export share.
+
+**Why it helps:** Most importers don't know if FTZ or bonded warehouse is worth the setup cost. A back-of-envelope calculator helps them decide whether to talk to a customs broker about it, instead of ignoring the option or jumping in blindly.
+
+**Critical view:** A generic calculator can mislead. Real FTZ economics depend on warehouse rent, broker fees, weekly entry savings, compliance burden, and merchandise processing fees — not just duty timing. We should clearly mark this as a directional estimate, not a financial decision.
+
+**Adds value?** **Conditional — yes only if we keep it honest.** Useful as a "should I look into this?" gate. Most importers either don't know FTZ exists or assume it's only for big players. A simple calculator that says "yes, worth investigating" or "no, your volume is too small" saves users a meeting with a broker.
+
+**Best target audience:** Mid-size importers with annual import value above ~$1M considering FTZ setup, businesses with seasonal stock or high re-export share, e-commerce sellers with returns flow, and finance teams comparing cash-flow scenarios.
+
+### 5. Duty drawback eligibility checker
+
+**What to show:** A short questionnaire where the user describes their goods, what they do with them (re-export, destroy, use in manufacturing), and rough volume. The tool tells them which type of drawback may apply (manufacturing, unused merchandise, rejected merchandise) and a rough estimate of recoverable duties.
+
+**Target audience:** Importers who also export — contract manufacturers, distributors with international resale, pharmaceutical and electronics companies with returns flow, and businesses near border zones.
+
+**Why it helps:** Drawback can recover up to 99% of duties paid on goods that are later exported or destroyed, but the rules are complex and most small importers leave money on the table. A simple checker that flags eligibility and shows rough recovery numbers can prompt users to start a real claim with a broker.
+
+**Critical view:** Drawback applies to a small share of importers — those who actually re-export or destroy goods. For pure domestic-sale importers, it's irrelevant. The eligibility rules also have time limits (typically 5 years), recordkeeping requirements, and proof-of-export documentation that a checker can't fully validate. We must be clear this is a screening tool, not a claim filing.
+
+**Adds value?** **Limited but real for the right user.** Niche feature — most importers won't qualify. But for the subset who do (manufacturers with export sales, distributors handling returns), it can flag meaningful recoverable duties they didn't know about. Worth building as a lightweight screener, not a flagship feature.
+
+**Best target audience:** Contract manufacturers selling to overseas buyers, distributors and resellers with international customers, pharma and electronics importers handling returns or rejects, and e-commerce sellers shipping to Canada/Mexico/EU customers from U.S. inventory.
+
+## Five more ideas — vetted against the same three questions
+
+The first five ideas above were generated before we critically asked "would users actually come for this, and is the answer a confident yes?" After re-reading them, only #2 (import sourcing comparison) and arguably #4 (FTZ calculator) survive that bar.
+
+The five ideas below are picked specifically because each one anchors to a demand signal we can already see, not a hypothesis. The two strongest signals available to us are:
+
+1. **KoalaGains already has investors on it** — our stock and ETF analysis pages have an existing audience. Anything that adds a tariff lens to a stock or ETF page is in front of users who are already here.
+2. **Tariff news cycles drive predictable, repeatable searches** — every Section 232 / EO / retaliation announcement creates a wave of "what does this mean for [ticker]," "what does this mean for [industry]," "is this going to stick" queries. We can verify this in Google Trends and in our own tariffs-page traffic spikes.
+
+Both of these are observed, not predicted. The five ideas below all leverage one or both. Ideas that depend on attracting a brand-new audience (e.g., compliance officers, brokers, exporters) are excluded — we have no evidence those users come to KoalaGains today.
+
+### 6. Per-stock tariff exposure card (added to every ticker page)
+
+**What to show:** On every public-company ticker page that KoalaGains already publishes, add a tariff-exposure block: estimated share of COGS sourced from tariff-affected countries, key supplier countries disclosed in 10-K/10-Q/earnings calls, product lines hit by current and proposed duties, exposure to retaliatory tariffs in major export markets, and a directional EPS / gross-margin sensitivity range. Every claim links back to the disclosure sentence it came from.
+
+**Target audience:** Equity investors (retail and institutional), buy-side analysts, sell-side analysts updating sector notes during tariff events, financial journalists writing same-day stock stories.
+
+**Why it helps:** When a tariff event hits, the very first question every investor asks is "how exposed is the stock I own?" Today that question requires reading a 10-K, calling IR, or waiting for a sell-side note. Putting a sourced exposure card directly on the ticker page captures that query at the moment users want it — and KoalaGains' ticker pages already rank for many of those searches.
+
+**Critical view:** Estimating exposure from public filings is imperfect — companies disclose sourcing inconsistently, and EPS impact depends on pass-through ability and contract structure that filings rarely reveal. We must mark this as a directional, disclosure-anchored estimate, not a precise forecast. Refresh cadence is also a real risk: 10-Ks are annual, so we'd need to layer in 8-Ks and earnings-call transcripts to keep estimates current during fast-moving tariff cycles.
+
+**Adds value?** **Yes — strong, and very differentiated.** Stock investors are already KoalaGains' core audience, and no major stock-research site (Yahoo Finance, Seeking Alpha, Morningstar, Stockanalysis.com) shows per-ticker tariff exposure as a first-class block. SEO upside is large because every "[ticker] tariff impact" search becomes addressable. Repeat usage is high during tariff news cycles — the same investor checks 5–20 tickers in a single afternoon when a new tariff is announced.
+
+**Best target audience:** Active retail investors with concentrated portfolios checking tariff exposure of specific holdings, hedge-fund and asset-manager analysts running quick screens, sell-side equity research desks using KoalaGains as a starting point, and financial journalists writing same-day tariff stories.
+
+### 7. Per-ETF tariff exposure heatmap
+
+**What to show:** For any major ETF (SPY, QQQ, IWM, XLI, IYT, EWZ, FXI, EWG, EWY, ITA, ITB, etc.), aggregate the ticker-level tariff exposure from idea #6 across holdings, weighted by position size. Output: ETF-level "tariff sensitivity" score, top 10 most-exposed holdings, breakdown by tariff regime (China 301, EU steel, Mexico autos, Section 232, etc.), and a comparison to a benchmark ETF or peer set.
+
+**Target audience:** ETF investors (retail and advisor-channel), passive-fund holders deciding whether to rotate during tariff cycles, multi-asset allocators at family offices, RIAs running ETF model portfolios, and CIOs comparing fund options.
+
+**Why it helps:** Most ETF investors don't realize how much tariff risk is hidden in their broad-market funds — SPY has meaningful indirect exposure through industrials, semis, and autos; sector ETFs concentrate that exposure dramatically. KoalaGains already publishes ETF analysis as a core surface, so adding tariff exposure is a "free with what we already have" feature once idea #6 exists. The aggregation logic is straightforward: weight per-ticker exposure by holding %.
+
+**Critical view:** Aggregating ticker-level estimates compounds the imprecision of each one. We must publish methodology clearly, include confidence bands, and avoid "fund X loses Y%" framing. Holdings also shift over time, so we'd need to refresh on the issuer's published cadence (typically daily for transparent ETFs, monthly for some others). For ETFs of ETFs and synthetic / derivative-heavy products, the model may simply not apply and we should say so.
+
+**Adds value?** **Yes — strong differentiation.** No major ETF-research site (ETF.com, VettaFi, Morningstar ETF) publishes a tariff-exposure heatmap. KoalaGains is uniquely positioned because it has both the stock-level and ETF-level analysis pipelines already. The cross-link from ticker pages to the ETFs that hold them, with shared tariff context, is also a strong internal-link / SEO play.
+
+**Best target audience:** Retail ETF investors building DIY portfolios, RIAs and advisors managing ETF model portfolios for clients, family-office allocators, and CIOs comparing tariff exposure across overlapping fund options.
+
+### 8. Multi-importer tariff comparison for a single product
+
+**What to show:** Pick a product (HS6 or finer), then see a side-by-side table of how the U.S., EU, UK, Japan, China, India, Canada, Mexico, Brazil, Australia, etc., each tariff that product on imports — MFN rate, preferential rates by FTA, recent rate changes with effective dates, key non-tariff barriers (TRQs, anti-dumping orders, licensing), and import volume. Adds a "demand context" column with destination-market import value so "lowest tariff" doesn't mislead users into shipping to a market with no demand.
+
+**Target audience:** Cross-border e-commerce sellers picking fulfillment markets, retailers and brands setting up regional distribution centers, trade consultants advising mid-market multinationals, policy researchers, and large exporters comparing destination markets.
+
+**Why it helps:** This answers "if I'm shipping product X, where in the world does it land cheapest, and where is there actually demand?" That's a real question for retailers with global e-commerce, brands deciding whether to set up an EU vs UK warehouse post-Brexit, and DTC sellers picking new markets. Existing tools (USITC, Trade Tariff UK, EU TARIC, Canada Tariff Finder) answer "what is the tariff in country Y?" one country at a time — they don't compare 10 importers in one view, and none of them pair the tariff with destination demand data.
+
+**Critical view:** Different from idea #2 (which compares source countries for a U.S. buyer) — this is the exporter's-eye view. The risk is that without volume and demand data alongside, "lowest tariff" misleads. We must always pair the tariff with import value and trend, and we should flag known non-tariff barriers (e.g., EU REACH for chemicals, Japan's quota for rice). Data freshness is critical because rate phasing under FTAs is common.
+
+**Adds value?** **Yes — particularly for cross-border e-commerce and regional-distribution decisions.** A single page replaces 10 government-portal lookups. Evergreen SEO content for every "[product] tariff [country]" query, and the page structure scales: same template works for thousands of HS codes.
+
+**Best target audience:** Cross-border e-commerce operators picking fulfillment markets, retailers and brands setting up regional distribution centers, trade consultants servicing mid-market clients, policy and research teams at NGOs / think tanks, and exporters at U.S. SMB manufacturers comparing destinations.
+
+### 9. Tariff news / executive order impact explainer
+
+**What to show:** A "paste any tariff news article, EO text, USTR press release, or Federal Register notice → get a structured impact analysis" tool. Output: products affected (HS codes parsed from the source), countries affected, effective dates, magnitude vs prior rate, U.S. industries impacted (linked to existing KoalaGains industry reports), public companies that benefit/lose by ticker (linked to idea #6 cards), historical precedent (linked to idea #10), and likely retaliation lanes. Every conclusion links to the exact sentence in the source that drives it.
+
+**Target audience:** Financial journalists writing same-day tariff stories, retail and institutional investors reacting to news, corporate strategy and government-affairs teams briefing executives, sell-side analysts updating notes, and trade lawyers / consultants briefing clients.
+
+**Why it helps:** Tariff news breaks fast and is dense with HS codes, dates, country lists, and exemption schedules. Most readers cannot parse what the text actually means within an hour. A tool that converts unstructured tariff text into a structured, sourced impact view is genuinely time-saving and high-frequency. Every major tariff news cycle (Section 232 announcements, EO signings, retaliation announcements, WTO rulings) creates a wave of users with this exact need — a wave we've observed in our tariffs-page traffic during real events.
+
+**Critical view:** Quality is bounded by the input — a vague news article gives a vague output, and we must show source evidence (which sentence drives each conclusion) rather than appearing to extract truth that isn't in the text. Very fresh EOs may also reference HS codes or country lists that haven't been mapped to industries yet, and we should fail gracefully ("partial mapping") rather than guess.
+
+**Adds value?** **Yes — high, and specifically high during news cycles.** This is a category nobody else covers well. It's also a strong top-of-funnel feature: a journalist or investor pastes a news link, gets an analysis, and discovers the rest of KoalaGains' tariff content (per-stock exposure, industry reports, history tracker). Each tariff news cycle creates a fresh batch of inbound users.
+
+**Best target audience:** Financial journalists at Bloomberg/Reuters/Politico/CNBC writing same-day tariff stories, retail investors reacting to news on the day, corporate-affairs and government-relations teams at multinationals, sell-side equity research desks updating sector notes, and trade lawyers/consultants briefing clients within hours of a major announcement.
+
+### 10. Historical tariff outcome tracker
+
+**What to show:** A curated, structured database of major tariff events from roughly 1980 to today: what triggered each one, which products and countries it covered, the magnitude of the rate change, how long it lasted, what retaliation followed, how it was resolved (negotiated rollback, WTO ruling, expiration, escalation, replacement by quota), and what happened to affected industries and stocks during and after. For any current tariff event, surface the closest 3–5 historical analogs.
+
+**Target audience:** Corporate strategy and government-affairs teams doing scenario planning, sell-side analysts writing context-rich sector notes, investors trying to handicap tariff durability, policy researchers and academic teams, trade lawyers building precedent arguments, and journalists writing long-form feature pieces.
+
+**Why it helps:** Every tariff news cycle drives the question "is this going to stick or get rolled back?" The best available answer is history — most tariffs of the past 40 years have a closest analog (Reagan steel VRAs, Bush Section 201 steel safeguards, Trump 1.0 Section 301, EU-U.S. Boeing/Airbus disputes, the WTO China rare-earths case, etc.). KoalaGains is well-positioned for this because we already produce structured industry impact reports — the historical layer is curation plus structured AI summarization on top of established academic and government sources (USTR archives, WTO disputes database, Peterson Institute papers, CBO reports).
+
+**Critical view:** History is not destiny, and political conditions differ across decades. We must avoid "this tariff will last X years" framing and instead present "the closest precedents and how they played out, with the political context that drove each outcome." Sourcing has to be real (peer-reviewed papers, USTR archives, WTO documents) — pure AI summarization without primary sources would destroy the credibility that makes this feature defensible.
+
+**Adds value?** **Yes — strong for the right user, and defensible.** Lower volume than ideas #6/#7/#9 but much higher engagement when used. Builds editorial credibility and is highly linkable from journalism, academic content, and sell-side notes. Hard to replicate without genuine historical research, which means it's a moat for users who care about depth.
+
+**Best target audience:** Corporate strategy and government-affairs teams at large multinationals doing tariff scenario planning, sell-side equity analysts writing context-rich notes during major tariff cycles, academic and think-tank researchers, trade lawyers building precedent arguments, and journalists writing 1,500+ word feature pieces.
+
+## Quick comparison: original 5 vs new 5
+
+| # | Idea | User signal we can verify | Verdict |
+|---|---|---|---|
+| 1 | Tariff reduction suggestions | Generic SEO traffic; advice already widely available | Weak — keep as SEO layer only |
+| 2 | Import sourcing comparison | Real procurement question; not easily Google-able | **Strong — build** |
+| 3 | Export market opportunity | Most exporters are domain experts already | Weak — deprioritize |
+| 4 | FTZ / bonded warehouse calculator | Mid-size importers do ask "is this worth it" | Has potential — build small |
+| 5 | Duty drawback eligibility checker | Niche audience that does qualify | Limited — niche tool |
+| 6 | Per-stock tariff exposure card | Existing investor audience + tariff news cycles | **Strong — build first** |
+| 7 | Per-ETF tariff exposure heatmap | Existing ETF audience; differentiated content | **Strong — natural extension of #6** |
+| 8 | Multi-importer tariff comparison | Cross-border e-commerce + regional distribution decisions | Strong — build after #6/#7 |
+| 9 | Tariff news / EO explainer | News-cycle traffic spikes we already see | **Strong — high-leverage** |
+| 10 | Historical tariff outcome tracker | "Will it stick?" question at every cycle | Strong but slower payoff — defensible moat |
+
+## Ten more ideas from competitive research — independent PM evaluation
+
+The ten ideas below come from a competitive scan of Flexport, Zonos, Avalara, Descartes, SimplyDuty, USITC, CBP CROSS, and law-firm trackers. They sit between raw government data and expensive enterprise compliance software — a real product gap.
+
+These are evaluated from an **independent product-manager** perspective, not against KoalaGains' current audience. Building any of them is a deliberate move into a new audience segment (SMB importers, brokers, procurement teams, CFOs) — that's a known, accepted trade-off, not a problem to flag. So each idea is judged on whether it works *as a tariff product for that audience*: real demand, build effort, competitive risk, MVP scope, and where it sits in a sensible build sequence. The "Review" field at the end of each idea is my own assessment.
+
+### 11. SKU Portfolio Tariff Audit Tool
+
+**What it is:** User uploads a CSV with SKUs, product descriptions, HTS codes if available, country of origin, annual import value, and supplier country. The tool returns a ranked list of where the user is paying the most tariff cost.
+
+**Why users will come:** A business does not only care about one product. They want to know: "Out of my 500 SKUs, which 20 are creating most of my tariff problem?"
+
+**Target users:** SMB importers, ecommerce brands, procurement teams, CFOs, consultants.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Total estimated annual duty | "Estimated $420k annual duty exposure" |
+| Top cost drivers | "12 SKUs create 72% of tariff cost" |
+| Highest-risk countries | "China-origin SKUs drive most extra duties" |
+| Missing data | "86 SKUs missing reliable HTS code" |
+| Action list | "Review classification, check AD/CVD, consider supplier renegotiation" |
+
+**Market signal:** C.H. Robinson already has a self-serve tool for customers to assess duty exposure down to SKU level, so this is not completely unique. The opening is a simpler public-facing version for SMBs and SEO users who do not have enterprise trade software.
+
+**Critical view:** Very useful, but only if users can upload their own data. A generic article version will not be enough.
+
+**Priority:** Very high.
+
+**Review:** Real demand and a clear job-to-be-done. The strongest version is upload + cached results + a "delta vs last quarter" view — that's what creates repeat usage instead of a one-time visit. The blocker is data quality: you need a credible HTS-to-rate engine and AD/CVD overlay, otherwise the audit will be wrong on the high-cost items, which is exactly where users check most carefully. C.H. Robinson is gated behind a broker relationship, leaving a real opening for the long-tail $5M–$50M importer who can't afford enterprise compliance suites. Build effort: medium-high. Worth building, but not first — it depends on having a working classification layer (#12) and AD/CVD overlay (#13) underneath, so it should follow them in the sequence.
+
+### 12. HTS Classification Evidence Report
+
+**What it is:** A report that helps users understand the most likely HTS code for a product and shows supporting evidence from CBP CROSS rulings.
+
+**Why users will come:** Many importers do not know whether their HTS code is correct. Wrong classification can cause overpayment, underpayment, shipment delay, or penalties.
+
+**Target users:** New importers, ecommerce sellers, customs brokers, consultants, procurement teams.
+
+**Value addition:** Instead of only saying "this product may be HTS 9403.60," the report should say:
+
+| Section | What to show |
+|---|---|
+| Likely HTS codes | Top 2–3 possible codes |
+| Confidence level | High / medium / low |
+| Why this code may apply | Product material, function, use |
+| CBP ruling evidence | Similar rulings from CROSS |
+| Risk flags | Material ambiguity, product use ambiguity, country-of-origin issue |
+| Next action | "Ask broker" or "request binding ruling" |
+
+**Market signal:** CBP CROSS is a searchable database of CBP rulings and can be searched by keywords and Boolean operators, making it a strong source for this feature. Avalara itself says HS classification is a key input for landed cost, and that wrong codes can create delays, penalties, or over/underpaid duties.
+
+**Critical view:** Do not present this as legal classification advice. Present it as "classification research support."
+
+**Priority:** Very high.
+
+**Review:** Strong concept with a high credibility bar. Wrong classification has real legal and financial consequences, so users won't trust an AI suggestion without sourced evidence — meaning CBP CROSS ingestion is the actual product, not a nice-to-have add-on. Once that exists, the evidence-citation pattern is genuinely defensible because most "classification" tools today are paid SaaS gated behind compliance suites. The biggest risk is liability: frame strictly as "research support" with "verify with broker" CTAs, never as advice. Build effort: high (CROSS scrape + indexing + retrieval + UI + classification confidence model). Sequence-wise, build this *before* #11 because the SKU audit depends on having reliable HTS codes for the entries users leave blank — classification is the foundation, not a sibling feature.
+
+### 13. AD/CVD Risk Radar
+
+**What it is:** A product + country report that checks whether anti-dumping or countervailing duties may apply.
+
+**Why users will come:** Normal tariffs may be 5% or 10%, but AD/CVD can be much higher and can destroy the economics of an import. Many small importers only check normal tariff rates and miss trade-remedy duties.
+
+**Target users:** Importers, customs brokers, procurement teams, manufacturers, consultants.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| AD/CVD case status | Active / investigation / no obvious case found |
+| Country affected | China, Vietnam, India, etc. |
+| Product scope summary | What products are covered |
+| Duty range | If available |
+| Case timeline | Investigation, order, review, expiry |
+| Risk level | Low / medium / high |
+| User action | "Do not buy until broker confirms scope" |
+
+**Market signal:** The International Trade Administration provides AD/CVD resources and search tools, and CBP lists AD/CVD as a priority trade issue. Almost no public consumer-grade tariff tool surfaces AD/CVD in the same workflow as regular tariff lookups.
+
+**Critical view:** This is one of the highest-value features because AD/CVD risk is painful. But scope matching is hard, so the product must clearly say: "Potential match — verify with broker."
+
+**Priority:** Very high.
+
+**Review:** Probably the highest pure-value feature in the entire list. AD/CVD rates routinely run 50–300%+, which dwarf any normal tariff effect, and almost no public tool surfaces them in the same workflow as regular tariff lookups. ITA and CBP data is public and structured, so the data layer is achievable. The hard part is product-name to scope-language matching — AD/CVD orders use legal scope text ("hot-rolled steel flat products from Brazil") that doesn't always map cleanly to consumer product names. Mitigation: start with the 20–30 most active categories (steel, aluminum, solar cells, chemicals, hardwood plywood, mattresses, tires, rebar) and expand. Build effort: medium. On a value-per-effort basis, this is probably what to build first among the data-heavy tools.
+
+### 14. "What Changed Since My Last Shipment?" Report
+
+**What it is:** User enters HTS code, country, and last import date. The tool shows what tariff rules changed between then and now.
+
+**Why users will come:** Importers do not only ask, "What is the tariff today?" They ask: "Last time I imported this in January, I paid X. If I import today, what changed?"
+
+**Target users:** Repeat importers, customs brokers, procurement teams, finance teams.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Old duty rate | Rate on last import date |
+| New duty rate | Rate today |
+| Difference | "+10 percentage points" |
+| Reason | Section 232 update, exclusion expired, new product coverage |
+| Effective date | Exact date |
+| Source | Federal Register / CBP / USTR |
+| Business action | Update quote, renegotiate supplier, delay shipment, file refund |
+
+**Market signal:** Flexport and Project44 calculate duties using import date / HTS / origin, but most tools do not turn that into a simple "what changed and why" business explanation.
+
+**Critical view:** This is excellent for returning users. It creates repeat usage, not just one-time SEO traffic.
+
+**Priority:** Very high.
+
+**Review:** Genuine repeat-usage feature, not a one-time visit — and that's rare among tariff tools. The "what changed and why" framing is the actual missing piece in every existing tool: Flexport, Zonos, and SimplyDuty all answer "what is the rate today" but not "what changed since X date and what do I do about it." Build effort is medium *if* the rate engine for #11 already exists (just add a date dimension and a diff view); much harder if built standalone. Real risk: requires accurate historical rate data, which is harder than current rate data because most official sources don't expose easy historical APIs. Practical mitigation: scrape Federal Register notices and CBP CSMS messages for change events, building the historical layer event-by-event rather than trying to snapshot full history. Worth building once the rate engine exists.
+
+### 15. Tariff Refund / Exclusion Opportunity Tracker
+
+**What it is:** A tool where importers enter HTS codes, country, import date, and value. It tells them whether they may have refund or exclusion opportunities.
+
+**Why users will come:** After the Supreme Court ruling on IEEPA tariffs, refunds became a real business issue. Reuters reported that CBP implemented CAPE within ACE for refund handling, and CBP's own IEEPA refund page says valid refunds will generally be issued within 60–90 days after acceptance.
+
+**Target users:** Importers, brokers, CFOs, ecommerce brands, distributors, logistics teams.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Possible refund type | IEEPA refund, product exclusion, expired exclusion review |
+| Estimated refundable amount | Directional estimate |
+| Filing path | CAPE, protest, broker action, exclusion review |
+| Urgency | Deadline / protest timing |
+| Required data | Entry number, liquidation date, importer of record, duty paid |
+| Confidence | High / medium / low |
+
+**Critical view:** This is timely and high-value, but sensitive. It must not promise refunds. It should be framed as "eligibility screening."
+
+**Priority:** Very high right now.
+
+**Review:** Time-sensitive feature with a real news catalyst (IEEPA SCOTUS ruling and CBP CAPE process). Demand is highest right now and will decay as the refund window closes — first-mover advantage matters here. Risk is also high: a wrong "you're eligible" estimate could cost users weeks of broker time on a denied claim, and a wrong "you're not eligible" leaves money on the table. Frame strictly as eligibility screening with a "talk to your broker" CTA, and never auto-generate dollar amounts without a confidence band. Build effort: medium for IEEPA-only screening; higher if you cover Section 301 exclusions, 232 exclusions, and Chapter 99 carve-outs in the same flow. Practical sequence: ship the IEEPA-only version in ~3 weeks while the catalyst is still active, expand later. Decay risk is real — if you ship 6 months from now, the moment is gone.
+
+### 16. Rules-of-Origin Qualification Builder
+
+**What it is:** A step-by-step tool that checks whether a product may qualify for lower FTA tariffs based on rules of origin.
+
+**Why users will come:** Many users know "FTA can reduce tariffs," but they do not know whether their product qualifies. trade.gov's FTA Tariff Tool helps users find tariff information and origin requirements for U.S. FTA-covered products, and EU Access2Markets has a rules-of-origin self-assessment tool.
+
+**Target users:** Importers, exporters, manufacturers, sourcing teams, customs brokers.
+
+**Value addition:** Inputs:
+
+| Input | Example |
+|---|---|
+| Final product HTS | Product code |
+| Country of origin | Mexico, Canada, Korea, etc. |
+| Materials used | Components and countries |
+| Manufacturing step | Cutting, sewing, assembly, chemical transformation |
+| FTA | USMCA, KORUS, etc. |
+
+Outputs:
+
+| Output | Example |
+|---|---|
+| Likely qualification | Likely / unlikely / unclear |
+| Rule tested | Tariff shift, regional value content, wholly obtained |
+| Missing documents | Supplier declaration, certificate of origin |
+| Broker questions | "Ask supplier for component origin breakdown" |
+
+**Critical view:** This is more complex than a normal tariff calculator, but very useful. It should start with one or two FTAs only, such as USMCA, instead of trying to cover the whole world.
+
+**Priority:** High.
+
+**Review:** Highest complexity of the ten because rules of origin are genuinely complicated — tariff shift rules, regional value content thresholds, de minimis exceptions, and product-specific rules sit in agreement annexes that don't follow consistent structures across FTAs. The AI fit is actually good (interpreting rule text, walking the user through component-by-component questions in plain English), but the legal exposure is significant. Smart move per the original note: scope to USMCA only at first because (a) it's the highest-volume FTA for U.S. importers/exporters, (b) auto, electronics, and textile rules are widely understood and well-documented, and (c) trade.gov has good baseline tools to validate against. Build effort: high. Don't build first, but it's a flagship feature once #12, #13, and #14 are stable — the kind of tool that gets shared in procurement Slack channels and drives word-of-mouth.
+
+### 17. Contract & Incoterms Tariff Liability Analyzer
+
+**What it is:** User pastes a purchase order, supplier contract, or Incoterms terms. The tool explains who likely bears tariff cost: buyer or seller.
+
+**Why users will come:** When tariffs change, businesses immediately ask: "Can I pass this tariff to my supplier or customer, or do I have to absorb it?"
+
+**Target users:** Importers, procurement teams, CFOs, legal teams, consultants.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Incoterms detected | FOB, CIF, DDP, EXW |
+| Likely tariff payer | Buyer / seller / unclear |
+| Risk clauses | Price adjustment, tax/duty clause, force majeure |
+| Missing protection | No tariff escalation clause |
+| Suggested negotiation points | "Add tariff pass-through language" |
+
+**Critical view:** This is not strictly a tariff-rate tool, but it solves a very real tariff business problem. It should include a legal disclaimer and should not replace counsel.
+
+**Priority:** High.
+
+**Review:** Creative idea, but probably the wrong wrapper for the underlying need. The actual question users ask is more specific: "do I have a tariff escalation clause, and if not, what should I add?" That's a checklist + sample-clause-library question, not a contract analysis problem. A simpler v1: "Here are the 6 clauses your contract should have to protect against tariff changes; here's the suggested language; here's how to raise it with your supplier." That builds trust without taking on legal-tech complexity, NLP infrastructure, or legal-review staff. The full contract-analyzer version requires Ironclad-grade NLP and a legal review pipeline — probably not worth staffing for one feature. Build effort: low for the checklist version, very high for the analyzer. Build the checklist; skip the analyzer.
+
+### 18. Margin & Price Pass-Through Simulator
+
+**What it is:** A tool that shows how tariffs affect product margin and what price increase is needed to maintain margin.
+
+**Why users will come:** Most importers and ecommerce sellers do not only want duty cost. They want to know: "Should I increase my selling price? By how much?"
+
+**Target users:** Ecommerce brands, retailers, wholesalers, distributors, CFOs.
+
+**Value addition:** Inputs:
+
+| Input | Example |
+|---|---|
+| Product cost | $20 |
+| Freight | $3 |
+| Current tariff | 10% |
+| New tariff | 25% |
+| Selling price | $50 |
+| Gross margin target | 45% |
+
+Outputs:
+
+| Output | Example |
+|---|---|
+| Old gross margin | 48% |
+| New gross margin | 39% |
+| Price needed to preserve margin | $56.20 |
+| If only 50% passed to customer | Margin becomes 43% |
+| Annual profit impact | Based on volume |
+
+**Market signal:** Tariffs are already showing up as margin and pricing issues. KPMG's 2026 tariff survey said many U.S. businesses were navigating declining margins, and 55% planned further price increases in the next six months.
+
+**Critical view:** This is simple but very useful. It is probably one of the easiest tools to build.
+
+**Priority:** High.
+
+**Review:** Lowest-effort, fastest-to-MVP feature in the entire list. Pure user-input math — no data ingestion, no classification engine, no AD/CVD scope matching. The value is in the framing: most users intuit margin compression but can't quantify it, and a number turns "I should probably raise prices" into "I need to raise prices 12.4% to hold margin at 45%." Add scenarios (50% pass-through, 100% pass-through, no pass-through, demand-elasticity adjusted) so users see the full decision space. Easy to ship in ~2 weeks, produces social-shareable outputs, and works as a marketing wedge for the heavier tools. The KPMG signal (55% planning price increases) confirms mainstream demand. Strong candidate for the first thing to ship — earns trust cheaply and feeds users into the harder tools later.
+
+### 19. Competitor Import Shift Benchmark
+
+**What it is:** A report showing whether importers in a product category are shifting sourcing countries after tariff changes.
+
+**Why users will come:** A procurement manager wants to know: "Are other companies still buying this from China, or are they moving to Vietnam, Mexico, India, or Indonesia?"
+
+**Target users:** Procurement teams, consultants, investors, industry analysts, sourcing teams.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Top origin countries over time | China share down, Vietnam share up |
+| Import value trend | By month / quarter |
+| Average unit value trend | Is alternative country actually cheaper? |
+| Top ports | Where goods enter |
+| Strategic insight | "Shift is happening, but Mexico is still small volume" |
+
+**Market signal:** USITC DataWeb provides official U.S. import and export statistics, so this can be built using official trade data at the category/country level.
+
+**Critical view:** This is strong, but only if you avoid pretending you know exact private supplier contracts. Use public trade data and call it a market benchmark.
+
+**Priority:** Medium-high.
+
+**Review:** Strong feature with a real data foundation — USITC DataWeb is genuinely the best public trade-flow source available. The procurement use case is real: every sourcing strategy meeting in 2025–2026 starts with "what is everyone else doing about China." The honest constraint is data lag: DataWeb is monthly with a 4–6 week reporting lag, so this is a quarterly-trend tool, not a same-week response to news. Frame as benchmark, not signal. Differentiation comes from layering tariff context on top of trade data — most existing trade-flow tools (Panjiva, ImportGenius) sell to traders/investors, not procurement, and don't explicitly connect tariff changes to sourcing-volume shifts. Build effort: medium. Sequence after the rate engine exists — the data is too thin without tariff context to overlay onto.
+
+### 20. Customs Document Readiness / Border Hold Risk Checklist
+
+**What it is:** A product-country checklist showing documents and compliance risks that may delay customs clearance.
+
+**Why users will come:** Tariff rate is only one part of importing. Shipments can also get delayed because of missing certificates, wrong country marking, product safety rules, FDA/USDA rules, forced labor checks, AD/CVD scope questions, or invoice problems.
+
+**Target users:** First-time importers, ecommerce sellers, customs brokers, logistics teams.
+
+**Value addition:**
+
+| Output | Example |
+|---|---|
+| Required documents | Commercial invoice, packing list, certificate of origin |
+| Product-specific checks | FDA, USDA, CPSC, EPA, textiles labeling, etc. |
+| Country risk | Forced labor, sanctions, AD/CVD |
+| Common mistakes | Wrong HTS, vague invoice description, missing origin |
+| Broker handoff checklist | Questions to ask before shipping |
+
+**Critical view:** This is not as SEO-attractive as a tariff calculator, but it creates trust. It helps users avoid real-world pain.
+
+**Priority:** Medium.
+
+**Review:** Useful trust-building feature, but probably not a traffic driver on its own. Compliance content is heavily covered by every customs broker site, freight forwarder blog, and government portal, so the SEO ceiling is low — generic "documents you need to import" pages won't rank. Differentiation has to come from product-country specificity: a generic page is dead, but "documents you need to import children's pajamas from Vietnam" with FDA / CPSC / textile labeling overlays is a real long-tail SEO play. Risk: keeping it accurate across thousands of product-country combinations is hard. Either deep partnership with a customs broker for review, or AI-generated content with manual review pass on the top 50 categories. Build effort: medium. Lowest priority of the ten — useful as a content layer once users are on-site, not as the wedge that brings them in.
+
+## Independent PM build sequence
+
+Sequencing the ten by build dependency, time-sensitivity, and value-per-effort:
+
+| Order | Idea | Build effort | Why this order |
+|---|---|---|---|
+| 1 | #18 Margin Pass-Through Simulator | Very low | Fastest MVP, pure math, marketing wedge |
+| 2 | #15 Refund / Exclusion Tracker (IEEPA only) | Medium | Time-sensitive — IEEPA window decays |
+| 3 | #13 AD/CVD Risk Radar | Medium | Highest pure value; almost no public tool surfaces AD/CVD |
+| 4 | #12 HTS Classification Evidence | High | Foundation layer for #11 and #14 |
+| 5 | #11 SKU Portfolio Audit | Medium-high | Repeat-usage product; depends on #12 + #13 |
+| 6 | #14 What Changed Since Last Shipment | Medium | Repeat-usage; depends on rate engine |
+| 7 | #19 Competitor Import Shift Benchmark | Medium | Depends on tariff-context overlay |
+| 8 | #16 Rules-of-Origin Builder (USMCA only) | High | Flagship feature once foundations are stable |
+| 9 | #17 Tariff Escalation Clause Checklist (not full analyzer) | Low | Build the checklist, skip the NLP analyzer |
+| 10 | #20 Customs Document Checklist | Medium | Trust layer, not traffic driver |
+
+Two ideas worth deliberately scoping smaller than the original framing suggests:
+
+- **#17:** Build the "tariff escalation clause checklist + sample language" version, not the contract analyzer. The legal-tech version is a different company.
+- **#16:** Build USMCA only at first. Multi-FTA is a phase-3 feature.
+
+The strongest build-first candidates are **#18** (cheap to ship, broad reach, marketing wedge), **#15** (real time-sensitivity around IEEPA refunds), and **#13** (highest pure value because AD/CVD is genuinely under-covered by public tools). Everything else builds on top of those three.
