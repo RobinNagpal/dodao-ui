@@ -7,7 +7,7 @@ properties:
     description: '~2 paragraph summary suitable for the main ticker page. Cover who is leading the company, how aligned they are with long-term shareholder value, and any standout signals from compensation or insider transactions. End with a one-sentence investor takeaway.'
   detailedAnalysis:
     type: string
-    description: '5–7 paragraphs covering: (1) the names, roles, and tenure of the key management team members; (2) ownership stakes (insider %), compensation structure, and how compensation incentives align with long-term company growth; (3) recent insider buying/selling activity and what it signals; (4) leadership track record and capital allocation history; (5) overall alignment verdict and the reasoning behind it.'
+    description: '5–7 paragraphs covering: (1) the names, roles, and tenure of the key management team members; (2) where the founders are now and the reason they are not (or are) on the management team; (3) ownership stakes (insider %), compensation structure, and how compensation incentives align with long-term company growth; (4) recent insider buying/selling activity and what it signals; (5) any past management issues — SEC investigations, lawsuits, abrupt CFO/CEO departures, governance controversies, or failed prior roles tied to current leadership; (6) leadership track record and capital allocation history; (7) overall alignment verdict and the reasoning behind it.'
   alignmentVerdict:
     type: string
     enum:
