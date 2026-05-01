@@ -50,9 +50,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   const [slug, setSlug] = useState<string>('');
   const [underlyingCause, setUnderlyingCause] = useState<string>('');
   const [historicalAnalog, setHistoricalAnalog] = useState<string>('');
-  const [winnersMarkdown, setWinnersMarkdown] = useState<string>('');
-  const [losersMarkdown, setLosersMarkdown] = useState<string>('');
   const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
+  const [detailedAnalysis, setDetailedAnalysis] = useState<string>('');
   const [direction, setDirection] = useState<EtfScenarioDirection>('DOWNSIDE');
   const [timeframe, setTimeframe] = useState<EtfScenarioTimeframe>('FUTURE');
   const [probabilityBucket, setProbabilityBucket] = useState<EtfScenarioProbabilityBucket>('MEDIUM');
@@ -90,9 +89,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       setSlug('');
       setUnderlyingCause('');
       setHistoricalAnalog('');
-      setWinnersMarkdown('');
-      setLosersMarkdown('');
       setOutlookMarkdown('');
+      setDetailedAnalysis('');
       setDirection('DOWNSIDE');
       setTimeframe('FUTURE');
       setProbabilityBucket('MEDIUM');
@@ -122,9 +120,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setSlug(data.slug);
         setUnderlyingCause(data.underlyingCause);
         setHistoricalAnalog(data.historicalAnalog);
-        setWinnersMarkdown(data.winnersMarkdown);
-        setLosersMarkdown(data.losersMarkdown);
         setOutlookMarkdown(data.outlookMarkdown);
+        setDetailedAnalysis(data.detailedAnalysis ?? '');
         setDirection(data.direction as EtfScenarioDirection);
         setTimeframe(data.timeframe as EtfScenarioTimeframe);
         setProbabilityBucket(data.probabilityBucket as EtfScenarioProbabilityBucket);
@@ -149,8 +146,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
     e.preventDefault();
     setFormError('');
 
-    if (!title || !underlyingCause || !historicalAnalog || !winnersMarkdown || !losersMarkdown || !outlookMarkdown) {
-      setFormError('All markdown fields plus title are required.');
+    if (!title || !underlyingCause || !historicalAnalog || !outlookMarkdown) {
+      setFormError('Title, underlying cause, historical analog, and outlook are required.');
       return;
     }
     if (countries.length === 0) {
@@ -184,9 +181,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       slug: slug || undefined,
       underlyingCause,
       historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
       outlookMarkdown,
+      detailedAnalysis: detailedAnalysis || null,
       direction,
       timeframe,
       probabilityBucket,
@@ -383,26 +379,18 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         />
 
         <TextareaAutosize
-          label="Winners (markdown)"
-          modelValue={winnersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setWinnersMarkdown(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Losers (markdown)"
-          modelValue={losersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setLosersMarkdown(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Outlook (markdown; should include the as-of date, catalysts, and most exposed ETFs)"
+          label="Outlook (markdown; should include the as-of date and catalysts)"
           modelValue={outlookMarkdown}
           onUpdate={(v: unknown): void => {
             if (typeof v === 'string') setOutlookMarkdown(v);
+          }}
+        />
+
+        <TextareaAutosize
+          label="Detailed analysis (markdown, optional — surfaced behind a 'Detailed analysis' button on the public detail page)"
+          modelValue={detailedAnalysis}
+          onUpdate={(v: unknown): void => {
+            if (typeof v === 'string') setDetailedAnalysis(v);
           }}
         />
 

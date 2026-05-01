@@ -30,7 +30,7 @@ interface AddLinkFormState {
   expectedPriceChangeExplanation: string;
 }
 
-const ROLES: EtfScenarioRole[] = ['WINNER', 'LOSER', 'MOST_EXPOSED'];
+const ROLES: EtfScenarioRole[] = ['WINNER', 'LOSER'];
 
 function fetchDetailBySlug(slug: string): Promise<EtfScenarioDetail | null> {
   return fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etf-scenarios/${slug}?allowNull=true`).then((r) => (r.ok ? r.json() : null));
@@ -134,7 +134,6 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
   const allLinks: Array<{ heading: string; role: EtfScenarioRole; items: EtfScenarioLinkDto[] }> = [
     { heading: 'Winners', role: 'WINNER', items: detail?.winners ?? [] },
     { heading: 'Losers', role: 'LOSER', items: detail?.losers ?? [] },
-    { heading: 'Most exposed', role: 'MOST_EXPOSED', items: detail?.mostExposed ?? [] },
   ];
 
   return (
@@ -197,7 +196,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <TextareaAutosize
-                  label="Role explanation (why this ETF is a winner / loser / most-exposed — markdown)"
+                  label="Role explanation (why this ETF is a winner / loser — markdown)"
                   modelValue={form.roleExplanation}
                   onUpdate={(v: unknown): void => {
                     if (typeof v === 'string') setForm((f) => ({ ...f, roleExplanation: v }));

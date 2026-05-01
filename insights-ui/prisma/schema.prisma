@@ -1795,9 +1795,8 @@ model EtfScenario {
   slug                           String   @map("slug")
   underlyingCause                String   @map("underlying_cause") @db.Text
   historicalAnalog               String   @map("historical_analog") @db.Text
-  winnersMarkdown                String   @map("winners_markdown") @db.Text
-  losersMarkdown                 String   @map("losers_markdown") @db.Text
   outlookMarkdown                String   @map("outlook_markdown") @db.Text
+  detailedAnalysis               String?  @map("detailed_analysis") @db.Text
   direction                      String   @default("DOWNSIDE") @map("direction")
   timeframe                      String   @default("FUTURE") @map("timeframe")
   probabilityBucket              String   @default("MEDIUM") @map("probability_bucket")
@@ -1863,6 +1862,7 @@ model StockScenario {
   underlyingCause                 String   @map("underlying_cause") @db.Text
   historicalAnalog                String   @map("historical_analog") @db.Text
   outlookMarkdown                 String   @map("outlook_markdown") @db.Text
+  detailedAnalysis                String?  @map("detailed_analysis") @db.Text
   direction                       String   @default("DOWNSIDE") @map("direction")
   timeframe                       String   @default("FUTURE") @map("timeframe")
   probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")

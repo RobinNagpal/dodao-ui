@@ -1,4 +1,5 @@
 import { StockScenarioDetail } from '@/app/api/[spaceId]/stock-scenarios/[slug]/route';
+import Link from 'next/link';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { directionLabel, probabilityBucketLabel, timeframeLabel } from '@/utils/stock-scenario-metadata-generators';
 import StockScenarioLinkColumns from './StockScenarioLinkColumns';
@@ -76,16 +77,23 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.outlookMarkdown)} />
       </section>
 
+      {scenario.detailedAnalysis && (
+        <div className="mb-6">
+          <Link
+            href={`/stock-scenarios/${scenario.slug}/detailed-analysis`}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-opacity"
+          >
+            Detailed analysis
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
+      )}
+
       <section aria-labelledby="impacted-stocks-heading">
         <h2 id="impacted-stocks-heading" className="sr-only">
           Impacted stocks
         </h2>
-        <StockScenarioLinkColumns
-          winners={scenario.winners}
-          losers={scenario.losers}
-          mostExposed={scenario.mostExposed}
-          scenarioCountries={scenario.countries}
-        />
+        <StockScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} scenarioCountries={scenario.countries} />
       </section>
     </article>
   );

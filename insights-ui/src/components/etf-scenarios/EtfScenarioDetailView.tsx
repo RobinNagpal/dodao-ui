@@ -1,4 +1,5 @@
 import { EtfScenarioDetail } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
+import Link from 'next/link';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { directionLabel, pricedInBucketLabel, probabilityBucketLabel, timeframeLabel } from '@/utils/etf-scenario-metadata-generators';
 import EtfScenarioLinkColumns from './EtfScenarioLinkColumns';
@@ -107,22 +108,6 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
         </section>
       )}
 
-      <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-6" aria-labelledby="winners-losers-heading">
-        <h2 id="winners-losers-heading" className="sr-only">
-          Winners and losers
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-lg font-semibold text-emerald-300 mb-2">Winners</h3>
-            <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.winnersMarkdown)} />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-red-300 mb-2">Losers</h3>
-            <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.losersMarkdown)} />
-          </div>
-        </div>
-      </section>
-
       <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-6" aria-labelledby="outlook-heading">
         <h2 id="outlook-heading" className="text-xl font-bold text-white mb-4 pb-2 border-b border-gray-700">
           Outlook <span className="text-sm font-normal text-gray-400">(as of {asOf})</span>
@@ -130,11 +115,23 @@ export default function EtfScenarioDetailView({ scenario }: { scenario: EtfScena
         <div className="markdown-body prose prose-invert max-w-none" dangerouslySetInnerHTML={renderMarkdown(scenario.outlookMarkdown)} />
       </section>
 
+      {scenario.detailedAnalysis && (
+        <div className="mb-6">
+          <Link
+            href={`/etf-scenarios/${scenario.slug}/detailed-analysis`}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black font-semibold px-4 py-2 rounded hover:opacity-90 transition-opacity"
+          >
+            Detailed analysis
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
+      )}
+
       <section aria-labelledby="impacted-etfs-heading">
         <h2 id="impacted-etfs-heading" className="sr-only">
           Impacted ETFs
         </h2>
-        <EtfScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} mostExposed={scenario.mostExposed} scenarioCountries={scenario.countries} />
+        <EtfScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} scenarioCountries={scenario.countries} />
       </section>
     </article>
   );

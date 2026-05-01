@@ -213,11 +213,10 @@ function countryOfExchange(exchange: string): SupportedCountries | null {
 interface StockScenarioLinkColumnsProps {
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
-  mostExposed: StockScenarioLinkDto[];
   scenarioCountries: SupportedCountries[];
 }
 
-export default function StockScenarioLinkColumns({ winners, losers, mostExposed, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
+export default function StockScenarioLinkColumns({ winners, losers, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
   const [countryFilter, setCountryFilter] = useState<SupportedCountries | 'ALL'>('ALL');
 
   // Disable country options that the scenario doesn't cover; the user still
@@ -232,7 +231,6 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
 
   const filteredWinners = filterByCountry(winners);
   const filteredLosers = filterByCountry(losers);
-  const filteredMostExposed = filterByCountry(mostExposed);
 
   return (
     <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
@@ -256,7 +254,7 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
         </label>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <LinkList
           title="Winners"
           links={filteredWinners}
@@ -270,13 +268,6 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
           filteredCount={filteredLosers.length}
           countryFilter={countryFilter}
           emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as losers.' : `No losers listed on ${countryFilter} exchanges.`}
-        />
-        <LinkList
-          title="Most exposed right now"
-          links={filteredMostExposed}
-          filteredCount={filteredMostExposed.length}
-          countryFilter={countryFilter}
-          emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as currently most exposed.' : `No most-exposed stocks on ${countryFilter} exchanges.`}
         />
       </div>
     </section>
