@@ -6,7 +6,7 @@ import {
   LLMInvestorAnalysisResponse,
   LLMManagementTeamResponse,
 } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
@@ -279,6 +279,13 @@ export async function saveManagementTeamResponse(ticker: string, exchange: strin
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
+  // The LLM returns SCREAMING_SNAKE strings per the prompt schema (e.g. "OWNER_OPERATOR"),
+  // but the Prisma enum uses PascalCase (e.g. "OwnerOperator"). The TS enum's keys are the
+  // LLM-side names and its values are the DB-side names, so indexing by key translates.
+  const rawVerdict = response.alignmentVerdict as unknown as string;
+  const alignmentVerdict =
+    ManagementTeamAlignmentVerdict[rawVerdict as keyof typeof ManagementTeamAlignmentVerdict] ?? (rawVerdict as ManagementTeamAlignmentVerdict);
+
   await prisma.tickerV1ManagementTeamReport.upsert({
     where: {
       spaceId_tickerId: {
@@ -289,7 +296,7 @@ export async function saveManagementTeamResponse(ticker: string, exchange: strin
     update: {
       summary: response.summary,
       detailedAnalysis: response.detailedAnalysis,
-      alignmentVerdict: response.alignmentVerdict,
+      alignmentVerdict,
       updatedAt: new Date(),
     },
     create: {
@@ -297,7 +304,7 @@ export async function saveManagementTeamResponse(ticker: string, exchange: strin
       tickerId: tickerRecord.id,
       summary: response.summary,
       detailedAnalysis: response.detailedAnalysis,
-      alignmentVerdict: response.alignmentVerdict,
+      alignmentVerdict,
     },
   });
 
