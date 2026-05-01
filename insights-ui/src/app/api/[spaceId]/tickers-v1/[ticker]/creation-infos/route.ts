@@ -117,6 +117,7 @@ async function createTickerFomCompetition(req: NextRequest, context: { params: P
       regenerateFutureGrowth: true,
       regenerateFairValue: true,
       regenerateFutureRisk: true,
+      regenerateManagementTeam: true,
       regenerateFinalSummary: true,
     },
   });

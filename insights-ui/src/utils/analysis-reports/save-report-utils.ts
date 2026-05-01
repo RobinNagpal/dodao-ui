@@ -1,6 +1,11 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import {
+  CompetitionAnalysis,
+  LLMFactorAnalysisResponse,
+  LLMInvestorAnalysisResponse,
+  LLMManagementTeamResponse,
+} from '@/types/public-equity/analysis-factors-types';
 import { CATEGORY_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
@@ -261,6 +266,38 @@ export async function saveFutureRiskResponse(
       tickerId: tickerRecord.id,
       summary: response.summary,
       detailedAnalysis: response.detailedAnalysis,
+    },
+  });
+
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+}
+
+/**
+ * Saves management team experience and alignment response
+ */
+export async function saveManagementTeamResponse(ticker: string, exchange: string, response: LLMManagementTeamResponse): Promise<void> {
+  const spaceId = KoalaGainsSpaceId;
+  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
+
+  await prisma.tickerV1ManagementTeamReport.upsert({
+    where: {
+      spaceId_tickerId: {
+        spaceId,
+        tickerId: tickerRecord.id,
+      },
+    },
+    update: {
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      alignmentVerdict: response.alignmentVerdict,
+      updatedAt: new Date(),
+    },
+    create: {
+      spaceId,
+      tickerId: tickerRecord.id,
+      summary: response.summary,
+      detailedAnalysis: response.detailedAnalysis,
+      alignmentVerdict: response.alignmentVerdict,
     },
   });
 

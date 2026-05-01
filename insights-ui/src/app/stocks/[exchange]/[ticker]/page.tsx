@@ -18,7 +18,14 @@ import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import {
+  CATEGORY_MAPPINGS,
+  CompetitionResponse,
+  EvaluationResult,
+  MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
+  ManagementTeamAlignmentVerdict,
+  TickerAnalysisCategory,
+} from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -510,8 +517,25 @@ function TickerChartsInfo({
   );
 }
 
+function getManagementTeamVerdictBadgeClasses(verdict: ManagementTeamAlignmentVerdict): string {
+  switch (verdict) {
+    case ManagementTeamAlignmentVerdict.OWNER_OPERATOR:
+    case ManagementTeamAlignmentVerdict.STRONGLY_ALIGNED:
+      return 'bg-green-900 text-green-200';
+    case ManagementTeamAlignmentVerdict.ALIGNED:
+      return 'bg-blue-900 text-blue-200';
+    case ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED:
+      return 'bg-yellow-900 text-yellow-200';
+    case ManagementTeamAlignmentVerdict.MISALIGNED:
+      return 'bg-red-900 text-red-200';
+    default:
+      return 'bg-gray-800 text-gray-200';
+  }
+}
+
 function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
   const d: TickerV1FastResponse = use(data);
+  const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
     <>
@@ -603,6 +627,35 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
               </div>
             );
           })}
+          {managementTeamReport && (
+            <div key="management-team-summary" className="bg-gray-900 p-4 rounded-md shadow-sm">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
+                  <span
+                    className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
+                      managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
+                    )}`}
+                  >
+                    {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
+                      managementTeamReport.alignmentVerdict}
+                  </span>
+                  {managementTeamReport.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
+                </div>
+                <Link
+                  href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
+                  className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+                >
+                  View Detailed Analysis →
+                </Link>
+              </div>
+              <div
+                className="text-gray-300 markdown markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
+              />
+            </div>
+          )}
         </div>
       </section>
     </>
