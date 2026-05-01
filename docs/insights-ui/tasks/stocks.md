@@ -482,124 +482,182 @@ glance. This also feeds the **founder / owner-operator quality** dimension of th
     tickers (parent + sub); decide whether to model `Person` as its own table
     with stock links, or denormalize per ticker.
 
-## Management Team Report — new dedicated analysis category for stocks
+## Management Team Experience and Alignment — new optional report type
 
-Goal: ship a full **Management Team Report** as a new top-level analysis category for
-every stock — a sibling to Business & Moat, Financial Statement Analysis, Past
-Performance, Future Growth, Fair Value, Future Risk, and Vs Competition (see
-`TickerV1CategoryAnalysisResult` + `TickerV1GenerationRequest` in
-`insights-ui/prisma/schema.prisma`). Where the **Founder & management team —
-LinkedIn-sourced info** task above handles the *data layer* (Leadership block: who
-runs the company, photos, tenure, LinkedIn URLs), this task handles the *analytical
-layer* — Claude's structured opinion on **how good** the team actually is, scored
-and explained against repeatable factors so the verdict is comparable across
-tickers.
+Goal: add an **8th** stock report type — **Management Team Experience and Alignment** —
+alongside the existing seven (Business & Moat, Financial Statement Analysis, Past
+Performance, Future Growth, Fair Value, Future Risk, Vs Competition; see
+`TickerAnalysisCategory` + `TickerV1CategoryAnalysisResult` +
+`TickerV1GenerationRequest` in `insights-ui/prisma/schema.prisma`). Where the
+**Founder & management team — LinkedIn-sourced info** task above handles the *who*
+(Leadership block: photos, tenure, LinkedIn URLs), this report answers
+**"how experienced is this team and how aligned are they with long-term
+shareholders?"** in a focused, narrative format.
 
-- [ ] **Data model** (mirror the existing per-category pattern):
-  - Add `MANAGEMENT_TEAM` to the `TickerAnalysisCategory` enum so the report flows
-    through the existing `TickerV1CategoryAnalysisResult` /
-    `TickerV1AnalysisCategoryFactorResult` tables — no new top-level table needed
-    if we go this route. (The alternative — a dedicated `TickerV1ManagementTeam`
-    model like `TickerV1FutureRisk` — should be considered only if the output shape
-    diverges meaningfully from the standard `summary` + `overallAnalysisDetails` +
-    factor-results pattern.)
-  - Add `regenerateManagementTeam` to `TickerV1GenerationRequest` so the section
-    plugs into the existing batch regen pipeline.
-  - Add `managementTeamScore` to `TickerV1CachedScore` (Int, alongside
-    `businessAndMoatScore`, `fairValueScore`, etc.) so the management-team verdict
-    contributes to the `finalScore` rollup.
-- [ ] **Analysis factors** (seed `AnalysisCategoryFactor` rows per industry /
-  sub-industry, same shape as the existing categories):
-  - **Track record** — has this team executed against prior guidance / strategic
-    plans? Compare prior-period management commentary with realized results.
-  - **Capital allocation** — historical pattern of buybacks, dividends, M&A,
-    organic reinvestment. Quality of M&A integration, write-down history,
-    incremental ROIC.
-  - **Insider ownership + alignment** — % of shares held by insiders, recent
-    insider buys vs sells, comp structure (cash-heavy vs equity-heavy, LTI tied to
-    real performance metrics vs. fluffy ESG targets).
-  - **Tenure + stability** — average exec tenure, CEO/CFO churn rate, recent
-    departures, time since last leadership change.
-  - **Founder presence** — is the founder still in the seat / on the board /
-    significantly aligned by ownership? (Plumbs into the 10-bagger founder/
-    owner-operator dimension.)
-  - **Governance** — board independence, separation of CEO/Chair, related-party
-    transactions, audit/compensation committee composition, recent governance red
-    flags (restatements, SEC actions, lawsuits naming the team).
-  - **Succession risk** — single-point-of-failure dependency on one or two
-    individuals; documented succession plan (yes/no).
-  - **Communication quality** — earnings-call transparency vs spin, willingness to
-    address bad news, consistency of long-term messaging across cycles.
+This report is intentionally **optional** — no back-fill of stocks whose reports
+were generated before this category shipped. It only gets created for tickers that
+go through a "generate all reports" run *after* the category lands.
+
+### What the report covers
+
+Exactly four things, in this order:
+
+1. **Who's running the company** — names + titles of each key management team
+   member (CEO, CFO, COO/President, founder if separate, board chair if
+   distinct from CEO). Pulled from the Leadership block populated by the
+   "Founder & management team — LinkedIn-sourced info" task.
+2. **Tenure** — how long each person has been in their current role and at the
+   company overall. Flag founders, recent hires, and unusually short or long
+   tenures vs. industry norm.
+3. **Ownership + compensation alignment** — each named exec's stock ownership
+   as a % of shares outstanding (and approximate $ value), the structure of
+   their compensation (cash vs equity, performance-vested vs time-vested,
+   metrics that govern long-term incentive plans), and whether comp design
+   actually rewards long-term company growth (e.g. revenue / FCF / ROIC over
+   multi-year windows) vs. short-term proxies (single-year EPS, stock price,
+   ESG fluff).
+4. **Insider buying / selling** — net insider activity over the trailing
+   12 months (Form 4 filings), distinguishing planned 10b5-1 sales from
+   discretionary trades. Heavy buying = strong conviction signal; persistent
+   selling = a yellow flag worth surfacing.
+
+### Verdict scale (NOT 0–5)
+
+Use a categorical enum that names the overall *experience-and-alignment* posture
+of the team. Don't fall back to generic "Very Bad / Bad / Fair / Good" — pick
+labels that actually describe the construct. Recommended `AlignmentVerdict`
+enum:
+
+- `OWNER_OPERATOR` — founder(s) still in the seat, double-digit insider
+  ownership, recent buying or no selling, comp materially tied to long-term
+  metrics.
+- `STRONGLY_ALIGNED` — non-founder team but long-tenured, meaningful insider
+  ownership, LTI tied to multi-year performance metrics, no concerning
+  insider sales.
+- `ALIGNED` — typical professional management with reasonable tenure, modest
+  ownership, conventional comp structure; no red flags but nothing
+  exceptional either.
+- `WEAKLY_ALIGNED` — low insider ownership, short or churn-prone tenure,
+  comp dominated by short-term proxies, mixed insider activity.
+- `MISALIGNED` — concerning combination of insider selling, governance flags,
+  short tenures, and / or comp design that pays out regardless of long-term
+  outcomes.
+
+Render the verdict as a labeled pill on both the summary block and the detail
+page; use distinct colors per level so a reader can pattern-match across
+tickers at a glance.
+
+### Tasks
+
+- [ ] **Data model** — keep it simple, narrative-shaped (don't reach for the
+  factor pattern):
+  - Either add `MANAGEMENT_TEAM_EXPERIENCE_AND_ALIGNMENT` to
+    `TickerAnalysisCategory` and reuse `TickerV1CategoryAnalysisResult` for the
+    `summary` + `overallAnalysisDetails` markdown, **plus** a new
+    `alignmentVerdict` column on that table (or a dedicated companion table),
+    *or* add a fresh top-level model `TickerV1ManagementTeamReport` mirroring
+    `TickerV1FutureRisk`'s shape: `summary` (markdown, ~2 paragraphs),
+    `detailedAnalysis` (markdown, 5–7 paragraphs), `alignmentVerdict`
+    (enum), audit fields. Pick the model based on whether the verdict enum
+    fits the shared category result row or not.
+  - Add the new `AlignmentVerdict` enum to the Prisma schema (or
+    `src/types/`) with the five values above.
+  - Add `regenerateManagementTeamExperienceAndAlignment` to
+    `TickerV1GenerationRequest` so the "generate all reports" pipeline picks
+    this up by default for new runs.
+  - **Do NOT** add a corresponding score to `TickerV1CachedScore` — this
+    report uses a categorical verdict, not a 0–5 score, so it should not feed
+    the numeric `finalScore` rollup. Surface the verdict separately.
+- [ ] **No back-fill, opt-in by default for new generations**:
+  - Migration is purely additive — no historical data to populate.
+  - The "generate all reports" entry point flips
+    `regenerateManagementTeamExperienceAndAlignment = true` so newly-requested
+    full runs include it.
+  - Existing stock pages whose generation pre-dated this section keep
+    rendering as today; the UI hides the new section entirely when no row
+    exists (see UI tasks below — no half-empty card / no "coming soon"
+    placeholder).
 - [ ] **Prompt + inputs** (reuse `getLLMResponseForPromptViaInvocation`):
-  - Register a new `promptKey: 'US/public-equities-v1/management-team'` with the
-    standard system prompt skeleton used by the other analysis categories.
-  - `inputJson` should carry: ticker symbol/name/industry, the **Leadership block**
-    data (`keyPeople[]` from the LinkedIn task above), recent **10-K / proxy /
-    DEF 14A** excerpts (compensation, ownership, related-party sections),
-    recent **insider transactions** (Form 4 summary), capital-allocation history
-    (buyback $, dividend $, M&A $, capex), and any prior management-team
-    commentary stored on the ticker.
-  - Output contract: `summary` (markdown) + `overallAnalysisDetails` (markdown)
-    + per-factor `{ result: PASS|FAIL|NEUTRAL, oneLineExplanation,
-    detailedExplanation }` rows that drop straight into
-    `TickerV1AnalysisCategoryFactorResult` — same shape as Business & Moat.
-  - Cite sources (10-K Item, proxy section, Form 4 filing date) in the detailed
-    explanation so claims are auditable.
+  - Register a new `promptKey:
+    'US/public-equities-v1/management-team-experience-and-alignment'`.
+  - `inputJson` carries: ticker symbol/name/industry, the **Leadership block**
+    rows (`keyPeople[]` with name, title, tenure, founder flag), recent
+    **proxy / DEF 14A** excerpts (compensation, ownership, related-party
+    sections), trailing-12-month **Form 4** insider transactions (buyer,
+    seller, $ amount, 10b5-1 flag).
+  - Output contract:
+    - `summary`: ~2 paragraphs (target ~150–250 words) suitable for the
+      main stock page.
+    - `detailedAnalysis`: 5–7 paragraphs (target ~600–900 words) covering
+      the four areas above in order. Each numbered exec mention should
+      include their tenure inline.
+    - `alignmentVerdict`: one of the 5 enum values.
+  - Cite sources (proxy section, Form 4 filing date) inline so claims are
+    auditable.
 - [ ] **API**:
-  - Add a `GET` route under
-    `/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/management-team` that
-    returns the cached `TickerV1CategoryAnalysisResult` + factor rows for the
-    `MANAGEMENT_TEAM` category, and a `POST` regenerate route that flips
-    `regenerateManagementTeam` on the next generation request (or invokes
-    synchronously, matching `future-risk/route.ts`).
+  - `GET /api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/management-team-experience-and-alignment`
+    — returns the row + verdict, or 404 if absent (caller treats 404 as "not
+    generated yet", not an error).
+  - `POST` regenerate route that mirrors `future-risk/route.ts` —
+    synchronous v1, flips the section's regen flag and invokes the prompt
+    end-to-end.
   - Wire the new section into the batch regeneration handler that consumes
-    `TickerV1GenerationRequest` so "regenerate all" picks it up automatically.
-- [ ] **UI**:
-  - On the main stock page (`app/stocks/[exchange]/[ticker]/page.tsx`) add a
-    **Management Team** summary block: score badge, one-paragraph summary, top
-    2–3 factor verdicts, and a "View full management-team analysis" CTA — same
-    shape as the other category summaries.
-  - New per-section detail page
-    `app/stocks/[exchange]/[ticker]/management-team/page.tsx` that renders the
-    full markdown + factor table + per-factor rationale, mirroring the
-    Business & Moat detail page.
-  - Surface the **Leadership block** (founders + key execs from the LinkedIn
-    task) at the top of the detail page so readers see *who* before reading
-    Claude's verdict on *how good*.
-  - Update sitemaps / metadata for the new detail route; unique title / meta
-    description per ticker (avoid the "Crawled — currently not indexed" trap
-    flagged in the SEO Fixes section below).
+    `TickerV1GenerationRequest`, but **only when the "generate all" flag is
+    set** — no implicit back-fill on individual-section regens of older
+    tickers.
+- [ ] **UI — main stock page**
+  (`app/stocks/[exchange]/[ticker]/page.tsx`):
+  - When the report exists, render a **Management Team Experience and
+    Alignment** summary card: section title, `alignmentVerdict` pill,
+    ~2-paragraph `summary` markdown, and a "View full management team
+    analysis" CTA linking to the detail page.
+  - When the report does **not** exist (older tickers), render nothing — no
+    placeholder, no "coming soon", no empty card. The section is silently
+    absent.
+- [ ] **UI — new detail page**
+  (`app/stocks/[exchange]/[ticker]/management-team-experience-and-alignment/page.tsx`):
+  - Header: ticker / company name / verdict pill.
+  - Body: full 5–7 paragraph `detailedAnalysis` markdown.
+  - Sidebar / top block: the **Leadership block** (founders + key execs from
+    the LinkedIn task) so readers see *who* before reading the assessment.
+  - Breadcrumbs back to the main stock page.
+  - SSR'd, indexable, unique `<title>` + `<meta description>` per ticker
+    (avoid the "Crawled — currently not indexed" trap flagged in the SEO
+    Fixes section below).
+  - Add the route to the relevant per-section sitemap.
 - [ ] **Integration with adjacent features**:
-  - **Business & Moat** prompt should now *consume* the management-team summary
-    as input (rather than re-deriving team quality inline), so the moat narrative
-    stops repeating team claims and the two reports stay consistent.
-  - **10-bagger lens** "founder / owner-operator quality" dimension should pull
-    its score from `managementTeamScore` rather than re-evaluating from scratch.
-  - **Custom Reports** — make sure the management-team factor rows are part of
-    the `inputJson` exposed to the generic custom-report prompt so user
-    questions about leadership get grounded in our own analysis.
+  - **Business & Moat** prompt input should optionally include the
+    `summary` + `alignmentVerdict` so the moat narrative grounds team-quality
+    claims in this report's verdict instead of re-deriving them inline.
+  - **10-bagger lens** "founder / owner-operator quality" dimension should
+    map to `alignmentVerdict` (e.g. `OWNER_OPERATOR` ⇒ top score, `MISALIGNED`
+    ⇒ bottom).
+  - **Custom Reports** — include the management-team report's `summary` +
+    `alignmentVerdict` in the generic custom-report prompt's `inputJson` so
+    user questions about leadership are grounded in our own analysis.
 - [ ] **Off-hours refresh**:
-  - Add the management-team section to the off-hours regeneration cron (see
-    "Off-hours automated report refresh" above) so it stays fresh on the same
-    cadence as other categories.
-  - Bump priority on tickers where leadership changed recently (CEO/CFO
-    departure, founder exit) — these reports should regenerate sooner than the
-    default staleness threshold.
+  - Add this section to the off-hours regeneration cron (see "Off-hours
+    automated report refresh" above) but only for tickers that already have a
+    populated row — don't use the cron to retro-back-fill the entire
+    universe.
+  - Bump priority on tickers where a CEO/CFO/founder departure was detected
+    (Form 8-K Item 5.02) so the verdict catches the change quickly.
 - [ ] **Open questions**:
-  - **Industry-specific factors** — should the factor list vary by industry
-    (e.g. for REITs, capital allocation is the dominant signal; for biotech,
-    scientific founder presence matters more)? Same `AnalysisCategoryFactor`
-    table supports per-industry rows already, so this is a content question,
-    not schema.
-  - **Coverage threshold** — if the Leadership block has fewer than N
-    verified rows (e.g. CEO unknown), should we suppress the
-    Management Team Report entirely instead of writing a low-confidence one?
-  - **Score weighting** — how heavily should `managementTeamScore` weight into
-    the rolled-up `finalScore`? Pick a default and document it; revisit once
-    we have data on whether the score correlates with subsequent returns.
-  - **Backfill strategy** — generate for the full universe in one off-hours
-    sweep, or gate on tickers that have a complete Leadership block first?
-    Probably the latter to avoid garbage-in reports.
+  - **Verdict-only-without-detail tickers** — if the Leadership block /
+    proxy data is too thin to write 5–7 paragraphs, do we suppress the
+    report entirely, or render a shorter version with a "limited data"
+    flag? Lean towards suppressing — a half-baked alignment verdict is
+    worse than no verdict.
+  - **Frequency of refresh** — proxy filings update annually, Form 4s
+    arrive continuously. Pick separate refresh cadences (e.g. annual full
+    regen post-proxy, lighter monthly regen that only updates the insider-
+    activity paragraph) or one combined cadence?
+  - **Verdict colour mapping** — settle the pill colours up front so they're
+    consistent across the summary card, detail page header, and any future
+    listing/filter UI.
+  - **Cross-ticker comparability** — do we want a future "leaderboard" view
+    of `OWNER_OPERATOR` tickers as a discovery surface? Out of scope for v1
+    but the schema should not preclude it.
 
 ## Social media content — convert reports into posts
 
