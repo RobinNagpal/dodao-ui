@@ -17,6 +17,7 @@ interface GenerationRequestPayload {
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
   regenerateFutureRisk: boolean;
+  regenerateManagementTeam: boolean;
   regenerateFinalSummary: boolean;
 }
 
@@ -34,6 +35,7 @@ const ANALYSIS_CATEGORIES: readonly ReportType[] = [
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
   ReportType.FUTURE_RISK,
+  ReportType.MANAGEMENT_TEAM,
 ];
 
 const ALL_REPORT_TYPES: readonly ReportType[] = [...ANALYSIS_CATEGORIES, ReportType.FINAL_SUMMARY];
@@ -52,6 +54,7 @@ function buildPayload(ticker: TickerIdentifier, categories: ReportType[]): Gener
     regenerateFutureGrowth: set.has(ReportType.FUTURE_GROWTH),
     regenerateFairValue: set.has(ReportType.FAIR_VALUE),
     regenerateFutureRisk: set.has(ReportType.FUTURE_RISK),
+    regenerateManagementTeam: set.has(ReportType.MANAGEMENT_TEAM),
     regenerateFinalSummary: set.has(ReportType.FINAL_SUMMARY),
   };
 }
@@ -63,7 +66,7 @@ function buildPayload(ticker: TickerIdentifier, categories: ReportType[]): Gener
  *   1. `--all` (or `--categories=all`)                 → every report type (incl. final-summary)
  *   2. `--analysis` (or `--categories=analysis`)       → 7 analysis categories, skip final-summary
  *   3. `--categories=<csv>`                            → explicit comma-separated list
- *   4. (no flag)                                       → defaults to all 8 report types
+ *   4. (no flag)                                       → defaults to all 9 report types
  *
  * Each token in a CSV must match a ReportType enum value (e.g. `financial-analysis`).
  */

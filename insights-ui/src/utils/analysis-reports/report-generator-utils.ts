@@ -19,6 +19,7 @@ export const createBackgroundGenerationRequest = async (
     regenerateFutureGrowth: true,
     regenerateFairValue: true,
     regenerateFutureRisk: true,
+    regenerateManagementTeam: true,
     regenerateFinalSummary: true,
   };
 
@@ -43,6 +44,7 @@ export const createSingleAnalysisBackgroundRequest = async (
     regenerateFutureGrowth: false,
     regenerateFairValue: false,
     regenerateFutureRisk: false,
+    regenerateManagementTeam: false,
     regenerateFinalSummary: false,
   };
 
@@ -68,6 +70,9 @@ export const createSingleAnalysisBackgroundRequest = async (
       break;
     case ReportType.FUTURE_RISK:
       payload.regenerateFutureRisk = true;
+      break;
+    case ReportType.MANAGEMENT_TEAM:
+      payload.regenerateManagementTeam = true;
       break;
     case ReportType.FINAL_SUMMARY:
       payload.regenerateFinalSummary = true;

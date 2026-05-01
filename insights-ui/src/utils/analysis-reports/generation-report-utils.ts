@@ -40,6 +40,7 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
   [ReportType.FAIR_VALUE]: [ReportType.BUSINESS_AND_MOAT, ReportType.FINANCIAL_ANALYSIS, ReportType.PAST_PERFORMANCE, ReportType.FUTURE_GROWTH],
   [ReportType.FUTURE_RISK]: [],
+  [ReportType.MANAGEMENT_TEAM]: [],
   [ReportType.FINAL_SUMMARY]: [
     ReportType.FINANCIAL_ANALYSIS,
     ReportType.COMPETITION,
@@ -62,6 +63,7 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.FINANCIAL_ANALYSIS,
   ReportType.PAST_PERFORMANCE,
   ReportType.FUTURE_RISK,
+  ReportType.MANAGEMENT_TEAM,
 
   // Dependent reports (with dependencies)
   ReportType.FUTURE_GROWTH,
@@ -249,6 +251,25 @@ async function generateFutureRiskAnalysis(spaceId: string, tickerRecord: TickerV
   });
 }
 
+async function generateManagementTeamAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
+  // Prepare base input JSON
+  const inputJson = prepareBaseTickerInputJson(tickerRecord);
+
+  // Call the LLM
+  await getLLMResponseForPromptViaInvocationViaLambda({
+    symbol: tickerRecord.symbol,
+    exchange: tickerRecord.exchange,
+    generationRequestId,
+    params: {
+      spaceId,
+      inputJson,
+      promptKey: 'US/public-equities-v1/management-team',
+      requestFrom: 'ui',
+    },
+    reportType: ReportType.MANAGEMENT_TEAM,
+  });
+}
+
 async function generateFinalSummary(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Get ticker from DB with all related analysis data
   const tickerWithAnalysis = await fetchTickerRecordBySymbolAndExchangeWithAnalysisData(tickerRecord.symbol, tickerRecord.exchange);
@@ -398,6 +419,9 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         break;
       case ReportType.FUTURE_RISK:
         await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
+        break;
+      case ReportType.MANAGEMENT_TEAM:
+        await generateManagementTeamAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
       case ReportType.FINAL_SUMMARY:
         await generateFinalSummary(spaceId, tickerRecord, generationRequestId);

@@ -144,6 +144,7 @@ export enum ReportType {
   FUTURE_GROWTH = 'future-growth',
   FAIR_VALUE = 'fair-value',
   FUTURE_RISK = 'future-risk',
+  MANAGEMENT_TEAM = 'management-team',
   FINAL_SUMMARY = 'final-summary',
 }
 
@@ -156,8 +157,28 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth' },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value' },
   { key: ReportType.FUTURE_RISK, label: 'Future Risk' },
+  { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team' },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary' },
 ];
+
+// Verdict for the Management Team Experience and Alignment report.
+// String values mirror the Prisma `ManagementTeamAlignmentVerdict` enum so
+// they can be passed to the DB without translation.
+export enum ManagementTeamAlignmentVerdict {
+  OWNER_OPERATOR = 'OwnerOperator',
+  STRONGLY_ALIGNED = 'StronglyAligned',
+  ALIGNED = 'Aligned',
+  WEAKLY_ALIGNED = 'WeaklyAligned',
+  MISALIGNED = 'Misaligned',
+}
+
+export const MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS: Record<ManagementTeamAlignmentVerdict, string> = {
+  [ManagementTeamAlignmentVerdict.OWNER_OPERATOR]: 'Owner-Operator',
+  [ManagementTeamAlignmentVerdict.STRONGLY_ALIGNED]: 'Strongly Aligned',
+  [ManagementTeamAlignmentVerdict.ALIGNED]: 'Aligned',
+  [ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED]: 'Weakly Aligned',
+  [ManagementTeamAlignmentVerdict.MISALIGNED]: 'Misaligned',
+};
 
 // Types for ticker analysis categories
 export enum TickerAnalysisCategory {

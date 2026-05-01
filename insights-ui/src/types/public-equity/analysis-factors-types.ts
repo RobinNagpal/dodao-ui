@@ -1,4 +1,4 @@
-import { InvestorKey, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import { InvestorKey, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerV1GenerationRequest } from '@prisma/client';
 import { TopCompaniesToConsider } from '../prismaTypes';
 
@@ -53,6 +53,12 @@ export interface LLMFactorAnalysisResponse {
 export interface LLMFutureRiskResponse {
   summary: string;
   detailedAnalysis: string;
+}
+
+export interface LLMManagementTeamResponse {
+  summary: string;
+  detailedAnalysis: string;
+  alignmentVerdict: ManagementTeamAlignmentVerdict;
 }
 
 export interface LLMInvestorAnalysisResponse {
