@@ -41,11 +41,24 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
+async function GET(req: NextRequest): Promise<NextResponse<Buffer | string>> {
   const host = req.headers.get('host') as string;
 
   try {
     const urls = await generateManagementTeamUrls();
+
+    // streamToPromise() rejects on an empty SitemapStream, so emit a valid
+    // empty urlset directly until the first management-team report exists.
+    if (urls.length === 0) {
+      const empty = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>';
+      return new NextResponse(empty, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/xml',
+        },
+      });
+    }
+
     const smStream = new SitemapStream({ hostname: 'https://' + host });
 
     for (const url of urls) {
