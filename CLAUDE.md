@@ -251,6 +251,7 @@ Use **`docs/insights-ui/`** for topical reference docs about Insights-UI subsyst
 * `etf-analysis/` — ETF analysis pipeline + ETF Scenarios system (`generate-etf-reports.md`, `etf-scenarios.md`)
 * `stock-analysis/` — `yarn stocks:add` / `yarn stocks:trigger` runbooks
 * `etf-prompts/` — Source-of-truth prompt text for each ETF analysis category
+* `stock-prompts/` — Source-of-truth prompt text for stock analysis report types (currently `management-team`)
 * `etf-prompt-improvement/` — Iterative prompt-tuning review notes
 * `tariffs/` — Tariffs subsystem reference (`tariffs-functionality.md`, `tariff-usecases.md`)
 * `tasks/` — Active KoalaGains task lists (open + closed): ETFs, stocks, tariffs, scenarios, prompt tuning

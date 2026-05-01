@@ -20,6 +20,7 @@ export const reportTypes: ReportTypeInfo[] = [
   { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance', reportType: ReportType.PAST_PERFORMANCE },
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', reportType: ReportType.FUTURE_GROWTH },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value', reportType: ReportType.FAIR_VALUE },
+  { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team', reportType: ReportType.MANAGEMENT_TEAM },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary/Meta/About', reportType: ReportType.FINAL_SUMMARY },
 ];
 
