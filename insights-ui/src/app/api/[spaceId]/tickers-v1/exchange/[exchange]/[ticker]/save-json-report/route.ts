@@ -1,5 +1,5 @@
 import { ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { LLMFactorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
+import { LLMFactorAnalysisResponse, LLMManagementTeamResponse } from '@/types/public-equity/analysis-factors-types';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
   saveCompetitionAnalysisResponse,
@@ -7,6 +7,7 @@ import {
   saveFinalSummaryResponse,
   saveFinancialAnalysisFactorAnalysisResponse,
   saveFutureGrowthFactorAnalysisResponse,
+  saveManagementTeamResponse,
   savePastPerformanceFactorAnalysisResponse,
 } from '@/utils/analysis-reports/save-report-utils';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
@@ -28,6 +29,7 @@ export type LLMResponse =
   | LLMFactorAnalysisResponse // For BUSINESS_AND_MOAT, PAST_PERFORMANCE, FUTURE_GROWTH, FINANCIAL_ANALYSIS, FAIR_VALUE
   | CompetitionAnalysisResponse // For COMPETITION
   | FutureRiskResponse // For FUTURE_RISK
+  | LLMManagementTeamResponse // For MANAGEMENT_TEAM
   | FinalSummaryResponse; // For FINAL_SUMMARY
 
 export interface SaveJsonReportRequest {
@@ -94,6 +96,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     case ReportType.FUTURE_RISK:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'future-risk', 'future-risk-output.schema.yaml');
       break;
+    case ReportType.MANAGEMENT_TEAM:
+      schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'management-team', 'management-team-output.schema.yaml');
+      break;
     case ReportType.FINAL_SUMMARY:
       schemaPath = path.join(process.cwd(), 'schemas', 'analysis-factors', 'final-summary', 'final-summary-analysis-output.schema.yaml');
       break;
@@ -158,6 +163,9 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       break;
     case ReportType.FUTURE_RISK:
       await saveFutureRiskResponse(ticker, exchange, llmResponse as FutureRiskResponse);
+      break;
+    case ReportType.MANAGEMENT_TEAM:
+      await saveManagementTeamResponse(ticker, exchange, llmResponse as LLMManagementTeamResponse);
       break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse as LLMFactorAnalysisResponse, TickerAnalysisCategory.FairValue);

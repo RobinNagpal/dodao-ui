@@ -49,6 +49,7 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
     ReportType.FUTURE_GROWTH,
     ReportType.FAIR_VALUE,
     ReportType.FUTURE_RISK,
+    ReportType.MANAGEMENT_TEAM,
   ],
 };
 
