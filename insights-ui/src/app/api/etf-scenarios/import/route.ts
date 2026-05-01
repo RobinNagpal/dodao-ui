@@ -101,6 +101,9 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
               etfId: knownEtf?.id ?? null,
               role: link.role,
               sortOrder: link.sortOrder,
+              roleExplanation: link.roleExplanation,
+              expectedPriceChange: link.expectedPriceChange,
+              expectedPriceChangeExplanation: link.expectedPriceChangeExplanation,
               spaceId: KoalaGainsSpaceId,
             };
           }),
