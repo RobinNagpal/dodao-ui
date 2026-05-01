@@ -482,6 +482,125 @@ glance. This also feeds the **founder / owner-operator quality** dimension of th
     tickers (parent + sub); decide whether to model `Person` as its own table
     with stock links, or denormalize per ticker.
 
+## Management Team Report — new dedicated analysis category for stocks
+
+Goal: ship a full **Management Team Report** as a new top-level analysis category for
+every stock — a sibling to Business & Moat, Financial Statement Analysis, Past
+Performance, Future Growth, Fair Value, Future Risk, and Vs Competition (see
+`TickerV1CategoryAnalysisResult` + `TickerV1GenerationRequest` in
+`insights-ui/prisma/schema.prisma`). Where the **Founder & management team —
+LinkedIn-sourced info** task above handles the *data layer* (Leadership block: who
+runs the company, photos, tenure, LinkedIn URLs), this task handles the *analytical
+layer* — Claude's structured opinion on **how good** the team actually is, scored
+and explained against repeatable factors so the verdict is comparable across
+tickers.
+
+- [ ] **Data model** (mirror the existing per-category pattern):
+  - Add `MANAGEMENT_TEAM` to the `TickerAnalysisCategory` enum so the report flows
+    through the existing `TickerV1CategoryAnalysisResult` /
+    `TickerV1AnalysisCategoryFactorResult` tables — no new top-level table needed
+    if we go this route. (The alternative — a dedicated `TickerV1ManagementTeam`
+    model like `TickerV1FutureRisk` — should be considered only if the output shape
+    diverges meaningfully from the standard `summary` + `overallAnalysisDetails` +
+    factor-results pattern.)
+  - Add `regenerateManagementTeam` to `TickerV1GenerationRequest` so the section
+    plugs into the existing batch regen pipeline.
+  - Add `managementTeamScore` to `TickerV1CachedScore` (Int, alongside
+    `businessAndMoatScore`, `fairValueScore`, etc.) so the management-team verdict
+    contributes to the `finalScore` rollup.
+- [ ] **Analysis factors** (seed `AnalysisCategoryFactor` rows per industry /
+  sub-industry, same shape as the existing categories):
+  - **Track record** — has this team executed against prior guidance / strategic
+    plans? Compare prior-period management commentary with realized results.
+  - **Capital allocation** — historical pattern of buybacks, dividends, M&A,
+    organic reinvestment. Quality of M&A integration, write-down history,
+    incremental ROIC.
+  - **Insider ownership + alignment** — % of shares held by insiders, recent
+    insider buys vs sells, comp structure (cash-heavy vs equity-heavy, LTI tied to
+    real performance metrics vs. fluffy ESG targets).
+  - **Tenure + stability** — average exec tenure, CEO/CFO churn rate, recent
+    departures, time since last leadership change.
+  - **Founder presence** — is the founder still in the seat / on the board /
+    significantly aligned by ownership? (Plumbs into the 10-bagger founder/
+    owner-operator dimension.)
+  - **Governance** — board independence, separation of CEO/Chair, related-party
+    transactions, audit/compensation committee composition, recent governance red
+    flags (restatements, SEC actions, lawsuits naming the team).
+  - **Succession risk** — single-point-of-failure dependency on one or two
+    individuals; documented succession plan (yes/no).
+  - **Communication quality** — earnings-call transparency vs spin, willingness to
+    address bad news, consistency of long-term messaging across cycles.
+- [ ] **Prompt + inputs** (reuse `getLLMResponseForPromptViaInvocation`):
+  - Register a new `promptKey: 'US/public-equities-v1/management-team'` with the
+    standard system prompt skeleton used by the other analysis categories.
+  - `inputJson` should carry: ticker symbol/name/industry, the **Leadership block**
+    data (`keyPeople[]` from the LinkedIn task above), recent **10-K / proxy /
+    DEF 14A** excerpts (compensation, ownership, related-party sections),
+    recent **insider transactions** (Form 4 summary), capital-allocation history
+    (buyback $, dividend $, M&A $, capex), and any prior management-team
+    commentary stored on the ticker.
+  - Output contract: `summary` (markdown) + `overallAnalysisDetails` (markdown)
+    + per-factor `{ result: PASS|FAIL|NEUTRAL, oneLineExplanation,
+    detailedExplanation }` rows that drop straight into
+    `TickerV1AnalysisCategoryFactorResult` — same shape as Business & Moat.
+  - Cite sources (10-K Item, proxy section, Form 4 filing date) in the detailed
+    explanation so claims are auditable.
+- [ ] **API**:
+  - Add a `GET` route under
+    `/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/management-team` that
+    returns the cached `TickerV1CategoryAnalysisResult` + factor rows for the
+    `MANAGEMENT_TEAM` category, and a `POST` regenerate route that flips
+    `regenerateManagementTeam` on the next generation request (or invokes
+    synchronously, matching `future-risk/route.ts`).
+  - Wire the new section into the batch regeneration handler that consumes
+    `TickerV1GenerationRequest` so "regenerate all" picks it up automatically.
+- [ ] **UI**:
+  - On the main stock page (`app/stocks/[exchange]/[ticker]/page.tsx`) add a
+    **Management Team** summary block: score badge, one-paragraph summary, top
+    2–3 factor verdicts, and a "View full management-team analysis" CTA — same
+    shape as the other category summaries.
+  - New per-section detail page
+    `app/stocks/[exchange]/[ticker]/management-team/page.tsx` that renders the
+    full markdown + factor table + per-factor rationale, mirroring the
+    Business & Moat detail page.
+  - Surface the **Leadership block** (founders + key execs from the LinkedIn
+    task) at the top of the detail page so readers see *who* before reading
+    Claude's verdict on *how good*.
+  - Update sitemaps / metadata for the new detail route; unique title / meta
+    description per ticker (avoid the "Crawled — currently not indexed" trap
+    flagged in the SEO Fixes section below).
+- [ ] **Integration with adjacent features**:
+  - **Business & Moat** prompt should now *consume* the management-team summary
+    as input (rather than re-deriving team quality inline), so the moat narrative
+    stops repeating team claims and the two reports stay consistent.
+  - **10-bagger lens** "founder / owner-operator quality" dimension should pull
+    its score from `managementTeamScore` rather than re-evaluating from scratch.
+  - **Custom Reports** — make sure the management-team factor rows are part of
+    the `inputJson` exposed to the generic custom-report prompt so user
+    questions about leadership get grounded in our own analysis.
+- [ ] **Off-hours refresh**:
+  - Add the management-team section to the off-hours regeneration cron (see
+    "Off-hours automated report refresh" above) so it stays fresh on the same
+    cadence as other categories.
+  - Bump priority on tickers where leadership changed recently (CEO/CFO
+    departure, founder exit) — these reports should regenerate sooner than the
+    default staleness threshold.
+- [ ] **Open questions**:
+  - **Industry-specific factors** — should the factor list vary by industry
+    (e.g. for REITs, capital allocation is the dominant signal; for biotech,
+    scientific founder presence matters more)? Same `AnalysisCategoryFactor`
+    table supports per-industry rows already, so this is a content question,
+    not schema.
+  - **Coverage threshold** — if the Leadership block has fewer than N
+    verified rows (e.g. CEO unknown), should we suppress the
+    Management Team Report entirely instead of writing a low-confidence one?
+  - **Score weighting** — how heavily should `managementTeamScore` weight into
+    the rolled-up `finalScore`? Pick a default and document it; revisit once
+    we have data on whether the score correlates with subsequent returns.
+  - **Backfill strategy** — generate for the full universe in one off-hours
+    sweep, or gate on tickers that have a complete Leadership block first?
+    Probably the latter to avoid garbage-in reports.
+
 ## Social media content — convert reports into posts
 
 Goal: turn the work we already produce (stock reports, **stock scenarios**, the
