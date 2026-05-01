@@ -12,6 +12,13 @@ export interface ParsedScenarioLink {
   exchange: string | null;
   role: 'WINNER' | 'LOSER' | 'MOST_EXPOSED';
   sortOrder: number;
+  // Per-link enrichment, populated only when the markdown uses bullet form
+  // (`- **EXCHANGE:SYMBOL** (+12%, 24–36 months) — explanation`). Inline /
+  // bare-symbol forms leave these null. Mirrors the stock-scenario parser
+  // shape, minus pricedInBucket which the ETF link schema does not store.
+  expectedPriceChange: number | null;
+  expectedPriceChangeExplanation: string | null;
+  roleExplanation: string | null;
 }
 
 export interface ParsedScenario {
@@ -39,6 +46,14 @@ const TICKER_PATTERN = /\b([A-Z]{2,5})\b/g;
 // ticker. See QUALIFIED_TICKER_PATTERN in stock-scenario-markdown-parser.ts.
 const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 const STOPWORDS = new Set(['AI', 'US', 'EV', 'DOJ', 'OPEC', 'FERC', 'PPA', 'PMI', 'TTM', 'PPE', 'GDP', 'EPS', 'PE', 'ETF', 'ETFs', 'EM', 'CPI', 'MLP', 'MLPs']);
+
+// Per-ETF bullet line. Captures (in order): exchange, symbol, signed price
+// change %, free-text price-change explanation (timeframe + rationale), and
+// the role explanation that follows the em-dash (or `-` / `:`) separator.
+// All fields after the bold ticker are optional; if a section uses bullets
+// without numbers, the price-change fields stay null. Mirrors the
+// stock-scenario parser BULLET_LINE_PATTERN.
+const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,3})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
 
 interface ExtractedTicker {
   symbol: string;
@@ -70,6 +85,65 @@ function extractTickers(line: string): ExtractedTicker[] {
     out.push({ symbol: t, exchange: null });
   }
   return out;
+}
+
+type LinkRole = ParsedScenarioLink['role'];
+
+// Walk a bulleted section line by line, extracting one ParsedScenarioLink per
+// `- **EXCHANGE:SYMBOL** (...)` row. Designed for the richer authoring style
+// where each ETF gets a dedicated bullet with price target + explanation;
+// returns [] for inline / paragraph-style sections so callers can fall back.
+function extractBulletLinks(section: string, role: LinkRole): ParsedScenarioLink[] {
+  const links: ParsedScenarioLink[] = [];
+  const seen = new Set<string>();
+  for (const rawLine of section.split('\n')) {
+    const line = rawLine.trim();
+    const m = line.match(BULLET_LINE_PATTERN);
+    if (!m) continue;
+    const exchange = m[1];
+    if (!isEtfExchange(exchange)) continue;
+    const symbol = m[2];
+    const key = `${symbol}|${exchange}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    let expectedPriceChange: number | null = null;
+    if (m[3] !== undefined) {
+      const v = parseInt(m[3], 10);
+      if (!Number.isNaN(v) && v >= -100 && v <= 100) expectedPriceChange = v;
+    }
+    const expectedPriceChangeExplanation = m[4]?.trim() || null;
+    const roleExplanation = m[5]?.trim() || null;
+
+    links.push({
+      symbol,
+      exchange,
+      role,
+      sortOrder: links.length,
+      expectedPriceChange,
+      expectedPriceChangeExplanation,
+      roleExplanation,
+    });
+  }
+  return links;
+}
+
+// Bullet form (one ETF per line, supports per-link price target and rationale)
+// is the preferred format. Inline / paragraph form (`KARS — cleanest…; LIT —
+// …`) still works for short sections but cannot carry the per-link price
+// fields. Bullet form takes precedence when both appear in the same section.
+function extractRoleLinks(section: string, role: LinkRole): ParsedScenarioLink[] {
+  const bulletLinks = extractBulletLinks(section, role);
+  if (bulletLinks.length > 0) return bulletLinks;
+  return extractTickers(section).map((t, i) => ({
+    symbol: t.symbol,
+    exchange: t.exchange,
+    role,
+    sortOrder: i,
+    expectedPriceChange: null,
+    expectedPriceChangeExplanation: null,
+    roleExplanation: null,
+  }));
 }
 
 function classifyProbabilityBucket(outlook: string, extractedPercentage: number | null): EtfScenarioProbabilityBucket {
@@ -180,21 +254,26 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     // which is stripped by extractField — so search the whole scenario block, not just the body.
     const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
 
-    const winnersTickers = extractTickers(winnersMarkdown);
-    const losersTickers = extractTickers(losersMarkdown);
+    const winnerLinks = extractRoleLinks(winnersMarkdown, 'WINNER');
+    const loserLinks = extractRoleLinks(losersMarkdown, 'LOSER');
 
-    // Try to extract the "Most exposed ETFs right now" subsection from within outlook.
-    let mostExposedTickers: ExtractedTicker[] = [];
-    const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed ETFs[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-    if (mostExposedMatch) {
-      mostExposedTickers = extractTickers(mostExposedMatch[1]);
+    // Most exposed prefers a top-level `**Most exposed:**` section so authors
+    // can use the bullet form and carry per-ETF price detail. Older docs that
+    // inline `**Most exposed ETFs right now:** …` inside the Outlook paragraph
+    // still parse via the legacy fallback below.
+    const mostExposedMarkdown = extractField(body, 'Most exposed');
+    let mostExposedLinks: ParsedScenarioLink[] = [];
+    if (mostExposedMarkdown) {
+      mostExposedLinks = extractRoleLinks(mostExposedMarkdown, 'MOST_EXPOSED');
+    }
+    if (mostExposedLinks.length === 0) {
+      const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
+      if (mostExposedMatch) {
+        mostExposedLinks = extractRoleLinks(mostExposedMatch[1], 'MOST_EXPOSED');
+      }
     }
 
-    const links: ParsedScenarioLink[] = [
-      ...winnersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'WINNER' as const, sortOrder: i })),
-      ...losersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'LOSER' as const, sortOrder: i })),
-      ...mostExposedTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'MOST_EXPOSED' as const, sortOrder: i })),
-    ];
+    const links: ParsedScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];
 
     // Dedupe on (symbol, role)
     const seen = new Set<string>();
