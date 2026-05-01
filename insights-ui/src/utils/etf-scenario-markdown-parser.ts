@@ -10,7 +10,7 @@ export interface ParsedScenarioLink {
   // the API now requires exchange on links, so admins should re-author those
   // docs (or add the links via the admin UI which has an exchange dropdown).
   exchange: string | null;
-  role: 'WINNER' | 'LOSER' | 'MOST_EXPOSED';
+  role: 'WINNER' | 'LOSER';
   sortOrder: number;
   // Per-link enrichment, populated only when the markdown uses bullet form
   // (`- **EXCHANGE:SYMBOL** (+12%, 24–36 months) — explanation`). Inline /
@@ -27,9 +27,8 @@ export interface ParsedScenario {
   slug: string;
   underlyingCause: string;
   historicalAnalog: string;
-  winnersMarkdown: string;
-  losersMarkdown: string;
   outlookMarkdown: string;
+  detailedAnalysis: string | null;
   direction: EtfScenarioDirection;
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
@@ -257,23 +256,7 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     const winnerLinks = extractRoleLinks(winnersMarkdown, 'WINNER');
     const loserLinks = extractRoleLinks(losersMarkdown, 'LOSER');
 
-    // Most exposed prefers a top-level `**Most exposed:**` section so authors
-    // can use the bullet form and carry per-ETF price detail. Older docs that
-    // inline `**Most exposed ETFs right now:** …` inside the Outlook paragraph
-    // still parse via the legacy fallback below.
-    const mostExposedMarkdown = extractField(body, 'Most exposed');
-    let mostExposedLinks: ParsedScenarioLink[] = [];
-    if (mostExposedMarkdown) {
-      mostExposedLinks = extractRoleLinks(mostExposedMarkdown, 'MOST_EXPOSED');
-    }
-    if (mostExposedLinks.length === 0) {
-      const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-      if (mostExposedMatch) {
-        mostExposedLinks = extractRoleLinks(mostExposedMatch[1], 'MOST_EXPOSED');
-      }
-    }
-
-    const links: ParsedScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];
+    const links: ParsedScenarioLink[] = [...winnerLinks, ...loserLinks];
 
     // Dedupe on (symbol, role)
     const seen = new Set<string>();
@@ -295,15 +278,16 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     }
     const countries: EtfSupportedCountry[] = derivedCountries.size > 0 ? Array.from(derivedCountries) : [SupportedCountries.US];
 
+    const detailedAnalysisMarkdown = extractField(body, 'Detailed analysis') || null;
+
     scenarios.push({
       scenarioNumber,
       title,
       slug: slugifyScenarioTitle(title),
       underlyingCause,
       historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
       outlookMarkdown,
+      detailedAnalysis: detailedAnalysisMarkdown,
       direction,
       timeframe,
       probabilityBucket,

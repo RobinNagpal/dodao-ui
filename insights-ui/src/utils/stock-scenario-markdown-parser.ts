@@ -20,6 +20,7 @@ export interface ParsedStockScenario {
   underlyingCause: string;
   historicalAnalog: string;
   outlookMarkdown: string;
+  detailedAnalysis: string | null;
   direction: ScenarioDirection;
   timeframe: ScenarioTimeframe;
   probabilityBucket: ScenarioProbabilityBucket;
@@ -303,22 +304,7 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
     const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
 
-    // Most exposed prefers a top-level `**Most exposed:**` section so it can
-    // carry per-stock detail in bullet form. Older docs that inline it inside
-    // the Outlook paragraph still parse via the legacy fallback.
-    const mostExposedMarkdown = extractField(body, 'Most exposed');
-    let mostExposedLinks: ParsedStockScenarioLink[] = [];
-    if (mostExposedMarkdown) {
-      mostExposedLinks = extractRoleLinks(mostExposedMarkdown, ScenarioRole.MOST_EXPOSED);
-    }
-    if (mostExposedLinks.length === 0) {
-      const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-      if (mostExposedMatch) {
-        mostExposedLinks = extractRoleLinks(mostExposedMatch[1], ScenarioRole.MOST_EXPOSED);
-      }
-    }
-
-    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];
+    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks];
 
     const seen = new Set<string>();
     const deduped = links.filter((l) => {
@@ -331,6 +317,8 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const explicitCountries = extractCountries(body);
     const countries = explicitCountries.length ? explicitCountries : inferCountriesFromLinks(deduped);
 
+    const detailedAnalysisMarkdown = extractField(body, 'Detailed analysis') || null;
+
     scenarios.push({
       scenarioNumber,
       title,
@@ -338,6 +326,7 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
       underlyingCause,
       historicalAnalog,
       outlookMarkdown,
+      detailedAnalysis: detailedAnalysisMarkdown,
       direction,
       timeframe,
       probabilityBucket,

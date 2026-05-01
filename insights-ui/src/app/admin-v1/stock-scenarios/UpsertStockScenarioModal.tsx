@@ -50,6 +50,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
   const [countries, setCountries] = useState<SupportedCountries[]>([]);
   const [outlookAsOfDate, setOutlookAsOfDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [metaDescription, setMetaDescription] = useState<string>('');
+  const [detailedAnalysis, setDetailedAnalysis] = useState<string>('');
   const [archived, setArchived] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>('');
   const [loadingExisting, setLoadingExisting] = useState<boolean>(false);
@@ -84,6 +85,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       setCountries([]);
       setOutlookAsOfDate(new Date().toISOString().slice(0, 10));
       setMetaDescription('');
+      setDetailedAnalysis('');
       setArchived(false);
       setFormError('');
       return;
@@ -110,6 +112,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         setCountries((data.countries ?? []) as SupportedCountries[]);
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');
+        setDetailedAnalysis(data.detailedAnalysis ?? '');
         setArchived(data.archived);
       })
       .catch(() => setFormError('Failed to load scenario'))
@@ -157,6 +160,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       countries,
       outlookAsOfDate: new Date(outlookAsOfDate).toISOString(),
       metaDescription: metaDescription || null,
+      detailedAnalysis: detailedAnalysis || null,
       archived,
     };
 
@@ -297,10 +301,18 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         />
 
         <TextareaAutosize
-          label="Outlook (markdown; should include the as-of date, catalysts, and most-exposed stocks)"
+          label="Outlook (markdown; should include the as-of date and catalysts)"
           modelValue={outlookMarkdown}
           onUpdate={(v: unknown): void => {
             if (typeof v === 'string') setOutlookMarkdown(v);
+          }}
+        />
+
+        <TextareaAutosize
+          label="Detailed analysis (markdown, optional — surfaced behind a 'Detailed analysis' button on the public detail page)"
+          modelValue={detailedAnalysis}
+          onUpdate={(v: unknown): void => {
+            if (typeof v === 'string') setDetailedAnalysis(v);
           }}
         />
 

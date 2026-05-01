@@ -39,6 +39,5 @@ export type ScenarioPricedInBucket = (typeof ScenarioPricedInBucket)[keyof typeo
 export const ScenarioRole = {
   WINNER: 'WINNER',
   LOSER: 'LOSER',
-  MOST_EXPOSED: 'MOST_EXPOSED',
 } as const;
 export type ScenarioRole = (typeof ScenarioRole)[keyof typeof ScenarioRole];

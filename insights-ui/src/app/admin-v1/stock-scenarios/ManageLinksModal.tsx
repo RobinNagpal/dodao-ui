@@ -31,7 +31,7 @@ interface AddLinkFormState {
   pricedInBucket: ScenarioPricedInBucket;
 }
 
-const ROLES: ScenarioRole[] = ['WINNER', 'LOSER', 'MOST_EXPOSED'];
+const ROLES: ScenarioRole[] = ['WINNER', 'LOSER'];
 
 const PRICED_IN_BUCKETS: ScenarioPricedInBucket[] = [
   ScenarioPricedInBucket.NOT_PRICED_IN,
@@ -156,7 +156,6 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
   const allLinks: Array<{ heading: string; role: ScenarioRole; items: StockScenarioLinkDto[] }> = [
     { heading: 'Winners', role: 'WINNER', items: detail?.winners ?? [] },
     { heading: 'Losers', role: 'LOSER', items: detail?.losers ?? [] },
-    { heading: 'Most exposed', role: 'MOST_EXPOSED', items: detail?.mostExposed ?? [] },
   ];
 
   return (
@@ -219,7 +218,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <TextareaAutosize
-                  label="Role explanation (why this stock is a winner / loser / most-exposed — markdown)"
+                  label="Role explanation (why this stock is a winner / loser — markdown)"
                   modelValue={form.roleExplanation}
                   onUpdate={(v: unknown): void => {
                     if (typeof v === 'string') setForm((f) => ({ ...f, roleExplanation: v }));

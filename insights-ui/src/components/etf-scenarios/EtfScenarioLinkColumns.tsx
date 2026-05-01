@@ -116,11 +116,10 @@ function countryOfExchange(exchange: string | null): EtfSupportedCountry | null 
 interface EtfScenarioLinkColumnsProps {
   winners: EtfScenarioLinkDto[];
   losers: EtfScenarioLinkDto[];
-  mostExposed: EtfScenarioLinkDto[];
   scenarioCountries: EtfSupportedCountry[];
 }
 
-export default function EtfScenarioLinkColumns({ winners, losers, mostExposed, scenarioCountries }: EtfScenarioLinkColumnsProps): JSX.Element {
+export default function EtfScenarioLinkColumns({ winners, losers, scenarioCountries }: EtfScenarioLinkColumnsProps): JSX.Element {
   const [countryFilter, setCountryFilter] = useState<EtfSupportedCountry | 'ALL'>('ALL');
 
   const scenarioCountrySet = useMemo(() => new Set(scenarioCountries), [scenarioCountries]);
@@ -132,7 +131,6 @@ export default function EtfScenarioLinkColumns({ winners, losers, mostExposed, s
 
   const filteredWinners = filterByCountry(winners);
   const filteredLosers = filterByCountry(losers);
-  const filteredMostExposed = filterByCountry(mostExposed);
 
   return (
     <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
@@ -156,7 +154,7 @@ export default function EtfScenarioLinkColumns({ winners, losers, mostExposed, s
         </label>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <LinkList
           title="Winners"
           links={filteredWinners}
@@ -170,13 +168,6 @@ export default function EtfScenarioLinkColumns({ winners, losers, mostExposed, s
           filteredCount={filteredLosers.length}
           countryFilter={countryFilter}
           emptyLabel={countryFilter === 'ALL' ? 'No ETFs tagged as losers.' : `No losers listed on ${countryFilter} exchanges.`}
-        />
-        <LinkList
-          title="Most exposed right now"
-          links={filteredMostExposed}
-          filteredCount={filteredMostExposed.length}
-          countryFilter={countryFilter}
-          emptyLabel={countryFilter === 'ALL' ? 'No ETFs tagged as currently most exposed.' : `No most-exposed ETFs on ${countryFilter} exchanges.`}
         />
       </div>
     </section>

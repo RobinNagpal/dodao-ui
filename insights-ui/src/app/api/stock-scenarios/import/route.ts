@@ -118,6 +118,7 @@ async function postHandler(request: NextRequest, _userContext: DoDaoJwtTokenPayl
       underlyingCause: scenario.underlyingCause,
       historicalAnalog: scenario.historicalAnalog,
       outlookMarkdown: scenario.outlookMarkdown,
+      detailedAnalysis: scenario.detailedAnalysis ?? null,
       direction: scenario.direction,
       timeframe: scenario.timeframe,
       probabilityBucket: scenario.probabilityBucket,
