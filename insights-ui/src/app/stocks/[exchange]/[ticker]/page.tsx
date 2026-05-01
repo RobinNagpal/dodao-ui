@@ -627,11 +627,11 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
               </div>
             );
           })}
-          {managementTeamReport && (
-            <div key="management-team-summary" className="bg-gray-900 p-4 rounded-md shadow-sm">
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
+          <div key="management-team-summary" className="bg-gray-900 p-4 rounded-md shadow-sm">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
+                {managementTeamReport && (
                   <span
                     className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
                       managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
@@ -640,8 +640,10 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                     {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
                       managementTeamReport.alignmentVerdict}
                   </span>
-                  {managementTeamReport.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
-                </div>
+                )}
+                {managementTeamReport?.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
+              </div>
+              {managementTeamReport && (
                 <Link
                   href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
                   className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
@@ -649,13 +651,13 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
                 >
                   View Detailed Analysis →
                 </Link>
-              </div>
-              <div
-                className="text-gray-300 markdown markdown-body"
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
-              />
+              )}
             </div>
-          )}
+            <div
+              className="text-gray-300 markdown markdown-body"
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport?.summary || 'No summary available.') }}
+            />
+          </div>
         </div>
       </section>
     </>
