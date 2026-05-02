@@ -47,7 +47,10 @@ section headings.
   consistently across scenarios):
   1. `## Introduction` — 2–3 paragraphs.
   2. `## Market size, timeline, and probability` — 2–3 paragraphs.
-  3. `## Value chain` — 2–3 paragraphs followed by a layer-by-layer breakdown.
+  3. `## Value chain` — 8–10 paragraphs total: a short opener that maps
+     the chain end-to-end for a domain newcomer, followed by **three
+     paragraphs per layer** (3 layers = 9 paragraphs incl. opener) — see
+     the prompt body for the per-layer paragraph contract.
 - A 4th section `## What would change the call` is **optional**. Add it if
   there are concrete falsification triggers (a price level, a policy event,
   a data print) the reader should watch.
@@ -125,21 +128,60 @@ encountering the topic.
 
 ## Value chain
 
-Open with 2–3 paragraphs describing the value chain of the affected
-industry — who creates the raw input, who transforms it, who distributes
-it, who captures the end customer. Then list **3–4 layers** of the chain
-in order, and for each layer state:
-- What the layer does, in one sentence.
-- Whether this layer is favorably or unfavorably exposed under the
-  scenario, with a one-sentence mechanical reason.
-- 2–4 **sample tickers** in `EXCHANGE:SYMBOL` form (bold) that sit at this
-  layer of the chain in this scenario's context. These can overlap with
-  the curated winners/losers, but should also surface adjacent names not
-  in the 5+5 list.
+Total length: **8–10 paragraphs**. Write for a reader who has zero prior
+knowledge of the industry — explain the mechanics from raw input to end
+customer in plain language, no jargon without a one-line gloss.
 
-After the per-layer breakdown, finish the section with one sentence
-naming the layer that **extracts the most value** in this scenario and
-why (pricing power / scarcity / regulation / barriers to entry).
+Structure:
+
+1. **One opening paragraph** mapping the chain end-to-end at a high level
+   — who creates the raw input, who transforms it, who distributes it,
+   who captures the end customer, and which 3 layers you'll cover in
+   detail. Name the 3 layers explicitly so the reader knows what's coming.
+
+2. Then for **each of the 3 layers**, write exactly **three consecutive
+   paragraphs** (so 3 layers × 3 paragraphs = 9 paragraphs of layer
+   content; with the opener that lands at 10 total — adjust to 8 by using
+   shorter paragraphs if the chain is genuinely thin):
+
+   - **Paragraph A — What this layer does.** Explain the layer's role in
+     the chain to a complete newcomer. What physical or financial
+     transformation happens here? What inputs go in, what outputs come
+     out, who is the customer of this layer (the next layer down, or the
+     end consumer)? No tickers in this paragraph — pure mechanics.
+
+   - **Paragraph B — Economics, players, scenario impact, and whether
+     it's priced in.** Cover all four:
+     1. Typical gross / operating margins for this layer with a named
+        source (broker research, company filings, industry trade
+        association).
+     2. The 3–6 most prominent players globally, with country of
+        domicile if relevant. Use `EXCHANGE:SYMBOL` in **bold** for any
+        ticker named.
+     3. The dollar (or unit) revenue / capex / volume this layer should
+        expect from the scenario specifically — not generic industry
+        size, but the slice of the scenario that flows through this
+        layer. Cite source.
+     4. Whether the upside or downside is **already priced in** (point
+        to forward multiples vs. mid-cycle, options skew, ETF flow data,
+        or recent broker target moves) or whether there is residual gap.
+
+   - **Paragraph C — How to invest in this layer via ETFs.** Name 1–3
+     ETFs that give clean exposure to this layer specifically (not the
+     whole sector — be precise about why this ETF maps to this layer).
+     Use `EXCHANGE:SYMBOL` in **bold**. State the layer-relevant weight
+     or top-holdings overlap if known. If no clean ETF exists for this
+     layer, say so plainly and name the closest single-ticker proxies
+     instead.
+
+3. After the three layer-blocks, **one closing paragraph** naming the
+   layer that **extracts the most value per dollar of investor capital**
+   under this scenario and why — pricing power, scarcity, regulation,
+   barriers to entry, time-to-cash, or risk-adjusted return profile.
+
+Across the section, tickers always use `EXCHANGE:SYMBOL` in bold.
+Numbers cited (margins, revenue, AUM, weights) must come from a named
+source with as-of date. Omit a metric silently if you cannot source it.
 
 ## What would change the call
 
