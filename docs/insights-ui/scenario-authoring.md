@@ -59,16 +59,11 @@ A scenario is not done until every section below is populated with concrete numb
 - **EXCHANGE:SYMBOL** (+N%, <timeframe + priced-in bucket>) — <1–2 sentences on why
   this name is positioned to outperform under this scenario. Include exposure %,
   pricing-power lever, or earnings sensitivity if known.>
-- ... (3–10 names)
+- ... (exactly 5 names — see "Five winners, five losers" convention below)
 
 **Losers**
 - **EXCHANGE:SYMBOL** (-N%, <timeframe + priced-in bucket>) — <as above, but downside>
-- ... (3–10 names)
-
-**Most exposed:** <Optional. Names whose P&L is most directly tied to the scenario
-  outcome regardless of direction — useful when the magnitude is more interesting
-  than the sign.>
-- **EXCHANGE:SYMBOL** (±N%, ...) — ...
+- ... (exactly 5 names)
 
 **Countries:** USA, Canada    <!-- Stock scenarios only. Comma-separated list of
   SupportedCountries. Omit for ETF scenarios. -->
@@ -78,7 +73,32 @@ A scenario is not done until every section below is populated with concrete numb
   range like `30–40%`), the timeframe (`already happened` / `in progress` /
   `future`), and what would change the call. The parser reads the percentage and
   the timeframe phrasing from this paragraph.>
+
+**Detailed analysis:** <Optional. Long-form markdown rendered on
+  `/(etf|stock)-scenarios/<slug>/detailed-analysis`. Skip the section entirely
+  if you don't have it yet — leaving the field unset is preferred to writing a
+  thin or speculative version. Use the dedicated prompt template at
+  `docs/insights-ui/scenario-prompts/detailed-analysis.md` to generate this.>
 ```
+
+### Five winners, five losers — convention, not a hard limit
+
+The schema does **not** enforce a count on link rows, and the public detail
+page renders every link the parser stores. By convention, every scenario
+should ship with **exactly five winners and five losers** — no more, no less:
+
+- A short, ranked list reads like a trade idea; a long tail reads like noise.
+- The intent is editorial relevance, not coverage. If you're reaching for a
+  sixth name, drop the weakest existing one instead.
+- Broad diversified ETFs / index ETFs (SPY, QQQ, VTI) are usually the weakest
+  link when a more targeted sector / industry ETF would qualify.
+- Same rule applies to stock scenarios — pick the cleanest 5+5.
+
+Claude Code (and any human author) MUST respect this convention when drafting
+or revising a scenario, even though no code path will reject a 7-winner list.
+The same convention is reiterated as a comment at the top of
+`insights-ui/src/scripts/import-etf-scenarios.ts` and
+`insights-ui/src/scripts/import-stock-scenarios.ts`.
 
 ### Stock vs ETF: where priced-in / expected-move lives
 
@@ -90,7 +110,7 @@ ETF scenarios still carry these at the scenario level on `EtfScenario`. Don't
 write a "Priced-in" or "Expected move" line above the Winners list for a stock
 draft — the parser ignores it and the schema has no column for it.
 
-### Per-stock bullet syntax (Winners / Losers / Most exposed)
+### Per-stock bullet syntax (Winners / Losers)
 
 The bullet line is parsed by `BULLET_LINE_PATTERN` in `insights-ui/src/utils/stock-scenario-markdown-parser.ts` (and the matching ETF parser). To carry a per-stock price target and explanation:
 
@@ -124,8 +144,9 @@ A scenario is ready to import when:
 - Every required section is populated (no TODOs, no `<...>` placeholders).
 - The underlying-cause section names specific dates and at least one headline number.
 - Every per-industry impact in the cause section has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
-- Winners and losers each have at least 3 names with `EXCHANGE:SYMBOL` qualifiers; bullet form (with `(±N%, ...)` per stock) is preferred over inline form.
+- Winners and losers each have **exactly 5** names with `EXCHANGE:SYMBOL` qualifiers; bullet form (with `(±N%, ...)` per stock) is preferred over inline form. See "Five winners, five losers" above.
 - The historical analog is a real, datable episode — not a hand-wave.
 - The outlook paragraph is dated and states both probability and timeframe in language the parser recognizes.
+- Detailed analysis is either absent (acceptable) or follows the structure in `docs/insights-ui/scenario-prompts/detailed-analysis.md` — never a thin one-paragraph stub.
 
 If any of these are missing, keep iterating in the scratch file before pasting into the admin modal.

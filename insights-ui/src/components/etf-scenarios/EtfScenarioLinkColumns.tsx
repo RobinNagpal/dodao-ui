@@ -73,8 +73,6 @@ function LinkCard({ link }: { link: EtfScenarioLinkDto }): JSX.Element {
   return <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">{body}</div>;
 }
 
-const MAX_LINKS_PER_ROLE = 5;
-
 function LinkList({
   title,
   links,
@@ -88,21 +86,20 @@ function LinkList({
   countryFilter: EtfSupportedCountry | 'ALL';
   emptyLabel: string;
 }): JSX.Element {
-  const visibleLinks = links.slice(0, MAX_LINKS_PER_ROLE);
-  const hiddenCount = filteredCount - visibleLinks.length;
-  const countryScope = countryFilter !== 'ALL' ? ` in ${countryFilter}` : '';
-  const countLabel = hiddenCount > 0 ? `top ${visibleLinks.length} of ${filteredCount}${countryScope}` : `${filteredCount}${countryScope}`;
-
   return (
     <div>
       <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">
-        {title} <span className="text-xs font-normal text-gray-500">({countLabel})</span>
+        {title}{' '}
+        <span className="text-xs font-normal text-gray-500">
+          ({filteredCount}
+          {countryFilter !== 'ALL' ? ` in ${countryFilter}` : ''})
+        </span>
       </h3>
-      {visibleLinks.length === 0 ? (
+      {links.length === 0 ? (
         <p className="text-xs text-gray-500">{emptyLabel}</p>
       ) : (
         <div className="flex flex-col gap-2">
-          {visibleLinks.map((l) => (
+          {links.map((l) => (
             <LinkCard key={`${l.symbol}-${l.exchange ?? 'noex'}-${l.role}`} link={l} />
           ))}
         </div>

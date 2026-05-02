@@ -1,3 +1,12 @@
+// Editorial convention (NOT enforced by the schema or this script):
+// every ETF scenario ships with EXACTLY 5 winners and 5 losers. The DB will
+// happily accept more, but the public detail page is curated as a ranked
+// trade idea, not a coverage list. Drop the weakest existing pick before
+// adding a sixth. Broad diversified ETFs (SPY, QQQ, VTI) are usually the
+// weakest link when a more targeted sector ETF exists. See
+// `docs/insights-ui/scenario-authoring.md` for the full convention and
+// `docs/insights-ui/scenario-prompts/detailed-analysis.md` for the prompt
+// used to author the optional `detailedAnalysis` long-form section.
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
