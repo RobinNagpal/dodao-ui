@@ -2,7 +2,11 @@ import Link from 'next/link';
 import { StockScenarioListingItem } from '@/app/api/[spaceId]/stock-scenarios/listing/route';
 import { StockScenarioDirectionBadge, StockScenarioProbabilityBadge, StockScenarioTimeframeBadge } from './StockScenarioOutlookBadge';
 
-function firstSentence(md: string, maxLen = 160): string {
+// Tolerate `null` / `undefined` so the listing page renders cleanly during the
+// summary-field rollout window — production's old API may still respond
+// without a `summary` field while the new build is being deployed.
+function firstSentence(md: string | null | undefined, maxLen = 160): string {
+  if (!md) return '';
   const cleaned = md.replace(/\*\*/g, '').replace(/\s+/g, ' ').trim();
   const period = cleaned.search(/\.\s+/);
   const base = period > 0 ? cleaned.slice(0, period + 1) : cleaned;
