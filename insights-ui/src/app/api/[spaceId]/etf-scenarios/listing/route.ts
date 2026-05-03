@@ -17,7 +17,7 @@ export interface EtfScenarioListingItem {
   probabilityBucket: EtfScenarioProbabilityBucket;
   probabilityPercentage: number | null;
   outlookAsOfDate: string;
-  underlyingCause: string;
+  summary: string;
   archived: boolean;
   countries: EtfSupportedCountry[];
 }
@@ -69,7 +69,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   if (country) where.countries = { has: country };
 
   if (search) {
-    where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { underlyingCause: { contains: search, mode: 'insensitive' } }];
+    where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { summary: { contains: search, mode: 'insensitive' } }];
   }
 
   const filtersApplied = !!directionParam || !!timeframeParam || !!bucketParam || !!search || !!country;
@@ -90,7 +90,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         probabilityBucket: true,
         probabilityPercentage: true,
         outlookAsOfDate: true,
-        underlyingCause: true,
+        summary: true,
         archived: true,
         countries: true,
       },
@@ -111,7 +111,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       probabilityBucket: s.probabilityBucket as EtfScenarioProbabilityBucket,
       probabilityPercentage: s.probabilityPercentage,
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
-      underlyingCause: s.underlyingCause,
+      summary: s.summary,
       archived: s.archived,
       countries: s.countries as EtfSupportedCountry[],
     })),

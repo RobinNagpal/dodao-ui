@@ -741,10 +741,10 @@ analog. We should **borrow its schema and UI patterns** rather than invent new o
     "re-shoring of semiconductor manufacturing", etc.).
   - **Slug** — stable URL-safe identifier, derived from title on create (same pattern as
     scenarios).
-  - **Underlying cause** (markdown) — why the trend is happening.
-  - **Historical analog** (markdown) — past equivalent shift (e.g. baby-boomer entry into
-    housing market in the 1970s, post-WWII suburbanization, early-internet adoption curve).
-    This is borrowed directly from scenarios and is high-value for trends.
+  - **Summary** (markdown, 4–5 paragraphs) — folds the underlying cause / mechanism, the
+    historical analog (e.g. baby-boomer entry into housing in the 1970s, post-WWII
+    suburbanization, early-internet adoption curve), magnitude, and the dated outlook into
+    a single narrative. Same shape as `EtfScenario.summary`.
   - **Direction** — `UPSIDE` / `DOWNSIDE` (reuse `EtfScenarioDirection`): does the trend lift
     or depress the mapped ETFs?
   - **Timeframe / lifecycle** — `FUTURE` / `IN_PROGRESS` / `PAST` (reuse
@@ -758,8 +758,9 @@ analog. We should **borrow its schema and UI patterns** rather than invent new o
     `FULLY_PRICED_IN` / `OVER_PRICED_IN` (reuse `EtfScenarioPricedInBucket`).
   - **Expected price change** (int %) + **expectedPriceChangeExplanation** (markdown) +
     **priceChangeTimeframeExplanation** (markdown) — same trio scenarios use.
-  - **Outlook** (markdown) + **`outlookAsOfDate`** — "last reviewed" date so readers know how
-    fresh the thesis is.
+  - **`outlookAsOfDate`** — "last reviewed" date so readers know how fresh the thesis is.
+    The dated outlook itself lives inside the **Summary** field above (same shape as
+    `EtfScenario`).
   - **Evidence / sources** (markdown or structured list) — news, data, research supporting
     the trend. (Scenarios embed this inside the markdown fields; we can do the same or make
     it structured.)

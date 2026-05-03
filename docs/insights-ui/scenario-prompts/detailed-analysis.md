@@ -9,8 +9,7 @@ analysis" button on the scenario detail page.
 ## When to use this
 
 - The base scenario row already exists in the DB (the parser-driven sections
-  — underlying cause, historical analog, outlook, winners, losers — are
-  already populated).
+  — summary, winners, losers — are already populated).
 - You want to add a longer-form, narrative companion that goes beyond
   ranking trade ideas: market sizing, time horizon, value-chain map,
   sample tickers per layer.
@@ -32,9 +31,8 @@ section headings.
 - `{{probability}}` → e.g. `MEDIUM (≈30%)`
 - `{{outlook_as_of}}` → e.g. `2026-04-21`
 - `{{countries}}` → for stock scenarios only, e.g. `USA, Canada`
-- `{{underlying_cause_md}}` → paste the existing `underlyingCause` body
-- `{{historical_analog_md}}` → paste the existing `historicalAnalog` body
-- `{{outlook_md}}` → paste the existing `outlookMarkdown` body
+- `{{summary_md}}` → paste the existing `summary` body (the 4–5 paragraphs covering
+  cause, historical analog, and the dated outlook)
 - `{{winners_block}}` → bullet list of the 5 winners with their
   `EXCHANGE:SYMBOL`, expected price change, and 1-line role explanation
 - `{{losers_block}}` → same shape, 5 losers
@@ -81,9 +79,8 @@ section headings.
 - Tickers use `EXCHANGE:SYMBOL` in **bold**, matching the parser convention
   used elsewhere in this codebase (e.g. `**NYSE:CVX**`, `**TSX:CNQ**`,
   `**NYSEARCA:XLE**`).
-- Do not repeat content already in `underlyingCause` / `historicalAnalog` /
-  `outlookMarkdown` verbatim. Reference them; this section adds depth, not
-  redundancy.
+- Do not repeat content already in the `summary` field verbatim. Reference it;
+  this section adds depth, not redundancy.
 
 ## The prompt
 
@@ -95,23 +92,17 @@ Direction: {{direction}}. Timeframe: {{timeframe}}. Probability: {{probability}}
 Outlook reviewed: {{outlook_as_of}}. Countries in scope: {{countries}}.
 
 The reader has already read the short summary on the scenario detail page,
-which contains the underlying cause, historical analog, dated outlook
-paragraph, and the curated lists of 5 winners / 5 losers. Your job is to
-add a longer-form companion piece that goes beyond a ranked trade idea —
-sizing the opportunity, mapping the value chain, naming sample tickers at
-each layer.
+which folds the underlying cause, the historical analog, and the dated
+outlook into a single 4–5 paragraph narrative, alongside the curated
+lists of 5 winners / 5 losers. Your job is to add a longer-form companion
+piece that goes beyond a ranked trade idea — sizing the opportunity,
+mapping the value chain, naming sample tickers at each layer.
 
 Existing scenario sections you can reference but should not duplicate
 verbatim:
 
-UNDERLYING CAUSE:
-{{underlying_cause_md}}
-
-HISTORICAL ANALOG:
-{{historical_analog_md}}
-
-OUTLOOK ({{outlook_as_of}}):
-{{outlook_md}}
+SUMMARY:
+{{summary_md}}
 
 WINNERS (5):
 {{winners_block}}

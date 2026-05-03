@@ -105,7 +105,7 @@ interface StockScenarioDetailMetadataInput {
   probabilityBucket: string;
   outlookAsOfDate: string;
   metaDescription?: string | null;
-  underlyingCause: string;
+  summary: string;
   createdTime?: string;
   updatedTime?: string;
 }
@@ -116,7 +116,7 @@ export function generateStockScenarioDetailMetadata({
   probabilityBucket,
   outlookAsOfDate,
   metaDescription,
-  underlyingCause,
+  summary,
   createdTime,
   updatedTime,
 }: StockScenarioDetailMetadataInput): Metadata {
@@ -127,7 +127,7 @@ export function generateStockScenarioDetailMetadata({
   const description =
     metaDescription?.trim() ||
     truncateForMeta(
-      `${title} — stock scenario analysis: ${underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
+      `${title} — stock scenario analysis: ${summary.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
     );
 
   return {
@@ -160,13 +160,13 @@ export function generateStockScenarioDetailMetadata({
 export function generateStockScenarioDetailArticleJsonLd({
   title,
   slug,
-  underlyingCause,
+  summary,
   publishedDate,
   modifiedDate,
 }: {
   title: string;
   slug: string;
-  underlyingCause: string;
+  summary: string;
   publishedDate: string;
   modifiedDate: string;
 }) {
@@ -176,7 +176,7 @@ export function generateStockScenarioDetailArticleJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${title} — Stock Scenario Analysis`,
-    description: truncateForMeta(underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
+    description: truncateForMeta(summary.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
     image: [LOGO_URL],
     datePublished: publishedDate,
     dateModified: modifiedDate,

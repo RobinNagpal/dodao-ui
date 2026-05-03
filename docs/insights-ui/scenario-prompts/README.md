@@ -17,9 +17,9 @@ generate a specific section instead of writing it freehand.
 
 ## When NOT to use a prompt
 
-- The required parser-driven sections (`underlyingCause`, `historicalAnalog`,
-  `outlookMarkdown`, winners / losers bullets) are deliberately authored
-  freehand because they encode editorial judgment and source-grounded
-  numbers. Don't mass-generate them — see `scenario-authoring.md`.
+- The required parser-driven sections (`summary`, winners / losers bullets)
+  are deliberately authored freehand because they encode editorial judgment
+  and source-grounded numbers. Don't mass-generate them — see
+  `scenario-authoring.md`.
 - If you don't have a strong, sourced read on a section yet, leave the
   field null. Thin placeholder content is worse than nothing.

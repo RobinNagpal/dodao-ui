@@ -17,9 +17,7 @@ export interface ParsedStockScenario {
   scenarioNumber: number;
   title: string;
   slug: string;
-  underlyingCause: string;
-  historicalAnalog: string;
-  outlookMarkdown: string;
+  summary: string;
   detailedAnalysis: string | null;
   direction: ScenarioDirection;
   timeframe: ScenarioTimeframe;
@@ -290,20 +288,25 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const bodyStart = trimmed.indexOf('\n', trimmed.indexOf(headingMatch[0])) + 1;
     const body = trimmed.slice(bodyStart).trim();
 
-    const underlyingCause = extractField(body, 'Underlying cause');
-    const historicalAnalog = extractField(body, 'Historical analog');
+    // New canonical authoring uses one **Summary** field. Legacy drafts that
+    // still split into Underlying cause / Historical analog / Outlook are
+    // imported by concatenating those three sections.
     const winnersMarkdown = extractField(body, 'Winners');
     const losersMarkdown = extractField(body, 'Losers');
     const tenBaggersMarkdown = extractField(body, '10 Baggers');
-    const outlookMarkdown = extractField(body, 'Outlook');
+    let summary = extractField(body, 'Summary');
+    if (!summary) {
+      const legacyParts = [extractField(body, 'Underlying cause'), extractField(body, 'Historical analog'), extractField(body, 'Outlook')].filter(Boolean);
+      summary = legacyParts.join('\n\n');
+    }
 
-    if (!underlyingCause || !outlookMarkdown) continue;
+    if (!summary) continue;
 
-    const probabilityPercentage = extractProbabilityPercentage(outlookMarkdown);
-    const probabilityBucket = classifyProbabilityBucket(outlookMarkdown, probabilityPercentage);
-    const timeframe = classifyTimeframe(outlookMarkdown);
+    const probabilityPercentage = extractProbabilityPercentage(summary);
+    const probabilityBucket = classifyProbabilityBucket(summary, probabilityPercentage);
+    const timeframe = classifyTimeframe(summary);
     const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
-    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
+    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(summary) ?? fallbackOutlookDate;
 
     const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
     const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
@@ -328,9 +331,7 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
       scenarioNumber,
       title,
       slug: slugifyScenarioTitle(title),
-      underlyingCause,
-      historicalAnalog,
-      outlookMarkdown,
+      summary,
       detailedAnalysis: detailedAnalysisMarkdown,
       direction,
       timeframe,

@@ -19,9 +19,7 @@ The goal is not to list "every ETF that might be affected" — it is to give a r
 | `scenarioNumber` | Int | Stable human-facing number (1..N). Unique per space. |
 | `title` | String | Human title, e.g. "Geopolitical Oil Price Spike". |
 | `slug` | String | URL slug, unique per space. Auto-derived from title if omitted. |
-| `underlyingCause` | Markdown | Why the scenario happens (the mechanism). |
-| `historicalAnalog` | Markdown | Prior episodes with dates and magnitudes. |
-| `outlookMarkdown` | Markdown | Dated outlook: catalysts to watch, positioning, what would invalidate the thesis. |
+| `summary` | Markdown | 4–5 paragraph narrative folding the underlying cause / mechanism, magnitude, affected industries, historical analog, and dated outlook into a single field. |
 | `detailedAnalysis` | Markdown (nullable) | Long-form scenario analysis — intro, sizing & timeline, value-chain breakdown. Renders on `/etf-scenarios/<slug>/detailed-analysis` behind a "Detailed analysis" button. Generate with `docs/insights-ui/scenario-prompts/detailed-analysis.md`. Leave null if not yet authored. |
 | `direction` | Enum | `UPSIDE` (boom / rally scenario) or `DOWNSIDE` (crash / stress scenario). |
 | `timeframe` | Enum | `FUTURE` (not yet triggered), `IN_PROGRESS` (currently unfolding), `PAST` (already played out). |
@@ -115,9 +113,7 @@ Upsert-by-slug via `POST /api/etf-scenarios?token=<AUTOMATION_SECRET>`. This is 
   "scenarioNumber": 14,
   "title": "Geopolitical Oil Price Spike",
   "slug": "geopolitical-oil-price-spike",
-  "underlyingCause": "...markdown...",
-  "historicalAnalog": "...markdown...",
-  "outlookMarkdown": "...markdown...",
+  "summary": "...4–5 paragraphs of markdown...",
   "detailedAnalysis": "...markdown or null...",
   "direction": "UPSIDE",
   "timeframe": "IN_PROGRESS",
@@ -186,5 +182,5 @@ Both paths revalidate the listing tag and the slug tag so cached pages update.
 
 - **5 winners, 5 losers — convention, not enforced.** Always exactly five of each. If you find yourself reaching for a sixth, drop the weakest existing one. Broad diversified ETFs (SPY, QQQ, VTI) are usually the weakest link when a more targeted ETF exists. Schema does not reject extra rows; the rule lives in `docs/insights-ui/scenario-authoring.md` and is reiterated as a comment in the import scripts.
 - **`detailedAnalysis` is optional but follows a fixed structure when present.** Use the prompt at `docs/insights-ui/scenario-prompts/detailed-analysis.md` to generate it — intro, sizing & timeline, value-chain breakdown. Skip the field rather than ship a thin one-paragraph version.
-- **Preserve markdown fields on surgical edits.** When a script is only patching new fields or links, it should re-send the existing markdown bodies byte-for-byte. Don't silently rewrite `underlyingCause` / `historicalAnalog` / `detailedAnalysis` / etc. unless the task is explicitly to revise them.
+- **Preserve markdown fields on surgical edits.** When a script is only patching new fields or links, it should re-send the existing markdown bodies byte-for-byte. Don't silently rewrite `summary` / `detailedAnalysis` / etc. unless the task is explicitly to revise them.
 - **Use absolute dates in memory, narrative dates in copy.** Internal code + API payloads use ISO dates (`2026-04-21`). User-facing markdown uses narrative timeframes ("Q3 2026", "through 2027") — this is what `priceChangeTimeframeExplanation` is for.
