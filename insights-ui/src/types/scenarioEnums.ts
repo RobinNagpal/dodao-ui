@@ -36,8 +36,13 @@ export const ScenarioPricedInBucket = {
 } as const;
 export type ScenarioPricedInBucket = (typeof ScenarioPricedInBucket)[keyof typeof ScenarioPricedInBucket];
 
+// BAGGER is stock-only — names with plausible 5–10x potential under the
+// scenario, sourced from the value-chain layers in the detailed analysis.
+// ETF scenarios never use this role (ETF holdings are pre-diversified, so a
+// per-name 10x call would be misleading).
 export const ScenarioRole = {
   WINNER: 'WINNER',
   LOSER: 'LOSER',
+  BAGGER: 'BAGGER',
 } as const;
 export type ScenarioRole = (typeof ScenarioRole)[keyof typeof ScenarioRole];

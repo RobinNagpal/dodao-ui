@@ -268,6 +268,17 @@ broker terminal).
   default) or **instead of** it (only if the small-cap is genuinely
   the highest-conviction expression).
 
+The 3 paragraphs above are the **prose** version of 10 Baggers and live
+inside `detailedAnalysis`. The scenario markdown (the file pasted into
+the admin import modal) **also** carries a structured `**10 Baggers**`
+bullet list parallel to Winners / Losers — same `EXCHANGE:SYMBOL` bullet
+syntax, up to 5 names, drawn from the candidates in Paragraph A. The
+structured list is what the public detail page renders as a third
+column; the prose section is what the long-form `detailed-analysis`
+sub-page renders. Keep the two consistent — every ticker in the
+`**10 Baggers**` bullet list should be named in the prose section above.
+See `docs/insights-ui/scenario-authoring.md` for the bullet syntax.
+
 ## What would change the call
 
 (Optional — include only if there are concrete falsification triggers.)

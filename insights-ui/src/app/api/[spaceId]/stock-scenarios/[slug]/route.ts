@@ -61,6 +61,10 @@ export interface StockScenarioDetail
   updatedAt: string;
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
+  // Stock-only third bucket: small/micro caps with plausible 5–10x upside
+  // under this scenario. Scenarios without a `**10 Baggers**` section return
+  // an empty array.
+  tenBaggers: StockScenarioLinkDto[];
 }
 
 function toLinkDto(link: StockScenarioStockLink, resolved: ResolvedTicker | undefined): StockScenarioLinkDto {
@@ -150,6 +154,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     updatedAt: updatedAt.toISOString(),
     winners: stockLinks.filter((l) => l.role === 'WINNER').map(mapLink),
     losers: stockLinks.filter((l) => l.role === 'LOSER').map(mapLink),
+    tenBaggers: stockLinks.filter((l) => l.role === 'BAGGER').map(mapLink),
   };
 }
 
