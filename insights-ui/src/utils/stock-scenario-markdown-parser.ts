@@ -41,7 +41,7 @@ const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 // the role explanation that follows the em-dash (or `-` / `:`) separator.
 // All fields after the bold ticker are optional; if a section uses bullets
 // without numbers, the price-change fields stay null. The `\d{1,4}` window
-// covers 10-bagger expressed as +900% / 1000% in the BAGGER section.
+// covers 10-bagger expressed as +900% / 1000% in the TEN_BAGGER section.
 const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,4})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
 
 function extractQualifiedTickers(text: string): Array<{ symbol: string; exchange: string }> {
@@ -106,10 +106,11 @@ function extractBulletLinks(section: string, role: ScenarioRole): ParsedStockSce
     if (seen.has(key)) continue;
     seen.add(key);
 
-    // Upper bound is wider than the ETF parser's ±100% to fit BAGGER bullets,
-    // where a 10-bagger is +900% and a stretch 20-bagger reaches +2000%.
-    // Winners/losers in practice still fall inside ±100; the wider window only
-    // helps the BAGGER role and never reshapes the existing two roles.
+    // Upper bound is wider than the ETF parser's ±100% to fit TEN_BAGGER
+    // bullets, where a 10-bagger is +900% and a stretch 20-bagger reaches
+    // +2000%. Winners/losers in practice still fall inside ±100; the wider
+    // window only helps the TEN_BAGGER role and never reshapes the existing
+    // two roles.
     let expectedPriceChange: number | null = null;
     if (m[3] !== undefined) {
       const v = parseInt(m[3], 10);
@@ -299,7 +300,7 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     // `**10 Baggers**` is the third structured list, parallel to Winners /
     // Losers — small/micro caps with plausible 5–10x potential under this
     // scenario. Optional: scenarios without a baggers section just won't have
-    // any BAGGER-role links.
+    // any TEN_BAGGER-role links.
     const tenBaggersMarkdown = extractField(body, '10 Baggers');
     const outlookMarkdown = extractField(body, 'Outlook');
 
@@ -313,9 +314,9 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
 
     const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
     const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
-    const baggerLinks = tenBaggersMarkdown ? extractRoleLinks(tenBaggersMarkdown, ScenarioRole.BAGGER) : [];
+    const tenBaggerLinks = tenBaggersMarkdown ? extractRoleLinks(tenBaggersMarkdown, ScenarioRole.TEN_BAGGER) : [];
 
-    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...baggerLinks];
+    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...tenBaggerLinks];
 
     const seen = new Set<string>();
     const deduped = links.filter((l) => {

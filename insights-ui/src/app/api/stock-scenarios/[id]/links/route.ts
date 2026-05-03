@@ -95,7 +95,7 @@ async function postHandler(
 }
 
 function isScenarioRole(value: string | null): value is ScenarioRole {
-  return value === 'WINNER' || value === 'LOSER' || value === 'BAGGER';
+  return value === 'WINNER' || value === 'LOSER' || value === 'TEN_BAGGER';
 }
 
 async function deleteHandler(
@@ -110,7 +110,7 @@ async function deleteHandler(
   const roleParam = searchParams.get('role');
 
   if (!symbolParam || !exchangeParam || !isScenarioRole(roleParam)) {
-    throw new Error('symbol, exchange, and role (WINNER|LOSER|BAGGER) query params are required');
+    throw new Error('symbol, exchange, and role (WINNER|LOSER|TEN_BAGGER) query params are required');
   }
   if (!isExchange(exchangeParam.toUpperCase())) {
     throw new Error(`exchange "${exchangeParam}" is not one of the supported exchanges`);

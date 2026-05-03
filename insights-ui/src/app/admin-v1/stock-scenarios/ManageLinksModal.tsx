@@ -31,7 +31,7 @@ interface AddLinkFormState {
   pricedInBucket: ScenarioPricedInBucket;
 }
 
-const ROLES: ScenarioRole[] = ['WINNER', 'LOSER', 'BAGGER'];
+const ROLES: ScenarioRole[] = ['WINNER', 'LOSER', 'TEN_BAGGER'];
 
 const PRICED_IN_BUCKETS: ScenarioPricedInBucket[] = [
   ScenarioPricedInBucket.NOT_PRICED_IN,
@@ -111,10 +111,10 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     let expectedPriceChangeValue: number | null = null;
     if (form.expectedPriceChange.trim() !== '') {
       const n = parseInt(form.expectedPriceChange, 10);
-      // Wider upper bound (2000) covers BAGGER bullets where a 10-bagger is
-      // +900% and a stretch 20-bagger reaches +2000%. Winners/losers in
+      // Wider upper bound (2000) covers TEN_BAGGER bullets where a 10-bagger
+      // is +900% and a stretch 20-bagger reaches +2000%. Winners/losers in
       // practice still stay inside ±100 — the wider window only matters
-      // for the BAGGER role.
+      // for the TEN_BAGGER role.
       if (isNaN(n) || n < -100 || n > 2000) {
         setFormError('Expected price change must be an integer between -100 and 2000.');
         return;
@@ -160,7 +160,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
   const allLinks: Array<{ heading: string; role: ScenarioRole; items: StockScenarioLinkDto[] }> = [
     { heading: 'Winners', role: 'WINNER', items: detail?.winners ?? [] },
     { heading: 'Losers', role: 'LOSER', items: detail?.losers ?? [] },
-    { heading: '10 Baggers', role: 'BAGGER', items: detail?.tenBaggers ?? [] },
+    { heading: '10 Baggers', role: 'TEN_BAGGER', items: detail?.tenBaggers ?? [] },
   ];
 
   return (

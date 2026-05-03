@@ -154,7 +154,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     updatedAt: updatedAt.toISOString(),
     winners: stockLinks.filter((l) => l.role === 'WINNER').map(mapLink),
     losers: stockLinks.filter((l) => l.role === 'LOSER').map(mapLink),
-    tenBaggers: stockLinks.filter((l) => l.role === 'BAGGER').map(mapLink),
+    tenBaggers: stockLinks.filter((l) => l.role === 'TEN_BAGGER').map(mapLink),
   };
 }
 
