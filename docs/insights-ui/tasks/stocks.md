@@ -1,5 +1,14 @@
 # Stock Reports — KoalaGains (Tasks)
 
+## Stock detail page — mobile layout
+
+User feedback: the stock detail page has many issues on mobile and does not look good there.
+
+- [ ] Audit the stock detail page on a real mobile viewport (Chrome DevTools + a real phone) and list the broken pieces: tables overflowing, charts cut off, fonts too small/large, spacing, sticky headers, tap targets.
+- [ ] Fix layout issues so the page looks good on mobile (small phones first, then tablet).
+- [ ] Verify charts/tables are scrollable or stack cleanly on narrow widths.
+- [ ] Re-check after every major section restructure below — moves should not regress mobile.
+
 ## Stock Details Page — layout + per-section detail pages
 
 Restructure the stock report page so heavy sub-reports live on dedicated detail pages and
