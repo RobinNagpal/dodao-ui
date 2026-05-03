@@ -1,7 +1,12 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { CompetitionAnalysis, LLMFactorAnalysisResponse, LLMInvestorAnalysisResponse } from '@/types/public-equity/analysis-factors-types';
-import { CATEGORY_MAPPINGS, InvestorTypes, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import {
+  CompetitionAnalysis,
+  LLMFactorAnalysisResponse,
+  LLMInvestorAnalysisResponse,
+  LLMManagementTeamResponse,
+} from '@/types/public-equity/analysis-factors-types';
+import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
 import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
@@ -230,21 +235,20 @@ export async function saveCompetitionAnalysisResponse(
 }
 
 /**
- * Saves future risk response
+ * Saves management team experience and alignment response
  */
-export async function saveFutureRiskResponse(
-  ticker: string,
-  exchange: string,
-  response: {
-    summary: string;
-    detailedAnalysis: string;
-  }
-): Promise<void> {
+export async function saveManagementTeamResponse(ticker: string, exchange: string, response: LLMManagementTeamResponse): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
-  // Store future risk analysis result (upsert)
-  await prisma.tickerV1FutureRisk.upsert({
+  // The LLM returns SCREAMING_SNAKE strings per the prompt schema (e.g. "OWNER_OPERATOR"),
+  // but the Prisma enum uses PascalCase (e.g. "OwnerOperator"). The TS enum's keys are the
+  // LLM-side names and its values are the DB-side names, so indexing by key translates.
+  const rawVerdict = response.alignmentVerdict as unknown as string;
+  const alignmentVerdict =
+    ManagementTeamAlignmentVerdict[rawVerdict as keyof typeof ManagementTeamAlignmentVerdict] ?? (rawVerdict as ManagementTeamAlignmentVerdict);
+
+  await prisma.tickerV1ManagementTeamReport.upsert({
     where: {
       spaceId_tickerId: {
         spaceId,
@@ -254,6 +258,7 @@ export async function saveFutureRiskResponse(
     update: {
       summary: response.summary,
       detailedAnalysis: response.detailedAnalysis,
+      alignmentVerdict,
       updatedAt: new Date(),
     },
     create: {
@@ -261,6 +266,7 @@ export async function saveFutureRiskResponse(
       tickerId: tickerRecord.id,
       summary: response.summary,
       detailedAnalysis: response.detailedAnalysis,
+      alignmentVerdict,
     },
   });
 
