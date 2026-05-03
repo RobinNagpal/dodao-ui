@@ -135,7 +135,7 @@ export default function PriceChart({ data }: PriceChartProps) {
   const metaLine = [data.currency, intervalNote].filter(Boolean).join(' • ');
 
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mb-6">
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-100">Price History</h3>

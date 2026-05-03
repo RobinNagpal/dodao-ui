@@ -205,7 +205,7 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
           </h1>
         </section>
 
-        <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8" itemProp="articleBody">
+        <section className="bg-gray-900 rounded-lg shadow-sm px-2 py-4 sm:p-6 mb-8" itemProp="articleBody">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
             <h2 className="text-xl font-bold">Alignment Verdict</h2>
             <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getVerdictBadgeClasses(verdict)}`}>
