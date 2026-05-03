@@ -42,7 +42,7 @@ section headings.
 ## Output contract
 
 - Plain markdown — no front matter, no code fences around the whole document.
-- **Three top-level sections, in this exact order, with these exact `##`
+- **Required top-level sections, in this exact order, with these exact `##`
   headings** (the render path keys off them so authors can scan them
   consistently across scenarios):
   1. `## Introduction` — 2–3 paragraphs.
@@ -51,9 +51,18 @@ section headings.
      the chain end-to-end for a domain newcomer, followed by **three
      paragraphs per layer** (3 layers = 9 paragraphs incl. opener) — see
      the prompt body for the per-layer paragraph contract.
-- A 4th section `## What would change the call` is **optional**. Add it if
-  there are concrete falsification triggers (a price level, a policy event,
-  a data print) the reader should watch.
+- **For `stock` scenarios only**, add a 4th required section
+  `## 10 Baggers` — exactly **3 paragraphs** that pick the small-cap or
+  micro-cap names from inside the value-chain layers above that have the
+  highest plausible multi-bagger potential under this scenario. See the
+  prompt body for the per-paragraph contract. **Do not include this
+  section in ETF scenarios** — ETF holdings are pre-diversified, so a
+  per-name 10x call would be misleading.
+- A final section `## What would change the call` is **optional** (for
+  both kinds). Add it if there are concrete falsification triggers (a
+  price level, a policy event, a data print) the reader should watch.
+  When present, it goes **after** `## 10 Baggers` (stock) or after
+  `## Value chain` (ETF).
 - No invented numbers. Every dollar figure, percentage, basis-point spread,
   or share count must come from the inputs above OR a reputable source you
   can name inline (FRED/BLS/BEA, central-bank statements, IEA, USGS, EIA,
@@ -183,6 +192,53 @@ Across the section, tickers always use `EXCHANGE:SYMBOL` in bold.
 Numbers cited (margins, revenue, AUM, weights) must come from a named
 source with as-of date. Omit a metric silently if you cannot source it.
 
+## 10 Baggers
+
+(Include this section ONLY if {{scenario_kind}} is `stock`. Skip
+entirely for ETF scenarios — do not emit the heading.)
+
+Exactly **3 paragraphs** picking the small-cap or micro-cap names from
+inside the value-chain layers above that have the highest plausible
+multi-bagger (5–10x+) potential under this scenario. The bar is
+deliberately high: only names where the math actually supports a 10x
+on a 3–5 year view if the scenario plays out, not "good small-cap
+exposure." Tickers in `EXCHANGE:SYMBOL` bold throughout. Soft cap on
+market cap: under ~$5B at time of writing for "small cap" candidates,
+under ~$500M for "micro cap" candidates — state each name's market cap
+inline with as-of date and source (issuer page, exchange listing, or
+broker terminal).
+
+- **Paragraph A — The candidates.** Name 3–6 small-cap or micro-cap
+  tickers from across the three value-chain layers (do not introduce
+  new names that were not part of any layer). For each, state market
+  cap (with as-of date and source), which value-chain layer it sits
+  in, and a one-line note on what specifically inside the scenario is
+  the demand-side or pricing-side catalyst for that name. If a layer
+  has no genuine sub-$5B candidate, say so plainly and skip it rather
+  than naming a $20B mid-cap to fill the slot.
+
+- **Paragraph B — The 10x math.** Walk through the unit economics that
+  would have to print for at least one of these names to actually
+  10-bag from current levels. Pick the most likely of the candidates
+  and show the chain: revenue uplift % × incremental gross margin × P/E
+  or P/S re-rating multiple = implied market cap; compare implied vs.
+  current market cap to derive the bagger multiple. Use sourced
+  numbers for current revenue, current margin, current multiple
+  (company filings, broker research). Do not invent operating leverage
+  — if the chain only supports a 3–5x, say 3–5x.
+
+- **Paragraph C — The risks specific to small-cap exposure here.**
+  Cover dilution risk (small-cap names often issue equity into a
+  thesis-driven rally), single-customer concentration (DoD,
+  single-utility, single-OEM), cap-table overhangs, illiquidity (state
+  ADV in shares or dollars if known), regulatory single-points-of-
+  failure (one permit, one drug approval, one supplier qualification),
+  and the broader "the layer wins, the small cap doesn't" risk where
+  the large incumbent capture the rents. Conclude with whether this
+  basket is **owned alongside** the large-cap layer exposure (preferred
+  default) or **instead of** it (only if the small-cap is genuinely
+  the highest-conviction expression).
+
 ## What would change the call
 
 (Optional — include only if there are concrete falsification triggers.)
@@ -202,6 +258,10 @@ Constraints:
   fence. The output is the markdown body of the `detailedAnalysis` field.
 - If you cannot source a number confidently, omit the metric silently —
   do not write "data not available" or "TBD".
+- The `## 10 Baggers` section is for `stock` scenarios only. For ETF
+  scenarios, end the body at `## Value chain` (or `## What would
+  change the call` if you include that optional section). Do not emit
+  an empty `## 10 Baggers` heading on ETF scenarios.
 ```
 
 ## Where the result goes
