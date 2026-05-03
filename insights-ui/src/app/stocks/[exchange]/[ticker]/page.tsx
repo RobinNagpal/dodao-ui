@@ -294,7 +294,7 @@ function FinancialInfoSkeleton(): JSX.Element {
 
 function QuarterlyChartSkeleton(): JSX.Element {
   return (
-    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-48 rounded bg-gray-800 animate-pulse" />
@@ -313,7 +313,7 @@ function QuarterlyChartSkeleton(): JSX.Element {
 
 function PriceChartSkeleton(): JSX.Element {
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
@@ -539,13 +539,13 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
 
   return (
     <>
-      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6" itemProp="abstract">
+      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:py-6" itemProp="abstract">
         <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
         <div className="space-y-4">
           {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
             const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
             return (
-              <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
+              <div key={categoryKey} className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
                 <div
                   className={`flex items-center gap-2 mb-2 ${
                     categoryKey === TickerAnalysisCategory.BusinessAndMoat ||
@@ -627,7 +627,7 @@ function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): 
               </div>
             );
           })}
-          <div key="management-team-summary" className="bg-gray-900 p-4 rounded-md shadow-sm">
+          <div key="management-team-summary" className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
             <div className="flex items-center justify-between gap-2 mb-2">
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
@@ -696,7 +696,7 @@ function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): J
           if (!categoryResult) return null;
 
           return (
-            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
+            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-2 py-4 sm:p-6 mb-8">
               <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
                 <h3 className="text-xl font-bold">{CATEGORY_QUESTION_MAPPINGS[categoryKey]}</h3>
                 <div
@@ -856,15 +856,11 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         {/* Analysis info - server rendered, no skeleton needed */}
         <TickerAnalysisInfo data={tickerInfo} />
 
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-6">
-            <SimilarTickers dataPromise={similarPromise} />
-          </section>
-        </div>
+        <section className="mb-6">
+          <SimilarTickers dataPromise={similarPromise} />
+        </section>
 
-        <div className="mx-auto max-w-7xl">
-          <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
-        </div>
+        <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
         <TickerDetailsInfo data={tickerInfo} />
 

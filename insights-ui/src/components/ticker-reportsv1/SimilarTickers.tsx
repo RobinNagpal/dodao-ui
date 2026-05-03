@@ -16,7 +16,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
   }
 
   return (
-    <div id="similar-tickers" className="bg-gray-900 rounded-lg shadow-sm p-6 mb-8">
+    <div id="similar-tickers" className="bg-gray-900 rounded-lg shadow-sm p-3 sm:p-6 mb-8">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Top Similar Companies</h2>
       <p className="text-gray-300 mb-4">Based on industry classification and performance score:</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -28,7 +28,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
             <Link
               key={similarTicker.id}
               href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}
-              className="block bg-gray-800 p-4 rounded-md border border-gray-700 hover:border-[#F97316] transition-colors group"
+              className="block bg-gray-800 p-3 sm:p-4 rounded-md border border-gray-700 hover:border-[#F97316] transition-colors group"
             >
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
