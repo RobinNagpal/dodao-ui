@@ -58,9 +58,9 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
   }
 
   return (
-    <section id="competition" className="mb-8">
+    <section id="competition">
       <div className="bg-gray-900 rounded-lg shadow-sm p-3 sm:p-6">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-700">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-gray-700">
           <h2 className="text-xl font-bold">Competition</h2>
           <Link
             href={`/stocks/${exchange}/${ticker}/competition`}
