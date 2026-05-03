@@ -29,7 +29,7 @@ section headings.
 - `{{scenario_slug}}` → e.g. `geopolitical-oil-price-spike`
 - `{{direction}}` → `UPSIDE` or `DOWNSIDE`
 - `{{timeframe}}` → `FUTURE` / `IN_PROGRESS` / `PAST`
-- `{{probability}}` → e.g. `MEDIUM (~30%)`
+- `{{probability}}` → e.g. `MEDIUM (≈30%)`
 - `{{outlook_as_of}}` → e.g. `2026-04-21`
 - `{{countries}}` → for stock scenarios only, e.g. `USA, Canada`
 - `{{underlying_cause_md}}` → paste the existing `underlyingCause` body
@@ -58,6 +58,16 @@ section headings.
   prompt body for the per-paragraph contract. **Do not include this
   section in ETF scenarios** — ETF holdings are pre-diversified, so a
   per-name 10x call would be misleading.
+- **`stock` scenarios must not mention ETFs anywhere in the body.** The
+  per-layer "Paragraph C" is therefore stock-investability-focused for
+  stock scenarios (single-name positioning, valuation snapshot,
+  balance-sheet, capital-return, ADV, near-term catalysts) and
+  ETF-focused only for ETF scenarios. See the prompt body for the
+  exact contract per kind.
+- **Never use `~` for "approximately"** anywhere in the body (use `≈`
+  or write out the word). The downstream renderer treats certain
+  `~ ... ~` patterns as GFM strikethrough delimiters and renders the
+  content as struck-through text.
 - A final section `## What would change the call` is **optional** (for
   both kinds). Add it if there are concrete falsification triggers (a
   price level, a policy event, a data print) the reader should watch.
@@ -172,16 +182,35 @@ Structure:
         size, but the slice of the scenario that flows through this
         layer. Cite source.
      4. Whether the upside or downside is **already priced in** (point
-        to forward multiples vs. mid-cycle, options skew, ETF flow data,
-        or recent broker target moves) or whether there is residual gap.
+        to forward multiples vs. mid-cycle, options skew, or recent
+        broker target moves; for ETF scenarios you may also cite ETF
+        flow data) or whether there is residual gap.
 
-   - **Paragraph C — How to invest in this layer via ETFs.** Name 1–3
-     ETFs that give clean exposure to this layer specifically (not the
-     whole sector — be precise about why this ETF maps to this layer).
-     Use `EXCHANGE:SYMBOL` in **bold**. State the layer-relevant weight
-     or top-holdings overlap if known. If no clean ETF exists for this
-     layer, say so plainly and name the closest single-ticker proxies
-     instead.
+   - **Paragraph C — depends on `{{scenario_kind}}`.**
+
+     - **If `{{scenario_kind}}` is `ETF`** → "How to invest in this
+       layer via ETFs." Name 1–3 ETFs that give clean exposure to this
+       layer specifically (not the whole sector — be precise about why
+       this ETF maps to this layer). Use `EXCHANGE:SYMBOL` in **bold**.
+       State the layer-relevant weight or top-holdings overlap if
+       known. If no clean ETF exists for this layer, say so plainly
+       and name the closest single-ticker proxies instead.
+
+     - **If `{{scenario_kind}}` is `stock`** → "Investability notes
+       for the layer's listed names." Do **not** mention ETFs at all
+       — not as a wrapper, not as a comparison, not as a fallback. Go
+       deeper on the individual stocks already named in Paragraph B:
+       which 1–2 names give the cleanest single-stock exposure to
+       this layer's economics (vs. names where the layer is a small
+       segment of a diversified business), an indicative valuation
+       snapshot per name (forward P/E, EV/EBITDA, or P/S vs.
+       mid-cycle, with source + as-of date), balance-sheet position
+       (net cash / net debt, source: most recent 10-K or 10-Q),
+       capital return profile (buyback authorization size, dividend
+       yield), float / ADV (in shares or dollars) for the smaller
+       names, and 1–2 named near-term catalysts per stock (next
+       earnings print, contract decision, regulatory milestone) the
+       reader should watch. Tickers in `EXCHANGE:SYMBOL` bold.
 
 3. After the three layer-blocks, **one closing paragraph** naming the
    layer that **extracts the most value per dollar of investor capital**
@@ -203,8 +232,8 @@ multi-bagger (5–10x+) potential under this scenario. The bar is
 deliberately high: only names where the math actually supports a 10x
 on a 3–5 year view if the scenario plays out, not "good small-cap
 exposure." Tickers in `EXCHANGE:SYMBOL` bold throughout. Soft cap on
-market cap: under ~$5B at time of writing for "small cap" candidates,
-under ~$500M for "micro cap" candidates — state each name's market cap
+market cap: under ≈$5B at time of writing for "small cap" candidates,
+under ≈$500M for "micro cap" candidates — state each name's market cap
 inline with as-of date and source (issuer page, exchange listing, or
 broker terminal).
 
@@ -262,6 +291,19 @@ Constraints:
   scenarios, end the body at `## Value chain` (or `## What would
   change the call` if you include that optional section). Do not emit
   an empty `## 10 Baggers` heading on ETF scenarios.
+- **For `stock` scenarios, never mention ETFs anywhere in the body** —
+  not in Paragraph C of any value-chain layer, not in the market-sizing
+  section, not in the closing paragraph, not in `## 10 Baggers`. Stock
+  scenarios are about individual listed equities only. (ETF scenarios,
+  conversely, may freely discuss ETFs; that's the whole point.)
+- **Never use `~` as an "approximately" prefix** (i.e. do **not** write
+  `~$5B`, `~10x`, `~17%`). The downstream markdown renderer treats
+  certain `~ ... ~` patterns as GitHub-Flavored-Markdown strikethrough
+  delimiters, which results in struck-through text on the rendered
+  page when two such tildes happen to flank a passage. Use `≈` instead
+  (`≈$5B`, `≈10x`, `≈17%`), or write out the word ("approximately
+  $5B", "about 17%"), or just give a tight range ("$4–6B", "16–18%").
+  This rule is mandatory — there are no exceptions.
 ```
 
 ## Where the result goes
