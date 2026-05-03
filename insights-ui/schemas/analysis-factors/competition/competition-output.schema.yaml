@@ -10,9 +10,12 @@ properties:
     description: '3–4 paragraphs with a high-level overview of how the company compares to its competition. Must not repeat information or data points already covered in the competitionAnalysisArray entries.'
   competitionAnalysisArray:
     type: array
+    minItems: 6
+    maxItems: 8
     description: 'Array of competitor comparisons — 6 to 8 competitors including public, private, and international peers.'
     items:
       type: object
+      additionalProperties: false
       properties:
         companyName:
           type: string
