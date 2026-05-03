@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated HTSUS chapter exports (produced by scripts/tariff-calculator/download-hts-chapter.ts)
+/data/hts-chapters/
