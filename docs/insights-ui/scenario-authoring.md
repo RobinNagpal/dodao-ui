@@ -63,21 +63,23 @@ A scenario is not done until every section below is populated with concrete numb
 - **EXCHANGE:SYMBOL** (+N%, <timeframe + priced-in bucket>) — <1–2 sentences on why
   this name is positioned to outperform under this scenario. Include exposure %,
   pricing-power lever, or earnings sensitivity if known.>
-- ... (exactly 5 names — see "Five winners, five losers" convention below)
+- ... (target 5 names; never exceed 7–8 — see convention section below)
 
 **Losers**
 - **EXCHANGE:SYMBOL** (-N%, <timeframe + priced-in bucket>) — <as above, but downside>
-- ... (exactly 5 names)
+- ... (target 5 names; OK to ship fewer if no clean candidates)
 
 **10 Baggers**    <!-- Stock scenarios only. Optional: omit for ETF scenarios
   and for stock scenarios where no plausible 10x candidate exists. -->
-- **EXCHANGE:SYMBOL** (+N%, <timeframe + priced-in bucket>) — <1–2 sentences on
+- **EXCHANGE:SYMBOL** (+N%, <timeframe to 10x>, not priced in) — <1–2 sentences on
   why this small/micro-cap could 5–10x under this scenario. Reference the
   value-chain layer it sits in (e.g., upstream miner, contract manufacturer)
   and the specific catalyst that would re-rate it.>
-- ... (exactly 5 names; the % can exceed +100, e.g. +500 to +900 for a 10x.
-  Use NOT_PRICED_IN as the bucket — if a name is already partially priced in
-  for a 10x, it doesn't belong here.)
+- ... (target 5 names; OK to ship fewer. The % can exceed +100, e.g. +500 to
+  +900 for a 10x. Always use NOT_PRICED_IN as the bucket — if a name is
+  already partially priced in for a 10x, it doesn't belong here. The
+  parenthetical MUST include an explicit timeframe to 10x, e.g. "36–60 months",
+  so a reader can size the holding period against the magnitude.)
 
 **Countries:** USA, Canada    <!-- Stock scenarios only. Comma-separated list of
   SupportedCountries. Omit for ETF scenarios. -->
@@ -89,27 +91,41 @@ A scenario is not done until every section below is populated with concrete numb
   `docs/insights-ui/scenario-prompts/detailed-analysis.md` to generate this.>
 ```
 
-### Five winners, five losers (and up to five 10 baggers) — convention, not a hard limit
+### Five winners, five losers, five 10 baggers — convention with a hard cap
 
 The schema does **not** enforce a count on link rows, and the public detail
-page renders every link the parser stores. By convention, every scenario
-should ship with **exactly five winners and five losers** — no more, no less.
-Stock scenarios may additionally ship with **up to five 10 baggers**:
+page renders every link the parser stores. The editorial target is **five
+winners, five losers, and (for stock scenarios) five 10 baggers** — short,
+ranked lists that read like trade ideas, not coverage tables. The rules below
+are soft on the floor and hard on the ceiling:
 
-- A short, ranked list reads like a trade idea; a long tail reads like noise.
-- The intent is editorial relevance, not coverage. If you're reaching for a
-  sixth name, drop the weakest existing one instead.
-- Broad diversified ETFs / index ETFs (SPY, QQQ, VTI) are usually the weakest
-  link when a more targeted sector / industry ETF would qualify.
-- Same rule applies to stock scenarios — pick the cleanest 5+5.
-- 10 Baggers is **stock-only and optional**: include up to 5 small/micro caps
-  with plausible 5–10x upside drawn from the value-chain layers in the
-  detailed analysis. ETF scenarios never carry this list — ETF holdings are
+- **Winners — try for 5, never exceed 7–8.** Five is the target. If a
+  scenario genuinely has more clear top names, you may stretch to 7 or 8 — but
+  **no more**. Past 8 the list stops being a ranked trade idea and becomes a
+  coverage list. Drop the weakest pick before adding another.
+- **Losers — try for 5, fewer is fine.** Aim for 5; if the scenario doesn't
+  surface 5 clean loser candidates, ship what you have rather than padding
+  with marginal names. Two strong losers beats five weak ones.
+- **10 baggers (stock-only, optional) — try for 5, fewer is fine; each bullet
+  must state the timeframe to 10x.** Include up to 5 small/micro caps with
+  plausible 5–10x upside drawn from the value-chain layers in the detailed
+  analysis. Each bullet **must include the timeframe over which the 10x
+  thesis is expected to play out** (e.g. "36–60 months" inside the per-stock
+  parenthetical) so a reader can size the holding-period requirement against
+  the magnitude. ETF scenarios never carry this list — ETF holdings are
   pre-diversified, so a per-name 10x call would be misleading. Skip the
   section entirely if no candidate clears the bar.
+- **Always save partial sets.** Don't block a draft because you couldn't find
+  exactly 5 of every category. Save what you have — a scenario with 5 winners
+  and 2 losers is acceptable; a scenario with 5 winners and 3 ten baggers is
+  acceptable; a scenario with 9 winners is not.
+- **Broad diversified ETFs / index ETFs** (SPY, QQQ, VTI) are usually the
+  weakest link in an ETF scenario when a more targeted sector / industry ETF
+  would qualify; same instinct applies to mega-cap diversified names in stock
+  scenario winner lists.
 
 Claude Code (and any human author) MUST respect this convention when drafting
-or revising a scenario, even though no code path will reject a 7-winner list.
+or revising a scenario, even though no code path will reject a 9-winner list.
 The same convention is reiterated as a comment at the top of
 `insights-ui/src/scripts/import-etf-scenarios.ts` and
 `insights-ui/src/scripts/import-stock-scenarios.ts`.
@@ -162,8 +178,8 @@ A scenario is ready to import when:
 - Every required section is populated (no TODOs, no `<...>` placeholders).
 - The summary section names specific dates and at least one headline number.
 - Every per-industry impact in the summary has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
-- Winners and losers each have **exactly 5** names with `EXCHANGE:SYMBOL` qualifiers; bullet form (with `(±N%, ...)` per stock) is preferred over inline form. See "Five winners, five losers" above.
-- For stock scenarios where 10 Baggers is included: **up to 5** small/micro-cap names, drawn from the value-chain layers of the detailed analysis, each with NOT_PRICED_IN bucket and a +500 to +2000% bullet. Skip the section entirely if no candidate clears the bar.
+- Winners aim for **5** names (hard cap **7–8**); losers aim for **5** but fewer is OK. Use bullet form (with `(±N%, ...)` per stock) — it carries the per-stock price target and explanation; inline form does not.
+- For stock scenarios where 10 Baggers is included: aim for **5** small/micro-cap names (fewer is OK), drawn from the value-chain layers of the detailed analysis, each with NOT_PRICED_IN bucket, a +500 to +2000% bullet, and an explicit **timeframe to 10x** in the parenthetical (e.g. "36–60 months"). Skip the section entirely if no candidate clears the bar.
 - The historical analog folded into the summary is a real, datable episode — not a hand-wave.
 - The outlook paragraph (also folded into the summary) is dated and states both probability and timeframe in language the parser recognizes.
 - Detailed analysis is either absent (acceptable) or follows the structure in `docs/insights-ui/scenario-prompts/detailed-analysis.md` — never a thin one-paragraph stub.

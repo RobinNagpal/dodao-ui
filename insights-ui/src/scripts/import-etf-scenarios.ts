@@ -1,9 +1,10 @@
 // Editorial convention (NOT enforced by the schema or this script):
-// every ETF scenario ships with EXACTLY 5 winners and 5 losers. The DB will
-// happily accept more, but the public detail page is curated as a ranked
-// trade idea, not a coverage list. Drop the weakest existing pick before
-// adding a sixth. Broad diversified ETFs (SPY, QQQ, VTI) are usually the
-// weakest link when a more targeted sector ETF exists. See
+// target 5 winners and 5 losers. Winners are soft-floored at 5 with a HARD
+// cap at 7–8 — never exceed 8. Losers are soft-floored at 5 but acceptable
+// to ship fewer if no clean candidates exist. ETF scenarios never carry the
+// "10 Baggers" list (ETF holdings are pre-diversified, so a per-name 10x
+// call would be misleading). Broad diversified ETFs (SPY, QQQ, VTI) are
+// usually the weakest link when a more targeted sector ETF exists. See
 // `docs/insights-ui/scenario-authoring.md` for the full convention and
 // `docs/insights-ui/scenario-prompts/detailed-analysis.md` for the prompt
 // used to author the optional `detailedAnalysis` long-form section.

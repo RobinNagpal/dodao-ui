@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import type { EtfScenarioDetail } from '@/app/api/[spaceId]/etf-scenarios/[slug]/route';
+import EtfScenarioDetailActions from '@/app/etf-scenarios/[slug]/EtfScenarioDetailActions';
 import EtfScenarioDetailView from '@/components/etf-scenarios/EtfScenarioDetailView';
 import EtfScenarioPageLayout from '@/components/etf-scenarios/EtfScenarioPageLayout';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfScenarioBySlugTag } from '@/utils/etf-scenario-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { humanizeScenarioSlug } from '@/utils/scenario-slug';
 import {
   generateEtfScenarioDetailArticleJsonLd,
   generateEtfScenarioDetailBreadcrumbJsonLd,
@@ -56,8 +57,27 @@ export default async function EtfScenarioDetailPage({ params }: { params: RouteP
   const { slug } = await params;
   const scenario = await fetchScenarioBySlug(slug);
 
+  // Render the layout chrome (breadcrumbs + 3-dot admin menu + title)
+  // unconditionally so that when the upstream fetch fails or the cache is
+  // stuck on a "not found" response, an admin can still reach the
+  // "Revalidate This Scenario's Cache" action and recover the page.
   if (!scenario) {
-    notFound();
+    const fallbackTitle = humanizeScenarioSlug(slug);
+    const breadcrumbs = [
+      { name: 'US ETFs', href: '/etfs', current: false },
+      { name: 'Scenarios', href: '/etf-scenarios', current: false },
+      { name: fallbackTitle, href: `/etf-scenarios/${slug}`, current: true },
+    ];
+    return (
+      <EtfScenarioPageLayout breadcrumbs={breadcrumbs} title={fallbackTitle} rightButton={<EtfScenarioDetailActions slug={slug} />}>
+        <div className="block-bg-color text-color rounded-md p-6">
+          <p className="mb-2 font-semibold">This scenario page is currently unavailable.</p>
+          <p className="text-sm opacity-80">
+            The most common cause is a stale cache entry. Admins can use the menu in the top right to revalidate this scenario&apos;s cache and reload the page.
+          </p>
+        </div>
+      </EtfScenarioPageLayout>
+    );
   }
 
   const breadcrumbs = [
@@ -67,7 +87,7 @@ export default async function EtfScenarioDetailPage({ params }: { params: RouteP
   ];
 
   return (
-    <EtfScenarioPageLayout breadcrumbs={breadcrumbs}>
+    <EtfScenarioPageLayout breadcrumbs={breadcrumbs} rightButton={<EtfScenarioDetailActions slug={scenario.slug} />}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
