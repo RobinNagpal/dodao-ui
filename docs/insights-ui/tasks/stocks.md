@@ -1,5 +1,14 @@
 # Stock Reports — KoalaGains (Tasks)
 
+## Stock detail page — mobile layout
+
+User feedback: the stock detail page has many issues on mobile and does not look good there.
+
+- [ ] Audit the stock detail page on a real mobile viewport (Chrome DevTools + a real phone) and list the broken pieces: tables overflowing, charts cut off, fonts too small/large, spacing, sticky headers, tap targets.
+- [ ] Fix layout issues so the page looks good on mobile (small phones first, then tablet).
+- [ ] Verify charts/tables are scrollable or stack cleanly on narrow widths.
+- [ ] Re-check after every major section restructure below — moves should not regress mobile.
+
 ## Stock Details Page — layout + per-section detail pages
 
 Restructure the stock report page so heavy sub-reports live on dedicated detail pages and
@@ -240,9 +249,9 @@ below are the remaining open work.
 
 ### Open questions (decide before Phase 2/3/4 land)
 
-- [ ] **Shared scenarios table vs parallel tables with ETFs?** Underlying cause and
-  historical analog are identical between an ETF and stock counterpart of the same
-  scenario; only winner/loser/most-exposed lists differ. Option A (parallel tables) is
+- [ ] **Shared scenarios table vs parallel tables with ETFs?** The narrative `summary`
+  is identical between an ETF and stock counterpart of the same scenario; only
+  winner/loser/most-exposed lists differ. Option A (parallel tables) is
   simpler and matches today's code. Option B (shared `Scenario` table + `ScenarioEtfLink`
   + `ScenarioStockLink`) is one source of truth for the narrative but requires migrating
   the existing `EtfScenario` data and updating every caller. Pick before any further
@@ -304,9 +313,10 @@ than invent new ones.
     demand", "younger generation prefers experiences over ownership", "shift from ICE to EV",
     "re-shoring of semiconductor manufacturing", etc.).
   - **Slug** — stable URL-safe identifier, derived from title on create.
-  - **Underlying cause** (markdown) — why the trend is happening.
-  - **Historical analog** (markdown) — past equivalent shift. Borrowed from scenarios; very
-    high-value for trends (e.g. dot-com adoption curve, boomer housing demand in the 1970s).
+  - **Summary** (markdown, 4–5 paragraphs) — folds the underlying cause / mechanism, the
+    historical analog (e.g. dot-com adoption curve, boomer housing demand in the 1970s),
+    magnitude, and the dated outlook into a single narrative. Same shape as
+    `StockScenario.summary`.
   - **Direction** — `UPSIDE` / `DOWNSIDE` (reuse the scenario enum): does the trend lift or
     depress mapped stocks?
   - **Timeframe / lifecycle** — `FUTURE` / `IN_PROGRESS` / `PAST`. Replaces the earlier
@@ -318,7 +328,8 @@ than invent new ones.
     `FULLY_PRICED_IN` / `OVER_PRICED_IN`.
   - **Expected price change** (int %) + **expectedPriceChangeExplanation** (markdown) +
     **priceChangeTimeframeExplanation** (markdown) — same trio scenarios use.
-  - **Outlook** (markdown) + **`outlookAsOfDate`** — "last reviewed" date.
+  - **`outlookAsOfDate`** — "last reviewed" date. The dated outlook itself lives inside
+    the **Summary** field above (same shape as `StockScenario`).
   - **Evidence / sources** (markdown or structured list).
   - **Archived** boolean — soft-delete, same pattern as scenarios.
   - **Author** + `createdAt` / `updatedAt`.
@@ -481,6 +492,183 @@ glance. This also feeds the **founder / owner-operator quality** dimension of th
   - **De-duplication** — same person can be on multiple boards / multiple
     tickers (parent + sub); decide whether to model `Person` as its own table
     with stock links, or denormalize per ticker.
+
+## Management Team Experience and Alignment — new optional report type
+
+Goal: add an **8th** stock report type — **Management Team Experience and Alignment** —
+alongside the existing seven (Business & Moat, Financial Statement Analysis, Past
+Performance, Future Growth, Fair Value, Future Risk, Vs Competition; see
+`TickerAnalysisCategory` + `TickerV1CategoryAnalysisResult` +
+`TickerV1GenerationRequest` in `insights-ui/prisma/schema.prisma`). Where the
+**Founder & management team — LinkedIn-sourced info** task above handles the *who*
+(Leadership block: photos, tenure, LinkedIn URLs), this report answers
+**"how experienced is this team and how aligned are they with long-term
+shareholders?"** in a focused, narrative format.
+
+This report is intentionally **optional** — no back-fill of stocks whose reports
+were generated before this category shipped. It only gets created for tickers that
+go through a "generate all reports" run *after* the category lands.
+
+### What the report covers
+
+Exactly four things, in this order:
+
+1. **Who's running the company** — names + titles of each key management team
+   member (CEO, CFO, COO/President, founder if separate, board chair if
+   distinct from CEO). Pulled from the Leadership block populated by the
+   "Founder & management team — LinkedIn-sourced info" task.
+2. **Tenure** — how long each person has been in their current role and at the
+   company overall. Flag founders, recent hires, and unusually short or long
+   tenures vs. industry norm.
+3. **Ownership + compensation alignment** — each named exec's stock ownership
+   as a % of shares outstanding (and approximate $ value), the structure of
+   their compensation (cash vs equity, performance-vested vs time-vested,
+   metrics that govern long-term incentive plans), and whether comp design
+   actually rewards long-term company growth (e.g. revenue / FCF / ROIC over
+   multi-year windows) vs. short-term proxies (single-year EPS, stock price,
+   ESG fluff).
+4. **Insider buying / selling** — net insider activity over the trailing
+   12 months (Form 4 filings), distinguishing planned 10b5-1 sales from
+   discretionary trades. Heavy buying = strong conviction signal; persistent
+   selling = a yellow flag worth surfacing.
+
+### Verdict scale (NOT 0–5)
+
+Use a categorical enum that names the overall *experience-and-alignment* posture
+of the team. Don't fall back to generic "Very Bad / Bad / Fair / Good" — pick
+labels that actually describe the construct. Recommended `AlignmentVerdict`
+enum:
+
+- `OWNER_OPERATOR` — founder(s) still in the seat, double-digit insider
+  ownership, recent buying or no selling, comp materially tied to long-term
+  metrics.
+- `STRONGLY_ALIGNED` — non-founder team but long-tenured, meaningful insider
+  ownership, LTI tied to multi-year performance metrics, no concerning
+  insider sales.
+- `ALIGNED` — typical professional management with reasonable tenure, modest
+  ownership, conventional comp structure; no red flags but nothing
+  exceptional either.
+- `WEAKLY_ALIGNED` — low insider ownership, short or churn-prone tenure,
+  comp dominated by short-term proxies, mixed insider activity.
+- `MISALIGNED` — concerning combination of insider selling, governance flags,
+  short tenures, and / or comp design that pays out regardless of long-term
+  outcomes.
+
+Render the verdict as a labeled pill on both the summary block and the detail
+page; use distinct colors per level so a reader can pattern-match across
+tickers at a glance.
+
+### Tasks
+
+- [ ] **Data model** — keep it simple, narrative-shaped (don't reach for the
+  factor pattern):
+  - Either add `MANAGEMENT_TEAM_EXPERIENCE_AND_ALIGNMENT` to
+    `TickerAnalysisCategory` and reuse `TickerV1CategoryAnalysisResult` for the
+    `summary` + `overallAnalysisDetails` markdown, **plus** a new
+    `alignmentVerdict` column on that table (or a dedicated companion table),
+    *or* add a fresh top-level model `TickerV1ManagementTeamReport` mirroring
+    `TickerV1FutureRisk`'s shape: `summary` (markdown, ~2 paragraphs),
+    `detailedAnalysis` (markdown, 5–7 paragraphs), `alignmentVerdict`
+    (enum), audit fields. Pick the model based on whether the verdict enum
+    fits the shared category result row or not.
+  - Add the new `AlignmentVerdict` enum to the Prisma schema (or
+    `src/types/`) with the five values above.
+  - Add `regenerateManagementTeamExperienceAndAlignment` to
+    `TickerV1GenerationRequest` so the "generate all reports" pipeline picks
+    this up by default for new runs.
+  - **Do NOT** add a corresponding score to `TickerV1CachedScore` — this
+    report uses a categorical verdict, not a 0–5 score, so it should not feed
+    the numeric `finalScore` rollup. Surface the verdict separately.
+- [ ] **No back-fill, opt-in by default for new generations**:
+  - Migration is purely additive — no historical data to populate.
+  - The "generate all reports" entry point flips
+    `regenerateManagementTeamExperienceAndAlignment = true` so newly-requested
+    full runs include it.
+  - Existing stock pages whose generation pre-dated this section keep
+    rendering as today; the UI hides the new section entirely when no row
+    exists (see UI tasks below — no half-empty card / no "coming soon"
+    placeholder).
+- [ ] **Prompt + inputs** (reuse `getLLMResponseForPromptViaInvocation`):
+  - Register a new `promptKey:
+    'US/public-equities-v1/management-team-experience-and-alignment'`.
+  - `inputJson` carries: ticker symbol/name/industry, the **Leadership block**
+    rows (`keyPeople[]` with name, title, tenure, founder flag), recent
+    **proxy / DEF 14A** excerpts (compensation, ownership, related-party
+    sections), trailing-12-month **Form 4** insider transactions (buyer,
+    seller, $ amount, 10b5-1 flag).
+  - Output contract:
+    - `summary`: ~2 paragraphs (target ~150–250 words) suitable for the
+      main stock page.
+    - `detailedAnalysis`: 5–7 paragraphs (target ~600–900 words) covering
+      the four areas above in order. Each numbered exec mention should
+      include their tenure inline.
+    - `alignmentVerdict`: one of the 5 enum values.
+  - Cite sources (proxy section, Form 4 filing date) inline so claims are
+    auditable.
+- [ ] **API**:
+  - `GET /api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/management-team-experience-and-alignment`
+    — returns the row + verdict, or 404 if absent (caller treats 404 as "not
+    generated yet", not an error).
+  - `POST` regenerate route that mirrors `future-risk/route.ts` —
+    synchronous v1, flips the section's regen flag and invokes the prompt
+    end-to-end.
+  - Wire the new section into the batch regeneration handler that consumes
+    `TickerV1GenerationRequest`, but **only when the "generate all" flag is
+    set** — no implicit back-fill on individual-section regens of older
+    tickers.
+- [ ] **UI — main stock page**
+  (`app/stocks/[exchange]/[ticker]/page.tsx`):
+  - When the report exists, render a **Management Team Experience and
+    Alignment** summary card: section title, `alignmentVerdict` pill,
+    ~2-paragraph `summary` markdown, and a "View full management team
+    analysis" CTA linking to the detail page.
+  - When the report does **not** exist (older tickers), render nothing — no
+    placeholder, no "coming soon", no empty card. The section is silently
+    absent.
+- [ ] **UI — new detail page**
+  (`app/stocks/[exchange]/[ticker]/management-team-experience-and-alignment/page.tsx`):
+  - Header: ticker / company name / verdict pill.
+  - Body: full 5–7 paragraph `detailedAnalysis` markdown.
+  - Sidebar / top block: the **Leadership block** (founders + key execs from
+    the LinkedIn task) so readers see *who* before reading the assessment.
+  - Breadcrumbs back to the main stock page.
+  - SSR'd, indexable, unique `<title>` + `<meta description>` per ticker
+    (avoid the "Crawled — currently not indexed" trap flagged in the SEO
+    Fixes section below).
+  - Add the route to the relevant per-section sitemap.
+- [ ] **Integration with adjacent features**:
+  - **Business & Moat** prompt input should optionally include the
+    `summary` + `alignmentVerdict` so the moat narrative grounds team-quality
+    claims in this report's verdict instead of re-deriving them inline.
+  - **10-bagger lens** "founder / owner-operator quality" dimension should
+    map to `alignmentVerdict` (e.g. `OWNER_OPERATOR` ⇒ top score, `MISALIGNED`
+    ⇒ bottom).
+  - **Custom Reports** — include the management-team report's `summary` +
+    `alignmentVerdict` in the generic custom-report prompt's `inputJson` so
+    user questions about leadership are grounded in our own analysis.
+- [ ] **Off-hours refresh**:
+  - Add this section to the off-hours regeneration cron (see "Off-hours
+    automated report refresh" above) but only for tickers that already have a
+    populated row — don't use the cron to retro-back-fill the entire
+    universe.
+  - Bump priority on tickers where a CEO/CFO/founder departure was detected
+    (Form 8-K Item 5.02) so the verdict catches the change quickly.
+- [ ] **Open questions**:
+  - **Verdict-only-without-detail tickers** — if the Leadership block /
+    proxy data is too thin to write 5–7 paragraphs, do we suppress the
+    report entirely, or render a shorter version with a "limited data"
+    flag? Lean towards suppressing — a half-baked alignment verdict is
+    worse than no verdict.
+  - **Frequency of refresh** — proxy filings update annually, Form 4s
+    arrive continuously. Pick separate refresh cadences (e.g. annual full
+    regen post-proxy, lighter monthly regen that only updates the insider-
+    activity paragraph) or one combined cadence?
+  - **Verdict colour mapping** — settle the pill colours up front so they're
+    consistent across the summary card, detail page header, and any future
+    listing/filter UI.
+  - **Cross-ticker comparability** — do we want a future "leaderboard" view
+    of `OWNER_OPERATOR` tickers as a discovery surface? Out of scope for v1
+    but the schema should not preclude it.
 
 ## Social media content — convert reports into posts
 

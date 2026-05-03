@@ -100,7 +100,7 @@ interface EtfScenarioDetailMetadataInput {
   probabilityBucket: string;
   outlookAsOfDate: string;
   metaDescription?: string | null;
-  underlyingCause: string;
+  summary: string;
   createdTime?: string;
   updatedTime?: string;
 }
@@ -111,7 +111,7 @@ export function generateEtfScenarioDetailMetadata({
   probabilityBucket,
   outlookAsOfDate,
   metaDescription,
-  underlyingCause,
+  summary,
   createdTime,
   updatedTime,
 }: EtfScenarioDetailMetadataInput): Metadata {
@@ -122,7 +122,7 @@ export function generateEtfScenarioDetailMetadata({
   const description =
     metaDescription?.trim() ||
     truncateForMeta(
-      `${title} — ETF scenario analysis: ${underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
+      `${title} — ETF scenario analysis: ${summary.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
     );
 
   return {
@@ -150,13 +150,13 @@ export function generateEtfScenarioDetailMetadata({
 export function generateEtfScenarioDetailArticleJsonLd({
   title,
   slug,
-  underlyingCause,
+  summary,
   publishedDate,
   modifiedDate,
 }: {
   title: string;
   slug: string;
-  underlyingCause: string;
+  summary: string;
   publishedDate: string;
   modifiedDate: string;
 }) {
@@ -166,7 +166,7 @@ export function generateEtfScenarioDetailArticleJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${title} — ETF Scenario Analysis`,
-    description: truncateForMeta(underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
+    description: truncateForMeta(summary.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
     image: [LOGO_URL],
     datePublished: publishedDate,
     dateModified: modifiedDate,

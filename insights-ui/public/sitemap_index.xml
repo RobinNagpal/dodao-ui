@@ -36,4 +36,10 @@
   <sitemap>
     <loc>https://koalagains.com/stocks/fair-value-sitemap.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/stocks/management-team-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://koalagains.com/stock-scenarios/sitemap.xml</loc>
+  </sitemap>
 </sitemapindex>

@@ -955,3 +955,20 @@
 .markdown-body ::-webkit-calendar-picker-indicator {
   filter: invert(50%);
 }
+
+@media (max-width: 640px) {
+  .markdown-body figure {
+    margin: 1em 0;
+  }
+  .markdown-body ul,
+  .markdown-body ol {
+    padding-left: 1.25em;
+  }
+  .markdown-body dl dd {
+    padding: 0 8px;
+  }
+  .markdown-body table th,
+  .markdown-body table td {
+    padding: 4px 6px;
+  }
+}

@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import type { StockScenarioDetail } from '@/app/api/[spaceId]/stock-scenarios/[slug]/route';
+import StockScenarioDetailActions from '@/app/stock-scenarios/[slug]/StockScenarioDetailActions';
 import StockScenarioDetailView from '@/components/stock-scenarios/StockScenarioDetailView';
 import StockScenarioPageLayout from '@/components/stock-scenarios/StockScenarioPageLayout';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { humanizeScenarioSlug } from '@/utils/scenario-slug';
 import { stockScenarioBySlugTag } from '@/utils/stock-scenario-cache-utils';
 import {
   generateStockScenarioDetailArticleJsonLd,
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     probabilityBucket: scenario.probabilityBucket,
     outlookAsOfDate: scenario.outlookAsOfDate.slice(0, 10),
     metaDescription: scenario.metaDescription,
-    underlyingCause: scenario.underlyingCause,
+    summary: scenario.summary,
     createdTime: scenario.createdAt,
     updatedTime: scenario.updatedAt,
   });
@@ -56,8 +57,27 @@ export default async function StockScenarioDetailPage({ params }: { params: Rout
   const { slug } = await params;
   const scenario = await fetchScenarioBySlug(slug);
 
+  // Render the layout chrome (breadcrumbs + 3-dot admin menu + title)
+  // unconditionally so that when the upstream fetch fails or the cache is
+  // stuck on a "not found" response, an admin can still reach the
+  // "Revalidate This Scenario's Cache" action and recover the page.
   if (!scenario) {
-    notFound();
+    const fallbackTitle = humanizeScenarioSlug(slug);
+    const breadcrumbs = [
+      { name: 'Stocks', href: '/stocks', current: false },
+      { name: 'Scenarios', href: '/stock-scenarios', current: false },
+      { name: fallbackTitle, href: `/stock-scenarios/${slug}`, current: true },
+    ];
+    return (
+      <StockScenarioPageLayout breadcrumbs={breadcrumbs} title={fallbackTitle} rightButton={<StockScenarioDetailActions slug={slug} />}>
+        <div className="block-bg-color text-color rounded-md p-6">
+          <p className="mb-2 font-semibold">This scenario page is currently unavailable.</p>
+          <p className="text-sm opacity-80">
+            The most common cause is a stale cache entry. Admins can use the menu in the top right to revalidate this scenario&apos;s cache and reload the page.
+          </p>
+        </div>
+      </StockScenarioPageLayout>
+    );
   }
 
   const breadcrumbs = [
@@ -67,11 +87,7 @@ export default async function StockScenarioDetailPage({ params }: { params: Rout
   ];
 
   return (
-    <StockScenarioPageLayout
-      title={scenario.title}
-      description={`Scenario #${scenario.scenarioNumber} — outlook last reviewed ${scenario.outlookAsOfDate.slice(0, 10)}.`}
-      breadcrumbs={breadcrumbs}
-    >
+    <StockScenarioPageLayout breadcrumbs={breadcrumbs} rightButton={<StockScenarioDetailActions slug={scenario.slug} />}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -79,7 +95,7 @@ export default async function StockScenarioDetailPage({ params }: { params: Rout
             generateStockScenarioDetailArticleJsonLd({
               title: scenario.title,
               slug: scenario.slug,
-              underlyingCause: scenario.underlyingCause,
+              summary: scenario.summary,
               publishedDate: scenario.createdAt,
               modifiedDate: scenario.updatedAt,
             })

@@ -41,7 +41,7 @@ const SCHEMA_PATHS: Partial<Record<ReportType, string>> = {
   [ReportType.FUTURE_GROWTH]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
   [ReportType.FAIR_VALUE]: 'schemas/analysis-factors/outputs/whole-category-analysis-output.schema.yaml',
   [ReportType.COMPETITION]: 'schemas/analysis-factors/competition/competition-output.schema.yaml',
-  [ReportType.FUTURE_RISK]: 'schemas/analysis-factors/future-risk/future-risk-output.schema.yaml',
+  [ReportType.MANAGEMENT_TEAM]: 'schemas/analysis-factors/management-team/management-team-output.schema.yaml',
   [ReportType.FINAL_SUMMARY]: 'schemas/analysis-factors/final-summary/final-summary-analysis-output.schema.yaml',
 };
 
@@ -163,9 +163,9 @@ export async function generatePromptForReportType(symbol: string, exchange: stri
       promptKey = 'US/public-equities-v1/fair-value';
       break;
 
-    case ReportType.FUTURE_RISK:
+    case ReportType.MANAGEMENT_TEAM:
       inputJson = prepareBaseTickerInputJson(tickerRecord);
-      promptKey = 'US/public-equities-v1/future-risk';
+      promptKey = 'US/public-equities-v1/management-team';
       break;
 
     case ReportType.FINAL_SUMMARY:

@@ -23,6 +23,7 @@ export function generateStockScenarioListingMetadata(): Metadata {
     title,
     description,
     alternates: { canonical: url },
+    robots: { index: true, follow: true },
     keywords: [
       'stock scenarios',
       'sector shock analysis',
@@ -42,11 +43,13 @@ export function generateStockScenarioListingMetadata(): Metadata {
       url,
       siteName: SITE_NAME,
       type: 'website',
+      images: [{ url: LOGO_URL }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [LOGO_URL],
     },
   };
 }
@@ -102,7 +105,7 @@ interface StockScenarioDetailMetadataInput {
   probabilityBucket: string;
   outlookAsOfDate: string;
   metaDescription?: string | null;
-  underlyingCause: string;
+  summary: string;
   createdTime?: string;
   updatedTime?: string;
 }
@@ -113,7 +116,7 @@ export function generateStockScenarioDetailMetadata({
   probabilityBucket,
   outlookAsOfDate,
   metaDescription,
-  underlyingCause,
+  summary,
   createdTime,
   updatedTime,
 }: StockScenarioDetailMetadataInput): Metadata {
@@ -124,13 +127,14 @@ export function generateStockScenarioDetailMetadata({
   const description =
     metaDescription?.trim() ||
     truncateForMeta(
-      `${title} — stock scenario analysis: ${underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
+      `${title} — stock scenario analysis: ${summary.replace(/\*\*/g, '').replace(/\n+/g, ' ')}. Probability ${bucketLabel} as of ${outlookAsOfDate}.`
     );
 
   return {
     title: `${title} — Stock Scenario Analysis (${year}) | ${SITE_NAME}`,
     description,
     alternates: { canonical: canonicalUrl },
+    robots: { index: true, follow: true },
     keywords: [title, `${title} stocks`, `${title} winners`, `${title} losers`, 'stock scenarios', 'sector rotation', 'market scenario analysis', SITE_NAME],
     openGraph: {
       title: `${title} — Stock Scenario Analysis | ${SITE_NAME}`,
@@ -140,11 +144,15 @@ export function generateStockScenarioDetailMetadata({
       type: 'article',
       publishedTime: createdTime ?? updatedTime,
       modifiedTime: updatedTime ?? createdTime,
+      authors: [SITE_NAME],
+      section: 'Stock Scenarios',
+      images: [{ url: LOGO_URL }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} — Stock Scenario Analysis | ${SITE_NAME}`,
       description,
+      images: [LOGO_URL],
     },
   };
 }
@@ -152,13 +160,13 @@ export function generateStockScenarioDetailMetadata({
 export function generateStockScenarioDetailArticleJsonLd({
   title,
   slug,
-  underlyingCause,
+  summary,
   publishedDate,
   modifiedDate,
 }: {
   title: string;
   slug: string;
-  underlyingCause: string;
+  summary: string;
   publishedDate: string;
   modifiedDate: string;
 }) {
@@ -168,7 +176,7 @@ export function generateStockScenarioDetailArticleJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: `${title} — Stock Scenario Analysis`,
-    description: truncateForMeta(underlyingCause.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
+    description: truncateForMeta(summary.replace(/\*\*/g, '').replace(/\n+/g, ' '), 300),
     image: [LOGO_URL],
     datePublished: publishedDate,
     dateModified: modifiedDate,

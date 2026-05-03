@@ -28,24 +28,26 @@ function renderMarkdown(md: string) {
   return { __html: parseMarkdown(md) as string };
 }
 
-function LinkPill({ link }: { link: StockScenarioLinkDto }): JSX.Element {
-  const inner = (
+function PillVisual({ link }: { link: StockScenarioLinkDto }): JSX.Element {
+  return (
     <span className="inline-flex items-center gap-1 bg-[#111827] border border-[#374151] text-xs text-white rounded px-2 py-0.5">
       <span className="font-semibold">{link.symbol}</span>
       <span className="text-gray-400">· {link.exchange}</span>
     </span>
   );
+}
 
+function LinkPill({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   // tickerId === null means the (symbol, exchange) pair isn't in TickerV1 yet —
   // the public stock detail page would 404 on it. Render as plain text instead
   // so authors can still tag the ticker and admins can later add it to TickerV1.
   if (!link.tickerId) {
-    return inner;
+    return <PillVisual link={link} />;
   }
 
   return (
     <Link href={`/stocks/${link.exchange}/${link.symbol}`} className="hover:opacity-80">
-      {inner}
+      <PillVisual link={link} />
     </Link>
   );
 }
@@ -84,10 +86,10 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   const score = link.finalScore;
   const scoreClasses = score !== null ? getScoreColorClasses(score) : null;
 
-  return (
-    <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">
+  const body = (
+    <>
       <div className="flex items-center justify-between gap-2 mb-1">
-        <LinkPill link={link} />
+        <PillVisual link={link} />
         {link.expectedPriceChange !== null && (
           <span className={`text-xs font-semibold ${changeColor}`}>{formatExpectedPriceChange(link.expectedPriceChange)}</span>
         )}
@@ -140,8 +142,23 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
           )}
         </div>
       )}
-    </div>
+    </>
   );
+
+  // When the stock exists in TickerV1 the whole card is a link to its report
+  // page; otherwise we keep the same visual but drop the hover/click affordance.
+  if (link.tickerId) {
+    return (
+      <Link
+        href={`/stocks/${link.exchange}/${link.symbol}`}
+        className="block bg-[#111827] border border-[#374151] rounded-md p-2.5 hover:border-blue-500 hover:bg-[#0f1623] transition-colors"
+      >
+        {body}
+      </Link>
+    );
+  }
+
+  return <div className="bg-[#111827] border border-[#374151] rounded-md p-2.5">{body}</div>;
 }
 
 function LinkList({
@@ -196,11 +213,11 @@ function countryOfExchange(exchange: string): SupportedCountries | null {
 interface StockScenarioLinkColumnsProps {
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
-  mostExposed: StockScenarioLinkDto[];
+  tenBaggers: StockScenarioLinkDto[];
   scenarioCountries: SupportedCountries[];
 }
 
-export default function StockScenarioLinkColumns({ winners, losers, mostExposed, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
+export default function StockScenarioLinkColumns({ winners, losers, tenBaggers, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
   const [countryFilter, setCountryFilter] = useState<SupportedCountries | 'ALL'>('ALL');
 
   // Disable country options that the scenario doesn't cover; the user still
@@ -215,12 +232,14 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
 
   const filteredWinners = filterByCountry(winners);
   const filteredLosers = filterByCountry(losers);
-  const filteredMostExposed = filterByCountry(mostExposed);
+  const filteredBaggers = filterByCountry(tenBaggers);
+  const hasBaggers = tenBaggers.length > 0;
+  const gridClass = hasBaggers ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
   return (
     <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold text-white">Tagged stocks</h2>
+        <h2 className="text-xl font-bold text-white">Tagged stocks</h2>
         <label className="flex items-center gap-2 text-xs text-gray-300">
           <span className="uppercase tracking-wide text-[11px] text-gray-400">Filter by country</span>
           <select
@@ -239,7 +258,7 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
         </label>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={gridClass}>
         <LinkList
           title="Winners"
           links={filteredWinners}
@@ -254,13 +273,15 @@ export default function StockScenarioLinkColumns({ winners, losers, mostExposed,
           countryFilter={countryFilter}
           emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as losers.' : `No losers listed on ${countryFilter} exchanges.`}
         />
-        <LinkList
-          title="Most exposed right now"
-          links={filteredMostExposed}
-          filteredCount={filteredMostExposed.length}
-          countryFilter={countryFilter}
-          emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as currently most exposed.' : `No most-exposed stocks on ${countryFilter} exchanges.`}
-        />
+        {hasBaggers && (
+          <LinkList
+            title="10 Baggers"
+            links={filteredBaggers}
+            filteredCount={filteredBaggers.length}
+            countryFilter={countryFilter}
+            emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as 10 baggers.' : `No 10 baggers listed on ${countryFilter} exchanges.`}
+          />
+        )}
       </div>
     </section>
   );

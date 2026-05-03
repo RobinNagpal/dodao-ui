@@ -17,9 +17,8 @@ export interface ParsedStockScenario {
   scenarioNumber: number;
   title: string;
   slug: string;
-  underlyingCause: string;
-  historicalAnalog: string;
-  outlookMarkdown: string;
+  summary: string;
+  detailedAnalysis: string | null;
   direction: ScenarioDirection;
   timeframe: ScenarioTimeframe;
   probabilityBucket: ScenarioProbabilityBucket;
@@ -39,8 +38,9 @@ const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 // change %, free-text price-change explanation (timeframe + rationale), and
 // the role explanation that follows the em-dash (or `-` / `:`) separator.
 // All fields after the bold ticker are optional; if a section uses bullets
-// without numbers, the price-change fields stay null.
-const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,3})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
+// without numbers, the price-change fields stay null. `\d{1,4}` fits TEN_BAGGER
+// bullets that go up to +2000%.
+const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,4})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
 
 function extractQualifiedTickers(text: string): Array<{ symbol: string; exchange: string }> {
   const out: Array<{ symbol: string; exchange: string }> = [];
@@ -104,10 +104,12 @@ function extractBulletLinks(section: string, role: ScenarioRole): ParsedStockSce
     if (seen.has(key)) continue;
     seen.add(key);
 
+    // Upper bound is +2000 (not ±100 like the ETF parser) so TEN_BAGGER
+    // bullets at +900% / +2000% fit.
     let expectedPriceChange: number | null = null;
     if (m[3] !== undefined) {
       const v = parseInt(m[3], 10);
-      if (!Number.isNaN(v) && v >= -100 && v <= 100) expectedPriceChange = v;
+      if (!Number.isNaN(v) && v >= -100 && v <= 2000) expectedPriceChange = v;
     }
 
     // Priced-in phrase may live in either the parenthetical explanation or
@@ -286,39 +288,31 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const bodyStart = trimmed.indexOf('\n', trimmed.indexOf(headingMatch[0])) + 1;
     const body = trimmed.slice(bodyStart).trim();
 
-    const underlyingCause = extractField(body, 'Underlying cause');
-    const historicalAnalog = extractField(body, 'Historical analog');
+    // New canonical authoring uses one **Summary** field. Legacy drafts that
+    // still split into Underlying cause / Historical analog / Outlook are
+    // imported by concatenating those three sections.
     const winnersMarkdown = extractField(body, 'Winners');
     const losersMarkdown = extractField(body, 'Losers');
-    const outlookMarkdown = extractField(body, 'Outlook');
+    const tenBaggersMarkdown = extractField(body, '10 Baggers');
+    let summary = extractField(body, 'Summary');
+    if (!summary) {
+      const legacyParts = [extractField(body, 'Underlying cause'), extractField(body, 'Historical analog'), extractField(body, 'Outlook')].filter(Boolean);
+      summary = legacyParts.join('\n\n');
+    }
 
-    if (!underlyingCause || !outlookMarkdown) continue;
+    if (!summary) continue;
 
-    const probabilityPercentage = extractProbabilityPercentage(outlookMarkdown);
-    const probabilityBucket = classifyProbabilityBucket(outlookMarkdown, probabilityPercentage);
-    const timeframe = classifyTimeframe(outlookMarkdown);
+    const probabilityPercentage = extractProbabilityPercentage(summary);
+    const probabilityBucket = classifyProbabilityBucket(summary, probabilityPercentage);
+    const timeframe = classifyTimeframe(summary);
     const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
-    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
+    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(summary) ?? fallbackOutlookDate;
 
     const winnerLinks = extractRoleLinks(winnersMarkdown, ScenarioRole.WINNER);
     const loserLinks = extractRoleLinks(losersMarkdown, ScenarioRole.LOSER);
+    const tenBaggerLinks = tenBaggersMarkdown ? extractRoleLinks(tenBaggersMarkdown, ScenarioRole.TEN_BAGGER) : [];
 
-    // Most exposed prefers a top-level `**Most exposed:**` section so it can
-    // carry per-stock detail in bullet form. Older docs that inline it inside
-    // the Outlook paragraph still parse via the legacy fallback.
-    const mostExposedMarkdown = extractField(body, 'Most exposed');
-    let mostExposedLinks: ParsedStockScenarioLink[] = [];
-    if (mostExposedMarkdown) {
-      mostExposedLinks = extractRoleLinks(mostExposedMarkdown, ScenarioRole.MOST_EXPOSED);
-    }
-    if (mostExposedLinks.length === 0) {
-      const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-      if (mostExposedMatch) {
-        mostExposedLinks = extractRoleLinks(mostExposedMatch[1], ScenarioRole.MOST_EXPOSED);
-      }
-    }
-
-    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...mostExposedLinks];
+    const links: ParsedStockScenarioLink[] = [...winnerLinks, ...loserLinks, ...tenBaggerLinks];
 
     const seen = new Set<string>();
     const deduped = links.filter((l) => {
@@ -331,13 +325,14 @@ export function parseStockScenariosMarkdown(raw: string, fallbackOutlookDate: Da
     const explicitCountries = extractCountries(body);
     const countries = explicitCountries.length ? explicitCountries : inferCountriesFromLinks(deduped);
 
+    const detailedAnalysisMarkdown = extractField(body, 'Detailed analysis') || null;
+
     scenarios.push({
       scenarioNumber,
       title,
       slug: slugifyScenarioTitle(title),
-      underlyingCause,
-      historicalAnalog,
-      outlookMarkdown,
+      summary,
+      detailedAnalysis: detailedAnalysisMarkdown,
       direction,
       timeframe,
       probabilityBucket,

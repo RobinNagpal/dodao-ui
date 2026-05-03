@@ -20,6 +20,7 @@ export const reportTypes: ReportTypeInfo[] = [
   { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance', reportType: ReportType.PAST_PERFORMANCE },
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth', reportType: ReportType.FUTURE_GROWTH },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value', reportType: ReportType.FAIR_VALUE },
+  { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team', reportType: ReportType.MANAGEMENT_TEAM },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary/Meta/About', reportType: ReportType.FINAL_SUMMARY },
 ];
 
@@ -139,7 +140,7 @@ export const useGenerateReports = () => {
           regeneratePastPerformance: false,
           regenerateFutureGrowth: false,
           regenerateFairValue: false,
-          regenerateFutureRisk: false,
+          regenerateManagementTeam: false,
           regenerateFinalSummary: false,
         };
 
@@ -150,6 +151,7 @@ export const useGenerateReports = () => {
           else if (rt === ReportType.PAST_PERFORMANCE) payload.regeneratePastPerformance = true;
           else if (rt === ReportType.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
           else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
+          else if (rt === ReportType.MANAGEMENT_TEAM) payload.regenerateManagementTeam = true;
           else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
         });
 
@@ -179,7 +181,7 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: false,
+        regenerateManagementTeam: true,
         regenerateFinalSummary: true,
       }));
 
@@ -206,7 +208,7 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: false,
+        regenerateManagementTeam: true,
         regenerateFinalSummary: true,
       }));
 
@@ -236,7 +238,7 @@ export const useGenerateReports = () => {
             regeneratePastPerformance: false,
             regenerateFutureGrowth: false,
             regenerateFairValue: false,
-            regenerateFutureRisk: false,
+            regenerateManagementTeam: false,
             regenerateFinalSummary: false,
           };
 
@@ -247,7 +249,7 @@ export const useGenerateReports = () => {
             else if (step === ReportType.PAST_PERFORMANCE) p.regeneratePastPerformance = true;
             else if (step === ReportType.FUTURE_GROWTH) p.regenerateFutureGrowth = true;
             else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
-            else if (step === ReportType.FUTURE_RISK) p.regenerateFutureRisk = true;
+            else if (step === ReportType.MANAGEMENT_TEAM) p.regenerateManagementTeam = true;
             else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
           });
 

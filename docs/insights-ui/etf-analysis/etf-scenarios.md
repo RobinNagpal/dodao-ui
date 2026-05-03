@@ -2,7 +2,7 @@
 
 Recurring market scenarios (recessions, sector crashes, commodity supercycles, rate regimes, geopolitical shocks, etc.) that move specific ETF categories. Each scenario carries a probability outlook, a priced-in assessment, an expected residual price move, and explicit lists of the ETFs most exposed to it.
 
-The goal is not to list "every ETF that might be affected" — it is to give a reader **five winners, five losers, and five most-exposed tickers**, each with a clear mechanical reason and an estimated % move, so the page reads like a ranked trade idea rather than a story.
+The goal is not to list "every ETF that might be affected" — it is to give a reader **five winners and five losers**, each with a clear mechanical reason and an estimated % move, so the page reads like a ranked trade idea rather than a story. See `docs/insights-ui/scenario-authoring.md` for the full template and the "Five winners, five losers" convention.
 
 ## Where the data lives
 
@@ -19,11 +19,8 @@ The goal is not to list "every ETF that might be affected" — it is to give a r
 | `scenarioNumber` | Int | Stable human-facing number (1..N). Unique per space. |
 | `title` | String | Human title, e.g. "Geopolitical Oil Price Spike". |
 | `slug` | String | URL slug, unique per space. Auto-derived from title if omitted. |
-| `underlyingCause` | Markdown | Why the scenario happens (the mechanism). |
-| `historicalAnalog` | Markdown | Prior episodes with dates and magnitudes. |
-| `winnersMarkdown` | Markdown | Narrative rationale for the winners as a group. |
-| `losersMarkdown` | Markdown | Narrative rationale for the losers as a group. |
-| `outlookMarkdown` | Markdown | Dated outlook: catalysts to watch, positioning, what would invalidate the thesis. |
+| `summary` | Markdown | 4–5 paragraph narrative folding the underlying cause / mechanism, magnitude, affected industries, historical analog, and dated outlook into a single field. |
+| `detailedAnalysis` | Markdown (nullable) | Long-form scenario analysis — intro, sizing & timeline, value-chain breakdown. Renders on `/etf-scenarios/<slug>/detailed-analysis` behind a "Detailed analysis" button. Generate with `docs/insights-ui/scenario-prompts/detailed-analysis.md`. Leave null if not yet authored. |
 | `direction` | Enum | `UPSIDE` (boom / rally scenario) or `DOWNSIDE` (crash / stress scenario). |
 | `timeframe` | Enum | `FUTURE` (not yet triggered), `IN_PROGRESS` (currently unfolding), `PAST` (already played out). |
 | `probabilityBucket` | Enum | `HIGH` (>40%), `MEDIUM` (20–40%), `LOW` (<20%). |
@@ -43,13 +40,12 @@ They are orthogonal. A 50%-probability scenario that is `FULLY_PRICED_IN` has no
 
 ## The `EtfScenarioEtfLink` model — how ETFs attach to a scenario
 
-Each row ties one ETF to a scenario with one of three `role`s:
+Each row ties one ETF to a scenario with one of two `role`s:
 
 - `WINNER` — this ETF benefits if the scenario plays out
 - `LOSER` — this ETF is hurt if the scenario plays out
-- `MOST_EXPOSED` — this ETF has the highest current sensitivity to the scenario right now (can overlap with a winner or loser depending on direction)
 
-**We always narrow to exactly 5 per role.** A scenario page carries 15 link rows total: 5 winners + 5 losers + 5 most-exposed. Pick the ETFs with the cleanest, most direct mechanical exposure — prefer targeted sector/industry ETFs (XLE, XOP, KRE) over broad diversified ones (SPY) when both would qualify.
+**Convention: exactly 5 winners and 5 losers per scenario** (10 link rows total). The schema does not enforce this — it's an editorial rule. Pick the ETFs with the cleanest, most direct mechanical exposure — prefer targeted sector/industry ETFs (XLE, XOP, KRE) over broad diversified ones (SPY) when both would qualify. See `docs/insights-ui/scenario-authoring.md` for the rationale.
 
 ### Per-link fields
 
@@ -58,7 +54,7 @@ Each row ties one ETF to a scenario with one of three `role`s:
 | `symbol` | String | Ticker, uppercase (e.g. `XOP`). Required. |
 | `exchange` | String (nullable) | Populated automatically by the API if the ticker is a known ETF in our `Etf` table. Do **not** pass it manually in the POST payload. |
 | `etfId` | String (nullable) | Populated automatically. Unresolved symbols render as a plain span in the UI; resolved ones render as a clickable link to `/etfs/<exchange>/<symbol>`. |
-| `role` | Enum | `WINNER` / `LOSER` / `MOST_EXPOSED`. |
+| `role` | Enum | `WINNER` / `LOSER`. |
 | `sortOrder` | Int | 0-indexed within the role. Controls display order. |
 | `roleExplanation` | Markdown (nullable) | **Why this specific ETF is a winner / loser / most-exposed** — the mechanical reason, not the scenario narrative. |
 | `expectedPriceChange` | Int (nullable) | Signed % expected move for this specific ETF if the scenario plays out. |
@@ -66,7 +62,7 @@ Each row ties one ETF to a scenario with one of three `role`s:
 
 ### How the detail page renders the links
 
-`EtfScenarioDetailView` shows a three-column grid (Winners tagged / Losers tagged / Most exposed). If **any** link in a column has `roleExplanation`, `expectedPriceChange`, or `expectedPriceChangeExplanation` populated, the column flips from compact pills to a richer card list per ETF. Legacy links without those fields still render as pills — no migration needed.
+`EtfScenarioDetailView` shows a two-column grid (Winners / Losers). Each link renders as a card with the ticker pill, expected price change, role explanation, and price-change explanation when those per-link fields are populated. Cards link out to `/etfs/<exchange>/<symbol>` when the ETF is resolved to our `Etf` table.
 
 ## Endpoints
 
@@ -83,7 +79,7 @@ The automation secret lives in the discord-claude-bot `.env` as `AUTOMATION_SECR
 | GET | `/api/etf-scenarios` | Admin-only flat list of scenarios for this space. |
 | GET | `/api/etf-scenarios/[id]` | Admin single scenario by id (UUID / slug — we use slug as id for deterministic upserts). |
 | GET | `/api/[spaceId]/etf-scenarios/listing` | Public listing with filters (`direction`, `timeframe`, `probabilityBucket`, `search`, `page`, `pageSize`, `includeArchived`). |
-| GET | `/api/[spaceId]/etf-scenarios/[slug]` | Public detail including `winners` / `losers` / `mostExposed` arrays. `?allowNull=true` returns `null` instead of throwing for missing slugs. |
+| GET | `/api/[spaceId]/etf-scenarios/[slug]` | Public detail including `winners` and `losers` arrays. `?allowNull=true` returns `null` instead of throwing for missing slugs. |
 
 ### Write endpoints
 
@@ -104,9 +100,9 @@ There are three paths. Pick the one that fits the situation.
 
 1. Go to `/admin-v1/etf-scenarios`.
 2. Click "Create Scenario" → the `UpsertEtfScenarioModal` opens.
-3. Fill in every field. The form has inputs for all `EtfScenario` columns including the priced-in bucket, expected change, and the two explanation markdowns. Leave the slug blank to auto-derive from the title.
+3. Fill in every field. The form has inputs for all `EtfScenario` columns including the priced-in bucket, expected change, the two explanation markdowns, and the optional `detailedAnalysis` long-form section. Leave the slug blank to auto-derive from the title.
 4. Save. The modal creates the row but does **not** attach ETF links.
-5. Open "Manage Links" on the new row → use the add form to attach 5 winners, 5 losers, and 5 most-exposed. Each link form lets you set `roleExplanation`, `expectedPriceChange`, and `expectedPriceChangeExplanation` at the same time.
+5. Open "Manage Links" on the new row → use the add form to attach 5 winners and 5 losers (convention; no schema enforcement). Each link form lets you set `roleExplanation`, `expectedPriceChange`, and `expectedPriceChangeExplanation` at the same time.
 
 ### Path 2 — Full POST (preferred for scripted or bulk work)
 
@@ -117,11 +113,8 @@ Upsert-by-slug via `POST /api/etf-scenarios?token=<AUTOMATION_SECRET>`. This is 
   "scenarioNumber": 14,
   "title": "Geopolitical Oil Price Spike",
   "slug": "geopolitical-oil-price-spike",
-  "underlyingCause": "...markdown...",
-  "historicalAnalog": "...markdown...",
-  "winnersMarkdown": "...markdown...",
-  "losersMarkdown": "...markdown...",
-  "outlookMarkdown": "...markdown...",
+  "summary": "...4–5 paragraphs of markdown...",
+  "detailedAnalysis": "...markdown or null...",
   "direction": "UPSIDE",
   "timeframe": "IN_PROGRESS",
   "probabilityBucket": "MEDIUM",
@@ -140,7 +133,7 @@ Upsert-by-slug via `POST /api/etf-scenarios?token=<AUTOMATION_SECRET>`. This is 
       "expectedPriceChange": 18,
       "expectedPriceChangeExplanation": "+15% to +25% over 3–6 months if Brent holds above $100."
     }
-    // ... 4 more winners, 5 losers, 5 most_exposed
+    // ... 4 more winners, then 5 losers (convention: exactly 5 of each)
   ]
 }
 ```
@@ -187,7 +180,7 @@ Both paths revalidate the listing tag and the slug tag so cached pages update.
 
 ## Operational conventions
 
-- **5 winners, 5 losers, 5 most-exposed.** Always exactly five. If you find yourself reaching for a sixth, drop the weakest existing one. Broad diversified ETFs (SPY, QQQ, VTI) are usually the weakest link when a more targeted ETF exists.
-- **`mostExposed` overlaps with winners or losers by design.** For a DOWNSIDE scenario, most-exposed ≈ the most aggressive losers. For an UPSIDE scenario, it ≈ the most aggressive winners. That is the point — it highlights the ETFs with highest *current* sensitivity.
-- **Preserve markdown fields on surgical edits.** When a script is only patching new fields or links, it should re-send the existing markdown bodies byte-for-byte. Don't silently rewrite `underlyingCause` / `historicalAnalog` / etc. unless the task is explicitly to revise them.
+- **5 winners, 5 losers — convention, not enforced.** Always exactly five of each. If you find yourself reaching for a sixth, drop the weakest existing one. Broad diversified ETFs (SPY, QQQ, VTI) are usually the weakest link when a more targeted ETF exists. Schema does not reject extra rows; the rule lives in `docs/insights-ui/scenario-authoring.md` and is reiterated as a comment in the import scripts.
+- **`detailedAnalysis` is optional but follows a fixed structure when present.** Use the prompt at `docs/insights-ui/scenario-prompts/detailed-analysis.md` to generate it — intro, sizing & timeline, value-chain breakdown. Skip the field rather than ship a thin one-paragraph version.
+- **Preserve markdown fields on surgical edits.** When a script is only patching new fields or links, it should re-send the existing markdown bodies byte-for-byte. Don't silently rewrite `summary` / `detailedAnalysis` / etc. unless the task is explicitly to revise them.
 - **Use absolute dates in memory, narrative dates in copy.** Internal code + API payloads use ISO dates (`2026-04-21`). User-facing markdown uses narrative timeframes ("Q3 2026", "through 2027") — this is what `priceChangeTimeframeExplanation` is for.

@@ -18,7 +18,14 @@ import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SpiderGraphForTicker, SpiderGraphPie } from '@/types/public-equity/ticker-report-types';
-import { CATEGORY_MAPPINGS, CompetitionResponse, EvaluationResult, TickerAnalysisCategory } from '@/types/ticker-typesv1';
+import {
+  CATEGORY_MAPPINGS,
+  CompetitionResponse,
+  EvaluationResult,
+  MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS,
+  ManagementTeamAlignmentVerdict,
+  TickerAnalysisCategory,
+} from '@/types/ticker-typesv1';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import {
@@ -37,7 +44,6 @@ import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -287,7 +293,7 @@ function FinancialInfoSkeleton(): JSX.Element {
 
 function QuarterlyChartSkeleton(): JSX.Element {
   return (
-    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-48 rounded bg-gray-800 animate-pulse" />
@@ -306,7 +312,7 @@ function QuarterlyChartSkeleton(): JSX.Element {
 
 function PriceChartSkeleton(): JSX.Element {
   return (
-    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-3 py-4 sm:p-4 mt-6">
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
@@ -510,189 +516,137 @@ function TickerChartsInfo({
   );
 }
 
-function TickerAnalysisInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
-  const d: TickerV1FastResponse = use(data);
+function getManagementTeamVerdictBadgeClasses(verdict: ManagementTeamAlignmentVerdict): string {
+  switch (verdict) {
+    case ManagementTeamAlignmentVerdict.OWNER_OPERATOR:
+    case ManagementTeamAlignmentVerdict.STRONGLY_ALIGNED:
+      return 'bg-green-900 text-green-200';
+    case ManagementTeamAlignmentVerdict.ALIGNED:
+      return 'bg-blue-900 text-blue-200';
+    case ManagementTeamAlignmentVerdict.WEAKLY_ALIGNED:
+      return 'bg-yellow-900 text-yellow-200';
+    case ManagementTeamAlignmentVerdict.MISALIGNED:
+      return 'bg-red-900 text-red-200';
+    default:
+      return 'bg-gray-800 text-gray-200';
+  }
+}
 
+const CATEGORY_DETAIL_LINKS: Record<TickerAnalysisCategory, { href: (exchange: string, symbol: string) => string; label: string }> = {
+  [TickerAnalysisCategory.BusinessAndMoat]: {
+    href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/business-and-moat`,
+    label: 'View Detailed Analysis →',
+  },
+  [TickerAnalysisCategory.FinancialStatementAnalysis]: {
+    href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/financial-statement-analysis`,
+    label: 'View Detailed Analysis →',
+  },
+  [TickerAnalysisCategory.PastPerformance]: {
+    href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/past-performance`,
+    label: 'View Detailed Analysis →',
+  },
+  [TickerAnalysisCategory.FutureGrowth]: {
+    href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/future-performance`,
+    label: 'Show Detailed Future Analysis →',
+  },
+  [TickerAnalysisCategory.FairValue]: {
+    href: (exchange, symbol) => `/stocks/${exchange}/${symbol}/fair-value`,
+    label: 'View Detailed Fair Value →',
+  },
+};
+
+function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCategory; d: TickerV1FastResponse }): JSX.Element {
+  const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
+  const link = CATEGORY_DETAIL_LINKS[categoryKey];
   return (
-    <>
-      <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:p-y6" itemProp="abstract">
-        <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
-        <div className="space-y-4">
-          {Object.values(TickerAnalysisCategory).map((categoryKey: TickerAnalysisCategory) => {
-            const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-            return (
-              <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-                <div
-                  className={`flex items-center gap-2 mb-2 ${
-                    categoryKey === TickerAnalysisCategory.BusinessAndMoat ||
-                    categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis ||
-                    categoryKey === TickerAnalysisCategory.PastPerformance ||
-                    categoryKey === TickerAnalysisCategory.FutureGrowth ||
-                    categoryKey === TickerAnalysisCategory.FairValue
-                      ? 'justify-between'
-                      : ''
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
-                    {categoryResult && (
-                      <div
-                        className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                        style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
-                      >
-                        {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
-                      </div>
-                    )}
-                    {categoryResult?.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
-                  </div>
-
-                  {categoryKey === TickerAnalysisCategory.BusinessAndMoat && (
-                    <Link
-                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/business-and-moat`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                    >
-                      View Detailed Analysis →
-                    </Link>
-                  )}
-
-                  {categoryKey === TickerAnalysisCategory.FinancialStatementAnalysis && (
-                    <Link
-                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/financial-statement-analysis`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                    >
-                      View Detailed Analysis →
-                    </Link>
-                  )}
-
-                  {categoryKey === TickerAnalysisCategory.PastPerformance && (
-                    <Link
-                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/past-performance`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                    >
-                      View Detailed Analysis →
-                    </Link>
-                  )}
-
-                  {categoryKey === TickerAnalysisCategory.FutureGrowth && (
-                    <Link
-                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/future-performance`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                    >
-                      Show Detailed Future Analysis →
-                    </Link>
-                  )}
-
-                  {categoryKey === TickerAnalysisCategory.FairValue && (
-                    <Link
-                      href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/fair-value`}
-                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                    >
-                      View Detailed Fair Value →
-                    </Link>
-                  )}
-                </div>
-                <div
-                  className="text-gray-300 markdown markdown-body"
-                  dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
-                />
-              </div>
-            );
-          })}
+    <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="text-lg font-semibold">{CATEGORY_MAPPINGS[categoryKey]}</h3>
+          {categoryResult && (
+            <div
+              className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+              style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+            >
+              {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
+            </div>
+          )}
+          {categoryResult?.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
         </div>
-      </section>
-    </>
+        <Link
+          href={link.href(d.exchange.toUpperCase(), d.symbol.toUpperCase())}
+          className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+          style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+        >
+          {link.label}
+        </Link>
+      </div>
+      <div
+        className="text-gray-300 markdown markdown-body"
+        dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
+      />
+    </div>
   );
 }
 
-function TickerDetailsInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+function TickerAnalysisInfo({
+  data,
+  competitionPromise,
+  exchange,
+  ticker,
+}: {
+  data: Promise<TickerV1FastResponse>;
+  competitionPromise: Promise<CompetitionResponse | null>;
+  exchange: string;
+  ticker: string;
+}): JSX.Element {
   const d: TickerV1FastResponse = use(data);
-
-  // Question-based category mappings for better SEO
-  const CATEGORY_QUESTION_MAPPINGS = {
-    [TickerAnalysisCategory.BusinessAndMoat]: `Does ${d.name} Have a Strong Business Model and Competitive Moat?`,
-    [TickerAnalysisCategory.FinancialStatementAnalysis]: `How Strong Are ${d.name}'s Financial Statements?`,
-    [TickerAnalysisCategory.PastPerformance]: `How Has ${d.name} Performed Historically?`,
-    [TickerAnalysisCategory.FutureGrowth]: `What Are ${d.name}'s Future Growth Prospects?`,
-    [TickerAnalysisCategory.FairValue]: `Is ${d.name} Fairly Valued?`,
-  };
-
-  // Filter out categories that have their own dedicated detail pages
-  const categoriesToShow = Object.values(TickerAnalysisCategory).filter(
-    (key) =>
-      key !== TickerAnalysisCategory.BusinessAndMoat &&
-      key !== TickerAnalysisCategory.FinancialStatementAnalysis &&
-      key !== TickerAnalysisCategory.PastPerformance &&
-      key !== TickerAnalysisCategory.FutureGrowth &&
-      key !== TickerAnalysisCategory.FairValue
-  );
+  const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
-    <>
-      <section id="detailed-analysis" className="mb-8" itemProp="articleBody">
-        <h2 className="text-2xl font-bold mb-6">Detailed Analysis</h2>
+    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:py-6" itemProp="abstract">
+      <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
+      <div className="space-y-4">
+        <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
-        {categoriesToShow.map((categoryKey: TickerAnalysisCategory) => {
-          const categoryResult: FullTickerV1CategoryAnalysisResult | undefined = d.categoryAnalysisResults?.find((r) => r.categoryKey === categoryKey);
-          if (!categoryResult) return null;
+        <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
-          return (
-            <div key={`detail-${categoryKey}`} id={`detailed-${categoryKey}`} className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mb-8">
-              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
-                <h3 className="text-xl font-bold">{CATEGORY_QUESTION_MAPPINGS[categoryKey]}</h3>
-                <div
-                  className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+        {managementTeamReport && (
+          <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
+                <span
+                  className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
+                    managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
+                  )}`}
                 >
-                  {categoryResult.factorResults?.filter((fr) => fr.result === EvaluationResult.Pass).length || 0}/5
-                </div>
-                {categoryResult.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
+                  {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
+                    managementTeamReport.alignmentVerdict}
+                </span>
+                {managementTeamReport.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
               </div>
-
-              {categoryResult.summary && (
-                <div className="mb-4">
-                  <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult.summary) }} />
-                </div>
-              )}
-
-              {categoryResult.factorResults?.length ? (
-                <ul className="space-y-3">
-                  {categoryResult.factorResults.map((factor) => (
-                    <li key={factor.id} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
-                      <div className="flex flex-col gap-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            {factor.result === EvaluationResult.Pass ? (
-                              <CheckCircleIcon className="h-6 w-6 text-green-500 flex-shrink-0" />
-                            ) : (
-                              <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
-                            )}
-                            <h4 className="font-semibold">{factor.analysisCategoryFactor?.factorAnalysisTitle}</h4>
-                          </div>
-                          <span
-                            className={`px-2 py-1 rounded-full text-sm font-medium ${
-                              factor.result === EvaluationResult.Pass ? 'bg-green-900 text-green-200' : 'bg-red-900 text-red-200'
-                            }`}
-                          >
-                            {factor.result}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-400">{factor.oneLineExplanation}</p>
-                        <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(factor.detailedExplanation) }} />
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+              <Link
+                href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
+                className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
+              >
+                View Detailed Analysis →
+              </Link>
             </div>
-          );
-        })}
-      </section>
-    </>
+            <div
+              className="text-gray-300 markdown markdown-body"
+              dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
+            />
+          </div>
+        )}
+
+        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FinancialStatementAnalysis} d={d} />
+        <CategorySummaryCard categoryKey={TickerAnalysisCategory.PastPerformance} d={d} />
+        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FutureGrowth} d={d} />
+        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FairValue} d={d} />
+      </div>
+    </section>
   );
 }
 
@@ -799,19 +753,11 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         </Suspense>
 
         {/* Analysis info - server rendered, no skeleton needed */}
-        <TickerAnalysisInfo data={tickerInfo} />
+        <TickerAnalysisInfo data={tickerInfo} competitionPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-6">
-            <SimilarTickers dataPromise={similarPromise} />
-          </section>
-        </div>
-
-        <div className="mx-auto max-w-7xl">
-          <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
-        </div>
-
-        <TickerDetailsInfo data={tickerInfo} />
+        <section className="mb-6">
+          <SimilarTickers dataPromise={similarPromise} />
+        </section>
 
         <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>

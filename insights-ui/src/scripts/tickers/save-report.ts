@@ -14,7 +14,7 @@ const VALID_REPORT_TYPES: readonly ReportType[] = [
   ReportType.PAST_PERFORMANCE,
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
-  ReportType.FUTURE_RISK,
+  ReportType.MANAGEMENT_TEAM,
   ReportType.FINAL_SUMMARY,
 ];
 

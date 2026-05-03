@@ -95,8 +95,12 @@ export function calculatePendingSteps(request: TickerV1GenerationRequest): Repor
     pendingSteps.push(ReportType.FAIR_VALUE);
   }
 
-  if (request.regenerateFutureRisk && !request.completedSteps.includes(ReportType.FUTURE_RISK) && !request.failedSteps.includes(ReportType.FUTURE_RISK)) {
-    pendingSteps.push(ReportType.FUTURE_RISK);
+  if (
+    request.regenerateManagementTeam &&
+    !request.completedSteps.includes(ReportType.MANAGEMENT_TEAM) &&
+    !request.failedSteps.includes(ReportType.MANAGEMENT_TEAM)
+  ) {
+    pendingSteps.push(ReportType.MANAGEMENT_TEAM);
   }
 
   if (request.regenerateFinalSummary && !request.completedSteps.includes(ReportType.FINAL_SUMMARY) && !request.failedSteps.includes(ReportType.FINAL_SUMMARY)) {

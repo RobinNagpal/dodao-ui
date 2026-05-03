@@ -1,3 +1,13 @@
+// Editorial convention (NOT enforced by the schema or this script):
+// target 5 winners and 5 losers. Winners are soft-floored at 5 with a HARD
+// cap at 7–8 — never exceed 8. Losers are soft-floored at 5 but acceptable
+// to ship fewer if no clean candidates exist. ETF scenarios never carry the
+// "10 Baggers" list (ETF holdings are pre-diversified, so a per-name 10x
+// call would be misleading). Broad diversified ETFs (SPY, QQQ, VTI) are
+// usually the weakest link when a more targeted sector ETF exists. See
+// `docs/insights-ui/scenario-authoring.md` for the full convention and
+// `docs/insights-ui/scenario-prompts/detailed-analysis.md` for the prompt
+// used to author the optional `detailedAnalysis` long-form section.
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -16,11 +26,8 @@ function toRequestBody(s: ParsedScenario) {
     scenarioNumber: s.scenarioNumber,
     title: s.title,
     slug: s.slug,
-    underlyingCause: s.underlyingCause,
-    historicalAnalog: s.historicalAnalog,
-    winnersMarkdown: s.winnersMarkdown,
-    losersMarkdown: s.losersMarkdown,
-    outlookMarkdown: s.outlookMarkdown,
+    summary: s.summary,
+    detailedAnalysis: s.detailedAnalysis,
     direction: s.direction,
     timeframe: s.timeframe,
     probabilityBucket: s.probabilityBucket,
@@ -30,7 +37,17 @@ function toRequestBody(s: ParsedScenario) {
     // The API requires exchange on every link. Drop bare-symbol legacy links
     // here — they have to be re-authored with `EXCHANGE:SYMBOL` qualifiers
     // (or added through the admin UI which has an exchange dropdown).
-    links: s.links.filter((l) => !!l.exchange).map((l) => ({ symbol: l.symbol, exchange: l.exchange!, role: l.role, sortOrder: l.sortOrder })),
+    links: s.links
+      .filter((l) => !!l.exchange)
+      .map((l) => ({
+        symbol: l.symbol,
+        exchange: l.exchange!,
+        role: l.role,
+        sortOrder: l.sortOrder,
+        roleExplanation: l.roleExplanation,
+        expectedPriceChange: l.expectedPriceChange,
+        expectedPriceChangeExplanation: l.expectedPriceChangeExplanation,
+      })),
   };
 }
 

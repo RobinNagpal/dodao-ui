@@ -1,17 +1,21 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { StockScenarioListingResponse } from '@/app/api/[spaceId]/stock-scenarios/listing/route';
 import { ScenarioDirection, ScenarioProbabilityBucket, ScenarioTimeframe } from '@/types/scenarioEnums';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { SupportedCountries, toSupportedCountry } from '@/utils/countryExchangeUtils';
 import StockScenarioCard from './StockScenarioCard';
 import StockScenarioFiltersBar from './StockScenarioFiltersBar';
 
 export default function StockScenarioListingGrid({ data }: { data: StockScenarioListingResponse }): JSX.Element | null {
+  const searchParams = useSearchParams();
+  const initialCountry = toSupportedCountry(searchParams?.get('country') ?? null) ?? 'ALL';
+
   const [direction, setDirection] = useState<ScenarioDirection | 'ALL'>('ALL');
   const [bucket, setBucket] = useState<ScenarioProbabilityBucket | 'ALL'>('ALL');
   const [timeframe, setTimeframe] = useState<ScenarioTimeframe | 'ALL'>('ALL');
-  const [country, setCountry] = useState<SupportedCountries | 'ALL'>('ALL');
+  const [country, setCountry] = useState<SupportedCountries | 'ALL'>(initialCountry);
   const [search, setSearch] = useState<string>('');
 
   const filtered = useMemo(() => {
@@ -22,7 +26,7 @@ export default function StockScenarioListingGrid({ data }: { data: StockScenario
       if (timeframe !== 'ALL' && s.timeframe !== timeframe) return false;
       if (country !== 'ALL' && !s.countries.includes(country)) return false;
       if (needle) {
-        const hay = `${s.title} ${s.underlyingCause}`.toLowerCase();
+        const hay = `${s.title} ${s.summary}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
@@ -65,7 +69,7 @@ export default function StockScenarioListingGrid({ data }: { data: StockScenario
           <p className="text-[#E5E7EB] text-lg">No scenarios match the current filters.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((s) => (
             <StockScenarioCard key={s.id} scenario={s} />
           ))}

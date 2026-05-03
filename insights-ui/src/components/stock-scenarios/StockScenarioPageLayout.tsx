@@ -4,8 +4,8 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 interface StockScenarioPageLayoutProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   breadcrumbs?: BreadcrumbsOjbect[];
   rightButton?: ReactNode;
   children: ReactNode;
@@ -23,10 +23,12 @@ export default function StockScenarioPageLayout({ title, description, breadcrumb
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs ?? defaultBreadcrumbs()} rightButton={rightButton} />
 
-      <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
-        <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
-      </div>
+      {title && (
+        <div className="w-full mb-8">
+          <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
+          {description && <p className="text-[#E5E7EB] text-md mb-4">{description}</p>}
+        </div>
+      )}
 
       {children}
     </PageWrapper>
