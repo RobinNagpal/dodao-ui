@@ -4,6 +4,7 @@ Active KoalaGains task lists — open work, closed work, per-surface roadmaps. T
 
 ## Open task lists
 
+- **[overall_task.md](overall_task.md)** — Site-wide tasks + user feedback that apply across stocks, ETFs, tariffs, scenarios.
 - **[etfs.md](etfs.md)** — Top open ETF tasks (custom reports, ETFs listing page, active-management surfacing, prompt + factor improvements, comparison-base open questions, SEO, social media, trends).
 - **[stocks.md](stocks.md)** — Open stock-side tasks (scenarios Phase 2/3/4 + open questions, 10-bagger shortlist, founder/management lookups, management team experience and alignment report, social media, off-hours refresh, recategorization, internet-augmented Claude Code generation).
 - **[tariffs.md](tariffs.md)** — Open tariff tasks.
