@@ -30,7 +30,8 @@ A scenario is not done until every section below is populated with concrete numb
 ```markdown
 ### N. <Scenario title>
 
-**Underlying cause:** <2–4 paragraphs. Cover ALL of:>
+**Summary:** <4–5 paragraphs. Fold the cause, the historical analog, and the outlook
+  into a single narrative. Cover ALL of:>
   - **Dates:** when the scenario started (event / announcement / regime shift), and the
     end date or the window through which the impact is expected to play out.
   - **What exactly changed:** the specific policy / rate / tariff / regulation / supply
@@ -50,10 +51,13 @@ A scenario is not done until every section below is populated with concrete numb
     over standalone PBMs", "asymmetrically hurts contract manufacturers vs. brand
     pharma"). Specific stocks and ETFs go in the Winners / Losers sections below — this
     paragraph is for the industry- or category-level asymmetry.
-
-**Historical analog:** <1–2 paragraphs naming a comparable past episode (year, scope,
-  outcome). Cite the magnitude of that prior move so the current scenario can be sized
-  against it.>
+  - **Historical analog:** name a comparable past episode (year, scope, outcome). Cite
+    the magnitude of that prior move so the current scenario can be sized against it.
+  - **Outlook (with `as of YYYY-MM-DD`):** the probability bucket (`high probability` /
+    `medium probability` / `low probability`, or an explicit range like `30–40%`), the
+    timeframe (`already happened` / `in progress` / `future`), and what would change the
+    call. The parser reads the percentage, the timeframe phrasing, and the as-of date
+    from this paragraph.
 
 **Winners**
 - **EXCHANGE:SYMBOL** (+N%, <timeframe + priced-in bucket>) — <1–2 sentences on why
@@ -77,12 +81,6 @@ A scenario is not done until every section below is populated with concrete numb
 
 **Countries:** USA, Canada    <!-- Stock scenarios only. Comma-separated list of
   SupportedCountries. Omit for ETF scenarios. -->
-
-**Outlook (as of YYYY-MM-DD):** <One paragraph stating the probability bucket
-  (`high probability` / `medium probability` / `low probability`, or an explicit
-  range like `30–40%`), the timeframe (`already happened` / `in progress` /
-  `future`), and what would change the call. The parser reads the percentage and
-  the timeframe phrasing from this paragraph.>
 
 **Detailed analysis:** <Optional. Long-form markdown rendered on
   `/(etf|stock)-scenarios/<slug>/detailed-analysis`. Skip the section entirely
@@ -162,12 +160,12 @@ Inferred from the title keywords first (`boom`, `rally`, `surge`, `breakout` →
 A scenario is ready to import when:
 
 - Every required section is populated (no TODOs, no `<...>` placeholders).
-- The underlying-cause section names specific dates and at least one headline number.
-- Every per-industry impact in the cause section has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
+- The summary section names specific dates and at least one headline number.
+- Every per-industry impact in the summary has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
 - Winners and losers each have **exactly 5** names with `EXCHANGE:SYMBOL` qualifiers; bullet form (with `(±N%, ...)` per stock) is preferred over inline form. See "Five winners, five losers" above.
 - For stock scenarios where 10 Baggers is included: **up to 5** small/micro-cap names, drawn from the value-chain layers of the detailed analysis, each with NOT_PRICED_IN bucket and a +500 to +2000% bullet. Skip the section entirely if no candidate clears the bar.
-- The historical analog is a real, datable episode — not a hand-wave.
-- The outlook paragraph is dated and states both probability and timeframe in language the parser recognizes.
+- The historical analog folded into the summary is a real, datable episode — not a hand-wave.
+- The outlook paragraph (also folded into the summary) is dated and states both probability and timeframe in language the parser recognizes.
 - Detailed analysis is either absent (acceptable) or follows the structure in `docs/insights-ui/scenario-prompts/detailed-analysis.md` — never a thin one-paragraph stub.
 
 If any of these are missing, keep iterating in the scratch file before pasting into the admin modal.

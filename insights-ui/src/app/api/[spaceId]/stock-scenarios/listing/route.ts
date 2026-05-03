@@ -18,7 +18,7 @@ export interface StockScenarioListingItem {
   probabilityPercentage: number | null;
   countries: SupportedCountries[];
   outlookAsOfDate: string;
-  underlyingCause: string;
+  summary: string;
   archived: boolean;
 }
 
@@ -68,7 +68,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   if (country) where.countries = { has: country };
 
   if (search) {
-    where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { underlyingCause: { contains: search, mode: 'insensitive' } }];
+    where.OR = [{ title: { contains: search, mode: 'insensitive' } }, { summary: { contains: search, mode: 'insensitive' } }];
   }
 
   const filtersApplied = !!directionParam || !!timeframeParam || !!bucketParam || !!search || !!country;
@@ -90,7 +90,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         probabilityPercentage: true,
         countries: true,
         outlookAsOfDate: true,
-        underlyingCause: true,
+        summary: true,
         archived: true,
       },
     }),
@@ -111,7 +111,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       probabilityPercentage: s.probabilityPercentage,
       countries: s.countries as SupportedCountries[],
       outlookAsOfDate: s.outlookAsOfDate.toISOString(),
-      underlyingCause: s.underlyingCause,
+      summary: s.summary,
       archived: s.archived,
     })),
     totalCount,

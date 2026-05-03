@@ -26,7 +26,7 @@ export default function StockScenarioListingGrid({ data }: { data: StockScenario
       if (timeframe !== 'ALL' && s.timeframe !== timeframe) return false;
       if (country !== 'ALL' && !s.countries.includes(country)) return false;
       if (needle) {
-        const hay = `${s.title} ${s.underlyingCause}`.toLowerCase();
+        const hay = `${s.title} ${s.summary}`.toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;

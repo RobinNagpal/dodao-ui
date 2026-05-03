@@ -1793,9 +1793,13 @@ model EtfScenario {
   scenarioNumber                 Int      @map("scenario_number")
   title                          String   @map("title")
   slug                           String   @map("slug")
-  underlyingCause                String   @map("underlying_cause") @db.Text
-  historicalAnalog               String   @map("historical_analog") @db.Text
-  outlookMarkdown                String   @map("outlook_markdown") @db.Text
+  // 4–5 paragraph narrative covering cause, historical analog, and dated
+  // outlook in one field. Replaces the legacy underlyingCause/historicalAnalog/
+  // outlookMarkdown trio; those columns remain nullable for one release cycle.
+  summary                        String   @map("summary") @db.Text
+  underlyingCause                String?  @map("underlying_cause") @db.Text
+  historicalAnalog               String?  @map("historical_analog") @db.Text
+  outlookMarkdown                String?  @map("outlook_markdown") @db.Text
   detailedAnalysis               String?  @map("detailed_analysis") @db.Text
   direction                      String   @default("DOWNSIDE") @map("direction")
   timeframe                      String   @default("FUTURE") @map("timeframe")
@@ -1859,9 +1863,11 @@ model StockScenario {
   scenarioNumber                  Int      @map("scenario_number")
   title                           String   @map("title")
   slug                            String   @map("slug")
-  underlyingCause                 String   @map("underlying_cause") @db.Text
-  historicalAnalog                String   @map("historical_analog") @db.Text
-  outlookMarkdown                 String   @map("outlook_markdown") @db.Text
+  // See note on EtfScenario.summary — same semantics here.
+  summary                         String   @map("summary") @db.Text
+  underlyingCause                 String?  @map("underlying_cause") @db.Text
+  historicalAnalog                String?  @map("historical_analog") @db.Text
+  outlookMarkdown                 String?  @map("outlook_markdown") @db.Text
   detailedAnalysis                String?  @map("detailed_analysis") @db.Text
   direction                       String   @default("DOWNSIDE") @map("direction")
   timeframe                       String   @default("FUTURE") @map("timeframe")

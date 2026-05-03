@@ -240,9 +240,9 @@ below are the remaining open work.
 
 ### Open questions (decide before Phase 2/3/4 land)
 
-- [ ] **Shared scenarios table vs parallel tables with ETFs?** Underlying cause and
-  historical analog are identical between an ETF and stock counterpart of the same
-  scenario; only winner/loser/most-exposed lists differ. Option A (parallel tables) is
+- [ ] **Shared scenarios table vs parallel tables with ETFs?** The narrative `summary`
+  is identical between an ETF and stock counterpart of the same scenario; only
+  winner/loser/most-exposed lists differ. Option A (parallel tables) is
   simpler and matches today's code. Option B (shared `Scenario` table + `ScenarioEtfLink`
   + `ScenarioStockLink`) is one source of truth for the narrative but requires migrating
   the existing `EtfScenario` data and updating every caller. Pick before any further
@@ -304,9 +304,10 @@ than invent new ones.
     demand", "younger generation prefers experiences over ownership", "shift from ICE to EV",
     "re-shoring of semiconductor manufacturing", etc.).
   - **Slug** — stable URL-safe identifier, derived from title on create.
-  - **Underlying cause** (markdown) — why the trend is happening.
-  - **Historical analog** (markdown) — past equivalent shift. Borrowed from scenarios; very
-    high-value for trends (e.g. dot-com adoption curve, boomer housing demand in the 1970s).
+  - **Summary** (markdown, 4–5 paragraphs) — folds the underlying cause / mechanism, the
+    historical analog (e.g. dot-com adoption curve, boomer housing demand in the 1970s),
+    magnitude, and the dated outlook into a single narrative. Same shape as
+    `StockScenario.summary`.
   - **Direction** — `UPSIDE` / `DOWNSIDE` (reuse the scenario enum): does the trend lift or
     depress mapped stocks?
   - **Timeframe / lifecycle** — `FUTURE` / `IN_PROGRESS` / `PAST`. Replaces the earlier
@@ -318,7 +319,8 @@ than invent new ones.
     `FULLY_PRICED_IN` / `OVER_PRICED_IN`.
   - **Expected price change** (int %) + **expectedPriceChangeExplanation** (markdown) +
     **priceChangeTimeframeExplanation** (markdown) — same trio scenarios use.
-  - **Outlook** (markdown) + **`outlookAsOfDate`** — "last reviewed" date.
+  - **`outlookAsOfDate`** — "last reviewed" date. The dated outlook itself lives inside
+    the **Summary** field above (same shape as `StockScenario`).
   - **Evidence / sources** (markdown or structured list).
   - **Archived** boolean — soft-delete, same pattern as scenarios.
   - **Author** + `createdAt` / `updatedAt`.

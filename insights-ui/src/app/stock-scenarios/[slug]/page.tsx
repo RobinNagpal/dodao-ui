@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     probabilityBucket: scenario.probabilityBucket,
     outlookAsOfDate: scenario.outlookAsOfDate.slice(0, 10),
     metaDescription: scenario.metaDescription,
-    underlyingCause: scenario.underlyingCause,
+    summary: scenario.summary,
     createdTime: scenario.createdAt,
     updatedTime: scenario.updatedAt,
   });
@@ -75,7 +75,7 @@ export default async function StockScenarioDetailPage({ params }: { params: Rout
             generateStockScenarioDetailArticleJsonLd({
               title: scenario.title,
               slug: scenario.slug,
-              underlyingCause: scenario.underlyingCause,
+              summary: scenario.summary,
               publishedDate: scenario.createdAt,
               modifiedDate: scenario.updatedAt,
             })

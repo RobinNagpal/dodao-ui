@@ -48,9 +48,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
-  const [underlyingCause, setUnderlyingCause] = useState<string>('');
-  const [historicalAnalog, setHistoricalAnalog] = useState<string>('');
-  const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
+  const [summary, setSummary] = useState<string>('');
   const [detailedAnalysis, setDetailedAnalysis] = useState<string>('');
   const [direction, setDirection] = useState<EtfScenarioDirection>('DOWNSIDE');
   const [timeframe, setTimeframe] = useState<EtfScenarioTimeframe>('FUTURE');
@@ -87,9 +85,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       setScenarioNumber(1);
       setTitle('');
       setSlug('');
-      setUnderlyingCause('');
-      setHistoricalAnalog('');
-      setOutlookMarkdown('');
+      setSummary('');
       setDetailedAnalysis('');
       setDirection('DOWNSIDE');
       setTimeframe('FUTURE');
@@ -118,9 +114,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setScenarioNumber(data.scenarioNumber);
         setTitle(data.title);
         setSlug(data.slug);
-        setUnderlyingCause(data.underlyingCause);
-        setHistoricalAnalog(data.historicalAnalog);
-        setOutlookMarkdown(data.outlookMarkdown);
+        setSummary(data.summary);
         setDetailedAnalysis(data.detailedAnalysis ?? '');
         setDirection(data.direction as EtfScenarioDirection);
         setTimeframe(data.timeframe as EtfScenarioTimeframe);
@@ -146,8 +140,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
     e.preventDefault();
     setFormError('');
 
-    if (!title || !underlyingCause || !historicalAnalog || !outlookMarkdown) {
-      setFormError('Title, underlying cause, historical analog, and outlook are required.');
+    if (!title || !summary) {
+      setFormError('Title and summary are required.');
       return;
     }
     if (countries.length === 0) {
@@ -179,9 +173,7 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       scenarioNumber,
       title,
       slug: slug || undefined,
-      underlyingCause,
-      historicalAnalog,
-      outlookMarkdown,
+      summary,
       detailedAnalysis: detailedAnalysis || null,
       direction,
       timeframe,
@@ -363,26 +355,10 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         />
 
         <TextareaAutosize
-          label="Underlying cause (markdown)"
-          modelValue={underlyingCause}
+          label="Summary (markdown — 4–5 paragraphs covering cause, historical analog, and outlook with the as-of date)"
+          modelValue={summary}
           onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setUnderlyingCause(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Historical analog (markdown)"
-          modelValue={historicalAnalog}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setHistoricalAnalog(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Outlook (markdown; should include the as-of date and catalysts)"
-          modelValue={outlookMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setOutlookMarkdown(v);
+            if (typeof v === 'string') setSummary(v);
           }}
         />
 
