@@ -43,7 +43,7 @@ const createStockScenarioSchema = z.object({
         role: z.nativeEnum(ScenarioRole),
         sortOrder: z.number().int().nonnegative().optional(),
         roleExplanation: z.string().nullable().optional(),
-        expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+        expectedPriceChange: z.number().int().min(-100).max(2000).nullable().optional(),
         expectedPriceChangeExplanation: z.string().nullable().optional(),
         pricedInBucket: z.nativeEnum(ScenarioPricedInBucket).nullable().optional(),
       })

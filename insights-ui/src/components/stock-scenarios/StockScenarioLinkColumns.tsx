@@ -213,10 +213,11 @@ function countryOfExchange(exchange: string): SupportedCountries | null {
 interface StockScenarioLinkColumnsProps {
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
+  tenBaggers: StockScenarioLinkDto[];
   scenarioCountries: SupportedCountries[];
 }
 
-export default function StockScenarioLinkColumns({ winners, losers, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
+export default function StockScenarioLinkColumns({ winners, losers, tenBaggers, scenarioCountries }: StockScenarioLinkColumnsProps): JSX.Element {
   const [countryFilter, setCountryFilter] = useState<SupportedCountries | 'ALL'>('ALL');
 
   // Disable country options that the scenario doesn't cover; the user still
@@ -231,6 +232,9 @@ export default function StockScenarioLinkColumns({ winners, losers, scenarioCoun
 
   const filteredWinners = filterByCountry(winners);
   const filteredLosers = filterByCountry(losers);
+  const filteredBaggers = filterByCountry(tenBaggers);
+  const hasBaggers = tenBaggers.length > 0;
+  const gridClass = hasBaggers ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'grid grid-cols-1 md:grid-cols-2 gap-4';
 
   return (
     <section className="bg-[#1F2937] border border-[#374151] rounded-lg p-4 space-y-4">
@@ -254,7 +258,7 @@ export default function StockScenarioLinkColumns({ winners, losers, scenarioCoun
         </label>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className={gridClass}>
         <LinkList
           title="Winners"
           links={filteredWinners}
@@ -269,6 +273,15 @@ export default function StockScenarioLinkColumns({ winners, losers, scenarioCoun
           countryFilter={countryFilter}
           emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as losers.' : `No losers listed on ${countryFilter} exchanges.`}
         />
+        {hasBaggers && (
+          <LinkList
+            title="10 Baggers"
+            links={filteredBaggers}
+            filteredCount={filteredBaggers.length}
+            countryFilter={countryFilter}
+            emptyLabel={countryFilter === 'ALL' ? 'No stocks tagged as 10 baggers.' : `No 10 baggers listed on ${countryFilter} exchanges.`}
+          />
+        )}
       </div>
     </section>
   );

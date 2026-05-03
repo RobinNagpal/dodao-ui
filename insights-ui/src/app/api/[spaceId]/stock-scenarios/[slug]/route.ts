@@ -61,6 +61,7 @@ export interface StockScenarioDetail
   updatedAt: string;
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
+  tenBaggers: StockScenarioLinkDto[];
 }
 
 function toLinkDto(link: StockScenarioStockLink, resolved: ResolvedTicker | undefined): StockScenarioLinkDto {
@@ -150,6 +151,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     updatedAt: updatedAt.toISOString(),
     winners: stockLinks.filter((l) => l.role === 'WINNER').map(mapLink),
     losers: stockLinks.filter((l) => l.role === 'LOSER').map(mapLink),
+    tenBaggers: stockLinks.filter((l) => l.role === 'TEN_BAGGER').map(mapLink),
   };
 }
 

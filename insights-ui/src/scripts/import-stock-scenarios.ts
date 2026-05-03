@@ -1,3 +1,7 @@
+// Editorial convention (NOT enforced by the schema or this script):
+// every stock scenario ships with EXACTLY 5 winners and 5 losers, plus
+// optionally up to 5 "10 Baggers". See
+// `docs/insights-ui/scenario-authoring.md` for the full convention.
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';

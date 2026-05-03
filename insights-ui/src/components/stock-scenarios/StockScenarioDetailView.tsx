@@ -93,7 +93,7 @@ export default function StockScenarioDetailView({ scenario }: { scenario: StockS
         <h2 id="impacted-stocks-heading" className="sr-only">
           Impacted stocks
         </h2>
-        <StockScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} scenarioCountries={scenario.countries} />
+        <StockScenarioLinkColumns winners={scenario.winners} losers={scenario.losers} tenBaggers={scenario.tenBaggers} scenarioCountries={scenario.countries} />
       </section>
     </article>
   );

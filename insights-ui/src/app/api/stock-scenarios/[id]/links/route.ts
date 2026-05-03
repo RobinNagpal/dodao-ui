@@ -22,7 +22,7 @@ const addLinkSchema = z.object({
   role: z.nativeEnum(ScenarioRole),
   sortOrder: z.number().int().nonnegative().optional(),
   roleExplanation: z.string().nullable().optional(),
-  expectedPriceChange: z.number().int().min(-100).max(100).nullable().optional(),
+  expectedPriceChange: z.number().int().min(-100).max(2000).nullable().optional(),
   expectedPriceChangeExplanation: z.string().nullable().optional(),
   pricedInBucket: z.nativeEnum(ScenarioPricedInBucket).nullable().optional(),
 });
@@ -95,7 +95,7 @@ async function postHandler(
 }
 
 function isScenarioRole(value: string | null): value is ScenarioRole {
-  return value === 'WINNER' || value === 'LOSER';
+  return value === 'WINNER' || value === 'LOSER' || value === 'TEN_BAGGER';
 }
 
 async function deleteHandler(
@@ -110,7 +110,7 @@ async function deleteHandler(
   const roleParam = searchParams.get('role');
 
   if (!symbolParam || !exchangeParam || !isScenarioRole(roleParam)) {
-    throw new Error('symbol, exchange, and role (WINNER|LOSER) query params are required');
+    throw new Error('symbol, exchange, and role (WINNER|LOSER|TEN_BAGGER) query params are required');
   }
   if (!isExchange(exchangeParam.toUpperCase())) {
     throw new Error(`exchange "${exchangeParam}" is not one of the supported exchanges`);

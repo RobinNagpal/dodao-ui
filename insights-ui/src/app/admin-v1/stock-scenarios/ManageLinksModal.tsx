@@ -31,7 +31,7 @@ interface AddLinkFormState {
   pricedInBucket: ScenarioPricedInBucket;
 }
 
-const ROLES: ScenarioRole[] = ['WINNER', 'LOSER'];
+const ROLES: ScenarioRole[] = ['WINNER', 'LOSER', 'TEN_BAGGER'];
 
 const PRICED_IN_BUCKETS: ScenarioPricedInBucket[] = [
   ScenarioPricedInBucket.NOT_PRICED_IN,
@@ -111,8 +111,8 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     let expectedPriceChangeValue: number | null = null;
     if (form.expectedPriceChange.trim() !== '') {
       const n = parseInt(form.expectedPriceChange, 10);
-      if (isNaN(n) || n < -100 || n > 100) {
-        setFormError('Expected price change must be an integer between -100 and 100.');
+      if (isNaN(n) || n < -100 || n > 2000) {
+        setFormError('Expected price change must be an integer between -100 and 2000.');
         return;
       }
       expectedPriceChangeValue = n;
@@ -156,6 +156,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
   const allLinks: Array<{ heading: string; role: ScenarioRole; items: StockScenarioLinkDto[] }> = [
     { heading: 'Winners', role: 'WINNER', items: detail?.winners ?? [] },
     { heading: 'Losers', role: 'LOSER', items: detail?.losers ?? [] },
+    { heading: '10 Baggers', role: 'TEN_BAGGER', items: detail?.tenBaggers ?? [] },
   ];
 
   return (
@@ -218,18 +219,18 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <TextareaAutosize
-                  label="Role explanation (why this stock is a winner / loser — markdown)"
+                  label="Role explanation (why this stock is a winner / loser / 10 bagger — markdown)"
                   modelValue={form.roleExplanation}
                   onUpdate={(v: unknown): void => {
                     if (typeof v === 'string') setForm((f) => ({ ...f, roleExplanation: v }));
                   }}
                 />
                 <label className="flex flex-col gap-1 text-sm">
-                  <span className="text-gray-300">Expected price change % (-100 to 100)</span>
+                  <span className="text-gray-300">Expected price change % (-100 to 2000)</span>
                   <input
                     type="number"
                     min={-100}
-                    max={100}
+                    max={2000}
                     className="bg-[#111827] border border-[#374151] rounded px-2 py-1.5 text-sm text-white"
                     value={form.expectedPriceChange}
                     onChange={(e) => setForm((f) => ({ ...f, expectedPriceChange: e.target.value }))}
