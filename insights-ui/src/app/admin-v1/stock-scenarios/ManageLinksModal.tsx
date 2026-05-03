@@ -111,10 +111,6 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
     let expectedPriceChangeValue: number | null = null;
     if (form.expectedPriceChange.trim() !== '') {
       const n = parseInt(form.expectedPriceChange, 10);
-      // Wider upper bound (2000) covers TEN_BAGGER bullets where a 10-bagger
-      // is +900% and a stretch 20-bagger reaches +2000%. Winners/losers in
-      // practice still stay inside ±100 — the wider window only matters
-      // for the TEN_BAGGER role.
       if (isNaN(n) || n < -100 || n > 2000) {
         setFormError('Expected price change must be an integer between -100 and 2000.');
         return;
@@ -230,7 +226,7 @@ export default function ManageLinksModal({ isOpen, onClose, onSuccess, scenarioI
                   }}
                 />
                 <label className="flex flex-col gap-1 text-sm">
-                  <span className="text-gray-300">Expected price change % (-100 to 2000; baggers can use up to +2000)</span>
+                  <span className="text-gray-300">Expected price change % (-100 to 2000)</span>
                   <input
                     type="number"
                     min={-100}

@@ -213,10 +213,6 @@ function countryOfExchange(exchange: string): SupportedCountries | null {
 interface StockScenarioLinkColumnsProps {
   winners: StockScenarioLinkDto[];
   losers: StockScenarioLinkDto[];
-  // Optional third bucket — small/micro caps with plausible 5–10x upside under
-  // this scenario. Scenarios without a `**10 Baggers**` markdown section pass
-  // an empty array and the column is hidden so 2-bucket scenarios still get
-  // the wider 2-column layout.
   tenBaggers: StockScenarioLinkDto[];
   scenarioCountries: SupportedCountries[];
 }

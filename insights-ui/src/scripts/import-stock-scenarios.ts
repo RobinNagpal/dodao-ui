@@ -1,16 +1,7 @@
 // Editorial convention (NOT enforced by the schema or this script):
 // every stock scenario ships with EXACTLY 5 winners and 5 losers, plus
-// (optionally) up to 5 "10 Baggers" — small/micro caps with plausible
-// 5–10x upside drawn from the value-chain layers in the detailed
-// analysis. The DB will happily accept more, but the public detail page
-// is curated as a ranked trade idea, not a coverage list. Drop the
-// weakest existing pick before adding a sixth. The 10 Baggers section
-// is stock-only and optional — skip it for any scenario where no
-// candidate clears the bar. See `docs/insights-ui/scenario-authoring.md`
-// for the full convention and
-// `docs/insights-ui/scenario-prompts/detailed-analysis.md` for the
-// prompt used to author the optional `detailedAnalysis` long-form
-// section.
+// optionally up to 5 "10 Baggers". See
+// `docs/insights-ui/scenario-authoring.md` for the full convention.
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
