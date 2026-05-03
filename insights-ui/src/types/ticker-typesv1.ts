@@ -143,7 +143,6 @@ export enum ReportType {
   PAST_PERFORMANCE = 'past-performance',
   FUTURE_GROWTH = 'future-growth',
   FAIR_VALUE = 'fair-value',
-  FUTURE_RISK = 'future-risk',
   MANAGEMENT_TEAM = 'management-team',
   FINAL_SUMMARY = 'final-summary',
 }
@@ -156,7 +155,6 @@ export const analysisTypes: AnalysisTypeInfo[] = [
   { key: ReportType.PAST_PERFORMANCE, label: 'Past Performance' },
   { key: ReportType.FUTURE_GROWTH, label: 'Future Growth' },
   { key: ReportType.FAIR_VALUE, label: 'Fair Value' },
-  { key: ReportType.FUTURE_RISK, label: 'Future Risk' },
   { key: ReportType.MANAGEMENT_TEAM, label: 'Management Team' },
   { key: ReportType.FINAL_SUMMARY, label: 'Final Summary' },
 ];

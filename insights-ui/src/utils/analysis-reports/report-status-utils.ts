@@ -19,8 +19,6 @@ export function shouldRegenerateReport(request: TickerV1GenerationRequest, repor
       return request.regenerateFutureGrowth;
     case ReportType.FAIR_VALUE:
       return request.regenerateFairValue;
-    case ReportType.FUTURE_RISK:
-      return request.regenerateFutureRisk;
     case ReportType.MANAGEMENT_TEAM:
       return request.regenerateManagementTeam;
     case ReportType.FINAL_SUMMARY:

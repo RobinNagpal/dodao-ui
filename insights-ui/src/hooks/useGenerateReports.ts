@@ -140,7 +140,6 @@ export const useGenerateReports = () => {
           regeneratePastPerformance: false,
           regenerateFutureGrowth: false,
           regenerateFairValue: false,
-          regenerateFutureRisk: false,
           regenerateManagementTeam: false,
           regenerateFinalSummary: false,
         };
@@ -152,7 +151,6 @@ export const useGenerateReports = () => {
           else if (rt === ReportType.PAST_PERFORMANCE) payload.regeneratePastPerformance = true;
           else if (rt === ReportType.FUTURE_GROWTH) payload.regenerateFutureGrowth = true;
           else if (rt === ReportType.FAIR_VALUE) payload.regenerateFairValue = true;
-          else if (rt === ReportType.FUTURE_RISK) payload.regenerateFutureRisk = true;
           else if (rt === ReportType.MANAGEMENT_TEAM) payload.regenerateManagementTeam = true;
           else if (rt === ReportType.FINAL_SUMMARY) payload.regenerateFinalSummary = true;
         });
@@ -183,7 +181,6 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: false,
         regenerateManagementTeam: true,
         regenerateFinalSummary: true,
       }));
@@ -211,7 +208,6 @@ export const useGenerateReports = () => {
         regeneratePastPerformance: true,
         regenerateFutureGrowth: true,
         regenerateFairValue: true,
-        regenerateFutureRisk: false,
         regenerateManagementTeam: true,
         regenerateFinalSummary: true,
       }));
@@ -242,7 +238,6 @@ export const useGenerateReports = () => {
             regeneratePastPerformance: false,
             regenerateFutureGrowth: false,
             regenerateFairValue: false,
-            regenerateFutureRisk: false,
             regenerateManagementTeam: false,
             regenerateFinalSummary: false,
           };
@@ -254,7 +249,6 @@ export const useGenerateReports = () => {
             else if (step === ReportType.PAST_PERFORMANCE) p.regeneratePastPerformance = true;
             else if (step === ReportType.FUTURE_GROWTH) p.regenerateFutureGrowth = true;
             else if (step === ReportType.FAIR_VALUE) p.regenerateFairValue = true;
-            else if (step === ReportType.FUTURE_RISK) p.regenerateFutureRisk = true;
             else if (step === ReportType.MANAGEMENT_TEAM) p.regenerateManagementTeam = true;
             else if (step === ReportType.FINAL_SUMMARY) p.regenerateFinalSummary = true;
           });

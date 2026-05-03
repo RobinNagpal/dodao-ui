@@ -11,7 +11,6 @@ import {
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CachedScore,
   TickerV1CategoryAnalysisResult,
-  TickerV1FutureRisk,
   TickerV1Industry,
   TickerV1ManagementTeamReport,
   TickerV1SubIndustry,
@@ -71,7 +70,6 @@ export interface CompetitorTicker {
 
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
-  futureRisks?: TickerV1FutureRisk[];
   managementTeamReports?: TickerV1ManagementTeamReport[];
   vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;
@@ -113,7 +111,6 @@ export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prism
         },
       },
       investorAnalysisResults: true,
-      futureRisks: true,
       managementTeamReports: true,
       vsCompetition: true,
     },

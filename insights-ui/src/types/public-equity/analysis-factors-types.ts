@@ -50,11 +50,6 @@ export interface LLMFactorAnalysisResponse {
   }>;
 }
 
-export interface LLMFutureRiskResponse {
-  summary: string;
-  detailedAnalysis: string;
-}
-
 export interface LLMManagementTeamResponse {
   summary: string;
   detailedAnalysis: string;

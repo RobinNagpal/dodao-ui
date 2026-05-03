@@ -8,7 +8,6 @@ import {
   saveFinalSummaryResponse,
   saveFinancialAnalysisFactorAnalysisResponse,
   saveFutureGrowthFactorAnalysisResponse,
-  saveFutureRiskResponse,
   saveInvestorAnalysisResponse,
   saveManagementTeamResponse,
   savePastPerformanceFactorAnalysisResponse,
@@ -47,9 +46,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
       break;
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FairValue);
-      break;
-    case ReportType.FUTURE_RISK:
-      await saveFutureRiskResponse(ticker, exchange, llmResponse);
       break;
     case ReportType.MANAGEMENT_TEAM:
       await saveManagementTeamResponse(ticker, exchange, llmResponse);

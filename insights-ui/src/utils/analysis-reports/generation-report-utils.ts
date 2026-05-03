@@ -39,7 +39,6 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
   [ReportType.PAST_PERFORMANCE]: [],
   [ReportType.FUTURE_GROWTH]: [ReportType.BUSINESS_AND_MOAT],
   [ReportType.FAIR_VALUE]: [ReportType.BUSINESS_AND_MOAT, ReportType.FINANCIAL_ANALYSIS, ReportType.PAST_PERFORMANCE, ReportType.FUTURE_GROWTH],
-  [ReportType.FUTURE_RISK]: [],
   [ReportType.MANAGEMENT_TEAM]: [],
   [ReportType.FINAL_SUMMARY]: [
     ReportType.FINANCIAL_ANALYSIS,
@@ -48,7 +47,6 @@ export const reportDependencyMap: Record<ReportType, ReportType[]> = {
     ReportType.PAST_PERFORMANCE,
     ReportType.FUTURE_GROWTH,
     ReportType.FAIR_VALUE,
-    ReportType.FUTURE_RISK,
     ReportType.MANAGEMENT_TEAM,
   ],
 };
@@ -63,7 +61,6 @@ export const dependencyBasedReportOrder: ReportType[] = [
   ReportType.BUSINESS_AND_MOAT,
   ReportType.FINANCIAL_ANALYSIS,
   ReportType.PAST_PERFORMANCE,
-  ReportType.FUTURE_RISK,
   ReportType.MANAGEMENT_TEAM,
 
   // Dependent reports (with dependencies)
@@ -233,25 +230,6 @@ async function generateFairValueAnalysis(spaceId: string, tickerRecord: TickerV1
   });
 }
 
-async function generateFutureRiskAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
-  // Prepare base input JSON
-  const inputJson = prepareBaseTickerInputJson(tickerRecord);
-
-  // Call the LLM
-  await getLLMResponseForPromptViaInvocationViaLambda({
-    symbol: tickerRecord.symbol,
-    exchange: tickerRecord.exchange,
-    generationRequestId,
-    params: {
-      spaceId,
-      inputJson,
-      promptKey: 'US/public-equities-v1/future-risk',
-      requestFrom: 'ui',
-    },
-    reportType: ReportType.FUTURE_RISK,
-  });
-}
-
 async function generateManagementTeamAnalysis(spaceId: string, tickerRecord: TickerV1WithIndustryAndSubIndustry, generationRequestId: string): Promise<void> {
   // Prepare base input JSON
   const inputJson = prepareBaseTickerInputJson(tickerRecord);
@@ -417,9 +395,6 @@ export async function triggerGenerationOfAReportSimplified(symbol: string, excha
         break;
       case ReportType.FAIR_VALUE:
         await generateFairValueAnalysis(spaceId, tickerRecord, generationRequest.id);
-        break;
-      case ReportType.FUTURE_RISK:
-        await generateFutureRiskAnalysis(spaceId, tickerRecord, generationRequest.id);
         break;
       case ReportType.MANAGEMENT_TEAM:
         await generateManagementTeamAnalysis(spaceId, tickerRecord, generationRequest.id);
