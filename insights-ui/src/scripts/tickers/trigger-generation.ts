@@ -16,7 +16,6 @@ interface GenerationRequestPayload {
   regeneratePastPerformance: boolean;
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
-  regenerateFutureRisk: boolean;
   regenerateManagementTeam: boolean;
   regenerateFinalSummary: boolean;
 }
@@ -34,7 +33,6 @@ const ANALYSIS_CATEGORIES: readonly ReportType[] = [
   ReportType.PAST_PERFORMANCE,
   ReportType.FUTURE_GROWTH,
   ReportType.FAIR_VALUE,
-  ReportType.FUTURE_RISK,
   ReportType.MANAGEMENT_TEAM,
 ];
 
@@ -53,7 +51,6 @@ function buildPayload(ticker: TickerIdentifier, categories: ReportType[]): Gener
     regeneratePastPerformance: set.has(ReportType.PAST_PERFORMANCE),
     regenerateFutureGrowth: set.has(ReportType.FUTURE_GROWTH),
     regenerateFairValue: set.has(ReportType.FAIR_VALUE),
-    regenerateFutureRisk: set.has(ReportType.FUTURE_RISK),
     regenerateManagementTeam: set.has(ReportType.MANAGEMENT_TEAM),
     regenerateFinalSummary: set.has(ReportType.FINAL_SUMMARY),
   };

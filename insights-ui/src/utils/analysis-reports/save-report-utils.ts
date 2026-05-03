@@ -235,44 +235,6 @@ export async function saveCompetitionAnalysisResponse(
 }
 
 /**
- * Saves future risk response
- */
-export async function saveFutureRiskResponse(
-  ticker: string,
-  exchange: string,
-  response: {
-    summary: string;
-    detailedAnalysis: string;
-  }
-): Promise<void> {
-  const spaceId = KoalaGainsSpaceId;
-  const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
-
-  // Store future risk analysis result (upsert)
-  await prisma.tickerV1FutureRisk.upsert({
-    where: {
-      spaceId_tickerId: {
-        spaceId,
-        tickerId: tickerRecord.id,
-      },
-    },
-    update: {
-      summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
-      updatedAt: new Date(),
-    },
-    create: {
-      spaceId,
-      tickerId: tickerRecord.id,
-      summary: response.summary,
-      detailedAnalysis: response.detailedAnalysis,
-    },
-  });
-
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
-}
-
-/**
  * Saves management team experience and alignment response
  */
 export async function saveManagementTeamResponse(ticker: string, exchange: string, response: LLMManagementTeamResponse): Promise<void> {

@@ -13,7 +13,6 @@ export interface GenerationRequestPayload {
   regeneratePastPerformance: boolean;
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
-  regenerateFutureRisk: boolean;
   regenerateManagementTeam: boolean;
   regenerateFinalSummary: boolean;
   regenerateCachedScore: boolean;
@@ -62,7 +61,6 @@ async function postHandler(
         regeneratePastPerformance: payload.regeneratePastPerformance || existingRequest.regeneratePastPerformance,
         regenerateFutureGrowth: payload.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue || existingRequest.regenerateFairValue,
-        regenerateFutureRisk: payload.regenerateFutureRisk || existingRequest.regenerateFutureRisk,
         regenerateManagementTeam: payload.regenerateManagementTeam || existingRequest.regenerateManagementTeam,
         regenerateFinalSummary: payload.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
 
@@ -82,7 +80,6 @@ async function postHandler(
         regeneratePastPerformance: payload.regeneratePastPerformance,
         regenerateFutureGrowth: payload.regenerateFutureGrowth,
         regenerateFairValue: payload.regenerateFairValue,
-        regenerateFutureRisk: payload.regenerateFutureRisk,
         regenerateManagementTeam: payload.regenerateManagementTeam,
         regenerateFinalSummary: payload.regenerateFinalSummary,
       },
@@ -128,7 +125,6 @@ async function getHandler(req: NextRequest, { params }: { params: Promise<{ spac
       regeneratePastPerformance: false,
       regenerateFutureGrowth: false,
       regenerateFairValue: false,
-      regenerateFutureRisk: false,
       regenerateManagementTeam: false,
       regenerateFinalSummary: false,
       status: GenerationRequestStatus.NotStarted,
