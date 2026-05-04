@@ -24,8 +24,7 @@
     "stocks:add": "tsx src/scripts/tickers/add-stock.ts",
     "stocks:prompt": "tsx src/scripts/tickers/get-report-prompt.ts",
     "stocks:save": "tsx src/scripts/tickers/save-report.ts",
-    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts",
-    "tariffs:gen-candidate-codes-sql": "tsx src/scripts/tariff-calculator/generate-candidate-codes-sql.ts"
+    "stocks:list-oldest": "tsx src/scripts/tickers/list-oldest.ts"
   },
   "engines": {
     "node": ">=23.11.0"
