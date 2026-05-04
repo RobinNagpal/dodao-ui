@@ -150,6 +150,12 @@ function normalizeCandidate(raw: UpstreamCandidateCode): UpstreamCandidateCode {
 // `hts10` is the 10-digit HTSUS code with no separators. The upstream
 // endpoint returns 404 for non-existent codes; we throw so callers can map
 // that to a 404 response.
+//
+// Rate-limit handling: the upstream returns 429 to browsers and 403 to
+// non-browser User-Agents when the daily IP quota is exhausted, both with a
+// JSON body of `{"error":"Usage limit exceeded"}`. We tag those errors with
+// the `RATE_LIMITED:` prefix so the bulk-fetch script can distinguish them
+// from genuine permission/not-found failures and apply long backoff.
 export async function fetchCandidateCodes(hts10: string): Promise<UpstreamCandidateCode[]> {
   if (!/^\d{10}$/.test(hts10)) {
     throw new Error(`Invalid HTS 10-digit code: ${hts10}`);
@@ -157,7 +163,17 @@ export async function fetchCandidateCodes(hts10: string): Promise<UpstreamCandid
   const url = `${baseUrl()}/api/public/v1/candidate-codes/${hts10}`;
   const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' } });
   if (!res.ok) {
-    throw new Error(`Upstream candidate-codes fetch failed for ${hts10}: HTTP ${res.status}`);
+    let body = '';
+    try {
+      body = await res.text();
+    } catch {
+      // ignore — we only use the body to disambiguate quota errors.
+    }
+    if ((res.status === 429 || res.status === 403) && /usage limit/i.test(body)) {
+      const retryAfter = res.headers.get('retry-after');
+      throw new Error(`RATE_LIMITED: ${hts10}: HTTP ${res.status} (retry-after=${retryAfter ?? 'none'}) ${body.slice(0, 120)}`);
+    }
+    throw new Error(`Upstream candidate-codes fetch failed for ${hts10}: HTTP ${res.status}${body ? ` ${body.slice(0, 120)}` : ''}`);
   }
   const json = (await res.json()) as unknown;
   if (!Array.isArray(json)) {

@@ -26,15 +26,25 @@
 //   yarn tariffs:gen-candidate-codes-sql --chapter 1 --concurrency 4
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22 --out custom.sql
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22 --stdout      # pipe instead
+//   yarn tariffs:gen-candidate-codes-sql --chapter 4  --cache-dir ./cache/tariffs
+//   yarn tariffs:gen-candidate-codes-sql --chapter 4  --no-cache    # force re-fetch
 //
 // By default the SQL is written to
 // `generated-sql/tariff-candidate-codes-chapter-<N>.sql` (relative to cwd).
 // Pass `--out <path>` to override, or `--stdout` to dump to stdout. Stats
 // and progress always go to stderr.
+//
+// Per-HTS responses are cached to disk by default at
+// `.cache/tariff-candidate-codes/<hts10>.json` (relative to cwd). The cache
+// turns the upstream into a resumable feed: when the daily IP quota gets
+// exhausted mid-chapter, you can re-run the same command after the quota
+// resets and only the still-missing codes get fetched. Failures are NEVER
+// cached — only successful payloads. To force a full re-fetch, pass
+// `--no-cache` or just delete the cache directory.
 
 import 'dotenv/config';
 import { randomUUID } from 'node:crypto';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -54,6 +64,7 @@ interface CliArgs {
   limit: number | null;
   delayMs: number;
   concurrency: number;
+  cacheDir: string | null;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -101,7 +112,17 @@ function parseArgs(argv: string[]): CliArgs {
     throw new Error(`--concurrency must be an integer in 1..32 (got "${concurrencyRaw}")`);
   }
 
-  return { chapter, out, stdout, limit, delayMs, concurrency };
+  // Cache: default-on at .cache/tariff-candidate-codes; --no-cache disables;
+  // --cache-dir overrides path. We deliberately default-on because re-runs
+  // after a quota-exhaustion 429 are the script's primary failure mode.
+  const noCache = flags.get('no-cache') === 'true';
+  const cacheDirRaw = flags.get('cache-dir');
+  if (noCache && cacheDirRaw) {
+    throw new Error('Pass either --cache-dir <path> or --no-cache, not both.');
+  }
+  const cacheDir = noCache ? null : cacheDirRaw ?? path.join('.cache', 'tariff-candidate-codes');
+
+  return { chapter, out, stdout, limit, delayMs, concurrency, cacheDir };
 }
 
 // ---------------------------------------------------------------------------
@@ -420,17 +441,64 @@ async function fetchWithRetry(hts10: string, maxAttempts: number): Promise<Upstr
       return await fetchCandidateCodes(hts10);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      const retryable = message === 'fetch failed' || message.includes('ECONNRESET') || message.includes('ETIMEDOUT');
+      const isRateLimited = message.startsWith('RATE_LIMITED:') || message.includes('HTTP 429');
+      const isTransient =
+        message === 'fetch failed' ||
+        message.includes('ECONNRESET') ||
+        message.includes('ETIMEDOUT') ||
+        message.includes('HTTP 502') ||
+        message.includes('HTTP 503');
+      const retryable = isRateLimited || isTransient;
       if (!retryable || attempt === maxAttempts) {
         throw err;
       }
       lastErr = err;
-      const backoffMs = 500 * attempt;
+      // Rate-limit responses get long backoff (15s, 60s, 180s) — the upstream
+      // quota usually resets on a daily window, so short retries are useless.
+      // Transient network errors get the original short backoff.
+      const backoffMs = isRateLimited ? [15_000, 60_000, 180_000][attempt - 1] ?? 180_000 : 500 * attempt;
       console.error(`    retrying ${hts10} (attempt ${attempt + 1}/${maxAttempts}) in ${backoffMs}ms — ${describeFetchError(err)}`);
       await sleep(backoffMs);
     }
   }
   throw lastErr;
+}
+
+// Disk cache: one JSON file per HTS10. Successful upstream payloads are
+// cached so re-runs after a rate-limit can pick up where the previous run
+// gave up. Failures are NEVER cached — a 429/quota-exhausted error must be
+// re-attempted on the next run, not memoized as "no candidates".
+async function loadFromCache(cacheDir: string, hts10: string): Promise<UpstreamCandidateCode[] | null> {
+  const cachePath = path.join(cacheDir, `${hts10}.json`);
+  try {
+    const raw = await readFile(cachePath, 'utf-8');
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return null;
+    return parsed as UpstreamCandidateCode[];
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') return null;
+    throw err;
+  }
+}
+
+async function saveToCache(cacheDir: string, hts10: string, data: UpstreamCandidateCode[]): Promise<void> {
+  const cachePath = path.join(cacheDir, `${hts10}.json`);
+  await writeFile(cachePath, JSON.stringify(data), 'utf-8');
+}
+
+interface FetchOutcome {
+  data: UpstreamCandidateCode[];
+  fromCache: boolean;
+}
+
+async function fetchHts(hts10: string, cacheDir: string | null, maxAttempts: number): Promise<FetchOutcome> {
+  if (cacheDir) {
+    const cached = await loadFromCache(cacheDir, hts10);
+    if (cached) return { data: cached, fromCache: true };
+  }
+  const data = await fetchWithRetry(hts10, maxAttempts);
+  if (cacheDir) await saveToCache(cacheDir, hts10, data);
+  return { data, fromCache: false };
 }
 
 // Bounded-parallel runner — workers pull from a shared cursor.
@@ -473,6 +541,13 @@ async function main(): Promise<void> {
   const targets = args.limit ? all.slice(0, args.limit) : all;
 
   console.error(`Chapter ${chapter.number} ("${chapter.title}"): ${targets.length} HTS lines${args.limit ? ` (limited from ${all.length})` : ''}`);
+  if (args.cacheDir) {
+    const absCache = path.resolve(args.cacheDir);
+    await mkdir(absCache, { recursive: true });
+    console.error(`Cache: ${absCache} (re-runs skip already-cached HTS lines; pass --no-cache to force re-fetch)`);
+  } else {
+    console.error(`Cache: disabled (--no-cache)`);
+  }
   console.error(`Phase A: fetching upstream (concurrency=${args.concurrency})…`);
 
   // -------- Phase A: fetch + accumulate (deduped by (code, variant)) --------
@@ -480,11 +555,14 @@ async function main(): Promise<void> {
   const links: LinkRow[] = [];
   const failures: Array<{ hts10: string; reason: string }> = [];
   let processedLines = 0;
+  let cacheHits = 0;
+  let rateLimitedCount = 0;
   const fetchedAt = new Date();
 
   await runWithConcurrency(targets, args.concurrency, async (hts10) => {
     try {
-      const upstream = await fetchWithRetry(hts10, 3);
+      const { data: upstream, fromCache } = await fetchHts(hts10, args.cacheDir, 3);
+      if (fromCache) cacheHits += 1;
       // Lock around the shared maps isn't needed in single-threaded JS — the
       // awaits return synchronously into the same event loop turn here.
       for (const c of upstream) {
@@ -493,16 +571,28 @@ async function main(): Promise<void> {
         links.push({ hts10, code: c.codeVariant.code, variant: c.codeVariant.variant });
       }
       processedLines += 1;
-      console.error(`  ✓ ${hts10} (${upstream.length} candidates) [${processedLines}/${targets.length}]`);
+      const tag = fromCache ? 'cached' : 'fetched';
+      console.error(`  ✓ ${hts10} (${upstream.length} candidates, ${tag}) [${processedLines}/${targets.length}]`);
     } catch (err) {
       const reason = describeFetchError(err);
+      if (reason.includes('RATE_LIMITED:') || reason.includes('HTTP 429')) rateLimitedCount += 1;
       failures.push({ hts10, reason });
       console.error(`  ✗ ${hts10}: ${reason}`);
     }
     if (args.delayMs > 0) await sleep(args.delayMs);
   });
 
-  console.error(`Phase B: emitting SQL — ${candidates.size} unique candidates, ${links.length} HTS↔candidate links, ${failures.length} fetch failures`);
+  console.error(
+    `Phase B: emitting SQL — ${candidates.size} unique candidates, ${links.length} HTS↔candidate links,` +
+      ` ${failures.length} fetch failures (${rateLimitedCount} rate-limited, ${cacheHits} cache hits)`
+  );
+  if (rateLimitedCount > 0) {
+    console.error(
+      `WARNING: ${rateLimitedCount} HTS lines were rate-limited by the upstream. The successful` +
+        ` ones are cached on disk — re-run the same command after the upstream quota resets and` +
+        ` only the missing codes will be re-fetched.`
+    );
+  }
 
   // -------- Phase B: emit SQL --------
   const out: string[] = [];
@@ -550,7 +640,10 @@ async function main(): Promise<void> {
     console.error(`Wrote SQL → ${absPath}`);
   }
 
-  console.error(`Done: ${processedLines} HTS lines, ${candidates.size} unique candidates, ${links.length} links, ${failures.length} failures.`);
+  console.error(
+    `Done: ${processedLines} HTS lines, ${candidates.size} unique candidates, ${links.length} links,` +
+      ` ${failures.length} failures (${rateLimitedCount} rate-limited, ${cacheHits} from cache).`
+  );
 }
 
 main()
