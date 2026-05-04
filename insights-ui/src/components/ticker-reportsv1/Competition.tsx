@@ -262,7 +262,14 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
           )}
         </div>
 
-        <TickerRelatedSections exchange={tickerData.exchange} symbol={tickerData.symbol} companyName={tickerData.name} currentSlug="competition" />
+        {/* @ts-expect-error Async Server Component (React 18 typing limitation) */}
+        <TickerRelatedSections
+          tickerId={tickerData.id}
+          exchange={tickerData.exchange}
+          symbol={tickerData.symbol}
+          companyName={tickerData.name}
+          currentSlug="competition"
+        />
 
         {/* Article Footer */}
         <footer className="mt-8 pt-6 border-t border-color">

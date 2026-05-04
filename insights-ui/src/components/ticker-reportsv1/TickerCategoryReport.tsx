@@ -7,6 +7,7 @@ import React from 'react';
 const PASS_RESULT = 'Pass';
 
 type TickerDataLike = {
+  id: string;
   name: string;
   symbol: string;
   exchange: string;
@@ -161,7 +162,14 @@ export default function TickerCategoryReport({
           )}
         </div>
 
-        <TickerRelatedSections exchange={tickerData.exchange} symbol={tickerData.symbol} companyName={tickerData.name} currentSlug={pageSlug} />
+        {/* @ts-expect-error Async Server Component (React 18 typing limitation) */}
+        <TickerRelatedSections
+          tickerId={tickerData.id}
+          exchange={tickerData.exchange}
+          symbol={tickerData.symbol}
+          companyName={tickerData.name}
+          currentSlug={pageSlug}
+        />
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

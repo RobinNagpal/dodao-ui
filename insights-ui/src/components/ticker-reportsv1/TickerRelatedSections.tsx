@@ -1,8 +1,13 @@
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import React from 'react';
 
+const FULL_REPORT_SLUG = '';
+
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
-  { slug: '', label: 'Full Stock Report' },
+  { slug: FULL_REPORT_SLUG, label: 'Full Stock Report' },
   { slug: 'business-and-moat', label: 'Business & Moat' },
   { slug: 'financial-statement-analysis', label: 'Financial Statements' },
   { slug: 'past-performance', label: 'Past Performance' },
@@ -12,7 +17,16 @@ const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'management-team', label: 'Management Team' },
 ];
 
+const CATEGORY_TO_SLUG: Readonly<Record<TickerAnalysisCategory, string>> = {
+  [TickerAnalysisCategory.BusinessAndMoat]: 'business-and-moat',
+  [TickerAnalysisCategory.FinancialStatementAnalysis]: 'financial-statement-analysis',
+  [TickerAnalysisCategory.PastPerformance]: 'past-performance',
+  [TickerAnalysisCategory.FutureGrowth]: 'future-performance',
+  [TickerAnalysisCategory.FairValue]: 'fair-value',
+};
+
 export interface TickerRelatedSectionsProps {
+  tickerId: string;
   exchange: string;
   symbol: string;
   companyName: string;
@@ -20,10 +34,50 @@ export interface TickerRelatedSectionsProps {
   currentSlug: string;
 }
 
-export default function TickerRelatedSections({ exchange, symbol, companyName, currentSlug }: TickerRelatedSectionsProps): JSX.Element {
+async function getAvailableSlugs(tickerId: string): Promise<ReadonlySet<string>> {
+  const [categoryRows, competitionRow, managementRow] = await Promise.all([
+    prisma.tickerV1CategoryAnalysisResult.findMany({
+      where: {
+        spaceId: KoalaGainsSpaceId,
+        tickerId,
+        summary: { not: '' },
+        overallAnalysisDetails: { not: '' },
+      },
+      select: { categoryKey: true },
+    }),
+    prisma.tickerV1VsCompetition.findFirst({
+      where: { spaceId: KoalaGainsSpaceId, tickerId, overallAnalysisDetails: { not: '' } },
+      select: { id: true },
+    }),
+    prisma.tickerV1ManagementTeamReport.findFirst({
+      where: { spaceId: KoalaGainsSpaceId, tickerId, summary: { not: '' }, detailedAnalysis: { not: '' } },
+      select: { id: true },
+    }),
+  ]);
+
+  const available = new Set<string>([FULL_REPORT_SLUG]);
+  for (const row of categoryRows) {
+    const slug = CATEGORY_TO_SLUG[row.categoryKey as TickerAnalysisCategory];
+    if (slug) available.add(slug);
+  }
+  if (competitionRow) available.add('competition');
+  if (managementRow) available.add('management-team');
+  return available;
+}
+
+export default async function TickerRelatedSections({
+  tickerId,
+  exchange,
+  symbol,
+  companyName,
+  currentSlug,
+}: TickerRelatedSectionsProps): Promise<JSX.Element | null> {
   const ex = exchange.toUpperCase();
   const tk = symbol.toUpperCase();
-  const others = SECTIONS.filter((s) => s.slug !== currentSlug);
+  const available = await getAvailableSlugs(tickerId);
+  const others = SECTIONS.filter((s) => s.slug !== currentSlug && available.has(s.slug));
+
+  if (others.length === 0) return null;
 
   return (
     <nav aria-label={`More ${companyName} (${tk}) analyses`} className="mt-10 pt-6 border-t border-color">

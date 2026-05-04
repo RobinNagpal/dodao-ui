@@ -226,7 +226,14 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
           </div>
         </section>
 
-        <TickerRelatedSections exchange={tickerData.exchange} symbol={tickerData.symbol} companyName={tickerData.name} currentSlug="management-team" />
+        {/* @ts-expect-error Async Server Component (React 18 typing limitation) */}
+        <TickerRelatedSections
+          tickerId={tickerData.id}
+          exchange={tickerData.exchange}
+          symbol={tickerData.symbol}
+          companyName={tickerData.name}
+          currentSlug="management-team"
+        />
       </article>
     </PageWrapper>
   );
