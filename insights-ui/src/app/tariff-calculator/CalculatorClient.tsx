@@ -1,9 +1,9 @@
 'use client';
 
-import { CalculatorResult, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
+import { CalculatorResult, PotentialExclusion, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
 import { COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
 import { TariffCandidateCodeType } from '@prisma/client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface FormState {
   htsCode: string;
@@ -42,57 +42,96 @@ function digitsOnly(raw: string): string {
   return raw.replace(/[^\d]/g, '');
 }
 
+function exclusionKey(code: string, variant: string | null): string {
+  return `${code}|${variant ?? ''}`;
+}
+
+function formatExclusionTargets(targets: { code: string; variant: string | null }[]): string {
+  return targets.map((t) => (t.variant ? `${t.code} (${t.variant})` : t.code)).join(', ');
+}
+
 export default function CalculatorClient() {
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [result, setResult] = useState<CalculatorResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  // Set of `code|variant` keys for user-elected exclusions. Each toggle
+  // re-runs the duty engine with the new selection so the duty totals stay
+  // in sync with what the user has claimed.
+  const [chosenExclusions, setChosenExclusions] = useState<Set<string>>(new Set());
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
+  const submitCalculation = useCallback(
+    async (currentForm: FormState, exclusions: Set<string>) => {
+      setError(null);
+      setSubmitting(true);
+      try {
+        const hts10 = digitsOnly(currentForm.htsCode);
+        if (hts10.length !== 10) throw new Error('HTS code must contain 10 digits (separators are ignored).');
+        const value = Number(currentForm.shipmentValueUsd);
+        if (!Number.isFinite(value) || value <= 0) throw new Error('Shipment value must be a positive number.');
+        const qty = Number(currentForm.quantity);
+        const unitsOfMeasure: Record<string, number> = {};
+        if (currentForm.unitOfMeasure.trim() && Number.isFinite(qty) && qty >= 0) {
+          unitsOfMeasure[currentForm.unitOfMeasure.trim().toUpperCase()] = qty;
+        }
+        const body = {
+          hts10,
+          shipmentValueUsd: value,
+          countryOfOrigin: currentForm.countryOfOrigin,
+          modeOfTransport: currentForm.modeOfTransport,
+          entryDate: new Date(currentForm.entryDate).toISOString(),
+          dateOfLoading: new Date(currentForm.dateOfLoading).toISOString(),
+          unitsOfMeasure,
+          chosenSpis: [] as string[],
+          chosenExclusions: Array.from(exclusions),
+        };
+        const res = await fetch('/api/tariff-calculator/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+          const payload = (await res.json().catch(() => ({}))) as { message?: string; errorMessage?: string };
+          throw new Error(payload.errorMessage ?? payload.message ?? `Calculation failed (HTTP ${res.status})`);
+        }
+        setResult((await res.json()) as CalculatorResult);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Calculation failed');
+        setResult(null);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [setError, setSubmitting, setResult]
+  );
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    try {
-      const hts10 = digitsOnly(form.htsCode);
-      if (hts10.length !== 10) throw new Error('HTS code must contain 10 digits (separators are ignored).');
-      const value = Number(form.shipmentValueUsd);
-      if (!Number.isFinite(value) || value <= 0) throw new Error('Shipment value must be a positive number.');
-      const qty = Number(form.quantity);
-      const unitsOfMeasure: Record<string, number> = {};
-      if (form.unitOfMeasure.trim() && Number.isFinite(qty) && qty >= 0) {
-        unitsOfMeasure[form.unitOfMeasure.trim().toUpperCase()] = qty;
-      }
-      const body = {
-        hts10,
-        shipmentValueUsd: value,
-        countryOfOrigin: form.countryOfOrigin,
-        modeOfTransport: form.modeOfTransport,
-        entryDate: new Date(form.entryDate).toISOString(),
-        dateOfLoading: new Date(form.dateOfLoading).toISOString(),
-        unitsOfMeasure,
-        chosenSpis: [] as string[],
-      };
-      const res = await fetch('/api/tariff-calculator/calculate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) {
-        const payload = (await res.json().catch(() => ({}))) as { message?: string; errorMessage?: string };
-        throw new Error(payload.errorMessage ?? payload.message ?? `Calculation failed (HTTP ${res.status})`);
-      }
-      setResult((await res.json()) as CalculatorResult);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Calculation failed');
-      setResult(null);
-    } finally {
-      setSubmitting(false);
-    }
+    // Fresh form submit clears any previous user-elected exclusions — the
+    // shipment may have changed (different HTS, country, dates) and the old
+    // selection is no longer meaningful.
+    const fresh = new Set<string>();
+    setChosenExclusions(fresh);
+    await submitCalculation(form, fresh);
   }
+
+  async function toggleExclusion(key: string, applied: boolean) {
+    const next = new Set(chosenExclusions);
+    if (applied) next.add(key);
+    else next.delete(key);
+    setChosenExclusions(next);
+    await submitCalculation(form, next);
+  }
+
+  // Once we have a result we know whether any candidate is priced per-unit;
+  // if not, the UOM/Quantity inputs are inert and we hide them. Before the
+  // first calc we leave them visible so the user can fill them in case the
+  // selected HTS turns out to need a quantity.
+  const hideQuantityInputs = result !== null && !result.diagnostics.requiresQuantity;
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
@@ -192,38 +231,46 @@ export default function CalculatorClient() {
           </div>
         </div>
 
-        <div className="grid grid-cols-[100px_minmax(0,1fr)] gap-3">
-          <div>
-            <label htmlFor="unitOfMeasure" className="block text-sm font-medium mb-1">
-              UOM
-            </label>
-            <input
-              id="unitOfMeasure"
-              type="text"
-              value={form.unitOfMeasure}
-              onChange={(e) => update('unitOfMeasure', e.target.value)}
-              placeholder="KG"
-              className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase"
-            />
-          </div>
-          <div>
-            <label htmlFor="quantity" className="block text-sm font-medium mb-1">
-              Quantity
-            </label>
-            <input
-              id="quantity"
-              type="number"
-              min="0"
-              step="0.01"
-              value={form.quantity}
-              onChange={(e) => update('quantity', e.target.value)}
-              className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs"
-            />
-          </div>
-        </div>
-        <p className="text-xs opacity-70">
-          Required for codes priced per-unit (e.g. coffee at <span className="whitespace-nowrap">1.5¢/kg</span>). Ad-valorem-only HTS lines ignore quantity.
-        </p>
+        {hideQuantityInputs ? (
+          <p className="text-xs opacity-70">
+            UOM and quantity are not required for this HTS code — its duty rates are entirely ad-valorem (percentage of shipment value).
+          </p>
+        ) : (
+          <>
+            <div className="grid grid-cols-[100px_minmax(0,1fr)] gap-3">
+              <div>
+                <label htmlFor="unitOfMeasure" className="block text-sm font-medium mb-1">
+                  UOM
+                </label>
+                <input
+                  id="unitOfMeasure"
+                  type="text"
+                  value={form.unitOfMeasure}
+                  onChange={(e) => update('unitOfMeasure', e.target.value)}
+                  placeholder="KG"
+                  className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase"
+                />
+              </div>
+              <div>
+                <label htmlFor="quantity" className="block text-sm font-medium mb-1">
+                  Quantity
+                </label>
+                <input
+                  id="quantity"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={form.quantity}
+                  onChange={(e) => update('quantity', e.target.value)}
+                  className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs"
+                />
+              </div>
+            </div>
+            <p className="text-xs opacity-70">
+              Required for codes priced per-unit (e.g. coffee at <span className="whitespace-nowrap">1.5¢/kg</span>). Ad-valorem-only HTS lines ignore quantity.
+            </p>
+          </>
+        )}
 
         <button
           type="submit"
@@ -239,7 +286,7 @@ export default function CalculatorClient() {
 
       <div className="space-y-6">
         {result ? (
-          <ResultPanel result={result} />
+          <ResultPanel result={result} submitting={submitting} onToggleExclusion={toggleExclusion} />
         ) : (
           <div className="rounded-lg border border-dashed border-color p-8 text-center text-sm opacity-70">
             Fill out the shipment details and click <strong>Calculate duties</strong> to see a per-line breakdown of the applicable HTSUS rates and Chapter 99
@@ -251,8 +298,14 @@ export default function CalculatorClient() {
   );
 }
 
-function ResultPanel({ result }: { result: CalculatorResult }) {
-  const { lines, totals, diagnostics, hts10, inputs } = result;
+interface ResultPanelProps {
+  result: CalculatorResult;
+  submitting: boolean;
+  onToggleExclusion: (key: string, applied: boolean) => void;
+}
+
+function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps) {
+  const { lines, potentialExclusions, totals, diagnostics, hts10, inputs } = result;
 
   return (
     <>
@@ -314,6 +367,8 @@ function ResultPanel({ result }: { result: CalculatorResult }) {
         </table>
       </div>
 
+      {potentialExclusions.length > 0 && <PotentialExclusionsPanel exclusions={potentialExclusions} submitting={submitting} onToggle={onToggleExclusion} />}
+
       <div className="rounded-lg border border-color p-6">
         <h3 className="text-sm font-semibold uppercase tracking-wide opacity-70 mb-3">Cost breakdown</h3>
         <dl className="space-y-2 text-sm">
@@ -329,6 +384,61 @@ function ResultPanel({ result }: { result: CalculatorResult }) {
         </p>
       </div>
     </>
+  );
+}
+
+interface PotentialExclusionsPanelProps {
+  exclusions: PotentialExclusion[];
+  submitting: boolean;
+  onToggle: (key: string, applied: boolean) => void;
+}
+
+function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: PotentialExclusionsPanelProps) {
+  return (
+    <div className="rounded-lg border border-color p-6">
+      <h3 className="text-sm font-semibold uppercase tracking-wide opacity-70 mb-1">Potential exclusion codes</h3>
+      <p className="text-xs opacity-70 mb-4">
+        These Chapter 99 codes are not auto-applied — the importer must claim them. Toggle one to recalculate with that exclusion in effect.
+      </p>
+      <ul className="space-y-3">
+        {exclusions.map((ex) => {
+          const key = exclusionKey(ex.code, ex.variant);
+          return (
+            <li key={ex.candidateId} className="flex items-start gap-3">
+              <input
+                id={`excl-${ex.candidateId}`}
+                type="checkbox"
+                className="mt-1 h-4 w-4 cursor-pointer disabled:cursor-not-allowed"
+                checked={ex.applied}
+                disabled={submitting}
+                onChange={(e) => onToggle(key, e.target.checked)}
+              />
+              <label htmlFor={`excl-${ex.candidateId}`} className="flex-1 cursor-pointer">
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <span className="font-mono text-xs">
+                    {ex.code}
+                    {ex.variant ? ` (${ex.variant})` : ''}
+                  </span>
+                  <span
+                    className={`rounded px-1.5 py-0.5 text-[10px] uppercase tracking-wide ${
+                      ex.applied ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300' : 'bg-rose-500/15 text-rose-700 dark:text-rose-300'
+                    }`}
+                  >
+                    {ex.applied ? 'Applied' : 'Not applied'}
+                  </span>
+                  <span className="text-xs">{ex.label}</span>
+                </div>
+                <div className="text-xs opacity-70 mt-0.5">{ex.rateDescription || '—'}</div>
+                <div className="text-xs opacity-70 mt-0.5">
+                  {ex.applied ? 'Currently dropping: ' : 'Would drop: '}
+                  <span className="font-mono">{formatExclusionTargets(ex.excludesCodes)}</span>
+                </div>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 

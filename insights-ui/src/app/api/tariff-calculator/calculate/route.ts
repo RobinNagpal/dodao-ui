@@ -58,6 +58,15 @@ function parseChosenSpis(raw: unknown): string[] {
   });
 }
 
+function parseChosenExclusions(raw: unknown): string[] {
+  if (raw === undefined || raw === null) return [];
+  if (!Array.isArray(raw)) throw new Error('chosenExclusions must be an array of strings');
+  return raw.map((s, i) => {
+    if (typeof s !== 'string') throw new Error(`chosenExclusions[${i}] must be a string`);
+    return s;
+  });
+}
+
 function parseCalculatorInputs(body: unknown): CalculatorInputs {
   if (!isObject(body)) throw new Error('Request body must be an object');
   const hts10 = parseHts10(body.hts10);
@@ -75,6 +84,7 @@ function parseCalculatorInputs(body: unknown): CalculatorInputs {
     entryDate: parseIsoDate(body.entryDate, 'entryDate'),
     dateOfLoading: parseIsoDate(body.dateOfLoading, 'dateOfLoading'),
     chosenSpis: parseChosenSpis(body.chosenSpis),
+    chosenExclusions: parseChosenExclusions(body.chosenExclusions),
   };
 }
 

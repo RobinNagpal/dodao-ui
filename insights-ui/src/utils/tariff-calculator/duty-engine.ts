@@ -39,6 +39,10 @@ export interface CalculatorInputs {
   entryDate: string;
   dateOfLoading: string;
   chosenSpis: string[];
+  // Codes the user explicitly elected to apply. Each entry is `${code}|${variant ?? ''}`.
+  // Used for `requiresUserChoice`-flagged candidates (e.g. Section 122 Donation
+  // Exclusion) which never auto-apply — the importer has to claim them.
+  chosenExclusions: string[];
 }
 
 export interface DutyLine {
@@ -54,10 +58,26 @@ export interface DutyLine {
   notes: string[];
 }
 
+// A user-electable Chapter 99 code (requiresUserChoice = true) that — if the
+// importer claims it — would knock out at least one currently-active duty
+// line. The UI lists these with checkboxes; toggling re-submits the calc.
+export interface PotentialExclusion {
+  candidateId: string;
+  code: string;
+  variant: string | null;
+  label: string;
+  category: string | null;
+  rateDescription: string;
+  // Codes that would be dropped from the duty totals if the user applies this exclusion.
+  excludesCodes: { code: string; variant: string | null }[];
+  applied: boolean;
+}
+
 export interface CalculatorResult {
   hts10: string;
   inputs: CalculatorInputs;
   lines: DutyLine[];
+  potentialExclusions: PotentialExclusion[];
   totals: {
     baseCost: number;
     totalDuties: number;
@@ -70,6 +90,10 @@ export interface CalculatorResult {
     candidatesEvaluated: number;
     candidatesApplicable: number;
     candidatesExcluded: number;
+    // True when at least one candidate in scope is priced per-unit
+    // (computationCode "1" or any specific ratePrimary > 0). The UI hides the
+    // UOM/Quantity inputs when false.
+    requiresQuantity: boolean;
   };
 }
 
@@ -194,6 +218,10 @@ function computeLineDuty(c: CandidateCodeListItem, inputs: CalculatorInputs): Du
   return { amount, effectiveAdValoremRate, notes };
 }
 
+function keyFor(code: string, variant: string | null | undefined): string {
+  return `${code}|${variant ?? ''}`;
+}
+
 export function calculateDuties(candidates: CandidateCodeListItem[], inputs: CalculatorInputs): CalculatorResult {
   const entryDate = new Date(inputs.entryDate);
   if (Number.isNaN(entryDate.getTime())) {
@@ -204,13 +232,23 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
     (c) => withinDateWindow(c, entryDate) && countryMatches(c, inputs.countryOfOrigin) && applicabilityConditionsPass(c, inputs)
   );
 
-  // Drop codes that are excluded by another code that's also applicable.
-  // The exclusion graph is small per HTS line, so an O(n^2) scan is fine.
-  const applicableKeys = new Set(applicable.map((c) => `${c.code}|${c.variant ?? ''}`));
-  const surviving = applicable.filter((c) => {
+  // `requiresUserChoice` codes (e.g. Section 122 Donation Exclusion) are
+  // *never* auto-applied — the importer has to claim them. Split the
+  // applicable set so we can report user-electable ones separately and only
+  // include them in the active set when the user opts in.
+  const chosenSet = new Set(inputs.chosenExclusions);
+  const autoActive = applicable.filter((c) => !c.requiresUserChoice);
+  const userElectable = applicable.filter((c) => c.requiresUserChoice);
+  const userOptedIn = userElectable.filter((c) => chosenSet.has(keyFor(c.code, c.variant)));
+  const active = [...autoActive, ...userOptedIn];
+
+  // Drop codes whose EXCLUDED_BY references point to anything in the active
+  // set. The exclusion graph is small per HTS line, so an O(n^2) scan is fine.
+  const activeKeys = new Set(active.map((c) => keyFor(c.code, c.variant)));
+  const surviving = active.filter((c) => {
     for (const rel of c.relatedCodes) {
       if (rel.kind !== TariffRelatedCodeKind.EXCLUDED_BY) continue;
-      if (applicableKeys.has(`${rel.code}|${rel.variant ?? ''}`)) return false;
+      if (activeKeys.has(keyFor(rel.code, rel.variant))) return false;
     }
     return true;
   });
@@ -233,6 +271,53 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
     };
   });
 
+  // Build the "Potential Exclusion Codes" list. We only surface user-electable
+  // codes that would *actually* knock out at least one currently-charged duty
+  // line (or, if already opted in, that are knocking one out right now). This
+  // keeps the list focused on real choices instead of a wall of inert codes.
+  const survivingKeys = new Set(surviving.map((c) => keyFor(c.code, c.variant)));
+  const dutyLineKeys = new Set(lines.filter((l) => l.dutyAmount > 0).map((l) => keyFor(l.code, l.variant)));
+  const potentialExclusions: PotentialExclusion[] = [];
+  for (const c of userElectable) {
+    const isApplied = chosenSet.has(keyFor(c.code, c.variant));
+    // For "would exclude X" we look at *every* applicable code (auto + opted-in)
+    // and check whether it lists this user-electable code in its EXCLUDED_BY.
+    const wouldExcludeKeys = new Set<string>();
+    for (const candidate of applicable) {
+      if (candidate.requiresUserChoice) continue;
+      for (const rel of candidate.relatedCodes) {
+        if (rel.kind !== TariffRelatedCodeKind.EXCLUDED_BY) continue;
+        if (rel.code === c.code && (rel.variant ?? null) === (c.variant ?? null)) {
+          wouldExcludeKeys.add(keyFor(candidate.code, candidate.variant));
+        }
+      }
+    }
+    // Only worth showing if it currently affects, or would affect, a charged duty line.
+    const effectiveTargets: { code: string; variant: string | null }[] = [];
+    for (const candidate of applicable) {
+      if (candidate.requiresUserChoice) continue;
+      const k = keyFor(candidate.code, candidate.variant);
+      if (!wouldExcludeKeys.has(k)) continue;
+      const currentlyCharged = dutyLineKeys.has(k);
+      const wouldGetCharged = !survivingKeys.has(k); // dropped today, would re-appear if exclusion is dropped
+      if (isApplied && wouldGetCharged) effectiveTargets.push({ code: candidate.code, variant: candidate.variant });
+      else if (!isApplied && currentlyCharged) effectiveTargets.push({ code: candidate.code, variant: candidate.variant });
+    }
+    if (effectiveTargets.length === 0) continue;
+    potentialExclusions.push({
+      candidateId: c.id,
+      code: c.code,
+      variant: c.variant,
+      label: c.label,
+      category: c.category,
+      rateDescription: c.rateDescription,
+      excludesCodes: effectiveTargets,
+      applied: isApplied,
+    });
+  }
+
+  const requiresQuantity = candidates.some((c) => c.rateComputationCode === '1' || parseRate(c.ratePrimary) > 0);
+
   const baseCost = inputs.shipmentValueUsd;
   const hmf = inputs.modeOfTransport === 'OCEAN' ? baseCost * HMF_RATE : 0;
   let mpf = 0;
@@ -246,6 +331,7 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
     hts10: inputs.hts10,
     inputs,
     lines,
+    potentialExclusions,
     totals: {
       baseCost,
       totalDuties,
@@ -257,7 +343,8 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
     diagnostics: {
       candidatesEvaluated: candidates.length,
       candidatesApplicable: applicable.length,
-      candidatesExcluded: applicable.length - surviving.length,
+      candidatesExcluded: active.length - surviving.length,
+      requiresQuantity,
     },
   };
 }
