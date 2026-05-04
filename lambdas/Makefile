@@ -33,26 +33,31 @@ help:
 	@echo "  $(GREEN)setup-pull-news$(NC)           Install dependencies for pull-news-from-google"
 	@echo "  $(GREEN)setup-email-list$(NC)          Install dependencies for email-list"
 	@echo "  $(GREEN)setup-unzipper$(NC)            Install dependencies for unzipper-service"
+	@echo "  $(GREEN)setup-tariff-candidate-codes$(NC)  Install dependencies for tariff-candidate-codes"
 	@echo ""
 	@echo "  $(GREEN)build-ts-all$(NC)              Build all TypeScript functions"
 	@echo "  $(GREEN)build-pull-news$(NC)           Build pull-news-from-google function"
 	@echo "  $(GREEN)build-email-list$(NC)          Build email-list function"
 	@echo "  $(GREEN)build-unzipper$(NC)            Build unzipper-service function"
+	@echo "  $(GREEN)build-tariff-candidate-codes$(NC)  Build tariff-candidate-codes function"
 	@echo ""
 	@echo "  $(GREEN)deploy-ts-all$(NC)             Deploy all TypeScript functions"
 	@echo "  $(GREEN)deploy-pull-news$(NC)          Deploy pull-news-from-google function"
 	@echo "  $(GREEN)deploy-email-list$(NC)         Deploy email-list function"
 	@echo "  $(GREEN)deploy-unzipper$(NC)           Deploy unzipper-service function"
+	@echo "  $(GREEN)deploy-tariff-candidate-codes$(NC) Deploy tariff-candidate-codes function"
 	@echo ""
 	@echo "  $(GREEN)lint-ts-all$(NC)               Lint all TypeScript functions"
 	@echo "  $(GREEN)lint-pull-news$(NC)            Lint pull-news-from-google function"
 	@echo "  $(GREEN)lint-email-list$(NC)           Lint email-list function"
 	@echo "  $(GREEN)lint-unzipper$(NC)             Lint unzipper-service function"
+	@echo "  $(GREEN)lint-tariff-candidate-codes$(NC)   Lint tariff-candidate-codes function"
 	@echo ""
 	@echo "  $(GREEN)clean-ts-all$(NC)              Clean build artifacts for all TypeScript functions"
 	@echo "  $(GREEN)clean-pull-news$(NC)           Clean build artifacts for pull-news-from-google function"
 	@echo "  $(GREEN)clean-email-list$(NC)          Clean build artifacts for email-list function"
 	@echo "  $(GREEN)clean-unzipper$(NC)            Clean build artifacts for unzipper-service function"
+	@echo "  $(GREEN)clean-tariff-candidate-codes$(NC)  Clean build artifacts for tariff-candidate-codes function"
 
 # Python (Chalice) Functions
 .PHONY: setup-pull-google-news
@@ -70,7 +75,7 @@ deploy-pull-google-news:
 
 # TypeScript Functions - Setup
 .PHONY: setup-ts-all
-setup-ts-all: setup-pull-news setup-email-list setup-unzipper
+setup-ts-all: setup-pull-news setup-email-list setup-unzipper setup-tariff-candidate-codes
 
 .PHONY: setup-pull-news
 setup-pull-news:
@@ -87,9 +92,14 @@ setup-unzipper:
 	@echo "$(GREEN)Setting up unzipper-service...$(NC)"
 	cd unzipper-service && $(NPM) install
 
+.PHONY: setup-tariff-candidate-codes
+setup-tariff-candidate-codes:
+	@echo "$(GREEN)Setting up tariff-candidate-codes...$(NC)"
+	cd tariff-candidate-codes && $(NPM) install
+
 # TypeScript Functions - Build
 .PHONY: build-ts-all
-build-ts-all: build-pull-news build-email-list build-unzipper
+build-ts-all: build-pull-news build-email-list build-unzipper build-tariff-candidate-codes
 
 .PHONY: build-pull-news
 build-pull-news:
@@ -106,9 +116,14 @@ build-unzipper:
 	@echo "$(GREEN)Building unzipper-service...$(NC)"
 	cd unzipper-service && $(NPM) run compile
 
+.PHONY: build-tariff-candidate-codes
+build-tariff-candidate-codes:
+	@echo "$(GREEN)Building tariff-candidate-codes...$(NC)"
+	cd tariff-candidate-codes && $(NPM) run compile || echo "$(YELLOW)No compile script found, skipping...$(NC)"
+
 # TypeScript Functions - Deploy
 .PHONY: deploy-ts-all
-deploy-ts-all: deploy-pull-news deploy-email-list deploy-unzipper
+deploy-ts-all: deploy-pull-news deploy-email-list deploy-unzipper deploy-tariff-candidate-codes
 
 .PHONY: deploy-pull-news
 deploy-pull-news: build-pull-news
@@ -125,9 +140,14 @@ deploy-unzipper: build-unzipper
 	@echo "$(GREEN)Deploying unzipper-service...$(NC)"
 	cd unzipper-service && $(SERVERLESS) deploy
 
+.PHONY: deploy-tariff-candidate-codes
+deploy-tariff-candidate-codes: build-tariff-candidate-codes
+	@echo "$(GREEN)Deploying tariff-candidate-codes...$(NC)"
+	cd tariff-candidate-codes && $(SERVERLESS) deploy
+
 # TypeScript Functions - Lint
 .PHONY: lint-ts-all
-lint-ts-all: lint-pull-news lint-email-list lint-unzipper
+lint-ts-all: lint-pull-news lint-email-list lint-unzipper lint-tariff-candidate-codes
 
 .PHONY: lint-pull-news
 lint-pull-news:
@@ -144,9 +164,14 @@ lint-unzipper:
 	@echo "$(GREEN)Linting unzipper-service...$(NC)"
 	cd unzipper-service && $(NPM) run lint || echo "$(YELLOW)No lint script found, skipping...$(NC)"
 
+.PHONY: lint-tariff-candidate-codes
+lint-tariff-candidate-codes:
+	@echo "$(GREEN)Linting tariff-candidate-codes...$(NC)"
+	cd tariff-candidate-codes && $(NPM) run lint || echo "$(YELLOW)No lint script found, skipping...$(NC)"
+
 # TypeScript Functions - Clean
 .PHONY: clean-ts-all
-clean-ts-all: clean-pull-news clean-email-list clean-unzipper
+clean-ts-all: clean-pull-news clean-email-list clean-unzipper clean-tariff-candidate-codes
 
 .PHONY: clean-pull-news
 clean-pull-news:
@@ -162,6 +187,11 @@ clean-email-list:
 clean-unzipper:
 	@echo "$(GREEN)Cleaning unzipper-service...$(NC)"
 	rm -rf unzipper-service/dist unzipper-service/.serverless
+
+.PHONY: clean-tariff-candidate-codes
+clean-tariff-candidate-codes:
+	@echo "$(GREEN)Cleaning tariff-candidate-codes...$(NC)"
+	rm -rf tariff-candidate-codes/dist tariff-candidate-codes/.serverless
 
 # Default target
 .DEFAULT_GOAL := help

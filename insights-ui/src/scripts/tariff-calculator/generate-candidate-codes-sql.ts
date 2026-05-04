@@ -28,6 +28,7 @@
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22 --stdout      # pipe instead
 //   yarn tariffs:gen-candidate-codes-sql --chapter 4  --cache-dir ./cache/tariffs
 //   yarn tariffs:gen-candidate-codes-sql --chapter 4  --no-cache    # force re-fetch
+//   yarn tariffs:gen-candidate-codes-sql --chapter 4  --via-lambda  # route through AWS lambda
 //
 // By default the SQL is written to
 // `generated-sql/tariff-candidate-codes-chapter-<N>.sql` (relative to cwd).
@@ -41,6 +42,15 @@
 // resets and only the still-missing codes get fetched. Failures are NEVER
 // cached — only successful payloads. To force a full re-fetch, pass
 // `--no-cache` or just delete the cache directory.
+//
+// Lambda fan-out (--via-lambda): the upstream rate-limits per source IP, so a
+// single workstation gets blocked after ~2 chapters. Pass --via-lambda to
+// route every fetch through the `tariff-candidate-codes` Lambda
+// (lambdas/tariff-candidate-codes/), whose URL is read from the env var
+// `TARIFF_CANDIDATE_CODES_LAMBDA_URL`. Each concurrent invocation lands on a
+// fresh Lambda execution environment with its own AWS egress IP, so the
+// per-IP quota effectively scales with our concurrency. Default concurrency
+// is bumped to 25 in this mode (override with --concurrency).
 
 import 'dotenv/config';
 import { randomUUID } from 'node:crypto';
@@ -65,6 +75,8 @@ interface CliArgs {
   delayMs: number;
   concurrency: number;
   cacheDir: string | null;
+  viaLambda: boolean;
+  lambdaUrl: string | null;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -106,8 +118,26 @@ function parseArgs(argv: string[]): CliArgs {
   if (!Number.isInteger(delayMs) || delayMs < 0) {
     throw new Error(`--delay-ms must be a non-negative integer (got "${delayRaw}")`);
   }
+  // Lambda fan-out: when enabled, every upstream fetch goes through the
+  // `tariff-candidate-codes` Lambda for IP rotation. URL must come from env so
+  // it isn't checked into shell history; the local .env.example ships with
+  // an empty placeholder.
+  const viaLambda = flags.get('via-lambda') === 'true';
+  const lambdaUrlRaw = process.env.TARIFF_CANDIDATE_CODES_LAMBDA_URL?.trim() ?? '';
+  const lambdaUrl = lambdaUrlRaw.length > 0 ? lambdaUrlRaw : null;
+  if (viaLambda && !lambdaUrl) {
+    throw new Error(
+      '--via-lambda requires TARIFF_CANDIDATE_CODES_LAMBDA_URL to be set in the environment ' +
+        '(see insights-ui/.env.example). Deploy lambdas/tariff-candidate-codes and paste the API GW URL.'
+    );
+  }
+
+  // Default concurrency: 6 for direct fetch (be polite to upstream), 25 for
+  // lambda fan-out (each concurrent invocation gets its own egress IP, which
+  // is the whole point of routing through Lambda).
   const concurrencyRaw = flags.get('concurrency');
-  const concurrency = concurrencyRaw ? Number.parseInt(concurrencyRaw, 10) : 6;
+  const defaultConcurrency = viaLambda ? 25 : 6;
+  const concurrency = concurrencyRaw ? Number.parseInt(concurrencyRaw, 10) : defaultConcurrency;
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) {
     throw new Error(`--concurrency must be an integer in 1..32 (got "${concurrencyRaw}")`);
   }
@@ -122,7 +152,7 @@ function parseArgs(argv: string[]): CliArgs {
   }
   const cacheDir = noCache ? null : cacheDirRaw ?? path.join('.cache', 'tariff-candidate-codes');
 
-  return { chapter, out, stdout, limit, delayMs, concurrency, cacheDir };
+  return { chapter, out, stdout, limit, delayMs, concurrency, cacheDir, viaLambda, lambdaUrl };
 }
 
 // ---------------------------------------------------------------------------
@@ -522,6 +552,16 @@ async function runWithConcurrency<T>(items: readonly T[], limit: number, fn: (it
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
+
+  // When --via-lambda is set, point fetchCandidateCodes() at the API Gateway
+  // URL by overriding the env it reads. The Lambda mirrors the upstream path
+  // (/api/public/v1/candidate-codes/{hts10}) so no other code changes are
+  // needed; the response shape and error semantics are identical to a direct
+  // upstream call.
+  if (args.viaLambda && args.lambdaUrl) {
+    process.env.TARIFF_CANDIDATE_CODES_BASE_URL = args.lambdaUrl;
+    console.error(`Lambda fan-out enabled: routing fetches through ${args.lambdaUrl}`);
+  }
 
   const chapter = await prisma.tariffChapter.findUnique({
     where: { spaceId_number: { spaceId: KoalaGainsSpaceId, number: args.chapter } },

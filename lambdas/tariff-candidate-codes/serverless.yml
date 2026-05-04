@@ -1,0 +1,21 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: dodao
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: tariff-candidate-codes
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  # Upstream usually responds in <1s; cap a bit lower than the 29s API GW default
+  # so a hung upstream socket fails fast instead of holding the API GW connection.
+  timeout: 15
+  httpApi:
+    cors: true
+
+functions:
+  fetchCandidateCode:
+    handler: handler.fetchCandidateCode
+    events:
+      - httpApi:
+          path: /api/public/v1/candidate-codes/{hts10}
+          method: get
