@@ -2,20 +2,28 @@
 //
 // Given an HTSUS chapter number (e.g. `--chapter 22`), this:
 //   1. Reads every `hts_codes` row in that chapter that has a 10-digit code.
-//   2. Calls the upstream candidate-codes API for each one.
-//   3. Emits a self-contained SQL transcript that, when executed in pgAdmin
-//      (against dev or prod), upserts the same rows the runtime ingest path
-//      writes via Prisma — `tariff_candidate_codes`, its child tables, and
-//      the `hts_code_candidate_codes` link.
+//   2. Calls the upstream candidate-codes API for each one (in parallel).
+//   3. Deduplicates the candidates by (code, variant) — the upstream returns
+//      the same SPECIAL_CODE blanket set for almost every HTS line in a
+//      chapter, so emitting it once per HTS would inflate the SQL ~Nx.
+//   4. Emits a self-contained SQL transcript with two parts:
+//        a) one DO-block per UNIQUE candidate, which short-circuits if the
+//           candidate already exists in the DB (skip-if-exists semantics);
+//        b) one bulk INSERT ... SELECT for the entire HTS↔candidate fanout
+//           (`hts_code_candidate_codes`), using IS NOT DISTINCT FROM so the
+//           NULL-variant case joins correctly.
 //
-// The SQL is idempotent: re-running it for the same HTS line replaces that
-// candidate code's child rows in place. We do not touch data for HTS lines
-// outside the chapter we were asked to emit.
+// Why "skip-if-exists" instead of upsert: this script is the bulk seeding
+// path. Once a SPECIAL_CODE row is in the DB, the runtime admin POST in
+// `/api/tariff-calculator/candidate-codes/[hts10]` is the path used to
+// refresh a specific HTS line. The script avoids overwriting existing
+// candidates so re-runs are near-instant and don't churn child rows for
+// data that hasn't changed.
 //
 // Usage:
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22
 //   yarn tariffs:gen-candidate-codes-sql --chapter 9 --limit 5      # quick test
-//   yarn tariffs:gen-candidate-codes-sql --chapter 1 --delay-ms 500
+//   yarn tariffs:gen-candidate-codes-sql --chapter 1 --concurrency 4
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22 --out custom.sql
 //   yarn tariffs:gen-candidate-codes-sql --chapter 22 --stdout      # pipe instead
 //
@@ -25,6 +33,7 @@
 // and progress always go to stderr.
 
 import 'dotenv/config';
+import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { prisma } from '@/prisma';
@@ -44,6 +53,7 @@ interface CliArgs {
   stdout: boolean;
   limit: number | null;
   delayMs: number;
+  concurrency: number;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -81,12 +91,17 @@ function parseArgs(argv: string[]): CliArgs {
     throw new Error(`--limit must be a positive integer (got "${limitRaw}")`);
   }
   const delayRaw = flags.get('delay-ms');
-  const delayMs = delayRaw ? Number.parseInt(delayRaw, 10) : 200;
+  const delayMs = delayRaw ? Number.parseInt(delayRaw, 10) : 0;
   if (!Number.isInteger(delayMs) || delayMs < 0) {
     throw new Error(`--delay-ms must be a non-negative integer (got "${delayRaw}")`);
   }
+  const concurrencyRaw = flags.get('concurrency');
+  const concurrency = concurrencyRaw ? Number.parseInt(concurrencyRaw, 10) : 6;
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) {
+    throw new Error(`--concurrency must be an integer in 1..32 (got "${concurrencyRaw}")`);
+  }
 
-  return { chapter, out, stdout, limit, delayMs };
+  return { chapter, out, stdout, limit, delayMs, concurrency };
 }
 
 // ---------------------------------------------------------------------------
@@ -136,27 +151,21 @@ function sqlJsonb(value: unknown): string {
   return `${sqlString(JSON.stringify(value))}::jsonb`;
 }
 
-// PL/pgSQL identifier escape — the variant subselect uses the value inline,
-// which is the only place we'd ever interpolate an identifier-like string.
 function sqlVariantPredicate(variant: string | null): string {
   if (variant === null) return 'variant IS NULL';
   return `variant = ${sqlString(variant)}`;
 }
 
 // ---------------------------------------------------------------------------
-// SQL block builder for a single candidate code
+// SQL block builder for a single (deduplicated) candidate code
 // ---------------------------------------------------------------------------
 
-interface BlockContext {
-  hts10: string;
-  fetchedAtIso: string;
-}
-
-function emitCandidateBlock(ctx: BlockContext, c: UpstreamCandidateCode): string {
+function emitCandidateBlock(c: UpstreamCandidateCode): string {
   const lines: string[] = [];
   const code = c.codeVariant.code;
   const variant = c.codeVariant.variant;
   const scope = mapCountryScope(c.countryScope);
+  const space = sqlString(KoalaGainsSpaceId);
 
   lines.push(`-- Candidate ${code}${variant ? `:${variant}` : ''} (${c.type})`);
   lines.push(`DO $$`);
@@ -164,210 +173,214 @@ function emitCandidateBlock(ctx: BlockContext, c: UpstreamCandidateCode): string
   // Primary keys on these tables are TEXT (Prisma `String @id @default(uuid())`
   // maps to TEXT, not native UUID). Declaring TEXT keeps `id = v_*` comparisons
   // sane — a UUID-typed local would fail with `operator does not exist: text = uuid`.
-  lines.push(`  v_hts_code_id    TEXT;`);
-  lines.push(`  v_candidate_id   TEXT;`);
-  if (c.tradeAnalytics.length > 0) {
-    lines.push(`  v_trade_analytic_id TEXT;`);
-  }
+  lines.push(`  v_id TEXT;`);
   lines.push(`BEGIN`);
-  lines.push(`  SELECT id INTO v_hts_code_id`);
-  lines.push(`  FROM hts_codes`);
-  lines.push(`  WHERE space_id = ${sqlString(KoalaGainsSpaceId)} AND hts_code_10 = ${sqlString(ctx.hts10)};`);
+  lines.push(`  SELECT id INTO v_id`);
+  lines.push(`  FROM tariff_candidate_codes`);
+  lines.push(`  WHERE space_id = ${space}`);
+  lines.push(`    AND code = ${sqlString(code)}`);
+  lines.push(`    AND ${sqlVariantPredicate(variant)};`);
   lines.push(``);
-  lines.push(`  IF v_hts_code_id IS NULL THEN`);
-  lines.push(`    RAISE NOTICE 'hts_code_10 % not found — skipping candidate %', ${sqlString(ctx.hts10)}, ${sqlString(code)};`);
+  // Skip-if-exists: bulk seeding is one-shot per chapter. Refreshing an
+  // existing candidate is the runtime admin POST's job.
+  lines.push(`  IF v_id IS NOT NULL THEN`);
   lines.push(`    RETURN;`);
   lines.push(`  END IF;`);
   lines.push(``);
 
-  // Find an existing candidate code row by (space_id, code, variant).
-  // We use an explicit IS NULL check because the unique index treats NULL
-  // variants as distinct, and we want to land on the exact row Prisma would.
-  lines.push(`  SELECT id INTO v_candidate_id`);
-  lines.push(`  FROM tariff_candidate_codes`);
-  lines.push(`  WHERE space_id = ${sqlString(KoalaGainsSpaceId)}`);
-  lines.push(`    AND code = ${sqlString(code)}`);
-  lines.push(`    AND ${sqlVariantPredicate(variant)};`);
+  lines.push(`  INSERT INTO tariff_candidate_codes (`);
+  lines.push(`    id, space_id, code, variant, type, line_description, full_description,`);
+  lines.push(`    effective_from, effective_to, rate_description,`);
+  lines.push(`    rate_primary, rate_secondary, rate_other, rate_penalty, rate_computation_code,`);
+  lines.push(`    units_of_measure, flags_for_anti_dumping, flags_for_countervailing,`);
+  lines.push(`    priority, requires_user_choice, country_scope_type, country_scope_countries,`);
+  lines.push(`    label, category, tags, pga_flags, fee_flags, parent_codes,`);
+  lines.push(`    line_split_field, line_split_conditions, relates_to_codes_digits,`);
+  lines.push(`    created_at, updated_at`);
+  lines.push(`  ) VALUES (`);
+  lines.push(`    gen_random_uuid()::text, ${space}, ${sqlString(code)}, ${sqlString(variant)},`);
+  lines.push(`    ${sqlEnum(mapCodeType(c.type), 'TariffCandidateCodeType')},`);
+  lines.push(`    ${sqlString(c.lineDescription)}, ${sqlString(c.fullDescription)},`);
+  lines.push(`    ${sqlTimestamp(new Date(c.effectiveFrom))}, ${sqlTimestamp(new Date(c.effectiveTo))},`);
+  lines.push(`    ${sqlString(c.rateDescription)},`);
+  lines.push(`    ${sqlString(c.rateInfo.primaryRate)}, ${sqlString(c.rateInfo.secondaryRate)},`);
+  lines.push(`    ${sqlString(c.rateInfo.otherRate)}, ${sqlString(c.rateInfo.penaltyRate)},`);
+  lines.push(`    ${sqlString(c.rateInfo.computationCode)},`);
+  lines.push(`    ${sqlTextArray(c.unitsOfMeasure)}, ${sqlBool(c.flagsForAntiDumping)}, ${sqlBool(c.flagsForCountervailing)},`);
+  lines.push(`    ${sqlInt(c.priority)}, ${sqlBool(c.requiresUserChoice)},`);
+  lines.push(`    ${sqlEnum(scope.type, 'TariffCountryScopeType')}, ${sqlTextArray(scope.countries)},`);
+  lines.push(`    ${sqlString(c.label)}, ${sqlString(c.category)},`);
+  lines.push(`    ${sqlTextArray(c.tags)}, ${sqlTextArray(c.pgaFlags)}, ${sqlTextArray(c.feeFlags)}, ${sqlTextArray(c.parentCodes)},`);
+  lines.push(`    ${sqlString(c.lineSplitField)}, ${sqlJsonb(c.lineSplitConditions)}, ${sqlJsonb(c.relatesToCodesDigits)},`);
+  lines.push(`    NOW(), NOW()`);
+  lines.push(`  ) RETURNING id INTO v_id;`);
   lines.push(``);
 
-  const scalarAssignments = [
-    `type = ${sqlEnum(mapCodeType(c.type), 'TariffCandidateCodeType')}`,
-    `line_description = ${sqlString(c.lineDescription)}`,
-    `full_description = ${sqlString(c.fullDescription)}`,
-    `effective_from = ${sqlTimestamp(new Date(c.effectiveFrom))}`,
-    `effective_to = ${sqlTimestamp(new Date(c.effectiveTo))}`,
-    `rate_description = ${sqlString(c.rateDescription)}`,
-    `rate_primary = ${sqlString(c.rateInfo.primaryRate)}`,
-    `rate_secondary = ${sqlString(c.rateInfo.secondaryRate)}`,
-    `rate_other = ${sqlString(c.rateInfo.otherRate)}`,
-    `rate_penalty = ${sqlString(c.rateInfo.penaltyRate)}`,
-    `rate_computation_code = ${sqlString(c.rateInfo.computationCode)}`,
-    `units_of_measure = ${sqlTextArray(c.unitsOfMeasure)}`,
-    `flags_for_anti_dumping = ${sqlBool(c.flagsForAntiDumping)}`,
-    `flags_for_countervailing = ${sqlBool(c.flagsForCountervailing)}`,
-    `priority = ${sqlInt(c.priority)}`,
-    `requires_user_choice = ${sqlBool(c.requiresUserChoice)}`,
-    `country_scope_type = ${sqlEnum(scope.type, 'TariffCountryScopeType')}`,
-    `country_scope_countries = ${sqlTextArray(scope.countries)}`,
-    `label = ${sqlString(c.label)}`,
-    `category = ${sqlString(c.category)}`,
-    `tags = ${sqlTextArray(c.tags)}`,
-    `pga_flags = ${sqlTextArray(c.pgaFlags)}`,
-    `fee_flags = ${sqlTextArray(c.feeFlags)}`,
-    `parent_codes = ${sqlTextArray(c.parentCodes)}`,
-    `line_split_field = ${sqlString(c.lineSplitField)}`,
-    `line_split_conditions = ${sqlJsonb(c.lineSplitConditions)}`,
-    `relates_to_codes_digits = ${sqlJsonb(c.relatesToCodesDigits)}`,
-    `updated_at = NOW()`,
-  ];
-
-  lines.push(`  IF v_candidate_id IS NULL THEN`);
-  lines.push(`    INSERT INTO tariff_candidate_codes (`);
-  lines.push(`      id, space_id, code, variant, type, line_description, full_description,`);
-  lines.push(`      effective_from, effective_to, rate_description,`);
-  lines.push(`      rate_primary, rate_secondary, rate_other, rate_penalty, rate_computation_code,`);
-  lines.push(`      units_of_measure, flags_for_anti_dumping, flags_for_countervailing,`);
-  lines.push(`      priority, requires_user_choice, country_scope_type, country_scope_countries,`);
-  lines.push(`      label, category, tags, pga_flags, fee_flags, parent_codes,`);
-  lines.push(`      line_split_field, line_split_conditions, relates_to_codes_digits,`);
-  lines.push(`      created_at, updated_at`);
-  lines.push(`    ) VALUES (`);
-  lines.push(`      gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, ${sqlString(code)}, ${sqlString(variant)},`);
-  lines.push(`      ${sqlEnum(mapCodeType(c.type), 'TariffCandidateCodeType')},`);
-  lines.push(`      ${sqlString(c.lineDescription)}, ${sqlString(c.fullDescription)},`);
-  lines.push(`      ${sqlTimestamp(new Date(c.effectiveFrom))}, ${sqlTimestamp(new Date(c.effectiveTo))},`);
-  lines.push(`      ${sqlString(c.rateDescription)},`);
-  lines.push(`      ${sqlString(c.rateInfo.primaryRate)}, ${sqlString(c.rateInfo.secondaryRate)},`);
-  lines.push(`      ${sqlString(c.rateInfo.otherRate)}, ${sqlString(c.rateInfo.penaltyRate)},`);
-  lines.push(`      ${sqlString(c.rateInfo.computationCode)},`);
-  lines.push(`      ${sqlTextArray(c.unitsOfMeasure)}, ${sqlBool(c.flagsForAntiDumping)}, ${sqlBool(c.flagsForCountervailing)},`);
-  lines.push(`      ${sqlInt(c.priority)}, ${sqlBool(c.requiresUserChoice)},`);
-  lines.push(`      ${sqlEnum(scope.type, 'TariffCountryScopeType')}, ${sqlTextArray(scope.countries)},`);
-  lines.push(`      ${sqlString(c.label)}, ${sqlString(c.category)},`);
-  lines.push(`      ${sqlTextArray(c.tags)}, ${sqlTextArray(c.pgaFlags)}, ${sqlTextArray(c.feeFlags)}, ${sqlTextArray(c.parentCodes)},`);
-  lines.push(`      ${sqlString(c.lineSplitField)}, ${sqlJsonb(c.lineSplitConditions)}, ${sqlJsonb(c.relatesToCodesDigits)},`);
-  lines.push(`      NOW(), NOW()`);
-  lines.push(`    ) RETURNING id INTO v_candidate_id;`);
-  lines.push(`  ELSE`);
-  lines.push(`    UPDATE tariff_candidate_codes SET`);
-  scalarAssignments.forEach((assignment, i) => {
-    const sep = i === scalarAssignments.length - 1 ? '' : ',';
-    lines.push(`      ${assignment}${sep}`);
-  });
-  lines.push(`    WHERE id = v_candidate_id;`);
-  lines.push(`  END IF;`);
-  lines.push(``);
-
-  // Replace child rows. The Prisma ingest does the same delete-then-insert,
-  // so we mirror its semantics exactly.
-  lines.push(`  DELETE FROM tariff_candidate_special_rates WHERE candidate_code_id = v_candidate_id;`);
-  lines.push(`  DELETE FROM tariff_candidate_applicability_conditions WHERE candidate_code_id = v_candidate_id;`);
-  lines.push(`  DELETE FROM tariff_candidate_related_codes WHERE candidate_code_id = v_candidate_id;`);
-  lines.push(`  DELETE FROM tariff_trade_analytics WHERE candidate_code_id = v_candidate_id;`);
-  lines.push(``);
-
-  // specialRates
-  c.specialRates.forEach((sr, i) => {
+  // specialRates — multi-row INSERT
+  if (c.specialRates.length > 0) {
     lines.push(`  INSERT INTO tariff_candidate_special_rates (`);
     lines.push(`    id, space_id, candidate_code_id, spi, rate_description,`);
     lines.push(`    rate_primary, rate_secondary, rate_other, rate_penalty, rate_computation_code,`);
     lines.push(`    sort_order, created_at, updated_at`);
-    lines.push(`  ) VALUES (`);
-    lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_candidate_id,`);
-    lines.push(`    ${sqlString(sr.spi)}, ${sqlString(sr.rateDescription)},`);
-    lines.push(`    ${sqlString(sr.rateInfo.primaryRate)}, ${sqlString(sr.rateInfo.secondaryRate)},`);
-    lines.push(`    ${sqlString(sr.rateInfo.otherRate)}, ${sqlString(sr.rateInfo.penaltyRate)},`);
-    lines.push(`    ${sqlString(sr.rateInfo.computationCode)}, ${sqlInt(i)}, NOW(), NOW()`);
-    lines.push(`  );`);
-  });
+    lines.push(`  ) VALUES`);
+    const rows = c.specialRates.map(
+      (sr, i) =>
+        `    (gen_random_uuid()::text, ${space}, v_id, ${sqlString(sr.spi)}, ${sqlString(sr.rateDescription)},` +
+        ` ${sqlString(sr.rateInfo.primaryRate)}, ${sqlString(sr.rateInfo.secondaryRate)},` +
+        ` ${sqlString(sr.rateInfo.otherRate)}, ${sqlString(sr.rateInfo.penaltyRate)},` +
+        ` ${sqlString(sr.rateInfo.computationCode)}, ${sqlInt(i)}, NOW(), NOW())`
+    );
+    lines.push(rows.join(',\n') + ';');
+    lines.push(``);
+  }
 
-  // applicabilityConditions
-  c.applicabilityConditions.forEach((cond, i) => {
-    const fieldShouldEqual = cond.__typename === 'CustomsTariffEquals' ? cond.fieldShouldEqual : null;
-    const threshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.threshold : null;
-    const includingThreshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.includingThreshold : null;
-    const programCodes = cond.__typename === 'CustomsTariffSomeSpiApplied' ? cond.programCodes : [];
+  // applicabilityConditions — multi-row INSERT
+  if (c.applicabilityConditions.length > 0) {
     lines.push(`  INSERT INTO tariff_candidate_applicability_conditions (`);
     lines.push(`    id, space_id, candidate_code_id, kind, field_key,`);
     lines.push(`    field_should_equal, threshold, including_threshold, program_codes,`);
     lines.push(`    sort_order, created_at, updated_at`);
-    lines.push(`  ) VALUES (`);
-    lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_candidate_id,`);
-    lines.push(`    ${sqlEnum(mapApplicabilityKind(cond.__typename), 'TariffApplicabilityConditionKind')},`);
-    lines.push(`    ${sqlString(cond.fieldKey)},`);
-    lines.push(`    ${sqlString(fieldShouldEqual)}, ${sqlString(threshold)}, ${includingThreshold === null ? 'NULL' : sqlBool(includingThreshold)},`);
-    lines.push(`    ${sqlTextArray(programCodes)}, ${sqlInt(i)}, NOW(), NOW()`);
-    lines.push(`  );`);
-  });
+    lines.push(`  ) VALUES`);
+    const rows = c.applicabilityConditions.map((cond, i) => {
+      const fieldShouldEqual = cond.__typename === 'CustomsTariffEquals' ? cond.fieldShouldEqual : null;
+      const threshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.threshold : null;
+      const includingThreshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.includingThreshold : null;
+      const programCodes = cond.__typename === 'CustomsTariffSomeSpiApplied' ? cond.programCodes : [];
+      return (
+        `    (gen_random_uuid()::text, ${space}, v_id,` +
+        ` ${sqlEnum(mapApplicabilityKind(cond.__typename), 'TariffApplicabilityConditionKind')},` +
+        ` ${sqlString(cond.fieldKey)}, ${sqlString(fieldShouldEqual)},` +
+        ` ${sqlString(threshold)}, ${includingThreshold === null ? 'NULL' : sqlBool(includingThreshold)},` +
+        ` ${sqlTextArray(programCodes)}, ${sqlInt(i)}, NOW(), NOW())`
+      );
+    });
+    lines.push(rows.join(',\n') + ';');
+    lines.push(``);
+  }
 
-  // relatedCodes (3 kinds in one table)
+  // relatedCodes — three upstream fields collapsed into one table via `kind`
+  const relatedRows: string[] = [];
   for (const fieldName of ['excludedByCodes', 'replacesCodes', 'relatedCodes'] as const) {
     const arr = c[fieldName];
     arr.forEach((r, i) => {
-      lines.push(`  INSERT INTO tariff_candidate_related_codes (`);
-      lines.push(`    id, space_id, candidate_code_id, kind, code, variant,`);
-      lines.push(`    sort_order, created_at, updated_at`);
-      lines.push(`  ) VALUES (`);
-      lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_candidate_id,`);
-      lines.push(`    ${sqlEnum(RELATED_KIND_BY_FIELD[fieldName], 'TariffRelatedCodeKind')},`);
-      lines.push(`    ${sqlString(r.code)}, ${sqlString(r.variant)}, ${sqlInt(i)}, NOW(), NOW()`);
-      lines.push(`  );`);
+      relatedRows.push(
+        `    (gen_random_uuid()::text, ${space}, v_id,` +
+          ` ${sqlEnum(RELATED_KIND_BY_FIELD[fieldName], 'TariffRelatedCodeKind')},` +
+          ` ${sqlString(r.code)}, ${sqlString(r.variant)}, ${sqlInt(i)}, NOW(), NOW())`
+      );
     });
   }
+  if (relatedRows.length > 0) {
+    lines.push(`  INSERT INTO tariff_candidate_related_codes (`);
+    lines.push(`    id, space_id, candidate_code_id, kind, code, variant,`);
+    lines.push(`    sort_order, created_at, updated_at`);
+    lines.push(`  ) VALUES`);
+    lines.push(relatedRows.join(',\n') + ';');
+    lines.push(``);
+  }
 
-  // tradeAnalytics + nested importPrograms
-  for (const ta of c.tradeAnalytics) {
+  // tradeAnalytics + nested importPrograms. Mint TS-side UUIDs so we can
+  // emit one multi-row INSERT for analytics and one for the children rather
+  // than per-row RETURNING dance.
+  if (c.tradeAnalytics.length > 0) {
+    const taIds = c.tradeAnalytics.map(() => randomUUID());
     lines.push(`  INSERT INTO tariff_trade_analytics (`);
     lines.push(`    id, space_id, candidate_code_id, analytics_level, hts_code_10, date,`);
     lines.push(`    country_name, us_customs_country_code,`);
     lines.push(`    total_customs_value, total_calculated_duty, total_duty_rate,`);
     lines.push(`    created_at, updated_at`);
-    lines.push(`  ) VALUES (`);
-    lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_candidate_id,`);
-    lines.push(`    ${sqlString(ta.analyticsLevel)}, ${sqlString(ta.htsCode)}, ${sqlString(ta.date)},`);
-    lines.push(`    ${sqlString(ta.countryOfOrigin.countryName)}, ${sqlString(ta.countryOfOrigin.usCustomsCountryCode)},`);
-    lines.push(`    ${sqlDecimal(ta.totalCustomsValue)}, ${sqlDecimal(ta.totalCalculatedDuty)}, ${sqlDecimal(ta.totalDutyRate)},`);
-    lines.push(`    NOW(), NOW()`);
-    lines.push(`  ) RETURNING id INTO v_trade_analytic_id;`);
-    for (const p of ta.importPrograms) {
+    lines.push(`  ) VALUES`);
+    const taRows = c.tradeAnalytics.map(
+      (ta, i) =>
+        `    (${sqlString(taIds[i])}, ${space}, v_id,` +
+        ` ${sqlString(ta.analyticsLevel)}, ${sqlString(ta.htsCode)}, ${sqlString(ta.date)},` +
+        ` ${sqlString(ta.countryOfOrigin.countryName)}, ${sqlString(ta.countryOfOrigin.usCustomsCountryCode)},` +
+        ` ${sqlDecimal(ta.totalCustomsValue)}, ${sqlDecimal(ta.totalCalculatedDuty)}, ${sqlDecimal(ta.totalDutyRate)},` +
+        ` NOW(), NOW())`
+    );
+    lines.push(taRows.join(',\n') + ';');
+    lines.push(``);
+
+    const ipRows: string[] = [];
+    c.tradeAnalytics.forEach((ta, i) => {
+      const taId = taIds[i];
+      for (const p of ta.importPrograms) {
+        ipRows.push(
+          `    (gen_random_uuid()::text, ${space}, ${sqlString(taId)},` +
+            ` ${sqlString(p.importProgram.programName)}, ${sqlString(p.importProgram.programIndicator)},` +
+            ` ${sqlString(p.importProgram.generalNote)},` +
+            ` ${sqlString(p.importProgram.customsTariffSpi.specialProgramIndicator)},` +
+            ` ${sqlString(p.importProgram.customsTariffSpi.agreementName)},` +
+            ` ${sqlString(p.importProgram.customsTariffSpi.generalNote)},` +
+            ` ${sqlBool(p.importProgram.customsTariffSpi.excludeMpf)},` +
+            ` ${sqlTextArray(p.importProgram.countriesOfOrigin)},` +
+            ` ${sqlTextArray(p.importProgram.customsTariffSpi.countriesOfOrigin)},` +
+            ` ${sqlDecimal(p.customsValue)}, ${sqlDecimal(p.calculatedDuty)},` +
+            ` ${sqlDecimal(p.dutyRate)}, ${sqlDecimal(p.percentOfLineValue)},` +
+            ` NOW(), NOW())`
+        );
+      }
+    });
+    if (ipRows.length > 0) {
       lines.push(`  INSERT INTO tariff_trade_analytic_import_programs (`);
       lines.push(`    id, space_id, trade_analytic_id, program_name, program_indicator, general_note,`);
       lines.push(`    spi_special_program_indicator, spi_agreement_name, spi_general_note, spi_exclude_mpf,`);
       lines.push(`    countries_of_origin, spi_countries_of_origin,`);
       lines.push(`    customs_value, calculated_duty, duty_rate, percent_of_line_value,`);
       lines.push(`    created_at, updated_at`);
-      lines.push(`  ) VALUES (`);
-      lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_trade_analytic_id,`);
-      lines.push(`    ${sqlString(p.importProgram.programName)}, ${sqlString(p.importProgram.programIndicator)},`);
-      lines.push(`    ${sqlString(p.importProgram.generalNote)},`);
-      lines.push(`    ${sqlString(p.importProgram.customsTariffSpi.specialProgramIndicator)},`);
-      lines.push(`    ${sqlString(p.importProgram.customsTariffSpi.agreementName)},`);
-      lines.push(`    ${sqlString(p.importProgram.customsTariffSpi.generalNote)},`);
-      lines.push(`    ${sqlBool(p.importProgram.customsTariffSpi.excludeMpf)},`);
-      lines.push(`    ${sqlTextArray(p.importProgram.countriesOfOrigin)},`);
-      lines.push(`    ${sqlTextArray(p.importProgram.customsTariffSpi.countriesOfOrigin)},`);
-      lines.push(`    ${sqlDecimal(p.customsValue)}, ${sqlDecimal(p.calculatedDuty)},`);
-      lines.push(`    ${sqlDecimal(p.dutyRate)}, ${sqlDecimal(p.percentOfLineValue)},`);
-      lines.push(`    NOW(), NOW()`);
-      lines.push(`  );`);
+      lines.push(`  ) VALUES`);
+      lines.push(ipRows.join(',\n') + ';');
     }
   }
 
-  // Link upsert. `(space_id, hts_code_id, candidate_code_id)` is the unique
-  // we hang ON CONFLICT off — both columns are NOT NULL so the index works.
-  lines.push(``);
-  lines.push(`  INSERT INTO hts_code_candidate_codes (`);
-  lines.push(`    id, space_id, hts_code_id, candidate_code_id, last_fetched_at, created_at, updated_at`);
-  lines.push(`  ) VALUES (`);
-  lines.push(`    gen_random_uuid(), ${sqlString(KoalaGainsSpaceId)}, v_hts_code_id, v_candidate_id,`);
-  lines.push(`    ${sqlTimestamp(new Date(ctx.fetchedAtIso))}, NOW(), NOW()`);
-  lines.push(`  )`);
-  lines.push(`  ON CONFLICT (space_id, hts_code_id, candidate_code_id) DO UPDATE`);
-  lines.push(`  SET last_fetched_at = EXCLUDED.last_fetched_at, updated_at = NOW();`);
   lines.push(`END $$;`);
   lines.push(``);
-
   return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Bulk HTS↔candidate fanout — one statement per chunk of `LINK_CHUNK` rows.
+// ---------------------------------------------------------------------------
+
+interface LinkRow {
+  hts10: string;
+  code: string;
+  variant: string | null;
+}
+
+const LINK_CHUNK = 1000;
+
+function emitBulkJoinInserts(links: readonly LinkRow[], fetchedAt: Date): string {
+  if (links.length === 0) return '-- No HTS↔candidate links to insert.\n';
+  const space = sqlString(KoalaGainsSpaceId);
+  const ts = sqlTimestamp(fetchedAt);
+  const out: string[] = [];
+  out.push(`-- Link HTS lines to candidate codes. Resolves IDs by joining on the natural`);
+  out.push(`-- keys (space_id + hts_code_10) and (space_id + code + variant). The`);
+  out.push(`-- ON CONFLICT clause makes re-runs touch only last_fetched_at / updated_at.`);
+  for (let i = 0; i < links.length; i += LINK_CHUNK) {
+    const chunk = links.slice(i, i + LINK_CHUNK);
+    out.push(`INSERT INTO hts_code_candidate_codes (`);
+    out.push(`  id, space_id, hts_code_id, candidate_code_id, last_fetched_at, created_at, updated_at`);
+    out.push(`)`);
+    out.push(`SELECT gen_random_uuid()::text, ${space}, h.id, c.id, ${ts}, NOW(), NOW()`);
+    out.push(`FROM (VALUES`);
+    const valueRows = chunk.map((l, idx) => {
+      // Force column types on the very first row; later rows inherit text.
+      if (i === 0 && idx === 0) {
+        return `  (${sqlString(l.hts10)}::text, ${sqlString(l.code)}::text, ${sqlString(l.variant)}::text)`;
+      }
+      return `  (${sqlString(l.hts10)}, ${sqlString(l.code)}, ${sqlString(l.variant)})`;
+    });
+    out.push(valueRows.join(',\n'));
+    out.push(`) AS pairs(hts10, code, variant)`);
+    out.push(`JOIN hts_codes h ON h.space_id = ${space} AND h.hts_code_10 = pairs.hts10`);
+    out.push(`JOIN tariff_candidate_codes c ON c.space_id = ${space} AND c.code = pairs.code AND c.variant IS NOT DISTINCT FROM pairs.variant`);
+    out.push(`ON CONFLICT (space_id, hts_code_id, candidate_code_id) DO UPDATE`);
+    out.push(`  SET last_fetched_at = EXCLUDED.last_fetched_at, updated_at = NOW();`);
+    out.push(``);
+  }
+  return out.join('\n');
 }
 
 // ---------------------------------------------------------------------------
@@ -400,9 +413,6 @@ function describeFetchError(err: unknown): string {
   return parts.join(' | ');
 }
 
-// Retry the upstream fetch a few times with backoff to ride out transient
-// network blips (TLS handshake glitch, brief DNS hiccup). We do not retry
-// `Invalid HTS 10-digit code` or HTTP errors — those are deterministic.
 async function fetchWithRetry(hts10: string, maxAttempts: number): Promise<UpstreamCandidateCode[]> {
   let lastErr: unknown;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -423,6 +433,25 @@ async function fetchWithRetry(hts10: string, maxAttempts: number): Promise<Upstr
   throw lastErr;
 }
 
+// Bounded-parallel runner — workers pull from a shared cursor.
+async function runWithConcurrency<T>(items: readonly T[], limit: number, fn: (item: T, index: number) => Promise<void>): Promise<void> {
+  let cursor = 0;
+  const workerCount = Math.min(limit, items.length);
+  const workers: Promise<void>[] = [];
+  for (let w = 0; w < workerCount; w++) {
+    workers.push(
+      (async () => {
+        while (true) {
+          const i = cursor++;
+          if (i >= items.length) return;
+          await fn(items[i], i);
+        }
+      })()
+    );
+  }
+  await Promise.all(workers);
+}
+
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
 
@@ -435,11 +464,7 @@ async function main(): Promise<void> {
   }
 
   const htsRows = await prisma.htsCode.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      chapterId: chapter.id,
-      htsCode10: { not: null },
-    },
+    where: { spaceId: KoalaGainsSpaceId, chapterId: chapter.id, htsCode10: { not: null } },
     select: { htsCode10: true },
     orderBy: { sortOrder: 'asc' },
   });
@@ -448,56 +473,70 @@ async function main(): Promise<void> {
   const targets = args.limit ? all.slice(0, args.limit) : all;
 
   console.error(`Chapter ${chapter.number} ("${chapter.title}"): ${targets.length} HTS lines${args.limit ? ` (limited from ${all.length})` : ''}`);
+  console.error(`Phase A: fetching upstream (concurrency=${args.concurrency})…`);
 
-  const fetchedAtIso = new Date().toISOString();
+  // -------- Phase A: fetch + accumulate (deduped by (code, variant)) --------
+  const candidates = new Map<string, UpstreamCandidateCode>(); // key: `${code}|${variant ?? ''}`
+  const links: LinkRow[] = [];
+  const failures: Array<{ hts10: string; reason: string }> = [];
+  let processedLines = 0;
+  const fetchedAt = new Date();
+
+  await runWithConcurrency(targets, args.concurrency, async (hts10) => {
+    try {
+      const upstream = await fetchWithRetry(hts10, 3);
+      // Lock around the shared maps isn't needed in single-threaded JS — the
+      // awaits return synchronously into the same event loop turn here.
+      for (const c of upstream) {
+        const key = `${c.codeVariant.code}|${c.codeVariant.variant ?? ''}`;
+        if (!candidates.has(key)) candidates.set(key, c);
+        links.push({ hts10, code: c.codeVariant.code, variant: c.codeVariant.variant });
+      }
+      processedLines += 1;
+      console.error(`  ✓ ${hts10} (${upstream.length} candidates) [${processedLines}/${targets.length}]`);
+    } catch (err) {
+      const reason = describeFetchError(err);
+      failures.push({ hts10, reason });
+      console.error(`  ✗ ${hts10}: ${reason}`);
+    }
+    if (args.delayMs > 0) await sleep(args.delayMs);
+  });
+
+  console.error(`Phase B: emitting SQL — ${candidates.size} unique candidates, ${links.length} HTS↔candidate links, ${failures.length} fetch failures`);
+
+  // -------- Phase B: emit SQL --------
   const out: string[] = [];
   out.push(`-- Generated by src/scripts/tariff-calculator/generate-candidate-codes-sql.ts`);
   out.push(`-- Chapter ${chapter.number}: ${chapter.title}`);
-  out.push(`-- HTS lines: ${targets.length}`);
-  out.push(`-- Generated at: ${fetchedAtIso}`);
-  out.push(`-- Run inside a transaction; safe to re-run (replaces child rows in place).`);
+  out.push(`-- HTS lines fetched: ${processedLines}/${targets.length} (failures: ${failures.length})`);
+  out.push(`-- Unique candidates: ${candidates.size}, HTS↔candidate links: ${links.length}`);
+  out.push(`-- Generated at: ${fetchedAt.toISOString()}`);
+  out.push(`-- Safe to re-run: each candidate DO-block early-exits if the row exists,`);
+  out.push(`-- and the link INSERT uses ON CONFLICT DO UPDATE.`);
   out.push(``);
+  for (const f of failures) {
+    out.push(`-- !! ${f.hts10}: ${f.reason}`);
+  }
+  if (failures.length > 0) out.push(``);
+
   out.push(`BEGIN;`);
   out.push(``);
 
-  let processedLines = 0;
-  let totalCandidates = 0;
-  let failures = 0;
-
-  for (const hts10 of targets) {
-    let upstream: UpstreamCandidateCode[];
-    try {
-      upstream = await fetchWithRetry(hts10, 3);
-    } catch (err) {
-      failures += 1;
-      const message = describeFetchError(err);
-      out.push(`-- !! ${hts10}: upstream fetch failed — ${message}`);
-      console.error(`  ✗ ${hts10}: fetch failed — ${message}`);
-      await sleep(args.delayMs);
-      continue;
-    }
-    try {
-      out.push(`-- ============================================================`);
-      out.push(`-- HTS ${hts10} — ${upstream.length} candidate codes`);
-      out.push(`-- ============================================================`);
-      for (const candidate of upstream) {
-        out.push(emitCandidateBlock({ hts10, fetchedAtIso }, candidate));
-      }
-      processedLines += 1;
-      totalCandidates += upstream.length;
-      console.error(`  ✓ ${hts10} (${upstream.length} candidates) [${processedLines}/${targets.length}]`);
-    } catch (err) {
-      failures += 1;
-      const message = describeFetchError(err);
-      out.push(`-- !! ${hts10}: SQL render failed — ${message}`);
-      console.error(`  ✗ ${hts10}: SQL render failed — ${message}`);
-    }
-    await sleep(args.delayMs);
+  // Sort by (code, variant) for deterministic output.
+  const sorted = Array.from(candidates.values()).sort((a, b) => {
+    const c = a.codeVariant.code.localeCompare(b.codeVariant.code);
+    if (c !== 0) return c;
+    return (a.codeVariant.variant ?? '').localeCompare(b.codeVariant.variant ?? '');
+  });
+  for (const c of sorted) {
+    out.push(emitCandidateBlock(c));
   }
+
+  out.push(emitBulkJoinInserts(links, fetchedAt));
 
   out.push(`COMMIT;`);
   out.push(``);
-  out.push(`-- Summary: ${processedLines} HTS lines, ${totalCandidates} candidate codes, ${failures} failures.`);
+  out.push(`-- Summary: ${processedLines} HTS lines, ${candidates.size} unique candidates, ${links.length} link rows, ${failures.length} failures.`);
 
   const sql = out.join('\n');
   if (args.stdout) {
@@ -511,7 +550,7 @@ async function main(): Promise<void> {
     console.error(`Wrote SQL → ${absPath}`);
   }
 
-  console.error(`Done: ${processedLines} HTS lines, ${totalCandidates} candidate codes, ${failures} failures.`);
+  console.error(`Done: ${processedLines} HTS lines, ${candidates.size} unique candidates, ${links.length} links, ${failures.length} failures.`);
 }
 
 main()
