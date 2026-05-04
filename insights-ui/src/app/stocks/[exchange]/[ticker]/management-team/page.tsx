@@ -1,4 +1,5 @@
 import AdminTimestamp from '@/components/auth/AdminTimestamp';
+import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS, ManagementTeamAlignmentVerdict } from '@/types/ticker-typesv1';
@@ -13,6 +14,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -187,6 +189,10 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
   const verdict = report.alignmentVerdict as ManagementTeamAlignmentVerdict;
   const verdictLabel = MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[verdict] || report.alignmentVerdict;
 
+  // Kick off the sibling-presence query in parallel with the rest of render.
+  // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
+  const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
+
   return (
     <PageWrapper>
       <script
@@ -224,6 +230,16 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             <div className="markdown markdown-body text-gray-300" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.detailedAnalysis) }} />
           </div>
         </section>
+
+        <Suspense fallback={null}>
+          <TickerRelatedSections
+            availableSlugsPromise={availableSlugsPromise}
+            exchange={tickerData.exchange}
+            symbol={tickerData.symbol}
+            companyName={tickerData.name}
+            currentSlug="management-team"
+          />
+        </Suspense>
       </article>
     </PageWrapper>
   );

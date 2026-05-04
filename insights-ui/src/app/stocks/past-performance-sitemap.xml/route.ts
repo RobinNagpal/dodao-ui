@@ -18,6 +18,10 @@ async function generatePastPerformanceUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       categoryKey: TickerAnalysisCategory.PastPerformance,
+      // Both sections rendered by TickerCategoryReport must have content;
+      // either being empty produces a thin page (GSC "Crawled - currently not indexed").
+      summary: { not: '' },
+      overallAnalysisDetails: { not: '' },
     },
     select: {
       updatedAt: true,

@@ -16,6 +16,10 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
   const records = await prisma.tickerV1ManagementTeamReport.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
+      // The management-team page renders both `summary` and `detailedAnalysis`
+      // as markdown sections; either being empty makes the page thin.
+      summary: { not: '' },
+      detailedAnalysis: { not: '' },
     },
     select: {
       updatedAt: true,
