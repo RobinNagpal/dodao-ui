@@ -14,7 +14,13 @@ async function generateCompetitionUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
   const competitionRecords = await prisma.tickerV1VsCompetition.findMany({
-    where: { spaceId: KoalaGainsSpaceId, summary: { not: '' } },
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      // The competition page renders `overallAnalysisDetails` (Comprehensive Analysis)
+      // and the competitorTickers cards — `summary` is never displayed. Filter on the
+      // field that actually drives the rendered body.
+      overallAnalysisDetails: { not: '' },
+    },
     select: {
       updatedAt: true,
       ticker: {

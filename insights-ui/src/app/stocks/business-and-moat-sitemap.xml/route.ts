@@ -18,9 +18,12 @@ async function generateBusinessAndMoatUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       categoryKey: TickerAnalysisCategory.BusinessAndMoat,
-      // Only include URLs whose analysis has actual content. Empty/placeholder
-      // records produce thin pages that GSC marks "Crawled - currently not indexed".
+      // Mirror the page body: include only URLs whose Executive Summary
+      // (`summary`) AND Comprehensive Analysis (`overallAnalysisDetails`) are
+      // both populated. Either being empty leaves the page thin and GSC marks
+      // it "Crawled - currently not indexed".
       summary: { not: '' },
+      overallAnalysisDetails: { not: '' },
     },
     select: {
       updatedAt: true,
