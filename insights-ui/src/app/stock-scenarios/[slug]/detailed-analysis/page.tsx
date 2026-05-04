@@ -14,13 +14,13 @@ export const revalidate = false;
 
 type RouteParams = Promise<Readonly<{ slug: string }>>;
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
 
 async function fetchScenarioBySlug(slug: string): Promise<StockScenarioDetail | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/stock-scenarios/${slug}?allowNull=true`;
   try {
     const res = await fetch(url, {
-      next: { revalidate: WEEK_IN_SECONDS, tags: [stockScenarioBySlugTag(slug)] },
+      next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [stockScenarioBySlugTag(slug)] },
     });
     if (!res.ok) return null;
     return (await res.json()) as StockScenarioDetail | null;

@@ -7,7 +7,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
 
 const EMPTY_RESPONSE: PerformanceResponse = { categoryResult: null, ticker: undefined };
 
@@ -20,7 +20,7 @@ export function truncateForMeta(text: string, maxLength: number = 155): string {
 export async function fetchPerformanceByExchange(exchange: string, ticker: string, dataSlug: string): Promise<PerformanceResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/${dataSlug}`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
     if (!res.ok) {
       console.warn(`fetchPerformanceByExchange failed (${res.status}): ${url}`);
       return EMPTY_RESPONSE;

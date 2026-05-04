@@ -23,7 +23,7 @@ export default async function DailyTopLosersPage({ params }: PageProps) {
   const baseUrl = getBaseUrl();
   const cacheOptions = {
     next: {
-      revalidate: 604800,
+      revalidate: 1209600,
       tags: [getDailyMoversByCountryTag(country, DailyMoverType.LOSER)],
     },
   };

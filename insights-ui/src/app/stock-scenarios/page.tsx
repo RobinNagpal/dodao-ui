@@ -18,7 +18,7 @@ export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours
 
 const DEFAULT_PAGE_SIZE = 200; // dataset should stay under ~100 for the foreseeable future; 200 leaves headroom
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
 
 export const metadata = generateStockScenarioListingMetadata();
 
@@ -26,7 +26,7 @@ async function fetchScenarioListing(): Promise<StockScenarioListingResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/stock-scenarios/listing?pageSize=${DEFAULT_PAGE_SIZE}`;
   try {
     const res = await fetch(url, {
-      next: { revalidate: WEEK_IN_SECONDS, tags: [STOCK_SCENARIO_LISTING_TAG] },
+      next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [STOCK_SCENARIO_LISTING_TAG] },
     });
     if (!res.ok) {
       console.error(`Failed to fetch stock scenarios listing: HTTP ${res.status}`);
