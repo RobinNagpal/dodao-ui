@@ -10,7 +10,7 @@ export interface EnsureMorInfoResponse {
 }
 
 /**
- * Check the four MOR tables for an ETF; for any that are empty, trigger the Morningstar
+ * Check the four MOR tables for an ETF; for any that are empty, trigger the Mornstar
  * scrape lambda to populate them. Scraping is fire-and-forget (callbacks upsert the rows
  * asynchronously), so a caller that needs the data immediately should sleep a few seconds
  * before requesting the prompt.

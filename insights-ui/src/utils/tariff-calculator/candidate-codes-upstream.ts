@@ -1,7 +1,4 @@
 // Shared types + mapping helpers for "candidate codes" ingestion.
-//
-// Important: runtime code must not call the upstream (Flexport) API. Network
-// fetch logic has been intentionally removed from this module.
 
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
 

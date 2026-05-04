@@ -42,7 +42,6 @@ Below are representative online resources and software tools frequently used to 
 - **HTS Online Reference Tool (USITC)** - Interactive version of the U.S. Harmonized Tariff Schedule (HTS) that allows users to search by keyword to find the correct classification and associated duty rates[\[21\]](https://www.trade.gov/fta-tariff-tool-home#:~:text=The%20U,more%20technical%20tariff%20nomenclature%20descriptions).
 - **WITS (World Bank)** - Offers export, import, tariff and non‑tariff measure data and includes analytical modules to assess the impact of tariff cuts[\[22\]](https://wits.worldbank.org/#:~:text=data,along%20with%20relevant%20development%20data).
 - **WTO Tariff & Trade Data Platform** - Provides legally bound duty, applied MFN and preferential tariffs by product, partner and year[\[23\]](https://www.wto.org/english/tratop_e/tariffs_e/tariff_data_e.htm#:~:text=level,Tariff%20%26%20Trade%20Data%20Platform).
-- **Flexport Tariff Simulator** - Real‑time U.S. duty calculator; users enter product name or HTS codes to see current duty rate and recent updates[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence).
 - **UNCTAD TRAINS database** - Supplies detailed MFN and preferential tariff rates along with non‑tariff measures for many countries; integrated in WITS.
 - **EU TARIC** - European Commission database of customs duties and commercial policy measures for the EU; useful when exporting to Europe.
 - **Canada Customs Tariff (CBSA)** - Government of Canada's searchable tariff schedule for imports into Canada.
@@ -67,7 +66,6 @@ Below are representative online resources and software tools frequently used to 
 - **Easyship Import Duty & Tax Calculator** - Integrated with shipping checkout to show customers the full landed cost; helps prevent cart abandonment.
 - **PayPal / eBay Global Shipping Program** - Provides automated estimation of customs fees and handles payment of duties for sellers.
 - **ShipStation & ShipBob** - E‑commerce logistics platforms with integrated customs documentation and tariff calculation modules.
-- **Flexport Tariff Simulator** - Real‑time U.S. tariff calculator accessible without subscription[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence).
 - **Amazon Seller Central** - Includes duty‑estimation tools for sellers exporting or fulfilling orders abroad.
 - **U.S. Postal Service International Price Calculator** - Gives estimates of duties and taxes for small parcels.
 - **FedEx Global Trade Manager / UPS TradeAbility** - Carriers' tools that calculate duties, taxes and compliance documentation.
@@ -78,7 +76,6 @@ Below are representative online resources and software tools frequently used to 
 
 - **U.S. Customs & Border Protection (CBP) Automated Commercial Environment (ACE)** - Platform used by brokers to file entries, classify products and pay duties.
 - **GEODIS Tariff Compliance Services** - Provides HS classification verification, bond management and duty‑deferral strategies[\[27\]](https://geodis.com/blog/goods-transportation-integrated-logistics-solutions/how-stay-compliant-us-tariffs-and-reduce#:~:text=1,Tariff%20Classification%20and%20Duty%20Rate).
-- **Flexport Customs Brokerage** - Offers digital customs clearance with tariff calculation and classification guidance.
 - **Descartes CustomsInfo** - Subscription database of tariff rates and free‑trade agreement rules of origin.
 - **Chain.io & project44** - Integrate tariff and compliance data into logistics visibility platforms.
 - **Maersk Customs Services** - Shipping‑line service providing tariff advice, classification and import compliance.
@@ -135,7 +132,6 @@ Below are representative online resources and software tools frequently used to 
 - **Federal Reserve & World Bank economic data** - Macro‑economic indicators to gauge the broader impact of tariffs.
 - **Trade.gov economic indicators** - Provide trade balances, import/export statistics.
 - **Company 10‑K filings and investor presentations** - Contain disclosures about exposure to tariffs and trade restrictions.
-- **Tariff Simulator (Flexport)** - Can be used to estimate cost impacts on company imports[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence).
 - **Regulatory news services (e.g., Politico Trade, Inside U.S. Trade)** - Offer policy updates and negotiation status.
 - **Financial modelling software** - Tools like Excel add‑ins or Python libraries incorporate tariff scenarios into earnings models.
 
@@ -163,7 +159,7 @@ Below are representative online resources and software tools frequently used to 
 - **Commodity boards (Soybean Board, Dairy Export Council)** - Provide members with tariff updates and market access information.
 - **International Grains Council (IGC)** - Publishes tariff data for cereals and oilseeds.
 - **Global Agricultural Information Network (GAIN) reports** - USDA Foreign Agricultural Service reports summarising tariff and non‑tariff barriers.
-- **Third‑party calculators (Flexport, SimplyDuty)** - For quick estimation of duties and quotas on specific agricultural products.
+- **Third‑party calculators (e.g., SimplyDuty)** - For quick estimation of duties and quotas on specific agricultural products.
 
 ### 11\. Accounting & finance professionals
 
@@ -198,7 +194,6 @@ Below are representative online resources and software tools frequently used to 
 - **Freight forwarders' tariff calculators** - Estimate landed costs for multiple products; helps decide on product mix.
 - **E-commerce marketplace analytics (Jungle Scout)** - Estimate duties for imported private‑label goods.
 - **Pricing strategy software (Pricefx, PROS)** - Integrate cost inputs including tariffs to optimize pricing.
-- **Tariff simulators (Flexport)** - Provide quick check of duty rates to decide product viability[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence).
 - **WITS & ITC MacMap** - Determine which markets offer lower duties for goods to be sourced.
 - **Vendor portals (e.g., Walmart's Retail Link)** - Provide guidance on import compliance and duties.
 - **Trade‑show portals** - Offer country‑specific tariff information for exhibitors and buyers.
@@ -247,7 +242,7 @@ Below are representative online resources and software tools frequently used to 
 
 - **WITS API and WTO Tariff database downloads** - Provide programmatic access to tariff data for integration into applications[\[23\]](https://www.wto.org/english/tratop_e/tariffs_e/tariff_data_e.htm#:~:text=level,Tariff%20%26%20Trade%20Data%20Platform).
 - **UN Comtrade API** - Supplies trade flow data to combine with tariff rates.
-- **HS classification AI services (Avalara, Flexport)** - Offer machine‑learning models for automatic classification.
+- **HS classification AI services (e.g., Avalara)** - Offer machine‑learning models for automatic classification.
 - **Tariff simulation libraries (e.g., Python packages)** - Provide functions to estimate duties based on HS code and country.
 - **Open source datasets (World Tariff Profiles)** - Provide aggregated tariff data for training algorithms.
 - **GraphQL endpoints (MacMap)** - Provide real‑time tariff retrieval for multiple products.
@@ -289,7 +284,7 @@ Below are representative online resources and software tools frequently used to 
 - **ITC Rules of Origin Facilitator** - Helps negotiators understand criteria across agreements.
 - **Training manuals (World Customs Organization)** - Provide guidelines on HS classification and valuation.
 - **FTA text libraries (USTR, EU)** - Provide full text of trade agreements including tariff elimination schedules.
-- **Tariff simulation software (Flexport, Thomson Reuters)** - Used in training to show effects of tariff changes.
+- **Tariff simulation software (e.g., Thomson Reuters)** - Used in training to show effects of tariff changes.
 - **Academic courses (World Trade Institute)** - Offer in‑depth training on tariffs and trade negotiations.
 - **Trade advocacy toolkits (Chambers of Commerce)** - Provide case studies and negotiation strategies.
 - **Regulatory update trackers (Inside U.S. Trade)** - Provide real‑time updates on negotiations and compliance issues.
@@ -309,7 +304,7 @@ Although numerous tools exist, users often face information gaps. Five notable m
 
 ## Conclusion
 
-Tariff information is critical for a diverse set of users. Importers, exporters and supply‑chain managers require up‑to‑date tariff rates to calculate landed costs and adjust sourcing. Professionals in finance, law and government rely on accurate tariff data to ensure compliance, report financial impacts and negotiate agreements. Despite numerous databases and tools (such as the U.S. FTA Tariff Tool[\[15\]](https://www.trade.gov/fta-tariff-tool-home#:~:text=This%20free%20search%20tool%20allows,is%20eliminated%20under%20the%20agreement), WTO Tariff & Trade Data Platform[\[13\]](https://www.wto.org/english/tratop_e/tariffs_e/tariff_data_e.htm#:~:text=level,Tariff%20%26%20Trade%20Data%20Platform) and Flexport's Tariff Simulator[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence)), users still face information gaps-especially for real‑time changes, product‑level rules of origin, multi‑country simulations, tariffs on services and the integration of non‑tariff measures.
+Tariff information is critical for a diverse set of users. Importers, exporters and supply‑chain managers require up‑to‑date tariff rates to calculate landed costs and adjust sourcing. Professionals in finance, law and government rely on accurate tariff data to ensure compliance, report financial impacts and negotiate agreements. Despite numerous databases and tools (such as the U.S. FTA Tariff Tool[\[15\]](https://www.trade.gov/fta-tariff-tool-home#:~:text=This%20free%20search%20tool%20allows,is%20eliminated%20under%20the%20agreement) and WTO Tariff & Trade Data Platform[\[13\]](https://www.wto.org/english/tratop_e/tariffs_e/tariff_data_e.htm#:~:text=level,Tariff%20%26%20Trade%20Data%20Platform)), users still face information gaps-especially for real‑time changes, product‑level rules of origin, multi‑country simulations, tariffs on services and the integration of non‑tariff measures.
 
 [\[1\]](https://www.oxfordeconomics.com/resource/tariffs-101-what-are-they-and-how-do-they-work/#:~:text=Tariffs%20are%20taxes%20imposed%20by,the%20significance%20of%20its%20impacts) [\[2\]](https://www.oxfordeconomics.com/resource/tariffs-101-what-are-they-and-how-do-they-work/#:~:text=Domestic%20industries%20may%20benefit%20from,to%20expand%20and%20increase%20production) Tariffs 101: What are they and how do they work? | Oxford Economics
 
@@ -350,10 +345,6 @@ Tariff information is critical for a diverse set of users. Importers, exporters 
 [\[22\]](https://wits.worldbank.org/#:~:text=data,along%20with%20relevant%20development%20data) World Integrated Trade Solution (WITS) | Data on Export, Import, Tariff, NTM
 
 <https://wits.worldbank.org/>
-
-[\[24\]](https://tariffs.flexport.com/#:~:text=Navigate%20US%20Tariffs%20with%20Confidence) Tariff Simulator 2026 - US Import Duty, Customs Fees & Tax Calculator | Flexport
-
-<https://tariffs.flexport.com/>
 
 [\[29\]](https://hts.usitc.gov/#:~:text=The%20Harmonized%20Tariff%20Schedule%20of,most%20world%20trade%20in%20goods) Harmonized Tariff Schedule
 

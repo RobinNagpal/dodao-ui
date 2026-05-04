@@ -4,7 +4,7 @@ additionalProperties: false
 description: |
   Input for the ETF competition analysis. Only identity/context fields are passed
   in — no financial data. The LLM is expected to look up peer ETFs and fund-level
-  facts from reputable public sources (issuer fund pages, Morningstar, etf.com,
+  facts from reputable public sources (issuer fund pages, Mornstar, etf.com,
   index providers, etc.) and build the comparison from there.
 properties:
   name:
