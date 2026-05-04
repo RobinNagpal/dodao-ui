@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-losers/${topLosersId}`, {
       next: {
-        revalidate: 604800,
+        revalidate: 1209600,
         tags: [getDailyMoverDetailsTag(topLosersId)],
       },
     });
@@ -51,7 +51,7 @@ export default async function TopLoserDetailsPage({ params }: PageProps) {
   // Fetch top loser details from the API with cache tag
   const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/daily-top-losers/${topLosersId}`, {
     next: {
-      revalidate: 604800, // 7 days in seconds
+      revalidate: 1209600, // 14 days in seconds
       tags: [getDailyMoverDetailsTag(topLosersId)],
     },
   });
