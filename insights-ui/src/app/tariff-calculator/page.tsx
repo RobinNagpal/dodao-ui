@@ -9,7 +9,7 @@ export const dynamic = 'force-static';
 const PAGE_URL = 'https://koalagains.com/tariff-calculator';
 const PAGE_TITLE = 'US Tariff & Duty Calculator | KoalaGains';
 const PAGE_DESCRIPTION =
-  'Free US import duty calculator. Search any product, pick its HTSUS code, and get a per-line landed-cost breakdown — base HTSUS rate, Section 232/301/IEEPA Chapter 99 special tariffs, plus HMF and MPF.';
+  'Free US import duty calculator. Search what you ship, pick its HTS code, and see the full cost — base HTS rate, Section 232, 301 and IEEPA tariffs, plus the usual port and processing fees.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -79,14 +79,14 @@ export default function TariffCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_LD) }} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color" style={{ colorScheme: 'dark', accentColor: '#fbbf24' }}>
         <Breadcrumbs breadcrumbs={BREADCRUMBS} />
 
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl heading-color">US Tariff &amp; Duty Calculator</h1>
-          <p className="mt-3 max-w-3xl text-sm sm:text-base opacity-80">
-            Find the HTSUS code for any product, then get a per-line landed-cost breakdown — base HTSUS duty, Chapter 99 special tariffs (Section 232/301,
-            IEEPA), plus the Harbor Maintenance Fee and Merchandise Processing Fee for the country and entry date you choose.
+          <p className="mt-3 text-sm sm:text-base opacity-80">
+            Search for what you ship and see what it costs to bring into the US. We add the base HTS rate, extra tariffs like Section 232, 301 and IEEPA, and
+            the usual port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
           </p>
         </header>
 

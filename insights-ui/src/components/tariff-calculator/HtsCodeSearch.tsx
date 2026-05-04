@@ -98,15 +98,15 @@ export default function HtsCodeSearch({ onSelect, className }: HtsCodeSearchProp
   return (
     <div ref={wrapperRef} className={`relative ${className ?? ''}`}>
       <div className="relative">
-        <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-amber-400" aria-hidden="true" />
+        <MagnifyingGlassIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-amber-300/70" aria-hidden="true" />
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={onChange}
           onFocus={() => query.trim().length >= 2 && setOpen(true)}
-          placeholder="Search by product description (e.g. frozen shrimp, lithium battery, cotton t-shirt) or HTS code"
-          className="w-full h-12 rounded-lg border border-amber-500/40 bg-gray-900/70 backdrop-blur-sm pl-11 pr-10 text-sm text-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+          placeholder="Search what you ship — like frozen shrimp, lithium battery, cotton t-shirt"
+          className="w-full h-12 rounded-lg border border-amber-300/25 bg-gray-800/60 pl-11 pr-10 text-sm text-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           aria-label="Search HTS codes"
           autoComplete="off"
         />

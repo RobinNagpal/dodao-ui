@@ -225,11 +225,10 @@ interface CodePickerProps {
 
 function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManualSubmit }: CodePickerProps): JSX.Element {
   return (
-    <div className="rounded-xl bg-gray-900 border border-gray-800 shadow-2xl p-6 sm:p-8">
-      <h2 className="text-xl sm:text-2xl font-semibold heading-color">Find your HTSUS code</h2>
+    <div className="rounded-xl bg-gray-900 border border-gray-800 shadow-2xl p-4 sm:p-6 lg:p-8">
+      <h2 className="text-xl sm:text-2xl font-semibold heading-color">Find your HTS code</h2>
       <p className="mt-2 text-sm opacity-80">
-        Start by searching for the product you&apos;re importing. We match against the HTSUS line descriptions and show the full classification path so you can
-        pick the most specific match.
+        Type what you ship in plain words. We match it to the official US tariff list and show the full path so you can pick the closest line.
       </p>
 
       <div className="mt-6">
@@ -250,7 +249,7 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
           onChange={(e) => setManualCode(e.target.value)}
           placeholder="0901.90.20.00"
           aria-label="HTS code"
-          className="flex-1 h-11 rounded-lg border border-gray-700 bg-gray-950 px-4 text-sm text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+          className="flex-1 h-11 rounded-lg border border-gray-700 bg-gray-950 px-4 text-sm text-white placeholder-gray-500 font-mono focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
         <button
           type="submit"
@@ -260,21 +259,21 @@ function CodePicker({ onSelect, manualCode, setManualCode, manualError, onManual
         </button>
       </form>
       {manualError && <p className="mt-2 text-xs text-red-400">{manualError}</p>}
-      <p className="mt-3 text-xs opacity-60">Enter the full 10-digit HTSUS classification (separators are optional).</p>
+      <p className="mt-3 text-xs opacity-60">Type the full 10-digit code. Dots are fine but not needed.</p>
     </div>
   );
 }
 
 function SelectedCodeBanner({ selected, onChange }: { selected: SelectedCode; onChange: () => void }): JSX.Element {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl bg-gray-900 border border-amber-500/30 px-5 py-4 shadow-lg">
-      <div className="flex items-start gap-3 min-w-0">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-gray-900 border border-amber-300/25 px-4 sm:px-5 py-4 shadow-lg">
+      <div className="flex items-start gap-3 min-w-0 flex-1">
         <CheckCircleIcon className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
-        <div className="min-w-0">
-          <div className="text-xs uppercase tracking-wide opacity-60">Calculating duties for</div>
-          <div className="font-mono text-base font-semibold text-amber-300">{formatHts10(selected.hts10)}</div>
+        <div className="min-w-0 flex-1">
+          <div className="text-xs uppercase tracking-wide opacity-60">Working out duties for</div>
+          <div className="font-mono text-sm sm:text-base font-semibold text-amber-300 break-all">{formatHts10(selected.hts10)}</div>
           {selected.description && selected.description !== 'User-entered HTS code' && (
-            <div className="mt-0.5 text-xs opacity-80 truncate">{selected.description}</div>
+            <div className="mt-0.5 text-xs opacity-80 line-clamp-2 sm:line-clamp-1">{selected.description}</div>
           )}
         </div>
       </div>
@@ -302,7 +301,7 @@ interface ShipmentFormProps {
 
 function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primaryUoms, onSubmit, error }: ShipmentFormProps): JSX.Element {
   return (
-    <form onSubmit={onSubmit} className="rounded-xl bg-gray-900 border border-gray-800 p-6 shadow-lg space-y-4">
+    <form onSubmit={onSubmit} className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg space-y-4">
       <h2 className="text-lg font-semibold heading-color">Shipment details</h2>
 
       <Field label="Shipment Value (USD)" htmlFor="shipmentValueUsd">
@@ -313,7 +312,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           step="0.01"
           value={form.shipmentValueUsd}
           onChange={(e) => updateForm('shipmentValueUsd', e.target.value)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         />
       </Field>
 
@@ -322,7 +321,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="countryOfOrigin"
           value={form.countryOfOrigin}
           onChange={(e) => updateForm('countryOfOrigin', e.target.value)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {COUNTRY_OPTIONS.map((c) => (
             <option key={c.code} value={c.code}>
@@ -337,7 +336,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
           id="modeOfTransport"
           value={form.modeOfTransport}
           onChange={(e) => updateForm('modeOfTransport', e.target.value as TransportMode)}
-          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
         >
           {TRANSPORT_MODES.map((m) => (
             <option key={m} value={m}>
@@ -354,7 +353,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.entryDate}
             onChange={(e) => updateForm('entryDate', e.target.value)}
-            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
         <Field label="Date of Loading" htmlFor="dateOfLoading">
@@ -363,15 +362,13 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
             type="date"
             value={form.dateOfLoading}
             onChange={(e) => updateForm('dateOfLoading', e.target.value)}
-            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
           />
         </Field>
       </div>
 
       {hideQuantityInputs ? (
-        <p className="text-xs opacity-70">
-          UOM and quantity are not required for this HTS code — its duty rates are entirely ad-valorem (percentage of shipment value).
-        </p>
+        <p className="text-xs opacity-70">This code uses only percentage duties, so you can skip the unit and quantity.</p>
       ) : (
         <>
           <div className="grid grid-cols-[110px_minmax(0,1fr)] gap-3">
@@ -389,7 +386,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   id="unitOfMeasure"
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
-                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 >
                   {primaryUoms.map((u) => (
                     <option key={u} value={u}>
@@ -404,7 +401,7 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                   value={form.unitOfMeasure}
                   onChange={(e) => updateForm('unitOfMeasure', e.target.value)}
                   placeholder="—"
-                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs uppercase focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
                 />
               )}
             </Field>
@@ -416,14 +413,14 @@ function ShipmentForm({ form, updateForm, submitting, hideQuantityInputs, primar
                 step="0.01"
                 value={form.quantity}
                 onChange={(e) => updateForm('quantity', e.target.value)}
-                className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-400"
+                className="block w-full rounded-md border border-gray-700 bg-gray-950 px-3 py-2 text-sm text-white shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-300/40 focus:border-amber-300/60"
               />
             </Field>
           </div>
           <p className="text-xs opacity-70">
             {primaryUoms.length > 0
-              ? `Priced per ${primaryUoms.join(' / ')} — quantity must be in that unit.`
-              : 'Required for codes priced per-unit. The unit is derived from the candidate-code data after the first calculation.'}
+              ? `This code charges per ${primaryUoms.join(' / ')}. Enter your quantity in that unit.`
+              : 'Some codes charge per unit (like per kg). The unit fills in after the first calculation.'}
           </p>
         </>
       )}
@@ -455,8 +452,7 @@ function Field({ label, htmlFor, children }: { label: string; htmlFor: string; c
 function EmptyResultState(): JSX.Element {
   return (
     <div className="rounded-xl border border-dashed border-gray-700 bg-gray-900/40 p-8 text-center text-sm opacity-70">
-      Fill in the shipment details and click <strong>Calculate duties</strong> to see a per-line breakdown of the applicable HTSUS rates and Chapter 99 special
-      tariffs.
+      Fill in your shipment details and click <strong>Calculate duties</strong> to see what each line will cost.
     </div>
   );
 }
@@ -472,74 +468,76 @@ function ResultPanel({ result, submitting, onToggleExclusion }: ResultPanelProps
 
   return (
     <>
-      <div className="rounded-xl bg-gray-900 border border-gray-800 p-6 shadow-lg">
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <div>
+      <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <div className="min-w-0">
             <h2 className="text-lg font-semibold heading-color">Result</h2>
-            <p className="mt-1 text-xs opacity-70">
+            <p className="mt-1 text-xs opacity-70 break-all">
               HTS <span className="font-mono">{formatHts10(hts10)}</span> · {inputs.countryOfOrigin} · {inputs.modeOfTransport}
             </p>
           </div>
           <div className="text-right">
-            <div className="text-xs uppercase tracking-wide opacity-70">Effective duty rate</div>
-            <div className="text-3xl font-semibold text-amber-300">{formatPercent(totals.effectiveDutyRate)}</div>
+            <div className="text-xs uppercase tracking-wide opacity-70">Total duty rate</div>
+            <div className="text-2xl sm:text-3xl font-semibold text-amber-300">{formatPercent(totals.effectiveDutyRate)}</div>
           </div>
         </div>
       </div>
 
       <div className="rounded-xl bg-gray-900 border border-gray-800 overflow-hidden shadow-lg">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-gray-800 text-left text-xs uppercase tracking-wide opacity-60">
-              <th className="px-4 py-3">Code</th>
-              <th className="px-4 py-3">Rate</th>
-              <th className="px-4 py-3 text-right">Duty</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lines.length === 0 && (
-              <tr>
-                <td colSpan={3} className="px-4 py-6 text-center opacity-70">
-                  No applicable duties for this shipment.
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[480px]">
+            <thead>
+              <tr className="border-b border-gray-800 text-left text-xs uppercase tracking-wide opacity-60">
+                <th className="px-4 py-3">Code</th>
+                <th className="px-4 py-3">Rate</th>
+                <th className="px-4 py-3 text-right">Duty</th>
               </tr>
-            )}
-            {lines.map((line) => (
-              <tr key={line.candidateId} className="border-b border-gray-800/60 last:border-0 align-top">
-                <td className="px-4 py-3">
-                  <div className="font-mono text-xs text-amber-200">
-                    {line.code}
-                    {line.variant ? ` (${line.variant})` : ''}
-                  </div>
-                  <div className="text-xs opacity-80 mt-0.5">
-                    {line.type === TariffCandidateCodeType.SPECIAL_CODE ? line.label || 'Special code' : 'Base HTSUS rate'}
-                  </div>
-                  {line.notes.length > 0 && (
-                    <ul className="mt-1 text-xs text-amber-400 list-disc list-inside">
-                      {line.notes.map((n, i) => (
-                        <li key={i}>{n}</li>
-                      ))}
-                    </ul>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-xs">{line.rateDescription || '—'}</td>
-                <td className="px-4 py-3 text-right font-mono">{formatCurrency(line.dutyAmount)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {lines.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-4 py-6 text-center opacity-70">
+                    No duties apply to this shipment.
+                  </td>
+                </tr>
+              )}
+              {lines.map((line) => (
+                <tr key={line.candidateId} className="border-b border-gray-800/60 last:border-0 align-top">
+                  <td className="px-4 py-3">
+                    <div className="font-mono text-xs text-amber-200">
+                      {line.code}
+                      {line.variant ? ` (${line.variant})` : ''}
+                    </div>
+                    <div className="text-xs opacity-80 mt-0.5">
+                      {line.type === TariffCandidateCodeType.SPECIAL_CODE ? line.label || 'Special code' : 'Base HTS rate'}
+                    </div>
+                    {line.notes.length > 0 && (
+                      <ul className="mt-1 text-xs text-amber-400 list-disc list-inside">
+                        {line.notes.map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-xs">{line.rateDescription || '—'}</td>
+                  <td className="px-4 py-3 text-right font-mono">{formatCurrency(line.dutyAmount)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {potentialExclusions.length > 0 && <PotentialExclusionsPanel exclusions={potentialExclusions} submitting={submitting} onToggle={onToggleExclusion} />}
 
-      <div className="rounded-xl bg-gray-900 border border-gray-800 p-6 shadow-lg">
+      <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
         <h3 className="text-xs font-semibold uppercase tracking-wide opacity-60 mb-3">Cost breakdown</h3>
         <dl className="space-y-2 text-sm">
-          <Row label="Base cost" value={formatCurrency(totals.baseCost)} />
-          <Row label="Total duties" value={formatCurrency(totals.totalDuties)} />
-          <Row label="Harbor Maintenance Fee (HMF)" value={formatCurrency(totals.hmf)} />
-          <Row label="Merchandise Processing Fee (MPF)" value={formatCurrency(totals.mpf)} />
-          <Row label="Landed cost" value={formatCurrency(totals.landedCost)} bold />
+          <Row label="Shipment value" value={formatCurrency(totals.baseCost)} />
+          <Row label="Duties" value={formatCurrency(totals.totalDuties)} />
+          <Row label="Harbor Maintenance Fee" value={formatCurrency(totals.hmf)} />
+          <Row label="Merchandise Processing Fee" value={formatCurrency(totals.mpf)} />
+          <Row label="Total landed cost" value={formatCurrency(totals.landedCost)} bold />
         </dl>
       </div>
     </>
@@ -554,10 +552,10 @@ interface PotentialExclusionsPanelProps {
 
 function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: PotentialExclusionsPanelProps): JSX.Element {
   return (
-    <div className="rounded-xl bg-gray-900 border border-gray-800 p-6 shadow-lg">
-      <h3 className="text-xs font-semibold uppercase tracking-wide opacity-60 mb-1">Potential exclusion codes</h3>
+    <div className="rounded-xl bg-gray-900 border border-gray-800 p-4 sm:p-6 shadow-lg">
+      <h3 className="text-xs font-semibold uppercase tracking-wide opacity-60 mb-1">Possible exclusions</h3>
       <p className="text-xs opacity-70 mb-4">
-        These Chapter 99 codes are not auto-applied — the importer must claim them. Toggle one to recalculate with that exclusion in effect.
+        These extra codes are not added by default. The importer has to claim them. Tick one to see how the duty changes.
       </p>
       <ul className="space-y-3">
         {exclusions.map((ex) => {
@@ -589,7 +587,7 @@ function PotentialExclusionsPanel({ exclusions, submitting, onToggle }: Potentia
                 </div>
                 <div className="text-xs opacity-70 mt-0.5">{ex.rateDescription || '—'}</div>
                 <div className="text-xs opacity-70 mt-0.5">
-                  {ex.applied ? 'Currently dropping: ' : 'Would drop: '}
+                  {ex.applied ? 'Removes: ' : 'Would remove: '}
                   <span className="font-mono">{formatExclusionTargets(ex.excludesCodes)}</span>
                 </div>
               </label>
