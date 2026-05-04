@@ -1,11 +1,12 @@
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import CompetitorCard from '@/components/competition/CompetitorCard';
+import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import AddTickerAdminButton from './AddTickerAdminButton';
 
 export interface CompetitionProps {
@@ -19,6 +20,10 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   if (!tickerData || (!vsCompetition && (!competitorTickers || competitorTickers.length === 0))) {
     return null;
   }
+
+  // Kick off the sibling-presence query in parallel with the rest of render.
+  // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
+  const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
   // Derive dates from competition/ticker data
   const createdAtRaw = vsCompetition?.createdAt || data.ticker?.createdAt || new Date();
@@ -99,7 +104,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
-                {tickerData.name} <span className="text-muted-foreground">({ticker})</span>
+                {analysisTitle}
               </h1>
               <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
                 <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
@@ -123,13 +128,6 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
 
         {/* Article Body */}
         <div className="prose prose-invert max-w-none">
-          <section className="mb-6">
-            <h2 className="text-xl font-semibold text-color mb-3">Analysis Title</h2>
-            <p className="text-color" itemProp="description">
-              {analysisTitle}
-            </p>
-          </section>
-
           {quadrantDataPoints.length >= 2 ? (
             <section className="mb-6">
               <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
@@ -267,6 +265,16 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
             </section>
           )}
         </div>
+
+        <Suspense fallback={null}>
+          <TickerRelatedSections
+            availableSlugsPromise={availableSlugsPromise}
+            exchange={tickerData.exchange}
+            symbol={tickerData.symbol}
+            companyName={tickerData.name}
+            currentSlug="competition"
+          />
+        </Suspense>
 
         {/* Article Footer */}
         <footer className="mt-8 pt-6 border-t border-color">

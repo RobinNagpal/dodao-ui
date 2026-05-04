@@ -40,9 +40,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
-  const [underlyingCause, setUnderlyingCause] = useState<string>('');
-  const [historicalAnalog, setHistoricalAnalog] = useState<string>('');
-  const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
+  const [summary, setSummary] = useState<string>('');
   const [direction, setDirection] = useState<ScenarioDirection>('DOWNSIDE');
   const [timeframe, setTimeframe] = useState<ScenarioTimeframe>('FUTURE');
   const [probabilityBucket, setProbabilityBucket] = useState<ScenarioProbabilityBucket>('MEDIUM');
@@ -50,6 +48,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
   const [countries, setCountries] = useState<SupportedCountries[]>([]);
   const [outlookAsOfDate, setOutlookAsOfDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [metaDescription, setMetaDescription] = useState<string>('');
+  const [detailedAnalysis, setDetailedAnalysis] = useState<string>('');
   const [archived, setArchived] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>('');
   const [loadingExisting, setLoadingExisting] = useState<boolean>(false);
@@ -74,9 +73,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       setScenarioNumber(1);
       setTitle('');
       setSlug('');
-      setUnderlyingCause('');
-      setHistoricalAnalog('');
-      setOutlookMarkdown('');
+      setSummary('');
       setDirection('DOWNSIDE');
       setTimeframe('FUTURE');
       setProbabilityBucket('MEDIUM');
@@ -84,6 +81,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       setCountries([]);
       setOutlookAsOfDate(new Date().toISOString().slice(0, 10));
       setMetaDescription('');
+      setDetailedAnalysis('');
       setArchived(false);
       setFormError('');
       return;
@@ -100,9 +98,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         setScenarioNumber(data.scenarioNumber);
         setTitle(data.title);
         setSlug(data.slug);
-        setUnderlyingCause(data.underlyingCause);
-        setHistoricalAnalog(data.historicalAnalog);
-        setOutlookMarkdown(data.outlookMarkdown);
+        setSummary(data.summary);
         setDirection(data.direction as ScenarioDirection);
         setTimeframe(data.timeframe as ScenarioTimeframe);
         setProbabilityBucket(data.probabilityBucket as ScenarioProbabilityBucket);
@@ -110,6 +106,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         setCountries((data.countries ?? []) as SupportedCountries[]);
         setOutlookAsOfDate(new Date(data.outlookAsOfDate).toISOString().slice(0, 10));
         setMetaDescription(data.metaDescription ?? '');
+        setDetailedAnalysis(data.detailedAnalysis ?? '');
         setArchived(data.archived);
       })
       .catch(() => setFormError('Failed to load scenario'))
@@ -124,8 +121,8 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
     e.preventDefault();
     setFormError('');
 
-    if (!title || !underlyingCause || !historicalAnalog || !outlookMarkdown) {
-      setFormError('Title, underlying cause, historical analog, and outlook are required.');
+    if (!title || !summary) {
+      setFormError('Title and summary are required.');
       return;
     }
     if (countries.length === 0) {
@@ -147,9 +144,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       scenarioNumber,
       title,
       slug: slug || undefined,
-      underlyingCause,
-      historicalAnalog,
-      outlookMarkdown,
+      summary,
       direction,
       timeframe,
       probabilityBucket,
@@ -157,6 +152,7 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
       countries,
       outlookAsOfDate: new Date(outlookAsOfDate).toISOString(),
       metaDescription: metaDescription || null,
+      detailedAnalysis: detailedAnalysis || null,
       archived,
     };
 
@@ -281,26 +277,18 @@ export default function UpsertStockScenarioModal({ isOpen, onClose, onSuccess, s
         </div>
 
         <TextareaAutosize
-          label="Underlying cause (markdown)"
-          modelValue={underlyingCause}
+          label="Summary (markdown — 4–5 paragraphs covering cause, historical analog, and outlook with the as-of date)"
+          modelValue={summary}
           onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setUnderlyingCause(v);
+            if (typeof v === 'string') setSummary(v);
           }}
         />
 
         <TextareaAutosize
-          label="Historical analog (markdown)"
-          modelValue={historicalAnalog}
+          label="Detailed analysis (markdown, optional — surfaced behind a 'Detailed analysis' button on the public detail page)"
+          modelValue={detailedAnalysis}
           onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setHistoricalAnalog(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Outlook (markdown; should include the as-of date, catalysts, and most-exposed stocks)"
-          modelValue={outlookMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setOutlookMarkdown(v);
+            if (typeof v === 'string') setDetailedAnalysis(v);
           }}
         />
 

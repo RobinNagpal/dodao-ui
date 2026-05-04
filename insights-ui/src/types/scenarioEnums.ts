@@ -36,9 +36,11 @@ export const ScenarioPricedInBucket = {
 } as const;
 export type ScenarioPricedInBucket = (typeof ScenarioPricedInBucket)[keyof typeof ScenarioPricedInBucket];
 
+// TEN_BAGGER is stock-only. ETF scenarios never use it — ETF holdings are
+// pre-diversified, so a per-name 10x call would be misleading.
 export const ScenarioRole = {
   WINNER: 'WINNER',
   LOSER: 'LOSER',
-  MOST_EXPOSED: 'MOST_EXPOSED',
+  TEN_BAGGER: 'TEN_BAGGER',
 } as const;
 export type ScenarioRole = (typeof ScenarioRole)[keyof typeof ScenarioRole];

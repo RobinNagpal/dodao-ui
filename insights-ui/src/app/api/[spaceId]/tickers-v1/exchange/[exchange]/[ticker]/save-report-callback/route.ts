@@ -8,8 +8,8 @@ import {
   saveFinalSummaryResponse,
   saveFinancialAnalysisFactorAnalysisResponse,
   saveFutureGrowthFactorAnalysisResponse,
-  saveFutureRiskResponse,
   saveInvestorAnalysisResponse,
+  saveManagementTeamResponse,
   savePastPerformanceFactorAnalysisResponse,
 } from '@/utils/analysis-reports/save-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -47,8 +47,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     case ReportType.FAIR_VALUE:
       await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FairValue);
       break;
-    case ReportType.FUTURE_RISK:
-      await saveFutureRiskResponse(ticker, exchange, llmResponse);
+    case ReportType.MANAGEMENT_TEAM:
+      await saveManagementTeamResponse(ticker, exchange, llmResponse);
       break;
     case ReportType.FINAL_SUMMARY:
       await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);

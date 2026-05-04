@@ -7,8 +7,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Let Google crawl but we ALSO noindex via meta/header as above
-        disallow: ['/public-equities', '/api', '/_next/'],
+        // Do NOT block /_next/ — Googlebot needs to fetch /_next/static/* (CSS/JS) and
+        // /_next/image (optimized images, including the logo) to render pages correctly.
+        // Blocking it strips styling and breaks images in Search Console's URL Inspection.
+        disallow: ['/public-equities', '/api'],
       },
     ],
     sitemap: 'https://koalagains.com/sitemap_index.xml',

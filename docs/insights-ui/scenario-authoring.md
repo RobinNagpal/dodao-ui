@@ -30,7 +30,8 @@ A scenario is not done until every section below is populated with concrete numb
 ```markdown
 ### N. <Scenario title>
 
-**Underlying cause:** <2–4 paragraphs. Cover ALL of:>
+**Summary:** <4–5 paragraphs. Fold the cause, the historical analog, and the outlook
+  into a single narrative. Cover ALL of:>
   - **Dates:** when the scenario started (event / announcement / regime shift), and the
     end date or the window through which the impact is expected to play out.
   - **What exactly changed:** the specific policy / rate / tariff / regulation / supply
@@ -50,35 +51,84 @@ A scenario is not done until every section below is populated with concrete numb
     over standalone PBMs", "asymmetrically hurts contract manufacturers vs. brand
     pharma"). Specific stocks and ETFs go in the Winners / Losers sections below — this
     paragraph is for the industry- or category-level asymmetry.
-
-**Historical analog:** <1–2 paragraphs naming a comparable past episode (year, scope,
-  outcome). Cite the magnitude of that prior move so the current scenario can be sized
-  against it.>
+  - **Historical analog:** name a comparable past episode (year, scope, outcome). Cite
+    the magnitude of that prior move so the current scenario can be sized against it.
+  - **Outlook (with `as of YYYY-MM-DD`):** the probability bucket (`high probability` /
+    `medium probability` / `low probability`, or an explicit range like `30–40%`), the
+    timeframe (`already happened` / `in progress` / `future`), and what would change the
+    call. The parser reads the percentage, the timeframe phrasing, and the as-of date
+    from this paragraph.
 
 **Winners**
 - **EXCHANGE:SYMBOL** (+N%, <timeframe + priced-in bucket>) — <1–2 sentences on why
   this name is positioned to outperform under this scenario. Include exposure %,
   pricing-power lever, or earnings sensitivity if known.>
-- ... (3–10 names)
+- ... (target 5 names; never exceed 7–8 — see convention section below)
 
 **Losers**
 - **EXCHANGE:SYMBOL** (-N%, <timeframe + priced-in bucket>) — <as above, but downside>
-- ... (3–10 names)
+- ... (target 5 names; OK to ship fewer if no clean candidates)
 
-**Most exposed:** <Optional. Names whose P&L is most directly tied to the scenario
-  outcome regardless of direction — useful when the magnitude is more interesting
-  than the sign.>
-- **EXCHANGE:SYMBOL** (±N%, ...) — ...
+**10 Baggers**    <!-- Stock scenarios only. Optional: omit for ETF scenarios
+  and for stock scenarios where no plausible 10x candidate exists. -->
+- **EXCHANGE:SYMBOL** (+N%, <timeframe to 10x>, not priced in) — <1–2 sentences on
+  why this small/micro-cap could 5–10x under this scenario. Reference the
+  value-chain layer it sits in (e.g., upstream miner, contract manufacturer)
+  and the specific catalyst that would re-rate it.>
+- ... (target 5 names; OK to ship fewer. The % can exceed +100, e.g. +500 to
+  +900 for a 10x. Always use NOT_PRICED_IN as the bucket — if a name is
+  already partially priced in for a 10x, it doesn't belong here. The
+  parenthetical MUST include an explicit timeframe to 10x, e.g. "36–60 months",
+  so a reader can size the holding period against the magnitude.)
 
 **Countries:** USA, Canada    <!-- Stock scenarios only. Comma-separated list of
   SupportedCountries. Omit for ETF scenarios. -->
 
-**Outlook (as of YYYY-MM-DD):** <One paragraph stating the probability bucket
-  (`high probability` / `medium probability` / `low probability`, or an explicit
-  range like `30–40%`), the timeframe (`already happened` / `in progress` /
-  `future`), and what would change the call. The parser reads the percentage and
-  the timeframe phrasing from this paragraph.>
+**Detailed analysis:** <Optional. Long-form markdown rendered on
+  `/(etf|stock)-scenarios/<slug>/detailed-analysis`. Skip the section entirely
+  if you don't have it yet — leaving the field unset is preferred to writing a
+  thin or speculative version. Use the dedicated prompt template at
+  `docs/insights-ui/scenario-prompts/detailed-analysis.md` to generate this.>
 ```
+
+### Five winners, five losers, five 10 baggers — convention with a hard cap
+
+The schema does **not** enforce a count on link rows, and the public detail
+page renders every link the parser stores. The editorial target is **five
+winners, five losers, and (for stock scenarios) five 10 baggers** — short,
+ranked lists that read like trade ideas, not coverage tables. The rules below
+are soft on the floor and hard on the ceiling:
+
+- **Winners — try for 5, never exceed 7–8.** Five is the target. If a
+  scenario genuinely has more clear top names, you may stretch to 7 or 8 — but
+  **no more**. Past 8 the list stops being a ranked trade idea and becomes a
+  coverage list. Drop the weakest pick before adding another.
+- **Losers — try for 5, fewer is fine.** Aim for 5; if the scenario doesn't
+  surface 5 clean loser candidates, ship what you have rather than padding
+  with marginal names. Two strong losers beats five weak ones.
+- **10 baggers (stock-only, optional) — try for 5, fewer is fine; each bullet
+  must state the timeframe to 10x.** Include up to 5 small/micro caps with
+  plausible 5–10x upside drawn from the value-chain layers in the detailed
+  analysis. Each bullet **must include the timeframe over which the 10x
+  thesis is expected to play out** (e.g. "36–60 months" inside the per-stock
+  parenthetical) so a reader can size the holding-period requirement against
+  the magnitude. ETF scenarios never carry this list — ETF holdings are
+  pre-diversified, so a per-name 10x call would be misleading. Skip the
+  section entirely if no candidate clears the bar.
+- **Always save partial sets.** Don't block a draft because you couldn't find
+  exactly 5 of every category. Save what you have — a scenario with 5 winners
+  and 2 losers is acceptable; a scenario with 5 winners and 3 ten baggers is
+  acceptable; a scenario with 9 winners is not.
+- **Broad diversified ETFs / index ETFs** (SPY, QQQ, VTI) are usually the
+  weakest link in an ETF scenario when a more targeted sector / industry ETF
+  would qualify; same instinct applies to mega-cap diversified names in stock
+  scenario winner lists.
+
+Claude Code (and any human author) MUST respect this convention when drafting
+or revising a scenario, even though no code path will reject a 9-winner list.
+The same convention is reiterated as a comment at the top of
+`insights-ui/src/scripts/import-etf-scenarios.ts` and
+`insights-ui/src/scripts/import-stock-scenarios.ts`.
 
 ### Stock vs ETF: where priced-in / expected-move lives
 
@@ -90,12 +140,16 @@ ETF scenarios still carry these at the scenario level on `EtfScenario`. Don't
 write a "Priced-in" or "Expected move" line above the Winners list for a stock
 draft — the parser ignores it and the schema has no column for it.
 
-### Per-stock bullet syntax (Winners / Losers / Most exposed)
+### Per-stock bullet syntax (Winners / Losers / 10 Baggers)
 
 The bullet line is parsed by `BULLET_LINE_PATTERN` in `insights-ui/src/utils/stock-scenario-markdown-parser.ts` (and the matching ETF parser). To carry a per-stock price target and explanation:
 
 - Use `EXCHANGE:SYMBOL` qualified form, in bold, e.g. `**NYSE:TEVA**`, `**TSX:CNQ**`.
-- Optional `(±N%, <free-text explanation>)` parenthetical right after — the integer is the expected price change in percent, capped at ±100. The free text usually carries the timeframe and a priced-in phrase.
+- Optional `(±N%, <free-text explanation>)` parenthetical right after — the
+  integer is the expected price change in percent. Winners / losers stay
+  inside ±100. **10 Baggers** widen the upper bound to +2000 so a 10-bagger
+  (+900%) or stretch 20-bagger (+2000%) fits; the ETF parser stays at ±100.
+  The free text usually carries the timeframe and a priced-in phrase.
 - Optional ` — <role explanation>` after an em-dash, hyphen, or colon — 1–2 sentences on the company-specific thesis.
 - Priced-in phrases recognized in either the parenthetical or the role explanation: `over-priced in`, `fully priced in`, `mostly priced in`, `partially priced in`, `not priced in`. Exactly one phrase per bullet — pick the bucket honestly.
 
@@ -122,10 +176,12 @@ Inferred from the title keywords first (`boom`, `rally`, `surge`, `breakout` →
 A scenario is ready to import when:
 
 - Every required section is populated (no TODOs, no `<...>` placeholders).
-- The underlying-cause section names specific dates and at least one headline number.
-- Every per-industry impact in the cause section has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
-- Winners and losers each have at least 3 names with `EXCHANGE:SYMBOL` qualifiers; bullet form (with `(±N%, ...)` per stock) is preferred over inline form.
-- The historical analog is a real, datable episode — not a hand-wave.
-- The outlook paragraph is dated and states both probability and timeframe in language the parser recognizes.
+- The summary section names specific dates and at least one headline number.
+- Every per-industry impact in the summary has a numerical range (% margin, % revenue, $ amount, basis points — pick what fits).
+- Winners aim for **5** names (hard cap **7–8**); losers aim for **5** but fewer is OK. Use bullet form (with `(±N%, ...)` per stock) — it carries the per-stock price target and explanation; inline form does not.
+- For stock scenarios where 10 Baggers is included: aim for **5** small/micro-cap names (fewer is OK), drawn from the value-chain layers of the detailed analysis, each with NOT_PRICED_IN bucket, a +500 to +2000% bullet, and an explicit **timeframe to 10x** in the parenthetical (e.g. "36–60 months"). Skip the section entirely if no candidate clears the bar.
+- The historical analog folded into the summary is a real, datable episode — not a hand-wave.
+- The outlook paragraph (also folded into the summary) is dated and states both probability and timeframe in language the parser recognizes.
+- Detailed analysis is either absent (acceptable) or follows the structure in `docs/insights-ui/scenario-prompts/detailed-analysis.md` — never a thin one-paragraph stub.
 
 If any of these are missing, keep iterating in the scratch file before pasting into the admin modal.

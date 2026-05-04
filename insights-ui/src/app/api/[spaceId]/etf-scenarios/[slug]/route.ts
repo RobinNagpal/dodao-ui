@@ -28,7 +28,6 @@ export interface EtfScenarioDetail
   updatedAt: string;
   winners: EtfScenarioLinkDto[];
   losers: EtfScenarioLinkDto[];
-  mostExposed: EtfScenarioLinkDto[];
 }
 
 function toLinkDto(link: EtfScenarioEtfLink, resolved?: { id: string; exchange: string }): EtfScenarioLinkDto {
@@ -88,7 +87,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     updatedAt: updatedAt.toISOString(),
     winners: etfLinks.filter((l) => l.role === 'WINNER').map(mapLink),
     losers: etfLinks.filter((l) => l.role === 'LOSER').map(mapLink),
-    mostExposed: etfLinks.filter((l) => l.role === 'MOST_EXPOSED').map(mapLink),
   };
 }
 

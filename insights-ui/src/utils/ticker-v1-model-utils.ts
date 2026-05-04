@@ -11,8 +11,8 @@ import {
   TickerV1AnalysisCategoryFactorResult,
   TickerV1CachedScore,
   TickerV1CategoryAnalysisResult,
-  TickerV1FutureRisk,
   TickerV1Industry,
+  TickerV1ManagementTeamReport,
   TickerV1SubIndustry,
   TickerV1VsCompetition,
 } from '@prisma/client';
@@ -30,6 +30,7 @@ export const tickerV1IncludeWithRelations = {
   industry: true,
   subIndustry: true,
   cachedScoreEntry: true,
+  managementTeamReports: true,
 } as const;
 
 export type FullTickerV1CategoryAnalysisResult = TickerV1CategoryAnalysisResult & {
@@ -69,7 +70,7 @@ export interface CompetitorTicker {
 
 export type TickerV1WithRelations = TickerV1 & {
   categoryAnalysisResults: FullTickerV1CategoryAnalysisResult[];
-  futureRisks?: TickerV1FutureRisk[];
+  managementTeamReports?: TickerV1ManagementTeamReport[];
   vsCompetition?: TickerV1VsCompetition | null;
   cachedScoreEntry?: TickerV1CachedScore | null;
 };
@@ -110,7 +111,7 @@ export async function getTickerWithAllDetailsForConditionsOpt(whereClause: Prism
         },
       },
       investorAnalysisResults: true,
-      futureRisks: true,
+      managementTeamReports: true,
       vsCompetition: true,
     },
   });

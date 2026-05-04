@@ -467,6 +467,14 @@ enum TickerAnalysisCategory {
   FairValue
 }
 
+enum ManagementTeamAlignmentVerdict {
+  OwnerOperator
+  StronglyAligned
+  Aligned
+  WeaklyAligned
+  Misaligned
+}
+
 // --------------------------
 // New Tables (convention-aligned)
 // --------------------------
@@ -530,6 +538,7 @@ model TickerV1 {
   factorResults           TickerV1AnalysisCategoryFactorResult[]
   investorAnalysisResults TickerV1InvestorAnalysisResult[]
   futureRisks             TickerV1FutureRisk[]
+  managementTeamReports   TickerV1ManagementTeamReport[]
   vsCompetition           TickerV1VsCompetition?
   generationRequests      TickerV1GenerationRequest[]
 
@@ -740,6 +749,26 @@ model TickerV1FutureRisk {
   @@map("ticker_v1_future_risks")
 }
 
+model TickerV1ManagementTeamReport {
+  id                String                         @id @default(uuid())
+  summary           String                         @map("summary")
+  detailedAnalysis  String                         @map("detailed_analysis")
+  alignmentVerdict  ManagementTeamAlignmentVerdict @map("alignment_verdict")
+  tickerId          String                         @map("ticker_id")
+  spaceId           String                         @default("koala_gains") @map("space_id")
+  createdAt         DateTime                       @default(now()) @map("created_at")
+  updatedAt         DateTime                       @updatedAt @map("updated_at")
+  createdBy         String?                        @map("created_by")
+  updatedBy         String?                        @map("updated_by")
+
+  ticker TickerV1 @relation(fields: [tickerId], references: [id])
+
+  @@unique([spaceId, tickerId])
+  @@index([tickerId])
+  @@index([spaceId, tickerId])
+  @@map("ticker_v1_management_team_reports")
+}
+
 model TickerV1VsCompetition {
   id                       String   @id @default(uuid())
   summary                  String   @map("summary")
@@ -775,6 +804,7 @@ model TickerV1GenerationRequest {
   regenerateFutureGrowth      Boolean @default(false) @map("regenerate_future_growth")
   regenerateFairValue         Boolean @default(false) @map("regenerate_fair_value")
   regenerateFutureRisk        Boolean @default(false) @map("regenerate_future_risk")
+  regenerateManagementTeam    Boolean @default(false) @map("regenerate_management_team")
 
   // Investor analyses
   regenerateWarrenBuffett Boolean @default(false) @map("regenerate_warren_buffett")
@@ -1793,11 +1823,14 @@ model EtfScenario {
   scenarioNumber                 Int      @map("scenario_number")
   title                          String   @map("title")
   slug                           String   @map("slug")
-  underlyingCause                String   @map("underlying_cause") @db.Text
-  historicalAnalog               String   @map("historical_analog") @db.Text
-  winnersMarkdown                String   @map("winners_markdown") @db.Text
-  losersMarkdown                 String   @map("losers_markdown") @db.Text
-  outlookMarkdown                String   @map("outlook_markdown") @db.Text
+  // 4–5 paragraph narrative covering cause, historical analog, and dated
+  // outlook in one field. Replaces the legacy underlyingCause/historicalAnalog/
+  // outlookMarkdown trio; those columns remain nullable for one release cycle.
+  summary                        String   @map("summary") @db.Text
+  underlyingCause                String?  @map("underlying_cause") @db.Text
+  historicalAnalog               String?  @map("historical_analog") @db.Text
+  outlookMarkdown                String?  @map("outlook_markdown") @db.Text
+  detailedAnalysis               String?  @map("detailed_analysis") @db.Text
   direction                      String   @default("DOWNSIDE") @map("direction")
   timeframe                      String   @default("FUTURE") @map("timeframe")
   probabilityBucket              String   @default("MEDIUM") @map("probability_bucket")
@@ -1860,9 +1893,12 @@ model StockScenario {
   scenarioNumber                  Int      @map("scenario_number")
   title                           String   @map("title")
   slug                            String   @map("slug")
-  underlyingCause                 String   @map("underlying_cause") @db.Text
-  historicalAnalog                String   @map("historical_analog") @db.Text
-  outlookMarkdown                 String   @map("outlook_markdown") @db.Text
+  // See note on EtfScenario.summary — same semantics here.
+  summary                         String   @map("summary") @db.Text
+  underlyingCause                 String?  @map("underlying_cause") @db.Text
+  historicalAnalog                String?  @map("historical_analog") @db.Text
+  outlookMarkdown                 String?  @map("outlook_markdown") @db.Text
+  detailedAnalysis                String?  @map("detailed_analysis") @db.Text
   direction                       String   @default("DOWNSIDE") @map("direction")
   timeframe                       String   @default("FUTURE") @map("timeframe")
   probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")

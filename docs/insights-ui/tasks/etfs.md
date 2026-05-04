@@ -741,10 +741,10 @@ analog. We should **borrow its schema and UI patterns** rather than invent new o
     "re-shoring of semiconductor manufacturing", etc.).
   - **Slug** — stable URL-safe identifier, derived from title on create (same pattern as
     scenarios).
-  - **Underlying cause** (markdown) — why the trend is happening.
-  - **Historical analog** (markdown) — past equivalent shift (e.g. baby-boomer entry into
-    housing market in the 1970s, post-WWII suburbanization, early-internet adoption curve).
-    This is borrowed directly from scenarios and is high-value for trends.
+  - **Summary** (markdown, 4–5 paragraphs) — folds the underlying cause / mechanism, the
+    historical analog (e.g. baby-boomer entry into housing in the 1970s, post-WWII
+    suburbanization, early-internet adoption curve), magnitude, and the dated outlook into
+    a single narrative. Same shape as `EtfScenario.summary`.
   - **Direction** — `UPSIDE` / `DOWNSIDE` (reuse `EtfScenarioDirection`): does the trend lift
     or depress the mapped ETFs?
   - **Timeframe / lifecycle** — `FUTURE` / `IN_PROGRESS` / `PAST` (reuse
@@ -758,8 +758,9 @@ analog. We should **borrow its schema and UI patterns** rather than invent new o
     `FULLY_PRICED_IN` / `OVER_PRICED_IN` (reuse `EtfScenarioPricedInBucket`).
   - **Expected price change** (int %) + **expectedPriceChangeExplanation** (markdown) +
     **priceChangeTimeframeExplanation** (markdown) — same trio scenarios use.
-  - **Outlook** (markdown) + **`outlookAsOfDate`** — "last reviewed" date so readers know how
-    fresh the thesis is.
+  - **`outlookAsOfDate`** — "last reviewed" date so readers know how fresh the thesis is.
+    The dated outlook itself lives inside the **Summary** field above (same shape as
+    `EtfScenario`).
   - **Evidence / sources** (markdown or structured list) — news, data, research supporting
     the trend. (Scenarios embed this inside the markdown fields; we can do the same or make
     it structured.)
@@ -805,3 +806,43 @@ analog. We should **borrow its schema and UI patterns** rather than invent new o
     identical — only the mapped assets differ.
   - Do trends need a separate "trend category" taxonomy (macro / demographic / generational /
     technological / regulatory) for filtering, beyond what scenarios have?
+
+## Suggestion — Connect ETFs to the home page + add categorization
+
+Right now ETFs feel disconnected from the rest of the site. We have detail pages for each ETF (`/etfs/[exchange]/[etf]` plus `competition`, `cost-efficiency-team`, `future-performance-outlook`, `holdings`, `performance-returns`, `risk-analysis`) and one flat listing page (`/etfs`), but:
+
+- The **home page** (`/`) only shows stocks by industry. There is no entry point to ETFs from there.
+- The **`/etfs` listing** dumps all 7,000+ ETFs in one page, with no grouping.
+- We have no **category pages** or **country pages** for ETFs, even though stocks have both (`/stocks/industries/[industry]`, `/stocks/countries/[country]`).
+
+Suggested next steps (small, in order):
+
+- [ ] **1. Add an ETF section on the home page**
+  - Mirror what we do for stocks: a small showcase block that links into ETFs.
+  - Group by **`category`** (Morningstar category — many values, useful), not `assetClass` (only 6, too coarse).
+  - Each card links to the matching category page.
+
+- [ ] **2. Group the `/etfs` listing by category**
+  - Stop showing all ETFs in one flat grid.
+  - Show top categories first, with a "View all" link per category.
+  - Keep the full search/filter for power users, but the default view should be category-led, like `/stocks` is industry-led.
+
+- [ ] **3. Add ETF category pages**
+  - New route: `/etfs/categories/[category]` (and an index `/etfs/categories`).
+  - Same shape as `/stocks/industries/[industry]`.
+  - Sitemap + SEO metadata per category.
+
+- [ ] **4. Add ETF country pages (later)**
+  - New route: `/etfs/countries/[country]` (mirrors `/stocks/countries/[country]`).
+  - We already store `country` and `region` on `EtfStockAnalyzerInfo`, so the data is there.
+  - Lower priority than category — most users will look up an ETF by what it holds, not where it's listed. Do this once category pages are live and we see demand.
+
+- [ ] **5. Cross-link from ETF detail pages**
+  - On every ETF detail page, link the category name to its category page, and (later) the country to its country page.
+  - Add a small "Related ETFs in this category" block at the bottom of the main detail page.
+
+**Open questions:**
+
+- Use `category` (Morningstar) or do we want our own taxonomy? `category` is good enough to start; revisit only if it gets messy.
+- Do we need both `/etfs/categories/[category]` *and* country pages on day one? Probably no — ship category first, see if country demand follows.
+- Should the home page show ETFs alongside stocks in the same showcase, or in a separate section? Separate section is clearer for users.

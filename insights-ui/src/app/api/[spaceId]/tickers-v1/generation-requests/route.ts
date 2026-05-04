@@ -21,7 +21,7 @@ export interface GenerationRequestPayload {
   regeneratePastPerformance: boolean;
   regenerateFutureGrowth: boolean;
   regenerateFairValue: boolean;
-  regenerateFutureRisk: boolean;
+  regenerateManagementTeam: boolean;
   regenerateFinalSummary: boolean;
 }
 
@@ -238,7 +238,7 @@ async function postHandler(
           regeneratePastPerformance: regenerateOptions.regeneratePastPerformance || existingRequest.regeneratePastPerformance,
           regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth || existingRequest.regenerateFutureGrowth,
           regenerateFairValue: regenerateOptions.regenerateFairValue || existingRequest.regenerateFairValue,
-          regenerateFutureRisk: regenerateOptions.regenerateFutureRisk || existingRequest.regenerateFutureRisk,
+          regenerateManagementTeam: regenerateOptions.regenerateManagementTeam || existingRequest.regenerateManagementTeam,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
         },
@@ -254,7 +254,7 @@ async function postHandler(
           regeneratePastPerformance: regenerateOptions.regeneratePastPerformance,
           regenerateFutureGrowth: regenerateOptions.regenerateFutureGrowth,
           regenerateFairValue: regenerateOptions.regenerateFairValue,
-          regenerateFutureRisk: regenerateOptions.regenerateFutureRisk,
+          regenerateManagementTeam: regenerateOptions.regenerateManagementTeam,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary,
         },
       });

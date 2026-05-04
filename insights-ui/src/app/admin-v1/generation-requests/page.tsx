@@ -23,6 +23,7 @@ type GenerationReportFields = keyof Pick<
   | 'regeneratePastPerformance'
   | 'regenerateFutureGrowth'
   | 'regenerateFairValue'
+  | 'regenerateManagementTeam'
   | 'regenerateFinalSummary'
 >;
 const REGENERATE_FIELDS = [
@@ -32,6 +33,7 @@ const REGENERATE_FIELDS = [
   'regeneratePastPerformance',
   'regenerateFutureGrowth',
   'regenerateFairValue',
+  'regenerateManagementTeam',
   'regenerateFinalSummary',
 ] as GenerationReportFields[];
 
@@ -46,6 +48,7 @@ const FIELD_LABELS: Record<GenerationReportFields, string> = {
   regeneratePastPerformance: 'Past Perf.',
   regenerateFutureGrowth: 'Future Growth',
   regenerateFairValue: 'Fair Value',
+  regenerateManagementTeam: 'Management Team',
   regenerateFinalSummary: 'Summary/Meta/About',
 };
 
@@ -56,6 +59,7 @@ const FIELD_TO_STEP_MAP: Record<RegenerateField, ReportType> = {
   regeneratePastPerformance: ReportType.PAST_PERFORMANCE,
   regenerateFutureGrowth: ReportType.FUTURE_GROWTH,
   regenerateFairValue: ReportType.FAIR_VALUE,
+  regenerateManagementTeam: ReportType.MANAGEMENT_TEAM,
   regenerateFinalSummary: ReportType.FINAL_SUMMARY,
 };
 

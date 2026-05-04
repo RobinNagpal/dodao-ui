@@ -60,12 +60,8 @@ export default function StockActions({ ticker, children, session }: StockActions
     { key: 'invalidate-cache', label: 'Invalidate Cache' },
   ];
 
-  // Filter out future risk (investor analysis types already removed from reportTypes)
-  const filteredAnalysisTypes = analysisTypes.filter((type) => type.key !== ReportType.FUTURE_RISK);
-
-  // Create modal items for filtered report types
   const reportGenerationItems: EllipsisDropdownItem[] = [
-    ...filteredAnalysisTypes.map((analysisType) => ({
+    ...analysisTypes.map((analysisType) => ({
       key: analysisType.key,
       label: `Generate ${analysisType.label}`,
     })),
@@ -262,7 +258,7 @@ export default function StockActions({ ticker, children, session }: StockActions
           setJsonContent(null);
           setImportedJson('');
         }}
-        title={selectedPromptType ? `Prompt for ${filteredAnalysisTypes.find((t) => t.key === selectedPromptType)?.label}` : 'Import Prompt'}
+        title={selectedPromptType ? `Prompt for ${analysisTypes.find((t) => t.key === selectedPromptType)?.label}` : 'Import Prompt'}
       >
         <PageWrapper>
           <div className="px-4">
@@ -270,7 +266,7 @@ export default function StockActions({ ticker, children, session }: StockActions
               <div>
                 <h3 className="text-lg font-semibold mb-4 text-white">Select Report Type</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {filteredAnalysisTypes.map((item) => (
+                  {analysisTypes.map((item) => (
                     <button
                       key={item.key}
                       onClick={() => handlePromptModalSelect(item.key)}

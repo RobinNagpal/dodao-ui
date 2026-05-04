@@ -10,19 +10,23 @@ export interface ParsedScenarioLink {
   // the API now requires exchange on links, so admins should re-author those
   // docs (or add the links via the admin UI which has an exchange dropdown).
   exchange: string | null;
-  role: 'WINNER' | 'LOSER' | 'MOST_EXPOSED';
+  role: 'WINNER' | 'LOSER';
   sortOrder: number;
+  // Per-link enrichment, populated only when the markdown uses bullet form
+  // (`- **EXCHANGE:SYMBOL** (+12%, 24–36 months) — explanation`). Inline /
+  // bare-symbol forms leave these null. Mirrors the stock-scenario parser
+  // shape, minus pricedInBucket which the ETF link schema does not store.
+  expectedPriceChange: number | null;
+  expectedPriceChangeExplanation: string | null;
+  roleExplanation: string | null;
 }
 
 export interface ParsedScenario {
   scenarioNumber: number;
   title: string;
   slug: string;
-  underlyingCause: string;
-  historicalAnalog: string;
-  winnersMarkdown: string;
-  losersMarkdown: string;
-  outlookMarkdown: string;
+  summary: string;
+  detailedAnalysis: string | null;
   direction: EtfScenarioDirection;
   timeframe: EtfScenarioTimeframe;
   probabilityBucket: EtfScenarioProbabilityBucket;
@@ -39,6 +43,14 @@ const TICKER_PATTERN = /\b([A-Z]{2,5})\b/g;
 // ticker. See QUALIFIED_TICKER_PATTERN in stock-scenario-markdown-parser.ts.
 const QUALIFIED_TICKER_PATTERN = /\b([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\b/g;
 const STOPWORDS = new Set(['AI', 'US', 'EV', 'DOJ', 'OPEC', 'FERC', 'PPA', 'PMI', 'TTM', 'PPE', 'GDP', 'EPS', 'PE', 'ETF', 'ETFs', 'EM', 'CPI', 'MLP', 'MLPs']);
+
+// Per-ETF bullet line. Captures (in order): exchange, symbol, signed price
+// change %, free-text price-change explanation (timeframe + rationale), and
+// the role explanation that follows the em-dash (or `-` / `:`) separator.
+// All fields after the bold ticker are optional; if a section uses bullets
+// without numbers, the price-change fields stay null. Mirrors the
+// stock-scenario parser BULLET_LINE_PATTERN.
+const BULLET_LINE_PATTERN = /^-\s*\*\*([A-Z]{2,10}):([A-Z0-9.\-]{1,10})\*\*\s*(?:\(\s*([+-]?\d{1,3})\s*%(?:\s*,\s*([^)]*?))?\s*\))?\s*(?:[—\-:]\s*(.+))?$/;
 
 interface ExtractedTicker {
   symbol: string;
@@ -70,6 +82,65 @@ function extractTickers(line: string): ExtractedTicker[] {
     out.push({ symbol: t, exchange: null });
   }
   return out;
+}
+
+type LinkRole = ParsedScenarioLink['role'];
+
+// Walk a bulleted section line by line, extracting one ParsedScenarioLink per
+// `- **EXCHANGE:SYMBOL** (...)` row. Designed for the richer authoring style
+// where each ETF gets a dedicated bullet with price target + explanation;
+// returns [] for inline / paragraph-style sections so callers can fall back.
+function extractBulletLinks(section: string, role: LinkRole): ParsedScenarioLink[] {
+  const links: ParsedScenarioLink[] = [];
+  const seen = new Set<string>();
+  for (const rawLine of section.split('\n')) {
+    const line = rawLine.trim();
+    const m = line.match(BULLET_LINE_PATTERN);
+    if (!m) continue;
+    const exchange = m[1];
+    if (!isEtfExchange(exchange)) continue;
+    const symbol = m[2];
+    const key = `${symbol}|${exchange}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    let expectedPriceChange: number | null = null;
+    if (m[3] !== undefined) {
+      const v = parseInt(m[3], 10);
+      if (!Number.isNaN(v) && v >= -100 && v <= 100) expectedPriceChange = v;
+    }
+    const expectedPriceChangeExplanation = m[4]?.trim() || null;
+    const roleExplanation = m[5]?.trim() || null;
+
+    links.push({
+      symbol,
+      exchange,
+      role,
+      sortOrder: links.length,
+      expectedPriceChange,
+      expectedPriceChangeExplanation,
+      roleExplanation,
+    });
+  }
+  return links;
+}
+
+// Bullet form (one ETF per line, supports per-link price target and rationale)
+// is the preferred format. Inline / paragraph form (`KARS — cleanest…; LIT —
+// …`) still works for short sections but cannot carry the per-link price
+// fields. Bullet form takes precedence when both appear in the same section.
+function extractRoleLinks(section: string, role: LinkRole): ParsedScenarioLink[] {
+  const bulletLinks = extractBulletLinks(section, role);
+  if (bulletLinks.length > 0) return bulletLinks;
+  return extractTickers(section).map((t, i) => ({
+    symbol: t.symbol,
+    exchange: t.exchange,
+    role,
+    sortOrder: i,
+    expectedPriceChange: null,
+    expectedPriceChangeExplanation: null,
+    roleExplanation: null,
+  }));
 }
 
 function classifyProbabilityBucket(outlook: string, extractedPercentage: number | null): EtfScenarioProbabilityBucket {
@@ -164,37 +235,31 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     const bodyStart = trimmed.indexOf('\n', trimmed.indexOf(headingMatch[0])) + 1;
     const body = trimmed.slice(bodyStart).trim();
 
-    const underlyingCause = extractField(body, 'Underlying cause');
-    const historicalAnalog = extractField(body, 'Historical analog');
+    // New canonical authoring uses one **Summary** field. Legacy drafts that
+    // still split into Underlying cause / Historical analog / Outlook are
+    // imported by concatenating those three sections.
     const winnersMarkdown = extractField(body, 'Winners');
     const losersMarkdown = extractField(body, 'Losers');
-    const outlookMarkdown = extractField(body, 'Outlook');
-
-    if (!underlyingCause || !outlookMarkdown) continue;
-
-    const probabilityPercentage = extractProbabilityPercentage(outlookMarkdown);
-    const probabilityBucket = classifyProbabilityBucket(outlookMarkdown, probabilityPercentage);
-    const timeframe = classifyTimeframe(outlookMarkdown);
-    const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
-    // The `as of YYYY-MM-DD` suffix lives inside the Outlook *label* (e.g. `**Outlook (as of 2026-04-19):**`),
-    // which is stripped by extractField — so search the whole scenario block, not just the body.
-    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(outlookMarkdown) ?? fallbackOutlookDate;
-
-    const winnersTickers = extractTickers(winnersMarkdown);
-    const losersTickers = extractTickers(losersMarkdown);
-
-    // Try to extract the "Most exposed ETFs right now" subsection from within outlook.
-    let mostExposedTickers: ExtractedTicker[] = [];
-    const mostExposedMatch = outlookMarkdown.match(/\*\*Most exposed ETFs[^*]*?\*\*:?\s*([\s\S]*?)$/i);
-    if (mostExposedMatch) {
-      mostExposedTickers = extractTickers(mostExposedMatch[1]);
+    let summary = extractField(body, 'Summary');
+    if (!summary) {
+      const legacyParts = [extractField(body, 'Underlying cause'), extractField(body, 'Historical analog'), extractField(body, 'Outlook')].filter(Boolean);
+      summary = legacyParts.join('\n\n');
     }
 
-    const links: ParsedScenarioLink[] = [
-      ...winnersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'WINNER' as const, sortOrder: i })),
-      ...losersTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'LOSER' as const, sortOrder: i })),
-      ...mostExposedTickers.map((t, i) => ({ symbol: t.symbol, exchange: t.exchange, role: 'MOST_EXPOSED' as const, sortOrder: i })),
-    ];
+    if (!summary) continue;
+
+    const probabilityPercentage = extractProbabilityPercentage(summary);
+    const probabilityBucket = classifyProbabilityBucket(summary, probabilityPercentage);
+    const timeframe = classifyTimeframe(summary);
+    const direction = classifyDirection(title, winnersMarkdown, losersMarkdown);
+    // The `as of YYYY-MM-DD` suffix may live inside an outlook-style label that
+    // gets stripped by extractField, so search the whole scenario block too.
+    const outlookAsOfDate = extractOutlookDate(body) ?? extractOutlookDate(summary) ?? fallbackOutlookDate;
+
+    const winnerLinks = extractRoleLinks(winnersMarkdown, 'WINNER');
+    const loserLinks = extractRoleLinks(losersMarkdown, 'LOSER');
+
+    const links: ParsedScenarioLink[] = [...winnerLinks, ...loserLinks];
 
     // Dedupe on (symbol, role)
     const seen = new Set<string>();
@@ -216,15 +281,14 @@ export function parseScenariosMarkdown(raw: string, fallbackOutlookDate: Date): 
     }
     const countries: EtfSupportedCountry[] = derivedCountries.size > 0 ? Array.from(derivedCountries) : [SupportedCountries.US];
 
+    const detailedAnalysisMarkdown = extractField(body, 'Detailed analysis') || null;
+
     scenarios.push({
       scenarioNumber,
       title,
       slug: slugifyScenarioTitle(title),
-      underlyingCause,
-      historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
-      outlookMarkdown,
+      summary,
+      detailedAnalysis: detailedAnalysisMarkdown,
       direction,
       timeframe,
       probabilityBucket,

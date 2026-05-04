@@ -1,3 +1,10 @@
+// Editorial convention (NOT enforced by the schema or this script):
+// target 5 winners, 5 losers, and (optionally) 5 "10 Baggers". Winners are
+// soft-floored at 5 with a HARD cap at 7–8 — never exceed 8. Losers and
+// 10 baggers are soft-floored at 5 but acceptable to ship fewer if no clean
+// candidates exist. Each 10-bagger bullet must state the timeframe to 10x
+// in its parenthetical. See `docs/insights-ui/scenario-authoring.md` for the
+// full convention.
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,9 +25,7 @@ function toRequestBody(s: ParsedStockScenario) {
     scenarioNumber: s.scenarioNumber,
     title: s.title,
     slug: s.slug,
-    underlyingCause: s.underlyingCause,
-    historicalAnalog: s.historicalAnalog,
-    outlookMarkdown: s.outlookMarkdown,
+    summary: s.summary,
     direction: s.direction,
     timeframe: s.timeframe,
     probabilityBucket: s.probabilityBucket,

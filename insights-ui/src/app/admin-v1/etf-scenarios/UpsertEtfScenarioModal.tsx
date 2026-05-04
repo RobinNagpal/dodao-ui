@@ -48,11 +48,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
   const [scenarioNumber, setScenarioNumber] = useState<number>(1);
   const [title, setTitle] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
-  const [underlyingCause, setUnderlyingCause] = useState<string>('');
-  const [historicalAnalog, setHistoricalAnalog] = useState<string>('');
-  const [winnersMarkdown, setWinnersMarkdown] = useState<string>('');
-  const [losersMarkdown, setLosersMarkdown] = useState<string>('');
-  const [outlookMarkdown, setOutlookMarkdown] = useState<string>('');
+  const [summary, setSummary] = useState<string>('');
+  const [detailedAnalysis, setDetailedAnalysis] = useState<string>('');
   const [direction, setDirection] = useState<EtfScenarioDirection>('DOWNSIDE');
   const [timeframe, setTimeframe] = useState<EtfScenarioTimeframe>('FUTURE');
   const [probabilityBucket, setProbabilityBucket] = useState<EtfScenarioProbabilityBucket>('MEDIUM');
@@ -88,11 +85,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       setScenarioNumber(1);
       setTitle('');
       setSlug('');
-      setUnderlyingCause('');
-      setHistoricalAnalog('');
-      setWinnersMarkdown('');
-      setLosersMarkdown('');
-      setOutlookMarkdown('');
+      setSummary('');
+      setDetailedAnalysis('');
       setDirection('DOWNSIDE');
       setTimeframe('FUTURE');
       setProbabilityBucket('MEDIUM');
@@ -120,11 +114,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         setScenarioNumber(data.scenarioNumber);
         setTitle(data.title);
         setSlug(data.slug);
-        setUnderlyingCause(data.underlyingCause);
-        setHistoricalAnalog(data.historicalAnalog);
-        setWinnersMarkdown(data.winnersMarkdown);
-        setLosersMarkdown(data.losersMarkdown);
-        setOutlookMarkdown(data.outlookMarkdown);
+        setSummary(data.summary);
+        setDetailedAnalysis(data.detailedAnalysis ?? '');
         setDirection(data.direction as EtfScenarioDirection);
         setTimeframe(data.timeframe as EtfScenarioTimeframe);
         setProbabilityBucket(data.probabilityBucket as EtfScenarioProbabilityBucket);
@@ -149,8 +140,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
     e.preventDefault();
     setFormError('');
 
-    if (!title || !underlyingCause || !historicalAnalog || !winnersMarkdown || !losersMarkdown || !outlookMarkdown) {
-      setFormError('All markdown fields plus title are required.');
+    if (!title || !summary) {
+      setFormError('Title and summary are required.');
       return;
     }
     if (countries.length === 0) {
@@ -182,11 +173,8 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
       scenarioNumber,
       title,
       slug: slug || undefined,
-      underlyingCause,
-      historicalAnalog,
-      winnersMarkdown,
-      losersMarkdown,
-      outlookMarkdown,
+      summary,
+      detailedAnalysis: detailedAnalysis || null,
       direction,
       timeframe,
       probabilityBucket,
@@ -367,42 +355,18 @@ export default function UpsertEtfScenarioModal({ isOpen, onClose, onSuccess, sce
         />
 
         <TextareaAutosize
-          label="Underlying cause (markdown)"
-          modelValue={underlyingCause}
+          label="Summary (markdown — 4–5 paragraphs covering cause, historical analog, and outlook with the as-of date)"
+          modelValue={summary}
           onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setUnderlyingCause(v);
+            if (typeof v === 'string') setSummary(v);
           }}
         />
 
         <TextareaAutosize
-          label="Historical analog (markdown)"
-          modelValue={historicalAnalog}
+          label="Detailed analysis (markdown, optional — surfaced behind a 'Detailed analysis' button on the public detail page)"
+          modelValue={detailedAnalysis}
           onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setHistoricalAnalog(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Winners (markdown)"
-          modelValue={winnersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setWinnersMarkdown(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Losers (markdown)"
-          modelValue={losersMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setLosersMarkdown(v);
-          }}
-        />
-
-        <TextareaAutosize
-          label="Outlook (markdown; should include the as-of date, catalysts, and most exposed ETFs)"
-          modelValue={outlookMarkdown}
-          onUpdate={(v: unknown): void => {
-            if (typeof v === 'string') setOutlookMarkdown(v);
+            if (typeof v === 'string') setDetailedAnalysis(v);
           }}
         />
 
