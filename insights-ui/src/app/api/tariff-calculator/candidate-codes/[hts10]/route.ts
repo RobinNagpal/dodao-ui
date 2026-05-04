@@ -1,7 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { fetchAndPersistCandidateCodes, IngestCandidateCodesResult } from '@/utils/tariff-calculator/ingest-candidate-codes';
 import { revalidateCandidateCodesTag } from '@/utils/tariff-calculator/cache-tags';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
@@ -156,20 +155,16 @@ async function getHandler(_req: NextRequest, dynamic: { params: Promise<{ hts10:
   return { hts10, candidates, lastFetchedAt };
 }
 
-async function postHandler(
-  _req: NextRequest,
-  _user: KoalaGainsJwtTokenPayload,
-  dynamic: { params: Promise<{ hts10: string }> }
-): Promise<IngestCandidateCodesResult> {
+async function postHandler(_req: NextRequest, _user: KoalaGainsJwtTokenPayload, dynamic: { params: Promise<{ hts10: string }> }): Promise<{ error: string }> {
   const { hts10: rawHts10 } = await dynamic.params;
   const hts10 = parseHts10(rawHts10);
   if (!hts10) {
     throw new Error(`Invalid HTS 10-digit code: ${rawHts10}`);
   }
-  const result = await fetchAndPersistCandidateCodes(hts10);
+  // Candidate codes must be pre-ingested into the DB by an offline pipeline.
   revalidateCandidateCodesTag(hts10);
-  return result;
+  return { error: `Upstream refresh disabled. Candidate codes for ${hts10} must be ingested offline.` };
 }
 
 export const GET = withErrorHandlingV2<CandidateCodesResponse | null>(getHandler);
-export const POST = withLoggedInAdmin<IngestCandidateCodesResult>(postHandler);
+export const POST = withLoggedInAdmin<{ error: string }>(postHandler);

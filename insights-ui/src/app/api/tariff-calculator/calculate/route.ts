@@ -2,7 +2,6 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CandidateCodeListItem } from '@/app/api/tariff-calculator/candidate-codes/[hts10]/route';
 import { calculateDuties, CalculatorInputs, CalculatorResult, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
-import { fetchAndPersistCandidateCodes } from '@/utils/tariff-calculator/ingest-candidate-codes';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -113,11 +112,7 @@ async function loadCandidates(hts10: string): Promise<CandidateCodeListItem[]> {
 
   let links = await fetchLinks();
   if (links.length === 0) {
-    // Lazy ingest on first calculation against this HTS line. Public traffic
-    // is naturally rate-limited by user input shape; the upstream feed is
-    // public so this is cheap to call.
-    await fetchAndPersistCandidateCodes(hts10);
-    links = await fetchLinks();
+    throw new Error(`No candidate codes found for HTS ${hts10}. Ingest candidate codes into the DB before running the calculator.`);
   }
 
   return links

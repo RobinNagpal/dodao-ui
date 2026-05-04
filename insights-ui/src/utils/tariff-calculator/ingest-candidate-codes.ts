@@ -7,14 +7,13 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Prisma, TariffCandidateCode } from '@prisma/client';
 import {
-  fetchCandidateCodes,
   isKnownApplicabilityCondition,
   mapApplicabilityKind,
   mapCodeType,
   mapCountryScope,
   RELATED_KIND_BY_FIELD,
   UpstreamCandidateCode,
-} from './upstream-feed';
+} from './candidate-codes-upstream';
 
 export interface IngestCandidateCodesResult {
   hts10: string;
@@ -223,12 +222,4 @@ export async function persistCandidateCodes(hts10: string, upstream: UpstreamCan
     candidatesUpdated: updated,
     linksCreated,
   };
-}
-
-// Convenience wrapper used by both the admin ingest route and any
-// on-demand ingest path. Returns the freshly-fetched candidate codes
-// alongside the persistence summary.
-export async function fetchAndPersistCandidateCodes(hts10: string): Promise<IngestCandidateCodesResult> {
-  const upstream = await fetchCandidateCodes(hts10);
-  return persistCandidateCodes(hts10, upstream);
 }

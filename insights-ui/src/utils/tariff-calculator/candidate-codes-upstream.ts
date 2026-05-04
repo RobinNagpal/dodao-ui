@@ -1,13 +1,9 @@
-// Thin wrapper around the upstream public candidate-codes feed. The endpoint
-// is treated as a vendor-agnostic data source so the rest of the codebase can
-// reason about "candidate codes" without naming the upstream provider; the
-// host is overridable via TARIFF_CANDIDATE_CODES_BASE_URL when we eventually
-// proxy or replace it.
+// Shared types + mapping helpers for "candidate codes" ingestion.
+//
+// Important: runtime code must not call the upstream (Flexport) API. Network
+// fetch logic has been intentionally removed from this module.
 
 import { TariffApplicabilityConditionKind, TariffCandidateCodeType, TariffCountryScopeType, TariffRelatedCodeKind } from '@prisma/client';
-
-const DEFAULT_BASE_URL = 'https://tariffs.flexport.com';
-const USER_AGENT = 'Mozilla/5.0 (compatible; KoalaGains-TariffCalculator/1.0; +https://koalagains.com)';
 
 export interface UpstreamCodeVariant {
   code: string;
@@ -104,82 +100,6 @@ export interface UpstreamCandidateCode {
   specialRates: UpstreamSpecialRate[];
   applicabilityConditions: UpstreamApplicabilityCondition[];
   tradeAnalytics: UpstreamTradeAnalytic[];
-}
-
-function baseUrl(): string {
-  return process.env.TARIFF_CANDIDATE_CODES_BASE_URL?.replace(/\/$/, '') ?? DEFAULT_BASE_URL;
-}
-
-// The upstream sometimes sends `null` where the schema declares an array
-// (e.g. specialRates, applicabilityConditions, excludedByCodes, tradeAnalytics).
-// Normalize at the boundary so consumers can treat these fields as always-array.
-function arr<T>(v: T[] | null | undefined): T[] {
-  return Array.isArray(v) ? v : [];
-}
-
-function normalizeCandidate(raw: UpstreamCandidateCode): UpstreamCandidateCode {
-  return {
-    ...raw,
-    unitsOfMeasure: arr(raw.unitsOfMeasure),
-    tags: arr(raw.tags),
-    pgaFlags: arr(raw.pgaFlags),
-    feeFlags: arr(raw.feeFlags),
-    parentCodes: arr(raw.parentCodes),
-    excludedByCodes: arr(raw.excludedByCodes),
-    replacesCodes: arr(raw.replacesCodes),
-    relatedCodes: arr(raw.relatedCodes),
-    specialRates: arr(raw.specialRates),
-    applicabilityConditions: arr(raw.applicabilityConditions),
-    tradeAnalytics: arr(raw.tradeAnalytics).map((ta) => ({
-      ...ta,
-      importPrograms: arr(ta.importPrograms).map((p) => ({
-        ...p,
-        importProgram: {
-          ...p.importProgram,
-          countriesOfOrigin: arr(p.importProgram.countriesOfOrigin),
-          customsTariffSpi: {
-            ...p.importProgram.customsTariffSpi,
-            countriesOfOrigin: arr(p.importProgram.customsTariffSpi.countriesOfOrigin),
-          },
-        },
-      })),
-    })),
-  };
-}
-
-// `hts10` is the 10-digit HTSUS code with no separators. The upstream
-// endpoint returns 404 for non-existent codes; we throw so callers can map
-// that to a 404 response.
-//
-// Rate-limit handling: the upstream returns 429 to browsers and 403 to
-// non-browser User-Agents when the daily IP quota is exhausted, both with a
-// JSON body of `{"error":"Usage limit exceeded"}`. We tag those errors with
-// the `RATE_LIMITED:` prefix so the bulk-fetch script can distinguish them
-// from genuine permission/not-found failures and apply long backoff.
-export async function fetchCandidateCodes(hts10: string): Promise<UpstreamCandidateCode[]> {
-  if (!/^\d{10}$/.test(hts10)) {
-    throw new Error(`Invalid HTS 10-digit code: ${hts10}`);
-  }
-  const url = `${baseUrl()}/api/public/v1/candidate-codes/${hts10}`;
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' } });
-  if (!res.ok) {
-    let body = '';
-    try {
-      body = await res.text();
-    } catch {
-      // ignore — we only use the body to disambiguate quota errors.
-    }
-    if ((res.status === 429 || res.status === 403) && /usage limit/i.test(body)) {
-      const retryAfter = res.headers.get('retry-after');
-      throw new Error(`RATE_LIMITED: ${hts10}: HTTP ${res.status} (retry-after=${retryAfter ?? 'none'}) ${body.slice(0, 120)}`);
-    }
-    throw new Error(`Upstream candidate-codes fetch failed for ${hts10}: HTTP ${res.status}${body ? ` ${body.slice(0, 120)}` : ''}`);
-  }
-  const json = (await res.json()) as unknown;
-  if (!Array.isArray(json)) {
-    throw new Error(`Upstream candidate-codes response for ${hts10} is not an array`);
-  }
-  return (json as UpstreamCandidateCode[]).map(normalizeCandidate);
 }
 
 // Conversion helpers that translate upstream discriminated unions into the
