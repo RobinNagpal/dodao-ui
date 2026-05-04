@@ -6,7 +6,15 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { Prisma, TariffCandidateCode } from '@prisma/client';
-import { fetchCandidateCodes, mapApplicabilityKind, mapCodeType, mapCountryScope, RELATED_KIND_BY_FIELD, UpstreamCandidateCode } from './upstream-feed';
+import {
+  fetchCandidateCodes,
+  isKnownApplicabilityCondition,
+  mapApplicabilityKind,
+  mapCodeType,
+  mapCountryScope,
+  RELATED_KIND_BY_FIELD,
+  UpstreamCandidateCode,
+} from './upstream-feed';
 
 export interface IngestCandidateCodesResult {
   hts10: string;
@@ -88,9 +96,14 @@ async function replaceChildren(tx: Prisma.TransactionClient, candidate: TariffCa
     });
   }
 
-  if (c.applicabilityConditions.length > 0) {
+  // Filter out unknown __typename values — the upstream occasionally adds new
+  // condition kinds (e.g. CustomsTariffHasExistingHtsCodes) that aren't in our
+  // enum yet. Persisting them would require a Prisma enum migration; until
+  // then we drop them rather than crash the ingest with an enum-cast error.
+  const knownConditions = c.applicabilityConditions.filter(isKnownApplicabilityCondition);
+  if (knownConditions.length > 0) {
     await tx.tariffCandidateApplicabilityCondition.createMany({
-      data: c.applicabilityConditions.map((cond, i) => ({
+      data: knownConditions.map((cond, i) => ({
         candidateCodeId: candidate.id,
         kind: mapApplicabilityKind(cond.__typename),
         fieldKey: cond.fieldKey,

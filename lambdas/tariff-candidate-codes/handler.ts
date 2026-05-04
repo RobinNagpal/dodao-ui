@@ -11,15 +11,18 @@
 
 const UPSTREAM = 'https://tariffs.flexport.com';
 
-// Browser-shaped headers — the upstream returns 403 to non-browser User-Agents
-// when the per-IP quota is exhausted (vs 429 to browsers). Keep the request
-// shape identical to a real browser call so error semantics are predictable
-// for the local script's RATE_LIMITED detection.
+// Match the headers the direct (non-lambda) fetch path uses
+// (insights-ui/src/utils/tariff-calculator/upstream-feed.ts). Sending
+// browser-shaped headers (Mozilla UA + Referer/Origin = tariffs.flexport.com)
+// caused the upstream to return a richer payload than direct fetches did —
+// including applicabilityConditions with __typename values our local mapper
+// doesn't know about, which then surfaced as `'undefined'::"…ConditionKind"`
+// literals in the generated SQL. Keeping the lambda's request shape identical
+// to the direct path ensures via-lambda is purely an IP-rotation change, not a
+// content change.
 const REQUEST_HEADERS: Record<string, string> = {
   Accept: 'application/json',
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-  Referer: 'https://tariffs.flexport.com/',
-  Origin: 'https://tariffs.flexport.com',
+  'User-Agent': 'Mozilla/5.0 (compatible; KoalaGains-TariffCalculator/1.0; +https://koalagains.com)',
 };
 
 interface ApiGatewayEvent {

@@ -200,6 +200,12 @@ export function mapCountryScope(scope: UpstreamCountryScope): { type: TariffCoun
   }
 }
 
+// The upstream occasionally introduces new applicabilityCondition `__typename`
+// values that aren't yet mapped to our enum (e.g. `CustomsTariffHasExistingHtsCodes`
+// observed when fetching with browser-shaped headers). Callers MUST filter
+// unknown conditions via `isKnownApplicabilityCondition` before calling this —
+// otherwise we previously emitted `'undefined'::"TariffApplicabilityConditionKind"`
+// into generated SQL and got a 22P02 enum-cast error at runtime.
 export function mapApplicabilityKind(typename: UpstreamApplicabilityCondition['__typename']): TariffApplicabilityConditionKind {
   switch (typename) {
     case 'CustomsTariffEquals':
@@ -210,7 +216,15 @@ export function mapApplicabilityKind(typename: UpstreamApplicabilityCondition['_
       return TariffApplicabilityConditionKind.LESS;
     case 'CustomsTariffSomeSpiApplied':
       return TariffApplicabilityConditionKind.SOME_SPI_APPLIED;
+    default:
+      throw new Error(`Unknown applicabilityCondition __typename: ${String(typename)}. Filter via isKnownApplicabilityCondition() first.`);
   }
+}
+
+const KNOWN_APPLICABILITY_TYPENAMES = new Set<string>(['CustomsTariffEquals', 'CustomsTariffGreater', 'CustomsTariffLess', 'CustomsTariffSomeSpiApplied']);
+
+export function isKnownApplicabilityCondition(cond: { __typename?: string }): cond is UpstreamApplicabilityCondition {
+  return typeof cond.__typename === 'string' && KNOWN_APPLICABILITY_TYPENAMES.has(cond.__typename);
 }
 
 export const RELATED_KIND_BY_FIELD: Record<'excludedByCodes' | 'replacesCodes' | 'relatedCodes', TariffRelatedCodeKind> = {

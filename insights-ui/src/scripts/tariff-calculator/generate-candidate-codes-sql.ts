@@ -60,6 +60,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import {
   fetchCandidateCodes,
+  isKnownApplicabilityCondition,
   mapApplicabilityKind,
   mapCodeType,
   mapCountryScope,
@@ -285,14 +286,28 @@ function emitCandidateBlock(c: UpstreamCandidateCode): string {
     lines.push(``);
   }
 
-  // applicabilityConditions — multi-row INSERT
-  if (c.applicabilityConditions.length > 0) {
+  // applicabilityConditions — multi-row INSERT.
+  // Filter to known __typename values: the upstream sometimes returns kinds
+  // (e.g. CustomsTariffHasExistingHtsCodes, observed when fetching with
+  // browser-shaped headers) that aren't in our `TariffApplicabilityConditionKind`
+  // enum. Skipping them here is safer than failing the whole chapter — the
+  // skipped count goes into a SQL comment so we can spot a regression and
+  // extend the enum if a new kind starts showing up routinely.
+  const knownConditions = c.applicabilityConditions.filter(isKnownApplicabilityCondition);
+  const skippedConditions = c.applicabilityConditions.length - knownConditions.length;
+  if (skippedConditions > 0) {
+    const unknownTypes = Array.from(
+      new Set(c.applicabilityConditions.filter((cond) => !isKnownApplicabilityCondition(cond)).map((cond) => cond.__typename))
+    ).join(', ');
+    lines.push(`  -- Skipped ${skippedConditions} applicabilityCondition(s) with unknown __typename: ${unknownTypes}`);
+  }
+  if (knownConditions.length > 0) {
     lines.push(`  INSERT INTO tariff_candidate_applicability_conditions (`);
     lines.push(`    id, space_id, candidate_code_id, kind, field_key,`);
     lines.push(`    field_should_equal, threshold, including_threshold, program_codes,`);
     lines.push(`    sort_order, created_at, updated_at`);
     lines.push(`  ) VALUES`);
-    const rows = c.applicabilityConditions.map((cond, i) => {
+    const rows = knownConditions.map((cond, i) => {
       const fieldShouldEqual = cond.__typename === 'CustomsTariffEquals' ? cond.fieldShouldEqual : null;
       const threshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.threshold : null;
       const includingThreshold = cond.__typename === 'CustomsTariffGreater' || cond.__typename === 'CustomsTariffLess' ? cond.includingThreshold : null;
