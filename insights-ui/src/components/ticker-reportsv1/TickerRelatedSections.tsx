@@ -2,7 +2,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import Link from 'next/link';
-import React from 'react';
+import React, { use } from 'react';
 
 const FULL_REPORT_SLUG = '';
 
@@ -25,16 +25,17 @@ const CATEGORY_TO_SLUG: Readonly<Record<TickerAnalysisCategory, string>> = {
   [TickerAnalysisCategory.FairValue]: 'fair-value',
 };
 
-export interface TickerRelatedSectionsProps {
-  tickerId: string;
-  exchange: string;
-  symbol: string;
-  companyName: string;
-  /** Slug of the current page so it is excluded from the related list (use '' for the parent report). */
-  currentSlug: string;
-}
+export type AvailableSiblingSlugs = ReadonlySet<string>;
 
-async function getAvailableSlugs(tickerId: string): Promise<ReadonlySet<string>> {
+/**
+ * Server-side lookup of which sibling stock-detail pages have publishable
+ * content for this ticker. Mirrors the per-section sitemap filters so the
+ * in-page link graph and the sitemap stay in sync.
+ *
+ * Call this in a parent server component to kick off the query, then pass the
+ * returned Promise to {@link TickerRelatedSections}, wrapped in `<Suspense>`.
+ */
+export async function getAvailableSiblingSlugs(tickerId: string): Promise<AvailableSiblingSlugs> {
   const [categoryRows, competitionRow, managementRow] = await Promise.all([
     prisma.tickerV1CategoryAnalysisResult.findMany({
       where: {
@@ -65,16 +66,26 @@ async function getAvailableSlugs(tickerId: string): Promise<ReadonlySet<string>>
   return available;
 }
 
-export default async function TickerRelatedSections({
-  tickerId,
+export interface TickerRelatedSectionsProps {
+  /** Promise returned by {@link getAvailableSiblingSlugs}. Unwrapped with `use()` inside a `<Suspense>` boundary. */
+  availableSlugsPromise: Promise<AvailableSiblingSlugs>;
+  exchange: string;
+  symbol: string;
+  companyName: string;
+  /** Slug of the current page so it is excluded from the related list (use '' for the parent report). */
+  currentSlug: string;
+}
+
+export default function TickerRelatedSections({
+  availableSlugsPromise,
   exchange,
   symbol,
   companyName,
   currentSlug,
-}: TickerRelatedSectionsProps): Promise<JSX.Element | null> {
+}: TickerRelatedSectionsProps): JSX.Element | null {
   const ex = exchange.toUpperCase();
   const tk = symbol.toUpperCase();
-  const available = await getAvailableSlugs(tickerId);
+  const available = use(availableSlugsPromise);
   const others = SECTIONS.filter((s) => s.slug !== currentSlug && available.has(s.slug));
 
   if (others.length === 0) return null;

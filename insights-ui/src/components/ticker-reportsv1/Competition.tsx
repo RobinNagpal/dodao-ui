@@ -1,12 +1,12 @@
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import CompetitorCard from '@/components/competition/CompetitorCard';
-import TickerRelatedSections from '@/components/ticker-reportsv1/TickerRelatedSections';
+import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getCountryByExchange } from '@/utils/countryExchangeUtils';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import AddTickerAdminButton from './AddTickerAdminButton';
 
 export interface CompetitionProps {
@@ -20,6 +20,10 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
   if (!tickerData || (!vsCompetition && (!competitorTickers || competitorTickers.length === 0))) {
     return null;
   }
+
+  // Kick off the sibling-presence query in parallel with the rest of render.
+  // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
+  const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
   // Derive dates from competition/ticker data
   const createdAtRaw = vsCompetition?.createdAt || data.ticker?.createdAt || new Date();
@@ -262,14 +266,15 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
           )}
         </div>
 
-        {/* @ts-expect-error Async Server Component (React 18 typing limitation) */}
-        <TickerRelatedSections
-          tickerId={tickerData.id}
-          exchange={tickerData.exchange}
-          symbol={tickerData.symbol}
-          companyName={tickerData.name}
-          currentSlug="competition"
-        />
+        <Suspense fallback={null}>
+          <TickerRelatedSections
+            availableSlugsPromise={availableSlugsPromise}
+            exchange={tickerData.exchange}
+            symbol={tickerData.symbol}
+            companyName={tickerData.name}
+            currentSlug="competition"
+          />
+        </Suspense>
 
         {/* Article Footer */}
         <footer className="mt-8 pt-6 border-t border-color">

@@ -1,8 +1,8 @@
-import TickerRelatedSections from '@/components/ticker-reportsv1/TickerRelatedSections';
+import TickerRelatedSections, { getAvailableSiblingSlugs } from '@/components/ticker-reportsv1/TickerRelatedSections';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const PASS_RESULT = 'Pass';
 
@@ -69,6 +69,10 @@ export default function TickerCategoryReport({
 
   const passCount = categoryResult.factorResults?.filter((fr) => String(fr.result) === PASS_RESULT).length || 0;
   const totalCount = categoryResult.factorResults?.length || 0;
+
+  // Kick off the sibling-presence query in parallel with the rest of render.
+  // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
+  const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
   return (
     <div className="py-4">
@@ -162,14 +166,15 @@ export default function TickerCategoryReport({
           )}
         </div>
 
-        {/* @ts-expect-error Async Server Component (React 18 typing limitation) */}
-        <TickerRelatedSections
-          tickerId={tickerData.id}
-          exchange={tickerData.exchange}
-          symbol={tickerData.symbol}
-          companyName={tickerData.name}
-          currentSlug={pageSlug}
-        />
+        <Suspense fallback={null}>
+          <TickerRelatedSections
+            availableSlugsPromise={availableSlugsPromise}
+            exchange={tickerData.exchange}
+            symbol={tickerData.symbol}
+            companyName={tickerData.name}
+            currentSlug={pageSlug}
+          />
+        </Suspense>
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
