@@ -25,6 +25,7 @@ export default function FairValue({ tickerData, data }: FairValueProps): JSX.Ele
       analysisTitle={analysisTitle}
       categoryBadgeText="Fair Value"
       categoryBadgeClassName="bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300"
+      pageSlug="fair-value"
     />
   );
 }

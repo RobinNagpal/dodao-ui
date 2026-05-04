@@ -18,6 +18,7 @@ async function generateFairValueUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       categoryKey: TickerAnalysisCategory.FairValue,
+      summary: { not: '' },
     },
     select: {
       updatedAt: true,

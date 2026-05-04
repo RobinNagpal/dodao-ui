@@ -14,7 +14,7 @@ async function generateCompetitionUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
   const competitionRecords = await prisma.tickerV1VsCompetition.findMany({
-    where: { spaceId: KoalaGainsSpaceId },
+    where: { spaceId: KoalaGainsSpaceId, summary: { not: '' } },
     select: {
       updatedAt: true,
       ticker: {

@@ -1,4 +1,5 @@
 import AdminTimestamp from '@/components/auth/AdminTimestamp';
+import TickerRelatedSections from '@/components/ticker-reportsv1/TickerRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS, ManagementTeamAlignmentVerdict } from '@/types/ticker-typesv1';
@@ -224,6 +225,8 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             <div className="markdown markdown-body text-gray-300" dangerouslySetInnerHTML={{ __html: parseMarkdown(report.detailedAnalysis) }} />
           </div>
         </section>
+
+        <TickerRelatedSections exchange={tickerData.exchange} symbol={tickerData.symbol} companyName={tickerData.name} currentSlug="management-team" />
       </article>
     </PageWrapper>
   );

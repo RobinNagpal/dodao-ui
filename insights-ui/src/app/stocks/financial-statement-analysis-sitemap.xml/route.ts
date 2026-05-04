@@ -18,6 +18,7 @@ async function generateFinancialStatementAnalysisUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       categoryKey: TickerAnalysisCategory.FinancialStatementAnalysis,
+      summary: { not: '' },
     },
     select: {
       updatedAt: true,

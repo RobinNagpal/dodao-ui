@@ -16,6 +16,7 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
   const records = await prisma.tickerV1ManagementTeamReport.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
+      summary: { not: '' },
     },
     select: {
       updatedAt: true,

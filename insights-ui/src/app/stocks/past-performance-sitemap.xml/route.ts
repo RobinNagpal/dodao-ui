@@ -18,6 +18,7 @@ async function generatePastPerformanceUrls(): Promise<SiteMapUrl[]> {
     where: {
       spaceId: KoalaGainsSpaceId,
       categoryKey: TickerAnalysisCategory.PastPerformance,
+      summary: { not: '' },
     },
     select: {
       updatedAt: true,
