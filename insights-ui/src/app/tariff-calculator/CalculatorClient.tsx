@@ -3,7 +3,7 @@
 import { CalculatorResult, PotentialExclusion, TRANSPORT_MODES, TransportMode } from '@/utils/tariff-calculator/duty-engine';
 import { COUNTRY_OPTIONS } from '@/utils/tariff-calculator/countries';
 import { TariffCandidateCodeType } from '@prisma/client';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface FormState {
   htsCode: string;
@@ -25,7 +25,10 @@ const INITIAL_FORM: FormState = {
   modeOfTransport: 'OCEAN',
   entryDate: TODAY_ISO,
   dateOfLoading: TODAY_ISO,
-  unitOfMeasure: 'KG',
+  // UOM is auto-derived from the candidate-code data after the first calc.
+  // Pre-calc we don't know whether this HTS line is priced per KG, NO,
+  // dozen, etc., so leave it blank rather than guess.
+  unitOfMeasure: '',
   quantity: '500000',
 };
 
@@ -132,6 +135,19 @@ export default function CalculatorClient() {
   // first calc we leave them visible so the user can fill them in case the
   // selected HTS turns out to need a quantity.
   const hideQuantityInputs = result !== null && !result.diagnostics.requiresQuantity;
+  const primaryUoms = result?.diagnostics.primaryUoms ?? [];
+
+  // After each calc, if the candidate data tells us which UOMs this HTS line
+  // is priced in, snap form.unitOfMeasure into that set. This is the
+  // mechanism that switches a poultry line (HTS 0105.11.00.10) from the
+  // default empty UOM to 'NO' without the user guessing. We depend on the
+  // result object directly (not the derived array) so the effect doesn't
+  // fire on every render when there's no result yet.
+  useEffect(() => {
+    const uoms = result?.diagnostics.primaryUoms ?? [];
+    if (uoms.length === 0) return;
+    setForm((prev) => (uoms.includes(prev.unitOfMeasure) ? prev : { ...prev, unitOfMeasure: uoms[0] }));
+  }, [result]);
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
@@ -242,14 +258,37 @@ export default function CalculatorClient() {
                 <label htmlFor="unitOfMeasure" className="block text-sm font-medium mb-1">
                   UOM
                 </label>
-                <input
-                  id="unitOfMeasure"
-                  type="text"
-                  value={form.unitOfMeasure}
-                  onChange={(e) => update('unitOfMeasure', e.target.value)}
-                  placeholder="KG"
-                  className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase"
-                />
+                {primaryUoms.length === 1 ? (
+                  <input
+                    id="unitOfMeasure"
+                    type="text"
+                    value={primaryUoms[0]}
+                    readOnly
+                    className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase opacity-80"
+                  />
+                ) : primaryUoms.length > 1 ? (
+                  <select
+                    id="unitOfMeasure"
+                    value={form.unitOfMeasure}
+                    onChange={(e) => update('unitOfMeasure', e.target.value)}
+                    className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase"
+                  >
+                    {primaryUoms.map((u) => (
+                      <option key={u} value={u}>
+                        {u}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    id="unitOfMeasure"
+                    type="text"
+                    value={form.unitOfMeasure}
+                    onChange={(e) => update('unitOfMeasure', e.target.value)}
+                    placeholder="KG"
+                    className="block w-full rounded-md border border-color bg-transparent px-3 py-2 text-sm shadow-xs uppercase"
+                  />
+                )}
               </div>
               <div>
                 <label htmlFor="quantity" className="block text-sm font-medium mb-1">
@@ -267,7 +306,9 @@ export default function CalculatorClient() {
               </div>
             </div>
             <p className="text-xs opacity-70">
-              Required for codes priced per-unit (e.g. coffee at <span className="whitespace-nowrap">1.5¢/kg</span>). Ad-valorem-only HTS lines ignore quantity.
+              {primaryUoms.length > 0
+                ? `This HTS line is priced per ${primaryUoms.join(' / ')} — quantity below must be in that unit.`
+                : 'Required for codes priced per-unit (e.g. coffee at 1.5¢/kg). The unit is derived from the candidate-code data after the first calculation.'}
             </p>
           </>
         )}

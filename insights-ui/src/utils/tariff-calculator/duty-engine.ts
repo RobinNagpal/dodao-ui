@@ -94,6 +94,10 @@ export interface CalculatorResult {
     // (computationCode "1" or any specific ratePrimary > 0). The UI hides the
     // UOM/Quantity inputs when false.
     requiresQuantity: boolean;
+    // Distinct UOMs the per-unit candidate codes are priced in. UI uses this
+    // to render a derived UOM picker instead of a free-text input — e.g. HTS
+    // 0105.11.00.10 (live poultry) returns ['NO'], not 'KG'.
+    primaryUoms: string[];
   };
 }
 
@@ -317,6 +321,13 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
   }
 
   const requiresQuantity = candidates.some((c) => c.rateComputationCode === '1' || parseRate(c.ratePrimary) > 0);
+  const uomSet = new Set<string>();
+  for (const c of candidates) {
+    if (c.rateComputationCode !== '1' && parseRate(c.ratePrimary) <= 0) continue;
+    const uom = c.unitsOfMeasure[0];
+    if (uom) uomSet.add(uom);
+  }
+  const primaryUoms = Array.from(uomSet).sort();
 
   const baseCost = inputs.shipmentValueUsd;
   const hmf = inputs.modeOfTransport === 'OCEAN' ? baseCost * HMF_RATE : 0;
@@ -345,6 +356,7 @@ export function calculateDuties(candidates: CandidateCodeListItem[], inputs: Cal
       candidatesApplicable: applicable.length,
       candidatesExcluded: active.length - surviving.length,
       requiresQuantity,
+      primaryUoms,
     },
   };
 }
