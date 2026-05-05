@@ -2076,6 +2076,10 @@ model HtsCode {
   parent   HtsCode?  @relation("HtsCodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
   children HtsCode[] @relation("HtsCodeHierarchy")
 
+  // Candidate codes (commodity row + chapter-99 special programs) returned
+  // by the upstream candidate-codes API for this HTS line.
+  candidateCodeLinks HtsCodeCandidateCode[]
+
   // CSV row order within its chapter. Hierarchy reconstruction depends on
   // walking rows in this order, so it is preserved verbatim from the CSV.
   sortOrder Int @map("sort_order")
@@ -2089,4 +2093,354 @@ model HtsCode {
   @@index([chapterId, sortOrder])
   @@index([spaceId, parentId])
   @@map("hts_codes")
+}
+
+// ============================================================================
+// Tariff Candidate Codes (per-HTS-line API ingest)
+// ----------------------------------------------------------------------------
+// Stores the per-HTS-line "candidate codes" feed used by the tariff
+// simulator. For each queried HTS 10-digit line, the upstream API returns
+// ~100-200 records: one COMMODITY_CODE (the base HTSUS line itself, with
+// its rate, special-program rates, and historical trade analytics) plus a
+// long tail of SPECIAL_CODE records (Chapter 99 add-ons such as IEEPA
+// reciprocal tariffs, Section 232/301, anti-dumping etc.) that may apply
+// when goods of a given country/scope/date are imported under that HTS
+// line.
+//
+// Modelling decisions:
+//   - A candidate code is keyed by (code, variant) globally — the same
+//     SPECIAL_CODE applies to many HTS lines (e.g. IEEPA Mexico 25%
+//     attaches to virtually every Mexican import), so we deduplicate via
+//     a join table (HtsCodeCandidateCode) instead of storing a copy per
+//     HTS line.
+//   - Discriminated unions in the API (countryScope, applicabilityConditions)
+//     are flattened to a `kind` column + sparse value columns rather than
+//     stored as JSON, so the simulator can filter on them in SQL.
+//   - Rate amounts arrive as decimal strings ("0.32", "0.25"); kept as
+//     strings to preserve upstream precision verbatim. Trade analytics —
+//     which the API already computes as numbers — use `Decimal` since they
+//     drive aggregate displays.
+//   - tradeAnalytics + importPrograms are kept as separate tables because
+//     they are large (one row per country-of-origin per year) and only
+//     populated for COMMODITY_CODE rows; isolating them keeps the per-line
+//     candidate listings cheap.
+// ============================================================================
+
+enum TariffCandidateCodeType {
+  COMMODITY_CODE
+  SPECIAL_CODE
+}
+
+// Discriminator for the API's `countryScope` union: `all`, `only`, or
+// `allExcept`. The country list is empty for ALL and populated for the
+// other two.
+enum TariffCountryScopeType {
+  ALL
+  ONLY
+  ALL_EXCEPT
+}
+
+// Discriminator for `applicabilityConditions[]` and `lineSplitConditions`.
+// EQUALS / GREATER / LESS use scalar comparisons against a fieldKey;
+// SOME_SPI_APPLIED checks whether any of `programCodes` is among the user's
+// chosen SPIs.
+enum TariffApplicabilityConditionKind {
+  EQUALS
+  GREATER
+  LESS
+  SOME_SPI_APPLIED
+}
+
+// Discriminator for the related-code arrays on a candidate code:
+//   EXCLUDED_BY -> `excludedByCodes[]`  (this code does NOT apply if any of
+//                                        these other codes do)
+//   REPLACES    -> `replacesCodes[]`    (supersedes the listed codes)
+//   RELATED     -> `relatedCodes[]`     (informational cross-links)
+enum TariffRelatedCodeKind {
+  EXCLUDED_BY
+  REPLACES
+  RELATED
+}
+
+// One row per unique (code, variant) candidate returned by the per-HTS-line
+// candidate-codes API. COMMODITY_CODE rows mirror an HTSUS 10-digit line;
+// SPECIAL_CODE rows are Chapter 99 add-ons (IEEPA, Section 232/301, etc.)
+// that get layered on top depending on country of origin and other
+// applicability conditions.
+model TariffCandidateCode {
+  id String @id @default(uuid())
+
+  // Numeric HTSUS code (no separators). For COMMODITY_CODE this matches an
+  // HtsCode.htsCode10; for SPECIAL_CODE this is typically a Chapter 99
+  // sub-heading like "99030101".
+  code String @map("code")
+  // Sub-letter ("a", "b", "c") used by the upstream feed when a single
+  // chapter-99 code has multiple variants (different effective windows /
+  // rate stacks). Null for COMMODITY_CODE rows.
+  variant String? @map("variant")
+
+  type TariffCandidateCodeType @map("type")
+
+  // Short display label and full ">"-joined breadcrumb description.
+  lineDescription String @map("line_description") @db.Text
+  fullDescription String @map("full_description") @db.Text
+
+  // Upstream effective window. `effectiveTo` uses the API's "9999-12-31"
+  // sentinel for indefinite codes — kept verbatim so we don't lose the
+  // distinction between "open-ended" and a far-future explicit end date.
+  effectiveFrom DateTime @map("effective_from")
+  effectiveTo   DateTime @map("effective_to")
+
+  // Headline rate description ("32%", "Free", "The duty provided in the
+  // applicable subheading + 25%"). Plain text, not parsed.
+  rateDescription String @map("rate_description") @db.Text
+
+  // rateInfo decomposition. The upstream API delivers all five fields as
+  // decimal strings; preserved as-is so we don't lose precision or
+  // round-trip into floating point. The computation code is a numeric
+  // string but treated as an opaque enum-ish value.
+  ratePrimary         String @map("rate_primary")
+  rateSecondary       String @map("rate_secondary")
+  rateOther           String @map("rate_other")
+  ratePenalty         String @map("rate_penalty")
+  rateComputationCode String @map("rate_computation_code")
+
+  // Allowed unit-of-measure codes for this line ("DOZ", "KG", ...).
+  unitsOfMeasure String[] @default([]) @map("units_of_measure")
+
+  flagsForAntiDumping    Boolean @default(false) @map("flags_for_anti_dumping")
+  flagsForCountervailing Boolean @default(false) @map("flags_for_countervailing")
+
+  // Stacking priority used by the simulator to decide which special-rate
+  // codes apply on top of the commodity rate. Higher numbers => evaluated
+  // later. Kept as the raw integer the upstream feed assigns.
+  priority           Int     @map("priority")
+  requiresUserChoice Boolean @default(false) @map("requires_user_choice")
+
+  // countryScope, flattened from the discriminated union. `countries` is
+  // the ISO-2 list for ONLY / ALL_EXCEPT and empty for ALL.
+  countryScopeType      TariffCountryScopeType @map("country_scope_type")
+  countryScopeCountries String[]               @default([]) @map("country_scope_countries")
+
+  // Editorial label and category from the API ("IEEPA Mexico 25%",
+  // "IEEPA Reciprocal", ...). Used for grouping in the UI.
+  label    String  @default("") @map("label") @db.Text
+  category String? @map("category")
+
+  // Free-form taxonomy + flag arrays — `tags` is human-curated topic words,
+  // `pgaFlags` are Partner Government Agency markers (FDA / EPA / ...),
+  // `feeFlags` are MPF / cotton-fee style line-level fee triggers.
+  tags     String[] @default([]) @map("tags")
+  pgaFlags String[] @default([]) @map("pga_flags")
+  feeFlags String[] @default([]) @map("fee_flags")
+
+  // Codes whose hierarchy this row sits under. Stored as raw strings — the
+  // API does not include variants here.
+  parentCodes String[] @default([]) @map("parent_codes")
+
+  // Sparse fields that appear on a small minority of rows. lineSplitField
+  // names the field whose value drives a line split (e.g.
+  // "US_CONTENT_PERCENTAGE"); lineSplitConditions is the matching array of
+  // condition objects. relatesToCodesDigits is an optional grouping of
+  // related codes by digit-prefix. All preserved as JSON until a query
+  // pattern justifies a richer model.
+  lineSplitField       String? @map("line_split_field")
+  /// [Json]
+  lineSplitConditions  Json?   @map("line_split_conditions")
+  /// [Json]
+  relatesToCodesDigits Json?   @map("relates_to_codes_digits")
+
+  specialRates            TariffCandidateSpecialRate[]
+  applicabilityConditions TariffCandidateApplicabilityCondition[]
+  relatedCodes            TariffCandidateRelatedCode[]
+  tradeAnalytics          TariffTradeAnalytic[]
+  htsCodeLinks            HtsCodeCandidateCode[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, code, variant])
+  @@index([type, category])
+  @@index([code])
+  @@map("tariff_candidate_codes")
+}
+
+// Many-to-many: which candidate codes the upstream API returned for a
+// given HTS 10-digit line. A candidate code can show up under many HTS
+// lines (especially the IEEPA blanket codes), so we dedupe via this join
+// rather than re-storing the candidate per line.
+model HtsCodeCandidateCode {
+  id String @id @default(uuid())
+
+  htsCodeId String  @map("hts_code_id")
+  htsCode   HtsCode @relation(fields: [htsCodeId], references: [id], onDelete: Cascade)
+
+  candidateCodeId String              @map("candidate_code_id")
+  candidateCode   TariffCandidateCode @relation(fields: [candidateCodeId], references: [id], onDelete: Cascade)
+
+  // Snapshot of when this pairing was last confirmed by an API fetch. Lets
+  // a future ingest detect candidate codes that have aged out of an HTS
+  // line's set without dropping the candidate record itself.
+  lastFetchedAt DateTime @default(now()) @map("last_fetched_at")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, htsCodeId, candidateCodeId])
+  @@index([candidateCodeId])
+  @@map("hts_code_candidate_codes")
+}
+
+// One row per `specialRates[]` entry on a candidate code. Same rateInfo
+// shape as the parent, but scoped to a Special Program Indicator (SPI)
+// like "AU", "MX", "P+". The API can return duplicate (spi) entries that
+// differ only by computation code, so we keep `sortOrder` to preserve
+// deterministic order.
+model TariffCandidateSpecialRate {
+  id String @id @default(uuid())
+
+  candidateCodeId String              @map("candidate_code_id")
+  candidateCode   TariffCandidateCode @relation(fields: [candidateCodeId], references: [id], onDelete: Cascade)
+
+  spi                 String @map("spi")
+  rateDescription     String @map("rate_description") @db.Text
+  ratePrimary         String @map("rate_primary")
+  rateSecondary       String @map("rate_secondary")
+  rateOther           String @map("rate_other")
+  ratePenalty         String @map("rate_penalty")
+  rateComputationCode String @map("rate_computation_code")
+
+  sortOrder Int @map("sort_order")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([candidateCodeId, sortOrder])
+  @@map("tariff_candidate_special_rates")
+}
+
+// Polymorphic `applicabilityConditions[]` flattened into one table. The
+// `kind` discriminator picks which value column(s) are populated:
+//   EQUALS            -> fieldShouldEqual
+//   GREATER / LESS    -> threshold + includingThreshold
+//   SOME_SPI_APPLIED  -> programCodes
+// `fieldKey` is always set (e.g. "MODE_OF_TRANSPORT", "DATE_OF_LOADING",
+// "CHOSEN_SPIS").
+model TariffCandidateApplicabilityCondition {
+  id String @id @default(uuid())
+
+  candidateCodeId String              @map("candidate_code_id")
+  candidateCode   TariffCandidateCode @relation(fields: [candidateCodeId], references: [id], onDelete: Cascade)
+
+  kind     TariffApplicabilityConditionKind @map("kind")
+  fieldKey String                           @map("field_key")
+
+  fieldShouldEqual   String?  @map("field_should_equal")
+  threshold          String?  @map("threshold")
+  includingThreshold Boolean? @map("including_threshold")
+  programCodes       String[] @default([]) @map("program_codes")
+
+  sortOrder Int @map("sort_order")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([candidateCodeId, sortOrder])
+  @@map("tariff_candidate_applicability_conditions")
+}
+
+// `excludedByCodes[]` / `replacesCodes[]` / `relatedCodes[]` are all the
+// same shape — `{ code, variant }` pointing at another candidate code —
+// so they share a single table with `kind` as the discriminator.
+model TariffCandidateRelatedCode {
+  id String @id @default(uuid())
+
+  candidateCodeId String              @map("candidate_code_id")
+  candidateCode   TariffCandidateCode @relation(fields: [candidateCodeId], references: [id], onDelete: Cascade)
+
+  kind    TariffRelatedCodeKind @map("kind")
+  code    String                @map("code")
+  variant String?               @map("variant")
+
+  sortOrder Int @map("sort_order")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([candidateCodeId, kind, sortOrder])
+  @@index([code, variant])
+  @@map("tariff_candidate_related_codes")
+}
+
+// One row per `tradeAnalytics[]` entry on a candidate code. In practice
+// the API only populates this for COMMODITY_CODE rows, at the
+// "HTS10-COO-SPI" (HTS 10-digit / country-of-origin / SPI) granularity,
+// for the most recent year. `date` arrives as a 4-digit year string and
+// is stored verbatim — it can be a partial-year label in some cases.
+model TariffTradeAnalytic {
+  id String @id @default(uuid())
+
+  candidateCodeId String              @map("candidate_code_id")
+  candidateCode   TariffCandidateCode @relation(fields: [candidateCodeId], references: [id], onDelete: Cascade)
+
+  analyticsLevel String @map("analytics_level")
+  htsCode10      String @map("hts_code_10")
+  date           String @map("date")
+
+  countryName          String @map("country_name")
+  usCustomsCountryCode String @map("us_customs_country_code")
+
+  totalCustomsValue   Decimal @map("total_customs_value") @db.Decimal(20, 2)
+  totalCalculatedDuty Decimal @map("total_calculated_duty") @db.Decimal(20, 2)
+  totalDutyRate       Decimal @map("total_duty_rate") @db.Decimal(10, 6)
+
+  importPrograms TariffTradeAnalyticImportProgram[]
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([candidateCodeId])
+  @@index([htsCode10, date])
+  @@map("tariff_trade_analytics")
+}
+
+// Per-program breakdown nested inside `tradeAnalytics[].importPrograms[]`.
+// The upstream `importProgram.customsTariffSpi` sub-object is flattened
+// into the `spi*` columns to keep the table queryable without a JSON
+// extract step.
+model TariffTradeAnalyticImportProgram {
+  id String @id @default(uuid())
+
+  tradeAnalyticId String              @map("trade_analytic_id")
+  tradeAnalytic   TariffTradeAnalytic @relation(fields: [tradeAnalyticId], references: [id], onDelete: Cascade)
+
+  programName      String @map("program_name") @db.Text
+  programIndicator String @map("program_indicator")
+  generalNote      String @map("general_note") @db.Text
+
+  spiSpecialProgramIndicator String  @map("spi_special_program_indicator")
+  spiAgreementName           String  @map("spi_agreement_name") @db.Text
+  spiGeneralNote             String  @map("spi_general_note") @db.Text
+  spiExcludeMpf              Boolean @default(false) @map("spi_exclude_mpf")
+
+  countriesOfOrigin    String[] @default([]) @map("countries_of_origin")
+  spiCountriesOfOrigin String[] @default([]) @map("spi_countries_of_origin")
+
+  customsValue       Decimal @map("customs_value") @db.Decimal(20, 2)
+  calculatedDuty     Decimal @map("calculated_duty") @db.Decimal(20, 2)
+  dutyRate           Decimal @map("duty_rate") @db.Decimal(10, 6)
+  percentOfLineValue Decimal @map("percent_of_line_value") @db.Decimal(10, 6)
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([tradeAnalyticId])
+  @@map("tariff_trade_analytic_import_programs")
 }

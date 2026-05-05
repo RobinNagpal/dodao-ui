@@ -35,7 +35,7 @@ const VALID_REPORT_TYPES: readonly EtfReportType[] = [
 ];
 
 // Raised to 20s after the SPUS test run — at 10s the first prompt's `morReturns`
-// field still came back empty because the four Morningstar scrape callbacks
+// field still came back empty because the four Mornstar scrape callbacks
 // hadn't all landed yet. 20s covers the slow tail without being painful for the
 // one-time wait on the first report of a run.
 const DEFAULT_MOR_WAIT_MS = 20_000;
@@ -70,7 +70,7 @@ async function main(): Promise<void> {
       }
     );
 
-    // Morningstar scrapes are fire-and-forget: the lambda callbacks upsert the tables
+    // Mornstar scrapes are fire-and-forget: the lambda callbacks upsert the tables
     // asynchronously. Sleep so the DB-backed prompt builder sees the freshly-written rows.
     if (morResponse.triggeredKinds.length > 0) {
       console.error(`MOR data missing for kinds [${morResponse.triggeredKinds.join(', ')}] — triggered scrape; sleeping ${waitMs}ms before building prompt.`);

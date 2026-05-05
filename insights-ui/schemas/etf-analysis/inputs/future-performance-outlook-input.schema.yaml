@@ -66,7 +66,7 @@ properties:
     type: ['string', 'null']
     description: 'JSON string from EtfStockAnalyzerInfo (stockPrice, MAs, RSI, ATR, beta windows, 52w/ATH/ATL distances & dates, issuer/category, avgVolume/relVolume/dollarVol, options/leverage/region/country, etc.).'
 
-  # From EtfMorAnalyzerInfo — overview, returns, holdings snapshot, and Morningstar analysis sections (when available)
+  # From EtfMorAnalyzerInfo — overview, returns, holdings snapshot, and Mornstar analysis sections (when available)
   etfMorAnalyzerInfo:
     type: ['string', 'null']
     description: 'JSON string from EtfMorAnalyzerInfo (overview metrics like SEC/TTM yield, turnover, style box; annual/trailing returns; holdings.topHoldings; strategyText; analysis sections if available).'

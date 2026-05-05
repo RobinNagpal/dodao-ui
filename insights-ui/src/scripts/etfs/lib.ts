@@ -100,7 +100,7 @@ export interface SampledEtf {
 
 /**
  * Instruction block prepended to every ETF prompt returned by `etfs:prompt`.
- * ETF inputs fan out across many Morningstar-sourced sub-objects (morOverview,
+ * ETF inputs fan out across many Mornstar-sourced sub-objects (morOverview,
  * morAnalysis, morRiskPeriods, etfMorPortfolioInfo, ...) and those labels leak
  * into the generated analysis unless the LLM is told not to reference them.
  * The stock CLI does not prepend this — stock prompts are already tighter and
