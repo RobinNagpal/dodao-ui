@@ -119,29 +119,10 @@ const nextConfig: NextConfig = {
         destination: '/industry-tariff-report/:industryId',
         permanent: true,
       },
-      // The evaluate-industry-areas section was dropped: it generated little organic traffic and
-      // its content didn't serve readers landing on a tariff page. 301 to the listing so any
-      // remaining ranking signals consolidate there. Sub-pages (heading-subheading combos) match
-      // via :rest*; the bare URL has its own rule below.
-      {
-        source: '/industry-tariff-report/:industryId/evaluate-industry-areas/:rest*',
-        destination: '/tariff-reports',
-        permanent: true,
-      },
-      {
-        source: '/industry-tariff-report/:industryId/evaluate-industry-areas',
-        destination: '/tariff-reports',
-        permanent: true,
-      },
-      // The all-countries-tariff-updates section was dropped from the report nav: tariff-updates
-      // already covers the top trade partners and the long-tail country list duplicated content
-      // without adding ranking value. 301 to the cover so any remaining link signals consolidate
-      // there. Only the industry URL needs a redirect — the chapter URL variant was never shipped.
-      {
-        source: '/industry-tariff-report/:industryId/all-countries-tariff-updates',
-        destination: '/industry-tariff-report/:industryId',
-        permanent: true,
-      },
+      // evaluate-industry-areas and all-countries-tariff-updates are no longer 301'd. They keep
+      // their URLs (legacy backlinks were getting clicks) but render the cover content with
+      // `<link rel="canonical">` pointing at the cover, so Google consolidates ranking there
+      // without bouncing real users away from the URL they followed.
     ];
   },
 };
