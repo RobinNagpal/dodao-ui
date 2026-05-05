@@ -799,6 +799,37 @@ export function chapterUrlSlug(chapter: HtsChapterRef): string {
   return `${chapter.number}-${chapter.slug}`;
 }
 
+// True when the chapter is the primary chapter of some industry, i.e. its content lives at the
+// industry's URL. Non-primary chapters get their own /industry-tariff-report/chapter/<slug> URL.
+export function isPrimaryChapter(chapterNumber: number): boolean {
+  return Object.values(TariffIndustries).some((industry) => getPrimaryChapterForIndustry(industry)?.number === chapterNumber);
+}
+
+// Returns the industry whose URL represents this chapter (chapter is its primary). Used to redirect
+// a /chapter/<slug> URL to the industry URL when a primary owner exists.
+export function getIndustryForPrimaryChapter(chapterNumber: number): TariffIndustryDefinition | undefined {
+  return Object.values(TariffIndustries).find((industry) => getPrimaryChapterForIndustry(industry)?.number === chapterNumber);
+}
+
+// All chapters covered by an industry — both primary (htsChapters[0] / primaryChapterNumber) and
+// non-primary. Used to render the "Related HTS Chapters" cross-link block on the industry page.
+export function getAllChaptersForIndustry(industry: TariffIndustryDefinition): HtsChapterRef[] {
+  if (industry.htsChapters && industry.htsChapters.length > 0) return industry.htsChapters;
+  if (industry.primaryChapterNumber !== undefined) {
+    const c = HTS_CHAPTERS[industry.primaryChapterNumber];
+    return c ? [c] : [];
+  }
+  return [];
+}
+
+// Chapter numbers that need their own /chapter/<slug> URL — every chapter that isn't already
+// represented by some industry's URL via `isPrimaryChapter`.
+export function chapterNumbersWithoutPrimaryIndustry(): number[] {
+  return Object.keys(HTS_CHAPTERS)
+    .map(Number)
+    .filter((n) => !isPrimaryChapter(n));
+}
+
 export function getAllHeadingSubheadingCombinations(industryId: TariffIndustryId): HeadingSubheadingCombination[] {
   const industry = getTariffIndustryDefinitionById(industryId);
   const combinations: HeadingSubheadingCombination[] = [];

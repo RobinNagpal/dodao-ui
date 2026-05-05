@@ -1,9 +1,15 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { fetchTariffReportsWithUpdatedAt } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
-import { TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import {
+  chapterUrlSlug,
+  getCanonicalIndustryForChapter,
+  HTS_CHAPTERS,
+  ORPHAN_HTS_CHAPTER_NUMBERS,
+  TariffIndustryDefinition,
+} from '@/scripts/industry-tariff-reports/tariff-industries';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ChevronRight, FileText } from 'lucide-react';
+import { ArrowRight, FileText, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -45,31 +51,130 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const REPORT_SECTIONS = [
+  { slug: 'tariff-updates', label: 'Tariff Updates' },
+  { slug: 'all-countries-tariff-updates', label: 'All Countries' },
+  { slug: 'understand-industry', label: 'Understand Industry' },
+  { slug: 'industry-areas', label: 'Industry Areas' },
+  { slug: 'final-conclusion', label: 'Final Conclusion' },
+] as const;
+
+function formatDate(value: string): string {
+  return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function IndustryReportCard({ report }: { report: TariffIndustryDefinition & { lastModified: string } }) {
+  const reportHref = `/industry-tariff-report/${report.industryId}`;
+  return (
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-color background-color transition-all duration-200 hover:border-indigo-500/60 hover:shadow-xl hover:shadow-indigo-500/5">
+      <div className="h-1 bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500" />
+
+      <div className="flex flex-1 flex-col p-6">
+        <div className="mb-4 flex items-center justify-between text-xs">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-500/10 px-2.5 py-1 font-medium text-indigo-300 ring-1 ring-inset ring-indigo-500/20">
+            <FileText className="h-3 w-3" />
+            Tariff Report
+          </span>
+          {report.lastModified && <span className="text-muted-foreground">Updated {formatDate(report.lastModified)}</span>}
+        </div>
+
+        <h3 className="mb-2 text-xl font-semibold leading-snug">
+          <Link href={reportHref} className="transition-colors hover:text-indigo-400 focus-visible:text-indigo-400 focus-visible:outline-none">
+            {report.reportTitle}
+          </Link>
+        </h3>
+
+        <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted-foreground">{report.reportOneLiner}</p>
+
+        <div className="mb-5 flex flex-wrap gap-1.5">
+          {REPORT_SECTIONS.map((section) => (
+            <Link
+              key={section.slug}
+              href={`${reportHref}/${section.slug}`}
+              className="inline-flex items-center rounded-md border border-color px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-indigo-500/60 hover:bg-indigo-500/5 hover:text-indigo-300"
+            >
+              {section.label}
+            </Link>
+          ))}
+        </div>
+
+        <Link
+          href={reportHref}
+          className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-indigo-400 transition-transform hover:translate-x-0.5"
+        >
+          Open report
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+function OrphanChapterCard({ chapterNumber }: { chapterNumber: number }) {
+  const chapter = HTS_CHAPTERS[chapterNumber];
+  if (!chapter) return null;
+  const href = `/industry-tariff-report/chapter/${chapterUrlSlug(chapter)}`;
+  const padded = chapterNumber.toString().padStart(2, '0');
+  return (
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-color background-color transition-all duration-200 hover:border-emerald-500/60 hover:shadow-xl hover:shadow-emerald-500/5">
+      <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+
+      <div className="flex flex-1 flex-col p-6">
+        <div className="mb-4 flex items-center justify-between text-xs">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/20">
+            <Layers className="h-3 w-3" />
+            HTS Chapter {padded}
+          </span>
+        </div>
+
+        <h3 className="mb-2 text-xl font-semibold leading-snug">
+          <Link href={href} className="transition-colors hover:text-emerald-400 focus-visible:text-emerald-400 focus-visible:outline-none">
+            {chapter.shortName}
+          </Link>
+        </h3>
+
+        <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted-foreground">
+          Tariff analysis for HTS Chapter {padded} ({chapter.shortName}). Browse trade flows, country-level changes, and policy impacts for this chapter of the
+          Harmonized Tariff Schedule.
+        </p>
+
+        <div className="mb-5 flex flex-wrap gap-1.5">
+          {REPORT_SECTIONS.map((section) => (
+            <Link
+              key={section.slug}
+              href={`${href}/${section.slug}`}
+              className="inline-flex items-center rounded-md border border-color px-2 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-emerald-500/60 hover:bg-emerald-500/5 hover:text-emerald-300"
+            >
+              {section.label}
+            </Link>
+          ))}
+        </div>
+
+        <Link href={href} className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 transition-transform hover:translate-x-0.5">
+          Open chapter report
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
+    </article>
+  );
+}
+
 export default async function TariffReportsPage() {
-  // Fetch tariff reports
   const tariffReports: (TariffIndustryDefinition & { lastModified: string })[] = await fetchTariffReportsWithUpdatedAt();
 
-  // Sort reports by updatedAt date (most recent first)
   const sortedTariffReports = tariffReports.sort((a, b) => {
     if (!a.lastModified && !b.lastModified) return 0;
     if (!a.lastModified) return 1;
     if (!b.lastModified) return -1;
-
     return new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime();
   });
 
-  // Set up breadcrumbs
+  // Chapters that have no canonical industry owner — surfaced as standalone chapter reports.
+  const orphanChapters = ORPHAN_HTS_CHAPTER_NUMBERS.filter((n) => !getCanonicalIndustryForChapter(n));
+
   const breadcrumbs: BreadcrumbsOjbect[] = [
-    {
-      name: 'Reports',
-      href: '/reports',
-      current: false,
-    },
-    {
-      name: 'Tariff Reports',
-      href: '/tariff-reports',
-      current: true,
-    },
+    { name: 'Reports', href: '/reports', current: false },
+    { name: 'Tariff Reports', href: '/tariff-reports', current: true },
   ];
 
   return (
@@ -77,79 +182,52 @@ export default async function TariffReportsPage() {
       <Breadcrumbs breadcrumbs={breadcrumbs} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
-        <div className="mx-auto">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-6">Industry Tariff Reports</h1>
+        <header className="mb-10">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Industry Tariff Reports</h1>
+          <p className="mt-3 max-w-3xl text-muted-foreground">
+            Deep tariff and trade-policy analyses across industries and Harmonized Tariff Schedule (HTS) chapters. Each report covers tariff updates, country
+            breakdowns, industry structure, established players and challengers, and forward-looking conclusions.
+          </p>
+        </header>
 
-          {/* Tariff Reports Section */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6 border-b border-color pb-2">Comprehensive Trade & Policy Analyses</h2>
-            <p className="mb-6 text-muted-foreground">
-              Comprehensive analyses of tariff impacts across various industries. These reports provide deep insights into how tariff policies affect industry
-              dynamics, supply chains, competitive landscapes, and future outlook. Each report explores established players, emerging challengers, and potential
-              investment opportunities created by changing trade policies.
+        <section className="mb-14">
+          <div className="mb-6 flex items-baseline justify-between border-b border-color pb-2">
+            <h2 className="text-2xl font-semibold">Industry Reports</h2>
+            <span className="text-sm text-muted-foreground">{sortedTariffReports.length} industries</span>
+          </div>
+
+          {tariffReports.length === 0 ? (
+            <div className="rounded-2xl border border-color background-color py-12 text-center shadow-sm">
+              <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+              <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Tariff reports will appear here once they are created.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {sortedTariffReports.map((report) => (
+                <IndustryReportCard key={report.industryId} report={report} />
+              ))}
+            </div>
+          )}
+        </section>
+
+        {orphanChapters.length > 0 && (
+          <section className="mb-14">
+            <div className="mb-6 flex items-baseline justify-between border-b border-color pb-2">
+              <h2 className="text-2xl font-semibold">HTS Chapter Reports</h2>
+              <span className="text-sm text-muted-foreground">{orphanChapters.length} chapters</span>
+            </div>
+            <p className="mb-6 max-w-3xl text-sm text-muted-foreground">
+              Standalone tariff analyses for HTS chapters that don&apos;t map directly to one of the industry reports above. Each chapter covers the same five
+              sections: tariff updates, country breakdowns, industry structure, industry areas, and final conclusion.
             </p>
-
-            {tariffReports.length === 0 ? (
-              <div className="text-center py-12 background-color rounded-lg shadow-sm border border-color">
-                <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
-                <p className="mt-2 text-sm text-muted-foreground">Tariff reports will appear here once they are created.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {sortedTariffReports.map((report) => (
-                  <div key={report.industryId} className="flex flex-col overflow-hidden rounded-lg shadow-lg border border-color hover:shadow-xl">
-                    <div className="flex-1 background-color p-6">
-                      <div className="flex items-center text-xs font-medium mb-3">
-                        <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                          Tariff Report
-                        </span>
-                        {report.lastModified && (
-                          <span className="ml-2 text-muted-foreground">
-                            Updated: {new Date(report.lastModified).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                          </span>
-                        )}
-                      </div>
-
-                      <Link href={`/industry-tariff-report/${report.industryId}`} className="block mt-2 group">
-                        <h3 className="text-xl font-semibold group-hover:text-primary-color transition-colors">{report.reportTitle}</h3>
-                      </Link>
-
-                      <p className="mt-3 text-muted-foreground line-clamp-3">{report.reportOneLiner}</p>
-                    </div>
-
-                    <div className="block-bg-color border-t border-color p-4 space-y-3">
-                      <ul className="flex flex-wrap gap-2 text-xs">
-                        {(
-                          [
-                            { slug: 'tariff-updates', label: 'Tariff Updates' },
-                            { slug: 'all-countries-tariff-updates', label: 'All Countries' },
-                            { slug: 'understand-industry', label: 'Understand Industry' },
-                            { slug: 'industry-areas', label: 'Industry Areas' },
-                            { slug: 'final-conclusion', label: 'Final Conclusion' },
-                          ] as const
-                        ).map((section) => (
-                          <li key={section.slug}>
-                            <Link
-                              href={`/industry-tariff-report/${report.industryId}/${section.slug}`}
-                              className="inline-block rounded-full border border-color px-2.5 py-1 text-muted-foreground hover:text-primary-color hover:border-primary-color transition-colors"
-                            >
-                              {section.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                      <Link href={`/industry-tariff-report/${report.industryId}`} className="group flex items-center text-sm font-medium primary-color">
-                        View full report
-                        <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {orphanChapters.map((chapterNumber) => (
+                <OrphanChapterCard key={chapterNumber} chapterNumber={chapterNumber} />
+              ))}
+            </div>
           </section>
-        </div>
+        )}
       </div>
     </PageWrapper>
   );

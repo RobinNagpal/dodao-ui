@@ -2,9 +2,9 @@
 
 import { cn } from '@/lib/utils';
 
-import { getNumberOfSubHeadings, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { ChevronDown, ChevronRight, ChevronUp, FileText, Folder, Home, X } from 'lucide-react';
+import { ChevronDown, ChevronRight, FileText, Folder, Home, X } from 'lucide-react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -140,36 +140,6 @@ export default function ReportLeftNavigation({
         />
 
         <NavSection
-          title="Evaluate Industry Areas"
-          section="evaluate-industry-areas"
-          isExpanded={isSectionExpanded('evaluate-industry-areas')}
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/evaluate-industry-areas`)}
-          onClick={() => toggleSection('evaluate-industry-areas')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        >
-          {report.industryAreas?.areas?.flatMap((heading, index) => {
-            return heading.subAreas.map((subHeading, subIndex) => {
-              const indexInArray = index * getNumberOfSubHeadings(industryId) + subIndex;
-              const evaluated = report?.evaluateIndustryAreas?.[indexInArray];
-              const title = evaluated?.title || subHeading.title || index + '-' + subIndex;
-              return (
-                <NavItem
-                  key={index + '-' + subIndex}
-                  title={title}
-                  href={`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index + '-' + subIndex}`}
-                  isActive={pathname.includes(`/industry-tariff-report/${industryId}/evaluate-industry-areas/${index + '-' + subIndex}`)}
-                  isArray
-                  onNavItemClick={handleNavClick}
-                />
-              );
-            });
-          })}
-        </NavSection>
-
-        <NavSection
           title="Final Conclusion"
           section="final-conclusion"
           reportId={industryId}
@@ -252,40 +222,5 @@ function NavSection({
       </Link>
       {isExpanded && children && <div className="ml-4 mt-1 space-y-1">{children}</div>}
     </div>
-  );
-}
-
-// Navigation item component
-function NavItem({
-  title,
-  href,
-  isActive,
-  isArray = false,
-  onNavItemClick,
-}: {
-  title: string;
-  href: string;
-  isActive: boolean;
-  isArray?: boolean;
-  onNavItemClick?: () => void;
-}) {
-  const handleClick = () => {
-    if (onNavItemClick) {
-      onNavItemClick();
-    }
-  };
-
-  return (
-    <Link
-      href={href}
-      className={cn(
-        'flex w-full items-center rounded-md px-3 py-2 text-left text-sm',
-        isActive ? 'bg-primary-color/10 font-medium primary-color' : 'hover:block-bg-color'
-      )}
-      onClick={handleClick}
-    >
-      {isArray ? <ChevronUp className="mr-2 h-4 w-4 rotate-90" /> : <FileText className="mr-2 h-4 w-4" />}
-      {title}
-    </Link>
   );
 }

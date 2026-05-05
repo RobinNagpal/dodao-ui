@@ -9,11 +9,17 @@ interface SiteMapUrl {
   lastmod?: string;
 }
 
+// evaluate-industry-areas is omitted: its URLs 301 to /tariff-reports (see next.config.ts) and
+// must not be advertised in the sitemap, otherwise Google keeps recrawling them.
+const REPORT_SECTIONS = ['tariff-updates', 'all-countries-tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
+
 // Generate URLs for tariff reports and their sections
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
   const lastModifiedDates = await getTariffReportsLastModifiedDates();
-  const { getTariffIndustryDefinitionById, TariffIndustryId } = await import('@/scripts/industry-tariff-reports/tariff-industries');
+  const { chapterNumbersWithoutPrimaryIndustry, chapterUrlSlug, getTariffIndustryDefinitionById, HTS_CHAPTERS, TariffIndustryId } = await import(
+    '@/scripts/industry-tariff-reports/tariff-industries'
+  );
   const tariffReports = Object.values(TariffIndustryId).map((industryId) => ({
     ...getTariffIndustryDefinitionById(industryId),
     lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
@@ -21,7 +27,6 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
 
   if (tariffReports.length === 0) {
     console.warn('No tariff reports found for the sitemap.');
-    return urls;
   }
 
   // For each industry report
@@ -36,19 +41,28 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       lastmod: industry.lastModified,
     });
 
-    // Standard report sections based on navigation structure. evaluate-industry-areas is omitted:
-    // its URLs 301 to /tariff-reports (see next.config.ts) and must not be advertised in the
-    // sitemap, otherwise Google keeps recrawling them.
-    const reportSections = ['tariff-updates', 'all-countries-tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
-
-    // Add URLs for each section
-    for (const section of reportSections) {
+    // Standard report sections based on navigation structure.
+    for (const section of REPORT_SECTIONS) {
       urls.push({
         url: `/industry-tariff-report/${industryId}/${section}`,
         changefreq: 'weekly',
         priority: 0.7,
         lastmod: industry.lastModified,
       });
+    }
+  }
+
+  // HTS chapter pages — only include chapters that don't redirect to an industry URL. Primary
+  // chapters issue a 301 to the industry page (see chapter route handlers), so emitting them here
+  // would advertise URLs Google must follow a redirect to reach.
+  const fallbackLastmod = new Date().toISOString();
+  for (const chapterNumber of chapterNumbersWithoutPrimaryIndustry()) {
+    const chapter = HTS_CHAPTERS[chapterNumber];
+    if (!chapter) continue;
+    const chapterPath = `/industry-tariff-report/chapter/${chapterUrlSlug(chapter)}`;
+    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod: fallbackLastmod });
+    for (const section of REPORT_SECTIONS) {
+      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod: fallbackLastmod });
     }
   }
 
