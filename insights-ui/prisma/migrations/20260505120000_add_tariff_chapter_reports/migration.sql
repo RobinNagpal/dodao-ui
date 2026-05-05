@@ -3,7 +3,7 @@ CREATE TABLE "tariff_chapter_reports" (
     "id" TEXT NOT NULL,
     "chapter_id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "old_urls" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "old_url" TEXT NOT NULL,
     "introduction" JSONB NOT NULL,
     "tariff_updates" JSONB NOT NULL,
     "understand_industry" JSONB NOT NULL,
@@ -23,7 +23,7 @@ CREATE UNIQUE INDEX "tariff_chapter_reports_space_id_slug_key" ON "tariff_chapte
 CREATE UNIQUE INDEX "tariff_chapter_reports_space_id_chapter_id_key" ON "tariff_chapter_reports"("space_id", "chapter_id");
 
 -- CreateIndex
-CREATE INDEX "tariff_chapter_reports_old_urls_idx" ON "tariff_chapter_reports" USING GIN ("old_urls");
+CREATE UNIQUE INDEX "tariff_chapter_reports_space_id_old_url_key" ON "tariff_chapter_reports"("space_id", "old_url");
 
 -- AddForeignKey
 ALTER TABLE "tariff_chapter_reports" ADD CONSTRAINT "tariff_chapter_reports_chapter_id_fkey" FOREIGN KEY ("chapter_id") REFERENCES "tariff_chapters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

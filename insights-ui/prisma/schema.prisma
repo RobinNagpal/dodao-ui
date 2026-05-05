@@ -2050,10 +2050,10 @@ model TariffChapter {
 // existing typed renderers (executiveSummary, tariffUpdates per-country,
 // industry-areas with headings/subheadings, etc.) keep working.
 //
-// `oldUrls` carries the legacy industry URLs the report originally lived at
-// (e.g. ["/industry-tariff-report/plastic"]) — used to keep ranking pages
-// alive after the swap. Multiple aliases per row supports industries that
-// share a chapter (e.g. industrial-gases + commodity-chemicals → ch. 28).
+// `oldUrl` carries the legacy industryId this chapter took over from
+// (e.g. "plastic"). All three legacy paths share that industryId
+// (cover, evaluate-industry-areas, all-countries-tariff-updates), so the
+// router parses the industryId from the URL and looks it up here.
 model TariffChapterReport {
   id        String        @id @default(uuid())
   chapterId String        @map("chapter_id")
@@ -2062,9 +2062,9 @@ model TariffChapterReport {
   // URL slug for the new /chapter/<slug> route, e.g. "39-plastics-and-articles".
   slug String @map("slug")
 
-  // Legacy industry URLs (pathname only) that should resolve to this chapter's
-  // content. Empty for chapters that never had an industry URL.
-  oldUrls String[] @default([]) @map("old_urls")
+  // Legacy industryId (e.g. "plastic") whose `/industry-tariff-report/<id>/...`
+  // URLs should resolve to this chapter's content.
+  oldUrl String @map("old_url")
 
   // Section bodies. Each is a typed JSON object — see tariff-types.ts for the
   // shapes (ReportCover, IndustryTariffsForCountry[], UnderstandIndustry, etc.).
@@ -2080,7 +2080,7 @@ model TariffChapterReport {
 
   @@unique([spaceId, slug])
   @@unique([spaceId, chapterId])
-  @@index([oldUrls], type: Gin)
+  @@unique([spaceId, oldUrl])
   @@map("tariff_chapter_reports")
 }
 
