@@ -118,7 +118,27 @@ export default async function TariffReportsPage() {
                       <p className="mt-3 text-muted-foreground line-clamp-3">{report.reportOneLiner}</p>
                     </div>
 
-                    <div className="block-bg-color border-t border-color p-4">
+                    <div className="block-bg-color border-t border-color p-4 space-y-3">
+                      <ul className="flex flex-wrap gap-2 text-xs">
+                        {(
+                          [
+                            { slug: 'tariff-updates', label: 'Tariff Updates' },
+                            { slug: 'all-countries-tariff-updates', label: 'All Countries' },
+                            { slug: 'understand-industry', label: 'Understand Industry' },
+                            { slug: 'industry-areas', label: 'Industry Areas' },
+                            { slug: 'final-conclusion', label: 'Final Conclusion' },
+                          ] as const
+                        ).map((section) => (
+                          <li key={section.slug}>
+                            <Link
+                              href={`/industry-tariff-report/${report.industryId}/${section.slug}`}
+                              className="inline-block rounded-full border border-color px-2.5 py-1 text-muted-foreground hover:text-primary-color hover:border-primary-color transition-colors"
+                            >
+                              {section.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
                       <Link href={`/industry-tariff-report/${report.industryId}`} className="group flex items-center text-sm font-medium primary-color">
                         View full report
                         <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />

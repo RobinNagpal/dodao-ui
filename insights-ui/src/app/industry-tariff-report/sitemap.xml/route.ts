@@ -1,5 +1,4 @@
 import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
-import { getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -37,7 +36,9 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       lastmod: industry.lastModified,
     });
 
-    // Standard report sections based on navigation structure
+    // Standard report sections based on navigation structure. evaluate-industry-areas is omitted:
+    // its URLs 301 to /tariff-reports (see next.config.ts) and must not be advertised in the
+    // sitemap, otherwise Google keeps recrawling them.
     const reportSections = ['tariff-updates', 'all-countries-tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
     // Add URLs for each section
@@ -49,23 +50,6 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
         lastmod: industry.lastModified,
       });
     }
-
-    const combos = getAllHeadingSubheadingCombinations(industry.industryId);
-    // Add the main evaluate-industry-areas section
-    urls.push({
-      url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: industry.lastModified,
-    });
-    combos.forEach((c) =>
-      urls.push({
-        url: `/industry-tariff-report/${industry.industryId}/evaluate-industry-areas/${c.headingIndex}-${c.subHeadingIndex}`,
-        changefreq: 'weekly',
-        priority: 0.6,
-        lastmod: industry.lastModified,
-      })
-    );
   }
 
   return urls;

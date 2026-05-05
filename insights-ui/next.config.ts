@@ -119,6 +119,20 @@ const nextConfig: NextConfig = {
         destination: '/industry-tariff-report/:industryId',
         permanent: true,
       },
+      // The evaluate-industry-areas section was dropped: it generated little organic traffic and
+      // its content didn't serve readers landing on a tariff page. 301 to the listing so any
+      // remaining ranking signals consolidate there. Sub-pages (heading-subheading combos) match
+      // via :rest*; the bare URL has its own rule below.
+      {
+        source: '/industry-tariff-report/:industryId/evaluate-industry-areas/:rest*',
+        destination: '/tariff-reports',
+        permanent: true,
+      },
+      {
+        source: '/industry-tariff-report/:industryId/evaluate-industry-areas',
+        destination: '/tariff-reports',
+        permanent: true,
+      },
     ];
   },
 };
