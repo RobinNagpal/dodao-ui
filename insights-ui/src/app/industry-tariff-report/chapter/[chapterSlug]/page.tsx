@@ -41,7 +41,6 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   return (
     <ChapterPlaceholder
       chapter={resolved.chapter}
-      ownerIndustry={resolved.ownerIndustry}
       pageTitle={`HTS Chapter ${padded} — ${resolved.chapter.shortName}`}
       description={`Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.shortName}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`}
     />

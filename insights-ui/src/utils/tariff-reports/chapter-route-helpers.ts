@@ -1,6 +1,5 @@
 import {
   chapterUrlSlug,
-  getCanonicalIndustryForChapter,
   getIndustryForPrimaryChapter,
   HTS_CHAPTERS,
   HtsChapterRef,
@@ -27,9 +26,6 @@ export interface ResolvedChapterRoute {
   // Industry whose URL is the canonical home for this chapter (chapter is its primary).
   // When set, callers should redirect to the industry URL instead of rendering chapter content.
   primaryIndustry: TariffIndustryDefinition | undefined;
-  // Industry that owns this chapter via htsChapters (any position). Used for context (back-links,
-  // "see industry report" CTA), not for canonical URL routing.
-  ownerIndustry: TariffIndustryDefinition | undefined;
 }
 
 // Parses a chapter slug from the URL and resolves it. Returns undefined for malformed slugs or
@@ -43,7 +39,6 @@ export function resolveChapterRoute(rawSlug: string): ResolvedChapterRoute | und
     canonicalSlug: chapterUrlSlug(chapter),
     chapter,
     primaryIndustry: getIndustryForPrimaryChapter(chapterNumber),
-    ownerIndustry: getCanonicalIndustryForChapter(chapterNumber),
   };
 }
 

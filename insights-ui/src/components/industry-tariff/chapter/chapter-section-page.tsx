@@ -43,13 +43,5 @@ export function renderChapterSection(chapterSlug: string, sectionSlug: string): 
   if (resolved.primaryIndustry) {
     redirect(`/industry-tariff-report/${resolved.primaryIndustry.industryId}/${sectionSlug}`);
   }
-  return (
-    <ChapterPlaceholder
-      chapter={resolved.chapter}
-      ownerIndustry={resolved.ownerIndustry}
-      pageTitle={copy.pageTitle}
-      currentSectionSlug={sectionSlug}
-      description={copy.description}
-    />
-  );
+  return <ChapterPlaceholder chapter={resolved.chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
 }

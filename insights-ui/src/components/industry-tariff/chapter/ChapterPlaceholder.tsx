@@ -1,11 +1,10 @@
-import { chapterUrlSlug, getAllChaptersForIndustry, HtsChapterRef, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { HtsChapterRef } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { ArrowRight, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 interface ChapterPlaceholderProps {
   chapter: HtsChapterRef;
-  ownerIndustry: TariffIndustryDefinition | undefined;
   // Title shown above the placeholder, e.g. "Tariff Updates" for a section page or chapter name for the cover.
   pageTitle: string;
   // Optional sub-section the user is currently looking at — exclude it from the section nav block.
@@ -13,10 +12,9 @@ interface ChapterPlaceholderProps {
   description: string;
 }
 
-export default function ChapterPlaceholder({ chapter, ownerIndustry, pageTitle, currentSectionSlug, description }: ChapterPlaceholderProps) {
+export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description }: ChapterPlaceholderProps) {
   const padded = chapter.number.toString().padStart(2, '0');
   const otherSections = CHAPTER_REPORT_SECTIONS.filter((s) => s.slug !== currentSectionSlug);
-  const siblingChapters = ownerIndustry ? getAllChaptersForIndustry(ownerIndustry).filter((c) => c.number !== chapter.number) : [];
 
   return (
     <div className="py-6">
@@ -64,42 +62,6 @@ export default function ChapterPlaceholder({ chapter, ownerIndustry, pageTitle, 
           ))}
         </ul>
       </section>
-
-      {ownerIndustry && (
-        <section className="mb-10">
-          <h2 className="mb-4 text-lg font-semibold">Related industry report</h2>
-          <Link
-            href={`/industry-tariff-report/${ownerIndustry.industryId}`}
-            className="group flex items-start justify-between gap-4 rounded-2xl border border-color background-color p-5 transition hover:border-indigo-500/60 hover:shadow-lg"
-          >
-            <div>
-              <div className="mb-1 text-xs font-medium uppercase tracking-wide text-indigo-400">Industry</div>
-              <div className="text-lg font-semibold group-hover:text-indigo-400">{ownerIndustry.name}</div>
-              <p className="mt-2 text-sm text-muted-foreground">{ownerIndustry.reportOneLiner}</p>
-            </div>
-            <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-indigo-400" />
-          </Link>
-        </section>
-      )}
-
-      {siblingChapters.length > 0 && (
-        <section className="mb-10">
-          <h2 className="mb-4 text-lg font-semibold">Other chapters in {ownerIndustry?.name ?? 'this industry'}</h2>
-          <ul className="flex flex-wrap gap-2">
-            {siblingChapters.map((sibling) => (
-              <li key={sibling.number}>
-                <Link
-                  href={`/industry-tariff-report/chapter/${chapterUrlSlug(sibling)}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-color px-3 py-1.5 text-sm text-muted-foreground transition hover:border-emerald-500/60 hover:text-emerald-400"
-                >
-                  <span className="font-mono text-xs tabular-nums">{sibling.number.toString().padStart(2, '0')}</span>
-                  {sibling.shortName}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
     </div>
   );
 }
