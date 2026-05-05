@@ -1,5 +1,8 @@
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import type { ChapterSeoResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/seo/route';
+import type { PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { chapterSectionHref, getChapterSectionCopy, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -7,7 +10,23 @@ import { notFound, redirect } from 'next/navigation';
 // Keeps the per-route page.tsx files to a few lines each — same resolve/redirect/render flow, only
 // the section slug differs.
 
-export function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Metadata {
+const SECTION_SEO_KEY: Record<string, keyof TariffReportSeoDetails> = {
+  'tariff-updates': 'tariffUpdatesSeoDetails',
+  'understand-industry': 'understandIndustrySeoDetails',
+  'industry-areas': 'industryAreasSeoDetails',
+  'final-conclusion': 'finalConclusionSeoDetails',
+};
+
+function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionSlug: string): PageSeoDetails | undefined {
+  const key = SECTION_SEO_KEY[sectionSlug];
+  if (!key || !seo) return undefined;
+  const value = seo[key];
+  // evaluateIndustryAreasSeoDetails is a Record, not PageSeoDetails — exclude it.
+  if (!value || typeof value !== 'object' || !('title' in value)) return undefined;
+  return value as PageSeoDetails;
+}
+
+export async function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Promise<Metadata> {
   const resolved = resolveChapterRoute(chapterSlug);
   if (!resolved) {
     return { title: 'HTS Chapter Tariff Report' };
@@ -17,21 +36,38 @@ export function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: st
     return { title: 'HTS Chapter Tariff Report' };
   }
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const title = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.shortName} | KoalaGains`;
+  const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.shortName} | KoalaGains`;
+  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.shortName, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
+
+  let sectionSeo: PageSeoDetails | undefined;
+  try {
+    const res = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
+    if (res.ok) {
+      const body: ChapterSeoResponse = await res.json();
+      sectionSeo = pickSectionSeo(body.seoDetails, sectionSlug);
+    }
+  } catch {
+    // Network/SSR errors fall back to the placeholder copy below.
+  }
+
+  const title = sectionSeo?.title || fallbackTitle;
+  const description = sectionSeo?.shortDescription || copy.description;
+  const keywords = sectionSeo?.keywords?.length ? sectionSeo.keywords : fallbackKeywords;
   const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter, sectionSlug)}`;
+
   return {
     title,
-    description: copy.description,
+    description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title,
-      description: copy.description,
+      description,
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'article',
     },
-    twitter: { card: 'summary_large_image', title, description: copy.description },
-    keywords: [`HTS Chapter ${padded}`, resolved.chapter.shortName, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'],
+    twitter: { card: 'summary_large_image', title, description },
+    keywords,
   };
 }
 
