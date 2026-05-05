@@ -119,6 +119,10 @@ const nextConfig: NextConfig = {
         destination: '/industry-tariff-report/:industryId',
         permanent: true,
       },
+      // evaluate-industry-areas and all-countries-tariff-updates are no longer 301'd. They keep
+      // their URLs (legacy backlinks were getting clicks) but render the cover content with
+      // `<link rel="canonical">` pointing at the cover, so Google consolidates ranking there
+      // without bouncing real users away from the URL they followed.
     ];
   },
 };
