@@ -12,6 +12,7 @@
     "prettier-fix": "prettier --config .prettierrc 'src/**/*.{js,ts,tsx,json}' --write",
     "prettier-check": "prettier --check 'src/**/*.{js,ts,tsx,json}'",
     "generate:tariff": "tsx src/scripts/run-tariff-report.ts",
+    "tariff:seed-chapter-reports-seo": "tsx src/scripts/industry-tariff-reports/seed-tariff-chapter-reports-seo.ts",
     "generate:meta-descriptions": "tsx src/scripts/generate-meta-descriptions.ts",
     "import:etf-scenarios": "tsx src/scripts/import-etf-scenarios.ts",
     "import:stock-scenarios": "tsx src/scripts/import-stock-scenarios.ts",
