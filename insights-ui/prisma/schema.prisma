@@ -2077,6 +2077,14 @@ model TariffChapterReport {
   industryAreas      Json? @map("industry_areas")
   conclusion         Json? @map("conclusion")
 
+  // Per-section SEO metadata in one JSON blob (mirrors the legacy S3
+  // `08-seo-details/seo-details.json` shape — `TariffReportSeoDetails`
+  // in tariff-types.ts: cover, executive summary, tariff updates,
+  // understand industry, industry areas, evaluate-industry-areas keyed
+  // by heading/subheading, final conclusion). Optional, like the
+  // section bodies.
+  seoDetails Json? @map("seo_details")
+
   spaceId   String   @default("koala_gains") @map("space_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
