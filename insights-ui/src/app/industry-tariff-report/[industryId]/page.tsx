@@ -222,50 +222,6 @@ export default async function IndustryTariffReportPage({ params }: { params: Pro
               </ul>
             </div>
           )}
-
-        {/* Related Industries Section */}
-        {definition.relatedIndustryIds &&
-          definition.relatedIndustryIds.length > 0 &&
-          renderSection(
-            'Related Industry Reports',
-            <div>
-              <p className="text-muted-foreground mb-6">
-                Explore tariff impacts on related industries that may affect your supply chain, sourcing decisions, or market opportunities.
-              </p>
-              <div className="space-y-6">
-                {definition.relatedIndustryIds.map((relatedIndustryId) => {
-                  const relatedDefinition = getTariffIndustryDefinitionById(relatedIndustryId);
-                  return (
-                    <div
-                      key={relatedIndustryId}
-                      className="bg-gray-900 rounded-lg shadow-sm overflow-hidden border border-color hover:shadow-xl transition-all duration-300"
-                    >
-                      <div className="background-color p-2">
-                        <div className="flex items-center text-xs font-medium mb-3">
-                          <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                            Related Report
-                          </span>
-                        </div>
-
-                        <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="block mt-2 group">
-                          <h4 className="text-lg font-semibold group-hover:text-primary-color transition-colors link-color">{relatedDefinition.name}</h4>
-                        </Link>
-
-                        <p className="mt-3 text-muted-foreground line-clamp-3">{relatedDefinition.reportOneLiner}</p>
-
-                        <div className="mt-4">
-                          <Link href={`/industry-tariff-report/${relatedIndustryId}`} className="group flex items-center text-sm font-medium link-color">
-                            View report
-                            <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
       </div>
     </div>
   );

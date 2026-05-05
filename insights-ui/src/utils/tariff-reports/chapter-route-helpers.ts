@@ -15,7 +15,6 @@ export interface ChapterReportSection {
 
 export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
   { slug: 'tariff-updates', label: 'Tariff Updates' },
-  { slug: 'all-countries-tariff-updates', label: 'All Countries' },
   { slug: 'understand-industry', label: 'Understand Industry' },
   { slug: 'industry-areas', label: 'Industry Areas' },
   { slug: 'final-conclusion', label: 'Final Conclusion' },
@@ -67,10 +66,6 @@ const SECTION_COPY: Record<string, (shortName: string, padded: string) => Chapte
   'tariff-updates': (shortName, padded) => ({
     pageTitle: 'Tariff Updates',
     description: `Recent tariff updates affecting HTS Chapter ${padded} (${shortName}) — rate changes, effective dates, exclusions, and policy actions impacting goods classified under this chapter.`,
-  }),
-  'all-countries-tariff-updates': (shortName, padded) => ({
-    pageTitle: 'All Countries Tariff Updates',
-    description: `Country-by-country tariff breakdown for HTS Chapter ${padded} (${shortName}) — applied duties, recent changes, and trade-relationship context for every major partner.`,
   }),
   'understand-industry': (shortName, padded) => ({
     pageTitle: 'Understand the Industry',

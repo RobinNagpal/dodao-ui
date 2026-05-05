@@ -2,18 +2,15 @@
 
 import { cn } from '@/lib/utils';
 
-import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { ChevronDown, ChevronRight, FileText, Folder, Home, X } from 'lucide-react';
+import { ChevronRight, FileText, Home, X } from 'lucide-react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
 import type React from 'react';
 
-interface BookNavigationProps {
-  report: IndustryTariffReport;
-  industryId: TariffIndustryId;
+interface ReportLeftNavigationProps {
+  // Path the "Introduction" link points at; sections are appended (e.g. `${basePath}/tariff-updates`).
+  basePath: string;
   isMobile?: boolean;
   onNavItemClick?: () => void;
   onToggle?: () => void;
@@ -21,40 +18,23 @@ interface BookNavigationProps {
   lastModified?: string;
 }
 
+const NAV_SECTIONS: ReadonlyArray<{ title: string; section: string }> = [
+  { title: 'Tariff Updates - Top 5 Trade Partners', section: 'tariff-updates' },
+  { title: 'Understand Industry', section: 'understand-industry' },
+  { title: 'Industry Areas', section: 'industry-areas' },
+  { title: 'Final Conclusion', section: 'final-conclusion' },
+];
+
 export default function ReportLeftNavigation({
-  report,
-  industryId,
+  basePath,
   isMobile = false,
   onNavItemClick,
   onToggle,
   showToggle = false,
   lastModified,
-}: BookNavigationProps) {
+}: ReportLeftNavigationProps) {
   const pathname = usePathname();
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
-  // Helper function to check if a path is active
-  const isActive = (path: string) => pathname === path;
-
-  // Helper function to check if a section should be expanded
-  const isSectionExpanded = (section: string) => {
-    if (expandedSections[section] !== undefined) {
-      return expandedSections[section];
-    }
-    return pathname.includes(`/${section}`);
-  };
-
-  // Toggle section expansion - only used in mobile view
-  const toggleSection = (section: string) => {
-    if (isMobile) {
-      setExpandedSections((prev) => ({
-        ...prev,
-        [section]: !isSectionExpanded(section),
-      }));
-    }
-  };
-
-  // Handle navigation item click
   const handleNavClick = () => {
     if (isMobile && onNavItemClick) {
       onNavItemClick();
@@ -73,84 +53,49 @@ export default function ReportLeftNavigation({
               </button>
             )}
             {isMobile && (
-              <Link href={`/industry-tariff-report/${industryId}`} className="p-1 rounded-full hover:bg-muted link-color" onClick={handleNavClick}>
+              <Link href={basePath} className="p-1 rounded-full hover:bg-muted link-color" onClick={handleNavClick}>
                 <Home className="h-5 w-5" />
               </Link>
             )}
           </div>
         </div>
 
-        {/* Navigation items based on IndustryTariffReport structure */}
         <Link
-          href={`/industry-tariff-report/${industryId}`}
+          href={basePath}
           className={cn(
             'flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium',
-            pathname.endsWith(industryId) ? 'bg-primary-color primary-text-color' : 'hover:block-bg-color'
+            pathname === basePath ? 'bg-primary-color primary-text-color' : 'hover:block-bg-color'
           )}
+          onClick={handleNavClick}
         >
           <div className="flex items-center">
             <FileText className="mr-2 h-4 w-4" /> Introduction
           </div>
         </Link>
 
-        <NavSection
-          title="Tariff Updates - Top 5 Trade Partners"
-          section="tariff-updates"
-          isExpanded={isSectionExpanded('tariff-updates')}
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/tariff-updates`)}
-          onClick={() => toggleSection('tariff-updates')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
+        {NAV_SECTIONS.map(({ title, section }) => {
+          const href = `${basePath}/${section}`;
+          const active = pathname === href;
+          return (
+            <div key={section} className="mb-2">
+              <Link
+                href={href}
+                className={cn(
+                  'flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium',
+                  active ? 'bg-primary-color primary-text-color' : 'hover:block-bg-color'
+                )}
+                onClick={handleNavClick}
+              >
+                <div className="flex items-center">
+                  <FileText className="mr-2 h-4 w-4" />
+                  {title}
+                </div>
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+          );
+        })}
 
-        <NavSection
-          title="Tariff Updates - All Key Markets"
-          section="all-countries-tariff-updates"
-          isExpanded={isSectionExpanded('all-countries-tariff-updates')}
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/all-countries-tariff-updates`)}
-          onClick={() => toggleSection('all-countries-tariff-updates')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
-
-        <NavSection
-          title="Understand Industry"
-          section="understand-industry"
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/understand-industry`)}
-          onClick={() => toggleSection('understand-industry')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
-
-        <NavSection
-          title="Industry Areas"
-          section="industry-areas"
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/industry-areas`)}
-          onClick={() => toggleSection('industry-areas')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
-
-        <NavSection
-          title="Final Conclusion"
-          section="final-conclusion"
-          reportId={industryId}
-          currentPath={pathname}
-          isActive={isActive(`/industry-tariff-report/${industryId}/final-conclusion`)}
-          onClick={() => toggleSection('final-conclusion')}
-          onNavItemClick={handleNavClick}
-          isMobile={isMobile}
-        />
-
-        {/* Last Modified Date Display */}
         {lastModified && (
           <div className="px-3 py-2 text-xs text-muted-foreground border-t border-color">
             <div className="flex items-center gap-2 mt-2">
@@ -166,61 +111,6 @@ export default function ReportLeftNavigation({
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-// Navigation section component
-function NavSection({
-  title,
-  section,
-  isExpanded = false,
-  children,
-  reportId,
-  currentPath,
-  isActive = false,
-  onClick,
-  onNavItemClick,
-  isMobile = false,
-}: {
-  title: string;
-  section: string;
-  isExpanded?: boolean;
-  children?: React.ReactNode;
-  reportId: string;
-  currentPath: string;
-  isActive: boolean;
-  onClick?: () => void;
-  onNavItemClick?: () => void;
-  isMobile?: boolean;
-}) {
-  // For mobile, we want to handle section clicks differently
-  const handleSectionClick = (e: React.MouseEvent) => {
-    if (isMobile && children && onClick) {
-      e.preventDefault();
-      onClick();
-    } else if (onNavItemClick) {
-      onNavItemClick();
-    }
-  };
-
-  return (
-    <div className="mb-2">
-      <Link
-        href={`/industry-tariff-report/${reportId}/${section}`}
-        className={cn(
-          'flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm font-medium',
-          isActive ? 'bg-primary-color primary-text-color' : 'hover:block-bg-color'
-        )}
-        onClick={handleSectionClick}
-      >
-        <div className="flex items-center">
-          {children ? <Folder className="mr-2 h-4 w-4" /> : <FileText className="mr-2 h-4 w-4" />}
-          {title}
-        </div>
-        {children && (isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />)}
-      </Link>
-      {isExpanded && children && <div className="ml-4 mt-1 space-y-1">{children}</div>}
     </div>
   );
 }

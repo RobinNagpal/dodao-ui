@@ -133,6 +133,21 @@ const nextConfig: NextConfig = {
         destination: '/tariff-reports',
         permanent: true,
       },
+      // The all-countries-tariff-updates section was dropped from the report nav: tariff-updates
+      // already covers the top trade partners and the long-tail country list duplicated content
+      // without adding ranking value. 301 to the cover so any remaining link signals consolidate
+      // there. The chapter route variant (`/industry-tariff-report/chapter/:chapterSlug/...`)
+      // matches via the same rule because :industryId is just a slug.
+      {
+        source: '/industry-tariff-report/:industryId/all-countries-tariff-updates',
+        destination: '/industry-tariff-report/:industryId',
+        permanent: true,
+      },
+      {
+        source: '/industry-tariff-report/chapter/:chapterSlug/all-countries-tariff-updates',
+        destination: '/industry-tariff-report/chapter/:chapterSlug',
+        permanent: true,
+      },
     ];
   },
 };

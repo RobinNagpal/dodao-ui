@@ -53,7 +53,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const REPORT_SECTIONS = [
   { slug: 'tariff-updates', label: 'Tariff Updates' },
-  { slug: 'all-countries-tariff-updates', label: 'All Countries' },
   { slug: 'understand-industry', label: 'Understand Industry' },
   { slug: 'industry-areas', label: 'Industry Areas' },
   { slug: 'final-conclusion', label: 'Final Conclusion' },

@@ -3,7 +3,7 @@ import { chapterSectionHref, getChapterSectionCopy, resolveChapterRoute } from '
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
-// Small wrappers used by every chapter section page (`tariff-updates`, `all-countries-tariff-updates`, ...).
+// Small wrappers used by every chapter section page (`tariff-updates`, `understand-industry`, ...).
 // Keeps the per-route page.tsx files to a few lines each — same resolve/redirect/render flow, only
 // the section slug differs.
 

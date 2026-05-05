@@ -9,9 +9,10 @@ interface SiteMapUrl {
   lastmod?: string;
 }
 
-// evaluate-industry-areas is omitted: its URLs 301 to /tariff-reports (see next.config.ts) and
-// must not be advertised in the sitemap, otherwise Google keeps recrawling them.
-const REPORT_SECTIONS = ['tariff-updates', 'all-countries-tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
+// evaluate-industry-areas and all-countries-tariff-updates are omitted: both 301 to the cover
+// (see next.config.ts), so advertising them here would advertise URLs Google must follow a
+// redirect to reach.
+const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
 // Generate URLs for tariff reports and their sections
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
