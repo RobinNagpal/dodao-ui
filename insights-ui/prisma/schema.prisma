@@ -2041,6 +2041,50 @@ model TariffChapter {
   @@unique([spaceId, number])
   @@index([sectionId])
   @@map("tariff_chapters")
+
+  reports TariffChapterReport[]
+}
+
+// Long-form, reader-facing tariff report attached to an HTS chapter. Each
+// chapter has at most one report. Section content is stored as Json so the
+// existing typed renderers (executiveSummary, tariffUpdates per-country,
+// industry-areas with headings/subheadings, etc.) keep working.
+//
+// `oldUrl` carries the legacy industryId this chapter took over from
+// (e.g. "plastic"). All three legacy paths share that industryId
+// (cover, evaluate-industry-areas, all-countries-tariff-updates), so the
+// router parses the industryId from the URL and looks it up here.
+model TariffChapterReport {
+  id        String        @id @default(uuid())
+  chapterId String        @map("chapter_id")
+  chapter   TariffChapter @relation(fields: [chapterId], references: [id])
+
+  // URL slug for the /chapters/<slug> route, e.g. "39-plastics-and-articles".
+  // Required — every chapter has a row even if no content is seeded yet.
+  slug String @map("slug")
+
+  // Legacy industryId (e.g. "plastic") whose `/industry-tariff-report/<id>/...`
+  // URLs should resolve to this chapter's content. Null for chapters that
+  // have no associated legacy industry report.
+  oldUrl String? @map("old_url")
+
+  // Section bodies. Each is a typed JSON object — see tariff-types.ts for the
+  // shapes (ReportCover, IndustryTariffsForCountry[], UnderstandIndustry, etc.).
+  // Optional: chapters without seeded content carry only the slug.
+  introduction       Json? @map("introduction")
+  tariffUpdates      Json? @map("tariff_updates")
+  understandIndustry Json? @map("understand_industry")
+  industryAreas      Json? @map("industry_areas")
+  conclusion         Json? @map("conclusion")
+
+  spaceId   String   @default("koala_gains") @map("space_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([spaceId, slug])
+  @@unique([spaceId, chapterId])
+  @@unique([spaceId, oldUrl])
+  @@map("tariff_chapter_reports")
 }
 
 // One row per CSV row. CSV rows include both leaf 10-digit codes and
