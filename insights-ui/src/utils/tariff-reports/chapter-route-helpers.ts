@@ -43,7 +43,7 @@ export function resolveChapterRoute(rawSlug: string): ResolvedChapterRoute | und
 }
 
 export function chapterCoverHref(chapter: HtsChapterRef): string {
-  return `/industry-tariff-report/chapter/${chapterUrlSlug(chapter)}`;
+  return `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
 }
 
 export function chapterSectionHref(chapter: HtsChapterRef, sectionSlug: string): string {

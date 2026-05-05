@@ -74,7 +74,7 @@ interface ChapterCardProps {
 
 function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
   const padded = chapter.number.toString().padStart(2, '0');
-  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapter/${chapterUrlSlug(chapter)}`;
+  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
   const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapter.shortName}`;
   const description =
     industry?.reportOneLiner ??

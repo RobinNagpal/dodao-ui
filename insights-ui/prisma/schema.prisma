@@ -2059,20 +2059,23 @@ model TariffChapterReport {
   chapterId String        @map("chapter_id")
   chapter   TariffChapter @relation(fields: [chapterId], references: [id])
 
-  // URL slug for the new /chapter/<slug> route, e.g. "39-plastics-and-articles".
+  // URL slug for the /chapters/<slug> route, e.g. "39-plastics-and-articles".
+  // Required — every chapter has a row even if no content is seeded yet.
   slug String @map("slug")
 
   // Legacy industryId (e.g. "plastic") whose `/industry-tariff-report/<id>/...`
-  // URLs should resolve to this chapter's content.
-  oldUrl String @map("old_url")
+  // URLs should resolve to this chapter's content. Null for chapters that
+  // have no associated legacy industry report.
+  oldUrl String? @map("old_url")
 
   // Section bodies. Each is a typed JSON object — see tariff-types.ts for the
   // shapes (ReportCover, IndustryTariffsForCountry[], UnderstandIndustry, etc.).
-  introduction       Json @map("introduction")
-  tariffUpdates      Json @map("tariff_updates")
-  understandIndustry Json @map("understand_industry")
-  industryAreas      Json @map("industry_areas")
-  conclusion         Json @map("conclusion")
+  // Optional: chapters without seeded content carry only the slug.
+  introduction       Json? @map("introduction")
+  tariffUpdates      Json? @map("tariff_updates")
+  understandIndustry Json? @map("understand_industry")
+  industryAreas      Json? @map("industry_areas")
+  conclusion         Json? @map("conclusion")
 
   spaceId   String   @default("koala_gains") @map("space_id")
   createdAt DateTime @default(now()) @map("created_at")

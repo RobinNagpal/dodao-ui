@@ -12,7 +12,7 @@ export default async function ChapterReportLayout({ children, params }: { childr
   const resolved = resolveChapterRoute(chapterSlug);
 
   if (resolved && resolved.canonicalSlug !== chapterSlug) {
-    redirect(`/industry-tariff-report/chapter/${resolved.canonicalSlug}`);
+    redirect(`/industry-tariff-report/chapters/${resolved.canonicalSlug}`);
   }
 
   // Without a resolved chapter the leaf page will 404 — render bare so the chapter-specific

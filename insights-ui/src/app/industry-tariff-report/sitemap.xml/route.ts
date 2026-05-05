@@ -60,7 +60,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   for (const chapterNumber of chapterNumbersWithoutPrimaryIndustry()) {
     const chapter = HTS_CHAPTERS[chapterNumber];
     if (!chapter) continue;
-    const chapterPath = `/industry-tariff-report/chapter/${chapterUrlSlug(chapter)}`;
+    const chapterPath = `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
     urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod: fallbackLastmod });
     for (const section of REPORT_SECTIONS) {
       urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod: fallbackLastmod });
