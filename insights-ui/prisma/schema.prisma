@@ -750,16 +750,16 @@ model TickerV1FutureRisk {
 }
 
 model TickerV1ManagementTeamReport {
-  id                String                         @id @default(uuid())
-  summary           String                         @map("summary")
-  detailedAnalysis  String                         @map("detailed_analysis")
-  alignmentVerdict  ManagementTeamAlignmentVerdict @map("alignment_verdict")
-  tickerId          String                         @map("ticker_id")
-  spaceId           String                         @default("koala_gains") @map("space_id")
-  createdAt         DateTime                       @default(now()) @map("created_at")
-  updatedAt         DateTime                       @updatedAt @map("updated_at")
-  createdBy         String?                        @map("created_by")
-  updatedBy         String?                        @map("updated_by")
+  id               String                         @id @default(uuid())
+  summary          String                         @map("summary")
+  detailedAnalysis String                         @map("detailed_analysis")
+  alignmentVerdict ManagementTeamAlignmentVerdict @map("alignment_verdict")
+  tickerId         String                         @map("ticker_id")
+  spaceId          String                         @default("koala_gains") @map("space_id")
+  createdAt        DateTime                       @default(now()) @map("created_at")
+  updatedAt        DateTime                       @updatedAt @map("updated_at")
+  createdBy        String?                        @map("created_by")
+  updatedBy        String?                        @map("updated_by")
 
   ticker TickerV1 @relation(fields: [tickerId], references: [id])
 
@@ -1309,20 +1309,20 @@ model Etf {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  financialInfo EtfFinancialInfo?
+  financialInfo     EtfFinancialInfo?
   stockAnalyzerInfo EtfStockAnalyzerInfo?
-  morAnalyzerInfo EtfMorAnalyzerInfo?
-  morRiskInfo EtfMorRiskInfo?
-  morPeopleInfo EtfMorPeopleInfo?
-  morPortfolioInfo EtfMorPortfolioInfo?
+  morAnalyzerInfo   EtfMorAnalyzerInfo?
+  morRiskInfo       EtfMorRiskInfo?
+  morPeopleInfo     EtfMorPeopleInfo?
+  morPortfolioInfo  EtfMorPortfolioInfo?
 
-  generationRequests          EtfGenerationRequest[]
-  categoryAnalysisResults     EtfCategoryAnalysisResult[]
+  generationRequests            EtfGenerationRequest[]
+  categoryAnalysisResults       EtfCategoryAnalysisResult[]
   analysisCategoryFactorResults EtfAnalysisCategoryFactorResult[]
-  cachedScore                 EtfCachedScore?
-  priceHistory                EtfPriceHistory?
-  similarEtfs                 EtfSimilarEtf[] @relation("EtfSimilarEtfSource")
-  vsCompetition               EtfVsCompetition?
+  cachedScore                   EtfCachedScore?
+  priceHistory                  EtfPriceHistory?
+  similarEtfs                   EtfSimilarEtf[]                   @relation("EtfSimilarEtfSource")
+  vsCompetition                 EtfVsCompetition?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1355,10 +1355,10 @@ model EtfPriceHistory {
 }
 
 model EtfFinancialInfo {
-  id     String @id @default(uuid())
-  etfId  String @unique @map("etf_id")
+  id              String  @id @default(uuid())
+  etfId           String  @unique @map("etf_id")
   // Assets under management; may store raw display text from source (e.g. "$190.08M")
-  aum    String? @map("aum")
+  aum             String? @map("aum")
   // Expense ratio as percent number (e.g. 0.60 for 0.60%)
   expenseRatio    Float?  @map("expense_ratio")
   pe              Float?  @map("pe")
@@ -1393,11 +1393,11 @@ model EtfStockAnalyzerInfo {
   fundName   String? @map("fund_name")
   assetClass String? @map("asset_class")
 
-  stockPrice String? @map("stock_price")
+  stockPrice    String? @map("stock_price")
   // Daily price change (i.e. "Price Change 1D") as displayed by source — kept as a
   percentChange String? @map("percent_change")
 
-  isinNumber String? @map("isin_number")
+  isinNumber  String? @map("isin_number")
   cusipNumber String? @map("cusip_number")
 
   // Moving-average change percentages vs the respective MA level
@@ -1415,13 +1415,13 @@ model EtfStockAnalyzerInfo {
   tags String? @map("tags")
 
   // All-time-low / all-time-high metrics from the screener
-  atlDate String?  @map("atl_date")
+  atlDate       String? @map("atl_date")
   atlChgPercent String? @map("atl_chg_percent")
-  atl Float? @map("atl")
+  atl           Float?  @map("atl")
 
-  athDate String? @map("ath_date")
+  athDate       String? @map("ath_date")
   athChgPercent String? @map("ath_chg_percent")
-  ath Float? @map("ath")
+  ath           Float?  @map("ath")
 
   // 52-week range metrics from the screener (dates + % changes)
   low52wDate  String? @map("low_52w_date")
@@ -1483,46 +1483,46 @@ model EtfStockAnalyzerInfo {
   atr     Float? @map("atr")
   sharpe  Float? @map("sharpe")
 
-  indexName String? @map("index")
+  indexName     String? @map("index")
   priceCurrency String? @map("price_curr")
 
   beta1y Float? @map("beta_1y")
   beta2y Float? @map("beta_2y")
   beta5y Float? @map("beta_5y")
 
-  rsi   Float? @map("rsi")
-  rsiW  Float? @map("rsi_w")
-  rsiM  Float? @map("rsi_m")
+  rsi  Float? @map("rsi")
+  rsiW Float? @map("rsi_w")
+  rsiM Float? @map("rsi_m")
 
   issuer   String? @map("issuer")
   category String? @map("category")
 
-  chgOpenPercent String? @map("chg_open_percent")
+  chgOpenPercent  String? @map("chg_open_percent")
   // Where the current price sits inside the 52-week low–high band, as a percent string
   // (e.g. "79.41%"). 0% = at 52w low, 100% = at 52w high.
   positionInRange String? @map("position_in_range")
-  open Float? @map("open")
-  low  Float? @map("low")
-  high Float? @map("high")
-  prevClose Float? @map("prev_close")
-  priceDate String? @map("price_date")
+  open            Float?  @map("open")
+  low             Float?  @map("low")
+  high            Float?  @map("high")
+  prevClose       Float?  @map("prev_close")
+  priceDate       String? @map("price_date")
 
-  premarketPrice Float? @map("premarket_price")
+  premarketPrice      Float?  @map("premarket_price")
   premarketChgPercent String? @map("premarket_chg_percent")
-  gapPercent String? @map("gap_percent")
+  gapPercent          String? @map("gap_percent")
   // Relative volume vs average volume (as shown by source; often a percent-like string)
-  relVolume String? @map("rel_volume")
-  avgVolume BigInt? @map("avg_volume")
+  relVolume           String? @map("rel_volume")
+  avgVolume           BigInt? @map("avg_volume")
   // Dollar volume from the screener (can be very large)
-  dollarVol BigInt? @map("dollar_vol")
+  dollarVol           BigInt? @map("dollar_vol")
 
   // After-hours metrics from the screener (when available)
-  afterhrClose Float? @map("afterhr_close")
+  afterhrClose      Float?  @map("afterhr_close")
   afterhrChgPercent String? @map("afterhr_chg_percent")
-  afterhrPrice Float? @map("afterhr_price")
+  afterhrPrice      Float?  @map("afterhr_price")
 
-  preVolume BigInt? @map("pre_volume")
-  premarketClose Float? @map("premarket_close")
+  preVolume      BigInt? @map("pre_volume")
+  premarketClose Float?  @map("premarket_close")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -1579,9 +1579,9 @@ model EtfMorAnalyzerInfo {
   holdings Json? @map("holdings") @db.JsonB
 
   // Strategy text (kept separately for easier full-text search)
-  strategyText String? @map("strategy_text")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  strategyText String?  @map("strategy_text")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
   etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
 
@@ -1633,17 +1633,17 @@ model EtfMorPortfolioInfo {
   etfId String @unique @map("etf_id")
 
   /// [EtfMorPortfolioAssetAllocation]
-  assetAllocation Json? @map("asset_allocation") @db.JsonB
+  assetAllocation  Json? @map("asset_allocation") @db.JsonB
   /// [EtfMorPortfolioStyleMeasures]
-  styleMeasures Json? @map("style_measures") @db.JsonB
+  styleMeasures    Json? @map("style_measures") @db.JsonB
   /// [EtfMorPortfolioFixedIncomeStyle]
   fixedIncomeStyle Json? @map("fixed_income_style") @db.JsonB
   /// [EtfMorPortfolioSectorExposure]
-  sectorExposure Json? @map("sector_exposure") @db.JsonB
+  sectorExposure   Json? @map("sector_exposure") @db.JsonB
   /// [EtfMorPortfolioBondBreakdown]
-  bondBreakdown Json? @map("bond_breakdown") @db.JsonB
+  bondBreakdown    Json? @map("bond_breakdown") @db.JsonB
   /// [EtfMorPortfolioHoldings]
-  holdings Json? @map("holdings") @db.JsonB
+  holdings         Json? @map("holdings") @db.JsonB
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -1666,17 +1666,17 @@ enum EtfAnalysisCategory {
 }
 
 model EtfGenerationRequest {
-  id    String @id @default(uuid())
-  etfId String @map("etf_id")
+  id      String @id @default(uuid())
+  etfId   String @map("etf_id")
   spaceId String @default("koala_gains") @map("space_id")
 
-  regeneratePerformanceAndReturns Boolean @default(false) @map("regenerate_performance_and_returns")
-  regenerateCostEfficiencyAndTeam Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
-  regenerateRiskAnalysis          Boolean @default(false) @map("regenerate_risk_analysis")
+  regeneratePerformanceAndReturns    Boolean @default(false) @map("regenerate_performance_and_returns")
+  regenerateCostEfficiencyAndTeam    Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
+  regenerateRiskAnalysis             Boolean @default(false) @map("regenerate_risk_analysis")
   regenerateFuturePerformanceOutlook Boolean @default(false) @map("regenerate_future_performance_outlook")
-  regenerateIndexStrategy         Boolean @default(false) @map("regenerate_index_strategy")
-  regenerateCompetition           Boolean @default(false) @map("regenerate_competition")
-  regenerateFinalSummary          Boolean @default(false) @map("regenerate_final_summary")
+  regenerateIndexStrategy            Boolean @default(false) @map("regenerate_index_strategy")
+  regenerateCompetition              Boolean @default(false) @map("regenerate_competition")
+  regenerateFinalSummary             Boolean @default(false) @map("regenerate_final_summary")
 
   status String @default("NotStarted") @map("status")
 
@@ -1743,9 +1743,9 @@ model EtfCachedScore {
   id    String @id @default(uuid())
   etfId String @map("etf_id")
 
-  performanceAndReturnsScore Int @map("performance_and_returns_score")
-  costEfficiencyAndTeamScore Int @map("cost_efficiency_and_team_score")
-  riskAnalysisScore          Int @map("risk_analysis_score")
+  performanceAndReturnsScore    Int  @map("performance_and_returns_score")
+  costEfficiencyAndTeamScore    Int  @map("cost_efficiency_and_team_score")
+  riskAnalysisScore             Int  @map("risk_analysis_score")
   futurePerformanceOutlookScore Int? @map("future_performance_outlook_score")
 
   finalScore Int @map("final_score")
@@ -1819,35 +1819,35 @@ model EtfSimilarEtf {
 // values can be added without a migration.
 
 model EtfScenario {
-  id                             String   @id @default(uuid())
-  scenarioNumber                 Int      @map("scenario_number")
-  title                          String   @map("title")
-  slug                           String   @map("slug")
+  id                              String   @id @default(uuid())
+  scenarioNumber                  Int      @map("scenario_number")
+  title                           String   @map("title")
+  slug                            String   @map("slug")
   // 4–5 paragraph narrative covering cause, historical analog, and dated
   // outlook in one field. Replaces the legacy underlyingCause/historicalAnalog/
   // outlookMarkdown trio; those columns remain nullable for one release cycle.
-  summary                        String   @map("summary") @db.Text
-  underlyingCause                String?  @map("underlying_cause") @db.Text
-  historicalAnalog               String?  @map("historical_analog") @db.Text
-  outlookMarkdown                String?  @map("outlook_markdown") @db.Text
-  detailedAnalysis               String?  @map("detailed_analysis") @db.Text
-  direction                      String   @default("DOWNSIDE") @map("direction")
-  timeframe                      String   @default("FUTURE") @map("timeframe")
-  probabilityBucket              String   @default("MEDIUM") @map("probability_bucket")
-  probabilityPercentage          Int?     @map("probability_percentage")
-  pricedInBucket                 String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
-  expectedPriceChange            Int?     @map("expected_price_change")
-  expectedPriceChangeExplanation String?  @map("expected_price_change_explanation") @db.Text
-  priceChangeTimeframeExplanation String? @map("price_change_timeframe_explanation") @db.Text
-  outlookAsOfDate                DateTime @map("outlook_as_of_date") @db.Date
-  metaDescription                String?  @map("meta_description") @db.Text
-  archived                       Boolean  @default(false) @map("archived")
-  countries                      String[] @default(["US"]) @map("countries")
-  spaceId                        String   @default("koala_gains") @map("space_id")
-  createdAt                      DateTime @default(now()) @map("created_at")
-  updatedAt                      DateTime @updatedAt @map("updated_at")
+  summary                         String   @map("summary") @db.Text
+  underlyingCause                 String?  @map("underlying_cause") @db.Text
+  historicalAnalog                String?  @map("historical_analog") @db.Text
+  outlookMarkdown                 String?  @map("outlook_markdown") @db.Text
+  detailedAnalysis                String?  @map("detailed_analysis") @db.Text
+  direction                       String   @default("DOWNSIDE") @map("direction")
+  timeframe                       String   @default("FUTURE") @map("timeframe")
+  probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")
+  probabilityPercentage           Int?     @map("probability_percentage")
+  pricedInBucket                  String   @default("PARTIALLY_PRICED_IN") @map("priced_in_bucket")
+  expectedPriceChange             Int?     @map("expected_price_change")
+  expectedPriceChangeExplanation  String?  @map("expected_price_change_explanation") @db.Text
+  priceChangeTimeframeExplanation String?  @map("price_change_timeframe_explanation") @db.Text
+  outlookAsOfDate                 DateTime @map("outlook_as_of_date") @db.Date
+  metaDescription                 String?  @map("meta_description") @db.Text
+  archived                        Boolean  @default(false) @map("archived")
+  countries                       String[] @default(["US"]) @map("countries")
+  spaceId                         String   @default("koala_gains") @map("space_id")
+  createdAt                       DateTime @default(now()) @map("created_at")
+  updatedAt                       DateTime @updatedAt @map("updated_at")
 
-  etfLinks              EtfScenarioEtfLink[]
+  etfLinks EtfScenarioEtfLink[]
 
   @@unique([spaceId, scenarioNumber])
   @@unique([spaceId, slug])
@@ -1874,7 +1874,7 @@ model EtfScenarioEtfLink {
   createdAt                      DateTime @default(now()) @map("created_at")
   updatedAt                      DateTime @updatedAt @map("updated_at")
 
-  scenario    EtfScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  scenario EtfScenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
 
   @@unique([scenarioId, symbol, role])
   @@index([scenarioId])
@@ -1889,27 +1889,27 @@ model EtfScenarioEtfLink {
 // on multiple exchanges (dual listings, ADRs), so the link uniqueness key
 // includes `exchange`.
 model StockScenario {
-  id                              String   @id @default(uuid())
-  scenarioNumber                  Int      @map("scenario_number")
-  title                           String   @map("title")
-  slug                            String   @map("slug")
+  id                    String   @id @default(uuid())
+  scenarioNumber        Int      @map("scenario_number")
+  title                 String   @map("title")
+  slug                  String   @map("slug")
   // See note on EtfScenario.summary — same semantics here.
-  summary                         String   @map("summary") @db.Text
-  underlyingCause                 String?  @map("underlying_cause") @db.Text
-  historicalAnalog                String?  @map("historical_analog") @db.Text
-  outlookMarkdown                 String?  @map("outlook_markdown") @db.Text
-  detailedAnalysis                String?  @map("detailed_analysis") @db.Text
-  direction                       String   @default("DOWNSIDE") @map("direction")
-  timeframe                       String   @default("FUTURE") @map("timeframe")
-  probabilityBucket               String   @default("MEDIUM") @map("probability_bucket")
-  probabilityPercentage           Int?     @map("probability_percentage")
-  countries                       String[] @map("countries")
-  outlookAsOfDate                 DateTime @map("outlook_as_of_date") @db.Date
-  metaDescription                 String?  @map("meta_description") @db.Text
-  archived                        Boolean  @default(false) @map("archived")
-  spaceId                         String   @default("koala_gains") @map("space_id")
-  createdAt                       DateTime @default(now()) @map("created_at")
-  updatedAt                       DateTime @updatedAt @map("updated_at")
+  summary               String   @map("summary") @db.Text
+  underlyingCause       String?  @map("underlying_cause") @db.Text
+  historicalAnalog      String?  @map("historical_analog") @db.Text
+  outlookMarkdown       String?  @map("outlook_markdown") @db.Text
+  detailedAnalysis      String?  @map("detailed_analysis") @db.Text
+  direction             String   @default("DOWNSIDE") @map("direction")
+  timeframe             String   @default("FUTURE") @map("timeframe")
+  probabilityBucket     String   @default("MEDIUM") @map("probability_bucket")
+  probabilityPercentage Int?     @map("probability_percentage")
+  countries             String[] @map("countries")
+  outlookAsOfDate       DateTime @map("outlook_as_of_date") @db.Date
+  metaDescription       String?  @map("meta_description") @db.Text
+  archived              Boolean  @default(false) @map("archived")
+  spaceId               String   @default("koala_gains") @map("space_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
 
   stockLinks StockScenarioStockLink[]
 
@@ -1987,7 +1987,7 @@ model StockScenarioStockLink {
 // title and the listing page can rely on `number` for canonical ordering
 // instead of inferring it from the lowest chapter number.
 model TariffSection {
-  id String @id @default(uuid())
+  id           String  @id @default(uuid())
   // Arabic section number 1..22. Unique within a space.
   number       Int     @map("number")
   // Roman-numeral form ("I".."XXII"). Stored alongside `number` because
@@ -2015,12 +2015,12 @@ model TariffSection {
 // fills `number`, `title`, and `sectionId`; the long-form note bodies and
 // the per-row HTS codes are added by the CSV ingest script later.
 model TariffChapter {
-  id     String @id @default(uuid())
+  id                String  @id @default(uuid())
   // Two-digit chapter number (1..99). Unique within a space.
-  number Int    @map("number")
+  number            Int     @map("number")
   // Chapter title from the HTSUS, e.g. "Live Animals" or "Articles of
   // apparel and clothing accessories, knitted or crocheted".
-  title  String @map("title") @db.Text
+  title             String  @map("title") @db.Text
   // Chapter-level "Note" text from the HTSUS PDF (definitions and
   // exclusions that apply to the whole chapter). Optional — backfilled
   // later from the PDF; the CSV doesn't carry it.
@@ -2038,11 +2038,11 @@ model TariffChapter {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  reports TariffChapterReport[]
+
   @@unique([spaceId, number])
   @@index([sectionId])
   @@map("tariff_chapters")
-
-  reports TariffChapterReport[]
 }
 
 // Long-form, reader-facing tariff report attached to an HTS chapter. Each
@@ -2071,11 +2071,13 @@ model TariffChapterReport {
   // Section bodies. Each is a typed JSON object — see tariff-types.ts for the
   // shapes (ReportCover, IndustryTariffsForCountry[], UnderstandIndustry, etc.).
   // Optional: chapters without seeded content carry only the slug.
-  introduction       Json? @map("introduction")
-  tariffUpdates      Json? @map("tariff_updates")
-  understandIndustry Json? @map("understand_industry")
-  industryAreas      Json? @map("industry_areas")
-  conclusion         Json? @map("conclusion")
+  introduction          Json? @map("introduction")
+  executiveSummary      Json? @map("executive_summary")
+  tariffUpdates         Json? @map("tariff_updates")
+  understandIndustry    Json? @map("understand_industry")
+  industryAreas         Json? @map("industry_areas")
+  industryAreasSections Json? @map("industry_areas_sections")
+  conclusion            Json? @map("conclusion")
 
   // Per-section SEO metadata in one JSON blob (mirrors the legacy S3
   // `08-seo-details/seo-details.json` shape — `TariffReportSeoDetails`
@@ -2099,17 +2101,17 @@ model TariffChapterReport {
 // intermediate heading/group rows that have only an indent — so htsNumber
 // is nullable. The CSV's nested headings are preserved via parentId.
 model HtsCode {
-  id        String  @id @default(uuid())
+  id                String   @id @default(uuid())
   // 4/6/8/10-digit code with dots, e.g. "0101.21.00.10". Null for header
   // rows that exist only to group the rows below them.
-  htsNumber String? @map("hts_number")
+  htsNumber         String?  @map("hts_number")
   // 10-digit form with no separators ("0101210010"). Set for leaf rows
   // that have a full 10-digit code; useful as a stable join key for any
   // future per-line data we ingest from upstream APIs.
-  htsCode10 String? @map("hts_code_10")
+  htsCode10         String?  @map("hts_code_10")
   // CSV "Indent" column: 0..6. Drives display indentation in the viewer.
-  indent      Int    @map("indent")
-  description String @map("description") @db.Text
+  indent            Int      @map("indent")
+  description       String   @map("description") @db.Text
   // CSV "Unit of Quantity" cell is itself a JSON-encoded array
   // (e.g. ["No.","kg"]); decoded into a string array on ingest.
   unitOfQuantity    String[] @default([]) @map("unit_of_quantity")
@@ -2225,7 +2227,7 @@ model TariffCandidateCode {
   // Numeric HTSUS code (no separators). For COMMODITY_CODE this matches an
   // HtsCode.htsCode10; for SPECIAL_CODE this is typically a Chapter 99
   // sub-heading like "99030101".
-  code String @map("code")
+  code    String  @map("code")
   // Sub-letter ("a", "b", "c") used by the upstream feed when a single
   // chapter-99 code has multiple variants (different effective windows /
   // rate stacks). Null for COMMODITY_CODE rows.
