@@ -1,6 +1,5 @@
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import fs from 'fs';
-import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
 import { readLastModifiedDatesFromS3, writeLastModifiedDatesToS3 } from './industry-tariff-reports/tariff-report-read-write';
 import { TariffIndustryId } from './industry-tariff-reports/tariff-industries';
 
@@ -46,8 +45,11 @@ export async function uploadJsonTariffFileToS3(data: Uint8Array, key: string, in
   await writeLastModifiedDatesToS3(existingLastModifiedDates);
   console.log(`Updated centralized last modified dates for ${industry}`);
 
-  // Revalidate cache for this industry
+  // Revalidate cache for this industry. Imported lazily so plain Node CLI
+  // scripts (e.g. seeders that only read) don't transitively pull in
+  // `server-only` / `next/cache`.
   console.log(`Revalidating cache for industry: ${industry}`);
+  const { revalidateTariffReport } = await import('@/utils/tariff-report-cache-utils');
   revalidateTariffReport(industry);
 
   return `https://${BUCKET_NAME}.s3.${REGION}.amazonaws.com/${key}`;
