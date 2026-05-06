@@ -64,9 +64,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
 
       <div className="space-y-4">
         {/* Country Navigation */}
-        {report.tariffUpdates && report.tariffUpdates.countryNames && (
-          <CountryNavigation countries={report.tariffUpdates.countryNames} industryId={industryId} />
-        )}
+        {report.tariffUpdates && report.tariffUpdates.countryNames && <CountryNavigation countries={report.tariffUpdates.countryNames} />}
 
         {report.tariffUpdates ? (
           report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
