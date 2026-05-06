@@ -1,18 +1,18 @@
-import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
-  readExecutiveSummaryFromFile,
-  readFinalConclusionFromFile,
-  readIndustryAreaSectionFromFile,
-  readReportCoverFromFile,
-  readTariffUpdatesFromFile,
-  readUnderstandIndustryJsonFromFile,
-  writeJsonFileForIndustryAreaSections,
-  writeJsonFileForIndustryTariffs,
-  writeJsonFileForUnderstandIndustry,
-  writeJsonFileForExecutiveSummary,
-  writeJsonFileForFinalConclusion,
-  writeJsonFileForReportCover,
-} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+  findReportSlugByOldUrl,
+  readExecutiveSummary,
+  readFinalConclusion,
+  readIndustryAreaSection,
+  readReportCover,
+  readTariffUpdates,
+  readUnderstandIndustry,
+  writeExecutiveSummary,
+  writeFinalConclusion,
+  writeIndustryAreaSection,
+  writeReportCover,
+  writeTariffUpdates,
+  writeUnderstandIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -21,62 +21,40 @@ interface SaveMarkdownRequest {
   content: string;
 }
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<{ success: boolean; message: string }> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<{ success: boolean; message: string }> {
   const { industry } = await params;
   const body: SaveMarkdownRequest = await req.json();
   const { section, content } = body;
 
-  if (!industry) {
-    throw new Error('Industry is required');
-  }
+  if (!industry) throw new Error('Industry is required');
+  if (!section || !content) throw new Error('Section and content are required');
 
-  if (!section || !content) {
-    throw new Error('Section and content are required');
-  }
+  const slug = await findReportSlugByOldUrl(industry);
 
   switch (section) {
     case 'executive-summary': {
-      const existingData = await readExecutiveSummaryFromFile(industry);
-      if (!existingData) {
-        throw new Error('Executive summary data not found');
-      }
-
-      const updatedData = {
-        ...existingData,
-        executiveSummary: content,
-      };
-
-      await writeJsonFileForExecutiveSummary(industry, updatedData);
+      const existingData = await readExecutiveSummary(slug);
+      if (!existingData) throw new Error('Executive summary data not found');
+      await writeExecutiveSummary(slug, { ...existingData, executiveSummary: content });
       break;
     }
 
     case 'report-cover': {
-      const existingData = await readReportCoverFromFile(industry);
-      if (!existingData) {
-        throw new Error('Report cover data not found');
-      }
-
-      const updatedData = {
-        ...existingData,
-        reportCoverContent: content,
-      };
-
-      await writeJsonFileForReportCover(industry, updatedData);
+      const existingData = await readReportCover(slug);
+      if (!existingData) throw new Error('Report cover data not found');
+      await writeReportCover(slug, { ...existingData, reportCoverContent: content });
       break;
     }
 
     case 'understand-industry': {
-      const existingData = await readUnderstandIndustryJsonFromFile(industry);
-      if (!existingData) {
-        throw new Error('Understand industry data not found');
-      }
+      const existingData = await readUnderstandIndustry(slug);
+      if (!existingData) throw new Error('Understand industry data not found');
 
-      // Parse markdown content back to sections
       const sections = content
         .split(/^## /gm)
-        .filter((section) => section.trim())
-        .map((section) => {
-          const lines = section.trim().split('\n');
+        .filter((sec) => sec.trim())
+        .map((sec) => {
+          const lines = sec.trim().split('\n');
           const title = lines[0].trim();
           const paragraphs = lines
             .slice(1)
@@ -84,29 +62,17 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
             .split('\n\n')
             .filter((p) => p.trim())
             .map((p) => p.trim());
-
-          return {
-            title,
-            paragraphs,
-          };
+          return { title, paragraphs };
         });
 
-      const updatedData = {
-        ...existingData,
-        sections,
-      };
-
-      await writeJsonFileForUnderstandIndustry(industry, updatedData);
+      await writeUnderstandIndustry(slug, { ...existingData, sections });
       break;
     }
 
     case 'tariff-updates': {
-      const existingData = await readTariffUpdatesFromFile(industry);
-      if (!existingData) {
-        throw new Error('Tariff updates data not found');
-      }
+      const existingData = await readTariffUpdates(slug);
+      if (!existingData) throw new Error('Tariff updates data not found');
 
-      // Parse markdown content back to country-specific tariffs
       const countryBlocks = content.split(/^---$/gm).filter((block) => block.trim());
 
       const countrySpecificTariffs = countryBlocks.map((block) => {
@@ -114,13 +80,10 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         const countryNameLine = lines.find((line) => line.startsWith('# '));
         const countryName = countryNameLine ? countryNameLine.replace('# ', '').trim() : '';
 
-        // Extract sections
         const extractSection = (startMarker: string, endMarker?: string) => {
           const startIndex = lines.findIndex((line) => line.startsWith(startMarker));
           if (startIndex === -1) return '';
-
           const endIndex = endMarker ? lines.findIndex((line, idx) => idx > startIndex && line.startsWith(endMarker)) : lines.length;
-
           return lines
             .slice(startIndex + 1, endIndex === -1 ? lines.length : endIndex)
             .filter((line) => line.trim())
@@ -128,16 +91,12 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
             .trim();
         };
 
-        // Extract industry sub-area changes
         const extractIndustrySubAreaChanges = (): string[] => {
           const sectionContent = extractSection('## Industry Sub-Area Changes', '## Trade Impacted');
           if (!sectionContent) return [];
-
-          // Split by double newlines and preserve spacing (don't filter empty items)
           return sectionContent.split('\n\n').map((item) => item.trim());
         };
 
-        // Determine the correct end markers based on whether Industry Sub-Area Changes section exists
         const hasIndustrySubArea = lines.some((line) => line.startsWith('## Industry Sub-Area Changes'));
         const newChangesEndMarker = hasIndustrySubArea ? '## Industry Sub-Area Changes' : '## Trade Impacted';
 
@@ -152,22 +111,14 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
         };
       });
 
-      const updatedData = {
-        ...existingData,
-        countrySpecificTariffs,
-      };
-
-      await writeJsonFileForIndustryTariffs(industry, updatedData);
+      await writeTariffUpdates(slug, { ...existingData, countrySpecificTariffs });
       break;
     }
 
     case 'industry-areas': {
-      const existingData = await readIndustryAreaSectionFromFile(industry);
-      if (!existingData) {
-        throw new Error('Industry areas data not found');
-      }
+      const existingData = await readIndustryAreaSection(slug);
+      if (!existingData) throw new Error('Industry areas data not found');
 
-      // Parse markdown content back to structured data
       const lines = content.split('\n');
       const title =
         lines
@@ -175,43 +126,30 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
           ?.replace('# ', '')
           .trim() || existingData.title;
 
-      // Extract content (everything after the title, preserving paragraph structure)
       const titleIndex = lines.findIndex((line) => line.startsWith('# '));
       const contentLines = lines.slice(titleIndex + 1);
 
-      // Remove leading empty lines but preserve internal paragraph spacing
       let startIndex = 0;
       while (startIndex < contentLines.length && !contentLines[startIndex].trim()) {
         startIndex++;
       }
 
-      const industryAreas = contentLines.slice(startIndex).join('\n').trimEnd(); // Only trim trailing whitespace, not leading/internal
+      const industryAreas = contentLines.slice(startIndex).join('\n').trimEnd();
 
-      const updatedData = {
-        title,
-        industryAreas,
-      };
-
-      await writeJsonFileForIndustryAreaSections(industry, updatedData);
+      await writeIndustryAreaSection(slug, { title, industryAreas });
       break;
     }
 
     case 'final-conclusion': {
-      const existingData = await readFinalConclusionFromFile(industry);
-      if (!existingData) {
-        throw new Error('Final conclusion data not found');
-      }
+      const existingData = await readFinalConclusion(slug);
+      if (!existingData) throw new Error('Final conclusion data not found');
 
-      // Parse markdown content back to structured data
       const lines = content.split('\n');
 
       const extractSection = (startMarker: string) => {
         const startIndex = lines.findIndex((line) => line.startsWith(startMarker));
         if (startIndex === -1) return '';
-
-        // Find the next section header (##) after this one
         const endIndex = lines.findIndex((line, idx) => idx > startIndex && line.startsWith('## '));
-
         return lines
           .slice(startIndex + 1, endIndex === -1 ? lines.length : endIndex)
           .filter((line) => line.trim() && !line.startsWith('#'))
@@ -219,7 +157,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
           .trim();
       };
 
-      // Find all section headers
       const sectionHeaders = lines
         .map((line, index) => ({ line, index }))
         .filter(({ line }) => line.startsWith('## '))
@@ -229,43 +166,31 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
           index,
         }));
 
-      // Extract conclusion section title and brief (first ## section after main title)
       const conclusionSection = sectionHeaders.find(
-        (section) => section.title.toLowerCase().includes('conclusion') || section.index === lines.findIndex((line) => line.startsWith('## '))
+        (sec) => sec.title.toLowerCase().includes('conclusion') || sec.index === lines.findIndex((line) => line.startsWith('## '))
       );
       const title = conclusionSection ? conclusionSection.title : existingData.title;
       const conclusionBrief = conclusionSection ? extractSection(conclusionSection.fullLine) : '';
 
-      // Extract positive impacts
-      const positiveSection = sectionHeaders.find((section) => section.title.toLowerCase().includes('positive'));
+      const positiveSection = sectionHeaders.find((sec) => sec.title.toLowerCase().includes('positive'));
       const positiveImpactsTitle = positiveSection ? positiveSection.title : existingData.positiveImpacts.title;
       const positiveImpacts = positiveSection ? extractSection(positiveSection.fullLine) : '';
 
-      // Extract negative impacts
-      const negativeSection = sectionHeaders.find((section) => section.title.toLowerCase().includes('negative'));
+      const negativeSection = sectionHeaders.find((sec) => sec.title.toLowerCase().includes('negative'));
       const negativeImpactsTitle = negativeSection ? negativeSection.title : existingData.negativeImpacts.title;
       const negativeImpacts = negativeSection ? extractSection(negativeSection.fullLine) : '';
 
-      // Extract final statements
-      const finalStatementsSection = sectionHeaders.find((section) => section.title.toLowerCase().includes('final statement'));
+      const finalStatementsSection = sectionHeaders.find((sec) => sec.title.toLowerCase().includes('final statement'));
       const finalStatements = finalStatementsSection ? extractSection(finalStatementsSection.fullLine) : '';
 
-      const updatedData = {
+      await writeFinalConclusion(slug, {
         ...existingData,
         title,
         conclusionBrief,
-        positiveImpacts: {
-          title: positiveImpactsTitle,
-          positiveImpacts,
-        },
-        negativeImpacts: {
-          title: negativeImpactsTitle,
-          negativeImpacts,
-        },
+        positiveImpacts: { title: positiveImpactsTitle, positiveImpacts },
+        negativeImpacts: { title: negativeImpactsTitle, negativeImpacts },
         finalStatements,
-      };
-
-      await writeJsonFileForFinalConclusion(industry, updatedData);
+      });
       break;
     }
 
@@ -273,10 +198,7 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       throw new Error(`Unknown section: ${section}`);
   }
 
-  return {
-    success: true,
-    message: `${section} content updated successfully`,
-  };
+  return { success: true, message: `${section} content updated successfully` };
 }
 
 export const POST = withErrorHandlingV2<{ success: boolean; message: string }>(postHandler);

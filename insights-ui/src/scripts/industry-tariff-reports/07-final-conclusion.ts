@@ -1,14 +1,12 @@
-import { writeJsonFileForFinalConclusion } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
 import {
-  FinalConclusion,
-  IndustryAreasWrapper,
-  NegativeTariffImpactOnCompanyType,
-  PositiveTariffImpactOnCompanyType,
-  TariffUpdatesForIndustry,
-} from '@/scripts/industry-tariff-reports/tariff-types';
+  getIndustryPromptContext,
+  readIndustryHeadings,
+  readTariffUpdates,
+  writeFinalConclusion,
+} from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import { FinalConclusion } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific industry.'),
@@ -50,82 +48,45 @@ const FinalConclusionSchema = z.object({
   finalStatements: z.string().describe('Final statements of the report.'),
 });
 
-function getFinalConclusionPrompt(
-  industry: TariffIndustryId,
-  headings: IndustryAreasWrapper,
-  tariffUpdates: TariffUpdatesForIndustry,
-  tariffSummaries: string[],
-  positiveImpacts: PositiveTariffImpactOnCompanyType[],
-  negativeImpacts: NegativeTariffImpactOnCompanyType[]
-): string {
-  const definition = getTariffIndustryDefinitionById(industry);
-  return `Write a final conclusion section for the ${
-    definition.name
-  } industry. The conclusion should be 4-6 paragraphs long and should follow the following rules: 
-  1. The conclusion should be concise and to the point, avoiding unnecessary details or jargon. 
+export async function getFinalConclusionAndSaveToFile(slug: string): Promise<void> {
+  const ctx = await getIndustryPromptContext(slug);
+  const headings = await readIndustryHeadings(slug);
+  if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
+  const tariffUpdates = await readTariffUpdates(slug);
+  if (!tariffUpdates) throw new Error(`Tariff updates not found for slug "${slug}"`);
+
+  const prompt = `Write a final conclusion section for the ${
+    ctx.industryName
+  } industry. The conclusion should be 4-6 paragraphs long and should follow the following rules:
+  1. The conclusion should be concise and to the point, avoiding unnecessary details or jargon.
   2. This is the conclusion, so there should be no introduction as this is the last sections of the report.
   3. Make sure to include the concrete company names and the company types and the reasoning.
-  4. The conclusion section should be specific to the ${definition.name} industry but mentions that
-     - In this full report, we will discuss the latest tariff updates and their impact on the ${definition.name} industry.
-     - The report assumes that the reader is not familiar with the ${definition.name} industry hence we first start with the 
+  4. The conclusion section should be specific to the ${ctx.industryName} industry but mentions that
+     - In this full report, we will discuss the latest tariff updates and their impact on the ${ctx.industryName} industry.
+     - The report assumes that the reader is not familiar with the ${ctx.industryName} industry hence we first start with the
         introduction of the industry.
      - We then try to understand the industry in detail by dividing the industry into few areas.
      - For each of these areas, we learn what exactly is the area, what the established companies, what are the new companies
      and what are the latest tariff updates, and how these updates impact the given area.
      - For each of these areas we also create a final summary.
-     - I will provide you the final summaries so that you know what will be discussed, but don't take any insights from them
-     in this sections, as this is the executive summary(introduction) section.
-  
+
 
    Conclusion should include the following fields:
     - Title
     - Conclusion brief a string which is a brief conclusion of the report.
-    - Positive impacts a string which is a summary of all the area specific summaries which tell about positive impacts of new tariffs on the industry. 
-    - Negative impacts a string which is a summary of all the area specific summaries which tell about negative impacts of new tariffs on the industry. 
+    - Positive impacts a string which is a summary of all the area specific summaries which tell about positive impacts of new tariffs on the industry.
+    - Negative impacts a string which is a summary of all the area specific summaries which tell about negative impacts of new tariffs on the industry.
     - Final statements a string which is a final statement of the report.
 
     ${outputInstructions}
-    
+
    # Industry Areas
    ${JSON.stringify(headings, null, 2)}
-   
+
     # Tariff Updates
     ${JSON.stringify(tariffUpdates, null, 2)}
-    
-    # Positive Impacts
-    ${JSON.stringify(positiveImpacts, null, 2)}
-    
-    # Negative Impacts
-    ${JSON.stringify(negativeImpacts, null, 2)}
-    
-    # Final Summaries
-    ${JSON.stringify(tariffSummaries, null, 2)}
    `;
-}
 
-async function getFinalConclusion(
-  industry: TariffIndustryId,
-  headings: IndustryAreasWrapper,
-  tariffUpdates: TariffUpdatesForIndustry,
-  tariffSummaries: string[],
-  positiveImpacts: PositiveTariffImpactOnCompanyType[],
-  negativeImpacts: NegativeTariffImpactOnCompanyType[]
-): Promise<FinalConclusion> {
-  const prompt = getFinalConclusionPrompt(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-  const response = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
-  return response;
-}
-
-export async function getFinalConclusionAndSaveToFile(
-  industry: TariffIndustryId,
-  headings: IndustryAreasWrapper,
-  tariffUpdates: TariffUpdatesForIndustry,
-  tariffSummaries: string[],
-  positiveImpacts: PositiveTariffImpactOnCompanyType[],
-  negativeImpacts: NegativeTariffImpactOnCompanyType[]
-) {
-  const finalConclusion = await getFinalConclusion(industry, headings, tariffUpdates, tariffSummaries, positiveImpacts, negativeImpacts);
-
-  // Upload JSON to S3
-  await writeJsonFileForFinalConclusion(industry, finalConclusion);
+  const finalConclusion = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
+  await writeFinalConclusion(slug, finalConclusion);
 }

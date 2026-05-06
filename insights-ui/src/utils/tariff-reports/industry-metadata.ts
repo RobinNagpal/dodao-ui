@@ -40,7 +40,7 @@ function buildMetadata({ title, description, canonicalUrl, keywords }: MetadataI
   };
 }
 
-type SeoSectionKey = Exclude<keyof TariffReportSeoDetails, 'evaluateIndustryAreasSeoDetails'>;
+type SeoSectionKey = keyof TariffReportSeoDetails;
 
 interface SectionConfig {
   seoKey: SeoSectionKey;

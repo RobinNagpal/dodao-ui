@@ -1,8 +1,7 @@
-import { writeJsonFileForUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { IndustryAreasWrapper, UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getIndustryPromptContext, readIndustryHeadings, writeUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import { UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
-import { getTariffIndustryDefinitionById, TariffIndustryId } from './tariff-industries';
 
 const IndustrySectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -29,10 +28,13 @@ const UnderstandIndustrySchema = z.object({
     ),
 });
 
-function getUnderstandIndustryPrompt(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
-  const definition = getTariffIndustryDefinitionById(industry);
+export async function getAndWriteUnderstandIndustryJson(slug: string): Promise<void> {
+  const ctx = await getIndustryPromptContext(slug);
+  const headings = await readIndustryHeadings(slug);
+  if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
+
   const prompt = `
-I want to understand the ${definition.name} industry in depth. Give me a very detailed article with:
+I want to understand the ${ctx.industryName} industry in depth. Give me a very detailed article with:
 - Exactly **6 Headings** and **2–3 small paragraphs** under each heading
 - Share as many facts as possible (volumes, amounts, dollar values)
 - Add hyperlinks for definitions and key numbers throughout
@@ -92,7 +94,7 @@ I want to understand the ${definition.name} industry in depth. Give me a very de
   - Cite the latest figures and embed hyperlinks to sources.
   - Include hyperlinks/citations in the content where ever possible in the markdown format.
   - Dont forget to include hyperlinks/citations in the content where ever possible.
-  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
+  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
   - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
   - Use markdown format for output.
   - All amounts, dollar values, or figures should be wrapped in backticks.
@@ -104,17 +106,9 @@ ${JSON.stringify(headings, null, 2)}
 
 `;
 
-  return prompt;
-}
-
-export async function getUnderstandIndustry(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
   console.log('Invoking LLM for understanding industry');
-  return await getLlmResponse<UnderstandIndustry>(getUnderstandIndustryPrompt(industry, headings), UnderstandIndustrySchema);
-}
-
-export async function getAndWriteUnderstandIndustryJson(industry: TariffIndustryId, headings: IndustryAreasWrapper) {
-  const understandIndustry = await getUnderstandIndustry(industry, headings);
+  const understandIndustry = await getLlmResponse<UnderstandIndustry>(prompt, UnderstandIndustrySchema);
   console.log('Understand Industry:', understandIndustry);
 
-  await writeJsonFileForUnderstandIndustry(industry, understandIndustry);
+  await writeUnderstandIndustry(slug, understandIndustry);
 }

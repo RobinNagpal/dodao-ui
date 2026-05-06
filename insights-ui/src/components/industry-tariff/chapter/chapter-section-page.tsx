@@ -20,10 +20,7 @@ const SECTION_SEO_KEY: Record<string, keyof TariffReportSeoDetails> = {
 function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionSlug: string): PageSeoDetails | undefined {
   const key = SECTION_SEO_KEY[sectionSlug];
   if (!key || !seo) return undefined;
-  const value = seo[key];
-  // evaluateIndustryAreasSeoDetails is a Record, not PageSeoDetails — exclude it.
-  if (!value || typeof value !== 'object' || !('title' in value)) return undefined;
-  return value as PageSeoDetails;
+  return seo[key];
 }
 
 export async function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Promise<Metadata> {
