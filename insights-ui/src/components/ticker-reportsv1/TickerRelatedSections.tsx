@@ -99,9 +99,12 @@ export default function TickerRelatedSections({
         {others.map((s) => {
           const href = s.slug ? `/stocks/${ex}/${tk}/${s.slug}` : `/stocks/${ex}/${tk}`;
           return (
-            <li key={s.slug || 'root'}>
-              <Link href={href} className="block rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors">
-                {companyName} ({tk}) {s.label} →
+            <li key={s.slug || 'root'} className="h-full">
+              <Link
+                href={href}
+                className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+              >
+                {companyName} ({tk}) {s.label} &rarr;
               </Link>
             </li>
           );
