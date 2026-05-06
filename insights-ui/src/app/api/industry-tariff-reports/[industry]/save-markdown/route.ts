@@ -6,14 +6,9 @@ import {
   readReportCoverFromFile,
   readTariffUpdatesFromFile,
   readUnderstandIndustryJsonFromFile,
-  readIndustryHeadingsFromFile,
-  readEvaluateSubIndustryAreaJsonFromFile,
-  readAllCountriesTariffUpdatesFromFile,
   writeJsonFileForIndustryAreaSections,
   writeJsonFileForIndustryTariffs,
   writeJsonFileForUnderstandIndustry,
-  writeJsonFileForEvaluateSubIndustryArea,
-  writeJsonFileForAllCountriesTariffUpdates,
   writeJsonFileForExecutiveSummary,
   writeJsonFileForFinalConclusion,
   writeJsonFileForReportCover,
@@ -274,74 +269,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
       break;
     }
 
-    case 'all-countries-tariff-updates': {
-      const existingData = await readAllCountriesTariffUpdatesFromFile(industry);
-      if (!existingData) {
-        throw new Error('All countries tariff updates data not found');
-      }
-
-      const updatedData = {
-        ...existingData,
-        tariffUpdates: content,
-      };
-
-      await writeJsonFileForAllCountriesTariffUpdates(industry, updatedData);
-      break;
-    }
-
-    case 'evaluate-industry-areas': {
-      const { headingAndSubheadingIndex, sectionType } = body as any;
-
-      if (!headingAndSubheadingIndex || !sectionType) {
-        throw new Error('headingAndSubheadingIndex and sectionType are required for evaluate-industry-areas');
-      }
-
-      const [headingString, subHeadingString] = headingAndSubheadingIndex.split('-');
-      const headingIndex = Number.parseInt(headingString, 10);
-      const subHeadingIndex = Number.parseInt(subHeadingString, 10);
-
-      // Get the current data
-      const existingHeadings = await readIndustryHeadingsFromFile(industry);
-      if (!existingHeadings) {
-        throw new Error('Industry headings not found');
-      }
-
-      const area = existingHeadings.areas[headingIndex]?.subAreas[subHeadingIndex];
-      if (!area) {
-        throw new Error('Industry area not found');
-      }
-
-      const existingData = await readEvaluateSubIndustryAreaJsonFromFile(industry, area, existingHeadings);
-      if (!existingData) {
-        throw new Error('Evaluate industry area data not found');
-      }
-
-      // Parse markdown back to JSON based on section type
-      let updatedData = { ...existingData };
-
-      switch (sectionType) {
-        case 'about':
-          updatedData.aboutParagraphs = content;
-          break;
-        case 'headwinds-and-tailwinds':
-          updatedData.headwindsAndTailwinds = parseHeadwindsAndTailwindsFromMarkdown(content);
-          break;
-        case 'tariff-impact-by-company-type':
-          const { positive, negative } = parseTariffImpactByCompanyTypeFromMarkdown(content);
-          updatedData.positiveTariffImpactOnCompanyType = positive;
-          updatedData.negativeTariffImpactOnCompanyType = negative;
-          break;
-        case 'tariff-impact-summary':
-          updatedData.tariffImpactSummary = content;
-          break;
-        default:
-          throw new Error(`Unknown sectionType: ${sectionType}`);
-      }
-
-      await writeJsonFileForEvaluateSubIndustryArea(industry, area, existingHeadings, updatedData);
-      break;
-    }
-
     default:
       throw new Error(`Unknown section: ${section}`);
   }
@@ -350,100 +277,6 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ ind
     success: true,
     message: `${section} content updated successfully`,
   };
-}
-
-function parseHeadwindsAndTailwindsFromMarkdown(markdown: string): any {
-  const sections = markdown.split(/### (Headwinds|Tailwinds)/);
-  const headwinds: string[] = [];
-  const tailwinds: string[] = [];
-
-  for (let i = 1; i < sections.length; i += 2) {
-    const sectionType = sections[i];
-    const sectionContent = sections[i + 1];
-
-    if (sectionContent) {
-      // Split by double newlines to get paragraphs, then filter out empty ones
-      const paragraphs = sectionContent
-        .split(/\n\s*\n/)
-        .map((p) => p.trim())
-        .filter((p) => p.length > 0);
-
-      if (sectionType === 'Headwinds') {
-        headwinds.push(...paragraphs);
-      } else if (sectionType === 'Tailwinds') {
-        tailwinds.push(...paragraphs);
-      }
-    }
-  }
-
-  return { headwinds, tailwinds };
-}
-
-function parseTariffImpactByCompanyTypeFromMarkdown(markdown: string): { positive: any[]; negative: any[] } {
-  // Split by the main section headers
-  const sections = markdown.split(/### (Positive Impact|Negative Impact)/);
-  const positive: any[] = [];
-  const negative: any[] = [];
-
-  for (let i = 1; i < sections.length; i += 2) {
-    const sectionType = sections[i].trim();
-    const sectionContent = sections[i + 1];
-
-    if (!sectionContent) continue;
-
-    // Split by company headers (####)
-    const companyBlocks = sectionContent.split(/#### /);
-
-    for (let j = 1; j < companyBlocks.length; j++) {
-      const block = companyBlocks[j].trim();
-      if (!block) continue;
-
-      const lines = block.split('\n');
-      const companyType = lines[0].trim();
-
-      let impact = '';
-      let reasoning = '';
-      let currentField = '';
-
-      for (let k = 1; k < lines.length; k++) {
-        const line = lines[k].trim();
-
-        if (line.startsWith('- Impact:')) {
-          impact = line.replace('- Impact:', '').trim();
-          currentField = 'impact';
-        } else if (line.startsWith('- Reasoning:')) {
-          reasoning = line.replace('- Reasoning:', '').trim();
-          currentField = 'reasoning';
-        } else if (line && currentField) {
-          // Continue multi-line content
-          if (currentField === 'impact') {
-            impact += ' ' + line;
-          } else if (currentField === 'reasoning') {
-            reasoning += ' ' + line;
-          }
-        } else if (!line) {
-          // Empty line resets field
-          currentField = '';
-        }
-      }
-
-      if (companyType && (impact || reasoning)) {
-        const impactObj = {
-          companyType,
-          impact: impact.trim(),
-          reasoning: reasoning.trim(),
-        };
-
-        if (sectionType === 'Positive Impact') {
-          positive.push(impactObj);
-        } else if (sectionType === 'Negative Impact') {
-          negative.push(impactObj);
-        }
-      }
-    }
-  }
-
-  return { positive, negative };
 }
 
 export const POST = withErrorHandlingV2<{ success: boolean; message: string }>(postHandler);
