@@ -27,7 +27,7 @@ function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionS
 }
 
 export async function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Promise<Metadata> {
-  const resolved = resolveChapterRoute(chapterSlug);
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) {
     return { title: 'HTS Chapter Tariff Report' };
   }
@@ -36,8 +36,8 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
     return { title: 'HTS Chapter Tariff Report' };
   }
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.shortName} | KoalaGains`;
-  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.shortName, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
+  const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.title} | KoalaGains`;
+  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
 
   let sectionSeo: PageSeoDetails | undefined;
   try {
@@ -53,7 +53,7 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
   const title = sectionSeo?.title || fallbackTitle;
   const description = sectionSeo?.shortDescription || copy.description;
   const keywords = sectionSeo?.keywords?.length ? sectionSeo.keywords : fallbackKeywords;
-  const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter, sectionSlug)}`;
+  const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter.slug, sectionSlug)}`;
 
   return {
     title,
@@ -71,13 +71,13 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
   };
 }
 
-export function renderChapterSection(chapterSlug: string, sectionSlug: string): JSX.Element {
-  const resolved = resolveChapterRoute(chapterSlug);
+export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) notFound();
   const copy = getChapterSectionCopy(sectionSlug, resolved.chapter);
   if (!copy) notFound();
-  if (resolved.primaryIndustry) {
-    redirect(`/industry-tariff-report/${resolved.primaryIndustry.industryId}/${sectionSlug}`);
+  if (resolved.oldUrl) {
+    redirect(`/industry-tariff-report/${resolved.oldUrl}/${sectionSlug}`);
   }
   return <ChapterPlaceholder chapter={resolved.chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
 }

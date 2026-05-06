@@ -1,20 +1,11 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
-import {
-  getAllChaptersForIndustry,
-  getPrimaryChapterForIndustry,
-  getTariffIndustryDefinitionById,
-  TariffIndustryId,
-} from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
-import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { ChevronRight, Layers } from 'lucide-react';
-import Link from 'next/link';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
@@ -48,12 +39,6 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       countryName: tariff.countryName,
       newChangesFirstSentence: tariff.newChanges,
     })) || [];
-
-  const primaryChapter = getPrimaryChapterForIndustry(definition);
-  const seededChapterNumbers = new Set((await getSeededChapterReports()).map((row) => row.chapterNumber));
-  const relatedChapters = getAllChaptersForIndustry(definition).filter(
-    (chapter) => chapter.number !== primaryChapter?.number && seededChapterNumbers.has(chapter.number)
-  );
 
   return (
     <div className="mx-auto max-w-7xl py-2">
@@ -123,41 +108,6 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
               className="prose max-w-none markdown markdown-body"
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }}
             />
-          )}
-
-        {relatedChapters.length > 0 &&
-          renderSection(
-            'Related HTS Chapters',
-            <div>
-              <p className="text-muted-foreground mb-6">
-                Additional Harmonized Tariff Schedule chapters covered by this industry. Each chapter has its own dedicated page with tariff updates, country
-                breakdowns, and analysis.
-              </p>
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {relatedChapters.map((chapter) => {
-                  const padded = chapter.number.toString().padStart(2, '0');
-                  return (
-                    <li key={chapter.number}>
-                      <Link
-                        href={chapterCoverHref(chapter)}
-                        className="group flex items-center justify-between rounded-lg border border-color background-color px-4 py-3 transition hover:border-emerald-500/60 hover:bg-emerald-500/5"
-                      >
-                        <span className="flex items-center gap-3">
-                          <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-500/20">
-                            <Layers className="h-4 w-4" />
-                          </span>
-                          <span>
-                            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">HTS Chapter {padded}</span>
-                            <span className="block font-medium group-hover:text-emerald-400">{chapter.shortName}</span>
-                          </span>
-                        </span>
-                        <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-emerald-400" />
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
           )}
       </div>
     </div>

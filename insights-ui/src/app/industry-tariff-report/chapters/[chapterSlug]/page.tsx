@@ -7,14 +7,14 @@ import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ chapterSlug: string }> }): Promise<Metadata> {
   const { chapterSlug } = await params;
-  const resolved = resolveChapterRoute(chapterSlug);
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) {
     return { title: 'HTS Chapter Tariff Report' };
   }
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const fallbackTitle = `HTS Chapter ${padded} — ${resolved.chapter.shortName} Tariff Report | KoalaGains`;
-  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.shortName}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
-  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.shortName, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'];
+  const fallbackTitle = `HTS Chapter ${padded} — ${resolved.chapter.title} Tariff Report | KoalaGains`;
+  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
+  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'];
 
   let coverSeo: { title?: string; shortDescription?: string; keywords?: string[] } | undefined;
   try {
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
   const title = coverSeo?.title || fallbackTitle;
   const description = coverSeo?.shortDescription || fallbackDescription;
   const keywords = coverSeo?.keywords?.length ? coverSeo.keywords : fallbackKeywords;
-  const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter)}`;
+  const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter.slug)}`;
 
   return {
     title,
@@ -50,18 +50,18 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
 
 export default async function ChapterCoverPage({ params }: { params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
-  const resolved = resolveChapterRoute(chapterSlug);
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) notFound();
-  if (resolved.primaryIndustry) {
-    redirect(`/industry-tariff-report/${resolved.primaryIndustry.industryId}`);
+  if (resolved.oldUrl) {
+    redirect(`/industry-tariff-report/${resolved.oldUrl}`);
   }
 
   const padded = resolved.chapter.number.toString().padStart(2, '0');
   return (
     <ChapterPlaceholder
       chapter={resolved.chapter}
-      pageTitle={`HTS Chapter ${padded} — ${resolved.chapter.shortName}`}
-      description={`Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.shortName}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`}
+      pageTitle={`HTS Chapter ${padded} — ${resolved.chapter.title}`}
+      description={`Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`}
     />
   );
 }

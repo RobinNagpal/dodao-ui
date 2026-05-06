@@ -1,5 +1,6 @@
-import { chapterUrlSlug, HTS_CHAPTERS } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { Prisma } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -15,14 +16,23 @@ interface SiteMapUrl {
 // non-canonical URLs.
 const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
+// A row counts as "seeded" when its cover (introduction) JSON has been written. Slug-only rows
+// inserted for chapters with no industry mapping carry a NULL introduction and are excluded.
+const SEEDED_FILTER = { introduction: { not: Prisma.DbNull } } as const;
+
 // `oldUrl` on a seeded row is the canonical "this chapter is part of an industry" signal — when
 // present, the chapter's content lives at `/industry-tariff-report/<oldUrl>` and the chapter URL
 // is never reachable. Only chapters with a NULL `oldUrl` get their own `/chapters/<slug>` URL.
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
-  const seeded = await getSeededChapterReports();
 
-  for (const row of seeded) {
+  const rows = await prisma.tariffChapterReport.findMany({
+    where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
+    select: { slug: true, oldUrl: true, updatedAt: true },
+    orderBy: { chapter: { number: 'asc' } },
+  });
+
+  for (const row of rows) {
     const lastmod = row.updatedAt.toISOString();
 
     if (row.oldUrl) {
@@ -34,9 +44,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
       continue;
     }
 
-    const chapter = HTS_CHAPTERS[row.chapterNumber];
-    if (!chapter) continue;
-    const chapterPath = `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
+    const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
     urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod });
     for (const section of REPORT_SECTIONS) {
       urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod });

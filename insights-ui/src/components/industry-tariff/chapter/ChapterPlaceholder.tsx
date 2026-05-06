@@ -1,10 +1,9 @@
-import { HtsChapterRef } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { ArrowRight, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 interface ChapterPlaceholderProps {
-  chapter: HtsChapterRef;
+  chapter: ChapterRouteInfo;
   // Title shown above the placeholder, e.g. "Tariff Updates" for a section page or chapter name for the cover.
   pageTitle: string;
   // Optional sub-section the user is currently looking at — exclude it from the section nav block.
@@ -23,7 +22,7 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
           <Layers className="h-4 w-4 text-emerald-400" />
           <span className="font-medium text-emerald-400">HTS Chapter {padded}</span>
           <span aria-hidden>·</span>
-          <span>{chapter.shortName}</span>
+          <span>{chapter.title}</span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight">{pageTitle}</h1>
         <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
@@ -32,8 +31,8 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
       <section className="mb-10 rounded-2xl border border-color background-color p-6">
         <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          We&apos;re building out the full tariff analysis for HTS Chapter {padded} ({chapter.shortName}). Use the navigation below to explore the sections of
-          this chapter as content rolls out.
+          We&apos;re building out the full tariff analysis for HTS Chapter {padded} ({chapter.title}). Use the navigation below to explore the sections of this
+          chapter as content rolls out.
         </p>
       </section>
 
@@ -42,7 +41,7 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
         <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <li>
             <Link
-              href={chapterCoverHref(chapter)}
+              href={chapterCoverHref(chapter.slug)}
               className="group flex items-center justify-between rounded-lg border border-color background-color px-4 py-3 transition hover:border-emerald-500/60 hover:bg-emerald-500/5"
             >
               <span className="font-medium">Chapter overview</span>
@@ -52,7 +51,7 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
           {otherSections.map((section) => (
             <li key={section.slug}>
               <Link
-                href={chapterSectionHref(chapter, section.slug)}
+                href={chapterSectionHref(chapter.slug, section.slug)}
                 className="group flex items-center justify-between rounded-lg border border-color background-color px-4 py-3 transition hover:border-emerald-500/60 hover:bg-emerald-500/5"
               >
                 <span className="font-medium">{section.label}</span>

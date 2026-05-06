@@ -4,16 +4,11 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { chapterCoverHref, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { redirect } from 'next/navigation';
 import type React from 'react';
 
 export default async function ChapterReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
-  const resolved = resolveChapterRoute(chapterSlug);
-
-  if (resolved && resolved.canonicalSlug !== chapterSlug) {
-    redirect(`/industry-tariff-report/chapters/${resolved.canonicalSlug}`);
-  }
+  const resolved = await resolveChapterRoute(chapterSlug);
 
   // Without a resolved chapter the leaf page will 404 — render bare so the chapter-specific
   // breadcrumb/nav chrome doesn't try to read undefined chapter data.
@@ -22,12 +17,12 @@ export default async function ChapterReportLayout({ children, params }: { childr
   }
 
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const navTitle = `HTS Chapter ${padded} ${resolved.chapter.shortName}`;
-  const basePath = chapterCoverHref(resolved.chapter);
+  const navTitle = `HTS Chapter ${padded} ${resolved.chapter.title}`;
+  const basePath = chapterCoverHref(resolved.chapter.slug);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Tariff Reports', href: '/tariff-reports', current: false },
-    { name: `Chapter ${padded} — ${resolved.chapter.shortName}`, href: basePath, current: true },
+    { name: `Chapter ${padded} — ${resolved.chapter.title}`, href: basePath, current: true },
   ];
 
   return (

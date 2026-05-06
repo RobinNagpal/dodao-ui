@@ -1,12 +1,8 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import {
-  chapterUrlSlug,
-  findIndustryByLegacyUrl,
-  HTS_CHAPTERS,
-  HtsChapterRef,
-  TariffIndustryDefinition,
-} from '@/scripts/industry-tariff-reports/tariff-industries';
-import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { prisma } from '@/prisma';
+import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { Prisma } from '@prisma/client';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowRight, FileText, Layers } from 'lucide-react';
@@ -63,19 +59,20 @@ function formatDate(value: string): string {
 }
 
 interface ChapterCardProps {
-  chapter: HtsChapterRef;
-  // Set when the chapter is the primary chapter of an industry — clicks land on the industry URL.
+  chapterNumber: number;
+  chapterTitle: string;
+  chapterSlug: string;
   industry: TariffIndustryDefinition | undefined;
   lastModified?: string;
 }
 
-function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
-  const padded = chapter.number.toString().padStart(2, '0');
-  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
-  const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapter.shortName}`;
+function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastModified }: ChapterCardProps) {
+  const padded = chapterNumber.toString().padStart(2, '0');
+  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterSlug}`;
+  const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapterTitle}`;
   const description =
     industry?.reportOneLiner ??
-    `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.shortName}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+    `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-color background-color transition-all duration-200 hover:border-indigo-500/60 hover:shadow-xl hover:shadow-indigo-500/5">
@@ -96,7 +93,7 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
           </Link>
         </h3>
 
-        {industry && <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">{chapter.shortName}</p>}
+        {industry && <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">{chapterTitle}</p>}
 
         <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted-foreground">{description}</p>
 
@@ -121,8 +118,16 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
   );
 }
 
+// A row counts as "seeded" when its cover (introduction) JSON has been written. Slug-only rows
+// inserted for chapters with no industry mapping carry a NULL introduction and are excluded.
+const SEEDED_FILTER = { introduction: { not: Prisma.DbNull } } as const;
+
 export default async function TariffReportsPage() {
-  const seededChapters = await getSeededChapterReports();
+  const rows = await prisma.tariffChapterReport.findMany({
+    where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
+    select: { slug: true, oldUrl: true, updatedAt: true, chapter: { select: { number: true, title: true } } },
+    orderBy: { chapter: { number: 'asc' } },
+  });
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -142,7 +147,7 @@ export default async function TariffReportsPage() {
           </p>
         </header>
 
-        {seededChapters.length === 0 ? (
+        {rows.length === 0 ? (
           <div className="rounded-2xl border border-color background-color py-12 text-center shadow-sm">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
@@ -152,14 +157,21 @@ export default async function TariffReportsPage() {
           <section className="mb-14">
             <div className="mb-6 flex items-baseline justify-between border-b border-color pb-2">
               <h2 className="text-2xl font-semibold">All Chapters</h2>
-              <span className="text-sm text-muted-foreground">{seededChapters.length} chapters</span>
+              <span className="text-sm text-muted-foreground">{rows.length} chapters</span>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {seededChapters.map((row) => {
-                const chapter = HTS_CHAPTERS[row.chapterNumber];
-                if (!chapter) return null;
+              {rows.map((row) => {
                 const industry = findIndustryByLegacyUrl(row.oldUrl);
-                return <ChapterCard key={row.chapterNumber} chapter={chapter} industry={industry} lastModified={row.updatedAt.toISOString()} />;
+                return (
+                  <ChapterCard
+                    key={row.slug}
+                    chapterNumber={row.chapter.number}
+                    chapterTitle={row.chapter.title}
+                    chapterSlug={row.slug}
+                    industry={industry}
+                    lastModified={row.updatedAt.toISOString()}
+                  />
+                );
               })}
             </div>
           </section>
