@@ -4,10 +4,7 @@ import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import Link from 'next/link';
 import React, { use } from 'react';
 
-const FULL_REPORT_SLUG = '';
-
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
-  { slug: FULL_REPORT_SLUG, label: 'Full Stock Report' },
   { slug: 'business-and-moat', label: 'Business & Moat' },
   { slug: 'financial-statement-analysis', label: 'Financial Statements' },
   { slug: 'past-performance', label: 'Past Performance' },
@@ -56,7 +53,7 @@ export async function getAvailableSiblingSlugs(tickerId: string): Promise<Availa
     }),
   ]);
 
-  const available = new Set<string>([FULL_REPORT_SLUG]);
+  const available = new Set<string>();
   for (const row of categoryRows) {
     const slug = CATEGORY_TO_SLUG[row.categoryKey as TickerAnalysisCategory];
     if (slug) available.add(slug);
@@ -72,7 +69,7 @@ export interface TickerRelatedSectionsProps {
   exchange: string;
   symbol: string;
   companyName: string;
-  /** Slug of the current page so it is excluded from the related list (use '' for the parent report). */
+  /** Slug of the current sibling page so it is excluded from the related list. */
   currentSlug: string;
 }
 
@@ -96,16 +93,16 @@ export default function TickerRelatedSections({
         More {companyName} ({tk}) analyses
       </h2>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-        {others.map((s) => {
-          const href = s.slug ? `/stocks/${ex}/${tk}/${s.slug}` : `/stocks/${ex}/${tk}`;
-          return (
-            <li key={s.slug || 'root'}>
-              <Link href={href} className="block rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors">
-                {companyName} ({tk}) {s.label} →
-              </Link>
-            </li>
-          );
-        })}
+        {others.map((s) => (
+          <li key={s.slug} className="h-full">
+            <Link
+              href={`/stocks/${ex}/${tk}/${s.slug}`}
+              className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+            >
+              {companyName} ({tk}) {s.label} &rarr;
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );

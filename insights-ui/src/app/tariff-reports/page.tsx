@@ -9,6 +9,9 @@ import { ArrowRight, FileText, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+// Render at request time; CI build does not provision DATABASE_URL for the Prisma listing query.
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Tariff Reports | KoalaGains';
   const description = 'Comprehensive collection of tariff reports. Explore industry insights and tariff impacts across various sectors.';
