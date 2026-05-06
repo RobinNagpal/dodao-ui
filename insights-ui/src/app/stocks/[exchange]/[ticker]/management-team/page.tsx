@@ -211,14 +211,14 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
 
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <article itemScope itemType="https://schema.org/Article">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <section className="mb-6">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
             {tickerData.name} ({tickerData.symbol}) — Management Team Experience &amp; Alignment
           </h1>
         </section>
 
-        <section className="bg-gray-900 rounded-lg shadow-sm px-2 py-4 sm:p-6 mb-8" itemProp="articleBody">
+        <section className="mb-8" itemProp="articleBody">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
             <h2 className="text-xl font-bold">Alignment Verdict</h2>
             <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getVerdictBadgeClasses(verdict)}`}>
