@@ -1,10 +1,10 @@
+import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { prisma } from '@/prisma';
 import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { Prisma } from '@prisma/client';
+import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowRight, FileText, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -118,16 +118,14 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastM
   );
 }
 
-// A row counts as "seeded" when its cover (introduction) JSON has been written. Slug-only rows
-// inserted for chapters with no industry mapping carry a NULL introduction and are excluded.
-const SEEDED_FILTER = { introduction: { not: Prisma.DbNull } } as const;
+const WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
 export default async function TariffReportsPage() {
-  const rows = await prisma.tariffChapterReport.findMany({
-    where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
-    select: { slug: true, oldUrl: true, updatedAt: true, chapter: { select: { number: true, title: true } } },
-    orderBy: { chapter: { number: 'asc' } },
+  const res = await fetch(`${getBaseUrl()}/api/tariff-reports/listing`, {
+    next: { revalidate: WEEK_IN_SECONDS, tags: [TARIFF_REPORTS_LISTING_TAG] },
   });
+
+  const rows: TariffReportListingItem[] = res.ok ? await res.json() : [];
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -169,7 +167,7 @@ export default async function TariffReportsPage() {
                     chapterTitle={row.chapter.title}
                     chapterSlug={row.slug}
                     industry={industry}
-                    lastModified={row.updatedAt.toISOString()}
+                    lastModified={row.updatedAt}
                   />
                 );
               })}
