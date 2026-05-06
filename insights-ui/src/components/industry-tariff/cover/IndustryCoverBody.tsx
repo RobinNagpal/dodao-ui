@@ -10,6 +10,7 @@ import {
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ChevronRight, Layers } from 'lucide-react';
@@ -49,7 +50,10 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
     })) || [];
 
   const primaryChapter = getPrimaryChapterForIndustry(definition);
-  const relatedChapters = getAllChaptersForIndustry(definition).filter((chapter) => chapter.number !== primaryChapter?.number);
+  const seededChapterNumbers = new Set((await getSeededChapterReports()).map((row) => row.chapterNumber));
+  const relatedChapters = getAllChaptersForIndustry(definition).filter(
+    (chapter) => chapter.number !== primaryChapter?.number && seededChapterNumbers.has(chapter.number)
+  );
 
   return (
     <div className="mx-auto max-w-7xl py-2">

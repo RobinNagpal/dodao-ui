@@ -1,9 +1,8 @@
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getLastModifiedDateForIndustry } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
+import { getSeededLastModifiedForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -21,12 +20,7 @@ export default async function IndustryTariffReportLayout({ children, params }: {
     report = await reportResponse.json();
   }
 
-  let lastModified = '';
-  try {
-    lastModified = await getLastModifiedDateForIndustry(industryId as TariffIndustryId);
-  } catch (error) {
-    lastModified = new Date().toISOString().split('T')[0];
-  }
+  const lastModified = (await getSeededLastModifiedForOldUrl(industryId)) ?? '';
 
   if (!report) {
     return (

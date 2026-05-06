@@ -1,5 +1,4 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
 import {
   chapterUrlSlug,
   getIndustryForPrimaryChapter,
@@ -7,6 +6,7 @@ import {
   HtsChapterRef,
   TariffIndustryDefinition,
 } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowRight, FileText, Layers } from 'lucide-react';
@@ -57,9 +57,6 @@ const REPORT_SECTIONS = [
   { slug: 'industry-areas', label: 'Industry Areas' },
   { slug: 'final-conclusion', label: 'Final Conclusion' },
 ] as const;
-
-// Chapter 77 is reserved by the HTS for possible future use, so it has nothing to surface.
-const RESERVED_CHAPTER_NUMBERS = new Set<number>([77]);
 
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -125,12 +122,7 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
 }
 
 export default async function TariffReportsPage() {
-  const lastModifiedDates = await getTariffReportsLastModifiedDates();
-
-  const chapterNumbers = Object.keys(HTS_CHAPTERS)
-    .map(Number)
-    .filter((n) => !RESERVED_CHAPTER_NUMBERS.has(n))
-    .sort((a, b) => a - b);
+  const seededChapters = await getSeededChapterReports();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -145,12 +137,12 @@ export default async function TariffReportsPage() {
         <header className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            Tariff and trade-policy analysis for every chapter of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country
-            breakdowns, industry structure, sub-areas, and forward-looking conclusions.
+            Tariff and trade-policy analysis for chapters of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country breakdowns,
+            industry structure, sub-areas, and forward-looking conclusions.
           </p>
         </header>
 
-        {chapterNumbers.length === 0 ? (
+        {seededChapters.length === 0 ? (
           <div className="rounded-2xl border border-color background-color py-12 text-center shadow-sm">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
@@ -160,14 +152,14 @@ export default async function TariffReportsPage() {
           <section className="mb-14">
             <div className="mb-6 flex items-baseline justify-between border-b border-color pb-2">
               <h2 className="text-2xl font-semibold">All Chapters</h2>
-              <span className="text-sm text-muted-foreground">{chapterNumbers.length} chapters</span>
+              <span className="text-sm text-muted-foreground">{seededChapters.length} chapters</span>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {chapterNumbers.map((chapterNumber) => {
-                const chapter = HTS_CHAPTERS[chapterNumber];
-                const industry = getIndustryForPrimaryChapter(chapterNumber);
-                const lastModified = industry ? lastModifiedDates[industry.industryId] : undefined;
-                return <ChapterCard key={chapterNumber} chapter={chapter} industry={industry} lastModified={lastModified} />;
+              {seededChapters.map((row) => {
+                const chapter = HTS_CHAPTERS[row.chapterNumber];
+                if (!chapter) return null;
+                const industry = getIndustryForPrimaryChapter(row.chapterNumber);
+                return <ChapterCard key={row.chapterNumber} chapter={chapter} industry={industry} lastModified={row.updatedAt.toISOString()} />;
               })}
             </div>
           </section>
