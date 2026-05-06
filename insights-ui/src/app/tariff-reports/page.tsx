@@ -1,10 +1,10 @@
 import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { ArrowRight, FileText, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -121,7 +121,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastM
 const WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 
 export default async function TariffReportsPage() {
-  const res = await fetch(`${getBaseUrl()}/api/tariff-reports/listing`, {
+  const res = await fetch(`${getBaseUrlForServerSidePages()}/api/tariff-reports/listing`, {
     next: { revalidate: WEEK_IN_SECONDS, tags: [TARIFF_REPORTS_LISTING_TAG] },
   });
 
