@@ -4,9 +4,7 @@ import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-repo
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
-import { getAndWriteEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
-import { getAllCountriesTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/09-all-countries-tariffs';
 import {
   getNegativeImpactsOfEvaluatedAreas,
   getPositiveImpactsOfEvaluatedAreas,
@@ -14,7 +12,6 @@ import {
 } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
 import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import {
-  readEvaluateSubIndustryAreaJsonFromFile,
   readExecutiveSummaryFromFile,
   readFinalConclusionFromFile,
   readIndustryAreaSectionFromFile,
@@ -29,17 +26,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-export async function doIt(
-  reportType: ReportType,
-  tariffIndustry: TariffIndustryDefinition,
-  evaluationReportToGenerate: {
-    headingIndex: number;
-    subHeadingIndex: number;
-  } = {
-    headingIndex: 0,
-    subHeadingIndex: 0,
-  }
-) {
+export async function doIt(reportType: ReportType, tariffIndustry: TariffIndustryDefinition) {
   const industryId = tariffIndustry.industryId;
   const date = getTodayDateAsMonthDDYYYYFormat(); // Dynamic date based on today
   // Pre-read common dependencies
@@ -75,23 +62,10 @@ export async function doIt(
       if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
       break;
 
-    case ReportType.ALL_COUNTRIES_TARIFF_UPDATES:
-      await getAllCountriesTariffUpdatesForIndustryAndSaveToFile(industryId, date, headings);
-      break;
-
     case ReportType.INDUSTRY_AREA_SECTION:
       await getAndWriteIndustryAreaSectionToJsonFile(industryId, headings);
       const industryAreaSection = await readIndustryAreaSectionFromFile(industryId);
       if (!industryAreaSection) throw new Error('Industry area section not found');
-      break;
-
-    case ReportType.EVALUATE_INDUSTRY_AREA:
-      const tariff = await readTariffUpdatesFromFile(industryId);
-      const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
-      const firstArea = headings.areas[headingIndex].subAreas[subHeadingIndex];
-      await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
-      const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, firstArea, headings);
-      if (!evaluated) throw new Error('Evaluate sub-industry area section not found');
       break;
 
     case ReportType.EXECUTIVE_SUMMARY:
@@ -131,7 +105,6 @@ export async function doIt(
       // Run all sections in sequence
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
-        // @ts-ignore
         await doIt(type as ReportType, tariffIndustry);
       }
       break;
@@ -140,13 +113,8 @@ export async function doIt(
 
 const industry = getTariffIndustryDefinitionById(TariffIndustryId.metalGlassPlasticContainers);
 
-// Example usage:
-doIt(ReportType.ALL_COUNTRIES_TARIFF_UPDATES, industry, {
-  headingIndex: 1,
-  subHeadingIndex: 1,
-})
+doIt(ReportType.ALL, industry)
   .then(() => {
     console.log('Tariff updates generated successfully.');
   })
   .catch(console.error);
-// doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);
