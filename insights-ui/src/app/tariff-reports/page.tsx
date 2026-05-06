@@ -93,8 +93,6 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastM
         </Link>
       </h3>
 
-      {industry && <p className="mb-2 text-xs uppercase tracking-wide text-gray-400">{chapterTitle}</p>}
-
       <p className="mb-5 line-clamp-3 flex-1 text-sm text-gray-300">{description}</p>
 
       <div className="mb-5 flex flex-wrap gap-1.5">
