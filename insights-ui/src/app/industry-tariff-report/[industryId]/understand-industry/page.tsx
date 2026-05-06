@@ -3,71 +3,14 @@ import UnderstandIndustryActions from '@/components/industry-tariff/section-acti
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { fetchIndustryUnderstandIndustryMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
-
-  // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId)] },
-  });
-  let report: IndustryTariffReport | null = null;
-
-  if (reportResponse.ok) {
-    report = await reportResponse.json();
-  }
-
-  if (!report) {
-    return {
-      title: 'Understand Industry | Tariff Report',
-      description: 'Comprehensive overview and explanation of the industry structure and operations',
-    };
-  }
-
-  // Get the SEO details specific to understand industry
-  const seoDetails = report.reportSeoDetails?.understandIndustrySeoDetails;
-
-  // Create a title that includes the industry name
-  const industryName = report.executiveSummary?.title || 'Industry';
-  const seoTitle = seoDetails?.title || `Understanding the ${industryName} | Industry Overview`;
-  const seoDescription =
-    seoDetails?.shortDescription || `Comprehensive explanation of the ${industryName} industry, including key operations, value chain, and market dynamics.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/understand-industry`;
-
-  // Create keywords from SEO details or fallback to generic ones
-  const keywords = seoDetails?.keywords || [
-    industryName,
-    'industry overview',
-    'value chain',
-    'market dynamics',
-    'business operations',
-    'industry primer',
-    'KoalaGains',
-  ];
-
-  return {
-    title: seoTitle,
-    description: seoDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: seoTitle,
-      description: seoDescription,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
-    },
-    keywords: keywords,
-  };
+  return fetchIndustryUnderstandIndustryMetadata(industryId);
 }
 
 export default async function UnderstandIndustryPage({ params }: { params: Promise<{ industryId: string }> }) {
