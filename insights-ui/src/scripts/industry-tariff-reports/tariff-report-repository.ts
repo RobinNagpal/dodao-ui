@@ -85,7 +85,7 @@ export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<
   const row = await prisma.tariffChapterReport.findUnique({
     where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
     select: {
-      industryHeadings: true,
+      industryAreas: true,
       introduction: true,
       executiveSummary: true,
       tariffUpdates: true,
@@ -99,7 +99,7 @@ export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<
   if (!row) return {};
 
   return {
-    industryHeadings: (row.industryHeadings as IndustryAreasWrapper | null) ?? undefined,
+    industryAreas: (row.industryAreas as IndustryAreasWrapper | null) ?? undefined,
     reportCover: (row.introduction as ReportCover | null) ?? undefined,
     executiveSummary: (row.executiveSummary as ExecutiveSummary | null) ?? undefined,
     tariffUpdates: (row.tariffUpdates as TariffUpdatesForIndustry | null) ?? undefined,
@@ -131,12 +131,17 @@ async function writeSection(slug: string, data: Prisma.TariffChapterReportUpdate
   }
 }
 
+// Stored in the `industry_areas` JSONB column — this is the headings/sub-headings
+// tree (`IndustryAreasWrapper`) that's generated first and consumed by every
+// other section's prompt builder. The "headings" alias keeps usages readable
+// alongside `readIndustryAreaSection` (the prose section under
+// `05-industry-areas.ts`, which lives in `industry_areas_sections`).
 export async function readIndustryHeadings(slug: string): Promise<IndustryAreasWrapper | undefined> {
-  return readSection<IndustryAreasWrapper>(slug, 'industryHeadings');
+  return readSection<IndustryAreasWrapper>(slug, 'industryAreas');
 }
 
 export async function writeIndustryHeadings(slug: string, value: IndustryAreasWrapper): Promise<void> {
-  await writeSection(slug, { industryHeadings: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { industryAreas: value as unknown as Prisma.InputJsonValue });
 }
 
 export async function readReportCover(slug: string): Promise<ReportCover | undefined> {

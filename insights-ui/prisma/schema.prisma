@@ -2071,9 +2071,9 @@ model TariffChapterReport {
   // Section bodies. Each is a typed JSON object — see tariff-types.ts for the
   // shapes (ReportCover, IndustryTariffsForCountry[], UnderstandIndustry, etc.).
   // Optional: chapters without seeded content carry only the slug.
-  // `industryHeadings` is the IndustryHeadings tree generated first and
-  // consumed by every other section's prompt builder.
-  industryHeadings      Json? @map("industry_headings")
+  // `industryAreas` holds the headings/sub-headings tree (IndustryAreasWrapper)
+  // generated first and consumed by every other section's prompt builder.
+  industryAreas         Json? @map("industry_areas")
   introduction          Json? @map("introduction")
   executiveSummary      Json? @map("executive_summary")
   tariffUpdates         Json? @map("tariff_updates")

@@ -109,7 +109,7 @@ export interface TariffReportSeoDetails {
 }
 
 export interface IndustryTariffReport {
-  industryHeadings?: IndustryAreasWrapper;
+  industryAreas?: IndustryAreasWrapper;
   reportCover?: ReportCover;
   executiveSummary?: ExecutiveSummary;
   tariffUpdates?: TariffUpdatesForIndustry;
