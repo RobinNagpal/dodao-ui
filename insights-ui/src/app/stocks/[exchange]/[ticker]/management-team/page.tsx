@@ -193,6 +193,13 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
   // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
   const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
+  const modifiedDate = new Date(report.updatedAt || tickerData.updatedAt || new Date());
+  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <PageWrapper>
       <script
@@ -240,6 +247,29 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             currentSlug="management-team"
           />
         </Suspense>
+
+        <footer className="mt-8 pt-6 border-t border-color">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              <span>Last updated by </span>
+              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <span itemProp="name">KoalaGains</span>
+              </span>
+              <span> on </span>
+              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                {formattedModifiedDate}
+              </time>
+            </div>
+            <div className="flex gap-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Stock Analysis
+              </span>
+              <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-300">
+                Management Team
+              </span>
+            </div>
+          </div>
+        </footer>
       </article>
     </PageWrapper>
   );
