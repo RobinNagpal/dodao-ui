@@ -1,6 +1,6 @@
 // Seeds the tariff_chapter_reports table from S3.
 //
-// One row per HTS chapter (1–99, skipping 77 "Reserved"). Two flavors:
+// One row per HTS chapter present in `tariff_chapters`. Two flavors:
 //
 //  1. Chapters mapped in CHAPTER_SEEDS (41 industries → 41 unique chapters):
 //     full INSERT with slug, old_url, and the five JSON section columns
@@ -20,6 +20,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
+import { prisma } from '@/prisma';
 import {
   readReportCoverFromFile,
   readTariffUpdatesFromFile,
@@ -27,7 +28,8 @@ import {
   readIndustryHeadingsFromFile,
   readFinalConclusionFromFile,
 } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { chapterUrlSlug, HTS_CHAPTERS, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
 interface ChapterSeed {
   // HTS chapter the row represents.
@@ -85,6 +87,14 @@ const CHAPTER_SEEDS: ChapterSeed[] = [
   { chapterNumber: 95, industry: TariffIndustryId.leisureProducts },
 ];
 
+// Slugify a chapter title for the URL: lowercase, alphanumeric only, hyphen-separated.
+function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 // JSON value cast to jsonb. Single quotes inside JSON are escaped per Postgres
 // string literal rules (`'` -> `''`).
 function toPgJsonb(value: unknown): string {
@@ -94,10 +104,15 @@ function toPgJsonb(value: unknown): string {
 
 async function main() {
   const seedByChapter = new Map(CHAPTER_SEEDS.map((s) => [s.chapterNumber, s]));
-  const allChapterNumbers = Object.keys(HTS_CHAPTERS)
-    .map(Number)
-    .filter((n) => n !== 77)
-    .sort((a, b) => a - b);
+
+  const chapterRows = await prisma.tariffChapter.findMany({
+    where: { spaceId: KoalaGainsSpaceId },
+    select: { number: true, title: true },
+    orderBy: { number: 'asc' },
+  });
+
+  const allChapterNumbers = chapterRows.map((c) => c.number);
+  const titleByNumber = new Map(chapterRows.map((c) => [c.number, c.title]));
 
   const withContent = allChapterNumbers.filter((n) => seedByChapter.has(n));
   const slugOnly = allChapterNumbers.filter((n) => !seedByChapter.has(n));
@@ -113,11 +128,11 @@ async function main() {
   ];
 
   for (const chapterNumber of allChapterNumbers) {
-    const chapter = HTS_CHAPTERS[chapterNumber];
-    if (!chapter) throw new Error(`HTS chapter ${chapterNumber} not found in HTS_CHAPTERS`);
+    const title = titleByNumber.get(chapterNumber);
+    if (!title) throw new Error(`No title for chapter ${chapterNumber}`);
 
     const id = randomUUID();
-    const slug = chapterUrlSlug(chapter);
+    const slug = `${chapterNumber}-${slugifyTitle(title)}`;
     const seed = seedByChapter.get(chapterNumber);
 
     if (seed) {
@@ -138,7 +153,7 @@ async function main() {
       if (!conclusion) console.warn(`    ! ${seed.industry}: missing final-conclusion.json`);
 
       lines.push(
-        `-- chapter ${chapterNumber} (${chapter.shortName}) — content from ${seed.industry}`,
+        `-- chapter ${chapterNumber} (${title}) — content from ${seed.industry}`,
         `INSERT INTO tariff_chapter_reports (`,
         `  id, chapter_id, slug, old_url, introduction, tariff_updates, understand_industry, industry_areas, conclusion, space_id, updated_at`,
         `)`,
@@ -171,7 +186,7 @@ async function main() {
       // Slug-only row. ON CONFLICT preserves any previously seeded content
       // (only slug + updated_at are touched).
       lines.push(
-        `-- chapter ${chapterNumber} (${chapter.shortName}) — slug only, no content`,
+        `-- chapter ${chapterNumber} (${title}) — slug only, no content`,
         `INSERT INTO tariff_chapter_reports (id, chapter_id, slug, space_id, updated_at)`,
         `SELECT '${id}', c.id, '${slug}', 'koala_gains', NOW()`,
         `FROM tariff_chapters c`,
@@ -196,7 +211,11 @@ async function main() {
   console.log(`Apply with: psql "$DATABASE_URL" -f prisma/seeds/tariff-chapter-reports.sql`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

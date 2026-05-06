@@ -3,12 +3,8 @@ import { chapterSectionHref, getChapterSectionCopy, resolveChapterRoute } from '
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
-// Small wrappers used by every chapter section page (`tariff-updates`, `understand-industry`, ...).
-// Keeps the per-route page.tsx files to a few lines each — same resolve/redirect/render flow, only
-// the section slug differs.
-
-export function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Metadata {
-  const resolved = resolveChapterRoute(chapterSlug);
+export async function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Promise<Metadata> {
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) {
     return { title: 'HTS Chapter Tariff Report' };
   }
@@ -17,8 +13,8 @@ export function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: st
     return { title: 'HTS Chapter Tariff Report' };
   }
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const title = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.shortName} | KoalaGains`;
-  const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter, sectionSlug)}`;
+  const title = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.title} | KoalaGains`;
+  const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter.slug, sectionSlug)}`;
   return {
     title,
     description: copy.description,
@@ -31,17 +27,17 @@ export function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: st
       type: 'article',
     },
     twitter: { card: 'summary_large_image', title, description: copy.description },
-    keywords: [`HTS Chapter ${padded}`, resolved.chapter.shortName, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'],
+    keywords: [`HTS Chapter ${padded}`, resolved.chapter.title, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'],
   };
 }
 
-export function renderChapterSection(chapterSlug: string, sectionSlug: string): JSX.Element {
-  const resolved = resolveChapterRoute(chapterSlug);
+export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) notFound();
   const copy = getChapterSectionCopy(sectionSlug, resolved.chapter);
   if (!copy) notFound();
-  if (resolved.primaryIndustry) {
-    redirect(`/industry-tariff-report/${resolved.primaryIndustry.industryId}/${sectionSlug}`);
+  if (resolved.oldUrl) {
+    redirect(`/industry-tariff-report/${resolved.oldUrl}/${sectionSlug}`);
   }
   return <ChapterPlaceholder chapter={resolved.chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
 }

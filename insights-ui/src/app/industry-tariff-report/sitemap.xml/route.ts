@@ -1,4 +1,5 @@
-import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -14,56 +15,33 @@ interface SiteMapUrl {
 // redirect to reach.
 const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
-// Generate URLs for tariff reports and their sections
+// `oldUrl` on a row is the canonical "this chapter is part of an industry" signal — when set, the
+// content lives at `/industry-tariff-report/<oldUrl>` and `/chapters/<slug>` is never advertised.
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
+  const rows = await prisma.tariffChapterReport.findMany({
+    where: { spaceId: KoalaGainsSpaceId },
+    select: { slug: true, oldUrl: true, updatedAt: true },
+    orderBy: { chapter: { number: 'asc' } },
+  });
+
   const urls: SiteMapUrl[] = [];
-  const lastModifiedDates = await getTariffReportsLastModifiedDates();
-  const { chapterNumbersWithoutPrimaryIndustry, chapterUrlSlug, getTariffIndustryDefinitionById, HTS_CHAPTERS, TariffIndustryId } = await import(
-    '@/scripts/industry-tariff-reports/tariff-industries'
-  );
-  const tariffReports = Object.values(TariffIndustryId).map((industryId) => ({
-    ...getTariffIndustryDefinitionById(industryId),
-    lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
-  }));
 
-  if (tariffReports.length === 0) {
-    console.warn('No tariff reports found for the sitemap.');
-  }
+  for (const row of rows) {
+    const lastmod = row.updatedAt.toISOString();
 
-  // For each industry report
-  for (const industry of tariffReports) {
-    const industryId = industry.industryId;
-
-    // Main report page
-    urls.push({
-      url: `/industry-tariff-report/${industryId}`,
-      changefreq: 'weekly',
-      priority: 0.8,
-      lastmod: industry.lastModified,
-    });
-
-    // Standard report sections based on navigation structure.
-    for (const section of REPORT_SECTIONS) {
-      urls.push({
-        url: `/industry-tariff-report/${industryId}/${section}`,
-        changefreq: 'weekly',
-        priority: 0.7,
-        lastmod: industry.lastModified,
-      });
+    if (row.oldUrl) {
+      const industryPath = `/industry-tariff-report/${row.oldUrl}`;
+      urls.push({ url: industryPath, changefreq: 'weekly', priority: 0.8, lastmod });
+      for (const section of REPORT_SECTIONS) {
+        urls.push({ url: `${industryPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });
+      }
+      continue;
     }
-  }
 
-  // HTS chapter pages — only include chapters that don't redirect to an industry URL. Primary
-  // chapters issue a 301 to the industry page (see chapter route handlers), so emitting them here
-  // would advertise URLs Google must follow a redirect to reach.
-  const fallbackLastmod = new Date().toISOString();
-  for (const chapterNumber of chapterNumbersWithoutPrimaryIndustry()) {
-    const chapter = HTS_CHAPTERS[chapterNumber];
-    if (!chapter) continue;
-    const chapterPath = `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
-    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod: fallbackLastmod });
+    const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
+    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod });
     for (const section of REPORT_SECTIONS) {
-      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod: fallbackLastmod });
+      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod });
     }
   }
 

@@ -1,12 +1,7 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
-import {
-  chapterUrlSlug,
-  getIndustryForPrimaryChapter,
-  HTS_CHAPTERS,
-  HtsChapterRef,
-  TariffIndustryDefinition,
-} from '@/scripts/industry-tariff-reports/tariff-industries';
+import { prisma } from '@/prisma';
+import { TariffIndustries, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowRight, FileText, Layers } from 'lucide-react';
@@ -58,27 +53,31 @@ const REPORT_SECTIONS = [
   { slug: 'final-conclusion', label: 'Final Conclusion' },
 ] as const;
 
-// Chapter 77 is reserved by the HTS for possible future use, so it has nothing to surface.
-const RESERVED_CHAPTER_NUMBERS = new Set<number>([77]);
-
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-interface ChapterCardProps {
-  chapter: HtsChapterRef;
-  // Set when the chapter is the primary chapter of an industry — clicks land on the industry URL.
-  industry: TariffIndustryDefinition | undefined;
-  lastModified?: string;
+function findIndustryByOldUrl(oldUrl: string | null): TariffIndustryDefinition | undefined {
+  if (!oldUrl) return undefined;
+  return Object.values(TariffIndustries).find((industry) => industry.industryId === oldUrl);
 }
 
-function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
-  const padded = chapter.number.toString().padStart(2, '0');
-  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
-  const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapter.shortName}`;
+interface ChapterCardProps {
+  chapterNumber: number;
+  chapterTitle: string;
+  chapterSlug: string;
+  // Set when the row's `oldUrl` matches a known industry — clicks land on the industry URL.
+  industry: TariffIndustryDefinition | undefined;
+  lastModified: string;
+}
+
+function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastModified }: ChapterCardProps) {
+  const padded = chapterNumber.toString().padStart(2, '0');
+  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterSlug}`;
+  const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapterTitle}`;
   const description =
     industry?.reportOneLiner ??
-    `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.shortName}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+    `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-color background-color transition-all duration-200 hover:border-indigo-500/60 hover:shadow-xl hover:shadow-indigo-500/5">
@@ -90,7 +89,7 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
             <Layers className="h-3 w-3" />
             HTS Chapter {padded}
           </span>
-          {lastModified && <span className="text-muted-foreground">Updated {formatDate(lastModified)}</span>}
+          <span className="text-muted-foreground">Updated {formatDate(lastModified)}</span>
         </div>
 
         <h3 className="mb-2 text-xl font-semibold leading-snug">
@@ -99,7 +98,7 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
           </Link>
         </h3>
 
-        {industry && <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">{chapter.shortName}</p>}
+        {industry && <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">{chapterTitle}</p>}
 
         <p className="mb-5 line-clamp-3 flex-1 text-sm text-muted-foreground">{description}</p>
 
@@ -125,12 +124,13 @@ function ChapterCard({ chapter, industry, lastModified }: ChapterCardProps) {
 }
 
 export default async function TariffReportsPage() {
-  const lastModifiedDates = await getTariffReportsLastModifiedDates();
-
-  const chapterNumbers = Object.keys(HTS_CHAPTERS)
-    .map(Number)
-    .filter((n) => !RESERVED_CHAPTER_NUMBERS.has(n))
-    .sort((a, b) => a - b);
+  // List every seeded chapter row. `oldUrl` decides whether the card links to an industry URL or a
+  // bare chapter URL — chapters with `oldUrl` are surfaced only at `/industry-tariff-report/<oldUrl>`.
+  const rows = await prisma.tariffChapterReport.findMany({
+    where: { spaceId: KoalaGainsSpaceId },
+    select: { slug: true, oldUrl: true, updatedAt: true, chapter: { select: { number: true, title: true } } },
+    orderBy: { chapter: { number: 'asc' } },
+  });
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
@@ -145,12 +145,12 @@ export default async function TariffReportsPage() {
         <header className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
           <p className="mt-3 max-w-3xl text-muted-foreground">
-            Tariff and trade-policy analysis for every chapter of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country
-            breakdowns, industry structure, sub-areas, and forward-looking conclusions.
+            Tariff and trade-policy analysis for chapters of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country breakdowns,
+            industry structure, sub-areas, and forward-looking conclusions.
           </p>
         </header>
 
-        {chapterNumbers.length === 0 ? (
+        {rows.length === 0 ? (
           <div className="rounded-2xl border border-color background-color py-12 text-center shadow-sm">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">No tariff reports available</h3>
@@ -160,15 +160,19 @@ export default async function TariffReportsPage() {
           <section className="mb-14">
             <div className="mb-6 flex items-baseline justify-between border-b border-color pb-2">
               <h2 className="text-2xl font-semibold">All Chapters</h2>
-              <span className="text-sm text-muted-foreground">{chapterNumbers.length} chapters</span>
+              <span className="text-sm text-muted-foreground">{rows.length} chapters</span>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {chapterNumbers.map((chapterNumber) => {
-                const chapter = HTS_CHAPTERS[chapterNumber];
-                const industry = getIndustryForPrimaryChapter(chapterNumber);
-                const lastModified = industry ? lastModifiedDates[industry.industryId] : undefined;
-                return <ChapterCard key={chapterNumber} chapter={chapter} industry={industry} lastModified={lastModified} />;
-              })}
+              {rows.map((row) => (
+                <ChapterCard
+                  key={row.chapter.number}
+                  chapterNumber={row.chapter.number}
+                  chapterTitle={row.chapter.title}
+                  chapterSlug={row.slug}
+                  industry={findIndustryByOldUrl(row.oldUrl)}
+                  lastModified={row.updatedAt.toISOString()}
+                />
+              ))}
             </div>
           </section>
         )}

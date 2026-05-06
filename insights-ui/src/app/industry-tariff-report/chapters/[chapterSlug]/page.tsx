@@ -5,14 +5,14 @@ import { notFound, redirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ chapterSlug: string }> }): Promise<Metadata> {
   const { chapterSlug } = await params;
-  const resolved = resolveChapterRoute(chapterSlug);
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) {
     return { title: 'HTS Chapter Tariff Report' };
   }
   const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const title = `HTS Chapter ${padded} — ${resolved.chapter.shortName} Tariff Report | KoalaGains`;
-  const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.shortName}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
-  const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter)}`;
+  const title = `HTS Chapter ${padded} — ${resolved.chapter.title} Tariff Report | KoalaGains`;
+  const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
+  const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter.slug)}`;
   return {
     title,
     description,
@@ -25,24 +25,24 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
       type: 'article',
     },
     twitter: { card: 'summary_large_image', title, description },
-    keywords: [`HTS Chapter ${padded}`, resolved.chapter.shortName, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'],
+    keywords: [`HTS Chapter ${padded}`, resolved.chapter.title, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'],
   };
 }
 
 export default async function ChapterCoverPage({ params }: { params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
-  const resolved = resolveChapterRoute(chapterSlug);
+  const resolved = await resolveChapterRoute(chapterSlug);
   if (!resolved) notFound();
-  if (resolved.primaryIndustry) {
-    redirect(`/industry-tariff-report/${resolved.primaryIndustry.industryId}`);
+  if (resolved.oldUrl) {
+    redirect(`/industry-tariff-report/${resolved.oldUrl}`);
   }
 
   const padded = resolved.chapter.number.toString().padStart(2, '0');
   return (
     <ChapterPlaceholder
       chapter={resolved.chapter}
-      pageTitle={`HTS Chapter ${padded} — ${resolved.chapter.shortName}`}
-      description={`Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.shortName}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`}
+      pageTitle={`HTS Chapter ${padded} — ${resolved.chapter.title}`}
+      description={`Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`}
     />
   );
 }

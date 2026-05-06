@@ -1,11 +1,11 @@
-import {
-  chapterUrlSlug,
-  getIndustryForPrimaryChapter,
-  HTS_CHAPTERS,
-  HtsChapterRef,
-  parseChapterNumberFromSlug,
-  TariffIndustryDefinition,
-} from '@/scripts/industry-tariff-reports/tariff-industries';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+
+export interface ChapterRouteInfo {
+  number: number;
+  title: string;
+  slug: string;
+}
 
 export interface ChapterReportSection {
   slug: string;
@@ -20,63 +20,58 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
 ] as const;
 
 export interface ResolvedChapterRoute {
-  // Canonical chapter slug. Different from the requested slug → caller should redirect.
-  canonicalSlug: string;
-  chapter: HtsChapterRef;
-  // Industry whose URL is the canonical home for this chapter (chapter is its primary).
-  // When set, callers should redirect to the industry URL instead of rendering chapter content.
-  primaryIndustry: TariffIndustryDefinition | undefined;
+  chapter: ChapterRouteInfo;
+  // Set when this chapter is rendered under a legacy industry URL — caller redirects.
+  oldUrl: string | null;
 }
 
-// Parses a chapter slug from the URL and resolves it. Returns undefined for malformed slugs or
-// unknown chapter numbers — caller should `notFound()` in that case.
-export function resolveChapterRoute(rawSlug: string): ResolvedChapterRoute | undefined {
-  const chapterNumber = parseChapterNumberFromSlug(rawSlug);
-  if (chapterNumber === undefined) return undefined;
-  const chapter = HTS_CHAPTERS[chapterNumber];
-  if (!chapter) return undefined;
+// Looks up a chapter by its URL slug from `tariff_chapter_reports`. Chapter title comes from the
+// related `tariff_chapters` row so we never duplicate chapter metadata in code.
+export async function resolveChapterRoute(rawSlug: string): Promise<ResolvedChapterRoute | undefined> {
+  const row = await prisma.tariffChapterReport.findUnique({
+    where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug: rawSlug } },
+    select: { slug: true, oldUrl: true, chapter: { select: { number: true, title: true } } },
+  });
+  if (!row) return undefined;
   return {
-    canonicalSlug: chapterUrlSlug(chapter),
-    chapter,
-    primaryIndustry: getIndustryForPrimaryChapter(chapterNumber),
+    chapter: { number: row.chapter.number, title: row.chapter.title, slug: row.slug },
+    oldUrl: row.oldUrl,
   };
 }
 
-export function chapterCoverHref(chapter: HtsChapterRef): string {
-  return `/industry-tariff-report/chapters/${chapterUrlSlug(chapter)}`;
+export function chapterCoverHref(slug: string): string {
+  return `/industry-tariff-report/chapters/${slug}`;
 }
 
-export function chapterSectionHref(chapter: HtsChapterRef, sectionSlug: string): string {
-  return `${chapterCoverHref(chapter)}/${sectionSlug}`;
+export function chapterSectionHref(slug: string, sectionSlug: string): string {
+  return `${chapterCoverHref(slug)}/${sectionSlug}`;
 }
 
-// Per-section copy used for page H1, meta description, and the placeholder body. Kept here so the
-// six chapter route files stay thin and the wording lives in one place.
 interface ChapterSectionCopy {
   pageTitle: string;
   description: string;
 }
 
-const SECTION_COPY: Record<string, (shortName: string, padded: string) => ChapterSectionCopy> = {
-  'tariff-updates': (shortName, padded) => ({
+const SECTION_COPY: Record<string, (title: string, padded: string) => ChapterSectionCopy> = {
+  'tariff-updates': (title, padded) => ({
     pageTitle: 'Tariff Updates',
-    description: `Recent tariff updates affecting HTS Chapter ${padded} (${shortName}) — rate changes, effective dates, exclusions, and policy actions impacting goods classified under this chapter.`,
+    description: `Recent tariff updates affecting HTS Chapter ${padded} (${title}) — rate changes, effective dates, exclusions, and policy actions impacting goods classified under this chapter.`,
   }),
-  'understand-industry': (shortName, padded) => ({
+  'understand-industry': (title, padded) => ({
     pageTitle: 'Understand the Industry',
-    description: `Background on the industry structure behind HTS Chapter ${padded} (${shortName}) — supply chains, established players, challengers, and the economics that drive tariff impact.`,
+    description: `Background on the industry structure behind HTS Chapter ${padded} (${title}) — supply chains, established players, challengers, and the economics that drive tariff impact.`,
   }),
-  'industry-areas': (shortName, padded) => ({
+  'industry-areas': (title, padded) => ({
     pageTitle: 'Industry Areas',
-    description: `Sub-areas of HTS Chapter ${padded} (${shortName}) — segment-level tariff exposure across the product groupings inside this chapter.`,
+    description: `Sub-areas of HTS Chapter ${padded} (${title}) — segment-level tariff exposure across the product groupings inside this chapter.`,
   }),
-  'final-conclusion': (shortName, padded) => ({
+  'final-conclusion': (title, padded) => ({
     pageTitle: 'Final Conclusion',
-    description: `Forward-looking conclusion for HTS Chapter ${padded} (${shortName}) — what the latest tariff actions mean for sourcing, pricing, and strategic positioning.`,
+    description: `Forward-looking conclusion for HTS Chapter ${padded} (${title}) — what the latest tariff actions mean for sourcing, pricing, and strategic positioning.`,
   }),
 };
 
-export function getChapterSectionCopy(sectionSlug: string, chapter: HtsChapterRef): ChapterSectionCopy | undefined {
+export function getChapterSectionCopy(sectionSlug: string, chapter: ChapterRouteInfo): ChapterSectionCopy | undefined {
   const padded = chapter.number.toString().padStart(2, '0');
-  return SECTION_COPY[sectionSlug]?.(chapter.shortName, padded);
+  return SECTION_COPY[sectionSlug]?.(chapter.title, padded);
 }
