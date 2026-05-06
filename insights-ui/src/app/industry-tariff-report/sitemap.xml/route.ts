@@ -1,5 +1,6 @@
-import { getTariffReportsLastModifiedDates } from '@/scripts/industry-tariff-reports/fetch-tariff-reports-with-updated-at';
-import { getAllHeadingSubheadingCombinations } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { prisma } from '@/prisma';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { Prisma } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -10,62 +11,44 @@ interface SiteMapUrl {
   lastmod?: string;
 }
 
-// Generate URLs for tariff reports and their sections
+// evaluate-industry-areas and all-countries-tariff-updates are omitted: both render the cover with
+// `<link rel="canonical">` pointing back at the cover, so advertising them here would surface
+// non-canonical URLs.
+const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
+
+// A row counts as "seeded" when its cover (introduction) JSON has been written. Slug-only rows
+// inserted for chapters with no industry mapping carry a NULL introduction and are excluded.
+const SEEDED_FILTER = { introduction: { not: Prisma.DbNull } } as const;
+
+// `oldUrl` on a seeded row is the canonical "this chapter is part of an industry" signal — when
+// present, the chapter's content lives at `/industry-tariff-report/<oldUrl>` and the chapter URL
+// is never reachable. Only chapters with a NULL `oldUrl` get their own `/chapters/<slug>` URL.
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
-  const lastModifiedDates = await getTariffReportsLastModifiedDates();
-  const { getTariffIndustryDefinitionById, TariffIndustryId } = await import('@/scripts/industry-tariff-reports/tariff-industries');
-  const tariffReports = Object.values(TariffIndustryId).map((industryId) => ({
-    ...getTariffIndustryDefinitionById(industryId),
-    lastModified: lastModifiedDates[industryId] || new Date().toISOString(),
-  }));
 
-  if (tariffReports.length === 0) {
-    console.warn('No tariff reports found for the sitemap.');
-    return urls;
-  }
+  const rows = await prisma.tariffChapterReport.findMany({
+    where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
+    select: { slug: true, oldUrl: true, updatedAt: true },
+    orderBy: { chapter: { number: 'asc' } },
+  });
 
-  // For each industry report
-  for (const industry of tariffReports) {
-    const industryId = industry.industryId;
+  for (const row of rows) {
+    const lastmod = row.updatedAt.toISOString();
 
-    // Main report page
-    urls.push({
-      url: `/industry-tariff-report/${industryId}`,
-      changefreq: 'weekly',
-      priority: 0.8,
-      lastmod: industry.lastModified,
-    });
-
-    // Standard report sections based on navigation structure
-    const reportSections = ['tariff-updates', 'all-countries-tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
-
-    // Add URLs for each section
-    for (const section of reportSections) {
-      urls.push({
-        url: `/industry-tariff-report/${industryId}/${section}`,
-        changefreq: 'weekly',
-        priority: 0.7,
-        lastmod: industry.lastModified,
-      });
+    if (row.oldUrl) {
+      const industryPath = `/industry-tariff-report/${row.oldUrl}`;
+      urls.push({ url: industryPath, changefreq: 'weekly', priority: 0.8, lastmod });
+      for (const section of REPORT_SECTIONS) {
+        urls.push({ url: `${industryPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });
+      }
+      continue;
     }
 
-    const combos = getAllHeadingSubheadingCombinations(industry.industryId);
-    // Add the main evaluate-industry-areas section
-    urls.push({
-      url: `/industry-tariff-report/${industryId}/evaluate-industry-areas`,
-      changefreq: 'weekly',
-      priority: 0.7,
-      lastmod: industry.lastModified,
-    });
-    combos.forEach((c) =>
-      urls.push({
-        url: `/industry-tariff-report/${industry.industryId}/evaluate-industry-areas/${c.headingIndex}-${c.subHeadingIndex}`,
-        changefreq: 'weekly',
-        priority: 0.6,
-        lastmod: industry.lastModified,
-      })
-    );
+    const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
+    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod });
+    for (const section of REPORT_SECTIONS) {
+      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod });
+    }
   }
 
   return urls;

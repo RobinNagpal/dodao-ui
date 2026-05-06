@@ -133,7 +133,7 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
     name: 'Copper',
     industryId: TariffIndustryId.copper,
     reportTitle: 'Impact of Tariffs on Copper',
-    reportOneLiner: 'An analysis of the newly announced 50% Section 232 tariffs on copper imports and their effects on supply chains and pricing.',
+    reportOneLiner: 'An analysis of the newly announced 50% Section 232 tariffs on copper imports and their effects on supply chains and pricing.',
     headingsCount: 3,
     subHeadingsCount: 2,
     establishedPlayersCount: 3,
@@ -591,6 +591,13 @@ export interface HeadingSubheadingCombination {
   headingIndex: number;
   subHeadingIndex: number;
   displayName: string;
+}
+
+// Looks up an industry by its `industryId` (the legacy URL slug stored in `tariff_chapter_reports.oldUrl`).
+// Non-throwing — returns undefined if the row's oldUrl doesn't match a known industry.
+export function findIndustryByLegacyUrl(oldUrl: string | null | undefined): TariffIndustryDefinition | undefined {
+  if (!oldUrl) return undefined;
+  return Object.values(TariffIndustries).find((industry) => industry.industryId === oldUrl);
 }
 
 export function getAllHeadingSubheadingCombinations(industryId: TariffIndustryId): HeadingSubheadingCombination[] {
