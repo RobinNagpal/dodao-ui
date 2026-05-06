@@ -1,7 +1,7 @@
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import {
   chapterUrlSlug,
-  getIndustryForPrimaryChapter,
+  findIndustryByLegacyUrl,
   HTS_CHAPTERS,
   HtsChapterRef,
   TariffIndustryDefinition,
@@ -158,7 +158,7 @@ export default async function TariffReportsPage() {
               {seededChapters.map((row) => {
                 const chapter = HTS_CHAPTERS[row.chapterNumber];
                 if (!chapter) return null;
-                const industry = getIndustryForPrimaryChapter(row.chapterNumber);
+                const industry = findIndustryByLegacyUrl(row.oldUrl);
                 return <ChapterCard key={row.chapterNumber} chapter={chapter} industry={industry} lastModified={row.updatedAt.toISOString()} />;
               })}
             </div>

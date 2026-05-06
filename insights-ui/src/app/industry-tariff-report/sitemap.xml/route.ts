@@ -1,4 +1,4 @@
-import { chapterUrlSlug, getIndustryForPrimaryChapter, HTS_CHAPTERS } from '@/scripts/industry-tariff-reports/tariff-industries';
+import { chapterUrlSlug, HTS_CHAPTERS } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getSeededChapterReports } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
@@ -15,16 +15,18 @@ interface SiteMapUrl {
 // non-canonical URLs.
 const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-areas', 'final-conclusion'];
 
+// `oldUrl` on a seeded row is the canonical "this chapter is part of an industry" signal — when
+// present, the chapter's content lives at `/industry-tariff-report/<oldUrl>` and the chapter URL
+// is never reachable. Only chapters with a NULL `oldUrl` get their own `/chapters/<slug>` URL.
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
   const seeded = await getSeededChapterReports();
 
   for (const row of seeded) {
     const lastmod = row.updatedAt.toISOString();
-    const industry = getIndustryForPrimaryChapter(row.chapterNumber);
 
-    if (industry) {
-      const industryPath = `/industry-tariff-report/${industry.industryId}`;
+    if (row.oldUrl) {
+      const industryPath = `/industry-tariff-report/${row.oldUrl}`;
       urls.push({ url: industryPath, changefreq: 'weekly', priority: 0.8, lastmod });
       for (const section of REPORT_SECTIONS) {
         urls.push({ url: `${industryPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });

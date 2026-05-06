@@ -811,6 +811,13 @@ export function getIndustryForPrimaryChapter(chapterNumber: number): TariffIndus
   return Object.values(TariffIndustries).find((industry) => getPrimaryChapterForIndustry(industry)?.number === chapterNumber);
 }
 
+// Looks up an industry by its `industryId` (the legacy URL slug stored in `tariff_chapter_reports.oldUrl`).
+// Non-throwing — returns undefined if the row's oldUrl doesn't match a known industry.
+export function findIndustryByLegacyUrl(oldUrl: string | null | undefined): TariffIndustryDefinition | undefined {
+  if (!oldUrl) return undefined;
+  return Object.values(TariffIndustries).find((industry) => industry.industryId === oldUrl);
+}
+
 // All chapters covered by an industry — both primary (htsChapters[0] / primaryChapterNumber) and
 // non-primary. Used to render the "Related HTS Chapters" cross-link block on the industry page.
 export function getAllChaptersForIndustry(industry: TariffIndustryDefinition): HtsChapterRef[] {
