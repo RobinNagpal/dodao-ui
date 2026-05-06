@@ -10,6 +10,7 @@ import {
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
+import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
 import { prisma } from '@/prisma';
@@ -73,4 +74,9 @@ export async function revalidateStockScenariosListingCache() {
 export async function revalidateStockScenarioCache(slug: string) {
   revalidateStockScenarioBySlugTag(slug);
   return { success: true, message: `Revalidated Stock scenario cache for ${slug}` };
+}
+
+export async function revalidateTariffReportsListingCache() {
+  revalidateTariffReportsListing();
+  return { success: true, message: 'Revalidated tariff reports listing cache' };
 }
