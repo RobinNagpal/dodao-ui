@@ -137,89 +137,82 @@ function getTariffUpdatesForIndustryPrompt(chapterLabel: string, date: string, h
   return prompt;
 }
 
-async function getTariffUpdatesForIndustry(
+// Fetch one country's tariff blob from the LLM. Wrapped in its own helper so the
+// caller can swallow per-country errors and keep going — we'd rather persist 4/5
+// countries than discard everything because the 5th call hit a transient error.
+async function fetchCountryTariff(chapterLabel: string, date: string, headings: IndustryAreasWrapper, country: string): Promise<CountrySpecificTariff> {
+  const prompt = getTariffUpdatesForIndustryPrompt(chapterLabel, date, headings, country);
+  console.log(`Fetching tariffs for ${country}…`);
+  return getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
+}
+
+// Multi-country generation path. Persists after each country so a mid-flight
+// failure (LLM error, serverless timeout) leaves the prior countries saved
+// rather than discarding the whole batch. A subsequent run can re-target the
+// missing countries via the single-country path.
+async function generateAllCountryTariffs(
   ctx: ChapterPromptContext,
   date: string,
   headings: IndustryAreasWrapper,
-  countryName?: string
+  countriesToProcess: string[]
 ): Promise<TariffUpdatesForIndustry> {
-  const existingTariffUpdates = await readTariffUpdates(ctx.slug);
-  const existingCountryNames = existingTariffUpdates?.countryNames || [];
   const chapterLabel = formatChapterLabel(ctx);
-
-  let countriesToProcess: string[];
-  if (countryName) {
-    countriesToProcess = [countryName];
-  } else {
-    console.log(`Fetching top 5 trading partners for ${ctx.slug}…`);
-    countriesToProcess = await getTopTradingCountries(chapterLabel, date);
-  }
-
-  console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
-  const countrySpecificTariffs: CountrySpecificTariff[] = [];
+  const collected: CountrySpecificTariff[] = [];
+  const failures: string[] = [];
 
   for (const country of countriesToProcess) {
-    const prompt = getTariffUpdatesForIndustryPrompt(chapterLabel, date, headings, country);
-    console.log(`Fetching tariffs for ${country}…`);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(
-      prompt,
-      CountrySpecificTariffSchema,
-      LLMProvider.GEMINI_WITH_GROUNDING,
-      GeminiModel.GEMINI_3_PRO_PREVIEW
-    );
-    countrySpecificTariffs.push(countryTariff);
+    try {
+      const tariff = await fetchCountryTariff(chapterLabel, date, headings, country);
+      collected.push(tariff);
+      // Incremental save: persist after every successful country so a later
+      // failure doesn't roll back what we already have.
+      await writeTariffUpdates(ctx.slug, {
+        countryNames: countriesToProcess,
+        countrySpecificTariffs: collected,
+        lastUpdated: new Date().toISOString(),
+      });
+    } catch (err) {
+      failures.push(country);
+      console.error(`Failed to generate tariffs for ${country}; continuing with remaining countries.`, err);
+    }
   }
 
-  if (!countryName) {
-    return {
-      countryNames: countriesToProcess,
-      countrySpecificTariffs,
-      lastUpdated: new Date().toISOString(),
-    };
+  if (collected.length === 0) {
+    throw new Error(`No tariff data generated. All countries failed: ${failures.join(', ')}`);
   }
 
-  if (existingTariffUpdates && existingTariffUpdates.countrySpecificTariffs.length > 0) {
-    const newTariffsMap = new Map<string, CountrySpecificTariff>();
-    countrySpecificTariffs.forEach((tariff) => {
-      newTariffsMap.set(tariff.countryName.toLowerCase(), tariff);
-    });
+  return {
+    countryNames: countriesToProcess,
+    countrySpecificTariffs: collected,
+    lastUpdated: new Date().toISOString(),
+  };
+}
 
-    const orderedTariffs = existingCountryNames.map((country) => {
-      if (country.toLowerCase() === countryName.toLowerCase()) {
-        let newTariff = newTariffsMap.get(country) || newTariffsMap.get(country.toLowerCase());
-        if (!newTariff) {
-          for (const generatedTariff of countrySpecificTariffs) {
-            if (generatedTariff.countryName.toLowerCase() === country.toLowerCase()) {
-              newTariff = generatedTariff;
-              break;
-            }
-          }
-        }
-        if (!newTariff) {
-          console.error(`Failed to get new tariff data for ${country}`);
-          return existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country)!;
-        }
-        return newTariff;
-      }
+// Single-country regeneration path. Replaces just the targeted country in the
+// existing record — used by the admin "regenerate one country" affordance.
+async function regenerateSingleCountryTariff(
+  ctx: ChapterPromptContext,
+  date: string,
+  headings: IndustryAreasWrapper,
+  countryName: string
+): Promise<TariffUpdatesForIndustry> {
+  const chapterLabel = formatChapterLabel(ctx);
+  const existing = await readTariffUpdates(ctx.slug);
+  const newTariff = await fetchCountryTariff(chapterLabel, date, headings, countryName);
 
-      const existingTariff = existingTariffUpdates.countrySpecificTariffs.find((t) => t.countryName === country);
-      if (!existingTariff) {
-        console.error(`Failed to find existing tariff data for ${country}`);
-        throw new Error(`No data available for country: ${country}`);
-      }
-      return existingTariff;
-    });
-
+  if (existing && existing.countrySpecificTariffs.length > 0) {
+    const merged = existing.countrySpecificTariffs.map((t) => (t.countryName.toLowerCase() === countryName.toLowerCase() ? newTariff : t));
+    const alreadyPresent = existing.countrySpecificTariffs.some((t) => t.countryName.toLowerCase() === countryName.toLowerCase());
     return {
-      countryNames: existingCountryNames,
-      countrySpecificTariffs: orderedTariffs,
+      countryNames: existing.countryNames,
+      countrySpecificTariffs: alreadyPresent ? merged : [...merged, newTariff],
       lastUpdated: new Date().toISOString(),
     };
   }
 
   return {
-    countryNames: countriesToProcess,
-    countrySpecificTariffs,
+    countryNames: [countryName],
+    countrySpecificTariffs: [newTariff],
     lastUpdated: new Date().toISOString(),
   };
 }
@@ -230,11 +223,20 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(slug: string, dat
   const headings = await readIndustryHeadings(slug);
   if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
 
-  const tariffUpdates = await getTariffUpdatesForIndustry(ctx, date, headings, countryName);
-
-  if (!tariffUpdates.countrySpecificTariffs || tariffUpdates.countrySpecificTariffs.length === 0) {
-    throw new Error('No tariff data generated');
+  if (countryName) {
+    const tariffUpdates = await regenerateSingleCountryTariff(ctx, date, headings, countryName);
+    await writeTariffUpdates(slug, tariffUpdates);
+    return;
   }
 
+  const chapterLabel = formatChapterLabel(ctx);
+  console.log(`Fetching top 5 trading partners for ${slug}…`);
+  const countriesToProcess = await getTopTradingCountries(chapterLabel, date);
+  console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
+
+  // generateAllCountryTariffs persists incrementally; this final write is
+  // a no-op semantically but keeps the function symmetric with the single-
+  // country path and ensures the final lastUpdated stamp is up to date.
+  const tariffUpdates = await generateAllCountryTariffs(ctx, date, headings, countriesToProcess);
   await writeTariffUpdates(slug, tariffUpdates);
 }

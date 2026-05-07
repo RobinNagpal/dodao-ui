@@ -96,7 +96,16 @@ export default function TariffReportsAdminTable(): JSX.Element {
       for (let i = 0; i < CHAPTER_GENERATE_STEPS.length; i++) {
         const step = CHAPTER_GENERATE_STEPS[i] as ChapterGenerateStep;
         updateRun(slug, { currentStep: i });
-        await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
+        // `postData` resolves to `undefined` (without throwing) when the API
+        // returns a non-2xx. Treat that as a hard stop so we don't paint later
+        // steps green while the chain has already broken — and so cascading
+        // failures (e.g. tariffUpdates → executiveSummary) surface immediately.
+        const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
+        if (result === undefined) {
+          updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed — see server logs.` });
+          await reFetchData();
+          return;
+        }
         // Mark this field as filled in the local overlay so the pill flips to ✓.
         setRunStates((prev) => {
           const cur = prev[slug] ?? EMPTY_RUN;
