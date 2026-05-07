@@ -35,7 +35,8 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
   const seoDetails = report.reportSeoDetails?.industryAreasSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
-  const content = report.industryAreasSections ? parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections)) : 'No content available';
+  const markdown = report.industryAreasSections ? getMarkdownContentForIndustryAreas(report.industryAreasSections) : '';
+  const content = markdown ? parseMarkdown(markdown) : '';
 
   return (
     <div className="mx-auto max-w-7xl py-2">
@@ -65,7 +66,11 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
       <div className="space-y-12">
         <div className="bg-gray-900 rounded-lg p-2 shadow-sm">
           <div className="markdown-body prose max-w-none px-2">
-            <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
+            {content ? (
+              <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
+            ) : (
+              <p className="text-gray-500 italic p-4">No content available</p>
+            )}
           </div>
         </div>
       </div>

@@ -66,7 +66,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       <div className="space-y-12">
         {renderSection(
           'Overview',
-          report.reportCover ? (
+          report.reportCover?.reportCoverContent ? (
             <div
               className="prose max-w-none markdown markdown-body"
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
@@ -101,7 +101,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
             </div>
           )}
 
-        {report.executiveSummary &&
+        {report.executiveSummary?.executiveSummary &&
           renderSection(
             'Executive Summary',
             <div
