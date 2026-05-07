@@ -405,7 +405,12 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
     <Breadcrumbs
       breadcrumbs={breadcrumbs}
       rightButton={
-        <StockActions ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}>
+        <StockActions
+          ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}
+          movedExchange={d.movedExchange ?? null}
+          movedSymbol={d.movedSymbol ?? null}
+          isDeleted={d.isDeleted ?? false}
+        >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <TickerComparisonButton
