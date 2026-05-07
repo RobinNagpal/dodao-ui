@@ -40,6 +40,7 @@ import {
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -102,6 +103,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
   // Try fetching by specific exchange first
   const tickerByExchange = await fetchTickerByExchange(exchange, ticker);
   if (tickerByExchange) {
+    enforceMovedRedirect(tickerByExchange, exchange, ticker);
     return tickerByExchange;
   }
 
@@ -120,6 +122,7 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
     permanentRedirect(`/stocks/${canonicalExchange}/${tickerAnyExchange.symbol.toUpperCase()}`);
   }
 
+  enforceMovedRedirect(tickerAnyExchange, exchange, ticker);
   return tickerAnyExchange;
 }
 

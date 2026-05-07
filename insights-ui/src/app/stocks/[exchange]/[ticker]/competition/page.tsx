@@ -5,6 +5,7 @@ import { CompetitionResponse } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -61,6 +62,7 @@ async function getCompetitionOrRedirect(exchange: string, ticker: string): Promi
 
   // Ticker found on the correct exchange — happy path
   if (data.ticker) {
+    enforceMovedRedirect(data.ticker, exchange, ticker, '/competition');
     return data;
   }
 
@@ -79,6 +81,7 @@ async function getCompetitionOrRedirect(exchange: string, ticker: string): Promi
     permanentRedirect(`/stocks/${canonicalExchange}/${fallback.ticker.symbol.toUpperCase()}/competition`);
   }
 
+  enforceMovedRedirect(fallback.ticker, exchange, ticker, '/competition');
   return fallback;
 }
 

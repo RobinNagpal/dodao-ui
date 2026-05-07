@@ -6,6 +6,7 @@ import { MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS, ManagementTeamAlignmentVerdic
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { generateManagementTeamArticleSchema, generateManagementTeamBreadcrumbSchema } from '@/utils/metadata-generators';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -52,7 +53,10 @@ async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastRespo
 
 async function getTickerOrRedirect(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const data = await fetchTickerByExchange(exchange, ticker);
-  if (data) return data;
+  if (data) {
+    enforceMovedRedirect(data, exchange, ticker, '/management-team');
+    return data;
+  }
 
   noStore();
   const fallback = await fetchTickerAnyExchange(ticker);
@@ -62,6 +66,7 @@ async function getTickerOrRedirect(exchange: string, ticker: string): Promise<Ti
   if (canonicalExchange !== exchange.toUpperCase()) {
     permanentRedirect(`/stocks/${canonicalExchange}/${fallback.symbol.toUpperCase()}/management-team`);
   }
+  enforceMovedRedirect(fallback, exchange, ticker, '/management-team');
   return fallback;
 }
 
