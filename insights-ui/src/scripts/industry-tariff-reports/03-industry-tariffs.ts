@@ -240,3 +240,26 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(slug: string, dat
   const tariffUpdates = await generateAllCountryTariffs(ctx, date, headings, countriesToProcess);
   await writeTariffUpdates(slug, tariffUpdates);
 }
+
+// Phase 1 of the split tariff-updates flow: fetch the top-5 trading countries
+// (single grounded LLM call) and persist a stub record so the per-country
+// route can append into it. Returns the country list so the caller can fan
+// out one HTTP request per country — keeps each request well under Vercel's
+// function timeout, which the bundled flow can blow past.
+export async function initTariffUpdatesAndSaveToFile(slug: string, date: string): Promise<string[]> {
+  console.log(`Initialising tariff updates for ${slug} (top countries lookup)`);
+  const ctx = await getChapterPromptContext(slug);
+  const chapterLabel = formatChapterLabel(ctx);
+  const countries = await getTopTradingCountries(chapterLabel, date);
+
+  const existing = await readTariffUpdates(slug);
+  await writeTariffUpdates(slug, {
+    countryNames: countries,
+    // Preserve any country tariffs already generated (e.g. a previous partial
+    // run) so re-init on the same chapter doesn't wipe in-progress work.
+    countrySpecificTariffs: existing?.countrySpecificTariffs ?? [],
+    lastUpdated: new Date().toISOString(),
+  });
+
+  return countries;
+}

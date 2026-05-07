@@ -1,5 +1,6 @@
 'use client';
 
+import type { InitTariffUpdatesResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/init-tariff-updates/route';
 import type { ChapterReportAdminListResponse, ChapterReportAdminRow } from '@/app/api/industry-tariff-reports/chapters/route';
 import { CHAPTER_GENERATE_STEPS, ChapterGenerateStep, ChapterReportField } from '@/utils/tariff-reports/chapter-generate-sections';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -85,9 +86,44 @@ export default function TariffReportsAdminTable(): JSX.Element {
   const [runStates, setRunStates] = useState<Record<string, RowRunState>>({});
   // `usePostData` is generic enough to call any of the chapter-keyed generate routes.
   const { postData } = usePostData<unknown, unknown>({ successMessage: '', errorMessage: '' });
+  const { postData: postInit } = usePostData<InitTariffUpdatesResponse, { date?: string }>({ successMessage: '', errorMessage: '' });
+  const { postData: postCountry } = usePostData<unknown, { countryName: string }>({ successMessage: '', errorMessage: '' });
 
   const updateRun = (slug: string, patch: Partial<RowRunState>) => {
     setRunStates((prev) => ({ ...prev, [slug]: { ...(prev[slug] ?? EMPTY_RUN), ...patch } }));
+  };
+
+  // The bundled `generate-tariff-updates` route runs ~6 grounded LLM calls in
+  // sequence, which routinely exceeds Vercel's function timeout. Split into
+  // (1) init → discover top countries, (2) one POST per country. Each request
+  // is a single LLM call so it stays well under any realistic timeout.
+  const runTariffUpdatesStep = async (slug: string): Promise<boolean> => {
+    const initUrl = `${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/init-tariff-updates`;
+    const initResult = await postInit(initUrl, {});
+    if (!initResult) {
+      updateRun(slug, { currentStep: null, error: `Step "tariffUpdates" failed at init step — see server logs.` });
+      return false;
+    }
+
+    const countryUrl = `${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/generate-tariff-updates`;
+    const failures: string[] = [];
+    for (const country of initResult.countries) {
+      const countryResult = await postCountry(countryUrl, { countryName: country });
+      if (countryResult === undefined) failures.push(country);
+    }
+
+    // Match the server-side rule (`generateAllCountryTariffs` throws only if
+    // zero countries land): treat the step as a failure only when nothing
+    // was persisted. Partial success keeps the chain alive — downstream
+    // sections only need at least one country in `tariffUpdates` to read.
+    if (failures.length === initResult.countries.length) {
+      updateRun(slug, { currentStep: null, error: `Step "tariffUpdates" failed for all countries: ${failures.join(', ')}` });
+      return false;
+    }
+    if (failures.length > 0) {
+      console.warn(`tariffUpdates partial success for ${slug}; failed: ${failures.join(', ')}`);
+    }
+    return true;
   };
 
   const generateAll = async (slug: string): Promise<void> => {
@@ -96,16 +132,27 @@ export default function TariffReportsAdminTable(): JSX.Element {
       for (let i = 0; i < CHAPTER_GENERATE_STEPS.length; i++) {
         const step = CHAPTER_GENERATE_STEPS[i] as ChapterGenerateStep;
         updateRun(slug, { currentStep: i });
-        // `postData` resolves to `undefined` (without throwing) when the API
-        // returns a non-2xx. Treat that as a hard stop so we don't paint later
-        // steps green while the chain has already broken — and so cascading
-        // failures (e.g. tariffUpdates → executiveSummary) surface immediately.
-        const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
-        if (result === undefined) {
-          updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed — see server logs.` });
+
+        let succeeded: boolean;
+        if (step.field === 'tariffUpdates') {
+          succeeded = await runTariffUpdatesStep(slug);
+        } else {
+          // `postData` resolves to `undefined` (without throwing) when the API
+          // returns a non-2xx. Treat that as a hard stop so we don't paint later
+          // steps green while the chain has already broken — and so cascading
+          // failures (e.g. tariffUpdates → executiveSummary) surface immediately.
+          const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${slug}/${step.apiPath}`, {});
+          succeeded = result !== undefined;
+          if (!succeeded) {
+            updateRun(slug, { currentStep: null, error: `Step "${step.label}" failed — see server logs.` });
+          }
+        }
+
+        if (!succeeded) {
           await reFetchData();
           return;
         }
+
         // Mark this field as filled in the local overlay so the pill flips to ✓.
         setRunStates((prev) => {
           const cur = prev[slug] ?? EMPTY_RUN;
