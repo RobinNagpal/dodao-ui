@@ -37,6 +37,10 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
   const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
+  const tariffUpdates = report.tariffUpdates;
+  const countryNames = Array.isArray(tariffUpdates?.countryNames) ? tariffUpdates?.countryNames ?? [] : [];
+  const countrySpecificTariffs = Array.isArray(tariffUpdates?.countrySpecificTariffs) ? tariffUpdates?.countrySpecificTariffs ?? [] : [];
+
   return (
     <div className="mx-auto max-w-7xl py-2">
       {/* Title and Actions */}
@@ -50,7 +54,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
       </div>
 
       {/* SEO Warning Banner for Admins */}
-      {report.tariffUpdates && isSeoMissing && (
+      {tariffUpdates && isSeoMissing && (
         <PrivateWrapper>
           <div className="mb-8 p-4 bg-amber-100 border border-amber-300 rounded-md text-amber-800 shadow-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -63,17 +67,17 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
       )}
 
       <div className="space-y-4">
-        {/* Country Navigation */}
-        {report.tariffUpdates && report.tariffUpdates.countryNames && <CountryNavigation countries={report.tariffUpdates.countryNames} />}
+        {countryNames.length > 0 && <CountryNavigation countries={countryNames} />}
 
-        {report.tariffUpdates ? (
-          report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
-            const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
+        {countrySpecificTariffs.length > 0 ? (
+          countrySpecificTariffs.map((countryTariff, index) => {
+            const countryName = typeof countryTariff?.countryName === 'string' ? countryTariff.countryName : '';
+            const sectionId = `country-${countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return (
               <div key={index} className="mb-6">
                 <div className="flex justify-end mb-4">
                   <PrivateWrapper>
-                    <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryTariff.countryName} />
+                    <TariffUpdatesActions industryId={industryId} tariffIndex={index} countryName={countryName} />
                   </PrivateWrapper>
                 </div>
                 <CountryTariffRenderer countryTariff={countryTariff} sectionId={sectionId} />
