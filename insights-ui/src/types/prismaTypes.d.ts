@@ -1,4 +1,14 @@
 import { CompetitionAnalysis as CompetitionAnalysisType } from '@/types/public-equity/analysis-factors-types';
+import type {
+  ExecutiveSummary as TariffExecutiveSummaryType,
+  FinalConclusion as TariffFinalConclusionType,
+  IndustryAreaSection as TariffIndustryAreaSectionType,
+  IndustryAreasWrapper as TariffIndustryAreasType,
+  Introduction as TariffIntroductionType,
+  TariffReportSeoDetails as TariffReportSeoDetailsType,
+  TariffUpdatesForIndustry as TariffUpdatesForIndustryType,
+  UnderstandIndustry as TariffUnderstandIndustryType,
+} from '@/scripts/industry-tariff-reports/tariff-types';
 
 export interface StockFundamentalsSummary {
   marketCap?: string;
@@ -452,5 +462,15 @@ declare global {
     type EtfMorPortfolioSectorExposure = EtfMorPortfolioSectorExposure;
     type EtfMorPortfolioBondBreakdown = EtfMorPortfolioBondBreakdown;
     type EtfMorPortfolioHoldings = EtfMorPortfolioHoldings;
+
+    // Tariff chapter report JSON shapes
+    type TariffIndustryAreas = TariffIndustryAreasType;
+    type TariffIntroduction = TariffIntroductionType;
+    type TariffExecutiveSummary = TariffExecutiveSummaryType;
+    type TariffUpdatesForIndustry = TariffUpdatesForIndustryType;
+    type TariffUnderstandIndustry = TariffUnderstandIndustryType;
+    type TariffIndustryAreaSection = TariffIndustryAreaSectionType;
+    type TariffFinalConclusion = TariffFinalConclusionType;
+    type TariffReportSeoDetails = TariffReportSeoDetailsType;
   }
 }

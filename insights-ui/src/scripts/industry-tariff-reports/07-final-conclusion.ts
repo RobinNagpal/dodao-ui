@@ -8,6 +8,7 @@ import {
 import { FinalConclusion } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const PositiveImpactsSchema = z.object({
   title: z.string().describe('Title of the section which discusses the specific HTS chapter.'),
@@ -87,6 +88,11 @@ export async function getFinalConclusionAndSaveToFile(slug: string): Promise<voi
     ${JSON.stringify(tariffUpdates, null, 2)}
    `;
 
-  const finalConclusion = await getLlmResponse<FinalConclusion>(prompt, FinalConclusionSchema);
+  const finalConclusion = await getLlmResponse<FinalConclusion>(
+    prompt,
+    FinalConclusionSchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   await writeFinalConclusion(slug, finalConclusion);
 }

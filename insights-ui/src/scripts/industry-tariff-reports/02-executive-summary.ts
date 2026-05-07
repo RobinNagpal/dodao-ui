@@ -8,6 +8,7 @@ import {
 import { ExecutiveSummary } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const ExecutiveSummarySchema = z.object({
   title: z.string().describe('Title of the section which discusses the specific HTS chapter.'),
@@ -55,6 +56,11 @@ export async function getExecutiveSummaryAndSaveToFile(slug: string): Promise<vo
     ${JSON.stringify(tariffUpdates, null, 2)}
   `;
 
-  const executiveSummary = await getLlmResponse<ExecutiveSummary>(prompt, ExecutiveSummarySchema);
+  const executiveSummary = await getLlmResponse<ExecutiveSummary>(
+    prompt,
+    ExecutiveSummarySchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   await writeExecutiveSummary(slug, executiveSummary);
 }

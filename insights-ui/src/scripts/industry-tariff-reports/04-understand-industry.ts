@@ -7,6 +7,7 @@ import {
 import { UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const ChapterSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
@@ -116,7 +117,12 @@ ${JSON.stringify(headings, null, 2)}
 `;
 
   console.log('Invoking LLM for understanding industry');
-  const understandIndustry = await getLlmResponse<UnderstandIndustry>(prompt, UnderstandIndustrySchema);
+  const understandIndustry = await getLlmResponse<UnderstandIndustry>(
+    prompt,
+    UnderstandIndustrySchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   console.log('Understand Industry:', understandIndustry);
 
   await writeUnderstandIndustry(slug, understandIndustry);

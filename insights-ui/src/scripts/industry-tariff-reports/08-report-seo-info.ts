@@ -13,6 +13,7 @@ import {
 import { PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const PageSeoDetailsSchema = z.object({
   title: z.string().describe('SEO title for the page (50-60 characters)'),
@@ -41,7 +42,7 @@ async function generateSeoDetailsForSection(chapterLabel: string, sectionName: s
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema);
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
 }
 
 export async function generateReportCoverSeo(slug: string): Promise<PageSeoDetails | undefined> {

@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { ZodObject } from 'zod';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 import { GeminiModel, LLMProvider, getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { getGroundedResponse, getGroundedStructuredResponse } from '@/util/llm-grounding-utils';
 
@@ -46,7 +47,8 @@ export async function getLlmResponse<T extends Record<string, any>>(
           console.log('Using Gemini 3 Pro Preview with grounding - trying single-call grounded structured output...');
 
           try {
-            const groundedStructured = await getGroundedStructuredResponse<T>(prompt, model, schema);
+            const jsonSchema = zodToJsonSchema(schema, { $refStrategy: 'none' });
+            const groundedStructured = await getGroundedStructuredResponse<T>(prompt, model, jsonSchema);
 
             console.log('✅ Single-call grounded structured output succeeded');
             return groundedStructured.result;

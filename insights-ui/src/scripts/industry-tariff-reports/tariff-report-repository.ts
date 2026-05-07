@@ -206,14 +206,7 @@ function normalizeMarkdownNewlines(value: unknown): unknown {
 }
 
 export async function writeExecutiveSummary(slug: string, value: ExecutiveSummary): Promise<void> {
-  const raw = value as any;
-  const normalized: ExecutiveSummary = {
-    title: typeof raw?.title === 'string' ? raw.title : typeof raw?.Title === 'string' ? raw.Title : '',
-    executiveSummary:
-      typeof raw?.executiveSummary === 'string' ? raw.executiveSummary : typeof raw?.['Executive summary'] === 'string' ? raw['Executive summary'] : '',
-  };
-
-  await writeSection(slug, { executiveSummary: normalizeMarkdownNewlines(normalized) as Prisma.InputJsonValue });
+  await writeSection(slug, { executiveSummary: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
 }
 
 export async function readTariffUpdates(slug: string): Promise<TariffUpdatesForIndustry | undefined> {
@@ -229,32 +222,7 @@ export async function readUnderstandIndustry(slug: string): Promise<UnderstandIn
 }
 
 export async function writeUnderstandIndustry(slug: string, value: UnderstandIndustry): Promise<void> {
-  const raw = value as any;
-  const title = typeof raw?.title === 'string' ? raw.title : typeof raw?.Title === 'string' ? raw.Title : '';
-
-  const rawSections = Array.isArray(raw?.sections) ? raw.sections : Array.isArray(raw?.Sections) ? raw.Sections : [];
-  const sections = rawSections
-    .map((s: any) => {
-      const sectionTitle = typeof s?.title === 'string' ? s.title : typeof s?.Title === 'string' ? s.Title : '';
-      const parasRaw = Array.isArray(s?.paragraphs)
-        ? s.paragraphs
-        : Array.isArray(s?.Paragraphs)
-        ? s.Paragraphs
-        : typeof s?.paragraphs === 'string'
-        ? s.paragraphs.split(/\n{2,}/g)
-        : typeof s?.Paragraphs === 'string'
-        ? s.Paragraphs.split(/\n{2,}/g)
-        : [];
-
-      const paragraphs = (parasRaw as any[]).filter((p) => typeof p === 'string' && p.trim().length > 0).map((p) => p.trim());
-
-      return { title: sectionTitle, paragraphs };
-    })
-    .filter((s: any) => (typeof s.title === 'string' && s.title.trim().length > 0) || (Array.isArray(s.paragraphs) && s.paragraphs.length > 0));
-
-  const normalized: UnderstandIndustry = { title, sections };
-
-  await writeSection(slug, { understandIndustry: normalizeMarkdownNewlines(normalized) as Prisma.InputJsonValue });
+  await writeSection(slug, { understandIndustry: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
 }
 
 export async function readIndustryAreaSection(slug: string): Promise<IndustryAreaSection | undefined> {
@@ -262,13 +230,7 @@ export async function readIndustryAreaSection(slug: string): Promise<IndustryAre
 }
 
 export async function writeIndustryAreaSection(slug: string, value: IndustryAreaSection): Promise<void> {
-  const raw = value as any;
-  const normalized: IndustryAreaSection = {
-    title: typeof raw?.title === 'string' ? raw.title : typeof raw?.Title === 'string' ? raw.Title : '',
-    industryAreas: typeof raw?.industryAreas === 'string' ? raw.industryAreas : typeof raw?.industry_areas === 'string' ? raw.industry_areas : '',
-  };
-
-  await writeSection(slug, { industryAreasSections: normalizeMarkdownNewlines(normalized) as Prisma.InputJsonValue });
+  await writeSection(slug, { industryAreasSections: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
 }
 
 export async function readFinalConclusion(slug: string): Promise<FinalConclusion | undefined> {
@@ -276,44 +238,7 @@ export async function readFinalConclusion(slug: string): Promise<FinalConclusion
 }
 
 export async function writeFinalConclusion(slug: string, value: FinalConclusion): Promise<void> {
-  const raw = value as any;
-  const normalized: FinalConclusion = {
-    title: typeof raw?.title === 'string' ? raw.title : typeof raw?.Title === 'string' ? raw.Title : '',
-    conclusionBrief:
-      typeof raw?.conclusionBrief === 'string' ? raw.conclusionBrief : typeof raw?.['Conclusion brief'] === 'string' ? raw['Conclusion brief'] : '',
-    positiveImpacts: {
-      title:
-        typeof raw?.positiveImpacts?.title === 'string'
-          ? raw.positiveImpacts.title
-          : typeof raw?.positiveImpacts?.Title === 'string'
-          ? raw.positiveImpacts.Title
-          : 'Positive impacts',
-      positiveImpacts:
-        typeof raw?.positiveImpacts?.positiveImpacts === 'string'
-          ? raw.positiveImpacts.positiveImpacts
-          : typeof raw?.positiveImpacts?.['Positive impacts'] === 'string'
-          ? raw.positiveImpacts['Positive impacts']
-          : '',
-    },
-    negativeImpacts: {
-      title:
-        typeof raw?.negativeImpacts?.title === 'string'
-          ? raw.negativeImpacts.title
-          : typeof raw?.negativeImpacts?.Title === 'string'
-          ? raw.negativeImpacts.Title
-          : 'Negative impacts',
-      negativeImpacts:
-        typeof raw?.negativeImpacts?.negativeImpacts === 'string'
-          ? raw.negativeImpacts.negativeImpacts
-          : typeof raw?.negativeImpacts?.['Negative impacts'] === 'string'
-          ? raw.negativeImpacts['Negative impacts']
-          : '',
-    },
-    finalStatements:
-      typeof raw?.finalStatements === 'string' ? raw.finalStatements : typeof raw?.['Final statements'] === 'string' ? raw['Final statements'] : '',
-  };
-
-  await writeSection(slug, { conclusion: normalizeMarkdownNewlines(normalized) as Prisma.InputJsonValue });
+  await writeSection(slug, { conclusion: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
 }
 
 export async function readSeoDetails(slug: string): Promise<TariffReportSeoDetails | undefined> {

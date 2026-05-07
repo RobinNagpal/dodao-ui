@@ -9,6 +9,7 @@ import {
 import { ReportCover } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const ReportCoverSchema = z.object({
   title: z.string().describe('Title of the cover page.'),
@@ -53,6 +54,6 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
     # Tariff Updates
     ${JSON.stringify(tariffUpdates, null, 2)}
   `;
-  const reportCover = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema);
+  const reportCover = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
   await writeReportCover(slug, reportCover);
 }

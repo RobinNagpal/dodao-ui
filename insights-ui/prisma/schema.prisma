@@ -2073,20 +2073,22 @@ model TariffChapterReport {
   // Optional: chapters without seeded content carry only the slug.
   // `industryAreas` holds the headings/sub-headings tree (IndustryAreasWrapper)
   // generated first and consumed by every other section's prompt builder.
+  /// [TariffIndustryAreas]
   industryAreas         Json? @map("industry_areas")
+  /// [TariffIntroduction]
   introduction          Json? @map("introduction")
+  /// [TariffExecutiveSummary]
   executiveSummary      Json? @map("executive_summary")
+  /// [TariffUpdatesForIndustry]
   tariffUpdates         Json? @map("tariff_updates")
+  /// [TariffUnderstandIndustry]
   understandIndustry    Json? @map("understand_industry")
+  /// [TariffIndustryAreaSection]
   industryAreasSections Json? @map("industry_areas_sections")
+  /// [TariffFinalConclusion]
   conclusion            Json? @map("conclusion")
 
-  // Per-section SEO metadata in one JSON blob (mirrors the legacy S3
-  // `08-seo-details/seo-details.json` shape — `TariffReportSeoDetails`
-  // in tariff-types.ts: cover, executive summary, tariff updates,
-  // understand industry, industry areas, evaluate-industry-areas keyed
-  // by heading/subheading, final conclusion). Optional, like the
-  // section bodies.
+  /// [TariffReportSeoDetails]
   seoDetails Json? @map("seo_details")
 
   spaceId   String   @default("koala_gains") @map("space_id")

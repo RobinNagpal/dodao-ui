@@ -27,6 +27,8 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
     report = await reportResponse.json();
   }
 
+  console.log('report', report);
+
   if (!report) {
     return <div>Report not found</div>;
   }
@@ -37,7 +39,6 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
 
   const markdown = report.industryAreasSections ? getMarkdownContentForIndustryAreas(report.industryAreasSections) : '';
   const content = markdown ? parseMarkdown(markdown) : '';
-  console.log(content);
 
   return (
     <div className="mx-auto max-w-7xl py-2">

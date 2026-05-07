@@ -32,7 +32,6 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
   }
 
   const seoDetails = report.reportSeoDetails?.reportCoverSeoDetails;
-  console.log('seoDetails', seoDetails);
   const isSeoMissing = !seoDetails || !seoDetails.title || !seoDetails.shortDescription || !seoDetails.keywords?.length;
 
   const tariffUpdatesSummary =
