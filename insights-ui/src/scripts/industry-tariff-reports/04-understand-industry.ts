@@ -40,13 +40,26 @@ export async function getAndWriteUnderstandIndustryJson(slug: string): Promise<v
   if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
 
   const prompt = `
-I want to understand ${chapterLabel} in depth. Give me a very detailed article with:
-- Exactly **6 Headings** and **2–3 small paragraphs** under each heading
-- Share as many facts as possible (volumes, amounts, dollar values)
-- Add hyperlinks for definitions and key numbers throughout
-- The full article should be at least **3000 words**
-- Below are the consolidated key areas to cover under each of the six headings
-- I am also adding more details about the chapter to ensure each area is discussed
+You must output a JSON object that matches this EXACT schema:
+{
+  "title": string,
+  "sections": [
+    {
+      "title": string,
+      "paragraphs": string[]
+    }
+  ]
+}
+
+Content rules:
+- Create EXACTLY 6 sections (these are the 6 headings).
+- Each section must have 2–3 paragraphs in "paragraphs".
+- Each paragraph should be 3–5 lines and may contain markdown (bold, bullets, links).
+- Share as many facts as possible (volumes, amounts, dollar values) and wrap all amounts in backticks.
+- Add hyperlinks for definitions and key numbers throughout (use markdown links).
+- Avoid LaTeX, italics, or KaTeX formatting.
+
+Below are the consolidated key areas to cover under each of the six headings.
 
 # Important Headings Below
 
@@ -94,16 +107,6 @@ I want to understand ${chapterLabel} in depth. Give me a very detailed article w
 - **Scenario Planning**: best‑case vs. worst‑case outlooks, stress tests
 - **Strategic Moves**: M&A, vertical integration, diversification, partnerships
 - **Risk Management**: regulatory evolution, technological obsolescence, geopolitical exposure
-
-
-#  For output content:
-  - Cite the latest figures and embed hyperlinks to sources.
-  - Include hyperlinks/citations in the content where ever possible in the markdown format.
-  - Dont forget to include hyperlinks/citations in the content where ever possible.
-  - Avoid LaTeX, italics, or KaTeX formatting, or   character for space
-  - Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
-  - Use markdown format for output.
-  - All amounts, dollar values, or figures should be wrapped in backticks.
 
 
 # Various Sectors/Areas I want you to cover

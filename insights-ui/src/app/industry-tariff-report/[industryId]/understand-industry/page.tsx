@@ -3,9 +3,9 @@ import UnderstandIndustryActions from '@/components/industry-tariff/section-acti
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { fetchIndustryUnderstandIndustryMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
@@ -17,7 +17,7 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
   const { industryId } = await params;
 
   // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
+  const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;

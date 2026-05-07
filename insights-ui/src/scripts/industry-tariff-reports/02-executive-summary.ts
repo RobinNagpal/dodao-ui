@@ -43,8 +43,8 @@ export async function getExecutiveSummaryAndSaveToFile(slug: string): Promise<vo
   4. Dont use Katex or Latex or italics formatting in the response.
 
    Executive summary should include the following fields:
-    - Title
-    - Executive summary a string which is the summary of the report.
+    - title
+    - executiveSummary (a markdown string which is the summary of the report)
 
    ${outputInstructions}
 

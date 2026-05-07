@@ -32,6 +32,11 @@ async function generateSeoDetailsForSection(chapterLabel: string, sectionName: s
 
     The SEO metadata should be optimized for search engines while accurately reflecting the content.
 
+    Output must be a JSON object with EXACTLY these keys:
+    - title
+    - shortDescription
+    - keywords
+
     # Content:
     ${JSON.stringify(sectionContent, null, 2)}
   `;

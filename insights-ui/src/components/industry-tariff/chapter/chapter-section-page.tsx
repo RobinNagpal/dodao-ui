@@ -9,7 +9,7 @@ import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-report
 import type { IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -43,9 +43,9 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
   const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.title} | KoalaGains`;
   const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
 
-  let sectionSeo: PageSeoDetails | undefined;
+  let sectionSeo: (PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string }) | undefined;
   try {
-    const res = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
+    const res = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
     if (res.ok) {
       const body: ChapterSeoResponse = await res.json();
       sectionSeo = pickSectionSeo(body.seoDetails, sectionSlug);
@@ -54,8 +54,8 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
     // Network/SSR errors fall back to the placeholder copy below.
   }
 
-  const title = sectionSeo?.title || fallbackTitle;
-  const description = sectionSeo?.shortDescription || copy.description;
+  const title = sectionSeo?.title || sectionSeo?.seoTitle || sectionSeo?.seo_title || fallbackTitle;
+  const description = sectionSeo?.shortDescription || sectionSeo?.metaDescription || sectionSeo?.meta_description || copy.description;
   const keywords = sectionSeo?.keywords?.length ? sectionSeo.keywords : fallbackKeywords;
   const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter.slug, sectionSlug)}`;
 

@@ -4,7 +4,7 @@ import type { ChapterSeoResponse } from '@/app/api/industry-tariff-reports/chapt
 import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { chapterCoverHref, chapterSectionHref, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -19,9 +19,19 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
   const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
   const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'];
 
-  let coverSeo: { title?: string; shortDescription?: string; keywords?: string[] } | undefined;
+  let coverSeo:
+    | {
+        title?: string;
+        shortDescription?: string;
+        keywords?: string[];
+        seoTitle?: string;
+        metaDescription?: string;
+        seo_title?: string;
+        meta_description?: string;
+      }
+    | undefined;
   try {
-    const res = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
+    const res = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
     if (res.ok) {
       const body: ChapterSeoResponse = await res.json();
       coverSeo = body.seoDetails?.reportCoverSeoDetails;
@@ -30,8 +40,8 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
     // Network/SSR errors fall back to the placeholder copy below.
   }
 
-  const title = coverSeo?.title || fallbackTitle;
-  const description = coverSeo?.shortDescription || fallbackDescription;
+  const title = coverSeo?.title || coverSeo?.seoTitle || coverSeo?.seo_title || fallbackTitle;
+  const description = coverSeo?.shortDescription || coverSeo?.metaDescription || coverSeo?.meta_description || fallbackDescription;
   const keywords = coverSeo?.keywords?.length ? coverSeo.keywords : fallbackKeywords;
   const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter.slug)}`;
 

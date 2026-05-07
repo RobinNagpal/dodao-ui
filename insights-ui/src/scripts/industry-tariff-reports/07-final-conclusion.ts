@@ -72,11 +72,11 @@ export async function getFinalConclusionAndSaveToFile(slug: string): Promise<voi
 
 
    Conclusion should include the following fields:
-    - Title
-    - Conclusion brief a string which is a brief conclusion of the report.
-    - Positive impacts a string which is a summary of all the area specific summaries which tell about positive impacts of new tariffs on ${chapterLabel}.
-    - Negative impacts a string which is a summary of all the area specific summaries which tell about negative impacts of new tariffs on ${chapterLabel}.
-    - Final statements a string which is a final statement of the report.
+    - title
+    - conclusionBrief (string)
+    - positiveImpacts (object with keys: title, positiveImpacts)
+    - negativeImpacts (object with keys: title, negativeImpacts)
+    - finalStatements (string)
 
     ${outputInstructions}
 
