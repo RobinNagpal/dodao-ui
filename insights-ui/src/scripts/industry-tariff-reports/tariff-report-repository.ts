@@ -13,7 +13,17 @@ import type {
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+
 import { revalidateTariffReport, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
+
+/**
+ * Prisma JSON columns accept "JSON-ish" values, but Prisma's generated TS types
+ * often require an index signature for objects. We store plain serializable
+ * objects, so we cast to the specific Prisma field input type (not `any`).
+ */
+function toJsonField<K extends keyof Prisma.TariffChapterReportUpdateInput>(value: unknown): Prisma.TariffChapterReportUpdateInput[K] {
+  return value as Prisma.TariffChapterReportUpdateInput[K];
+}
 
 // Defaults for chapters that don't have a legacy `TariffIndustryDefinition`.
 // Used by the headings-generation prompt — must match the typical shape of
@@ -177,7 +187,7 @@ export async function readIndustryHeadings(slug: string): Promise<IndustryAreasW
 }
 
 export async function writeIndustryHeadings(slug: string, value: IndustryAreasWrapper): Promise<void> {
-  await writeSection(slug, { industryAreas: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { industryAreas: toJsonField<'industryAreas'>(value) });
 }
 
 export async function readReportCover(slug: string): Promise<ReportCover | undefined> {
@@ -185,15 +195,30 @@ export async function readReportCover(slug: string): Promise<ReportCover | undef
 }
 
 export async function writeReportCover(slug: string, value: ReportCover): Promise<void> {
-  await writeSection(slug, { introduction: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { introduction: toJsonField<'introduction'>(value) });
 }
 
 export async function readExecutiveSummary(slug: string): Promise<ExecutiveSummary | undefined> {
   return readSection<ExecutiveSummary>(slug, 'executiveSummary');
 }
 
+function normalizeMarkdownNewlines(value: unknown): unknown {
+  if (typeof value === 'string') {
+    // Some regenerated content lands double-escaped (literal "\n" in the string),
+    // which causes markdown parsers to treat the whole section as one line.
+    return value.replace(/\\n/g, '\n');
+  }
+  if (Array.isArray(value)) return value.map(normalizeMarkdownNewlines);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, normalizeMarkdownNewlines(v)]));
+  }
+  return value;
+}
+
 export async function writeExecutiveSummary(slug: string, value: ExecutiveSummary): Promise<void> {
-  await writeSection(slug, { executiveSummary: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, {
+    executiveSummary: toJsonField<'executiveSummary'>(normalizeMarkdownNewlines(value)),
+  });
 }
 
 export async function readTariffUpdates(slug: string): Promise<TariffUpdatesForIndustry | undefined> {
@@ -201,7 +226,7 @@ export async function readTariffUpdates(slug: string): Promise<TariffUpdatesForI
 }
 
 export async function writeTariffUpdates(slug: string, value: TariffUpdatesForIndustry): Promise<void> {
-  await writeSection(slug, { tariffUpdates: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { tariffUpdates: toJsonField<'tariffUpdates'>(value) });
 }
 
 export async function readUnderstandIndustry(slug: string): Promise<UnderstandIndustry | undefined> {
@@ -209,7 +234,9 @@ export async function readUnderstandIndustry(slug: string): Promise<UnderstandIn
 }
 
 export async function writeUnderstandIndustry(slug: string, value: UnderstandIndustry): Promise<void> {
-  await writeSection(slug, { understandIndustry: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, {
+    understandIndustry: toJsonField<'understandIndustry'>(normalizeMarkdownNewlines(value)),
+  });
 }
 
 export async function readIndustryAreaSection(slug: string): Promise<IndustryAreaSection | undefined> {
@@ -217,7 +244,9 @@ export async function readIndustryAreaSection(slug: string): Promise<IndustryAre
 }
 
 export async function writeIndustryAreaSection(slug: string, value: IndustryAreaSection): Promise<void> {
-  await writeSection(slug, { industryAreasSections: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, {
+    industryAreasSections: toJsonField<'industryAreasSections'>(normalizeMarkdownNewlines(value)),
+  });
 }
 
 export async function readFinalConclusion(slug: string): Promise<FinalConclusion | undefined> {
@@ -225,13 +254,53 @@ export async function readFinalConclusion(slug: string): Promise<FinalConclusion
 }
 
 export async function writeFinalConclusion(slug: string, value: FinalConclusion): Promise<void> {
-  await writeSection(slug, { conclusion: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { conclusion: toJsonField<'conclusion'>(normalizeMarkdownNewlines(value)) });
 }
 
 export async function readSeoDetails(slug: string): Promise<TariffReportSeoDetails | undefined> {
   return readSection<TariffReportSeoDetails>(slug, 'seoDetails');
 }
 
+function normalizePageSeoDetails(input: any): any {
+  if (!input || typeof input !== 'object') return input;
+  const title =
+    typeof input.title === 'string'
+      ? input.title
+      : typeof input.seoTitle === 'string'
+      ? input.seoTitle
+      : typeof input.seo_title === 'string'
+      ? input.seo_title
+      : undefined;
+  const shortDescription =
+    typeof input.shortDescription === 'string'
+      ? input.shortDescription
+      : typeof input.metaDescription === 'string'
+      ? input.metaDescription
+      : typeof input.meta_description === 'string'
+      ? input.meta_description
+      : undefined;
+  const keywords = Array.isArray(input.keywords) ? input.keywords : undefined;
+
+  // Keep extra fields (for backwards-compat / debugging), but ensure canonical keys exist.
+  return {
+    ...input,
+    ...(title ? { title } : {}),
+    ...(shortDescription ? { shortDescription } : {}),
+    ...(keywords ? { keywords } : {}),
+  };
+}
+
 export async function writeSeoDetails(slug: string, value: TariffReportSeoDetails): Promise<void> {
-  await writeSection(slug, { seoDetails: value as unknown as Prisma.InputJsonValue });
+  const v: any = value ?? {};
+  const normalized: TariffReportSeoDetails = {
+    ...v,
+    reportCoverSeoDetails: normalizePageSeoDetails(v.reportCoverSeoDetails),
+    executiveSummarySeoDetails: normalizePageSeoDetails(v.executiveSummarySeoDetails),
+    tariffUpdatesSeoDetails: normalizePageSeoDetails(v.tariffUpdatesSeoDetails),
+    understandIndustrySeoDetails: normalizePageSeoDetails(v.understandIndustrySeoDetails),
+    industryAreasSeoDetails: normalizePageSeoDetails(v.industryAreasSeoDetails),
+    finalConclusionSeoDetails: normalizePageSeoDetails(v.finalConclusionSeoDetails),
+  };
+
+  await writeSection(slug, { seoDetails: toJsonField<'seoDetails'>(normalized) });
 }

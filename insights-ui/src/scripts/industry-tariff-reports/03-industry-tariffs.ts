@@ -161,7 +161,12 @@ async function getTariffUpdatesForIndustry(
   for (const country of countriesToProcess) {
     const prompt = getTariffUpdatesForIndustryPrompt(chapterLabel, date, headings, country);
     console.log(`Fetching tariffs for ${country}…`);
-    const countryTariff = await getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, LLMProvider.GEMINI_WITH_GROUNDING);
+    const countryTariff = await getLlmResponse<CountrySpecificTariff>(
+      prompt,
+      CountrySpecificTariffSchema,
+      LLMProvider.GEMINI_WITH_GROUNDING,
+      GeminiModel.GEMINI_3_PRO_PREVIEW
+    );
     countrySpecificTariffs.push(countryTariff);
   }
 

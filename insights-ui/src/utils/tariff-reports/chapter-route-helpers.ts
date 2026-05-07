@@ -1,6 +1,3 @@
-import { prisma } from '@/prisma';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-
 export interface ChapterReportSection {
   slug: string;
   label: string;
@@ -17,28 +14,6 @@ export interface ChapterRouteInfo {
   number: number;
   title: string;
   slug: string;
-}
-
-export interface ResolvedChapterRoute {
-  chapter: ChapterRouteInfo;
-  // Legacy industryId set on the row when the chapter is part of an existing industry report.
-  // When set, callers should redirect to `/industry-tariff-report/<oldUrl>` instead of rendering
-  // chapter content.
-  oldUrl: string | null;
-}
-
-// Resolves a chapter slug from the URL by reading the seeded `tariff_chapter_reports` row.
-// Returns undefined for unknown slugs — caller should `notFound()` in that case.
-export async function resolveChapterRoute(rawSlug: string): Promise<ResolvedChapterRoute | undefined> {
-  const row = await prisma.tariffChapterReport.findUnique({
-    where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug: rawSlug } },
-    select: { slug: true, oldUrl: true, chapter: { select: { number: true, title: true } } },
-  });
-  if (!row) return undefined;
-  return {
-    chapter: { number: row.chapter.number, title: row.chapter.title, slug: row.slug },
-    oldUrl: row.oldUrl,
-  };
 }
 
 export function chapterCoverHref(slug: string): string {

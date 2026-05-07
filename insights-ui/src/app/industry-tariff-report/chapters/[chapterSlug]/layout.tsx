@@ -1,28 +1,36 @@
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { chapterCoverHref, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
+import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type React from 'react';
 
+async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  return response.ok ? response.json() : null;
+}
+
 export default async function ChapterReportLayout({ children, params }: { children: React.ReactNode; params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
-  const resolved = await resolveChapterRoute(chapterSlug);
+  const data = await fetchChapterTariffReport(chapterSlug);
 
   // Without a resolved chapter the leaf page will 404 — render bare so the chapter-specific
   // breadcrumb/nav chrome doesn't try to read undefined chapter data.
-  if (!resolved) {
+  if (!data) {
     return <PageWrapper>{children}</PageWrapper>;
   }
 
-  const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const navTitle = `HTS Chapter ${padded} ${resolved.chapter.title}`;
-  const basePath = chapterCoverHref(resolved.chapter.slug);
+  const { chapter } = data;
+  const padded = chapter.number.toString().padStart(2, '0');
+  const navTitle = `HTS Chapter ${padded} ${chapter.title}`;
+  const basePath = chapterCoverHref(chapter.slug);
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Tariff Reports', href: '/tariff-reports', current: false },
-    { name: `Chapter ${padded} — ${resolved.chapter.title}`, href: basePath, current: true },
+    { name: `Chapter ${padded} — ${chapter.title}`, href: basePath, current: true },
   ];
 
   return (

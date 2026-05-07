@@ -1,12 +1,12 @@
 import type { IndustrySeoResponse } from '@/app/api/industry-tariff-reports/[industry]/seo/route';
 import type { PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import type { Metadata } from 'next';
 
 async function fetchIndustrySeo(industryId: string): Promise<IndustrySeoResponse | null> {
   try {
-    const res = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}/seo`, {
+    const res = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}/seo`, {
       next: { tags: [tariffReportTag(industryId)] },
     });
     if (!res.ok) return null;
@@ -98,11 +98,13 @@ async function buildSectionMetadata({ industryId, canonicalUrl, section, notFoun
   if (!seo) return notFoundFallback;
 
   const cfg = SECTION_CONFIGS[section];
-  const sectionSeo = seo.seoDetails?.[cfg.seoKey] as PageSeoDetails | undefined;
+  const sectionSeo = seo.seoDetails?.[cfg.seoKey] as
+    | (PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string })
+    | undefined;
   const industryName = seo.industryName || 'Industry';
 
-  const title = sectionSeo?.title || cfg.fallbackTitle(industryName);
-  const description = sectionSeo?.shortDescription || cfg.fallbackDescription(industryName);
+  const title = sectionSeo?.title || sectionSeo?.seoTitle || sectionSeo?.seo_title || cfg.fallbackTitle(industryName);
+  const description = sectionSeo?.shortDescription || sectionSeo?.metaDescription || sectionSeo?.meta_description || cfg.fallbackDescription(industryName);
   let keywords = sectionSeo?.keywords?.length ? sectionSeo.keywords : cfg.fallbackKeywords(industryName);
   if (!sectionSeo?.keywords?.length && appendCountryKeywords && seo.countryNames.length) {
     keywords = [...keywords, ...seo.countryNames].slice(0, 10);

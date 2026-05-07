@@ -4,8 +4,8 @@ import { renderSection } from '@/components/industry-tariff/renderers/SectionRen
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
@@ -14,7 +14,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 export async function renderIndustryCoverBody(industryId: string): Promise<JSX.Element> {
   const definition = getTariffIndustryDefinitionById(industryId as TariffIndustryId);
 
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
+  const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
     next: { tags: [tariffReportTag(industryId)] },
   });
   let report: IndustryTariffReport | null = null;

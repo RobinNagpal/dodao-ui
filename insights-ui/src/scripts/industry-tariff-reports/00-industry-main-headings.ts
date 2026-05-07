@@ -7,6 +7,7 @@ import {
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z, ZodObject } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 export const PublicCompanySchema = z.object({
   name: z.string().describe('Name of the public company.'),
@@ -54,7 +55,12 @@ function getMainIndustryPrompt(ctx: ChapterPromptContext) {
 
 export async function getAndWriteIndustryHeadings(slug: string) {
   const ctx = await getChapterPromptContext(slug);
-  const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(ctx), IndustryAreasSchema);
+  const areas = await getLlmResponse<IndustryAreasWrapper>(
+    getMainIndustryPrompt(ctx),
+    IndustryAreasSchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   console.log(JSON.stringify(areas, null, 2));
 
   await writeIndustryHeadings(slug, areas);

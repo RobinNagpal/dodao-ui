@@ -7,6 +7,7 @@ import {
 import { IndustryAreaSection } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
 const IndustryAreaSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses various chapter areas.'),
@@ -40,6 +41,11 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(slug: string): Pr
   ${JSON.stringify(headings, null, 2)}
 `;
 
-  const industryAreaSection = await getLlmResponse<IndustryAreaSection>(prompt, IndustryAreaSectionSchema);
+  const industryAreaSection = await getLlmResponse<IndustryAreaSection>(
+    prompt,
+    IndustryAreaSectionSchema,
+    LLMProvider.GEMINI_WITH_GROUNDING,
+    GeminiModel.GEMINI_3_PRO_PREVIEW
+  );
   await writeIndustryAreaSection(slug, industryAreaSection);
 }
