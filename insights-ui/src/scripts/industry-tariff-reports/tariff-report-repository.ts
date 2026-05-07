@@ -29,21 +29,38 @@ export interface TariffReportContext {
   chapterTitle: string;
 }
 
-export interface IndustryPromptContext {
+export interface ChapterPromptContext {
   slug: string;
   oldUrl: string | null;
-  industryName: string;
+  chapterNumber: number;
+  chapterTitle: string;
   headingsCount: number;
   subHeadingsCount: number;
 }
 
-export async function getIndustryPromptContext(slug: string): Promise<IndustryPromptContext> {
+// Human-readable chapter label used across every section's prompt — e.g.
+// `HTS Chapter 03 — Fish and crustaceans, molluscs and other aquatic invertebrates`.
+// Keeps the chapter number visible in LLM input so it can ground answers in the
+// correct HTS scope, even when the title is generic.
+export function formatChapterLabel(ctx: Pick<ChapterPromptContext, 'chapterNumber' | 'chapterTitle'>): string {
+  const padded = ctx.chapterNumber.toString().padStart(2, '0');
+  return `HTS Chapter ${padded} — ${ctx.chapterTitle}`;
+}
+
+// The chapter is the canonical subject of the report, regardless of whether the
+// caller arrived via the legacy `/industry-tariff-report/<industryId>` URL or a
+// chapter-keyed route. Prompts must reference the chapter title (and number) so
+// the same input always yields the same content. The legacy industry definition
+// is only consulted for headings/sub-headings counts (which match the seeded
+// reports' shape); the chapter title overrides any legacy `name`.
+export async function getChapterPromptContext(slug: string): Promise<ChapterPromptContext> {
   const ctx = await getReportContextBySlug(slug);
   const legacy = ctx.oldUrl ? findIndustryByLegacyUrl(ctx.oldUrl) : undefined;
   return {
     slug: ctx.slug,
     oldUrl: ctx.oldUrl,
-    industryName: legacy?.name ?? ctx.chapterTitle,
+    chapterNumber: ctx.chapterNumber,
+    chapterTitle: ctx.chapterTitle,
     headingsCount: legacy?.headingsCount ?? DEFAULT_HEADINGS_COUNT,
     subHeadingsCount: legacy?.subHeadingsCount ?? DEFAULT_SUB_HEADINGS_COUNT,
   };

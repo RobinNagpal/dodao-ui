@@ -1,4 +1,9 @@
-import { getIndustryPromptContext, writeIndustryHeadings, type IndustryPromptContext } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import {
+  formatChapterLabel,
+  getChapterPromptContext,
+  writeIndustryHeadings,
+  type ChapterPromptContext,
+} from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { IndustryAreasWrapper } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z, ZodObject } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
@@ -24,30 +29,31 @@ export const IndustryAreasSchema: ZodObject<any> = z.object({
   areas: z.array(IndustryAreaSchema).describe('Array of main areas.'),
 });
 
-function getMainIndustryPrompt(ctx: IndustryPromptContext) {
+function getMainIndustryPrompt(ctx: ChapterPromptContext) {
+  const chapterLabel = formatChapterLabel(ctx);
   const prompt: string = `
-  As an investor I want to learn everything about ${ctx.industryName} sub-industry(GICS).
+  As an investor I want to learn everything about the products and trade scope of ${chapterLabel}.
 
   Give me the information based on the following rules:
-  - I want to divide the industry into four main  areas, with three sub areas under each of them.
+  - I want to divide this chapter into four main areas, with three sub areas under each of them.
   - The Downstream areas should come at the end, then the Midstream areas and then the Upstream areas first.
-  - I want to make sure the whole industry is covered and there is no overlap between the areas.
+  - I want to make sure the whole scope of ${chapterLabel} is covered and there is no overlap between the areas.
   - Tell me the top ${ctx.headingsCount} areas and ${ctx.subHeadingsCount} subareas under each that I should know.
   - Number of areas should be ${ctx.headingsCount}
   - Number of subareas under each area should be ${ctx.subHeadingsCount}.
   - There should be almost no overlap between the areas and subareas.
 
   Also under each subAreas give me the name and tickers of each
-  of the us public company that belongs under it.
+  of the US public company that belongs under it.
 
-  I dont want any thing like common industry introduction or metrics or other things to be in the areas or subareas.
+  I dont want anything like common chapter introduction or metrics or other things to be in the areas or subareas.
   `;
 
   return prompt;
 }
 
 export async function getAndWriteIndustryHeadings(slug: string) {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const areas = await getLlmResponse<IndustryAreasWrapper>(getMainIndustryPrompt(ctx), IndustryAreasSchema);
   console.log(JSON.stringify(areas, null, 2));
 

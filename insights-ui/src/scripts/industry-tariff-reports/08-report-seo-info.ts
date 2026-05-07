@@ -1,5 +1,6 @@
 import {
-  getIndustryPromptContext,
+  formatChapterLabel,
+  getChapterPromptContext,
   readExecutiveSummary,
   readFinalConclusion,
   readIndustryAreaSection,
@@ -19,9 +20,9 @@ const PageSeoDetailsSchema = z.object({
   keywords: z.array(z.string()).describe('Array of relevant keywords for the page (5-10 keywords)'),
 });
 
-async function generateSeoDetailsForSection(industryName: string, sectionName: string, sectionContent: unknown): Promise<PageSeoDetails> {
+async function generateSeoDetailsForSection(chapterLabel: string, sectionName: string, sectionContent: unknown): Promise<PageSeoDetails> {
   const prompt = `
-    Generate SEO metadata for the ${sectionName} section of the ${industryName} industry tariff report.
+    Generate SEO metadata for the ${sectionName} section of the tariff report for ${chapterLabel}.
     The section content is provided below.
 
     Please create:
@@ -39,45 +40,45 @@ async function generateSeoDetailsForSection(industryName: string, sectionName: s
 }
 
 export async function generateReportCoverSeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const reportCover = await readReportCover(slug);
   if (!reportCover) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.REPORT_COVER, reportCover);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.REPORT_COVER, reportCover);
 }
 
 export async function generateExecutiveSummarySeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const executiveSummary = await readExecutiveSummary(slug);
   if (!executiveSummary) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.EXECUTIVE_SUMMARY, executiveSummary);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.EXECUTIVE_SUMMARY, executiveSummary);
 }
 
 export async function generateTariffUpdatesSeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const tariffUpdates = await readTariffUpdates(slug);
   if (!tariffUpdates) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.TARIFF_UPDATES, tariffUpdates);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.TARIFF_UPDATES, tariffUpdates);
 }
 
 export async function generateUnderstandIndustrySeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const understandIndustry = await readUnderstandIndustry(slug);
   if (!understandIndustry) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.UNDERSTAND_INDUSTRY, understandIndustry);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.UNDERSTAND_INDUSTRY, understandIndustry);
 }
 
 export async function generateIndustryAreasSeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const industryAreas = await readIndustryAreaSection(slug);
   if (!industryAreas) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.INDUSTRY_AREA_SECTION, industryAreas);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.INDUSTRY_AREA_SECTION, industryAreas);
 }
 
 export async function generateFinalConclusionSeo(slug: string): Promise<PageSeoDetails | undefined> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
   const finalConclusion = await readFinalConclusion(slug);
   if (!finalConclusion) return undefined;
-  return generateSeoDetailsForSection(ctx.industryName, ReportType.FINAL_CONCLUSION, finalConclusion);
+  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.FINAL_CONCLUSION, finalConclusion);
 }
 
 export async function generateAndSaveAllSeoDetails(slug: string): Promise<TariffReportSeoDetails> {

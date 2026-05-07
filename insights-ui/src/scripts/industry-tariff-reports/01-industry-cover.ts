@@ -1,5 +1,6 @@
 import {
-  getIndustryPromptContext,
+  formatChapterLabel,
+  getChapterPromptContext,
   readExecutiveSummary,
   readIndustryHeadings,
   readTariffUpdates,
@@ -14,7 +15,7 @@ const ReportCoverSchema = z.object({
   reportCoverContent: z
     .string()
     .describe(
-      'Cover page of the tariff report for the given industry. It should contain two paragraphs of 5-6 lines each. It should be different' +
+      'Cover page of the tariff report for the given HTS chapter. It should contain two paragraphs of 5-6 lines each. It should be different' +
         'from executive summary. Dont include the title in the content' +
         'Be very specific. ' +
         'Include hyperlinks in the content where ever possible. ' +
@@ -23,7 +24,8 @@ const ReportCoverSchema = z.object({
 });
 
 export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
+  const chapterLabel = formatChapterLabel(ctx);
   const headings = await readIndustryHeadings(slug);
   if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
   const executiveSummary = await readExecutiveSummary(slug);
@@ -31,9 +33,9 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
   const tariffUpdates = await readTariffUpdates(slug);
   if (!tariffUpdates) throw new Error(`Tariff updates not found for slug "${slug}"`);
 
-  const prompt = `Write a report cover page for the ${ctx.industryName} industry. The cover page should be 2 paragraphs paragraphs long
-  each paragraph should be 5-6 lines long. I am passing you the executive summary, the industry areas, the tariff updates,
-  the summaries of the tariff updates on the industry areas.
+  const prompt = `Write a report cover page for the tariff analysis of ${chapterLabel}. The cover page should be 2 paragraphs long,
+  each paragraph 5-6 lines. I am passing you the executive summary, the chapter areas, and the tariff updates so you can frame the cover
+  in the context of this chapter.
 
   Create a cover page which is different from the executive summary and conclusions.
 
@@ -42,7 +44,7 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
    ${outputInstructions}
 
 
-   # Industry Areas
+   # Chapter Areas
    ${JSON.stringify(headings, null, 2)}
 
     # Executive Summary

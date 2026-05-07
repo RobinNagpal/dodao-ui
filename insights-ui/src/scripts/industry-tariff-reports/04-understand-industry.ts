@@ -1,9 +1,14 @@
-import { getIndustryPromptContext, readIndustryHeadings, writeUnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import {
+  formatChapterLabel,
+  getChapterPromptContext,
+  readIndustryHeadings,
+  writeUnderstandIndustry,
+} from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
 
-const IndustrySectionSchema = z.object({
+const ChapterSectionSchema = z.object({
   title: z.string().describe('Title of the section which discusses specific part of the article.'),
   paragraphs: z
     .string()
@@ -17,9 +22,9 @@ const IndustrySectionSchema = z.object({
 });
 
 const UnderstandIndustrySchema = z.object({
-  title: z.string().describe('Title of the article which discusses understanding the industry.'),
+  title: z.string().describe('Title of the article which discusses understanding the HTS chapter.'),
   sections: z
-    .array(IndustrySectionSchema)
+    .array(ChapterSectionSchema)
     .describe(
       '8-12 sections of 3-5 paragraph each which explain each of the sections in detail' +
         'Be very specific. ' +
@@ -29,18 +34,19 @@ const UnderstandIndustrySchema = z.object({
 });
 
 export async function getAndWriteUnderstandIndustryJson(slug: string): Promise<void> {
-  const ctx = await getIndustryPromptContext(slug);
+  const ctx = await getChapterPromptContext(slug);
+  const chapterLabel = formatChapterLabel(ctx);
   const headings = await readIndustryHeadings(slug);
   if (!headings) throw new Error(`Headings not found for slug "${slug}"`);
 
   const prompt = `
-I want to understand the ${ctx.industryName} industry in depth. Give me a very detailed article with:
+I want to understand ${chapterLabel} in depth. Give me a very detailed article with:
 - Exactly **6 Headings** and **2–3 small paragraphs** under each heading
 - Share as many facts as possible (volumes, amounts, dollar values)
 - Add hyperlinks for definitions and key numbers throughout
 - The full article should be at least **3000 words**
 - Below are the consolidated key areas to cover under each of the six headings
-- I am also adding more details about the industry to ensure each area is discussed
+- I am also adding more details about the chapter to ensure each area is discussed
 
 # Important Headings Below
 
