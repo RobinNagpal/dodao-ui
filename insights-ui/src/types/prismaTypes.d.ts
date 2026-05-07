@@ -4,7 +4,7 @@ import type {
   FinalConclusion as TariffFinalConclusionType,
   IndustryAreaSection as TariffIndustryAreaSectionType,
   IndustryAreasWrapper as TariffIndustryAreasType,
-  Introduction as TariffIntroductionType,
+  ReportCover as TariffReportCoverType,
   TariffReportSeoDetails as TariffReportSeoDetailsType,
   TariffUpdatesForIndustry as TariffUpdatesForIndustryType,
   UnderstandIndustry as TariffUnderstandIndustryType,
@@ -465,7 +465,7 @@ declare global {
 
     // Tariff chapter report JSON shapes
     type TariffIndustryAreas = TariffIndustryAreasType;
-    type TariffIntroduction = TariffIntroductionType;
+    type TariffReportCover = TariffReportCoverType;
     type TariffExecutiveSummary = TariffExecutiveSummaryType;
     type TariffUpdatesForIndustry = TariffUpdatesForIndustryType;
     type TariffUnderstandIndustry = TariffUnderstandIndustryType;

@@ -13,6 +13,11 @@ import type {
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+
+/** Bridge typed interfaces → Prisma's `InputJsonValue` without `any`. */
+function toJsonInput(value: unknown): Prisma.InputJsonValue {
+  return value as Prisma.InputJsonValue;
+}
 import { revalidateTariffReport, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 
 // Defaults for chapters that don't have a legacy `TariffIndustryDefinition`.
@@ -177,7 +182,7 @@ export async function readIndustryHeadings(slug: string): Promise<IndustryAreasW
 }
 
 export async function writeIndustryHeadings(slug: string, value: IndustryAreasWrapper): Promise<void> {
-  await writeSection(slug, { industryAreas: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { industryAreas: toJsonInput(value) });
 }
 
 export async function readReportCover(slug: string): Promise<ReportCover | undefined> {
@@ -185,7 +190,7 @@ export async function readReportCover(slug: string): Promise<ReportCover | undef
 }
 
 export async function writeReportCover(slug: string, value: ReportCover): Promise<void> {
-  await writeSection(slug, { introduction: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { introduction: toJsonInput(value) });
 }
 
 export async function readExecutiveSummary(slug: string): Promise<ExecutiveSummary | undefined> {
@@ -206,7 +211,7 @@ function normalizeMarkdownNewlines(value: unknown): unknown {
 }
 
 export async function writeExecutiveSummary(slug: string, value: ExecutiveSummary): Promise<void> {
-  await writeSection(slug, { executiveSummary: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
+  await writeSection(slug, { executiveSummary: toJsonInput(normalizeMarkdownNewlines(value)) });
 }
 
 export async function readTariffUpdates(slug: string): Promise<TariffUpdatesForIndustry | undefined> {
@@ -214,7 +219,7 @@ export async function readTariffUpdates(slug: string): Promise<TariffUpdatesForI
 }
 
 export async function writeTariffUpdates(slug: string, value: TariffUpdatesForIndustry): Promise<void> {
-  await writeSection(slug, { tariffUpdates: value as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { tariffUpdates: toJsonInput(value) });
 }
 
 export async function readUnderstandIndustry(slug: string): Promise<UnderstandIndustry | undefined> {
@@ -222,7 +227,7 @@ export async function readUnderstandIndustry(slug: string): Promise<UnderstandIn
 }
 
 export async function writeUnderstandIndustry(slug: string, value: UnderstandIndustry): Promise<void> {
-  await writeSection(slug, { understandIndustry: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
+  await writeSection(slug, { understandIndustry: toJsonInput(normalizeMarkdownNewlines(value)) });
 }
 
 export async function readIndustryAreaSection(slug: string): Promise<IndustryAreaSection | undefined> {
@@ -230,7 +235,7 @@ export async function readIndustryAreaSection(slug: string): Promise<IndustryAre
 }
 
 export async function writeIndustryAreaSection(slug: string, value: IndustryAreaSection): Promise<void> {
-  await writeSection(slug, { industryAreasSections: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
+  await writeSection(slug, { industryAreasSections: toJsonInput(normalizeMarkdownNewlines(value)) });
 }
 
 export async function readFinalConclusion(slug: string): Promise<FinalConclusion | undefined> {
@@ -238,7 +243,7 @@ export async function readFinalConclusion(slug: string): Promise<FinalConclusion
 }
 
 export async function writeFinalConclusion(slug: string, value: FinalConclusion): Promise<void> {
-  await writeSection(slug, { conclusion: normalizeMarkdownNewlines(value) as Prisma.InputJsonValue });
+  await writeSection(slug, { conclusion: toJsonInput(normalizeMarkdownNewlines(value)) });
 }
 
 export async function readSeoDetails(slug: string): Promise<TariffReportSeoDetails | undefined> {
@@ -286,5 +291,5 @@ export async function writeSeoDetails(slug: string, value: TariffReportSeoDetail
     finalConclusionSeoDetails: normalizePageSeoDetails(v.finalConclusionSeoDetails),
   };
 
-  await writeSection(slug, { seoDetails: normalized as unknown as Prisma.InputJsonValue });
+  await writeSection(slug, { seoDetails: toJsonInput(normalized) });
 }

@@ -27,8 +27,6 @@ export default async function IndustryAreasPage({ params }: { params: Promise<{ 
     report = await reportResponse.json();
   }
 
-  console.log('report', report);
-
   if (!report) {
     return <div>Report not found</div>;
   }

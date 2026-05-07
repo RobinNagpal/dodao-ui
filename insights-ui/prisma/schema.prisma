@@ -2075,7 +2075,7 @@ model TariffChapterReport {
   // generated first and consumed by every other section's prompt builder.
   /// [TariffIndustryAreas]
   industryAreas         Json? @map("industry_areas")
-  /// [TariffIntroduction]
+  /// [TariffReportCover]
   introduction          Json? @map("introduction")
   /// [TariffExecutiveSummary]
   executiveSummary      Json? @map("executive_summary")
