@@ -12,6 +12,11 @@ function escapeTildes(text: string): string {
   return text.replace(/~/g, '&#126;');
 }
 
-export function parseMarkdown(text: string) {
+// Section JSON occasionally lands with a missing or non-string leaf (LLM
+// structured output isn't always strictly Zod-validated, partial Generate All
+// runs leave gaps). Returning '' here keeps a single bad field from throwing
+// out of a Server Component and tripping the production error boundary.
+export function parseMarkdown(text: string | null | undefined) {
+  if (typeof text !== 'string' || text.length === 0) return '';
   return marked.parse(escapeTildes(recursivelyCleanOpenAiUrls(text)), { renderer });
 }
