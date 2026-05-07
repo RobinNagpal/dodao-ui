@@ -20,6 +20,11 @@ function normalizeParagraphLabels(text: string): string {
   return text.replace(/^\s*Paragraph\s*\d+\s*:\s*/i, '').replace(/\s*Paragraph\s*\d+\s*:\s*/gi, '\n\n');
 }
 
-export function parseMarkdown(text: string) {
+// Section JSON occasionally lands with a missing or non-string leaf (LLM
+// structured output isn't always strictly Zod-validated, partial Generate All
+// runs leave gaps). Returning '' here keeps a single bad field from throwing
+// out of a Server Component and tripping the production error boundary.
+export function parseMarkdown(text: string | null | undefined) {
+  if (typeof text !== 'string' || text.length === 0) return '';
   return marked.parse(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text))), { renderer });
 }

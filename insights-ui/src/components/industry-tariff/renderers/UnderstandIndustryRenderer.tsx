@@ -11,30 +11,48 @@ interface UnderstandIndustryRendererProps {
  * This replaces the markdown generation logic from render-tariff-markdown.ts
  */
 export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProps> = ({ understandIndustry }) => {
+  const sections = Array.isArray(understandIndustry?.sections) ? understandIndustry.sections : [];
+  const title = typeof understandIndustry?.title === 'string' ? understandIndustry.title : '';
+
+  if (!title && sections.length === 0) {
+    return (
+      <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
+        <p className="text-gray-500 italic">No content available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      {/* Title */}
-      <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
-        <div className="bg-gray-800 p-4 border-b border-gray-700">
-          <h2 className="text-2xl font-bold heading-color">{understandIndustry.title}</h2>
-        </div>
-      </div>
-
-      {/* Sections */}
-      {understandIndustry.sections.map((section, index) => (
-        <div key={index} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+      {title && (
+        <div className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
           <div className="bg-gray-800 p-4 border-b border-gray-700">
-            <h3 className="text-xl font-semibold heading-color">{section.title}</h3>
+            <h2 className="text-2xl font-bold heading-color">{title}</h2>
           </div>
-          <div className="p-4">
-            <div className="prose max-w-none space-y-4">
-              {section.paragraphs.map((paragraph, pIndex) => (
-                <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
-              ))}
+        </div>
+      )}
+
+      {sections.map((section, index) => {
+        const paragraphs = Array.isArray(section?.paragraphs) ? section.paragraphs : [];
+        const sectionTitle = typeof section?.title === 'string' ? section.title : '';
+        if (!sectionTitle && paragraphs.length === 0) return null;
+        return (
+          <div key={index} className="bg-gray-900 rounded-lg shadow-sm overflow-hidden">
+            {sectionTitle && (
+              <div className="bg-gray-800 p-4 border-b border-gray-700">
+                <h3 className="text-xl font-semibold heading-color">{sectionTitle}</h3>
+              </div>
+            )}
+            <div className="p-4">
+              <div className="prose max-w-none space-y-4">
+                {paragraphs.map((paragraph, pIndex) => (
+                  <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

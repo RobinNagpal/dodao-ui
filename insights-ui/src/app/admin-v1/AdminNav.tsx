@@ -51,6 +51,11 @@ const analysisTemplatesSection: AdminNavSection = {
   ],
 };
 
+const tariffReportsSection: AdminNavSection = {
+  label: 'Tariff Reports',
+  items: [{ name: 'Tariff Chapter Reports', href: '/admin-v1/tariff-reports' }],
+};
+
 function AdminNavDropdown({ section }: { section: AdminNavSection }) {
   return (
     <Popover className="relative">
@@ -92,6 +97,7 @@ export default function AdminNav() {
         <AdminNavDropdown section={stockIndustryMgmtSection} />
         <AdminNavDropdown section={etfMgmtSection} />
         <AdminNavDropdown section={analysisTemplatesSection} />
+        <AdminNavDropdown section={tariffReportsSection} />
         <Link href="/admin-v1/users" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">
           Users
         </Link>

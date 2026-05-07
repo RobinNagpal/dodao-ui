@@ -13,7 +13,7 @@ import type {
   UnderstandIndustry,
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { revalidateTariffReport } from '@/utils/tariff-report-cache-utils';
+import { revalidateTariffReport, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 
 // Defaults for chapters that don't have a legacy `TariffIndustryDefinition`.
 // Used by the headings-generation prompt — must match the typical shape of
@@ -161,6 +161,10 @@ async function writeSection(slug: string, data: Prisma.TariffChapterReportUpdate
   if (row.oldUrl) {
     revalidateTariffReport(row.oldUrl);
   }
+  // The /tariff-reports listing is cached via unstable_cache and shows the
+  // updatedAt for every chapter; bust it on every write so the homepage card
+  // reflects the new generation time without waiting for the weekly TTL.
+  revalidateTariffReportsListing();
 }
 
 // Stored in the `industry_areas` JSONB column — this is the headings/sub-headings
