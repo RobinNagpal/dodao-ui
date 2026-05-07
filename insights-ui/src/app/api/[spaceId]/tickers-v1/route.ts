@@ -64,6 +64,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
+    isDeleted: false,
     ...(industryKey ? { industryKey } : {}),
     ...(subIndustryKey ? { subIndustryKey } : {}),
     ...getExchangeFilterClause(country),

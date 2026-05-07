@@ -7,6 +7,7 @@ import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKE
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
+import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateManagementTeamArticleSchema, generateManagementTeamBreadcrumbSchema } from '@/utils/metadata-generators';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -54,6 +55,7 @@ async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastRespo
 async function getTickerOrRedirect(exchange: string, ticker: string): Promise<TickerV1FastResponse> {
   const data = await fetchTickerByExchange(exchange, ticker);
   if (data) {
+    enforceDeletedTicker(data);
     enforceMovedRedirect(data, exchange, ticker, '/management-team');
     return data;
   }
@@ -61,6 +63,8 @@ async function getTickerOrRedirect(exchange: string, ticker: string): Promise<Ti
   noStore();
   const fallback = await fetchTickerAnyExchange(ticker);
   if (!fallback) notFound();
+
+  enforceDeletedTicker(fallback);
 
   const canonicalExchange: string = fallback.exchange.toUpperCase();
   if (canonicalExchange !== exchange.toUpperCase()) {
