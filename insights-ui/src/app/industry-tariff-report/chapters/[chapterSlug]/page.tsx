@@ -1,49 +1,37 @@
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
-import type { ChapterSeoResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/seo/route';
-import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
+import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { chapterCoverHref, chapterSectionHref, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
+type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
+
+async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  return response.ok ? response.json() : null;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ chapterSlug: string }> }): Promise<Metadata> {
   const { chapterSlug } = await params;
-  const resolved = await resolveChapterRoute(chapterSlug);
-  if (!resolved) {
+  const data = await fetchChapterTariffReport(chapterSlug);
+  if (!data) {
     return { title: 'HTS Chapter Tariff Report' };
   }
-  const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const fallbackTitle = `HTS Chapter ${padded} — ${resolved.chapter.title} Tariff Report | KoalaGains`;
-  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
-  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'];
-
-  let coverSeo:
-    | {
-        title?: string;
-        shortDescription?: string;
-        keywords?: string[];
-        seoTitle?: string;
-        metaDescription?: string;
-        seo_title?: string;
-        meta_description?: string;
-      }
-    | undefined;
-  try {
-    const res = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
-    if (res.ok) {
-      const body: ChapterSeoResponse = await res.json();
-      coverSeo = body.seoDetails?.reportCoverSeoDetails;
-    }
-  } catch {
-    // Network/SSR errors fall back to the placeholder copy below.
-  }
+  const { chapter, report } = data;
+  const padded = chapter.number.toString().padStart(2, '0');
+  const fallbackTitle = `HTS Chapter ${padded} — ${chapter.title} Tariff Report | KoalaGains`;
+  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.title}). Covers tariff updates, country-level breakdowns, industry structure, sub-areas, and forward-looking conclusions.`;
+  const fallbackKeywords = [`HTS Chapter ${padded}`, chapter.title, 'tariff report', 'trade policy', 'industry analysis', 'KoalaGains'];
+  const coverSeo = report.reportSeoDetails?.reportCoverSeoDetails as SeoDetailsWithAliases | undefined;
 
   const title = coverSeo?.title || coverSeo?.seoTitle || coverSeo?.seo_title || fallbackTitle;
   const description = coverSeo?.shortDescription || coverSeo?.metaDescription || coverSeo?.meta_description || fallbackDescription;
   const keywords = coverSeo?.keywords?.length ? coverSeo.keywords : fallbackKeywords;
-  const canonicalUrl = `https://koalagains.com${chapterCoverHref(resolved.chapter.slug)}`;
+  const canonicalUrl = `https://koalagains.com${chapterCoverHref(chapter.slug)}`;
 
   return {
     title,
@@ -63,20 +51,20 @@ export async function generateMetadata({ params }: { params: Promise<{ chapterSl
 
 export default async function ChapterCoverPage({ params }: { params: Promise<{ chapterSlug: string }> }) {
   const { chapterSlug } = await params;
-  const resolved = await resolveChapterRoute(chapterSlug);
-  if (!resolved) notFound();
-  if (resolved.oldUrl) {
-    redirect(`/industry-tariff-report/${resolved.oldUrl}`);
+  const data = await fetchChapterTariffReport(chapterSlug);
+  if (!data) notFound();
+  if (data.oldUrl) {
+    redirect(`/industry-tariff-report/${data.oldUrl}`);
   }
 
-  const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const fallbackPageTitle = `HTS Chapter ${padded} — ${resolved.chapter.title}`;
-  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${resolved.chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`;
+  const { chapter, report } = data;
+  const padded = chapter.number.toString().padStart(2, '0');
+  const fallbackPageTitle = `HTS Chapter ${padded} — ${chapter.title}`;
+  const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`;
 
-  const report = await readIndustryTariffReportBySlug(chapterSlug);
   const hasContent = Boolean(report.reportCover || report.executiveSummary || report.tariffUpdates?.countrySpecificTariffs?.length);
   if (!hasContent) {
-    return <ChapterPlaceholder chapter={resolved.chapter} pageTitle={fallbackPageTitle} description={fallbackDescription} />;
+    return <ChapterPlaceholder chapter={chapter} pageTitle={fallbackPageTitle} description={fallbackDescription} />;
   }
 
   const tariffUpdatesSummary =
@@ -89,7 +77,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
     <div className="mx-auto max-w-7xl py-2">
       <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
         <div className="text-sm text-muted-foreground mb-1">
-          HTS Chapter {padded} — {resolved.chapter.title}
+          HTS Chapter {padded} — {chapter.title}
         </div>
         <h1 className="text-3xl font-bold heading-color">{report.reportCover?.title || fallbackPageTitle}</h1>
       </div>
@@ -120,7 +108,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
                 ))}
               </div>
               <div className="mt-4">
-                <a href={chapterSectionHref(resolved.chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
+                <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
                   See full country breakdown
                 </a>
               </div>

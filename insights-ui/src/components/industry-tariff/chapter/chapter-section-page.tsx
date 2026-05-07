@@ -3,18 +3,17 @@ import { CountryNavigation } from '@/components/industry-tariff/renderers/Countr
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
-import type { ChapterSeoResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/seo/route';
+import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
-import { readIndustryTariffReportBySlug } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import type { IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
-import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy, resolveChapterRoute } from '@/utils/tariff-reports/chapter-route-helpers';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
 // Small wrappers used by every chapter section page (`tariff-updates`, `understand-industry`, ...).
-// Keeps the per-route page.tsx files to a few lines each — same resolve/redirect/render flow, only
+// Keeps the per-route page.tsx files to a few lines each — same fetch/redirect/render flow, only
 // the section slug differs.
 
 const SECTION_SEO_KEY: Record<string, keyof TariffReportSeoDetails> = {
@@ -24,40 +23,38 @@ const SECTION_SEO_KEY: Record<string, keyof TariffReportSeoDetails> = {
   'final-conclusion': 'finalConclusionSeoDetails',
 };
 
-function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionSlug: string): PageSeoDetails | undefined {
+type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
+
+function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionSlug: string): SeoDetailsWithAliases | undefined {
   const key = SECTION_SEO_KEY[sectionSlug];
   if (!key || !seo) return undefined;
-  return seo[key];
+  return seo[key] as SeoDetailsWithAliases | undefined;
+}
+
+async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  return response.ok ? response.json() : null;
 }
 
 export async function buildChapterSectionMetadata(chapterSlug: string, sectionSlug: string): Promise<Metadata> {
-  const resolved = await resolveChapterRoute(chapterSlug);
-  if (!resolved) {
+  const data = await fetchChapterTariffReport(chapterSlug);
+  if (!data) {
     return { title: 'HTS Chapter Tariff Report' };
   }
-  const copy = getChapterSectionCopy(sectionSlug, resolved.chapter);
+  const { chapter, report } = data;
+  const copy = getChapterSectionCopy(sectionSlug, chapter);
   if (!copy) {
     return { title: 'HTS Chapter Tariff Report' };
   }
-  const padded = resolved.chapter.number.toString().padStart(2, '0');
-  const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${resolved.chapter.title} | KoalaGains`;
-  const fallbackKeywords = [`HTS Chapter ${padded}`, resolved.chapter.title, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
-
-  let sectionSeo: (PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string }) | undefined;
-  try {
-    const res = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}/seo`);
-    if (res.ok) {
-      const body: ChapterSeoResponse = await res.json();
-      sectionSeo = pickSectionSeo(body.seoDetails, sectionSlug);
-    }
-  } catch {
-    // Network/SSR errors fall back to the placeholder copy below.
-  }
+  const padded = chapter.number.toString().padStart(2, '0');
+  const fallbackTitle = `${copy.pageTitle} — HTS Chapter ${padded} ${chapter.title} | KoalaGains`;
+  const fallbackKeywords = [`HTS Chapter ${padded}`, chapter.title, copy.pageTitle, 'tariff report', 'trade policy', 'KoalaGains'];
+  const sectionSeo = pickSectionSeo(report.reportSeoDetails, sectionSlug);
 
   const title = sectionSeo?.title || sectionSeo?.seoTitle || sectionSeo?.seo_title || fallbackTitle;
   const description = sectionSeo?.shortDescription || sectionSeo?.metaDescription || sectionSeo?.meta_description || copy.description;
   const keywords = sectionSeo?.keywords?.length ? sectionSeo.keywords : fallbackKeywords;
-  const canonicalUrl = `https://koalagains.com${chapterSectionHref(resolved.chapter.slug, sectionSlug)}`;
+  const canonicalUrl = `https://koalagains.com${chapterSectionHref(chapter.slug, sectionSlug)}`;
 
   return {
     title,
@@ -92,7 +89,7 @@ function ChapterSectionHeader({ chapter, pageTitle }: ChapterSectionHeaderProps)
   );
 }
 
-// Returns the rendered section body when the matching JSON exists in Prisma; returns
+// Returns the rendered section body when the matching report JSON exists; returns
 // `null` when there's nothing to show (caller falls back to the placeholder).
 function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): JSX.Element | null {
   switch (sectionSlug) {
@@ -134,24 +131,24 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
 }
 
 export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
-  const resolved = await resolveChapterRoute(chapterSlug);
-  if (!resolved) notFound();
-  const copy = getChapterSectionCopy(sectionSlug, resolved.chapter);
+  const data = await fetchChapterTariffReport(chapterSlug);
+  if (!data) notFound();
+  const { chapter, oldUrl, report } = data;
+  const copy = getChapterSectionCopy(sectionSlug, chapter);
   if (!copy) notFound();
-  if (resolved.oldUrl) {
-    redirect(`/industry-tariff-report/${resolved.oldUrl}/${sectionSlug}`);
+  if (oldUrl) {
+    redirect(`/industry-tariff-report/${oldUrl}/${sectionSlug}`);
   }
 
-  const report = await readIndustryTariffReportBySlug(chapterSlug);
   const body = renderSectionBody(sectionSlug, report);
 
   if (!body) {
-    return <ChapterPlaceholder chapter={resolved.chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
+    return <ChapterPlaceholder chapter={chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
   }
 
   return (
     <div className="mx-auto max-w-7xl py-2">
-      <ChapterSectionHeader chapter={resolved.chapter} pageTitle={copy.pageTitle} />
+      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} />
       {body}
     </div>
   );
