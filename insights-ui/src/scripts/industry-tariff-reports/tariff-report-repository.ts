@@ -98,23 +98,20 @@ export async function findReportSlugByOldUrl(oldUrl: string): Promise<string> {
   return row.slug;
 }
 
-export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<IndustryTariffReport> {
-  const row = await prisma.tariffChapterReport.findUnique({
-    where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
-    select: {
-      industryAreas: true,
-      introduction: true,
-      executiveSummary: true,
-      tariffUpdates: true,
-      understandIndustry: true,
-      industryAreasSections: true,
-      conclusion: true,
-      seoDetails: true,
-    },
-  });
+const REPORT_SECTIONS_SELECT = {
+  industryAreas: true,
+  introduction: true,
+  executiveSummary: true,
+  tariffUpdates: true,
+  understandIndustry: true,
+  industryAreasSections: true,
+  conclusion: true,
+  seoDetails: true,
+} as const satisfies Prisma.TariffChapterReportSelect;
 
-  if (!row) return {};
+type ReportSectionsRow = Prisma.TariffChapterReportGetPayload<{ select: typeof REPORT_SECTIONS_SELECT }>;
 
+function rowToIndustryTariffReport(row: ReportSectionsRow): IndustryTariffReport {
   return {
     industryAreas: (row.industryAreas as IndustryAreasWrapper | null) ?? undefined,
     reportCover: (row.introduction as ReportCover | null) ?? undefined,
@@ -125,6 +122,24 @@ export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<
     finalConclusion: (row.conclusion as FinalConclusion | null) ?? undefined,
     reportSeoDetails: (row.seoDetails as TariffReportSeoDetails | null) ?? undefined,
   };
+}
+
+export async function readIndustryTariffReportByOldUrl(oldUrl: string): Promise<IndustryTariffReport> {
+  const row = await prisma.tariffChapterReport.findUnique({
+    where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
+    select: REPORT_SECTIONS_SELECT,
+  });
+  if (!row) return {};
+  return rowToIndustryTariffReport(row);
+}
+
+export async function readIndustryTariffReportBySlug(slug: string): Promise<IndustryTariffReport> {
+  const row = await prisma.tariffChapterReport.findUnique({
+    where: { spaceId_slug: { spaceId: KoalaGainsSpaceId, slug } },
+    select: REPORT_SECTIONS_SELECT,
+  });
+  if (!row) return {};
+  return rowToIndustryTariffReport(row);
 }
 
 async function readSection<T>(slug: string, column: keyof Prisma.TariffChapterReportSelect): Promise<T | undefined> {

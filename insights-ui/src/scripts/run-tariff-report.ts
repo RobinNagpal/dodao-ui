@@ -5,6 +5,7 @@ import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tar
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
 import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
+import { generateAndSaveAllSeoDetails } from '@/scripts/industry-tariff-reports/08-report-seo-info';
 import { readIndustryHeadings } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { ReportType } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
@@ -61,6 +62,10 @@ export async function doIt(reportType: ReportType, slug: string) {
         if (type === ReportType.ALL) continue;
         await doIt(type as ReportType, slug);
       }
+      // SEO details are generated last so they can summarize every section that
+      // was just written. The browser-driven `generate-all` flow does the same
+      // step at the end via the `generate-seo-info` API.
+      await generateAndSaveAllSeoDetails(slug);
       break;
   }
 }
