@@ -1,0 +1,11 @@
+-- RenameForeignKey
+ALTER TABLE "tariff_candidate_applicability_conditions" RENAME CONSTRAINT "tariff_candidate_applicability_conditions_candidate_code_id_fke" TO "tariff_candidate_applicability_conditions_candidate_code_i_fkey";
+
+-- RenameIndex
+ALTER INDEX "hts_code_candidate_codes_space_id_hts_code_id_candidate_code_id" RENAME TO "hts_code_candidate_codes_space_id_hts_code_id_candidate_cod_key";
+
+-- RenameIndex
+ALTER INDEX "tariff_candidate_applicability_conditions_candidate_code_id_sor" RENAME TO "tariff_candidate_applicability_conditions_candidate_code_id_idx";
+
+-- RenameIndex
+ALTER INDEX "tariff_candidate_related_codes_candidate_code_id_kind_sort_orde" RENAME TO "tariff_candidate_related_codes_candidate_code_id_kind_sort__idx";

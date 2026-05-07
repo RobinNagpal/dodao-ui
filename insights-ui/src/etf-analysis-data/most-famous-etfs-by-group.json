@@ -1,5 +1,5 @@
 {
-  "description": "Curated list of the most famous 4–5 ETFs under each analysis group defined in etf-analysis-categories.json. Within each group, the selected ETFs intentionally span different Morningstar categories so that peer comparisons cover the breadth of the group rather than a single sub-category. Categories reference the `category` field shown on the KoalaGains ETF financial-data page (e.g. https://koalagains.com/etfs/NYSEARCA/XLY/financial-data).",
+  "description": "Curated list of the most famous 4–5 ETFs under each analysis group defined in etf-analysis-categories.json. Within each group, the selected ETFs intentionally span different categories so that peer comparisons cover the breadth of the group rather than a single sub-category. Categories reference the `category` field shown on the KoalaGains ETF financial-data page (e.g. https://koalagains.com/etfs/NYSEARCA/XLY/financial-data).",
   "groups": [
     {
       "key": "broad-equity",

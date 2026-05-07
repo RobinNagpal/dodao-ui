@@ -4,149 +4,80 @@ import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-repo
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
-import { getAndWriteEvaluateIndustryAreaJson } from '@/scripts/industry-tariff-reports/06-evaluate-industry-area';
 import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
-import { getAllCountriesTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/09-all-countries-tariffs';
-import {
-  getNegativeImpactsOfEvaluatedAreas,
-  getPositiveImpactsOfEvaluatedAreas,
-  getSummariesOfEvaluatedAreas,
-} from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { getTariffIndustryDefinitionById, TariffIndustryDefinition, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import {
-  readEvaluateSubIndustryAreaJsonFromFile,
-  readExecutiveSummaryFromFile,
-  readFinalConclusionFromFile,
-  readIndustryAreaSectionFromFile,
-  readIndustryHeadingsFromFile,
-  readReportCoverFromFile,
-  readTariffUpdatesFromFile,
-  readUnderstandIndustryJsonFromFile,
-} from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import { generateAndSaveAllSeoDetails } from '@/scripts/industry-tariff-reports/08-report-seo-info';
+import { readIndustryHeadings } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { ReportType } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getTodayDateAsMonthDDYYYYFormat } from '@/util/get-date';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-export async function doIt(
-  reportType: ReportType,
-  tariffIndustry: TariffIndustryDefinition,
-  evaluationReportToGenerate: {
-    headingIndex: number;
-    subHeadingIndex: number;
-  } = {
-    headingIndex: 0,
-    subHeadingIndex: 0,
-  }
-) {
-  const industryId = tariffIndustry.industryId;
-  const date = getTodayDateAsMonthDDYYYYFormat(); // Dynamic date based on today
-  // Pre-read common dependencies
+export async function doIt(reportType: ReportType, slug: string) {
+  const date = getTodayDateAsMonthDDYYYYFormat();
 
   // Ensure headings exist before proceeding
-  let headings = await readIndustryHeadingsFromFile(industryId);
+  let headings = await readIndustryHeadings(slug);
   if (headings) {
-    console.log(`Headings for ${tariffIndustry.name} already exist, skipping generation.`);
-  }
-  if (!headings) {
-    await getAndWriteIndustryHeadings(industryId);
-    headings = await readIndustryHeadingsFromFile(industryId);
+    console.log(`Headings for ${slug} already exist, skipping generation.`);
+  } else {
+    await getAndWriteIndustryHeadings(slug);
+    headings = await readIndustryHeadings(slug);
     if (!headings) {
-      throw new Error('Failed to generate or read industry headings');
+      throw new Error(`Failed to generate or read industry headings for slug "${slug}"`);
     }
   }
 
   switch (reportType) {
     case ReportType.HEADINGS:
-      // Headings are already ensured to exist from the setup above
-      // No additional action needed
       break;
 
     case ReportType.UNDERSTAND_INDUSTRY:
-      await getAndWriteUnderstandIndustryJson(industryId, headings);
-      const understandIndustry = await readUnderstandIndustryJsonFromFile(industryId);
-      if (!understandIndustry) throw new Error('Understand industry section not found');
+      await getAndWriteUnderstandIndustryJson(slug);
       break;
 
     case ReportType.TARIFF_UPDATES:
-      await getTariffUpdatesForIndustryAndSaveToFile(industryId, date, headings);
-      const tariffUpdatesForIndustry = await readTariffUpdatesFromFile(industryId);
-      if (!tariffUpdatesForIndustry) throw new Error('Tariff updates not found');
-      break;
-
-    case ReportType.ALL_COUNTRIES_TARIFF_UPDATES:
-      await getAllCountriesTariffUpdatesForIndustryAndSaveToFile(industryId, date, headings);
+      await getTariffUpdatesForIndustryAndSaveToFile(slug, date);
       break;
 
     case ReportType.INDUSTRY_AREA_SECTION:
-      await getAndWriteIndustryAreaSectionToJsonFile(industryId, headings);
-      const industryAreaSection = await readIndustryAreaSectionFromFile(industryId);
-      if (!industryAreaSection) throw new Error('Industry area section not found');
-      break;
-
-    case ReportType.EVALUATE_INDUSTRY_AREA:
-      const tariff = await readTariffUpdatesFromFile(industryId);
-      const { headingIndex, subHeadingIndex } = evaluationReportToGenerate;
-      const firstArea = headings.areas[headingIndex].subAreas[subHeadingIndex];
-      await getAndWriteEvaluateIndustryAreaJson(tariffIndustry, firstArea, headings, tariff!, date);
-      const evaluated = await readEvaluateSubIndustryAreaJsonFromFile(industryId, firstArea, headings);
-      if (!evaluated) throw new Error('Evaluate sub-industry area section not found');
+      await getAndWriteIndustryAreaSectionToJsonFile(slug);
       break;
 
     case ReportType.EXECUTIVE_SUMMARY:
-      const tariffUpdates = await readTariffUpdatesFromFile(industryId);
-      const summaries = await getSummariesOfEvaluatedAreas(industryId, headings);
-      if (!tariffUpdates) throw new Error('Tariff updates not found');
-      await getExecutiveSummaryAndSaveToFile(industryId, headings, tariffUpdates, summaries);
-      const execSummary = await readExecutiveSummaryFromFile(industryId);
-      if (!execSummary) throw new Error('Executive summary not found');
+      await getExecutiveSummaryAndSaveToFile(slug);
       break;
 
     case ReportType.REPORT_COVER:
-      const tariffUpd = await readTariffUpdatesFromFile(industryId);
-      const summ = await getSummariesOfEvaluatedAreas(industryId, headings);
-      if (!tariffUpd) throw new Error('Tariff updates not found');
-      const executiveSummary = await readExecutiveSummaryFromFile(industryId);
-      if (!executiveSummary) throw new Error('Executive summary not found');
-      if (!tariffUpd) throw new Error('Tariff updates not found');
-      await getReportCoverAndSaveToFile(industryId, headings, executiveSummary, tariffUpd, summ);
-      const reportCover = await readReportCoverFromFile(industryId);
-      if (!reportCover) throw new Error('Report cover not found');
+      await getReportCoverAndSaveToFile(slug);
       break;
 
     case ReportType.FINAL_CONCLUSION:
-      const tariffs = await readTariffUpdatesFromFile(industryId);
-      if (!tariffs) throw new Error('Tariff updates not found');
-      const summariesAll = await getSummariesOfEvaluatedAreas(industryId, headings);
-      const positiveImpacts = await getPositiveImpactsOfEvaluatedAreas(industryId, headings);
-      const negativeImpacts = await getNegativeImpactsOfEvaluatedAreas(industryId, headings);
-      await getFinalConclusionAndSaveToFile(industryId, headings, tariffs, summariesAll, positiveImpacts, negativeImpacts);
-      const conclusion = await readFinalConclusionFromFile(industryId);
-      if (!conclusion) throw new Error('Final conclusion not found');
+      await getFinalConclusionAndSaveToFile(slug);
       break;
 
     case ReportType.ALL:
     default:
-      // Run all sections in sequence
       for (const type of Object.values(ReportType)) {
         if (type === ReportType.ALL) continue;
-        // @ts-ignore
-        await doIt(type as ReportType, tariffIndustry);
+        await doIt(type as ReportType, slug);
       }
+      // SEO details are generated last so they can summarize every section that
+      // was just written. The browser-driven `generate-all` flow does the same
+      // step at the end via the `generate-seo-info` API.
+      await generateAndSaveAllSeoDetails(slug);
       break;
   }
 }
 
-const industry = getTariffIndustryDefinitionById(TariffIndustryId.metalGlassPlasticContainers);
+const slug = process.argv[2];
+if (!slug) {
+  console.error('Usage: ts-node src/scripts/run-tariff-report.ts <chapter-slug>');
+  process.exit(1);
+}
 
-// Example usage:
-doIt(ReportType.ALL_COUNTRIES_TARIFF_UPDATES, industry, {
-  headingIndex: 1,
-  subHeadingIndex: 1,
-})
+doIt(ReportType.ALL, slug)
   .then(() => {
     console.log('Tariff updates generated successfully.');
   })
   .catch(console.error);
-// doIt(ReportType.ALL, 'Plastic', 'April 21, 2025').catch(console.error);

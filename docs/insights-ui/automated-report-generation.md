@@ -11,7 +11,7 @@ Generating a report has two parts:
 
 Claude runs one stock or ETF through all of its report types by looping: **get prompt → call LLM → save answer → repeat** for the next report type.
 
-For ETFs there is one extra step: before the first report, Claude asks the server to make sure Morningstar (MOR) data is fresh. If any of the four MOR tables (quote, risk, people, portfolio) is empty, the server fires the Morningstar scrape lambda. Because that lambda is fire-and-forget, the script then waits 20 seconds so the rows are in the DB before the prompt is built.
+For ETFs there is one extra step: before the first report, Claude asks the server to make sure Mornstar (MOR) data is fresh. If any of the four MOR tables (quote, risk, people, portfolio) is empty, the server fires the Mornstar scrape lambda. Because that lambda is fire-and-forget, the script then waits 20 seconds so the rows are in the DB before the prompt is built.
 
 ## The five scripts
 
@@ -72,7 +72,7 @@ Report types, in the order you should run them:
 
 ### Step 1 — get the prompt
 
-**First report only** — do not pass `--skip-mor-check`. The script will call `ensure-mor-info`, trigger the Morningstar scrape lambda for any missing MOR kinds, and sleep `20s` (default):
+**First report only** — do not pass `--skip-mor-check`. The script will call `ensure-mor-info`, trigger the Mornstar scrape lambda for any missing MOR kinds, and sleep `20s` (default):
 
 ```bash
 yarn etfs:prompt --symbol SPUS --exchange NYSEARCA \
@@ -91,7 +91,7 @@ yarn etfs:prompt --symbol SPUS --exchange NYSEARCA \
 
 `yarn etfs:prompt` extra flags:
 
-- `--wait-ms 20000` — override the post-MOR-trigger sleep. The default is `20s`; at `10s` the first prompt's `morReturns` field was still empty because not all four Morningstar callbacks had landed.
+- `--wait-ms 20000` — override the post-MOR-trigger sleep. The default is `20s`; at `10s` the first prompt's `morReturns` field was still empty because not all four Mornstar callbacks had landed.
 - `--skip-mor-check` — skip the MOR check entirely (use when you know the data is fresh and want to avoid the extra round-trip).
 
 ### Step 2 — act as the LLM
@@ -251,7 +251,7 @@ Same shape as the stock factor reports above.
 2. If a specific metric is missing, source it yourself from reputable public sources; do not write "not available" / "data is missing" or any variant.
 3. Generate analysis in plain investor-facing English; never reference the input schema.
 
-ETF inputs fan out across many Morningstar-sourced sub-objects and those labels leak into the generated analysis without this reminder. The stock CLI does not prepend a preamble — stock prompts are already tight and the category templates handle this themselves. If you need to change the ETF rules, edit `AGENT_PROMPT_PREAMBLE` in `src/scripts/etfs/lib.ts`.
+ETF inputs fan out across many Mornstar-sourced sub-objects and those labels leak into the generated analysis without this reminder. The stock CLI does not prepend a preamble — stock prompts are already tight and the category templates handle this themselves. If you need to change the ETF rules, edit `AGENT_PROMPT_PREAMBLE` in `src/scripts/etfs/lib.ts`.
 
 ## Gotchas that only show up at run-time
 
@@ -377,7 +377,7 @@ For stocks, the analysis route is `/api/koala_gains/tickers-v1/exchange/$EXCHANG
 
 - `etfs:prompt` first calls `POST /api/<spaceId>/etfs-v1/exchange/<exchange>/<etf>/ensure-mor-info`.
   - Handler: `ensureMorDataForAnalysis()` in `src/utils/etf-analysis-reports/mor-scrape-utils.ts`.
-  - Counts rows in `EtfMorAnalyzerInfo`, `EtfMorRiskInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`. For every table with zero rows, triggers the Morningstar lambda (`ETF_MORN_LAMBDA_URL`) and returns the list of triggered kinds.
+  - Counts rows in `EtfMorAnalyzerInfo`, `EtfMorRiskInfo`, `EtfMorPeopleInfo`, `EtfMorPortfolioInfo`. For every table with zero rows, triggers the Mornstar lambda (`ETF_MORN_LAMBDA_URL`) and returns the list of triggered kinds.
   - If the returned list is non-empty, the script sleeps `20s` (configurable with `--wait-ms`) so the async lambda callbacks can finish upserting the rows.
 - Then `etfs:prompt` calls `POST /api/<spaceId>/etfs-v1/exchange/<exchange>/<etf>/generate-prompt` with `{ reportType }`.
   - Handler: `generateEtfPromptForReportType()` in `src/utils/etf-analysis-reports/etf-prompt-generator-utils.ts` (mirrors the stock side).

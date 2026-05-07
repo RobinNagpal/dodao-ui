@@ -27,7 +27,7 @@ phase-ordered list below.
   - When Claude Code regenerates an ETF report on the off-hours runner, it should
     **actively use the internet** to (a) fill in any **missing** data points the
     prompt input lacks (issuer, AUM, expense ratio, holdings concentration,
-    Morningstar category, PM identity, etc.), and (b) pull the **latest**
+    Mornstar category, PM identity, etc.), and (b) pull the **latest**
     information (recent prospectus supplements, fund-fact-sheet updates, PM
     changes, 19a-1 distributions, regulatory actions, material news in the last
     90 days) before producing the report.
@@ -347,17 +347,17 @@ category name **and** its quantitative baseline so every comparison is grounded.
     page so the reader can see exactly what "the category" is.
   - Add category pages to the sitemap generation in Phase 4.
 
-#### 3.3.b) Handle Morningstar categories as a first-class concept
+#### 3.3.b) Handle Mornstar categories as a first-class concept
 
-Goal: Morningstar categories (e.g. "Large Blend", "Intermediate Core Bond", "Foreign
+Goal: Mornstar categories (e.g. "Large Blend", "Intermediate Core Bond", "Foreign
 Large Growth") are the de-facto industry taxonomy that investors, issuers, and
 screeners already use. Our internal category-groups are useful, but reports that
-reference "the category" without reconciling against Morningstar feel amateur. We
-should treat Morningstar category as a **first-class field** on each ETF, expose it in
+reference "the category" without reconciling against Mornstar feel amateur. We
+should treat Mornstar category as a **first-class field** on each ETF, expose it in
 the UI, and use it in prompts alongside (or in place of) our internal group where
 appropriate.
 
-- [ ] **Capture the Morningstar category on each ETF**:
+- [ ] **Capture the Mornstar category on each ETF**:
   - Add a `morningstarCategory` field (and optional `morningstarCategoryId`) to the
     `Etf` Prisma model.
   - Source this from our existing data provider / scraping pipeline (confirm which
@@ -365,22 +365,22 @@ appropriate.
   - Backfill historic ETFs and keep it updated on refresh.
 - [ ] **Resolve the relationship to our internal category-groups**:
   - Decide whether our internal groups are a **superset**, a **re-mapping**, or a
-    **complementary tag** to Morningstar categories.
+    **complementary tag** to Mornstar categories.
   - Persist a `morningstarCategory -> internalGroupKey` mapping so we can pivot
     reports either way without re-querying every run.
-  - Flag ETFs where Morningstar assigns them to a category that doesn't match our
+  - Flag ETFs where Mornstar assigns them to a category that doesn't match our
     internal group (audit + reconcile).
-- [ ] **Use Morningstar categories in prompts**:
+- [ ] **Use Mornstar categories in prompts**:
   - When Option B in 3.3.a applies (cite category + numbers), prefer the
-    **Morningstar category name** in the user-facing text because readers
+    **Mornstar category name** in the user-facing text because readers
     recognize it. Keep the internal group for our own analytics.
-  - Compute per-Morningstar-category aggregates (median expense ratio, median
+  - Compute per-Mornstar-category aggregates (median expense ratio, median
     drawdown, etc.) the same way we do for internal groups in 3.3.a, or at least
     define which one is the source of truth for the comparison numbers.
-- [ ] **Surface Morningstar category in the UI**:
+- [ ] **Surface Mornstar category in the UI**:
   - Show it on the ETF detail page header next to ticker / issuer / internal group.
   - Link it to the category page (3.3.a) — either the same page shared across
-    Morningstar + internal, or a sibling page scoped to the Morningstar category.
+    Mornstar + internal, or a sibling page scoped to the Mornstar category.
 
 #### 3.3.c) Cross-check reports against the target-audience feature
 
@@ -497,7 +497,7 @@ per-category detail pages), and hard to validate in the prompt-tuning loop.
   - `strategyIntro` — consolidate with the 3.3.d `introParagraph` if the content
     overlaps; otherwise keep as a short strategy-focused intro.
   - `peerContext` — 1–2 paragraphs on where the fund sits relative to its group /
-    Morningstar category peers (ties into 3.3.a + 3.3.b).
+    Mornstar category peers (ties into 3.3.a + 3.3.b).
   - `strategyDescription` — the index / mandate / replication approach.
   - `upDownConditions` — structured rather than prose:
     `{ upsideDrivers: string[], downsideDrivers: string[], sensitivity:
@@ -569,7 +569,7 @@ to re-derive / second-guess category conclusions.
   - Pass **only** the per-category `overallAnalysis` (one synthesized paragraph
     per evaluation category: Performance, Cost & Team, Risk, Future Outlook,
     Index & Strategy, etc.) plus the small set of identity fields the prompt
-    actually needs (symbol, name, issuer, category-group, Morningstar category,
+    actually needs (symbol, name, issuer, category-group, Mornstar category,
     matched target-groups).
   - Document the new contract — `{ etfIdentity, perCategoryOverallAnalysis:
     Record<categoryKey, string>, matchedTargetGroups, generationDate }` — and
@@ -584,7 +584,7 @@ to re-derive / second-guess category conclusions.
     without inventing or re-ranking underlying factors.
   - Keep alignment with the surrounding report-quality tasks:
     - Include the report-generation date (3.4 bullet).
-    - Name the category / Morningstar category when it compares (3.3.a / 3.3.b).
+    - Name the category / Mornstar category when it compares (3.3.a / 3.3.b).
     - Emit the per-target-group verdict block (3.3.c).
     - Emit the `introParagraph` alongside, if we bundle intro generation here
       (3.3.d).

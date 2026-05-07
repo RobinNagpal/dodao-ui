@@ -2,3 +2,5 @@
 const TARIFF_REPORT_TAG_PREFIX = 'tariff_report:' as const;
 
 export const tariffReportTag = (industryId: string): `${typeof TARIFF_REPORT_TAG_PREFIX}${string}` => `${TARIFF_REPORT_TAG_PREFIX}${industryId.toUpperCase()}`;
+
+export const TARIFF_REPORTS_LISTING_TAG = 'tariff_reports_listing' as const;

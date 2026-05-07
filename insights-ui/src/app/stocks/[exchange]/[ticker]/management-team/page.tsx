@@ -193,6 +193,13 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
   // The Promise is unwrapped via `use()` inside <TickerRelatedSections>, suspended by the boundary below.
   const availableSlugsPromise = getAvailableSiblingSlugs(tickerData.id);
 
+  const modifiedDate = new Date(report.updatedAt || tickerData.updatedAt || new Date());
+  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <PageWrapper>
       <script
@@ -204,14 +211,14 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
 
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <article itemScope itemType="https://schema.org/Article">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <section className="mb-6">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl" itemProp="headline">
             {tickerData.name} ({tickerData.symbol}) — Management Team Experience &amp; Alignment
           </h1>
         </section>
 
-        <section className="bg-gray-900 rounded-lg shadow-sm px-2 py-4 sm:p-6 mb-8" itemProp="articleBody">
+        <section className="mb-8" itemProp="articleBody">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-gray-700">
             <h2 className="text-xl font-bold">Alignment Verdict</h2>
             <span className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getVerdictBadgeClasses(verdict)}`}>
@@ -240,6 +247,29 @@ export default async function ManagementTeamPage({ params }: { params: RoutePara
             currentSlug="management-team"
           />
         </Suspense>
+
+        <footer className="mt-8 pt-6 border-t border-color">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              <span>Last updated by </span>
+              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <span itemProp="name">KoalaGains</span>
+              </span>
+              <span> on </span>
+              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                {formattedModifiedDate}
+              </time>
+            </div>
+            <div className="flex gap-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Stock Analysis
+              </span>
+              <span className="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-300">
+                Management Team
+              </span>
+            </div>
+          </div>
+        </footer>
       </article>
     </PageWrapper>
   );

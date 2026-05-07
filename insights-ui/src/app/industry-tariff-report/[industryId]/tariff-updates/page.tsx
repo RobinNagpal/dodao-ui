@@ -3,6 +3,7 @@ import TariffUpdatesActions from '@/components/industry-tariff/section-actions/T
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { fetchIndustryTariffUpdatesMetadata } from '@/utils/tariff-reports/industry-metadata';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { Metadata } from 'next';
@@ -10,62 +11,7 @@ import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/Co
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
-
-  // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrl()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId)] },
-  });
-  let report: IndustryTariffReport | null = null;
-
-  if (reportResponse.ok) {
-    report = await reportResponse.json();
-  }
-
-  if (!report) {
-    return {
-      title: 'Top 5 Trade Partners | Industry Report',
-      description: 'Latest tariff updates and their impact on the industry',
-    };
-  }
-
-  // Get the SEO details specific to tariff updates
-  const seoDetails = report.reportSeoDetails?.tariffUpdatesSeoDetails;
-
-  // Create a title that includes the industry name
-  const industryName = report.executiveSummary?.title || 'Industry';
-  const seoTitle = seoDetails?.title || `${industryName} Top 5 Trade Partners | Trade Impact Analysis`;
-  const seoDescription =
-    seoDetails?.shortDescription ||
-    `Detailed analysis of recent tariff changes affecting the ${industryName} industry, including country-specific impacts and trade agreement changes.`;
-  const canonicalUrl = `https://koalagains.com/industry-tariff-report/${industryId}/tariff-updates`;
-
-  // Get countries affected to use in keywords
-  const countries = report.tariffUpdates?.countrySpecificTariffs.map((tariff) => tariff.countryName) || [];
-
-  // Create keywords from SEO details or fallback to generic ones
-  const keywords =
-    seoDetails?.keywords || [industryName, 'tariff updates', 'trade agreements', 'import tariffs', 'export tariffs', ...countries, 'KoalaGains'].slice(0, 10); // Limit to 10 keywords
-
-  return {
-    title: seoTitle,
-    description: seoDescription,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: seoTitle,
-      description: seoDescription,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: seoTitle,
-      description: seoDescription,
-    },
-    keywords: keywords,
-  };
+  return fetchIndustryTariffUpdatesMetadata(industryId);
 }
 
 export default async function TariffUpdatesPage({ params }: { params: Promise<{ industryId: string }> }) {
@@ -118,9 +64,7 @@ export default async function TariffUpdatesPage({ params }: { params: Promise<{ 
 
       <div className="space-y-4">
         {/* Country Navigation */}
-        {report.tariffUpdates && report.tariffUpdates.countryNames && (
-          <CountryNavigation countries={report.tariffUpdates.countryNames} industryId={industryId} />
-        )}
+        {report.tariffUpdates && report.tariffUpdates.countryNames && <CountryNavigation countries={report.tariffUpdates.countryNames} />}
 
         {report.tariffUpdates ? (
           report.tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
