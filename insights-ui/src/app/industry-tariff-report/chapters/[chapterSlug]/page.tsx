@@ -1,4 +1,6 @@
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import ChapterSectionActions from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -76,10 +78,48 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   return (
     <div className="mx-auto max-w-7xl py-2">
       <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="text-sm text-muted-foreground mb-1">
-          HTS Chapter {padded} — {chapter.title}
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="text-sm text-muted-foreground mb-1">
+              HTS Chapter {padded} — {chapter.title}
+            </div>
+            <h1 className="text-3xl font-bold heading-color">{report.reportCover?.title || fallbackPageTitle}</h1>
+          </div>
+          <PrivateWrapper>
+            <ChapterSectionActions
+              chapterSlug={chapter.slug}
+              actions={[
+                {
+                  kind: 'simple',
+                  key: 'regenerate-cover',
+                  label: 'Regenerate Cover',
+                  apiPath: 'generate-report-cover',
+                  modalTitle: 'Regenerate Cover',
+                  confirmationText: 'Regenerate the cover for this chapter? This replaces the current content.',
+                  successMessage: 'Cover regenerated.',
+                },
+                {
+                  kind: 'simple',
+                  key: 'regenerate-executive-summary',
+                  label: 'Regenerate Executive Summary',
+                  apiPath: 'generate-executive-summary',
+                  modalTitle: 'Regenerate Executive Summary',
+                  confirmationText: 'Regenerate the executive summary? This replaces the current content.',
+                  successMessage: 'Executive summary regenerated.',
+                },
+                {
+                  kind: 'simple',
+                  key: 'regenerate-seo',
+                  label: 'Regenerate SEO',
+                  apiPath: 'generate-seo-info',
+                  modalTitle: 'Regenerate SEO',
+                  confirmationText: 'Regenerate SEO metadata for every section of this chapter?',
+                  successMessage: 'SEO metadata regenerated.',
+                },
+              ]}
+            />
+          </PrivateWrapper>
         </div>
-        <h1 className="text-3xl font-bold heading-color">{report.reportCover?.title || fallbackPageTitle}</h1>
       </div>
 
       <div className="space-y-12">

@@ -1,4 +1,6 @@
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
@@ -75,18 +77,89 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
 interface ChapterSectionHeaderProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
+  actions: ChapterSectionAction[];
 }
 
-function ChapterSectionHeader({ chapter, pageTitle }: ChapterSectionHeaderProps): JSX.Element {
+function ChapterSectionHeader({ chapter, pageTitle, actions }: ChapterSectionHeaderProps): JSX.Element {
   const padded = chapter.number.toString().padStart(2, '0');
   return (
     <div className="mb-8 pb-4 border-b border-gray-200">
-      <div className="text-sm text-muted-foreground mb-1">
-        HTS Chapter {padded} — {chapter.title}
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-sm text-muted-foreground mb-1">
+            HTS Chapter {padded} — {chapter.title}
+          </div>
+          <h1 className="text-3xl font-bold heading-color">{pageTitle}</h1>
+        </div>
+        {actions.length > 0 && (
+          <PrivateWrapper>
+            <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
+          </PrivateWrapper>
+        )}
       </div>
-      <h1 className="text-3xl font-bold heading-color">{pageTitle}</h1>
     </div>
   );
+}
+
+// Per-section regenerate actions surfaced to admins on the chapter section
+// pages. Mirrors the affordances on the legacy `/industry-tariff-report/<id>/`
+// pages so admins can recover from a partially-failed generation without
+// going back to the admin table.
+function getSectionActions(sectionSlug: string): ChapterSectionAction[] {
+  switch (sectionSlug) {
+    case 'tariff-updates':
+      return [
+        {
+          // Use the init + per-country fan-out instead of the bundled
+          // generate route — the bundled chain would routinely time out on
+          // Vercel and leave the chapter with no `tariffUpdates` row.
+          kind: 'tariff-updates-fanout',
+          key: 'regenerate-tariff-updates',
+          label: 'Regenerate Tariff Updates',
+          modalTitle: 'Regenerate Tariff Updates',
+          confirmationText: 'Refetch the top trading partners and regenerate tariff data for each. This may take several minutes.',
+          successMessage: 'Tariff updates regenerated.',
+        },
+      ];
+    case 'understand-industry':
+      return [
+        {
+          kind: 'simple',
+          key: 'regenerate-understand-industry',
+          label: 'Regenerate Understand Industry',
+          apiPath: 'generate-understand-industry',
+          modalTitle: 'Regenerate Understand Industry',
+          confirmationText: 'Regenerate the Understand Industry section? This replaces the current content.',
+          successMessage: 'Understand Industry regenerated.',
+        },
+      ];
+    case 'industry-areas':
+      return [
+        {
+          kind: 'simple',
+          key: 'regenerate-industry-areas',
+          label: 'Regenerate Industry Areas',
+          apiPath: 'generate-industry-areas',
+          modalTitle: 'Regenerate Industry Areas',
+          confirmationText: 'Regenerate the Industry Areas section? This replaces the current content.',
+          successMessage: 'Industry Areas regenerated.',
+        },
+      ];
+    case 'final-conclusion':
+      return [
+        {
+          kind: 'simple',
+          key: 'regenerate-final-conclusion',
+          label: 'Regenerate Final Conclusion',
+          apiPath: 'generate-final-conclusion',
+          modalTitle: 'Regenerate Final Conclusion',
+          confirmationText: 'Regenerate the Final Conclusion? This replaces the current content.',
+          successMessage: 'Final Conclusion regenerated.',
+        },
+      ];
+    default:
+      return [];
+  }
 }
 
 // Returns the rendered section body when the matching report JSON exists; returns
@@ -148,7 +221,7 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
 
   return (
     <div className="mx-auto max-w-7xl py-2">
-      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} />
+      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={getSectionActions(sectionSlug)} />
       {body}
     </div>
   );
