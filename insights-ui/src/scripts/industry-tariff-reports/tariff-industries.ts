@@ -564,14 +564,6 @@ export const TariffIndustries: Record<string, TariffIndustryDefinition> = {
   },
 };
 
-export function getNumberOfHeadings(industryId: TariffIndustryId): number {
-  return getTariffIndustryDefinitionById(industryId).headingsCount;
-}
-
-export function getNumberOfSubHeadings(industryId: TariffIndustryId): number {
-  return getTariffIndustryDefinitionById(industryId).subHeadingsCount;
-}
-
 export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): TariffIndustryDefinition {
   const industryDefinition = Object.entries(TariffIndustries).find((k, v) => {
     return k[1].industryId === industryId;
@@ -583,36 +575,9 @@ export function getTariffIndustryDefinitionById(industryId: TariffIndustryId): T
   return industryDefinition[1];
 }
 
-export function fetchTariffReports(): TariffIndustryDefinition[] {
-  return Object.values(TariffIndustryId).map((industryId) => getTariffIndustryDefinitionById(industryId));
-}
-
-export interface HeadingSubheadingCombination {
-  headingIndex: number;
-  subHeadingIndex: number;
-  displayName: string;
-}
-
 // Looks up an industry by its `industryId` (the legacy URL slug stored in `tariff_chapter_reports.oldUrl`).
 // Non-throwing — returns undefined if the row's oldUrl doesn't match a known industry.
 export function findIndustryByLegacyUrl(oldUrl: string | null | undefined): TariffIndustryDefinition | undefined {
   if (!oldUrl) return undefined;
   return Object.values(TariffIndustries).find((industry) => industry.industryId === oldUrl);
-}
-
-export function getAllHeadingSubheadingCombinations(industryId: TariffIndustryId): HeadingSubheadingCombination[] {
-  const industry = getTariffIndustryDefinitionById(industryId);
-  const combinations: HeadingSubheadingCombination[] = [];
-
-  for (let headingIndex = 0; headingIndex < industry.headingsCount; headingIndex++) {
-    for (let subHeadingIndex = 0; subHeadingIndex < industry.subHeadingsCount; subHeadingIndex++) {
-      combinations.push({
-        headingIndex,
-        subHeadingIndex,
-        displayName: `Evaluate Industry Area ${headingIndex}_${subHeadingIndex}`,
-      });
-    }
-  }
-
-  return combinations;
 }

@@ -7,86 +7,70 @@ import {
   generateTariffUpdatesSeo,
   generateUnderstandIndustrySeo,
 } from '@/scripts/industry-tariff-reports/08-report-seo-info';
-import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { readSeoDetailsFromFile, writeJsonFileForSeoDetails } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
+import {
+  findReportSlugByOldUrl,
+  readIndustryTariffReportByOldUrl,
+  readSeoDetails,
+  writeSeoDetails,
+} from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { IndustryTariffReport, PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
-// Valid sections are all enum values from ReportType
 const VALID_SECTION_VALUES = Object.values(ReportType);
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
+  if (!industry) throw new Error('Industry is required');
 
-  if (!industry) {
-    throw new Error('Industry is required');
-  }
-
-  // Get the parameters from the request body
   const requestBody = await req.json();
   const sectionParam = requestBody.section || ReportType.ALL;
-
-  // Validate that the section parameter is a valid ReportType
   if (!VALID_SECTION_VALUES.includes(sectionParam as ReportType)) {
     throw new Error(`Invalid section: ${sectionParam}. Valid sections are: ${VALID_SECTION_VALUES.join(', ')}`);
   }
-
-  // Cast the validated section parameter to ReportType
   const section = sectionParam as ReportType;
 
-  const tariffReport = await getIndustryTariffReport(industry);
-
-  // Load existing SEO details if available
-  let existingSeoDetails: TariffReportSeoDetails = (await readSeoDetailsFromFile(industry)) || {};
+  const slug = await findReportSlugByOldUrl(industry);
 
   console.log(`Generating SEO info for ${section === ReportType.ALL ? 'all sections' : section}...`);
 
-  // Generate SEO details based on the requested section
   if (section === ReportType.ALL) {
-    // Generate SEO details for all sections
-    existingSeoDetails = await generateAndSaveAllSeoDetails(industry, tariffReport);
+    await generateAndSaveAllSeoDetails(slug);
   } else {
-    // Generate SEO details for a specific section
-    let seoDetails: PageSeoDetails | PageSeoDetails[] | undefined;
+    const existingSeoDetails: TariffReportSeoDetails = (await readSeoDetails(slug)) ?? {};
+    let seoDetails: PageSeoDetails | undefined;
 
     switch (section) {
       case ReportType.REPORT_COVER:
-        seoDetails = await generateReportCoverSeo(industry);
+        seoDetails = await generateReportCoverSeo(slug);
         if (seoDetails) existingSeoDetails.reportCoverSeoDetails = seoDetails;
         break;
       case ReportType.EXECUTIVE_SUMMARY:
-        seoDetails = await generateExecutiveSummarySeo(industry);
+        seoDetails = await generateExecutiveSummarySeo(slug);
         if (seoDetails) existingSeoDetails.executiveSummarySeoDetails = seoDetails;
         break;
       case ReportType.TARIFF_UPDATES:
-        seoDetails = await generateTariffUpdatesSeo(industry);
+        seoDetails = await generateTariffUpdatesSeo(slug);
         if (seoDetails) existingSeoDetails.tariffUpdatesSeoDetails = seoDetails;
         break;
       case ReportType.UNDERSTAND_INDUSTRY:
-        seoDetails = await generateUnderstandIndustrySeo(industry);
+        seoDetails = await generateUnderstandIndustrySeo(slug);
         if (seoDetails) existingSeoDetails.understandIndustrySeoDetails = seoDetails;
         break;
       case ReportType.INDUSTRY_AREA_SECTION:
-        seoDetails = await generateIndustryAreasSeo(industry);
+        seoDetails = await generateIndustryAreasSeo(slug);
         if (seoDetails) existingSeoDetails.industryAreasSeoDetails = seoDetails;
         break;
       case ReportType.FINAL_CONCLUSION:
-        seoDetails = await generateFinalConclusionSeo(industry);
+        seoDetails = await generateFinalConclusionSeo(slug);
         if (seoDetails) existingSeoDetails.finalConclusionSeoDetails = seoDetails;
         break;
     }
 
-    // Save the updated SEO details
-    await writeJsonFileForSeoDetails(industry, existingSeoDetails);
+    await writeSeoDetails(slug, existingSeoDetails);
   }
 
-  // Get the updated tariff report with the new SEO details
-  const updatedTariffReport = await getIndustryTariffReport(industry);
-  updatedTariffReport.reportSeoDetails = existingSeoDetails;
-
-  return updatedTariffReport;
+  return readIndustryTariffReportByOldUrl(industry);
 }
 
 export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);

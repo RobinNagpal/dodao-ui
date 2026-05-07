@@ -1,24 +1,16 @@
-import { getIndustryTariffReport } from '@/scripts/industry-tariff-reports/industry-tariff-report-utils';
-import { TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { readIndustryHeadingsFromFile } from '@/scripts/industry-tariff-reports/tariff-report-read-write';
-import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { NextRequest } from 'next/server';
-import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { getAndWriteIndustryHeadings } from '@/scripts/industry-tariff-reports/00-industry-main-headings';
+import { findReportSlugByOldUrl, readIndustryTariffReportByOldUrl } from '@/scripts/industry-tariff-reports/tariff-report-repository';
+import { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
+import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { NextRequest } from 'next/server';
 
-async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: TariffIndustryId }> }): Promise<IndustryTariffReport> {
+async function postHandler(req: NextRequest, { params }: { params: Promise<{ industry: string }> }): Promise<IndustryTariffReport> {
   const { industry } = await params;
+  if (!industry) throw new Error('Industry is required');
 
-  if (!industry) {
-    throw new Error('Industry is required');
-  }
-
-  // Generate the headings
-  await getAndWriteIndustryHeadings(industry);
-  const headings = await readIndustryHeadingsFromFile(industry);
-  if (!headings) throw new Error(`Headings not found for industry: ${industry}`);
-
-  return getIndustryTariffReport(industry);
+  const slug = await findReportSlugByOldUrl(industry);
+  await getAndWriteIndustryHeadings(slug);
+  return readIndustryTariffReportByOldUrl(industry);
 }
 
 export const POST = withErrorHandlingV2<IndustryTariffReport>(postHandler);
