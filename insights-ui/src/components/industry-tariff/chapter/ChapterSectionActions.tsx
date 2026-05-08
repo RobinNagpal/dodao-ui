@@ -25,8 +25,9 @@ interface SimpleChapterAction {
 // Special case for the tariff-updates regenerate. The bundled
 // `generate-tariff-updates` chain blew past Vercel's function timeout when
 // run server-side, so admin-triggered regeneration calls `init-tariff-updates`
-// (top-5 country lookup, single LLM call) and then fans out one POST to
-// `generate-tariff-updates` per country. Each request is a single LLM call.
+// (top-5 country lookup via trade-analytics aggregation, no LLM) and then
+// fans out one POST to `generate-tariff-updates` per country. Each fan-out
+// request is a single LLM call.
 interface TariffFanoutChapterAction {
   kind: 'tariff-updates-fanout';
   key: string;

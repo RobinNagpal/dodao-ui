@@ -1,3 +1,4 @@
+import { prisma } from '@/prisma';
 import {
   formatChapterLabel,
   getChapterPromptContext,
@@ -7,7 +8,9 @@ import {
   type ChapterPromptContext,
 } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { CountrySpecificTariff, IndustryAreasWrapper, TariffUpdatesForIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getDateAsMonthDDYYYYFormat } from '@/util/get-date';
+import { TariffCandidateCodeType } from '@prisma/client';
 import { z } from 'zod';
 import { getLlmResponse, outputInstructions } from '../llm‑utils‑gemini';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
@@ -58,35 +61,35 @@ const CountrySpecificTariffSchema = z.object({
     ),
 });
 
-const TopCountriesSchema = z.object({
-  topCountries: z.array(z.string()).describe('Array of exactly 5 country names whose trading volume with the US is highest for the given HTS chapter.'),
-});
+// Top-5 trading partners come straight from the ingested trade analytics
+// instead of an LLM lookup. We sum imported customs value (USD) by country
+// across every COMMODITY_CODE candidate that links to any HTS line in the
+// chapter. SPECIAL_CODE rows (Chapter 99 add-ons — IEEPA reciprocal,
+// Section 232/301, etc.) are skipped: their analytics duplicate the
+// underlying commodity-line trade rather than representing new flows.
+const TOP_COUNTRY_LIMIT = 5;
 
-function getTopTradingCountriesPrompt(chapterLabel: string, date: string) {
-  return `
-Identify the top 5 countries by trading volume with the U.S. for ${chapterLabel} as of ${date}.
-Output a JSON object with a single key \`topCountries\`, whose value is an array of exactly five ISO-style country names (strings).
-Example:
-\`\`\`
-{
-  "topCountries": ["China", "Canada", "Mexico", "Germany", "Japan"]
-}
-\`\`\`
-No extra keys or commentary.
-
-Fetch the countries in descending order of trading volume with the US for the provided HTS chapter.
-`;
-}
-
-async function getTopTradingCountries(chapterLabel: string, date: string): Promise<string[]> {
-  const prompt = getTopTradingCountriesPrompt(chapterLabel, date);
-  const response = await getLlmResponse<{ topCountries: string[] }>(
-    prompt,
-    TopCountriesSchema,
-    LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
-  );
-  return response.topCountries;
+async function getTopTradingCountriesFromAnalytics(chapterNumber: number): Promise<string[]> {
+  const rows = await prisma.tariffTradeAnalytic.groupBy({
+    by: ['countryName'],
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      candidateCode: {
+        type: TariffCandidateCodeType.COMMODITY_CODE,
+        htsCodeLinks: {
+          some: {
+            htsCode: {
+              chapter: { spaceId: KoalaGainsSpaceId, number: chapterNumber },
+            },
+          },
+        },
+      },
+    },
+    _sum: { totalCustomsValue: true },
+    orderBy: { _sum: { totalCustomsValue: 'desc' } },
+    take: TOP_COUNTRY_LIMIT,
+  });
+  return rows.map((r) => r.countryName);
 }
 
 function getTariffUpdatesForIndustryPrompt(chapterLabel: string, date: string, headings: IndustryAreasWrapper, country: string) {
@@ -229,9 +232,11 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(slug: string, dat
     return;
   }
 
-  const chapterLabel = formatChapterLabel(ctx);
-  console.log(`Fetching top 5 trading partners for ${slug}…`);
-  const countriesToProcess = await getTopTradingCountries(chapterLabel, date);
+  console.log(`Fetching top ${TOP_COUNTRY_LIMIT} trading partners for ${slug} from trade analytics…`);
+  const countriesToProcess = await getTopTradingCountriesFromAnalytics(ctx.chapterNumber);
+  if (countriesToProcess.length === 0) {
+    throw new Error(`No trade analytics found for HTS chapter ${ctx.chapterNumber}; cannot determine top trading partners.`);
+  }
   console.log(`Invoking LLM for tariffs for each of:`, countriesToProcess);
 
   // generateAllCountryTariffs persists incrementally; this final write is
@@ -241,16 +246,18 @@ export async function getTariffUpdatesForIndustryAndSaveToFile(slug: string, dat
   await writeTariffUpdates(slug, tariffUpdates);
 }
 
-// Phase 1 of the split tariff-updates flow: fetch the top-5 trading countries
-// (single grounded LLM call) and persist a stub record so the per-country
+// Phase 1 of the split tariff-updates flow: resolve the top-5 trading
+// countries from trade analytics and persist a stub record so the per-country
 // route can append into it. Returns the country list so the caller can fan
 // out one HTTP request per country — keeps each request well under Vercel's
 // function timeout, which the bundled flow can blow past.
-export async function initTariffUpdatesAndSaveToFile(slug: string, date: string): Promise<string[]> {
+export async function initTariffUpdatesAndSaveToFile(slug: string): Promise<string[]> {
   console.log(`Initialising tariff updates for ${slug} (top countries lookup)`);
   const ctx = await getChapterPromptContext(slug);
-  const chapterLabel = formatChapterLabel(ctx);
-  const countries = await getTopTradingCountries(chapterLabel, date);
+  const countries = await getTopTradingCountriesFromAnalytics(ctx.chapterNumber);
+  if (countries.length === 0) {
+    throw new Error(`No trade analytics found for HTS chapter ${ctx.chapterNumber}; cannot determine top trading partners.`);
+  }
 
   const existing = await readTariffUpdates(slug);
   await writeTariffUpdates(slug, {
