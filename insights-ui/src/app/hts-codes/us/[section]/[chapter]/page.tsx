@@ -1,11 +1,14 @@
 import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[number]/route';
 import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
+import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { chapterDetailHref, chapterUrlSegment, parseChapterSegment, parseSectionSegment, sectionUrlSegment } from '@/utils/tariff-calculator/chapter-slug';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getTariffReportRefByChapterNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { HtsCode } from '@prisma/client';
+import { Calculator, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
@@ -210,12 +213,30 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
     { name: 'HTS Codes', href: '/hts-codes', current: false },
-    { name: `Chapter ${padded}`, href: canonicalHref, current: true },
+    { name: `Chapter ${padded} — ${chapter.title}`, href: canonicalHref, current: true },
   ];
+
+  const tariffReportRef = await getTariffReportRefByChapterNumber(chapter.number);
+  const crossLinks = [
+    tariffReportRef
+      ? {
+          href: tariffReportRef.href,
+          title: `Tariff Impact Report — Chapter ${padded}`,
+          description: 'Industry tariff analysis tied to this HTS chapter: rate changes, country breakdowns, winners and losers.',
+          icon: <FileText className="h-5 w-5" />,
+        }
+      : null,
+    {
+      href: '/tariff-calculator',
+      title: 'Tariff Calculator',
+      description: `Estimate full landed duty for codes in HTS Chapter ${padded} — base rate plus Section 232, 301, IEEPA, and processing fees.`,
+      icon: <Calculator className="h-5 w-5" />,
+    },
+  ].filter((link): link is NonNullable<typeof link> => link !== null);
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
         <header className="mb-6">
           <div className="text-sm text-muted-foreground mb-1">
@@ -227,6 +248,8 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
             {chapter.title}
           </h1>
         </header>
+
+        <TariffCrossLinks heading="Tools for this chapter" links={crossLinks} />
 
         {(chapter.notes || chapter.additionalUsNotes) && (
           <section className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-4">

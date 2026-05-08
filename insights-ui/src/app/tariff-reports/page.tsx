@@ -1,10 +1,11 @@
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
+import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getTariffReportsListing } from '@/utils/tariff-reports/tariff-reports-listing';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ArrowRight, FileText, Layers } from 'lucide-react';
+import { ArrowRight, Calculator, FileText, Layers, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -125,7 +126,7 @@ export default async function TariffReportsPage() {
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
         <header className="mb-10">
@@ -138,6 +139,25 @@ export default async function TariffReportsPage() {
             industry structure, sub-areas, and forward-looking conclusions.
           </p>
         </header>
+
+        <TariffCrossLinks
+          heading="Looking for a specific HTS code or duty?"
+          description="Skip the long-form analysis when you just need to look up a code or estimate a duty."
+          links={[
+            {
+              href: '/tariff-calculator',
+              title: 'Tariff Calculator',
+              description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
+              icon: <Calculator className="h-5 w-5" />,
+            },
+            {
+              href: '/hts-codes',
+              title: 'HTS Code Browser',
+              description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
+              icon: <ListTree className="h-5 w-5" />,
+            },
+          ]}
+        />
 
         {rows.length === 0 ? (
           <div className="rounded-2xl border border-gray-800 bg-gray-900 py-12 text-center">

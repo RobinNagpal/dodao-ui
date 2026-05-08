@@ -1,6 +1,6 @@
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -38,7 +38,7 @@ export default async function ChapterReportLayout({ children, params }: { childr
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
       <div className="mx-auto text-color">
         <div className="mx-auto">
