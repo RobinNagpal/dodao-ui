@@ -1,13 +1,7 @@
 // 00-industry-main-headings.ts
-interface PublicCompany {
-  name: string;
-  ticker: string;
-}
-
 export interface IndustrySubArea {
   title: string;
   oneLineSummary: string;
-  companies: PublicCompany[];
 }
 
 export interface IndustryArea {

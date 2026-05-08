@@ -1,4 +1,5 @@
 import {
+  chapterSeoGuidance,
   formatChapterLabel,
   getChapterPromptContext,
   readExecutiveSummary,
@@ -41,6 +42,12 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
   Create a cover page which is different from the executive summary and conclusions.
 
   Dont include the title in the reportCoverContent.
+
+  Title rules:
+  - The "title" field should be a search-friendly H1 (50-65 characters) that includes the chapter title and a high-intent keyword
+    (e.g. "${ctx.chapterTitle}: Tariff Rates, Duties & 2026 Updates"). Avoid generic phrases like "Tariff Report Cover".
+
+   ${chapterSeoGuidance(ctx)}
 
    ${outputInstructions}
 

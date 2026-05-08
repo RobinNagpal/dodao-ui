@@ -1,4 +1,5 @@
 import {
+  chapterSeoGuidance,
   formatChapterLabel,
   getChapterPromptContext,
   readIndustryHeadings,
@@ -80,6 +81,8 @@ export async function getFinalConclusionAndSaveToFile(slug: string): Promise<voi
     - finalStatements (string)
 
     ${outputInstructions}
+
+    ${chapterSeoGuidance(ctx)}
 
    # Chapter Areas
    ${JSON.stringify(headings, null, 2)}

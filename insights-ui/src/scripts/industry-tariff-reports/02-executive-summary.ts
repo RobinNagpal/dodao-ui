@@ -1,4 +1,5 @@
 import {
+  chapterSeoGuidance,
   formatChapterLabel,
   getChapterPromptContext,
   readIndustryHeadings,
@@ -44,8 +45,11 @@ export async function getExecutiveSummaryAndSaveToFile(slug: string): Promise<vo
   4. Dont use Katex or Latex or italics formatting in the response.
 
    Executive summary should include the following fields:
-    - title
+    - title (search-friendly H1, 50-65 characters, includes the chapter title and a high-intent keyword such as
+      "Tariff Impact", "Duty Rates", or "2026 Updates" — e.g. "${ctx.chapterTitle}: Tariff Impact Summary").
     - executiveSummary (a markdown string which is the summary of the report)
+
+   ${chapterSeoGuidance(ctx)}
 
    ${outputInstructions}
 

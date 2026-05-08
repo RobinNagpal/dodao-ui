@@ -57,6 +57,27 @@ export function formatChapterLabel(ctx: Pick<ChapterPromptContext, 'chapterNumbe
   return `HTS Chapter ${padded} — ${ctx.chapterTitle}`;
 }
 
+// Shared SEO/engagement guidance injected into every section's content prompt.
+// We want the report to rank for high-intent tariff queries (rates, duties,
+// per-country impact) so the analysis is written *with* those search phrases
+// in headings and lead sentences instead of generic prose.
+export function chapterSeoGuidance(ctx: Pick<ChapterPromptContext, 'chapterNumber' | 'chapterTitle'>): string {
+  const padded = ctx.chapterNumber.toString().padStart(2, '0');
+  const title = ctx.chapterTitle;
+  return `
+# SEO and Reader-Engagement Rules
+- Write for readers actively searching for tariff information on "${title}" or "HTS Chapter ${padded}".
+- Naturally weave high-intent phrases into H2/H3 sub-headers and the first sentence of paragraphs, e.g.
+  "${title} tariff rates", "${title} import duty", "HTS Chapter ${padded} tariff updates",
+  "tariffs on ${title} imports", "<country> tariffs on ${title}".
+- Prefer keyword-rich sub-headings over generic ones ("Latest Tariff Rates on ${title}" beats "Latest Updates").
+- Front-load concrete specifics in every paragraph: percentage rates, dollar amounts, exact dates, HTS sub-headings.
+  Wrap numerical values in backticks.
+- Include at least one short, direct snippet-friendly answer per section (a 2–3 sentence "What is…?" / "How does…?" opener).
+- Avoid filler ("In conclusion", "It is important to note"). Be concrete, scannable, and specific.
+`;
+}
+
 // The chapter is the canonical subject of the report, regardless of whether the
 // caller arrived via the legacy `/industry-tariff-report/<industryId>` URL or a
 // chapter-keyed route. Prompts must reference the chapter title (and number) so
@@ -168,7 +189,11 @@ async function writeSection(slug: string, data: Prisma.TariffChapterReportUpdate
     data,
     select: { oldUrl: true },
   });
-  if (row.oldUrl) {
+  // Chapter routes (`/industry-tariff-report/chapters/<slug>`) cache their
+  // fetches under a slug-keyed tag; legacy industry routes (when oldUrl is
+  // set) cache under the oldUrl. Bust both so neither URL serves stale data.
+  revalidateTariffReport(slug);
+  if (row.oldUrl && row.oldUrl !== slug) {
     revalidateTariffReport(row.oldUrl);
   }
   // The /tariff-reports listing is cached via unstable_cache and shows the

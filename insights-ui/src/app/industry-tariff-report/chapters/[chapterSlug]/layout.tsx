@@ -4,12 +4,15 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import type React from 'react';
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
-  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
+    next: { tags: [tariffReportTag(chapterSlug)] },
+  });
   return response.ok ? response.json() : null;
 }
 

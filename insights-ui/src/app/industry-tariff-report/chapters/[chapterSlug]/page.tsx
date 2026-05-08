@@ -7,13 +7,16 @@ import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-ty
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
 type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
-  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
+    next: { tags: [tariffReportTag(chapterSlug)] },
+  });
   return response.ok ? response.json() : null;
 }
 

@@ -1,4 +1,5 @@
 import {
+  chapterSeoGuidance,
   formatChapterLabel,
   getChapterPromptContext,
   readIndustryHeadings,
@@ -114,6 +115,7 @@ Below are the consolidated key areas to cover under each of the six headings.
 
 ${JSON.stringify(headings, null, 2)}
 
+${chapterSeoGuidance(ctx)}
 `;
 
   console.log('Invoking LLM for understanding industry');

@@ -9,15 +9,16 @@ import { z, ZodObject } from 'zod';
 import { getLlmResponse } from '../llm‑utils‑gemini';
 import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 
-export const PublicCompanySchema = z.object({
-  name: z.string().describe('Name of the public company.'),
-  ticker: z.string().describe('Ticker symbol of the public company.'),
-});
-
+// Headings drive the structure of every downstream section (cover, executive
+// summary, understand-industry, industry-areas, tariff-updates, conclusion).
+// Keep this lean: title + one-line summary is enough to scope the prompts
+// for an HTS chapter. We previously also asked for US public companies per
+// subarea for the (now-removed) "evaluate industry area" section; that data
+// is no longer consumed anywhere, so dropping it shrinks the JSON the LLM
+// has to produce and reduces hallucinations.
 export const IndustrySubAreaSchema = z.object({
   title: z.string().describe('Subarea title'),
   oneLineSummary: z.string().describe('One line summary of the subarea.'),
-  companies: z.array(PublicCompanySchema).describe('This is the id of the html element to which the hyperlink points'),
 });
 
 export const IndustryAreaSchema = z.object({
@@ -33,21 +34,20 @@ export const IndustryAreasSchema: ZodObject<any> = z.object({
 function getMainIndustryPrompt(ctx: ChapterPromptContext) {
   const chapterLabel = formatChapterLabel(ctx);
   const prompt: string = `
-  As an investor I want to learn everything about the products and trade scope of ${chapterLabel}.
+  Divide ${chapterLabel} into clean, non-overlapping product/trade areas suitable for an HTS-chapter
+  tariff report. The output drives the structure of every other section, so the areas must be
+  specific to the goods covered by this HTS chapter — not generic industry segments.
 
-  Give me the information based on the following rules:
-  - I want to divide this chapter into four main areas, with three sub areas under each of them.
-  - The Downstream areas should come at the end, then the Midstream areas and then the Upstream areas first.
-  - I want to make sure the whole scope of ${chapterLabel} is covered and there is no overlap between the areas.
-  - Tell me the top ${ctx.headingsCount} areas and ${ctx.subHeadingsCount} subareas under each that I should know.
-  - Number of areas should be ${ctx.headingsCount}
-  - Number of subareas under each area should be ${ctx.subHeadingsCount}.
-  - There should be almost no overlap between the areas and subareas.
+  Rules:
+  - Produce exactly ${ctx.headingsCount} top-level areas, each with exactly ${ctx.subHeadingsCount} sub-areas.
+  - Order: Upstream first, then Midstream, then Downstream.
+  - Together the areas must cover the full product scope of ${chapterLabel} with effectively no overlap.
+  - Each area/sub-area title should reference concrete goods or trade categories from this HTS chapter
+    (not generic terms like "Market Dynamics" or "Industry Overview").
+  - The "oneLineSummary" should be one sentence that names the goods covered and their role in the chapter.
 
-  Also under each subAreas give me the name and tickers of each
-  of the US public company that belongs under it.
-
-  I dont want anything like common chapter introduction or metrics or other things to be in the areas or subareas.
+  Do NOT include common-chapter introductions, generic metrics, regulatory overviews, or company lists —
+  those belong to other sections of the report.
   `;
 
   return prompt;

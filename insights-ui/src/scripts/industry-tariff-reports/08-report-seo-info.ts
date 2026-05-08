@@ -9,6 +9,7 @@ import {
   readTariffUpdates,
   readUnderstandIndustry,
   writeSeoDetails,
+  type ChapterPromptContext,
 } from '@/scripts/industry-tariff-reports/tariff-report-repository';
 import { PageSeoDetails, ReportType, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { z } from 'zod';
@@ -21,17 +22,36 @@ const PageSeoDetailsSchema = z.object({
   keywords: z.array(z.string()).describe('Array of relevant keywords for the page (5-10 keywords)'),
 });
 
-async function generateSeoDetailsForSection(chapterLabel: string, sectionName: string, sectionContent: unknown): Promise<PageSeoDetails> {
+async function generateSeoDetailsForSection(
+  ctx: Pick<ChapterPromptContext, 'chapterNumber' | 'chapterTitle'>,
+  sectionName: string,
+  sectionContent: unknown
+): Promise<PageSeoDetails> {
+  const chapterLabel = formatChapterLabel(ctx);
+  const padded = ctx.chapterNumber.toString().padStart(2, '0');
   const prompt = `
-    Generate SEO metadata for the ${sectionName} section of the tariff report for ${chapterLabel}.
-    The section content is provided below.
+    Generate SEO metadata for the "${sectionName}" page of the tariff report covering ${chapterLabel}.
+    This is a public web page; the goal is to maximise organic clicks from importers, exporters,
+    investors, and policy researchers searching for tariff information on this chapter.
 
-    Please create:
-    1. A concise, descriptive SEO title (50-60 characters) that includes important keywords
-    2. A compelling meta description (150-160 characters) that summarizes the section content
-    3. 5-10 relevant keywords related to the section content
+    Title rules (50-65 characters, hard cap at 65):
+    - Include the chapter title ("${ctx.chapterTitle}") OR the chapter number ("HTS Chapter ${padded}").
+    - Include at least one high-intent keyword for this section: tariff rates, import duty, customs duty,
+      trade impact, tariff updates, country-specific tariffs, etc.
+    - End with a brand suffix like " | KoalaGains" only if it still fits the character budget.
+    - Avoid stop-word filler ("Comprehensive Analysis of…"). Be direct.
 
-    The SEO metadata should be optimized for search engines while accurately reflecting the content.
+    Meta description rules (150-160 characters, hard cap at 160):
+    - Plain language, written to drive a click. Include a concrete pull (a country name, a percentage,
+      a date, or "2026 updates") if the underlying content provides one.
+    - Reference ${ctx.chapterTitle} explicitly.
+    - Active voice, no "Learn about…" / "Find out…" filler.
+
+    Keyword rules (5-10 keywords):
+    - Mix short-tail ("${ctx.chapterTitle} tariff", "HTS Chapter ${padded}") and long-tail
+      ("${ctx.chapterTitle} import duty rates", "<country> tariff on ${ctx.chapterTitle}") phrases.
+    - Pull at least 2-3 entities from the actual content (countries, sub-products, agreements).
+    - Lower-case, no duplicates, no hashtags.
 
     Output must be a JSON object with EXACTLY these keys:
     - title
@@ -49,42 +69,42 @@ export async function generateReportCoverSeo(slug: string): Promise<PageSeoDetai
   const ctx = await getChapterPromptContext(slug);
   const reportCover = await readReportCover(slug);
   if (!reportCover) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.REPORT_COVER, reportCover);
+  return generateSeoDetailsForSection(ctx, ReportType.REPORT_COVER, reportCover);
 }
 
 export async function generateExecutiveSummarySeo(slug: string): Promise<PageSeoDetails | undefined> {
   const ctx = await getChapterPromptContext(slug);
   const executiveSummary = await readExecutiveSummary(slug);
   if (!executiveSummary) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.EXECUTIVE_SUMMARY, executiveSummary);
+  return generateSeoDetailsForSection(ctx, ReportType.EXECUTIVE_SUMMARY, executiveSummary);
 }
 
 export async function generateTariffUpdatesSeo(slug: string): Promise<PageSeoDetails | undefined> {
   const ctx = await getChapterPromptContext(slug);
   const tariffUpdates = await readTariffUpdates(slug);
   if (!tariffUpdates) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.TARIFF_UPDATES, tariffUpdates);
+  return generateSeoDetailsForSection(ctx, ReportType.TARIFF_UPDATES, tariffUpdates);
 }
 
 export async function generateUnderstandIndustrySeo(slug: string): Promise<PageSeoDetails | undefined> {
   const ctx = await getChapterPromptContext(slug);
   const understandIndustry = await readUnderstandIndustry(slug);
   if (!understandIndustry) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.UNDERSTAND_INDUSTRY, understandIndustry);
+  return generateSeoDetailsForSection(ctx, ReportType.UNDERSTAND_INDUSTRY, understandIndustry);
 }
 
 export async function generateIndustryAreasSeo(slug: string): Promise<PageSeoDetails | undefined> {
   const ctx = await getChapterPromptContext(slug);
   const industryAreas = await readIndustryAreaSection(slug);
   if (!industryAreas) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.INDUSTRY_AREA_SECTION, industryAreas);
+  return generateSeoDetailsForSection(ctx, ReportType.INDUSTRY_AREA_SECTION, industryAreas);
 }
 
 export async function generateFinalConclusionSeo(slug: string): Promise<PageSeoDetails | undefined> {
   const ctx = await getChapterPromptContext(slug);
   const finalConclusion = await readFinalConclusion(slug);
   if (!finalConclusion) return undefined;
-  return generateSeoDetailsForSection(formatChapterLabel(ctx), ReportType.FINAL_CONCLUSION, finalConclusion);
+  return generateSeoDetailsForSection(ctx, ReportType.FINAL_CONCLUSION, finalConclusion);
 }
 
 export async function generateAndSaveAllSeoDetails(slug: string): Promise<TariffReportSeoDetails> {
