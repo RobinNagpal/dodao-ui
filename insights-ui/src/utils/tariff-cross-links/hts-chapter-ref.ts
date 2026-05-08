@@ -58,7 +58,6 @@ export interface TariffReportRef {
   href: string;
   chapterTitle: string;
   chapterNumber: number;
-  isIndustryUrl: boolean;
 }
 
 const SEEDED_REPORT_FILTER = { introduction: { not: Prisma.DbNull } } as const;
@@ -66,14 +65,13 @@ const SEEDED_REPORT_FILTER = { introduction: { not: Prisma.DbNull } } as const;
 async function fetchTariffReportRefByChapterNumber(chapterNumber: number): Promise<TariffReportRef | null> {
   const row = await prisma.tariffChapterReport.findFirst({
     where: { spaceId: KoalaGainsSpaceId, chapter: { number: chapterNumber }, ...SEEDED_REPORT_FILTER },
-    select: { slug: true, oldUrl: true, chapter: { select: { number: true, title: true } } },
+    select: { slug: true, chapter: { select: { number: true, title: true } } },
   });
   if (!row) return null;
   return {
-    href: row.oldUrl ? `/industry-tariff-report/${row.oldUrl}` : chapterCoverHref(row.slug),
+    href: chapterCoverHref(row.slug),
     chapterTitle: row.chapter.title,
     chapterNumber: row.chapter.number,
-    isIndustryUrl: Boolean(row.oldUrl),
   };
 }
 
