@@ -11,6 +11,7 @@ import type { IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } fro
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
+import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
@@ -34,7 +35,9 @@ function pickSectionSeo(seo: TariffReportSeoDetails | null | undefined, sectionS
 }
 
 async function fetchChapterTariffReport(chapterSlug: string): Promise<ChapterTariffReportResponse | null> {
-  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`);
+  const response = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/chapters/${chapterSlug}`, {
+    next: { tags: [tariffReportTag(chapterSlug)] },
+  });
   return response.ok ? response.json() : null;
 }
 

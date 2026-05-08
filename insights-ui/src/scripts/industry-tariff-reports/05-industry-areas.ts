@@ -1,4 +1,5 @@
 import {
+  chapterSeoGuidance,
   formatChapterLabel,
   getChapterPromptContext,
   readIndustryHeadings,
@@ -36,6 +37,8 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(slug: string): Pr
   - Give a detailed insightful explanation of the sub-areas and how they relate to the main headings in around 1500 words
 
   ${outputInstructions}
+
+  ${chapterSeoGuidance(ctx)}
 
   # Headings and Subheadings
   ${JSON.stringify(headings, null, 2)}
