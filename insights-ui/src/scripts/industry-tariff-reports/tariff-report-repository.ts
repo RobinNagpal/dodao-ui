@@ -8,6 +8,7 @@ import type {
   IndustryAreasWrapper,
   IndustryTariffReport,
   ReportCover,
+  TariffEngineering,
   TariffReportSeoDetails,
   TariffUpdatesForIndustry,
   UnderstandIndustry,
@@ -137,6 +138,7 @@ const REPORT_SECTIONS_SELECT = {
   understandIndustry: true,
   industryAreasSections: true,
   conclusion: true,
+  tariffEngineering: true,
   seoDetails: true,
 } as const satisfies Prisma.TariffChapterReportSelect;
 
@@ -151,6 +153,7 @@ function rowToIndustryTariffReport(row: ReportSectionsRow): IndustryTariffReport
     understandIndustry: (row.understandIndustry as UnderstandIndustry | null) ?? undefined,
     industryAreasSections: (row.industryAreasSections as IndustryAreaSection | null) ?? undefined,
     finalConclusion: (row.conclusion as FinalConclusion | null) ?? undefined,
+    tariffEngineering: (row.tariffEngineering as TariffEngineering | null) ?? undefined,
     reportSeoDetails: (row.seoDetails as TariffReportSeoDetails | null) ?? undefined,
   };
 }
@@ -282,6 +285,16 @@ export async function writeFinalConclusion(slug: string, value: FinalConclusion)
   await writeSection(slug, { conclusion: toJsonField<'conclusion'>(normalizeMarkdownNewlines(value)) });
 }
 
+export async function readTariffEngineering(slug: string): Promise<TariffEngineering | undefined> {
+  return readSection<TariffEngineering>(slug, 'tariffEngineering');
+}
+
+export async function writeTariffEngineering(slug: string, value: TariffEngineering): Promise<void> {
+  await writeSection(slug, {
+    tariffEngineering: toJsonField<'tariffEngineering'>(normalizeMarkdownNewlines(value)),
+  });
+}
+
 export async function readSeoDetails(slug: string): Promise<TariffReportSeoDetails | undefined> {
   return readSection<TariffReportSeoDetails>(slug, 'seoDetails');
 }
@@ -325,6 +338,7 @@ export async function writeSeoDetails(slug: string, value: TariffReportSeoDetail
     understandIndustrySeoDetails: normalizePageSeoDetails(v.understandIndustrySeoDetails),
     industryAreasSeoDetails: normalizePageSeoDetails(v.industryAreasSeoDetails),
     finalConclusionSeoDetails: normalizePageSeoDetails(v.finalConclusionSeoDetails),
+    tariffEngineeringSeoDetails: normalizePageSeoDetails(v.tariffEngineeringSeoDetails),
   };
 
   await writeSection(slug, { seoDetails: toJsonField<'seoDetails'>(normalized) });

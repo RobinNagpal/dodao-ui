@@ -2098,6 +2098,8 @@ model TariffChapterReport {
   industryAreasSections Json? @map("industry_areas_sections")
   /// [TariffFinalConclusion]
   conclusion            Json? @map("conclusion")
+  /// [TariffEngineering]
+  tariffEngineering     Json? @map("tariff_engineering")
 
   /// [TariffReportSeoDetails]
   seoDetails Json? @map("seo_details")

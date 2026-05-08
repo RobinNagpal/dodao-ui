@@ -4,6 +4,7 @@ import ChapterSectionActions, { type ChapterSectionAction } from '@/components/i
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
+import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderers/TariffEngineeringRenderer';
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
@@ -24,6 +25,7 @@ const SECTION_SEO_KEY: Record<string, keyof TariffReportSeoDetails> = {
   'understand-industry': 'understandIndustrySeoDetails',
   'industry-areas': 'industryAreasSeoDetails',
   'final-conclusion': 'finalConclusionSeoDetails',
+  'tariff-engineering': 'tariffEngineeringSeoDetails',
 };
 
 type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
@@ -160,6 +162,18 @@ function getSectionActions(sectionSlug: string): ChapterSectionAction[] {
           successMessage: 'Final Conclusion regenerated.',
         },
       ];
+    case 'tariff-engineering':
+      return [
+        {
+          kind: 'simple',
+          key: 'regenerate-tariff-engineering',
+          label: 'Regenerate Tariff Engineering',
+          apiPath: 'generate-tariff-engineering',
+          modalTitle: 'Regenerate Tariff Engineering',
+          confirmationText: 'Regenerate the Tariff Engineering analysis? This replaces the current content.',
+          successMessage: 'Tariff Engineering regenerated.',
+        },
+      ];
     default:
       return [];
   }
@@ -200,6 +214,10 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
     case 'final-conclusion': {
       if (!report.finalConclusion) return null;
       return <FinalConclusionRenderer finalConclusion={report.finalConclusion} />;
+    }
+    case 'tariff-engineering': {
+      if (!report.tariffEngineering) return null;
+      return <TariffEngineeringRenderer tariffEngineering={report.tariffEngineering} />;
     }
     default:
       return null;

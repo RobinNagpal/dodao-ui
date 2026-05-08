@@ -6,6 +6,7 @@ import {
   readIndustryAreaSection,
   readReportCover,
   readSeoDetails,
+  readTariffEngineering,
   readTariffUpdates,
   readUnderstandIndustry,
   writeSeoDetails,
@@ -107,6 +108,13 @@ export async function generateFinalConclusionSeo(slug: string): Promise<PageSeoD
   return generateSeoDetailsForSection(ctx, ReportType.FINAL_CONCLUSION, finalConclusion);
 }
 
+export async function generateTariffEngineeringSeo(slug: string): Promise<PageSeoDetails | undefined> {
+  const ctx = await getChapterPromptContext(slug);
+  const tariffEngineering = await readTariffEngineering(slug);
+  if (!tariffEngineering) return undefined;
+  return generateSeoDetailsForSection(ctx, ReportType.TARIFF_ENGINEERING, tariffEngineering);
+}
+
 export async function generateAndSaveAllSeoDetails(slug: string): Promise<TariffReportSeoDetails> {
   const seoDetails: TariffReportSeoDetails = (await readSeoDetails(slug)) ?? {};
 
@@ -149,6 +157,13 @@ export async function generateAndSaveAllSeoDetails(slug: string): Promise<Tariff
   if (finalConclusion) {
     console.log(`Generating SEO details for ${ReportType.FINAL_CONCLUSION}...`);
     seoDetails.finalConclusionSeoDetails = await generateFinalConclusionSeo(slug);
+    await writeSeoDetails(slug, seoDetails);
+  }
+
+  const tariffEngineering = await readTariffEngineering(slug);
+  if (tariffEngineering) {
+    console.log(`Generating SEO details for ${ReportType.TARIFF_ENGINEERING}...`);
+    seoDetails.tariffEngineeringSeoDetails = await generateTariffEngineeringSeo(slug);
     await writeSeoDetails(slug, seoDetails);
   }
 

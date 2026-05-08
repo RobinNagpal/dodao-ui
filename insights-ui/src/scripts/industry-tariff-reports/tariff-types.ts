@@ -82,6 +82,37 @@ export interface FinalConclusion {
   finalStatements: string;
 }
 
+// 06-tariff-engineering.ts
+export interface TariffEngineeringClassificationLever {
+  leverTitle: string;
+  currentClassification: string;
+  engineeredClassification: string;
+  basisForReclassification: string;
+  dutyDelta: string;
+}
+
+export interface TariffEngineeringStrategy {
+  title: string;
+  technique: string;
+  applicabilityToChapter: string;
+  potentialDutyImpact: string;
+  implementationSteps: string[];
+  risksAndCaveats: string;
+  precedent: string;
+}
+
+export interface TariffEngineering {
+  title: string;
+  overview: string;
+  classificationLevers: TariffEngineeringClassificationLever[];
+  strategies: TariffEngineeringStrategy[];
+  countryOfOriginPlaybook: string;
+  valuationOpportunities: string;
+  ftzAndDrawback: string;
+  complianceGuardrails: string;
+  bottomLine: string;
+}
+
 export interface ReportCover {
   title: string;
   reportCoverContent: string;
@@ -100,6 +131,7 @@ export interface TariffReportSeoDetails {
   understandIndustrySeoDetails?: PageSeoDetails;
   industryAreasSeoDetails?: PageSeoDetails;
   finalConclusionSeoDetails?: PageSeoDetails;
+  tariffEngineeringSeoDetails?: PageSeoDetails;
 }
 
 export interface IndustryTariffReport {
@@ -110,6 +142,7 @@ export interface IndustryTariffReport {
   understandIndustry?: UnderstandIndustry;
   industryAreasSections?: IndustryAreaSection;
   finalConclusion?: FinalConclusion;
+  tariffEngineering?: TariffEngineering;
   reportSeoDetails?: TariffReportSeoDetails;
 }
 
@@ -124,5 +157,6 @@ export enum ReportType {
   EXECUTIVE_SUMMARY = 'EXECUTIVE_SUMMARY',
   REPORT_COVER = 'REPORT_COVER',
   FINAL_CONCLUSION = 'FINAL_CONCLUSION',
+  TARIFF_ENGINEERING = 'TARIFF_ENGINEERING',
   ALL = 'ALL',
 }
