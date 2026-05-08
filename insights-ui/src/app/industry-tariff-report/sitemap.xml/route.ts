@@ -20,34 +20,21 @@ const REPORT_SECTIONS = ['tariff-updates', 'understand-industry', 'industry-area
 // inserted for chapters with no industry mapping carry a NULL introduction and are excluded.
 const SEEDED_FILTER = { introduction: { not: Prisma.DbNull } } as const;
 
-// `oldUrl` on a seeded row is the canonical "this chapter is part of an industry" signal — when
-// present, the chapter's content lives at `/industry-tariff-report/<oldUrl>` and the chapter URL
-// is never reachable. Only chapters with a NULL `oldUrl` get their own `/chapters/<slug>` URL.
 async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
   const rows = await prisma.tariffChapterReport.findMany({
     where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
-    select: { slug: true, oldUrl: true, updatedAt: true },
+    select: { slug: true, updatedAt: true },
     orderBy: { chapter: { number: 'asc' } },
   });
 
   for (const row of rows) {
     const lastmod = row.updatedAt.toISOString();
-
-    if (row.oldUrl) {
-      const industryPath = `/industry-tariff-report/${row.oldUrl}`;
-      urls.push({ url: industryPath, changefreq: 'weekly', priority: 0.8, lastmod });
-      for (const section of REPORT_SECTIONS) {
-        urls.push({ url: `${industryPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });
-      }
-      continue;
-    }
-
     const chapterPath = `/industry-tariff-report/chapters/${row.slug}`;
-    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.6, lastmod });
+    urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.8, lastmod });
     for (const section of REPORT_SECTIONS) {
-      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.5, lastmod });
+      urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
   }
 

@@ -1,8 +1,25 @@
 import type { IndustrySeoResponse } from '@/app/api/industry-tariff-reports/[industry]/seo/route';
 import type { PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
+
+const SITE_ORIGIN = 'https://koalagains.com';
+
+// Industry routes still serve content for click-through traffic, but their canonical points at the
+// chapter URL so search engines consolidate ranking on the chapter route. Falls back to the industry
+// URL only when no chapter row maps to the legacy industry slug.
+async function resolveCanonicalUrl(industryId: string, sectionSlug: string | null): Promise<string> {
+  const chapterSlug = await getChapterSlugForOldUrl(industryId);
+  if (chapterSlug) {
+    const path = sectionSlug ? chapterSectionHref(chapterSlug, sectionSlug) : chapterCoverHref(chapterSlug);
+    return `${SITE_ORIGIN}${path}`;
+  }
+  const sectionPath = sectionSlug ? `/${sectionSlug}` : '';
+  return `${SITE_ORIGIN}/industry-tariff-report/${industryId}${sectionPath}`;
+}
 
 async function fetchIndustrySeo(industryId: string): Promise<IndustrySeoResponse | null> {
   try {
@@ -86,17 +103,18 @@ const SECTION_CONFIGS: Record<'cover' | 'tariffUpdates' | 'understandIndustry' |
 
 interface SectionMetadataOptions {
   industryId: string;
-  canonicalUrl: string;
+  sectionSlug: string | null;
   section: keyof typeof SECTION_CONFIGS;
   notFoundFallback: Metadata;
   /** When true, append the report's country names to the fallback keywords (used by tariff-updates page). */
   appendCountryKeywords?: boolean;
 }
 
-async function buildSectionMetadata({ industryId, canonicalUrl, section, notFoundFallback, appendCountryKeywords }: SectionMetadataOptions): Promise<Metadata> {
+async function buildSectionMetadata({ industryId, sectionSlug, section, notFoundFallback, appendCountryKeywords }: SectionMetadataOptions): Promise<Metadata> {
   const seo = await fetchIndustrySeo(industryId);
   if (!seo) return notFoundFallback;
 
+  const canonicalUrl = await resolveCanonicalUrl(industryId, sectionSlug);
   const cfg = SECTION_CONFIGS[section];
   const sectionSeo = seo.seoDetails?.[cfg.seoKey] as
     | (PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string })
@@ -113,10 +131,10 @@ async function buildSectionMetadata({ industryId, canonicalUrl, section, notFoun
   return buildMetadata({ title, description, canonicalUrl, keywords });
 }
 
-export function fetchIndustryCoverMetadata(industryId: string, canonicalUrl: string): Promise<Metadata> {
+export function fetchIndustryCoverMetadata(industryId: string): Promise<Metadata> {
   return buildSectionMetadata({
     industryId,
-    canonicalUrl,
+    sectionSlug: null,
     section: 'cover',
     notFoundFallback: { title: 'Industry Tariff Report', description: 'Comprehensive analysis of tariff impacts on industry' },
   });
@@ -125,7 +143,7 @@ export function fetchIndustryCoverMetadata(industryId: string, canonicalUrl: str
 export function fetchIndustryTariffUpdatesMetadata(industryId: string): Promise<Metadata> {
   return buildSectionMetadata({
     industryId,
-    canonicalUrl: `https://koalagains.com/industry-tariff-report/${industryId}/tariff-updates`,
+    sectionSlug: 'tariff-updates',
     section: 'tariffUpdates',
     notFoundFallback: { title: 'Top 5 Trade Partners | Industry Report', description: 'Latest tariff updates and their impact on the industry' },
     appendCountryKeywords: true,
@@ -135,7 +153,7 @@ export function fetchIndustryTariffUpdatesMetadata(industryId: string): Promise<
 export function fetchIndustryUnderstandIndustryMetadata(industryId: string): Promise<Metadata> {
   return buildSectionMetadata({
     industryId,
-    canonicalUrl: `https://koalagains.com/industry-tariff-report/${industryId}/understand-industry`,
+    sectionSlug: 'understand-industry',
     section: 'understandIndustry',
     notFoundFallback: {
       title: 'Understand Industry | Tariff Report',
@@ -147,7 +165,7 @@ export function fetchIndustryUnderstandIndustryMetadata(industryId: string): Pro
 export function fetchIndustryAreasMetadata(industryId: string): Promise<Metadata> {
   return buildSectionMetadata({
     industryId,
-    canonicalUrl: `https://koalagains.com/industry-tariff-report/${industryId}/industry-areas`,
+    sectionSlug: 'industry-areas',
     section: 'industryAreas',
     notFoundFallback: { title: 'Industry Areas | Tariff Report', description: 'Overview of industry areas and their structure' },
   });
@@ -156,7 +174,7 @@ export function fetchIndustryAreasMetadata(industryId: string): Promise<Metadata
 export function fetchIndustryFinalConclusionMetadata(industryId: string): Promise<Metadata> {
   return buildSectionMetadata({
     industryId,
-    canonicalUrl: `https://koalagains.com/industry-tariff-report/${industryId}/final-conclusion`,
+    sectionSlug: 'final-conclusion',
     section: 'finalConclusion',
     notFoundFallback: { title: 'Final Conclusion | Tariff Report', description: 'Final conclusion and summary of the industry tariff report' },
   });

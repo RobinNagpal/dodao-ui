@@ -11,6 +11,8 @@ import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
+import { revalidateTariffChapterDetailTag, revalidateTariffChapterRelatedReportTag } from '@/utils/tariff-calculator/cache-tags';
+import { revalidateHtsChapterRefsTag } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { PortfolioManagerType } from '@/types/portfolio-manager';
 import { prisma } from '@/prisma';
@@ -79,4 +81,11 @@ export async function revalidateStockScenarioCache(slug: string) {
 export async function revalidateTariffReportsListingCache() {
   revalidateTariffReportsListing();
   return { success: true, message: 'Revalidated tariff reports listing cache' };
+}
+
+export async function revalidateHtsChapterDetailCache(chapterNumber: number) {
+  revalidateTariffChapterDetailTag(chapterNumber);
+  revalidateTariffChapterRelatedReportTag(chapterNumber);
+  revalidateHtsChapterRefsTag();
+  return { success: true, message: `Revalidated HTS chapter ${chapterNumber} cache` };
 }

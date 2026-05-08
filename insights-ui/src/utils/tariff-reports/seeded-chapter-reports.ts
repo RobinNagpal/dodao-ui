@@ -39,3 +39,14 @@ export async function getSeededLastModifiedForOldUrl(oldUrl: string): Promise<st
   if (!row || row.introduction === null) return null;
   return row.updatedAt.toISOString();
 }
+
+// Resolve the canonical chapter slug for a legacy industry URL. Industry routes still serve content
+// (we keep the URLs alive for click-through), but their canonical now points at the chapter URL so
+// Google consolidates ranking on the chapter route. Returns null when no row maps to that oldUrl.
+export async function getChapterSlugForOldUrl(oldUrl: string): Promise<string | null> {
+  const row = await prisma.tariffChapterReport.findUnique({
+    where: { spaceId_oldUrl: { spaceId: KoalaGainsSpaceId, oldUrl } },
+    select: { slug: true },
+  });
+  return row?.slug ?? null;
+}

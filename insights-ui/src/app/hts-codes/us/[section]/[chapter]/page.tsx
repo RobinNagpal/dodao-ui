@@ -1,6 +1,7 @@
 import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[number]/route';
 import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
 import type { TariffReportRef } from '@/app/api/tariff-calculator/chapters/[number]/related-report/route';
+import HtsChapterDetailActions from '@/app/hts-codes/us/[section]/[chapter]/HtsChapterDetailActions';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { TARIFF_CHAPTERS_LISTING_TAG, tariffChapterDetailCacheTag, tariffChapterRelatedReportCacheTag } from '@/utils/tariff-calculator/cache-tags';
@@ -65,14 +66,6 @@ async function fetchChapterList(): Promise<TariffChapterListItem[]> {
     console.error('Failed to fetch chapter list:', e);
     return [];
   }
-}
-
-export async function generateStaticParams(): Promise<RouteParams[]> {
-  const chapters = await fetchChapterList();
-  return chapters.map((c) => ({
-    section: sectionUrlSegment(c.sectionNumber),
-    chapter: chapterUrlSegment(c.number, c.title),
-  }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<RouteParams> }): Promise<Metadata> {
@@ -258,10 +251,13 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
             <span className="font-mono tabular-nums mr-2">Section {chapter.section.romanNumeral}</span>
             {chapter.section.title}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            <span className="font-mono tabular-nums text-muted-foreground mr-3">Chapter {padded}</span>
-            {chapter.title}
-          </h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              <span className="font-mono tabular-nums text-muted-foreground mr-3">Chapter {padded}</span>
+              {chapter.title}
+            </h1>
+            <HtsChapterDetailActions chapterNumber={chapter.number} />
+          </div>
         </header>
 
         <TariffCrossLinks heading="Tools for this chapter" links={crossLinks} />

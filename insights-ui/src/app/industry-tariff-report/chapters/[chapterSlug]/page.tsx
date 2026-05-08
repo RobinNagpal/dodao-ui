@@ -12,7 +12,7 @@ import { getHtsChapterRefByNumber } from '@/utils/tariff-cross-links/hts-chapter
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Calculator, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 type SeoDetailsWithAliases = PageSeoDetails & { seoTitle?: string; metaDescription?: string; seo_title?: string; meta_description?: string };
 
@@ -61,9 +61,6 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   const { chapterSlug } = await params;
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
-  if (data.oldUrl) {
-    redirect(`/industry-tariff-report/${data.oldUrl}`);
-  }
 
   const { chapter, report } = data;
   const padded = chapter.number.toString().padStart(2, '0');

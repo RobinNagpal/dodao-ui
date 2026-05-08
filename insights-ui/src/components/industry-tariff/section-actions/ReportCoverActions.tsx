@@ -22,7 +22,6 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
     { key: 'generate-all', label: 'Generate All Sections of Report' },
     { key: 'regenerate', label: 'Regenerate Cover' },
     { key: 'generate-executive-summary', label: 'Regenerate Summary' },
-    { key: 'edit', label: 'Edit Cover' },
     { key: 'generate-seo', label: 'Generate SEO for Cover' },
   ];
 
@@ -73,8 +72,6 @@ export default function ReportCoverActions({ industryId }: ReportCoverActionsPro
         onSelect={async (key) => {
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industryId}/edit/report-cover`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           } else if (key === 'generate-executive-summary') {

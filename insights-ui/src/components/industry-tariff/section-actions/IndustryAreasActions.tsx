@@ -23,7 +23,6 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate ${sectionName}` },
-    { key: 'edit', label: `Edit ${sectionName}` },
     { key: 'generate-seo', label: `Generate SEO for ${sectionName}` },
   ];
 
@@ -66,12 +65,6 @@ export default function IndustryAreasActions({ industryId, areaIndex, areaTitle 
         onSelect={async (key) => {
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            if (areaIndex !== undefined) {
-              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas/${areaIndex}`);
-            } else {
-              router.push(`/industry-tariff-report/${industryId}/edit/industry-areas`);
-            }
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }

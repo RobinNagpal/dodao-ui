@@ -2,7 +2,8 @@ import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
-import { getSeededLastModifiedForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { getChapterSlugForOldUrl, getSeededLastModifiedForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
@@ -34,7 +35,8 @@ export default async function IndustryTariffReportLayout({ children, params }: {
   }
 
   const navTitle = report.reportCover?.title || `Tariff Report ${industryId}`;
-  const basePath = `/industry-tariff-report/${industryId}`;
+  const chapterSlug = await getChapterSlugForOldUrl(industryId);
+  const basePath = chapterSlug ? chapterCoverHref(chapterSlug) : `/industry-tariff-report/${industryId}`;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     {

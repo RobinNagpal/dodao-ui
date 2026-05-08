@@ -29,10 +29,6 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
     actions.push({ key: 'regenerate', label: `Regenerate ${sectionName}` });
   }
 
-  // Only allow editing the whole tariff updates section, not individual countries
-  if (!countryName) {
-    actions.push({ key: 'edit', label: `Edit ${sectionName}` });
-  }
   actions.push({ key: 'generate-seo', label: `Generate SEO for ${sectionName}` });
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
@@ -75,9 +71,6 @@ export default function TariffUpdatesActions({ industryId, tariffIndex, countryN
         onSelect={async (key) => {
           if (key === 'regenerate' || key === 'regenerate-country') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            // Only allow editing the whole tariff updates section
-            router.push(`/industry-tariff-report/${industryId}/edit/tariff-updates`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }

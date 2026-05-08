@@ -13,7 +13,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 // Small wrappers used by every chapter section page (`tariff-updates`, `understand-industry`, ...).
 // Keeps the per-route page.tsx files to a few lines each — same fetch/redirect/render flow, only
@@ -209,12 +209,9 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
 export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
-  const { chapter, oldUrl, report } = data;
+  const { chapter, report } = data;
   const copy = getChapterSectionCopy(sectionSlug, chapter);
   if (!copy) notFound();
-  if (oldUrl) {
-    redirect(`/industry-tariff-report/${oldUrl}/${sectionSlug}`);
-  }
 
   const body = renderSectionBody(sectionSlug, report);
 
