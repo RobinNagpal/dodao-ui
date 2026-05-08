@@ -17,14 +17,18 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { LLMResponse, SaveJsonReportRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/save-json-report/route';
 import { revalidateTickerCache } from '@/utils/cache-actions';
+import EditStockDetailsModal from '@/app/stocks/[exchange]/[ticker]/EditStockDetailsModal';
 
 interface StockActionsProps {
   ticker: TickerIdentifier;
   session?: KoalaGainsSession;
   children?: ReactNode;
+  movedExchange?: string | null;
+  movedSymbol?: string | null;
+  isDeleted?: boolean;
 }
 
-export default function StockActions({ ticker, children, session }: StockActionsProps): JSX.Element {
+export default function StockActions({ ticker, children, session, movedExchange, movedSymbol, isDeleted }: StockActionsProps): JSX.Element {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
@@ -34,6 +38,7 @@ export default function StockActions({ ticker, children, session }: StockActions
   const [isJsonModalOpen, setIsJsonModalOpen] = useState(false);
   const [importedJson, setImportedJson] = useState<string>('');
   const [jsonContent, setJsonContent] = useState<LLMResponse | null>(null);
+  const [isEditDetailsOpen, setIsEditDetailsOpen] = useState(false);
 
   // Post hook for background generation requests
   const { postData: postRequest } = usePostData<any, GenerationRequestPayload[]>({
@@ -53,11 +58,12 @@ export default function StockActions({ ticker, children, session }: StockActions
     errorMessage: 'Failed to save report.',
   });
 
-  // Create dropdown items - "Generate Report", "Import Prompt", and "Invalidate Cache" options
+  // Create dropdown items - "Generate Report", "Import Prompt", "Invalidate Cache", and "Edit Stock"
   const dropdownItems: EllipsisDropdownItem[] = [
     { key: 'generate-report', label: 'Generate Report' },
     { key: 'import-prompt', label: 'Import Prompt' },
     { key: 'invalidate-cache', label: 'Invalidate Cache' },
+    { key: 'edit-stock', label: 'Edit Stock' },
   ];
 
   const reportGenerationItems: EllipsisDropdownItem[] = [
@@ -77,7 +83,14 @@ export default function StockActions({ ticker, children, session }: StockActions
       const result = await revalidateTickerCache(ticker.symbol, ticker.exchange);
       console.log('[invalidate-cache]', result.message);
       router.refresh();
+    } else if (key === 'edit-stock') {
+      setIsEditDetailsOpen(true);
     }
+  };
+
+  const handleEditDetailsSaved = async (): Promise<void> => {
+    await revalidateTickerCache(ticker.symbol, ticker.exchange);
+    router.refresh();
   };
 
   const handleModalSelect = async (key: string) => {
@@ -360,6 +373,17 @@ export default function StockActions({ ticker, children, session }: StockActions
       </FullPageModal>
 
       <RawJsonEditModal open={isJsonModalOpen} onClose={() => setIsJsonModalOpen(false)} title="Import JSON Report" onSave={handleJsonSave} />
+
+      <EditStockDetailsModal
+        open={isEditDetailsOpen}
+        onClose={() => setIsEditDetailsOpen(false)}
+        symbol={ticker.symbol}
+        exchange={ticker.exchange}
+        initialMovedExchange={movedExchange ?? null}
+        initialMovedSymbol={movedSymbol ?? null}
+        initialIsDeleted={isDeleted ?? false}
+        onSaved={handleEditDetailsSaved}
+      />
     </>
   );
 }

@@ -105,7 +105,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     take: fetchLimit, // Get more results to sort properly
   });
 
-  // Sort results with proper priority
+  // Sort results with proper priority. All symbol matches outrank all name
+  // matches — i.e. a symbol-contains hit beats a name-starts-with hit, so
+  // typing a ticker substring always surfaces tickers before companies whose
+  // name happens to begin with the same letters.
   const results = tickers
     .sort((a, b) => {
       const searchUpper = searchTerm.toUpperCase();
@@ -117,32 +120,20 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (aSymbolExact && !bSymbolExact) return -1;
       if (!aSymbolExact && bSymbolExact) return 1;
 
-      // Priority 2: Symbol starts with search term
+      // Priority 2: Symbol starts with search term (shorter symbol wins as more specific)
       const aSymbolStarts = a.symbol.toUpperCase().startsWith(searchUpper);
       const bSymbolStarts = b.symbol.toUpperCase().startsWith(searchUpper);
       if (aSymbolStarts && !bSymbolStarts) return -1;
       if (!aSymbolStarts && bSymbolStarts) return 1;
-
-      // If both symbols start with search term, prefer shorter symbols (more specific match)
-      if (aSymbolStarts && bSymbolStarts) {
-        if (a.symbol.length !== b.symbol.length) {
-          return a.symbol.length - b.symbol.length;
-        }
+      if (aSymbolStarts && bSymbolStarts && a.symbol.length !== b.symbol.length) {
+        return a.symbol.length - b.symbol.length;
       }
 
-      // Priority 3: Company name starts with search term
-      const aNameStarts = a.name.toLowerCase().startsWith(searchLower);
-      const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
-      if (aNameStarts && !bNameStarts) return -1;
-      if (!aNameStarts && bNameStarts) return 1;
-
-      // Priority 4: For symbol contains matches, prefer earlier positions
+      // Priority 3: Symbol contains search term (earlier position wins)
       const aSymbolContains = a.symbol.toUpperCase().includes(searchUpper);
       const bSymbolContains = b.symbol.toUpperCase().includes(searchUpper);
       if (aSymbolContains && !bSymbolContains) return -1;
       if (!aSymbolContains && bSymbolContains) return 1;
-
-      // If both contain the search term, prefer earlier position in symbol
       if (aSymbolContains && bSymbolContains) {
         const aSymbolIndex = a.symbol.toUpperCase().indexOf(searchUpper);
         const bSymbolIndex = b.symbol.toUpperCase().indexOf(searchUpper);
@@ -151,7 +142,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
         }
       }
 
-      // Priority 5: Company name contains matches
+      // Priority 4: Company name starts with search term
+      const aNameStarts = a.name.toLowerCase().startsWith(searchLower);
+      const bNameStarts = b.name.toLowerCase().startsWith(searchLower);
+      if (aNameStarts && !bNameStarts) return -1;
+      if (!aNameStarts && bNameStarts) return 1;
+
+      // Priority 5: Company name contains search term
       const aNameContains = a.name.toLowerCase().includes(searchLower);
       const bNameContains = b.name.toLowerCase().includes(searchLower);
       if (aNameContains && !bNameContains) return -1;

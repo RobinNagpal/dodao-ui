@@ -8,7 +8,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
-import { AllExchanges } from '@/utils/countryExchangeUtils';
+import { AllExchanges, isExchange } from '@/utils/countryExchangeUtils';
 
 async function getHandler(
   req: NextRequest,
@@ -44,7 +44,10 @@ async function getHandler(
 }
 
 export interface UpdateStockAnalyzeUrlRequest {
-  stockAnalyzeUrl: string;
+  stockAnalyzeUrl?: string;
+  movedExchange?: string | null;
+  movedSymbol?: string | null;
+  isDeleted?: boolean;
 }
 
 async function putHandler(
@@ -54,19 +57,54 @@ async function putHandler(
 ): Promise<TickerV1> {
   const { spaceId, ticker, exchange } = await context.params;
   const body: UpdateStockAnalyzeUrlRequest = await req.json();
-  const { stockAnalyzeUrl } = body;
+  const { stockAnalyzeUrl, movedExchange, movedSymbol, isDeleted } = body;
 
-  if (!stockAnalyzeUrl || typeof stockAnalyzeUrl !== 'string') {
-    throw new Error('stockAnalyzeUrl is required');
+  const data: Prisma.TickerV1UpdateInput = {
+    updatedBy: 'ui-user',
+    updatedAt: new Date(),
+  };
+
+  if (stockAnalyzeUrl !== undefined) {
+    if (typeof stockAnalyzeUrl !== 'string' || !stockAnalyzeUrl.trim()) {
+      throw new Error('stockAnalyzeUrl must be a non-empty string when provided');
+    }
+    const validationError = validateStockAnalyzeUrl(ticker.toUpperCase(), exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl.trim());
+    if (validationError) {
+      throw new Error(`Invalid stockAnalyzeUrl format: ${validationError}`);
+    }
+    data.stockAnalyzeUrl = stockAnalyzeUrl.trim();
   }
 
-  // Validate stockAnalyzeUrl format
-  const validationError = validateStockAnalyzeUrl(ticker.toUpperCase(), exchange.toUpperCase() as AllExchanges, stockAnalyzeUrl.trim());
-  if (validationError) {
-    throw new Error(`Invalid stockAnalyzeUrl format: ${validationError}`);
+  if (movedExchange !== undefined) {
+    const trimmed = typeof movedExchange === 'string' ? movedExchange.trim().toUpperCase() : '';
+    if (trimmed && !isExchange(trimmed)) {
+      throw new Error(`Invalid movedExchange "${movedExchange}"`);
+    }
+    data.movedExchange = trimmed || null;
   }
 
-  // Find the ticker
+  if (movedSymbol !== undefined) {
+    const trimmed = typeof movedSymbol === 'string' ? movedSymbol.trim().toUpperCase() : '';
+    data.movedSymbol = trimmed || null;
+  }
+
+  if (isDeleted !== undefined) {
+    if (typeof isDeleted !== 'boolean') {
+      throw new Error('isDeleted must be a boolean');
+    }
+    data.isDeleted = isDeleted;
+  }
+
+  // "Gone" and "moved" are conceptually exclusive: a deleted ticker shouldn't
+  // also have a forwarding address. Resolve via the final intended state, not
+  // just the patch.
+  const finalIsDeleted = isDeleted !== undefined ? isDeleted : undefined;
+  const finalMovedExchange = movedExchange !== undefined ? data.movedExchange : undefined;
+  const finalMovedSymbol = movedSymbol !== undefined ? data.movedSymbol : undefined;
+  if (finalIsDeleted === true && (finalMovedExchange || finalMovedSymbol)) {
+    throw new Error('A ticker cannot be both deleted and have a moved exchange/symbol set in the same update');
+  }
+
   const tickerRecord = await prisma.tickerV1.findFirstOrThrow({
     where: {
       spaceId: spaceId || KoalaGainsSpaceId,
@@ -75,14 +113,9 @@ async function putHandler(
     },
   });
 
-  // Update the stockAnalyzeUrl
   const updatedTicker = await prisma.tickerV1.update({
     where: { id: tickerRecord.id },
-    data: {
-      stockAnalyzeUrl: stockAnalyzeUrl.trim(),
-      updatedBy: 'ui-user',
-      updatedAt: new Date(),
-    },
+    data,
   });
 
   return updatedTicker;

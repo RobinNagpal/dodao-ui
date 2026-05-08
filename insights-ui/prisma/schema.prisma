@@ -529,6 +529,17 @@ model TickerV1 {
   spaceId         String   @default("koala_gains") @map("space_id")
   stockAnalyzeUrl String   @map("stock_analyze_url")
 
+  // When a ticker has been moved to a new exchange and/or symbol, set one or both
+  // of these. The page handlers issue a 308 permanent redirect to the canonical
+  // URL; when only one is set, the other is taken from the current request.
+  movedExchange String? @map("moved_exchange")
+  movedSymbol   String? @map("moved_symbol")
+
+  // True when the ticker has been delisted / removed and its pages should no
+  // longer be served. Detail pages return HTTP 410 Gone and the ticker is
+  // excluded from listings + the sitemap so search engines can de-index it.
+  isDeleted Boolean @default(false) @map("is_deleted")
+
   // Direct FK to industry (for quick joins/filters)
   industry                TickerV1Industry                       @relation("IndustryTickers", fields: [industryKey], references: [industryKey], onUpdate: Cascade, onDelete: Restrict)
   // Composite FK to subindustry: *enforces the pairing*

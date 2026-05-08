@@ -3,6 +3,8 @@ import { PerformanceResponse } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
+import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -57,6 +59,8 @@ export async function getPerformanceOrRedirect(exchange: string, ticker: string,
   const data = await fetchPerformanceByExchange(exchange, ticker, dataSlug);
 
   if (data.ticker) {
+    enforceDeletedTicker(data.ticker);
+    enforceMovedRedirect(data.ticker, exchange, ticker, `/${pageSlug}`);
     return data;
   }
 
@@ -67,11 +71,14 @@ export async function getPerformanceOrRedirect(exchange: string, ticker: string,
     notFound();
   }
 
+  enforceDeletedTicker(fallback.ticker);
+
   const canonicalExchange = fallback.ticker.exchange.toUpperCase();
   if (canonicalExchange !== exchange.toUpperCase()) {
     permanentRedirect(`/stocks/${canonicalExchange}/${fallback.ticker.symbol.toUpperCase()}/${pageSlug}`);
   }
 
+  enforceMovedRedirect(fallback.ticker, exchange, ticker, `/${pageSlug}`);
   return fallback;
 }
 

@@ -5,6 +5,8 @@ import { CompetitionResponse } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
+import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -61,6 +63,8 @@ async function getCompetitionOrRedirect(exchange: string, ticker: string): Promi
 
   // Ticker found on the correct exchange — happy path
   if (data.ticker) {
+    enforceDeletedTicker(data.ticker);
+    enforceMovedRedirect(data.ticker, exchange, ticker, '/competition');
     return data;
   }
 
@@ -73,12 +77,15 @@ async function getCompetitionOrRedirect(exchange: string, ticker: string): Promi
     notFound();
   }
 
+  enforceDeletedTicker(fallback.ticker);
+
   // Found on a different exchange — redirect to the canonical competition URL
   const canonicalExchange: string = fallback.ticker.exchange.toUpperCase();
   if (canonicalExchange !== exchange.toUpperCase()) {
     permanentRedirect(`/stocks/${canonicalExchange}/${fallback.ticker.symbol.toUpperCase()}/competition`);
   }
 
+  enforceMovedRedirect(fallback.ticker, exchange, ticker, '/competition');
   return fallback;
 }
 

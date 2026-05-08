@@ -40,6 +40,8 @@ import {
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
+import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
+import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -102,6 +104,8 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
   // Try fetching by specific exchange first
   const tickerByExchange = await fetchTickerByExchange(exchange, ticker);
   if (tickerByExchange) {
+    enforceDeletedTicker(tickerByExchange);
+    enforceMovedRedirect(tickerByExchange, exchange, ticker);
     return tickerByExchange;
   }
 
@@ -114,12 +118,15 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
     notFound();
   }
 
+  enforceDeletedTicker(tickerAnyExchange);
+
   // Found on a different exchange - redirect to canonical URL
   const canonicalExchange: string = tickerAnyExchange.exchange.toUpperCase();
   if (canonicalExchange !== exchange) {
     permanentRedirect(`/stocks/${canonicalExchange}/${tickerAnyExchange.symbol.toUpperCase()}`);
   }
 
+  enforceMovedRedirect(tickerAnyExchange, exchange, ticker);
   return tickerAnyExchange;
 }
 
@@ -398,7 +405,12 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
     <Breadcrumbs
       breadcrumbs={breadcrumbs}
       rightButton={
-        <StockActions ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}>
+        <StockActions
+          ticker={{ symbol: d.symbol, exchange: d.exchange as TickerIdentifier['exchange'] }}
+          movedExchange={d.movedExchange ?? null}
+          movedSymbol={d.movedSymbol ?? null}
+          isDeleted={d.isDeleted ?? false}
+        >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <TickerComparisonButton
