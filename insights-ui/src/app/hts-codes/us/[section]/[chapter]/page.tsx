@@ -2,6 +2,7 @@ import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[
 import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
+import { TARIFF_CHAPTERS_LISTING_TAG, tariffChapterDetailCacheTag } from '@/utils/tariff-calculator/cache-tags';
 import { chapterDetailHref, chapterUrlSegment, parseChapterSegment, parseSectionSegment, sectionUrlSegment } from '@/utils/tariff-calculator/chapter-slug';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { getTariffReportRefByChapterNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
@@ -15,7 +16,6 @@ import { notFound, redirect } from 'next/navigation';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
-export const revalidate = 86400; // 24h
 
 interface RouteParams {
   section: string;
@@ -25,7 +25,7 @@ interface RouteParams {
 async function fetchChapterDetail(chapterNumber: number): Promise<TariffChapterDetail | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters/${chapterNumber.toString().padStart(2, '0')}`;
   try {
-    const res = await fetch(url, { next: { revalidate: 86400 } });
+    const res = await fetch(url, { next: { tags: [tariffChapterDetailCacheTag(chapterNumber)] } });
     if (!res.ok) {
       if (res.status !== 404) console.error(`Failed to fetch chapter ${chapterNumber}: HTTP ${res.status}`);
       return null;
@@ -40,7 +40,7 @@ async function fetchChapterDetail(chapterNumber: number): Promise<TariffChapterD
 async function fetchChapterList(): Promise<TariffChapterListItem[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters`;
   try {
-    const res = await fetch(url, { next: { revalidate: 86400 } });
+    const res = await fetch(url, { next: { tags: [TARIFF_CHAPTERS_LISTING_TAG] } });
     if (!res.ok) {
       console.error(`Failed to fetch chapter list: HTTP ${res.status}`);
       return [];

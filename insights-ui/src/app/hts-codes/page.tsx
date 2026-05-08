@@ -11,7 +11,6 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const dynamic = 'force-static';
-export const revalidate = 86400; // 24h
 
 export const metadata: Metadata = {
   title: 'HTS Code Sections & Chapters | KoalaGains',
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
 async function fetchSections(): Promise<TariffSectionListItem[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/sections`;
   try {
-    const res = await fetch(url, { next: { revalidate: 86400, tags: [TARIFF_SECTIONS_LISTING_TAG] } });
+    const res = await fetch(url, { next: { tags: [TARIFF_SECTIONS_LISTING_TAG] } });
     if (!res.ok) {
       console.error(`Failed to fetch tariff sections: HTTP ${res.status}`);
       return [];
