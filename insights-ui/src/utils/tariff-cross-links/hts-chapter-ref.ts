@@ -4,7 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { chapterDetailHref } from '@/utils/tariff-calculator/chapter-slug';
 import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { Prisma } from '@prisma/client';
-import { unstable_cache } from 'next/cache';
+import { revalidateTag, unstable_cache } from 'next/cache';
 
 export interface HtsChapterRef {
   chapterNumber: number;
@@ -14,7 +14,9 @@ export interface HtsChapterRef {
 }
 
 const WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
-const HTS_CHAPTER_REFS_TAG = 'hts-chapter-refs';
+export const HTS_CHAPTER_REFS_TAG = 'hts-chapter-refs';
+
+export const revalidateHtsChapterRefsTag = () => revalidateTag(HTS_CHAPTER_REFS_TAG);
 
 async function fetchHtsChapterByNumber(chapterNumber: number): Promise<HtsChapterRef | null> {
   const chapter = await prisma.tariffChapter.findUnique({
