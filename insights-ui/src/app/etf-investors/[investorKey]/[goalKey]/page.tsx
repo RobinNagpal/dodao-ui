@@ -10,16 +10,6 @@ export const revalidate = false;
 
 type RouteParams = Promise<Readonly<{ investorKey: string; goalKey: string }>>;
 
-export function generateStaticParams(): Array<{ investorKey: string; goalKey: string }> {
-  const params: Array<{ investorKey: string; goalKey: string }> = [];
-  for (const investor of getAllInvestors()) {
-    for (const goal of investor.etfInvestorGoals) {
-      params.push({ investorKey: investor.key, goalKey: goal.key });
-    }
-  }
-  return params;
-}
-
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { investorKey, goalKey } = await params;
   const lookup = getInvestorGoal(investorKey, goalKey);

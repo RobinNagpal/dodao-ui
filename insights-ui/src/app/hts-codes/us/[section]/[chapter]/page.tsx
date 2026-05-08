@@ -68,14 +68,6 @@ async function fetchChapterList(): Promise<TariffChapterListItem[]> {
   }
 }
 
-export async function generateStaticParams(): Promise<RouteParams[]> {
-  const chapters = await fetchChapterList();
-  return chapters.map((c) => ({
-    section: sectionUrlSegment(c.sectionNumber),
-    chapter: chapterUrlSegment(c.number, c.title),
-  }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<RouteParams> }): Promise<Metadata> {
   const { section: sectionRaw, chapter: chapterRaw } = await params;
   const sectionNumber = parseSectionSegment(sectionRaw);
