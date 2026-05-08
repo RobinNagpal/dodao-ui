@@ -6,7 +6,9 @@ import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/ind
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-chapter-ref';
+import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Calculator, ListTree } from 'lucide-react';
 
@@ -44,6 +46,8 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
     })) || [];
 
   const htsChapter = await getHtsChapterRefByIndustryId(industryId);
+  const chapterSlug = await getChapterSlugForOldUrl(industryId);
+  const tariffUpdatesHref = chapterSlug ? chapterSectionHref(chapterSlug, 'tariff-updates') : `/industry-tariff-report/${industryId}/tariff-updates`;
   const crossLinks = [
     {
       href: '/tariff-calculator',
@@ -117,7 +121,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
                 ))}
               </div>
               <div className="mt-4">
-                <a href={`/industry-tariff-report/${industryId}/tariff-updates`} className="link-color underline font-medium">
+                <a href={tariffUpdatesHref} className="link-color underline font-medium">
                   See full country breakdown
                 </a>
               </div>
