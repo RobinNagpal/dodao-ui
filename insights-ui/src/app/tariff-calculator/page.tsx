@@ -1,7 +1,9 @@
 import CalculatorClient from './CalculatorClient';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
+import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
+import { FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const dynamic = 'force-static';
@@ -62,25 +64,13 @@ const JSON_LD = {
   publisher: { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
 };
 
-const BREADCRUMB_LD = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: BREADCRUMBS.map((b, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: b.name,
-    item: `https://koalagains.com${b.href}`,
-  })),
-};
-
 export default function TariffCalculatorPage() {
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(BREADCRUMB_LD) }} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color" style={{ colorScheme: 'dark', accentColor: '#fbbf24' }}>
-        <Breadcrumbs breadcrumbs={BREADCRUMBS} />
+        <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
 
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl heading-color">US Tariff &amp; Duty Calculator</h1>
@@ -89,6 +79,24 @@ export default function TariffCalculatorPage() {
             the usual port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
           </p>
         </header>
+
+        <TariffCrossLinks
+          heading="Need to find an exact HTS code or read the broader analysis?"
+          links={[
+            {
+              href: '/hts-codes',
+              title: 'Browse HTS Codes',
+              description: 'Open the full HTSUS section + chapter catalog to confirm the exact code for what you ship.',
+              icon: <ListTree className="h-5 w-5" />,
+            },
+            {
+              href: '/tariff-reports',
+              title: 'Tariff Reports',
+              description: 'Industry-level tariff impact analysis — context behind the rates this calculator returns.',
+              icon: <FileText className="h-5 w-5" />,
+            },
+          ]}
+        />
 
         <CalculatorClient />
       </div>

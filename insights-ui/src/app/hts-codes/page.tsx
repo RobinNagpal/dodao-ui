@@ -1,16 +1,16 @@
 import type { TariffSectionListItem } from '@/app/api/tariff-calculator/sections/route';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
+import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { chapterDetailHref } from '@/utils/tariff-calculator/chapter-slug';
 import { TARIFF_SECTIONS_LISTING_TAG } from '@/utils/tariff-calculator/cache-tags';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
-import { ChevronRight } from 'lucide-react';
+import { Calculator, ChevronRight, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const dynamic = 'force-static';
-export const revalidate = 86400; // 24h
 
 export const metadata: Metadata = {
   title: 'HTS Code Sections & Chapters | KoalaGains',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 async function fetchSections(): Promise<TariffSectionListItem[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/sections`;
   try {
-    const res = await fetch(url, { next: { revalidate: 86400, tags: [TARIFF_SECTIONS_LISTING_TAG] } });
+    const res = await fetch(url, { next: { tags: [TARIFF_SECTIONS_LISTING_TAG] } });
     if (!res.ok) {
       console.error(`Failed to fetch tariff sections: HTTP ${res.status}`);
       return [];
@@ -60,7 +60,7 @@ export default async function HtsCodesIndexPage() {
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">HTS Code Sections &amp; Chapters</h1>
@@ -69,6 +69,24 @@ export default async function HtsCodesIndexPage() {
             view its full HTS code list with duty rates, units of measure, and official notes.
           </p>
         </header>
+
+        <TariffCrossLinks
+          heading="Want analysis or a duty estimate, not just the code?"
+          links={[
+            {
+              href: '/tariff-reports',
+              title: 'Tariff Reports',
+              description: 'Industry tariff-impact analysis tied to these HTS chapters: rate changes, country breakdowns, and outlook.',
+              icon: <FileText className="h-5 w-5" />,
+            },
+            {
+              href: '/tariff-calculator',
+              title: 'Tariff Calculator',
+              description: 'Once you have the right HTS code, plug it in to estimate the full landed duty cost.',
+              icon: <Calculator className="h-5 w-5" />,
+            },
+          ]}
+        />
 
         {sections.length === 0 ? (
           <div className="text-center py-16 background-color rounded-lg border border-color">

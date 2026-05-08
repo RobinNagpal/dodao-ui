@@ -1,6 +1,6 @@
 import MobileNavToggle from '@/components/industry-tariff/mobile-nav-toggle';
 import CollapsibleLayout from '@/components/industry-tariff/collapsible-layout';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { getSeededLastModifiedForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -51,7 +51,7 @@ export default async function IndustryTariffReportLayout({ children, params }: {
 
   return (
     <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
       {lastModified && (
         <div className="block lg:hidden mx-auto max-w-7xl px-4 sm:px-6 mb-4">

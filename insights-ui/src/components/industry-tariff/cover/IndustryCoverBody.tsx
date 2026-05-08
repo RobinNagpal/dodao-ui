@@ -1,11 +1,14 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ReportCoverActions from '@/components/industry-tariff/section-actions/ReportCoverActions';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
+import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { getTariffIndustryDefinitionById, TariffIndustryId } from '@/scripts/industry-tariff-reports/tariff-industries';
 import type { IndustryTariffReport } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { getHtsChapterRefByIndustryId } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
+import { Calculator, ListTree } from 'lucide-react';
 
 // Shared async render for the industry cover body. Used by the cover route
 // itself and by the legacy `/evaluate-industry-areas` and `/all-countries-tariff-updates`
@@ -40,6 +43,24 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
       newChangesFirstSentence: tariff.newChanges,
     })) || [];
 
+  const htsChapter = await getHtsChapterRefByIndustryId(industryId);
+  const crossLinks = [
+    {
+      href: '/tariff-calculator',
+      title: 'Tariff Calculator',
+      description: `Estimate landed US duty for goods covered by this report — base HTS rate plus Section 232, 301, IEEPA fees.`,
+      icon: <Calculator className="h-5 w-5" />,
+    },
+    htsChapter
+      ? {
+          href: htsChapter.href,
+          title: `HTS Chapter ${htsChapter.chapterNumber.toString().padStart(2, '0')} — ${htsChapter.chapterTitle}`,
+          description: 'Browse every HTS code in the chapter that covers this industry, with duty rates and units.',
+          icon: <ListTree className="h-5 w-5" />,
+        }
+      : null,
+  ].filter((link): link is NonNullable<typeof link> => link !== null);
+
   return (
     <div className="mx-auto max-w-7xl py-2">
       <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
@@ -62,6 +83,8 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
           </div>
         </PrivateWrapper>
       )}
+
+      <TariffCrossLinks heading="Tools for this industry" links={crossLinks} />
 
       <div className="space-y-12">
         {renderSection(

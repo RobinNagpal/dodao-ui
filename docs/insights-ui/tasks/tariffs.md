@@ -65,13 +65,10 @@ the page is dense and long; we need a much higher signal-to-noise ratio at the t
     long — readers should be able to jump to "Rates", "Recent changes", "By
     country", etc.).
   - Anchor links so each subsection has its own URL fragment for sharing.
-- [ ] **Better cross-linking**:
-  - From an industry tariff page, link to the relevant **stock** and **ETF**
-    reports (companies + funds with exposure to that industry / those
-    countries).
-  - From a country tariff page, link to the industries most affected.
-  - Internal linking helps both UX and the GSC "Crawled — currently not indexed"
-    issue tracked in `stocks.md` SEO Fixes.
+- [ ] **Better cross-linking** — broken out into its own task below
+  ("Link tariff pages (internal linking pass)") so the work has a single
+  owner and a single PR. Covers tariff → tariff, tariff → stock, tariff →
+  ETF, and the inbound stock/ETF → tariff direction in one pass.
 - [ ] **Mobile pass**:
   - The biggest share of incoming traffic from search lands on mobile — verify
     headline numbers, charts, and the snapshot block all render cleanly on a
@@ -100,3 +97,127 @@ the page is dense and long; we need a much higher signal-to-noise ratio at the t
     in place; only rename if the content materially changes shape.
   - Per-country vs per-industry primary view — readers seem to come in from
     both. Confirm with analytics which surface deserves the polished UX first.
+
+## Link tariff pages (internal linking pass)
+
+Why this matters: tariff pages are some of the highest-traffic, highest-intent
+landing pages on KoalaGains, but each one is currently a dead-end for readers
+and for crawlers. Search Console is reporting a "Crawled — currently not
+indexed" pattern (see `stocks.md` SEO Fixes) on adjacent surfaces, which
+internal linking is the cheapest, most direct lever to fix. A reader who lands
+on `/industry-tariff-report/automobiles/tariff-updates` from organic search
+should be one click away from the related industry, related country, related
+stocks, and related ETF surfaces — and crawlers should see those links so the
+neighbouring URLs get discovered and indexed.
+
+Treat this as a **standalone, single-PR task** rather than a bullet under
+"Simplify the UX". The cross-linking sub-bullet there is now superseded by
+this section.
+
+### In-scope surfaces
+
+These are the pages that need link blocks added or improved. Keep the list
+explicit so reviewers can tick each off:
+
+- `app/tariff-reports/page.tsx` — listing page (`/tariff-reports`).
+- `app/industry-tariff-report/[industryId]/page.tsx` — industry cover.
+- `app/industry-tariff-report/[industryId]/tariff-updates/` — section page.
+- `app/industry-tariff-report/[industryId]/understand-industry/` — section page.
+- `app/industry-tariff-report/[industryId]/industry-areas/` — section page.
+- `app/industry-tariff-report/[industryId]/final-conclusion/` — section page.
+- `app/industry-tariff-report/chapters/[slug]/` (and its section sub-routes) —
+  slug-based chapter pages (only those without `oldUrl`).
+- The deprecated routes (`all-countries-tariff-updates`,
+  `evaluate-industry-areas/*`) are out of scope — they keep their cover-page
+  body and a canonical pointer, no new internal links needed (see
+  `../tariffs/post-merge-url-checklist.md`).
+
+### Outbound links to add (from a tariff page)
+
+- [ ] **Related industries (spillover)** — use the `relatedIndustries` field
+  already present on `TariffIndustryDefinition`. Render a "Related industry
+  tariff reports" rail with 3–6 links to other
+  `/industry-tariff-report/<id>` pages. Place it on the cover and on
+  `final-conclusion` (the two surfaces a reader hits at the start and end of
+  the report).
+- [ ] **Related country tariff context** — for the most-referenced exporter /
+  importer countries in each report, link out to the relevant
+  `tariff-updates` section anchors on neighbouring industry reports
+  (e.g. an automobiles report that talks about Mexico → link to the Mexico
+  section on the steel report). Cap at the top 3–5 countries by mention
+  weight to avoid link spam.
+- [ ] **Stocks: impacted companies** — for every company already returned by
+  the impact pipeline (`EstablishedPlayer` / `NewChallenger` with positive or
+  negative impact), link to that company's KoalaGains stock report when one
+  exists. Skip silently when no stock page is available — do **not** render a
+  dead link or a placeholder.
+- [ ] **ETFs with exposure** — link from the industry cover to the most
+  relevant ETF reports (industry-themed and country-themed) using the same
+  ETF index that powers the ETFs listing page. Mirror the pattern stocks.md
+  uses for stock → ETF links so the two stay consistent.
+- [ ] **Tariff-reports listing breadcrumb** — every section page should have a
+  breadcrumb / back-link to `/tariff-reports` and to the industry cover.
+  Today the user has to use the browser back button.
+
+### Inbound links to add (to a tariff page)
+
+- [ ] **Stock report → tariff report** — on every stock report whose primary
+  industry matches a tariff report, surface a "Tariff exposure" link block
+  that points to that industry's tariff cover and (where useful) the
+  `tariff-updates` section anchor for the country most relevant to that
+  stock.
+- [ ] **ETF report → tariff report** — same pattern from ETF reports whose
+  exposure overlaps an industry that has a tariff report. Use the existing
+  industry mapping that powers the ETFs listing rather than introducing a
+  new field.
+- [ ] **Home / hub pages** — confirm the home page and any hub/landing
+  surfaces link to `/tariff-reports` (and to a curated handful of
+  high-traffic industry covers). One click from home to the most popular
+  tariff reports.
+
+### Implementation guardrails
+
+- [ ] **Reuse before creating** — there is already a "Related" rail / link
+  block pattern on stocks and ETFs (see the `Reuse Before Creating` rule in
+  the repo `CLAUDE.md`). Reuse that component; do **not** introduce a new
+  bespoke one for tariffs.
+- [ ] **Render server-side** — links must be in the server-rendered HTML so
+  Googlebot sees them on first crawl. No client-only `useEffect` rails.
+- [ ] **Cache invalidation** — the new link blocks pull from the same JSON the
+  page already loads, so the existing `tariff_report:<INDUSTRYID>` cache tag
+  (see `../tariffs/post-merge-url-checklist.md` cache section) covers them.
+  If a link block reads from a *different* source (e.g. ETF index, stock
+  index), tag the fetch with that source's tag too so a stock/ETF refresh
+  also refreshes the tariff page's link block.
+- [ ] **Stable anchors** — when linking to a section anchor (e.g. the Mexico
+  block inside `tariff-updates`), the anchor id must come from the country /
+  area slug, not a generated index. Otherwise the inbound link rots the next
+  time the report regenerates.
+- [ ] **Avoid orphaned links** — guard each outbound link by checking the
+  target exists before rendering. A 404 from an internal link hurts more
+  than no link at all.
+- [ ] **Sitemap untouched** — this task does not add new URLs; the existing
+  sitemap rules in the post-merge checklist still hold.
+
+### Measurement
+
+- [ ] **Before/after baselines** — record indexed-URL count for the tariff
+  sitemaps and average internal-link count per tariff page **before** the
+  PR lands.
+- [ ] **GSC follow-up** — 2 weeks after the PR is in production, re-check the
+  "Crawled — currently not indexed" report for tariff URLs and the
+  `inurl:industry-tariff-report` slice of the indexed-URL count. Document
+  the delta in `../tariffs/` and link from this task entry.
+- [ ] **Engagement** — confirm clicks on the new link rails are non-trivial
+  (analytics: rail-click events / page-views). If a rail sees ~zero clicks,
+  treat it as dead weight and remove it rather than letting it linger.
+
+### Open questions
+
+- Where should the "Related industries" rail render — inline in the body, in
+  a sidebar, or as a footer block? Pick whichever the existing stock/ETF
+  reports already use, for consistency.
+- Do we want a "Related tariff reports" rail on stock and ETF reports, or
+  just a single inline "Tariff exposure" link? The latter is cheaper and
+  lower-noise; default to that unless engagement data later justifies a full
+  rail.

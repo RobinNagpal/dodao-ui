@@ -16,6 +16,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://koalagains.com/tariff-calculator</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://koalagains.com/genai-simulation</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
