@@ -2,8 +2,8 @@ import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/r
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
-import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -79,17 +79,14 @@ interface ChapterCardProps {
   chapterNumber: number;
   chapterTitle: string;
   chapterSlug: string;
-  industry: TariffIndustryDefinition | undefined;
   lastModified?: string;
 }
 
-function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastModified }: ChapterCardProps) {
+function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
-  const href = industry ? `/industry-tariff-report/${industry.industryId}` : `/industry-tariff-report/chapters/${chapterSlug}`;
-  const title = industry?.reportTitle ?? `HTS Chapter ${padded} — ${chapterTitle}`;
-  const description =
-    industry?.reportOneLiner ??
-    `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+  const href = chapterCoverHref(chapterSlug);
+  const title = `HTS Chapter ${padded} — ${chapterTitle}`;
+  const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
 
   return (
     <article className="group flex flex-col rounded-2xl bg-gray-900 border border-gray-800 transition-all hover:border-blue-500 p-6">
@@ -113,7 +110,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastM
         {REPORT_SECTIONS.map((section) => (
           <Link
             key={section.slug}
-            href={`${href}/${section.slug}`}
+            href={chapterSectionHref(chapterSlug, section.slug)}
             className="inline-flex items-center rounded-md border border-gray-800 px-2 py-1 text-xs font-medium text-gray-400 transition-colors hover:border-blue-500 hover:bg-blue-500/5 hover:text-blue-400"
           >
             {section.label}
@@ -185,19 +182,15 @@ export default async function TariffReportsPage() {
               <span className="text-sm text-gray-400">{rows.length} chapters</span>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {rows.map((row) => {
-                const industry = findIndustryByLegacyUrl(row.oldUrl);
-                return (
-                  <ChapterCard
-                    key={row.slug}
-                    chapterNumber={row.chapter.number}
-                    chapterTitle={row.chapter.title}
-                    chapterSlug={row.slug}
-                    industry={industry}
-                    lastModified={row.updatedAt}
-                  />
-                );
-              })}
+              {rows.map((row) => (
+                <ChapterCard
+                  key={row.slug}
+                  chapterNumber={row.chapter.number}
+                  chapterTitle={row.chapter.title}
+                  chapterSlug={row.slug}
+                  lastModified={row.updatedAt}
+                />
+              ))}
             </div>
           </section>
         )}

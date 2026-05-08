@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
   const { industryId } = await params;
-  return fetchIndustryCoverMetadata(industryId, `https://koalagains.com/industry-tariff-report/${industryId}`);
+  return fetchIndustryCoverMetadata(industryId);
 }
 
 export default async function EvaluateIndustryAreasPage({ params }: { params: Promise<{ industryId: string }> }) {
