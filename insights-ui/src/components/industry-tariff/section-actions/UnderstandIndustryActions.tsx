@@ -19,7 +19,6 @@ export default function UnderstandIndustryActions({ industryId }: UnderstandIndu
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate Understand Industry Section` },
-    { key: 'edit', label: `Edit Understand Industry Section` },
     { key: 'generate-seo', label: 'Generate SEO for Understand Industry' },
   ];
 
@@ -58,8 +57,6 @@ export default function UnderstandIndustryActions({ industryId }: UnderstandIndu
         onSelect={async (key) => {
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industryId}/edit/understand-industry`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }

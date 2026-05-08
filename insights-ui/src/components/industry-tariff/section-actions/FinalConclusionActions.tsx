@@ -19,10 +19,8 @@ export default function FinalConclusionActions({ industryId }: FinalConclusionAc
 
   const actions: EllipsisDropdownItem[] = [
     { key: 'regenerate', label: `Regenerate Final Conclusion` },
-    { key: 'edit', label: `Edit Final Conclusion` },
+    { key: 'generate-seo', label: `Generate SEO for Final Conclusion` },
   ];
-
-  actions.push({ key: 'generate-seo', label: `Generate SEO for Final Conclusion` });
 
   const { postData, loading: isRegenerating } = usePostData<any, any>({
     successMessage: `Final Conclusion regenerated successfully!`,
@@ -61,8 +59,6 @@ export default function FinalConclusionActions({ industryId }: FinalConclusionAc
         onSelect={async (key) => {
           if (key === 'regenerate') {
             setShowRegenerateModal(true);
-          } else if (key === 'edit') {
-            router.push(`/industry-tariff-report/${industryId}/edit/final-conclusion`);
           } else if (key === 'generate-seo') {
             setShowGenerateSeoModal(true);
           }
