@@ -1,11 +1,11 @@
 import type { TariffChapterDetail } from '@/app/api/tariff-calculator/chapters/[number]/route';
 import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters/route';
+import type { TariffReportRef } from '@/app/api/tariff-calculator/chapters/[number]/related-report/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
-import { TARIFF_CHAPTERS_LISTING_TAG, tariffChapterDetailCacheTag } from '@/utils/tariff-calculator/cache-tags';
+import { TARIFF_CHAPTERS_LISTING_TAG, tariffChapterDetailCacheTag, tariffChapterRelatedReportCacheTag } from '@/utils/tariff-calculator/cache-tags';
 import { chapterDetailHref, chapterUrlSegment, parseChapterSegment, parseSectionSegment, sectionUrlSegment } from '@/utils/tariff-calculator/chapter-slug';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { getTariffReportRefByChapterNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { HtsCode } from '@prisma/client';
@@ -33,6 +33,21 @@ async function fetchChapterDetail(chapterNumber: number): Promise<TariffChapterD
     return (await res.json()) as TariffChapterDetail | null;
   } catch (e) {
     console.error(`Failed to fetch chapter ${chapterNumber}:`, e);
+    return null;
+  }
+}
+
+async function fetchChapterRelatedReport(chapterNumber: number): Promise<TariffReportRef | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-calculator/chapters/${chapterNumber.toString().padStart(2, '0')}/related-report`;
+  try {
+    const res = await fetch(url, { next: { tags: [tariffChapterRelatedReportCacheTag(chapterNumber)] } });
+    if (!res.ok) {
+      if (res.status !== 404) console.error(`Failed to fetch related report for chapter ${chapterNumber}: HTTP ${res.status}`);
+      return null;
+    }
+    return (await res.json()) as TariffReportRef | null;
+  } catch (e) {
+    console.error(`Failed to fetch related report for chapter ${chapterNumber}:`, e);
     return null;
   }
 }
@@ -216,7 +231,7 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
     { name: `Chapter ${padded} — ${chapter.title}`, href: canonicalHref, current: true },
   ];
 
-  const tariffReportRef = await getTariffReportRefByChapterNumber(chapter.number);
+  const tariffReportRef = await fetchChapterRelatedReport(chapter.number);
   const crossLinks = [
     tariffReportRef
       ? {

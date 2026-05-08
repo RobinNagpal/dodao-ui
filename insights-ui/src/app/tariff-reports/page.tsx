@@ -1,17 +1,30 @@
+import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { findIndustryByLegacyUrl, TariffIndustryDefinition } from '@/scripts/industry-tariff-reports/tariff-industries';
-import { getTariffReportsListing } from '@/utils/tariff-reports/tariff-reports-listing';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { ArrowRight, Calculator, FileText, Layers, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-// Render at request time; the build environment does not provision DATABASE_URL for the Prisma listing query.
-// The listing data itself is cached via unstable_cache in getTariffReportsListing.
-export const dynamic = 'force-dynamic';
+async function fetchTariffReportsListing(): Promise<TariffReportListingItem[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/tariff-reports/listing`;
+  try {
+    const res = await fetch(url, { next: { tags: [TARIFF_REPORTS_LISTING_TAG] } });
+    if (!res.ok) {
+      console.error(`Failed to fetch tariff reports listing: HTTP ${res.status}`);
+      return [];
+    }
+    return (await res.json()) as TariffReportListingItem[];
+  } catch (e) {
+    console.error('Failed to fetch tariff reports listing:', e);
+    return [];
+  }
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = 'Tariff Reports | KoalaGains';
@@ -117,7 +130,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, industry, lastM
 }
 
 export default async function TariffReportsPage() {
-  const rows = await getTariffReportsListing();
+  const rows = await fetchTariffReportsListing();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'Reports', href: '/reports', current: false },
