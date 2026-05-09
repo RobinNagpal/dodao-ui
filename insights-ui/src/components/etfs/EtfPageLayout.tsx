@@ -9,15 +9,20 @@ interface EtfPageLayoutProps {
   title: string;
   description: string;
   showAppliedFilters?: boolean;
+  extraBreadcrumbs?: BreadcrumbsOjbect[];
   children: ReactNode;
 }
 
-function buildBreadcrumbs(): BreadcrumbsOjbect[] {
-  return [{ name: 'US ETFs', href: '/etfs', current: true }];
+function buildBreadcrumbs(extraBreadcrumbs?: BreadcrumbsOjbect[]): BreadcrumbsOjbect[] {
+  if (!extraBreadcrumbs || extraBreadcrumbs.length === 0) {
+    return [{ name: 'US ETFs', href: '/etfs', current: true }];
+  }
+  const rootCrumb: BreadcrumbsOjbect = { name: 'US ETFs', href: '/etfs', current: false };
+  return [rootCrumb, ...extraBreadcrumbs];
 }
 
-export default function EtfPageLayout({ title, description, showAppliedFilters = false, children }: EtfPageLayoutProps) {
-  const breadcrumbs = buildBreadcrumbs();
+export default function EtfPageLayout({ title, description, showAppliedFilters = false, extraBreadcrumbs, children }: EtfPageLayoutProps) {
+  const breadcrumbs = buildBreadcrumbs(extraBreadcrumbs);
 
   return (
     <PageWrapper>

@@ -23,13 +23,29 @@ export default function EtfPagination({ currentPage, totalPages }: EtfPagination
 
     const hasFilters = Array.from(params.keys()).some((k) => k !== 'page');
     const targetPage = page <= 1 ? 1 : page;
+    const qs = params.toString();
 
-    if (targetPage === 1 && !hasFilters) {
-      router.push('/etfs');
-    } else {
-      const qs = params.toString();
-      router.push(`/etfs-filtered?${qs}`);
+    // Special-case the static landing page: /etfs is force-static and ignores query params,
+    // so any non-trivial nav (page 2+, or any filter) is routed through /etfs-filtered, and
+    // a return to page 1 with no filters bounces back to the static page.
+    if (pathname === '/etfs') {
+      if (targetPage === 1 && !hasFilters) {
+        router.push('/etfs');
+      } else {
+        router.push(`/etfs-filtered${qs ? `?${qs}` : ''}`);
+      }
+      return;
     }
+
+    if (pathname === '/etfs-filtered' && targetPage === 1 && !hasFilters) {
+      router.push('/etfs');
+      return;
+    }
+
+    // Default: stay on the current path. Works for the new dynamic listing pages
+    // (/etfs/asset-classes/[…], /etfs/categories/[…], /etfs/groups/[…]) as well as
+    // /etfs-filtered with active filters.
+    router.push(qs ? `${pathname}?${qs}` : pathname);
   };
 
   // Build visible page numbers: show first, last, current +/- 2, with ellipses
