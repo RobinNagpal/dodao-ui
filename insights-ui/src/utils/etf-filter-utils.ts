@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
+import { getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 
 /** ----- Types and Enums ----- */
 
@@ -19,6 +20,8 @@ export enum EtfFilterType {
   RSI = 'rsi',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
+  CATEGORY = 'category',
+  GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
   // Advanced (Mor) filters — per period
@@ -48,6 +51,8 @@ export enum EtfFilterParamKey {
   RSI = 'rsi',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
+  CATEGORY = 'category',
+  GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
   // Advanced (Mor) filters — per period
@@ -98,6 +103,8 @@ type RangeFilterType =
 type SelectFilterType =
   | EtfFilterType.PAYOUT_FREQUENCY
   | EtfFilterType.ASSET_CLASS
+  | EtfFilterType.CATEGORY
+  | EtfFilterType.GROUP
   | EtfFilterType.ISSUER
   | EtfFilterType.MOR_RISK_3YR
   | EtfFilterType.MOR_RISK_5YR
@@ -320,6 +327,8 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.RSI,
   EtfFilterParamKey.DIVIDEND_YEARS,
   EtfFilterParamKey.ASSET_CLASS,
+  EtfFilterParamKey.CATEGORY,
+  EtfFilterParamKey.GROUP,
   EtfFilterParamKey.ISSUER,
   EtfFilterParamKey.SEARCH,
   EtfFilterParamKey.MOR_UPSIDE_3YR,
@@ -434,6 +443,8 @@ export const MOR_ADVANCED_FILTERS: MorAdvancedFilterDef[] = [
 const SELECT_FILTER_TYPES: Set<string> = new Set([
   EtfFilterType.PAYOUT_FREQUENCY,
   EtfFilterType.ASSET_CLASS,
+  EtfFilterType.CATEGORY,
+  EtfFilterType.GROUP,
   EtfFilterType.ISSUER,
   EtfFilterType.MOR_RISK_3YR,
   EtfFilterType.MOR_RISK_5YR,
@@ -590,6 +601,29 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
       paramKey: EtfFilterParamKey.ASSET_CLASS,
       selectedValue: acRaw,
       label: matchingOption ? `Asset Class: ${matchingOption.label}` : `Asset Class: ${acRaw}`,
+    });
+  }
+
+  // Category
+  const categoryRaw = searchParams.get(EtfFilterParamKey.CATEGORY);
+  if (categoryRaw && categoryRaw.trim()) {
+    filters.push({
+      type: EtfFilterType.CATEGORY,
+      paramKey: EtfFilterParamKey.CATEGORY,
+      selectedValue: categoryRaw,
+      label: `Category: ${categoryRaw}`,
+    });
+  }
+
+  // Group (key, e.g. "broad-equity")
+  const groupRaw = searchParams.get(EtfFilterParamKey.GROUP);
+  if (groupRaw && groupRaw.trim()) {
+    const groupName = getEtfGroupByKey(groupRaw)?.name;
+    filters.push({
+      type: EtfFilterType.GROUP,
+      paramKey: EtfFilterParamKey.GROUP,
+      selectedValue: groupRaw,
+      label: `Group: ${groupName ?? groupRaw}`,
     });
   }
 
@@ -867,6 +901,25 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
   const assetClass = filters[EtfFilterParamKey.ASSET_CLASS]?.trim();
   if (assetClass) {
     where.assetClass = { equals: assetClass, mode: 'insensitive' };
+  }
+
+  const category = filters[EtfFilterParamKey.CATEGORY]?.trim();
+  if (category) {
+    where.category = { equals: category, mode: 'insensitive' };
+  }
+
+  // Group is not stored on the row — translate the group key into the set of
+  // category names that belong to it and match any of them.
+  const groupKey = filters[EtfFilterParamKey.GROUP]?.trim();
+  if (groupKey) {
+    const categoryNames = getCategoriesForGroupKey(groupKey).map((c) => c.name);
+    if (categoryNames.length === 0) {
+      // Unknown / empty group: force-empty result set so callers see "no matches"
+      // rather than the unfiltered listing.
+      where.category = { equals: '__no_match__' };
+    } else {
+      where.category = { in: categoryNames };
+    }
   }
 
   const issuer = filters[EtfFilterParamKey.ISSUER]?.trim();
