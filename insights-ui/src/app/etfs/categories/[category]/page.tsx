@@ -1,7 +1,7 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey } from '@/utils/etf-filter-utils';
+import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfGroupName, getEtfCategoryByName } from '@/utils/etf-categorization-utils';
 import type { Metadata } from 'next';
 
@@ -9,9 +9,10 @@ export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ category: string }>;
+  searchParams: Promise<EtfSearchParams>;
 };
 
-export async function generateMetadata(props: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ category: string }> }): Promise<Metadata> {
   const { category } = await props.params;
   const decoded = decodeURIComponent(category);
   return {
@@ -20,15 +21,19 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-export default async function EtfsByCategoryPage({ params }: PageProps) {
+export default async function EtfsByCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { category } = await params;
+  const searchParams = await searchParamsPromise;
   const decodedCategory = decodeURIComponent(category);
 
   // If we recognize the category, surface its parent group in the layout context.
   const knownCategory = getEtfCategoryByName(decodedCategory);
   const groupName = getEtfGroupName(decodedCategory);
 
-  const dataPromise = fetchEtfListingData({ [EtfFilterParamKey.CATEGORY]: decodedCategory });
+  const dataPromise = fetchEtfListingData({
+    ...searchParams,
+    [EtfFilterParamKey.CATEGORY]: decodedCategory,
+  });
 
   const description = groupName
     ? `Explore US ETFs in the ${decodedCategory} category (${groupName}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`

@@ -1,16 +1,17 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
+import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ assetClass: string }>;
+  searchParams: Promise<EtfSearchParams>;
 };
 
-export async function generateMetadata(props: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ assetClass: string }> }): Promise<Metadata> {
   const { assetClass } = await props.params;
   const decoded = decodeURIComponent(assetClass);
   return {
@@ -19,15 +20,19 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-export default async function EtfsByAssetClassPage({ params }: PageProps) {
+export default async function EtfsByAssetClassPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { assetClass } = await params;
+  const searchParams = await searchParamsPromise;
   const decodedAssetClass = decodeURIComponent(assetClass);
 
   const matchingOption = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value.toLowerCase() === decodedAssetClass.toLowerCase());
   const displayAssetClass = matchingOption?.label ?? decodedAssetClass;
   const filterValue = matchingOption?.value ?? decodedAssetClass;
 
-  const dataPromise = fetchEtfListingData({ [EtfFilterParamKey.ASSET_CLASS]: filterValue });
+  const dataPromise = fetchEtfListingData({
+    ...searchParams,
+    [EtfFilterParamKey.ASSET_CLASS]: filterValue,
+  });
 
   return (
     <EtfPageLayout
