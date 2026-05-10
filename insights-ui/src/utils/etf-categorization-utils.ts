@@ -1,11 +1,13 @@
 import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
+import { canonicalizeCategory } from '@/utils/etf-category-aliases';
 import { EtfCategoriesConfig, EtfCategoryToGroup, EtfGroup } from '@/types/etf/etf-analysis-types';
 
 const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
 
 export function getEtfGroupKey(category: string | null | undefined): string | undefined {
   if (!category) return undefined;
-  return categoriesConfig.categories.find((c) => c.name === category)?.group;
+  const canonical = canonicalizeCategory(category);
+  return categoriesConfig.categories.find((c) => c.name === canonical)?.group;
 }
 
 export function getEtfGroupName(category: string | null | undefined): string | undefined {
@@ -30,5 +32,6 @@ export function getCategoriesForGroupKey(key: string | null | undefined): EtfCat
 
 export function getEtfCategoryByName(name: string | null | undefined): EtfCategoryToGroup | undefined {
   if (!name) return undefined;
-  return categoriesConfig.categories.find((c) => c.name === name);
+  const canonical = canonicalizeCategory(name);
+  return categoriesConfig.categories.find((c) => c.name === canonical);
 }

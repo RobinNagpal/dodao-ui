@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 import { getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { expandCategoryAliases } from '@/utils/etf-category-aliases';
 
 /** ----- Types and Enums ----- */
 
@@ -940,7 +941,8 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
 
   const category = filters[EtfFilterParamKey.CATEGORY]?.trim();
   if (category) {
-    where.category = { equals: category, mode: 'insensitive' };
+    const expanded = expandCategoryAliases([category]);
+    where.category = expanded.length > 1 ? { in: expanded } : { equals: category, mode: 'insensitive' };
   }
 
   // Group is not stored on the row — translate the group key into the set of
@@ -953,7 +955,7 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
       // rather than the unfiltered listing.
       where.category = { equals: '__no_match__' };
     } else {
-      where.category = { in: categoryNames };
+      where.category = { in: expandCategoryAliases(categoryNames) };
     }
   }
 
