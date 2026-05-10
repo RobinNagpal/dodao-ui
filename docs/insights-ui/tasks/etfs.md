@@ -23,39 +23,7 @@ phase-ordered list below.
   - Definition of done: a scheduled run that, with no human in the loop, produces
     a night's worth of refreshed reports across stocks + ETFs using Sonnet, with
     logs we can review the next morning.
-- [ ] **2. Use the internet for missing + latest info during Claude Code generation**
-  - When Claude Code regenerates an ETF report on the off-hours runner, it should
-    **actively use the internet** to (a) fill in any **missing** data points the
-    prompt input lacks (issuer, AUM, expense ratio, holdings concentration,
-    Mornstar category, PM identity, etc.), and (b) pull the **latest**
-    information (recent prospectus supplements, fund-fact-sheet updates, PM
-    changes, 19a-1 distributions, regulatory actions, material news in the last
-    90 days) before producing the report.
-  - Update every report-generation prompt (Performance, Cost & Team, Risk,
-    Summary, Index & Strategy, Future Outlook, Custom Reports) to include an
-    explicit instruction along the lines of:
-    *"If any input field you need is missing, blank, or stale, **use the
-    internet** to find it. Always also search for the **latest** information on
-    this ETF — recent prospectus supplements, fund-fact-sheet updates, PM
-    changes, distributions, news in the last 90 days — and incorporate it
-    before writing the section. Cite the source URL for every internet-sourced
-    fact."*
-  - Confirm the Claude Code invocation actually has web access on the runner;
-    a prompt instruction is a no-op if the session is headless without web /
-    fetch tools.
-  - Extend the output contract with a `sources: { url, title, accessedAt }[]`
-    array per section so we can render citations on the detail page and audit
-    which claims came from the internet, and include as-of dates inline for any
-    numeric / factual claim.
-  - Guardrails: restrict to reputable sources (issuer site, SEC EDGAR fund
-    filings, primary news outlets, official regulators); cap wall-clock per
-    internet call so a slow site doesn't blow the off-hours window; track an
-    `internetAugmented` flag + unique-URL count per run and surface it in the
-    admin generation-requests view for auditability.
-  - Pairs with the stock-side equivalent in `stocks.md` ("Use the internet for
-    missing + latest info during Claude Code generation") — share the same
-    web-tool config + citation contract so we maintain one pipeline, not two.
-- [ ] **3. Split the Index & Strategy field into multiple structured fields**
+- [ ] **2. Split the Index & Strategy field into multiple structured fields**
   - Today **Index & Strategy** is a single blob that crams intro + strategy + other
     context into one field, which makes it hard to lay out cleanly on the detail
     page.
@@ -63,21 +31,20 @@ phase-ordered list below.
     `strategy` field, plus a couple more to-be-decided fields (likely candidates:
     `indexMethodology`, `rebalanceApproach`, `replicationStyle`, `keyConstraints`
     — finalize during implementation).
-  - Related to, but distinct from, the broader Strategy-section restructuring in
-    3.3.e: that task is about the `Strategy` section as a whole; this task is
-    specifically about the **Index & Strategy** feed / data shape.
+  - Related to, but distinct from, the broader **`Strategy`** section as a whole;
+    this task is specifically about the **Index & Strategy** feed / data shape.
   - Update the prompt, the output JSON contract, persistence, and the detail-page
     rendering together so the UI can present each sub-field with its own heading
     / layout slot. Run through the 3.2 tuning loop (closed) to sanity-check the
     split.
-- [ ] **4. ETFs list page — `isComplete` filter + admin toggle**
+- [ ] **3. ETFs list page — `isComplete` filter + admin toggle**
   - Detail in section **1.6** below — surfaced here because it's active work and
     determines what first-time visitors see by default on the public ETFs list.
   - Make sure the `Etf.isComplete` derivation, the public default filter, the
     admin "include incomplete ETFs" toggle, and the per-row missing-data
     indicators all ship together rather than landing piecemeal.
-- [ ] **5. ETF discoverability + internal linking**
-  - Once the ETFs list page (item 4 / §1.6) is finalized, wire it into the rest
+- [ ] **4. ETF discoverability + internal linking**
+  - Once the ETFs list page (item 3 / §1.6) is finalized, wire it into the rest
     of the site so ETF pages aren't an island.
   - **Home page → ETFs**: the main thing — pick the entry points (hero / nav /
     a featured-ETFs rail / "browse by category-group") so a first-time visitor
@@ -96,84 +63,6 @@ phase-ordered list below.
 
 ## Phase 1 — Complete the ETF UI
 
-> **1.1 ETF Details Page layout**, **1.2 Competition + Similar ETFs**, **1.4 Admin
-> ETF generation requests page**, and **1.7 Populate Canadian ETFs from Stock
-> Analyzer** have all shipped and moved to `etf-closed-tasks.md`. The earlier
-> **1.3 Famous ETFs comparison** task was descoped and removed. The remaining
-> Phase 1 items below are: **1.5 Custom Reports**, **1.6 ETFs list page**, and
-> **1.8 Active-ETF management team**.
-
-### 1.5) Custom Reports ("random reports") per ETF
-
-Mirror of the stock Custom Reports feature — see PR #1318 for the full spec; the ETF
-version should reuse the same shape, just scoped to an `Etf` instead of a `TickerV1`.
-
-Goal: let a user (or curator) attach **arbitrary, free-form investigation reports** to a
-single ETF — e.g. "Why is QQQI's premium to NAV widening?", "How does this sector ETF hold
-up in a 50% China-tariff scenario?", "What happens to this fund if 10y yields spike?". Each
-ETF has **0..N** Custom Reports; each is a one-shot prompt → one-shot answer with
-regeneration history.
-
-- [ ] **Data model** (new Prisma tables, mirror the stock ones):
-  - `EtfCustomReport` — one row per report on an ETF; `title`, `userQuestion`, optional
-    `templateKey`, denormalized `latestAnswerMarkdown` / `latestAnswerJson` /
-    `latestSources` / `latestRunId`, `status` (`NotStarted` / `InProgress` / `Completed` /
-    `Failed`), `archived` soft-delete, audit fields.
-  - `EtfCustomReportRun` — one row per LLM invocation; links to `PromptInvocation`; keeps
-    history so we can compare answers over time.
-  - Optional `EtfCustomReportTemplate` — curated pre-written prompts with placeholders
-    (e.g. "Explain a premium/discount-to-NAV change") users can pick from.
-  - Backref `Etf.customReports`.
-- [ ] **API** — under an ETF-scoped namespace, same shape as the stock routes:
-  - `GET` list, `POST` create (kicks off first Run), `GET /[reportId]` detail with all Runs,
-    `POST /[reportId]/regenerate`, `PATCH /[reportId]` (title / archive).
-  - Admin route for curated ETF templates.
-  - Thin handlers; work in `src/utils/analysis-reports/etf-custom-report-utils.ts`.
-- [ ] **Prompt infra reuse**:
-  - Go through `getLLMResponseForPromptViaInvocation` with a single generic system prompt
-    (e.g. `promptKey: 'US/etfs-v1/custom-report'`).
-  - `inputJson` carries ETF context (symbol / name / issuer / category-group / strategy,
-    holdings summary, 30d price move, recent news) **plus** the user's question or resolved
-    template.
-  - Get `Prompt` / `PromptVersion` / `PromptInvocation` versioning, status, model id, error
-    capture, raw I/O for free.
-- [ ] **Output shape** the LLM must return:
-  - `answerMarkdown` — long-form rendering on the detail page.
-  - `answerJson`: `{ summary, keyPoints[], verdict?: 'Bullish'|'Bearish'|'Neutral',
-    confidence?: 'Low'|'Medium'|'High', sources?: { title, url }[] }`.
-- [ ] **UI**:
-  - Add a **"Custom Reports"** section to the ETF detail page (section 1.1) — `[+ New
-    Report]` button, card grid of existing reports, empty state.
-  - New sub-page `app/etfs/[exchange]/[symbol]/custom-reports/[reportId]/page.tsx` with full
-    markdown render, sources list, "Regenerate" (permission-gated), collapsed history panel.
-  - **New-report modal** with two tabs: **From template** (dropdown + preview) and
-    **Free-form** (title + question textarea). Optimistic UI, poll until `Completed`.
-  - Admin CRUD page for curated ETF templates.
-- [ ] **Generation flow** (v1 = synchronous inside the POST handler):
-  1. Load ETF; insert Report (`NotStarted`) + first Run (`InProgress`); return
-     `201 { reportId, runId }`.
-  2. `await` `getLLMResponseForPromptViaInvocation`.
-  3. On success: populate Run, flip Report to `Completed`, update denormalized latest-*
-     fields + `latestRunId`.
-  4. On failure: store `errorMessage`, mark Run `Failed`; keep prior successful answer if
-     one existed, else mark Report `Failed`.
-- [ ] **Permissions / quotas / abuse**:
-  - Space-scoped via existing membership check.
-  - Per-user quota: cap N Custom Reports per ETF per user per day (config-driven).
-  - Hard output-length cap in the system prompt; no recursive web-research tools in v1.
-  - Archive-only (no row deletion) in v1; only creator or admin can edit/archive.
-- [ ] **Phased rollout** (mirrors the stock phasing):
-  - **P0**: schema + migration + admin curated-template CRUD.
-  - **P1**: list + detail + create-from-template modal on the ETF detail page.
-  - **P2**: free-form prompt behind a feature flag; per-user quota enforced.
-  - **P3**: streaming answers, web-search citations, history diff view.
-- [ ] **Open questions**:
-  - Should stock and ETF Custom Reports share a **single** `CustomReport(+Run)` table with a
-    polymorphic `subjectType` + `subjectId` column, or stay as two parallel table families?
-    Parallel is simpler; unified is DRYer and lets cross-asset reports happen later.
-  - ETF-specific template examples to seed (premium/NAV, holdings concentration, tracking
-    error, sector-rotation scenarios).
-
 ### 1.6) ETFs list page — default to complete-data only + admin toggle
 
 Goal: the public ETFs list page should only show ETFs that are **actually ready to read**
@@ -189,7 +78,7 @@ that via a toggle instead of dropping the data from the page entirely.
   - Every evaluation-category report is generated and non-failed: **Performance**,
     **Cost & Team**, **Risk**, **Summary**, **Index & Strategy**, **Future Outlook**
     (i.e. the full set referenced in 1.4's header-columns task).
-  - **Final Summary** + `introParagraph` (3.3.d) are generated.
+  - **Final Summary** is generated.
   - Persist this as a derived boolean (e.g. `Etf.isComplete`) updated by the
     generation pipeline whenever a report/field lands, so the list query is a cheap
     index lookup rather than a multi-join per request.
@@ -253,8 +142,8 @@ ingestion infra, and refresh cadence wherever it makes sense.
 - [ ] **Use the data in analysis**:
   - Pass the team block into the **Cost & Team** prompt input so the team
     narrative cites actual PM tenure / experience instead of vague language.
-  - Once 3.3.f is in place, the per-category `overallAnalysis` for Cost & Team
-    can reference these structured fields in the Final Summary.
+    The per-category `overallAnalysis` for Cost & Team should be able to
+    reference these structured fields when Final Summary synthesizes verdicts.
 - [ ] **Refresh + verification**:
   - Quarterly re-ingest on the same off-hours runner used for stocks — issuers
     publish PM changes via prospectus supplements; pick those up.
@@ -276,326 +165,7 @@ ingestion infra, and refresh cadence wherever it makes sense.
 ## Phase 3 — Prompt and analysis-factor improvements
 
 > 3.1 (review + finalize category grouping) and 3.2 (automated factor/prompt tuning loop)
-> are already shipped — see `etf-closed-tasks.md`. The tuning loop is still referenced
-> from the open sub-items below (3.3.*) as the validation harness for new prompt changes.
-
-### 3.3) Improve ETF report quality
-
-Umbrella for report-quality fixes that go beyond factor/prompt tuning. Sub-items below
-share a common goal: a reader should be able to **finish an ETF report and know whether
-they should buy it or not**, for their specific profile, against a clearly named
-benchmark.
-
-#### 3.3.a) Explicit category context
-
-Goal: fix a recurring quality issue where ETF reports (especially **Risk**, but also
-**Performance**, **Cost & Team**, and **Final Summary**) make a lot of statements like
-*"this ETF underperforms its category on drawdowns"* or *"fees are slightly above the
-category average"* without ever telling the reader **which category** the ETF is being
-compared against, or **what the category's actual numbers are**. This makes the
-comparison feel vague and unprofessional — the user sees "vs. category" everywhere but
-has no idea what the category is or how it stacks up quantitatively.
-
-Fix this end-to-end: either stop referencing the category entirely, or surface the
-category name **and** its quantitative baseline so every comparison is grounded.
-
-- [ ] **Audit every category reference** in existing outputs:
-  - Scan recent reports across Performance, Cost & Team, Risk, and Final Summary for
-    phrases like "vs. category", "category average", "above/below its category",
-    "compared to peers in its category", etc.
-  - Catalog how often each prompt leans on an un-named / un-quantified category
-    comparison.
-- [ ] **Decide the policy per prompt** (discuss + commit to one path per section):
-  - **Option A — drop category references**: rewrite prompts so they only make
-    comparisons against concrete, named benchmarks (SPY, AGG, the fund's index, a
-    named peer) and never against an abstract "category" the reader can't see.
-  - **Option B — show the category + its numbers**: every time a prompt says "vs.
-    category", require it to state:
-    1. the **category name** (exact group from `etf-analysis-categories.json`), and
-    2. the **quantitative baseline** it's comparing against (e.g. category median /
-       average / percentile for that specific metric — expense ratio, max drawdown,
-       Sharpe, 3yr return, etc.).
-  - Default recommendation: **Option B** for Performance & Risk (the comparison is
-    informative when grounded), **Option A** for Cost & Team where category means
-    less.
-- [ ] **Data the prompt needs for Option B** — before the prompt can cite real
-  category numbers, the generation pipeline must pass them in:
-  - Compute per-category aggregates (median / average / percentile buckets) for the
-    metrics we actually quote — expense ratio, AUM, flows, max drawdown, volatility,
-    Sharpe, 1yr / 3yr / 5yr return, yield, etc.
-  - Persist these on the category-group record (or in a sibling
-    `EtfCategoryGroupStats` table) so the generation run can hydrate the prompt
-    input with `{ categoryName, categoryStats: { ... } }`.
-  - Keep `categoryStatsAsOf` on the record so the prompt can cite "as of
-    YYYY-MM-DD".
-- [ ] **Update the prompts** to enforce the new rule:
-  - Add an explicit instruction: *"Any comparison phrased as 'vs. category',
-    'category average', 'above/below category', etc. MUST either (a) be removed, or
-    (b) name the exact category and cite its numeric baseline with units and an
-    as-of date. Never say 'vs. category' without both."*
-  - Extend the output JSON schema so every category-comparison claim carries the
-    `categoryName`, the `metric`, the ETF's `value`, the `categoryValue`, and a
-    `source` (e.g. `"internal-aggregate-2026-04"`).
-  - Run this through the **automated factor/prompt tuning loop** (Section 3.2) so
-    regressions get caught.
-- [ ] **Surface the category in the UI** — a category page:
-  - New route `app/etfs/categories/[categoryKey]/page.tsx` showing: category label,
-    plain-English description, member-ETF list, the aggregate stats used in
-    prompts, and sparklines / distributions for expense ratio, return, drawdown,
-    etc.
-  - On the ETF detail page (section 1.1), link every category mention to that
-    page so the reader can see exactly what "the category" is.
-  - Add category pages to the sitemap generation in Phase 4.
-
-#### 3.3.b) Handle Mornstar categories as a first-class concept
-
-Goal: Mornstar categories (e.g. "Large Blend", "Intermediate Core Bond", "Foreign
-Large Growth") are the de-facto industry taxonomy that investors, issuers, and
-screeners already use. Our internal category-groups are useful, but reports that
-reference "the category" without reconciling against Mornstar feel amateur. We
-should treat Mornstar category as a **first-class field** on each ETF, expose it in
-the UI, and use it in prompts alongside (or in place of) our internal group where
-appropriate.
-
-- [ ] **Capture the Mornstar category on each ETF**:
-  - Add a `morningstarCategory` field (and optional `morningstarCategoryId`) to the
-    `Etf` Prisma model.
-  - Source this from our existing data provider / scraping pipeline (confirm which
-    source actually carries it — check `scraping-lambdas` outputs).
-  - Backfill historic ETFs and keep it updated on refresh.
-- [ ] **Resolve the relationship to our internal category-groups**:
-  - Decide whether our internal groups are a **superset**, a **re-mapping**, or a
-    **complementary tag** to Mornstar categories.
-  - Persist a `morningstarCategory -> internalGroupKey` mapping so we can pivot
-    reports either way without re-querying every run.
-  - Flag ETFs where Mornstar assigns them to a category that doesn't match our
-    internal group (audit + reconcile).
-- [ ] **Use Mornstar categories in prompts**:
-  - When Option B in 3.3.a applies (cite category + numbers), prefer the
-    **Mornstar category name** in the user-facing text because readers
-    recognize it. Keep the internal group for our own analytics.
-  - Compute per-Mornstar-category aggregates (median expense ratio, median
-    drawdown, etc.) the same way we do for internal groups in 3.3.a, or at least
-    define which one is the source of truth for the comparison numbers.
-- [ ] **Surface Mornstar category in the UI**:
-  - Show it on the ETF detail page header next to ticker / issuer / internal group.
-  - Link it to the category page (3.3.a) — either the same page shared across
-    Mornstar + internal, or a sibling page scoped to the Mornstar category.
-
-#### 3.3.c) Cross-check reports against the target-audience feature
-
-Goal: if/when a **target-investor-groups** feature is brought back into scope, the
-reports themselves must let each targeted segment — specific slices of retail, plus
-specific slices of institutional — walk away with a clear **"yes, this fits me"** or
-**"no, skip this one"** verdict. Today the reports are written in a generic voice; a
-retiree looking for income and a pension fund doing liability-matching read the same
-paragraphs and neither gets a confident answer. (Note: the dedicated
-target-investor-groups data model is not currently on the roadmap — this sub-section
-is a placeholder for the prompt-quality work that would be needed once it is.)
-
-- [ ] **Make target-audience a live input to the prompts**:
-  - Pass the **matched target-groups** into the analysis prompts as structured input,
-    not just as tags stored on the side.
-  - Extend the **Final Summary** prompt so it ends with a **per-target-group verdict
-    block**: for each matched target-group, emit `{ targetGroupKey, fit:
-    'Good'|'Acceptable'|'Poor', reason, cautions[] }`.
-  - Where the report already says things like "this is suitable for income
-    investors", require the prompt to name the **exact target-group key**, not a
-    generic persona.
-- [ ] **Cross-check existing reports after target-groups data lands**:
-  - Once the target-group data model + back-fill exist, run a pass across generated
-    reports to verify every matched target-group is actually addressed in the
-    narrative.
-  - Flag reports where the matched target-groups don't appear (or appear only as
-    vague hand-waving) and route them back through regeneration.
-  - Add this check to the **automated factor/prompt tuning loop** (closed) so future
-    regressions are caught.
-- [ ] **Surface per-audience verdicts in the UI**:
-  - Add a **"Is this ETF right for you?"** panel to the ETF detail page (section
-    1.1) that lists each matched target-group with its fit verdict + one-line
-    rationale from the prompt output.
-  - Group retail vs. institutional verdicts separately (retail block visible by
-    default, institutional block collapsible).
-- [ ] **Definition of done** for this sub-section:
-  - A retail retiree, a young DCA investor, and a corporate-treasury analyst can
-    each open the same ETF report and within 30 seconds point to the line that tells
-    them whether to buy or skip — with a named rationale.
-
-#### 3.3.d) Report layout — Final Summary + Intro, then charts, then Strategy, then analysis
-
-Goal: revisit how **Final Summary** and **Strategy** are displayed on the ETF detail
-page so the top of the page reads well. Two failure modes today:
-
-1. If we show **only Final Summary** at the top and nothing about the ETF itself, the
-   reader has no idea what the fund is before the verdict — it feels jarring and is
-   hard to follow.
-2. If we put **Strategy at the top too**, before the charts, the pre-chart block
-   becomes a wall of text and the page feels long and bureaucratic.
-
-Proposed structure (refines the layout already in section 1.1):
-
-1. **Final Summary** — the existing verdict block (already generated).
-2. **Intro paragraph** — **new field** — a short, 1-paragraph, plain-English
-   description of *what the ETF is*: issuer, what it tracks / holds, basic shape
-   (equity/fixed-income/sector/thematic), who it's built for. This is the "so what
-   is this thing?" block that currently doesn't exist.
-3. **Charts** — price chart, spider chart, any headline visuals.
-4. **Strategy** — 2–3 paragraphs (not a full essay) explaining the fund's
-   strategy, index, rebalance approach, and how it actually delivers its
-   exposure.
-5. **Evaluation-category blocks** — ratings + narrative for each analysis
-   category (Performance, Cost & Team, Risk, Future Outlook, etc.).
-
-Tasks:
-
-- [ ] **Add `introParagraph`** as a new field on the ETF analysis output:
-  - Short (≈80–150 words), plain-English, no jargon, no verdict language.
-  - Must describe the ETF in its own right (issuer, strategy family, what it holds,
-    headline stats) — **not** opinionate. Verdict lives in Final Summary.
-  - Persist on the `Etf` (or the Final-Summary record) so it's available to the
-    detail page and to SEO metadata.
-- [ ] **Update the generation prompt(s)** to produce `introParagraph` alongside
-  Final Summary:
-  - Decide whether it comes out of the Final-Summary prompt or a new tiny "intro"
-    prompt; prefer bundling with Final Summary to keep one round-trip.
-  - Extend the output JSON schema accordingly; backfill across existing ETFs after
-    rollout.
-- [ ] **Revise Strategy so it's not long-form at the top**:
-  - Target: 2–3 focused paragraphs, not an essay.
-  - Place it **after** the charts, not before.
-  - If the existing Strategy content is longer, move the deep-dive into the
-    **per-category detail page** (section 1.1) and keep only the summary on the
-    main detail page.
-- [ ] **Update the detail-page component order** (section 1.1) to match:
-  Final Summary → Intro paragraph → Charts → Strategy → Evaluation categories →
-  other sections (competition, similar ETFs, etc.).
-- [ ] **Cross-check with section 1.1 and 3.3.c**:
-  - Reconcile this ordering with the ordering currently listed in 1.1 so there is
-    one canonical layout, not two.
-  - Make sure the **"Is this ETF right for you?"** panel from 3.3.c has a clear
-    slot in this order (suggested: right after Final Summary + Intro, before
-    charts — or just after charts — pick one and document it).
-
-#### 3.3.e) Improve Strategy section — split into structured fields + per-group shape
-
-Goal: today the **Strategy** section is stored as **one** free-form field that packs
-roughly five different things into a single blob:
-
-1. **Intro** — what the fund is (overlaps with 3.3.d's `introParagraph`).
-2. **Peer / competitive context** — how it sits versus peers in the same group.
-3. **Strategy proper** — index, mandate, how exposure is actually delivered.
-4. **Up/down conditions** — which macro, rate, or market conditions make it rise
-   or fall.
-5. **Three major risks** — the top risks associated with the fund.
-
-Treating these as one blob makes the section hard to render cleanly, hard to reuse
-(e.g. in competition tables, in the "Is this ETF right for you?" panel, in
-per-category detail pages), and hard to validate in the prompt-tuning loop.
-
-- [ ] **Break Strategy into 5–6 structured fields** on the ETF analysis output
-  (names are indicative — finalize during implementation):
-  - `strategyIntro` — consolidate with the 3.3.d `introParagraph` if the content
-    overlaps; otherwise keep as a short strategy-focused intro.
-  - `peerContext` — 1–2 paragraphs on where the fund sits relative to its group /
-    Mornstar category peers (ties into 3.3.a + 3.3.b).
-  - `strategyDescription` — the index / mandate / replication approach.
-  - `upDownConditions` — structured rather than prose:
-    `{ upsideDrivers: string[], downsideDrivers: string[], sensitivity:
-    { rates?: 'High'|'Medium'|'Low', usdStrength?: ..., oilPrice?: ..., etc. } }`.
-  - `topRisks` — an array of exactly N (default 3) risks, each
-    `{ title, description, severity: 'High'|'Medium'|'Low' }`.
-  - (Optional) `keyMetrics` — small K/V block (index, rebalance cadence, currency
-    hedging, leverage factor, options-overlay details, etc.) so the UI can render
-    it as a quick-facts panel.
-- [ ] **Check which fields apply to which groups** — **not every field is
-  universal**:
-  - Equity ETFs: all of the above apply; `upDownConditions.sensitivity` leans on
-    sectors / factors / regions.
-  - Fixed-income ETFs: `upDownConditions.sensitivity` must include
-    duration / credit-quality / curve-shape fields; `topRisks` shape differs
-    (credit risk, duration risk, convexity risk).
-  - Commodities ETFs: contango/backwardation, spot vs futures, roll yield.
-  - Leveraged / inverse / options-income ETFs: volatility drag, decay, strike
-    selection, call-overwrite cadence — these deserve their own fields.
-  - Currency ETFs: rate differentials, carry.
-  - Catalog the full set of groups from `etf-analysis-categories.json` and mark
-    which fields are **required**, **optional**, or **n/a** per group.
-- [ ] **Pick a storage shape** (open decision — pick one, document the rationale):
-  - **Option A — single `strategy` JSON column** on `Etf` / the analysis record,
-    with a TypeScript discriminated union keyed by `strategyType` / group. Zod
-    schema per group validates shape before save.
-  - **Option B — one `EtfStrategy` table** with the common fields as columns, plus
-    a small `details` JSON column for group-specific extras.
-  - **Option C — multiple tables per group family** (`EtfEquityStrategy`,
-    `EtfFixedIncomeStrategy`, …). Cleanest schema, most migration cost.
-  - Default recommendation: **Option A** (JSON + Zod) to start, revisit to
-    Option B if querying structured sub-fields becomes common.
-- [ ] **Prompt changes to emit the structured shape**:
-  - Update the Strategy prompt to return each field separately instead of one
-    markdown blob.
-  - Add a Zod-validated JSON contract so prompt regressions fail loudly instead
-    of silently producing malformed strategy sections.
-  - Run this through the **automated factor/prompt tuning loop** (section 3.2)
-    per group so the shape converges.
-- [ ] **UI rendering** — once fields are separate, the detail page can:
-  - Render **Strategy** as a tight 2–3-paragraph block (from
-    `strategyDescription` + `peerContext`) per 3.3.d's layout goals.
-  - Render **up/down conditions** as a small two-column list or sensitivity table.
-  - Render **top risks** as a compact card list with severity badges.
-  - Hoist a 1-line "strategy TL;DR" up near Final Summary if needed.
-- [ ] **Migration / backfill**:
-  - Keep the legacy single-field Strategy readable during transition (read-only
-    fallback) until all ETFs are regenerated into the new shape.
-  - After backfill, remove the legacy field.
-- [ ] **Decide placement** — sibling section vs. expansion of 3.3.d:
-  - Either (a) restructure the existing **Strategy** section on the detail page
-    using these new fields (preferred, aligns with 3.3.d), or (b) add a new
-    sibling section **"Improve Strategy"** next to Final Summary that renders the
-    structured output. Pick one during implementation; don't ship both.
-
-#### 3.3.f) Final Summary — simplify input schema + finalize prompt
-
-Goal: the **Final Summary** generation currently receives the **entire** set of
-analysis factors (every factor from Performance, Cost & Team, Risk, Future Outlook,
-Index & Strategy, etc.) as its input. That's far more context than it needs — Final
-Summary is a synthesis, not a re-analysis, so it should only consume the
-**per-category overall analysis** and produce a clean top-level verdict from that.
-This both shrinks the prompt (cheaper + faster) and reduces the model's temptation
-to re-derive / second-guess category conclusions.
-
-- [ ] **Slim the Final Summary input schema**:
-  - Remove all per-factor detail (factor keys, per-factor scores, per-factor
-    narratives, raw numerical inputs) from the Final Summary prompt input.
-  - Pass **only** the per-category `overallAnalysis` (one synthesized paragraph
-    per evaluation category: Performance, Cost & Team, Risk, Future Outlook,
-    Index & Strategy, etc.) plus the small set of identity fields the prompt
-    actually needs (symbol, name, issuer, category-group, Mornstar category,
-    matched target-groups).
-  - Document the new contract — `{ etfIdentity, perCategoryOverallAnalysis:
-    Record<categoryKey, string>, matchedTargetGroups, generationDate }` — and
-    enforce it with a Zod schema.
-- [ ] **Stop re-fetching what we don't need**:
-  - Update the Final Summary generation call site so it doesn't load full factor
-    JSON from the DB just to throw it away; fetch only the `overallAnalysis`
-    fields.
-- [ ] **Finalize the Final Summary prompt**:
-  - Rewrite the prompt around the slimmed input — it can reference each
-    category's `overallAnalysis` by key and weave them into a single verdict
-    without inventing or re-ranking underlying factors.
-  - Keep alignment with the surrounding report-quality tasks:
-    - Include the report-generation date (3.4 bullet).
-    - Name the category / Mornstar category when it compares (3.3.a / 3.3.b).
-    - Emit the per-target-group verdict block (3.3.c).
-    - Emit the `introParagraph` alongside, if we bundle intro generation here
-      (3.3.d).
-  - Run the finalized prompt through the **automated factor/prompt tuning loop**
-    (3.2) so the synthesis quality is tracked over iterations.
-- [ ] **Validation**:
-  - Spot-check across several ETFs from different groups that the slimmed input
-    still produces Final Summaries at least as good as the current version, and
-    no worse on category-accuracy or target-audience fit.
-  - Regression watch: confirm no Final Summary relies on a factor-level detail
-    that only existed in the old input schema.
+> are already shipped — see `etf-closed-tasks.md`.
 
 ### 3.4) Misc prompt updates
 
@@ -607,7 +177,8 @@ to re-derive / second-guess category conclusions.
 ### 3.5) Comparison "base" per ETF group — open questions
 
 Goal: pick the right **comparison base** for each ETF group so reports always have a
-named benchmark to anchor performance / risk / cost claims (ties into 3.3.a). Equity has
+named benchmark to anchor performance / risk / cost claims alongside any category-relative
+stats the prompts emit. Equity has
 S&P Global as the working answer; the other groups are still undecided.
 
 - [ ] **Fixed-income base — pick one (or a small set)**:
@@ -628,13 +199,13 @@ S&P Global as the working answer; the other groups are still undecided.
     spot, GLD ↔ gold spot)?
   - Alternatives / multi-asset / managed-futures: there isn't a clean public benchmark —
     decide between (a) a 60/40 or risk-parity proxy, (b) the relevant HFR sub-index,
-    (c) skip the base and lean on category aggregates from 3.3.a.
+    (c) skip the base and lean on category aggregates baked into prompts / data.
   - Crypto: BTC / ETH spot, or a crypto-index ETF, or both?
   - Currency: DXY for USD, vs. trade-weighted indices for cross-currency funds.
 - [ ] **How the base is used in the report** — tighten the contract:
   - Performance comparisons over fixed windows (1y / 3y / 5y total return, max drawdown,
     Sharpe) computed **vs. the chosen base** for that group, alongside the category
-    aggregates from 3.3.a.
+    aggregates emitted for the ETF's category group (when available).
   - Where it makes sense, surface beta / tracking error / correlation **vs. the base**
     (most useful for equity + fixed-income; less for alternatives / crypto).
 - [ ] **Storage**:
@@ -686,8 +257,8 @@ posting infra. Don't build two parallel systems; only the source artifacts diffe
     audience overlap.
   - **ETF trends** (Trends page below): each trend → multiple posts (the trend
     itself, ETF winners, ETF losers, "priced-in?" angle).
-  - **Verdict / Final-Summary changes** when an ETF is regenerated (3.3.f): the
-    diff itself is post-worthy.
+  - **Verdict / Final-Summary changes** when an ETF is regenerated: the diff itself
+    is post-worthy.
 - [ ] **Content templates** — share with the stock pipeline; ETF-specific shapes:
   - **Scenario card post** — same shape as stock-side, sourced from
     `EtfScenario`.
