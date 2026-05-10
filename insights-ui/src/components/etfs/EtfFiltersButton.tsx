@@ -21,13 +21,19 @@ import {
   ETF_DIVIDEND_YEARS_OPTIONS,
   ETF_ASSET_CLASS_OPTIONS,
   ETF_ISSUER_OPTIONS,
-  MOR_ADVANCED_FILTERS,
+  MOR_FIELD_KINDS,
+  MOR_PERIODS,
+  detectActiveMorPeriod,
+  getMorFilterDef,
+  getMorFilterShortLabel,
+  getMorParamKey,
   getAppliedEtfFilters,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
   EtfFilterParamKey,
   type AppliedEtfFilter,
   type EtfSelectedFiltersMap,
+  type MorPeriodKey,
   type ThresholdOption,
 } from '@/utils/etf-filter-utils';
 
@@ -101,6 +107,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
   const pathname = usePathname();
 
   const [selectedFilters, setSelectedFilters] = useState<EtfSelectedFiltersMap>(() => ({ ...initialSelected }));
+  const [morPeriod, setMorPeriod] = useState<MorPeriodKey>(() => detectActiveMorPeriod(initialSelected));
 
   const handleChange = (paramKey: EtfFilterParamKey, value: string): void => {
     setSelectedFilters((prev) => {
@@ -110,6 +117,25 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
       }
       return { ...prev, [paramKey]: value };
     });
+  };
+
+  const handlePeriodChange = (newPeriod: MorPeriodKey): void => {
+    if (newPeriod === morPeriod) return;
+    setSelectedFilters((prev) => {
+      const next = { ...prev };
+      // Carry the user's selections over to the new period's paramKeys so a chosen
+      // upside / downside / risk threshold doesn't silently disappear when they switch.
+      for (const kind of MOR_FIELD_KINDS) {
+        const oldKey = getMorParamKey(kind, morPeriod);
+        const newKey = getMorParamKey(kind, newPeriod);
+        const value = prev[oldKey];
+        delete next[oldKey];
+        if (value) next[newKey] = value;
+        else delete next[newKey];
+      }
+      return next;
+    });
+    setMorPeriod(newPeriod);
   };
 
   const handleClearAll = (): void => {
@@ -132,12 +158,6 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
 
     onClose();
   };
-
-  const morFiltersByPeriod = [
-    { period: '3 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '3-Yr') },
-    { period: '5 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '5-Yr') },
-    { period: '10 Yr', filters: MOR_ADVANCED_FILTERS.filter((f) => f.period === '10-Yr') },
-  ];
 
   return (
     <div className="space-y-4">
@@ -256,25 +276,42 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
       {/* Advanced (Mor) Filters */}
       <div>
         <h3 className="text-white font-semibold text-xs mb-1">Advanced Filters (Mor)</h3>
-        <p className="text-[#9CA3AF] text-[10px] mb-2">Only ETFs with Mor data shown when active</p>
+        <p className="text-[#9CA3AF] text-[10px] mb-2">Only ETFs with Mor data shown when active. Pick a time period; the three filters below apply to it.</p>
 
-        {morFiltersByPeriod.map(({ period, filters: periodFilters }) => (
-          <div key={period} className="mb-3">
-            <h4 className="text-gray-300 text-[10px] font-medium mb-1.5 uppercase tracking-wider">{period}</h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-              {periodFilters.map((def) => (
-                <FilterDropdown
-                  key={def.paramKey}
-                  id={def.paramKey}
-                  label={def.kind === 'upside' ? 'Upside Capture' : def.kind === 'downside' ? 'Downside Capture' : 'Risk Level'}
-                  value={selectedFilters[def.paramKey] || ''}
-                  options={def.options}
-                  onChange={(v) => handleChange(def.paramKey, v)}
-                />
-              ))}
-            </div>
+        <div className="mb-3">
+          <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider mr-2">Time Period:</span>
+          <div className="inline-flex gap-1.5">
+            {MOR_PERIODS.map((p) => (
+              <button
+                key={p}
+                onClick={() => handlePeriodChange(p)}
+                type="button"
+                aria-pressed={morPeriod === p}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                  morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-[#374151] text-gray-300 hover:bg-[#4B5563]'
+                }`}
+              >
+                {p.replace('-', ' ')}
+              </button>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+          {MOR_FIELD_KINDS.map((kind) => {
+            const def = getMorFilterDef(kind, morPeriod);
+            return (
+              <FilterDropdown
+                key={def.paramKey}
+                id={def.paramKey}
+                label={getMorFilterShortLabel(kind)}
+                value={selectedFilters[def.paramKey] || ''}
+                options={def.options}
+                onChange={(v) => handleChange(def.paramKey, v)}
+              />
+            );
+          })}
+        </div>
       </div>
 
       {/* Actions */}
