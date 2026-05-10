@@ -41,7 +41,10 @@ export default async function EtfsByGroupPage({ params, searchParams: searchPara
     <EtfPageLayout
       title={`${groupObj.name} ETFs`}
       description={groupObj.description}
-      extraBreadcrumbs={[{ name: groupObj.name, href: `/etfs/groups/${encodeURIComponent(groupObj.key)}`, current: true }]}
+      extraBreadcrumbs={[
+        { name: 'All Groups', href: '/etfs/groups', current: false },
+        { name: groupObj.name, href: `/etfs/groups/${encodeURIComponent(groupObj.key)}`, current: true },
+      ]}
     >
       <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
     </EtfPageLayout>
