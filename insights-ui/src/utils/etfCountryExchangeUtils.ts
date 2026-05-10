@@ -63,3 +63,7 @@ export const toEtfSupportedCountry = (val: string | null | undefined): EtfSuppor
   const trimmed = val.trim();
   return isEtfSupportedCountry(trimmed) ? trimmed : undefined;
 };
+
+/** All ETF exchanges that map to the given country. */
+export const getEtfExchangesByCountry = (country: EtfSupportedCountry): AllEtfExchanges[] =>
+  ETF_EXCHANGES.filter((ex) => ETF_EXCHANGE_TO_COUNTRY[ex] === country);
