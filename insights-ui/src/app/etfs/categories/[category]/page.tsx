@@ -43,7 +43,10 @@ export default async function EtfsByCategoryPage({ params, searchParams: searchP
     <EtfPageLayout
       title={`${decodedCategory} ETFs`}
       description={description}
-      extraBreadcrumbs={[{ name: decodedCategory, href: `/etfs/categories/${encodeURIComponent(decodedCategory)}`, current: true }]}
+      extraBreadcrumbs={[
+        { name: 'All Categories', href: '/etfs/categories', current: false },
+        { name: decodedCategory, href: `/etfs/categories/${encodeURIComponent(decodedCategory)}`, current: true },
+      ]}
     >
       {knownCategory && groupName && (
         <p className="text-sm text-gray-400 -mt-4 mb-4">

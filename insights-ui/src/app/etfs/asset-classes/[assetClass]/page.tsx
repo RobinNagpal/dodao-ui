@@ -38,7 +38,10 @@ export default async function EtfsByAssetClassPage({ params, searchParams: searc
     <EtfPageLayout
       title={`${displayAssetClass} ETFs`}
       description={`Explore US ETFs in the ${displayAssetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
-      extraBreadcrumbs={[{ name: displayAssetClass, href: `/etfs/asset-classes/${encodeURIComponent(filterValue)}`, current: true }]}
+      extraBreadcrumbs={[
+        { name: 'All Asset Classes', href: '/etfs/asset-classes', current: false },
+        { name: displayAssetClass, href: `/etfs/asset-classes/${encodeURIComponent(filterValue)}`, current: true },
+      ]}
     >
       <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
     </EtfPageLayout>
