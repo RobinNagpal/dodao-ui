@@ -13,7 +13,7 @@ import {
   EtfFilterParamKey,
   MOR_ADVANCED_FILTERS,
 } from '@/utils/etf-filter-utils';
-import { ETF_EXCHANGE_TO_COUNTRY, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -108,9 +108,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // user-facing filter chips so it lives outside the ALL_ETF_PARAM_KEYS set.
   const countryParam = searchParams.get('country')?.trim();
   if (countryParam && isEtfSupportedCountry(countryParam)) {
-    const exchanges = Object.entries(ETF_EXCHANGE_TO_COUNTRY)
-      .filter(([, c]) => c === countryParam)
-      .map(([ex]) => ex);
+    const exchanges = getEtfExchangesByCountry(countryParam);
     if (exchanges.length > 0) {
       etfWhere.exchange = { in: exchanges };
     }

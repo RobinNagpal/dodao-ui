@@ -3,9 +3,8 @@ import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListing
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
-import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { notFound, redirect } from 'next/navigation';
+import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -29,10 +28,8 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
 
 export default async function CountryEtfsByGroupPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { country, group } = await params;
-  const decodedCountry = decodeURIComponent(country);
   const decodedGroupKey = decodeURIComponent(group);
-  if (decodedCountry === SupportedCountries.US) redirect(`/etfs/groups/${encodeURIComponent(decodedGroupKey)}`);
-  if (!isEtfSupportedCountry(decodedCountry)) notFound();
+  const decodedCountry = resolveEtfCountryParam(country, `/etfs/groups/${encodeURIComponent(decodedGroupKey)}`);
 
   const groupObj = getEtfGroupByKey(decodedGroupKey);
   if (!groupObj) notFound();

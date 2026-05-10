@@ -2,9 +2,7 @@ import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfSearchParams } from '@/utils/etf-filter-utils';
-import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { notFound, redirect } from 'next/navigation';
+import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -25,9 +23,7 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
 
 export default async function CountryEtfsPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { country } = await params;
-  const decoded = decodeURIComponent(country);
-  if (decoded === SupportedCountries.US) redirect('/etfs');
-  if (!isEtfSupportedCountry(decoded)) notFound();
+  const decoded = resolveEtfCountryParam(country, '/etfs');
 
   const searchParams = await searchParamsPromise;
   const dataPromise = fetchEtfListingData(searchParams, decoded);

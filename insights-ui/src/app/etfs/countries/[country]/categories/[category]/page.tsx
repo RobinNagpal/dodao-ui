@@ -3,9 +3,7 @@ import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListing
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfGroupName, getEtfCategoryByName } from '@/utils/etf-categorization-utils';
-import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { notFound, redirect } from 'next/navigation';
+import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -27,10 +25,8 @@ export async function generateMetadata(props: { params: Promise<{ country: strin
 
 export default async function CountryEtfsByCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { country, category } = await params;
-  const decodedCountry = decodeURIComponent(country);
   const decodedCategory = decodeURIComponent(category);
-  if (decodedCountry === SupportedCountries.US) redirect(`/etfs/categories/${encodeURIComponent(decodedCategory)}`);
-  if (!isEtfSupportedCountry(decodedCountry)) notFound();
+  const decodedCountry = resolveEtfCountryParam(country, `/etfs/categories/${encodeURIComponent(decodedCategory)}`);
 
   const searchParams = await searchParamsPromise;
   const knownCategory = getEtfCategoryByName(decodedCategory);

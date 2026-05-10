@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { parseNumericStringValue } from '@/utils/etf-filter-utils';
-import { ETF_EXCHANGE_TO_COUNTRY, EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 
 export interface EtfGroupingPreviewItem {
   id: string;
@@ -30,12 +30,6 @@ interface FetchEtfsForGroupingsArgs<TKey extends string> {
   country?: EtfSupportedCountry;
 }
 
-function exchangesForCountry(country: EtfSupportedCountry): string[] {
-  return Object.entries(ETF_EXCHANGE_TO_COUNTRY)
-    .filter(([, c]) => c === country)
-    .map(([ex]) => ex);
-}
-
 interface RawEtfRow {
   id: string;
   symbol: string;
@@ -55,7 +49,7 @@ async function loadRawEtfRows(spaceId: string, mode: GroupingMode, dbValues: str
       ? { spaceId, stockAnalyzerInfo: { is: { category: { in: dbValues } } } }
       : { spaceId, stockAnalyzerInfo: { is: { assetClass: { in: dbValues } } } };
 
-  const where = country ? { ...baseWhere, exchange: { in: exchangesForCountry(country) } } : baseWhere;
+  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
 
   const etfs = await prisma.etf.findMany({
     where,

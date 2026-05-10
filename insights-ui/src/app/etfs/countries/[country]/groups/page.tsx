@@ -3,9 +3,7 @@ import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
 import { fetchEtfsForGroupings } from '@/utils/etf-grouping-utils';
-import { isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { SupportedCountries } from '@/utils/countryExchangeUtils';
-import { notFound, redirect } from 'next/navigation';
+import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -25,9 +23,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function CountryEtfsGroupsIndexPage({ params }: PageProps) {
   const { country } = await params;
-  const decoded = decodeURIComponent(country);
-  if (decoded === SupportedCountries.US) redirect('/etfs/groups');
-  if (!isEtfSupportedCountry(decoded)) notFound();
+  const decoded = resolveEtfCountryParam(country, '/etfs/groups');
 
   const groups = getAllEtfGroups();
 
