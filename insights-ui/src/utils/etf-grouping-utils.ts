@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { canonicalizeCategory, expandCategoryAliases } from '@/utils/etf-category-aliases';
 import { parseNumericStringValue } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 
@@ -99,6 +100,18 @@ export async function fetchEtfsForGroupings<TKey extends string>({
   valueToKey,
   country,
 }: FetchEtfsForGroupingsArgs<TKey>): Promise<EtfGroupingPreview<TKey>> {
+  // For category mode, expand `valueToKey` with raw alias values pointing at the
+  // same bucket key. Asset-class mode has no aliases today.
+  if (mode === 'category') {
+    const canonicalToBucket = new Map(valueToKey);
+    for (const [canonical, bucketKey] of canonicalToBucket) {
+      const expansions = expandCategoryAliases([canonical]);
+      for (const raw of expansions) {
+        if (!valueToKey.has(raw)) valueToKey.set(raw, bucketKey);
+      }
+    }
+  }
+
   const dbValues = Array.from(valueToKey.keys());
   const rawRows = await loadRawEtfRows(spaceId, mode, dbValues, country);
 
@@ -108,7 +121,8 @@ export async function fetchEtfsForGroupings<TKey extends string>({
   for (const row of rawRows) {
     const dbValue = mode === 'category' ? row.category : row.assetClass;
     if (!dbValue) continue;
-    const outputKey = valueToKey.get(dbValue);
+    const lookupValue = mode === 'category' ? canonicalizeCategory(dbValue) : dbValue;
+    const outputKey = valueToKey.get(lookupValue) ?? valueToKey.get(dbValue);
     if (!outputKey) continue;
     const bucket = rowsByKey.get(outputKey) ?? [];
     bucket.push(row);
