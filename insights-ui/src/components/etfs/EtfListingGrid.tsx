@@ -1,5 +1,6 @@
 import { EtfListingResponse, EtfListingItem } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { formatPercentageDecimal } from '@/components/reportsv1/financialFormatters';
 import Link from 'next/link';
 import React, { use } from 'react';
 import EtfPagination from './EtfPagination';
@@ -86,8 +87,8 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
           <p className="text-white font-medium">{formatNumber(etf.pe)}</p>
         </div>
         <div>
-          <span className="text-gray-400">Dividend TTM</span>
-          <p className="text-white font-medium">{etf.dividendTtm !== null && etf.dividendTtm !== 0 ? `$${formatNumber(etf.dividendTtm)}` : '--'}</p>
+          <span className="text-gray-400">Dividend Yield</span>
+          <p className="text-white font-medium">{etf.dividendYield !== null && etf.dividendYield !== 0 ? formatPercentageDecimal(etf.dividendYield) : '--'}</p>
         </div>
       </div>
     </Link>
