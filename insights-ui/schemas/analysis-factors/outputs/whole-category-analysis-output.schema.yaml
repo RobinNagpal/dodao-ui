@@ -13,7 +13,6 @@ properties:
     description: 'Array of factor-level analyses.'
     items:
       type: object
-      additionalProperties: false
       properties:
         factorAnalysisKey:
           type: string
