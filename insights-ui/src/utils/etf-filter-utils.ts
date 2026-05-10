@@ -355,12 +355,17 @@ export const ADVANCED_MOR_FILTER_KEYS: EtfFilterParamKey[] = [
 ];
 
 export type MorPeriodKey = '3-Yr' | '5-Yr' | '10-Yr';
+export type MorFieldKind = 'upside' | 'downside' | 'risk';
+
+export const MOR_PERIODS: ReadonlyArray<MorPeriodKey> = ['3-Yr', '5-Yr', '10-Yr'];
+export const MOR_FIELD_KINDS: ReadonlyArray<MorFieldKind> = ['upside', 'downside', 'risk'];
+export const DEFAULT_MOR_PERIOD: MorPeriodKey = '5-Yr';
 
 export interface MorAdvancedFilterDef {
   paramKey: EtfFilterParamKey;
   filterType: EtfFilterType;
   period: MorPeriodKey;
-  kind: 'upside' | 'downside' | 'risk';
+  kind: MorFieldKind;
   label: string;
   options: ReadonlyArray<ThresholdOption>;
 }
@@ -439,6 +444,36 @@ export const MOR_ADVANCED_FILTERS: MorAdvancedFilterDef[] = [
     options: ETF_MOR_RISK_LEVEL_OPTIONS,
   },
 ];
+
+export function getMorFilterDef(kind: MorFieldKind, period: MorPeriodKey): MorAdvancedFilterDef {
+  const def = MOR_ADVANCED_FILTERS.find((f) => f.kind === kind && f.period === period);
+  if (!def) throw new Error(`Missing Mor filter definition for kind=${kind}, period=${period}`);
+  return def;
+}
+
+export function getMorParamKey(kind: MorFieldKind, period: MorPeriodKey): EtfFilterParamKey {
+  return getMorFilterDef(kind, period).paramKey;
+}
+
+export function getMorFilterShortLabel(kind: MorFieldKind): string {
+  return kind === 'upside' ? 'Upside Capture' : kind === 'downside' ? 'Downside Capture' : 'Risk Level';
+}
+
+export function detectActiveMorPeriod(selected: EtfSelectedFiltersMap): MorPeriodKey {
+  const counts: Record<MorPeriodKey, number> = { '3-Yr': 0, '5-Yr': 0, '10-Yr': 0 };
+  for (const def of MOR_ADVANCED_FILTERS) {
+    if (selected[def.paramKey]) counts[def.period]++;
+  }
+  let bestPeriod: MorPeriodKey = DEFAULT_MOR_PERIOD;
+  let bestCount = 0;
+  for (const period of MOR_PERIODS) {
+    if (counts[period] > bestCount) {
+      bestCount = counts[period];
+      bestPeriod = period;
+    }
+  }
+  return bestPeriod;
+}
 
 const SELECT_FILTER_TYPES: Set<string> = new Set([
   EtfFilterType.PAYOUT_FREQUENCY,
