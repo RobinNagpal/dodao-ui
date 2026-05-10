@@ -1,9 +1,7 @@
-import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
-import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
+import EtfGroupDetail from '@/components/etfs/EtfGroupDetail';
+import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
-import { notFound } from 'next/navigation';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -27,26 +25,5 @@ export async function generateMetadata(props: { params: Promise<{ group: string 
 export default async function EtfsByGroupPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { group } = await params;
   const searchParams = await searchParamsPromise;
-  const decodedGroupKey = decodeURIComponent(group);
-  const groupObj = getEtfGroupByKey(decodedGroupKey);
-
-  if (!groupObj) notFound();
-
-  const dataPromise = fetchEtfListingData({
-    ...searchParams,
-    [EtfFilterParamKey.GROUP]: groupObj.key,
-  });
-
-  return (
-    <EtfPageLayout
-      title={`${groupObj.name} ETFs`}
-      description={groupObj.description}
-      extraBreadcrumbs={[
-        { name: 'All Groups', href: '/etfs/groups', current: false },
-        { name: groupObj.name, href: `/etfs/groups/${encodeURIComponent(groupObj.key)}`, current: true },
-      ]}
-    >
-      <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
-    </EtfPageLayout>
-  );
+  return EtfGroupDetail({ country: SupportedCountries.US, groupKey: decodeURIComponent(group), searchParams });
 }

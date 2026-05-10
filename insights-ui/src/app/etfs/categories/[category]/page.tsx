@@ -1,8 +1,6 @@
-import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
-import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
-import { getEtfGroupName, getEtfCategoryByName } from '@/utils/etf-categorization-utils';
+import EtfCategoryDetail from '@/components/etfs/EtfCategoryDetail';
+import { EtfSearchParams } from '@/utils/etf-filter-utils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -24,36 +22,5 @@ export async function generateMetadata(props: { params: Promise<{ category: stri
 export default async function EtfsByCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { category } = await params;
   const searchParams = await searchParamsPromise;
-  const decodedCategory = decodeURIComponent(category);
-
-  // If we recognize the category, surface its parent group in the layout context.
-  const knownCategory = getEtfCategoryByName(decodedCategory);
-  const groupName = getEtfGroupName(decodedCategory);
-
-  const dataPromise = fetchEtfListingData({
-    ...searchParams,
-    [EtfFilterParamKey.CATEGORY]: decodedCategory,
-  });
-
-  const description = groupName
-    ? `Explore US ETFs in the ${decodedCategory} category (${groupName}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`
-    : `Explore US ETFs in the ${decodedCategory} category with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`;
-
-  return (
-    <EtfPageLayout
-      title={`${decodedCategory} ETFs`}
-      description={description}
-      extraBreadcrumbs={[
-        { name: 'All Categories', href: '/etfs/categories', current: false },
-        { name: decodedCategory, href: `/etfs/categories/${encodeURIComponent(decodedCategory)}`, current: true },
-      ]}
-    >
-      {knownCategory && groupName && (
-        <p className="text-sm text-gray-400 -mt-4 mb-4">
-          Part of <span className="text-white">{groupName}</span>
-        </p>
-      )}
-      <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
-    </EtfPageLayout>
-  );
+  return EtfCategoryDetail({ country: SupportedCountries.US, category: decodeURIComponent(category), searchParams });
 }

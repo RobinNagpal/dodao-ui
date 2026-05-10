@@ -1,7 +1,5 @@
-import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
-import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
+import EtfAssetClassDetail from '@/components/etfs/EtfAssetClassDetail';
+import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import type { Metadata } from 'next';
 
@@ -28,33 +26,5 @@ export default async function CountryEtfsByAssetClassPage({ params, searchParams
   const decodedCountry = resolveEtfCountryParam(country, `/etfs/asset-classes/${encodeURIComponent(decodedAssetClass)}`);
 
   const searchParams = await searchParamsPromise;
-
-  const matchingOption = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value.toLowerCase() === decodedAssetClass.toLowerCase());
-  const displayAssetClass = matchingOption?.label ?? decodedAssetClass;
-  const filterValue = matchingOption?.value ?? decodedAssetClass;
-
-  const dataPromise = fetchEtfListingData(
-    {
-      ...searchParams,
-      [EtfFilterParamKey.ASSET_CLASS]: filterValue,
-    },
-    decodedCountry
-  );
-
-  const encodedCountry = encodeURIComponent(decodedCountry);
-
-  return (
-    <EtfPageLayout
-      title={`${displayAssetClass} ${decodedCountry} ETFs`}
-      description={`Explore ${decodedCountry} ETFs in the ${displayAssetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
-      currentCountry={decodedCountry}
-      switcherSection="asset-classes"
-      extraBreadcrumbs={[
-        { name: 'All Asset Classes', href: `/etfs/countries/${encodedCountry}/asset-classes`, current: false },
-        { name: displayAssetClass, href: `/etfs/countries/${encodedCountry}/asset-classes/${encodeURIComponent(filterValue)}`, current: true },
-      ]}
-    >
-      <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
-    </EtfPageLayout>
-  );
+  return EtfAssetClassDetail({ country: decodedCountry, assetClass: decodedAssetClass, searchParams });
 }
