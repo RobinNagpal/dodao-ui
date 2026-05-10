@@ -17,33 +17,43 @@ interface ColumnDef {
   align?: 'left' | 'right';
 }
 
-function formatInteger(value: number | null): string {
-  if (value === null) return 'N/A';
-  return value.toLocaleString('en-US');
+// Treat missing fields (undefined) the same as null. Cached responses from
+// before this column set was added can omit them entirely, and we'd rather
+// render "N/A" than crash inside a formatter.
+function n(value: number | null | undefined): number | null {
+  return value ?? null;
 }
 
-function formatRange(low: number | null, high: number | null): string {
-  if (low === null && high === null) return 'N/A';
-  return `${formatNumber(low)} - ${formatNumber(high)}`;
+function formatInteger(value: number | null | undefined): string {
+  const v = n(value);
+  if (v === null) return 'N/A';
+  return v.toLocaleString('en-US');
+}
+
+function formatRange(low: number | null | undefined, high: number | null | undefined): string {
+  const l = n(low);
+  const h = n(high);
+  if (l === null && h === null) return 'N/A';
+  return `${formatNumber(l)} - ${formatNumber(h)}`;
 }
 
 const COLUMNS: ColumnDef[] = [
   { key: 'aum', label: 'AUM', render: (e) => formatCompactAmount(e.aum), align: 'right' },
-  { key: 'expenseRatio', label: 'Expense Ratio', render: (e) => (e.expenseRatio !== null ? `${e.expenseRatio}%` : 'N/A'), align: 'right' },
-  { key: 'pe', label: 'P/E', render: (e) => formatNumber(e.pe), align: 'right' },
+  { key: 'expenseRatio', label: 'Expense Ratio', render: (e) => (e.expenseRatio != null ? `${e.expenseRatio}%` : 'N/A'), align: 'right' },
+  { key: 'pe', label: 'P/E', render: (e) => formatNumber(n(e.pe)), align: 'right' },
   { key: 'sharesOut', label: 'Shares Out', render: (e) => formatCompactMillions(e.sharesOut), align: 'right' },
   {
     key: 'dividendTtm',
     label: 'Div TTM',
-    render: (e) => (e.dividendTtm !== null && e.dividendTtm !== 0 ? `$${formatNumber(e.dividendTtm)}` : '--'),
+    render: (e) => (e.dividendTtm != null && e.dividendTtm !== 0 ? `$${formatNumber(e.dividendTtm)}` : '--'),
     align: 'right',
   },
-  { key: 'dividendYield', label: 'Div Yield', render: (e) => (e.dividendYield !== null ? formatPercentageDecimal(e.dividendYield) : '--'), align: 'right' },
+  { key: 'dividendYield', label: 'Div Yield', render: (e) => (e.dividendYield != null ? formatPercentageDecimal(e.dividendYield) : '--'), align: 'right' },
   { key: 'payoutFrequency', label: 'Payout Freq', render: (e) => e.payoutFrequency || 'N/A', align: 'left' },
-  { key: 'payoutRatio', label: 'Payout Ratio', render: (e) => (e.payoutRatio !== null ? formatPercentageDecimal(e.payoutRatio) : 'N/A'), align: 'right' },
-  { key: 'volume', label: 'Volume', render: (e) => formatVolume(e.volume), align: 'right' },
+  { key: 'payoutRatio', label: 'Payout Ratio', render: (e) => (e.payoutRatio != null ? formatPercentageDecimal(e.payoutRatio) : 'N/A'), align: 'right' },
+  { key: 'volume', label: 'Volume', render: (e) => formatVolume(n(e.volume)), align: 'right' },
   { key: 'yearRange', label: '52W Range', render: (e) => formatRange(e.yearLow, e.yearHigh), align: 'right' },
-  { key: 'beta', label: 'Beta', render: (e) => formatNumber(e.beta), align: 'right' },
+  { key: 'beta', label: 'Beta', render: (e) => formatNumber(n(e.beta)), align: 'right' },
   { key: 'holdings', label: 'Holdings', render: (e) => formatInteger(e.holdings), align: 'right' },
 ];
 
