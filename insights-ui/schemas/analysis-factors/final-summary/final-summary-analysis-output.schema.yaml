@@ -13,6 +13,7 @@ properties:
       growth" or "High risk — best to avoid until profitability improves").
   metaDescription:
     type: string
+    maxLength: 160
     description: >-
       A concise SEO meta description (maximum 160 characters, no introductory
       text) that is compelling and informative for search engines. Include key
