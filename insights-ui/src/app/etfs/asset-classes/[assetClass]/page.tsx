@@ -1,7 +1,6 @@
-import EtfPageLayout from '@/components/etfs/EtfPageLayout';
-import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListingGrid';
-import { fetchEtfListingData } from '@/utils/etf-data-utils';
-import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
+import EtfAssetClassDetail from '@/components/etfs/EtfAssetClassDetail';
+import { EtfSearchParams } from '@/utils/etf-filter-utils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -23,27 +22,5 @@ export async function generateMetadata(props: { params: Promise<{ assetClass: st
 export default async function EtfsByAssetClassPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { assetClass } = await params;
   const searchParams = await searchParamsPromise;
-  const decodedAssetClass = decodeURIComponent(assetClass);
-
-  const matchingOption = ETF_ASSET_CLASS_OPTIONS.find((o) => o.value.toLowerCase() === decodedAssetClass.toLowerCase());
-  const displayAssetClass = matchingOption?.label ?? decodedAssetClass;
-  const filterValue = matchingOption?.value ?? decodedAssetClass;
-
-  const dataPromise = fetchEtfListingData({
-    ...searchParams,
-    [EtfFilterParamKey.ASSET_CLASS]: filterValue,
-  });
-
-  return (
-    <EtfPageLayout
-      title={`${displayAssetClass} ETFs`}
-      description={`Explore US ETFs in the ${displayAssetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
-      extraBreadcrumbs={[
-        { name: 'All Asset Classes', href: '/etfs/asset-classes', current: false },
-        { name: displayAssetClass, href: `/etfs/asset-classes/${encodeURIComponent(filterValue)}`, current: true },
-      ]}
-    >
-      <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
-    </EtfPageLayout>
-  );
+  return EtfAssetClassDetail({ country: SupportedCountries.US, assetClass: decodeURIComponent(assetClass), searchParams });
 }

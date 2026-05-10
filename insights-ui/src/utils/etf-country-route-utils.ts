@@ -22,6 +22,10 @@ export function etfBrowsePath(country: EtfSupportedCountry, section: EtfBrowseSe
   return `${etfBasePath(country)}/${section}`;
 }
 
+export function etfBrowseDetailPath(country: EtfSupportedCountry, section: EtfBrowseSection, slug: string): string {
+  return `${etfBrowsePath(country, section)}/${encodeURIComponent(slug)}`;
+}
+
 export const ALL_ETF_COUNTRIES = ETF_SUPPORTED_COUNTRIES;
 
 /**
