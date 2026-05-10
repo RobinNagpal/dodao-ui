@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { parseNumericStringValue } from '@/utils/etf-filter-utils';
+import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 
 export interface EtfGroupingPreviewItem {
   id: string;
@@ -25,6 +26,8 @@ interface FetchEtfsForGroupingsArgs<TKey extends string> {
   // Maps the raw DB value (category name or assetClass label) to the output bucket key.
   // Multiple raw values can share the same key (e.g. all categories in a group → group key).
   valueToKey: Map<string, TKey>;
+  // Restrict preview to ETFs whose exchange belongs to this country.
+  country?: EtfSupportedCountry;
 }
 
 interface RawEtfRow {
@@ -38,13 +41,15 @@ interface RawEtfRow {
   aum: string | null;
 }
 
-async function loadRawEtfRows(spaceId: string, mode: GroupingMode, dbValues: string[]): Promise<RawEtfRow[]> {
+async function loadRawEtfRows(spaceId: string, mode: GroupingMode, dbValues: string[], country?: EtfSupportedCountry): Promise<RawEtfRow[]> {
   if (dbValues.length === 0) return [];
 
-  const where =
+  const baseWhere =
     mode === 'category'
       ? { spaceId, stockAnalyzerInfo: { is: { category: { in: dbValues } } } }
       : { spaceId, stockAnalyzerInfo: { is: { assetClass: { in: dbValues } } } };
+
+  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
 
   const etfs = await prisma.etf.findMany({
     where,
@@ -92,9 +97,10 @@ export async function fetchEtfsForGroupings<TKey extends string>({
   spaceId,
   mode,
   valueToKey,
+  country,
 }: FetchEtfsForGroupingsArgs<TKey>): Promise<EtfGroupingPreview<TKey>> {
   const dbValues = Array.from(valueToKey.keys());
-  const rawRows = await loadRawEtfRows(spaceId, mode, dbValues);
+  const rawRows = await loadRawEtfRows(spaceId, mode, dbValues, country);
 
   const rowsByKey = new Map<TKey, RawEtfRow[]>();
   const counts = new Map<TKey, number>();

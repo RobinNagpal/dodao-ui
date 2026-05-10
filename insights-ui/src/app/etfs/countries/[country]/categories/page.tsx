@@ -3,18 +3,29 @@ import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
 import { fetchEtfsForGroupings } from '@/utils/etf-grouping-utils';
+import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'ETFs by Category | KoalaGains',
-  description:
-    'Browse US ETFs by Morningstar-style category — Large Blend, Technology, High Yield Bond, and more. Each card highlights the top-rated ETFs in that category.',
+type PageProps = {
+  params: Promise<{ country: string }>;
 };
 
-export default async function EtfsCategoriesIndexPage() {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const { country } = await props.params;
+  const decoded = decodeURIComponent(country);
+  return {
+    title: `${decoded} ETFs by Category | KoalaGains`,
+    description: `Browse ${decoded} ETFs by Morningstar-style category — Large Blend, Technology, High Yield Bond, and more. Each card highlights the top-rated ETFs in that category.`,
+  };
+}
+
+export default async function CountryEtfsCategoriesIndexPage({ params }: PageProps) {
+  const { country } = await params;
+  const decoded = resolveEtfCountryParam(country, '/etfs/categories');
+
   const groups = getAllEtfGroups();
 
   const valueToKey = new Map<string, string>();
@@ -28,14 +39,18 @@ export default async function EtfsCategoriesIndexPage() {
     spaceId: KoalaGainsSpaceId,
     mode: 'category',
     valueToKey,
+    country: decoded,
   });
+
+  const encodedCountry = encodeURIComponent(decoded);
 
   return (
     <EtfPageLayout
-      title="ETFs by Category"
-      description="Browse all ETF categories grouped by analysis group. Each card lists the top-rated ETFs in that category."
-      extraBreadcrumbs={[{ name: 'Categories', href: '/etfs/categories', current: true }]}
+      title={`${decoded} ETFs by Category`}
+      description={`Browse all ${decoded} ETF categories grouped by analysis group. Each card lists the top-rated ETFs in that category.`}
+      currentCountry={decoded}
       switcherSection="categories"
+      extraBreadcrumbs={[{ name: 'Categories', href: `/etfs/countries/${encodedCountry}/categories`, current: true }]}
     >
       {groups.map((group) => {
         const categories = getCategoriesForGroupKey(group.key);
@@ -46,7 +61,7 @@ export default async function EtfsCategoriesIndexPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-white">{group.name}</h2>
               <Link
-                href={`/etfs/groups/${encodeURIComponent(group.key)}`}
+                href={`/etfs/countries/${encodedCountry}/groups/${encodeURIComponent(group.key)}`}
                 className="text-sm bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] hover:from-[#F97316] hover:to-[#F59E0B] text-black font-medium px-3 py-1 rounded-lg shadow-md flex items-center"
               >
                 View Group
@@ -59,7 +74,7 @@ export default async function EtfsCategoriesIndexPage() {
                 <CompactEtfGroupingCard
                   key={cat.name}
                   title={cat.name}
-                  href={`/etfs/categories/${encodeURIComponent(cat.name)}`}
+                  href={`/etfs/countries/${encodedCountry}/categories/${encodeURIComponent(cat.name)}`}
                   totalCount={counts.get(cat.name) ?? 0}
                   etfs={values.get(cat.name) ?? []}
                 />

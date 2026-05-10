@@ -110,7 +110,11 @@ async function fetchEtfScores(exchange: string, etf: string): Promise<EtfScoresR
 }
 
 async function fetchSimilarEtfs(exchange: string, etf: string): Promise<SimilarEtf[]> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/similar-etfs`;
+  // Bumping the `v` segment changes the fetch cache key, forcing a refetch
+  // when the response shape grows (e.g. when new financial fields are added).
+  // Otherwise stale week-long entries from before the shape change keep being
+  // served and the new columns render as N/A everywhere.
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/similar-etfs?v=2`;
   try {
     const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
     if (!res.ok) {
