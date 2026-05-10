@@ -32,6 +32,7 @@ export default async function EtfsAssetClassesIndexPage() {
       title="ETFs by Asset Class"
       description="Equity, fixed income, commodity, alternative, multi-asset and currency fund classes. Each card shows the top-rated ETFs in that asset class."
       extraBreadcrumbs={[{ name: 'Asset Classes', href: '/etfs/asset-classes', current: true }]}
+      switcherSection="asset-classes"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
         {assetClasses.map((opt) => (

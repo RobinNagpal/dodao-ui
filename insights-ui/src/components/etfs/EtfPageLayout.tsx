@@ -4,25 +4,40 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import EtfFiltersButton from '@/components/etfs/EtfFiltersButton';
 import EtfAppliedFilterChips from '@/components/etfs/EtfAppliedFilterChips';
+import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
+import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { EtfBrowseSection, etfBasePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
 
 interface EtfPageLayoutProps {
   title: string;
   description: string;
   showAppliedFilters?: boolean;
   extraBreadcrumbs?: BreadcrumbsOjbect[];
+  currentCountry?: EtfSupportedCountry;
+  switcherSection?: EtfBrowseSection;
   children: ReactNode;
 }
 
-function buildBreadcrumbs(extraBreadcrumbs?: BreadcrumbsOjbect[]): BreadcrumbsOjbect[] {
+function buildBreadcrumbs(currentCountry: EtfSupportedCountry, extraBreadcrumbs?: BreadcrumbsOjbect[]): BreadcrumbsOjbect[] {
+  const rootName = `${etfCountryDisplayName(currentCountry)} ETFs`;
+  const rootHref = etfBasePath(currentCountry);
   if (!extraBreadcrumbs || extraBreadcrumbs.length === 0) {
-    return [{ name: 'US ETFs', href: '/etfs', current: true }];
+    return [{ name: rootName, href: rootHref, current: true }];
   }
-  const rootCrumb: BreadcrumbsOjbect = { name: 'US ETFs', href: '/etfs', current: false };
-  return [rootCrumb, ...extraBreadcrumbs];
+  return [{ name: rootName, href: rootHref, current: false }, ...extraBreadcrumbs];
 }
 
-export default function EtfPageLayout({ title, description, showAppliedFilters = false, extraBreadcrumbs, children }: EtfPageLayoutProps) {
-  const breadcrumbs = buildBreadcrumbs(extraBreadcrumbs);
+export default function EtfPageLayout({
+  title,
+  description,
+  showAppliedFilters = false,
+  extraBreadcrumbs,
+  currentCountry = SupportedCountries.US,
+  switcherSection,
+  children,
+}: EtfPageLayoutProps) {
+  const breadcrumbs = buildBreadcrumbs(currentCountry, extraBreadcrumbs);
 
   return (
     <PageWrapper>
@@ -42,6 +57,9 @@ export default function EtfPageLayout({ title, description, showAppliedFilters =
       <div className="w-full mb-8">
         <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
         <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+        <div className="mt-2 mb-2">
+          <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} className="text-sm" />
+        </div>
       </div>
 
       {children}

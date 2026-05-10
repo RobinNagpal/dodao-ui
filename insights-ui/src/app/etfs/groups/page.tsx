@@ -33,6 +33,7 @@ export default async function EtfsGroupsIndexPage() {
       title="ETFs by Group"
       description="Diversified, sector, fixed income, and alternative-strategy fund groups. Each card lists the top-rated ETFs in that group."
       extraBreadcrumbs={[{ name: 'Groups', href: '/etfs/groups', current: true }]}
+      switcherSection="groups"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
         {groups.map((group) => (
