@@ -34,27 +34,24 @@ async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
 interface SitemapTicker {
   symbol: string;
   exchange: string;
-  movedExchange: string | null;
-  movedSymbol: string | null;
   updatedAt: Date;
 }
 
-// Fetch all tickers eligible for the sitemap. We query Prisma directly (rather
-// than going through /api/.../tickers-v1) for two reasons: the listing API now
-// hides moved/deleted tickers — but the sitemap still needs to see the moved
-// fields so it can emit the *canonical destination* URL instead of an old URL
-// that would 308 to it. Deleted tickers are still excluded outright.
+// Fetch tickers eligible for the sitemap: live rows only. Deleted tickers
+// 404, and tickers with movedExchange/movedSymbol set 308 away — neither
+// should appear in the sitemap. The destination of a move is a separate row
+// (created when the move is applied) and lands in the sitemap on its own.
 async function getAllTickers(): Promise<SitemapTicker[]> {
   return prisma.tickerV1.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
       isDeleted: false,
+      movedExchange: null,
+      movedSymbol: null,
     },
     select: {
       symbol: true,
       exchange: true,
-      movedExchange: true,
-      movedSymbol: true,
       updatedAt: true,
     },
   });
@@ -113,18 +110,13 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     }
   }
 
-  // Individual ticker pages - /stocks/{exchange}/{symbol}. For tickers with
-  // movedExchange/movedSymbol set we emit the canonical destination URL — not
-  // the old URL that would 308 away. Mirrors enforceMovedRedirect's fallback
-  // (only one of the two fields can be set; the other is taken from the row).
+  // Individual ticker pages - /stocks/{exchange}/{symbol}.
   const tickers = await getAllTickers();
 
   const addedUrls = new Set<string>();
 
   for (const ticker of tickers) {
-    const destExchange = (ticker.movedExchange ?? ticker.exchange).toUpperCase();
-    const destSymbol = (ticker.movedSymbol ?? ticker.symbol).toUpperCase();
-    const tickerUrl = `/stocks/${destExchange}/${destSymbol}`;
+    const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
 
     if (!addedUrls.has(tickerUrl)) {
       urls.push({

@@ -39,9 +39,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const searchTerm = query.trim();
 
-  // Search by symbol (exact match first, then partial) and company name (partial match)
+  // Search by symbol (exact match first, then partial) and company name (partial match).
+  // Exclude tickers that would 404 (isDeleted) or 308-redirect away
+  // (movedExchange/movedSymbol set) — those URLs shouldn't surface in autocomplete.
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
+    isDeleted: false,
+    movedExchange: null,
+    movedSymbol: null,
     OR: [
       // Exact symbol match (highest priority)
       {

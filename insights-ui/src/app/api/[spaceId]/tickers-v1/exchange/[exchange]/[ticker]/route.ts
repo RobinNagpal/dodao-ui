@@ -7,7 +7,7 @@ import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma/client';
 import { NextRequest } from 'next/server';
-import { validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
+import { generateExpectedStockAnalyzeUrl, validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { AllExchanges, isExchange } from '@/utils/countryExchangeUtils';
 
 async function getHandler(
@@ -117,6 +117,50 @@ async function putHandler(
     where: { id: tickerRecord.id },
     data,
   });
+
+  // When a move has been applied (either field now non-null on the source),
+  // make sure a row exists at the destination URL. Otherwise the 308 redirect
+  // from enforceMovedRedirect would land on a 404. Copy the source ticker's
+  // identity fields to the destination; relations (analyses, scores, etc.) are
+  // left for the admin to regenerate. Skips if the destination row already
+  // exists or if the destination resolves to the source URL.
+  if (updatedTicker.movedExchange || updatedTicker.movedSymbol) {
+    const destExchange = (updatedTicker.movedExchange ?? updatedTicker.exchange).toUpperCase();
+    const destSymbol = (updatedTicker.movedSymbol ?? updatedTicker.symbol).toUpperCase();
+    const isSelfRedirect = destExchange === updatedTicker.exchange.toUpperCase() && destSymbol === updatedTicker.symbol.toUpperCase();
+
+    if (!isSelfRedirect) {
+      const existingDestination = await prisma.tickerV1.findUnique({
+        where: {
+          spaceId_symbol_exchange: {
+            spaceId: updatedTicker.spaceId,
+            symbol: destSymbol,
+            exchange: destExchange,
+          },
+        },
+      });
+
+      if (!existingDestination) {
+        await prisma.tickerV1.create({
+          data: {
+            spaceId: updatedTicker.spaceId,
+            name: updatedTicker.name,
+            symbol: destSymbol,
+            exchange: destExchange,
+            industryKey: updatedTicker.industryKey,
+            subIndustryKey: updatedTicker.subIndustryKey,
+            websiteUrl: updatedTicker.websiteUrl,
+            summary: updatedTicker.summary,
+            aboutReport: updatedTicker.aboutReport,
+            metaDescription: updatedTicker.metaDescription,
+            stockAnalyzeUrl: generateExpectedStockAnalyzeUrl(destSymbol, destExchange as AllExchanges),
+            createdBy: `ui-user (moved from ${updatedTicker.exchange}/${updatedTicker.symbol})`,
+            updatedBy: 'ui-user',
+          },
+        });
+      }
+    }
+  }
 
   return updatedTicker;
 }
