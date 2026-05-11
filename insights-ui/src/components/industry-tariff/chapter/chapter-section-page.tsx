@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
+import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
@@ -8,7 +9,7 @@ import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderer
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
-import type { IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -173,6 +174,16 @@ function getSectionActions(sectionSlug: string): ChapterSectionAction[] {
           confirmationText: 'Regenerate the Tariff Engineering analysis? This replaces the current content.',
           successMessage: 'Tariff Engineering regenerated.',
         },
+        {
+          kind: 'simple',
+          key: 'generate-tariff-engineering-seo',
+          label: 'Generate SEO for Tariff Engineering',
+          apiPath: 'generate-seo-info',
+          body: { section: ReportType.TARIFF_ENGINEERING },
+          modalTitle: 'Generate SEO for Tariff Engineering',
+          confirmationText: 'Generate SEO metadata for the Tariff Engineering section?',
+          successMessage: 'Tariff Engineering SEO generated.',
+        },
       ];
     default:
       return [];
@@ -232,14 +243,26 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   if (!copy) notFound();
 
   const body = renderSectionBody(sectionSlug, report);
+  const actions = getSectionActions(sectionSlug);
+  const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
 
   if (!body) {
-    return <ChapterPlaceholder chapter={chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
+    return (
+      <ChapterPlaceholder
+        chapter={chapter}
+        pageTitle={copy.pageTitle}
+        currentSectionSlug={sectionSlug}
+        description={copy.description}
+        actions={actions}
+        toolsCrossLinks={toolsCrossLinks}
+      />
+    );
   }
 
   return (
     <div className="mx-auto max-w-7xl py-2">
-      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={getSectionActions(sectionSlug)} />
+      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={actions} />
+      {toolsCrossLinks}
       {body}
     </div>
   );

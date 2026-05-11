@@ -25,7 +25,7 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
 
   const rows = await prisma.tariffChapterReport.findMany({
     where: { spaceId: KoalaGainsSpaceId, ...SEEDED_FILTER },
-    select: { slug: true, updatedAt: true },
+    select: { slug: true, updatedAt: true, tariffEngineering: true },
     orderBy: { chapter: { number: 'asc' } },
   });
 
@@ -35,6 +35,11 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     urls.push({ url: chapterPath, changefreq: 'weekly', priority: 0.8, lastmod });
     for (const section of REPORT_SECTIONS) {
       urls.push({ url: `${chapterPath}/${section}`, changefreq: 'weekly', priority: 0.7, lastmod });
+    }
+    // Tariff Engineering is only seeded for a subset of chapters — include the URL only when the
+    // JSONB column has content so we don't advertise placeholder section pages in the sitemap.
+    if (row.tariffEngineering !== null) {
+      urls.push({ url: `${chapterPath}/tariff-engineering`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
   }
 

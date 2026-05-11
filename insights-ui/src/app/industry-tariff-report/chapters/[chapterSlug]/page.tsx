@@ -1,16 +1,14 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterSectionActions from '@/components/industry-tariff/chapter/ChapterSectionActions';
+import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
-import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
-import { getHtsChapterRefByNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
-import { Calculator, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -78,23 +76,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
       newChangesFirstSentence: tariff.newChanges,
     })) ?? [];
 
-  const htsChapter = await getHtsChapterRefByNumber(chapter.number);
-  const crossLinks = [
-    {
-      href: '/tariff-calculator',
-      title: 'Tariff Calculator',
-      description: `Estimate landed US duty for goods in HTS Chapter ${padded} — base rate plus Section 232, 301, and IEEPA fees.`,
-      icon: <Calculator className="h-5 w-5" />,
-    },
-    htsChapter
-      ? {
-          href: htsChapter.href,
-          title: `HTS Chapter ${padded} — ${chapter.title}`,
-          description: 'Browse every HTS code in this chapter, with general rate, Column 2, special rates, and units of quantity.',
-          icon: <ListTree className="h-5 w-5" />,
-        }
-      : null,
-  ].filter((link): link is NonNullable<typeof link> => link !== null);
+  const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
 
   return (
     <div className="mx-auto max-w-7xl py-2">
@@ -143,7 +125,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
         </div>
       </div>
 
-      <TariffCrossLinks heading="Tools for this chapter" links={crossLinks} />
+      {toolsCrossLinks}
 
       <div className="space-y-12">
         {renderSection(

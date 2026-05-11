@@ -3,7 +3,7 @@ import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
 import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -64,13 +64,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const REPORT_SECTIONS = [
-  { slug: 'tariff-updates', label: 'Tariff Updates' },
-  { slug: 'understand-industry', label: 'Understand Industry' },
-  { slug: 'industry-areas', label: 'Industry Areas' },
-  { slug: 'final-conclusion', label: 'Final Conclusion' },
-] as const;
-
 function formatDate(value: string): string {
   return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
@@ -107,7 +100,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
       <p className="mb-5 line-clamp-3 flex-1 text-sm text-gray-300">{description}</p>
 
       <div className="mb-5 flex flex-wrap gap-1.5">
-        {REPORT_SECTIONS.map((section) => (
+        {CHAPTER_REPORT_SECTIONS.map((section) => (
           <Link
             key={section.slug}
             href={chapterSectionHref(chapterSlug, section.slug)}

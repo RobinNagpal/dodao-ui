@@ -1,6 +1,9 @@
+import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { ArrowRight, Layers } from 'lucide-react';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 interface ChapterPlaceholderProps {
   chapter: ChapterRouteInfo;
@@ -9,24 +12,41 @@ interface ChapterPlaceholderProps {
   // Optional sub-section the user is currently looking at — exclude it from the section nav block.
   currentSectionSlug?: string;
   description: string;
+  // Admin actions surfaced above the placeholder body. Mirrors `ChapterSectionHeader` so admins can
+  // generate the missing section directly from this page instead of jumping to the admin table.
+  actions?: ChapterSectionAction[];
+  // Optional "Tools for this chapter" block rendered between the header and the placeholder notice.
+  // Passed in pre-built so the placeholder stays a client-safe sync component.
+  toolsCrossLinks?: ReactNode;
 }
 
-export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description }: ChapterPlaceholderProps) {
+export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description, actions, toolsCrossLinks }: ChapterPlaceholderProps) {
   const padded = chapter.number.toString().padStart(2, '0');
   const otherSections = CHAPTER_REPORT_SECTIONS.filter((s) => s.slug !== currentSectionSlug);
 
   return (
     <div className="py-6">
       <header className="mb-8 border-b border-color pb-6">
-        <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-          <Layers className="h-4 w-4 text-emerald-400" />
-          <span className="font-medium text-emerald-400">HTS Chapter {padded}</span>
-          <span aria-hidden>·</span>
-          <span>{chapter.title}</span>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+              <Layers className="h-4 w-4 text-emerald-400" />
+              <span className="font-medium text-emerald-400">HTS Chapter {padded}</span>
+              <span aria-hidden>·</span>
+              <span>{chapter.title}</span>
+            </div>
+            <h1 className="text-3xl font-bold tracking-tight">{pageTitle}</h1>
+            <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
+          </div>
+          {actions && actions.length > 0 && (
+            <PrivateWrapper>
+              <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
+            </PrivateWrapper>
+          )}
         </div>
-        <h1 className="text-3xl font-bold tracking-tight">{pageTitle}</h1>
-        <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
       </header>
+
+      {toolsCrossLinks}
 
       <section className="mb-10 rounded-2xl border border-color background-color p-6">
         <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>
