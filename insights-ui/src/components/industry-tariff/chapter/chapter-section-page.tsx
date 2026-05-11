@@ -120,13 +120,21 @@ interface ChapterArticleProps {
   // Pass 'overview' on the chapter cover.
   currentSlug: string;
   // ISO date string for the report's `updated_at`. Drives the footer's "Last updated …" line and
-  // the article's <meta itemProp="dateModified">.
-  updatedAt: string;
-  // ISO date string for `created_at`. Used as the article's <meta itemProp="datePublished">.
-  createdAt: string;
+  // the article's <meta itemProp="dateModified">. Optional because the upstream `fetch()` response
+  // may be served from the Next.js data cache populated by a deploy that predates the field — in
+  // that case we degrade gracefully and omit the date row rather than crashing on `new Date(undefined)`.
+  updatedAt?: string;
+  // ISO date string for `created_at`. Same caveat as `updatedAt`.
+  createdAt?: string;
   // Human-readable label for the current section (e.g. "Tariff Updates", "Overview"). Rendered as
   // the right-hand badge in the footer, mirroring the per-category badge on the stock report card.
   sectionLabel: string;
+}
+
+function toValidDate(value: string | undefined): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
 export function ChapterArticle({
@@ -140,30 +148,34 @@ export function ChapterArticle({
   createdAt,
   sectionLabel,
 }: ChapterArticleProps): JSX.Element {
-  const publishedDate = new Date(createdAt);
-  const modifiedDate = new Date(updatedAt);
-  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const publishedDate = toValidDate(createdAt);
+  const modifiedDate = toValidDate(updatedAt);
+  const formattedModifiedDate = modifiedDate ? modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
 
   return (
     <div className="py-4">
       <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
-        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+        {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
         {toolsCrossLinks}
         <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} />
         {children}
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
-            </div>
+            {modifiedDate && formattedModifiedDate ? (
+              <div className="text-sm text-muted-foreground">
+                <span>Last updated by </span>
+                <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                  <span itemProp="name">KoalaGains</span>
+                </span>
+                <span> on </span>
+                <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                  {formattedModifiedDate}
+                </time>
+              </div>
+            ) : (
+              <div />
+            )}
             <div className="flex gap-2">
               <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
                 Tariff Report
