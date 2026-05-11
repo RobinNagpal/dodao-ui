@@ -2,7 +2,6 @@ import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
-import { Layers } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface ChapterPlaceholderProps {
@@ -32,12 +31,6 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
         <header className="mb-6 pb-4 border-b border-color">
           <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
-              <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-                <Layers className="h-4 w-4 text-emerald-400" />
-                <span className="font-medium text-emerald-400">HTS Chapter {padded}</span>
-                <span aria-hidden>·</span>
-                <span>{chapter.title}</span>
-              </div>
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
               <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
             </div>

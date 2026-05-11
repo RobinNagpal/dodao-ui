@@ -89,14 +89,10 @@ interface ChapterArticleHeaderProps {
 }
 
 function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHeaderProps): JSX.Element {
-  const padded = chapter.number.toString().padStart(2, '0');
   return (
     <header className="mb-6 pb-4 border-b border-color">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="flex-1">
-          <div className="text-sm text-muted-foreground mb-1">
-            HTS Chapter {padded} — {chapter.title}
-          </div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
         </div>
         {actions.length > 0 && (

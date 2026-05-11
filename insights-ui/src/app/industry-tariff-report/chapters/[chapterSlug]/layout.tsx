@@ -34,7 +34,7 @@ export default async function ChapterReportLayout({ children, params }: { childr
   return (
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-5xl text-color">{children}</div>
+      <div className="text-color">{children}</div>
     </PageWrapper>
   );
 }

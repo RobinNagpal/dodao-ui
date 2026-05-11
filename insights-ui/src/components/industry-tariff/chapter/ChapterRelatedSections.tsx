@@ -8,13 +8,13 @@ interface ChapterRelatedSectionsProps {
   currentSlug: string;
 }
 
-// Bottom-of-card "More HTS Chapter X sections" navigation. Replaces the left sidebar from the
-// previous layout — same set of links, just moved to the end of the article in the stock-page
-// style (cf. TickerRelatedSections / "More OMC analyses").
+// Bottom-of-card "More Related Reports" navigation. Replaces the left sidebar from the previous
+// layout — same set of links, just moved to the end of the article in the stock-page style
+// (cf. TickerRelatedSections / "More OMC analyses"). Card labels intentionally omit the chapter
+// title because the HTS chapter titles ("Dairy produce; birds eggs; natural honey; edible
+// products of animal origin, not elsewhere specified or included") are long enough to drown out
+// the per-section labels.
 export default function ChapterRelatedSections({ chapter, currentSlug }: ChapterRelatedSectionsProps): JSX.Element | null {
-  const padded = chapter.number.toString().padStart(2, '0');
-  const chapterLabel = `HTS Chapter ${padded} — ${chapter.title}`;
-
   const items: Array<{ href: string; label: string }> = [];
 
   if (currentSlug !== 'overview') {
@@ -29,8 +29,8 @@ export default function ChapterRelatedSections({ chapter, currentSlug }: Chapter
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label={`More ${chapterLabel} sections`} className="mt-10 pt-6 border-t border-color">
-      <h2 className="text-lg font-semibold mb-3">More {chapterLabel} sections</h2>
+    <nav aria-label="More related reports" className="mt-10 pt-6 border-t border-color">
+      <h2 className="text-lg font-semibold mb-3">More Related Reports</h2>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {items.map((item) => (
           <li key={item.href} className="h-full">
@@ -38,7 +38,7 @@ export default function ChapterRelatedSections({ chapter, currentSlug }: Chapter
               href={item.href}
               className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             >
-              {chapterLabel} {item.label} &rarr;
+              {item.label} &rarr;
             </Link>
           </li>
         ))}
