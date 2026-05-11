@@ -58,7 +58,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
 
-  const { chapter, report } = data;
+  const { chapter, report, createdAt, updatedAt } = data;
   const padded = chapter.number.toString().padStart(2, '0');
   const fallbackPageTitle = `HTS Chapter ${padded} — ${chapter.title}`;
   const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`;
@@ -109,7 +109,16 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   ];
 
   return (
-    <ChapterArticle chapter={chapter} pageTitle={pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug="overview">
+    <ChapterArticle
+      chapter={chapter}
+      pageTitle={pageTitle}
+      actions={actions}
+      toolsCrossLinks={toolsCrossLinks}
+      currentSlug="overview"
+      createdAt={createdAt}
+      updatedAt={updatedAt}
+      sectionLabel="Overview"
+    >
       <div className="space-y-10">
         <section>
           <h2 className="text-xl font-semibold heading-color mb-3">Overview</h2>

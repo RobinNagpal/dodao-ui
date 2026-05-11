@@ -12,7 +12,7 @@ import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-re
 import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -105,8 +105,9 @@ function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHea
 }
 
 // Outer article wrapper shared by the chapter cover and every chapter section page. Mirrors the
-// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with header at
-// the top, the section body in the middle, and related-section navigation + footer at the bottom.
+// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with related-section
+// navigation + tools bar at the top, the section body in the middle, and a "Last updated …" footer
+// at the bottom.
 interface ChapterArticleProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
@@ -118,16 +119,61 @@ interface ChapterArticleProps {
   // Slug used by ChapterRelatedSections to omit the current page from the related grid.
   // Pass 'overview' on the chapter cover.
   currentSlug: string;
+  // ISO date string for the report's `updated_at`. Drives the footer's "Last updated …" line and
+  // the article's <meta itemProp="dateModified">.
+  updatedAt: string;
+  // ISO date string for `created_at`. Used as the article's <meta itemProp="datePublished">.
+  createdAt: string;
+  // Human-readable label for the current section (e.g. "Tariff Updates", "Overview"). Rendered as
+  // the right-hand badge in the footer, mirroring the per-category badge on the stock report card.
+  sectionLabel: string;
 }
 
-export function ChapterArticle({ chapter, pageTitle, actions = [], toolsCrossLinks, children, currentSlug }: ChapterArticleProps): JSX.Element {
+export function ChapterArticle({
+  chapter,
+  pageTitle,
+  actions = [],
+  toolsCrossLinks,
+  children,
+  currentSlug,
+  updatedAt,
+  createdAt,
+  sectionLabel,
+}: ChapterArticleProps): JSX.Element {
+  const publishedDate = new Date(createdAt);
+  const modifiedDate = new Date(updatedAt);
+  const formattedModifiedDate = modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
   return (
     <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
         {toolsCrossLinks}
         <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} />
         {children}
-        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
+        <footer className="mt-8 pt-6 border-t border-color">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              <span>Last updated by </span>
+              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                <span itemProp="name">KoalaGains</span>
+              </span>
+              <span> on </span>
+              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                {formattedModifiedDate}
+              </time>
+            </div>
+            <div className="flex gap-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Tariff Report
+              </span>
+              <span className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900 px-2.5 py-0.5 text-xs font-medium text-teal-800 dark:text-teal-300">
+                {sectionLabel}
+              </span>
+            </div>
+          </div>
+        </footer>
       </article>
     </div>
   );
@@ -282,7 +328,7 @@ function getEffectivePageTitle(sectionSlug: string, report: IndustryTariffReport
 export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
-  const { chapter, report } = data;
+  const { chapter, report, createdAt, updatedAt } = data;
   const copy = getChapterSectionCopy(sectionSlug, chapter);
   if (!copy) notFound();
 
@@ -290,6 +336,7 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   const actions = getSectionActions(sectionSlug);
   const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
   const pageTitle = getEffectivePageTitle(sectionSlug, report, copy.pageTitle);
+  const sectionLabel = CHAPTER_REPORT_SECTIONS.find((s) => s.slug === sectionSlug)?.label ?? copy.pageTitle;
 
   if (!body) {
     return (
@@ -305,7 +352,16 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   }
 
   return (
-    <ChapterArticle chapter={chapter} pageTitle={pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug={sectionSlug}>
+    <ChapterArticle
+      chapter={chapter}
+      pageTitle={pageTitle}
+      actions={actions}
+      toolsCrossLinks={toolsCrossLinks}
+      currentSlug={sectionSlug}
+      createdAt={createdAt}
+      updatedAt={updatedAt}
+      sectionLabel={sectionLabel}
+    >
       {body}
     </ChapterArticle>
   );
