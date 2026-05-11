@@ -45,13 +45,13 @@ const SECTION_COPY: Record<string, (title: string, padded: string) => ChapterSec
     pageTitle: 'Industry Areas',
     description: `Sub-areas of HTS Chapter ${padded} (${title}) — segment-level tariff exposure across the product groupings inside this chapter.`,
   }),
-  'final-conclusion': (title, padded) => ({
-    pageTitle: 'Final Conclusion',
-    description: `Forward-looking conclusion for HTS Chapter ${padded} (${title}) — what the latest tariff actions mean for sourcing, pricing, and strategic positioning.`,
-  }),
   'tariff-engineering': (title, padded) => ({
     pageTitle: 'Tariff Engineering',
     description: `Tariff engineering strategies for HTS Chapter ${padded} (${title}) — classification levers, country-of-origin moves, first-sale valuation, FTZ usage, and duty drawback to lawfully reduce US duty exposure.`,
+  }),
+  'final-conclusion': (title, padded) => ({
+    pageTitle: 'Final Conclusion',
+    description: `Forward-looking conclusion for HTS Chapter ${padded} (${title}) — what the latest tariff actions mean for sourcing, pricing, and strategic positioning.`,
   }),
 };
 
