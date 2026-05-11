@@ -3,6 +3,7 @@ import ChapterSectionActions, { type ChapterSectionAction } from '@/components/i
 import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { ArrowRight, Layers } from 'lucide-react';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 interface ChapterPlaceholderProps {
   chapter: ChapterRouteInfo;
@@ -14,9 +15,12 @@ interface ChapterPlaceholderProps {
   // Admin actions surfaced above the placeholder body. Mirrors `ChapterSectionHeader` so admins can
   // generate the missing section directly from this page instead of jumping to the admin table.
   actions?: ChapterSectionAction[];
+  // Optional "Tools for this chapter" block rendered between the header and the placeholder notice.
+  // Passed in pre-built so the placeholder stays a client-safe sync component.
+  toolsCrossLinks?: ReactNode;
 }
 
-export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description, actions }: ChapterPlaceholderProps) {
+export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description, actions, toolsCrossLinks }: ChapterPlaceholderProps) {
   const padded = chapter.number.toString().padStart(2, '0');
   const otherSections = CHAPTER_REPORT_SECTIONS.filter((s) => s.slug !== currentSectionSlug);
 
@@ -41,6 +45,8 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
           )}
         </div>
       </header>
+
+      {toolsCrossLinks}
 
       <section className="mb-10 rounded-2xl border border-color background-color p-6">
         <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>

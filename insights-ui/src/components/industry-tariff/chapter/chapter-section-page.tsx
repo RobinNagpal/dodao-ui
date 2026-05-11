@@ -1,6 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
+import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
@@ -243,16 +244,25 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
 
   const body = renderSectionBody(sectionSlug, report);
   const actions = getSectionActions(sectionSlug);
+  const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
 
   if (!body) {
     return (
-      <ChapterPlaceholder chapter={chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} actions={actions} />
+      <ChapterPlaceholder
+        chapter={chapter}
+        pageTitle={copy.pageTitle}
+        currentSectionSlug={sectionSlug}
+        description={copy.description}
+        actions={actions}
+        toolsCrossLinks={toolsCrossLinks}
+      />
     );
   }
 
   return (
     <div className="mx-auto max-w-7xl py-2">
       <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={actions} />
+      {toolsCrossLinks}
       {body}
     </div>
   );
