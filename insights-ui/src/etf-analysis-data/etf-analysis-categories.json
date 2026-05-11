@@ -190,6 +190,7 @@
     { "name": "Long ETH", "group": "alt-strategies" },
     { "name": "Mid Cap", "group": "broad-equity" },
     { "name": "Target Risk", "group": "allocation-target-date" },
+    { "name": "Target Outcome", "group": "allocation-target-date" },
     { "name": "Extended Market", "group": "broad-equity" },
     { "name": "Downside Hedge", "group": "alt-strategies" },
     { "name": "Silver", "group": "alt-strategies" },
