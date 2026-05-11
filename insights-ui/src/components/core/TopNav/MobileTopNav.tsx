@@ -30,6 +30,7 @@ interface MobileTopNavProps {
 export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, reportsDropdown, genaiDropdown }: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
+  const isEtfsRoute = pathname.startsWith('/etfs');
 
   // Fetch industries data when on stocks page
   const { data: industries, loading } = useFetchData<IndustryWithSubIndustriesAndCounts[]>(`${getBaseUrl()}/api/industries`, {}, 'Failed to load industries');
@@ -52,7 +53,7 @@ export default function MobileTopNav({ mobileMenuOpen, setMobileMenuOpen, report
 
         <div className="mt-6 flow-root">
           <div className="mb-4">
-            <SearchBar placeholder="Search stocks..." variant="navbar" />
+            <SearchBar placeholder={isEtfsRoute ? 'Search ETFs...' : 'Search stocks...'} variant="navbar" kind={isEtfsRoute ? 'etfs' : 'stocks'} />
           </div>
 
           <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
