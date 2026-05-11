@@ -153,7 +153,6 @@ export interface EtfGroup {
 
 export interface EtfCategoryToGroup {
   name: string;
-  numberOfStocks: number;
   group: string;
 }
 
