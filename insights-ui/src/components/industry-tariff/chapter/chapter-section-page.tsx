@@ -3,7 +3,6 @@ import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlac
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
-import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderers/TariffEngineeringRenderer';
@@ -226,7 +225,6 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
       if (!tariffUpdates?.countrySpecificTariffs?.length) return null;
       return (
         <div className="space-y-4">
-          {tariffUpdates.countryNames?.length ? <CountryNavigation countries={tariffUpdates.countryNames} /> : null}
           {tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
             const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return <CountryTariffRenderer key={index} countryTariff={countryTariff} sectionId={sectionId} flat />;
@@ -260,6 +258,27 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
   }
 }
 
+// Prefer the LLM-generated section title as the page H1 — it tends to be richer (and more SEO-friendly)
+// than the static fallback ("Tariff Engineering", "Final Conclusion", …). Falls back to `copy.pageTitle`
+// for sections that don't carry their own title (tariff-updates, industry-areas) or when generation hasn't
+// run yet. Renderers no longer emit a duplicate H2 of this same title; the page H1 is the only H1 on the page.
+function getEffectivePageTitle(sectionSlug: string, report: IndustryTariffReport, fallback: string): string {
+  const candidate = ((): string | undefined => {
+    switch (sectionSlug) {
+      case 'understand-industry':
+        return typeof report.understandIndustry?.title === 'string' ? report.understandIndustry.title : undefined;
+      case 'tariff-engineering':
+        return typeof report.tariffEngineering?.title === 'string' ? report.tariffEngineering.title : undefined;
+      case 'final-conclusion':
+        return typeof report.finalConclusion?.title === 'string' ? report.finalConclusion.title : undefined;
+      default:
+        return undefined;
+    }
+  })();
+  const trimmed = candidate?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : fallback;
+}
+
 export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
@@ -270,6 +289,7 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   const body = renderSectionBody(sectionSlug, report);
   const actions = getSectionActions(sectionSlug);
   const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
+  const pageTitle = getEffectivePageTitle(sectionSlug, report, copy.pageTitle);
 
   if (!body) {
     return (
@@ -285,7 +305,7 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   }
 
   return (
-    <ChapterArticle chapter={chapter} pageTitle={copy.pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug={sectionSlug}>
+    <ChapterArticle chapter={chapter} pageTitle={pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug={sectionSlug}>
       {body}
     </ChapterArticle>
   );

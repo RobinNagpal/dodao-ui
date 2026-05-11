@@ -125,19 +125,19 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
 
         {tariffUpdatesSummary.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold heading-color mb-3">Latest HTS Chapter {padded} Tariff Actions</h2>
-            <div className="space-y-4 mb-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 mb-3">
+              <h2 className="text-xl font-semibold heading-color">Latest HTS Chapter {padded} Tariff Actions</h2>
+              <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color text-sm font-medium hover:underline whitespace-nowrap">
+                View full country breakdown &rarr;
+              </a>
+            </div>
+            <div className="space-y-4">
               {tariffUpdatesSummary.map((tariff, index) => (
                 <div key={index} className="bg-gray-800 rounded-md p-4">
                   <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
                   <div dangerouslySetInnerHTML={{ __html: parseMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
                 </div>
               ))}
-            </div>
-            <div>
-              <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
-                See full country breakdown
-              </a>
             </div>
           </section>
         )}

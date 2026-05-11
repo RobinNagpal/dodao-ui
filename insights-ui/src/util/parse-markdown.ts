@@ -20,11 +20,20 @@ function normalizeParagraphLabels(text: string): string {
   return text.replace(/^\s*Paragraph\s*\d+\s*:\s*/i, '').replace(/\s*Paragraph\s*\d+\s*:\s*/gi, '\n\n');
 }
 
+// The tariff renderers wrap every section in their own `<h2>` (or `<h3>`), so any markdown headings
+// the LLM emits inside a body field break SEO hierarchy and — when written without proper blank
+// lines around them — leak through as literal "### Heading" text instead of being parsed as a
+// heading. Demote any `# … ###### ` heading lines to `**bold**` so the content keeps the visual
+// emphasis without competing with the React-rendered section headings.
+function demoteInlineHeadings(text: string): string {
+  return text.replace(/^[ \t]{0,3}#{1,6}[ \t]+(.+?)[ \t]*#*[ \t]*$/gm, '**$1**');
+}
+
 // Section JSON occasionally lands with a missing or non-string leaf (LLM
 // structured output isn't always strictly Zod-validated, partial Generate All
 // runs leave gaps). Returning '' here keeps a single bad field from throwing
 // out of a Server Component and tripping the production error boundary.
 export function parseMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
-  return marked.parse(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text))), { renderer });
+  return marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text)))), { renderer });
 }

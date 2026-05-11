@@ -190,12 +190,13 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
   }
 
   if (flat) {
+    // The page-level H1 already shows `title` (see `getEffectivePageTitle` in chapter-section-page.tsx).
+    // Render just the overview here so we keep one H1 per page.
     return (
       <div className="space-y-8">
-        {(title || overview) && (
+        {overview && (
           <section>
-            {title && <h2 className="text-2xl font-bold heading-color mb-3">{title}</h2>}
-            {overview && <MarkdownBlock markdown={overview} />}
+            <MarkdownBlock markdown={overview} />
           </section>
         )}
         {classificationLevers.length > 0 && (

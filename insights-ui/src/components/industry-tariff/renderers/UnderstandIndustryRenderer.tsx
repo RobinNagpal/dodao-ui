@@ -29,16 +29,17 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
   }
 
   if (flat) {
+    // The page-level H1 already shows this section's title (see `getEffectivePageTitle` in
+    // chapter-section-page.tsx). Skip rendering it again here so we keep one H1 per page.
     return (
       <div className="space-y-8">
-        {title && <h2 className="text-2xl font-bold heading-color">{title}</h2>}
         {sections.map((section, index) => {
           const paragraphs = Array.isArray(section?.paragraphs) ? section.paragraphs : [];
           const sectionTitle = typeof section?.title === 'string' ? section.title : '';
           if (!sectionTitle && paragraphs.length === 0) return null;
           return (
             <section key={index}>
-              {sectionTitle && <h3 className="text-xl font-semibold heading-color mb-3">{sectionTitle}</h3>}
+              {sectionTitle && <h2 className="text-xl font-semibold heading-color mb-3">{sectionTitle}</h2>}
               <div className="prose max-w-none space-y-4">
                 {paragraphs.map((paragraph, pIndex) => (
                   <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />

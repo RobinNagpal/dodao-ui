@@ -39,14 +39,13 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
   }
 
   if (flat) {
+    // The page-level H1 already shows `title` (see `getEffectivePageTitle` in chapter-section-page.tsx).
+    // Render just the conclusion body here so we keep one H1 per page.
     return (
       <div className="space-y-8">
-        {(title || conclusionBrief) && (
+        {conclusionBrief && (
           <section>
-            {title && <h2 className="text-2xl font-bold heading-color mb-3">{title}</h2>}
-            {conclusionBrief && (
-              <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(conclusionBrief) }} />
-            )}
+            <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(conclusionBrief) }} />
           </section>
         )}
 

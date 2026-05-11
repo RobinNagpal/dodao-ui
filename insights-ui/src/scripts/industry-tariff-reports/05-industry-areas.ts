@@ -34,7 +34,9 @@ export async function getAndWriteIndustryAreaSectionToJsonFile(slug: string): Pr
   # Follow the below instructions:
   - Add 5-6 paragraphs that explain how the given areas divide ${chapterLabel} into various sub-areas
   - Explain how the sub-areas of ${chapterLabel} are connected to each other and how they relate to the main headings.
-  - Give a detailed insightful explanation of the sub-areas and how they relate to the main headings in around 1500 words
+  - Give a detailed insightful explanation of the sub-areas and how they relate to the main headings in around 1500 words.
+  - The "title" field IS the page heading and the UI renders it as an H2. Do NOT include any markdown headings (\`#\`, \`##\`, \`###\`) inside the \`industryAreas\` field — just use plain paragraphs, **bold**, and bullets.
+  - Bold every percentage / rate / dollar amount. Do not invent figures or use placeholder values.
 
   ${outputInstructions}
 
