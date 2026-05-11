@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 
@@ -30,11 +31,30 @@ async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
   return industries || [];
 }
 
-// Fetch all tickers
-async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; updatedAt: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
-  const tickers = await response.json();
-  return tickers || [];
+interface SitemapTicker {
+  symbol: string;
+  exchange: string;
+  updatedAt: Date;
+}
+
+// Fetch tickers eligible for the sitemap: live rows only. Deleted tickers
+// 404, and tickers with movedExchange/movedSymbol set 308 away — neither
+// should appear in the sitemap. The destination of a move is a separate row
+// (created when the move is applied) and lands in the sitemap on its own.
+async function getAllTickers(): Promise<SitemapTicker[]> {
+  return prisma.tickerV1.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      isDeleted: false,
+      movedExchange: null,
+      movedSymbol: null,
+    },
+    select: {
+      symbol: true,
+      exchange: true,
+      updatedAt: true,
+    },
+  });
 }
 
 // Generate all /stocks-related URLs for this sitemap
@@ -90,10 +110,9 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     }
   }
 
-  // Individual ticker pages - /stocks/{exchange}/{symbol}
+  // Individual ticker pages - /stocks/{exchange}/{symbol}.
   const tickers = await getAllTickers();
 
-  // Avoid duplicates in case the same ticker appears multiple times
   const addedUrls = new Set<string>();
 
   for (const ticker of tickers) {
@@ -104,7 +123,7 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
-        lastmod: ticker.updatedAt ? new Date(ticker.updatedAt).toISOString().split('T')[0] : undefined,
+        lastmod: ticker.updatedAt ? ticker.updatedAt.toISOString().split('T')[0] : undefined,
       });
       addedUrls.add(tickerUrl);
     }
