@@ -72,7 +72,7 @@ export default function EtfCategoryReport({
                   {formattedModifiedDate}
                 </time>
               </div>
-              <EtfMetadataBadges assetClass={assetClass} category={fundCategory} className="mt-3" />
+              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} className="mt-3" />
             </div>
             <Link href={`/etfs/${exchange}/${symbol}`} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
               View Full Report →

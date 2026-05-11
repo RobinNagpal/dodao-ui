@@ -311,7 +311,7 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
         </div>
       </div>
 
-      <EtfMetadataBadges assetClass={d.stockAnalyzerInfo?.assetClass} category={d.stockAnalyzerInfo?.category} className="mb-4" />
+      <EtfMetadataBadges exchange={d.exchange} assetClass={d.stockAnalyzerInfo?.assetClass} category={d.stockAnalyzerInfo?.category} className="mb-4" />
 
       {/* Summary (if available) */}
       {d.summary && d.summary.trim() && (
