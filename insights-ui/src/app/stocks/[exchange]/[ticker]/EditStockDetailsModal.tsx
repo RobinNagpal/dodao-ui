@@ -54,9 +54,21 @@ export default function EditStockDetailsModal({
   const movedSet = movedExchange.trim().length > 0 || movedSymbol.trim().length > 0;
   const conflict = isDeleted && movedSet;
 
+  // Mirror enforceMovedRedirect's fallback: when only one of moved-exchange /
+  // moved-symbol is set, the other defaults to the current value. A self-
+  // redirect (destination identical to current URL) would be a no-op at
+  // runtime but is almost always an admin mistake — block it here.
+  const targetExchange = (movedExchange.trim() || exchange).toUpperCase();
+  const targetSymbol = (movedSymbol.trim() || symbol).toUpperCase();
+  const selfRedirect = movedSet && targetExchange === exchange.toUpperCase() && targetSymbol === symbol.toUpperCase();
+
   const handleSave = async (): Promise<void> => {
     if (conflict) {
       setError('A ticker cannot be both deleted and have a forwarding exchange/symbol. Clear one of these.');
+      return;
+    }
+    if (selfRedirect) {
+      setError('Moved exchange/symbol points back to this same ticker. Either clear both fields or set a different destination.');
       return;
     }
     setError('');
@@ -120,7 +132,7 @@ export default function EditStockDetailsModal({
           <Button onClick={onClose} disabled={loading} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} disabled={loading || conflict} loading={loading} variant="contained" primary>
+          <Button onClick={handleSave} disabled={loading || conflict || selfRedirect} loading={loading} variant="contained" primary>
             Save
           </Button>
         </div>

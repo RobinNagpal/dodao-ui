@@ -62,9 +62,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const country = toSupportedCountry(url.searchParams.get('country'));
   const limitPerSubIndustry = url.searchParams.get('limitPerSubIndustry');
 
+  // Exclude tickers whose canonical URL would 308-redirect away (moved) so that
+  // downstream consumers (sitemap, listing pages, comparison) never surface
+  // links that we are about to redirect.
   const whereClause: Prisma.TickerV1WhereInput = {
     spaceId,
     isDeleted: false,
+    movedExchange: null,
+    movedSymbol: null,
     ...(industryKey ? { industryKey } : {}),
     ...(subIndustryKey ? { subIndustryKey } : {}),
     ...getExchangeFilterClause(country),

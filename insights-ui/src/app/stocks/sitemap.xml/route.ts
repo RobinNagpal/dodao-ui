@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
+import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 
@@ -30,11 +31,33 @@ async function getAllIndustriesByCountry(country: string): Promise<Industry[]> {
   return industries || [];
 }
 
-// Fetch all tickers
-async function getAllTickers(): Promise<Array<{ symbol: string; exchange: string; industryKey: string; updatedAt: string }>> {
-  const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1`);
-  const tickers = await response.json();
-  return tickers || [];
+interface SitemapTicker {
+  symbol: string;
+  exchange: string;
+  movedExchange: string | null;
+  movedSymbol: string | null;
+  updatedAt: Date;
+}
+
+// Fetch all tickers eligible for the sitemap. We query Prisma directly (rather
+// than going through /api/.../tickers-v1) for two reasons: the listing API now
+// hides moved/deleted tickers — but the sitemap still needs to see the moved
+// fields so it can emit the *canonical destination* URL instead of an old URL
+// that would 308 to it. Deleted tickers are still excluded outright.
+async function getAllTickers(): Promise<SitemapTicker[]> {
+  return prisma.tickerV1.findMany({
+    where: {
+      spaceId: KoalaGainsSpaceId,
+      isDeleted: false,
+    },
+    select: {
+      symbol: true,
+      exchange: true,
+      movedExchange: true,
+      movedSymbol: true,
+      updatedAt: true,
+    },
+  });
 }
 
 // Generate all /stocks-related URLs for this sitemap
@@ -90,21 +113,25 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     }
   }
 
-  // Individual ticker pages - /stocks/{exchange}/{symbol}
+  // Individual ticker pages - /stocks/{exchange}/{symbol}. For tickers with
+  // movedExchange/movedSymbol set we emit the canonical destination URL — not
+  // the old URL that would 308 away. Mirrors enforceMovedRedirect's fallback
+  // (only one of the two fields can be set; the other is taken from the row).
   const tickers = await getAllTickers();
 
-  // Avoid duplicates in case the same ticker appears multiple times
   const addedUrls = new Set<string>();
 
   for (const ticker of tickers) {
-    const tickerUrl = `/stocks/${ticker.exchange}/${ticker.symbol}`;
+    const destExchange = (ticker.movedExchange ?? ticker.exchange).toUpperCase();
+    const destSymbol = (ticker.movedSymbol ?? ticker.symbol).toUpperCase();
+    const tickerUrl = `/stocks/${destExchange}/${destSymbol}`;
 
     if (!addedUrls.has(tickerUrl)) {
       urls.push({
         url: tickerUrl,
         changefreq: 'weekly',
         priority: 0.6,
-        lastmod: ticker.updatedAt ? new Date(ticker.updatedAt).toISOString().split('T')[0] : undefined,
+        lastmod: ticker.updatedAt ? ticker.updatedAt.toISOString().split('T')[0] : undefined,
       });
       addedUrls.add(tickerUrl);
     }
