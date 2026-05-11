@@ -139,10 +139,17 @@ export async function getTickersWithMissingReports(spaceId: string, dateFilters?
       ${fairValueJoin}
       WHERE
         t.space_id = ${spaceId}
+        -- Hide tickers that have been deleted or marked as moved to a new
+        -- exchange/symbol. The admin has already "handled" these (delisted or
+        -- migrated to a fresh row) so they shouldn't keep showing up in the
+        -- backlog of work-to-do.
+        AND t.is_deleted = FALSE
+        AND t.moved_exchange IS NULL
+        AND t.moved_symbol IS NULL
         -- Exclude tickers with pending generation requests
         AND NOT EXISTS (
-          SELECT 1 FROM ticker_v1_generation_requests gr 
-          WHERE gr.ticker_id = t.id 
+          SELECT 1 FROM ticker_v1_generation_requests gr
+          WHERE gr.ticker_id = t.id
           AND gr.status IN ('NotStarted', 'InProgress')
         )
       GROUP BY
