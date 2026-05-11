@@ -6,6 +6,7 @@ export interface EtfMetadataBadgesProps {
   exchange?: string | null;
   assetClass?: string | null;
   category?: string | null;
+  issuer?: string | null;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ interface BadgeItem {
 const ASSET_CLASS_COLORS = 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800';
 const CATEGORY_COLORS = 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-800';
 const GROUP_COLORS = 'bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-300 hover:bg-cyan-200 dark:hover:bg-cyan-800';
+const PROVIDER_COLORS = 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800';
 
 function getCountryPathPrefix(exchange: string | null | undefined): string {
   if (!exchange) return '/etfs';
@@ -30,10 +32,11 @@ function getCountryPathPrefix(exchange: string | null | undefined): string {
   }
 }
 
-export default function EtfMetadataBadges({ exchange, assetClass, category, className }: EtfMetadataBadgesProps): JSX.Element | null {
+export default function EtfMetadataBadges({ exchange, assetClass, category, issuer, className }: EtfMetadataBadgesProps): JSX.Element | null {
   const groupName = getEtfGroupName(category);
   const groupKey = getEtfGroupKey(category);
   const prefix = getCountryPathPrefix(exchange);
+  const trimmedIssuer = issuer?.trim();
 
   const items: BadgeItem[] = [];
   if (assetClass) {
@@ -58,6 +61,14 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, clas
       value: groupName,
       href: `${prefix}/groups/${encodeURIComponent(groupKey)}`,
       colorClasses: GROUP_COLORS,
+    });
+  }
+  if (trimmedIssuer) {
+    items.push({
+      label: 'Provider',
+      value: trimmedIssuer,
+      href: `${prefix}/providers/${encodeURIComponent(trimmedIssuer)}`,
+      colorClasses: PROVIDER_COLORS,
     });
   }
 

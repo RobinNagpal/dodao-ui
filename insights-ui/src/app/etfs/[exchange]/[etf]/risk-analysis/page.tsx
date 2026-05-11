@@ -129,6 +129,7 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
         updatedAt={modifiedDate}
         assetClass={etfData.stockAnalyzerInfo?.assetClass}
         fundCategory={etfData.stockAnalyzerInfo?.category}
+        issuer={etfData.stockAnalyzerInfo?.issuer}
       />
     </PageWrapper>
   );

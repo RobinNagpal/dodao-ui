@@ -25,6 +25,7 @@ export interface EtfCategoryReportProps {
   updatedAt?: string;
   assetClass?: string | null;
   fundCategory?: string | null;
+  issuer?: string | null;
 }
 
 export default function EtfCategoryReport({
@@ -38,6 +39,7 @@ export default function EtfCategoryReport({
   updatedAt,
   assetClass,
   fundCategory,
+  issuer,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -72,7 +74,7 @@ export default function EtfCategoryReport({
                   {formattedModifiedDate}
                 </time>
               </div>
-              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} className="mt-3" />
+              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} className="mt-3" />
             </div>
             <Link href={`/etfs/${exchange}/${symbol}`} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
               View Full Report →
