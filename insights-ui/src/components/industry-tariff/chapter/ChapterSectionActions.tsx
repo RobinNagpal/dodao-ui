@@ -20,6 +20,9 @@ interface SimpleChapterAction {
   modalTitle: string;
   confirmationText: string;
   successMessage: string;
+  // Optional JSON body to POST; defaults to `{}`. Use when the target route
+  // expects a discriminator like `{ section: ReportType.X }`.
+  body?: Record<string, unknown>;
 }
 
 // Special case for the tariff-updates regenerate. The bundled
@@ -70,7 +73,7 @@ export default function ChapterSectionActions({ chapterSlug, actions }: ChapterS
     if (!pendingAction) return;
 
     if (pendingAction.kind === 'simple') {
-      const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${chapterSlug}/${pendingAction.apiPath}`, {});
+      const result = await postData(`${getBaseUrl()}/api/industry-tariff-reports/chapters/${chapterSlug}/${pendingAction.apiPath}`, pendingAction.body ?? {});
       setPendingAction(null);
       if (result !== undefined) {
         showNotification({ type: 'success', message: pendingAction.successMessage });

@@ -8,7 +8,7 @@ import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderer
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
-import type { IndustryTariffReport, PageSeoDetails, TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
+import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
@@ -172,6 +172,16 @@ function getSectionActions(sectionSlug: string): ChapterSectionAction[] {
           modalTitle: 'Regenerate Tariff Engineering',
           confirmationText: 'Regenerate the Tariff Engineering analysis? This replaces the current content.',
           successMessage: 'Tariff Engineering regenerated.',
+        },
+        {
+          kind: 'simple',
+          key: 'generate-tariff-engineering-seo',
+          label: 'Generate SEO for Tariff Engineering',
+          apiPath: 'generate-seo-info',
+          body: { section: ReportType.TARIFF_ENGINEERING },
+          modalTitle: 'Generate SEO for Tariff Engineering',
+          confirmationText: 'Generate SEO metadata for the Tariff Engineering section?',
+          successMessage: 'Tariff Engineering SEO generated.',
         },
       ];
     default:

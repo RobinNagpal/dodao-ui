@@ -7,8 +7,8 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
   { slug: 'tariff-updates', label: 'Tariff Updates' },
   { slug: 'understand-industry', label: 'Understand Industry' },
   { slug: 'industry-areas', label: 'Industry Areas' },
-  { slug: 'final-conclusion', label: 'Final Conclusion' },
   { slug: 'tariff-engineering', label: 'Tariff Engineering' },
+  { slug: 'final-conclusion', label: 'Final Conclusion' },
 ] as const;
 
 export interface ChapterRouteInfo {
