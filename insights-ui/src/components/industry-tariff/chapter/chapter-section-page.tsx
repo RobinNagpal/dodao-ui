@@ -242,14 +242,17 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   if (!copy) notFound();
 
   const body = renderSectionBody(sectionSlug, report);
+  const actions = getSectionActions(sectionSlug);
 
   if (!body) {
-    return <ChapterPlaceholder chapter={chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} />;
+    return (
+      <ChapterPlaceholder chapter={chapter} pageTitle={copy.pageTitle} currentSectionSlug={sectionSlug} description={copy.description} actions={actions} />
+    );
   }
 
   return (
     <div className="mx-auto max-w-7xl py-2">
-      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={getSectionActions(sectionSlug)} />
+      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={actions} />
       {body}
     </div>
   );
