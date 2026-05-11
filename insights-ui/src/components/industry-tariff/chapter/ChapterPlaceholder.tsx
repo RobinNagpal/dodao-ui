@@ -1,8 +1,7 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
-import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
-import { ArrowRight, Layers } from 'lucide-react';
-import Link from 'next/link';
+import { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import type { ReactNode } from 'react';
 
 interface ChapterPlaceholderProps {
@@ -22,65 +21,37 @@ interface ChapterPlaceholderProps {
 
 export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionSlug, description, actions, toolsCrossLinks }: ChapterPlaceholderProps) {
   const padded = chapter.number.toString().padStart(2, '0');
-  const otherSections = CHAPTER_REPORT_SECTIONS.filter((s) => s.slug !== currentSectionSlug);
+  const currentSlug = currentSectionSlug ?? 'overview';
 
   return (
-    <div className="py-6">
-      <header className="mb-8 border-b border-color pb-6">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
-              <Layers className="h-4 w-4 text-emerald-400" />
-              <span className="font-medium text-emerald-400">HTS Chapter {padded}</span>
-              <span aria-hidden>·</span>
-              <span>{chapter.title}</span>
+    <div className="py-4">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8">
+        {toolsCrossLinks}
+
+        <header className="mb-6 pb-4 border-b border-color">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
+              <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">{pageTitle}</h1>
-            <p className="mt-3 max-w-3xl text-muted-foreground">{description}</p>
+            {actions && actions.length > 0 && (
+              <PrivateWrapper>
+                <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
+              </PrivateWrapper>
+            )}
           </div>
-          {actions && actions.length > 0 && (
-            <PrivateWrapper>
-              <ChapterSectionActions chapterSlug={chapter.slug} actions={actions} />
-            </PrivateWrapper>
-          )}
-        </div>
-      </header>
+        </header>
 
-      {toolsCrossLinks}
+        <section className="rounded-lg border border-gray-700/60 bg-gray-800/40 p-5">
+          <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            We&apos;re building out the full tariff analysis for HTS Chapter {padded} ({chapter.title}). Use the navigation below to explore the sections of
+            this chapter as content rolls out.
+          </p>
+        </section>
 
-      <section className="mb-10 rounded-2xl border border-color background-color p-6">
-        <h2 className="text-lg font-semibold">Detailed analysis is being prepared</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          We&apos;re building out the full tariff analysis for HTS Chapter {padded} ({chapter.title}). Use the navigation below to explore the sections of this
-          chapter as content rolls out.
-        </p>
-      </section>
-
-      <section className="mb-10">
-        <h2 className="mb-4 text-lg font-semibold">Sections in this chapter</h2>
-        <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <li>
-            <Link
-              href={chapterCoverHref(chapter.slug)}
-              className="group flex items-center justify-between rounded-lg border border-color background-color px-4 py-3 transition hover:border-emerald-500/60 hover:bg-emerald-500/5"
-            >
-              <span className="font-medium">Chapter overview</span>
-              <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-emerald-400" />
-            </Link>
-          </li>
-          {otherSections.map((section) => (
-            <li key={section.slug}>
-              <Link
-                href={chapterSectionHref(chapter.slug, section.slug)}
-                className="group flex items-center justify-between rounded-lg border border-color background-color px-4 py-3 transition hover:border-emerald-500/60 hover:bg-emerald-500/5"
-              >
-                <span className="font-medium">{section.label}</span>
-                <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-emerald-400" />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
+      </article>
     </div>
   );
 }

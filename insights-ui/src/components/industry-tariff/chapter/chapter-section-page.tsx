@@ -1,5 +1,6 @@
 import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
+import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
@@ -16,6 +17,7 @@ import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/u
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import type { ReactNode } from 'react';
 
 // Small wrappers used by every chapter section page (`tariff-updates`, `understand-industry`, ...).
 // Keeps the per-route page.tsx files to a few lines each — same fetch/redirect/render flow, only
@@ -80,22 +82,18 @@ export async function buildChapterSectionMetadata(chapterSlug: string, sectionSl
   };
 }
 
-interface ChapterSectionHeaderProps {
+interface ChapterArticleHeaderProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
   actions: ChapterSectionAction[];
 }
 
-function ChapterSectionHeader({ chapter, pageTitle, actions }: ChapterSectionHeaderProps): JSX.Element {
-  const padded = chapter.number.toString().padStart(2, '0');
+function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHeaderProps): JSX.Element {
   return (
-    <div className="mb-8 pb-4 border-b border-gray-200">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="text-sm text-muted-foreground mb-1">
-            HTS Chapter {padded} — {chapter.title}
-          </div>
-          <h1 className="text-3xl font-bold heading-color">{pageTitle}</h1>
+    <header className="mb-6 pb-4 border-b border-color">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="flex-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight heading-color">{pageTitle}</h1>
         </div>
         {actions.length > 0 && (
           <PrivateWrapper>
@@ -103,6 +101,35 @@ function ChapterSectionHeader({ chapter, pageTitle, actions }: ChapterSectionHea
           </PrivateWrapper>
         )}
       </div>
+    </header>
+  );
+}
+
+// Outer article wrapper shared by the chapter cover and every chapter section page. Mirrors the
+// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with header at
+// the top, the section body in the middle, and related-section navigation + footer at the bottom.
+interface ChapterArticleProps {
+  chapter: ChapterRouteInfo;
+  pageTitle: string;
+  actions?: ChapterSectionAction[];
+  // Pre-rendered tools bar from renderChapterToolsCrossLinks().
+  toolsCrossLinks: ReactNode;
+  // The section's main content (cover overview, tariff-updates, etc.).
+  children: ReactNode;
+  // Slug used by ChapterRelatedSections to omit the current page from the related grid.
+  // Pass 'overview' on the chapter cover.
+  currentSlug: string;
+}
+
+export function ChapterArticle({ chapter, pageTitle, actions = [], toolsCrossLinks, children, currentSlug }: ChapterArticleProps): JSX.Element {
+  return (
+    <div className="py-4">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8">
+        {toolsCrossLinks}
+        <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} />
+        {children}
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
+      </article>
     </div>
   );
 }
@@ -202,33 +229,31 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
           {tariffUpdates.countryNames?.length ? <CountryNavigation countries={tariffUpdates.countryNames} /> : null}
           {tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
             const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
-            return <CountryTariffRenderer key={index} countryTariff={countryTariff} sectionId={sectionId} />;
+            return <CountryTariffRenderer key={index} countryTariff={countryTariff} sectionId={sectionId} flat />;
           })}
         </div>
       );
     }
     case 'understand-industry': {
       if (!report.understandIndustry) return null;
-      return <UnderstandIndustryRenderer understandIndustry={report.understandIndustry} />;
+      return <UnderstandIndustryRenderer understandIndustry={report.understandIndustry} flat />;
     }
     case 'industry-areas': {
       if (!report.industryAreasSections) return null;
       const html = parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections));
       return (
-        <div className="bg-gray-900 rounded-lg p-2 shadow-sm">
-          <div className="markdown-body prose max-w-none px-2">
-            <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
-          </div>
+        <div className="markdown-body prose max-w-none">
+          <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
         </div>
       );
     }
     case 'final-conclusion': {
       if (!report.finalConclusion) return null;
-      return <FinalConclusionRenderer finalConclusion={report.finalConclusion} />;
+      return <FinalConclusionRenderer finalConclusion={report.finalConclusion} flat />;
     }
     case 'tariff-engineering': {
       if (!report.tariffEngineering) return null;
-      return <TariffEngineeringRenderer tariffEngineering={report.tariffEngineering} />;
+      return <TariffEngineeringRenderer tariffEngineering={report.tariffEngineering} flat />;
     }
     default:
       return null;
@@ -260,10 +285,8 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   }
 
   return (
-    <div className="mx-auto max-w-7xl py-2">
-      <ChapterSectionHeader chapter={chapter} pageTitle={copy.pageTitle} actions={actions} />
-      {toolsCrossLinks}
+    <ChapterArticle chapter={chapter} pageTitle={copy.pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug={sectionSlug}>
       {body}
-    </div>
+    </ChapterArticle>
   );
 }

@@ -4,13 +4,16 @@ import { parseMarkdown } from '@/util/parse-markdown';
 
 interface FinalConclusionRendererProps {
   finalConclusion: FinalConclusion;
+  // When true, render without nested gray-900 cards — sections become H2 headings + content,
+  // designed to sit inside a single outer article card (chapter pages).
+  flat?: boolean;
 }
 
 /**
  * Renders a FinalConclusion object with styled components
  * This replaces the markdown generation logic from render-tariff-markdown.ts
  */
-export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = ({ finalConclusion }) => {
+export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = ({ finalConclusion, flat = false }) => {
   const title = typeof finalConclusion?.title === 'string' ? finalConclusion.title : '';
   const conclusionBrief = typeof finalConclusion?.conclusionBrief === 'string' ? finalConclusion.conclusionBrief : '';
   const positive = finalConclusion?.positiveImpacts;
@@ -25,9 +28,48 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
   const hasAnyContent = title || conclusionBrief || positiveTitle || positiveBody || negativeTitle || negativeBody || finalStatements;
 
   if (!hasAnyContent) {
+    if (flat) {
+      return <p className="text-gray-500 italic">No content available</p>;
+    }
     return (
       <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
         <p className="text-gray-500 italic">No content available</p>
+      </div>
+    );
+  }
+
+  if (flat) {
+    return (
+      <div className="space-y-8">
+        {(title || conclusionBrief) && (
+          <section>
+            {title && <h2 className="text-2xl font-bold heading-color mb-3">{title}</h2>}
+            {conclusionBrief && (
+              <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(conclusionBrief) }} />
+            )}
+          </section>
+        )}
+
+        {(positiveTitle || positiveBody) && (
+          <section>
+            {positiveTitle && <h2 className="text-xl font-semibold heading-color mb-3">{positiveTitle}</h2>}
+            {positiveBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(positiveBody) }} />}
+          </section>
+        )}
+
+        {(negativeTitle || negativeBody) && (
+          <section>
+            {negativeTitle && <h2 className="text-xl font-semibold heading-color mb-3">{negativeTitle}</h2>}
+            {negativeBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(negativeBody) }} />}
+          </section>
+        )}
+
+        {finalStatements && (
+          <section>
+            <h2 className="text-xl font-semibold heading-color mb-3">Final Statements</h2>
+            <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalStatements) }} />
+          </section>
+        )}
       </div>
     );
   }

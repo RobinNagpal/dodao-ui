@@ -4,20 +4,49 @@ import { parseMarkdown } from '@/util/parse-markdown';
 
 interface UnderstandIndustryRendererProps {
   understandIndustry: UnderstandIndustry;
+  // When true, render without nested gray-900 cards — sections are H2/H3 headings + content,
+  // designed to sit inside a single outer article card (chapter pages).
+  flat?: boolean;
 }
 
 /**
  * Renders an UnderstandIndustry object with styled components
  * This replaces the markdown generation logic from render-tariff-markdown.ts
  */
-export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProps> = ({ understandIndustry }) => {
+export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProps> = ({ understandIndustry, flat = false }) => {
   const sections = Array.isArray(understandIndustry?.sections) ? understandIndustry.sections : [];
   const title = typeof understandIndustry?.title === 'string' ? understandIndustry.title : '';
 
   if (!title && sections.length === 0) {
+    if (flat) {
+      return <p className="text-gray-500 italic">No content available</p>;
+    }
     return (
       <div className="bg-gray-900 rounded-lg p-6 shadow-sm">
         <p className="text-gray-500 italic">No content available</p>
+      </div>
+    );
+  }
+
+  if (flat) {
+    return (
+      <div className="space-y-8">
+        {title && <h2 className="text-2xl font-bold heading-color">{title}</h2>}
+        {sections.map((section, index) => {
+          const paragraphs = Array.isArray(section?.paragraphs) ? section.paragraphs : [];
+          const sectionTitle = typeof section?.title === 'string' ? section.title : '';
+          if (!sectionTitle && paragraphs.length === 0) return null;
+          return (
+            <section key={index}>
+              {sectionTitle && <h3 className="text-xl font-semibold heading-color mb-3">{sectionTitle}</h3>}
+              <div className="prose max-w-none space-y-4">
+                {paragraphs.map((paragraph, pIndex) => (
+                  <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     );
   }
