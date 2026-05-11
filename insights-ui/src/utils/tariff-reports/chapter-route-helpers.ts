@@ -8,6 +8,7 @@ export const CHAPTER_REPORT_SECTIONS: readonly ChapterReportSection[] = [
   { slug: 'understand-industry', label: 'Understand Industry' },
   { slug: 'industry-areas', label: 'Industry Areas' },
   { slug: 'final-conclusion', label: 'Final Conclusion' },
+  { slug: 'tariff-engineering', label: 'Tariff Engineering' },
 ] as const;
 
 export interface ChapterRouteInfo {
@@ -47,6 +48,10 @@ const SECTION_COPY: Record<string, (title: string, padded: string) => ChapterSec
   'final-conclusion': (title, padded) => ({
     pageTitle: 'Final Conclusion',
     description: `Forward-looking conclusion for HTS Chapter ${padded} (${title}) — what the latest tariff actions mean for sourcing, pricing, and strategic positioning.`,
+  }),
+  'tariff-engineering': (title, padded) => ({
+    pageTitle: 'Tariff Engineering',
+    description: `Tariff engineering strategies for HTS Chapter ${padded} (${title}) — classification levers, country-of-origin moves, first-sale valuation, FTZ usage, and duty drawback to lawfully reduce US duty exposure.`,
   }),
 };
 

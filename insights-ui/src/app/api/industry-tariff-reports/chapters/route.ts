@@ -33,6 +33,7 @@ async function getHandler(): Promise<ChapterReportAdminListResponse> {
       understandIndustry: true,
       industryAreasSections: true,
       conclusion: true,
+      tariffEngineering: true,
       seoDetails: true,
     },
     orderBy: { chapter: { number: 'asc' } },

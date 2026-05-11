@@ -13,6 +13,7 @@ export type ChapterReportField =
   | 'understandIndustry'
   | 'industryAreasSections'
   | 'conclusion'
+  | 'tariffEngineering'
   | 'seoDetails';
 
 export interface ChapterGenerateStep {
@@ -32,5 +33,6 @@ export const CHAPTER_GENERATE_STEPS: readonly ChapterGenerateStep[] = [
   { field: 'executiveSummary', label: 'executiveSummary', apiPath: 'generate-executive-summary' },
   { field: 'introduction', label: 'introduction', apiPath: 'generate-report-cover' },
   { field: 'conclusion', label: 'conclusion', apiPath: 'generate-final-conclusion' },
+  { field: 'tariffEngineering', label: 'tariffEngineering', apiPath: 'generate-tariff-engineering' },
   { field: 'seoDetails', label: 'seoDetails', apiPath: 'generate-seo-info' },
 ] as const;

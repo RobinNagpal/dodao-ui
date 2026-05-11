@@ -23,6 +23,7 @@ const NAV_SECTIONS: ReadonlyArray<{ title: string; section: string }> = [
   { title: 'Understand Industry', section: 'understand-industry' },
   { title: 'Industry Areas', section: 'industry-areas' },
   { title: 'Final Conclusion', section: 'final-conclusion' },
+  { title: 'Tariff Engineering', section: 'tariff-engineering' },
 ];
 
 export default function ReportLeftNavigation({

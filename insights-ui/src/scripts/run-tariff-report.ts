@@ -4,6 +4,7 @@ import { getExecutiveSummaryAndSaveToFile } from '@/scripts/industry-tariff-repo
 import { getTariffUpdatesForIndustryAndSaveToFile } from '@/scripts/industry-tariff-reports/03-industry-tariffs';
 import { getAndWriteUnderstandIndustryJson } from '@/scripts/industry-tariff-reports/04-understand-industry';
 import { getAndWriteIndustryAreaSectionToJsonFile } from '@/scripts/industry-tariff-reports/05-industry-areas';
+import { getAndWriteTariffEngineeringJson } from '@/scripts/industry-tariff-reports/06-tariff-engineering';
 import { getFinalConclusionAndSaveToFile } from '@/scripts/industry-tariff-reports/07-final-conclusion';
 import { generateAndSaveAllSeoDetails } from '@/scripts/industry-tariff-reports/08-report-seo-info';
 import { readIndustryHeadings } from '@/scripts/industry-tariff-reports/tariff-report-repository';
@@ -54,6 +55,10 @@ export async function doIt(reportType: ReportType, slug: string) {
 
     case ReportType.FINAL_CONCLUSION:
       await getFinalConclusionAndSaveToFile(slug);
+      break;
+
+    case ReportType.TARIFF_ENGINEERING:
+      await getAndWriteTariffEngineeringJson(slug);
       break;
 
     case ReportType.ALL:
