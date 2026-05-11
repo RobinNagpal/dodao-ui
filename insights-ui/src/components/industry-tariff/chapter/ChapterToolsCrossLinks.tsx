@@ -1,4 +1,4 @@
-import TariffCrossLinks, { type TariffCrossLink } from '@/components/tariff-cross-links/TariffCrossLinks';
+import ChapterToolsBar, { type ChapterToolLink } from '@/components/industry-tariff/chapter/ChapterToolsBar';
 import { getHtsChapterRefByNumber } from '@/utils/tariff-cross-links/hts-chapter-ref';
 import type { ChapterRouteInfo } from '@/utils/tariff-reports/chapter-route-helpers';
 import { Calculator, ListTree } from 'lucide-react';
@@ -10,23 +10,25 @@ export async function renderChapterToolsCrossLinks(chapter: ChapterRouteInfo): P
   const padded = chapter.number.toString().padStart(2, '0');
   const htsChapter = await getHtsChapterRefByNumber(chapter.number);
 
-  const links: TariffCrossLink[] = [
+  const links: ChapterToolLink[] = [
     {
       href: '/tariff-calculator',
-      title: 'Tariff Calculator',
+      label: 'Tariff Calculator',
       description: `Estimate landed US duty for goods in HTS Chapter ${padded} — base rate plus Section 232, 301, and IEEPA fees.`,
-      icon: <Calculator className="h-5 w-5" />,
+      icon: <Calculator className="h-4 w-4" />,
+      tone: 'indigo',
     },
   ];
 
   if (htsChapter) {
     links.push({
       href: htsChapter.href,
-      title: `HTS Chapter ${padded} — ${chapter.title}`,
+      label: `HTS Chapter ${padded} Codes`,
       description: 'Browse every HTS code in this chapter, with general rate, Column 2, special rates, and units of quantity.',
-      icon: <ListTree className="h-5 w-5" />,
+      icon: <ListTree className="h-4 w-4" />,
+      tone: 'emerald',
     });
   }
 
-  return <TariffCrossLinks heading="Tools for this chapter" links={links} />;
+  return <ChapterToolsBar links={links} />;
 }

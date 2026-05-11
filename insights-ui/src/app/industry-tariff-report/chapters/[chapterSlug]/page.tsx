@@ -1,8 +1,6 @@
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
+import { ChapterArticle } from '@/components/industry-tariff/chapter/chapter-section-page';
 import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlaceholder';
-import ChapterSectionActions from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
-import { renderSection } from '@/components/industry-tariff/renderers/SectionRenderer';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -78,97 +76,82 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
 
   const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
 
+  const pageTitle = report.reportCover?.title || fallbackPageTitle;
+
+  const actions = [
+    {
+      kind: 'simple' as const,
+      key: 'regenerate-cover',
+      label: 'Regenerate Cover',
+      apiPath: 'generate-report-cover',
+      modalTitle: 'Regenerate Cover',
+      confirmationText: 'Regenerate the cover for this chapter? This replaces the current content.',
+      successMessage: 'Cover regenerated.',
+    },
+    {
+      kind: 'simple' as const,
+      key: 'regenerate-executive-summary',
+      label: 'Regenerate Executive Summary',
+      apiPath: 'generate-executive-summary',
+      modalTitle: 'Regenerate Executive Summary',
+      confirmationText: 'Regenerate the executive summary? This replaces the current content.',
+      successMessage: 'Executive summary regenerated.',
+    },
+    {
+      kind: 'simple' as const,
+      key: 'regenerate-seo',
+      label: 'Regenerate SEO',
+      apiPath: 'generate-seo-info',
+      modalTitle: 'Regenerate SEO',
+      confirmationText: 'Regenerate SEO metadata for every section of this chapter?',
+      successMessage: 'SEO metadata regenerated.',
+    },
+  ];
+
   return (
-    <div className="mx-auto max-w-7xl py-2">
-      <div className="mb-8 pb-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="text-sm text-muted-foreground mb-1">
-              HTS Chapter {padded} — {chapter.title}
-            </div>
-            <h1 className="text-3xl font-bold heading-color">{report.reportCover?.title || fallbackPageTitle}</h1>
-          </div>
-          <PrivateWrapper>
-            <ChapterSectionActions
-              chapterSlug={chapter.slug}
-              actions={[
-                {
-                  kind: 'simple',
-                  key: 'regenerate-cover',
-                  label: 'Regenerate Cover',
-                  apiPath: 'generate-report-cover',
-                  modalTitle: 'Regenerate Cover',
-                  confirmationText: 'Regenerate the cover for this chapter? This replaces the current content.',
-                  successMessage: 'Cover regenerated.',
-                },
-                {
-                  kind: 'simple',
-                  key: 'regenerate-executive-summary',
-                  label: 'Regenerate Executive Summary',
-                  apiPath: 'generate-executive-summary',
-                  modalTitle: 'Regenerate Executive Summary',
-                  confirmationText: 'Regenerate the executive summary? This replaces the current content.',
-                  successMessage: 'Executive summary regenerated.',
-                },
-                {
-                  kind: 'simple',
-                  key: 'regenerate-seo',
-                  label: 'Regenerate SEO',
-                  apiPath: 'generate-seo-info',
-                  modalTitle: 'Regenerate SEO',
-                  confirmationText: 'Regenerate SEO metadata for every section of this chapter?',
-                  successMessage: 'SEO metadata regenerated.',
-                },
-              ]}
-            />
-          </PrivateWrapper>
-        </div>
-      </div>
-
-      {toolsCrossLinks}
-
-      <div className="space-y-12">
-        {renderSection(
-          'Overview',
-          report.reportCover ? (
+    <ChapterArticle chapter={chapter} pageTitle={pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug="overview">
+      <div className="space-y-10">
+        <section>
+          <h2 className="text-xl font-semibold heading-color mb-3">Overview</h2>
+          {report.reportCover ? (
             <div
               className="prose max-w-none markdown markdown-body"
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
             <p className="text-gray-500 italic">No content available</p>
-          )
+          )}
+        </section>
+
+        {tariffUpdatesSummary.length > 0 && (
+          <section>
+            <h2 className="text-xl font-semibold heading-color mb-3">Latest HTS Chapter {padded} Tariff Actions</h2>
+            <div className="space-y-4 mb-4">
+              {tariffUpdatesSummary.map((tariff, index) => (
+                <div key={index} className="bg-gray-800 rounded-md p-4">
+                  <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
+                  <div dangerouslySetInnerHTML={{ __html: parseMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
+                </div>
+              ))}
+            </div>
+            <div>
+              <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
+                See full country breakdown
+              </a>
+            </div>
+          </section>
         )}
 
-        {tariffUpdatesSummary.length > 0 &&
-          renderSection(
-            `Latest HTS Chapter ${padded} Tariff Actions`,
-            <div>
-              <div className="space-y-4 mb-4">
-                {tariffUpdatesSummary.map((tariff, index) => (
-                  <div key={index} className="mb-6">
-                    <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
-                    <div dangerouslySetInnerHTML={{ __html: parseMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4">
-                <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
-                  See full country breakdown
-                </a>
-              </div>
-            </div>
-          )}
-
-        {report.executiveSummary &&
-          renderSection(
-            'Executive Summary',
+        {report.executiveSummary && (
+          <section>
+            <h2 className="text-xl font-semibold heading-color mb-3">Executive Summary</h2>
             <div
               className="prose max-w-none markdown markdown-body"
               dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }}
             />
-          )}
+          </section>
+        )}
       </div>
-    </div>
+    </ChapterArticle>
   );
 }
