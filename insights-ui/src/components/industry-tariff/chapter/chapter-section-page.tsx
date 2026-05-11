@@ -10,7 +10,7 @@ import { UnderstandIndustryRenderer } from '@/components/industry-tariff/rendere
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
@@ -238,7 +238,7 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
     }
     case 'industry-areas': {
       if (!report.industryAreasSections) return null;
-      const html = parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections));
+      const html = parseChapterBodyMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections));
       return (
         <div className="markdown-body prose max-w-none">
           <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: html }} />

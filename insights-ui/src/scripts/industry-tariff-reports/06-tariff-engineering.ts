@@ -17,13 +17,13 @@ const ClassificationLeverSchema = z.object({
     .string()
     .describe(
       'The HTS subheading commonly used today for the in-scope product, including the heading number, ' +
-        'a one-line description, and the current US general (Column 1) duty rate. Bold every percentage / dollar amount.'
+        'a one-line description, and the current US general (Column 1) duty rate. Wrap rates and amounts in backticks.'
     ),
   engineeredClassification: z
     .string()
     .describe(
       'The alternative HTS subheading the product can legitimately be classified under after a design, ' +
-        'composition, or feature change. Include heading number, description, and the duty rate. Bold every percentage / rate / dollar value.'
+        'composition, or feature change. Include heading number, description, and the duty rate. Wrap values in backticks.'
     ),
   basisForReclassification: z
     .string()
@@ -36,7 +36,7 @@ const ClassificationLeverSchema = z.object({
     .string()
     .describe(
       'Plain-language before-vs-after on duty exposure, e.g. "Drops the column-1 rate from `27.7%` to `4.4%`, plus avoids the ' +
-        '`Section 301 List 4A` `7.5%` add-on if the bill of materials shifts away from China." Bold every percentage / rate / dollar value.'
+        '`Section 301 List 4A` `7.5%` add-on if the bill of materials shifts away from China." Wrap values in backticks.'
     ),
 });
 
@@ -58,7 +58,7 @@ const StrategySchema = z.object({
     .string()
     .describe(
       'Concrete duty impact in numbers: rate before, rate after, dollar savings on a representative shipment value if available. ' +
-        'Bold every percentage / dollar amount. Avoid vague phrases like "significant savings". ' +
+        'Wrap rates and amounts in backticks. Avoid vague phrases like "significant savings". ' +
         'Do not invent figures — if a precise number is not available, describe qualitatively or omit it.'
     ),
   implementationSteps: z
@@ -91,7 +91,7 @@ const TariffEngineeringSchema = z.object({
       '2-4 paragraphs of markdown introducing tariff engineering specifically for products in this HTS chapter. ' +
         'Define tariff engineering, explain the legitimacy boundary (legal restructuring vs. fraudulent misclassification), ' +
         'and frame why the current tariff landscape (Section 232 / 301 / IEEPA) makes this analysis valuable to importers right now. ' +
-        'Bold every percentage / dollar amount / rate value. Include at least 2 markdown citation links. ' +
+        'Wrap every percentage / dollar amount / rate value in backticks. Include at least 2 markdown citation links. ' +
         'Do NOT include any markdown headings (`#`, `##`, `###`) — the page UI already renders the section title.'
     ),
   classificationLevers: z
@@ -125,7 +125,7 @@ const TariffEngineeringSchema = z.object({
         '(c) realistic relocation candidates (Mexico, Vietnam, India, Malaysia, Thailand, Turkey) for sourcing teams ' +
         'now subject to Section 301 / IEEPA / reciprocal tariffs on China-origin goods; ' +
         "(d) anti-circumvention enforcement risk (CBP's focus on Vietnam/Cambodia/Malaysia transshipment). " +
-        'Bold every percentage / dollar amount. Cite specific CBP guidance and CSMS messages where possible.'
+        'Wrap every percentage / dollar amount in backticks. Cite specific CBP guidance and CSMS messages where possible.'
     ),
   valuationOpportunities: z
     .string()
@@ -133,7 +133,7 @@ const TariffEngineeringSchema = z.object({
       '3-5 paragraphs of markdown on valuation-side levers. ' +
         'Cover first-sale-for-export (with the Nissho Iwai factors), assists, royalties/license fees that may be excluded under 19 USC §1401a, ' +
         'related-party-transfer-pricing alignment with customs value, separately invoiced engineering and design costs, and ' +
-        'the impact on landed cost when duty is **25%** versus **7.5%**. Be specific about the documentation burden ' +
+        'the impact on landed cost when duty is `25%` versus `7.5%`. Be specific about the documentation burden ' +
         '(invoices, contracts, payment trails) required to defend each posture.'
     ),
   ftzAndDrawback: z
@@ -248,7 +248,7 @@ Output a JSON object that matches this EXACT schema:
 2. Cite real authorities wherever possible: CBP HQ / NY ruling numbers, CIT / CAFC case names,
    USTR exclusion notices, CBP CSMS messages, GRI numbers, 19 USC / 19 CFR sections. Use markdown
    links (\`[citation](url)\`) when you have a source.
-3. Bold every percentage, dollar amount, and tariff rate (e.g. **27.7%**, **\\$1.2M**). Reserve backticks for code, HTS subheading numbers (e.g. \`6109.10.0012\`), and regulation citations (e.g. \`19 CFR §146\`). Do NOT invent or stub figures — if a precise number is not in your sources, describe qualitatively or omit it.
+3. Wrap every percentage, dollar amount, tariff rate, HTS subheading number, and regulation citation in backticks (e.g. \`27.7%\`, \`\\$1.2M\`, \`6109.10.0012\`, \`19 CFR §146\`). Do NOT invent or stub figures — if a precise number is not in your sources, describe qualitatively or omit it.
 4. The classification levers must reflect the structure of THIS chapter's subheadings — read the
    "Industry Areas / Sub-headings In Scope" input above and pick levers that move a product between
    those subheadings (or into / out of the chapter entirely under GRI 1 or Chapter Notes).

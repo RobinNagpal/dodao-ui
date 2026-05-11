@@ -49,7 +49,7 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
 
   Body rules for \`reportCoverContent\`:
   - Do NOT use any markdown headings (\`#\`, \`##\`, \`###\`) — the page UI renders the title above your content.
-  - Use plain paragraphs, **bold**, and bullets only. Bold every percentage / rate / dollar amount.
+  - Use plain paragraphs, **bold**, and bullets only. Wrap every percentage / rate / dollar amount in backticks.
   - Do not invent figures or use placeholder values like \`var\` or \`TBD\`.
 
    ${chapterSeoGuidance(ctx)}

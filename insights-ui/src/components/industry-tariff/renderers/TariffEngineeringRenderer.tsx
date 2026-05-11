@@ -1,6 +1,6 @@
 import React from 'react';
 import { TariffEngineering } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown, parseMarkdown } from '@/util/parse-markdown';
 
 interface TariffEngineeringRendererProps {
   tariffEngineering: TariffEngineering;
@@ -10,8 +10,9 @@ interface TariffEngineeringRendererProps {
   flat?: boolean;
 }
 
-function MarkdownBlock({ markdown }: { markdown: string }): JSX.Element {
-  return <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(markdown) }} />;
+function MarkdownBlock({ markdown, flat = false }: { markdown: string; flat?: boolean }): JSX.Element {
+  const parse = flat ? parseChapterBodyMarkdown : parseMarkdown;
+  return <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parse(markdown) }} />;
 }
 
 function SectionCard({ heading, children }: { heading: string; children: React.ReactNode }): JSX.Element {
@@ -42,7 +43,7 @@ interface ClassificationLever {
   dutyDelta?: string;
 }
 
-function ClassificationLeversTable({ levers }: { levers: ClassificationLever[] }): JSX.Element {
+function ClassificationLeversTable({ levers, flat }: { levers: ClassificationLever[]; flat: boolean }): JSX.Element {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-700 text-sm">
@@ -66,16 +67,16 @@ function ClassificationLeversTable({ levers }: { levers: ClassificationLever[] }
               <tr key={idx} className="align-top">
                 <td className="px-3 py-3 font-medium">{leverTitle}</td>
                 <td className="px-3 py-3">
-                  <MarkdownBlock markdown={currentClassification} />
+                  <MarkdownBlock markdown={currentClassification} flat={flat} />
                 </td>
                 <td className="px-3 py-3">
-                  <MarkdownBlock markdown={engineeredClassification} />
+                  <MarkdownBlock markdown={engineeredClassification} flat={flat} />
                 </td>
                 <td className="px-3 py-3">
-                  <MarkdownBlock markdown={basisForReclassification} />
+                  <MarkdownBlock markdown={basisForReclassification} flat={flat} />
                 </td>
                 <td className="px-3 py-3">
-                  <MarkdownBlock markdown={dutyDelta} />
+                  <MarkdownBlock markdown={dutyDelta} flat={flat} />
                 </td>
               </tr>
             );
@@ -113,43 +114,46 @@ function StrategyCard({ strategy, flat }: { strategy: Strategy; flat: boolean })
       {stTitle && <h3 className="text-lg font-semibold heading-color mb-2">{stTitle}</h3>}
       {technique && (
         <div className="mb-3">
-          <MarkdownBlock markdown={technique} />
+          <MarkdownBlock markdown={technique} flat={flat} />
         </div>
       )}
       {applicability && (
         <div className="mb-3">
           <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Applicability to chapter</div>
-          <MarkdownBlock markdown={applicability} />
+          <MarkdownBlock markdown={applicability} flat={flat} />
         </div>
       )}
       {dutyImpact && (
         <div className="mb-3">
           <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Potential duty impact</div>
-          <MarkdownBlock markdown={dutyImpact} />
+          <MarkdownBlock markdown={dutyImpact} flat={flat} />
         </div>
       )}
       {steps.length > 0 && (
         <div className="mb-3">
           <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Implementation steps</div>
           <ol className="list-decimal list-inside space-y-1">
-            {steps.map((step, sIdx) => (
-              <li key={sIdx}>
-                <span className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(step) }} />
-              </li>
-            ))}
+            {steps.map((step, sIdx) => {
+              const parse = flat ? parseChapterBodyMarkdown : parseMarkdown;
+              return (
+                <li key={sIdx}>
+                  <span className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parse(step) }} />
+                </li>
+              );
+            })}
           </ol>
         </div>
       )}
       {risks && (
         <div className="mb-3">
           <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Risks &amp; caveats</div>
-          <MarkdownBlock markdown={risks} />
+          <MarkdownBlock markdown={risks} flat={flat} />
         </div>
       )}
       {precedent && (
         <div>
           <div className="text-xs uppercase tracking-wider text-gray-400 mb-1">Precedent</div>
-          <MarkdownBlock markdown={precedent} />
+          <MarkdownBlock markdown={precedent} flat={flat} />
         </div>
       )}
     </div>
@@ -196,12 +200,12 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
       <div className="space-y-8">
         {overview && (
           <section>
-            <MarkdownBlock markdown={overview} />
+            <MarkdownBlock markdown={overview} flat />
           </section>
         )}
         {classificationLevers.length > 0 && (
           <FlatSection heading="Classification Levers">
-            <ClassificationLeversTable levers={classificationLevers} />
+            <ClassificationLeversTable levers={classificationLevers} flat />
           </FlatSection>
         )}
         {strategies.length > 0 && (
@@ -215,27 +219,27 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
         )}
         {countryOfOriginPlaybook && (
           <FlatSection heading="Country-of-Origin Playbook">
-            <MarkdownBlock markdown={countryOfOriginPlaybook} />
+            <MarkdownBlock markdown={countryOfOriginPlaybook} flat />
           </FlatSection>
         )}
         {valuationOpportunities && (
           <FlatSection heading="Valuation Opportunities">
-            <MarkdownBlock markdown={valuationOpportunities} />
+            <MarkdownBlock markdown={valuationOpportunities} flat />
           </FlatSection>
         )}
         {ftzAndDrawback && (
           <FlatSection heading="Foreign Trade Zones & Duty Drawback">
-            <MarkdownBlock markdown={ftzAndDrawback} />
+            <MarkdownBlock markdown={ftzAndDrawback} flat />
           </FlatSection>
         )}
         {complianceGuardrails && (
           <FlatSection heading="Compliance Guardrails">
-            <MarkdownBlock markdown={complianceGuardrails} />
+            <MarkdownBlock markdown={complianceGuardrails} flat />
           </FlatSection>
         )}
         {bottomLine && (
           <FlatSection heading="Bottom Line">
-            <MarkdownBlock markdown={bottomLine} />
+            <MarkdownBlock markdown={bottomLine} flat />
           </FlatSection>
         )}
       </div>
@@ -261,7 +265,7 @@ export const TariffEngineeringRenderer: React.FC<TariffEngineeringRendererProps>
 
       {classificationLevers.length > 0 && (
         <SectionCard heading="Classification Levers">
-          <ClassificationLeversTable levers={classificationLevers} />
+          <ClassificationLeversTable levers={classificationLevers} flat={false} />
         </SectionCard>
       )}
 

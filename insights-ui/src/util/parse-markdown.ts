@@ -35,5 +35,15 @@ function demoteInlineHeadings(text: string): string {
 // out of a Server Component and tripping the production error boundary.
 export function parseMarkdown(text: string | null | undefined) {
   if (typeof text !== 'string' || text.length === 0) return '';
+  return marked.parse(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text))), { renderer });
+}
+
+// Tariff chapter body fields render under a React-controlled section heading,
+// so any `#`/`##`/`###` the LLM slips into the body would duplicate the page
+// hierarchy or leak as literal `### Heading` text. Use this variant for those
+// fields only — other markdown consumers (ETF reports, etc.) need to keep
+// inner headings intact.
+export function parseChapterBodyMarkdown(text: string | null | undefined) {
+  if (typeof text !== 'string' || text.length === 0) return '';
   return marked.parse(demoteInlineHeadings(normalizeParagraphLabels(escapeTildes(recursivelyCleanOpenAiUrls(text)))), { renderer });
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { UnderstandIndustry } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown, parseMarkdown } from '@/util/parse-markdown';
 
 interface UnderstandIndustryRendererProps {
   understandIndustry: UnderstandIndustry;
@@ -42,7 +42,7 @@ export const UnderstandIndustryRenderer: React.FC<UnderstandIndustryRendererProp
               {sectionTitle && <h2 className="text-xl font-semibold heading-color mb-3">{sectionTitle}</h2>}
               <div className="prose max-w-none space-y-4">
                 {paragraphs.map((paragraph, pIndex) => (
-                  <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(paragraph) }} />
+                  <div key={pIndex} className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(paragraph) }} />
                 ))}
               </div>
             </section>

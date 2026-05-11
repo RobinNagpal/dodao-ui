@@ -18,9 +18,9 @@ export const outputInstructions = `
 - Dont forget to include hyperlinks/citations in the content where ever possible.
 - Avoid LaTeX, italics, or KaTeX formatting, or   character for space.
 - Do NOT include markdown headings (\`#\`, \`##\`, \`###\`, etc.) inside any body / content field. The page UI already renders the section title above your content. Use **bold** text or paragraph breaks for emphasis instead.
-- Use only **bold**, bullets, numbered lists, and tables for formatting the content.
+- Use only headings and subheadings, bold, bullets, points, tables for formatting the content.
 - Use markdown format for output.
-- All amounts, dollar values, percentages, and tariff rates should be wrapped in **bold** (NOT in backticks). Backticks should only be used for actual code, HTS subheading numbers, or regulation citations (e.g. \`19 CFR §146\`, \`6109.10.0012\`).
+- All amounts, dollar values, or figures should be wrapped in backticks.
 - Never use placeholder values like \`var\`, \`X%\`, \`TBD\`, \`N/A\`, or \`[number]\`. If a specific figure isn't available from sources, describe it qualitatively (e.g. "a low single-digit ad-valorem rate", "the prevailing MFN rate") or omit the field rather than inventing or stubbing a value.
 `;
 

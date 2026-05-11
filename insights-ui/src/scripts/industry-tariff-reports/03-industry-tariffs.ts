@@ -130,7 +130,6 @@ function getTariffUpdatesForIndustryPrompt(chapterLabel: string, date: string, h
   Strict rules for the output content:
   - Each markdown body field must read as plain prose / bullets / bold — do NOT include any markdown headings (\`#\`, \`##\`, \`###\`, etc.). The page UI renders the section title for you.
   - Never substitute a placeholder like \`var\`, \`X%\`, \`TBD\`, or \`[number]\` for a missing figure. If a specific rate or dollar amount is not in your sources, describe it qualitatively ("the prevailing MFN rate", "a low single-digit ad-valorem rate") or omit that fact entirely.
-  - Bold all rates, percentages, and dollar amounts (e.g. **25%**, **\\$1.4B**). Reserve backticks for HTS subheading codes or regulation citations.
 
   Make sure to follow the output instructions below and include all the details in the output.
 

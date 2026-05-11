@@ -58,7 +58,7 @@ Content rules:
 - Each section must have 2–3 paragraphs in "paragraphs".
 - Each paragraph should be 3–5 lines and may contain markdown (bold, bullets, links).
 - Do NOT include markdown headings (\`#\`, \`##\`, \`###\`, etc.) inside any paragraph. Use **bold** or paragraph breaks for emphasis.
-- Share as many facts as possible (volumes, amounts, dollar values) and wrap every percentage / rate / dollar amount in **bold**. Reserve backticks for HTS codes or regulation citations.
+- Share as many facts as possible (volumes, amounts, dollar values) and wrap every percentage / rate / dollar amount / HTS code / regulation citation in backticks.
 - Never use placeholder values like \`var\`, \`X%\`, \`TBD\`, or \`[number]\`. If a specific figure isn't available, describe it qualitatively or omit it.
 - Add hyperlinks for definitions and key numbers throughout (use markdown links).
 - Avoid LaTeX, italics, or KaTeX formatting.

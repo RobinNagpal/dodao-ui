@@ -1,6 +1,6 @@
 import React from 'react';
 import { CountrySpecificTariff } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown, parseMarkdown } from '@/util/parse-markdown';
 
 interface CountryTariffRendererProps {
   countryTariff: CountrySpecificTariff;
@@ -17,23 +17,21 @@ interface CountryTariffRendererProps {
  */
 export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ countryTariff, sectionId, flat = false }) => {
   if (flat) {
+    const md = parseChapterBodyMarkdown;
     return (
       <div id={sectionId} className="bg-gray-800 rounded-md p-4 sm:p-5">
         <h3 className="text-lg font-bold heading-color mb-3">{countryTariff.countryName}</h3>
 
-        <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff.tariffDetails) }} />
+        <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(countryTariff.tariffDetails) }} />
 
         <div className="mt-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-1">Existing Trade Agreements</h4>
-          <div
-            className="prose max-w-none markdown markdown-body"
-            dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff.existingTradeAmountAndAgreement) }}
-          />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(countryTariff.existingTradeAmountAndAgreement) }} />
         </div>
 
         <div className="mt-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-1">New Tariff Changes</h4>
-          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff.newChanges) }} />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(countryTariff.newChanges) }} />
         </div>
 
         {countryTariff.tariffChangesForIndustrySubArea && countryTariff.tariffChangesForIndustrySubArea.length > 0 && (
@@ -41,7 +39,7 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
             <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-1">Impact on Industry Sub-Areas</h4>
             <ul className="list-disc pl-5 space-y-2">
               {countryTariff.tariffChangesForIndustrySubArea.map((change, index) => (
-                <li key={index} className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(change) }} />
+                <li key={index} className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(change) }} />
               ))}
             </ul>
           </div>
@@ -49,18 +47,12 @@ export const CountryTariffRenderer: React.FC<CountryTariffRendererProps> = ({ co
 
         <div className="mt-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-1">Trade Impacted by New Tariff</h4>
-          <div
-            className="prose max-w-none markdown markdown-body"
-            dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff.tradeImpactedByNewTariff) }}
-          />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(countryTariff.tradeImpactedByNewTariff) }} />
         </div>
 
         <div className="mt-4">
           <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-1">Trade Exempted by New Tariff</h4>
-          <div
-            className="prose max-w-none markdown markdown-body"
-            dangerouslySetInnerHTML={{ __html: parseMarkdown(countryTariff.tradeExemptedByNewTariff) }}
-          />
+          <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(countryTariff.tradeExemptedByNewTariff) }} />
         </div>
       </div>
     );

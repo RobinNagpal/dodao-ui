@@ -3,7 +3,7 @@ import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlac
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
@@ -116,7 +116,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
           {report.reportCover ? (
             <div
               className="prose max-w-none markdown markdown-body"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
+              dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
             <p className="text-gray-500 italic">No content available</p>
@@ -135,7 +135,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
               {tariffUpdatesSummary.map((tariff, index) => (
                 <div key={index} className="bg-gray-800 rounded-md p-4">
                   <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
-                  <div dangerouslySetInnerHTML={{ __html: parseMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
+                  <div dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
                 </div>
               ))}
             </div>
@@ -147,7 +147,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
             <h2 className="text-xl font-semibold heading-color mb-3">Executive Summary</h2>
             <div
               className="prose max-w-none markdown markdown-body"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }}
+              dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(report.executiveSummary.executiveSummary) }}
             />
           </section>
         )}
