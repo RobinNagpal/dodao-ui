@@ -319,8 +319,10 @@ export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryTy
   });
 };
 
-export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1) => {
-  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1, options?: { skipRevalidation?: boolean }) => {
+  if (!options?.skipRevalidation) {
+    revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+  }
   await prisma.tickerV1.update({
     where: {
       id: tickerRecord.id,
