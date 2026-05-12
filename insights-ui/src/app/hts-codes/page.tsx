@@ -1,6 +1,6 @@
 import type { TariffSectionListItem } from '@/app/api/tariff-calculator/sections/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
-import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
+import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { chapterDetailHref } from '@/utils/tariff-calculator/chapter-slug';
 import { TARIFF_SECTIONS_LISTING_TAG } from '@/utils/tariff-calculator/cache-tags';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -61,32 +61,34 @@ export default async function HtsCodesIndexPage() {
   return (
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
+      <div className="text-color">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl mb-3">HTS Code Sections &amp; Chapters</h1>
-          <p className="text-muted-foreground max-w-3xl">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">HTS Code Sections &amp; Chapters</h1>
+            <ToolPills
+              links={[
+                {
+                  href: '/tariff-reports',
+                  label: 'Tariff Reports',
+                  description: 'Industry tariff-impact analysis tied to these HTS chapters: rate changes, country breakdowns, and outlook.',
+                  icon: <FileText className="h-4 w-4" />,
+                  tone: 'indigo',
+                },
+                {
+                  href: '/tariff-calculator',
+                  label: 'Tariff Calculator',
+                  description: 'Once you have the right HTS code, plug it in to estimate the full landed duty cost.',
+                  icon: <Calculator className="h-4 w-4" />,
+                  tone: 'emerald',
+                },
+              ]}
+            />
+          </div>
+          <p className="mt-3 max-w-3xl text-muted-foreground">
             The Harmonized Tariff Schedule of the United States (HTSUS) groups every imported good into 22 sections, each split into chapters. Pick a chapter to
             view its full HTS code list with duty rates, units of measure, and official notes.
           </p>
         </header>
-
-        <TariffCrossLinks
-          heading="Want analysis or a duty estimate, not just the code?"
-          links={[
-            {
-              href: '/tariff-reports',
-              title: 'Tariff Reports',
-              description: 'Industry tariff-impact analysis tied to these HTS chapters: rate changes, country breakdowns, and outlook.',
-              icon: <FileText className="h-5 w-5" />,
-            },
-            {
-              href: '/tariff-calculator',
-              title: 'Tariff Calculator',
-              description: 'Once you have the right HTS code, plug it in to estimate the full landed duty cost.',
-              icon: <Calculator className="h-5 w-5" />,
-            },
-          ]}
-        />
 
         {sections.length === 0 ? (
           <div className="text-center py-16 background-color rounded-lg border border-color">

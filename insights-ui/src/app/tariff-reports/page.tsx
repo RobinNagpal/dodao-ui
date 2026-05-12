@@ -1,7 +1,7 @@
 import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
-import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
+import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
@@ -131,36 +131,37 @@ export default async function TariffReportsPage() {
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
+      <div className="text-color">
         <header className="mb-10">
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
-            <TariffReportsPageActions />
+            <div className="flex items-center gap-2">
+              <ToolPills
+                links={[
+                  {
+                    href: '/tariff-calculator',
+                    label: 'Tariff Calculator',
+                    description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
+                    icon: <Calculator className="h-4 w-4" />,
+                    tone: 'indigo',
+                  },
+                  {
+                    href: '/hts-codes',
+                    label: 'HTS Code Browser',
+                    description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
+                    icon: <ListTree className="h-4 w-4" />,
+                    tone: 'emerald',
+                  },
+                ]}
+              />
+              <TariffReportsPageActions />
+            </div>
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
             Tariff and trade-policy analysis for chapters of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country breakdowns,
             industry structure, sub-areas, and forward-looking conclusions.
           </p>
         </header>
-
-        <TariffCrossLinks
-          heading="Looking for a specific HTS code or duty?"
-          description="Skip the long-form analysis when you just need to look up a code or estimate a duty."
-          links={[
-            {
-              href: '/tariff-calculator',
-              title: 'Tariff Calculator',
-              description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
-              icon: <Calculator className="h-5 w-5" />,
-            },
-            {
-              href: '/hts-codes',
-              title: 'HTS Code Browser',
-              description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
-              icon: <ListTree className="h-5 w-5" />,
-            },
-          ]}
-        />
 
         {rows.length === 0 ? (
           <div className="rounded-2xl border border-gray-800 bg-gray-900 py-12 text-center">

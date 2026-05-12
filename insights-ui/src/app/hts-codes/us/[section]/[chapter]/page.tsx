@@ -3,7 +3,7 @@ import type { TariffChapterListItem } from '@/app/api/tariff-calculator/chapters
 import type { TariffReportRef } from '@/app/api/tariff-calculator/chapters/[number]/related-report/route';
 import HtsChapterDetailActions from '@/app/hts-codes/us/[section]/[chapter]/HtsChapterDetailActions';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
-import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
+import ToolPills, { type ToolPillLink } from '@/components/tariff-cross-links/ToolPills';
 import { TARIFF_CHAPTERS_LISTING_TAG, tariffChapterDetailCacheTag, tariffChapterRelatedReportCacheTag } from '@/utils/tariff-calculator/cache-tags';
 import { chapterDetailHref, chapterUrlSegment, parseChapterSegment, parseSectionSegment, sectionUrlSegment } from '@/utils/tariff-calculator/chapter-slug';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
@@ -225,42 +225,40 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
   ];
 
   const tariffReportRef = await fetchChapterRelatedReport(chapter.number);
-  const crossLinks = [
-    tariffReportRef
-      ? {
-          href: tariffReportRef.href,
-          title: `Tariff Impact Report — Chapter ${padded}`,
-          description: 'Industry tariff analysis tied to this HTS chapter: rate changes, country breakdowns, winners and losers.',
-          icon: <FileText className="h-5 w-5" />,
-        }
-      : null,
-    {
-      href: '/tariff-calculator',
-      title: 'Tariff Calculator',
-      description: `Estimate full landed duty for codes in HTS Chapter ${padded} — base rate plus Section 232, 301, IEEPA, and processing fees.`,
-      icon: <Calculator className="h-5 w-5" />,
-    },
-  ].filter((link): link is NonNullable<typeof link> => link !== null);
+  const toolLinks: ToolPillLink[] = [];
+  if (tariffReportRef) {
+    toolLinks.push({
+      href: tariffReportRef.href,
+      label: `Tariff Impact Report — Chapter ${padded}`,
+      description: 'Industry tariff analysis tied to this HTS chapter: rate changes, country breakdowns, winners and losers.',
+      icon: <FileText className="h-4 w-4" />,
+      tone: 'indigo',
+    });
+  }
+  toolLinks.push({
+    href: '/tariff-calculator',
+    label: 'Tariff Calculator',
+    description: `Estimate full landed duty for codes in HTS Chapter ${padded} — base rate plus Section 232, 301, IEEPA, and processing fees.`,
+    icon: <Calculator className="h-4 w-4" />,
+    tone: 'emerald',
+  });
 
   return (
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
+      <div className="text-color">
         <header className="mb-6">
-          <div className="text-sm text-muted-foreground mb-1">
-            <span className="font-mono tabular-nums mr-2">Section {chapter.section.romanNumeral}</span>
-            {chapter.section.title}
-          </div>
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
               <span className="font-mono tabular-nums text-muted-foreground mr-3">Chapter {padded}</span>
               {chapter.title}
             </h1>
-            <HtsChapterDetailActions chapterNumber={chapter.number} />
+            <div className="flex items-center gap-2">
+              <ToolPills links={toolLinks} />
+              <HtsChapterDetailActions chapterNumber={chapter.number} />
+            </div>
           </div>
         </header>
-
-        <TariffCrossLinks heading="Tools for this chapter" links={crossLinks} />
 
         {(chapter.notes || chapter.additionalUsNotes) && (
           <section className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
