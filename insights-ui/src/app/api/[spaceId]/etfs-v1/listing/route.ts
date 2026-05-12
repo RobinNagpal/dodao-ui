@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import {
   createEtfFinancialFilter,
   createEtfStockAnalyzerFilter,
@@ -15,6 +16,7 @@ import {
 } from '@/utils/etf-filter-utils';
 import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 
 const DEFAULT_PAGE_SIZE = 32;
@@ -123,7 +125,17 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);
   const hasStockAnalyzerFilter = Object.keys(stockAnalyzerFilter).length > 0;
-  if (hasStockAnalyzerFilter) {
+  const isOthersGroup = filters[EtfFilterParamKey.GROUP]?.trim() === ETF_OTHERS_GROUP_KEY;
+  if (isOthersGroup) {
+    // "Others" must also pick up ETFs that have no EtfStockAnalyzerInfo row at
+    // all. createEtfStockAnalyzerFilter has already set category: null for the
+    // case where a row exists; OR that with `is: null` for the no-row case.
+    // Wrapped in AND so it composes with any etfWhere.OR set by the search
+    // filter, which would otherwise be overwritten.
+    const othersOr: Prisma.EtfWhereInput[] = [{ stockAnalyzerInfo: { is: null } }, { stockAnalyzerInfo: { is: stockAnalyzerFilter } }];
+    const existingAnd = Array.isArray(etfWhere.AND) ? etfWhere.AND : etfWhere.AND ? [etfWhere.AND] : [];
+    etfWhere.AND = [...existingAnd, { OR: othersOr }];
+  } else if (hasStockAnalyzerFilter) {
     etfWhere.stockAnalyzerInfo = { is: stockAnalyzerFilter };
   }
 

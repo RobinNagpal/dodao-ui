@@ -1,8 +1,8 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
-import { fetchEtfsForGroupings } from '@/utils/etf-grouping-utils';
+import { ETF_OTHERS_GROUP, getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
+import { fetchEtfsForGroupings, fetchUncategorizedEtfPreview } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
 
@@ -20,12 +20,15 @@ export default async function EtfGroupsIndex({ country }: EtfGroupsIndexProps) {
     }
   }
 
-  const { values, counts } = await fetchEtfsForGroupings({
-    spaceId: KoalaGainsSpaceId,
-    mode: 'category',
-    valueToKey,
-    country,
-  });
+  const [{ values, counts }, others] = await Promise.all([
+    fetchEtfsForGroupings({
+      spaceId: KoalaGainsSpaceId,
+      mode: 'category',
+      valueToKey,
+      country,
+    }),
+    fetchUncategorizedEtfPreview(KoalaGainsSpaceId, country),
+  ]);
 
   const displayName = etfCountryDisplayName(country);
   const groupsPath = etfBrowsePath(country, 'groups');
@@ -48,6 +51,13 @@ export default async function EtfGroupsIndex({ country }: EtfGroupsIndexProps) {
             etfs={values.get(group.key) ?? []}
           />
         ))}
+        <CompactEtfGroupingCard
+          key={ETF_OTHERS_GROUP.key}
+          title={ETF_OTHERS_GROUP.name}
+          href={etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP.key)}
+          totalCount={others.count}
+          etfs={others.items}
+        />
       </div>
     </EtfPageLayout>
   );

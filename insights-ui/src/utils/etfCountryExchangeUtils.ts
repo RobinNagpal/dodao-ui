@@ -3,7 +3,7 @@
  * `countryExchangeUtils.ts` (stocks) because:
  *  - ETF coverage is currently US + Canada only; reusing the 10-country stock
  *    list would let admins create scenarios in markets we have no ETF data for.
- *  - ETF venues (NYSEARCA, BATS, NEOE) don't all overlap with the stock
+ *  - ETF venues (NYSEARCA, BATS, NEO) don't all overlap with the stock
  *    exchange list.
  *
  * Country code values are reused from `SupportedCountries` so the strings
@@ -29,7 +29,7 @@ export enum EtfUSExchanges {
 export enum EtfCanadaExchanges {
   TSX = 'TSX',
   TSXV = 'TSXV',
-  NEOE = 'NEOE',
+  NEO = 'NEO',
 }
 
 export type AllEtfExchanges = EtfUSExchanges | EtfCanadaExchanges;
@@ -41,7 +41,7 @@ export const ETF_EXCHANGES: ReadonlyArray<AllEtfExchanges> = [
   EtfUSExchanges.NYSE,
   EtfCanadaExchanges.TSX,
   EtfCanadaExchanges.TSXV,
-  EtfCanadaExchanges.NEOE,
+  EtfCanadaExchanges.NEO,
 ] as const;
 
 export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountry> = {
@@ -51,7 +51,7 @@ export const ETF_EXCHANGE_TO_COUNTRY: Record<AllEtfExchanges, EtfSupportedCountr
   [EtfUSExchanges.NYSE]: SupportedCountries.US,
   [EtfCanadaExchanges.TSX]: SupportedCountries.Canada,
   [EtfCanadaExchanges.TSXV]: SupportedCountries.Canada,
-  [EtfCanadaExchanges.NEOE]: SupportedCountries.Canada,
+  [EtfCanadaExchanges.NEO]: SupportedCountries.Canada,
 };
 
 export const isEtfExchange = (val: string): val is AllEtfExchanges => {

@@ -203,6 +203,16 @@
     { "name": "Broad Market", "group": "broad-equity" },
     { "name": "Long CAD", "group": "alt-strategies" },
     { "name": "Volatility", "group": "alt-strategies" },
-    { "name": "Carbon Credits", "group": "alt-strategies" }
+    { "name": "Carbon Credits", "group": "alt-strategies" },
+    { "name": "Long BTC, Short CAD", "group": "alt-strategies" },
+    { "name": "Long BTC, Short USD", "group": "alt-strategies" },
+    { "name": "Long CAD, Short BTC", "group": "leveraged-inverse" },
+    { "name": "Long Cryptocurrency Basket, Short CAD", "group": "alt-strategies" },
+    { "name": "Long ETH, Short CAD", "group": "alt-strategies" },
+    { "name": "Long ETH, Short USD", "group": "alt-strategies" },
+    { "name": "Long SOL, Short USD", "group": "alt-strategies" },
+    { "name": "Long USD, Short CAD", "group": "alt-strategies" },
+    { "name": "Long XRP, Short CAD", "group": "alt-strategies" },
+    { "name": "Long XRP, Short USD", "group": "alt-strategies" }
   ]
 }

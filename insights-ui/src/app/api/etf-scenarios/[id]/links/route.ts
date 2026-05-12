@@ -13,7 +13,7 @@ import { z } from 'zod';
 const addLinkSchema = z.object({
   symbol: z.string().min(1),
   // Exchange must be one of the ETF-specific exchanges (NYSEARCA / BATS /
-  // NASDAQ / NYSE / TSX / TSXV / NEOE). Below we additionally enforce that
+  // NASDAQ / NYSE / TSX / TSXV / NEO). Below we additionally enforce that
   // the exchange's country is in scenario.countries — see the mismatch
   // check after we load the scenario.
   exchange: z
