@@ -58,6 +58,7 @@ export default function FavouriteItem({
           )}
           <Link
             href={`/stocks/${favourite.ticker.exchange}/${favourite.ticker.symbol}`}
+            prefetch={false}
             className="hover:text-blue-400"
             target="_blank"
             rel="noopener noreferrer"

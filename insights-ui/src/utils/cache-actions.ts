@@ -1,11 +1,11 @@
 'use server';
 
 import {
+  revalidateAllTickerTags,
   revalidateStocksPageTag,
   revalidateIndustryPageTag,
   revalidatePortfolioManagersByTypeTag,
   revalidatePortfolioProfileTag,
-  revalidateTickerAndExchangeTag,
 } from '@/utils/ticker-v1-cache-utils';
 import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
@@ -49,7 +49,9 @@ export async function revalidatePortfolioProfileCache(portfolioManagerId: string
 }
 
 export async function revalidateTickerCache(ticker: string, exchange: string) {
-  revalidateTickerAndExchangeTag(ticker, exchange);
+  // The admin-facing "Revalidate" action is meant to clear *everything* for a
+  // ticker — main page plus every per-subpage cache slice.
+  revalidateAllTickerTags(ticker, exchange);
   return { success: true, message: `Cache invalidated for ${exchange.toUpperCase()}:${ticker.toUpperCase()}` };
 }
 

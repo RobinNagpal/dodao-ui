@@ -1,5 +1,6 @@
 import PastPerformance from '@/components/ticker-reportsv1/PastPerformance';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { generatePastPerformanceArticleSchema, generatePastPerformanceBreadcrumbSchema } from '@/utils/metadata-generators';
 import {
   buildPerformanceBreadcrumbs,
@@ -15,6 +16,7 @@ import { notFound } from 'next/navigation';
 
 const DATA_SLUG = 'past-performance-data';
 const PAGE_SLUG = 'past-performance';
+const CATEGORY = TickerAnalysisCategory.PastPerformance;
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let updatedTime: string;
 
   try {
-    const data = await fetchPerformanceByExchange(exchange, ticker, DATA_SLUG);
+    const data = await fetchPerformanceByExchange(exchange, ticker, DATA_SLUG, CATEGORY);
     companyName = data.ticker?.name ?? companyName;
     industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
     const timestamps = extractPerformanceTimestamps(data);
@@ -102,7 +104,7 @@ export default async function PastPerformancePage({ params }: { params: RoutePar
   const routeParams = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
-  const pastPerformanceData = await getPerformanceOrRedirect(exchange, ticker, DATA_SLUG, PAGE_SLUG);
+  const pastPerformanceData = await getPerformanceOrRedirect(exchange, ticker, DATA_SLUG, PAGE_SLUG, CATEGORY);
   const tickerData = pastPerformanceData.ticker;
   if (!tickerData) {
     notFound();

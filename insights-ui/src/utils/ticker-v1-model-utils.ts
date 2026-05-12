@@ -4,7 +4,12 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { TickerWithMissingReportInfo } from '@/utils/analysis-reports/report-steps-statuses';
 import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import {
+  revalidateTickerAndExchangeTag,
+  revalidateTickerCategoryReportTag,
+  revalidateTickerCompetitionTag,
+  revalidateTickerManagementTeamTag,
+} from '@/utils/ticker-v1-cache-utils';
 import {
   Prisma,
   TickerV1,
@@ -319,9 +324,38 @@ export const updateTickerCachedScore = async (tickerRecord: TickerV1, categoryTy
   });
 };
 
-export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1, options?: { skipRevalidation?: boolean }) => {
+/**
+ * Discriminator for which narrow per-subpage tag to invalidate alongside the
+ * umbrella `tickerAndExchangeTag` (which the main `/stocks/[exchange]/[ticker]`
+ * page subscribes to). Pass the right one so only the affected subpage's cache
+ * is invalidated, not all seven.
+ */
+export type TickerCacheSlice = { kind: 'category'; category: TickerAnalysisCategory } | { kind: 'competition' } | { kind: 'managementTeam' } | { kind: 'core' };
+
+const invalidateNarrowTag = (tickerRecord: TickerV1, slice: TickerCacheSlice): void => {
+  switch (slice.kind) {
+    case 'category':
+      revalidateTickerCategoryReportTag(tickerRecord.symbol, tickerRecord.exchange, slice.category);
+      return;
+    case 'competition':
+      revalidateTickerCompetitionTag(tickerRecord.symbol, tickerRecord.exchange);
+      return;
+    case 'managementTeam':
+      revalidateTickerManagementTeamTag(tickerRecord.symbol, tickerRecord.exchange);
+      return;
+    case 'core':
+      // Ticker-core changes (summary/aboutReport) only need the umbrella tag —
+      // the subpage caches still hold valid data for their own slice.
+      return;
+  }
+};
+
+export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1, slice: TickerCacheSlice, options?: { skipRevalidation?: boolean }) => {
   if (!options?.skipRevalidation) {
+    // Always bump the umbrella so the aggregate main page rebuilds...
     revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+    // ...plus the one narrow tag for the subpage whose data actually changed.
+    invalidateNarrowTag(tickerRecord, slice);
   }
   await prisma.tickerV1.update({
     where: {

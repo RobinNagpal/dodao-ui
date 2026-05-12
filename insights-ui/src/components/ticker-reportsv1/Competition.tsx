@@ -119,6 +119,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
 
             <Link
               href={`/stocks/${tickerData.exchange}/${tickerData.symbol}`}
+              prefetch={false}
               className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
             >
               View Full Report →

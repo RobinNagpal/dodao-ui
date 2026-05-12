@@ -1,8 +1,8 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { PerformanceResponse } from '@/types/ticker-typesv1';
+import { PerformanceResponse, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { tickerCategoryReportTag } from '@/utils/ticker-v1-cache-utils';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -17,10 +17,19 @@ export function truncateForMeta(text: string, maxLength: number = 155): string {
 }
 
 /** Fetch performance data for a specific exchange+ticker (cached). */
-export async function fetchPerformanceByExchange(exchange: string, ticker: string, dataSlug: string): Promise<PerformanceResponse> {
+export async function fetchPerformanceByExchange(
+  exchange: string,
+  ticker: string,
+  dataSlug: string,
+  category: TickerAnalysisCategory
+): Promise<PerformanceResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/${dataSlug}`;
   try {
-    const res = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    // Subscribe to the narrow per-category tag only. The umbrella tag would
+    // pull this page into every unrelated ticker-data invalidation (price
+    // history, scraper refresh, competition save, ...) and explode ISR
+    // writes — see knowledge/cache-invalidation.md if added.
+    const res = await fetch(url, { next: { tags: [tickerCategoryReportTag(ticker, exchange, category)] } });
     if (!res.ok) {
       console.warn(`fetchPerformanceByExchange failed (${res.status}): ${url}`);
       return EMPTY_RESPONSE;
@@ -52,9 +61,16 @@ export async function fetchPerformanceAnyExchange(ticker: string, dataSlug: stri
  * Exchange-aware fetch with uncached fallback + canonical redirect.
  * @param dataSlug  API data segment, e.g. "past-performance-data" or "future-performance-data"
  * @param pageSlug  Page segment for the redirect URL, e.g. "past-performance" or "future-performance"
+ * @param category  TickerAnalysisCategory for cache-tag scoping (one tag per subpage, not the umbrella)
  */
-export async function getPerformanceOrRedirect(exchange: string, ticker: string, dataSlug: string, pageSlug: string): Promise<PerformanceResponse> {
-  const data = await fetchPerformanceByExchange(exchange, ticker, dataSlug);
+export async function getPerformanceOrRedirect(
+  exchange: string,
+  ticker: string,
+  dataSlug: string,
+  pageSlug: string,
+  category: TickerAnalysisCategory
+): Promise<PerformanceResponse> {
+  const data = await fetchPerformanceByExchange(exchange, ticker, dataSlug, category);
 
   if (data.ticker) {
     enforceDeletedTicker(data.ticker);

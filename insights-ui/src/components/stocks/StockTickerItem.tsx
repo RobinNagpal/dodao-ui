@@ -41,7 +41,7 @@ export default function StockTickerItem({ symbol, name, exchange, score, display
 
   return (
     <>
-      <Link href={`/stocks/${exchange}/${symbol}`} className="w-full" aria-label={`View ${name}`} title={`View ${name}`}>
+      <Link href={`/stocks/${exchange}/${symbol}`} prefetch={false} className="w-full" aria-label={`View ${name}`} title={`View ${name}`}>
         <div className="flex gap-1.5 items-center min-w-0">
           <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[45px] text-right shrink-0`}>
             <span className="font-mono tabular-nums text-right text-xs">{score}/25</span>

@@ -1,6 +1,5 @@
 import { prisma } from '@/prisma';
 import { TickerV1, TickerV1StockAnalyzerScrapperInfo, Prisma } from '@prisma/client';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import {
   IncomeAnnualData,
   IncomeQuarterlyData,
@@ -320,7 +319,13 @@ export async function fetchAndUpdateStockAnalyzerData(ticker: TickerV1): Promise
   });
 
   console.log(`Updated scraper info for ticker ${ticker.symbol}`);
-  revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
+  // Intentionally do NOT revalidate the ticker tag here. This function runs in
+  // the read path of several API routes (financial-info, quarterly-chart-data,
+  // business-and-moat, etc.) that the static ticker pages fetch during render,
+  // so a revalidate here would evict the very cache entry we just filled and
+  // force an immediate re-render — double-counting ISR writes. The freshly
+  // upserted data is already in the response we're returning, which the
+  // caller's fetch will cache.
   return scraperInfo;
 }
 
@@ -383,7 +388,10 @@ export async function refreshMarketSummaryForFairValue(ticker: TickerV1): Promis
   });
 
   console.log(`Refreshed market summary only for ticker ${ticker.symbol} (fair value)`);
-  revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
+  // Intentionally do NOT revalidate here — see the note on
+  // fetchAndUpdateStockAnalyzerData above. This is called from the fair-value
+  // report-generation pipeline; the subsequent saveFactorAnalysisResponse call
+  // for the FairValue category will invalidate the right narrow tag.
   return scraperInfo;
 }
 

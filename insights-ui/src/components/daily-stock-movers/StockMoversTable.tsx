@@ -102,6 +102,7 @@ export default function StockMoversTable({ movers, type, country, availableDates
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Link
                         href={`/stocks/${mover.ticker.exchange}/${mover.ticker.symbol}`}
+                        prefetch={false}
                         className="group inline-flex items-center gap-1 text-sm font-semibold"
                       >
                         <span className="text-color group-hover:text-[#a09bff] group-hover:underline">{mover.ticker.symbol}</span>

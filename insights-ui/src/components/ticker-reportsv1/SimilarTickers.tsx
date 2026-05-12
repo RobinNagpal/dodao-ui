@@ -28,6 +28,7 @@ export default function SimilarTickers({ dataPromise }: SimilarTickersProps): JS
             <Link
               key={similarTicker.id}
               href={`/stocks/${similarTicker.exchange.toUpperCase()}/${similarTicker.symbol.toUpperCase()}`}
+              prefetch={false}
               className="block bg-gray-800 p-3 sm:p-4 rounded-md border border-gray-700 hover:border-[#F97316] transition-colors group"
             >
               <div className="flex flex-col gap-y-2">

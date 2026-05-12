@@ -48,6 +48,7 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
 
             <Link
               href={`/stocks/${toExchange(mover.ticker.exchange)}/${mover.ticker.symbol}`}
+              prefetch={false}
               className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1"
             >
               View Full Report →

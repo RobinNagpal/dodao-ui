@@ -64,6 +64,7 @@ export default function CompetitionChartSection({ dataPromise, exchange, ticker 
           <h2 className="text-xl font-bold">Competition</h2>
           <Link
             href={`/stocks/${exchange}/${ticker}/competition`}
+            prefetch={false}
             className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
           >

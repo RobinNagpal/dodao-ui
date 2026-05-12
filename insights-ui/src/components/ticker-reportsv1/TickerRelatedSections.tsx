@@ -97,6 +97,7 @@ export default function TickerRelatedSections({
           <li key={s.slug} className="h-full">
             <Link
               href={`/stocks/${ex}/${tk}/${s.slug}`}
+              prefetch={false}
               className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             >
               {s.label} &rarr;

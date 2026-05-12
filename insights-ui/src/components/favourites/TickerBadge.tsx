@@ -37,7 +37,11 @@ export default function TickerBadge({ ticker, showScore = false, showName = fals
   );
 
   if (linkToStock) {
-    return <Link href={`/stocks/${ticker.exchange}/${ticker.symbol}`}>{content}</Link>;
+    return (
+      <Link href={`/stocks/${ticker.exchange}/${ticker.symbol}`} prefetch={false}>
+        {content}
+      </Link>
+    );
   }
 
   return content;
