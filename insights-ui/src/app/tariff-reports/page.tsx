@@ -75,11 +75,18 @@ interface ChapterCardProps {
   lastModified?: string;
 }
 
+// Card-only ordering: shorter labels first so the 5 section pills fit in two rows
+// instead of three. The canonical reading order lives in CHAPTER_REPORT_SECTIONS.
+const CARD_SECTION_DISPLAY_ORDER = ['tariff-updates', 'industry-areas', 'tariff-engineering', 'understand-industry', 'final-conclusion'];
+
 function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
   const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+  const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
+    (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
+  );
 
   return (
     <article className="group flex flex-col rounded-2xl bg-gray-900 border border-gray-800 transition-all hover:border-blue-500 p-6">
@@ -100,7 +107,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
       <p className="mb-5 line-clamp-3 flex-1 text-sm text-gray-300">{description}</p>
 
       <div className="mb-5 flex flex-wrap gap-1.5">
-        {CHAPTER_REPORT_SECTIONS.map((section) => (
+        {orderedSections.map((section) => (
           <Link
             key={section.slug}
             href={chapterSectionHref(chapterSlug, section.slug)}

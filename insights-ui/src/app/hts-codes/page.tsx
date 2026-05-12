@@ -13,18 +13,29 @@ import Link from 'next/link';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'HTS Code Sections & Chapters | KoalaGains',
+  title: 'HTS Code Lookup – Browse HTSUS Sections, Chapters & Duty Rates',
   description:
-    'Browse every section and chapter of the Harmonized Tariff Schedule of the United States (HTSUS). Drill into any chapter to view duty rates, units of measure, and official chapter notes for every HTS code.',
+    'Free HTS code lookup. Browse every section and chapter of the Harmonized Tariff Schedule (HTSUS) with duty rates, units of measure, and official chapter notes.',
   alternates: { canonical: 'https://koalagains.com/hts-codes' },
   openGraph: {
-    title: 'HTS Code Sections & Chapters | KoalaGains',
-    description: 'Browse HTSUS sections and chapters with official duty rates.',
+    title: 'HTS Code Lookup – Browse HTSUS Sections, Chapters & Duty Rates',
+    description: 'Free HTS code lookup. Browse HTSUS sections and chapters with official US duty rates and chapter notes.',
     url: 'https://koalagains.com/hts-codes',
     siteName: 'KoalaGains',
     type: 'website',
   },
-  keywords: ['HTS codes', 'HTSUS', 'HTS sections', 'HTS chapters', 'harmonized tariff schedule', 'US tariffs', 'duty rates', 'tariff calculator'],
+  keywords: [
+    'HTS code lookup',
+    'HTS codes',
+    'HTSUS',
+    'HTS sections',
+    'HTS chapters',
+    'harmonized tariff schedule',
+    'US tariff codes',
+    'US duty rates',
+    'import classification',
+    'tariff calculator',
+  ],
 };
 
 async function fetchSections(): Promise<TariffSectionListItem[]> {

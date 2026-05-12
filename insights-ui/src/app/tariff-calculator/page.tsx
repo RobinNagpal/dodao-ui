@@ -9,9 +9,9 @@ import { Metadata } from 'next';
 export const dynamic = 'force-static';
 
 const PAGE_URL = 'https://koalagains.com/tariff-calculator';
-const PAGE_TITLE = 'US Tariff & Duty Calculator | KoalaGains';
+const PAGE_TITLE = 'US Tariff Calculator 2026 – Free Import Duty Estimator by HTS Code';
 const PAGE_DESCRIPTION =
-  'Free US import duty calculator. Search what you ship, pick its HTS code, and see the full cost — base HTS rate, Section 232, 301 and IEEPA tariffs, plus the usual port and processing fees.';
+  'Free US import duty calculator. Pick an HTS code and country to see the full landed cost — base HTS rate, Section 232, 301 and IEEPA tariffs, plus port and processing fees.';
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,

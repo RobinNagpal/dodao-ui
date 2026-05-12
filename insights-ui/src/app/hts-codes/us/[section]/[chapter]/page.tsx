@@ -72,14 +72,14 @@ export async function generateMetadata({ params }: { params: Promise<RouteParams
   const { section: sectionRaw, chapter: chapterRaw } = await params;
   const sectionNumber = parseSectionSegment(sectionRaw);
   const chapterNumber = parseChapterSegment(chapterRaw);
-  if (sectionNumber === null || chapterNumber === null) return { title: 'HTS Codes | KoalaGains' };
+  if (sectionNumber === null || chapterNumber === null) return { title: 'HTS Code Lookup – HTSUS Sections, Chapters & Duty Rates' };
 
   const chapter = await fetchChapterDetail(chapterNumber);
-  if (!chapter || chapter.section.number !== sectionNumber) return { title: 'HTS Codes | KoalaGains' };
+  if (!chapter || chapter.section.number !== sectionNumber) return { title: 'HTS Code Lookup – HTSUS Sections, Chapters & Duty Rates' };
 
   const padded = chapter.number.toString().padStart(2, '0');
-  const title = `Chapter ${padded} — ${chapter.title} | HTS Codes | KoalaGains`;
-  const description = `HTSUS Chapter ${padded}: ${chapter.title}. Browse every HTS code in this chapter with general rate, special rate, column 2 rate, units of measure, and applicable additional duties.`;
+  const title = `HTS Chapter ${padded}: ${chapter.title} – Codes & Duty Rates`;
+  const description = `HTS Chapter ${padded} (${chapter.title}) code lookup. View every HTS code in this chapter with the general rate, special rate, column 2 rate, units of measure, and additional duties.`;
   const canonical = `https://koalagains.com${chapterDetailHref(chapter.section.number, chapter.number, chapter.title)}`;
   return {
     title,
