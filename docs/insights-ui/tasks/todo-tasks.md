@@ -85,6 +85,22 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
+### Best ETF picks — curated shortlist per group / investor goal
+
+> ETF-side parallel to the stock 10-bagger shortlist. Reuse the existing analysis
+> output (Performance, Cost & Team, Risk, Future Outlook, Final Summary) and the
+> investor taxonomy in `etf-target-investor-groups.json` — don't invent new scoring.
+
+- [ ] Cast initial pool: `Etf.isComplete = true`, AUM floor (e.g. ≥ $250M), liquidity floor (≥ $5M ADV), inception ≥ 3y, expense-ratio sanity cap by group.
+- [ ] Score each survivor on a small fixed rubric — composite of the existing per-category report scores (Performance, Cost & Team, Risk, Future Outlook) plus tracking quality / mandate stability where applicable; reuse spider-chart numbers, do not regenerate.
+- [ ] Pick best-in-group: one primary + 1–2 honorable mentions per group in `etf-analysis-categories.json` (broad equity, sectors, factor/style, fixed-income-core, muni, leveraged-inverse, commodities, alternatives, crypto, multi-asset, currency). Suppress groups where a winner doesn't pass the threshold rather than forcing a pick.
+- [ ] Pick best-by-investor-goal: for each `etfInvestorGoals[].key` in the taxonomy, surface 3–5 ETFs that fit that goal's `analysisAngle` + `keyConsiderations` and clear its `redFlags`. Many goals already carry a seed `etfs[]` list — treat it as input, not output.
+- [ ] Persist `bestPickScore` + subscores + `bestPickRank` per group / per investor-goal on `Etf` (or a sibling table) so the score is queryable independent of the shortlist render.
+- [ ] Surface at `/etfs/best-picks` — one card per name with score, group, expense ratio, 1-paragraph thesis, link to the full ETF detail page; methodology + filters visible; sub-tabs or sibling pages for `/etfs/best-picks/by-investor-goal/[goalKey]`.
+- [ ] Cross-link from the ETFs home section, each group's category page, and each `EtfInvestorGoal` page (if/when those land); add to sitemap.
+- [ ] Re-run quarterly on the off-hours Claude-Code runner; track entries added/removed/promoted/cut; admin diff view for review before publish.
+- [ ] Open: composite-score weights per group (cost dominates broad-equity, risk dominates leveraged-inverse, team dominates active); how to handle ties across same-issuer share classes (VOO vs VFIAX-equivalent); whether passive-only groups should suppress the Cost & Team team-quality sub-score; honorable-mentions tier vs hard cut; whether "best for investor goal" overrides "best in group" on the home page rail.
+
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
 - [ ] Filter to active ETFs only via `Etf.isActive` (or `managementStyle` enum); suppress entirely for passive/index.
