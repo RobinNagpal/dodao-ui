@@ -26,9 +26,10 @@ For each group we ask:
 
 ## Groups
 
-- **Broad Equity** — two philosophies, pick the one that matches the investor:
-  - [broad-equity.md](broad-equity.md) — *passive total-market* approach. Picks **VTI** (US total market) + **VXUS** (international ex-US) to own everything at the lowest possible fee.
-  - [broad-equity-growth-quality.md](broad-equity-growth-quality.md) — *growth-and-quality concentration* approach. Picks **QQQ** (Nasdaq-100 innovation mega-caps) + **MOAT** (Morningstar wide-moat quality with valuation discipline) to deliberately outperform the broad market.
+- **Broad Equity** — three philosophies on a spectrum from passive to fully active. Pick the one that matches the investor's conviction level:
+  - [broad-equity.md](broad-equity.md) — *passive total-market*. Picks **VTI** (US total market) + **VXUS** (international ex-US) to own everything at the lowest possible fee. ~0.04% blended fee.
+  - [broad-equity-growth-quality.md](broad-equity-growth-quality.md) — *rules-based growth + quality concentration*. Picks **QQQ** (Nasdaq-100 innovation mega-caps) + **MOAT** (Morningstar wide-moat with valuation discipline) to outperform the broad market via systematic style tilts. ~0.30% blended fee.
+  - [broad-equity-active.md](broad-equity-active.md) — *truly actively managed, high-conviction*. Picks **FBCG** (Fidelity Blue Chip Growth — single-PM concentrated active under Sonu Kalra) + **CGGR** (Capital Group Growth — multi-PM American Funds active) to outperform via discretionary stock selection. ~0.49% blended fee. Carries explicit active-management risk: most active funds underperform, these picks are the empirical survivors.
 - _Sector & Thematic Equity — TBD_
 - _Factor & Style Equity — TBD_
 - _Fixed Income — Core & Government — TBD_
