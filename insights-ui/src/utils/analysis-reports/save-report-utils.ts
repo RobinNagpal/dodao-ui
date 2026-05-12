@@ -8,7 +8,7 @@ import {
 } from '@/types/public-equity/analysis-factors-types';
 import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
-import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { bumpUpdatedAtAndInvalidateCache, TickerCacheSlice, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
 import { TickerV1 } from '@prisma/client';
 
@@ -316,14 +316,14 @@ export async function saveFinalSummaryResponse(
   });
 
   if (!options?.skipRevalidation) {
-    // saveFinalSummaryResponse is the final step of the full generation
-    // pipeline. Every earlier step in `save-report-callback` passes
-    // `skipRevalidation: true`, so this is the only place an end-to-end run
-    // gets to invalidate caches. The pipeline touched every slice (categories,
-    // competition, management-team, ticker core), so we need to invalidate all
-    // per-ticker tags here — not just the umbrella — otherwise the per-subpage
-    // caches would keep serving stale data after a regeneration.
-    revalidateAllTickerTags(tickerRecord.symbol, tickerRecord.exchange);
+    // Final summary updates ticker.summary / metaDescription / aboutReport —
+    // all surfaced only on the main aggregate page, not on any subpage. Each
+    // step that DID run during this regen already invalidated its own narrow
+    // tag (per the new bumpUpdatedAtAndInvalidateCache semantics), so all we
+    // need to bump here is the umbrella. For a partial regen that includes
+    // only Final Summary, only the main page rebuilds — no false-positive
+    // subpage rebuilds.
+    revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
   }
 }
 
