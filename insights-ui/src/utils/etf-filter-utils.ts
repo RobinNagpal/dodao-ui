@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import { getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { ETF_OTHERS_GROUP_KEY, getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { expandCategoryAliases } from '@/utils/etf-category-aliases';
 
 /** ----- Types and Enums ----- */
@@ -946,16 +946,22 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
   }
 
   // Group is not stored on the row — translate the group key into the set of
-  // category names that belong to it and match any of them.
+  // category names that belong to it and match any of them. The synthetic
+  // "others" group means "category is null"; the listing route then OR-s in
+  // ETFs that lack a stockAnalyzerInfo relation entirely.
   const groupKey = filters[EtfFilterParamKey.GROUP]?.trim();
   if (groupKey) {
-    const categoryNames = getCategoriesForGroupKey(groupKey).map((c) => c.name);
-    if (categoryNames.length === 0) {
-      // Unknown / empty group: force-empty result set so callers see "no matches"
-      // rather than the unfiltered listing.
-      where.category = { equals: '__no_match__' };
+    if (groupKey === ETF_OTHERS_GROUP_KEY) {
+      where.category = null;
     } else {
-      where.category = { in: expandCategoryAliases(categoryNames) };
+      const categoryNames = getCategoriesForGroupKey(groupKey).map((c) => c.name);
+      if (categoryNames.length === 0) {
+        // Unknown / empty group: force-empty result set so callers see "no matches"
+        // rather than the unfiltered listing.
+        where.category = { equals: '__no_match__' };
+      } else {
+        where.category = { in: expandCategoryAliases(categoryNames) };
+      }
     }
   }
 

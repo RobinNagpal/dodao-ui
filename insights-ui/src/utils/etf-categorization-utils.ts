@@ -40,6 +40,19 @@ function validateEtfCategoriesConfig(): void {
 
 validateEtfCategoriesConfig();
 
+// Synthetic group for ETFs whose source data has no EtfStockAnalyzerInfo.category
+// value (either the relation is missing entirely or category is null). Not
+// stored in etf-analysis-categories.json — it isn't an analysis target, just a
+// browse bucket so users can still find these funds.
+export const ETF_OTHERS_GROUP_KEY = 'others';
+
+export const ETF_OTHERS_GROUP: EtfGroup = {
+  key: ETF_OTHERS_GROUP_KEY,
+  name: 'Others',
+  description:
+    'ETFs that are not yet assigned an analysis category in our source data. Shown so they remain discoverable; they are not part of the group-based analysis pipeline.',
+};
+
 export function getEtfGroupKey(category: string | null | undefined): string | undefined {
   if (!category) return undefined;
   const canonical = canonicalizeCategory(category);
@@ -54,6 +67,7 @@ export function getEtfGroupName(category: string | null | undefined): string | u
 
 export function getEtfGroupByKey(key: string | null | undefined): EtfGroup | undefined {
   if (!key) return undefined;
+  if (key === ETF_OTHERS_GROUP_KEY) return ETF_OTHERS_GROUP;
   return categoriesConfig.groups.find((g) => g.key === key);
 }
 

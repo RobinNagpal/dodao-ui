@@ -152,6 +152,47 @@ export async function fetchEtfProvidersForCountry(spaceId: string, country?: Etf
   return { providers, values, counts };
 }
 
+export interface EtfUncategorizedPreview {
+  items: EtfGroupingPreviewItem[];
+  count: number;
+}
+
+export async function fetchUncategorizedEtfPreview(spaceId: string, country?: EtfSupportedCountry): Promise<EtfUncategorizedPreview> {
+  // "Others" = ETFs missing a category value: either no EtfStockAnalyzerInfo
+  // relation at all, or one whose category column is null.
+  const baseWhere = {
+    spaceId,
+    OR: [{ stockAnalyzerInfo: { is: null } }, { stockAnalyzerInfo: { is: { category: null } } }],
+  };
+  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
+
+  const etfs = await prisma.etf.findMany({
+    where,
+    select: {
+      id: true,
+      symbol: true,
+      name: true,
+      exchange: true,
+      stockAnalyzerInfo: { select: { assetClass: true, category: true } },
+      financialInfo: { select: { aum: true } },
+      cachedScore: { select: { finalScore: true } },
+    },
+  });
+
+  const rows: RawEtfRow[] = etfs.map((etf) => ({
+    id: etf.id,
+    symbol: etf.symbol,
+    name: etf.name,
+    exchange: etf.exchange,
+    assetClass: etf.stockAnalyzerInfo?.assetClass ?? null,
+    category: etf.stockAnalyzerInfo?.category ?? null,
+    finalScore: etf.cachedScore?.finalScore ?? null,
+    aum: etf.financialInfo?.aum ?? null,
+  }));
+
+  return { items: selectTopFive(rows), count: rows.length };
+}
+
 export async function fetchEtfsForGroupings<TKey extends string>({
   spaceId,
   mode,
