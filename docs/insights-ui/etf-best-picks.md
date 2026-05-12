@@ -1,8 +1,6 @@
 # Best ETF Picks — by Group
 
-2 best ETFs under each of the 8 groups on
-[koalagains.com/etfs/groups](https://koalagains.com/etfs/groups) — one passive +
-one actively-managed pick per group. Reasoning lives in
+2 best ETFs under each of the 8 groups on `/etfs/groups`. Reasoning lives in
 [etf-best-picks-justifications.md](etf-best-picks-justifications.md).
 
 ---
@@ -29,21 +27,22 @@ one actively-managed pick per group. Reasoning lives in
 
 ## 2. Sector & Thematic Equity
 
-| Metric | **ITA** (passive pick) | **GDOC** (active pick) |
+| Metric | **ITA** (defense pick) | **SMH** (semiconductor pick) |
 |---|---|---|
-| Style | Passive thematic — US Aerospace & Defense | Actively managed — Goldman Sachs Future Health Care team |
-| Benchmark | Dow Jones US Select Aerospace & Defense Index | S&P 500 Health Care Index (reference benchmark) |
-| Top index to compare active to | n/a — IS an index tracker | vs XLV (S&P 500 Health Care): roughly in-line to +1–2 pp / yr since 2022 launch, but track record is short |
-| **Expense ratio** | 0.40% | 0.50% |
-| Expense vs same-index competitors | PPA (Invesco Aerospace & Defense) at **0.58%** (broader incl. some space/government services) and XAR (SPDR S&P Aerospace & Defense) at **0.35%** but equal-weighted (more mid-cap tilt). ITA is the cleanest market-cap-weighted prime-contractor exposure | XLV (Health Care Select SPDR) at **0.09%** — GDOC must clear a ~41 bps/yr active hurdle. Only ~3y of data; not yet decisively proven |
-| Tracking diff vs index (1y / 3y / 5y / 10y / 15y) | < 10 bps / yr across every window — clean tracking, all five horizons | n/a (active). vs XLV: 1y ~+1 pp, 3y ~+1–2 pp, 5y/10y/15y not available (launched 2022) |
-| AUM | ~$8B | ~$300–500M (below the $1B safety threshold — caveat) |
-| Portfolio turnover | ~10–15% / yr (quarterly index rebalance) | ~50–60% / yr (active discretion, theme rotation across GLP-1 / eldercare / med-tech) |
-| Dividend distribution | ~0.5% annual yield, paid quarterly | ~0.4% annual yield, paid annually. Growth-of-healthcare strategy → most return is capital appreciation |
-| Max drawdown + recovery vs index | 2020 COVID: −34% vs S&P −34%; recovered in ~12 months. 2022: −12% vs S&P −25% (defense was a 2022 winner) | 2022: ~−15% vs XLV −5%; recovered in ~12 months. Limited drawdown history given young fund |
-| Forward outlook on current holdings | Top: GE Aerospace, RTX, Lockheed Martin, Northrop Grumman, Boeing, TransDigm, L3Harris. Maps directly to KoalaGains scenarios: **US Defense Industrial Supercycle** + **US Missile Stockpile Rebuild After Iran War** | Top: Eli Lilly, Novo Nordisk, Vertex, Boston Scientific, plus AI-healthcare and longevity names. Maps to KoalaGains scenarios: **GLP-1 TAM Expansion Beyond Obesity**, **Eldercare & Long-Term Care Boom**, **Mental Health Demand Surge**; must navigate **Medicare Most-Favored-Nation Drug Price Caps** |
-| Securities-lending revenue | ~1–2 bps / yr returned to fund — iShares standard program | ~2–4 bps / yr returned to fund — Goldman standard program |
-| Bid-ask spread | ~2–3 bps during market hours | ~10–15 bps — wider than ITA due to smaller AUM, still tradable for retail size |
+| Style | Passive thematic — US Aerospace & Defense | Passive thematic — Semiconductors |
+| Benchmark | Dow Jones US Select Aerospace & Defense Index | MVIS US Listed Semiconductor 25 Index |
+| Top index to compare active to | n/a — IS an index tracker | n/a — IS an index tracker |
+| **Expense ratio** | 0.40% | 0.35% |
+| Expense vs same-index competitors | PPA (Invesco Aerospace & Defense) at **0.58%** (broader incl. some space/government services) and XAR (SPDR S&P Aerospace & Defense) at **0.35%** but equal-weighted (more mid-cap tilt). ITA is the cleanest market-cap-weighted prime-contractor exposure | SOXX (iShares Semiconductor) at **0.35%** — tracks PHLX SOX, slightly more equal-weighted, US-listed only (caps TSMC exposure). XSD (SPDR S&P Semiconductor) at **0.35%** — equal-weighted, small-cap-tilted. SMH wins on AUM/liquidity + cleanest exposure to the actual mega-cap leaders (NVDA, TSMC, AVGO) |
+| Tracking diff vs index (1y / 3y / 5y / 10y / 15y) | < 10 bps / yr across every window | < 10 bps / yr across every window |
+| AUM | ~$8B | ~$25B |
+| Portfolio turnover | ~10–15% / yr (quarterly index rebalance) | ~10–15% / yr (quarterly index rebalance) |
+| Dividend distribution | ~0.5% annual yield, paid quarterly | ~0.6% annual yield, paid annually (December) |
+| Max drawdown + recovery vs index | 2020 COVID: −34% vs S&P −34%; recovered in ~12 months. 2022: −12% vs S&P −25% (defense was a 2022 winner) | 2022: ~−40% vs S&P −25%; recovered in ~18 months. 2008: ~−60%, recovered in ~5y. Cyclical sector — bigger drawdowns are the price of admission |
+| Historical performance | 10y CAGR ~13–15% — accelerating last 3y as procurement budgets rise | 10y CAGR ~25%+ — the **single best-performing sector index of the last decade**, beats QQQ by ~7–10 pp / yr |
+| Forward outlook on current holdings | Top: GE Aerospace, RTX, Lockheed Martin, Northrop Grumman, Boeing, TransDigm, L3Harris. Multi-year tailwind: rising defense budgets, depleted munitions stockpiles after recent conflicts, allied rearmament. Concentrated prime-contractor exposure captures the procurement flow most directly | Top: NVDA (~20%), TSMC (~12%), AVGO (~10%), AMD, ASML, AMAT, LRCX, TXN, QCOM, MU. Cleanest AI-infrastructure expression in ETF form — hyperscaler capex, custom silicon, advanced packaging, EUV lithography. Concentrated where compute demand actually lands |
+| Securities-lending revenue | ~1–2 bps / yr returned to fund — iShares standard program | ~1–2 bps / yr returned to fund — VanEck standard program |
+| Bid-ask spread | ~2–3 bps during market hours | ~1–2 bps during market hours — top-tier liquidity for a thematic fund |
 
 ---
 
