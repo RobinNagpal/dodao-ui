@@ -119,6 +119,27 @@ trade with both **a multi-cycle PM track record and a reasonable fee**. ARKK has
 higher conviction but a much worse track record. TCAF is excellent but lower-growth
 oriented (more quality-tilted).
 
+### Same-index passive alternative — and the hurdle FBCG has to clear
+
+If you only want Russell 1000 Growth exposure, here are the cheapest passive ETFs
+tracking the **same benchmark**:
+
+| ETF      | Index                | Fee   | AUM     | Notes                                |
+| -------- | -------------------- | ----- | ------- | ------------------------------------ |
+| **VONG** | Russell 1000 Growth  | 0.07% | ~$30B   | Cheapest pure Russell 1000 Growth ETF (Vanguard) |
+| IWF      | Russell 1000 Growth  | 0.18% | ~$110B  | Most liquid Russell 1000 Growth ETF (iShares) |
+
+FBCG charges **0.59%** vs **0.07% for VONG** — a **52 bps / yr active-management
+premium**. To justify FBCG instead of just buying VONG, Kalra has to generate
+~52 bps / yr of excess return *after his fee*. Historically (via FBGRX) he has
+delivered ~+200–300 bps / yr of excess vs Russell 1000 Growth — well above the
+hurdle. But that hurdle resets every year: if Kalra retires, or the strategy lags
+3+ consecutive years, the active premium disappears and VONG becomes the better
+bet automatically.
+
+**Decision rule:** if FBCG's trailing 5y excess return vs VONG falls below
+~50 bps/yr on a rolling basis, switch to VONG.
+
 ---
 
 ## Pick 2: CGGR — Capital Group Growth ETF
@@ -218,6 +239,30 @@ market across many macro regimes.
 CGGR is the cleanest pure-growth ETF expression of a top-tier multi-PM active shop
 at a fee that doesn't materially erode the active premium.
 
+### Same-index passive alternative — and the hurdle CGGR has to clear
+
+CGGR also benchmarks against **Russell 1000 Growth** (even though the underlying
+AGTHX strategy is historically measured against the S&P 500). Same cheap passive
+alternatives as FBCG:
+
+| ETF      | Index                | Fee   | AUM     | Notes                |
+| -------- | -------------------- | ----- | ------- | -------------------- |
+| **VONG** | Russell 1000 Growth  | 0.07% | ~$30B   | Cheapest pure tracker |
+| IWF      | Russell 1000 Growth  | 0.18% | ~$110B  | Most liquid           |
+
+CGGR charges **0.39%** vs **0.07% for VONG** — a **32 bps / yr active premium**.
+Lower hurdle than FBCG's 52 bps, but here's the honest read: **CGGR's own 3y track
+record so far is in-line to slightly behind Russell 1000 Growth** — on the ETF's own
+data it has not yet cleared the hurdle. The bull case rests entirely on the
+multi-decade AGTHX track record (~+200 bps/yr vs S&P 500 over 30y), which is *not*
+an apples-to-apples comparison.
+
+**Decision rule:** if CGGR's trailing 5y excess return vs VONG remains negative
+through ~2027 — i.e., the multi-PM Capital Group process can't beat the cheap
+Russell 1000 Growth passive after fees — switch to VONG. The entire case for CGGR
+rests on the research team's historical alpha; if it stops showing up, there is no
+reason to keep paying 32 bps for the wrapper.
+
 ---
 
 ## Why pair FBCG + CGGR
@@ -258,3 +303,28 @@ at a fee that doesn't materially erode the active premium.
   don't qualify for the Nasdaq-100 or aren't yet in the Russell 1000 Growth index
   (recent IPOs, off-index foreign-listed-US-revenue names). That is where some of
   the historical alpha has actually come from.
+
+---
+
+## Decision rule: when to drop active for the cheap passive
+
+There is no point paying for an active ETF if a passive ETF tracking the **same
+index** delivers the same or better return after fees. Consolidated comparison:
+
+| Active pick   | Cheap passive tracking same index | Active premium hurdle | Historical excess (underlying fund vs same benchmark) | Status         |
+| ------------- | --------------------------------- | --------------------- | ----------------------------------------------------- | -------------- |
+| FBCG (0.59%)  | **VONG (0.07%)**                  | 52 bps / yr           | ~+200–300 bps / yr over 10y (FBGRX vs Russell 1000 Growth, net of fees) | **Clears hurdle** |
+| CGGR (0.39%)  | **VONG (0.07%)**                  | 32 bps / yr           | AGTHX is +100–200 bps / yr vs S&P 500 over 30y, but not vs Russell 1000 Growth — apples-to-apples comp doesn't exist | **Unproven on the ETF; under probation** |
+
+**Bottom line:** Active is only worth it if the manager actually beats the cheap
+passive tracking the same thing — net of fees. FBCG has cleared that bar
+historically. CGGR is on probation; underwrite it on the underlying Capital Group
+research process, not the 3y ETF returns. **If either pick's trailing 5y excess vs
+VONG drops below the respective hurdle, switch to VONG.** Don't keep paying for
+active management that isn't delivering.
+
+A simpler all-passive expression of this whole file:
+
+- **VONG (Russell 1000 Growth, 0.07%)** — captures the same factor exposure FBCG
+  and CGGR are targeting, at one-eighth the fee. If you don't believe in either of
+  the active managers, this is the right answer.
