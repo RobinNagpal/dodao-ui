@@ -131,13 +131,21 @@ async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastRes
  * Refresh window for time-driven scraper / market-data fetches. These hit
  * external services (Stock Analyzer Lambda, Yahoo Finance) whose underlying
  * upserts use a 7-day staleness threshold (`yahoo-price-history.ts` /
- * `stock-analyzer-scraper-utils.ts` FETCH_CONFIGS). Setting `revalidate` on
- * those specific fetches lets the page-level fetch cache expire on the same
- * cadence — so the freshness check has a chance to run on dormant tickers
- * without us blasting a `revalidateTag` call that would invalidate every
- * unrelated fetch tagged on the same page.
+ * `stock-analyzer-scraper-utils.ts` FETCH_CONFIGS).
+ *
+ * We deliberately pick 8 days — one full day beyond the staleness threshold —
+ * so that when this fetch's cache does expire and the API route runs, the DB
+ * row's `lastUpdatedAt*` is guaranteed to be older than 7 days, which makes
+ * the freshness check fire and the upstream Lambda/Yahoo call actually
+ * happen. At exactly 7 days the comparison (`ageInDays > 7`) can fall on the
+ * wrong side and skip the refresh.
+ *
+ * Only the 3 fetches that depend on external freshness (price-history,
+ * financial-info, quarterly-chart) carry this revalidate. The umbrella tag
+ * is invalidated independently by savers/admin actions; the time-based
+ * revalidate is purely a backstop for dormant tickers.
  */
-const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60;
+const EIGHT_DAYS_IN_SECONDS = 8 * 24 * 60 * 60;
 
 /** Similar + financial fetchers (promise-based for Suspense) */
 async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
@@ -154,7 +162,7 @@ async function fetchFinancialInfo(exchange: string, ticker: string): Promise<Fin
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
 
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: SEVEN_DAYS_IN_SECONDS } });
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
     if (!res.ok) {
       console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
       return null;
@@ -172,7 +180,7 @@ async function fetchQuarterlyChartData(exchange: string, ticker: string): Promis
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/quarterly-chart-data`;
 
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: SEVEN_DAYS_IN_SECONDS } });
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
     if (!res.ok) {
       console.error(`fetchQuarterlyChartData failed (${res.status}): ${url}`);
       return null;
@@ -190,7 +198,7 @@ async function fetchPriceHistory(exchange: string, ticker: string): Promise<Pric
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/price-history`;
 
   try {
-    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: SEVEN_DAYS_IN_SECONDS } });
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
     if (!res.ok) {
       console.error(`fetchPriceHistory failed (${res.status}): ${url}`);
       return null;
