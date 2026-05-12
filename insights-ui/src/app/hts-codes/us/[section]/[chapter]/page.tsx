@@ -243,17 +243,21 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
     tone: 'emerald',
   });
 
+  // Short / medium titles fit alongside the heading; long titles wrap onto a second visual row
+  // by stacking the pills below the H1, which keeps the heading readable and the pills usable.
+  const titleIsLong = chapter.title.length > 45;
+
   return (
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
       <div className="text-color">
         <header className="mb-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className={`flex flex-col gap-3 ${titleIsLong ? '' : 'sm:flex-row sm:items-start sm:justify-between'}`}>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
               <span className="font-mono tabular-nums text-muted-foreground mr-3">Chapter {padded}</span>
               {chapter.title}
             </h1>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <ToolPills links={toolLinks} />
               <HtsChapterDetailActions chapterNumber={chapter.number} />
             </div>

@@ -1,6 +1,6 @@
 # Tariffs Knowledge
 
-Reference docs for the tariffs analysis subsystem on KoalaGains. For active / planned tariff features see [`../tasks/optional_tariff_features.md`](../tasks/optional_tariff_features.md).
+Reference docs for the tariffs analysis subsystem on KoalaGains. For active / planned tariff features see [`../tasks/todo-tasks.md`](../tasks/todo-tasks.md).
 
 ## Files
 

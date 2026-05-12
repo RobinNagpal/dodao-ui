@@ -24,9 +24,6 @@ export const revalidate = false;
 /** Route params (strict) */
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
 
-/** Cache revalidation constants */
-const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
-
 /** Helpers */
 function truncateForMeta(text: string, maxLength: number = 155): string {
   if (text.length <= maxLength) return text;
@@ -36,7 +33,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 /** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */
 async function fetchCompetitionByExchange(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchCompetitionByExchange failed (${res.status}): ${url}`);
   }

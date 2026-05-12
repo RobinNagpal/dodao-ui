@@ -46,6 +46,7 @@ export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname() ?? ''; // <-- safe for null
   const isStocksRoute = pathname.startsWith('/stocks');
+  const isEtfsRoute = pathname.startsWith('/etfs');
   const isHomeRoute = pathname === '/';
 
   // Wrap the whole header in a parent with className="dark" to force dark mode here
@@ -64,7 +65,7 @@ export default function TopNav() {
             {!isHomeRoute && (
               <div className="hidden ml-4 lg:block lg:w-auto lg:min-w-[24rem]">
                 <div className="max-w-full lg:max-w-none">
-                  <SearchBar placeholder="Search stocks..." variant="navbar" />
+                  <SearchBar placeholder={isEtfsRoute ? 'Search ETFs...' : 'Search stocks...'} variant="navbar" kind={isEtfsRoute ? 'etfs' : 'stocks'} />
                 </div>
               </div>
             )}

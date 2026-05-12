@@ -10,13 +10,15 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+export type SearchKind = 'stocks' | 'etfs';
+
 export interface SearchResult {
   id: string;
   name: string;
   symbol: string;
   exchange: string;
-  industryKey: string;
-  subIndustryKey: string;
+  industryKey?: string;
+  subIndustryKey?: string;
   websiteUrl?: string | null;
   summary?: string | null;
   cachedScoreEntry: {
@@ -27,6 +29,7 @@ export interface SearchResult {
 export interface SearchBarProps {
   placeholder?: string;
   variant?: 'hero' | 'navbar';
+  kind?: SearchKind;
   onResultClick?: (result: SearchResult) => void;
   className?: string;
 }
@@ -40,12 +43,42 @@ type VariantStyles = {
   searchButton: string;
 };
 
+interface KindConfig {
+  apiPath: string;
+  detailHref: (r: SearchResult) => string;
+  viewAllHref: (q: string) => string;
+  noResultsTitle: (q: string) => string;
+  noResultsHint: string;
+  ariaLabel: string;
+}
+
+const KIND_CONFIG: Record<SearchKind, KindConfig> = {
+  stocks: {
+    apiPath: 'tickers-v1/search',
+    detailHref: (r) => `/stocks/${r.exchange}/${r.symbol}`,
+    viewAllHref: (q) => `/stocks?search=${encodeURIComponent(q)}`,
+    noResultsTitle: (q) => `No stocks found for “${q}”`,
+    noResultsHint: 'Try searching by company name or stock symbol',
+    ariaLabel: 'Search stocks',
+  },
+  etfs: {
+    apiPath: 'etfs-v1/search',
+    detailHref: (r) => `/etfs/${r.exchange}/${r.symbol}`,
+    viewAllHref: (q) => `/etfs?search=${encodeURIComponent(q)}`,
+    noResultsTitle: (q) => `No ETFs found for “${q}”`,
+    noResultsHint: 'Try searching by ETF name or ticker symbol',
+    ariaLabel: 'Search ETFs',
+  },
+};
+
 export default function SearchBar({
   placeholder = 'Search stocks by symbol or company name...',
   variant = 'hero',
+  kind = 'stocks',
   onResultClick,
   className = '',
 }: SearchBarProps): JSX.Element {
+  const config = KIND_CONFIG[kind];
   const [query, setQuery] = useState<string>('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -70,36 +103,38 @@ export default function SearchBar({
   }, []);
 
   // Debounced search function
-  const searchTickers = useCallback(async (searchQuery: string): Promise<void> => {
-    if (!searchQuery.trim() || searchQuery.length < 1) {
-      setResults([]);
-      setIsOpen(false);
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/search?q=${encodeURIComponent(searchQuery)}&limit=8`);
-
-      if (response.ok) {
-        const data: { results?: SearchResult[] } = await response.json();
-        setResults(Array.isArray(data.results) ? data.results : []);
-        // Keep dropdown open if we have results OR if we searched but found nothing
-        setIsOpen(true);
-      } else {
+  const runSearch = useCallback(
+    async (searchQuery: string): Promise<void> => {
+      if (!searchQuery.trim() || searchQuery.length < 1) {
         setResults([]);
         setIsOpen(false);
+        return;
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Search error:', error);
-      setResults([]);
-      setIsOpen(false);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+
+      setIsLoading(true);
+
+      try {
+        const response = await fetch(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/${config.apiPath}?q=${encodeURIComponent(searchQuery)}&limit=8`);
+
+        if (response.ok) {
+          const data: { results?: SearchResult[] } = await response.json();
+          setResults(Array.isArray(data.results) ? data.results : []);
+          setIsOpen(true);
+        } else {
+          setResults([]);
+          setIsOpen(false);
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Search error:', error);
+        setResults([]);
+        setIsOpen(false);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [config.apiPath]
+  );
 
   // Handle input change with debouncing
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -110,7 +145,7 @@ export default function SearchBar({
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
     debounceRef.current = setTimeout((): void => {
-      void searchTickers(value);
+      void runSearch(value);
     }, 300);
   };
 
@@ -156,8 +191,7 @@ export default function SearchBar({
     if (onResultClick) {
       onResultClick(result);
     } else if (typeof window !== 'undefined') {
-      // Default navigation
-      window.location.href = `/stocks/${result.exchange}/${result.symbol}`;
+      window.location.href = config.detailHref(result);
     }
   };
 
@@ -210,8 +244,10 @@ export default function SearchBar({
 
   const styles = getVariantStyles();
 
-  // Helper to render ticker item content without Link wrapper when onResultClick is provided
-  const renderTickerItem = (result: SearchResult): JSX.Element => {
+  // Inline renderer used when we can't (or don't want to) defer to a per-row Link
+  // component — i.e. when `onResultClick` is provided, or for ETF results where
+  // we don't have a stock-specific ticker item with notes/favourites.
+  const renderInlineRow = (result: SearchResult): JSX.Element => {
     const { textColorClass, bgColorClass } = getScoreColorClasses(result.cachedScoreEntry?.finalScore ?? 0);
 
     return (
@@ -241,7 +277,7 @@ export default function SearchBar({
           className={styles.input}
           autoComplete="off"
           autoFocus={variant === 'hero'}
-          aria-label="Search stocks"
+          aria-label={config.ariaLabel}
         />
 
         {query && (
@@ -253,7 +289,7 @@ export default function SearchBar({
         {variant === 'hero' && (
           <button
             onClick={(): void => {
-              if (query.trim()) void searchTickers(query);
+              if (query.trim()) void runSearch(query);
             }}
             className={`${styles.searchButton} focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2`}
             aria-label="Search"
@@ -287,8 +323,8 @@ export default function SearchBar({
                     aria-selected={index === highlightedIndex}
                   >
                     <div className="px-3 py-2">
-                      {onResultClick ? (
-                        renderTickerItem(result)
+                      {onResultClick || kind === 'etfs' ? (
+                        renderInlineRow(result)
                       ) : (
                         <StockTickerItem
                           symbol={result.symbol}
@@ -305,7 +341,7 @@ export default function SearchBar({
                 {results.length >= 8 && (
                   <div className="p-3 text-center border-t border-gray-700/50">
                     <Link
-                      href={`/stocks?search=${encodeURIComponent(query)}`}
+                      href={config.viewAllHref(query)}
                       className="text-indigo-400 hover:text-indigo-300 text-sm transition-colors duration-200"
                       onClick={(): void => setIsOpen(false)}
                     >
@@ -317,8 +353,8 @@ export default function SearchBar({
             </Tooltip.Provider>
           ) : query.trim() && !isLoading ? (
             <div className="p-4 text-center text-gray-400">
-              <div className="text-sm">No stocks found for &ldquo;{query}&rdquo;</div>
-              <div className="text-xs mt-1 opacity-75">Try searching by company name or stock symbol</div>
+              <div className="text-sm">{config.noResultsTitle(query)}</div>
+              <div className="text-xs mt-1 opacity-75">{config.noResultsHint}</div>
             </div>
           ) : null}
         </div>

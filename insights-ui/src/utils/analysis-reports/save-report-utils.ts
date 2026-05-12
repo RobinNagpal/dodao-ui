@@ -19,7 +19,8 @@ export async function saveFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
@@ -91,7 +92,7 @@ export async function saveFactorAnalysisResponse(
   // Update cached score using the utility function
   await updateTickerCachedScore(tickerRecord, tickerAnalysisCategory, score);
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
 }
 
 // Category-specific functions that use the generic saveFactorAnalysisResponse function
@@ -100,45 +101,50 @@ export async function saveBusinessAndMoatFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory, options);
 }
 
 export async function savePastPerformanceFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory, options);
 }
 
 export async function saveFutureGrowthFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory, options);
 }
 
 export async function saveFinancialAnalysisFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory, options);
 }
 
 export async function saveFairValueFactorAnalysisResponse(
   ticker: string,
   exchange: string,
   response: LLMFactorAnalysisResponse,
-  tickerAnalysisCategory: TickerAnalysisCategory
+  tickerAnalysisCategory: TickerAnalysisCategory,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
-  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory);
+  await saveFactorAnalysisResponse(ticker, exchange, response, tickerAnalysisCategory, options);
 }
 
 /**
@@ -201,7 +207,8 @@ export async function saveCompetitionAnalysisResponse(
       exchangeName?: string;
       detailedComparison: string;
     }>;
-  }
+  },
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
@@ -231,13 +238,18 @@ export async function saveCompetitionAnalysisResponse(
     },
   });
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
 }
 
 /**
  * Saves management team experience and alignment response
  */
-export async function saveManagementTeamResponse(ticker: string, exchange: string, response: LLMManagementTeamResponse): Promise<void> {
+export async function saveManagementTeamResponse(
+  ticker: string,
+  exchange: string,
+  response: LLMManagementTeamResponse,
+  options?: { skipRevalidation?: boolean }
+): Promise<void> {
   const spaceId = KoalaGainsSpaceId;
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
@@ -270,7 +282,7 @@ export async function saveManagementTeamResponse(ticker: string, exchange: strin
     },
   });
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
 }
 
 /**
@@ -281,7 +293,8 @@ export async function saveFinalSummaryResponse(
   exchange: string,
   finalSummary: string,
   metaDescription: string,
-  aboutReport: string
+  aboutReport: string,
+  options?: { skipRevalidation?: boolean }
 ): Promise<void> {
   const tickerRecord = await fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry(ticker, exchange);
 
@@ -298,7 +311,9 @@ export async function saveFinalSummaryResponse(
     },
   });
 
-  revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+  if (!options?.skipRevalidation) {
+    revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+  }
 }
 
 /**

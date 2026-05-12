@@ -27,8 +27,6 @@ export const revalidate = false;
 
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
 
-const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;
-
 function truncateForMeta(text: string, maxLength: number = 155): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
@@ -36,7 +34,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   }

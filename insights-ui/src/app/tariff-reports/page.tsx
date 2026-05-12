@@ -78,7 +78,7 @@ interface ChapterCardProps {
 function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
-  const title = `HTS Chapter ${padded} — ${chapterTitle}`;
+  const title = `${chapterTitle}`;
   const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
 
   return (
@@ -135,7 +135,7 @@ export default async function TariffReportsPage() {
         <header className="mb-10">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <ToolPills
                 links={[
                   {

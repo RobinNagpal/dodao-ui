@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { InvestorTypes, ReportType, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { triggerGenerationOfAReportSimplified } from '@/utils/analysis-reports/generation-report-utils';
+import { calculatePendingSteps } from '@/utils/analysis-reports/report-steps-statuses';
 import {
   saveBusinessAndMoatFactorAnalysisResponse,
   saveCompetitionAnalysisResponse,
@@ -27,31 +28,51 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     exchange,
     ticker,
   });
+
+  // When this save is part of an ongoing generation request, only revalidate the
+  // page cache when this is the LAST pending step. Intermediate steps skip the
+  // revalidation so a full generation produces a single cache invalidation
+  // instead of one per step.
+  let skipRevalidation = false;
+  if (generationRequestId) {
+    const currentRequest = await prisma.tickerV1GenerationRequest.findUniqueOrThrow({
+      where: { id: generationRequestId },
+    });
+    const projectedCompletedSteps = currentRequest.completedSteps.includes(reportType)
+      ? currentRequest.completedSteps
+      : [...currentRequest.completedSteps, reportType];
+    const remainingPendingSteps = calculatePendingSteps({
+      ...currentRequest,
+      completedSteps: projectedCompletedSteps,
+    });
+    skipRevalidation = remainingPendingSteps.length > 0;
+  }
+
   // Save the report based on the report type
   switch (reportType) {
     case ReportType.BUSINESS_AND_MOAT:
-      await saveBusinessAndMoatFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.BusinessAndMoat);
+      await saveBusinessAndMoatFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.BusinessAndMoat, { skipRevalidation });
       break;
     case ReportType.PAST_PERFORMANCE:
-      await savePastPerformanceFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.PastPerformance);
+      await savePastPerformanceFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.PastPerformance, { skipRevalidation });
       break;
     case ReportType.FUTURE_GROWTH:
-      await saveFutureGrowthFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FutureGrowth);
+      await saveFutureGrowthFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FutureGrowth, { skipRevalidation });
       break;
     case ReportType.FINANCIAL_ANALYSIS:
-      await saveFinancialAnalysisFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FinancialStatementAnalysis);
+      await saveFinancialAnalysisFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FinancialStatementAnalysis, { skipRevalidation });
       break;
     case ReportType.COMPETITION:
-      await saveCompetitionAnalysisResponse(ticker, exchange, llmResponse);
+      await saveCompetitionAnalysisResponse(ticker, exchange, llmResponse, { skipRevalidation });
       break;
     case ReportType.FAIR_VALUE:
-      await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FairValue);
+      await saveFairValueFactorAnalysisResponse(ticker, exchange, llmResponse, TickerAnalysisCategory.FairValue, { skipRevalidation });
       break;
     case ReportType.MANAGEMENT_TEAM:
-      await saveManagementTeamResponse(ticker, exchange, llmResponse);
+      await saveManagementTeamResponse(ticker, exchange, llmResponse, { skipRevalidation });
       break;
     case ReportType.FINAL_SUMMARY:
-      await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport);
+      await saveFinalSummaryResponse(ticker, exchange, llmResponse.finalSummary, llmResponse.metaDescription, llmResponse.aboutReport, { skipRevalidation });
       break;
     default:
       throw new Error(`Unsupported report type: ${reportType}`);

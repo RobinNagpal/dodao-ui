@@ -68,10 +68,9 @@ export default function TariffCalculatorPage() {
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
 
       <div className="text-color" style={{ colorScheme: 'dark', accentColor: '#fbbf24' }}>
-        <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
-
         <header className="mb-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">US Tariff &amp; Duty Calculator</h1>

@@ -94,6 +94,64 @@ function selectTopFive(rows: RawEtfRow[]): EtfGroupingPreviewItem[] {
   }));
 }
 
+export interface EtfProvidersPreview {
+  providers: string[];
+  values: Map<string, EtfGroupingPreviewItem[]>;
+  counts: Map<string, number>;
+}
+
+export async function fetchEtfProvidersForCountry(spaceId: string, country?: EtfSupportedCountry): Promise<EtfProvidersPreview> {
+  const baseWhere = { spaceId, stockAnalyzerInfo: { is: { issuer: { not: null } } } };
+  const where = country ? { ...baseWhere, exchange: { in: getEtfExchangesByCountry(country) } } : baseWhere;
+
+  const etfs = await prisma.etf.findMany({
+    where,
+    select: {
+      id: true,
+      symbol: true,
+      name: true,
+      exchange: true,
+      stockAnalyzerInfo: { select: { issuer: true } },
+      financialInfo: { select: { aum: true } },
+      cachedScore: { select: { finalScore: true } },
+    },
+  });
+
+  const rowsByIssuer = new Map<string, RawEtfRow[]>();
+  const counts = new Map<string, number>();
+
+  for (const etf of etfs) {
+    const issuer = etf.stockAnalyzerInfo?.issuer?.trim();
+    if (!issuer) continue;
+    const row: RawEtfRow = {
+      id: etf.id,
+      symbol: etf.symbol,
+      name: etf.name,
+      exchange: etf.exchange,
+      assetClass: null,
+      category: null,
+      finalScore: etf.cachedScore?.finalScore ?? null,
+      aum: etf.financialInfo?.aum ?? null,
+    };
+    const bucket = rowsByIssuer.get(issuer) ?? [];
+    bucket.push(row);
+    rowsByIssuer.set(issuer, bucket);
+    counts.set(issuer, (counts.get(issuer) ?? 0) + 1);
+  }
+
+  const values = new Map<string, EtfGroupingPreviewItem[]>();
+  for (const [issuer, rows] of rowsByIssuer.entries()) {
+    values.set(issuer, selectTopFive(rows));
+  }
+
+  const providers = Array.from(counts.keys()).sort((a, b) => {
+    const diff = (counts.get(b) ?? 0) - (counts.get(a) ?? 0);
+    return diff !== 0 ? diff : a.localeCompare(b);
+  });
+
+  return { providers, values, counts };
+}
+
 export async function fetchEtfsForGroupings<TKey extends string>({
   spaceId,
   mode,
