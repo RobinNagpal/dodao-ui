@@ -1,7 +1,7 @@
 import type { TariffReportListingItem } from '@/app/api/tariff-reports/listing/route';
 import BreadcrumbsWithJsonLd from '@/components/ui/BreadcrumbsWithJsonLd';
 import TariffReportsPageActions from '@/components/industry-tariff/TariffReportsPageActions';
-import TariffCrossLinks from '@/components/tariff-cross-links/TariffCrossLinks';
+import ToolPills from '@/components/tariff-cross-links/ToolPills';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { CHAPTER_REPORT_SECTIONS, chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { TARIFF_REPORTS_LISTING_TAG } from '@/utils/tariff-report-tags';
@@ -75,11 +75,18 @@ interface ChapterCardProps {
   lastModified?: string;
 }
 
+// Card-only ordering: shorter labels first so the 5 section pills fit in two rows
+// instead of three. The canonical reading order lives in CHAPTER_REPORT_SECTIONS.
+const CARD_SECTION_DISPLAY_ORDER = ['tariff-updates', 'industry-areas', 'tariff-engineering', 'understand-industry', 'final-conclusion'];
+
 function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
   const title = `${chapterTitle}`;
   const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
+  const orderedSections = CARD_SECTION_DISPLAY_ORDER.map((slug) => CHAPTER_REPORT_SECTIONS.find((s) => s.slug === slug)).filter(
+    (s): s is (typeof CHAPTER_REPORT_SECTIONS)[number] => Boolean(s)
+  );
 
   return (
     <article className="group flex flex-col rounded-2xl bg-gray-900 border border-gray-800 transition-all hover:border-blue-500 p-6">
@@ -100,7 +107,7 @@ function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }:
       <p className="mb-5 line-clamp-3 flex-1 text-sm text-gray-300">{description}</p>
 
       <div className="mb-5 flex flex-wrap gap-1.5">
-        {CHAPTER_REPORT_SECTIONS.map((section) => (
+        {orderedSections.map((section) => (
           <Link
             key={section.slug}
             href={chapterSectionHref(chapterSlug, section.slug)}
@@ -131,34 +138,37 @@ export default async function TariffReportsPage() {
     <PageWrapper>
       <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color">
+      <div className="text-color">
         <header className="mb-10">
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
-            <TariffReportsPageActions />
+            <div className="flex flex-wrap items-center gap-2">
+              <ToolPills
+                links={[
+                  {
+                    href: '/tariff-calculator',
+                    label: 'Tariff Calculator',
+                    description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
+                    icon: <Calculator className="h-4 w-4" />,
+                    tone: 'indigo',
+                  },
+                  {
+                    href: '/hts-codes',
+                    label: 'HTS Code Browser',
+                    description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
+                    icon: <ListTree className="h-4 w-4" />,
+                    tone: 'emerald',
+                  },
+                ]}
+              />
+              <TariffReportsPageActions />
+            </div>
           </div>
           <p className="mt-3 max-w-3xl text-muted-foreground">
             Tariff and trade-policy analysis for chapters of the U.S. Harmonized Tariff Schedule (HTS). Each report covers tariff updates, country breakdowns,
             industry structure, sub-areas, and forward-looking conclusions.
           </p>
         </header>
-
-        <TariffCrossLinks
-          links={[
-            {
-              href: '/tariff-calculator',
-              title: 'Tariff Calculator',
-              description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
-              icon: <Calculator className="h-5 w-5" />,
-            },
-            {
-              href: '/hts-codes',
-              title: 'HTS Code Browser',
-              description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
-              icon: <ListTree className="h-5 w-5" />,
-            },
-          ]}
-        />
 
         {rows.length === 0 ? (
           <div className="rounded-2xl border border-gray-800 bg-gray-900 py-12 text-center">
