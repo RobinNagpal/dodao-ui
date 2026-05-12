@@ -36,20 +36,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest on off-hours runner; admin verification UI flags rows older than N months.
 - [ ] Open: legal sign-off on storing only the public LinkedIn URL; minimum coverage threshold to render; `Person` table vs denormalized per ticker.
 
-### Management Team Experience and Alignment — new 8th report type
-
-> Schema groundwork (`TickerV1ManagementTeamReport` + `ManagementTeamAlignmentVerdict`)
-> is in place; remaining work is the prompt, API, UI, and integrations.
-
-- [ ] Register `promptKey: 'US/public-equities-v1/management-team-experience-and-alignment'`; `inputJson` carries Leadership block + proxy/DEF 14A excerpts + 12-month Form 4 data. Output: `summary` (~150–250 words), `detailedAnalysis` (5–7 paragraphs, ~600–900 words), `alignmentVerdict`; cite sources inline.
-- [ ] Add `regenerateManagementTeamExperienceAndAlignment` to `TickerV1GenerationRequest`; "generate all" flips it on. **No back-fill** of older tickers. **Do not** add a score to `TickerV1CachedScore`.
-- [ ] API: `GET` (returns row or 404) + `POST` regenerate (mirror `future-risk/route.ts`); wire into batch handler only when "generate all" is set.
-- [ ] **Main stock page**: when row exists, render summary card with verdict pill + CTA to detail page; when absent, render nothing (no placeholder).
-- [ ] **Detail page** at `app/stocks/[exchange]/[ticker]/management-team-experience-and-alignment/page.tsx` — header with verdict pill, full `detailedAnalysis`, Leadership block sidebar, breadcrumbs, SSR + unique title/meta, sitemap entry.
-- [ ] Integrations: optional pass-through into Business & Moat prompt; map verdict to 10-bagger founder/owner-operator dimension; include summary + verdict in Custom Reports `inputJson`.
-- [ ] Off-hours refresh: only for tickers that already have a populated row; bump priority on CEO/CFO/founder-departure 8-Ks.
-- [ ] Open: suppress vs limited-data flag when proxy data is too thin; refresh cadence (annual + monthly insider-only?); verdict-pill colour mapping; future leaderboard view.
-
 ### 10-bagger shortlist — small-cap candidates filtered by Business & Moat
 
 - [ ] Cast initial pool: small-cap band, Business & Moat ≥ 4, liquidity floor (≥ $1M ADV), data-complete + recent reports.
