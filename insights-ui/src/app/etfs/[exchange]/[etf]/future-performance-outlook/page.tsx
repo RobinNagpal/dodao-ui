@@ -129,6 +129,7 @@ export default async function FuturePerformanceOutlookPage({ params }: { params:
         updatedAt={modifiedDate}
         assetClass={etfData.stockAnalyzerInfo?.assetClass}
         fundCategory={etfData.stockAnalyzerInfo?.category}
+        issuer={etfData.stockAnalyzerInfo?.issuer}
       />
     </PageWrapper>
   );
