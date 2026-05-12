@@ -26,7 +26,9 @@ For each group we ask:
 
 ## Groups
 
-- [broad-equity.md](broad-equity.md) — Broad Equity (US + international total-market)
+- **Broad Equity** — two philosophies, pick the one that matches the investor:
+  - [broad-equity.md](broad-equity.md) — *passive total-market* approach. Picks **VTI** (US total market) + **VXUS** (international ex-US) to own everything at the lowest possible fee.
+  - [broad-equity-growth-quality.md](broad-equity-growth-quality.md) — *growth-and-quality concentration* approach. Picks **QQQ** (Nasdaq-100 innovation mega-caps) + **MOAT** (Morningstar wide-moat quality with valuation discipline) to deliberately outperform the broad market.
 - _Sector & Thematic Equity — TBD_
 - _Factor & Style Equity — TBD_
 - _Fixed Income — Core & Government — TBD_
