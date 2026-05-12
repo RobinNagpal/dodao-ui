@@ -8,8 +8,8 @@ import {
 } from '@/types/public-equity/analysis-factors-types';
 import { CATEGORY_MAPPINGS, InvestorTypes, ManagementTeamAlignmentVerdict, TickerAnalysisCategory } from '@/types/ticker-typesv1';
 import { fetchAnalysisFactors, fetchTickerRecordBySymbolAndExchangeWithIndustryAndSubIndustry } from '@/utils/analysis-reports/get-report-data-utils';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
-import { bumpUpdatedAtAndInvalidateCache, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
+import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
+import { bumpUpdatedAtAndInvalidateCache, TickerCacheSlice, updateTickerCachedScore } from '@/utils/ticker-v1-model-utils';
 import { TickerV1 } from '@prisma/client';
 
 /**
@@ -92,7 +92,8 @@ export async function saveFactorAnalysisResponse(
   // Update cached score using the utility function
   await updateTickerCachedScore(tickerRecord, tickerAnalysisCategory, score);
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
+  const slice: TickerCacheSlice = { kind: 'category', category: tickerAnalysisCategory };
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, slice, options);
 }
 
 // Category-specific functions that use the generic saveFactorAnalysisResponse function
@@ -188,7 +189,10 @@ export async function saveInvestorAnalysisResponse(
     },
   });
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord);
+  // Investor analysis has no dedicated subpage today — only the main ticker
+  // page surfaces it (indirectly via the summary). Invalidate the umbrella tag
+  // through the 'core' slice so the main page picks it up.
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, { kind: 'core' });
 }
 
 /**
@@ -238,7 +242,7 @@ export async function saveCompetitionAnalysisResponse(
     },
   });
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, { kind: 'competition' }, options);
 }
 
 /**
@@ -282,7 +286,7 @@ export async function saveManagementTeamResponse(
     },
   });
 
-  await bumpUpdatedAtAndInvalidateCache(tickerRecord, options);
+  await bumpUpdatedAtAndInvalidateCache(tickerRecord, { kind: 'managementTeam' }, options);
 }
 
 /**
@@ -312,7 +316,14 @@ export async function saveFinalSummaryResponse(
   });
 
   if (!options?.skipRevalidation) {
-    revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
+    // saveFinalSummaryResponse is the final step of the full generation
+    // pipeline. Every earlier step in `save-report-callback` passes
+    // `skipRevalidation: true`, so this is the only place an end-to-end run
+    // gets to invalidate caches. The pipeline touched every slice (categories,
+    // competition, management-team, ticker core), so we need to invalidate all
+    // per-ticker tags here — not just the umbrella — otherwise the per-subpage
+    // caches would keep serving stale data after a regeneration.
+    revalidateAllTickerTags(tickerRecord.symbol, tickerRecord.exchange);
   }
 }
 

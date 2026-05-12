@@ -1,7 +1,6 @@
 import { prisma } from '@/prisma';
 import { TickerV1, TickerV1PriceHistory } from '@prisma/client';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
-import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { convertToYahooFinanceSymbol } from '@/utils/yahoo-finance-symbol-utils';
 import {
   DAILY_LOOKBACK_DAYS,
@@ -67,7 +66,13 @@ export async function ensurePriceHistoryIsFresh(ticker: TickerV1): Promise<Ticke
       },
     });
 
-    revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
+    // Intentionally do NOT revalidate any cache tag here. This function runs in
+    // the read path (called from the price-history API route which the ticker
+    // page itself fetches), so a revalidate here would evict the very cache
+    // entry we're about to fill — causing the page to be rebuilt twice and
+    // counting as an extra ISR write each time. The freshly-returned data is
+    // already what the caller's fetch will cache. Stale data will be picked up
+    // on the next external invalidation (admin refresh, scraper save, etc.).
     return saved;
   } catch (error) {
     console.error(`Failed to refresh price history for ${ticker.symbol} (${ticker.exchange}):`, error);

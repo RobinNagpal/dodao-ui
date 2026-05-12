@@ -9,6 +9,7 @@ import { Prisma, TickerV1Industry, TickerV1SubIndustry, TickerV1 } from '@prisma
 import { NextRequest } from 'next/server';
 import { generateExpectedStockAnalyzeUrl, validateStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
 import { AllExchanges, isExchange } from '@/utils/countryExchangeUtils';
+import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
 
 async function getHandler(
   req: NextRequest,
@@ -161,6 +162,14 @@ async function putHandler(
       }
     }
   }
+
+  // Admin edits to movedExchange/movedSymbol/isDeleted change what
+  // enforceMovedRedirect / enforceDeletedTicker do at the top of every
+  // per-ticker page, so all subpage caches need to drop their stale snapshot —
+  // not just the main aggregate page. The narrow per-subpage tags only get
+  // touched by their respective savers; an admin PUT here doesn't go through
+  // any saver, so we explicitly bust every per-ticker cache slice.
+  revalidateAllTickerTags(updatedTicker.symbol, updatedTicker.exchange);
 
   return updatedTicker;
 }

@@ -46,7 +46,7 @@ function LinkPill({ link }: { link: StockScenarioLinkDto }): JSX.Element {
   }
 
   return (
-    <Link href={`/stocks/${link.exchange}/${link.symbol}`} className="hover:opacity-80">
+    <Link href={`/stocks/${link.exchange}/${link.symbol}`} prefetch={false} className="hover:opacity-80">
       <PillVisual link={link} />
     </Link>
   );
@@ -151,6 +151,7 @@ function LinkCard({ link }: { link: StockScenarioLinkDto }): JSX.Element {
     return (
       <Link
         href={`/stocks/${link.exchange}/${link.symbol}`}
+        prefetch={false}
         className="block bg-[#111827] border border-[#374151] rounded-md p-2.5 hover:border-blue-500 hover:bg-[#0f1623] transition-colors"
       >
         {body}

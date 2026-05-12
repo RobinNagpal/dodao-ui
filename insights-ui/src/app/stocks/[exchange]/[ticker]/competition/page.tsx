@@ -4,7 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CompetitionResponse } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { tickerCompetitionTag } from '@/utils/ticker-v1-cache-utils';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
@@ -33,7 +33,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 /** Fetch competition data for a specific exchange+ticker (cached). Returns null ticker if exchange mismatch. */
 async function fetchCompetitionByExchange(exchange: string, ticker: string): Promise<CompetitionResponse> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { tags: [tickerCompetitionTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchCompetitionByExchange failed (${res.status}): ${url}`);
   }

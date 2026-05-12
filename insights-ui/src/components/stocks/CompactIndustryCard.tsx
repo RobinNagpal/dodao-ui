@@ -35,6 +35,7 @@ export default function CompactIndustryCard({ industryKey, industryName, topTick
                 <li key={ticker.symbol}>
                   <Link
                     href={`/stocks/${ticker.exchange}/${ticker.symbol}`}
+                    prefetch={false}
                     className="flex items-center gap-1.5 py-1 hover:bg-[#2D3748] transition-colors rounded px-1 -mx-1"
                   >
                     <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[46px] text-right`}>

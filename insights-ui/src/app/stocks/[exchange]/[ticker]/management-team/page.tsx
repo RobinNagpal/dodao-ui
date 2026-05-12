@@ -5,7 +5,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS, ManagementTeamAlignmentVerdict } from '@/types/ticker-typesv1';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
+import { tickerManagementTeamTag } from '@/utils/ticker-v1-cache-utils';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateManagementTeamArticleSchema, generateManagementTeamBreadcrumbSchema } from '@/utils/metadata-generators';
@@ -34,7 +34,7 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
 
 async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
-  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  const res: Response = await fetch(url, { next: { tags: [tickerManagementTeamTag(ticker, exchange)] } });
   if (!res.ok) {
     throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   }

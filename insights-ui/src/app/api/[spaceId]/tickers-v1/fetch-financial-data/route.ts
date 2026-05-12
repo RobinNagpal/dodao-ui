@@ -1,6 +1,7 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { fetchAndUpdateStockAnalyzerData } from '@/utils/stock-analyzer-scraper-utils';
+import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
 
@@ -53,6 +54,11 @@ const postHandler = async (
       }
 
       await fetchAndUpdateStockAnalyzerData(ticker);
+      // fetchAndUpdateStockAnalyzerData no longer revalidates on its own (it
+      // runs in the read path of several API routes where revalidating would
+      // double the ISR write count). This admin endpoint is an explicit
+      // write-path refresh, so we invalidate every per-ticker tag here.
+      revalidateAllTickerTags(ticker.symbol, ticker.exchange);
       processed++;
     } catch (error: any) {
       errors.push({
