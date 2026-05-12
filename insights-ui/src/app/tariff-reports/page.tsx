@@ -78,7 +78,7 @@ interface ChapterCardProps {
 function ChapterCard({ chapterNumber, chapterTitle, chapterSlug, lastModified }: ChapterCardProps) {
   const padded = chapterNumber.toString().padStart(2, '0');
   const href = chapterCoverHref(chapterSlug);
-  const title = `HTS Chapter ${padded} — ${chapterTitle}`;
+  const title = `${chapterTitle}`;
   const description = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapterTitle}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions.`;
 
   return (
@@ -144,8 +144,6 @@ export default async function TariffReportsPage() {
         </header>
 
         <TariffCrossLinks
-          heading="Looking for a specific HTS code or duty?"
-          description="Skip the long-form analysis when you just need to look up a code or estimate a duty."
           links={[
             {
               href: '/tariff-calculator',
