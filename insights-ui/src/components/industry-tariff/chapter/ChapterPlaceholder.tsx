@@ -27,6 +27,7 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
     <div className="py-4">
       <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8">
         {toolsCrossLinks}
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
 
         <header className="mb-6 pb-4 border-b border-color">
           <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -49,8 +50,6 @@ export default function ChapterPlaceholder({ chapter, pageTitle, currentSectionS
             this chapter as content rolls out.
           </p>
         </section>
-
-        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
       </article>
     </div>
   );

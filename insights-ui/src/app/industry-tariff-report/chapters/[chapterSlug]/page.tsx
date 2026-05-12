@@ -3,7 +3,7 @@ import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlac
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import type { PageSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { chapterCoverHref, chapterSectionHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
@@ -58,7 +58,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
 
-  const { chapter, report } = data;
+  const { chapter, report, createdAt, updatedAt } = data;
   const padded = chapter.number.toString().padStart(2, '0');
   const fallbackPageTitle = `HTS Chapter ${padded} — ${chapter.title}`;
   const fallbackDescription = `Tariff and trade-policy analysis for HTS Chapter ${padded} (${chapter.title}). Browse tariff updates, country-level breakdowns, industry structure, and forward-looking conclusions for this chapter of the Harmonized Tariff Schedule.`;
@@ -109,14 +109,23 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
   ];
 
   return (
-    <ChapterArticle chapter={chapter} pageTitle={pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug="overview">
+    <ChapterArticle
+      chapter={chapter}
+      pageTitle={pageTitle}
+      actions={actions}
+      toolsCrossLinks={toolsCrossLinks}
+      currentSlug="overview"
+      createdAt={createdAt}
+      updatedAt={updatedAt}
+      sectionLabel="Overview"
+    >
       <div className="space-y-10">
         <section>
           <h2 className="text-xl font-semibold heading-color mb-3">Overview</h2>
           {report.reportCover ? (
             <div
               className="prose max-w-none markdown markdown-body"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.reportCover.reportCoverContent) }}
+              dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(report.reportCover.reportCoverContent) }}
             />
           ) : (
             <p className="text-gray-500 italic">No content available</p>
@@ -125,19 +134,19 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
 
         {tariffUpdatesSummary.length > 0 && (
           <section>
-            <h2 className="text-xl font-semibold heading-color mb-3">Latest HTS Chapter {padded} Tariff Actions</h2>
-            <div className="space-y-4 mb-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 mb-3">
+              <h2 className="text-xl font-semibold heading-color">Latest HTS Chapter {padded} Tariff Actions</h2>
+              <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color text-sm font-medium hover:underline whitespace-nowrap">
+                View full country breakdown &rarr;
+              </a>
+            </div>
+            <div className="space-y-4">
               {tariffUpdatesSummary.map((tariff, index) => (
                 <div key={index} className="bg-gray-800 rounded-md p-4">
                   <h3 className="font-bold text-lg mb-2">{tariff.countryName}</h3>
-                  <div dangerouslySetInnerHTML={{ __html: parseMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
+                  <div dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(tariff.newChangesFirstSentence) }} className="markdown markdown-body" />
                 </div>
               ))}
-            </div>
-            <div>
-              <a href={chapterSectionHref(chapter.slug, 'tariff-updates')} className="link-color underline font-medium">
-                See full country breakdown
-              </a>
             </div>
           </section>
         )}
@@ -147,7 +156,7 @@ export default async function ChapterCoverPage({ params }: { params: Promise<{ c
             <h2 className="text-xl font-semibold heading-color mb-3">Executive Summary</h2>
             <div
               className="prose max-w-none markdown markdown-body"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(report.executiveSummary.executiveSummary) }}
+              dangerouslySetInnerHTML={{ __html: parseChapterBodyMarkdown(report.executiveSummary.executiveSummary) }}
             />
           </section>
         )}

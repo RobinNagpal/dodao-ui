@@ -68,10 +68,9 @@ export default function TariffCalculatorPage() {
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+      <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-color" style={{ colorScheme: 'dark', accentColor: '#fbbf24' }}>
-        <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
-
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl heading-color">US Tariff &amp; Duty Calculator</h1>
           <p className="mt-3 text-sm sm:text-base opacity-80">
@@ -81,7 +80,6 @@ export default function TariffCalculatorPage() {
         </header>
 
         <TariffCrossLinks
-          heading="Need to find an exact HTS code or read the broader analysis?"
           links={[
             {
               href: '/hts-codes',

@@ -8,10 +8,9 @@ interface ChapterRelatedSectionsProps {
   currentSlug: string;
 }
 
-// Bottom-of-card "More Related Reports" navigation. Replaces the left sidebar from the previous
-// layout — same set of links, just moved to the end of the article in the stock-page style
-// (cf. TickerRelatedSections / "More OMC analyses"). Card labels intentionally omit the chapter
-// title because the HTS chapter titles ("Dairy produce; birds eggs; natural honey; edible
+// Sibling-section nav rendered between the chapter tools bar and the article body. No heading —
+// the link grid alone is enough context next to the tools row. Card labels intentionally omit the
+// chapter title because the HTS chapter titles ("Dairy produce; birds eggs; natural honey; edible
 // products of animal origin, not elsewhere specified or included") are long enough to drown out
 // the per-section labels.
 export default function ChapterRelatedSections({ chapter, currentSlug }: ChapterRelatedSectionsProps): JSX.Element | null {
@@ -29,8 +28,7 @@ export default function ChapterRelatedSections({ chapter, currentSlug }: Chapter
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="More related reports" className="mt-10 pt-6 border-t border-color">
-      <h2 className="text-lg font-semibold mb-3">More Related Reports</h2>
+    <nav aria-label="More related reports" className="mb-6">
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {items.map((item) => (
           <li key={item.href} className="h-full">

@@ -127,6 +127,10 @@ function getTariffUpdatesForIndustryPrompt(chapterLabel: string, date: string, h
   1. Know the changes to the tariffs for that area and sub-area and ${country} by the Trump Government.
   2. I want to know the exact change. Mention the numerical figures as much as possible.
 
+  Strict rules for the output content:
+  - Each markdown body field must read as plain prose / bullets / bold — do NOT include any markdown headings (\`#\`, \`##\`, \`###\`, etc.). The page UI renders the section title for you.
+  - Never substitute a placeholder like \`var\`, \`X%\`, \`TBD\`, or \`[number]\` for a missing figure. If a specific rate or dollar amount is not in your sources, describe it qualitatively ("the prevailing MFN rate", "a low single-digit ad-valorem rate") or omit that fact entirely.
+
   Make sure to follow the output instructions below and include all the details in the output.
 
 

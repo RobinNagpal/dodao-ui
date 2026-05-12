@@ -21,7 +21,7 @@ const TONE_CLASSES: Record<NonNullable<ChapterToolLink['tone']>, string> = {
 };
 
 // Compact in-card "Tools for this chapter" bar. Renders as a horizontal pill row at the top of the
-// chapter article card — lighter than the full TariffCrossLinks grid so it doesn't compete with
+// chapter article card — lighter than the page-level TariffCrossLinks row so it doesn't compete with
 // the article body for attention while still giving quick access to the Tariff Calculator and the
 // HTS chapter browser.
 export default function ChapterToolsBar({ links }: ChapterToolsBarProps): JSX.Element | null {

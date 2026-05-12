@@ -71,14 +71,16 @@ export async function getFinalConclusionAndSaveToFile(slug: string): Promise<voi
      - For each of these areas, we learned what exactly the area is, what the established companies are, what the new companies are,
        and what the latest tariff updates are, and how these updates impact the given area.
      - For each of these areas we also created a final summary.
+  5. Do NOT use markdown headings (\`#\`, \`##\`, \`###\`, etc.) inside any of the body fields (\`conclusionBrief\`, \`positiveImpacts.positiveImpacts\`, \`negativeImpacts.negativeImpacts\`, \`finalStatements\`). The page UI already renders the section title above each field — use plain paragraphs, **bold**, or bullets for emphasis.
+  6. Bold every rate / percentage / dollar amount. Do not invent figures or use placeholders like \`var\` or \`TBD\`.
 
 
    Conclusion should include the following fields:
-    - title
-    - conclusionBrief (string)
+    - title (the page H1 — a search-friendly, 50-65 character title for the conclusion page)
+    - conclusionBrief (string — opens with a one-paragraph synthesis; no heading prefix)
     - positiveImpacts (object with keys: title, positiveImpacts)
     - negativeImpacts (object with keys: title, negativeImpacts)
-    - finalStatements (string)
+    - finalStatements (string — no heading prefix; the UI labels this "Final Statements")
 
     ${outputInstructions}
 

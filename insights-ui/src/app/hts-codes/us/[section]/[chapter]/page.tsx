@@ -260,7 +260,7 @@ export default async function HtsChapterDetailPage({ params }: { params: Promise
           </div>
         </header>
 
-        <TariffCrossLinks heading="Tools for this chapter" links={crossLinks} />
+        <TariffCrossLinks links={crossLinks} />
 
         {(chapter.notes || chapter.additionalUsNotes) && (
           <section className="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-4">

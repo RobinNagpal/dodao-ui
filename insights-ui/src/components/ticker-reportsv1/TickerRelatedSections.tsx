@@ -99,7 +99,7 @@ export default function TickerRelatedSections({
               href={`/stocks/${ex}/${tk}/${s.slug}`}
               className="flex h-full items-center rounded-md px-3 py-2 text-sm bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
             >
-              {companyName} ({tk}) {s.label} &rarr;
+              {s.label} &rarr;
             </Link>
           </li>
         ))}

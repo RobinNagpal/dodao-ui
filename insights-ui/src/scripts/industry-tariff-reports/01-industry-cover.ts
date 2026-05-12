@@ -47,6 +47,11 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
   - The "title" field should be a search-friendly H1 (50-65 characters) that includes the chapter title and a high-intent keyword
     (e.g. "${ctx.chapterTitle}: Tariff Rates, Duties & 2026 Updates"). Avoid generic phrases like "Tariff Report Cover".
 
+  Body rules for \`reportCoverContent\`:
+  - Do NOT use any markdown headings (\`#\`, \`##\`, \`###\`) — the page UI renders the title above your content.
+  - Use plain paragraphs, **bold**, and bullets only. Wrap every percentage / rate / dollar amount in backticks.
+  - Do not invent figures or use placeholder values like \`var\` or \`TBD\`.
+
    ${chapterSeoGuidance(ctx)}
 
    ${outputInstructions}

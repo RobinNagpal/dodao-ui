@@ -58,7 +58,8 @@ const StrategySchema = z.object({
     .string()
     .describe(
       'Concrete duty impact in numbers: rate before, rate after, dollar savings on a representative shipment value if available. ' +
-        'Wrap percentages and dollar amounts in backticks. Avoid vague phrases like "significant savings".'
+        'Wrap rates and amounts in backticks. Avoid vague phrases like "significant savings". ' +
+        'Do not invent figures — if a precise number is not available, describe qualitatively or omit it.'
     ),
   implementationSteps: z
     .array(z.string())
@@ -90,7 +91,8 @@ const TariffEngineeringSchema = z.object({
       '2-4 paragraphs of markdown introducing tariff engineering specifically for products in this HTS chapter. ' +
         'Define tariff engineering, explain the legitimacy boundary (legal restructuring vs. fraudulent misclassification), ' +
         'and frame why the current tariff landscape (Section 232 / 301 / IEEPA) makes this analysis valuable to importers right now. ' +
-        'Wrap percentages, dollar amounts, and rate values in backticks. Include at least 2 markdown citation links.'
+        'Wrap every percentage / dollar amount / rate value in backticks. Include at least 2 markdown citation links. ' +
+        'Do NOT include any markdown headings (`#`, `##`, `###`) — the page UI already renders the section title.'
     ),
   classificationLevers: z
     .array(ClassificationLeverSchema)
@@ -123,7 +125,7 @@ const TariffEngineeringSchema = z.object({
         '(c) realistic relocation candidates (Mexico, Vietnam, India, Malaysia, Thailand, Turkey) for sourcing teams ' +
         'now subject to Section 301 / IEEPA / reciprocal tariffs on China-origin goods; ' +
         "(d) anti-circumvention enforcement risk (CBP's focus on Vietnam/Cambodia/Malaysia transshipment). " +
-        'Wrap rates and amounts in backticks. Cite specific CBP guidance and CSMS messages where possible.'
+        'Wrap every percentage / dollar amount in backticks. Cite specific CBP guidance and CSMS messages where possible.'
     ),
   valuationOpportunities: z
     .string()
@@ -246,7 +248,7 @@ Output a JSON object that matches this EXACT schema:
 2. Cite real authorities wherever possible: CBP HQ / NY ruling numbers, CIT / CAFC case names,
    USTR exclusion notices, CBP CSMS messages, GRI numbers, 19 USC / 19 CFR sections. Use markdown
    links (\`[citation](url)\`) when you have a source.
-3. Wrap every percentage, dollar amount, and tariff rate in backticks (e.g. \`27.7%\`, \`\\$1.2M\`).
+3. Wrap every percentage, dollar amount, tariff rate, HTS subheading number, and regulation citation in backticks (e.g. \`27.7%\`, \`\\$1.2M\`, \`6109.10.0012\`, \`19 CFR §146\`). Do NOT invent or stub figures — if a precise number is not in your sources, describe qualitatively or omit it.
 4. The classification levers must reflect the structure of THIS chapter's subheadings — read the
    "Industry Areas / Sub-headings In Scope" input above and pick levers that move a product between
    those subheadings (or into / out of the chapter entirely under GRI 1 or Chapter Notes).

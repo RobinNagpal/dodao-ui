@@ -3,7 +3,6 @@ import ChapterPlaceholder from '@/components/industry-tariff/chapter/ChapterPlac
 import ChapterRelatedSections from '@/components/industry-tariff/chapter/ChapterRelatedSections';
 import ChapterSectionActions, { type ChapterSectionAction } from '@/components/industry-tariff/chapter/ChapterSectionActions';
 import { renderChapterToolsCrossLinks } from '@/components/industry-tariff/chapter/ChapterToolsCrossLinks';
-import { CountryNavigation } from '@/components/industry-tariff/renderers/CountryNavigation';
 import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/CountryTariffRenderer';
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderers/TariffEngineeringRenderer';
@@ -11,9 +10,9 @@ import { UnderstandIndustryRenderer } from '@/components/industry-tariff/rendere
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown } from '@/util/parse-markdown';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
+import { CHAPTER_REPORT_SECTIONS, ChapterRouteInfo, chapterSectionHref, getChapterSectionCopy } from '@/utils/tariff-reports/chapter-route-helpers';
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -106,8 +105,9 @@ function ChapterArticleHeader({ chapter, pageTitle, actions }: ChapterArticleHea
 }
 
 // Outer article wrapper shared by the chapter cover and every chapter section page. Mirrors the
-// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with header at
-// the top, the section body in the middle, and related-section navigation + footer at the bottom.
+// stock-detail card on /stocks/<EX>/<TK>/<section> — single `bg-gray-900` card with related-section
+// navigation + tools bar at the top, the section body in the middle, and a "Last updated …" footer
+// at the bottom.
 interface ChapterArticleProps {
   chapter: ChapterRouteInfo;
   pageTitle: string;
@@ -119,16 +119,73 @@ interface ChapterArticleProps {
   // Slug used by ChapterRelatedSections to omit the current page from the related grid.
   // Pass 'overview' on the chapter cover.
   currentSlug: string;
+  // ISO date string for the report's `updated_at`. Drives the footer's "Last updated …" line and
+  // the article's <meta itemProp="dateModified">. Optional because the upstream `fetch()` response
+  // may be served from the Next.js data cache populated by a deploy that predates the field — in
+  // that case we degrade gracefully and omit the date row rather than crashing on `new Date(undefined)`.
+  updatedAt?: string;
+  // ISO date string for `created_at`. Same caveat as `updatedAt`.
+  createdAt?: string;
+  // Human-readable label for the current section (e.g. "Tariff Updates", "Overview"). Rendered as
+  // the right-hand badge in the footer, mirroring the per-category badge on the stock report card.
+  sectionLabel: string;
 }
 
-export function ChapterArticle({ chapter, pageTitle, actions = [], toolsCrossLinks, children, currentSlug }: ChapterArticleProps): JSX.Element {
+function toValidDate(value: string | undefined): Date | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+export function ChapterArticle({
+  chapter,
+  pageTitle,
+  actions = [],
+  toolsCrossLinks,
+  children,
+  currentSlug,
+  updatedAt,
+  createdAt,
+  sectionLabel,
+}: ChapterArticleProps): JSX.Element {
+  const publishedDate = toValidDate(createdAt);
+  const modifiedDate = toValidDate(updatedAt);
+  const formattedModifiedDate = modifiedDate ? modifiedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
+
   return (
     <div className="py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+        {publishedDate && <meta itemProp="datePublished" content={publishedDate.toISOString()} />}
         {toolsCrossLinks}
+        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
         <ChapterArticleHeader chapter={chapter} pageTitle={pageTitle} actions={actions} />
         {children}
-        <ChapterRelatedSections chapter={chapter} currentSlug={currentSlug} />
+        <footer className="mt-8 pt-6 border-t border-color">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {modifiedDate && formattedModifiedDate ? (
+              <div className="text-sm text-muted-foreground">
+                <span>Last updated by </span>
+                <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                  <span itemProp="name">KoalaGains</span>
+                </span>
+                <span> on </span>
+                <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                  {formattedModifiedDate}
+                </time>
+              </div>
+            ) : (
+              <div />
+            )}
+            <div className="flex gap-2">
+              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                Tariff Report
+              </span>
+              <span className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900 px-2.5 py-0.5 text-xs font-medium text-teal-800 dark:text-teal-300">
+                {sectionLabel}
+              </span>
+            </div>
+          </div>
+        </footer>
       </article>
     </div>
   );
@@ -226,7 +283,6 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
       if (!tariffUpdates?.countrySpecificTariffs?.length) return null;
       return (
         <div className="space-y-4">
-          {tariffUpdates.countryNames?.length ? <CountryNavigation countries={tariffUpdates.countryNames} /> : null}
           {tariffUpdates.countrySpecificTariffs.map((countryTariff, index) => {
             const sectionId = `country-${countryTariff.countryName.toLowerCase().replace(/\s+/g, '-')}`;
             return <CountryTariffRenderer key={index} countryTariff={countryTariff} sectionId={sectionId} flat />;
@@ -240,7 +296,7 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
     }
     case 'industry-areas': {
       if (!report.industryAreasSections) return null;
-      const html = parseMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections));
+      const html = parseChapterBodyMarkdown(getMarkdownContentForIndustryAreas(report.industryAreasSections));
       return (
         <div className="markdown-body prose max-w-none">
           <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
@@ -260,16 +316,39 @@ function renderSectionBody(sectionSlug: string, report: IndustryTariffReport): J
   }
 }
 
+// Prefer the LLM-generated section title as the page H1 — it tends to be richer (and more SEO-friendly)
+// than the static fallback ("Tariff Engineering", "Final Conclusion", …). Falls back to `copy.pageTitle`
+// for sections that don't carry their own title (tariff-updates, industry-areas) or when generation hasn't
+// run yet. Renderers no longer emit a duplicate H2 of this same title; the page H1 is the only H1 on the page.
+function getEffectivePageTitle(sectionSlug: string, report: IndustryTariffReport, fallback: string): string {
+  const candidate = ((): string | undefined => {
+    switch (sectionSlug) {
+      case 'understand-industry':
+        return typeof report.understandIndustry?.title === 'string' ? report.understandIndustry.title : undefined;
+      case 'tariff-engineering':
+        return typeof report.tariffEngineering?.title === 'string' ? report.tariffEngineering.title : undefined;
+      case 'final-conclusion':
+        return typeof report.finalConclusion?.title === 'string' ? report.finalConclusion.title : undefined;
+      default:
+        return undefined;
+    }
+  })();
+  const trimmed = candidate?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : fallback;
+}
+
 export async function renderChapterSection(chapterSlug: string, sectionSlug: string): Promise<JSX.Element> {
   const data = await fetchChapterTariffReport(chapterSlug);
   if (!data) notFound();
-  const { chapter, report } = data;
+  const { chapter, report, createdAt, updatedAt } = data;
   const copy = getChapterSectionCopy(sectionSlug, chapter);
   if (!copy) notFound();
 
   const body = renderSectionBody(sectionSlug, report);
   const actions = getSectionActions(sectionSlug);
   const toolsCrossLinks = await renderChapterToolsCrossLinks(chapter);
+  const pageTitle = getEffectivePageTitle(sectionSlug, report, copy.pageTitle);
+  const sectionLabel = CHAPTER_REPORT_SECTIONS.find((s) => s.slug === sectionSlug)?.label ?? copy.pageTitle;
 
   if (!body) {
     return (
@@ -285,7 +364,16 @@ export async function renderChapterSection(chapterSlug: string, sectionSlug: str
   }
 
   return (
-    <ChapterArticle chapter={chapter} pageTitle={copy.pageTitle} actions={actions} toolsCrossLinks={toolsCrossLinks} currentSlug={sectionSlug}>
+    <ChapterArticle
+      chapter={chapter}
+      pageTitle={pageTitle}
+      actions={actions}
+      toolsCrossLinks={toolsCrossLinks}
+      currentSlug={sectionSlug}
+      createdAt={createdAt}
+      updatedAt={updatedAt}
+      sectionLabel={sectionLabel}
+    >
       {body}
     </ChapterArticle>
   );

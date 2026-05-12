@@ -88,7 +88,7 @@ export async function renderIndustryCoverBody(industryId: string): Promise<JSX.E
         </PrivateWrapper>
       )}
 
-      <TariffCrossLinks heading="Tools for this industry" links={crossLinks} />
+      <TariffCrossLinks links={crossLinks} />
 
       <div className="space-y-12">
         {renderSection(

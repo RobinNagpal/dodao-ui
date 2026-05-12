@@ -71,7 +71,6 @@ export default async function HtsCodesIndexPage() {
         </header>
 
         <TariffCrossLinks
-          heading="Want analysis or a duty estimate, not just the code?"
           links={[
             {
               href: '/tariff-reports',

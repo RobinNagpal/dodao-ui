@@ -1,6 +1,6 @@
 import React from 'react';
 import { FinalConclusion } from '@/scripts/industry-tariff-reports/tariff-types';
-import { parseMarkdown } from '@/util/parse-markdown';
+import { parseChapterBodyMarkdown, parseMarkdown } from '@/util/parse-markdown';
 
 interface FinalConclusionRendererProps {
   finalConclusion: FinalConclusion;
@@ -39,35 +39,35 @@ export const FinalConclusionRenderer: React.FC<FinalConclusionRendererProps> = (
   }
 
   if (flat) {
+    const md = parseChapterBodyMarkdown;
+    // The page-level H1 already shows `title` (see `getEffectivePageTitle` in chapter-section-page.tsx).
+    // Render just the conclusion body here so we keep one H1 per page.
     return (
       <div className="space-y-8">
-        {(title || conclusionBrief) && (
+        {conclusionBrief && (
           <section>
-            {title && <h2 className="text-2xl font-bold heading-color mb-3">{title}</h2>}
-            {conclusionBrief && (
-              <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(conclusionBrief) }} />
-            )}
+            <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(conclusionBrief) }} />
           </section>
         )}
 
         {(positiveTitle || positiveBody) && (
           <section>
             {positiveTitle && <h2 className="text-xl font-semibold heading-color mb-3">{positiveTitle}</h2>}
-            {positiveBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(positiveBody) }} />}
+            {positiveBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(positiveBody) }} />}
           </section>
         )}
 
         {(negativeTitle || negativeBody) && (
           <section>
             {negativeTitle && <h2 className="text-xl font-semibold heading-color mb-3">{negativeTitle}</h2>}
-            {negativeBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(negativeBody) }} />}
+            {negativeBody && <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(negativeBody) }} />}
           </section>
         )}
 
         {finalStatements && (
           <section>
             <h2 className="text-xl font-semibold heading-color mb-3">Final Statements</h2>
-            <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(finalStatements) }} />
+            <div className="prose max-w-none markdown markdown-body" dangerouslySetInnerHTML={{ __html: md(finalStatements) }} />
           </section>
         )}
       </div>

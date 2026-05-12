@@ -8,6 +8,10 @@ export interface ChapterTariffReportResponse {
   chapter: ChapterRouteInfo;
   oldUrl: string | null;
   report: IndustryTariffReport;
+  // ISO date strings (Date is not JSON-serializable). Consumed by the chapter
+  // article footer to render the "Last updated by KoalaGains on …" line.
+  createdAt: string;
+  updatedAt: string;
 }
 
 async function getHandler(_req: NextRequest, { params }: { params: Promise<{ chapterSlug: string }> }): Promise<ChapterTariffReportResponse> {
@@ -22,6 +26,8 @@ async function getHandler(_req: NextRequest, { params }: { params: Promise<{ cha
     },
     oldUrl: context.oldUrl,
     report,
+    createdAt: context.createdAt.toISOString(),
+    updatedAt: context.updatedAt.toISOString(),
   };
 }
 

@@ -43,6 +43,8 @@ export async function getExecutiveSummaryAndSaveToFile(slug: string): Promise<vo
        and what the latest tariff updates are, and how these updates impact the given area.
      - For each of these areas we also create a final summary.
   4. Dont use Katex or Latex or italics formatting in the response.
+  5. Do NOT include markdown headings (\`#\`, \`##\`, \`###\`) inside the \`executiveSummary\` field. The "Executive Summary" header is rendered by the page UI; your content should be plain paragraphs, **bold**, and bullets only.
+  6. Wrap every rate / percentage / dollar amount in backticks. Do not invent figures or use placeholders like \`var\` or \`TBD\`.
 
    Executive summary should include the following fields:
     - title (search-friendly H1, 50-65 characters, includes the chapter title and a high-intent keyword such as

@@ -38,6 +38,8 @@ export interface TariffReportContext {
   chapterId: string;
   chapterNumber: number;
   chapterTitle: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ChapterPromptContext {
@@ -116,6 +118,8 @@ export async function getReportContextBySlug(slug: string): Promise<TariffReport
     chapterId: row.chapter.id,
     chapterNumber: row.chapter.number,
     chapterTitle: row.chapter.title,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
   };
 }
 
