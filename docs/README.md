@@ -34,5 +34,5 @@ See [insights-ui/README.md](insights-ui/README.md) for the full index. Highlight
 - **Stock analysis** — [insights-ui/stock-analysis/README.md](insights-ui/stock-analysis/README.md) — `yarn stocks:add`, `yarn stocks:trigger`, and the `StockScenario` admin surface.
 - **ETF prompts** — [insights-ui/etf-prompts/README.md](insights-ui/etf-prompts/README.md) — source-of-truth prompt text per category plus the prompt-finalization approach.
 - **ETF prompt improvement** — [insights-ui/etf-prompt-improvement/README.md](insights-ui/etf-prompt-improvement/README.md) — iterative review notes from the prompt-tuning loop.
-- **Tariffs** — [insights-ui/tariffs/README.md](insights-ui/tariffs/README.md) — pipeline + use-case catalog. Backlog of next-up tariff features lives in [insights-ui/tasks/optional_tariff_features.md](insights-ui/tasks/optional_tariff_features.md).
+- **Tariffs** — [insights-ui/tariffs/README.md](insights-ui/tariffs/README.md) — pipeline + use-case catalog. Active and planned tariff features live in [insights-ui/tasks/todo-tasks.md](insights-ui/tasks/todo-tasks.md).
 - **Active task lists** — [insights-ui/tasks/README.md](insights-ui/tasks/README.md) — open + closed work for ETFs, stocks, tariffs, scenarios, and the prompt-tuning loop.

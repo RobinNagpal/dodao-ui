@@ -1,6 +1,6 @@
 # ETF Verification & Refinement Loops
 
-Automates the two refinement loops described in Phase 3 of `etfs.md`:
+Automates the two refinement loops described in the ETF Phase 3 work (now closed — see [`../tasks/closed-tasks.md`](../tasks/closed-tasks.md)):
 
 - **Loop A — Prompt refinement** (run once per evaluation category): trigger report
   generation **for that one category only** against the 16 hardcoded ETFs → wait → read
