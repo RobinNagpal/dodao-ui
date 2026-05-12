@@ -46,37 +46,66 @@
 
 ---
 
-## 3. Factor & Style Equity
-
-_Picks TBD._
-
----
-
-## 4. Fixed Income — Core & Government
-
-_Picks TBD._
-
----
-
-## 5. Municipal Bonds
-
-_Picks TBD._
-
----
-
-## 6. Leveraged & Inverse Trading
+## 3. Leveraged & Inverse Trading
 
 _Picks TBD — note: actively-managed picks may not apply in this group; almost
 everything here is structurally short-duration / single-day-reset._
 
 ---
 
-## 7. Commodities
+## 4. Fixed Income — Core & Government
+
+| Metric | **AGG** (passive pick) | **BOND** (active pick) |
+|---|---|---|
+| Style | Passive index | Actively managed (PIMCO Investment Management — Dan Ivascyn, Mohit Mittal, Marc Seidner) |
+| Benchmark | Bloomberg US Aggregate Bond Index | Bloomberg US Aggregate Bond Index (same; active tries to beat it) |
+| Top index to compare active to | n/a — IS an index tracker | vs AGG — has beaten by ~50–100 bps / yr after fees over 10y |
+| **Expense ratio** | 0.03% | 0.55% |
+| Expense vs same-segment competitors | BND (Vanguard) at **0.03%** — virtually identical product. SCHZ (Schwab) at **0.03%**. AGG wins on liquidity / AUM / options market | FBND (Fidelity active) at **0.36%** — cheaper but younger team. AGGY (WisdomTree smart-beta) at **0.12%** — yield-tilted, not pure active. BOND must clear a ~52 bps / yr active hurdle vs AGG; PIMCO has cleared it most years |
+| AUM | ~$120B (top-5 bond ETF in the world) | ~$5B |
+| 30-day SEC yield (YTM) | ~4.5% | ~4.7% (slight pickup from active credit/duration) |
+| Effective duration | ~6.0 years | ~5.5 years (active duration management, typically 0.5–1y below AGG) |
+| Credit quality breakdown | ~70% AAA (Treasuries + agency MBS) / ~25% A–BBB (IG corporate) / ~5% below | ~60% AAA / ~30% A–BBB / ~10% BB–B (small junk slice for yield pickup) |
+| Distribution frequency | Monthly | Monthly |
+| Max drawdown + recovery | 2022: ~−17% (worst bond drawdown in 40+ years — rate shock); recovered in ~24 months | 2022: ~−15%; recovered in ~22 months (active duration shortening softened the blow) |
+| Forward outlook | Locked-in ~4.5% YTM at multi-decade-high yields; ~6y duration means full participation in rate cuts as Fed eases | PIMCO's edge is duration timing + structured credit / agency MBS selection — has added value in every rate cycle since 1988 |
+| Bid-ask spread | < 1 bp during market hours | ~3–5 bps |
+
+---
+
+## 5. Fixed Income — Credit & Income
+
+| Metric | **HYG** (passive pick) | **JAAA** (active pick) |
+|---|---|---|
+| Style | Passive index — US high-yield corporate | Actively managed — AAA-rated CLO tranches (Janus Henderson CLO team, John Kerschner) |
+| Benchmark | Markit iBoxx USD Liquid High Yield Index | J.P. Morgan AAA CLO Index (reference) |
+| Top index to compare active to | n/a — IS an index tracker | vs AAA CLO index — closely tracks, adds value via CLO-manager and tranche selection |
+| **Expense ratio** | 0.49% | 0.21% |
+| Expense vs same-segment competitors | JNK (SPDR) at **0.40%** — cheaper, slightly less liquid. HYLB (Xtrackers) at **0.20%** — much cheaper, ~$3B AUM. USHY (iShares Broad HY) at **0.15%** — broadest, cheaper. HYG wins on bid-ask, AUM, and options-chain depth — pay up only if you're trading | CLOA (BlackRock AAA CLO) at **0.20%** — direct competitor, half the AUM. JBBB (Janus BBB/BB CLO sister) at **0.49%** — higher yield, higher risk. JAAA was first-mover and has the deepest CLO bench |
+| AUM | ~$14B | ~$15B (growing fast post-2022) |
+| 30-day SEC yield (YTM) | ~7.5% | ~6.5% |
+| Effective duration | ~3.2 years (HY bonds are shorter than IG) | ~0.2 years (floating-rate — resets every ~3 months; near-zero rate risk) |
+| Credit quality breakdown | 0% AAA–A / ~50% BB / ~40% B / ~10% CCC and below | 100% AAA-rated (top of CLO capital stack) |
+| Credit spread vs Treasuries | ~350–400 bps (tight vs historical median ~500 bps) | ~150–200 bps (paid for CLO complexity premium, not for default risk) |
+| Distribution frequency | Monthly | Monthly |
+| Max drawdown + recovery | 2008: ~−22%; 2020 COVID: ~−21%; recovered in 6–9 months each time. Falls *with* stocks, not against them | Since 2020 launch, max ~−3% (2022 rate shock barely touched it). AAA CLO tranches have **never defaulted** in the 30+ year history of the CLO market |
+| Forward outlook | Yields well above LT average, but spreads near cycle-tight levels limit upside; defaults expected to tick up into 2026 | Best risk-adjusted credit yield in the market right now — ~6.5% with no duration and AAA structural protection. Active manager selection avoids weaker CLO managers |
+| Bid-ask spread | ~1–2 bps | ~3–5 bps |
+
+---
+
+## 6. Municipal Bonds
 
 _Picks TBD._
 
 ---
 
-## 8. Multi-Asset & Allocation
+## 7. Alternative Strategies
+
+_Picks TBD._
+
+---
+
+## 8. Allocation & Target-Date
 
 _Picks TBD._

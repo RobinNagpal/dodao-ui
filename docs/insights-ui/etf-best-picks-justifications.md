@@ -117,3 +117,169 @@ ITA reverts to a sleepy late-cycle defensive sector.
 - **GDOC (Goldman Future Health Care, active)?** Active and thematic, but the
   3y track record vs XLV is mixed and AUM is sub-$1B. Not yet proven enough
   to take a position in.
+
+---
+
+## 4. Fixed Income — Core & Government — **AGG + BOND**
+
+Core bond money has *one* job: be the boring half of the portfolio. Steady
+income, low default risk, recession ballast. Within that, the right framing is
+**one ultra-cheap passive anchor + one active manager who can actually beat
+the index**.
+
+### Passive pick — **AGG (iShares Core US Aggregate Bond ETF)**
+
+Why AGG, not BND or GOVT:
+
+- **AGG** — tracks the Bloomberg US Aggregate Bond Index; **0.03% fee**;
+  ~$120B AUM. Holds Treasuries (~40%) + agency MBS (~25%) + investment-grade
+  corporates (~25%) + a sliver of supranationals. The literal definition of
+  "the US bond market."
+- **BND** (Vanguard) — same index family, same 0.03% fee, slightly broader
+  (includes more individual securities via Vanguard's "float-adjusted" tweak).
+  AGG vs BND is a coin flip on cost; AGG wins on slightly tighter spreads,
+  deeper options market, and bigger ETF-creation flow during stress.
+- **GOVT** (Treasuries only) — purer recession-hedge but no corporate yield
+  pickup. Run alongside AGG, not instead of it, if you want extra ballast.
+
+Why passive wins here: in the Core & Government segment, ~90% of active core
+bond funds underperform AGG after fees over 10y. The IG corporate and Treasury
+universe is too efficient for stock-pickers — except for a couple of
+exceptionally good shops. PIMCO is one of those shops; everyone else loses to
+AGG on a fee-adjusted basis.
+
+Risk to flag honestly:
+
+- **Duration of 6 years** means AGG is *not* immune to rate spikes — it lost
+  ~17% in 2022 when the Fed hiked aggressively. The 2022 drawdown was the
+  worst bond drawdown in 40+ years; recovery took ~24 months.
+- **Yield of ~4.5%** is locked in *if* you hold to maturity. If you sell into
+  a rate spike, you crystallize the loss.
+- **No deflation protection** beyond what duration provides. Pair with
+  Treasuries (GOVT / TLT) if you want a sharper recession hedge.
+
+### Active pick — **BOND (PIMCO Active Bond ETF)**
+
+Why BOND, not FBND or AGGY:
+
+- **BOND** — actively managed by PIMCO (Dan Ivascyn, Mohit Mittal, Marc
+  Seidner). 0.55% fee. ~$5B AUM. PIMCO has been the gold-standard active
+  fixed-income shop since the 1980s. The edge is duration timing + structured
+  credit / agency MBS selection — areas where the index can be inefficient.
+- **FBND** (Fidelity Total Bond) — 0.36% fee, ~$5B AUM, also active. Cheaper
+  but the Fidelity fixed-income franchise is younger and less deep than
+  PIMCO. Track record is fine, not exceptional.
+- **AGGY** (WisdomTree Yield Enhanced) — 0.12% fee, smart-beta yield tilt.
+  Cheaper but it's a rules-based factor, not real active management. Has had
+  a fee-adjusted edge in some periods, lost it in others.
+
+The 52 bps/yr hurdle vs AGG is real. PIMCO has cleared it in most years
+historically (~50–100 bps/yr alpha over 10y), and they've been honest about
+when they short or extend duration. If the team changes materially — which
+hasn't happened — re-evaluate.
+
+Decision rule: hold BOND as long as **3y rolling excess return vs AGG > 25
+bps / yr**. If PIMCO's edge degrades sustainably below that, just own AGG and
+save the 52 bps.
+
+---
+
+## 5. Fixed Income — Credit & Income — **HYG + JAAA**
+
+Credit & Income money is what you buy when you're willing to take **default
+risk in exchange for higher yield**. Two very different shapes of the risk
+make sense in a pair:
+
+1. **HYG** — classic fixed-rate high-yield exposure. The default-risk-for-yield
+   trade in its purest form. ~7.5% yield, ~3y duration, BB/B/CCC credit.
+2. **JAAA** — structurally different. AAA CLO tranches at the top of the
+   capital stack — near-zero duration, ~6.5% yield, almost no historical
+   default risk. The smart-credit innovation of the post-2020 cycle.
+
+These two are **complementary, not overlapping**: HYG gives you genuine
+credit-cycle exposure that correlates with stocks; JAAA gives you high yield
+*without* the duration or the directional credit beta. Together they're a
+much better credit barbell than two flavors of the same high-yield trade.
+
+### Passive pick — **HYG (iShares iBoxx High Yield Corporate Bond ETF)**
+
+Why HYG, not JNK or USHY:
+
+- **HYG** — tracks the Markit iBoxx USD Liquid High Yield Index; 0.49% fee;
+  ~$14B AUM. *The* benchmark high-yield ETF — deepest liquidity, tightest
+  spreads, biggest options market.
+- **JNK** (SPDR Bloomberg High Yield) — 0.40% fee, ~$7B AUM. Tracks a
+  different index that overlaps ~85% with HYG's. ~9 bps cheaper. For pure
+  buy-and-hold, JNK is the marginally better pick on cost.
+- **USHY** (iShares Broad USD High Yield) — 0.15% fee, broader inclusion. The
+  cheapest serious option. But the broader index includes smaller / less-
+  liquid issues that can blow out wider in stress.
+- **HYLB** (Xtrackers USD High Yield) — 0.20% fee, ~$3B AUM. Cheap, less
+  liquid.
+
+Why we still pick HYG: the **liquidity advantage matters more here than in
+equity ETFs**. High-yield bonds become very hard to sell during stress;
+March 2020 and 2008 both saw HY bond spreads blow out. The ETF's bid-ask is
+~1–2 bps even in stress, vs 5–10+ bps for the cheaper alternatives. For an
+asset class where you might need to exit fast, that's worth the 9 bps fee
+gap vs JNK.
+
+Risk to flag honestly:
+
+- **Spreads are tight** (~350–400 bps over Treasuries, vs ~500 bps historical
+  median). You're not being paid much for the credit risk right now.
+- **Default rates are rising** into the late-cycle — high-yield default rate
+  has been ticking up from sub-2% post-2020 lows.
+- **Stock-correlated**: HYG fell ~21% during March 2020 alongside the S&P.
+  It's income, not ballast.
+
+### Active pick — **JAAA (Janus Henderson AAA CLO ETF)**
+
+Why JAAA matters and what it is:
+
+A CLO (Collateralized Loan Obligation) is a pool of bank loans that gets
+sliced into tranches by credit risk. The **AAA tranche** sits at the very top
+of the capital stack — it gets paid first, and the lower tranches absorb losses
+before AAA holders see any pain. AAA CLO tranches have **never defaulted** in
+the 30+ year history of the CLO market.
+
+JAAA is the actively managed ETF that buys these AAA tranches. The "active"
+part is selecting which CLO managers (the people running the underlying loan
+portfolios) to back, and which specific tranches to hold.
+
+Why JAAA, not CLOA or JBBB:
+
+- **JAAA** — Janus Henderson, ~$15B AUM, 0.21% fee, ~6.5% yield. First-mover
+  (launched 2020), deepest active CLO bench, ran up to $15B+ AUM in 5 years
+  on real demand.
+- **CLOA** (BlackRock AAA CLO) — direct competitor, ~0.20% fee, ~$7B AUM.
+  Newer, smaller, but BlackRock's backing gives it a credible alternative
+  trajectory. If JAAA management leaves, CLOA is the fallback.
+- **JBBB** (Janus BBB-BB CLO) — Janus's sister fund, **lower tranches** of
+  the CLO capital stack. ~8% yield, but real default risk in a recession.
+  Not the same trade.
+
+Why it's the best risk-adjusted credit pick available right now:
+
+- **~6.5% yield** at AAA credit and ~0.2 duration. Bonds with that yield
+  usually carry junk credit *and* meaningful duration. CLO structure breaks
+  that trade-off.
+- **Floating-rate** (resets every ~3 months tied to SOFR). Doesn't fall when
+  rates rise — the 2022 drawdown was ~−3%.
+- **Active manager selection** earns its 21 bps — picking better-run CLO
+  managers (those with lower loan loss rates) genuinely matters. Bad CLO
+  managers can put even AAA tranches under stress in extreme scenarios.
+
+Risk to flag honestly:
+
+- **Complexity premium, not free yield** — the 150–200 bps over Treasuries
+  is partly compensation for CLO complexity. If markets ever decide CLOs are
+  too opaque (as happened briefly in March 2020), AAA prices can dislocate
+  even though credit hasn't actually deteriorated.
+- **Asset class is young in ETF form** — 5 years of live data is not a full
+  credit cycle. The thesis is structurally sound; the empirical record is
+  still being written.
+
+Decision rule: hold JAAA as long as **AAA CLO spread > 100 bps** over
+Treasuries. If spreads compress below that, the complexity premium has been
+arbitraged away and you might as well own short-duration Treasuries.
