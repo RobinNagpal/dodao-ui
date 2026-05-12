@@ -51,8 +51,27 @@
 
 ## 3. Leveraged & Inverse Trading
 
-_Picks TBD — note: actively-managed picks may not apply in this group; almost
-everything here is structurally short-duration / single-day-reset._
+| Metric | **SSO** (safer pick — 2x S&P 500) | **TQQQ** (aggressive pick — 3x Nasdaq-100) |
+|---|---|---|
+| Style | Daily-reset leveraged long | Daily-reset leveraged long |
+| Issuer | ProShares | ProShares |
+| Underlying index | **S&P 500** — broad large-cap US, ~500 names, ~15% annualized realized vol | **Nasdaq-100** — large-cap US growth, ~100 names, ~22% annualized realized vol |
+| Leverage factor | **2x daily** (resets to 2x exposure every night) | **3x daily** (resets to 3x exposure every night) |
+| **Expense ratio** | 0.89% | 0.84% |
+| Expense vs same-leverage / same-index competitors | SPUU (Direxion 2x S&P 500) at **0.62%** but only ~$60M AUM and ~10x wider spread — not usable for size. QLD (2x Nasdaq) at **0.95%** = same 2x leverage but on a tech-only index (higher decay). UPRO (3x S&P 500) at **0.91%** = same index but 3x leverage (much higher decay). SSO is the best balance of cost, AUM, and underlying-index volatility for a "safer" leveraged equity bet | UPRO (3x S&P 500) at **0.91%** — same 3x, broader index, but historically tech has delivered ~2x the index return of S&P. SPXL (Direxion 3x S&P 500) at **1.00%** — pricier, smaller AUM. SOXL (Direxion 3x semis) at **0.94%** — much higher decay due to ~30% underlying vol. UDOW (3x Dow) at **0.95%** — worst index of the bunch (price-weighted, low secular growth). TQQQ is the cheapest *and* most liquid 3x leveraged ETF |
+| AUM | ~$4–5B | ~$23–25B (**largest leveraged ETF in the world**) |
+| Average daily dollar volume | ~$200M | ~$2–3B (**deepest liquidity of any leveraged ETF**) |
+| Bid-ask spread | ~1–2 bps during market hours | ~0.5–1 bp during market hours |
+| Counterparty / swap structure | Total-return swaps diversified across 5–6 dealers (Goldman, JPM, Morgan Stanley, Citi, SocGen, BNP). Modest counterparty risk; no single-dealer concentration | Same swap structure, same dealer panel. Concentration well-managed; full disclosure in monthly fact sheet |
+| Realized vs target daily leverage | ~1.95–2.05x — closely tracks stated 2x | ~2.90–3.05x — closely tracks stated 3x |
+| Reverse split history | 1-for-4 in 2010 (post-GFC reset). None since | 1-for-2 (2013), 1-for-3 (2017), 1-for-2 (2021) — cumulative ~12x reverse splits across product life. Driven by post-bear-market price resets, not by ongoing decay in trending markets |
+| Distribution / income | ~0.3% annual yield (interest on swap collateral), paid quarterly. Not material for the use case | ~0.2% annual yield (interest on swap collateral), paid quarterly. Not material for the use case |
+| **Recent total return: 1m / 3m / 6m / 1y** | ~5% / ~12% / ~22% / ~30–35% (indicative mid-2026) | ~8% / ~20% / ~40% / ~55–65% (indicative mid-2026) |
+| **Total return (annualized): 3y / 5y / 10y / since inception** | ~28% / ~24% / **~24%** / ~12% since 2006 (2008–09 wiped out half the cumulative since-inception return) | ~50% / ~36% / **~45%** / **~38% since 2010** — **highest-returning ETF of the last 15 years** thanks to a sustained tech bull run |
+| Max drawdown / recovery | 2022: **−47%** vs S&P −25% — recovered in ~14 months. 2008–09: **~−85%** — took 5+ years to recover (decay amplified the bear) | 2022: **−80%** vs Nasdaq-100 −33% — recovered in ~18 months. 2020 COVID: **~−70%** vs NDX −28% — recovered in ~5 months on the V-shaped rebound. 2008-style event on TQQQ would mean ~−95%+ (TQQQ launched 2010, never tested in a true financial-crisis bear) |
+| Investment goal | Tactical, conviction-driven leveraged exposure to broad US large-cap. The "safer" leveraged trade — 2x on the most diversified US index = lower decay than 3x or sector-3x. Use when macro looks fine and you want amplified directional beta | Tactical, conviction-driven leveraged exposure to US tech / AI / growth. The flagship aggressive leveraged trade — 3x on a concentrated growth index. Use when you have high conviction in a sustained tech uptrend and a defined exit horizon |
+| **Holding-period warning** | Designed for **≤ a few days**. Multi-month holding in a choppy market can lose money even when S&P 500 is flat — that's volatility decay, not bad luck | Same warning — **magnified at 3x on a higher-vol index**. The 2022 example illustrates: a −33% Nasdaq year produced −80% in TQQQ because of decay stacked on top of direction. Never "buy and hold" |
+| What "safer vs aggressive" really means here | Lower leverage multiple + broader, lower-vol underlying = less decay, smaller drawdowns, but smaller upside. Still **NOT** a long-term hold | Higher leverage multiple + concentrated, higher-vol underlying = more decay, deeper drawdowns, much larger upside. Strictly a trading tool |
 
 ---
 
