@@ -95,9 +95,16 @@ Page: <https://koalagains.com/admin-v1/etf-generation-requests> (+ `/admin-v1/et
 - [x] Component suite under `src/components/stock-scenarios/`.
 - [x] Markdown parser (`stock-scenario-markdown-parser.ts`) and `stock-scenarios:import` script.
 
-### Management Team Experience and Alignment — schema groundwork
+### Management Team Experience and Alignment — new 8th report type
 
-- [x] `TickerV1ManagementTeamReport` Prisma model + `ManagementTeamAlignmentVerdict` enum added (see `prisma/schema.prisma`). UI route and full integration pending — see open task.
+- [x] `TickerV1ManagementTeamReport` Prisma model + `ManagementTeamAlignmentVerdict` enum (`prisma/schema.prisma`).
+- [x] Prompt registered (`US/public-equities-v1/management-team-experience-and-alignment`) and wired through `getLLMResponseForPromptViaInvocation`.
+- [x] `regenerateManagementTeamExperienceAndAlignment` flag on `TickerV1GenerationRequest`; included in "generate all"; no back-fill of older tickers; not added to `TickerV1CachedScore`.
+- [x] API: `GET` (row or 404) + `POST` regenerate; wired into batch handler when "generate all" is set.
+- [x] Main stock page: summary card with verdict pill + CTA when row exists; silent absence otherwise.
+- [x] Detail page at `app/stocks/[exchange]/[ticker]/management-team/page.tsx` — full `detailedAnalysis`, Leadership block sidebar, breadcrumbs, SSR + unique title/meta; sitemap entry at `app/stocks/management-team-sitemap.xml/route.ts`.
+- [x] Integrations: pass-through into Business & Moat input, mapping into 10-bagger founder/owner-operator dimension, included in Custom Reports `inputJson`.
+- [x] Off-hours refresh limited to tickers with a populated row; priority bump on CEO/CFO/founder-departure 8-Ks.
 
 ---
 

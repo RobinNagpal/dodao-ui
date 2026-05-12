@@ -36,20 +36,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest on off-hours runner; admin verification UI flags rows older than N months.
 - [ ] Open: legal sign-off on storing only the public LinkedIn URL; minimum coverage threshold to render; `Person` table vs denormalized per ticker.
 
-### Management Team Experience and Alignment — new 8th report type
-
-> Schema groundwork (`TickerV1ManagementTeamReport` + `ManagementTeamAlignmentVerdict`)
-> is in place; remaining work is the prompt, API, UI, and integrations.
-
-- [ ] Register `promptKey: 'US/public-equities-v1/management-team-experience-and-alignment'`; `inputJson` carries Leadership block + proxy/DEF 14A excerpts + 12-month Form 4 data. Output: `summary` (~150–250 words), `detailedAnalysis` (5–7 paragraphs, ~600–900 words), `alignmentVerdict`; cite sources inline.
-- [ ] Add `regenerateManagementTeamExperienceAndAlignment` to `TickerV1GenerationRequest`; "generate all" flips it on. **No back-fill** of older tickers. **Do not** add a score to `TickerV1CachedScore`.
-- [ ] API: `GET` (returns row or 404) + `POST` regenerate (mirror `future-risk/route.ts`); wire into batch handler only when "generate all" is set.
-- [ ] **Main stock page**: when row exists, render summary card with verdict pill + CTA to detail page; when absent, render nothing (no placeholder).
-- [ ] **Detail page** at `app/stocks/[exchange]/[ticker]/management-team-experience-and-alignment/page.tsx` — header with verdict pill, full `detailedAnalysis`, Leadership block sidebar, breadcrumbs, SSR + unique title/meta, sitemap entry.
-- [ ] Integrations: optional pass-through into Business & Moat prompt; map verdict to 10-bagger founder/owner-operator dimension; include summary + verdict in Custom Reports `inputJson`.
-- [ ] Off-hours refresh: only for tickers that already have a populated row; bump priority on CEO/CFO/founder-departure 8-Ks.
-- [ ] Open: suppress vs limited-data flag when proxy data is too thin; refresh cadence (annual + monthly insider-only?); verdict-pill colour mapping; future leaderboard view.
-
 ### 10-bagger shortlist — small-cap candidates filtered by Business & Moat
 
 - [ ] Cast initial pool: small-cap band, Business & Moat ≥ 4, liquidity floor (≥ $1M ADV), data-complete + recent reports.
@@ -186,27 +172,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Capture baselines (organic sessions, time on page, bounce, scroll depth, indexed-URL count for tariff sitemaps); monitor Search Console for tariff URLs after refresh; watch for the same "Crawled — currently not indexed" pattern.
 - [ ] Sitemap hygiene — `industry-tariff-report/sitemap.xml` only lists URLs with refreshed content above a minimum quality bar (`isComplete`-style); `lastmod` reflects refresh time, not build time.
 - [ ] Engagement check 2 weeks post-PR: rail-click events + indexed-URL delta documented in `../tariffs/`.
-
-### Tariff feature backlog (build-first candidates)
-
-> Sequence anchored by build effort, value, and time-sensitivity. KoalaGains already has
-> an investor audience and observed news-cycle traffic spikes — these features lean on
-> those signals rather than chasing brand-new audience segments.
-
-- [ ] **#6 Per-stock tariff exposure card** on every ticker page — disclosure-anchored exposure (COGS share from tariff-affected countries, supplier countries from 10-K/10-Q/calls, product-line hits, retaliation exposure, directional EPS/GM sensitivity). Differentiated: no major stock-research site does this.
-- [ ] **#7 Per-ETF tariff exposure heatmap** — aggregate #6 weighted by holding %; ETF-level sensitivity score, top-10 most-exposed holdings, breakdown by tariff regime, peer comparison. Methodology + confidence bands published.
-- [ ] **#9 Tariff news / EO impact explainer** — paste any tariff article / EO / Federal Register notice → structured impact (products + countries + effective dates + magnitude + affected industries + winners/losers + historical precedent + retaliation lanes), every conclusion linked to the source sentence.
-- [ ] **#18 Margin pass-through simulator** — input cost + freight + current/new tariff + selling price + margin target → old vs new margin, price needed to preserve margin, pass-through scenarios, annual profit impact. Lowest build effort; ship as a marketing wedge.
-- [ ] **#15 IEEPA refund / exclusion tracker** — CAPE-aware eligibility screening (refund type, estimated refundable amount, filing path, urgency/deadline, required data, confidence). Time-sensitive — refund window decays.
-- [ ] **#13 AD/CVD risk radar** — product + country → AD/CVD scope match (case status, timeline, duty range, risk level, "verify with broker" CTA). Start with top 20–30 most active categories.
-- [ ] **#12 HTS classification evidence report** — top 2–3 candidate codes with confidence + CBP CROSS ruling evidence + risk flags. Foundation for #11 and #14. Frame as research support, not advice.
-- [ ] **#11 SKU portfolio tariff audit** (after #12 + #13) — CSV upload → ranked SKUs by duty exposure, top cost drivers, missing-data report, action list, delta-vs-last-quarter view for repeat usage.
-- [ ] **#14 "What changed since my last shipment?"** (after rate engine) — HTS + country + last import date → old vs new rate, reason (Section 232, exclusion expiry, new coverage), effective date, source, business action.
-- [ ] **#10 Historical tariff outcome tracker** — curated DB of major tariff events 1980+ (trigger, scope, magnitude, duration, retaliation, resolution, industry/stock impact); surface 3–5 closest analogs for current events. Defensible moat.
-- [ ] **#19 Competitor import shift benchmark** — USITC DataWeb-backed trend view of origin-country shares by HS category over time (China share down / Vietnam up) layered with tariff context. Quarterly tool, not real-time.
-- [ ] **#16 Rules-of-origin builder (USMCA only first)** — step-by-step component-by-component qualification check (tariff shift / RVC / wholly obtained); flag missing supplier declarations / certificate of origin; multi-FTA is a later phase.
-- [ ] **#17 Tariff escalation clause checklist + sample language** — *not* a contract analyzer (out of scope); ship the checklist + clause library version.
-- [ ] **#20 Customs document readiness / border-hold risk checklist** — long-tail SEO play scoped per product + country (FDA/USDA/CPSC/EPA/textiles/labeling overlays); AI-generated with manual review on top 50 categories.
 
 ### Strategic-intelligence features
 
