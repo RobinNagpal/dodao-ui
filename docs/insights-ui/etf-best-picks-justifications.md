@@ -283,3 +283,106 @@ Risk to flag honestly:
 Decision rule: hold JAAA as long as **AAA CLO spread > 100 bps** over
 Treasuries. If spreads compress below that, the complexity premium has been
 arbitraged away and you might as well own short-duration Treasuries.
+
+---
+
+## 6. Municipal Bonds — **VTEB + HYD**
+
+Municipal-bond money has *one* job: deliver **tax-free income** to a
+high-bracket investor. The picks have to be evaluated on **tax-equivalent
+yield (TEY)**, not on headline yield — that's the only number that lets you
+compare a muni against a corporate or Treasury.
+
+The right pair covers the two genuinely different muni risk profiles:
+
+1. **VTEB** — broad investment-grade national muni. The boring, cheap,
+   diversified core position.
+2. **HYD** — high-yield / crossover muni. The "stretch for yield" position,
+   higher credit risk, materially higher TEY.
+
+These aren't redundant; they're a barbell. IG muni gives you the
+near-default-free core; HY muni gives you the materially-higher-TEY stretch.
+Most muni investors only need VTEB; high-bracket investors with conviction
+in muni credit add HYD to push portfolio yield higher.
+
+**Why not an active pick?** The active-muni-ETF universe is **immature**.
+The best active muni managers in the world (Nuveen, BlackRock, PIMCO) still
+do most of their best work in mutual-fund and CEF wrappers, not ETFs. The
+active muni ETFs that exist (HYMU, MEAR, MMIN, NUVA) are either too small
+(sub-$1B) or too young (<5 years) to make a confident "beats passive over a
+full cycle" claim. Once one of those funds has a 10-year track record of
+clearing its hurdle, this section should be revisited.
+
+### Pick 1 — **VTEB (Vanguard Tax-Exempt Bond ETF)**
+
+Why VTEB, not MUB or TFI:
+
+- **VTEB** — Bloomberg Tax-Exempt Bond Index; **0.05% fee**; ~$30B AUM.
+  Vanguard's broad national muni passive. 2 bps cheaper than MUB on an
+  essentially identical underlying universe.
+- **MUB** (iShares National Muni) — 0.07% fee, ~$40B AUM. Slightly more
+  liquid (better for trading or options strategies) but you pay 2 bps / yr
+  for that liquidity. For a buy-and-hold investor, this compounds to a
+  meaningful gap over 20–30 years.
+- **TFI** (SPDR Nuveen Bloomberg Muni) — 0.23% fee, $4B AUM. **Much** more
+  expensive for near-identical exposure. No good reason to own.
+- **SUB** (iShares Short Muni) — 0.07% fee, short duration (~2y). Different
+  product — buy this if you want to be rate-defensive, not as a substitute
+  for VTEB's broad market exposure.
+
+Why VTEB beats them all: it's literally the same product as MUB at a 2 bps
+discount, with enough AUM that the cost advantage isn't offset by spread or
+tracking issues. For a 30-year holding period, 2 bps / yr ≈ ~0.6% more
+ending wealth — small but real, and free.
+
+Decision rule: hold VTEB as long as your **federal + state marginal bracket
+combined is above ~30%**. Below that, the tax-exempt yield isn't enough to
+beat a same-duration taxable bond ETF (BND / AGG). For top-bracket investors
+in CA / NY / NJ, this is a no-brainer.
+
+### Pick 2 — **HYD (VanEck High-Yield Muni ETF)**
+
+Why HYD, not HYMB or HYMU:
+
+- **HYD** — ICE High-Yield Crossover Municipal Index; 0.32% fee; **~$3B
+  AUM**; live since **2009**. Largest HY muni ETF, longest track record,
+  cheapest fee among the meaningful candidates.
+- **HYMB** (SPDR Nuveen Bloomberg High-Yield Muni) — 0.35% fee, ~$1.5B AUM.
+  Half the AUM. Tracks a slightly different (Bloomberg) index. Marginal.
+- **HYMU** (BlackRock High-Yield Muni Active) — 0.35% fee, ~$700M AUM,
+  active management. Active HY muni *is* the segment where active should
+  add the most value — but HYMU only launched in 2021. Sub-$1B AUM + ~5y
+  track record isn't enough to switch yet. Reconsider in 2028+.
+
+Why HYD wins: longest track record, largest AUM in the segment, cheapest
+fee. Active HY muni managers can theoretically beat it (and Nuveen's best
+muni talent definitely could), but no ETF has accumulated enough live data
+to take that bet over the passive option yet.
+
+Risk to flag honestly:
+
+- **Drawdowns**: 2020 COVID −18%, 2022 −14%, 2013 taper tantrum −10%. HY
+  munis are more volatile than IG munis and can correlate with risk-off
+  events. Not a recession ballast.
+- **Duration of ~7.5y** — HY munis are longer-duration than HY corporates,
+  which surprises people. Rate spikes hurt this fund more than HYG.
+- **Credit cycle**: BB-and-below munis can default. Defaults are rarer than
+  corporate junk but not zero (Puerto Rico, Detroit, Stockton). Diversifi-
+  cation across the ETF helps — single-bond default impact is small.
+
+Decision rule: hold HYD as long as **HY muni spread > 250 bps** over IG
+munis. If the spread compresses below that, the credit-risk premium isn't
+worth taking — just hold more VTEB and skip the HY allocation.
+
+### Why both picks are passive
+
+Across all six groups built so far, this is the only group where both picks
+are passive — and it's deliberate:
+
+- **Active edge exists in munis** (the market is genuinely inefficient with
+  50,000+ issuers) but **almost none of that active edge is available in ETF
+  form yet**. The best active muni teams are still in mutual funds and CEFs.
+- **HYMU is the most plausible "active beats passive" candidate** in this
+  group but lacks track record + AUM to commit to.
+- For an honest "best 2 ETFs in this group" pick, the answer right now is
+  two passive funds covering the two ends of the muni risk spectrum.

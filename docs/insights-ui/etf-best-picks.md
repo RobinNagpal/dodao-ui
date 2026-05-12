@@ -103,7 +103,25 @@ everything here is structurally short-duration / single-day-reset._
 
 ## 6. Municipal Bonds
 
-_Picks TBD._
+| Metric | **VTEB** (broad IG muni pick) | **HYD** (high-yield muni pick) |
+|---|---|---|
+| Style | Passive index — broad national investment-grade muni | Passive index — high-yield / crossover munis |
+| Benchmark | Bloomberg Tax-Exempt Bond Index | ICE High-Yield Crossover Municipal Index |
+| Top index to compare active to | n/a — IS an index tracker | n/a — IS an index tracker |
+| **Expense ratio** | 0.05% | 0.32% |
+| Expense vs same-segment competitors | MUB (iShares National Muni) at **0.07%** — 2 bps more, similar AUM, slightly better trading liquidity. TFI (SPDR Nuveen Bloomberg) at **0.23%** — much more expensive for nearly identical exposure. SUB (iShares short-muni) at **0.07%** — short-duration, not comparable. **VTEB wins on cost** for buy-and-hold (2 bps / yr compounds) | HYMB (SPDR Nuveen Bloomberg High Yield Muni) at **0.35%** — slightly more expensive, half the AUM. HYMU (BlackRock active HY muni) at **0.35%** — active, sub-$1B AUM, only ~5y of data. **HYD wins on AUM, fee, and 15-year live track record** |
+| AUM | ~$30B (top-3 muni ETF in the world) | ~$3B (largest passive high-yield muni ETF) |
+| 30-day SEC yield (YTM, forward) | ~3.5% | ~5.5% |
+| **Tax-equivalent yield** — top federal (37%) | ~5.6% TEY | ~8.7% TEY |
+| Tax-equivalent yield — top federal + CA (51% combined) | **~7.1% TEY** — beats any taxable IG bond at that bracket | **~11.2% TEY** — beats most taxable junk bonds after-tax for a CA top-bracket investor |
+| Trailing 12-month distribution yield (realized) | ~3.2% — slightly below SEC because older low-coupon munis still in portfolio | ~5.3% — close to SEC yield |
+| **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~5% / ~−1% / ~+0.7% / **~+1.9%** / since 2015 inception ~+2.0% — total return understates the after-tax benefit by ~30–50% for high-bracket holders | ~9% / ~+3% / ~+2% / **~+3.5%** / ~+5% — solid long-run muni return with credit-cycle volatility |
+| Effective duration | ~6.5 years | ~7.5 years (HY munis are longer-duration than HY corporates) |
+| Credit quality breakdown | ~25% AAA / ~50% AA / ~20% A / ~5% BBB — essentially 100% investment grade | ~5% A / ~25% BBB / ~50% BB / ~15% B / ~5% NR (non-rated) |
+| Distribution frequency | Monthly | Monthly |
+| Max drawdown + recovery | 2022: ~−12% (rate shock); recovered in ~24 months. 2013 taper tantrum: ~−7% | 2020 COVID: ~−18%; 2022: ~−14%; 2013 taper: ~−10%. Recoveries in 12–18 months each time |
+| Forward outlook | Yields locked in at multi-decade highs; ~6.5y duration captures rate cuts as they come. State / local fiscal health broadly stable in 2026 | Spreads still elevated vs IG munis — credit cycle has compressed less in HY munis than HY corporates. Active credit-cycle navigation is harder when buying passive, but tax-exempt yield does most of the work |
+| Bid-ask spread | ~2 bps | ~5 bps |
 
 ---
 
