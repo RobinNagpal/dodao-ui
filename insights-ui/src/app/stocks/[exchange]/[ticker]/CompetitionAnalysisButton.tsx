@@ -11,6 +11,7 @@ export default function CompetitionAnalysisButton({ exchange, ticker }: Competit
     <div className="flex-shrink-0 relative">
       <Link
         href={`/stocks/${exchange}/${ticker}/competition`}
+        prefetch={false}
         className="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-gradient-to-r from-[#38BDF8] to-[#818CF8] hover:from-[#0EA5E9] hover:to-[#6366F1] border border-transparent rounded-lg shadow-md"
         title="View competition analysis"
       >

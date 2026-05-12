@@ -178,7 +178,7 @@ export default function Competition({ tickerData, data }: CompetitionProps): JSX
                       );
 
                       return tickerLink ? (
-                        <Link key={dp.ticker} href={tickerLink} className="flex items-start gap-2.5 text-sm group">
+                        <Link key={dp.ticker} href={tickerLink} prefetch={false} className="flex items-start gap-2.5 text-sm group">
                           {content}
                         </Link>
                       ) : (

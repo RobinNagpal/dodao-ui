@@ -31,7 +31,7 @@ export interface CompetitorCardProps {
  */
 export default function CompetitorCard({ competitor, href, actionSlot }: CompetitorCardProps): JSX.Element {
   const nameNode = href ? (
-    <Link href={href} title="View detailed report" className="flex gap-x-2 items-center text-[#F59E0B] hover:text-[#F97316] transition-colors">
+    <Link href={href} prefetch={false} title="View detailed report" className="flex gap-x-2 items-center text-[#F59E0B] hover:text-[#F97316] transition-colors">
       <h3 className="font-semibold">{competitor.companyName}</h3>
       <ArrowTopRightOnSquareIcon className="size-4 text-primary-text" />
     </Link>
