@@ -121,6 +121,12 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Add ETF country pages** (later) — `/etfs/countries/[country]` route exists; finish data wiring + sitemap + SEO once category pages are battle-tested.
 - [ ] **Cross-link from ETF detail pages** — category name links to the category page; small "Related ETFs in this category" block at the bottom.
 
+### Known limitations in the new 8-group taxonomy (follow-up cleanups)
+
+- [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
+- [ ] **Carve broad EM (EEM/VWO/IEMG, ~111 funds) out of `sector-thematic-equity`** — regional-diversification sleeve, not a thematic bet. Single-country EM (China/India/LatAm) stays in sector-thematic.
+- [ ] **Re-introduce a floating-rate bond group** — TLT (-31% in 2022) and BIL (+1%) shouldn't share `investment-grade` factors; JAAA (+1%) and HYG (-11%) shouldn't share `credit-and-income` factors. Bundle bank loans + AAA CLO + ultrashort + money market separately.
+
 ---
 
 ## Stocks & ETFs common
