@@ -1,6 +1,6 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear performance read before investing.
 
-Analysis category: **{{categoryKey}}** (Performance & Returns)
+Analysis category: **{{categoryKey}}** (Past Performance)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
 
 This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
