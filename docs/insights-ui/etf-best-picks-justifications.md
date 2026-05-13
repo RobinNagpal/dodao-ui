@@ -561,3 +561,216 @@ are passive — and it's deliberate:
   group but lacks track record + AUM to commit to.
 - For an honest "best 2 ETFs in this group" pick, the answer right now is
   two passive funds covering the two ends of the muni risk spectrum.
+
+---
+
+## 7. Alternative Strategies — **GLTR + DBMF**
+
+"Alternative strategies" is the loosest group on the list — it contains
+~10 distinct sub-flavors (precious metals, broad commodities, managed
+futures, covered-call income, defined-outcome buffer, merger arb,
+market-neutral, currency, volatility, crypto). Picking "best 2" only makes
+sense if you start by picking the **best 2 sub-strategies** for a normal
+investor, then pick the best ETF in each.
+
+The right two sub-strategies for a typical investor's alt allocation:
+
+1. **Real-asset / crisis hedge — precious metals.** Gold (and silver and
+   platinum) have a 2000+ year track record as stores of value and act as
+   negative-correlation diversifiers exactly when stocks AND bonds are
+   both falling (e.g., 2022). Rather than picking a single metal, picking
+   a basket is cleaner — silver, platinum, and palladium have meaningfully
+   different cycles than gold, so a basket smooths out the single-metal
+   drawdowns while keeping the same crisis-hedge property.
+2. **Genuine uncorrelated alpha — managed futures.** Managed-futures
+   hedge funds have a 40+ year track record of profiting from market
+   regime shifts. They go long *and* short across equities, bonds,
+   currencies, and commodities — meaning they're literally not stuck
+   with the market direction the way every long-only fund is. The 2022
+   bear market was the textbook proof: managed futures delivered +20%+
+   while 60/40 portfolios lost ~17%.
+
+These two sub-strategies cover the **two distinct diversification jobs**
+that alts actually do — store-of-value crisis hedging (gold/metals) and
+regime-shift alpha (managed futures). They don't overlap with each other,
+and neither overlaps with stocks or bonds.
+
+### Pick 1 — **GLTR (abrdn Physical Precious Metals Basket Shares)**
+
+Why a metals **basket** and not just gold:
+
+- **Gold is the anchor, but it's not the only metal that works.** Gold
+  works in inflation + currency-debasement scenarios. Silver works in
+  industrial-cycle plus monetary scenarios (it's ~60% industrial demand).
+  Platinum and palladium work in supply-shock scenarios (90%+ of
+  palladium comes from Russia and South Africa — geopolitical premium
+  baked in).
+- **The metals have meaningfully different cycles.** During 2011–15 gold
+  fell ~45% but silver fell ~70% and platinum fell ~50%, so a basket
+  smoothed the drawdown. During 2020 COVID-rebound, silver gained ~70%
+  vs gold's ~30%. Holding all four metals captures whichever metal is
+  responding to the specific crisis at hand.
+- **Single-ticker convenience.** Owning GLD + SLV + PPLT + PALL
+  separately requires manual rebalancing back to target weights. GLTR
+  handles this internally.
+
+Why **GLTR** specifically:
+
+1. **Only broad physical precious-metals basket ETF with $1B+ AUM.** Its
+   nearest competitor is doing the basket yourself with 4 separate
+   tickers. GLTR's 0.60% fee is ~18 bps higher than a DIY blend
+   (~0.42%), but you save the rebalancing labor.
+2. **Physical-backing — no contango drag.** Unlike futures-based
+   commodity ETFs (USO, DBC), GLTR holds actual bullion in an HSBC
+   London vault. The fund's NAV tracks spot prices cleanly.
+3. **Track record since 2010.** Launched October 2010, so it has lived
+   through the 2011 metals peak, the 2013–15 bear, the 2016–19 base, the
+   2020 COVID rally, and the 2022 inflation rally. The basket structure
+   has consistently produced lower drawdowns than gold-only ETFs over
+   each cycle.
+4. **Tax treatment.** All physical-metals trusts (GLD, IAU, SLV, GLTR)
+   share the collectibles-tax treatment — long-term cap gains taxed at
+   up to 28% federal instead of the 20% LTCG cap. This is a real
+   high-bracket cost but it's a feature of the asset class, not GLTR
+   specifically. Hold in a tax-advantaged account when possible.
+
+Historical returns (indicative mid-2026):
+
+- 10y annualized: **~10%** — basket-weighted average of the four metals'
+  individual returns. Gold ~10%, silver ~9%, platinum ~4%, palladium
+  ~7% over that window. Basket smooths the volatility.
+- 5y annualized: **~14%** — recent gold + silver run.
+- 2022: **roughly flat (~+5%)** vs S&P −18% and Bloomberg Agg −13%.
+  Exactly when you wanted it most.
+
+### Pick 2 — **DBMF (iMGP DBi Managed Futures Strategy ETF)**
+
+Why managed futures as a category:
+
+- **The only liquid-alt strategy that consistently profits when stocks
+  AND bonds both fall.** This is the 2022 scenario, and managed-futures
+  hedge funds returned +20% to +30% that year. Almost nothing else did.
+- **Genuinely uncorrelated alpha.** 3-year correlation to S&P 500 is
+  roughly zero, often negative during regime shifts. It's the cleanest
+  diversifier you can buy in ETF form.
+- **40+ year hedge-fund track record.** Managed futures isn't a new
+  strategy — Renaissance, Man AHL, Winton, AQR, and Millennium have
+  been running variants for decades. The strategy works; the only
+  question is whether retail can access it cheaply enough to matter.
+
+Why **DBMF** over competitors:
+
+1. **Best hedge-fund replication pedigree.** DBi (Dynamic Beta
+   Investments) was founded specifically to replicate hedge-fund
+   factor exposures at ETF cost. DBMF's process: regress the *returns*
+   of the top 20 managed-futures hedge funds against publicly-tradeable
+   futures, identify which factors they're collectively long/short, and
+   replicate. You get the *average* of the top 20 managers' positions —
+   not any single manager's calls, but the consensus exposure.
+2. **Best track record of the managed-futures ETFs.** Launched May 2019.
+   Returned **+21.8% in 2022** vs KMLM ~+33%, CTA ~+12%, WTMF ~+10%. So
+   KMLM had a better 2022 specifically, but DBMF has been more
+   consistent across 2020 (V-crash, ~-3% — small loss but not the
+   −30% you'd see if it was equity-correlated), 2023 (trend reversal,
+   ~-12%), 2024 (~+12%), 2025 (~+8%). The bumpiness is real, but the
+   multi-year compounding holds up.
+3. **Reasonable cost.** 0.85% — meaningfully cheaper than the 2-and-20
+   you'd pay accessing the underlying hedge funds directly, but not the
+   cheapest ETF in the category (WTMF is 0.65%). The 20 bps premium for
+   DBMF buys the hedge-fund-replication methodology, which has
+   outperformed pure-systematic-trend approaches (WTMF) on a Sharpe
+   basis since launch.
+4. **Standard tax treatment.** 1099-only, no K-1. Many older managed-
+   futures products were structured as LPs with K-1 reporting — a real
+   retail friction. DBMF avoids it.
+5. **AUM and liquidity.** ~$1.3-1.5B AUM, $20-30M daily dollar volume.
+   Tradeable in size for retail; institutions use it as the liquid-alt
+   sleeve in target-date and model-portfolio products.
+
+Historical returns (indicative mid-2026):
+
+- Since inception (May 2019): **~10% annualized** through mid-2026.
+- 5y annualized: **~10%** — close to S&P's same-period return, but
+  with completely different return path (almost no correlation).
+- 2022: **+21.8%** — the textbook managed-futures year.
+- 2023: **−12%** — managed futures' "bad year" when trends reversed.
+  Worth noting because the strategy isn't a free lunch — it loses
+  money in regimes where trends are choppy and short-lived.
+
+### Why we picked this pair, not the obvious alternatives
+
+- **IBIT (spot Bitcoin)?** Genuinely uncorrelated to stocks at the macro
+  level, and has had massive returns since the 2024 spot approval. But
+  ~60–80% annualized volatility means it's not a clean diversifier —
+  it's its own asset class with its own boom/bust cycle. Including it
+  in a "diversifier" pick would understate the risk to a normal
+  investor's capital. It's a separate conversation about how much
+  crypto exposure makes sense; not a "best alt" pick by the
+  diversification metric.
+- **JEPI / JEPQ (covered-call income)?** Hugely popular, ~$40B AUM
+  combined, ~7–10% headline yield. But their correlation to S&P 500
+  is ~+0.85 — they ARE equity exposure with capped upside. Useful as
+  an income substitute for fixed income, not as a diversifier. Including
+  JEPI here would be a category error: it doesn't do the diversification
+  job alts are bought for.
+- **MNA (merger arbitrage)?** Real diversifier with ~5–6% steady
+  annualized returns and low drawdowns. The right pick for a very
+  conservative alt allocation. But the absolute return is too modest
+  to justify a single "best alt" slot when DBMF delivers similar
+  Sharpe with materially higher total return.
+- **Broad commodities (PDBC, DBC, BCI)?** Captures all commodities not
+  just metals — agricultural, energy, livestock — and is the more
+  complete "real assets" diversifier in theory. In practice the
+  ag/energy/livestock futures suffer contango drag, the long-run
+  returns have lagged a metals basket, and the K-1 tax complications
+  (DBC, USO) are real for retail. GLTR's metals-only physical basket
+  is cleaner.
+- **GLD or IAU only (gold-only)?** GLD is what most people default to,
+  IAU is cheaper. Both are perfectly fine if the goal is gold
+  specifically. But the user's stated preference is "metals not just
+  gold" — and there's a genuine case that silver/platinum/palladium
+  add diversification within the metals sleeve. GLTR captures that in
+  one ticker.
+- **KMLM (Mount Lucas Managed Futures)?** Returned more than DBMF in
+  2022 (+33% vs +21.8%) but had a deeper 2023 drawdown and a smaller
+  AUM/liquidity profile. DBMF's hedge-fund-replication methodology has
+  been more consistent across regimes; KMLM is the runner-up in this
+  sub-category.
+- **BTAL (anti-beta market neutral)?** Pure negative-beta exposure —
+  designed to be up when stocks are down. Useful as a tactical hedge,
+  but it has a structural negative expected return over long periods
+  because it's literally short the equity risk premium. Not a "best
+  ETF" by total-return metric.
+
+### Decision rules for using these picks
+
+- **Allocation sizing.** Most allocation models suggest 5–15% of the
+  total portfolio in alts. Within that, splitting evenly between GLTR
+  and DBMF is a reasonable starting point — both target the
+  diversification job from different angles.
+- **GLTR overweight when:** real yields are falling, USD is weakening,
+  central banks are buying gold (China + India + Russia are net buyers
+  through this cycle), inflation surprises are running higher than
+  expectations.
+- **DBMF overweight when:** markets are in a sustained trending regime
+  (the strategy needs trends to extract returns). When markets are
+  chopping sideways or in a fast V-crash, expect DBMF to do nothing
+  much.
+- **Avoid increasing alt allocation right after they've ripped.** GLTR
+  up 30%+ year-to-date is a sign you should be trimming, not adding.
+  Same for DBMF after a +20% year (2022 was followed by −12% in 2023).
+  Alts work as a strategic allocation, not a momentum trade.
+- **Hold GLTR in a tax-advantaged account if possible.** The 28%
+  collectibles cap-gains tax is a real drag for high-bracket
+  investors. DBMF can sit in a taxable account fine.
+
+### Why this group is uniquely hard to pick "best" in
+
+Unlike equities or bonds, "best" depends entirely on which job you want
+the alt to do. The 10 sub-strategies serve different purposes and the
+"best" of each looks different. The two picks above optimize for the
+**single most-important job** of alts: actually working when 60/40
+portfolios fail. That happened most recently in 2022, and both GLTR and
+DBMF were unambiguously useful that year. Other sub-strategies (income,
+buffered, crypto, merger arb) serve other goals — they're worth knowing
+about, but they aren't optimizing for the same diversification mandate.

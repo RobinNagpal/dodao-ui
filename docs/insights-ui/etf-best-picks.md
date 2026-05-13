@@ -146,7 +146,27 @@
 
 ## 7. Alternative Strategies
 
-_Picks TBD._
+| Metric | **GLTR** (metals diversifier) | **DBMF** (uncorrelated alpha) |
+|---|---|---|
+| Style | Passive — physical precious-metals basket | Active — hedge-fund replication (managed futures) |
+| Issuer | abrdn (Aberdeen Standard) | iMGP / DBi (Dynamic Beta Investments) |
+| What it does in one sentence | Holds physical gold + silver + platinum + palladium bullion in an HSBC London vault, basket-weighted by market value | Replicates the average long-short exposure of the top 20 managed-futures hedge funds across equities, bonds, currencies, and commodities — positions flip as the underlying hedge-fund factor exposures shift |
+| Underlying / asset class | Precious metals (4 metals, physical-backed) — no derivatives, no contango | Multi-asset futures (S&P, Treasuries, FX, oil, gold, ag) — **long and short** simultaneously |
+| **Expense ratio** | 0.60% | 0.85% |
+| Expense vs same-strategy competitors | GLD (gold only) 0.40%, IAU (gold only) 0.25%, GLDM (cheapest gold) 0.10%, SLV (silver only) 0.50%. **GLTR is the only broad physical precious-metals basket ETF with $1B+ AUM** — no direct competitor. Vs DIY (GLD+SLV+PPLT+PALL ~0.42% blended), GLTR costs ~18 bps more but eliminates the rebalancing work | KMLM (Mount Lucas managed futures) 0.92% — similar AUM, smaller hedge-fund replication breadth. CTA (Simplify managed futures) 0.76% but only ~$200M AUM. WTMF (WisdomTree managed futures) 0.65% — underperformed peers in 2022/2023. **DBMF wins on track record + AUM + hedge-fund-replication pedigree** |
+| AUM | ~$1.5B | ~$1.3–1.5B |
+| Average daily dollar volume | ~$5–8M | ~$20–30M |
+| Bid-ask spread | ~5–10 bps | ~5–10 bps |
+| Holdings breakdown (typical) | ~60% gold, ~30% silver, ~5–7% platinum, ~3–5% palladium (rebalanced toward target weights periodically) | Rotating long/short positions across ~10 futures markets. Recent mid-2026 mix: long S&P, long gold, short long-duration Treasuries, long USD. Reweights monthly based on hedge-fund factor regression |
+| Correlation to S&P 500 (3y) | ~+0.10 — genuinely uncorrelated | ~−0.10 to +0.10 — genuinely uncorrelated, often inverse during regime shifts |
+| Correlation to Bloomberg Agg (3y) | ~+0.20 | ~−0.30 to +0.10 (often inverse, depending on trend regime) |
+| Tax structure | 1099 (grantor trust). **Long-term cap gains taxed as collectibles (28% max federal)** — IRS treats physical-metals trusts this way. Worse than equity LTCG (20% max) for high-bracket investors | 1099 (RIC structure). Standard capital gains treatment. No K-1, no collectibles tax |
+| **Recent total return: 1m / 3m / 6m / 1y** | ~3% / ~10% / ~22% / ~35% (indicative mid-2026 — central-bank buying + USD weakness driving the metals rally) | ~1% / ~4% / ~7% / ~9% (indicative mid-2026 — managed futures runs lower-vol in trending markets) |
+| **Total return (annualized): 3y / 5y / 10y / since inception** | ~22% / ~14% / **~10%** / ~8% since 2010 — gold-dominated, with silver/platinum/palladium adding cyclical noise | ~9% / ~10% / **n/a** (launched 2019) / ~10% since inception — bumpy single-year returns but consistent multi-year compounding |
+| Max drawdown / recovery | 2013–15 metals bear: ~−40% over 2 years, recovered by 2020. 2022 inflation panic: ~−12%, recovered within 12 months | 2023 trend reversal: ~−12% (managed futures' "bad year" — markets stopped trending). 2022: **+22%** — best year of any liquid alt |
+| Crisis-period behavior | 2008 GFC: gold +5%, silver −23%, platinum −41% → basket roughly flat. 2020 COVID: ~+30% (metals rallied on stimulus). 2022 inflation/rate hike: ~+5% while 60/40 lost 17%. Strong in crises where stocks AND bonds fall together | 2022 rate-hike bear: **+21.8% vs S&P −18%** — textbook managed-futures year. 2020 COVID V-crash: ~−3% (regime-shift months are usually neutral, not negative). Designed for slow-moving regime shifts, not fast V-shaped crashes |
+| Investment goal | Inflation hedge + crisis hedge + USD-weakening hedge. The "tangible store of value" allocation. Diversification *within* metals (silver/platinum cycles often run opposite gold) | True diversification — positive returns in regimes where 60/40 fails. The "I want something that works when nothing else does" allocation. Replicates expensive hedge-fund returns at ETF cost |
+| Why it's the best pick in its sub-category | Only broad physical precious-metals basket ETF with meaningful AUM. Physical-backing = no contango drag. Single-ticker = no DIY rebalancing. 4-metal diversification reduces single-metal cycle risk | Best managed-futures ETF by track record + AUM + cost. Replicates the top 20 managed-futures hedge funds at ETF cost. Cleanest 2022 datapoint of any liquid alt — proved the strategy in the modern era |
 
 ---
 
