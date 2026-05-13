@@ -1,5 +1,5 @@
 {
-  "description": "Maps raw category strings (as ingested per-country) to the canonical category name defined in etf-analysis-categories.json. Used to normalize country-specific taxonomies (Stock-Analysis style, GICS sector labels, etc.) into the shared Morningstar-style analysis grouping. Aliases are global (country-agnostic): a given raw label is assumed to mean the same thing wherever it appears. Categories that do NOT have a meaningful canonical equivalent are NOT aliased here — instead they are added as first-class entries in etf-analysis-categories.json so they appear as their own card.",
+  "description": "Maps raw category strings (as ingested per-country) to the canonical category name defined in etf-analysis-categories.json. Used to normalize country-specific taxonomies (Stock-Analysis style, GICS sector labels, etc.) into the shared canonical category grouping. Aliases are global (country-agnostic): a given raw label is assumed to mean the same thing wherever it appears. Categories that do NOT have a meaningful canonical equivalent are NOT aliased here — instead they are added as first-class entries in etf-analysis-categories.json so they appear as their own card.",
   "aliases": {
     "Information Technology": "Technology",
     "Health Care": "Health",

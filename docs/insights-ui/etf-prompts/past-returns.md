@@ -19,7 +19,7 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 
 ## Factor-metric lookup (only when needed)
 
-- If a factor asks for a metric that is not in the provided data blocks, first try to source that metric from reputable public sources (ETF issuer fund page/prospectus, Morningstar, etf.com, Nasdaq, CBOE, index provider, any other source).
+- If a factor asks for a metric that is not in the provided data blocks, first try to source that metric from reputable public sources (ETF issuer fund page/prospectus, etf.com, Nasdaq, CBOE, index provider, any other source).
 - If you successfully find a metric, use it sparingly and attribute it inline (source name + as-of date if available). Do not paste long URLs; one short source mention is enough.
 - If you cannot find it quickly or confidently, proceed using only provided data and omit that metric entirely (do not mention that it was unavailable).
 
