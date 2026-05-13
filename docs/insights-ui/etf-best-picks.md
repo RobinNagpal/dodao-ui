@@ -18,6 +18,7 @@
 | AUM | ~$320B (top-3 ETF in the world) | ~$3B in the ETF + ~$80B in the FBGRX mutual fund share class |
 | Portfolio turnover | ~10–15% / yr (annual NDX reconstitution + quarterly weight rebalances) | ~30–40% / yr (discretionary stock-picking, moderate by active-fund standards) |
 | Dividend distribution | ~0.5% annual yield, paid quarterly, qualified-dividend rate | ~0.2% annual yield, paid once annually (December). Growth strategy → most return is capital appreciation |
+| Trailing 12-month distribution yield | ~0.6% (about $2.60/share on ~$480 NAV) | ~0.2% (single December distribution; growth strategy retains most income inside capital gains) |
 | **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~25% / ~17% / ~17% / **~18%** / ~17% — among the best long-run records of any major US equity index | ~28% / ~14% / ~16% / **n/a** (launched 2020) / FBGRX same strategy: 10y ~19%, 15y ~17%. Has roughly matched QQQ since launch |
 | Max drawdown + recovery vs index | 2022: −33% vs S&P 500 −25%; recovered in ~14 months. Dot-com −83% vs S&P −50%; recovered in ~15y | 2022: −35% vs Russell 1000 Growth −29%; recovered in ~13 months. Tracks RUG drawdowns ±3 pp |
 | Forward outlook on current holdings | Mag 7 ≈ 50% of fund — concentrated bet on AI / cloud / semis / platform-compounding | Heavy mega-cap tech overlap with QQQ + Eli Lilly, Mastercard, Visa, off-index growth names. PM can trim into froth that QQQ structurally cannot |
@@ -39,10 +40,12 @@
 | AUM | ~$8B | ~$25B |
 | Portfolio turnover | ~10–15% / yr (quarterly index rebalance) | ~10–15% / yr (quarterly index rebalance) |
 | Dividend distribution | ~0.5% annual yield, paid quarterly | ~0.6% annual yield, paid annually (December) |
+| Trailing 12-month distribution yield | ~0.5% | ~0.6% |
 | **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~28% / ~20% / ~16% / **~13%** / ~15% — quietly one of the most consistent sector compounders | ~38% / ~36% / ~30% / **~28%** / ~25% — **best-performing sector index of the last decade**, beats QQQ by ~7–10 pp / yr |
 | Max drawdown + recovery vs index | 2020 COVID: −34% vs S&P −34%; recovered in ~12 months. 2022: −12% vs S&P −25% (defense was a 2022 winner) | 2022: ~−40% vs S&P −25%; recovered in ~18 months. 2008: ~−60%, recovered in ~5y. Cyclical sector — bigger drawdowns are the price of admission |
 | Forward outlook on current holdings | Top: GE Aerospace, RTX, Lockheed Martin, Northrop Grumman, Boeing, TransDigm, L3Harris. Multi-year tailwind: rising defense budgets, depleted munitions stockpiles after recent conflicts, allied rearmament. Concentrated prime-contractor exposure captures the procurement flow most directly | Top: NVDA (~20%), TSMC (~12%), AVGO (~10%), AMD, ASML, AMAT, LRCX, TXN, QCOM, MU. Cleanest AI-infrastructure expression in ETF form — hyperscaler capex, custom silicon, advanced packaging, EUV lithography. Concentrated where compute demand actually lands |
 | Securities-lending revenue | ~1–2 bps / yr returned to fund — iShares standard program | ~1–2 bps / yr returned to fund — VanEck standard program |
+| Bid-ask spread | ~2–3 bps during market hours | ~1–2 bps during market hours — top-tier liquidity for a thematic fund |
 
 ---
 
@@ -57,6 +60,7 @@
 | **Expense ratio** | 0.89% | 0.84% |
 | Expense vs same-leverage / same-index competitors | SPUU (Direxion 2x S&P 500) at **0.62%** but only ~$60M AUM and ~10x wider spread — not usable for size. QLD (2x Nasdaq) at **0.95%** = same 2x leverage but on a tech-only index (higher decay). UPRO (3x S&P 500) at **0.91%** = same index but 3x leverage (much higher decay). SSO is the best balance of cost, AUM, and underlying-index volatility for a "safer" leveraged equity bet | UPRO (3x S&P 500) at **0.91%** — same 3x, broader index, but historically tech has delivered ~2x the index return of S&P. SPXL (Direxion 3x S&P 500) at **1.00%** — pricier, smaller AUM. SOXL (Direxion 3x semis) at **0.94%** — much higher decay due to ~30% underlying vol. UDOW (3x Dow) at **0.95%** — worst index of the bunch (price-weighted, low secular growth). TQQQ is the cheapest *and* most liquid 3x leveraged ETF |
 | AUM | ~$4–5B | ~$23–25B (**largest leveraged ETF in the world**) |
+| Average daily dollar volume | ~$200M | ~$2–3B (**deepest liquidity of any leveraged ETF**) |
 | Bid-ask spread | ~1–2 bps during market hours | ~0.5–1 bp during market hours |
 | Realized vs target daily leverage | ~1.95–2.05x — closely tracks stated 2x | ~2.90–3.05x — closely tracks stated 3x |
 | Distribution / income | ~0.3% annual yield (interest on swap collateral), paid quarterly. Not material for the use case | ~0.2% annual yield (interest on swap collateral), paid quarterly. Not material for the use case |
@@ -79,10 +83,14 @@
 | **Expense ratio** | 0.03% | 0.55% |
 | Expense vs same-segment competitors | BND (Vanguard) at **0.03%** — virtually identical product. SCHZ (Schwab) at **0.03%**. AGG wins on liquidity / AUM / options market | FBND (Fidelity active) at **0.36%** — cheaper but younger team. AGGY (WisdomTree smart-beta) at **0.12%** — yield-tilted, not pure active. BOND must clear a ~52 bps / yr active hurdle vs AGG; PIMCO has cleared it most years |
 | AUM | ~$120B (top-5 bond ETF in the world) | ~$5B |
+| 30-day SEC yield (YTM, forward) | ~4.5% | ~4.7% (slight pickup from active credit/duration) |
 | Trailing 12-month distribution yield (realized) | ~3.5% — still ramping up as low-coupon legacy bonds roll into higher-coupon new issuance | ~4.4% — active duration shortening means newer, higher-coupon bonds entered the portfolio faster |
 | **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~5% / ~−0.5% / ~+0.7% / **~+1.8%** / ~+2.7% — bond returns were crushed by the 2022 rate shock; long-run avg pulled down to ~2% | ~6% / ~+0.5% / ~+1.0% / **~+2.6%** / since 2012 inception ~+3.2% — **~80–100 bps / yr alpha over AGG** after fees, every rolling 5y window |
+| Effective duration | ~6.0 years | ~5.5 years (active duration management, typically 0.5–1y below AGG) |
+| Credit quality breakdown | ~70% AAA (Treasuries + agency MBS) / ~25% A–BBB (IG corporate) / ~5% below | ~60% AAA / ~30% A–BBB / ~10% BB–B (small junk slice for yield pickup) |
 | Distribution frequency | Monthly | Monthly |
 | Max drawdown + recovery | 2022: ~−17% (worst bond drawdown in 40+ years — rate shock); recovered in ~24 months | 2022: ~−15%; recovered in ~22 months (active duration shortening softened the blow) |
+| Forward outlook | Locked-in ~4.5% YTM at multi-decade-high yields; ~6y duration means full participation in rate cuts as Fed eases | PIMCO's edge is duration timing + structured credit / agency MBS selection — has added value in every rate cycle since 1988 |
 | Bid-ask spread | < 1 bp during market hours | ~3–5 bps |
 
 ---
@@ -102,6 +110,7 @@
 | **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~10% / ~+5% / ~+3% / **~+4.3%** / ~+5.5% — long-run total return tracks the coupon minus default losses; drawdowns in 2008 and 2020 dragged the 10y figure | ~7.5% / ~+7% / since Oct-2020 inception **~+5%** annualized — only ~5y of live data, but every single rolling 12-month window has been positive (no down years yet) |
 | Effective duration | ~3.2 years (HY bonds are shorter than IG) | ~0.2 years (floating-rate — resets every ~3 months; near-zero rate risk) |
 | Credit quality breakdown | 0% AAA–A / ~50% BB / ~40% B / ~10% CCC and below | 100% AAA-rated (top of CLO capital stack) |
+| Credit spread vs Treasuries | ~350–400 bps (tight vs historical median ~500 bps) | ~150–200 bps (paid for CLO complexity premium, not for default risk) |
 | Distribution frequency | Monthly | Monthly |
 | Max drawdown + recovery | 2008: ~−22%; 2020 COVID: ~−21%; recovered in 6–9 months each time. Falls *with* stocks, not against them | Since 2020 launch, max ~−3% (2022 rate shock barely touched it). AAA CLO tranches have **never defaulted** in the 30+ year history of the CLO market |
 | Forward outlook | Yields well above LT average, but spreads near cycle-tight levels limit upside; defaults expected to tick up into 2026 | Best risk-adjusted credit yield in the market right now — ~6.5% with no duration and AAA structural protection. Active manager selection avoids weaker CLO managers |
@@ -120,6 +129,8 @@
 | Expense vs same-segment competitors | MUB (iShares National Muni) at **0.07%** — 2 bps more, similar AUM, slightly better trading liquidity. TFI (SPDR Nuveen Bloomberg) at **0.23%** — much more expensive for nearly identical exposure. SUB (iShares short-muni) at **0.07%** — short-duration, not comparable. **VTEB wins on cost** for buy-and-hold (2 bps / yr compounds) | HYMB (SPDR Nuveen Bloomberg High Yield Muni) at **0.35%** — slightly more expensive, half the AUM. HYMU (BlackRock active HY muni) at **0.35%** — active, sub-$1B AUM, only ~5y of data. **HYD wins on AUM, fee, and 15-year live track record** |
 | AUM | ~$30B (top-3 muni ETF in the world) | ~$3B (largest passive high-yield muni ETF) |
 | 30-day SEC yield (YTM, forward) | ~3.5% | ~5.5% |
+| **Tax-equivalent yield** — top federal (37%) | ~5.6% TEY | ~8.7% TEY |
+| Tax-equivalent yield — top federal + CA (51% combined) | **~7.1% TEY** — beats any taxable IG bond at that bracket | **~11.2% TEY** — beats most taxable junk bonds after-tax for a CA top-bracket investor |
 | Trailing 12-month distribution yield (realized) | ~3.2% — slightly below SEC because older low-coupon munis still in portfolio | ~5.3% — close to SEC yield |
 | **Total return (annualized): 1y / 3y / 5y / 10y / 15y** | ~5% / ~−1% / ~+0.7% / **~+1.9%** / since 2015 inception ~+2.0% — total return understates the after-tax benefit by ~30–50% for high-bracket holders | ~9% / ~+3% / ~+2% / **~+3.5%** / ~+5% — solid long-run muni return with credit-cycle volatility |
 | Effective duration | ~6.5 years | ~7.5 years (HY munis are longer-duration than HY corporates) |
@@ -142,6 +153,7 @@
 | **Expense ratio** | 0.60% | 0.85% |
 | Expense vs same-strategy competitors | GLD (gold only) 0.40%, IAU (gold only) 0.25%, GLDM (cheapest gold) 0.10%, SLV (silver only) 0.50%. **GLTR is the only broad physical precious-metals basket ETF with $1B+ AUM** — no direct competitor. Vs DIY (GLD+SLV+PPLT+PALL ~0.42% blended), GLTR costs ~18 bps more but eliminates the rebalancing work | KMLM (Mount Lucas managed futures) 0.92% — similar AUM, smaller hedge-fund replication breadth. CTA (Simplify managed futures) 0.76% but only ~$200M AUM. WTMF (WisdomTree managed futures) 0.65% — underperformed peers in 2022/2023. **DBMF wins on track record + AUM + hedge-fund-replication pedigree** |
 | AUM | ~$1.5B | ~$1.3–1.5B |
+| Average daily dollar volume | ~$5–8M | ~$20–30M |
 | Bid-ask spread | ~5–10 bps | ~5–10 bps |
 | Holdings breakdown (typical) | ~60% gold, ~30% silver, ~5–7% platinum, ~3–5% palladium (rebalanced toward target weights periodically) | Rotating long/short positions across ~10 futures markets. Recent mid-2026 mix: long S&P, long gold, short long-duration Treasuries, long USD. Reweights monthly based on hedge-fund factor regression |
 | Correlation to S&P 500 (3y) | ~+0.10 — genuinely uncorrelated | ~−0.10 to +0.10 — genuinely uncorrelated, often inverse during regime shifts |
@@ -165,9 +177,12 @@
 | Target-date / glide path | None — mix never changes | Targets retirement around **2050**. Currently ~90% stocks (24 years out); de-risking begins ~15 years before target, lands at ~40% stocks by 2050, continues to ~30% stocks post-retirement |
 | Underlying holdings (typical) | ~48% US stocks (ITOT), ~32% international stocks (IXUS), ~14% US bonds (IUSB), ~6% international bonds (IAGG) | ~55% US stocks (ITOT), ~35% international stocks (IXUS / IEMG), ~8% US bonds (IUSB), ~2% international bonds (IAGG) — current mix; shifts toward bonds annually |
 | **Expense ratio** | 0.15% (wrapper) | 0.08% (wrapper) |
+| All-in fee incl. acquired-fund fees | ~0.20% (underlying ETFs avg ~0.05%) | ~0.13% (underlying ETFs avg ~0.05%) |
 | Expense vs same-strategy competitors | VOO + BND DIY 80/20 = ~0.04% all-in, but US-only; Vanguard equivalent VASGX (mutual fund) 0.14% global allocation. AOA is the cheapest global-allocation ETF with $1B+ AUM | DFA Target Date 2050 (DFTI) ~0.20%, Dimensional 2050 launched 2024. AOR target-date competitors are mutual funds (Vanguard VFIFX 0.08%, Fidelity FIPFX 0.12%) — but those aren't ETFs and trade only end-of-day. ITDF is the cheapest target-date 2050 ETF |
 | AUM | ~$2.5B (largest "aggressive 80/20" allocation ETF) | ~$300-500M (modest — launched Sept 2023) |
+| Average daily dollar volume | ~$15-25M | ~$1-3M (limited; trade on limit orders, avoid market orders during volatile periods) |
 | Bid-ask spread | ~2-4 bps during market hours | ~5-15 bps during market hours — wider due to small AUM |
+| Tax structure | 1099 (RIC). In-fund rebalancing is **not** a taxable event for you — only the fund's own distributions are taxable | 1099 (RIC). Same in-fund rebalancing tax efficiency. Particularly valuable in taxable accounts where you'd otherwise pay capital gains every time you de-risked manually |
 | Dividend distribution | ~1.5-2.0% annual yield, paid quarterly (mostly qualified dividends + some interest income from bond sleeve) | ~1.5% annual yield, paid annually in December |
 | **Recent total return: 1m / 3m / 6m / 1y** | ~3% / ~8% / ~13% / ~19% (indicative mid-2026 — 80% global stocks riding the equity rally) | ~3% / ~8% / ~12% / ~18% (indicative mid-2026 — slightly less than AOA because of ~10% bond sleeve) |
 | **Total return (annualized): 3y / 5y / 10y / since inception** | ~13% / ~11% / **~10%** / ~9% since 2008 — has delivered the global 80/20 expected return remarkably consistently | ~14% / **n/a** (launched Sept 2023) — via predecessor mutual fund LIPIX (BlackRock LifePath Index 2050): 10y annualized ~10%, since 2010 inception ~9% |
