@@ -1,7 +1,7 @@
 import { withLoggedInAdmin } from '@/app/api/helpers/withLoggedInAdmin';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { fetchAndUpdateStockAnalyzerData } from '@/utils/stock-analyzer-scraper-utils';
-import { revalidateAllTickerTags } from '@/utils/ticker-v1-cache-utils';
+import { revalidateTickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { prisma } from '@/prisma';
 import { NextRequest } from 'next/server';
 
@@ -57,8 +57,11 @@ const postHandler = async (
       // fetchAndUpdateStockAnalyzerData no longer revalidates on its own (it
       // runs in the read path of several API routes where revalidating would
       // double the ISR write count). This admin endpoint is an explicit
-      // write-path refresh, so we invalidate every per-ticker tag here.
-      revalidateAllTickerTags(ticker.symbol, ticker.exchange);
+      // write-path refresh, so we invalidate the umbrella tag here — the
+      // scraper data feeds the main /stocks/[exchange]/[ticker] page only
+      // (financial-info + quarterly-chart), so per-subpage tags (category,
+      // competition, management-team) don't need invalidation.
+      revalidateTickerAndExchangeTag(ticker.symbol, ticker.exchange);
       processed++;
     } catch (error: any) {
       errors.push({

@@ -351,11 +351,19 @@ const invalidateNarrowTag = (tickerRecord: TickerV1, slice: TickerCacheSlice): v
 };
 
 export const bumpUpdatedAtAndInvalidateCache = async (tickerRecord: TickerV1, slice: TickerCacheSlice, options?: { skipRevalidation?: boolean }) => {
+  // Each saver writes one specific slice of data; the only page that actually
+  // renders that slice is the matching subpage. Invalidate its narrow tag
+  // unconditionally so the subpage rebuilds the next time it's hit, regardless
+  // of whether more pipeline steps are queued.
+  invalidateNarrowTag(tickerRecord, slice);
+
+  // The umbrella (main aggregate page) is the one we defer during a multi-step
+  // generation. The page renders every slice at once, so rebuilding it after
+  // each step would re-render the same shell with one section's update — we'd
+  // rather invalidate once when the pipeline finishes. `skipRevalidation: true`
+  // skips ONLY the umbrella for this reason.
   if (!options?.skipRevalidation) {
-    // Always bump the umbrella so the aggregate main page rebuilds...
     revalidateTickerAndExchangeTag(tickerRecord.symbol, tickerRecord.exchange);
-    // ...plus the one narrow tag for the subpage whose data actually changed.
-    invalidateNarrowTag(tickerRecord, slice);
   }
   await prisma.tickerV1.update({
     where: {
