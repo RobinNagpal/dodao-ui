@@ -24,7 +24,7 @@ properties:
     description: 'ETF category as provided by the data source (e.g., Large Blend, High Yield Bond).'
   groupKey:
     type: ['string', 'null']
-    description: 'ETF group key the fund maps to in our taxonomy (e.g., broad-equity, fixed-income-core).'
+    description: 'ETF group key the fund maps to in our taxonomy (e.g., broad-equity, fixed-income-investment-grade).'
   indexName:
     type: ['string', 'null']
     description: 'Index name the ETF aims to track (if known).'

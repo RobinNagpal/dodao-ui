@@ -14,13 +14,13 @@
     },
     {
       "key": "sector-thematic-equity",
-      "name": "Sector & Thematic Equity",
+      "name": "Sector, Thematic & Emerging-Market Equity",
       "etfs": [
         { "symbol": "XLK", "name": "Technology Select Sector SPDR Fund", "exchange": "NYSEARCA", "category": "Technology" },
         { "symbol": "XLV", "name": "Health Care Select Sector SPDR Fund", "exchange": "NYSEARCA", "category": "Health" },
         { "symbol": "XLF", "name": "Financial Select Sector SPDR Fund", "exchange": "NYSEARCA", "category": "Financial" },
-        { "symbol": "XLE", "name": "Energy Select Sector SPDR Fund", "exchange": "NYSEARCA", "category": "Equity Energy" },
-        { "symbol": "VNQ", "name": "Vanguard Real Estate ETF", "exchange": "NYSEARCA", "category": "Real Estate" }
+        { "symbol": "VNQ", "name": "Vanguard Real Estate ETF", "exchange": "NYSEARCA", "category": "Real Estate" },
+        { "symbol": "EEM", "name": "iShares MSCI Emerging Markets ETF", "exchange": "NYSEARCA", "category": "Diversified Emerging Mkts" }
       ]
     },
     {
@@ -35,47 +35,25 @@
       ]
     },
     {
-      "key": "fixed-income-core",
-      "name": "Fixed Income — Core & Government",
+      "key": "commodities-and-digital-assets",
+      "name": "Commodities & Digital Assets",
       "etfs": [
-        { "symbol": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF", "exchange": "NYSEARCA", "category": "Intermediate Core Bond" },
-        { "symbol": "TLT", "name": "iShares 20+ Year Treasury Bond ETF", "exchange": "NASDAQ", "category": "Long Government" },
-        { "symbol": "SHY", "name": "iShares 1-3 Year Treasury Bond ETF", "exchange": "NASDAQ", "category": "Short Government" },
-        { "symbol": "TIP", "name": "iShares TIPS Bond ETF", "exchange": "NYSEARCA", "category": "Inflation-Protected Bond" },
-        { "symbol": "BIL", "name": "SPDR Bloomberg 1-3 Month T-Bill ETF", "exchange": "NYSEARCA", "category": "Ultrashort Bond" }
+        { "symbol": "GLD", "name": "SPDR Gold Shares", "exchange": "NYSEARCA", "category": "Commodities Focused" },
+        { "symbol": "SLV", "name": "iShares Silver Trust", "exchange": "NYSEARCA", "category": "Commodities Focused" },
+        { "symbol": "DBC", "name": "Invesco DB Commodity Index Tracking Fund", "exchange": "NYSEARCA", "category": "Commodities Broad Basket" },
+        { "symbol": "IBIT", "name": "iShares Bitcoin Trust ETF", "exchange": "NASDAQ", "category": "Digital Assets" },
+        { "symbol": "UUP", "name": "Invesco DB US Dollar Index Bullish Fund", "exchange": "NYSEARCA", "category": "Single Currency" }
       ]
     },
     {
-      "key": "fixed-income-credit",
-      "name": "Fixed Income — Credit & Income",
-      "etfs": [
-        { "symbol": "HYG", "name": "iShares iBoxx $ High Yield Corporate Bond ETF", "exchange": "NYSEARCA", "category": "High Yield Bond" },
-        { "symbol": "BKLN", "name": "Invesco Senior Loan ETF", "exchange": "NYSEARCA", "category": "Bank Loan" },
-        { "symbol": "PFF", "name": "iShares Preferred and Income Securities ETF", "exchange": "NASDAQ", "category": "Preferred Stock" },
-        { "symbol": "EMB", "name": "iShares J.P. Morgan USD Emerging Markets Bond ETF", "exchange": "NASDAQ", "category": "Emerging Markets Bond" },
-        { "symbol": "CWB", "name": "SPDR Bloomberg Convertible Securities ETF", "exchange": "NYSEARCA", "category": "Convertibles" }
-      ]
-    },
-    {
-      "key": "muni",
-      "name": "Municipal Bonds",
-      "etfs": [
-        { "symbol": "MUB", "name": "iShares National Muni Bond ETF", "exchange": "NYSEARCA", "category": "Muni National Interm" },
-        { "symbol": "SUB", "name": "iShares Short-Term National Muni Bond ETF", "exchange": "NYSEARCA", "category": "Muni National Short" },
-        { "symbol": "MLN", "name": "VanEck Long Muni ETF", "exchange": "NYSEARCA", "category": "Muni National Long" },
-        { "symbol": "HYD", "name": "VanEck High Yield Muni ETF", "exchange": "NYSEARCA", "category": "High Yield Muni" },
-        { "symbol": "CMF", "name": "iShares California Muni Bond ETF", "exchange": "NYSEARCA", "category": "Muni California Long" }
-      ]
-    },
-    {
-      "key": "alt-strategies",
-      "name": "Alternative Strategies",
+      "key": "derivative-income",
+      "name": "Derivative Income & Alternative Strategies",
       "etfs": [
         { "symbol": "JEPI", "name": "JPMorgan Equity Premium Income ETF", "exchange": "NYSEARCA", "category": "Derivative Income" },
-        { "symbol": "GLD", "name": "SPDR Gold Shares", "exchange": "NYSEARCA", "category": "Commodities Focused" },
-        { "symbol": "IBIT", "name": "iShares Bitcoin Trust ETF", "exchange": "NASDAQ", "category": "Digital Assets" },
-        { "symbol": "DBC", "name": "Invesco DB Commodity Index Tracking Fund", "exchange": "NYSEARCA", "category": "Commodities Broad Basket" },
-        { "symbol": "DBMF", "name": "iMGP DBi Managed Futures Strategy ETF", "exchange": "NYSEARCA", "category": "Systematic Trend" }
+        { "symbol": "QYLD", "name": "Global X NASDAQ 100 Covered Call ETF", "exchange": "NASDAQ", "category": "Derivative Income" },
+        { "symbol": "DBMF", "name": "iMGP DBi Managed Futures Strategy ETF", "exchange": "NYSEARCA", "category": "Systematic Trend" },
+        { "symbol": "BTAL", "name": "AGFiQ U.S. Market Neutral Anti-Beta Fund", "exchange": "NYSEARCA", "category": "Equity Market Neutral" },
+        { "symbol": "PBJA", "name": "Innovator U.S. Equity Power Buffer ETF - January", "exchange": "NYSEARCA", "category": "Defined Outcome" }
       ]
     },
     {
@@ -87,6 +65,28 @@
         { "symbol": "AOM", "name": "iShares Core Moderate Allocation ETF", "exchange": "NYSEARCA", "category": "Moderately Conservative Allocation" },
         { "symbol": "AOK", "name": "iShares Core Conservative Allocation ETF", "exchange": "NYSEARCA", "category": "Conservative Allocation" },
         { "symbol": "GAL", "name": "SPDR SSGA Global Allocation ETF", "exchange": "NYSEARCA", "category": "Global Moderate Allocation" }
+      ]
+    },
+    {
+      "key": "fixed-income-investment-grade",
+      "name": "Fixed Income — Investment Grade",
+      "etfs": [
+        { "symbol": "AGG", "name": "iShares Core U.S. Aggregate Bond ETF", "exchange": "NYSEARCA", "category": "Intermediate Core Bond" },
+        { "symbol": "TLT", "name": "iShares 20+ Year Treasury Bond ETF", "exchange": "NASDAQ", "category": "Long Government" },
+        { "symbol": "SHY", "name": "iShares 1-3 Year Treasury Bond ETF", "exchange": "NASDAQ", "category": "Short Government" },
+        { "symbol": "TIP", "name": "iShares TIPS Bond ETF", "exchange": "NYSEARCA", "category": "Inflation-Protected Bond" },
+        { "symbol": "MUB", "name": "iShares National Muni Bond ETF", "exchange": "NYSEARCA", "category": "Muni National Interm" }
+      ]
+    },
+    {
+      "key": "fixed-income-credit-and-income",
+      "name": "Fixed Income — Credit & Income",
+      "etfs": [
+        { "symbol": "HYG", "name": "iShares iBoxx $ High Yield Corporate Bond ETF", "exchange": "NYSEARCA", "category": "High Yield Bond" },
+        { "symbol": "BKLN", "name": "Invesco Senior Loan ETF", "exchange": "NYSEARCA", "category": "Bank Loan" },
+        { "symbol": "JAAA", "name": "Janus Henderson AAA CLO ETF", "exchange": "NYSEARCA", "category": "Securitized Bond - Focused" },
+        { "symbol": "PFF", "name": "iShares Preferred and Income Securities ETF", "exchange": "NASDAQ", "category": "Preferred Stock" },
+        { "symbol": "EMB", "name": "iShares J.P. Morgan USD Emerging Markets Bond ETF", "exchange": "NASDAQ", "category": "Emerging Markets Bond" }
       ]
     }
   ]
