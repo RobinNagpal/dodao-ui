@@ -18,12 +18,20 @@ Bonds split cleanly on **two axes at the same time**:
 
 The three groups come from putting both axes together:
 
-| New group key                       | Credit quality        | Rate behaviour     | What the retail buyer asks first                       |
-| ----------------------------------- | --------------------- | ------------------ | ------------------------------------------------------ |
-| `fixed-income-investment-grade`     | Investment grade      | Duration-bearing   | "How much rate risk can I take?"                       |
-| `fixed-income-floating-rate`        | IG and sub-IG mix     | Floating / near-zero duration | "How much credit risk for a yield that resets with rates?" |
-| `fixed-income-credit-and-income`    | Sub-IG / income       | Duration-bearing   | "Am I being paid enough for the default risk?"         |
-| `muni` _(kept separate)_            | IG-dominated (HY muni is the exception) | Duration-bearing | "What is my tax-equivalent yield? Am I holding this in a taxable account?" |
+| New group key                       | US ETF count | Credit quality        | Rate behaviour     | What the retail buyer asks first                       |
+| ----------------------------------- | -----------: | --------------------- | ------------------ | ------------------------------------------------------ |
+| `fixed-income-investment-grade`     |      **418** | Investment grade      | Duration-bearing   | "How much rate risk can I take?"                       |
+| `fixed-income-floating-rate`        |      **114** | IG and sub-IG mix     | Floating / near-zero duration | "How much credit risk for a yield that resets with rates?" |
+| `fixed-income-credit-and-income`    |      **204** | Sub-IG / income       | Duration-bearing   | "Am I being paid enough for the default risk?"         |
+| `muni` _(kept separate)_            |      **148** | IG-dominated (HY muni is the exception) | Duration-bearing | "What is my tax-equivalent yield? Am I holding this in a taxable account?" |
+| _Total bond funds_                  |      **884** |                       |                    |                                                        |
+
+For reference, the **old** two-group split was: `fixed-income-core` 518 +
+`fixed-income-credit` 218. After the restructure, 100 ETFs move out of `core`
+into the new `floating-rate` group (Securitized Bond - Focused, Ultrashort
+Bond, Money Market-Taxable, Prime Money Market), and 14 ETFs move out of
+`credit` into `floating-rate` (Bank Loan). That accounts for the new
+`floating-rate` total of 114.
 
 ## In simple English — why three groups instead of two
 
@@ -47,76 +55,85 @@ not paying me back?").
 
 ## Category-to-group mapping
 
-### `fixed-income-investment-grade`
+### `fixed-income-investment-grade` — 418 ETFs
 
 (Renamed from the old `fixed-income-core`.) Investment grade, duration-bearing.
 Main risk = rates.
 
-- Short Government
-- Intermediate Government
-- Long Government
-- Short-Term Bond
-- Intermediate Core Bond
-- Intermediate Core-Plus Bond
-- Long-Term Bond
-- Corporate Bond
-- Government Mortgage-Backed Bond
-- Securitized Bond - Diversified
-- Inflation-Protected Bond
-- Short-Term Inflation-Protected Bond
-- Target Maturity
-- Global Bond
-- Global Bond-USD Hedged
-- Investment Grade
-- Miscellaneous Fixed Income
+| Category                              | ETFs |
+| ------------------------------------- | ---: |
+| Target Maturity                       |   80 |
+| Intermediate Core-Plus Bond           |   52 |
+| Intermediate Core Bond                |   51 |
+| Short-Term Bond                       |   50 |
+| Corporate Bond                        |   44 |
+| Long Government                       |   25 |
+| Short Government                      |   20 |
+| Securitized Bond - Diversified        |   15 |
+| Intermediate Government               |   14 |
+| Inflation-Protected Bond              |   14 |
+| Global Bond-USD Hedged                |   14 |
+| Government Mortgage-Backed Bond       |   12 |
+| Long-Term Bond                        |   10 |
+| Global Bond                           |    9 |
+| Short-Term Inflation-Protected Bond   |    7 |
+| Miscellaneous Fixed Income            |    1 |
+| Investment Grade _(alias, no funds yet)_ |    0 |
 
-### `fixed-income-floating-rate`
+### `fixed-income-floating-rate` — 114 ETFs
 
 New group. Floating-rate or near-zero duration. Coupon resets with rates.
 Yield comes from credit spread plus the reset rate.
 
-- Bank Loan _(moved out of credit)_
-- Securitized Bond - Focused _(moved out of core — this category is dominated
-  by CLO ETFs; the AAA tranches stay here, the sub-IG tranches go to
-  `fixed-income-credit-and-income` as a data-side correction)_
-- Ultrashort Bond _(moved out of core)_
-- Money Market-Taxable _(moved out of core)_
-- Prime Money Market _(moved out of core)_
+| Category                       | ETFs | Moved from        |
+| ------------------------------ | ---: | ----------------- |
+| Ultrashort Bond                |   69 | old `core`        |
+| Securitized Bond - Focused     |   25 | old `core` _(dominated by CLO ETFs — AAA tranches stay here, sub-IG tranches go to `credit-and-income` as a data-side correction)_ |
+| Bank Loan                      |   14 | old `credit`      |
+| Money Market-Taxable           |    5 | old `core`        |
+| Prime Money Market             |    1 | old `core`        |
 
-### `fixed-income-credit-and-income`
+### `fixed-income-credit-and-income` — 204 ETFs
 
 (Renamed from `fixed-income-credit` so the name signals that High Yield is
 the centre of gravity here.) Credit-sensitive, duration-bearing, mostly
 sub-investment grade. Main risk = default.
 
-- High Yield Bond (largest member — 78 ETFs)
-- Multisector Bond
-- Preferred Stock
-- Convertibles
-- Nontraditional Bond
-- Emerging Markets Bond
-- Emerging-Markets Local-Currency Bond
-- Broad Credit
-- Private Debt - General
-- Sub-IG CLO funds (JBBB, CLOZ, BCLO, CLOB, NCLO, RCLO) — these are tagged
-  Morningstar "Securitized Bond - Focused" but their tranche rating is below
-  investment grade, so they belong here. May need a manual override per ETF.
+| Category                              | ETFs |
+| ------------------------------------- | ---: |
+| High Yield Bond                       |   78 |
+| Multisector Bond                      |   45 |
+| Preferred Stock                       |   25 |
+| Emerging Markets Bond                 |   23 |
+| Nontraditional Bond                   |   20 |
+| Convertibles                          |    6 |
+| Emerging-Markets Local-Currency Bond  |    6 |
+| Private Debt - General                |    1 |
+| Broad Credit _(alias, no funds yet)_  |    0 |
 
-### `muni` _(kept as a separate group, listed for completeness)_
+Plus the **sub-IG CLO funds** that move in from the old `core` group (JBBB,
+CLOZ, BCLO, CLOB, NCLO, RCLO — these are tagged Morningstar "Securitized
+Bond - Focused" but their tranche rating is below investment grade, so they
+belong here). This is a per-ETF override, not a category move — the category
+itself stays in `floating-rate` for the AAA tranches.
+
+### `muni` — 148 ETFs _(kept as a separate group, listed for completeness)_
 
 Municipal bond funds. Split off by tax treatment, not by the two axes above.
 
-- Muni National Short
-- Muni National Interm
-- Muni National Long
-- Muni California Intermediate
-- Muni California Long
-- Muni New York Long
-- Muni New York Intermediate
-- Muni Single State Short
-- Muni Minnesota
-- Muni Massachusetts
-- Muni New Jersey
-- Muni Ohio
-- High Yield Muni
-- Muni Target Maturity
+| Category                          | ETFs | Sub-type            |
+| --------------------------------- | ---: | ------------------- |
+| Muni National Interm              |   43 | National IG         |
+| Muni Target Maturity              |   25 | Target maturity     |
+| Muni National Short               |   23 | National IG         |
+| Muni National Long                |   18 | National IG         |
+| High Yield Muni                   |   14 | High-yield muni     |
+| Muni California Intermediate      |    5 | Single-state (CA)   |
+| Muni California Long              |    5 | Single-state (CA)   |
+| Muni New York Long                |    5 | Single-state (NY)   |
+| Muni Single State Short           |    3 | Single-state (any)  |
+| Muni Minnesota                    |    2 | Single-state (MN)   |
+| Muni Massachusetts                |    2 | Single-state (MA)   |
+| Muni New York Intermediate        |    1 | Single-state (NY)   |
+| Muni New Jersey                   |    1 | Single-state (NJ)   |
+| Muni Ohio                         |    1 | Single-state (OH)   |

@@ -3,16 +3,18 @@
 The old `alt-strategies` group held 828 US ETFs that did not share a decision
 framework. We are splitting it into **three new groups**.
 
-## The three groups in one sentence each
+## The three groups in one sentence each, with sizes
 
-- **`commodities-and-digital-assets`** — funds that give you direct exposure
-  to a _thing_: a commodity, a crypto coin, or a currency. The fund just holds
-  (or tracks) the thing. There is no manager strategy in the way.
-- **`strategy-funds`** — funds where a manager runs a _process_ to try to
-  produce returns that are uncorrelated with the stock market. Hedge-fund-style.
-- **`derivative-income`** — funds that _engineer a payoff_ with options:
-  collect option premium as yield, give up some upside in return. Mechanical,
-  not manager-driven.
+| New group key                        | US ETF count | One-sentence description                                                                                                                              |
+| ------------------------------------ | -----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`commodities-and-digital-assets`** | **181**      | Funds that give you direct exposure to a _thing_ — a commodity, a crypto coin, or a currency. The fund just holds (or tracks) it. No manager strategy.   |
+| **`strategy-funds`**                 | **48**       | Funds where a manager runs a _process_ to try to produce returns that are uncorrelated with the stock market. Hedge-fund-style.                          |
+| **`derivative-income`**              | **599**      | Funds that _engineer a payoff_ with options: collect option premium as yield, give up some upside in return. Mechanical, not manager-driven.            |
+| _Total (old `alt-strategies`)_       | **828**      |                                                                                                                                                       |
+
+`derivative-income` is by far the largest of the three (~72% of the old alt
+group). `strategy-funds` is the smallest (~6%) but the most distinct in terms
+of decision framework.
 
 ## What is the difference between `strategy-funds` and `derivative-income`?
 
@@ -32,59 +34,45 @@ with the downside I can live with?_
 
 ## Category-to-group mapping
 
-### `commodities-and-digital-assets`
+### `commodities-and-digital-assets` — 181 ETFs
 
 Direct exposure to a thing. No manager strategy.
 
-- Commodities Focused
-- Commodities Broad Basket
-- Commodities Precious Metals
-- Gold
-- Silver
-- Natural Gas
-- Crude Oil
-- Carbon Credits
-- Digital Assets
-- Long BTC
-- Long ETH
-- Long XRP
-- Long SOL
-- Long Cryptocurrency Basket
-- Long BTC, Short CAD
-- Long BTC, Short USD
-- Long Cryptocurrency Basket, Short CAD
-- Long ETH, Short CAD
-- Long ETH, Short USD
-- Long SOL, Short USD
-- Long XRP, Short CAD
-- Long XRP, Short USD
-- Single Currency
-- Long USD
-- Long CAD
-- Long USD, Short CAD
+| Category                          | ETFs | Notes                                                                       |
+| --------------------------------- | ---: | --------------------------------------------------------------------------- |
+| Commodities Focused               |   51 |                                                                             |
+| Commodities Broad Basket          |   31 |                                                                             |
+| Commodities Precious Metals       |    1 |                                                                             |
+| Digital Assets                    |   91 | Where the spot-Bitcoin / spot-Ether ETFs actually live in the API.          |
+| Single Currency                   |    7 |                                                                             |
+| _Aliases (currently zero ETFs)_   |    0 | Gold, Silver, Natural Gas, Crude Oil, Carbon Credits, Long BTC, Long ETH, Long XRP, Long SOL, Long Cryptocurrency Basket, Long USD, Long CAD, the long/short crypto pairs, Long USD/Short CAD. These names exist in `etf-analysis-categories.json` but no ETF is currently tagged to them — the actual funds sit under the broader Morningstar categories (Commodities Focused, Digital Assets, Single Currency). Keep the aliases mapped to this group so new tags route correctly when issuers / Morningstar start using them. |
 
-### `strategy-funds`
+### `strategy-funds` — 48 ETFs
 
 A manager runs a process. Decision question is about the strategy working.
 
-- Systematic Trend
-- Long-Short Equity
-- Multistrategy
-- Equity Market Neutral
-- Macro Trading
-- Event Driven
-- Relative Value Arbitrage
-- Multialternative
-- Volatility
-- Downside Hedge
+| Category                | ETFs |
+| ----------------------- | ---: |
+| Systematic Trend        |   13 |
+| Long-Short Equity       |   13 |
+| Multistrategy           |    8 |
+| Event Driven            |    7 |
+| Macro Trading           |    3 |
+| Equity Market Neutral   |    2 |
+| Relative Value Arbitrage |   1 |
+| Multialternative        |    1 |
+| Volatility              |    0 |
+| Downside Hedge          |    0 |
 
-### `derivative-income`
+### `derivative-income` — 599 ETFs
 
 Payoff engineered with options. Yield in exchange for capped upside.
 
-- Derivative Income
-- Defined Outcome
-- Equity Hedged
+| Category          | ETFs |
+| ----------------- | ---: |
+| Defined Outcome   |  340 |
+| Derivative Income |  204 |
+| Equity Hedged     |   55 |
 
 ## Why these three and not five or six
 
