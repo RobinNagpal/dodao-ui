@@ -62,9 +62,7 @@
 | AUM | ~$4–5B | ~$23–25B (**largest leveraged ETF in the world**) |
 | Average daily dollar volume | ~$200M | ~$2–3B (**deepest liquidity of any leveraged ETF**) |
 | Bid-ask spread | ~1–2 bps during market hours | ~0.5–1 bp during market hours |
-| Counterparty / swap structure | Total-return swaps diversified across 5–6 dealers (Goldman, JPM, Morgan Stanley, Citi, SocGen, BNP). Modest counterparty risk; no single-dealer concentration | Same swap structure, same dealer panel. Concentration well-managed; full disclosure in monthly fact sheet |
 | Realized vs target daily leverage | ~1.95–2.05x — closely tracks stated 2x | ~2.90–3.05x — closely tracks stated 3x |
-| Reverse split history | 1-for-4 in 2010 (post-GFC reset). None since | 1-for-2 (2013), 1-for-3 (2017), 1-for-2 (2021) — cumulative ~12x reverse splits across product life. Driven by post-bear-market price resets, not by ongoing decay in trending markets |
 | Distribution / income | ~0.3% annual yield (interest on swap collateral), paid quarterly. Not material for the use case | ~0.2% annual yield (interest on swap collateral), paid quarterly. Not material for the use case |
 | **Recent total return: 1m / 3m / 6m / 1y** | ~5% / ~12% / ~22% / ~30–35% (indicative mid-2026) | ~8% / ~20% / ~40% / ~55–65% (indicative mid-2026) |
 | **Total return (annualized): 3y / 5y / 10y / since inception** | ~28% / ~24% / **~24%** / ~12% since 2006 (2008–09 wiped out half the cumulative since-inception return) | ~50% / ~36% / **~45%** / **~38% since 2010** — **highest-returning ETF of the last 15 years** thanks to a sustained tech bull run |
@@ -160,7 +158,6 @@
 | Holdings breakdown (typical) | ~60% gold, ~30% silver, ~5–7% platinum, ~3–5% palladium (rebalanced toward target weights periodically) | Rotating long/short positions across ~10 futures markets. Recent mid-2026 mix: long S&P, long gold, short long-duration Treasuries, long USD. Reweights monthly based on hedge-fund factor regression |
 | Correlation to S&P 500 (3y) | ~+0.10 — genuinely uncorrelated | ~−0.10 to +0.10 — genuinely uncorrelated, often inverse during regime shifts |
 | Correlation to Bloomberg Agg (3y) | ~+0.20 | ~−0.30 to +0.10 (often inverse, depending on trend regime) |
-| Tax structure | 1099 (grantor trust). **Long-term cap gains taxed as collectibles (28% max federal)** — IRS treats physical-metals trusts this way. Worse than equity LTCG (20% max) for high-bracket investors | 1099 (RIC structure). Standard capital gains treatment. No K-1, no collectibles tax |
 | **Recent total return: 1m / 3m / 6m / 1y** | ~3% / ~10% / ~22% / ~35% (indicative mid-2026 — central-bank buying + USD weakness driving the metals rally) | ~1% / ~4% / ~7% / ~9% (indicative mid-2026 — managed futures runs lower-vol in trending markets) |
 | **Total return (annualized): 3y / 5y / 10y / since inception** | ~22% / ~14% / **~10%** / ~8% since 2010 — gold-dominated, with silver/platinum/palladium adding cyclical noise | ~9% / ~10% / **n/a** (launched 2019) / ~10% since inception — bumpy single-year returns but consistent multi-year compounding |
 | Max drawdown / recovery | 2013–15 metals bear: ~−40% over 2 years, recovered by 2020. 2022 inflation panic: ~−12%, recovered within 12 months | 2023 trend reversal: ~−12% (managed futures' "bad year" — markets stopped trending). 2022: **+22%** — best year of any liquid alt |
@@ -185,7 +182,6 @@
 | AUM | ~$2.5B (largest "aggressive 80/20" allocation ETF) | ~$300-500M (modest — launched Sept 2023) |
 | Average daily dollar volume | ~$15-25M | ~$1-3M (limited; trade on limit orders, avoid market orders during volatile periods) |
 | Bid-ask spread | ~2-4 bps during market hours | ~5-15 bps during market hours — wider due to small AUM |
-| Rebalancing methodology | Quarterly rebalance to target weights + drift threshold (±5%); tax-aware at the fund level | Quarterly rebalance + annual glide-path adjustment shifting weights toward bonds; tax-aware at the fund level |
 | Tax structure | 1099 (RIC). In-fund rebalancing is **not** a taxable event for you — only the fund's own distributions are taxable | 1099 (RIC). Same in-fund rebalancing tax efficiency. Particularly valuable in taxable accounts where you'd otherwise pay capital gains every time you de-risked manually |
 | Dividend distribution | ~1.5-2.0% annual yield, paid quarterly (mostly qualified dividends + some interest income from bond sleeve) | ~1.5% annual yield, paid annually in December |
 | **Recent total return: 1m / 3m / 6m / 1y** | ~3% / ~8% / ~13% / ~19% (indicative mid-2026 — 80% global stocks riding the equity rally) | ~3% / ~8% / ~12% / ~18% (indicative mid-2026 — slightly less than AOA because of ~10% bond sleeve) |
