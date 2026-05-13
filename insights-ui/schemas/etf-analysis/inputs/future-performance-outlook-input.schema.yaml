@@ -54,7 +54,7 @@ properties:
   # ETF group — derived from fundCategory via etf-analysis-categories.json and drives which factors are selected.
   groupKey:
     type: string
-    description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-core, alt-strategies).'
+    description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-investment-grade, derivative-income).'
 
   # From EtfFinancialInfo — baseline fund stats (cost, size, simple valuation/yield, liquidity)
   etfFinancialInfo:
