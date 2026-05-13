@@ -172,4 +172,26 @@
 
 ## 8. Allocation & Target-Date
 
-_Picks TBD._
+| Metric | **AOA** (aggressive static allocation) | **ITDF** (target-date 2050 glide path) |
+|---|---|---|
+| Style | Passive — static 80/20 global allocation, fund-of-ETFs | Passive — target-date glide path, fund-of-ETFs |
+| Issuer | iShares (BlackRock) | iShares (BlackRock) — LifePath Target Date 2050 |
+| What it does in one sentence | Holds a fixed 80% global stocks / 20% global bonds mix by buying 8 underlying iShares ETFs and rebalancing quarterly | Holds a glide-path allocation that gradually shifts from ~90% stocks toward ~40% stocks as 2050 approaches; rebalanced quarterly |
+| Target-date / glide path | None — mix never changes | Targets retirement around **2050**. Currently ~90% stocks (24 years out); de-risking begins ~15 years before target, lands at ~40% stocks by 2050, continues to ~30% stocks post-retirement |
+| Underlying holdings (typical) | ~48% US stocks (ITOT), ~32% international stocks (IXUS), ~14% US bonds (IUSB), ~6% international bonds (IAGG) | ~55% US stocks (ITOT), ~35% international stocks (IXUS / IEMG), ~8% US bonds (IUSB), ~2% international bonds (IAGG) — current mix; shifts toward bonds annually |
+| **Expense ratio** | 0.15% (wrapper) | 0.08% (wrapper) |
+| All-in fee incl. acquired-fund fees | ~0.20% (underlying ETFs avg ~0.05%) | ~0.13% (underlying ETFs avg ~0.05%) |
+| Expense vs same-strategy competitors | VOO + BND DIY 80/20 = ~0.04% all-in, but US-only; Vanguard equivalent VASGX (mutual fund) 0.14% global allocation. AOA is the cheapest global-allocation ETF with $1B+ AUM | DFA Target Date 2050 (DFTI) ~0.20%, Dimensional 2050 launched 2024. AOR target-date competitors are mutual funds (Vanguard VFIFX 0.08%, Fidelity FIPFX 0.12%) — but those aren't ETFs and trade only end-of-day. ITDF is the cheapest target-date 2050 ETF |
+| AUM | ~$2.5B (largest "aggressive 80/20" allocation ETF) | ~$300-500M (modest — launched Sept 2023) |
+| Average daily dollar volume | ~$15-25M | ~$1-3M (limited; trade on limit orders, avoid market orders during volatile periods) |
+| Bid-ask spread | ~2-4 bps during market hours | ~5-15 bps during market hours — wider due to small AUM |
+| Rebalancing methodology | Quarterly rebalance to target weights + drift threshold (±5%); tax-aware at the fund level | Quarterly rebalance + annual glide-path adjustment shifting weights toward bonds; tax-aware at the fund level |
+| Tax structure | 1099 (RIC). In-fund rebalancing is **not** a taxable event for you — only the fund's own distributions are taxable | 1099 (RIC). Same in-fund rebalancing tax efficiency. Particularly valuable in taxable accounts where you'd otherwise pay capital gains every time you de-risked manually |
+| Dividend distribution | ~1.5-2.0% annual yield, paid quarterly (mostly qualified dividends + some interest income from bond sleeve) | ~1.5% annual yield, paid annually in December |
+| **Recent total return: 1m / 3m / 6m / 1y** | ~3% / ~8% / ~13% / ~19% (indicative mid-2026 — 80% global stocks riding the equity rally) | ~3% / ~8% / ~12% / ~18% (indicative mid-2026 — slightly less than AOA because of ~10% bond sleeve) |
+| **Total return (annualized): 3y / 5y / 10y / since inception** | ~13% / ~11% / **~10%** / ~9% since 2008 — has delivered the global 80/20 expected return remarkably consistently | ~14% / **n/a** (launched Sept 2023) — via predecessor mutual fund LIPIX (BlackRock LifePath Index 2050): 10y annualized ~10%, since 2010 inception ~9% |
+| Max drawdown / recovery | 2022: **−19%** vs 60/40 −16% (80/20 carries more equity vol). Recovered within 14 months. 2008–09: ~−40% — recovered in ~4 years | 2022 (via LIPIX predecessor): ~−18%. ETF version too new for direct data. Recovery profile similar to AOA given current ~90% equity mix |
+| Crisis-period behavior | 2022 inflation + rate hike: −19%. 2020 COVID: −20% drawdown, recovered in 6 months. 2008: ~−40% drawdown, recovered in ~4y. Behaves like global equities with a 20% bond cushion | At a 23-year-old's current age, ITDF is ~90% stocks → behaves nearly identically to AOA in crises right now. The benefit comes in 15+ years when the auto-de-risking begins |
+| Investment goal | Single-ticker, 80/20 global portfolio for the rest of your investing life. You handle the de-risking later (or never, if you want to stay aggressive into retirement) | Single-ticker portfolio for a 23-year-old targeting early retirement around 2050. Fund handles the de-risking automatically — you don't have to remember to do it |
+| Why it's the best pick in its sub-category | Largest, most-liquid, cheapest 80/20 global allocation ETF with a 17-year track record through multiple market cycles. Quietly one of the best "lazy portfolio" choices on the market | Cheapest target-date 2050 ETF (0.08% vs Dimensional's 0.20%). Backed by BlackRock LifePath methodology with 15+ year mutual-fund track record. Glide path is moderate-conservative (lands at ~40% stocks at retirement), suitable for someone who'll need 20-30 more years of portfolio life post-retirement |
+| Key caveat | You must remember to de-risk later in life. AOA at age 65 is too aggressive for most people | If you actually retire at standard age (65, not 50), the 2050 vintage de-risks too early. A 2065 (ITDI) or 2070 vintage would match standard retirement age for a 23-year-old today |

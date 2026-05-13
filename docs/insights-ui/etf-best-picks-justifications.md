@@ -774,3 +774,231 @@ portfolios fail. That happened most recently in 2022, and both GLTR and
 DBMF were unambiguously useful that year. Other sub-strategies (income,
 buffered, crypto, merger arb) serve other goals — they're worth knowing
 about, but they aren't optimizing for the same diversification mandate.
+
+---
+
+## 8. Allocation & Target-Date — **AOA + ITDF**
+
+This is the "ready-made portfolio in one ETF" group. Two sub-flavors:
+**static allocation** funds that hold a fixed stock/bond mix forever, and
+**target-date** funds that automatically de-risk over time toward a
+retirement year.
+
+The right two picks for a young investor with a long horizon cover both
+sub-flavors:
+
+1. **Aggressive static allocation — AOA (iShares Core Aggressive
+   Allocation ETF).** 80% global stocks / 20% global bonds, fixed mix.
+   The benchmark single-ticker portfolio for someone who wants a
+   complete diversified portfolio they manage themselves over time.
+2. **Target-date glide path — ITDF (iShares LifePath Target Date 2050
+   ETF).** Currently ~90% stocks, automatically de-risks toward ~40%
+   stocks by 2050. The benchmark single-ticker portfolio for someone
+   who wants the de-risking handled automatically as they age.
+
+These two picks are deliberately from the **same issuer (iShares)** with
+near-identical underlying construction. That's not a coincidence —
+iShares dominates this category on AUM, liquidity, expense ratio, and
+construction quality across both sub-flavors. The competition is
+materially weaker on at least one dimension.
+
+### Pick 1 — **AOA (iShares Core Aggressive Allocation ETF, 80/20 global)**
+
+Why aggressive 80/20 for a young investor:
+
+- **80% stocks is the right risk level for a 20+ year horizon.** Over
+  20-year rolling windows, stocks beat bonds in 100% of historical
+  cases — meaningfully. Holding 40% bonds (a 60/40 like AOR) at age 23
+  gives up real expected return for risk reduction you don't actually
+  need yet.
+- **20% bonds is enough cushion to keep you sane in bear markets.** A
+  100% equity portfolio (VTI alone) drew down ~50% in 2008–09. An 80/20
+  drew down ~40% — still painful, but materially less. The 20% bond
+  sleeve also gives the fund something to sell-stocks-into during
+  rebalancing, which adds modest expected return over decades.
+- **Global > US-only.** AOA's stock sleeve is ~60% US + 40%
+  international. International has underperformed US over the past
+  decade, but holding 100% US is a concentrated bet that one country's
+  multiple expansion is the future return source. Global diversification
+  is structurally the better long-horizon position.
+
+Why **AOA** specifically:
+
+1. **Largest, most-liquid 80/20 global allocation ETF.** ~$2.5B AUM
+   (the dominant ETF in this sub-category), $15-25M daily dollar
+   volume, 2-4 bp spreads. Easy to trade in size.
+2. **Cheapest in its category with proper construction.** 0.15% wrapper
+   fee, ~0.20% all-in with the underlying ITOT/IXUS/IUSB/IAGG fees.
+   No fund in the same construction category beats it on a cost +
+   liquidity + breadth basis.
+3. **17-year track record.** Launched November 2008 — has lived through
+   the post-GFC recovery, 2011 European debt crisis, 2015–16 commodity
+   bust, 2018 Q4 correction, COVID 2020, 2022 bear, and the 2023–24
+   AI-driven rally. Across all of that, AOA has delivered roughly the
+   expected return of a global 80/20: ~9% annualized since inception,
+   ~10% annualized over 10y.
+4. **In-fund rebalancing is tax-free for you.** A DIY 80/20 of VTI +
+   VXUS + BND + BNDX rebalanced quarterly would trigger taxable events
+   in a taxable account. AOA's internal rebalancing doesn't —
+   genuinely valuable for taxable holdings.
+
+Historical returns (indicative mid-2026):
+
+- 10y annualized: **~10%** — global 80/20 expected return, delivered.
+- Since 2008 inception: **~9%** — through a full market cycle.
+- 2022: **−19%** vs S&P −18%, Bloomberg Agg −13% — bond sleeve didn't
+  hedge in 2022 (no bond sleeve did), but the basic 80/20 math held.
+
+### Pick 2 — **ITDF (iShares LifePath Target Date 2050 ETF)**
+
+Why a target-date fund for a 23-year-old:
+
+- **You won't always want to be 80/20.** AOA forever means you also
+  hold 80% stocks at age 50, 60, 70. Most investors decide they want
+  less equity risk as they age, but **few actually execute the
+  de-risking**. A target-date fund automates the discipline you're
+  unlikely to apply manually.
+- **The automated glide path is built around decades of research.**
+  BlackRock's LifePath glide path (originally developed in 1993) lands
+  at ~40% stocks at retirement — moderate-conservative. That landing
+  point is calibrated to support 25–30 years of post-retirement
+  drawdown without running out of money. Doing this DIY requires
+  remembering to rebalance every year and knowing how aggressively to
+  de-risk — most people don't.
+- **Single-ticker simplicity for the entire investing lifecycle.** Buy
+  ITDF at 23, hold it until ~75 or longer. You do nothing for 50+
+  years. That's genuinely valuable behavioral capital.
+
+Why **ITDF** specifically (over Dimensional, Vanguard mutual funds, or
+the BlackRock mutual fund version LIPIX):
+
+1. **Cheapest target-date 2050 ETF.** 0.08% wrapper fee, ~0.13% all-in.
+   Dimensional's 2050 target-date ETF (launched 2024) is ~0.20%. The
+   mutual fund versions (Vanguard VFIFX 0.08%, Fidelity FIPFX 0.12%)
+   are competitive on fee but trade only end-of-day and lack ETF tax
+   efficiency.
+2. **BlackRock LifePath methodology has a 15+ year track record.** The
+   ETF version (ITDF) is new — launched September 2023 — but the
+   mutual fund version (LIPIX) launched in 2010 and has consistently
+   delivered close to its expected return through multiple market
+   cycles. The ETF is the same strategy in a more tax-efficient
+   wrapper.
+3. **Moderate-conservative glide path.** Lands at ~40% stocks at
+   retirement and continues de-risking to ~30% post-retirement. This
+   matches BlackRock's research that retirees need ~30% equity exposure
+   to sustain a 30-year withdrawal period without depleting capital.
+   Some competitor glide paths (T. Rowe Price, Fidelity) land at
+   55–60% equity at retirement — that's more aggressive than most
+   retirees actually want.
+4. **In-fund tax-efficient rebalancing AND glide-path shifts.** The
+   annual de-risking shifts are particularly valuable here — doing
+   them yourself in a taxable account would trigger capital gains
+   every year. ITDF handles all of it inside the fund.
+
+Note on the "2050" vintage choice:
+
+- The user is 23 in 2026 and named the 2050 fund because they expect to
+  be 50 (and retired) around 2053. That's an **early-retirement (FIRE)
+  framing** — most TDFs assume retirement at 65, which for a 23-year-old
+  today would point to the **2065 (ITDI) or 2070** vintage.
+- If the actual retirement plan is age 65+, ITDI (2065) is the
+  vintage-correct pick — it stays heavier in equity for longer (~90%
+  stocks until ~2050, then de-risks).
+- If the actual retirement plan is age 50–55 (genuine FIRE), ITDF
+  (2050) is correct — it'll be ~50% stocks by then, appropriate for
+  someone drawing down a portfolio over 30+ years post-retirement.
+- The pick depends on which retirement age the user is actually
+  targeting. We've gone with 2050 (ITDF) as the user explicitly chose
+  it.
+
+Historical returns (indicative mid-2026):
+
+- ETF (ITDF) launched Sept 2023 — only ~2.5y of history. Since-inception
+  annualized ~14% (mostly bull-market period).
+- **Via mutual fund predecessor LIPIX (same strategy, 15-year track
+  record):** 10y annualized ~10%, 15y annualized ~9%.
+- 2022 via LIPIX: ~−18% — slightly less drawdown than AOA's −19%
+  because LIPIX/ITDF had marginally more bonds at the time.
+
+### Why this pair, not the obvious alternatives
+
+- **AOR (iShares 60/40)?** Solid product but the wrong risk level for a
+  23-year-old. A 60/40 portfolio's long-run expected return is ~7–8%
+  vs AOA's ~9–10% — that 1.5–2 pp/yr gap compounds over 40+ years into
+  roughly half the terminal wealth. The bonds aren't earning their
+  keep at this horizon.
+- **NTSX (WisdomTree US Efficient Core, 90/60 levered)?** Clever
+  construction — 90% S&P 500 stocks + 60% Treasury futures = 60/40-like
+  risk profile at 90% equity allocation, with bonds as a capital-light
+  overlay. But: US-only (no international diversification), structurally
+  leveraged (1.5x total exposure), and got hammered in 2022 (~−25% vs
+  AOA's −19%) when stocks AND bonds both fell. Real story but not the
+  obvious better-than-AOA pick.
+- **Vanguard LifeStrategy funds (VASGX 80/20)?** Mutual fund only —
+  trades end-of-day, not ETF-tax-efficient, no intraday flexibility.
+  AOA delivers the same exposure in ETF form at the same all-in cost.
+- **Vanguard Target Retirement 2050 (VFIFX)?** Mutual fund only. Same
+  comparison as VASGX — strategy is fine, ETF wrapper is missing.
+- **Fidelity Freedom 2050 (FFFHX)?** Mutual fund, higher fee
+  (~0.75% all-in including underlying fees), and a more equity-heavy
+  glide path (~55% equity at retirement vs ITDF's ~40%). Not better on
+  any metric.
+- **T. Rowe Price 2050 (TRRMX)?** Mutual fund, ~0.66% all-in, more
+  aggressive glide path. T. Rowe's research argues for higher equity
+  at retirement to support longer lifespans. Defensible thesis but
+  much more expensive than ITDF.
+- **Dimensional 2050 Target Date ETF (DFTI/DRWY)?** Launched 2024,
+  ~0.20% expense ratio, factor-tilted (small-cap and value tilts in
+  the equity sleeve). Interesting but expensive vs ITDF (~2x the fee),
+  and the factor tilts are an opinionated choice that has
+  underperformed plain market-cap-weighted indexing over the past 15
+  years.
+- **Innovator Defined Outcome buffered ETFs (PJUL series)?** Different
+  product category — buffered equity exposure, not glide-path
+  diversification. Not comparable.
+
+### Decision rules for using these picks
+
+- **AOA as a single-fund portfolio for life:** works if you'll
+  consciously de-risk yourself by buying AOM (40/60) or AOK (30/70) as
+  you age. Realistic only if you have the discipline to actually do
+  this — most people don't.
+- **ITDF as a single-fund portfolio for life:** works for the lazy
+  default case — buy and never touch. The glide path does the work.
+  The right pick for someone who will genuinely not look at their
+  account for 30+ years.
+- **Both together (50/50 split)?** Plausible but unnecessary — you'd
+  end up with roughly 85% stocks today, falling to ~60% by 2050. If
+  you want this, just buy ITDF alone or AOA alone; combining them is
+  the average and you can get the average from either fund directly
+  with a small allocation adjustment.
+- **The user's specific situation (age 23, targeting retirement
+  around 2050):** ITDF is calibrated for early retirement. If the
+  actual retirement plan shifts to age 65 (around 2068), reconsider
+  toward ITDI (2065) or ITDH (2060).
+- **For the next 10–15 years, AOA and ITDF will perform almost
+  identically** (both ~85–90% stocks during that period). The glide-
+  path divergence only becomes material from ~2035 onward. So the
+  choice between them really hinges on which de-risking strategy you
+  trust more: yours (manual) or BlackRock's (automatic).
+
+### Why we picked both static AND glide-path instead of two static
+
+The two sub-flavors solve **genuinely different problems**:
+
+- **Static allocation (AOA)** is the right pick if you trust yourself
+  to manage your own glide path manually. You preserve flexibility —
+  you can switch to AOR or AOM whenever your circumstances change.
+- **Target-date (ITDF)** is the right pick if you want a single
+  decision made today to carry you through 50+ years of investing.
+  You sacrifice flexibility but gain behavioral discipline.
+
+Most "best 2" picks in this group from financial-press articles list
+two static allocation funds (typically AOA + AOR — aggressive + moderate
+of the same family). That's a valid framing, but it answers a different
+question: "what's the best ETF to pick at each life stage" rather than
+"what's the best ETF to hold for life." For a 23-year-old, the more
+honest answer is: pick the single product you'll actually hold through
+2070, and don't kid yourself about whether you'll remember to rebalance
+in your 60s. ITDF (target-date) covers the "lazy default" case; AOA
+covers the "manage it yourself" case.
