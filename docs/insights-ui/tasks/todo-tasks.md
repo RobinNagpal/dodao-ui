@@ -99,6 +99,13 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
 
+### Simplify analysis factors + prompt instructions
+
+- [ ] **Trim `etf-analysis-factors-*.json`** — current factor descriptions in `insights-ui/src/etf-analysis-data/etf-analysis-factors-{performance-and-returns,cost-efficiency-and-team,risk-analysis,future-performance-outlook}.json` carry long edge-case clauses per factor (leveraged decay, futures-roll, peer-group caveats, etc.). Tighten each `factorDescription` to a single short paragraph that names what is being measured and how to read it; push group-/asset-class-specific edge-case guidance into the live prompt body or into a small companion notes block so the factor JSON stays scannable.
+- [ ] **Simplify the per-prompt instruction blocks** in the live ETF analysis prompts (Past Returns, Cost Efficiency & Team, Risk Analysis, Future Performance Outlook, Index & Strategy, Final Summary). Cut duplicated boilerplate across prompts, deduplicate guidance that already appears in factor JSON, and keep each prompt's "instructions" section focused on the rules the LLM actually needs at generation time (output schema discipline, citation rules, what to skip when data is missing).
+- [ ] Re-run the prompt-finalization loop (`docs/insights-ui/etf-prompts/prompt-finalization-approach.md`) against the representative-ETF set after each pass; verify outputs don't regress on edge cases that were previously inlined in the factor descriptions.
+- [ ] Open: do the same simplification pass on stock analysis factors / instructions, or keep that as a follow-up after the ETF pass is validated?
+
 ### Comparison "base" per ETF group — open questions
 
 - [ ] Pick a fixed-income base (one vs 3–4 keyed to duration + credit): AGG/BND, ICE BofA family, Bloomberg Global Aggregate, or per-segment.
