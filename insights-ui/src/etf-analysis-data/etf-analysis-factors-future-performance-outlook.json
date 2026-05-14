@@ -8,7 +8,7 @@
       "factorTitle": "Short-Term Hold Outlook (1-3 Years)",
       "factorDescription": "Asks if this fund is a good fit to hold for the next 1-3 years inside its category. Combines two reads: where current valuation or yield sits vs the fund's own multi-year range, AND how fundamentals or yield are trending in the next year or two. The four-quadrant frame: cheap + improving = best setup; cheap + worsening = value-trap risk; expensive + improving = momentum, defendable; expensive + worsening = worst. Pass when valuation or yield is reasonable AND fundamentals or income are flat-to-improving over the window. Fail when valuation is stretched AND fundamentals or yield are clearly worsening.",
       "factorMetrics": "indexName, overviewCategory, peRatio, dividendYield, overviewSecYield, duration, topHoldings, sectorBreakdown, strategyText",
-      "groups": ["all"],
+      "groups": "all",
       "groupInstructions": {
         "broad-equity": "Look at forward P/E vs the index's own multi-year range, plus the earnings-revisions trend over the past 1-3 quarters. Cheap with rising revisions is the best 1-3Y setup; expensive with falling revisions is the worst.",
         "sector-thematic-equity": "Sector P/E vs the sector's own range, plus sector-specific earnings or growth trend. For thematic funds, also check whether the theme's adoption story is still building or has already peaked.",
@@ -25,7 +25,7 @@
       "factorTitle": "Long-Term Hold Outlook (5-10 Years)",
       "factorDescription": "Asks if this fund is a good fit to hold for 5-10 years inside its category. Looks at the secular story for the underlying asset class — long-term growth, structural demand, rate cycle, adoption arc — and whether the fund's position in that story is constructive. This is not a market-timing call; it's a 'does the multi-year story still work' call. Pass when the long-arc story for this exposure is solid. Fail when the long-arc story is fading or has structural headwinds with no offsetting positives.",
       "factorMetrics": "indexName, overviewCategory, assetClass, strategyText, duration",
-      "groups": ["all"],
+      "groups": "all",
       "groupInstructions": {
         "broad-equity": "Read the long-arc growth story for the index's home market — productivity, demographics, structural earnings power. US large-cap, foreign developed, and EM each have different multi-year stories worth naming.",
         "sector-thematic-equity": "Theme durability is the test — does this sector or theme have 5-10 year structural tailwinds (AI, energy transition, semis, healthcare innovation), or is the story already mature and pricing it in?",
@@ -42,7 +42,7 @@
       "factorTitle": "Upside vs Price Risk (Category vs Other Categories)",
       "factorDescription": "Asks how this category is expected to perform vs other categories an investor could pick instead, and whether the expected upside justifies the price risk. The honest comparison is not the fund vs itself — it's the fund's category vs the next-best category for the investor's dollar. Pass when expected upside over the next 1-5 years is in line with or above peer categories for similar price risk. Fail when expected upside is below peer categories AND the price risk is the same or higher.",
       "factorMetrics": "overviewCategory, assetClass, indexName, beta, duration, riskAndVolatilityMeasures, return5y, returnsAnnual, strategyText",
-      "groups": ["all"],
+      "groups": "all",
       "groupInstructions": {
         "broad-equity": "Compare expected 1-5Y total return for broad equity vs bonds, allocation, and commodities. Equity carries higher price risk — Pass when the expected return premium clearly covers it.",
         "sector-thematic-equity": "Compare expected sector or theme return to the broad market AND to other sectors. A sector bet takes on concentration risk on top of equity risk — the expected upside has to clear that higher bar.",
@@ -59,7 +59,7 @@
       "factorTitle": "Sharp Fall Protection & Recovery",
       "factorDescription": "Looks at how the fund handles a sharp market fall AND how well it bounces back. Ordinary drawdowns are not the test — only sharp falls. Mark Fail only when the fund falls sharply AND its recovery clearly lags peers or its benchmark. A sharp fall that recovers in line with the index or peers is acceptable for the mandate. Pass when the fund either avoids sharp falls or recovers in line with peers / benchmark. Fail when it falls sharply AND its recovery materially lags.",
       "factorMetrics": "drawdown, drawdownDates, captureRatios, returnsAnnual, return1y, return3y, return5y, beta, riskAndVolatilityMeasures, indexName",
-      "groups": ["all"],
+      "groups": "all",
       "groupInstructions": {
         "broad-equity": "Broad equity falls in market shocks — that's expected. Fail only if the fund falls sharply AND recovers slower than the benchmark or peer set (e.g. lagging on a 2020 or 2022 recovery).",
         "sector-thematic-equity": "Sectors and themes swing harder than the broad market. Fail only when a sharp drop is followed by a clearly weak recovery vs the sector benchmark or peer set.",
@@ -76,7 +76,7 @@
       "factorTitle": "Cycle Position & Un-Priced Catalyst",
       "factorDescription": "Reads where the fund's exposure sits in its cycle — accumulation, markup, distribution, or markdown — AND whether there is a clear upside catalyst the market hasn't already priced in. A good cycle phase is a Pass on its own; a credible un-priced catalyst is also a Pass even mid-cycle. Hype-peak red flags for thematic / single-country / digital-asset wrappers: sudden AUM surge + narrative saturation + stretched valuations + breadth narrowing to a few names = late distribution. Pass when the exposure is in accumulation / early markup, OR has a credible upside catalyst not yet in the price. Fail when the exposure is in late distribution / markdown AND no fresh catalyst is visible.",
       "factorMetrics": "overviewCategory, indexName, sectorBreakdown, topHoldings, ma50, ma200, rsiM, athChgPercent, atlChgPercent, aum, strategyText",
-      "groups": ["all"],
+      "groups": "all",
       "groupInstructions": {
         "broad-equity": "Read the broad index — price vs MA200, breadth, sentiment, valuation vs its own history. Accumulation / early markup with broad participation = Pass. Late distribution (narrow breadth + crowded long + top-decile valuation) = caution.",
         "sector-thematic-equity": "Read the specific sector or theme's own cycle. Look for hype-peak signals (peak AUM + peak P/E + narrative saturation) and for early-cycle signs (low AUM + improving fundamentals + reasonable valuation). Name any un-priced upside catalyst (regulatory shift, technology inflection, adoption tipping point).",

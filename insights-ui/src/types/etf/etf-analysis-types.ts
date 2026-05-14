@@ -146,7 +146,11 @@ export interface EtfGroupFactorDefinition {
   factorTitle: string;
   factorDescription: string;
   factorMetrics?: string;
-  groups: string[];
+  /**
+   * Either the sentinel `"all"` (the factor applies to every ETF group) or an
+   * explicit array of group keys (e.g. `["leveraged-inverse"]`).
+   */
+  groups: 'all' | string[];
   groupInstructions?: Record<string, string>;
 }
 

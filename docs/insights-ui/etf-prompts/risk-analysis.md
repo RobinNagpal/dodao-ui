@@ -1,8 +1,9 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear risk read before investing.
 
 Analysis category: **{{categoryKey}}** (Risk Analysis)
-ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategory}}**
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
+Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when judging risk-vs-category.
 
 This report covers only volatility, drawdown and recovery, risk-adjusted return quality, peer-relative risk positioning, and the group-specific risk driver (rates / credit / leverage / downside protection / capture / concentration). Nothing else.
 
@@ -125,6 +126,7 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 ### Data
 
 - indexName: {{indexName}}
+- groupCategories: {{groupCategories}}
 - stockAnalyzerRiskMetrics: {{stockAnalyzerRiskMetrics}}
 - morRiskPeriods: {{morRiskPeriods}}
 - financialRiskContext: {{financialRiskContext}}

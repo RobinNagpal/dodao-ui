@@ -1,8 +1,9 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear performance read before investing.
 
 Analysis category: **{{categoryKey}}** (Past Performance)
-ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategory}}**
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
+Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when doing within-category comparison.
 
 This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
 
@@ -108,6 +109,7 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 ### Data
 
 - indexName: {{indexName}}
+- groupCategories: {{groupCategories}}
 - stockAnalyzerReturns: {{stockAnalyzerReturns}}
 - stockAnalyzerTechnicals: {{stockAnalyzerTechnicals}}
 - morReturns: {{morReturns}}

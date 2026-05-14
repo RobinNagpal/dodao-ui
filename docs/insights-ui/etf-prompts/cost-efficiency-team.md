@@ -1,8 +1,9 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear cost & efficiency read before investing.
 
 Analysis category: **{{categoryKey}}** (Cost, Efficiency & Team)
-ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategory}}**
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
+Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when comparing fees and structure.
 
 This report covers only fees, liquidity, trading friction, tax drag, NAV execution, team / issuer quality, and fund maturity. Nothing else.
 
@@ -114,6 +115,7 @@ For AUM, bid-ask, dollar volume, turnover, tenure, track-record length, and P/D,
 ### Data
 
 - indexName: {{indexName}}
+- groupCategories: {{groupCategories}}
 - financialInfo: {{financialInfo}}
 - stockAnalyzerFundInfo: {{stockAnalyzerFundInfo}}
 - morAnalysis: {{morAnalysis}}

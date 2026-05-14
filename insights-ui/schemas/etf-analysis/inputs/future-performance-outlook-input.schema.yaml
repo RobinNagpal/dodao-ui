@@ -56,6 +56,16 @@ properties:
     type: string
     description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-investment-grade, derivative-income).'
 
+  # Human-readable group name (matches EtfGroup.name in etf-analysis-categories.json) — useful for prompt phrasing.
+  groupName:
+    type: string
+    description: 'Display name of the ETF group (e.g., "Broad Equity"). Mirrors groupKey but is shown to the LLM in plain English.'
+
+  # All categories belonging to the same group, joined with ", ". Lets the LLM treat sibling categories as fair peers for comparison.
+  groupCategories:
+    type: string
+    description: 'Comma-separated list of every Mor fund category that maps to this group. Some categories are very similar — the LLM should treat them as a valid peer set for category-level comparisons.'
+
   # Benchmark index name — sourced from EtfStockAnalyzerInfo.indexName; may be null when the upstream data does not carry an index reference.
   indexName:
     type: ['string', 'null']
