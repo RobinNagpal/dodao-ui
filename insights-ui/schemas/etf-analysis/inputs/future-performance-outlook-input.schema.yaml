@@ -71,35 +71,40 @@ properties:
     type: ['string', 'null']
     description: 'The benchmark index this ETF tracks (e.g., "S&P 500", "MSCI EAFE"). May be null when not provided by upstream data.'
 
-  # From EtfFinancialInfo — baseline fund stats (cost, size, simple valuation/yield, liquidity)
+  # From EtfFinancialInfo — trimmed to forward-relevant fields only: aum, pe, dividendYield, beta, holdings count.
+  # Cost/payout fields (expenseRatio, dividendTtm, payoutFrequency, payoutRatio, sharesOut, volume,
+  # yearHigh, yearLow) belong to Cost & Team and are excluded.
   etfFinancialInfo:
     type: ['string', 'null']
-    description: 'JSON string from EtfFinancialInfo (aum, expenseRatio, pe, sharesOut, dividendTtm, dividendYield, payoutFrequency, payoutRatio, volume, yearHigh/yearLow, beta, holdings).'
+    description: 'JSON string with aum, pe, dividendYield, beta, holdings (count). Cost/payout/intraday fields are excluded — those belong to Cost & Team.'
 
-  # From EtfStockAnalyzerInfo — price, technicals, momentum, liquidity, issuer/category tags
+  # Full EtfStockAnalyzerInfo row passed through as-is. The forward outlook benefits from the
+  # full multi-period view (returns 1m → 20y, CAGRs, full MA stack, RSI daily/weekly/monthly,
+  # ATH/ATL + 52w distances, beta windows, risk-adjusted ratios, liquidity, dividend growth,
+  # categorical flags).
   etfStockAnalyzerInfo:
     type: ['string', 'null']
-    description: 'JSON string from EtfStockAnalyzerInfo (stockPrice, MAs, RSI, ATR, beta windows, 52w/ATH/ATL distances & dates, issuer/category, avgVolume/relVolume/dollarVol, options/leverage/region/country, etc.).'
+    description: 'JSON string with the full EtfStockAnalyzerInfo row (all returns/CAGRs, MA stack, RSI, ATH/ATL, 52w distances, beta windows, sortino/sharpe/atr, liquidity, dividend growth fields, leverage/options/region flags).'
 
-  # From EtfMorAnalyzerInfo — overview, returns, holdings snapshot, and Mornstar analysis sections (when available)
+  # From EtfMorAnalyzerInfo — narrow slice. Only fields that are reliably populated by the
+  # upstream Mor scrape AND directly inform the forward read. The `analysis` block
+  # (medalistRating, headline, sections) is intentionally omitted because the scrape does
+  # not consistently populate it.
   etfMorAnalyzerInfo:
     type: ['string', 'null']
-    description: 'JSON string from EtfMorAnalyzerInfo (overview metrics like SEC/TTM yield, turnover, style box; annual/trailing returns; holdings.topHoldings; strategyText; analysis sections if available).'
+    description: 'JSON string with strategyText, overviewCategory, overviewStyleBox, overviewSecYield, overviewTtmYield, returnsAnnual, returnsTrailing. The Mor `analysis` block (sections / medalistRating / headline) is omitted because it is unreliable in the upstream scrape.'
 
-  # From EtfMorRiskInfo — risk tables useful for volatility regime + drawdown context
+  # From EtfMorRiskInfo — only the 3-Yr and 5-Yr risk periods. The 10-Yr window belongs to
+  # the Risk Analysis report.
   etfMorRiskInfo:
     type: ['string', 'null']
-    description: 'JSON string from EtfMorRiskInfo (riskPeriods for 3/5/10-yr: risk score/level, risk vs category, capture ratios, drawdowns/dates, risk & volatility measures).'
+    description: 'JSON string with riskPeriods limited to 3-Yr and 5-Yr (each carrying portfolioRiskScore, morAnalyzerRiskReturn, riskAndVolatilityMeasures, marketVolatilityMeasures with captureRatios + drawdown + drawdownDates). The 10-Yr period is excluded.'
 
-  # From EtfMorPeopleInfo — used for catalyst risk and process/people stability context
-  etfMorPeopleInfo:
-    type: ['string', 'null']
-    description: 'JSON string from EtfMorPeopleInfo (inception date, managers, tenure, advisors, current managers list).'
-
-  # From EtfMorPortfolioInfo — the richest source for holdings mix + style/sector/credit positioning
+  # From EtfMorPortfolioInfo — the richest source for holdings mix + style/sector/credit positioning.
+  # Holdings tail is capped at top 10; ESG and turnover fields on the summary are excluded.
   etfMorPortfolioInfo:
     type: ['string', 'null']
-    description: 'JSON string from EtfMorPortfolioInfo (asset allocation, style measures, sector exposure, fixed income style, bond breakdown/credit quality, holdings summary and detail, turnover/ESG fields when present).'
+    description: 'JSON string with assetAllocation, styleMeasures, fixedIncomeStyle, sectorExposure, bondBreakdown, plus the holdings block with the holdings array capped at the top 10 by weight and ESG / turnover fields stripped from the summary.'
 
 required:
   - name
