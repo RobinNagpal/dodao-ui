@@ -68,7 +68,7 @@ Two cross-cutting reminders that apply on top of every factor:
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per Section 3.
 
-When the factor carries a `factorAnalysisGroupInstructions` string, treat it as the authoritative perspective rule for this ETF — it names the right benchmark / comparison frame for the fund's group (S&P 500 for US broad equity, the spot underlying for commodity / crypto wrappers, a 60/40 blend for allocation, a duration-matched bond index for IG fixed income, etc.). The generic `factorAnalysisDescription` defines what the factor measures; the group instructions define how to frame it for this specific group. If the two ever appear to conflict, follow the group instructions.
+When the factor carries a `factorAnalysisGroupInstructions` string, treat it as the authoritative perspective rule for this ETF — it names the right benchmark / comparison frame for the fund's group. The generic `factorAnalysisDescription` defines what the factor measures; the group instructions define how to frame it for this specific group. If the two ever appear to conflict, follow the group instructions.
 
 ## 5. Comparison labels
 
@@ -108,20 +108,7 @@ For muni funds, also give a one-line **tax-equivalent-yield** framing — state 
 - If the fund matches one of the "tax-treatment flags" below, you added the one-line tax note in paragraph 4. If not, skip it.
 - You translated **beta / duration / leverage multiplier** into practical terms at least once (not just the number).
 
-## 7. Retail comparison points (fold into paragraph 1, 2, or 4 of `overallAnalysisDetails` — do not write a separate section)
-
-Pick the comparison that matches the fund type. One well-placed comparison is enough; do not stack all of them.
-
-- **Broad equity** (`broad-equity` group): name the benchmark index and say how the fund's tilt (large blend vs growth vs value, US vs foreign, etc.) changes expected return / volatility vs `SPY` or a plain total-market fund.
-- **Sector / thematic equity** (`sector-thematic-equity`): compare the 5Y / 10Y return to the S&P 500 so the reader sees the sector-concentration premium or discount.
-- **Daily-leveraged / inverse** (`leveraged-inverse`): the comparison is "vs not holding this at all." State explicitly that most retail investors should not hold these beyond a few trading days. Spell out the leverage-multiplier arithmetic in a drawdown (see §2.4).
-- **Investment-grade fixed income — government, IG corporate, muni, TIPS, MMF** (`fixed-income-investment-grade`): compare the ETF yield to a same-tenor T-bill / Treasury and to a HYSA. Frame expected 5Y total return as roughly starting yield ± duration move. If the ETF yield is lower than cash, state that the reason to hold it is optionality (price rally if rates fall), not yield. For muni funds inside this group, also give the tax-equivalent yield at a stated federal bracket (`24%`, `32%`, `35%`) and compare to a same-tenor Treasury yield; for national muni, note that state-specific funds may yield more after state tax for CA / NY / NJ / MA / OH / MN residents.
-- **Credit / high-yield / preferred / bank-loan / EM debt / convertibles / high-yield muni** (`fixed-income-credit-and-income`): compare yield to investment-grade corporate and to the broad-equity dividend yield. Translate "high yield" explicitly — below-investment-grade credit, real default risk — and name the worst-case credit drawdown (the fund's 2008 / 2020 / 2022 move).
-- **Covered-call / defined-outcome / hedge-style strategy** (`derivative-income`): compare *net total return* (not headline yield) against the underlying equity index and a plain dividend-equity ETF. Flag that the distribution level can shrink when option premia contract (cite `divGrowth3y` / `divGrowth5y` if negative).
-- **Commodity / precious-metals / digital-asset wrapper** (`commodities-and-digital-assets`): compare price return to a broad commodity basket (gold, broad commodities, spot BTC / ETH). Name the asset's role ("portfolio diversifier at `5-10%` weight, not a yield or growth engine"). For precious-metals *equity* funds (miners) the group is `sector-thematic-equity` — frame those against gold spot AND a small-cap equity index.
-- **Allocation / target-date** (`allocation-target-date`): compare to the DIY equivalent the reader could build themselves (e.g. "`80% VTI + 20% BND`" for aggressive, "`30% VTI + 70% AGG`" for conservative). State clearly that the ETF's value-add is automatic rebalancing, not alpha.
-
-## 8. Tax-treatment flags (one line in paragraph 4 of `overallAnalysisDetails`, only when applicable)
+## 7. Tax-treatment flags (one line in paragraph 4 of `overallAnalysisDetails`, only when applicable)
 
 Skip this entirely when none apply. When one does, a single sentence is enough — do not lecture.
 
