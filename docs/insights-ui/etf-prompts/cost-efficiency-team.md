@@ -85,15 +85,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
-## 5. Comparison labels (fees vs category)
-
-- `≥ 10% lower` than category average → **Strong**
-- within `±10%` → **In Line**
-- `≥ 10% higher` → **Weak**
-
-For AUM, bid-ask, dollar volume, turnover, tenure, track-record length, and P/D, use the bands defined in each factor's own description.
-
-## 6. Writing rules
+## 5. Writing rules
 
 - Markdown. Wrap fees, AUM, volume, bid-ask, turnover percentages, tenure, inception dates, and percentages in backticks. Use abbreviated units (`B`/`M`/`K`) per the number-formatting rule above — never raw integers.
 - Simple, direct English. No dramatic adjectives (see banned list above), no filler, no repetition of numbers.

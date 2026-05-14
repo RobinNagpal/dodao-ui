@@ -83,23 +83,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
-## 5. Comparison labels
-
-Default (equities, alt strategies, allocation):
-
-- `≥ 2 pp better` than category → **Strong**
-- within `±2 pp` → **In Line**
-- `≥ 2 pp worse` → **Weak**
-
-Narrow thresholds (bonds, muni, and any factor whose description says so):
-
-- `≥ 0.5 pp better` → **Strong**
-- within `±0.5 pp` → **In Line**
-- `≥ 0.5 pp worse` → **Weak**
-
-For capture ratios, protection ratios, drawdown comparatives, and concentration weights, use the bands defined in each factor's own description.
-
-## 6. Writing rules
+## 5. Writing rules
 
 - Markdown. Wrap every beta, Sharpe, Sortino, alpha, R², ATR, standard deviation, drawdown, capture ratio, risk score, date, and percentage in backticks — in the summary, the paragraphs, AND the factor explanations. Numbers without backticks are an error.
 - Simple, direct English. No dramatic adjectives (see Scope for the banned list), no filler, no self-praise of the fund's ride ("smooth", "frictionless", "textbook"). The numbers do the talking.
