@@ -99,6 +99,24 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
 
+### Evaluate percentile-vs-category claims against available data
+
+> Source statement to reproduce (from an ETF analysis report screenshot, Returns table):
+> *"It currently sits at the 32nd percentile for the year out of 414 mid-cap value competitors."*
+>
+> In the screenshot's Returns table, the YTD column shows `Percentile Rank = 32`,
+> `# of Invest. in Cat. = 414`, `Category Name = MV` — i.e. the sentence is a
+> direct stitch of those three cells. The questions below are about whether our
+> own ingested data carries the same three fields and whether our prompts can
+> safely emit that sentence.
+
+- [ ] **Derivability check** — confirm whether we can produce a statement of the form *"Nth percentile for the year out of K {category-name} competitors"* from data already persisted on the ETF record (or its returns/category tables). Audit the ETF schema + ingestion path for: a per-period `percentileRank`, a per-period `numberOfInvestmentsInCategory` (or equivalent peer count), and a resolved category display name (e.g. `MV` → "mid-cap value"). For each of the three pieces, document: field name, source feed, period grain (YTD / 1Y / 3Y / 5Y / annual), and whether it is currently surfaced to the prompts.
+- [ ] **Clarify `# of Invest. in Cat.` semantics** — pin down whether this column means the **number of funds/ETFs** in the Morningstar category (peer-fund universe used to compute the percentile), **not** the number of underlying equity holdings inside the ETF. Cross-check against the source feed's field definition + the Returns-table values across years (the screenshot shows 397 → 423 → 411 → 414 across 2023→YTD, which is consistent with a peer-fund count, not an internal-holdings count). Capture the finding in `docs/insights-ui/etf-analysis/` (or wherever the data dictionary lives) so prompts and UI labels use the right wording.
+- [ ] **Prompt + label follow-ups (conditional on the two checks above)**:
+  - If the data is present: extend the Performance / Past Returns prompt input contract to expose `{period, percentileRank, peerFundCount, categoryName}` and allow (but don't require) the LLM to emit the percentile-vs-peers sentence with all three numbers grounded.
+  - If `# of Invest. in Cat.` is the peer-fund count, rename the surfaced field to something unambiguous (e.g. `peerFundCount` / `categoryFundCount`) before it reaches the prompt, and update any UI label that currently reads "# of Invest. in Cat." so readers don't misinterpret it as "investments held by this ETF".
+  - If any of the three pieces is missing from our ingest, decide: backfill from the existing source feed, switch to a different feed, or instruct the prompt to omit the percentile-vs-peers sentence entirely rather than hallucinate it.
+
 ### Simplify analysis factors + prompt instructions
 
 - [ ] **Trim `etf-analysis-factors-*.json`** — current factor descriptions in `insights-ui/src/etf-analysis-data/etf-analysis-factors-{performance-and-returns,cost-efficiency-and-team,risk-analysis,future-performance-outlook}.json` carry long edge-case clauses per factor (leveraged decay, futures-roll, peer-group caveats, etc.). Tighten each `factorDescription` to a single short paragraph that names what is being measured and how to read it; push group-/asset-class-specific edge-case guidance into the live prompt body or into a small companion notes block so the factor JSON stays scannable.
