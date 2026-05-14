@@ -1,7 +1,7 @@
 {
   "categoryKey": "CostEfficiencyAndTeam",
   "categoryName": "Cost, Efficiency & Team",
-  "categoryDescription": "Looks at the slow-leak factors that quietly decide whether long-term returns reach the investor or get eaten up by costs: fees, what you actually earn for those fees, the people running the fund, and tax drag. Four factors apply to every ETF group. `factorDescription` carries the generic measurement principle and Pass/Fail rule. `groupInstructions` carries the group-specific perspective. When the two seem to conflict, follow `groupInstructions`.",
+  "categoryDescription": "Looks at the slow-leak factors that quietly decide whether long-term returns reach the investor or get eaten up by costs: fees, what you actually earn for those fees, the recurring spread cost of trading, the people running the fund, and tax drag. Five factors apply to every ETF group. `factorDescription` carries the generic measurement principle and Pass/Fail rule. `groupInstructions` carries the group-specific perspective. When the two seem to conflict, follow `groupInstructions`.",
   "factors": [
     {
       "factorKey": "expense_ratio_vs_competition",
@@ -35,6 +35,23 @@
         "allocation-target-date": "Compare net return to a simple cheap blend (e.g. broad equity + core bond at near-zero fee) over multi-year windows. The value-add is automatic rebalancing — if the fund doesn't beat the DIY mix, the extra fee is hard to justify. Verdict band: Strong = net return ≥2 pp above the cheap DIY blend; In Line = within ±2 pp; Weak / Fail = ≥2 pp below.",
         "fixed-income-investment-grade": "Compare net total return to a cheap passive sibling of the same duration. A fee gap should be paid for by yield or active alpha — otherwise the cheap passive option wins. Verdict band uses narrow thresholds for bonds: Strong = net return ≥0.5 pp above the cheap passive sibling; In Line = within ±0.5 pp; Weak / Fail = ≥0.5 pp below.",
         "fixed-income-credit-and-income": "Compare net total return to a cheap passive credit sibling of the same tier. Active credit should show documented manager alpha after fees — otherwise the cheap passive option wins. Verdict band uses narrow thresholds for credit: Strong = net return ≥0.5 pp above the cheap passive sibling; In Line = within ±0.5 pp; Weak / Fail = ≥0.5 pp below."
+      }
+    },
+    {
+      "factorKey": "bid_ask_spread_and_trading_cost",
+      "factorTitle": "Bid-Ask Spread & Implicit Trading Cost",
+      "factorDescription": "Measures the cost retail pays every time they enter or exit the fund — a recurring drag that sits outside the expense ratio and compounds with every rebalance, dividend reinvestment, or dollar-cost-averaging contribution. The 30-day median bid-ask spread (in basis points) is the headline measure. A 2 bps spread on a fund traded once a year is trivial; a persistent 30 bps spread on a fund a retail investor DCAs into monthly costs more than the expense ratio every year. Spread quality is downstream of underlying liquidity, AUM supporting tight market-maker quoting, and authorized-participant arbitrage health — but treated here purely as the recurring cost retail pays to transact, not as a stress-event risk. Pass when the median spread is at or below category norm for the fund's structure. Fail when the spread is persistently wide vs peers in normal market conditions, making the fund materially more expensive to own than the expense ratio suggests.",
+      "factorMetrics": "marketBidAskSpread, avgVolume, dollarVol, aum, overviewCategory",
+      "groups": "all",
+      "groupInstructions": {
+        "broad-equity": "Tightest bar — mega-cap passive ETFs (VOO, VTI, IVV, SPY) trade at 1-2 bps. Anything above 5 bps on a plain US large-cap tracker signals thin AP support or low volume. Small-cap and international broad trackers run 3-10 bps as normal.",
+        "sector-thematic-equity": "S&P sector ETFs (XL- series, VGT) trade at 1-3 bps. Thematic and niche ETFs commonly run 10-40 bps in normal conditions — material vs the headline fee for a retail investor making monthly contributions.",
+        "leveraged-inverse": "TQQQ, SOXL, UPRO trade at 1-3 bps because of massive volume. Smaller leveraged products can run 10-30 bps even in calm markets — a critical cost because the use case is rapid trading with multiple round-trips.",
+        "commodities-and-digital-assets": "GLD, IAU, SLV: 1-3 bps. Spot Bitcoin ETFs (IBIT, FBTC): 2-5 bps. Futures-based commodity funds: 5-20 bps. Smaller single-commodity wrappers can hit 30-100 bps in normal conditions — material vs the headline fee.",
+        "derivative-income": "JEPI, JEPQ: 2-4 bps. Smaller covered-call and defined-outcome ETFs run 10-40 bps. The spread is especially consequential because these funds attract income-seekers who reinvest distributions monthly.",
+        "allocation-target-date": "Vanguard / BlackRock / iShares allocation ETFs: 2-5 bps. Tactical allocation ETFs can run 15-40 bps. Matters most for retail using these as DCA buy-and-hold vehicles.",
+        "fixed-income-investment-grade": "AGG, BND, VGIT: 1-3 bps. Long-duration Treasury (TLT) similar. Muni ETFs (MUB, VTEB) at 2-5 bps. Single-state muni ETFs run wider (10-30 bps) — flag for retail rebalancing in taxable accounts.",
+        "fixed-income-credit-and-income": "HYG, JNK, LQD: 2-5 bps in normal conditions. EM debt (EMB) and bank-loan (BKLN): 5-15 bps. Preferred ETFs (PFF): 3-10 bps. Anything materially above these bands is a cost flag."
       }
     },
     {
