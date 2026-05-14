@@ -66,10 +66,10 @@ Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor def
 - Do not use a numbered list (`1.`, `2.`, …) that places all four paragraphs on the same line — each paragraph must end with a real line break before the next begins.
 - **No wall-of-text paragraphs.** No individual paragraph may exceed ~`400` words. If a paragraph approaches that, split the ideas across the four-paragraph structure — do NOT dump the entire analysis into a single block.
 
-1. **Positioning snapshot.** What the fund owns / targets, what that implies (sector/credit/rate/vol exposure), and what the market is currently paying attention to in that exposure. Use top holdings / sector / duration / credit tier where relevant.
-2. **Regime fit & the dominant tailwind/headwind.** Name the current macro regime (growth/inflation/policy/financial conditions) with 2–3 indicators. Explain why that regime helps or hurts this ETF’s exposure profile. If this is a rate/credit fund, make the rate-path/duration or credit-spread lens explicit.
-3. **Setup quality (valuation + technicals + flows).** One valuation/yield framing and one technical framing (trend / stretched / basing). Add one positioning/flow signal if you can source it. Be disciplined: technicals are secondary for long-horizon bond/muni/allocation funds.
-4. **Catalysts and what would change your view.** Name 2–4 catalysts in the next `30–90 days`, with approximate dates and whether each is a tailwind or headwind for THIS ETF. Close with "Favorable / Mixed / Unfavorable because …".
+1. **Positioning snapshot.** What the fund owns / targets, what that implies (sector / credit / rate / vol exposure), and what the market is currently paying attention to in that exposure. Use top holdings / sector / duration / credit tier where relevant.
+2. **Macro regime fit — short and long horizon.** Name the current macro regime (growth / inflation / policy / financial conditions) with 2-3 indicators. Explain why that regime helps or hurts this ETF's exposure profile over the next 6-12 months AND over a 3-5 year secular horizon. Name the 2-4 most relevant near-term catalysts (Fed meetings, CPI prints, OPEC+, elections, earnings windows) with approximate dates and whether each is a tailwind or headwind. If this is a rate / credit fund, make the rate-path / duration or credit-spread lens explicit per the `yield_rate_and_credit_outlook` factor's group instructions.
+3. **Valuation + cycle position (or group-specific lens).** Apply the factor that fits this group: for equity / allocation / fixed-income funds, one valuation / yield framing combined with the fundamental or credit trajectory. For broad-equity, sector-thematic-equity, leveraged-inverse, and commodities-and-digital-assets, also place the exposure in its cycle (accumulation / markup / distribution / markdown). For commodities-and-digital-assets, add the supply-demand or adoption read per `commodity_supply_demand_or_adoption_outlook`. For leveraged-inverse, add the holding-window vol / trend / event read per `leveraged_holding_window_outlook`. Be disciplined: technicals are secondary for long-horizon bond / allocation funds.
+4. **Verdict, watch-list trigger, and what would change your view.** Close with "Favorable / Mixed / Unfavorable because …".
 
 **Decisiveness of the verdict (mandatory in paragraph 4).** Whatever the verdict, finish with one actionable line that helps the retail reader make a decision:
 
@@ -85,11 +85,14 @@ Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor def
 
 ## 3. Pass / Fail rule — “positioned well” vs “positioned poorly”
 
-Pass/Fail here is **not** “will outperform” — it is “set up well” vs “set up poorly” given:
-- current + expected regime,
-- valuation margin-of-error,
-- technical/trend alignment (only where timing matters),
-- catalysts and positioning/flows.
+Pass/Fail here is **not** "will outperform" — it is "set up well" vs "set up poorly" given:
+- current + expected regime over both short (6-12mo) and long (3-5y+) horizons,
+- valuation margin-of-error and fundamental trajectory,
+- cycle position of the fund's specific exposure,
+- yield / rate / credit setup (for income and rate-sensitive funds),
+- group-specific structural lens (supply-demand for commodities, holding-window vol / trend for leveraged-inverse).
+
+Use the factor's `factorAnalysisDescription` (generic measurement principle and Pass/Fail rule) together with `factorAnalysisGroupInstructions` (group-specific perspective: right regime read, right sub-type lens, right benchmark). When the two appear to conflict, follow the group instructions.
 
 Cross-cutting rules:
 
@@ -125,7 +128,8 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 {{#each factorAnalysisArray}}
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
-  Metrics: {{factorAnalysisMetrics}}
+  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+  {{/if}}Metrics: {{factorAnalysisMetrics}}
 {{/each}}
 
 ### Data

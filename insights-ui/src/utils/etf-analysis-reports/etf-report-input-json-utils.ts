@@ -28,12 +28,13 @@ const CATEGORY_CONFIGS: Record<EtfAnalysisCategory, EtfGroupBasedFactorsConfig> 
   [EtfAnalysisCategory.FuturePerformanceOutlook]: futurePerformanceOutlookConfig,
 };
 
-function normalizeGroupFactor(f: EtfGroupFactorDefinition): EtfAnalysisFactorDefinition {
+function normalizeGroupFactor(f: EtfGroupFactorDefinition, groupKey?: string): EtfAnalysisFactorDefinition {
   return {
     factorAnalysisKey: f.factorKey,
     factorAnalysisTitle: f.factorTitle,
     factorAnalysisDescription: f.factorDescription,
     factorAnalysisMetrics: f.factorMetrics,
+    factorAnalysisGroupInstructions: groupKey ? f.groupInstructions?.[groupKey] : undefined,
   };
 }
 
@@ -49,7 +50,7 @@ export function getEtfGroupKeyForCategory(category: string | null | undefined): 
 }
 
 function getGroupFactors(config: EtfGroupBasedFactorsConfig, groupKey: string): EtfAnalysisFactorDefinition[] {
-  return config.factors.filter((f) => f.groups.includes(groupKey)).map(normalizeGroupFactor);
+  return config.factors.filter((f) => f.groups.includes(groupKey)).map((f) => normalizeGroupFactor(f, groupKey));
 }
 
 /**
@@ -82,6 +83,7 @@ function prepareFactorAnalysisArray(factors: EtfAnalysisFactorDefinition[]) {
     factorAnalysisTitle: f.factorAnalysisTitle,
     factorAnalysisDescription: f.factorAnalysisDescription,
     factorAnalysisMetrics: f.factorAnalysisMetrics || '',
+    factorAnalysisGroupInstructions: f.factorAnalysisGroupInstructions || '',
   }));
 }
 

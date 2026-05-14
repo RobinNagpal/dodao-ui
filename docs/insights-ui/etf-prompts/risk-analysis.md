@@ -59,21 +59,12 @@ Keep paragraphs tight. Do not pad. Do not restate factor definitions — just ap
 
 1. **Volatility & risk-adjusted return snapshot.** Beta picture across periods, standard deviation / ATR where useful, Sharpe and Sortino placed against category norms for THIS fund type — equity Sharpe, bond Sharpe, and alt-strategy Sharpe are different scales. One line on whether volatility fits the stated mandate.
 2. **Drawdown, recovery, and peer-relative risk.** Worst drawdown with dates, behaviour in key stress windows (e.g. `2020 COVID`, `2022 rate shock`), `riskVsCategory` and `returnVsCategory` across 3Y / 5Y / 10Y when available. Flag any divergence from peers — the comparative gap matters more than the absolute drawdown number.
-3. **Group-specific risk driver** — use only the lens that fits this group:
-   - `broad-equity`: upside / downside capture vs benchmark.
-   - `sector-thematic-equity`: within-theme concentration (top-10, single-name) and sector-peer drawdown.
-   - `leveraged-inverse`: daily-reset tracking fidelity and path-dependency decay; reinforce short-term-only suitability.
-   - `fixed-income-core`: rate sensitivity / duration behaviour across rate-shock years.
-   - `fixed-income-credit`: credit quality mix and stress-period behaviour vs credit peers.
-   - `muni`: rate sensitivity AND credit-tier mix / issuer concentration.
-   - `alt-strategies`: downside protection delivery and capture asymmetry.
-   - `allocation-target-date`: drawdown reduction vs pure-equity and risk-adjusted return.
-   For bond / muni / allocation funds, RSI and short-term technicals are thin — keep them to a single line or omit.
+3. **Group-specific risk driver and structural risk.** Follow the `factorAnalysisGroupInstructions` for `macro_environment_risk` and `group_specific_structural_risk` for this fund's group — those name the macro forces and the structural mechanic (daily-reset decay, return-of-capital, contango / roll cost, concentration, yield-smoothing, glide-path drift, fee drag, etc.) that matter here. For bond / allocation funds, RSI and short-term technicals are thin — keep them to a single line or omit.
 4. **Strengths, red flags, the takeaway, and retail fit.** 2–3 strengths, each backed by a peer-relative number (the number AND the comparison it beats). 2–3 risks, each backed by a peer-relative number when possible. If the fund has a concentration, leverage, thematic-sleeve, or alt-hedge risk profile, add one sentence naming a position-sizing or holding-period constraint from a risk-only standpoint — e.g. "single-name concentration above `15%` makes this a portfolio slice, not a core holding", "daily-reset decay keeps suitable holding periods in days-to-weeks, not months", "commodity / alt exposures typically sit at `5–10%` of a diversified portfolio". Where the fund sits in an obvious retail decision pair (e.g. broad-equity index variants, short Treasury vs short muni, aggressive allocation vs pure equity, 3× leveraged vs 1× equivalent, covered-call income vs dividend equity), add one sentence comparing the RISK difference only — do not cross into fees, returns, or yield. Close with one sentence: "Overall, this ETF's risk profile looks strong / mixed / weak because …". **Self-consistency rule:** if a factor verdict was `Pass` or the metric was labeled `In Line`, do not call that same metric a weakness here; if a factor verdict was `Fail`, do not call it a strength here.
 
-## 3. Pass / Fail rule — judge each factor against the bar in its own `factorAnalysisDescription`
+## 3. Pass / Fail rule — judge each factor against the bar in its own `factorAnalysisDescription` and `factorAnalysisGroupInstructions`
 
-The per-factor description already carries the full logic (Sharpe thresholds, drawdown comparative bars, capture asymmetry bars, protection ratios, credit stress comparisons, duration behaviour, concentration thresholds). Use those bars directly. Three cross-cutting rules for this category:
+The per-factor description carries the generic measurement principle and Pass/Fail rule. The `factorAnalysisGroupInstructions` string carries the group-specific perspective for THIS fund (typical beta / vol range, comparison index, drawdown norm, peer guardrails, the macro forces that matter, and the structural risk mechanic that applies). Use both together; when they appear to conflict, follow the group instructions. Three cross-cutting rules for this category:
 
 - **Mandate-based, not broad-equity-based**: never Fail an alt / managed-futures / covered-call / leveraged / bond / allocation fund on equity-benchmark comparison alone. Judge against its own stated mandate and category peers.
 - **Peer-relative losses**: a drawdown, volatility, or 2022-loss number in line with category peers is a Pass on the factor linked to it, even when the absolute magnitude is uncomfortable — the asset class drove the outcome, not the fund.
@@ -121,7 +112,8 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 {{#each factorAnalysisArray}}
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
-  Metrics: {{factorAnalysisMetrics}}
+  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+  {{/if}}Metrics: {{factorAnalysisMetrics}}
 {{/each}}
 
 ### Data

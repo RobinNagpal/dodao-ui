@@ -1,49 +1,13 @@
 {
   "categoryKey": "PerformanceAndReturns",
-  "categoryName": "Performance & Returns",
-  "categoryDescription": "Evaluates the ETF's historical returns, consistency, income contribution, risk-adjusted return quality, technical trend position, and how well it has tracked its benchmark or peers across multiple time horizons. Maximum-drawdown severity, capture ratios, and absolute downside-protection metrics are covered in Risk Analysis — this category stays focused on the return story itself. Factors are assigned to one or more ETF groups defined in etf-analysis-categories.json; each group uses exactly 5 factors from this file.",
+  "categoryName": "Past Performance",
+  "categoryDescription": "Looks at the ETF's past performance: multi-year returns, recent momentum, calendar-year consistency, AUM trend, and standing inside its category peer group. Five factors apply to every ETF group. The `factorDescription` says what is measured and gives the generic Pass/Fail rule. `groupInstructions` gives the group-specific perspective — how to frame the benchmark, when technicals matter, and which structural checks (distribution stability, NAV erosion, roll cost, daily-leverage decay) apply. When the two seem to conflict, follow `groupInstructions`.",
   "factors": [
     {
-      "factorKey": "long_term_cagr",
-      "factorTitle": "Long-Term CAGR",
-      "factorDescription": "Measures compound annual growth rate over 5, 10, 15, and 20-year periods. Shows whether the fund has consistently grown investor capital over extended horizons. For funds younger than 5 years, note the limited history and use only the periods available rather than extrapolating. For daily-leveraged or inverse funds, long-horizon CAGR is the clearest evidence of compounding decay — compare against the unleveraged underlying's CAGR times the stated leverage factor. For commodity / digital-asset funds, frame CAGR against both the spot underlying (gold, BTC, broad commodity index) and a broad-equity benchmark — the comparison the retail reader actually cares about is 'did this beat just holding stocks'.",
-      "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ]
-    },
-    {
-      "factorKey": "short_term_returns",
-      "factorTitle": "Short-Term Returns & Momentum",
-      "factorDescription": "Evaluates recent performance over 1-month, 3-month, 6-month, YTD, and 1-year periods. Distinguishes short-term momentum (1M, 3M) from trailing performance (6M, 1Y). A strong 1Y return alongside weak recent months usually reflects a normal pullback within an uptrend rather than broad weakness. For leveraged / inverse funds, short-term returns are the entire decision frame because these are short-term trading vehicles.",
-      "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y",
-      "groups": ["broad-equity", "sector-thematic-equity", "leveraged-inverse", "commodities-and-digital-assets", "derivative-income"]
-    },
-    {
-      "factorKey": "returns_consistency",
-      "factorTitle": "Returns Consistency",
-      "factorDescription": "Assesses how stable returns have been across different periods and calendar years. Flags wild year-to-year swings and tracks whether the fund recovered quickly from drawdown years. Uses percentile-rank trends across years to detect deteriorating or improving relative standing.",
-      "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks",
-      "groups": ["broad-equity", "derivative-income", "allocation-target-date", "fixed-income-credit-and-income"]
-    },
-    {
-      "factorKey": "benchmark_tracking",
-      "factorTitle": "Benchmark Tracking",
-      "factorDescription": "Compares the fund's returns against its stated benchmark index across every available period. For passive equity funds, tracking within 0.5pp is expected — persistent drag beyond that signals structural cost or replication issues. For IG bond funds, tracking within 0.5pp; for HY / specialized credit, within 1.0pp. For commodity and spot digital-asset funds, the benchmark is the spot index (LBMA Gold price, CME CF BTC Reference Rate, Bloomberg Commodity Index) — tracking within 0.30pp is strong for physically-backed wrappers; futures-based commodity funds will diverge from spot due to roll cost and that gap should be explained, not graded as a tracking failure. For sector and thematic ETFs, note whether the benchmark is a narrow sector index (most XL- series SPDRs) or a broader thematic index — tracking tightness expectation is the same. For active credit and strategy funds the benchmark question becomes whether the manager beat the index net of fees over multi-year windows. Note: for leveraged / inverse funds the daily-leverage tracking question lives in daily_leverage_fidelity, not here.",
-      "factorMetrics": "returnsTrailing, returnsAnnual, indexName",
-      "groups": ["broad-equity", "sector-thematic-equity", "commodities-and-digital-assets", "fixed-income-investment-grade"]
-    },
-    {
-      "factorKey": "category_peer_standing",
-      "factorTitle": "Category Peer Standing",
-      "factorDescription": "Evaluates where the fund ranks among its Mor-category peers using percentile and quartile rank data across 1Y, 3Y, 5Y, and 10Y. Tracks whether the fund's standing is improving, stable, or deteriorating. Always report the peer-group size alongside the rank — median in a 600-fund category is very different from median in a 10-fund category. When the peer group is mostly active managers and the fund is a passive index tracker, account for the structural tracking-cost headwind before concluding the fund is underperforming.",
-      "factorMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory",
+      "factorKey": "historical_long_term_returns",
+      "factorTitle": "Historical Long-Term Returns",
+      "factorDescription": "Looks at multi-year compound growth (5 / 10 / 15 / 20Y CAGR and trailing returns) and asks whether the fund beat its benchmark over each long window. For funds younger than 5 years, use only the periods you have and note the short history. Pass when CAGR matches or beats the benchmark across most windows, or stays within tracking tolerance for a passive index fund. Fail when CAGR trails the benchmark across several long windows without a clear mandate-based reason.",
+      "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y, return5y, return10y, returnsAnnual, returnsTrailing, indexName",
       "groups": [
         "broad-equity",
         "sector-thematic-equity",
@@ -53,42 +17,121 @@
         "allocation-target-date",
         "fixed-income-investment-grade",
         "fixed-income-credit-and-income"
-      ]
+      ],
+      "groupInstructions": {
+        "broad-equity": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If no index is given, pick the most suitable benchmark for this ETF. ALWAYS also compare to the S&P 500 — even when the fund tracks a different index, retail investors use the S&P 500 as their default reference. For style-tilted funds (value, growth, dividend, low-vol, quality), the tilt should beat the parent broad-market index over long windows when its style is in favor. Plain Large Blend / Total Market funds should sit within tracking tolerance of the benchmark.",
+        "sector-thematic-equity": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If no index is given, pick the most suitable sector or theme benchmark. ALWAYS also compare to the S&P 500 — this is the retail mandate test. A sector or theme that just tracked the broad market over 10Y has not delivered on its thesis.",
+        "leveraged-inverse": "Long-horizon CAGR is the daily-reset decay test. Quote the underlying's CAGR × stated leverage as the textbook expectation, then show the actual result and call the gap compounding decay. State plainly: these are short-term trading vehicles, never buy-and-hold. The 'how much would $10k be today' framing does not apply here. Do not require a direct comparison to the S&P 500.",
+        "commodities-and-digital-assets": "Compare CAGR to the spot benchmark given in the prompt (`indexName`). If none is given, pick the most suitable spot reference for this commodity or digital asset. For futures-based commodity wrappers, the gap between the spot price and the fund is NAV erosion from contango / roll cost — call this out plainly. For physical-backed or spot-based funds, note the small tracking gap vs spot from custody and management costs.",
+        "derivative-income": "Long-term CAGR is the mandate test. Covered-call funds should deliver yield + capped upside + a cushion in down markets — verify all three. Long-short / market-neutral should show equity-like-or-lower CAGR with materially lower drawdown. Managed-futures should show crisis alpha in stress years. Compare TOTAL return (with distributions reinvested) to the underlying equity benchmark given in the prompt (or a suitable benchmark if none is given) and to a high-dividend equity reference. Flag a flat or negative 10Y price-only return paired with a positive total return — that means distributions are partly return-of-capital.",
+        "allocation-target-date": "Compare CAGR to a same-period 60/40 mix (broad US equity + US aggregate bond) and to the allocation peer-category median. Also compare to the DIY equivalent a retail reader could build (an aggressive mix is ~80% broad equity + 20% core bond; a conservative mix is ~30% equity + 70% bond) — the fund's value-add is automatic rebalancing, not alpha. Mandate-band check: moderate ~5-7%, conservative ~4-5%, aggressive ~7-9%. Target-date funds should track the issuer's published glide path. For tactical / global allocation, ask whether active calls beat a passive 60/40 over multi-year windows.",
+        "fixed-income-investment-grade": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable duration-matched benchmark for this ETF (core aggregate bond, a Treasury duration band, national / state muni, or TIPS). For muni funds, also quote tax-equivalent CAGR at ~32% federal (plus state exemption for in-state holders). For TIPS, separate real vs nominal returns. If the fund's yield is below cash / HYSA, say plainly the reason to hold it is optionality (price rally if rates fall), not yield.",
+        "fixed-income-credit-and-income": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable credit benchmark for this sub-asset (high-yield corporate, bank loan, preferred, EM debt, or convertible). Also quote a same-period 60/40 CAGR — retail's honest question is whether they were paid for taking real default and subordination risk. Translate 'high yield' plainly: below-investment-grade credit with real default risk."
+      }
     },
     {
-      "factorKey": "income_vs_price_return",
-      "factorTitle": "Income vs Price Return",
-      "factorDescription": "Separates income contribution from price return. For bond, muni, and income-focused alternative funds, most of the total return comes from distributions rather than price appreciation. Compares total return (return fields) against price-only change (change fields); the gap is the income contribution. A positive total return alongside a declining share price means income is offsetting price erosion — normal for the fund type, not a red flag. For muni funds within the investment-grade group, also frame the yield in tax-equivalent terms — TEY = SEC yield ÷ (1 − marginal tax rate) at a stated bracket (~32% federal is a reasonable retail baseline; in-state CA / NY / NJ / MA / OH / MN holders pick up additional state-tax exemption; private-activity-bond exposure may trigger AMT and should be noted) — so retail readers can compare against taxable IG peers. For high-yield muni in the credit-and-income group, frame TEY too but be explicit that the yield premium is paid for taking real default risk, not just for the tax shield. For derivative-income / covered-call funds (JEPI, QYLD, SPYI-style), unpack the distribution composition — option premium vs ordinary income vs short-term gain vs return-of-capital — because the headline yield is misleading without that breakdown.",
-      "factorMetrics": "return1y, change1y, return5y, change5y, return10y, change10y, dividendYield, overviewSecYield, overviewTtmYield, divYears",
-      "groups": ["derivative-income", "fixed-income-investment-grade", "fixed-income-credit-and-income"]
+      "factorKey": "historical_short_term_returns",
+      "factorTitle": "Historical Short-Term Returns & Momentum",
+      "factorDescription": "Looks at recent returns over 1M / 3M / 6M / YTD / 1Y. Separate short-term momentum (1M, 3M) from trailing performance (6M, 1Y) — a strong 1Y with weak recent months is usually a normal pullback, not broad weakness. Where entry timing matters for the fund's typical holder, also read the technical signals (MA20 / 50 / 150 / 200, RSI daily / weekly / monthly, distance from 52w high / low and ATH / ATL); where it does not, keep technical commentary brief. Every short-term number needs the same-period number for the benchmark. Pass when short-term performance matches or beats the benchmark and the trend is decision-useful for the fund's typical holding horizon. Fail when materially lagging across multiple recent windows without a mandate-based reason.",
+      "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y, returnsAnnual, ma20, ma50, ma150, ma200, ma50ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, high52wChg, low52wChg, athChgPercent, atlChgPercent, indexName",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "commodities-and-digital-assets",
+        "derivative-income",
+        "allocation-target-date",
+        "fixed-income-investment-grade",
+        "fixed-income-credit-and-income"
+      ],
+      "groupInstructions": {
+        "broad-equity": "Compare 1M / 3M / 6M / YTD / 1Y to the benchmark index given in the prompt (`indexName`). If none is given, pick the most suitable broad-equity benchmark for this ETF. ALWAYS also compare to the S&P 500 — retail uses it as the default reference even when the fund tracks a different index. Flag whether near-term weakness is fund-specific (lagging the benchmark) or a broad-market move that hit every peer. MA / RSI signals are usually noise for buy-and-hold broad-equity — keep technical commentary brief unless price is at a clear extreme (monthly RSI >70 or <30).",
+        "sector-thematic-equity": "Compare each window to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable sector / theme benchmark. ALWAYS also compare to the S&P 500 — retail wants to see whether the sector bet is currently beating or fading vs the broad market. Sector cycles drive forward returns: read MA50 / MA200 position and RSI to gauge entry timing. Flag overbought (monthly RSI >70) or oversold (<30) and tie it to where the sector sits in its macro cycle.",
+        "leveraged-inverse": "Short-term return IS the decision frame here. Compare 1M / 3M / 6M / YTD / 1Y to the stated daily-leverage multiple of the unleveraged underlying — a 3x fund should be roughly 3x the underlying's same-period move minus reset slippage. Flag any large gap as path-dependency loss. The honest comparison is 'vs not holding this at all' — most retail investors should not hold these beyond a few trading days. Read price vs MA20 / 50 / 150 / 200 and RSI (monthly RSI >75 is stretched even by trading standards). Frame current entry against the 52-week range.",
+        "commodities-and-digital-assets": "Compare to the spot underlying given in the prompt (`indexName`) over each window. If none is given, pick a suitable spot reference for this commodity or digital asset. For futures-based commodity wrappers, show the spot vs fund gap and call out roll cost (contango / backwardation). These are momentum-driven asset classes — quote MA50 / MA200 position and RSI (monthly RSI >70 stretched, <30 washout) and frame current price against the ATH and the 52-week range.",
+        "derivative-income": "Compare 1M / 3M / 6M / YTD / 1Y TOTAL return to the underlying equity benchmark given in the prompt (`indexName`). If none is given, pick a suitable equity benchmark for the strategy's option-writing universe. Distribution composition matters — option-premium income, ordinary dividends, short-term capital gains, return of capital. Headline yield alone misleads; flag whether ROC is propping the yield while NAV erodes. MA / RSI is noise here — keep technical commentary minimal.",
+        "allocation-target-date": "Compare 1M / 3M / 6M / YTD / 1Y to a same-period 60/40 mix (broad US equity + US aggregate bond) and to the allocation peer-category median. For target-date funds, also compare to the issuer's published peer group for the dated year. MA / RSI signals are noise for allocation funds — keep technical commentary minimal.",
+        "fixed-income-investment-grade": "Compare 1M / 3M / 6M / YTD / 1Y to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable duration-matched benchmark (core aggregate bond, a Treasury duration band, national / state muni, or TIPS). Flag whether near-term moves are rate-driven (parallel with peers) or fund-specific (active calls, tracking drift). Distribution should track SEC yield — a large gap signals smoothing. MA / RSI is noise here.",
+        "fixed-income-credit-and-income": "Compare 1M / 3M / 6M / YTD / 1Y to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable credit benchmark (high-yield corporate, bank loan, preferred, EM debt, or convertible). Flag whether short-term weakness is spread-widening that hit the whole sub-asset class or fund-specific. Distribution moves with reference rates and default cycles."
+      }
     },
     {
-      "factorKey": "daily_leverage_fidelity",
-      "factorTitle": "Daily Leverage Fidelity & Decay",
-      "factorDescription": "For daily-leveraged or inverse funds, checks whether the realized multi-period return actually matched the daily-leverage target (e.g. 3x, -2x) or whether path-dependency and compounding destroyed the multiple. The long-term return of a leveraged fund is almost never the leverage factor times the underlying's long-term return — the gap is the decay story that must be explained to readers. Flag leveraged/inverse products as short-term trading vehicles only.",
-      "factorMetrics": "return1m, return3m, return1y, return3y, returnsAnnual, beta, beta1y",
-      "groups": ["leveraged-inverse"]
+      "factorKey": "historical_returns_consistency",
+      "factorTitle": "Historical Returns Consistency",
+      "factorDescription": "Looks at how stable returns have been across periods and calendar years. Quote calendar-year hit rate (how often the fund had a positive year), worst single year, and percentile-rank trend year-over-year (cite the actual movement, e.g. `14 → 87 → 18`, not just 'volatile'). Benchmark-matched bad year rule: a passive fund whose worst year is in line with its benchmark and peer category is not a Fail — that is the asset class moving, not fund failure. For income-paying funds, also check distribution stability: did the headline yield hold up, ratchet down, or get propped up by return-of-capital? A flat total return on top of a steadily eroding NAV is not real consistency. Pass when the calendar-year pattern fits the group's typical dispersion and distributions (where relevant) held up. Fail when the fund swings materially harder than its benchmark, OR distributions were cut sharply, OR total return is being propped up by ROC.",
+      "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks, dividendTtm, divGrowth3y, divGrowth5y, divYears, divGrYears, dividendYield, overviewSecYield, change1y, change5y, change10y, indexName",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "commodities-and-digital-assets",
+        "derivative-income",
+        "allocation-target-date",
+        "fixed-income-investment-grade",
+        "fixed-income-credit-and-income"
+      ],
+      "groupInstructions": {
+        "broad-equity": "Show calendar-year hit rate, worst single year, and percentile-rank trend against the benchmark index given in the prompt (`indexName`); if none is given, pick a suitable broad-equity benchmark. ALWAYS also frame the calendar-year pattern against the S&P 500 — it is the default reference retail uses for any equity fund. A 5-year migration up or down the percentile ladder matters more than any single year. For broad-equity dividend / income tilts, also check whether the distribution held up year-over-year.",
+        "sector-thematic-equity": "Sector and country returns swing harder than the broad market. Quote the worst single year and whether it lined up with a broad-market bad year or was sector-specific. ALWAYS also reference the S&P 500 calendar-year pattern over the same window so retail sees the trade-off vs holding the broad market.",
+        "leveraged-inverse": "Consistency is structurally poor here. Quote calendar-year wins vs losses, the worst single year, and recovery duration. Retail needs to see plainly that consistency is not a design feature of these products — reinforce the short-term-only warning every iteration.",
+        "commodities-and-digital-assets": "Calendar-year dispersion is wide for this asset class — quote hit rate, worst year, and the big up years. Also reference the S&P 500 calendar-year pattern over the same window so retail sees the trade-off vs holding equities. For futures-based wrappers, a steadily declining 5Y / 10Y price-only return alongside a positive distribution-yielded total return is roll-cost NAV erosion in disguise.",
+        "derivative-income": "Show how yield + capped upside translated into total return each calendar year, including down years where option premium did NOT offset the underlying loss. Quote per-share distribution year-by-year, the latest-year ROC share, and the divergence between total return and price-only return — a flat-to-positive total return on top of a steadily declining NAV is structural NAV erosion. Compare the worst calendar year to both the underlying equity benchmark AND a high-dividend equity reference.",
+        "allocation-target-date": "Smooth-ride delivery is the core mandate. Quote calendar-year hit rate, the worst single year, and a same-period 100% broad-equity worst year side-by-side — a moderate-allocation fund should have a materially smaller worst year than pure equity. For target-date glide paths, compare to the issuer's own glide-path target. The bond-sleeve distribution should track its yield; flag any abrupt drops.",
+        "fixed-income-investment-grade": "Quote calendar-year hit rate and the worst calendar year. Compare worst year to a duration-matched Treasury or core-bond reference — long-duration funds will have lost meaningfully in rate-shock years, intermediate less, and ultrashort / MMF barely at all. Distribution should closely track SEC yield; large gaps signal smoothing or de-accumulated coupons.",
+        "fixed-income-credit-and-income": "Quote calendar-year hit rate and worst single year. Show per-share distribution year-by-year, especially around credit-stress windows. Break out the ROC share for preferreds and convertibles where it is structurally larger. Compare the worst year to the matching credit benchmark given in the prompt (or a suitable one if none is given)."
+      }
     },
     {
-      "factorKey": "rate_environment_resilience",
-      "factorTitle": "Rate Environment Resilience",
-      "factorDescription": "For investment-grade bond, credit, and allocation funds, assesses how the fund performed across rising-rate years (e.g. 2022) vs falling-rate years (e.g. 2019, 2020). Long-duration government and muni funds suffer most in rising-rate years and gain most in falling-rate years. Credit-and-income funds (high-yield, bank loan, CLO, preferred, EM debt, multisector, convertibles) are partly insulated from rates via spread behavior — bank loans and AAA CLOs especially, because the coupon resets — but fixed-coupon HY and preferreds still take rate-driven hits when the move is large. Allocation funds inherit the rate sensitivity of their bond sleeve — compare the fund's 2022 loss to the mix of equity + bond index losses it would imply. Compare the fund's worst calendar year to its category and index: if the loss was in line with peers, the drawdown was asset-class-driven, not fund-specific.",
-      "factorMetrics": "returnsAnnual, return1y, return3y",
-      "groups": ["allocation-target-date", "fixed-income-investment-grade", "fixed-income-credit-and-income"]
+      "factorKey": "aum_growth_trend",
+      "factorTitle": "AUM Growth Trend",
+      "factorDescription": "Looks mainly at how the fund's AUM has trended over time — is money flowing in or out? Rising AUM signals that retail and institutional investors are choosing this fund, even a smaller fund with a steady upward trend is healthy because it shows growing investor interest. Flat or declining AUM, especially from a peak, signals lost confidence in the strategy or asset class. Very low absolute AUM (below ~$50M) with no growth is real closure / merger risk — the issuer may liquidate, merge into a sibling fund, or stop marketing. Strong recent return tends to correlate with strong inflows, so AUM trend doubles as a market-validated read on performance. Daily dollar volume and bid-ask spread are secondary tradability checks — comfortably above $1M / day and a spread that doesn't materially tax retail round-trips is fine. For AUM trend, look up historical AUM (1Y / 3Y / 5Y / since inception) from the issuer fact sheet, etf.com, or other reputable public sources via the Factor-metric lookup rule. Pass when AUM trend is flat-to-rising (even from a small base) AND trading friction is acceptable for retail. Fail when AUM is shrinking sharply from peak without an asset-class decline of similar magnitude, OR is well below the survival threshold for the category with no growth, OR trading friction (thin volume, very wide bid-ask) would materially tax retail round-trips.",
+      "factorMetrics": "aum, sharesOut, volume, avgVolume, dollarVol, marketBidAskSpread, inceptionDate, return1y",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "commodities-and-digital-assets",
+        "derivative-income",
+        "allocation-target-date",
+        "fixed-income-investment-grade",
+        "fixed-income-credit-and-income"
+      ],
+      "groupInstructions": {
+        "broad-equity": "For mega broad-market funds, AUM trend is mostly a signal about continued fee competitiveness — small relative moves are not decision-changing. For newer or niche broad-equity funds (factor tilts, themed dividend ETFs, foreign / single-region funds), a steady upward AUM trend even from a small base means the tilt is gaining traction; sustained outflows signal lost confidence. Below ~$100M for newer funds with no growth is closure risk worth flagging.",
+        "sector-thematic-equity": "AUM in thematic ETFs is highly cyclical — money piles in at theme peaks and out at troughs. A steady AUM rise (even from a small base) is the early signal of a theme gaining traction; a 60-80% drawdown from peak AUM is common once a theme falls out of favor. What matters most for retail is closure risk — below ~$50M with no growth is the threshold to flag.",
+        "leveraged-inverse": "Leveraged products see fast AUM swings tied to retail sentiment and short-term performance. A growing AUM trend signals continued trader interest. Below ~$50M with no growth is real closure / merger risk — multiple leveraged products have been delisted. Very high AUM in a narrow-sector leveraged product can hurt daily-tracking quality from derivative-position limits.",
+        "commodities-and-digital-assets": "Commodity and crypto wrappers see AUM swings with the underlying. A sustained AUM rise (even from a small base) means the wrapper is gaining adoption — important for newer spot-crypto and physical-backed funds. For futures-based commodity funds, sustained AUM signals that roll cost has been absorbable; shrinking AUM in a roll-cost-burdened fund is a closure warning.",
+        "derivative-income": "AUM growth has been a defining story for derivative-income funds in recent years — sustained growth signals retail income demand. A small fund still growing is a healthier signal than a large one with sudden outflows. Read AUM trend alongside the NAV and distribution trajectory; outflows can mean the strategy stopped delivering or NAV erosion finally caught retail attention.",
+        "allocation-target-date": "Target-date funds get most of their AUM from 401(k) defaults — flows are mostly mechanical and sticky. Watch for unusual outflows that may signal advisor or plan-sponsor migration to a different family (common for actively-managed target-date series losing share to cheaper passive). For tactical / global allocation, AUM trend is the retail vote on the strategy.",
+        "fixed-income-investment-grade": "Bond-fund AUM moves with rate-cycle sentiment — IG core / Treasury flows surge when rates peak; muni flows are tied to tax-bracket investor demand. For ultrashort / MMF, AUM is sticky cash-substitute money that grows late-cycle and bleeds when rates fall. A small fund still growing is a healthy signal; below ~$100M with no growth flags closure risk.",
+        "fixed-income-credit-and-income": "Credit-fund AUM is more volatile — HY / bank-loan / EM-debt flows surge in risk-on periods and bleed in risk-off; preferred / convertible flows mirror equity sentiment. A steady AUM trend tells you whether retail / institutional money is currently being rewarded for taking the credit risk. Below ~$50M with no growth = closure risk. Stress-window bid-ask blowouts are normal for the asset class — note as a warning, not as a Fail."
+      }
     },
     {
-      "factorKey": "technical_trend_position",
-      "factorTitle": "Technical Trend & Momentum Position",
-      "factorDescription": "Reads current price against moving averages (MA20, MA50, MA150, MA200) and RSI levels (daily, weekly, monthly) to judge whether the fund is in an uptrend, downtrend, or sideways range, and whether momentum looks stretched. Price above all four MAs with RSI rising signals broad strength; price below all four with RSI falling signals broad weakness. Monthly RSI above 70 is overbought; below 30 is oversold. Also uses distance from the 52-week high and 52-week low (and ATH/ATL when available) to place the current price in a longer range. For sector and thematic ETFs, trend position matters because sector cycles are the main driver of future return paths. For commodity and digital-asset funds, technicals matter because these are largely momentum-driven asset classes for retail entry timing. For leveraged and inverse funds, technical position is decision-useful because their core suitability case is short-term directional trading, not buy-and-hold — use this factor to judge whether the current entry looks reasonable rather than to predict future returns.",
-      "factorMetrics": "stockPrice, ma20, ma50, ma150, ma200, ma50ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, high52wChg, low52wChg, athChgPercent, atlChgPercent",
-      "groups": ["sector-thematic-equity", "leveraged-inverse", "commodities-and-digital-assets"]
-    },
-    {
-      "factorKey": "risk_adjusted_return_quality",
-      "factorTitle": "Risk-Adjusted Return Quality",
-      "factorDescription": "Asks whether the returns the fund delivered were worth the volatility it took. Uses Sharpe ratio (excess return per unit of total volatility) and Sortino ratio (excess return per unit of downside volatility) to judge return efficiency, with beta alongside to show how much of the return pattern is market-driven vs independent. For allocation and target-date funds, risk-adjusted return is the core value proposition — a moderate allocation fund that matches 60/40 returns with meaningfully lower volatility is doing its job even if the absolute return lags pure equity. For derivative-income and hedge-fund-style strategy funds (long-short, market-neutral, derivative income, managed futures, multi-strategy, macro, event-driven, volatility), Sharpe and Sortino are the honest scorecard: a low absolute return with a materially better Sharpe than equities can still be a sensible diversifier. Compare to typical category levels — a Sharpe near 1.0 is strong for allocation and bond-like alternatives; below 0.3 for a multi-year period is weak regardless of headline returns.",
-      "factorMetrics": "sharpe, sortino, beta, beta1y, return3y, return5y, return10y",
-      "groups": ["derivative-income", "allocation-target-date"]
+      "factorKey": "within_category_comparison",
+      "factorTitle": "Within-Category Performance Standing",
+      "factorDescription": "Looks at where the fund sits inside its category peer group across 1Y / 3Y / 5Y / 10Y. Use percentile and quartile rank: top quartile is above-average, second quartile near-average-but-better, third quartile below-average-but-acceptable, bottom quartile materially weak. Always report peer-group size alongside the rank — median in a 600-fund category is different from median in a 10-fund category. Track whether standing is improving, stable, or deteriorating and cite the actual percentile movement. For a passive index fund inside an active-heavy peer category, the structural tracking-cost headwind active managers carry means median-among-active is a Pass-grade outcome — do not Fail a passive fund on peer rank alone. Pass when the fund is in the top two quartiles over the longest available window AND the percentile trend is not deteriorating sharply. Fail when it sits in the bottom quartile across multiple windows without a mandate-based reason (e.g. a long-vol fund in the bottom quartile of a multi-strategy category during an equity bull is mandate-aligned, not a Fail).",
+      "factorMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory, overviewCategory, returnVsCategory, riskVsCategory",
+      "groups": [
+        "broad-equity",
+        "sector-thematic-equity",
+        "leveraged-inverse",
+        "commodities-and-digital-assets",
+        "derivative-income",
+        "allocation-target-date",
+        "fixed-income-investment-grade",
+        "fixed-income-credit-and-income"
+      ],
+      "groupInstructions": {
+        "broad-equity": "Use the ETF's exact Morningstar category from `overviewCategory` — broad-equity splits by size, style, and region. For passive index funds in an active-heavy peer category, median is a Pass-grade outcome because active managers carry a structural fee + tracking-cost headwind.",
+        "sector-thematic-equity": "Use the ETF's exact category from `overviewCategory`. Sector categories (large defined sectors) tend to be tight peer groups; thematic and miscellaneous-sector categories are more dispersed; single-country EM categories have small peer counts — always report the peer count alongside the rank.",
+        "leveraged-inverse": "Leveraged and inverse peer categories are small. Rank between products inside the same leverage bucket is mostly about daily-tracking quality and issuer execution — structural decay applies to every product in the category, so do not Fail a fund on rank alone if the decay is in line with peers.",
+        "commodities-and-digital-assets": "Categories here are small (broad commodities, precious metals, digital assets, single-currency) — report peer count alongside any rank. Physical-backed vs futures-based wrappers within the same category have different cost / tracking profiles — note which sub-group of peers the rank is actually comparing against.",
+        "derivative-income": "Use the ETF's exact category from `overviewCategory` — derivative-income and alternative strategies split into several distinct peer groups by strategy type. Inside derivative-income especially, peer dispersion is wide because different funds use different option mechanics and underlying indices.",
+        "allocation-target-date": "Each target-date vintage is its own peer group, and static allocation funds split by equity-bond mix (conservative / moderate / aggressive) and by tactical or global variants. Stay inside the specific category named in `overviewCategory`.",
+        "fixed-income-investment-grade": "Bond categories are duration-defined and split between government, core, inflation-protected, and muni (national vs single-state). Compare within the exact category named in the ETF's `overviewCategory`.",
+        "fixed-income-credit-and-income": "Credit-and-income categories split by credit tier and asset type (high-yield corporate, bank loan, preferred, convertible, EM debt, multisector, nontraditional, securitized, high-yield muni). Compare within the exact category named in the ETF's `overviewCategory`."
+      }
     }
   ]
 }
