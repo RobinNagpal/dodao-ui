@@ -130,6 +130,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerReturns: JSON.stringify({
       return1m: sa?.return1m,
@@ -241,6 +242,7 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     financialInfo: JSON.stringify({
       expenseRatio: fin?.expenseRatio,
@@ -303,6 +305,7 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerRiskMetrics: JSON.stringify({
       beta: fin?.beta,
@@ -362,6 +365,7 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
 
     // Broad blocks: the forward-looking category is explicitly synthesis-heavy,

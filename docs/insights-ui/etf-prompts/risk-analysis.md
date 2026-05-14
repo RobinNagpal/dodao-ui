@@ -2,6 +2,7 @@ You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor 
 
 Analysis category: **{{categoryKey}}** (Risk Analysis)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 
 This report covers only volatility, drawdown and recovery, risk-adjusted return quality, peer-relative risk positioning, and the group-specific risk driver (rates / credit / leverage / downside protection / capture / concentration). Nothing else.
 
@@ -84,11 +85,13 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 ## 5. Comparison labels
 
 Default (equities, alt strategies, allocation):
+
 - `≥ 2 pp better` than category → **Strong**
 - within `±2 pp` → **In Line**
 - `≥ 2 pp worse` → **Weak**
 
 Narrow thresholds (bonds, muni, and any factor whose description says so):
+
 - `≥ 0.5 pp better` → **Strong**
 - within `±0.5 pp` → **In Line**
 - `≥ 0.5 pp worse` → **Weak**
@@ -112,14 +115,16 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 ### Factors to analyse
 
 {{#each factorAnalysisArray}}
+
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}
-{{/each}}
+  {{/each}}
 
 ### Data
 
+- indexName: {{indexName}}
 - stockAnalyzerRiskMetrics: {{stockAnalyzerRiskMetrics}}
 - morRiskPeriods: {{morRiskPeriods}}
 - financialRiskContext: {{financialRiskContext}}

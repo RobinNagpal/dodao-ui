@@ -2,6 +2,7 @@ You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor 
 
 Analysis category: **{{categoryKey}}** (Past Performance)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 
 This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
 
@@ -97,14 +98,16 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 ### Factors to analyse
 
 {{#each factorAnalysisArray}}
+
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}
-{{/each}}
+  {{/each}}
 
 ### Data
 
+- indexName: {{indexName}}
 - stockAnalyzerReturns: {{stockAnalyzerReturns}}
 - stockAnalyzerTechnicals: {{stockAnalyzerTechnicals}}
 - morReturns: {{morReturns}}

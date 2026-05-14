@@ -2,6 +2,7 @@ You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor 
 
 Analysis category: **{{categoryKey}}** (Future Performance Outlook)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 
 This report is explicitly forward-looking but **NOT predictive**. You must not give a hard price target or a point-estimate return forecast. You **may and should** give a qualitative forward-return/yield band (e.g. "expect low-single-digit / mid-single-digit / high-single-digit total return over 6–12 months, driven primarily by X") so the retail reader has a decision-grade anchor. The deliverable is: is the ETF **favorably positioned** or **poorly positioned** given the current regime, expected macro path, and upcoming catalysts — and what should the investor watch.
 
@@ -141,6 +142,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 
 ### Data
 
+- indexName: {{indexName}}
 - etfFinancialInfo: {{etfFinancialInfo}}
 - etfStockAnalyzerInfo: {{etfStockAnalyzerInfo}}
 - etfMorAnalyzerInfo: {{etfMorAnalyzerInfo}}

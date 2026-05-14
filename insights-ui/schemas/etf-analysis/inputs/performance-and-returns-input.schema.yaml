@@ -78,6 +78,11 @@ properties:
     type: string
     description: 'The ETF group key (e.g., broad-equity, sector-thematic-equity, fixed-income-investment-grade, derivative-income). Determines which factors from the category config apply to this fund.'
 
+  # Benchmark index name — sourced from EtfStockAnalyzerInfo.indexName; may be null when the upstream data does not carry an index reference.
+  indexName:
+    type: ['string', 'null']
+    description: 'The benchmark index this ETF tracks (e.g., "S&P 500", "MSCI EAFE"). Group instructions reference this directly so the LLM can name the actual benchmark. May be null when not provided by upstream data — in that case the LLM picks the most suitable benchmark for the fund.'
+
   # P0 — Yield & income data (critical for bond and income ETFs)
   yieldAndIncome:
     type: string
