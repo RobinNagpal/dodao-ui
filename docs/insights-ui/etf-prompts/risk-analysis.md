@@ -1,9 +1,13 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear risk read before investing.
 
 Analysis category: **{{categoryKey}}** (Risk Analysis)
-ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategory}}**
+Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
+Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when judging risk-vs-category.
 
 This report covers only volatility, drawdown and recovery, risk-adjusted return quality, peer-relative risk positioning, and the group-specific risk driver (rates / credit / leverage / downside protection / capture / concentration). Nothing else.
+
+**Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
 
 ## Scope
 
@@ -79,21 +83,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
 
-## 5. Comparison labels
-
-Default (equities, alt strategies, allocation):
-- `≥ 2 pp better` than category → **Strong**
-- within `±2 pp` → **In Line**
-- `≥ 2 pp worse` → **Weak**
-
-Narrow thresholds (bonds, muni, and any factor whose description says so):
-- `≥ 0.5 pp better` → **Strong**
-- within `±0.5 pp` → **In Line**
-- `≥ 0.5 pp worse` → **Weak**
-
-For capture ratios, protection ratios, drawdown comparatives, and concentration weights, use the bands defined in each factor's own description.
-
-## 6. Writing rules
+## 5. Writing rules
 
 - Markdown. Wrap every beta, Sharpe, Sortino, alpha, R², ATR, standard deviation, drawdown, capture ratio, risk score, date, and percentage in backticks — in the summary, the paragraphs, AND the factor explanations. Numbers without backticks are an error.
 - Simple, direct English. No dramatic adjectives (see Scope for the banned list), no filler, no self-praise of the fund's ride ("smooth", "frictionless", "textbook"). The numbers do the talking.
@@ -110,14 +100,17 @@ For capture ratios, protection ratios, drawdown comparatives, and concentration 
 ### Factors to analyse
 
 {{#each factorAnalysisArray}}
+
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}
-{{/each}}
+  {{/each}}
 
 ### Data
 
+- indexName: {{indexName}}
+- groupCategories: {{groupCategories}}
 - stockAnalyzerRiskMetrics: {{stockAnalyzerRiskMetrics}}
 - morRiskPeriods: {{morRiskPeriods}}
 - financialRiskContext: {{financialRiskContext}}

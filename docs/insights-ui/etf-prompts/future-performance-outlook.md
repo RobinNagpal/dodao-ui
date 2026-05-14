@@ -1,9 +1,13 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a forward-looking positioning read for the next 6–12 months.
 
 Analysis category: **{{categoryKey}}** (Future Performance Outlook)
-ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
+ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategory}}**
+Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
+Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when comparing category vs other categories.
 
 This report is explicitly forward-looking but **NOT predictive**. You must not give a hard price target or a point-estimate return forecast. You **may and should** give a qualitative forward-return/yield band (e.g. "expect low-single-digit / mid-single-digit / high-single-digit total return over 6–12 months, driven primarily by X") so the retail reader has a decision-grade anchor. The deliverable is: is the ETF **favorably positioned** or **poorly positioned** given the current regime, expected macro path, and upcoming catalysts — and what should the investor watch.
+
+**Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
 
 ## Scope
 
@@ -41,12 +45,14 @@ If you cite “the benchmark”, name it explicitly (index name from holdings/st
 State whether the forward outlook is **Favorable**, **Mixed**, or **Unfavorable** for the next `6–12 months`.
 
 Include 3–5 decision-useful anchors such as:
+
 - one valuation/yield anchor (e.g. forward P/E or SEC yield),
 - one macro anchor (e.g. “market pricing X cuts by Y month”, “PMI trend”, “curve shape”),
 - one technical/positioning anchor (e.g. price vs `MA200`, `RSI` range, AUM/flow signal),
 - one key catalyst window (e.g. next Fed/CPI/earnings window).
 
 **Forward-return/yield band (mandatory).** Include one sentence that anchors the reader's expected-return picture in plain English. Pick the framing that fits the fund:
+
 - For equity / allocation funds: "expect `low` / `mid` / `high` single-digit (or double-digit) total return over the next 6–12 months, driven primarily by X." Do NOT give a precise point number.
 - For bond / muni / preferred / derivative-income funds: frame as expected carry (e.g. "base-case return ≈ the current `SEC yield` of `X%` plus/minus modest price drift from Y"). For munis, translate to tax-equivalent yield for a representative top-bracket retail investor.
 - For leveraged/inverse funds: explicitly say no multi-month hold band applies and, in one line, quantify the approximate volatility-decay drag in a sample choppy scenario (e.g. "a flat underlying over 3 months can still cost ~`X%` in this fund").
@@ -67,17 +73,18 @@ Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor def
 - **No wall-of-text paragraphs.** No individual paragraph may exceed ~`400` words. If a paragraph approaches that, split the ideas across the four-paragraph structure — do NOT dump the entire analysis into a single block.
 
 1. **Positioning snapshot.** What the fund owns / targets, what that implies (sector / credit / rate / vol exposure), and what the market is currently paying attention to in that exposure. Use top holdings / sector / duration / credit tier where relevant.
-2. **Macro regime fit — short and long horizon.** Name the current macro regime (growth / inflation / policy / financial conditions) with 2-3 indicators. Explain why that regime helps or hurts this ETF's exposure profile over the next 6-12 months AND over a 3-5 year secular horizon. Name the 2-4 most relevant near-term catalysts (Fed meetings, CPI prints, OPEC+, elections, earnings windows) with approximate dates and whether each is a tailwind or headwind. If this is a rate / credit fund, make the rate-path / duration or credit-spread lens explicit per the `yield_rate_and_credit_outlook` factor's group instructions.
-3. **Valuation + cycle position (or group-specific lens).** Apply the factor that fits this group: for equity / allocation / fixed-income funds, one valuation / yield framing combined with the fundamental or credit trajectory. For broad-equity, sector-thematic-equity, leveraged-inverse, and commodities-and-digital-assets, also place the exposure in its cycle (accumulation / markup / distribution / markdown). For commodities-and-digital-assets, add the supply-demand or adoption read per `commodity_supply_demand_or_adoption_outlook`. For leveraged-inverse, add the holding-window vol / trend / event read per `leveraged_holding_window_outlook`. Be disciplined: technicals are secondary for long-horizon bond / allocation funds.
+2. **Macro regime fit — short and long horizon.** Name the current macro regime (growth / inflation / policy / financial conditions) with 2-3 indicators. Explain why that regime helps or hurts this ETF's exposure profile over the next 6-12 months AND over a 3-5 year secular horizon. Name the 2-4 most relevant near-term catalysts (Fed meetings, CPI prints, OPEC+, elections, earnings windows) with approximate dates and whether each is a tailwind or headwind. If this is a rate / credit fund, make the rate-path / duration or credit-spread lens explicit.
+3. **Valuation + cycle position (or group-specific lens).** Apply the factor that fits this group: for equity / allocation / fixed-income funds, one valuation / yield framing combined with the fundamental or credit trajectory. For broad-equity, sector-thematic-equity, leveraged-inverse, and commodities-and-digital-assets, also place the exposure in its cycle (accumulation / markup / distribution / markdown). For commodities-and-digital-assets, add the supply / demand or adoption read for the underlying asset. For leveraged-inverse, add the next-few-weeks vol / trend / binary-event read for the underlying. Be disciplined: technicals are secondary for long-horizon bond / allocation funds.
 4. **Verdict, watch-list trigger, and what would change your view.** Close with "Favorable / Mixed / Unfavorable because …".
 
 **Decisiveness of the verdict (mandatory in paragraph 4).** Whatever the verdict, finish with one actionable line that helps the retail reader make a decision:
 
-- **If "Mixed"**: give a simple *watch-list trigger* that would flip the call in either direction (e.g. "flip to Favorable if May core CPI prints ≤ `2.5%`; flip to Unfavorable if credit spreads break above `400 bps`"). "Mixed" without a decision rule is not acceptable.
+- **If "Mixed"**: give a simple _watch-list trigger_ that would flip the call in either direction (e.g. "flip to Favorable if May core CPI prints ≤ `2.5%`; flip to Unfavorable if credit spreads break above `400 bps`"). "Mixed" without a decision rule is not acceptable.
 - **If "Favorable"**: name the type of investor it fits and any obvious caveat (e.g. "fits long-horizon growth allocators; aggressive concentration in `X` means size the position accordingly").
-- **If "Unfavorable"**: where relevant, name a *concrete alternative* from the same broad category (e.g. "if you want the conservative-allocation exposure, SHY/SUB deliver similar yield with materially less rate risk"). Do not invent alternatives outside the fund's category family.
+- **If "Unfavorable"**: where relevant, name a _concrete alternative_ from the same broad category (e.g. "if you want the conservative-allocation exposure, SHY/SUB deliver similar yield with materially less rate risk"). Do not invent alternatives outside the fund's category family.
 
 **Audience / suitability line (mandatory where the answer is non-obvious).** For funds where suitability is gated on a specific investor profile, add one short sentence naming it:
+
 - Municipal funds → name the tax-bracket threshold where the tax-equivalent yield beats the taxable alternative.
 - Fund-of-funds / target-risk / allocation funds → briefly note the underlying-sleeve fee stack and whether DIY-ing the sleeves is meaningfully cheaper.
 - Derivative-income / covered-call funds → state that the headline yield is volatility-dependent and likely to compress in calm regimes; give a plain-English range for a forward distribution.
@@ -86,6 +93,7 @@ Keep paragraphs tight. Do not pad. Apply factor logic; do not restate factor def
 ## 3. Pass / Fail rule — “positioned well” vs “positioned poorly”
 
 Pass/Fail here is **not** "will outperform" — it is "set up well" vs "set up poorly" given:
+
 - current + expected regime over both short (6-12mo) and long (3-5y+) horizons,
 - valuation margin-of-error and fundamental trajectory,
 - cycle position of the fund's specific exposure,
@@ -126,14 +134,17 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 ### Factors to analyse
 
 {{#each factorAnalysisArray}}
+
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}
-{{/each}}
+  {{/each}}
 
 ### Data
 
+- indexName: {{indexName}}
+- groupCategories: {{groupCategories}}
 - etfFinancialInfo: {{etfFinancialInfo}}
 - etfStockAnalyzerInfo: {{etfStockAnalyzerInfo}}
 - etfMorAnalyzerInfo: {{etfMorAnalyzerInfo}}

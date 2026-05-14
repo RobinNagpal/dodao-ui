@@ -49,8 +49,21 @@ export function getEtfGroupKeyForCategory(category: string | null | undefined): 
   return match?.group;
 }
 
+function getGroupNameForGroupKey(groupKey: string): string {
+  return categoriesConfig.groups.find((g) => g.key === groupKey)?.name ?? groupKey;
+}
+
+function getCategoriesForGroupKey(groupKey: string): string[] {
+  return categoriesConfig.categories.filter((c) => c.group === groupKey).map((c) => c.name);
+}
+
+function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {
+  if (f.groups === 'all') return true;
+  return f.groups.includes(groupKey);
+}
+
 function getGroupFactors(config: EtfGroupBasedFactorsConfig, groupKey: string): EtfAnalysisFactorDefinition[] {
-  return config.factors.filter((f) => f.groups.includes(groupKey)).map((f) => normalizeGroupFactor(f, groupKey));
+  return config.factors.filter((f) => factorAppliesToGroup(f, groupKey)).map((f) => normalizeGroupFactor(f, groupKey));
 }
 
 /**
@@ -130,6 +143,9 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    groupName: getGroupNameForGroupKey(groupKey),
+    groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerReturns: JSON.stringify({
       return1m: sa?.return1m,
@@ -241,6 +257,9 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    groupName: getGroupNameForGroupKey(groupKey),
+    groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     financialInfo: JSON.stringify({
       expenseRatio: fin?.expenseRatio,
@@ -303,6 +322,9 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    groupName: getGroupNameForGroupKey(groupKey),
+    groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerRiskMetrics: JSON.stringify({
       beta: fin?.beta,
@@ -362,6 +384,9 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
     assetClass,
     fundCategory,
     groupKey,
+    groupName: getGroupNameForGroupKey(groupKey),
+    groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
+    indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
 
     // Broad blocks: the forward-looking category is explicitly synthesis-heavy,
