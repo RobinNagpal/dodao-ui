@@ -1,7 +1,7 @@
 {
   "categoryKey": "FuturePerformanceOutlook",
   "categoryName": "Future Performance Outlook",
-  "categoryDescription": "Looks at how the ETF is positioned for the future across five plain-English lenses: short-term hold (1-3 years), long-term hold (5-10 years), upside vs price risk vs other categories, sharp-fall protection and recovery, and where the exposure sits in its cycle (with any un-priced catalyst). Each factor is forward-looking but NOT predictive — the prompt expects light web lookup of macro, valuation, yield, and flow data when needed; provided data blocks alone are not enough. All five factors apply to every ETF group. `factorDescription` carries the generic measurement principle and Pass/Fail rule. `groupInstructions` carries the group-specific perspective.",
+  "categoryDescription": "Looks at how the ETF is positioned for the future across five plain-English lenses: short-term hold (1-3 years), long-term hold (5-10 years), forward income & distribution durability (for income-oriented funds), sharp-fall protection and recovery, and where the exposure sits in its cycle (with any un-priced catalyst). Each factor is forward-looking but NOT predictive — the prompt expects light web lookup of macro, valuation, yield, and flow data when needed; provided data blocks alone are not enough. Four factors apply to every ETF group; `forward_income_durability` is gated to the six groups where income is part of the thesis. `factorDescription` carries the generic measurement principle and Pass/Fail rule. `groupInstructions` carries the group-specific perspective.",
   "factors": [
     {
       "factorKey": "short_term_hold_outlook",
@@ -38,20 +38,25 @@
       }
     },
     {
-      "factorKey": "upside_vs_price_risk",
-      "factorTitle": "Upside vs Price Risk (Category vs Other Categories)",
-      "factorDescription": "Asks how this category is expected to perform vs other categories an investor could pick instead, and whether the expected upside justifies the price risk. The honest comparison is not the fund vs itself — it's the fund's category vs the next-best category for the investor's dollar. Pass when expected upside over the next 1-5 years is in line with or above peer categories for similar price risk. Fail when expected upside is below peer categories AND the price risk is the same or higher.",
-      "factorMetrics": "overviewCategory, assetClass, indexName, beta, duration, riskAndVolatilityMeasures, return5y, returnsAnnual, strategyText",
-      "groups": "all",
+      "factorKey": "forward_income_durability",
+      "factorTitle": "Forward Income & Distribution Durability",
+      "factorDescription": "Asks whether the income stream this fund currently delivers can be maintained over the next 2-5 years. For any fund retail buys for yield — derivative-income, HY credit, dividend-tilt equity, preferred, REITs, bank-loan, EM-debt — forward income durability is the central forward question, not headline yield. Three things to read: (1) is the current distribution covered by sustainable sources (earnings, coupons, option premium) or is a meaningful share return-of-capital eroding NAV? (2) what is the forward environment for the income engine — option-vol regime for covered-call funds, default-rate trajectory for credit funds, dividend-coverage trends for dividend equity? (3) is the headline yield mean-reverting (currently inflated by a one-time event or stretched payout ratio) or sustainable? This is distinct from current valuation (factor 1) and from secular story (factor 2) — it specifically asks whether the income retail bought the fund for will still be there. Pass when the distribution is well-covered by sustainable sources AND the forward income environment is stable-to-improving. Fail when distribution is propped up by ROC or stretched payout AND the forward income environment is deteriorating.",
+      "factorMetrics": "dividendYield, overviewSecYield, overviewTtmYield, payoutFrequency, payoutRatio, returnOfCapitalShare, overviewCategory, strategyText, vix, creditSpreads, defaultRate",
+      "groups": [
+        "sector-thematic-equity",
+        "derivative-income",
+        "allocation-target-date",
+        "fixed-income-investment-grade",
+        "fixed-income-credit-and-income",
+        "commodities-and-digital-assets"
+      ],
       "groupInstructions": {
-        "broad-equity": "Compare expected 1-5Y total return for broad equity vs bonds, allocation, and commodities. Equity carries higher price risk — Pass when the expected return premium clearly covers it.",
-        "sector-thematic-equity": "Compare expected sector or theme return to the broad market AND to other sectors. A sector bet takes on concentration risk on top of equity risk — the expected upside has to clear that higher bar.",
-        "leveraged-inverse": "Upside is the leverage multiple times the underlying move minus daily-reset decay. Compare to simply taking the unleveraged underlying — for most retail holding windows, the unleveraged option wins.",
-        "commodities-and-digital-assets": "Compare expected commodity or crypto path to equity and bond categories. These assets swing harder, so the expected upside has to clear the wider risk band.",
-        "derivative-income": "Upside is structurally capped by the option-writing strategy. Compare expected total return to a plain high-dividend ETF — does the cushioned but capped profile still deliver more total return after fees?",
-        "allocation-target-date": "Compare expected return to a similar-risk DIY mix and to other allocation peers. The fund earns its keep if the mix or glide path beats a plain blend at lower fee.",
-        "fixed-income-investment-grade": "Compare expected total return (yield + price drift) to other duration buckets and to cash / HYSA. Longer duration brings extra return but also extra rate risk — match the trade-off to the investor's horizon.",
-        "fixed-income-credit-and-income": "Compare expected credit return (yield + carry) to investment-grade bonds and to equity. Credit takes on default risk — Pass only when spread compensation matches or beats the alternative."
+        "sector-thematic-equity": "Relevant for high-yield sector tilts — REITs, utilities, MLPs, dividend-aristocrat themes. Check dividend-coverage ratios and earnings trajectory for the top holdings. A stretched payout ratio in a slowing earnings environment is a forward income flag, regardless of how attractive the trailing yield looks.",
+        "derivative-income": "The central forward question for this group. Read forward option-premium environment: implied vol regime (VIX trend), realized-vol vs implied spread, and whether the underlying index's trajectory supports steady premium capture. Low-vol grinding markets compress option income for years; high-vol choppy markets are the sweet spot. Separately, name the ROC share — a 60%+ ROC distribution on a flat-NAV fund is mathematically NAV-eroding income that will not last.",
+        "allocation-target-date": "Bond-sleeve coupon income vs the rate cycle is the main read. Equity-sleeve dividend growth is secondary. For target-date funds nearing their dated year, the bond sleeve is the dominant forward income source.",
+        "fixed-income-investment-grade": "Forward SEC yield is essentially the current SEC yield as long as the fund's duration profile is stable. Read forward real yield (SEC yield minus expected inflation) and Treasury issuance pressure on the yield curve. For muni funds, also read forward tax-equivalent yield given any expected federal/state tax-policy shifts.",
+        "fixed-income-credit-and-income": "Spread compensation vs forward default rates is the forward income test. HY default rates rising into a slowdown can eat 200-400 bps of yield before it shows in price. EM-debt forward income also depends on FX outlook for the issuing currencies. Bank-loan income falls when SOFR falls — read the forward rate path.",
+        "commodities-and-digital-assets": "Only relevant for funds with distribution mechanics — most commodity and crypto wrappers don't distribute. Flag any wrapper marketing a yield from futures-roll income or staking — those forward income streams are highly regime-dependent."
       }
     },
     {
