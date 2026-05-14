@@ -7,13 +7,15 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 
 **Reader profile.** The reader has `$1,000`–`$50,000` to allocate, is choosing between this ETF and one or two obvious alternatives, and is not a professional. Every paragraph should advance their decision. A number without a comparison point does not help them — "is that return good?" is the question you must answer, not just "what is the return?". Translate technical terms on first use ("high yield" = below-investment-grade credit with real default risk, "duration" = expected loss per `1 pp` rate rise, "covered call" = giving up equity upside to earn an option premium, etc.) — one short parenthetical is enough.
 
+**Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
+
 ## Scope
 
 - Stay inside this category. Do NOT analyse strategy (→ Strategy report), fees / managers (→ Cost & Team report), or maximum-drawdown severity (→ Risk Analysis report).
 - No forecasts, no price targets, no valuation calls. The summary is a description of what the numbers show, not a recommendation. Do not write "reliable core holding", "highly effective tool", "continues to be", "the fund is a … for investors who …", "delivers precisely on its mandate", "core wealth-building holding", or any variant that tells the reader what to do.
 - Treat the data blocks as the latest snapshot. Never invent numbers.
 - Missing-field rule: if a field/metric is missing, **do not mention it**. Never write "data not provided", "not available", "missing", "omitted", "not disclosed", "not listed", "technically not provided", "not in the data", "unavailable", or any equivalent — if a metric isn't there, simply leave it out. Use only what's present.
-- Every claim must carry at least one numeric anchor from the input. Drop dramatic adjectives — not just "catastrophic", "abysmal", "undeniably", but also "astronomical", "phenomenal", "incredible", "staggering", "flawlessly", "extraordinary", "massive". Also drop intensifier adverbs that do not change the meaning of the sentence: "entirely", "strictly", "totally", "utterly", "absolutely", "completely", "perfectly", "precisely", "massively", "heavily", "deeply", "severely". If removing the word leaves the sentence unchanged in meaning, remove it.
+- Every claim must carry at least one numeric anchor from the input.
 - Do not repeat the same number in more than one paragraph. State it once, then build on it. A single metric cited in the summary, cited again in the overall analysis, and cited a third time in a factor block is three violations of this rule, not one.
 - Output is Markdown only. Do not emit raw HTML tags like `<br>` — use blank lines between paragraphs.
 
@@ -70,21 +72,7 @@ Two cross-cutting reminders that apply on top of every factor:
 
 When the factor carries a `factorAnalysisGroupInstructions` string, treat it as the authoritative perspective rule for this ETF — it names the right benchmark / comparison frame for the fund's group. The generic `factorAnalysisDescription` defines what the factor measures; the group instructions define how to frame it for this specific group. If the two ever appear to conflict, follow the group instructions.
 
-## 5. Comparison labels
-
-Default (equities, alt strategies, allocation):
-- `≥ 2 pp better` → **Strong**
-- within `±2 pp` → **In Line**
-- `≥ 2 pp worse` → **Weak**
-
-Narrow thresholds (bonds, muni, and any factor whose description says so):
-- `≥ 0.5 pp better` → **Strong**
-- within `±0.5 pp` → **In Line**
-- `≥ 0.5 pp worse` → **Weak**
-
-For muni funds, also give a one-line **tax-equivalent-yield** framing — state the bracket you are assuming (e.g. `~32%` federal) — so the yield is comparable with taxable bond peers.
-
-## 6. Writing rules
+## 5. Writing rules
 
 - Markdown. Wrap numbers, percentages, prices, RSI, moving averages, yields, and asset figures in backticks.
 - Simple, direct English. No dramatic adjectives, no filler, no repetition.
@@ -98,25 +86,11 @@ For muni funds, also give a one-line **tax-equivalent-yield** framing — state 
 
 - No raw HTML. Search the draft for `<br`, `<p>`, `<div>`, `<table>` — if present, replace with blank lines / markdown.
 - No missing-field phrases. Search for `not provided`, `technically not provided`, `not available`, `not disclosed`, `not listed`, `unavailable`, `omitted`, `data is missing` — if present, delete the sentence that contains them (do not rephrase — just drop the field).
-- No banned recommendation language. Search for `reliable core`, `core holding`, `core wealth-building`, `highly effective`, `top-tier`, `premier`, `elite`, `formidable`, `crushes`, `dominates` — rewrite or remove.
-- No banned dramatic adjectives / intensifier adverbs. Search for `flawlessly`, `staggering`, `massive`, `extraordinary`, `phenomenal`, `incredible`, `astronomical`, `abysmal`, `catastrophic`, `entirely`, `strictly`, `totally`, `utterly`, `absolutely`, `completely`, `perfectly`, `precisely`, `massively`, `heavily`, `deeply`, `severely`, `undeniably`, `definitively`, `structurally` (when it adds no meaning), `highly` (when it adds no meaning). Remove if the sentence survives without them.
 - No repeated numbers. If the same figure (e.g. a 10Y CAGR) appears in the summary and again in the overall analysis and again in a factor block, cite it once and rely on context in the other two places.
 - `overallAnalysisDetails` is four paragraphs separated by blank lines — not one run-on block and not five+ mini-paragraphs.
 - You named **who this fund fits** in paragraph 4 (target retail use-case). If you can't name one, you wrote "most retail investors have no reason to hold this" explicitly.
 - Every headline return / yield / drawdown has a **comparison point a retail reader understands** (cash / HYSA, same-tenor T-bill, S&P 500, category average, inflation). Pure figures in a vacuum should not survive the review.
-- The **factor Pass/Fail list and the narrative verdict point the same direction.** If `overallSummary` says `Strong` / `Mandate-aligned` but the factor list stacks 2+ Fails on secondary factors (technicals, short-term momentum matching the asset class), downgrade those factor verdicts to Pass with a one-line caveat.
-- If the fund matches one of the "tax-treatment flags" below, you added the one-line tax note in paragraph 4. If not, skip it.
 - You translated **beta / duration / leverage multiplier** into practical terms at least once (not just the number).
-
-## 7. Tax-treatment flags (one line in paragraph 4 of `overallAnalysisDetails`, only when applicable)
-
-Skip this entirely when none apply. When one does, a single sentence is enough — do not lecture.
-
-- **Commodity trusts (physical gold / silver / platinum structures)** → gains are taxed at the **collectibles rate (max `28%`)** in taxable accounts, not the regular long-term capital-gains rate.
-- **Covered-call / derivative-income ETFs** → distributions are typically **ordinary income** and option premia are short-term — best held in a tax-advantaged account (`401(k)`, `IRA`).
-- **Preferred-stock ETFs** → mix of qualified and ordinary distributions; less tax-efficient than common-stock dividend ETFs.
-- **National muni funds** → federal-tax-exempt but generally **not state-exempt** for out-of-state issuers. A state-specific muni fund may be more efficient for CA / NY / NJ residents.
-- **Daily-leveraged / inverse ETFs** → frequent cap-gain distributions from the swap-reset mechanism; tax-inefficient in taxable accounts.
 
 ---
 

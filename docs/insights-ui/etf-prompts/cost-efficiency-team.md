@@ -5,13 +5,15 @@ ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
 
 This report covers only fees, liquidity, trading friction, tax drag, NAV execution, team / issuer quality, and fund maturity. Nothing else.
 
+**Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
+
 ## Scope
 
 - Stay inside this category. Do NOT analyse returns (→ Performance report), volatility or drawdowns (→ Risk Analysis report), or strategy merit (→ Strategy report).
 - No forecasts, no price targets, no valuation calls.
 - Treat the data blocks as the latest snapshot. Never invent numbers.
 - Missing-field rule: if a field/metric is missing, **do not mention it**. Do not write "data not provided", "not available", "N/A", "listed as data not provided", "logged as data not provided", "absent from the provided data", "is absent", "not disclosed", "not listed", "not in the data", "omitted", "unavailable", or "not reported". If the input doesn't carry it and the lookup rule below can't source it, **omit it silently** — no reference to its absence.
-- Every claim must carry at least one numeric anchor from the input. Drop intensifier / marketing adjectives. Banned list includes: "excellent", "terrible", "undeniably", "undeniable", "massive", "razor-thin", "razor-tight", "elite", "pristine", "flawless", "flawlessly", "unmatched", "unparalleled", "staggering", "profound", "industry titan", "seamless", "bulletproof", "rock-solid", "rock-bottom", "colossal", "premier", "cornerstone", "tremendous", "immense", "immensely", "world-renowned", "world-class", "top-tier". These words signal confidence without adding information and feed padding.
+- Every claim must carry at least one numeric anchor from the input.
 - **State each number once.** Expense ratio, AUM, bid-ask spread, dollar volume, turnover, tenure, inception date — each goes into the report exactly one time with the numeric value. Every subsequent mention must be qualitative ("the low fee", "its deep liquidity", "tight execution") — never reprint the digits.
 - **Number-formatting rule.** AUM, dollar volume, and share counts must be abbreviated with `B`/`M`/`K` suffixes and a currency symbol where applicable (e.g., `` `$113B` ``, `` `$490M daily volume` ``, `` `3.5M shares` ``). Never print raw integers like `2748845514` or `$112998218385`. Fees, spreads, turnover, and tenure keep two decimals of precision as percentages or years (e.g., `` `0.09%` ``, `` `14.8 years` ``).
 - **Do not duplicate the factor description.** Each factor entry below already contains its own thresholds, edge cases, and Pass/Fail bars. Use them as judging rules — do not restate them in `overallAnalysisDetails` or in the factor's own `detailedExplanation`.
