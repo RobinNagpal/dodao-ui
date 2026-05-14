@@ -30,11 +30,11 @@ This category often cannot be completed using ETF snapshot data alone. You are e
 
 Use these blocks in this order when overlapping fields exist:
 
-- `etfMorPortfolioInfo` → asset allocation, sector exposure, credit quality, fixed-income style (duration/maturity/yield-to-maturity), holdings summary.
-- `etfMorAnalyzerInfo` → Mor overview (SEC/TTM yield, turnover, category/style box), holdings.topHoldings, `strategyText`, and any available analysis sections.
-- `etfStockAnalyzerInfo` → price/technicals (MA20/50/150/200, RSI daily/weekly/monthly, 52w/ATH/ATL distances), liquidity (avgVolume, dollarVol), flags (options/leverage).
-- `etfMorRiskInfo` → drawdown/capture/risk tables that inform regime + volatility fit.
-- `etfFinancialInfo` → AUM, expense ratio, P/E, dividend yield, volume, beta.
+- `etfMorPortfolioInfo` → asset allocation, sector exposure (vs category + vs index), credit quality, fixed-income style (duration / yield-to-maturity / average maturity), top-10 holdings, holdings summary (equity/bond/other split, % of assets in top 10).
+- `etfMorAnalyzerInfo` → `strategyText`, `overviewCategory`, `overviewStyleBox`, `overviewSecYield`, `overviewTtmYield`, and the fund-vs-category-vs-index `returnsAnnual` / `returnsTrailing` tables.
+- `etfStockAnalyzerInfo` → full price/technicals (MA20/50/150/200, RSI daily/weekly/monthly, ATH/ATL + 52w distances), multi-period returns 1m → 20y + CAGRs, beta windows, sortino / sharpe / atr, liquidity (avgVolume / dollarVol / relVolume), dividend growth (`divGrowth*`, `divYears`, `divGrYears`), leverage / options / region flags.
+- `etfMorRiskInfo` → drawdown / capture / risk-and-volatility tables for the 3-Yr and 5-Yr windows that inform regime + volatility fit.
+- `etfFinancialInfo` → `aum`, `pe`, `dividendYield`, `beta`, `holdings` (count).
 
 If you cite “the benchmark”, name it explicitly (index name from holdings/strategy blocks when present).
 
@@ -149,5 +149,4 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 - etfStockAnalyzerInfo: {{etfStockAnalyzerInfo}}
 - etfMorAnalyzerInfo: {{etfMorAnalyzerInfo}}
 - etfMorRiskInfo: {{etfMorRiskInfo}}
-- etfMorPeopleInfo: {{etfMorPeopleInfo}}
 - etfMorPortfolioInfo: {{etfMorPortfolioInfo}}

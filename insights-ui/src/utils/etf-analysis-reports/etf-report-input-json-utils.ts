@@ -102,27 +102,51 @@ function prepareFactorAnalysisArray(factors: EtfAnalysisFactorDefinition[]) {
 
 const PORTFOLIO_HOLDINGS_TOP_N = 10;
 
+// Summary fields on EtfMorPortfolioInfo.holdings.summary that belong to other reports
+// (turnover → Cost & Team; women director / executive percentages → ESG, not forward outlook)
+// and should be stripped before passing the bundle to the future-outlook prompt.
+const OUTLOOK_PORTFOLIO_SUMMARY_DROPPED_KEYS = new Set(['reportedTurnoverPct', 'turnoverAsOfDate', 'womenDirectorsPct', 'womenExecutivesPct']);
+
 /**
- * Returns a shallow clone of `morPortfolioInfo` with the inner holdings list capped
- * at the top N entries. The raw holdings array for a broad-index ETF can contain
- * hundreds of rows and blow the prompt size past `60KB`, even though only the
- * largest positions drive the analysis. Everything else on the record is kept intact.
+ * Trim `morPortfolioInfo` for the future-performance-outlook prompt: cap the holdings
+ * list at the top 10 by weight AND strip ESG + turnover fields from the holdings
+ * summary block. Asset allocation, style measures, fixed-income style, sector exposure,
+ * and bond breakdown are kept intact.
  */
-function trimPortfolioHoldings(portfolio: EtfWithAllData['morPortfolioInfo']): EtfWithAllData['morPortfolioInfo'] {
+function trimPortfolioForOutlook(portfolio: EtfWithAllData['morPortfolioInfo']): EtfWithAllData['morPortfolioInfo'] {
   if (!portfolio) return portfolio;
 
-  const holdingsJson = portfolio.holdings as { summary?: unknown; columns?: unknown; holdings?: unknown } | null;
-  if (!holdingsJson || !Array.isArray(holdingsJson.holdings) || holdingsJson.holdings.length <= PORTFOLIO_HOLDINGS_TOP_N) {
-    return portfolio;
-  }
+  const holdingsJson = portfolio.holdings as { summary?: Record<string, unknown> | null; columns?: unknown; holdings?: unknown[] } | null;
+  if (!holdingsJson) return portfolio;
+
+  const trimmedSummary = holdingsJson.summary
+    ? Object.fromEntries(Object.entries(holdingsJson.summary).filter(([k]) => !OUTLOOK_PORTFOLIO_SUMMARY_DROPPED_KEYS.has(k)))
+    : holdingsJson.summary;
+
+  const trimmedHoldings = Array.isArray(holdingsJson.holdings) ? holdingsJson.holdings.slice(0, PORTFOLIO_HOLDINGS_TOP_N) : holdingsJson.holdings;
 
   return {
     ...portfolio,
     holdings: {
       ...holdingsJson,
-      holdings: holdingsJson.holdings.slice(0, PORTFOLIO_HOLDINGS_TOP_N),
+      summary: trimmedSummary,
+      holdings: trimmedHoldings,
     } as typeof portfolio.holdings,
   };
+}
+
+// Risk periods we surface to the future-outlook prompt. The 10-Yr window belongs to
+// the Risk Analysis report and is not referenced by any outlook factor.
+const OUTLOOK_RISK_PERIOD_KEYS: ReadonlyArray<'3-Yr' | '5-Yr'> = ['3-Yr', '5-Yr'];
+
+function pickOutlookRiskPeriods(riskPeriods: unknown): Record<string, unknown> | null {
+  if (!riskPeriods || typeof riskPeriods !== 'object') return null;
+  const source = riskPeriods as Record<string, unknown>;
+  const picked: Record<string, unknown> = {};
+  for (const key of OUTLOOK_RISK_PERIOD_KEYS) {
+    if (source[key] != null) picked[key] = source[key];
+  }
+  return Object.keys(picked).length > 0 ? picked : null;
 }
 
 export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
@@ -366,15 +390,45 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
   const mor = etf.morAnalyzerInfo;
   const fin = etf.financialInfo;
   const risk = etf.morRiskInfo;
-  const people = etf.morPeopleInfo;
-  // The raw holdings list can run to hundreds of rows; trim to the top positions so
-  // the resulting prompt stays within a reasonable size budget for downstream LLMs.
-  const portfolio = trimPortfolioHoldings(etf.morPortfolioInfo);
+  const portfolio = trimPortfolioForOutlook(etf.morPortfolioInfo);
 
   const assetClass = sa?.assetClass || 'Equity';
   const fundCategory = sa?.category || null;
   const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
   const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.FuturePerformanceOutlook, { fundCategory: fundCategory ?? undefined });
+
+  // EtfFinancialInfo — keep only forward-relevant fields. Cost/payout/intraday columns
+  // (expenseRatio, dividendTtm, payoutFrequency, payoutRatio, sharesOut, volume,
+  // yearHigh, yearLow) belong to Cost & Team and are excluded.
+  const financialBundle = fin
+    ? {
+        aum: fin.aum,
+        pe: fin.pe,
+        dividendYield: fin.dividendYield,
+        beta: fin.beta,
+        holdings: fin.holdings,
+      }
+    : null;
+
+  // EtfMorAnalyzerInfo — narrow slice. The Mor `analysis` block (sections / medalistRating
+  // / headline) is intentionally omitted: the upstream scrape does not consistently
+  // populate it, and including it in the schema trains the LLM to expect data that
+  // typically won't be there. Market data + cost-related overview fields are also dropped.
+  const morAnalyzerBundle = mor
+    ? {
+        strategyText: mor.strategyText,
+        overviewCategory: mor.overviewCategory,
+        overviewStyleBox: mor.overviewStyleBox,
+        overviewSecYield: mor.overviewSecYield,
+        overviewTtmYield: mor.overviewTtmYield,
+        returnsAnnual: mor.returnsAnnual,
+        returnsTrailing: mor.returnsTrailing,
+      }
+    : null;
+
+  // EtfMorRiskInfo — keep only 3-Yr + 5-Yr periods. 10-Yr is Risk Analysis territory.
+  const riskPeriodsBundle = pickOutlookRiskPeriods(risk?.riskPeriods);
+  const morRiskBundle = riskPeriodsBundle ? { riskPeriods: riskPeriodsBundle } : null;
 
   return {
     name: etf.name,
@@ -389,15 +443,16 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
     indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
 
-    // Broad blocks: the forward-looking category is explicitly synthesis-heavy,
-    // and upstream data availability varies a lot by ETF type. Route through
-    // serializeBigIntFields so BigInt columns (stockAnalyzerInfo.avgVolume,
-    // dollarVol, preVolume) don't break JSON.stringify.
-    etfFinancialInfo: fin ? JSON.stringify(serializeBigIntFields(fin)) : null,
+    etfFinancialInfo: financialBundle ? JSON.stringify(financialBundle) : null,
+    // Full EtfStockAnalyzerInfo row passes through — slicing it loses too many useful
+    // signals for the forward read (full multi-period returns + CAGRs, complete MA stack,
+    // RSI daily/weekly/monthly, ATH/ATL + 52w distances, beta windows, risk-adjusted
+    // ratios, liquidity, dividend growth, leverage/options/region flags). Routed through
+    // serializeBigIntFields so BigInt columns (avgVolume, dollarVol, preVolume) don't
+    // break JSON.stringify.
     etfStockAnalyzerInfo: sa ? JSON.stringify(serializeBigIntFields(sa)) : null,
-    etfMorAnalyzerInfo: mor ? JSON.stringify(serializeBigIntFields(mor)) : null,
-    etfMorRiskInfo: risk ? JSON.stringify(serializeBigIntFields(risk)) : null,
-    etfMorPeopleInfo: people ? JSON.stringify(serializeBigIntFields(people)) : null,
+    etfMorAnalyzerInfo: morAnalyzerBundle ? JSON.stringify(serializeBigIntFields(morAnalyzerBundle)) : null,
+    etfMorRiskInfo: morRiskBundle ? JSON.stringify(serializeBigIntFields(morRiskBundle)) : null,
     etfMorPortfolioInfo: portfolio ? JSON.stringify(serializeBigIntFields(portfolio)) : null,
   };
 }
