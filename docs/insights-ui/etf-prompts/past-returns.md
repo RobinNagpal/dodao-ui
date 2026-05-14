@@ -11,6 +11,8 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 
 **Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
 
+**Group instructions come first.** Each factor's `factorAnalysisGroupInstructions` field carries the binding rule for this ETF's group (`{{groupKey}}`). Read it BEFORE the generic factor description. It tells you which benchmark to use, which comparisons are mandatory (e.g. always-vs-S&P-500 for equity groups, percentile-rank trajectory sequences, peer count alongside rank), and how to frame Pass/Fail for the group. When the generic factor description and the group instructions appear to conflict, the group instructions win.
+
 ## Scope
 
 - Stay inside this category. Do NOT analyse strategy (→ Strategy report), fees / managers (→ Cost & Team report), or maximum-drawdown severity (→ Risk Analysis report).
@@ -77,7 +79,9 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 ## 5. Writing rules
 
 - Markdown. Wrap numbers, percentages, prices, RSI, moving averages, yields, and asset figures in backticks.
-- Simple, direct English. No dramatic adjectives, no filler, no repetition.
+- Simple, direct English. No dramatic adjectives, no filler, no repetition. Banned words and phrases — re-read your draft and remove any of these before returning it: `elite`, `exceptional`, `remarkable` / `remarkably`, `stellar`, `crushing` / `crushed`, `decisively`, `decisive win`, `thoroughly` (as praise), `flawless`, `definitively`, `standout`, `top-tier` (when used as praise instead of a measured rank claim), `easily`, `vastly`, `comfortably` (when used to dramatise a routine number).
+- Pick one value per metric and use it everywhere. If AUM is `$591.78M` in the summary, it must be `$591.78M` in every factor block — not `$3.0B` in one place and `$3.82B` in another. Same rule for `1Y` return, peer count, AUM, beta, etc. — one number, used consistently.
+- Annotate the time-base on every multi-period number: write `3Y annualized` or `3Y cumulative`, never bare `3Y` for a return number. When you compare to a benchmark, the fund number and the benchmark number must be on the SAME time-base.
 - Name the index. Name the peer group. Name the fund category.
 - Do not invent context beyond what the data supports. If a data point isn’t present (and you couldn’t source it via the lookup rule), omit it silently.
 - **Every headline number needs a comparison point the retail reader actually sees** — inflation, cash / HYSA, a T-bill at the same tenor, the S&P 500, or the category average. "Is this return good?" must be answered, not implied.
@@ -89,10 +93,15 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 - No raw HTML. Search the draft for `<br`, `<p>`, `<div>`, `<table>` — if present, replace with blank lines / markdown.
 - No missing-field phrases. Search for `not provided`, `technically not provided`, `not available`, `not disclosed`, `not listed`, `unavailable`, `omitted`, `data is missing` — if present, delete the sentence that contains them (do not rephrase — just drop the field).
 - No repeated numbers. If the same figure (e.g. a 10Y CAGR) appears in the summary and again in the overall analysis and again in a factor block, cite it once and rely on context in the other two places.
+- No conflicting numbers. Search the draft for AUM, beta, 1Y return, peer count — wherever each appears, the value must be identical. If two paragraphs cite different values, that's a draft bug, fix before returning.
+- Every multi-period return is annotated `annualized` or `cumulative`. Fund-vs-benchmark comparisons are on the same time-base.
+- For equity groups (`broad-equity`, `sector-thematic-equity`): every short-term and long-term factor includes an explicit S&P 500 comparison with the actual S&P 500 number for the same window, not vague prose like "outpacing historical S&P 500 returns".
+- For `historical_returns_consistency` and `within_category_comparison`: percentile-rank trajectory is quoted as a sequence (e.g. `6 → 51 → 32`), not just the best year.
 - `overallAnalysisDetails` is four paragraphs separated by blank lines — not one run-on block and not five+ mini-paragraphs.
 - You named **who this fund fits** in paragraph 4 (target retail use-case). If you can't name one, you wrote "most retail investors have no reason to hold this" explicitly.
 - Every headline return / yield / drawdown has a **comparison point a retail reader understands** (cash / HYSA, same-tenor T-bill, S&P 500, category average, inflation). Pure figures in a vacuum should not survive the review.
 - You translated **beta / duration / leverage multiplier** into practical terms at least once (not just the number).
+- Banned-words sweep done: no `elite`, `exceptional`, `remarkable`, `stellar`, `crushing`, `decisively`, `flawless`, `definitively`, `standout`, `top-tier` (as praise), `easily`, `vastly`, `comfortably` (as dramatisation).
 
 ---
 
