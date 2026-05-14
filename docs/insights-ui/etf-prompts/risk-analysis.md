@@ -48,6 +48,7 @@ Risk is mandate-relative, not absolute. Before judging:
 - `stockAnalyzerRiskMetrics` → `beta`, `beta1y`, `beta2y`, `beta5y`, `sharpe`, `sortino`, `atr`, `rsi`, `rsiW`, `rsiM`, `athChgPercent`, `athDate`, `atlChgPercent`, `atlDate`.
 - `financialRiskContext` → `beta`, 52-week high/low, `volume` for price context.
 - `categoryContext` → Mor category, style box, and peer-group context.
+- `marketLiquidityAndPremiumDiscount` → `marketBidAskSpread`, `marketVolumeAvg`, `marketDiscount`, `marketPremium`, `avgVolume`, `dollarVol` — snapshot signals for `stress_liquidity_and_exit_friction`. Stress-window premium / discount and NAV history are obtained via lookup against issuer pages and Mor.
 
 When multiple blocks carry the same metric, prefer the source listed first. Always name the fund category and the benchmark stress window (e.g. `2022 rate shock`, `2020 COVID`) when used.
 
@@ -115,3 +116,4 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 - morRiskPeriods: {{morRiskPeriods}}
 - financialRiskContext: {{financialRiskContext}}
 - categoryContext: {{categoryContext}}
+- marketLiquidityAndPremiumDiscount: {{marketLiquidityAndPremiumDiscount}}

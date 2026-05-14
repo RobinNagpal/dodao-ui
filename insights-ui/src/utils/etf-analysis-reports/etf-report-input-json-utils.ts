@@ -382,6 +382,16 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
       overviewStyleBox: mor?.overviewStyleBox,
       overviewTotalAssets: mor?.overviewTotalAssets,
     }),
+    // Snapshot fields used by `stress_liquidity_and_exit_friction`. Stress-window premium /
+    // discount and NAV history are obtained via the prompt's light web-lookup pattern.
+    marketLiquidityAndPremiumDiscount: JSON.stringify({
+      marketBidAskSpread: mor?.marketBidAskSpread,
+      marketVolumeAvg: mor?.marketVolumeAvg,
+      marketDiscount: mor?.marketDiscount,
+      marketPremium: mor?.marketPremium,
+      avgVolume: sa?.avgVolume ? sa.avgVolume.toString() : null,
+      dollarVol: sa?.dollarVol ? sa.dollarVol.toString() : null,
+    }),
   };
 }
 
