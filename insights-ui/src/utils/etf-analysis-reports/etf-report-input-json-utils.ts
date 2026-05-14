@@ -50,7 +50,7 @@ export function getEtfGroupKeyForCategory(category: string | null | undefined): 
 }
 
 function getGroupFactors(config: EtfGroupBasedFactorsConfig, groupKey: string): EtfAnalysisFactorDefinition[] {
-  return config.factors.filter((f) => f.groups.includes(groupKey)).map((f) => normalizeGroupFactor(f, groupKey));
+  return config.factors.filter((f) => f.groups.includes('all') || f.groups.includes(groupKey)).map((f) => normalizeGroupFactor(f, groupKey));
 }
 
 /**

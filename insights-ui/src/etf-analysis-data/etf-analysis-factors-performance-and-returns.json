@@ -8,16 +8,7 @@
       "factorTitle": "Historical Long-Term Returns",
       "factorDescription": "Looks at multi-year compound growth (5 / 10 / 15 / 20Y CAGR and trailing returns) and asks whether the fund beat its benchmark over each long window. For funds younger than 5 years, use only the periods you have and note the short history. Pass when CAGR matches or beats the benchmark across most windows, or stays within tracking tolerance for a passive index fund. Fail when CAGR trails the benchmark across several long windows without a clear mandate-based reason.",
       "factorMetrics": "cagr5y, cagr10y, cagr15y, cagr20y, return5y, return10y, returnsAnnual, returnsTrailing, indexName",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "derivative-income",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ],
+      "groups": ["all"],
       "groupInstructions": {
         "broad-equity": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If no index is given, pick the most suitable benchmark for this ETF. ALWAYS also compare to the S&P 500 — even when the fund tracks a different index, retail investors use the S&P 500 as their default reference. For style-tilted funds (value, growth, dividend, low-vol, quality), the tilt should beat the parent broad-market index over long windows when its style is in favor. Plain Large Blend / Total Market funds should sit within tracking tolerance of the benchmark.",
         "sector-thematic-equity": "Compare CAGR to the benchmark index given in the prompt (`indexName`). If no index is given, pick the most suitable sector or theme benchmark. ALWAYS also compare to the S&P 500 — this is the retail mandate test. A sector or theme that just tracked the broad market over 10Y has not delivered on its thesis.",
@@ -34,16 +25,7 @@
       "factorTitle": "Historical Short-Term Returns & Momentum",
       "factorDescription": "Looks at recent returns over 1M / 3M / 6M / YTD / 1Y. Separate short-term momentum (1M, 3M) from trailing performance (6M, 1Y) — a strong 1Y with weak recent months is usually a normal pullback, not broad weakness. Where entry timing matters for the fund's typical holder, also read the technical signals (MA20 / 50 / 150 / 200, RSI daily / weekly / monthly, distance from 52w high / low and ATH / ATL); where it does not, keep technical commentary brief. Every short-term number needs the same-period number for the benchmark. Pass when short-term performance matches or beats the benchmark and the trend is decision-useful for the fund's typical holding horizon. Fail when materially lagging across multiple recent windows without a mandate-based reason.",
       "factorMetrics": "return1m, return3m, return6m, returnYtd, return1y, returnsAnnual, ma20, ma50, ma150, ma200, ma50ChgPercent, ma200ChgPercent, rsi, rsiW, rsiM, high52wChg, low52wChg, athChgPercent, atlChgPercent, indexName",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "derivative-income",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ],
+      "groups": ["all"],
       "groupInstructions": {
         "broad-equity": "Compare 1M / 3M / 6M / YTD / 1Y to the benchmark index given in the prompt (`indexName`). If none is given, pick the most suitable broad-equity benchmark for this ETF. ALWAYS also compare to the S&P 500 — retail uses it as the default reference even when the fund tracks a different index. Flag whether near-term weakness is fund-specific (lagging the benchmark) or a broad-market move that hit every peer. MA / RSI signals are usually noise for buy-and-hold broad-equity — keep technical commentary brief unless price is at a clear extreme (monthly RSI >70 or <30).",
         "sector-thematic-equity": "Compare each window to the benchmark index given in the prompt (`indexName`). If none is given, pick a suitable sector / theme benchmark. ALWAYS also compare to the S&P 500 — retail wants to see whether the sector bet is currently beating or fading vs the broad market. Sector cycles drive forward returns: read MA50 / MA200 position and RSI to gauge entry timing. Flag overbought (monthly RSI >70) or oversold (<30) and tie it to where the sector sits in its macro cycle.",
@@ -60,16 +42,7 @@
       "factorTitle": "Historical Returns Consistency",
       "factorDescription": "Looks at how stable returns have been across periods and calendar years. Quote calendar-year hit rate (how often the fund had a positive year), worst single year, and percentile-rank trend year-over-year (cite the actual movement, e.g. `14 → 87 → 18`, not just 'volatile'). Benchmark-matched bad year rule: a passive fund whose worst year is in line with its benchmark and peer category is not a Fail — that is the asset class moving, not fund failure. For income-paying funds, also check distribution stability: did the headline yield hold up, ratchet down, or get propped up by return-of-capital? A flat total return on top of a steadily eroding NAV is not real consistency. Pass when the calendar-year pattern fits the group's typical dispersion and distributions (where relevant) held up. Fail when the fund swings materially harder than its benchmark, OR distributions were cut sharply, OR total return is being propped up by ROC.",
       "factorMetrics": "returnsAnnual, return1y, return3y, return5y, return10y, percentileRanks, dividendTtm, divGrowth3y, divGrowth5y, divYears, divGrYears, dividendYield, overviewSecYield, change1y, change5y, change10y, indexName",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "derivative-income",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ],
+      "groups": ["all"],
       "groupInstructions": {
         "broad-equity": "Show calendar-year hit rate, worst single year, and percentile-rank trend against the benchmark index given in the prompt (`indexName`); if none is given, pick a suitable broad-equity benchmark. ALWAYS also frame the calendar-year pattern against the S&P 500 — it is the default reference retail uses for any equity fund. A 5-year migration up or down the percentile ladder matters more than any single year. For broad-equity dividend / income tilts, also check whether the distribution held up year-over-year.",
         "sector-thematic-equity": "Sector and country returns swing harder than the broad market. Quote the worst single year and whether it lined up with a broad-market bad year or was sector-specific. ALWAYS also reference the S&P 500 calendar-year pattern over the same window so retail sees the trade-off vs holding the broad market.",
@@ -86,16 +59,7 @@
       "factorTitle": "AUM Growth Trend",
       "factorDescription": "Looks mainly at how the fund's AUM has trended over time — is money flowing in or out? Rising AUM signals that retail and institutional investors are choosing this fund, even a smaller fund with a steady upward trend is healthy because it shows growing investor interest. Flat or declining AUM, especially from a peak, signals lost confidence in the strategy or asset class. Very low absolute AUM (below ~$50M) with no growth is real closure / merger risk — the issuer may liquidate, merge into a sibling fund, or stop marketing. Strong recent return tends to correlate with strong inflows, so AUM trend doubles as a market-validated read on performance. Daily dollar volume and bid-ask spread are secondary tradability checks — comfortably above $1M / day and a spread that doesn't materially tax retail round-trips is fine. For AUM trend, look up historical AUM (1Y / 3Y / 5Y / since inception) from the issuer fact sheet, etf.com, or other reputable public sources via the Factor-metric lookup rule. Pass when AUM trend is flat-to-rising (even from a small base) AND trading friction is acceptable for retail. Fail when AUM is shrinking sharply from peak without an asset-class decline of similar magnitude, OR is well below the survival threshold for the category with no growth, OR trading friction (thin volume, very wide bid-ask) would materially tax retail round-trips.",
       "factorMetrics": "aum, sharesOut, volume, avgVolume, dollarVol, marketBidAskSpread, inceptionDate, return1y",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "derivative-income",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ],
+      "groups": ["all"],
       "groupInstructions": {
         "broad-equity": "For mega broad-market funds, AUM trend is mostly a signal about continued fee competitiveness — small relative moves are not decision-changing. For newer or niche broad-equity funds (factor tilts, themed dividend ETFs, foreign / single-region funds), a steady upward AUM trend even from a small base means the tilt is gaining traction; sustained outflows signal lost confidence. Below ~$100M for newer funds with no growth is closure risk worth flagging.",
         "sector-thematic-equity": "AUM in thematic ETFs is highly cyclical — money piles in at theme peaks and out at troughs. A steady AUM rise (even from a small base) is the early signal of a theme gaining traction; a 60-80% drawdown from peak AUM is common once a theme falls out of favor. What matters most for retail is closure risk — below ~$50M with no growth is the threshold to flag.",
@@ -112,16 +76,7 @@
       "factorTitle": "Within-Category Performance Standing",
       "factorDescription": "Looks at where the fund sits inside its category peer group across 1Y / 3Y / 5Y / 10Y. Use percentile and quartile rank: top quartile is above-average, second quartile near-average-but-better, third quartile below-average-but-acceptable, bottom quartile materially weak. Always report peer-group size alongside the rank — median in a 600-fund category is different from median in a 10-fund category. Track whether standing is improving, stable, or deteriorating and cite the actual percentile movement. For a passive index fund inside an active-heavy peer category, the structural tracking-cost headwind active managers carry means median-among-active is a Pass-grade outcome — do not Fail a passive fund on peer rank alone. Pass when the fund is in the top two quartiles over the longest available window AND the percentile trend is not deteriorating sharply. Fail when it sits in the bottom quartile across multiple windows without a mandate-based reason (e.g. a long-vol fund in the bottom quartile of a multi-strategy category during an equity bull is mandate-aligned, not a Fail).",
       "factorMetrics": "percentileRanks, quartileRanks, numberOfInvestmentsInCategory, overviewCategory, returnVsCategory, riskVsCategory",
-      "groups": [
-        "broad-equity",
-        "sector-thematic-equity",
-        "leveraged-inverse",
-        "commodities-and-digital-assets",
-        "derivative-income",
-        "allocation-target-date",
-        "fixed-income-investment-grade",
-        "fixed-income-credit-and-income"
-      ],
+      "groups": ["all"],
       "groupInstructions": {
         "broad-equity": "Use the ETF's exact Morningstar category from `overviewCategory` — broad-equity splits by size, style, and region. For passive index funds in an active-heavy peer category, median is a Pass-grade outcome because active managers carry a structural fee + tracking-cost headwind.",
         "sector-thematic-equity": "Use the ETF's exact category from `overviewCategory`. Sector categories (large defined sectors) tend to be tight peer groups; thematic and miscellaneous-sector categories are more dispersed; single-country EM categories have small peer counts — always report the peer count alongside the rank.",
