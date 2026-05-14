@@ -1,6 +1,6 @@
 You are analyzing ETF {{symbol}} ({{name}}, {{exchange}}) for a retail investor who wants a clear performance read before investing.
 
-Analysis category: **{{categoryKey}}** (Performance & Returns)
+Analysis category: **{{categoryKey}}** (Past Performance)
 ETF group: **{{groupKey}}** — fund category: **{{fundCategory}}**
 
 This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
@@ -19,7 +19,7 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 
 ## Factor-metric lookup (only when needed)
 
-- If a factor asks for a metric that is not in the provided data blocks, first try to source that metric from reputable public sources (ETF issuer fund page/prospectus, Morningstar, etf.com, Nasdaq, CBOE, index provider, any other source).
+- If a factor asks for a metric that is not in the provided data blocks, first try to source that metric from reputable public sources (ETF issuer fund page/prospectus, etf.com, Nasdaq, CBOE, index provider, any other source).
 - If you successfully find a metric, use it sparingly and attribute it inline (source name + as-of date if available). Do not paste long URLs; one short source mention is enough.
 - If you cannot find it quickly or confidently, proceed using only provided data and omit that metric entirely (do not mention that it was unavailable).
 
@@ -52,20 +52,14 @@ to fill space.
 3. **Technical and momentum position.** Price vs `MA50` / `MA200`, `RSI` daily/weekly/monthly, distance from `52w high` / `52w low` / `ATH` / `ATL`. Label the current state: uptrend / downtrend / neutral; overbought / oversold / balanced. For bond, muni, and allocation ETFs where technicals are noise, keep this to 2–3 sentences and say explicitly that MA/RSI signals are thin in this asset class — do not force the analysis.
 4. **Strengths, red flags, who this fits, and the takeaway.** 2–3 strengths, each backed by a number. 2–3 risks, each backed by a number when possible. Name the **worst-case drawdown a retail reader should brace for** — cite the fund's worst calendar year (or the 2022 loss for bond / muni / allocation funds, or the leverage-multiplier arithmetic for leveraged / inverse funds: "QQQ fell `-33%` in 2022 → TQQQ fell `-79%`"). Add **one explicit "who this fits" line** naming the retail use-case in plain English — for example: `core equity allocation`, `income-first portfolios at 5-10% weight`, `short-term tactical hedging only`, `portfolio diversifier at 5-10%`, `cash parking with slight duration upside`, `not a fit for buy-and-hold retail investors`. If the fund fits few or no retail use-cases, say so. Close with one sentence: "Overall, this ETF's performance profile looks strong / mixed / weak because …".
 
-## 3. Pass / Fail rule — judge the fund against what it is designed to do
+## 3. Pass / Fail rule
 
-The Pass/Fail bar is mandate-based, not an absolute-return bar. Use `strategyText`, `indexName`, and the factor's own description to work out the mandate first, then judge.
+Pass/Fail logic for each factor lives in the factor JSON itself. Use the factor's `factorAnalysisDescription` (the generic measurement principle and Pass/Fail rule) together with `factorAnalysisGroupInstructions` (the group-specific perspective: right benchmark, right framing, right guardrail). Do not invent a separate Pass/Fail bar for this prompt — the JSON is authoritative.
 
-- **Passive index tracker — inside tolerance = Pass.** If the fund tracks its stated index within `0.5 pp` for equities / core bonds or `1.0 pp` for high-yield, muni, sector, or thematic funds across most periods, it has done its job → **Pass** for tracking-linked factors, even when absolute returns are modest. A gap that sits *inside* the tolerance band — for example a high-yield fund trailing its index by `0.93 pp` over 10 years — is a Pass, not a Fail. Low absolute returns reflect the asset class, not fund failure. *Slightly beating the index also counts as Pass.*
-- **Active fund**: **Pass** when the manager has beaten the relevant benchmark or peer median (whichever the factor targets) net of fees over the horizon the factor covers.
-- **Mandate-specific funds** (daily-leveraged / inverse, commodities, defined outcome, covered-call / derivative income, managed futures, long-short, etc.): judge against the stated mandate. Do not force a broad-equity benchmark. A covered-call / derivative-income fund (e.g. `JEPI`) that gave up equity upside for income and downside protection has *delivered on its mandate* → **Pass** on `benchmark_comparison`, `short_term_returns`, and `category_peer_standing` even when it trails the S&P 500 or a growth-leaning active peer group. Trailing the benchmark *is* the strategy.
-- **Passive fund in an active peer group**: median percentile among active managers is Pass for a low-cost index fund; do not Fail on peer rank alone.
-- **Benchmark-matched drawdown ≠ consistency Fail.** If a passive fund's worst calendar year is **In Line** with both its stated index and its category average (e.g. AGG `-13.06%` in 2022 vs index `-12.99%` and category `-13.32%`), that is the asset class moving, not fund failure. Do not Fail `returns_consistency` on an absolute-return swing the mandate required the fund to take.
-- **Technicals are thin for bond / muni / allocation / derivative-income ETFs.** For these groups, **do not Fail** `price_trend_momentum` / `technical_trend_position` on MA crossovers or mid-range RSI alone. Price is driven by rates, spreads, or options premia, not equity-style trend following. Either mark these factors **Pass** with a one-line acknowledgement that MA/RSI are noise in this asset class, or — if the factor is an obvious poor fit — call it out and judge on the closest relevant evidence (drawdown behaviour, yield stability) rather than forcing a Fail. A genuine structural breakdown (price below MAs *and* a confirmed credit/rate stress event) can still Fail; ordinary sub-MA drift cannot.
+Two cross-cutting reminders that apply on top of every factor:
+
 - **Missing-data discipline**: if a factor's core metric is absent, first try the “Factor-metric lookup” section. If still unavailable, make a conservative call using the closest related evidence from the provided data blocks. Do not Fail a factor only because one secondary data point is missing.
 - **Young funds (< 3 years)**: only judge on the periods actually available; don't Fail for missing long-window metrics.
-
-Each factor's own `factorAnalysisDescription` may specialise these rules for its group. When it does, the factor description wins.
 
 ## 4. For each item in `factorAnalysisArray` produce
 
@@ -73,6 +67,8 @@ Each factor's own `factorAnalysisDescription` may specialise these rules for its
 - `oneLineExplanation` — one sentence with the clearest takeaway.
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per Section 3.
+
+When the factor carries a `factorAnalysisGroupInstructions` string, treat it as the authoritative perspective rule for this ETF — it names the right benchmark / comparison frame for the fund's group (S&P 500 for US broad equity, the spot underlying for commodity / crypto wrappers, a 60/40 blend for allocation, a duration-matched bond index for IG fixed income, etc.). The generic `factorAnalysisDescription` defines what the factor measures; the group instructions define how to frame it for this specific group. If the two ever appear to conflict, follow the group instructions.
 
 ## 5. Comparison labels
 
@@ -119,11 +115,10 @@ Pick the comparison that matches the fund type. One well-placed comparison is en
 - **Broad equity** (`broad-equity` group): name the benchmark index and say how the fund's tilt (large blend vs growth vs value, US vs foreign, etc.) changes expected return / volatility vs `SPY` or a plain total-market fund.
 - **Sector / thematic equity** (`sector-thematic-equity`): compare the 5Y / 10Y return to the S&P 500 so the reader sees the sector-concentration premium or discount.
 - **Daily-leveraged / inverse** (`leveraged-inverse`): the comparison is "vs not holding this at all." State explicitly that most retail investors should not hold these beyond a few trading days. Spell out the leverage-multiplier arithmetic in a drawdown (see §2.4).
-- **Core / government bonds** (`fixed-income-core`): compare the ETF yield to a same-tenor T-bill / Treasury and to a HYSA. Frame expected 5Y total return as roughly starting yield ± duration move. If the ETF yield is lower than cash, state that the reason to hold it is optionality (price rally if rates fall), not yield.
-- **Credit / high-yield / preferred** (`fixed-income-credit`): compare yield to investment-grade corporate and to the broad-equity dividend yield. Translate "high yield" explicitly — below-investment-grade credit, real default risk — and name the worst-case credit drawdown (the fund's 2008 / 2020 / 2022 move).
-- **Muni** (`muni`): give the tax-equivalent yield at a stated federal bracket (`24%`, `32%`, `35%`) and compare to a same-tenor Treasury yield. For national muni funds, add a one-line note that state-specific muni funds may yield more after state tax for residents of high-tax states (CA, NY, NJ).
-- **Covered-call / derivative income** (alt-strategies): compare *net total return* (not headline yield) against the underlying equity index and a plain dividend-equity ETF. Flag that the distribution level can shrink when option premia contract (cite `divGrowth3y` / `divGrowth5y` if negative).
-- **Commodity / precious metals trust** (alt-strategies, sector-thematic-equity precious metals): compare price return to a broad commodity basket. Name the asset's role ("portfolio diversifier at `5-10%` weight, not a yield or growth engine").
+- **Investment-grade fixed income — government, IG corporate, muni, TIPS, MMF** (`fixed-income-investment-grade`): compare the ETF yield to a same-tenor T-bill / Treasury and to a HYSA. Frame expected 5Y total return as roughly starting yield ± duration move. If the ETF yield is lower than cash, state that the reason to hold it is optionality (price rally if rates fall), not yield. For muni funds inside this group, also give the tax-equivalent yield at a stated federal bracket (`24%`, `32%`, `35%`) and compare to a same-tenor Treasury yield; for national muni, note that state-specific funds may yield more after state tax for CA / NY / NJ / MA / OH / MN residents.
+- **Credit / high-yield / preferred / bank-loan / EM debt / convertibles / high-yield muni** (`fixed-income-credit-and-income`): compare yield to investment-grade corporate and to the broad-equity dividend yield. Translate "high yield" explicitly — below-investment-grade credit, real default risk — and name the worst-case credit drawdown (the fund's 2008 / 2020 / 2022 move).
+- **Covered-call / defined-outcome / hedge-style strategy** (`derivative-income`): compare *net total return* (not headline yield) against the underlying equity index and a plain dividend-equity ETF. Flag that the distribution level can shrink when option premia contract (cite `divGrowth3y` / `divGrowth5y` if negative).
+- **Commodity / precious-metals / digital-asset wrapper** (`commodities-and-digital-assets`): compare price return to a broad commodity basket (gold, broad commodities, spot BTC / ETH). Name the asset's role ("portfolio diversifier at `5-10%` weight, not a yield or growth engine"). For precious-metals *equity* funds (miners) the group is `sector-thematic-equity` — frame those against gold spot AND a small-cap equity index.
 - **Allocation / target-date** (`allocation-target-date`): compare to the DIY equivalent the reader could build themselves (e.g. "`80% VTI + 20% BND`" for aggressive, "`30% VTI + 70% AGG`" for conservative). State clearly that the ETF's value-add is automatic rebalancing, not alpha.
 
 ## 8. Tax-treatment flags (one line in paragraph 4 of `overallAnalysisDetails`, only when applicable)
@@ -143,7 +138,8 @@ Skip this entirely when none apply. When one does, a single sentence is enough �
 {{#each factorAnalysisArray}}
 - **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
   {{factorAnalysisDescription}}
-  Metrics: {{factorAnalysisMetrics}}
+  {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
+  {{/if}}Metrics: {{factorAnalysisMetrics}}
 {{/each}}
 
 ### Data

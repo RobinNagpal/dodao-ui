@@ -123,12 +123,23 @@ export interface EtfAnalysisFactorDefinition {
   factorAnalysisTitle: string;
   factorAnalysisDescription: string;
   factorAnalysisMetrics?: string;
+  /**
+   * The group-specific perspective/comparison instruction for this factor, picked
+   * from `EtfGroupFactorDefinition.groupInstructions` using the fund's group key.
+   * Empty when the factor has no group-specific override.
+   */
+  factorAnalysisGroupInstructions?: string;
 }
 
 /**
  * Group-based factor definition. Each factor declares the ETF groups it applies
  * to; the pipeline selects factors by intersecting the fund's group (derived
  * from EtfStockAnalyzerInfo.category via etf-analysis-categories.json) with these.
+ *
+ * `groupInstructions` carries the 1-2 line perspective rule for each group the
+ * factor applies to — the natural benchmark to compare against, the framing
+ * retail care about, and any group-specific guardrails. The pipeline forwards
+ * only the entry that matches the fund's group through to the prompt.
  */
 export interface EtfGroupFactorDefinition {
   factorKey: string;
@@ -136,6 +147,7 @@ export interface EtfGroupFactorDefinition {
   factorDescription: string;
   factorMetrics?: string;
   groups: string[];
+  groupInstructions?: Record<string, string>;
 }
 
 export interface EtfGroupBasedFactorsConfig {
