@@ -26,15 +26,14 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
   return (await res.json()) as EtfFastResponse | null;
 }
 
-async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse['holdings']> {
+async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/portfolio-holdings`;
   try {
     const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
-    if (!res.ok) return null;
-    const wrapper = (await res.json()) as EtfPortfolioHoldingsResponse;
-    return wrapper.holdings;
+    if (!res.ok) return { holdings: null, updatedAt: null };
+    return (await res.json()) as EtfPortfolioHoldingsResponse;
   } catch {
-    return null;
+    return { holdings: null, updatedAt: null };
   }
 }
 
@@ -54,7 +53,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const title = `${etfName} (${symbol}) Holdings`;
   return {
     title,
-    description: `Full list of holdings for ${etfName} (${symbol}) ETF, including portfolio weights and sector exposure.`,
+    description: `Top reported holdings for ${etfName} (${symbol}) ETF, including portfolio weights and sector exposure.`,
     alternates: { canonical: `/etfs/${exchange}/${symbol}/holdings` },
   };
 }
@@ -64,12 +63,14 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, holdings, availableSlugs] = await Promise.all([
+  const [etfData, holdingsResponse, availableSlugs] = await Promise.all([
     fetchEtf(exchange, symbol),
     fetchHoldings(exchange, symbol),
     fetchEtfAvailableSlugs(exchange, symbol),
   ]);
   if (!etfData) notFound();
+
+  const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse;
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
     { name: 'US ETFs', href: '/etfs', current: false },
@@ -79,8 +80,25 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const totalHoldings = holdings?.holdings?.length ?? 0;
 
+  const lastUpdatedDate = new Date(holdingsUpdatedAt ?? etfData.updatedAt ?? new Date());
+  const formattedLastUpdated = lastUpdatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  const footer = (
+    <footer className="mt-8 pt-6 border-t border-color">
+      <div className="text-sm text-muted-foreground">
+        <span>Last updated by </span>
+        <span>KoalaGains</span>
+        <span> on </span>
+        <time dateTime={lastUpdatedDate.toISOString()}>{formattedLastUpdated}</time>
+      </div>
+    </footer>
+  );
+
   const relatedSections = (
-    <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+    <>
+      <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
+      {footer}
+    </>
   );
 
   return (
@@ -92,11 +110,11 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
             {etfData.name} ({symbol}) &mdash; Holdings
           </h1>
-          <p className="text-sm text-gray-400 mt-1">Full list of reported holdings for this ETF.</p>
+          <p className="text-sm text-gray-400 mt-1">Top holdings reported by this ETF.</p>
         </header>
 
         {totalHoldings > 0 ? (
-          <EtfHoldings data={holdings} title="All Holdings" relatedSections={relatedSections} />
+          <EtfHoldings data={holdings} title="Top Holdings" relatedSections={relatedSections} />
         ) : (
           <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
             <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>

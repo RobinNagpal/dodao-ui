@@ -6,6 +6,8 @@ import { NextRequest } from 'next/server';
 
 export interface EtfPortfolioHoldingsResponse {
   holdings: EtfMorPortfolioHoldings | null;
+  /** When our pipeline last refreshed the portfolio info (ISO string). */
+  updatedAt: string | null;
 }
 
 async function getHandler(
@@ -15,16 +17,17 @@ async function getHandler(
   const { spaceId, exchange, etf } = await context.params;
   const whereClause = getEtfWhereClause({ spaceId, exchange, etf });
   if (!whereClause.symbol || !whereClause.exchange) {
-    return { holdings: null };
+    return { holdings: null, updatedAt: null };
   }
 
   const etfRecord = await prisma.etf.findFirst({
     where: { ...whereClause },
-    select: { morPortfolioInfo: { select: { holdings: true } } },
+    select: { morPortfolioInfo: { select: { holdings: true, updatedAt: true } } },
   });
 
   const holdings = (etfRecord?.morPortfolioInfo?.holdings ?? null) as EtfMorPortfolioHoldings | null;
-  return { holdings };
+  const updatedAt = etfRecord?.morPortfolioInfo?.updatedAt?.toISOString() ?? null;
+  return { holdings, updatedAt };
 }
 
 export const GET = withErrorHandlingV2<EtfPortfolioHoldingsResponse>(getHandler);
