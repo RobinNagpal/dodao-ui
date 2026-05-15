@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/20/solid';
+import { AdjustmentsHorizontalIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 
 import {
   ETF_AUM_OPTIONS,
@@ -12,15 +12,13 @@ import {
   ETF_DIVIDEND_TTM_OPTIONS,
   ETF_DIVIDEND_YIELD_OPTIONS,
   ETF_PAYOUT_FREQUENCY_OPTIONS,
-  ETF_SHARES_OUT_OPTIONS,
   ETF_HOLDINGS_OPTIONS,
-  ETF_SHARPE_RATIO_OPTIONS,
-  ETF_SORTINO_RATIO_OPTIONS,
   ETF_BETA_OPTIONS,
-  ETF_RSI_OPTIONS,
   ETF_DIVIDEND_YEARS_OPTIONS,
   ETF_ASSET_CLASS_OPTIONS,
   ETF_ISSUER_OPTIONS,
+  ETF_CATEGORY_SCORE_DEFS,
+  ETF_TOTAL_SCORE_DEF,
   MOR_FIELD_KINDS,
   MOR_PERIODS,
   detectActiveMorPeriod,
@@ -30,9 +28,11 @@ import {
   getAppliedEtfFilters,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
+  ADVANCED_MOR_FILTER_KEYS,
   EtfFilterParamKey,
   type AppliedEtfFilter,
   type EtfSelectedFiltersMap,
+  type EtfScoreFilterDef,
   type MorPeriodKey,
   type ThresholdOption,
 } from '@/utils/etf-filter-utils';
@@ -96,6 +96,59 @@ function FilterDropdown({ id, label, value, options, onChange }: FilterDropdownP
   );
 }
 
+interface ScoreTileProps {
+  def: EtfScoreFilterDef;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+/**
+ * Hero-band tile for an AI score threshold. Each tile is a card with a radio
+ * group; clicking the active option a second time clears the threshold so
+ * users can back out without a separate "any" radio.
+ */
+function ScoreTile({ def, value, onChange }: ScoreTileProps): JSX.Element {
+  const isActive = value !== '';
+  return (
+    <div className={`rounded-lg p-3 ${isActive ? 'bg-[#3B4252] ring-1 ring-[#F59E0B]' : 'bg-[#374151]'}`}>
+      <h4 className="text-white font-medium mb-2 text-sm">{def.label}</h4>
+      <div className="space-y-1">
+        {def.options.map((option) => (
+          <label key={option.value} className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name={def.paramKey}
+              value={option.value}
+              checked={value === option.value}
+              onClick={() => {
+                // Re-clicking the active option clears the threshold.
+                if (value === option.value) onChange('');
+              }}
+              onChange={() => onChange(option.value)}
+              className="text-[#4F46E5] focus:ring-[#4F46E5] bg-[#4B5563] border-[#6B7280] w-4 h-4"
+            />
+            <span className="text-[#E5E7EB] text-sm">{option.label}</span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+interface SubSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+function SubSection({ title, children }: SubSectionProps): JSX.Element {
+  return (
+    <div>
+      <h4 className="text-gray-300 text-[11px] font-semibold uppercase tracking-wider mb-2">{title}</h4>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">{children}</div>
+    </div>
+  );
+}
+
 interface EtfFilterModalContentProps {
   initialSelected: EtfSelectedFiltersMap;
   onClose: () => void;
@@ -108,6 +161,9 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
 
   const [selectedFilters, setSelectedFilters] = useState<EtfSelectedFiltersMap>(() => ({ ...initialSelected }));
   const [morPeriod, setMorPeriod] = useState<MorPeriodKey>(() => detectActiveMorPeriod(initialSelected));
+  // Auto-expand advanced section if the user already has a Mor filter applied.
+  const initiallyHasMorFilter = ADVANCED_MOR_FILTER_KEYS.some((k) => Boolean(initialSelected[k]));
+  const [advancedOpen, setAdvancedOpen] = useState<boolean>(initiallyHasMorFilter);
 
   const handleChange = (paramKey: EtfFilterParamKey, value: string): void => {
     setSelectedFilters((prev) => {
@@ -160,160 +216,174 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
   };
 
   return (
-    <div className="space-y-4">
-      {/* Basic Filters */}
+    <div className="space-y-5">
+      {/* AI Score Thresholds — hero band */}
       <div>
-        <h3 className="text-white font-semibold text-xs mb-2">Basic Filters</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-          <FilterDropdown
-            id="aum"
-            label="AUM"
-            value={selectedFilters[EtfFilterParamKey.AUM] || ''}
-            options={ETF_AUM_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.AUM, v)}
-          />
-          <FilterDropdown
-            id="expenseRatio"
-            label="Expense Ratio"
-            value={selectedFilters[EtfFilterParamKey.EXPENSE_RATIO] || ''}
-            options={ETF_EXPENSE_RATIO_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.EXPENSE_RATIO, v)}
-          />
-          <FilterDropdown
-            id="peRatio"
-            label="P/E Ratio"
-            value={selectedFilters[EtfFilterParamKey.PE_RATIO] || ''}
-            options={ETF_PE_RATIO_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.PE_RATIO, v)}
-          />
-          <FilterDropdown
-            id="dividendTtm"
-            label="Dividend TTM"
-            value={selectedFilters[EtfFilterParamKey.DIVIDEND_TTM] || ''}
-            options={ETF_DIVIDEND_TTM_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_TTM, v)}
-          />
-          <FilterDropdown
-            id="dividendYield"
-            label="Dividend Yield"
-            value={selectedFilters[EtfFilterParamKey.DIVIDEND_YIELD] || ''}
-            options={ETF_DIVIDEND_YIELD_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YIELD, v)}
-          />
-          <FilterDropdown
-            id="payoutFrequency"
-            label="Payout Frequency"
-            value={selectedFilters[EtfFilterParamKey.PAYOUT_FREQUENCY] || ''}
-            options={ETF_PAYOUT_FREQUENCY_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.PAYOUT_FREQUENCY, v)}
-          />
-          <FilterDropdown
-            id="sharesOut"
-            label="Shares Outstanding"
-            value={selectedFilters[EtfFilterParamKey.SHARES_OUT] || ''}
-            options={ETF_SHARES_OUT_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.SHARES_OUT, v)}
-          />
-          <FilterDropdown
-            id="holdings"
-            label="Holdings"
-            value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
-            options={ETF_HOLDINGS_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
-          />
-          <FilterDropdown
-            id="beta"
-            label="Beta (1Y)"
-            value={selectedFilters[EtfFilterParamKey.BETA] || ''}
-            options={ETF_BETA_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.BETA, v)}
-          />
-          <FilterDropdown
-            id="rsi"
-            label="RSI"
-            value={selectedFilters[EtfFilterParamKey.RSI] || ''}
-            options={ETF_RSI_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.RSI, v)}
-          />
-          <FilterDropdown
-            id="sharpeRatio"
-            label="Sharpe Ratio"
-            value={selectedFilters[EtfFilterParamKey.SHARPE_RATIO] || ''}
-            options={ETF_SHARPE_RATIO_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.SHARPE_RATIO, v)}
-          />
-          <FilterDropdown
-            id="sortinoRatio"
-            label="Sortino Ratio"
-            value={selectedFilters[EtfFilterParamKey.SORTINO_RATIO] || ''}
-            options={ETF_SORTINO_RATIO_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.SORTINO_RATIO, v)}
-          />
-          <FilterDropdown
-            id="dividendYears"
-            label="Dividend Years"
-            value={selectedFilters[EtfFilterParamKey.DIVIDEND_YEARS] || ''}
-            options={ETF_DIVIDEND_YEARS_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YEARS, v)}
-          />
-          <FilterDropdown
-            id="assetClass"
-            label="Asset Class"
-            value={selectedFilters[EtfFilterParamKey.ASSET_CLASS] || ''}
-            options={ETF_ASSET_CLASS_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.ASSET_CLASS, v)}
-          />
-          <FilterDropdown
-            id="issuer"
-            label="Issuer"
-            value={selectedFilters[EtfFilterParamKey.ISSUER] || ''}
-            options={ETF_ISSUER_OPTIONS}
-            onChange={(v) => handleChange(EtfFilterParamKey.ISSUER, v)}
+        <div className="flex items-baseline justify-between mb-2">
+          <h3 className="text-white font-semibold text-sm">AI Score Thresholds</h3>
+          <p className="text-[#9CA3AF] text-[11px]">
+            Minimum scores from KoalaGains&apos; per-category analysis. Total is summed across the four categories (max 20).
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+          {ETF_CATEGORY_SCORE_DEFS.map((def) => (
+            <ScoreTile key={def.paramKey} def={def} value={selectedFilters[def.paramKey] || ''} onChange={(v) => handleChange(def.paramKey, v)} />
+          ))}
+          <ScoreTile
+            def={ETF_TOTAL_SCORE_DEF}
+            value={selectedFilters[ETF_TOTAL_SCORE_DEF.paramKey] || ''}
+            onChange={(v) => handleChange(ETF_TOTAL_SCORE_DEF.paramKey, v)}
           />
         </div>
       </div>
 
-      {/* Advanced risk-period filters (capture ratios + risk level) */}
+      {/* Cost & Size */}
+      <SubSection title="Cost & Size">
+        <FilterDropdown
+          id="aum"
+          label="AUM"
+          value={selectedFilters[EtfFilterParamKey.AUM] || ''}
+          options={ETF_AUM_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.AUM, v)}
+        />
+        <FilterDropdown
+          id="expenseRatio"
+          label="Expense Ratio"
+          value={selectedFilters[EtfFilterParamKey.EXPENSE_RATIO] || ''}
+          options={ETF_EXPENSE_RATIO_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPENSE_RATIO, v)}
+        />
+        <FilterDropdown
+          id="holdings"
+          label="Holdings"
+          value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
+          options={ETF_HOLDINGS_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
+        />
+      </SubSection>
+
+      {/* Performance & Risk */}
+      <SubSection title="Performance & Risk">
+        <FilterDropdown
+          id="peRatio"
+          label="P/E Ratio"
+          value={selectedFilters[EtfFilterParamKey.PE_RATIO] || ''}
+          options={ETF_PE_RATIO_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.PE_RATIO, v)}
+        />
+        <FilterDropdown
+          id="beta"
+          label="Beta (1Y)"
+          value={selectedFilters[EtfFilterParamKey.BETA] || ''}
+          options={ETF_BETA_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.BETA, v)}
+        />
+      </SubSection>
+
+      {/* Dividends */}
+      <SubSection title="Dividends">
+        <FilterDropdown
+          id="dividendTtm"
+          label="Dividend TTM"
+          value={selectedFilters[EtfFilterParamKey.DIVIDEND_TTM] || ''}
+          options={ETF_DIVIDEND_TTM_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_TTM, v)}
+        />
+        <FilterDropdown
+          id="dividendYield"
+          label="Dividend Yield"
+          value={selectedFilters[EtfFilterParamKey.DIVIDEND_YIELD] || ''}
+          options={ETF_DIVIDEND_YIELD_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YIELD, v)}
+        />
+        <FilterDropdown
+          id="payoutFrequency"
+          label="Payout Frequency"
+          value={selectedFilters[EtfFilterParamKey.PAYOUT_FREQUENCY] || ''}
+          options={ETF_PAYOUT_FREQUENCY_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.PAYOUT_FREQUENCY, v)}
+        />
+        <FilterDropdown
+          id="dividendYears"
+          label="Dividend Years"
+          value={selectedFilters[EtfFilterParamKey.DIVIDEND_YEARS] || ''}
+          options={ETF_DIVIDEND_YEARS_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YEARS, v)}
+        />
+      </SubSection>
+
+      {/* Classification */}
+      <SubSection title="Classification">
+        <FilterDropdown
+          id="assetClass"
+          label="Asset Class"
+          value={selectedFilters[EtfFilterParamKey.ASSET_CLASS] || ''}
+          options={ETF_ASSET_CLASS_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.ASSET_CLASS, v)}
+        />
+        <FilterDropdown
+          id="issuer"
+          label="Issuer"
+          value={selectedFilters[EtfFilterParamKey.ISSUER] || ''}
+          options={ETF_ISSUER_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.ISSUER, v)}
+        />
+      </SubSection>
+
+      {/* Advanced — period-based Mor filters, collapsed by default */}
       <div>
-        <h3 className="text-white font-semibold text-xs mb-1 text-center">Advanced Filters</h3>
-        <p className="text-[#9CA3AF] text-[10px] mb-2 text-center">
-          Only ETFs with risk data are shown when these are active. Pick a time period; the three filters below apply to it.
-        </p>
+        <button
+          type="button"
+          onClick={() => setAdvancedOpen((v) => !v)}
+          className="flex w-full items-center justify-between rounded-md bg-[#374151] hover:bg-[#3B4252] px-3 py-2 text-left"
+          aria-expanded={advancedOpen}
+        >
+          <span className="text-gray-200 text-xs font-semibold uppercase tracking-wider">Advanced — Period-Based Risk Capture</span>
+          {advancedOpen ? <ChevronUpIcon className="h-4 w-4 text-gray-300" /> : <ChevronDownIcon className="h-4 w-4 text-gray-300" />}
+        </button>
 
-        <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
-          <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
-          <div className="inline-flex gap-1.5">
-            {MOR_PERIODS.map((p) => (
-              <button
-                key={p}
-                onClick={() => handlePeriodChange(p)}
-                type="button"
-                aria-pressed={morPeriod === p}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-[#374151] text-gray-300 hover:bg-[#4B5563]'
-                }`}
-              >
-                {p.replace('-', ' ')}
-              </button>
-            ))}
+        {advancedOpen && (
+          <div className="mt-3">
+            <p className="text-[#9CA3AF] text-[11px] mb-2">
+              Only ETFs with risk data are shown when these are active. Pick a time period; the three filters below apply to it.
+            </p>
+
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
+              <div className="inline-flex gap-1.5">
+                {MOR_PERIODS.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => handlePeriodChange(p)}
+                    type="button"
+                    aria-pressed={morPeriod === p}
+                    className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                      morPeriod === p ? 'bg-[#F59E0B] text-black' : 'bg-[#374151] text-gray-300 hover:bg-[#4B5563]'
+                    }`}
+                  >
+                    {p.replace('-', ' ')}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {MOR_FIELD_KINDS.map((kind) => {
+                const def = getMorFilterDef(kind, morPeriod);
+                return (
+                  <FilterDropdown
+                    key={def.paramKey}
+                    id={def.paramKey}
+                    label={getMorFilterShortLabel(kind)}
+                    value={selectedFilters[def.paramKey] || ''}
+                    options={def.options}
+                    onChange={(v) => handleChange(def.paramKey, v)}
+                  />
+                );
+              })}
+            </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-2xl mx-auto">
-          {MOR_FIELD_KINDS.map((kind) => {
-            const def = getMorFilterDef(kind, morPeriod);
-            return (
-              <FilterDropdown
-                key={def.paramKey}
-                id={def.paramKey}
-                label={getMorFilterShortLabel(kind)}
-                value={selectedFilters[def.paramKey] || ''}
-                options={def.options}
-                onChange={(v) => handleChange(def.paramKey, v)}
-              />
-            );
-          })}
-        </div>
+        )}
       </div>
 
       {/* Actions */}

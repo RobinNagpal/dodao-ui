@@ -13,18 +13,20 @@ export enum EtfFilterType {
   DIVIDEND_TTM = 'dividendTtm',
   DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
-  SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
-  SHARPE_RATIO = 'sharpeRatio',
-  SORTINO_RATIO = 'sortinoRatio',
   BETA = 'beta',
-  RSI = 'rsi',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
+  // AI score thresholds (per category + total) — backed by EtfCachedScore.
+  PERFORMANCE_SCORE = 'performanceScoreThreshold',
+  FUTURE_SCORE = 'futureScoreThreshold',
+  RISK_SCORE = 'riskScoreThreshold',
+  COST_SCORE = 'costScoreThreshold',
+  TOTAL_SCORE = 'totalScoreThreshold',
   // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
@@ -44,18 +46,20 @@ export enum EtfFilterParamKey {
   DIVIDEND_TTM = 'dividendTtm',
   DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
-  SHARES_OUT = 'sharesOut',
   HOLDINGS = 'holdings',
-  SHARPE_RATIO = 'sharpeRatio',
-  SORTINO_RATIO = 'sortinoRatio',
   BETA = 'beta',
-  RSI = 'rsi',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
+  // AI score thresholds (per category + total) — backed by EtfCachedScore.
+  PERFORMANCE_SCORE = 'performanceScoreThreshold',
+  FUTURE_SCORE = 'futureScoreThreshold',
+  RISK_SCORE = 'riskScoreThreshold',
+  COST_SCORE = 'costScoreThreshold',
+  TOTAL_SCORE = 'totalScoreThreshold',
   // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
@@ -87,12 +91,8 @@ type RangeFilterType =
   | EtfFilterType.PE_RATIO
   | EtfFilterType.DIVIDEND_TTM
   | EtfFilterType.DIVIDEND_YIELD
-  | EtfFilterType.SHARES_OUT
   | EtfFilterType.HOLDINGS
-  | EtfFilterType.SHARPE_RATIO
-  | EtfFilterType.SORTINO_RATIO
   | EtfFilterType.BETA
-  | EtfFilterType.RSI
   | EtfFilterType.DIVIDEND_YEARS
   | EtfFilterType.MOR_UPSIDE_3YR
   | EtfFilterType.MOR_UPSIDE_5YR
@@ -100,6 +100,13 @@ type RangeFilterType =
   | EtfFilterType.MOR_DOWNSIDE_3YR
   | EtfFilterType.MOR_DOWNSIDE_5YR
   | EtfFilterType.MOR_DOWNSIDE_10YR;
+
+type ScoreFilterType =
+  | EtfFilterType.PERFORMANCE_SCORE
+  | EtfFilterType.FUTURE_SCORE
+  | EtfFilterType.RISK_SCORE
+  | EtfFilterType.COST_SCORE
+  | EtfFilterType.TOTAL_SCORE;
 
 type SelectFilterType =
   | EtfFilterType.PAYOUT_FREQUENCY
@@ -127,7 +134,20 @@ export interface AppliedEtfSearchFilter extends AppliedEtfFilterBase {
   searchQuery: string;
 }
 
-export type AppliedEtfFilter = AppliedEtfRangeFilter | AppliedEtfSelectFilter | AppliedEtfSearchFilter;
+export interface AppliedEtfScoreFilter extends AppliedEtfFilterBase {
+  type: ScoreFilterType;
+  threshold: number;
+}
+
+export type AppliedEtfFilter = AppliedEtfRangeFilter | AppliedEtfSelectFilter | AppliedEtfSearchFilter | AppliedEtfScoreFilter;
+
+const SCORE_FILTER_TYPES: Set<string> = new Set([
+  EtfFilterType.PERFORMANCE_SCORE,
+  EtfFilterType.FUTURE_SCORE,
+  EtfFilterType.RISK_SCORE,
+  EtfFilterType.COST_SCORE,
+  EtfFilterType.TOTAL_SCORE,
+]);
 
 export type EtfSelectedFiltersMap = Record<string, string>;
 
@@ -182,14 +202,6 @@ export const ETF_PAYOUT_FREQUENCY_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Weekly', value: 'Weekly' },
 ] as const;
 
-export const ETF_SHARES_OUT_OPTIONS: ReadonlyArray<ThresholdOption> = [
-  { label: 'Any', value: '' },
-  { label: 'Small (< 10M)', value: '0-10000000' },
-  { label: 'Medium (10M - 50M)', value: '10000000-50000000' },
-  { label: 'Large (50M - 200M)', value: '50000000-200000000' },
-  { label: 'Very Large (> 200M)', value: '200000000-' },
-] as const;
-
 export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
   { label: 'Very Few (1 - 5)', value: '0-5' },
@@ -197,24 +209,6 @@ export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Moderate (15 - 50)', value: '15-50' },
   { label: 'Many (50 - 250)', value: '50-250' },
   { label: 'Very Many (250+)', value: '250-' },
-] as const;
-
-export const ETF_SHARPE_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
-  { label: 'Any', value: '' },
-  { label: 'Negative (< 0)', value: 'negative' },
-  { label: 'Low (0 - 0.5)', value: '0-0.5' },
-  { label: 'Moderate (0.5 - 1)', value: '0.5-1' },
-  { label: 'Good (1 - 1.5)', value: '1-1.5' },
-  { label: 'Excellent (> 1.5)', value: '1.5-' },
-] as const;
-
-export const ETF_SORTINO_RATIO_OPTIONS: ReadonlyArray<ThresholdOption> = [
-  { label: 'Any', value: '' },
-  { label: 'Negative (< 0)', value: 'negative' },
-  { label: 'Low (0 - 1)', value: '0-1' },
-  { label: 'Moderate (1 - 2)', value: '1-2' },
-  { label: 'Good (2 - 3)', value: '2-3' },
-  { label: 'Excellent (> 3)', value: '3-' },
 ] as const;
 
 export const ETF_BETA_OPTIONS: ReadonlyArray<ThresholdOption> = [
@@ -225,15 +219,6 @@ export const ETF_BETA_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Market (0.8 - 1.2)', value: '0.8-1.2' },
   { label: 'Above Market (1.2 - 1.5)', value: '1.2-1.5' },
   { label: 'High (> 1.5)', value: '1.5-' },
-] as const;
-
-export const ETF_RSI_OPTIONS: ReadonlyArray<ThresholdOption> = [
-  { label: 'Any', value: '' },
-  { label: 'Oversold (< 30)', value: '0-30' },
-  { label: 'Weak (30 - 40)', value: '30-40' },
-  { label: 'Neutral (40 - 60)', value: '40-60' },
-  { label: 'Strong (60 - 70)', value: '60-70' },
-  { label: 'Overbought (> 70)', value: '70-' },
 ] as const;
 
 export const ETF_DIVIDEND_YIELD_OPTIONS: ReadonlyArray<ThresholdOption> = [
@@ -286,6 +271,76 @@ export const ETF_ISSUER_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Dimensional', value: 'Dimensional' },
 ] as const;
 
+/** Per-category AI score thresholds (each category caps at 5 factors passed). */
+export const ETF_CATEGORY_SCORE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: '≥ 3', value: '3' },
+  { label: '≥ 4', value: '4' },
+  { label: '≥ 5', value: '5' },
+] as const;
+
+/** Total score is the sum across 4 categories — surface across out of 20. */
+export const ETF_TOTAL_SCORE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: '≥ 12', value: '12' },
+  { label: '≥ 14', value: '14' },
+  { label: '≥ 16', value: '16' },
+] as const;
+
+export type EtfCachedScoreField =
+  | 'performanceAndReturnsScore'
+  | 'futurePerformanceOutlookScore'
+  | 'riskAnalysisScore'
+  | 'costEfficiencyAndTeamScore'
+  | 'finalScore';
+
+export interface EtfScoreFilterDef {
+  label: string;
+  paramKey: EtfFilterParamKey;
+  filterType: ScoreFilterType;
+  cachedScoreField: EtfCachedScoreField;
+  options: ReadonlyArray<ThresholdOption>;
+}
+
+export const ETF_CATEGORY_SCORE_DEFS: ReadonlyArray<EtfScoreFilterDef> = [
+  {
+    label: 'Past Performance',
+    paramKey: EtfFilterParamKey.PERFORMANCE_SCORE,
+    filterType: EtfFilterType.PERFORMANCE_SCORE,
+    cachedScoreField: 'performanceAndReturnsScore',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    label: 'Future Outlook',
+    paramKey: EtfFilterParamKey.FUTURE_SCORE,
+    filterType: EtfFilterType.FUTURE_SCORE,
+    cachedScoreField: 'futurePerformanceOutlookScore',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    label: 'Risk Analysis',
+    paramKey: EtfFilterParamKey.RISK_SCORE,
+    filterType: EtfFilterType.RISK_SCORE,
+    cachedScoreField: 'riskAnalysisScore',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    label: 'Cost Efficiency',
+    paramKey: EtfFilterParamKey.COST_SCORE,
+    filterType: EtfFilterType.COST_SCORE,
+    cachedScoreField: 'costEfficiencyAndTeamScore',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+] as const;
+
+export const ETF_TOTAL_SCORE_DEF: EtfScoreFilterDef = {
+  label: 'Total Score',
+  paramKey: EtfFilterParamKey.TOTAL_SCORE,
+  filterType: EtfFilterType.TOTAL_SCORE,
+  cachedScoreField: 'finalScore',
+  options: ETF_TOTAL_SCORE_OPTIONS,
+};
+
+const ALL_SCORE_DEFS: ReadonlyArray<EtfScoreFilterDef> = [...ETF_CATEGORY_SCORE_DEFS, ETF_TOTAL_SCORE_DEF];
+
 export const ETF_MOR_UPSIDE_CAPTURE_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
   { label: 'Low (< 85)', value: '0-85' },
@@ -320,18 +375,19 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.DIVIDEND_TTM,
   EtfFilterParamKey.DIVIDEND_YIELD,
   EtfFilterParamKey.PAYOUT_FREQUENCY,
-  EtfFilterParamKey.SHARES_OUT,
   EtfFilterParamKey.HOLDINGS,
-  EtfFilterParamKey.SHARPE_RATIO,
-  EtfFilterParamKey.SORTINO_RATIO,
   EtfFilterParamKey.BETA,
-  EtfFilterParamKey.RSI,
   EtfFilterParamKey.DIVIDEND_YEARS,
   EtfFilterParamKey.ASSET_CLASS,
   EtfFilterParamKey.CATEGORY,
   EtfFilterParamKey.GROUP,
   EtfFilterParamKey.ISSUER,
   EtfFilterParamKey.SEARCH,
+  EtfFilterParamKey.PERFORMANCE_SCORE,
+  EtfFilterParamKey.FUTURE_SCORE,
+  EtfFilterParamKey.RISK_SCORE,
+  EtfFilterParamKey.COST_SCORE,
+  EtfFilterParamKey.TOTAL_SCORE,
   EtfFilterParamKey.MOR_UPSIDE_3YR,
   EtfFilterParamKey.MOR_UPSIDE_5YR,
   EtfFilterParamKey.MOR_UPSIDE_10YR,
@@ -579,13 +635,6 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     });
   }
 
-  // Shares Outstanding
-  const soRaw = searchParams.get(EtfFilterParamKey.SHARES_OUT);
-  if (soRaw) {
-    const f = parseRangeFilter(soRaw, EtfFilterType.SHARES_OUT, EtfFilterParamKey.SHARES_OUT, ETF_SHARES_OUT_OPTIONS, 'Shares Out');
-    if (f) filters.push(f);
-  }
-
   // Holdings
   const holdingsRaw = searchParams.get(EtfFilterParamKey.HOLDINGS);
   if (holdingsRaw) {
@@ -593,31 +642,10 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     if (f) filters.push(f);
   }
 
-  // Sharpe Ratio
-  const sharpeRaw = searchParams.get(EtfFilterParamKey.SHARPE_RATIO);
-  if (sharpeRaw) {
-    const f = parseRangeFilter(sharpeRaw, EtfFilterType.SHARPE_RATIO, EtfFilterParamKey.SHARPE_RATIO, ETF_SHARPE_RATIO_OPTIONS, 'Sharpe Ratio');
-    if (f) filters.push(f);
-  }
-
-  // Sortino Ratio
-  const sortinoRaw = searchParams.get(EtfFilterParamKey.SORTINO_RATIO);
-  if (sortinoRaw) {
-    const f = parseRangeFilter(sortinoRaw, EtfFilterType.SORTINO_RATIO, EtfFilterParamKey.SORTINO_RATIO, ETF_SORTINO_RATIO_OPTIONS, 'Sortino Ratio');
-    if (f) filters.push(f);
-  }
-
   // Beta
   const betaRaw = searchParams.get(EtfFilterParamKey.BETA);
   if (betaRaw) {
     const f = parseRangeFilter(betaRaw, EtfFilterType.BETA, EtfFilterParamKey.BETA, ETF_BETA_OPTIONS, 'Beta');
-    if (f) filters.push(f);
-  }
-
-  // RSI
-  const rsiRaw = searchParams.get(EtfFilterParamKey.RSI);
-  if (rsiRaw) {
-    const f = parseRangeFilter(rsiRaw, EtfFilterType.RSI, EtfFilterParamKey.RSI, ETF_RSI_OPTIONS, 'RSI');
     if (f) filters.push(f);
   }
 
@@ -675,6 +703,20 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     });
   }
 
+  // AI score thresholds (per-category + total)
+  for (const def of ALL_SCORE_DEFS) {
+    const raw = searchParams.get(def.paramKey);
+    if (!raw || !raw.trim()) continue;
+    const n = parseInt(raw, 10);
+    if (!Number.isFinite(n)) continue;
+    filters.push({
+      type: def.filterType,
+      paramKey: def.paramKey,
+      threshold: n,
+      label: `${def.label}: ≥ ${n}`,
+    });
+  }
+
   // Mor advanced filters (per-period)
   for (const def of MOR_ADVANCED_FILTERS) {
     const raw = searchParams.get(def.paramKey);
@@ -713,6 +755,8 @@ export function buildInitialEtfSelected(filters: ReadonlyArray<AppliedEtfFilter>
   for (const filter of filters) {
     if (filter.type === EtfFilterType.SEARCH) {
       initial[EtfFilterParamKey.SEARCH] = (filter as AppliedEtfSearchFilter).searchQuery;
+    } else if (SCORE_FILTER_TYPES.has(filter.type)) {
+      initial[filter.paramKey] = String((filter as AppliedEtfScoreFilter).threshold);
     } else if (SELECT_FILTER_TYPES.has(filter.type)) {
       initial[filter.paramKey] = (filter as AppliedEtfSelectFilter).selectedValue;
     } else {
@@ -873,36 +917,6 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
 export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.EtfStockAnalyzerInfoWhereInput {
   const where: Prisma.EtfStockAnalyzerInfoWhereInput = {};
 
-  const sharpeParam = filters[EtfFilterParamKey.SHARPE_RATIO]?.trim();
-  if (sharpeParam) {
-    if (sharpeParam === 'negative') {
-      where.sharpe = { lt: 0 };
-    } else {
-      const sharpeRange = parseRangeParam(sharpeParam);
-      if (sharpeRange) {
-        const sharpeFilter: Prisma.FloatNullableFilter = {};
-        if (sharpeRange.min !== undefined) sharpeFilter.gte = sharpeRange.min;
-        if (sharpeRange.max !== undefined) sharpeFilter.lte = sharpeRange.max;
-        where.sharpe = sharpeFilter;
-      }
-    }
-  }
-
-  const sortinoParam = filters[EtfFilterParamKey.SORTINO_RATIO]?.trim();
-  if (sortinoParam) {
-    if (sortinoParam === 'negative') {
-      where.sortino = { lt: 0 };
-    } else {
-      const sortinoRange = parseRangeParam(sortinoParam);
-      if (sortinoRange) {
-        const sortinoFilter: Prisma.FloatNullableFilter = {};
-        if (sortinoRange.min !== undefined) sortinoFilter.gte = sortinoRange.min;
-        if (sortinoRange.max !== undefined) sortinoFilter.lte = sortinoRange.max;
-        where.sortino = sortinoFilter;
-      }
-    }
-  }
-
   const betaParam = filters[EtfFilterParamKey.BETA]?.trim();
   if (betaParam) {
     if (betaParam === 'negative') {
@@ -916,14 +930,6 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
         where.beta1y = betaFilter;
       }
     }
-  }
-
-  const rsiRange = parseRangeParam(filters[EtfFilterParamKey.RSI]);
-  if (rsiRange) {
-    const rsiFilter: Prisma.FloatNullableFilter = {};
-    if (rsiRange.min !== undefined) rsiFilter.gte = rsiRange.min;
-    if (rsiRange.max !== undefined) rsiFilter.lte = rsiRange.max;
-    where.rsi = rsiFilter;
   }
 
   const divYearsRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YEARS]);
@@ -988,6 +994,18 @@ export function createEtfSearchFilter(spaceId: string, filters: EtfFilterParams)
   }
 
   return etfWhere;
+}
+
+export function createEtfCachedScoreFilter(filters: EtfFilterParams): Prisma.EtfCachedScoreWhereInput {
+  const where: Prisma.EtfCachedScoreWhereInput = {};
+  for (const def of ALL_SCORE_DEFS) {
+    const raw = filters[def.paramKey]?.trim();
+    if (!raw) continue;
+    const n = parseInt(raw, 10);
+    if (!Number.isFinite(n)) continue;
+    (where as Record<string, unknown>)[def.cachedScoreField] = { gte: n };
+  }
+  return where;
 }
 
 export function hasEtfFiltersAppliedServer(filters: EtfFilterParams): boolean {

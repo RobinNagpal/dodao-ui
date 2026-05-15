@@ -4,6 +4,7 @@ import {
   createEtfFinancialFilter,
   createEtfStockAnalyzerFilter,
   createEtfSearchFilter,
+  createEtfCachedScoreFilter,
   hasEtfFiltersAppliedServer,
   hasAdvancedMorFilters,
   parseEtfFilterParams,
@@ -131,6 +132,12 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     etfWhere.financialInfo = { is: financialFilter };
   }
 
+  const cachedScoreFilter = createEtfCachedScoreFilter(filters);
+  const hasCachedScoreFilter = Object.keys(cachedScoreFilter).length > 0;
+  if (hasCachedScoreFilter) {
+    etfWhere.cachedScore = { is: cachedScoreFilter };
+  }
+
   const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);
   const hasStockAnalyzerFilter = Object.keys(stockAnalyzerFilter).length > 0;
   const isOthersGroup = filters[EtfFilterParamKey.GROUP]?.trim() === ETF_OTHERS_GROUP_KEY;
@@ -154,8 +161,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
 
   // Check if we need application-level post-filtering
   const aumRange = parseRangeParam(filters[EtfFilterParamKey.AUM]);
-  const sharesOutRange = parseRangeParam(filters[EtfFilterParamKey.SHARES_OUT]);
-  const needsPostFilter = aumRange !== null || sharesOutRange !== null || hasMorFilters;
+  const needsPostFilter = aumRange !== null || hasMorFilters;
 
   // Pre-parse active Mor advanced filters for post-filtering
   const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
@@ -177,10 +183,6 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       if (aumRange) {
         const aumValue = parseNumericStringValue(etf.financialInfo?.aum);
         if (!isInRange(aumValue, aumRange.min, aumRange.max)) return false;
-      }
-      if (sharesOutRange) {
-        const soValue = parseNumericStringValue(etf.financialInfo?.sharesOut);
-        if (!isInRange(soValue, sharesOutRange.min, sharesOutRange.max)) return false;
       }
       const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
       for (const mf of activeMorFilters) {
