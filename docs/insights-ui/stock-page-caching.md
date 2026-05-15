@@ -10,7 +10,7 @@ Production sample: **281 reads / 1.8k writes / 818 unique paths** in a window wi
 
 **Biggest immediate lever**:
 
-1. **Reduce deploy frequency** to `main` (don't ship docs-only / dependabot-only PRs on their own), **or enable Vercel Skew Protection** so the ISR cache carries across deploys. Project-level setting, no code change.
+1. **Reduce the rate of deploys that invalidate the ticker route's dependency graph.** See §4.6 for concrete options when 10-20 deploys/day is unavoidable.
 
 **Lower-priority levers** (only relevant once deploy-driven resets stop dominating):
 
@@ -18,7 +18,7 @@ Production sample: **281 reads / 1.8k writes / 818 unique paths** in a window wi
 3. Narrow `revalidateAllTickerTags` on admin "Edit stock details" — fires 8 tags on every text-only edit; only needs all 8 when `movedExchange` / `movedSymbol` / `isDeleted` change.
 4. **ETF pages still use the OLD stock architecture** (~8 fetches per page sharing one tag across 4 subpages).
 
-Diagnosis steps + full ranked solutions in §4.5.
+Diagnosis steps + full ranked solutions in §4.5 and §4.6.
 
 ---
 
@@ -147,18 +147,15 @@ If no `revalidateTag` fired, **why did 900-ish rebuilds happen?** Cache writes d
 
 | # | If the cause is… | Solution | Trade-off |
 |---|---|---|---|
-| 1 | **Deploy resets** (hypothesis 1) | Reduce deployment frequency on `main` (don't deploy docs-only or dependabot-only changes), or enable Vercel **Skew Protection** which preserves the ISR cache across compatible deployments. Skew Protection is a per-project setting; enable it from the Project → Settings → General → Skew Protection. | Skew Protection: small storage overhead. Reduced deploy frequency: slower iteration |
+| 1 | **Deploy resets** (hypothesis 1) | See **§4.6** for the full menu. Short version: cut the number of deploys that touch the ticker route's dependency graph (Ignored Build Step in `vercel.json`, dependency-footprint pruning, batched merges). | Trade-off depends on which lever you pick — see §4.6 |
 | 2 | **Multi-region cold caches** (hypothesis 2) | Move some routes to a single-region runtime so there's only one cache to fill. Or accept the 2-3× multiplier as a cost of global edge serving. | Single-region serving = higher latency for users far from that region |
 | 3 | **Cache eviction** (hypothesis 3) | Increase the `revalidate` backstop from 8 days to something shorter (counter-intuitive — but a shorter backstop means more requests are "in-flight" stale-while-revalidate refreshes instead of cold misses, depending on Vercel's eviction model). Or switch to `unstable_cache` + Prisma to skip the HTTP/fetch-cache hop. | Marginal; might not move the needle |
 | 4 | **8-day fetch expiry coinciding** (hypothesis 4) | Lengthen the backstop further (14d or 30d). Cheap to test. | Dormant tickers go even longer without refreshing scraper data |
 | 5 | **Future regen / admin volume** (when it returns) | Lengthen `*/3` cron → `*/15`. Narrow `revalidateAllTickerTags` on admin "Edit stock" to only fire all-8-tags when moved/deleted state changes. Skip the umbrella for single-step partial regens. | Regen latency, admin sub-page staleness |
 
-**The single most productive next step for this user**: check Vercel's Deployments tab for activity in the same window the metrics cover. If there was a deploy, the writes are 100% explained and the right fix is one of:
+**The single most productive next step for this user**: check Vercel's Deployments tab for activity in the same window the metrics cover. If there was a deploy, the writes are 100% explained and the right fix lives in **§4.6** (preventing deploy-driven cache resets when 10-20 deploys/day is the norm).
 
-- **Reduce deploy frequency** to `main` (only deploy code that affects user-facing behavior; merge docs/dependabot PRs into a batched release).
-- **Enable Vercel Skew Protection** to carry the ISR cache forward across deploys (project-level setting; no code change).
-
-These are the two levers that flatten the write-spike-per-deploy pattern. Cron / admin-action tuning (the previous suggestions) only matters once deploys are no longer the dominant driver.
+> ⚠️ **Correction on Skew Protection.** An earlier draft of this doc suggested Vercel **Skew Protection** could preserve the ISR cache across deploys — that's wrong. Skew Protection only keeps OLD deployments running long enough that users with an in-flight session don't see version-mismatched chunks. It does not touch the ISR HTML cache. The actual tools for avoiding cache resets are in §4.6.
 
 ### How to confirm in 10 minutes
 
@@ -166,6 +163,91 @@ These are the two levers that flatten the write-spike-per-deploy pattern. Cron /
 2. If no deploys: open the Vercel logs for `/stocks/[exchange]/[ticker]` in the same window. Search for `Cache invalidated for`. Count occurrences. If you see 800+ entries, an explicit revalidate path exists that this audit missed — share the logs.
 3. If no logs match and no deploys: look at the per-region breakdown of writes. If writes are split across 2+ regions, **hypothesis 2** is your answer.
 4. If none of the above: hypothesis 3 (cache eviction) — confirm by sampling writes/reads in 1-hour buckets across a full week. A flat eviction rate independent of deploy/admin activity points there.
+
+## 4.6. Preventing deploy-driven cache resets when you ship 10-20× per day
+
+Vercel's ISR HTML cache (the "Full Route Cache" in Next.js terminology) is keyed by the build artifact. When Next.js's build pipeline sees that a route's dependency graph has changed between two builds, the new deployment's cache for that route starts empty. With 10-20 deploys/day and a deeply-imported page like `/stocks/[exchange]/[ticker]/page.tsx`, almost every deploy ends up touching *something* in the page's import graph — so almost every deploy resets the cache. The Vercel **Data Cache** (the `fetch(url, { next: { tags: [...] } })` results) persists across deploys, but the HTML cache does not.
+
+What you can actually do about it, in roughly decreasing order of effort-to-impact ratio:
+
+### A. Skip Vercel builds for changes that can't affect the runtime (cheapest win)
+
+Add an `ignoreCommand` to `insights-ui/vercel.json` so Vercel doesn't deploy when only docs, tests, or other non-runtime files changed. One-time config change. Skips an entire deploy when the diff is non-functional.
+
+```json
+{
+  "ignoreCommand": "bash -c 'git diff HEAD^ HEAD --quiet -- \\:^docs/ \\:^**/*.md \\:^**/__tests__/ \\:^.github/'"
+}
+```
+
+That predicate exits 0 (skip the deploy) when *only* `docs/`, `*.md`, `__tests__/`, or `.github/` files changed. Tune the path list to whatever your team produces routinely. Expected impact: if 30-50% of daily deploys are docs/test-only (common in active repos), this cuts cache-reset events proportionally. Risk: low — Vercel still rebuilds when you change actual code.
+
+Alternative: do this in **Vercel Dashboard → Project → Settings → Git → Ignored Build Step** with the same command. Same effect, no committed file.
+
+### B. Shrink the ticker route's dependency graph (medium effort, high payoff)
+
+Every file that `/stocks/[exchange]/[ticker]/page.tsx` or its transitively-imported files touches is a way for an unrelated change to invalidate the ticker route. The page currently imports from:
+
+- `@/utils/ticker-full-render-utils` (orchestrator)
+- `@/utils/ticker-v1-cache-utils`
+- `@/utils/ticker-v1-model-utils`
+- `@/utils/countryExchangeUtils`
+- `@/utils/metadata-generators`
+- `@/utils/ticker-moved-redirect`
+- `@/utils/ticker-deleted-handler`
+- Multiple component files under `@/components/ticker-reportsv1/*`
+- `@dodao/web-core/components/core/page/PageWrapper`
+- Many more
+
+Any change to any of those files invalidates the page in the next deploy. To shrink the graph:
+
+1. **Move heavy logic behind the consolidated `/full-render` API.** The endpoint is its own route; changes to its dependencies don't affect the page's Full Route Cache unless they also flow into the page module. This is largely done — keep new server-side logic in `ticker-full-render-utils.ts` and the route handler, not in the page module.
+2. **Audit shared utils.** If `ticker-v1-cache-utils.ts` is imported by 30 files and changes weekly, that's 30 routes invalidated per change. Split it: keep the tag-generation functions in a small file the page imports; put admin/save-side helpers in a separate file.
+3. **Lazy-load components.** Replace top-level `import` of heavy components (radar chart, charts, modals) with `next/dynamic`. The page module's "build content" then changes less often even when the heavy components do.
+
+The goal: a deploy that touches an admin panel or an ETF utility should not invalidate `/stocks/[exchange]/[ticker]`'s cache.
+
+### C. Promote workflow: deploy to preview, promote once daily
+
+Vercel supports separate Preview and Production environments. Configure CI so every PR merge deploys to a preview environment, and run a daily (or per-release) "Promote to Production" action that takes the latest preview build and serves it as Production. The promotion **does** reset the production ISR cache, but only once per day instead of per merge.
+
+How to set up:
+
+- Vercel Dashboard → Project → Settings → Git → toggle "Automatically expose System Environment Variables" and set Production Branch to `release` (or similar).
+- Have CI auto-merge PRs into `release` once a day (cron-triggered GitHub Action).
+- Or use Vercel's built-in Promote button manually each evening.
+
+Trade-off: code that lands at 10 AM doesn't go live in production until that evening. Acceptable for most non-emergency code; doesn't apply to hotfixes (still deploy those directly).
+
+### D. Pre-warm the cache after each deploy
+
+Add a post-deploy step that crawls the top-N most-popular ticker pages so they're warm by the time Googlebot or users arrive:
+
+```bash
+# post-deploy hook (Vercel build output API or GitHub Action)
+for url in $(curl -s https://koalagains.com/sitemap_index.xml | grep -oE 'https://koalagains.com/stocks/[^<]+' | head -100); do
+  curl -s -o /dev/null "$url"
+done
+```
+
+This **doesn't reduce write count** — the warming requests are themselves the cache-fills, and they cost writes. But it shifts the cache-fill cost away from real bots/users, so the next bot crawl is fast (a read instead of a write-then-serve). If "Cache Writes" and "Function Invocations" are billed the same, this is neutral on cost; if bots-causing-writes count differently in your dashboard, this can help.
+
+### E. Switch the page from `force-static` to `force-dynamic` + `unstable_cache` (last resort)
+
+If deploy frequency cannot come down and the HTML cache will reset constantly anyway, you can stop trying to cache HTML and just cache the data:
+
+1. Remove `export const dynamic = 'force-static'` from the page.
+2. Wrap the `fetchTickerFullRenderData` call in `unstable_cache(fn, [key], { tags: [tickerAndExchangeTag(t,e)], revalidate: 8 * 24 * 60 * 60 })`.
+3. The page renders on every request (function invocation cost), but the `unstable_cache` blob holds the rendered data across deploys (since the Data Cache persists).
+
+You lose HTML caching (so reads cost function invocations) but you gain immunity to deploy resets. **This is a real architectural change — only worth it if A, B, and C combined still don't get the ratio you want.** It also changes the cost profile from "Cache Writes" to "Function GB-seconds", which may or may not be cheaper depending on traffic.
+
+### What WON'T help
+
+- **Vercel Skew Protection.** Different problem (client-side hydration across version mismatches). Doesn't touch the ISR HTML cache.
+- **`next.config.js` cache flags.** No setting there controls deploy-time cache invalidation.
+- **`robots.txt` / bot-blocking.** Even if you block crawlers, the first real user visit after each deploy still pays the rebuild cost. Doesn't reduce total writes, just shifts timing.
+- **`stale-while-revalidate` headers on the response.** Those control edge-cache freshness, not Vercel's ISR/Data Cache layer.
 
 ## 5. Mental model in five bullets
 
