@@ -1,6 +1,7 @@
 import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/portfolio-holdings/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
+import EtfRelatedSections, { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -9,6 +10,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
@@ -74,24 +76,38 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const totalHoldings = holdings?.holdings?.length ?? 0;
 
+  const availableSiblingSlugsPromise = getAvailableSiblingSlugsForEtf(etfData.id);
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <header className="mb-4 mt-2">
-        <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
-          {etfData.name} ({symbol}) &mdash; Holdings
-        </h1>
-        <p className="text-sm text-gray-400 mt-1">Full list of reported holdings for this ETF.</p>
-      </header>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <header className="mb-4 mt-2">
+          <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
+            {etfData.name} ({symbol}) &mdash; Holdings
+          </h1>
+          <p className="text-sm text-gray-400 mt-1">Full list of reported holdings for this ETF.</p>
+        </header>
 
-      {totalHoldings > 0 ? (
-        <EtfHoldings data={holdings} title="All Holdings" />
-      ) : (
-        <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
-          <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
-        </div>
-      )}
+        {totalHoldings > 0 ? (
+          <EtfHoldings data={holdings} title="All Holdings" />
+        ) : (
+          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+            <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
+          </div>
+        )}
+
+        <Suspense fallback={null}>
+          <EtfRelatedSections
+            availableSlugsPromise={availableSiblingSlugsPromise}
+            exchange={exchange}
+            symbol={symbol}
+            etfName={etfData.name}
+            currentSlug="holdings"
+          />
+        </Suspense>
+      </div>
     </PageWrapper>
   );
 }

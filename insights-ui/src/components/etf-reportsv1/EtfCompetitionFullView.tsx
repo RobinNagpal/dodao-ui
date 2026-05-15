@@ -1,19 +1,23 @@
 import CompetitorCard from '@/components/competition/CompetitorCard';
 import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfCompetitionQuadrantWithLegend';
+import EtfRelatedSections, { AvailableEtfSiblingSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export interface EtfCompetitionFullViewProps {
   data: EtfCompetitionResponse;
+  /** Promise of slugs known to have publishable content. When set, a related-sections nav renders before the footer. */
+  availableSiblingSlugsPromise?: Promise<AvailableEtfSiblingSlugs>;
 }
 
 /**
  * Full Competition view rendered on the dedicated `/etfs/.../competition` page.
  * Shows the quadrant chart, the long-form markdown analysis, and per-peer cards.
  */
-export default function EtfCompetitionFullView({ data }: EtfCompetitionFullViewProps): JSX.Element | null {
+export default function EtfCompetitionFullView({ data, availableSiblingSlugsPromise }: EtfCompetitionFullViewProps): JSX.Element | null {
   const { vsCompetition, competitors, etf } = data;
 
   if (!etf || (!vsCompetition && (!competitors || competitors.length === 0))) {
@@ -119,6 +123,18 @@ export default function EtfCompetitionFullView({ data }: EtfCompetitionFullViewP
             </section>
           )}
         </div>
+
+        {availableSiblingSlugsPromise && (
+          <Suspense fallback={null}>
+            <EtfRelatedSections
+              availableSlugsPromise={availableSiblingSlugsPromise}
+              exchange={etf.exchange}
+              symbol={etf.symbol}
+              etfName={etf.name}
+              currentSlug="competition"
+            />
+          </Suspense>
+        )}
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

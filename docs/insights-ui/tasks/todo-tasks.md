@@ -95,23 +95,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest; admin verification UI for stale rows.
 - [ ] Open: compliance (store URL only); coverage threshold; cross-fund PM modelling (`Person` table vs denormalized); confirm we never render for passive products.
 
-### ETF report page — UI refresh
-
-> Scope: `app/etfs/[exchange]/[etf]/page.tsx` and the `components/etf-reportsv1/` components it renders.
-> UI-only pass — no prompt, schema, or data-shape changes. Run against a handful of representative ETFs
-> (broad equity, sector, fixed-income, leveraged) before shipping so we catch group-specific layout regressions.
-
-- [ ] **Top-of-page snapshot block** above the fold — name/symbol/exchange row stays, but pair it with a compact key-stats strip (AUM, expense ratio, 1y total return vs comparison base, # holdings, last-updated date) so a reader gets the headline before scrolling into the markdown summary.
-- [ ] **Sticky in-page TOC / section jump nav** — desktop side rail, mobile collapsing top bar; anchors derived from stable section slugs (Summary, Index & Strategy, Financial Info, Holdings, Analysis, Competition, Similar ETFs). Mirror the pattern from the tariff in-page nav task.
-- [ ] **Mobile layout audit** — financial-info + radar row currently splits `lg:w-1/2`; verify the stacked mobile order (financial card → radar → price chart) reads cleanly, holdings table doesn't overflow, analysis cards don't cut off the factor labels, and the metadata badges row wraps gracefully.
-- [ ] **Analysis section visual hierarchy** — `EtfAnalysisSections` renders each category (Past Returns, Cost & Team, Risk, Future Outlook, Index & Strategy, Final Summary) as a flat list. Add stronger card framing, per-category color/icon affordance, and a one-line "verdict" header so users can scan without expanding each section.
-- [ ] **Holdings preview density** — current preview is `HOLDINGS_PREVIEW_LIMIT = 10` with a "view more" link out to `/etfs/.../holdings`. Decide: inline expand-to-show-all vs route push; add a weight-bar visualization next to the % column either way.
-- [ ] **Reader actions** — "share / copy link" affordance near the title; "subscribe for updates on this ETF" CTA tied into the existing click-count login gate; ensure both work on mobile.
-- [ ] **Theme readability** — current dark-theme report has the same low-contrast complaints flagged in the site-wide theme toggle task ([Site-wide / Other](#site-wide--other) → Dark/light theme toggle). At minimum, audit muted-foreground / border-color usage on this page so headings, badges, and footer separators meet WCAG AA before the global toggle lands.
-- [ ] **Footer treatment** — the "ETF Analysis" / "Investment Report" badge pills feel placeholder-ish. Either tie them to real metadata (asset class, category, issuer — which already render in `EtfMetadataBadges` higher up) or drop them; keep the `dateModified` line.
-- [ ] **Loading states** — review `EtfFinancialInfoSkeleton`, `RadarSkeleton`, and the Suspense `fallback={null}` slots (holdings, analysis, competition, similar ETFs); silent-null fallbacks cause the page to jump as each section streams in. Add lightweight skeletons matching final section heights to stabilize CLS.
-- [ ] Open: ordering of Holdings vs Analysis (currently Holdings first); whether to fold "Similar ETFs" into a side rail rather than a bottom row; whether Index & Strategy tail paragraphs deserve their own collapsed-by-default section instead of inline render after the price chart.
-
 ### Misc prompt updates
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.

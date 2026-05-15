@@ -1,4 +1,5 @@
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
+import { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
@@ -102,10 +103,12 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
           { name: 'Competition', href: `/etfs/${exchangeUpper}/${etfUpper}/competition`, current: true },
         ];
 
+  const availableSiblingSlugsPromise = data.etf?.id ? getAvailableSiblingSlugsForEtf(data.etf.id) : undefined;
+
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCompetitionFullView data={data} />
+      <EtfCompetitionFullView data={data} availableSiblingSlugsPromise={availableSiblingSlugsPromise} />
     </PageWrapper>
   );
 }
