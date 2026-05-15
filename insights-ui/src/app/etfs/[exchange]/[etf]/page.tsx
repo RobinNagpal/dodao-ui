@@ -316,6 +316,7 @@ function EtfSummaryInfo({ data }: { data: Promise<EtfFastResponse> }): JSX.Eleme
         assetClass={d.stockAnalyzerInfo?.assetClass}
         category={d.stockAnalyzerInfo?.category}
         issuer={d.stockAnalyzerInfo?.issuer}
+        indexName={d.stockAnalyzerInfo?.indexName}
         className="mb-4"
       />
 
