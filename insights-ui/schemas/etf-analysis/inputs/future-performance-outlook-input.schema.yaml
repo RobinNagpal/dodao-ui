@@ -71,12 +71,13 @@ properties:
     type: ['string', 'null']
     description: 'The benchmark index this ETF tracks (e.g., "S&P 500", "MSCI EAFE"). May be null when not provided by upstream data.'
 
-  # From EtfFinancialInfo — trimmed to forward-relevant fields only: aum, pe, dividendYield, beta, holdings count.
-  # Cost/payout fields (expenseRatio, dividendTtm, payoutFrequency, payoutRatio, sharesOut, volume,
-  # yearHigh, yearLow) belong to Cost & Team and are excluded.
+  # From EtfFinancialInfo — trimmed to forward-relevant fields: aum, pe, dividendYield,
+  # payoutFrequency, payoutRatio, beta, holdings count. payoutFrequency + payoutRatio are
+  # included for the forward_income_durability factor. Pure cost / intraday columns
+  # (expenseRatio, sharesOut, volume, yearHigh, yearLow, dividendTtm) stay excluded.
   etfFinancialInfo:
     type: ['string', 'null']
-    description: 'JSON string with aum, pe, dividendYield, beta, holdings (count). Cost/payout/intraday fields are excluded — those belong to Cost & Team.'
+    description: 'JSON string with aum, pe, dividendYield, payoutFrequency, payoutRatio, beta, holdings (count). Pure cost / intraday columns are excluded — those belong to Cost & Team.'
 
   # Full EtfStockAnalyzerInfo row passed through as-is. The forward outlook benefits from the
   # full multi-period view (returns 1m → 20y, CAGRs, full MA stack, RSI daily/weekly/monthly,

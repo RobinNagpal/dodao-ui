@@ -88,6 +88,13 @@ properties:
     type: string
     description: 'JSON string with Mor category, style box, and overview metrics for peer comparison context.'
 
+  # From EtfMorAnalyzerInfo + EtfStockAnalyzerInfo — market-liquidity and premium/discount
+  # snapshot used by the stress-liquidity factor. Single-point measurements; for stress-window
+  # premium/discount history the prompt expects light web lookup against issuer pages / Mor.
+  marketLiquidityAndPremiumDiscount:
+    type: string
+    description: 'JSON string with marketBidAskSpread, marketVolumeAvg, marketDiscount, marketPremium (from EtfMorAnalyzerInfo) plus avgVolume, dollarVol (from EtfStockAnalyzerInfo). Snapshot fields used by `stress_liquidity_and_exit_friction`; stress-window premium/discount and NAV history come from web lookup.'
+
 required:
   - name
   - symbol
@@ -101,3 +108,4 @@ required:
   - morRiskPeriods
   - financialRiskContext
   - categoryContext
+  - marketLiquidityAndPremiumDiscount

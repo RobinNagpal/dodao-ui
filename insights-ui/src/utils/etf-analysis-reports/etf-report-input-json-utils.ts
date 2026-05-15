@@ -259,6 +259,18 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       inceptionDate: people?.inceptionDate,
       overviewStyleBox: mor?.overviewStyleBox,
     }),
+    // Corroborating size + trading-friction signals used by the `aum_size` factor.
+    // Headline `aum` stays in `financialSummary`; this bundle adds the
+    // dollar-volume / spread / total-assets / sharesOut signals so the LLM can grade
+    // whether scale is translating into retail-usable liquidity.
+    marketScaleAndTradability: JSON.stringify({
+      overviewTotalAssets: mor?.overviewTotalAssets,
+      sharesOut: fin?.sharesOut,
+      marketBidAskSpread: mor?.marketBidAskSpread,
+      marketVolumeAvg: mor?.marketVolumeAvg,
+      avgVolume: sa?.avgVolume ? sa.avgVolume.toString() : null,
+      dollarVol: sa?.dollarVol ? sa.dollarVol.toString() : null,
+    }),
   };
 }
 
@@ -382,6 +394,16 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
       overviewStyleBox: mor?.overviewStyleBox,
       overviewTotalAssets: mor?.overviewTotalAssets,
     }),
+    // Snapshot fields used by `stress_liquidity_and_exit_friction`. Stress-window premium /
+    // discount and NAV history are obtained via the prompt's light web-lookup pattern.
+    marketLiquidityAndPremiumDiscount: JSON.stringify({
+      marketBidAskSpread: mor?.marketBidAskSpread,
+      marketVolumeAvg: mor?.marketVolumeAvg,
+      marketDiscount: mor?.marketDiscount,
+      marketPremium: mor?.marketPremium,
+      avgVolume: sa?.avgVolume ? sa.avgVolume.toString() : null,
+      dollarVol: sa?.dollarVol ? sa.dollarVol.toString() : null,
+    }),
   };
 }
 
@@ -397,14 +419,18 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
   const groupKey = getEtfGroupKeyForCategory(fundCategory) || DEFAULT_GROUP_KEY;
   const factors = getEtfAnalysisFactorsForCategory(EtfAnalysisCategory.FuturePerformanceOutlook, { fundCategory: fundCategory ?? undefined });
 
-  // EtfFinancialInfo — keep only forward-relevant fields. Cost/payout/intraday columns
-  // (expenseRatio, dividendTtm, payoutFrequency, payoutRatio, sharesOut, volume,
-  // yearHigh, yearLow) belong to Cost & Team and are excluded.
+  // EtfFinancialInfo — keep forward-relevant fields plus the payout fields the
+  // forward_income_durability factor reads (payoutFrequency, payoutRatio). The pure
+  // cost / intraday columns (expenseRatio, sharesOut, volume, yearHigh, yearLow) and
+  // headline TTM-dollar dividend (dividendTtm) stay excluded — those are Cost & Team
+  // territory or covered by StockAnalyzer.
   const financialBundle = fin
     ? {
         aum: fin.aum,
         pe: fin.pe,
         dividendYield: fin.dividendYield,
+        payoutFrequency: fin.payoutFrequency,
+        payoutRatio: fin.payoutRatio,
         beta: fin.beta,
         holdings: fin.holdings,
       }

@@ -34,7 +34,7 @@ Use these blocks in this order when overlapping fields exist:
 - `etfMorAnalyzerInfo` → `strategyText`, `overviewCategory`, `overviewStyleBox`, `overviewSecYield`, `overviewTtmYield`, and the fund-vs-category-vs-index `returnsAnnual` / `returnsTrailing` tables.
 - `etfStockAnalyzerInfo` → full price/technicals (MA20/50/150/200, RSI daily/weekly/monthly, ATH/ATL + 52w distances), multi-period returns 1m → 20y + CAGRs, beta windows, sortino / sharpe / atr, liquidity (avgVolume / dollarVol / relVolume), dividend growth (`divGrowth*`, `divYears`, `divGrYears`), leverage / options / region flags.
 - `etfMorRiskInfo` → drawdown / capture / risk-and-volatility tables for the 3-Yr and 5-Yr windows that inform regime + volatility fit.
-- `etfFinancialInfo` → `aum`, `pe`, `dividendYield`, `beta`, `holdings` (count).
+- `etfFinancialInfo` → `aum`, `pe`, `dividendYield`, `payoutFrequency`, `payoutRatio`, `beta`, `holdings` (count).
 
 If you cite “the benchmark”, name it explicitly (index name from holdings/strategy blocks when present).
 
