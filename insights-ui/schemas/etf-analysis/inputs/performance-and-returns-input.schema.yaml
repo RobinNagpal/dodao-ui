@@ -103,6 +103,15 @@ properties:
     type: string
     description: 'JSON string with expense ratio (explains benchmark tracking drag), inception date (handles young fund evaluation), and style box (detects category/style mismatches).'
 
+  # From EtfMorAnalyzerInfo + EtfStockAnalyzerInfo + EtfFinancialInfo — scale and tradability
+  # snapshot used by the `aum_size` factor. Surfaces the corroborating size signals
+  # (overviewTotalAssets, sharesOut) plus the trading-friction signals (avgVolume, dollarVol,
+  # marketBidAskSpread, marketVolumeAvg) so the LLM can judge whether AUM scale is
+  # translating into retail-usable liquidity without needing web lookup for these fields.
+  marketScaleAndTradability:
+    type: string
+    description: 'JSON string with overviewTotalAssets, sharesOut (corroborating size signals) plus marketBidAskSpread, marketVolumeAvg, avgVolume, dollarVol (trading-friction signals) used by `aum_size`. Headline aum stays in `financialSummary`.'
+
 required:
   - name
   - symbol
@@ -114,6 +123,7 @@ required:
   - morReturns
   - morOverview
   - financialSummary
+  - marketScaleAndTradability
   - assetClass
   - fundCategory
   - groupKey

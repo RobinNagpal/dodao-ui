@@ -36,6 +36,7 @@ This report covers only returns, consistency, benchmark/category comparison, mom
 - `morOverview` → category, style box, NAV, strategy text, and `indexName`.
 - `yieldAndIncome` → dividend yield, SEC yield, TTM yield, dividend growth, dividend years. For income-first funds this is the headline.
 - `fundContext` → expense ratio, inception date, style box (useful for young-fund handling and style/category mismatches).
+- `marketScaleAndTradability` → `overviewTotalAssets`, `sharesOut`, `marketBidAskSpread`, `marketVolumeAvg`, `avgVolume`, `dollarVol` — corroborating size signals and trading-friction signals used by `aum_size`.
 
 Always name the actual index from `indexName` when referring to "the benchmark". Never just write "its index".
 
@@ -115,5 +116,6 @@ When the factor carries a `factorAnalysisGroupInstructions` string, treat it as 
 - morReturns: {{morReturns}}
 - morOverview: {{morOverview}}
 - financialSummary: {{financialSummary}}
+- marketScaleAndTradability: {{marketScaleAndTradability}}
 - yieldAndIncome: {{yieldAndIncome}}
 - fundContext: {{fundContext}}

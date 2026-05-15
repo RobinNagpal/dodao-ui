@@ -259,6 +259,18 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       inceptionDate: people?.inceptionDate,
       overviewStyleBox: mor?.overviewStyleBox,
     }),
+    // Corroborating size + trading-friction signals used by the `aum_size` factor.
+    // Headline `aum` stays in `financialSummary`; this bundle adds the
+    // dollar-volume / spread / total-assets / sharesOut signals so the LLM can grade
+    // whether scale is translating into retail-usable liquidity.
+    marketScaleAndTradability: JSON.stringify({
+      overviewTotalAssets: mor?.overviewTotalAssets,
+      sharesOut: fin?.sharesOut,
+      marketBidAskSpread: mor?.marketBidAskSpread,
+      marketVolumeAvg: mor?.marketVolumeAvg,
+      avgVolume: sa?.avgVolume ? sa.avgVolume.toString() : null,
+      dollarVol: sa?.dollarVol ? sa.dollarVol.toString() : null,
+    }),
   };
 }
 
