@@ -6,7 +6,7 @@ import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-in
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 const PASS_RESULT = 'Pass';
 
@@ -33,6 +33,8 @@ export interface EtfCategoryReportProps {
   currentSlug?: string;
   /** Promise of slugs known to have publishable content. Awaited inside a Suspense boundary. */
   availableSiblingSlugsPromise?: Promise<AvailableEtfSiblingSlugs>;
+  /** Optional content rendered immediately after the Executive Summary section. */
+  afterSummaryContent?: ReactNode;
 }
 
 export default function EtfCategoryReport({
@@ -50,6 +52,7 @@ export default function EtfCategoryReport({
   indexName,
   currentSlug,
   availableSiblingSlugsPromise,
+  afterSummaryContent,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -108,6 +111,8 @@ export default function EtfCategoryReport({
               <p className="text-color leading-relaxed" itemProp="abstract" />
             )}
           </section>
+
+          {afterSummaryContent}
 
           {categoryResult.overallAnalysisDetails && (
             <section className="mb-6" itemProp="articleBody">

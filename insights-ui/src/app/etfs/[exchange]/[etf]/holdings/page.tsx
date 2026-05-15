@@ -77,6 +77,17 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const totalHoldings = holdings?.holdings?.length ?? 0;
 
   const availableSiblingSlugsPromise = getAvailableSiblingSlugsForEtf(etfData.id);
+  const relatedSections = (
+    <Suspense fallback={null}>
+      <EtfRelatedSections
+        availableSlugsPromise={availableSiblingSlugsPromise}
+        exchange={exchange}
+        symbol={symbol}
+        etfName={etfData.name}
+        currentSlug="holdings"
+      />
+    </Suspense>
+  );
 
   return (
     <PageWrapper>
@@ -91,22 +102,13 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
         </header>
 
         {totalHoldings > 0 ? (
-          <EtfHoldings data={holdings} title="All Holdings" />
+          <EtfHoldings data={holdings} title="All Holdings" relatedSections={relatedSections} />
         ) : (
-          <div className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+          <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
             <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
-          </div>
+            {relatedSections}
+          </section>
         )}
-
-        <Suspense fallback={null}>
-          <EtfRelatedSections
-            availableSlugsPromise={availableSiblingSlugsPromise}
-            exchange={exchange}
-            symbol={symbol}
-            etfName={etfData.name}
-            currentSlug="holdings"
-          />
-        </Suspense>
       </div>
     </PageWrapper>
   );
