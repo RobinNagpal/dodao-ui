@@ -7,6 +7,7 @@ import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
+import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -104,9 +105,11 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
     sectionName: 'Competition',
     sectionSlug: 'competition',
   });
+  const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
       <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
     </PageWrapper>

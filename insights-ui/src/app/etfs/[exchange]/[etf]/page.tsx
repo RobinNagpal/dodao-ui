@@ -248,7 +248,7 @@ function PriceChartSkeleton(): JSX.Element {
 function EtfChartsInfoSkeleton(): JSX.Element {
   return (
     <section className="mb-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           <EtfFinancialInfoSkeleton />
         </div>
@@ -376,7 +376,7 @@ function EtfFinancialInfoSection({
 
   return (
     <section className="mb-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
         </div>

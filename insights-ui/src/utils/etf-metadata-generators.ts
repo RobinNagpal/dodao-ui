@@ -1,9 +1,32 @@
 import { Metadata } from 'next';
+import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import type { EtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 
 const SITE_NAME = 'KoalaGains';
 const BASE_URL = 'https://koalagains.com';
 const LOGO_URL = `${BASE_URL}/koalagain_logo.png`;
+
+function toAbsoluteUrl(href: string): string {
+  return href.startsWith('http') ? href : `${BASE_URL}${href.startsWith('/') ? '' : '/'}${href}`;
+}
+
+/**
+ * Build a Schema.org BreadcrumbList JSON-LD payload from the same array of crumbs
+ * we render with `<Breadcrumbs />`. The visible breadcrumb component renders Home
+ * as a separate icon, so we prepend a Home item here to keep the JSON-LD trail
+ * aligned with what users see.
+ */
+export function generateBreadcrumbJsonLdFromCrumbs(crumbs: ReadonlyArray<Pick<BreadcrumbsOjbect, 'name' | 'href'>>) {
+  const items = [{ '@type': 'ListItem' as const, position: 1, name: 'Home', item: BASE_URL }];
+  crumbs.forEach((c, idx) => {
+    items.push({ '@type': 'ListItem' as const, position: idx + 2, name: c.name, item: toAbsoluteUrl(c.href) });
+  });
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items,
+  };
+}
 
 function truncateForMeta(text: string, maxLength: number = 155): string {
   if (text.length <= maxLength) return text;

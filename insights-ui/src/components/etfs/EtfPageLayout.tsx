@@ -8,6 +8,7 @@ import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfBrowseSection, etfBasePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
 
 interface EtfPageLayoutProps {
   title: string;
@@ -39,8 +40,11 @@ export default function EtfPageLayout({
 }: EtfPageLayoutProps) {
   const breadcrumbs = buildBreadcrumbs(currentCountry, extraBreadcrumbs);
 
+  const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
+
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="overflow-x-auto">
         <Breadcrumbs
           breadcrumbs={breadcrumbs}
