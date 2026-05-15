@@ -16,15 +16,26 @@ type PageProps = {
   params: Promise<{ country: string; group: string }>;
 };
 
+const EMPTY_GROUP_DETAIL: EtfGroupDetailResponse = { found: false, values: {}, counts: {}, others: null };
+
+// Fail-soft so the first preview/prod build after introducing the listings
+// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// on the first real request once the new route is live in the target env.
 async function fetchGroupDetail(country: EtfSupportedCountry, groupKey: string): Promise<EtfGroupDetailResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/group?country=${encodeURIComponent(
     country
   )}&groupKey=${encodeURIComponent(groupKey)}`;
-  const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupDetailTag(country, groupKey)] } });
-  if (!res.ok) {
-    throw new Error(`fetchGroupDetail failed (${res.status}): ${url}`);
+  try {
+    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupDetailTag(country, groupKey)] } });
+    if (!res.ok) {
+      console.error(`fetchGroupDetail failed (${res.status}): ${url}`);
+      return EMPTY_GROUP_DETAIL;
+    }
+    return (await res.json()) as EtfGroupDetailResponse;
+  } catch (e) {
+    console.error('fetchGroupDetail error:', e);
+    return EMPTY_GROUP_DETAIL;
   }
-  return (await res.json()) as EtfGroupDetailResponse;
 }
 
 export async function generateMetadata(props: { params: Promise<{ country: string; group: string }> }): Promise<Metadata> {

@@ -11,13 +11,29 @@ export const revalidate = 1209600; // 14 days — must be a literal for Next.js 
 
 export const metadata = generateEtfListingMetadata();
 
+const EMPTY_GROUPS_INDEX: EtfGroupsIndexResponse = {
+  categoryValues: {},
+  categoryCounts: {},
+  groupCounts: {},
+  others: { items: [], count: 0 },
+};
+
+// Fail-soft so the first preview/prod build after introducing the listings
+// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// on the first real request once the new route is live in the target env.
 async function fetchGroupsIndex(country: SupportedCountries): Promise<EtfGroupsIndexResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/groups-index?country=${encodeURIComponent(country)}`;
-  const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupsIndexTag(country)] } });
-  if (!res.ok) {
-    throw new Error(`fetchGroupsIndex failed (${res.status}): ${url}`);
+  try {
+    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupsIndexTag(country)] } });
+    if (!res.ok) {
+      console.error(`fetchGroupsIndex failed (${res.status}): ${url}`);
+      return EMPTY_GROUPS_INDEX;
+    }
+    return (await res.json()) as EtfGroupsIndexResponse;
+  } catch (e) {
+    console.error('fetchGroupsIndex error:', e);
+    return EMPTY_GROUPS_INDEX;
   }
-  return (await res.json()) as EtfGroupsIndexResponse;
 }
 
 export default async function EtfsPage() {
