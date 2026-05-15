@@ -4,6 +4,7 @@ import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
 interface EtfProviderDetailProps {
   country: EtfSupportedCountry;
@@ -30,7 +31,7 @@ export default async function EtfProviderDetail({ country, provider, searchParam
       switcherSection="providers"
       extraBreadcrumbs={[
         { name: 'All Providers', href: etfBrowsePath(country, 'providers'), current: false },
-        { name: provider, href: etfBrowseDetailPath(country, 'providers', provider), current: true },
+        { name: provider, href: etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider)), current: true },
       ]}
     >
       <WithSuspenseEtfListingGrid dataPromise={dataPromise} />

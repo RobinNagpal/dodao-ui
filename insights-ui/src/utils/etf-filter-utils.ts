@@ -14,6 +14,7 @@ export enum EtfFilterType {
   DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   HOLDINGS = 'holdings',
+  VOLUME = 'volume',
   BETA = 'beta',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
@@ -47,6 +48,7 @@ export enum EtfFilterParamKey {
   DIVIDEND_YIELD = 'dividendYield',
   PAYOUT_FREQUENCY = 'payoutFrequency',
   HOLDINGS = 'holdings',
+  VOLUME = 'volume',
   BETA = 'beta',
   DIVIDEND_YEARS = 'dividendYears',
   ASSET_CLASS = 'assetClass',
@@ -92,6 +94,7 @@ type RangeFilterType =
   | EtfFilterType.DIVIDEND_TTM
   | EtfFilterType.DIVIDEND_YIELD
   | EtfFilterType.HOLDINGS
+  | EtfFilterType.VOLUME
   | EtfFilterType.BETA
   | EtfFilterType.DIVIDEND_YEARS
   | EtfFilterType.MOR_UPSIDE_3YR
@@ -209,6 +212,16 @@ export const ETF_HOLDINGS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Moderate (15 - 50)', value: '15-50' },
   { label: 'Many (50 - 250)', value: '50-250' },
   { label: 'Very Many (250+)', value: '250-' },
+] as const;
+
+// Daily trading volume buckets (shares). Source column is a Float, treated as raw share count.
+export const ETF_VOLUME_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Thin (< 50K)', value: '0-50000' },
+  { label: 'Light (50K - 250K)', value: '50000-250000' },
+  { label: 'Moderate (250K - 1M)', value: '250000-1000000' },
+  { label: 'Active (1M - 5M)', value: '1000000-5000000' },
+  { label: 'Heavy (> 5M)', value: '5000000-' },
 ] as const;
 
 export const ETF_BETA_OPTIONS: ReadonlyArray<ThresholdOption> = [
@@ -376,6 +389,7 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.DIVIDEND_YIELD,
   EtfFilterParamKey.PAYOUT_FREQUENCY,
   EtfFilterParamKey.HOLDINGS,
+  EtfFilterParamKey.VOLUME,
   EtfFilterParamKey.BETA,
   EtfFilterParamKey.DIVIDEND_YEARS,
   EtfFilterParamKey.ASSET_CLASS,
@@ -642,6 +656,13 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     if (f) filters.push(f);
   }
 
+  // Volume
+  const volumeRaw = searchParams.get(EtfFilterParamKey.VOLUME);
+  if (volumeRaw) {
+    const f = parseRangeFilter(volumeRaw, EtfFilterType.VOLUME, EtfFilterParamKey.VOLUME, ETF_VOLUME_OPTIONS, 'Volume');
+    if (f) filters.push(f);
+  }
+
   // Beta
   const betaRaw = searchParams.get(EtfFilterParamKey.BETA);
   if (betaRaw) {
@@ -901,6 +922,14 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
     if (holdingsRange.min !== undefined) holdingsFilter.gte = holdingsRange.min;
     if (holdingsRange.max !== undefined) holdingsFilter.lte = holdingsRange.max;
     where.holdings = holdingsFilter;
+  }
+
+  const volumeRange = parseRangeParam(filters[EtfFilterParamKey.VOLUME]);
+  if (volumeRange) {
+    const volumeFilter: Prisma.FloatNullableFilter = {};
+    if (volumeRange.min !== undefined) volumeFilter.gte = volumeRange.min;
+    if (volumeRange.max !== undefined) volumeFilter.lte = volumeRange.max;
+    where.volume = volumeFilter;
   }
 
   const dyRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YIELD]);

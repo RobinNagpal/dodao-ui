@@ -5,6 +5,7 @@ import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { fetchEtfsForGroupings } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
 interface EtfAssetClassesIndexProps {
   country: EtfSupportedCountry;
@@ -41,7 +42,7 @@ export default async function EtfAssetClassesIndex({ country }: EtfAssetClassesI
           <CompactEtfGroupingCard
             key={opt.value}
             title={opt.label}
-            href={etfBrowseDetailPath(country, 'asset-classes', opt.value)}
+            href={etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(opt.value))}
             totalCount={counts.get(opt.value) ?? 0}
             etfs={values.get(opt.value) ?? []}
           />

@@ -99,3 +99,23 @@ export function getEtfCategoryBySlug(slug: string | null | undefined): EtfCatego
   const needle = slug.toLowerCase();
   return categoriesConfig.categories.find((c) => slugifyEtfCategory(c.name) === needle);
 }
+
+export interface EtfFundCategoryHierarchy {
+  groupKey: string | null;
+  groupName: string | null;
+  fundCategoryName: string | null;
+  fundCategorySlug: string | null;
+}
+
+/** Derive the group → category hierarchy used in breadcrumbs from an ETF's raw fund category. */
+export function getEtfFundCategoryHierarchy(fundCategory: string | null | undefined): EtfFundCategoryHierarchy {
+  if (!fundCategory) return { groupKey: null, groupName: null, fundCategoryName: null, fundCategorySlug: null };
+  const groupKey = getEtfGroupKey(fundCategory) ?? null;
+  const groupName = getEtfGroupName(fundCategory) ?? null;
+  return {
+    groupKey,
+    groupName,
+    fundCategoryName: fundCategory,
+    fundCategorySlug: slugifyEtfCategory(fundCategory),
+  };
+}

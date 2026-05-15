@@ -483,7 +483,7 @@ function TickerAnalysisInfo({
   const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
-    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-8 sm:py-6" itemProp="abstract">
+    <section id="summary-analysis" className="bg-gray-800 rounded-lg shadow-sm mb-4 sm:py-6" itemProp="abstract">
       <h2 className="text-xl font-bold mb-4 pb-2 border-b border-gray-700">Summary Analysis</h2>
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
@@ -616,9 +616,7 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         {/* Analysis info - server rendered, no skeleton needed */}
         <TickerAnalysisInfo data={tickerData} competitionData={fullRender.competition} exchange={exchange} ticker={ticker} />
 
-        <section className="mb-6">
-          <SimilarTickers dataPromise={Promise.resolve(similarTickersForChild)} />
-        </section>
+        <SimilarTickers dataPromise={Promise.resolve(similarTickersForChild)} />
 
         <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>

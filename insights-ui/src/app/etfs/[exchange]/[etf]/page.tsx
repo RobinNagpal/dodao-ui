@@ -6,6 +6,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
+import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
@@ -29,7 +30,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense, use } from 'react';
+import { Suspense, use, type ReactNode } from 'react';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -247,7 +248,7 @@ function PriceChartSkeleton(): JSX.Element {
 function EtfChartsInfoSkeleton(): JSX.Element {
   return (
     <section className="mb-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           <EtfFinancialInfoSkeleton />
         </div>
@@ -276,22 +277,28 @@ function BreadcrumbsFromData({ data }: { data: Promise<EtfFastResponse> }): JSX.
   const exchange: string = d.exchange.toUpperCase();
   const etf: string = d.symbol.toUpperCase();
   const country: SupportedCountries = getCountryByExchange(toExchange(d.exchange));
+  const { groupKey, groupName, fundCategoryName, fundCategorySlug } = getEtfFundCategoryHierarchy(d.stockAnalyzerInfo?.category);
 
-  const breadcrumbs: BreadcrumbsOjbect[] =
+  const rootCrumb: BreadcrumbsOjbect =
     country === SupportedCountries.US
-      ? [
-          { name: 'US ETFs', href: `/etfs`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ]
+      ? { name: 'US ETFs', href: `/etfs`, current: false }
       : country
-      ? [
-          { name: `${country} ETFs`, href: `/etfs/countries/${country}`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ]
-      : [
-          { name: 'ETFs', href: `/etfs`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ];
+      ? { name: `${country} ETFs`, href: `/etfs/countries/${country}`, current: false }
+      : { name: 'ETFs', href: `/etfs`, current: false };
+  const countryPrefix = country === SupportedCountries.US ? '/etfs' : country ? `/etfs/countries/${country}` : '/etfs';
+
+  const breadcrumbs: BreadcrumbsOjbect[] = [rootCrumb];
+  if (groupKey && groupName) {
+    breadcrumbs.push({ name: groupName, href: `${countryPrefix}/groups/${groupKey}`, current: false });
+    if (fundCategoryName && fundCategorySlug) {
+      breadcrumbs.push({
+        name: fundCategoryName,
+        href: `${countryPrefix}/groups/${groupKey}/categories/${fundCategorySlug}`,
+        current: false,
+      });
+    }
+  }
+  breadcrumbs.push({ name: etf, href: `/etfs/${exchange}/${etf}`, current: true });
 
   return <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />;
 }
@@ -369,7 +376,7 @@ function EtfFinancialInfoSection({
 
   return (
     <section className="mb-8">
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
           {financialData ? <EtfFinancialInfo data={financialData} /> : <EtfFinancialInfoSkeleton />}
         </div>
@@ -417,13 +424,15 @@ function EtfAnalysisSection({
   analysisPromise,
   exchange,
   symbol,
+  afterPerformanceReturns,
 }: {
   analysisPromise: Promise<EtfAnalysisResponse>;
   exchange: string;
   symbol: string;
+  afterPerformanceReturns?: ReactNode;
 }): JSX.Element | null {
   const analysis: EtfAnalysisResponse = use(analysisPromise);
-  return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} />;
+  return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} afterPerformanceReturns={afterPerformanceReturns} />;
 }
 
 const HOLDINGS_PREVIEW_LIMIT = 10;
@@ -508,7 +517,14 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateEtfDetailBreadcrumbJsonLd({ etfName: etfData.name, symbol: etfData.symbol, exchange: etfData.exchange })),
+          __html: JSON.stringify(
+            generateEtfDetailBreadcrumbJsonLd({
+              etfName: etfData.name,
+              symbol: etfData.symbol,
+              exchange: etfData.exchange,
+              ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
+            })
+          ),
         }}
       />
 
@@ -540,11 +556,16 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         </Suspense>
 
         <Suspense fallback={null}>
-          <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
-        </Suspense>
-
-        <Suspense fallback={null}>
-          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
+          <EtfAnalysisSection
+            analysisPromise={analysisPromise}
+            exchange={exchange}
+            symbol={etf}
+            afterPerformanceReturns={
+              <Suspense fallback={null}>
+                <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
+              </Suspense>
+            }
+          />
         </Suspense>
 
         <div className="mx-auto max-w-7xl">

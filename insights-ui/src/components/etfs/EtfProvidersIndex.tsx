@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { fetchEtfProvidersForCountry } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
 interface EtfProvidersIndexProps {
   country: EtfSupportedCountry;
@@ -31,7 +32,7 @@ export default async function EtfProvidersIndex({ country }: EtfProvidersIndexPr
             <CompactEtfGroupingCard
               key={provider}
               title={provider}
-              href={etfBrowseDetailPath(country, 'providers', provider)}
+              href={etfBrowseDetailPath(country, 'providers', slugifyEtfTag(provider))}
               totalCount={counts.get(provider) ?? 0}
               etfs={values.get(provider) ?? []}
             />

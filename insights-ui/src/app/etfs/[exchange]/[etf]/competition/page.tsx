@@ -1,3 +1,4 @@
+import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -5,8 +6,8 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { getCountryByExchange, SupportedCountries, toExchange } from '@/utils/countryExchangeUtils';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
+import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -25,6 +26,17 @@ async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCo
   const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfCompetitionResponse | null;
+}
+
+async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) return null;
+    return (await res.json()) as EtfFastResponse | null;
+  } catch {
+    return null;
+  }
 }
 
 function truncateForMeta(text: string, maxLength: number = 155): string {
@@ -77,34 +89,27 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const [data, availableSlugs] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfAvailableSlugs(exchangeUpper, etfUpper)]);
+  const [data, availableSlugs, etfFast] = await Promise.all([
+    fetchEtfCompetition(exchangeUpper, etfUpper),
+    fetchEtfAvailableSlugs(exchangeUpper, etfUpper),
+    fetchEtfFast(exchangeUpper, etfUpper),
+  ]);
   if (!data || !data.etf) {
     notFound();
   }
 
-  const country: SupportedCountries = getCountryByExchange(toExchange(data.etf.exchange));
-
-  const breadcrumbs: BreadcrumbsOjbect[] =
-    country === SupportedCountries.US
-      ? [
-          { name: 'US ETFs', href: `/etfs`, current: false },
-          { name: etfUpper, href: `/etfs/${exchangeUpper}/${etfUpper}`, current: false },
-          { name: 'Competition', href: `/etfs/${exchangeUpper}/${etfUpper}/competition`, current: true },
-        ]
-      : country
-      ? [
-          { name: `${country} ETFs`, href: `/etfs/countries/${country}`, current: false },
-          { name: etfUpper, href: `/etfs/${exchangeUpper}/${etfUpper}`, current: false },
-          { name: 'Competition', href: `/etfs/${exchangeUpper}/${etfUpper}/competition`, current: true },
-        ]
-      : [
-          { name: 'ETFs', href: `/etfs`, current: false },
-          { name: etfUpper, href: `/etfs/${exchangeUpper}/${etfUpper}`, current: false },
-          { name: 'Competition', href: `/etfs/${exchangeUpper}/${etfUpper}/competition`, current: true },
-        ];
+  const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
+    exchange: exchangeUpper,
+    symbol: etfUpper,
+    fundCategory: etfFast?.stockAnalyzerInfo?.category ?? null,
+    sectionName: 'Competition',
+    sectionSlug: 'competition',
+  });
+  const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
   return (
     <PageWrapper>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
       <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
     </PageWrapper>

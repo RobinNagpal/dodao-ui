@@ -11,7 +11,8 @@ import { EtfMorReturnsRow } from '@/types/prismaTypes';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
+import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -129,13 +130,16 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
     exchange,
     categoryName: CATEGORY_NAME,
     categorySlug: CATEGORY_SLUG,
+    ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
   });
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: 'US ETFs', href: '/etfs', current: false },
-    { name: `${etfData.name} (${symbol})`, href: `/etfs/${exchange}/${symbol}`, current: false },
-    { name: CATEGORY_NAME, href: `/etfs/${exchange}/${symbol}/${CATEGORY_SLUG}`, current: true },
-  ];
+  const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
+    exchange,
+    symbol,
+    fundCategory: etfData.stockAnalyzerInfo?.category,
+    sectionName: CATEGORY_NAME,
+    sectionSlug: CATEGORY_SLUG,
+  });
 
   return (
     <PageWrapper>

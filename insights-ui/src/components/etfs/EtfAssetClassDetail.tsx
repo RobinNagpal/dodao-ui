@@ -4,6 +4,7 @@ import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfFilterParamKey, EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
 interface EtfAssetClassDetailProps {
   country: EtfSupportedCountry;
@@ -33,7 +34,7 @@ export default async function EtfAssetClassDetail({ country, assetClass, searchP
       switcherSection="asset-classes"
       extraBreadcrumbs={[
         { name: 'All Asset Classes', href: etfBrowsePath(country, 'asset-classes'), current: false },
-        { name: displayAssetClass, href: etfBrowseDetailPath(country, 'asset-classes', filterValue), current: true },
+        { name: displayAssetClass, href: etfBrowseDetailPath(country, 'asset-classes', slugifyEtfTag(filterValue)), current: true },
       ]}
     >
       <WithSuspenseEtfListingGrid dataPromise={dataPromise} />

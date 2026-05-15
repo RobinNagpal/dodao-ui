@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { getEtfGroupName, getEtfGroupKey } from '@/utils/etf-categorization-utils';
+import { getEtfGroupName, getEtfGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { getCountryByExchange, SupportedCountries, toExchange } from '@/utils/countryExchangeUtils';
+import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
 export interface EtfMetadataBadgesProps {
   exchange?: string | null;
@@ -46,7 +47,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Asset Class',
       value: assetClass,
-      href: `${prefix}/asset-classes/${encodeURIComponent(assetClass)}`,
+      href: `${prefix}/asset-classes/${slugifyEtfTag(assetClass)}`,
       colorClasses: ASSET_CLASS_COLORS,
     });
   }
@@ -54,7 +55,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Group',
       value: groupName,
-      href: `${prefix}/groups/${encodeURIComponent(groupKey)}`,
+      href: `${prefix}/groups/${groupKey}`,
       colorClasses: GROUP_COLORS,
     });
   }
@@ -62,7 +63,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Category',
       value: category,
-      href: `${prefix}/categories/${encodeURIComponent(category)}`,
+      href: groupKey ? `${prefix}/groups/${groupKey}/categories/${slugifyEtfCategory(category)}` : null,
       colorClasses: CATEGORY_COLORS,
     });
   }
@@ -70,7 +71,7 @@ export default function EtfMetadataBadges({ exchange, assetClass, category, issu
     items.push({
       label: 'Provider',
       value: trimmedIssuer,
-      href: `${prefix}/providers/${encodeURIComponent(trimmedIssuer)}`,
+      href: `${prefix}/providers/${slugifyEtfTag(trimmedIssuer)}`,
       colorClasses: PROVIDER_COLORS,
     });
   }

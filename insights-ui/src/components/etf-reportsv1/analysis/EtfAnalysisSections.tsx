@@ -3,6 +3,7 @@ import AdminTimestamp from '@/components/auth/AdminTimestamp';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import Link from 'next/link';
+import { Fragment, type ReactNode } from 'react';
 
 const CATEGORY_DISPLAY: Record<string, { name: string; order: number; slug: string }> = {
   [EtfAnalysisCategory.PerformanceAndReturns]: { name: 'Performance & Returns', order: 1, slug: 'performance-returns' },
@@ -22,9 +23,11 @@ interface EtfAnalysisSectionsProps {
   data: EtfAnalysisResponse;
   exchange: string;
   symbol: string;
+  /** Optional content rendered inside the Summary Analysis flow, immediately after the Performance & Returns card. */
+  afterPerformanceReturns?: ReactNode;
 }
 
-export default function EtfAnalysisSections({ data, exchange, symbol }: EtfAnalysisSectionsProps): JSX.Element | null {
+export default function EtfAnalysisSections({ data, exchange, symbol, afterPerformanceReturns }: EtfAnalysisSectionsProps): JSX.Element | null {
   if (!data.categories || data.categories.length === 0) {
     return null;
   }
@@ -37,35 +40,38 @@ export default function EtfAnalysisSections({ data, exchange, symbol }: EtfAnaly
           const categoryResult = data.categories.find((r) => r.categoryKey === categoryKey);
           const display = CATEGORY_DISPLAY[categoryKey] || { name: categoryKey, order: 99, slug: '' };
           return (
-            <div key={categoryKey} className="bg-gray-900 p-4 rounded-md shadow-sm">
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">{display.name}</h3>
-                  {categoryResult && (
-                    <div
-                      className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
-                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+            <Fragment key={categoryKey}>
+              <div className="bg-gray-900 p-4 rounded-md shadow-sm">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">{display.name}</h3>
+                    {categoryResult && (
+                      <div
+                        className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium"
+                        style={{ backgroundColor: 'var(--primary-color, #3b82f6)', color: 'white' }}
+                      >
+                        {categoryResult.factorResults?.filter((fr) => fr.result === 'Pass').length || 0}/{categoryResult.factorResults?.length || 0}
+                      </div>
+                    )}
+                    {categoryResult?.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
+                  </div>
+                  {categoryResult && display.slug && (
+                    <Link
+                      href={`/etfs/${exchange}/${symbol}/${display.slug}`}
+                      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                      style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                     >
-                      {categoryResult.factorResults?.filter((fr) => fr.result === 'Pass').length || 0}/{categoryResult.factorResults?.length || 0}
-                    </div>
+                      View Detailed Analysis →
+                    </Link>
                   )}
-                  {categoryResult?.updatedAt && <AdminTimestamp date={categoryResult.updatedAt} />}
                 </div>
-                {categoryResult && display.slug && (
-                  <Link
-                    href={`/etfs/${exchange}/${symbol}/${display.slug}`}
-                    className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                    style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-                  >
-                    View Detailed Analysis →
-                  </Link>
-                )}
+                <div
+                  className="text-gray-300 markdown markdown-body"
+                  dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
+                />
               </div>
-              <div
-                className="text-gray-300 markdown markdown-body"
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
-              />
-            </div>
+              {categoryKey === EtfAnalysisCategory.PerformanceAndReturns && afterPerformanceReturns}
+            </Fragment>
           );
         })}
       </div>

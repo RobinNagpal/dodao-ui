@@ -1,7 +1,10 @@
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import EtfMorInfo from '@/components/etf-reportsv1/EtfMorInfo';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
+import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
@@ -86,9 +89,20 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
 
   if (!etfData) notFound();
 
+  const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
+    exchange,
+    symbol: etfSymbol,
+    fundCategory: etfData.stockAnalyzerInfo?.category,
+    sectionName: 'Financial Data',
+    sectionSlug: 'financial-data',
+  });
+  const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
+
   return (
     <PageWrapper>
-      <div className="mb-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+      <div className="mb-6 mt-4">
         <h1 className="text-2xl font-bold">
           {etfData.name} ({etfData.symbol}) — Raw Financial Data
         </h1>
