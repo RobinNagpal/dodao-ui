@@ -273,13 +273,15 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         </div>
       </div>
 
-      {/* Advanced (Mor) Filters */}
+      {/* Advanced risk-period filters (capture ratios + risk level) */}
       <div>
-        <h3 className="text-white font-semibold text-xs mb-1">Advanced Filters (Mor)</h3>
-        <p className="text-[#9CA3AF] text-[10px] mb-2">Only ETFs with Mor data shown when active. Pick a time period; the three filters below apply to it.</p>
+        <h3 className="text-white font-semibold text-xs mb-1 text-center">Advanced Filters</h3>
+        <p className="text-[#9CA3AF] text-[10px] mb-2 text-center">
+          Only ETFs with risk data are shown when these are active. Pick a time period; the three filters below apply to it.
+        </p>
 
-        <div className="mb-3">
-          <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider mr-2">Time Period:</span>
+        <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
+          <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
           <div className="inline-flex gap-1.5">
             {MOR_PERIODS.map((p) => (
               <button
@@ -297,7 +299,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-2xl mx-auto">
           {MOR_FIELD_KINDS.map((kind) => {
             const def = getMorFilterDef(kind, morPeriod);
             return (

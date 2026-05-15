@@ -36,6 +36,8 @@ export interface EtfListingItem {
   payoutFrequency: string | null;
   holdings: number | null;
   beta: number | null;
+  finalScore: number | null;
+  category: string | null;
   hasMorAnalyzerInfo: boolean;
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
@@ -73,6 +75,8 @@ function toEtfListingItem(etf: any): EtfListingItem {
     payoutFrequency: etf.financialInfo?.payoutFrequency ?? null,
     holdings: etf.financialInfo?.holdings ?? null,
     beta: etf.financialInfo?.beta ?? null,
+    finalScore: etf.cachedScore?.finalScore ?? null,
+    category: etf.stockAnalyzerInfo?.category ?? null,
     hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
     hasMorRiskInfo: !!etf.morRiskInfo,
     hasMorPeopleInfo: !!etf.morPeopleInfo,
@@ -81,6 +85,8 @@ function toEtfListingItem(etf: any): EtfListingItem {
 
 const etfListingInclude = {
   financialInfo: true,
+  cachedScore: { select: { finalScore: true } },
+  stockAnalyzerInfo: { select: { category: true } },
   morAnalyzerInfo: { select: { id: true } },
   morRiskInfo: { select: { id: true } },
   morPeopleInfo: { select: { id: true } },
@@ -88,6 +94,8 @@ const etfListingInclude = {
 
 const etfListingIncludeWithMorRisk = {
   financialInfo: true,
+  cachedScore: { select: { finalScore: true } },
+  stockAnalyzerInfo: { select: { category: true } },
   morAnalyzerInfo: { select: { id: true } },
   morRiskInfo: true,
   morPeopleInfo: { select: { id: true } },
