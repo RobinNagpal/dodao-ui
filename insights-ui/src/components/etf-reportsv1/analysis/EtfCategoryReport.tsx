@@ -1,10 +1,12 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
+import EtfRelatedSections, { AvailableEtfSiblingSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 const PASS_RESULT = 'Pass';
 
@@ -26,6 +28,11 @@ export interface EtfCategoryReportProps {
   assetClass?: string | null;
   fundCategory?: string | null;
   issuer?: string | null;
+  indexName?: string | null;
+  /** Slug of the current sibling page (e.g. "performance-returns"). When set with {@link availableSiblingSlugsPromise}, renders a related-sections nav before the footer. */
+  currentSlug?: string;
+  /** Promise of slugs known to have publishable content. Awaited inside a Suspense boundary. */
+  availableSiblingSlugsPromise?: Promise<AvailableEtfSiblingSlugs>;
 }
 
 export default function EtfCategoryReport({
@@ -40,6 +47,9 @@ export default function EtfCategoryReport({
   assetClass,
   fundCategory,
   issuer,
+  indexName,
+  currentSlug,
+  availableSiblingSlugsPromise,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -74,7 +84,7 @@ export default function EtfCategoryReport({
                   {formattedModifiedDate}
                 </time>
               </div>
-              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} className="mt-3" />
+              <EtfMetadataBadges exchange={exchange} assetClass={assetClass} category={fundCategory} issuer={issuer} indexName={indexName} className="mt-3" />
             </div>
             <Link href={`/etfs/${exchange}/${symbol}`} className="link-color hover:underline text-sm font-medium whitespace-nowrap flex items-center gap-1">
               View Full Report →
@@ -142,6 +152,18 @@ export default function EtfCategoryReport({
             </section>
           )}
         </div>
+
+        {currentSlug && availableSiblingSlugsPromise && (
+          <Suspense fallback={null}>
+            <EtfRelatedSections
+              availableSlugsPromise={availableSiblingSlugsPromise}
+              exchange={exchange}
+              symbol={symbol}
+              etfName={etfName}
+              currentSlug={currentSlug}
+            />
+          </Suspense>
+        )}
 
         <footer className="mt-8 pt-6 border-t border-color">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
