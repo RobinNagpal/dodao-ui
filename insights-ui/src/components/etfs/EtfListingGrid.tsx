@@ -1,32 +1,10 @@
 import { EtfListingResponse, EtfListingItem } from '@/app/api/[spaceId]/etfs-v1/listing/route';
-import PrivateWrapper from '@/components/auth/PrivateWrapper';
 import { formatPercentageDecimal } from '@/components/reportsv1/financialFormatters';
+import { getEtfGroupKey } from '@/utils/etf-categorization-utils';
+import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React, { use } from 'react';
 import EtfPagination from './EtfPagination';
-
-const MOR_INDICATORS: Array<{ key: keyof Pick<EtfListingItem, 'hasMorAnalyzerInfo' | 'hasMorRiskInfo' | 'hasMorPeopleInfo'>; label: string }> = [
-  { key: 'hasMorAnalyzerInfo', label: 'Analyzer' },
-  { key: 'hasMorRiskInfo', label: 'Risk' },
-  { key: 'hasMorPeopleInfo', label: 'People' },
-];
-
-function MorIndicators({ etf }: { etf: EtfListingItem }): JSX.Element {
-  return (
-    <PrivateWrapper>
-      <div className="flex items-center gap-1.5" aria-label="MOR data available">
-        {MOR_INDICATORS.map(({ key, label }) => (
-          <span key={key} className="relative group/dot">
-            <span className={`inline-block w-2 h-2 rounded-full ${etf[key] ? 'bg-emerald-400' : 'bg-gray-600'}`} />
-            <span className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[10px] text-gray-200 opacity-0 shadow-lg transition-opacity group-hover/dot:opacity-100 border border-gray-700 z-10">
-              MOR {label}: {etf[key] ? 'Present' : 'Missing'}
-            </span>
-          </span>
-        ))}
-      </div>
-    </PrivateWrapper>
-  );
-}
 
 function parseNumericString(value: string | null): number | null {
   if (!value) return null;
@@ -56,19 +34,55 @@ function formatNumber(value: number | null): string {
   return value.toLocaleString('en-US', { maximumFractionDigits: 2 });
 }
 
+// Groups where P/E is a meaningful summary statistic (the fund's underlying is
+// earnings-bearing equities). For everything else, the listing card swaps P/E
+// out for a group-appropriate metric (see `pickThirdMetric`).
+const EQUITY_GROUP_KEYS = new Set(['broad-equity', 'sector-thematic-equity', 'leveraged-inverse']);
+
+interface ThirdMetric {
+  label: string;
+  value: string;
+}
+
+function pickThirdMetric(etf: EtfListingItem): ThirdMetric {
+  const groupKey = getEtfGroupKey(etf.category);
+  if (groupKey && EQUITY_GROUP_KEYS.has(groupKey)) {
+    return { label: 'P/E Ratio', value: formatNumber(etf.pe) };
+  }
+  // Holdings count works as the generic stand-in for non-equity funds
+  // (commodities/digital-assets, fixed income, allocation, derivative income):
+  // it tells the reader how diversified the wrapper is without leaning on a
+  // metric that only makes sense for equities.
+  return { label: 'Holdings', value: etf.holdings !== null && etf.holdings !== undefined ? etf.holdings.toLocaleString('en-US') : 'N/A' };
+}
+
 function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
+  const third = pickThirdMetric(etf);
+  const score = etf.finalScore;
+  const { textColorClass, bgColorClass } = getEtfScoreColorClasses(score);
+  const showScore = score !== null;
+
   return (
     <Link
       href={`/etfs/${etf.exchange}/${etf.symbol}`}
-      className="block bg-[#1F2937] border border-[#374151] rounded-lg p-4 hover:border-[#F59E0B] hover:shadow-lg transition-all duration-200"
+      className="block bg-gray-900 border border-[#374151] rounded-lg p-4 hover:border-[#F59E0B] hover:shadow-lg transition-all duration-200"
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between mb-3 gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-black text-xs font-bold px-2 py-0.5 rounded">{etf.symbol}</span>
           <span className="text-xs text-gray-400">{etf.exchange}</span>
-          <MorIndicators etf={etf} />
         </div>
-        {etf.payoutFrequency && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
+        <div className="flex items-center gap-2 shrink-0">
+          {showScore && (
+            <span
+              className={`${textColorClass} px-1.5 rounded-md ${bgColorClass} bg-opacity-15 text-xs font-mono tabular-nums`}
+              title={`KoalaGains score: ${score}/20`}
+            >
+              {score}/20
+            </span>
+          )}
+          {etf.payoutFrequency && <span className="text-xs text-gray-400 bg-[#374151] px-2 py-0.5 rounded">{etf.payoutFrequency}</span>}
+        </div>
       </div>
 
       <h3 className="text-white text-sm font-medium mb-3 line-clamp-2 min-h-[2.5rem]">{etf.name}</h3>
@@ -83,8 +97,8 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
           <p className="text-white font-medium">{etf.expenseRatio !== null ? `${etf.expenseRatio}%` : 'N/A'}</p>
         </div>
         <div>
-          <span className="text-gray-400">P/E Ratio</span>
-          <p className="text-white font-medium">{formatNumber(etf.pe)}</p>
+          <span className="text-gray-400">{third.label}</span>
+          <p className="text-white font-medium">{third.value}</p>
         </div>
         <div>
           <span className="text-gray-400">Dividend Yield</span>

@@ -86,3 +86,38 @@ export function getScoreColorClasses(score: number) {
 
   return { textColorClass, bgColorClass, scoreLabel };
 }
+
+/**
+ * Get color classes and label for an ETF score.
+ *
+ * ETF final scores sum four category scores (0–5 each) for a 0–20 range.
+ * Thresholds are scaled proportionally to the 0–25 stock thresholds:
+ *   stocks <8/<14/<20/>=20  →  etfs <6/<11/<16/>=16.
+ *
+ * Returns gray for `null` (no report yet) so the badge still renders.
+ */
+export function getEtfScoreColorClasses(score: number | null) {
+  if (score === null) {
+    return { textColorClass: 'text-gray-400', bgColorClass: 'bg-gray-500', scoreLabel: 'Unknown' };
+  }
+
+  let textColorClass = 'text-green-500';
+  let bgColorClass = 'bg-green-500';
+  let scoreLabel = 'Excellent';
+
+  if (score < 6) {
+    textColorClass = 'text-red-500';
+    bgColorClass = 'bg-red-500';
+    scoreLabel = 'Poor';
+  } else if (score < 11) {
+    textColorClass = 'text-orange-500';
+    bgColorClass = 'bg-orange-500';
+    scoreLabel = 'Fair';
+  } else if (score < 16) {
+    textColorClass = 'text-yellow-500';
+    bgColorClass = 'bg-yellow-500';
+    scoreLabel = 'Good';
+  }
+
+  return { textColorClass, bgColorClass, scoreLabel };
+}

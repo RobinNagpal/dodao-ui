@@ -193,6 +193,65 @@ export async function fetchUncategorizedEtfPreview(spaceId: string, country?: Et
   return { items: selectTopFive(rows), count: rows.length };
 }
 
+function sortByScoreThenAum(rows: RawEtfRow[]): EtfGroupingPreviewItem[] {
+  const withReport = rows.filter((r) => r.finalScore !== null).sort((a, b) => (b.finalScore ?? 0) - (a.finalScore ?? 0));
+
+  const withoutReport = rows.filter((r) => r.finalScore === null).sort((a, b) => (parseNumericStringValue(b.aum) ?? 0) - (parseNumericStringValue(a.aum) ?? 0));
+
+  return [...withReport, ...withoutReport].map((r) => ({
+    id: r.id,
+    symbol: r.symbol,
+    exchange: r.exchange,
+    name: r.name,
+    finalScore: r.finalScore,
+    hasDetailedReport: r.finalScore !== null,
+  }));
+}
+
+/**
+ * Returns every ETF (no top-N cap) bucketed by category for the given canonical
+ * category names. ETFs are ordered by `finalScore desc, AUM desc`. Used by the
+ * group detail page which lists all ETFs per category, packed into columns.
+ */
+export async function fetchAllEtfsByCategory(spaceId: string, categoryNames: string[], country?: EtfSupportedCountry): Promise<EtfGroupingPreview<string>> {
+  const valueToKey = new Map<string, string>();
+  for (const name of categoryNames) {
+    valueToKey.set(name, name);
+  }
+
+  const canonicalToBucket = new Map(valueToKey);
+  for (const [canonical, bucketKey] of canonicalToBucket) {
+    const expansions = expandCategoryAliases([canonical]);
+    for (const raw of expansions) {
+      if (!valueToKey.has(raw)) valueToKey.set(raw, bucketKey);
+    }
+  }
+
+  const dbValues = Array.from(valueToKey.keys());
+  const rawRows = await loadRawEtfRows(spaceId, 'category', dbValues, country);
+
+  const rowsByKey = new Map<string, RawEtfRow[]>();
+  const counts = new Map<string, number>();
+
+  for (const row of rawRows) {
+    if (!row.category) continue;
+    const lookup = canonicalizeCategory(row.category);
+    const bucketKey = valueToKey.get(lookup) ?? valueToKey.get(row.category);
+    if (!bucketKey) continue;
+    const bucket = rowsByKey.get(bucketKey) ?? [];
+    bucket.push(row);
+    rowsByKey.set(bucketKey, bucket);
+    counts.set(bucketKey, (counts.get(bucketKey) ?? 0) + 1);
+  }
+
+  const values = new Map<string, EtfGroupingPreviewItem[]>();
+  for (const [bucketKey, rows] of rowsByKey.entries()) {
+    values.set(bucketKey, sortByScoreThenAum(rows));
+  }
+
+  return { values, counts };
+}
+
 export async function fetchEtfsForGroupings<TKey extends string>({
   spaceId,
   mode,

@@ -29,6 +29,8 @@ function toEtfListingItem(etf: any): EtfListingItem {
     payoutFrequency: etf.financialInfo?.payoutFrequency ?? null,
     holdings: etf.financialInfo?.holdings ?? null,
     beta: etf.financialInfo?.beta ?? null,
+    finalScore: etf.cachedScore?.finalScore ?? null,
+    category: etf.stockAnalyzerInfo?.category ?? null,
     hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
     hasMorRiskInfo: !!etf.morRiskInfo,
     hasMorPeopleInfo: !!etf.morPeopleInfo,
@@ -44,6 +46,8 @@ export default async function EtfsPage() {
         where: { spaceId: KoalaGainsSpaceId },
         include: {
           financialInfo: true,
+          cachedScore: { select: { finalScore: true } },
+          stockAnalyzerInfo: { select: { category: true } },
           morAnalyzerInfo: { select: { id: true } },
           morRiskInfo: { select: { id: true } },
           morPeopleInfo: { select: { id: true } },

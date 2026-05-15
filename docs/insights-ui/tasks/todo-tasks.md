@@ -128,6 +128,10 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] **Add ETF country pages** (later) — `/etfs/countries/[country]` route exists; finish data wiring + sitemap + SEO once category pages are battle-tested.
 - [ ] **Cross-link from ETF detail pages** — category name links to the category page; small "Related ETFs in this category" block at the bottom.
 
+### ETF listing pages — UI fixes
+
+- [ ] **Audit + fix UI issues across the ETF listing surfaces** — `/etfs` (index), `/etfs/categories` (+ `[category]`), `/etfs/countries` (+ `[country]`), `/etfs/asset-classes` (+ `[assetClass]`), `/etfs/groups` (+ `[group]`), `/etfs/providers` (+ `[provider]`). Walk each page on desktop + mobile and capture concrete issues here as sub-bullets before scheduling fixes: layout/spacing, card alignment, header + breadcrumb consistency across the sub-listing variants, empty/loading/error states, sort + filter UX, pagination, and dark/light theme rendering. Cross-check against the `isComplete` filter behavior once that lands.
+
 ### Known limitations in the new 8-group taxonomy (follow-up cleanups)
 
 - [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
