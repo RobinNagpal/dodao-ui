@@ -7,7 +7,7 @@ import {
   revalidatePortfolioManagersByTypeTag,
   revalidatePortfolioProfileTag,
 } from '@/utils/ticker-v1-cache-utils';
-import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { revalidateAllEtfTags } from '@/utils/etf-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
@@ -56,7 +56,9 @@ export async function revalidateTickerCache(ticker: string, exchange: string) {
 }
 
 export async function revalidateEtfCache(symbol: string, exchange: string) {
-  revalidateEtfAndExchangeTag(symbol, exchange);
+  // Admin "Invalidate cache" is meant to clear *everything* for an ETF —
+  // main page plus every per-subpage cache slice.
+  revalidateAllEtfTags(symbol, exchange);
   return { success: true, message: `Cache invalidated for ETF ${exchange.toUpperCase()}:${symbol.toUpperCase()}` };
 }
 

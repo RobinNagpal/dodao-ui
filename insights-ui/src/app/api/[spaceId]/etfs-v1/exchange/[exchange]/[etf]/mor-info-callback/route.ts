@@ -16,7 +16,7 @@ import {
   EtfMorPortfolioSectorExposure,
   EtfMorPortfolioStyleMeasures,
 } from '@/types/prismaTypes';
-import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { revalidateEtfAndExchangeTag, revalidateEtfHoldingsTag } from '@/utils/etf-cache-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -331,6 +331,12 @@ async function postHandler(
     throw new Error(`Unknown kind: ${kind}`);
   }
 
+  // Main page renders previews of all 4 MOR sections — always fire umbrella.
+  // Holdings subpage only reads morPortfolioInfo, so its narrow tag only fires
+  // when this run actually wrote the portfolio section.
+  if (kind === 'portfolio') {
+    revalidateEtfHoldingsTag(etfRecord.symbol, etfRecord.exchange);
+  }
   revalidateEtfAndExchangeTag(etfRecord.symbol, etfRecord.exchange);
 
   return { success: true, kind, errors: lambdaErrors };

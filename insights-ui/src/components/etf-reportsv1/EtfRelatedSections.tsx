@@ -1,7 +1,7 @@
-import { EtfAvailableSectionsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/available-sections/route';
+import { prisma } from '@/prisma';
+import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
-import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import Link from 'next/link';
 
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
@@ -13,24 +13,55 @@ const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'holdings', label: 'Holdings' },
 ];
 
-const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+const ANALYSIS_CATEGORY_TO_SLUG: Readonly<Record<string, string>> = {
+  [EtfAnalysisCategory.PerformanceAndReturns]: 'performance-returns',
+  [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'cost-efficiency-team',
+  [EtfAnalysisCategory.RiskAnalysis]: 'risk-analysis',
+  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'future-performance-outlook',
+};
 
 /**
- * Server-side helper for ETF detail/category pages. Calls the
- * `/available-sections` API so the page's other parallel fetches can share
- * the result via `Promise.all`, and so revalidation rides the same
- * per-ETF cache tag as the rest of the page data.
+ * Server-side helper for ETF detail/category pages. Hits Prisma directly so the
+ * call rides the per-page ISR cache (no separate fetch-cache entry → no shared
+ * cache tag that would force all subpages to invalidate together). Mirrors the
+ * stocks-side `getAvailableSiblingSlugs` in `TickerRelatedSections.tsx`.
  */
 export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): Promise<string[]> {
-  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${symbol.toUpperCase()}/available-sections`;
-  try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(symbol, exchange)] } });
-    if (!res.ok) return [];
-    const data = (await res.json()) as EtfAvailableSectionsResponse;
-    return data.slugs ?? [];
-  } catch {
-    return [];
+  const where = getEtfWhereClause({ spaceId: KoalaGainsSpaceId, exchange, etf: symbol });
+  if (!where.symbol || !where.exchange) return [];
+
+  const etfRecord = await prisma.etf.findFirst({ where, select: { id: true } });
+  if (!etfRecord) return [];
+
+  const [analysisRows, competitionRow, holdingsRow] = await Promise.all([
+    prisma.etfCategoryAnalysisResult.findMany({
+      where: {
+        spaceId: KoalaGainsSpaceId,
+        etfId: etfRecord.id,
+        summary: { not: '' },
+        overallAnalysisDetails: { not: '' },
+      },
+      select: { categoryKey: true },
+    }),
+    prisma.etfVsCompetition.findFirst({
+      where: { spaceId: KoalaGainsSpaceId, etfId: etfRecord.id, overallAnalysisDetails: { not: '' } },
+      select: { id: true },
+    }),
+    prisma.etfMorPortfolioInfo.findFirst({
+      where: { etfId: etfRecord.id },
+      select: { id: true },
+    }),
+  ]);
+
+  const available = new Set<string>();
+  for (const row of analysisRows) {
+    const slug = ANALYSIS_CATEGORY_TO_SLUG[row.categoryKey as string];
+    if (slug) available.add(slug);
   }
+  if (competitionRow) available.add('competition');
+  if (holdingsRow) available.add('holdings');
+
+  return Array.from(available);
 }
 
 export interface EtfRelatedSectionsProps {

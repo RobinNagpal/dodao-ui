@@ -3,11 +3,9 @@ import { formatNumber, formatPercentageDecimal, formatVolume } from '@/component
 import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
-import { use } from 'react';
 
 export interface SimilarEtfsProps {
-  /** Promise-based fetch (resolved via `use()` to keep Suspense at the caller). */
-  dataPromise: Promise<SimilarEtf[]>;
+  data: ReadonlyArray<SimilarEtf>;
 }
 
 interface ColumnDef {
@@ -81,8 +79,7 @@ function SimilarEtfMobileCard({ etf }: { etf: SimilarEtf }): JSX.Element {
   );
 }
 
-export default function SimilarEtfs({ dataPromise }: SimilarEtfsProps): JSX.Element | null {
-  const similarEtfs: ReadonlyArray<SimilarEtf> = use(dataPromise);
+export default function SimilarEtfs({ data: similarEtfs }: SimilarEtfsProps): JSX.Element | null {
   if (!similarEtfs || similarEtfs.length === 0) {
     return null;
   }
