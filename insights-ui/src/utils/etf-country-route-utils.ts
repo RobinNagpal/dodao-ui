@@ -26,6 +26,11 @@ export function etfBrowseDetailPath(country: EtfSupportedCountry, section: EtfBr
   return `${etfBrowsePath(country, section)}/${encodeURIComponent(slug)}`;
 }
 
+/** Path to a category page nested under a group: `/etfs/groups/<group>/categories/<category>`. */
+export function etfGroupCategoryPath(country: EtfSupportedCountry, groupKey: string, categoryName: string): string {
+  return `${etfBrowseDetailPath(country, 'groups', groupKey)}/categories/${encodeURIComponent(categoryName)}`;
+}
+
 export const ALL_ETF_COUNTRIES = ETF_SUPPORTED_COUNTRIES;
 
 /**
