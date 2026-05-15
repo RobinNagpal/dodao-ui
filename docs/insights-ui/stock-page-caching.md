@@ -1,44 +1,65 @@
-# Stock Page Caching — Where, By What, and How It's Cleared
+# Stock Page Caching — Quick Reference
 
-A reference for every cache that sits between a request to `/stocks/[exchange]/[ticker]` (and its subpages) and the database. Per-route table at the top, then a write-side / invalidation-side table, then an answer to the standing question **"why are writes > reads on Vercel's ISR meter when most reports were merged days ago?"**
+## TL;DR
 
-The behavior here is the result of three merged PRs:
+Each of the 8 pages under `/stocks/[exchange]/[ticker]` subscribes to exactly **one** cache tag. No fetch attaches more than one tag, and no tag is shared between pages — so a `revalidateTag(X)` call invalidates exactly one page's cache. The only "fan-out" invalidations are deliberate and named in code (e.g. `revalidateAllTickerTags`), not implicit through shared tags.
 
-- [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472) — split umbrella tag into per-subpage tags, removed read-path `revalidateTag` calls, added `prefetch={false}` to every ticker-bound `<Link>`.
-- [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473) — narrow tag always fires; `skipRevalidation` defers only the umbrella; `fetch-financial-data` admin route is umbrella-only; financial fetches get an 8-day time-based revalidate as a backstop for dormant tickers.
-- [#1450](https://github.com/RobinNagpal/dodao-ui/pull/1450) (ETFs, listed for completeness) — cache-buster query param on a tagged fetch whose response shape changed.
+After PRs [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472), [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473), and the `/full-render` consolidation in this PR, one rebuild = **1 HTML + 1 Data Cache write = 2 cache writes per page**. Writes will lead reads only when the cron cadence (or admin actions) invalidate pages faster than crawlers can revisit them.
 
-## 1) Per-route caching map
+**Biggest remaining levers** (in order — see §6):
 
-Every per-ticker page is `force-static` with `revalidate = false` and `dynamicParams = true` — they are statically rendered on first request, stored in Vercel's ISR cache, then rebuilt on demand when one of their subscribed tags is invalidated. There is **no time-based ISR revalidate** on any of these routes; rebuilds happen only via tag invalidation. The 8-day fetch-level revalidate on three specific upstream fetches in the main page is a separate backstop (see §3).
+1. ETF pages still use the OLD stock architecture (~8 fetches per page sharing one tag across 4 subpages).
+2. The `*/3 * * * *` `generate-ticker-v1-request` cron drives most invalidations.
+3. `revalidateAllTickerTags` invalidates 8 pages per admin click — audit how often it fires.
 
-| Route | Page-level cache | `fetch()` tags inside the page render | DB-write API routes pulled in during render |
-|---|---|---|---|
-| `/stocks/[exchange]/[ticker]` (main) | ISR (force-static) | `tickerAndExchangeTag(t,e)` — **1 fetch**: `…/exchange/<e>/<t>/full-render` (consolidates ticker, similar, financial-info, quarterly-chart, price-history, competition into one tagged Data Cache entry with an 8-day backstop `revalidate`). | `full-render` (calls `ensureStockAnalyzerDataIsFresh` once → may `upsert` `TickerV1StockAnalyzerScrapperInfo`, and `ensurePriceHistoryIsFresh` once → may `upsert` `TickerV1PriceHistory`). Both functions still skip `revalidateTag` per #1472 so they don't evict the cache entry being filled. |
-| `/stocks/[exchange]/[ticker]/business-and-moat` | ISR (force-static) | `tickerCategoryReportTag(t,e,BusinessAndMoat)` — used by 1 fetch: `…/business-and-moat-data` | None — `business-and-moat-data` reads `TickerV1CategoryAnalysisResult` only. (The separate `business-and-moat` API route — without `-data` — is a write-path scraper call used by the LLM pipeline; the page does not hit it.) |
-| `/stocks/[exchange]/[ticker]/financial-statement-analysis` | ISR (force-static) | `tickerCategoryReportTag(t,e,FinancialStatementAnalysis)` — 1 fetch: `…/financial-statement-analysis-data` | None — reads `TickerV1CategoryAnalysisResult` only. |
-| `/stocks/[exchange]/[ticker]/past-performance` | ISR (force-static) | `tickerCategoryReportTag(t,e,PastPerformance)` — 1 fetch: `…/past-performance-data` | None. |
-| `/stocks/[exchange]/[ticker]/future-performance` | ISR (force-static) | `tickerCategoryReportTag(t,e,FutureGrowth)` — 1 fetch: `…/future-growth-data` (slug = `future-growth-data` in `performance-page-utils`) | None. |
-| `/stocks/[exchange]/[ticker]/fair-value` | ISR (force-static) | `tickerCategoryReportTag(t,e,FairValue)` — 1 fetch: `…/fair-value-data` | None (fair-value-data is a DB-only read; the LLM-side `refreshMarketSummaryForFairValue` only runs in the report-generation pipeline, not on page render). |
-| `/stocks/[exchange]/[ticker]/competition` | ISR (force-static) | `tickerCompetitionTag(t,e)` — 1 fetch: `…/competition-tickers` | None — `competition-tickers` reads `TickerV1VsCompetition` only. |
-| `/stocks/[exchange]/[ticker]/management-team` | ISR (force-static) | `tickerManagementTeamTag(t,e)` — 1 fetch: `…/exchange/<e>/<t>?allowNull=true` (same endpoint as main page, but tagged narrowly so it gets its own Data Cache entry) | None. |
+---
 
-**Notes**
+## 1. The 8 pages and the 8 tags
 
-- The main page now issues a single tagged fetch to `…/full-render`. Previously it called six (ticker, similar, financial-info, quarterly-chart, price-history, competition) — each producing its own Data Cache entry; consolidating dropped the per-rebuild cache-write cost from 1 HTML + 6 Data Cache entries to 1 HTML + 1 Data Cache entry.
-- Each subpage subscribes to exactly one narrow tag, not the umbrella — so a financial-statement save invalidates the main page + financial-statement subpage and nothing else.
-- `business-and-moat-data` ≠ `business-and-moat`. The page reads the `-data` route (DB-only). The non-`-data` route triggers a scraper write and is used only by the LLM generation pipeline.
-- `not-found.tsx` for `/stocks/[exchange]/[ticker]` does its own week-long fetch with `tags: [getStocksPageTag('US')]` — a 404 response is itself cached.
+Every per-ticker page is `force-static` with `revalidate = false` and `dynamicParams = true`. They render statically on first request and stay in Vercel's ISR cache until a tag they subscribe to is invalidated.
 
-## 2) Where the cache is invalidated (write side)
+| Route | The single tag it subscribes to | Defined in |
+|---|---|---|
+| `/stocks/[exchange]/[ticker]` (main) | `tickerAndExchangeTag(t,e)` ("the umbrella") | `app/stocks/[exchange]/[ticker]/page.tsx` |
+| `/stocks/[exchange]/[ticker]/business-and-moat` | `tickerCategoryReportTag(t,e,BusinessAndMoat)` | via `utils/performance-page-utils.ts` |
+| `/stocks/[exchange]/[ticker]/financial-statement-analysis` | `tickerCategoryReportTag(t,e,FinancialStatementAnalysis)` | via `utils/performance-page-utils.ts` |
+| `/stocks/[exchange]/[ticker]/past-performance` | `tickerCategoryReportTag(t,e,PastPerformance)` | via `utils/performance-page-utils.ts` |
+| `/stocks/[exchange]/[ticker]/future-performance` | `tickerCategoryReportTag(t,e,FutureGrowth)` | via `utils/performance-page-utils.ts` |
+| `/stocks/[exchange]/[ticker]/fair-value` | `tickerCategoryReportTag(t,e,FairValue)` | via `utils/performance-page-utils.ts` |
+| `/stocks/[exchange]/[ticker]/competition` | `tickerCompetitionTag(t,e)` | `app/stocks/[exchange]/[ticker]/competition/page.tsx` |
+| `/stocks/[exchange]/[ticker]/management-team` | `tickerManagementTeamTag(t,e)` | `app/stocks/[exchange]/[ticker]/management-team/page.tsx` |
 
-Three classes of trigger: LLM report saves during the regen pipeline, admin actions on the ticker page, and a time-based fetch-cache expiry. All `revalidate*` helpers are in `utils/ticker-v1-cache-utils.ts`.
+The 5 `tickerCategoryReportTag(t,e,category)` values are **5 distinct tag strings** (one per category enum) — not a shared "generic" tag. The category parameter is baked into the tag string, so `tickerCategoryReportTag(AAPL,NASDAQ,BusinessAndMoat) !== tickerCategoryReportTag(AAPL,NASDAQ,FairValue)`.
 
-### 2a) LLM report saves
+## 2. Two questions, asked and answered
 
-Every save runs through `bumpUpdatedAtAndInvalidateCache` (`utils/ticker-v1-model-utils.ts`), called from the matching saver in `utils/analysis-reports/save-report-utils.ts`. The narrow subpage tag always fires immediately; the umbrella is deferred (skipped) during intermediate steps of a multi-step regen — the last step of the pipeline always fires the umbrella.
+**Q1. Does any fetch attach more than one tag (like `tags: [narrow, generic]`)?**
 
-| Report type saved (via `save-report-callback`) | Narrow tag invalidated | Umbrella `tickerAndExchangeTag` |
+**No.** Every cache-tagged `fetch()` in the stocks tree uses exactly one tag. Verified:
+
+```bash
+grep -rn 'next: { tags:' insights-ui/src/  # all entries are tags: [X] — single element
+```
+
+If anyone ever introduces `tags: [narrow, generic]`, flushing `generic` would cascade across every fetch that uses it. That's a footgun this codebase avoids today.
+
+**Q2. Is any tag attached to more than one page?**
+
+**No, within stocks.** Each of the 8 tags above appears in exactly one `fetch()` call in the codebase (plus its `revalidate*` helper). Flushing `tickerCompetitionTag(AAPL,NASDAQ)` rebuilds only `/stocks/NASDAQ/AAPL/competition`, never anything else.
+
+**Yes, on other surfaces** — see §6 for `etfAndExchangeTag` (used by 8 fetches on one page **and** 3+ ETF subpages) and `getStocksPageTag` (used by home page, `/stocks`, `/stocks/countries/X`, and the 404 page).
+
+**Q3. What about cascade invalidations like "edit ticker → all 8 pages rebuild"?**
+
+Those exist, but they're **explicit, not implicit**. `revalidateAllTickerTags(t,e)` is a function that calls `revalidateTag` 8 times in a row, once per ticker tag. The cascade is named in code, not hidden behind a tag two fetches happen to share.
+
+## 3. Who calls `revalidateTag` for each tag (write side)
+
+All `revalidate*` helpers live in `utils/ticker-v1-cache-utils.ts`. Every save in `utils/analysis-reports/save-report-utils.ts` runs through `bumpUpdatedAtAndInvalidateCache` (`utils/ticker-v1-model-utils.ts`), which always fires the narrow tag and only defers the umbrella when `skipRevalidation: true` (used during intermediate steps of a multi-step regen — the last step always fires the umbrella).
+
+### 3a. LLM report saves (`save-report-callback` route)
+
+| Report type saved | Narrow tag fires | Umbrella fires |
 |---|---|---|
 | `BUSINESS_AND_MOAT` | `tickerCategoryReportTag(t,e,BusinessAndMoat)` | yes (deferred during partial regen) |
 | `FINANCIAL_ANALYSIS` | `tickerCategoryReportTag(t,e,FinancialStatementAnalysis)` | yes (deferred) |
@@ -47,60 +68,96 @@ Every save runs through `bumpUpdatedAtAndInvalidateCache` (`utils/ticker-v1-mode
 | `FAIR_VALUE` | `tickerCategoryReportTag(t,e,FairValue)` | yes (deferred) |
 | `COMPETITION` | `tickerCompetitionTag(t,e)` | yes (deferred) |
 | `MANAGEMENT_TEAM` | `tickerManagementTeamTag(t,e)` | yes (deferred) |
-| `INVESTOR_ANALYSIS` | (none — no subpage renders this slice) | yes |
+| `INVESTOR_ANALYSIS` | (none — no subpage uses it) | yes |
 | `FINAL_SUMMARY` | (none) | yes |
 
-So a full 8-step regen invalidates each touched narrow tag once + the umbrella once at the end. A partial regen (e.g. only `BUSINESS_AND_MOAT`) invalidates only that one narrow tag + the umbrella.
+### 3b. Admin actions
 
-### 2b) Admin actions
-
-| Trigger | Source | Tags invalidated |
-|---|---|---|
-| "Invalidate cache" button on ticker page | `StockActions.tsx#handleDropdownSelect('invalidate-cache')` → `cache-actions.ts#revalidateTickerCache` → `revalidateAllTickerTags` | **everything** (umbrella + competition + management-team + all 5 category tags) |
-| "Edit stock details" modal save | `StockActions.tsx#handleEditDetailsSaved` → `revalidateTickerCache` | **everything** |
-| Admin PUT `/api/[spaceId]/tickers-v1/exchange/<e>/<t>` (edit `stockAnalyzeUrl`, set `movedExchange` / `movedSymbol` / `isDeleted`) | `exchange/[exchange]/[ticker]/route.ts` putHandler → `revalidateAllTickerTags` | **everything** (moved/deleted state is enforced at the top of every per-ticker page render) |
-| Admin "Refresh financial data" batch | `app/api/[spaceId]/tickers-v1/fetch-financial-data/route.ts` → `revalidateTickerAndExchangeTag` | umbrella only (scraper data only feeds the main page) |
-
-### 2c) Time-based fetch-cache expiry (not a tag invalidation)
-
-| Trigger | Effect |
+| Trigger | Tags fired |
 |---|---|
-| 8-day `revalidate` on the consolidated `…/full-render` fetch (`app/stocks/[exchange]/[ticker]/page.tsx`, `EIGHT_DAYS_IN_SECONDS`) | The single Data Cache entry expires after 8 days, forcing the consolidated fetch to re-execute on the next request. Backstop so dormant tickers can refresh their underlying scraper / Yahoo data without an external invalidation. |
+| "Invalidate cache" button on ticker page (`StockActions.tsx`) | **all 8** via `revalidateAllTickerTags` |
+| "Edit stock details" modal save (`StockActions.tsx#handleEditDetailsSaved`) | **all 8** via `revalidateAllTickerTags` |
+| Admin PUT `/api/[spaceId]/tickers-v1/exchange/<e>/<t>` (edit `stockAnalyzeUrl` / set `movedExchange` / set `movedSymbol` / set `isDeleted`) | **all 8** via `revalidateAllTickerTags` |
+| Admin "Refresh financial data" batch (`fetch-financial-data/route.ts`) | umbrella only — scraper data only feeds the main page |
 
-### 2d) What does NOT invalidate ticker caches
+### 3c. Time-based expiry (not a tag invalidation)
 
-- `ensurePriceHistoryIsFresh`, `fetchAndUpdateStockAnalyzerData`, `refreshMarketSummaryForFairValue` — **intentionally none.** Per #1472 these used to call `revalidateTag` from the read path and were evicting the cache entry they were about to fill; that's removed.
-- ETF saves, scenarios, tariffs, daily-movers, portfolio-managers — separate cache namespaces (`etf_*`, `koalagains:etf-scenario:*`, `tariff_*`, `koalagains:daily-movers:*`, `koalagains:portfolio-*`). None of them call a `revalidateTicker*Tag` helper.
+The single `…/full-render` fetch on the main page has `next: { revalidate: 8 * 24 * 60 * 60 }`. After 8 days the cache entry expires on its own — backstop so dormant tickers can refresh their underlying scraper / Yahoo data without an external invalidation. The Data Cache entry is the only thing that expires; the page HTML stays cached until a tag invalidation forces a rebuild.
 
-### 2e) Mental model
+### 3d. What does NOT invalidate any ticker tag
 
-- **A coding save** → only that report's subpage + main page rebuild.
-- **Admin "revalidate" / "edit ticker" / "mark moved or deleted"** → every page for that ticker rebuilds.
-- **Admin "refresh financial data"** → only main page rebuilds.
-- **8 days idle** → main page Data Cache entry expires once, scraper data refreshes on next view.
+- `ensurePriceHistoryIsFresh`, `fetchAndUpdateStockAnalyzerData`, `refreshMarketSummaryForFairValue` — **intentionally none.** Per #1472, these used to call `revalidateTag` from the read path and were evicting the cache entry they were about to fill; that's removed.
+- ETF / scenario / tariff / daily-mover / portfolio-manager saves — separate cache namespaces (`etf_*`, `koalagains:etf-scenario:*`, `tariff_*`, `koalagains:daily-movers:*`, `koalagains:portfolio-*`). None call `revalidateTicker*Tag`.
+
+## 4. Cache-write math (after this PR)
+
+A page rebuild costs **1 HTML ISR write + 1 Data Cache write (the single tagged fetch's response) = 2 cache writes**. Same for every page now — there are no pages with multiple tagged fetches in the stocks tree.
+
+| Trigger | Pages invalidated | Cache writes when each invalidated page is next visited |
+|---|---|---|
+| Save 1 category report | 1 subpage + main page (umbrella) | 2 + 2 = **4** |
+| Save competition | /competition + main page | **4** |
+| Save management-team | /management-team + main page | **4** |
+| Save investor analysis or final summary | main page only | **2** |
+| Full 8-step regen (typical) | All 8 pages, each rebuilt once | 8 × 2 = **16** |
+| Admin "Invalidate cache" / "Edit stock" / PUT | All 8 pages | **16** |
+| Admin "Refresh financial data" batch | Main page only | **2** |
+
+A pure cache hit serves the stored HTML + the stored Data Cache entry — both count as reads, neither writes.
+
+## 5. Mental model in five bullets
+
+- **A coding save** → only that report's subpage + main page get rebuilt on the next view.
+- **Admin "Invalidate cache" / "Edit stock" / "Mark moved or deleted"** → every page for that ticker rebuilds on its next view.
+- **Admin "Refresh financial data"** → only the main page rebuilds.
+- **8 days idle** → the main page's Data Cache entry expires once; scraper/Yahoo data refreshes on the next view.
 - **Anything ETF / tariff / scenario / mover-related** → ticker caches untouched.
 
-## 3) Why ISR writes used to exceed reads (and what changed)
+## 6. The next biggest culprits (in order of impact)
 
-PRs #1472 and #1473 eliminated **unnecessary** invalidations (read-path revalidates, every-subpage-on-every-save, prefetch-driven rebuilds). They did not, however, change the fact that the main ticker page was issuing **six separately-tagged `fetch()`es per render** — and on Vercel's unified Cache Writes meter, each tagged fetch is its own Data Cache entry. So each rebuild used to cost **1 HTML ISR write + 6 Data Cache writes = 7 cache writes per rebuild**, while a single view only counted as ~1 read. With the `*/3 * * * *` `generate-ticker-v1-request` cron processing up to 10 generation requests every 3 minutes (~200 tickers/hour), the 833 writes/hour on `/stocks/[exchange]/[ticker]` reported in production mapped roughly to 100–120 invalidations/hour × 7 cache writes each + sparse organic reads.
+The stocks tree is structurally clean now. If overall Vercel costs are still too high, the highest-impact follow-ups are:
 
-For `/competition`, one rebuild ≈ 2 writes (HTML + 1 Data Cache entry for `…/competition-tickers`). The observed 7.6K writes / 4.5K reads ≈ 1.7:1 maps to ~1.18 views per rebuild — same shape, smaller multiplier.
+### 6a. ETF pages still use the **OLD** stock architecture (highest leverage)
 
-**Consolidating the six fetches into one `…/full-render` endpoint dropped the main page's per-rebuild multiplier from ~7× to ~2×.** A single tagged fetch ⇒ a single Data Cache entry ⇒ one HTML write + one Data Cache write per rebuild. With the same invalidation cadence, the projected steady-state shifts from ~833 writes/hour to ~240 writes/hour on the main page, putting reads ahead of writes whenever the average ticker gets more than ~2 views between umbrella invalidations.
+`insights-ui/src/app/etfs/[exchange]/[etf]/page.tsx` issues **8 tagged fetches** per render — and each one uses the same `etfAndExchangeTag(s,e)`. Three subpages (`risk-analysis`, `holdings`, `cost-efficiency-team`) also subscribe to that same tag. So:
 
-**Remaining levers** if writes still need to come down further:
+- One main-ETF-page rebuild = 1 HTML + 8 Data Cache writes = **9 cache writes**.
+- One `revalidateEtfAndExchangeTag` call (fired by every ETF report save in `save-etf-report-utils.ts` — 4 sites — and by `fetch-financial-info` and `mor-info-callback`) invalidates **all 4 ETF surfaces for that ETF**.
 
-- **Lengthen the cron cadence.** `*/3 * * * *` is 480 firings/day. Each firing that produces a `FINAL_SUMMARY` save invalidates one umbrella tag. Moving to `*/10` or batching multiple completed regens into a single revalidate call would cut umbrella invalidations by 3×. The `[Vercel cost optimization]` task in `docs/insights-ui/tasks/overall_task.md` already calls this out.
-- **Decouple bot crawls from rebuilds.** Each first-view-after-invalidation pays the rebuild cost; subsequent views are pure reads. If Googlebot is the dominant traffic and visits each ticker page once before the next invalidation, you'll see `writes:reads ≈ 2:1` indefinitely. Either rate-limit invalidations to roughly the bot's recrawl cadence, or accept the 2× multiplier as the floor for one-tagged-fetch-per-page ISR.
-- **Audit scraper-freshness work during rebuild.** `…/full-render` calls `ensureStockAnalyzerDataIsFresh` and `ensurePriceHistoryIsFresh` once per rebuild. The 7d / 30d / 90d staleness windows in `stock-analyzer-scraper-utils.ts` should keep most of those calls as no-ops, but worth a 24h sample of `UPDATE TickerV1StockAnalyzerScrapperInfo` frequency to confirm.
-- **(Optional) Skip HTTP entirely.** Replacing the `…/full-render` fetch with direct Prisma access wrapped in `unstable_cache` would remove the in-region HTTP round-trip while keeping the single Data Cache entry. Lower latency on cold builds; same cache-write count.
+This is the same anti-pattern that stocks just escaped. The fix is the same: a single `/etfs/[exchange]/[etf]/full-render` endpoint that consolidates the 8 fetches into one, and per-subpage narrow tags so a holdings save doesn't invalidate the risk-analysis page. Expected impact: ETF main-page cache writes drop ~4×.
 
-## 4) Quick diagnostic checklist
+### 6b. Cron cadence `*/3 * * * *`
 
-If a future audit shows the multipliers changing, check (in order):
+`vercel.json` runs `generate-ticker-v1-request` 480 times/day. Each tick processes up to 10 regen requests. Most completed regens fire `FINAL_SUMMARY` at the end, which invalidates the umbrella tag → main page rebuilds. With ~200 tickers/hour going through some regen activity, that's roughly 100-120 umbrella invalidations/hour just from this cron. Moving to `*/10` would cut umbrella invalidations 3×; `*/15` would cut them 5×. Same for the ETF cron (also `*/3`). Trade-off: regen latency for tickers in the queue.
 
-1. Did anyone re-introduce a `revalidateTag` call from a read-path utility? `grep -rn revalidateTag src/` and look for callers that are *not* in `save-report-utils.ts`, `cache-actions.ts`, the admin PUT route, or the `fetch-financial-data` admin route.
-2. Did anyone widen a save to use `revalidateAllTickerTags` where a narrow tag would do? Only the admin "Revalidate" button and the admin PUT (move/delete) should ever invoke that.
-3. Did any new `<Link>` to `/stocks/[exchange]/[ticker]` drop `prefetch={false}`? `grep -rn 'href={\`/stocks/' src/` — every one of these on a listing surface should disable prefetch.
-4. Did anyone add a tagged `fetch()` to the main page (or bypass `…/full-render`)? Each new tagged fetch adds 1 to the per-rebuild write multiplier.
-5. Did the cron cadence (`vercel.json` `crons`) get tightened? `*/3` is the floor that drove the existing baseline.
+### 6c. Blast radius of `revalidateAllTickerTags`
+
+Every admin click on "Invalidate cache" or "Edit stock details", plus every admin PUT that touches `stockAnalyzeUrl` / `movedExchange` / `movedSymbol` / `isDeleted`, fires **8 `revalidateTag` calls** — one per ticker page. Each invalidated page then costs 2 writes on its next view = **16 writes per admin click**. If admins use these heavily (or if a script loops over tickers calling the PUT route), this dominates everything else.
+
+Quick audits worth running: how often is `cache-actions.ts#revalidateTickerCache` called per day (Vercel logs filter on `Cache invalidated for`)? Could the admin PUT route narrow its invalidation — e.g. only fire the umbrella when `stockAnalyzeUrl` changes, since `movedExchange` / `isDeleted` only need to invalidate pages whose render uses `enforceMovedRedirect` / `enforceDeletedTicker`?
+
+### 6d. `getStocksPageTag(country)` is shared across multiple listing surfaces
+
+| Page | Subscribes via |
+|---|---|
+| Home page (`/`) | `app/page.tsx` (top industries fetch + `unstable_cache` industries list) |
+| `/stocks` | `app/stocks/page.tsx` |
+| `/stocks/countries/[country]` | `app/stocks/countries/[country]/page.tsx` |
+| `/stocks/[exchange]/[ticker]/not-found.tsx` | `app/stocks/[exchange]/[ticker]/not-found.tsx` |
+
+Calling `revalidateStocksPageCache(country)` invalidates all of these for that country. Today the only caller is the "refresh stocks listing" admin action in `StocksGridPageActions.tsx` — low frequency — but it's worth flagging in case any save path adopts it later.
+
+### 6e. Scraper-freshness work on every main-page rebuild
+
+`/full-render` calls `ensureStockAnalyzerDataIsFresh` (which may `upsert TickerV1StockAnalyzerScrapperInfo`) and `ensurePriceHistoryIsFresh` (which may `upsert TickerV1PriceHistory`) on every rebuild. The 7d / 30d / 90d staleness windows in `stock-analyzer-scraper-utils.ts` should keep most of these as no-ops, but if the umbrella keeps invalidating faster than the staleness window, each rebuild does real DB writes + a Yahoo / Lambda call. Worth a 24h sample of `UPDATE TickerV1StockAnalyzerScrapperInfo` frequency to confirm.
+
+## 7. Diagnostic checklist
+
+When auditing later — in order:
+
+1. `grep -rn "next: { tags:" insights-ui/src/` — every entry should be `tags: [X]` (one element). A `tags: [a, b]` slipping in is the #1 footgun for cascade invalidations.
+2. `grep -rn "revalidateTag\b" insights-ui/src/` — callers should be limited to `save-report-utils.ts`, `cache-actions.ts`, the admin PUT route, `fetch-financial-data` route, and the equivalent ETF / scenario / tariff savers. Anything else (especially in a read path) is a regression of #1472.
+3. `grep -rn 'tickerAndExchangeTag\|tickerCategoryReportTag\|tickerCompetitionTag\|tickerManagementTeamTag' insights-ui/src/` — each tag function should appear in exactly one page render (plus its `revalidate*` helper definition).
+4. `grep -rn 'href={\`/stocks/' insights-ui/src/` — every `<Link>` to a stock page on a listing surface should pass `prefetch={false}` (otherwise App Router will trigger background prefetches that count as rebuilds after every invalidation).
+5. `vercel.json` `crons` — `*/3` is the floor that drove the existing baseline; anything tighter will spike writes proportionally.
+6. Sanity-check `revalidateAllTickerTags` callers (`grep -rn revalidateAllTickerTags insights-ui/src/`). Today: `cache-actions.ts#revalidateTickerCache` and the admin PUT route. Anything new = audit.
