@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import type { EtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 
 const SITE_NAME = 'KoalaGains';
 const BASE_URL = 'https://koalagains.com';
@@ -181,15 +182,39 @@ export function generateEtfDetailArticleJsonLd({
   };
 }
 
-export function generateEtfDetailBreadcrumbJsonLd({ etfName, symbol, exchange }: { etfName: string; symbol: string; exchange: string }) {
+export function generateEtfDetailBreadcrumbJsonLd({
+  etfName,
+  symbol,
+  exchange,
+  groupKey,
+  groupName,
+  fundCategoryName,
+  fundCategorySlug,
+}: {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+} & EtfFundCategoryHierarchy) {
+  const items: Array<{ '@type': 'ListItem'; position: number; name: string; item: string }> = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+    { '@type': 'ListItem', position: 2, name: 'US ETFs', item: `${BASE_URL}/etfs` },
+  ];
+  if (groupKey && groupName) {
+    items.push({ '@type': 'ListItem', position: items.length + 1, name: groupName, item: `${BASE_URL}/etfs/groups/${groupKey}` });
+    if (fundCategoryName && fundCategorySlug) {
+      items.push({
+        '@type': 'ListItem',
+        position: items.length + 1,
+        name: fundCategoryName,
+        item: `${BASE_URL}/etfs/groups/${groupKey}/categories/${fundCategorySlug}`,
+      });
+    }
+  }
+  items.push({ '@type': 'ListItem', position: items.length + 1, name: `${etfName} (${symbol})`, item: `${BASE_URL}/etfs/${exchange}/${symbol}` });
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: 'US ETFs', item: `${BASE_URL}/etfs` },
-      { '@type': 'ListItem', position: 3, name: `${etfName} (${symbol})`, item: `${BASE_URL}/etfs/${exchange}/${symbol}` },
-    ],
+    itemListElement: items,
   };
 }
 
@@ -269,16 +294,35 @@ export function generateEtfCategoryArticleJsonLd(input: {
   };
 }
 
-export function generateEtfCategoryBreadcrumbJsonLd(input: { etfName: string; symbol: string; exchange: string; categoryName: string; categorySlug: string }) {
-  const { etfName, symbol, exchange, categoryName, categorySlug } = input;
+export function generateEtfCategoryBreadcrumbJsonLd(
+  input: { etfName: string; symbol: string; exchange: string; categoryName: string; categorySlug: string } & EtfFundCategoryHierarchy
+) {
+  const { etfName: _etfName, symbol, exchange, categoryName, categorySlug, groupKey, groupName, fundCategoryName, fundCategorySlug } = input;
+  const items: Array<{ '@type': 'ListItem'; position: number; name: string; item: string }> = [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
+    { '@type': 'ListItem', position: 2, name: 'US ETFs', item: `${BASE_URL}/etfs` },
+  ];
+  if (groupKey && groupName) {
+    items.push({ '@type': 'ListItem', position: items.length + 1, name: groupName, item: `${BASE_URL}/etfs/groups/${groupKey}` });
+    if (fundCategoryName && fundCategorySlug) {
+      items.push({
+        '@type': 'ListItem',
+        position: items.length + 1,
+        name: fundCategoryName,
+        item: `${BASE_URL}/etfs/groups/${groupKey}/categories/${fundCategorySlug}`,
+      });
+    }
+  }
+  items.push({ '@type': 'ListItem', position: items.length + 1, name: symbol, item: `${BASE_URL}/etfs/${exchange}/${symbol}` });
+  items.push({
+    '@type': 'ListItem',
+    position: items.length + 1,
+    name: categoryName,
+    item: `${BASE_URL}/etfs/${exchange}/${symbol}/${categorySlug}`,
+  });
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: 'US ETFs', item: `${BASE_URL}/etfs` },
-      { '@type': 'ListItem', position: 3, name: `${etfName} (${symbol})`, item: `${BASE_URL}/etfs/${exchange}/${symbol}` },
-      { '@type': 'ListItem', position: 4, name: categoryName, item: `${BASE_URL}/etfs/${exchange}/${symbol}/${categorySlug}` },
-    ],
+    itemListElement: items,
   };
 }

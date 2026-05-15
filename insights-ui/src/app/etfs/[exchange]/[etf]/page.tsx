@@ -6,6 +6,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
 import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
+import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
@@ -276,22 +277,28 @@ function BreadcrumbsFromData({ data }: { data: Promise<EtfFastResponse> }): JSX.
   const exchange: string = d.exchange.toUpperCase();
   const etf: string = d.symbol.toUpperCase();
   const country: SupportedCountries = getCountryByExchange(toExchange(d.exchange));
+  const { groupKey, groupName, fundCategoryName, fundCategorySlug } = getEtfFundCategoryHierarchy(d.stockAnalyzerInfo?.category);
 
-  const breadcrumbs: BreadcrumbsOjbect[] =
+  const rootCrumb: BreadcrumbsOjbect =
     country === SupportedCountries.US
-      ? [
-          { name: 'US ETFs', href: `/etfs`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ]
+      ? { name: 'US ETFs', href: `/etfs`, current: false }
       : country
-      ? [
-          { name: `${country} ETFs`, href: `/etfs/countries/${country}`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ]
-      : [
-          { name: 'ETFs', href: `/etfs`, current: false },
-          { name: etf, href: `/etfs/${exchange}/${etf}`, current: true },
-        ];
+      ? { name: `${country} ETFs`, href: `/etfs/countries/${country}`, current: false }
+      : { name: 'ETFs', href: `/etfs`, current: false };
+  const countryPrefix = country === SupportedCountries.US ? '/etfs' : country ? `/etfs/countries/${country}` : '/etfs';
+
+  const breadcrumbs: BreadcrumbsOjbect[] = [rootCrumb];
+  if (groupKey && groupName) {
+    breadcrumbs.push({ name: groupName, href: `${countryPrefix}/groups/${groupKey}`, current: false });
+    if (fundCategoryName && fundCategorySlug) {
+      breadcrumbs.push({
+        name: fundCategoryName,
+        href: `${countryPrefix}/groups/${groupKey}/categories/${fundCategorySlug}`,
+        current: false,
+      });
+    }
+  }
+  breadcrumbs.push({ name: etf, href: `/etfs/${exchange}/${etf}`, current: true });
 
   return <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />;
 }
@@ -508,7 +515,14 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(generateEtfDetailBreadcrumbJsonLd({ etfName: etfData.name, symbol: etfData.symbol, exchange: etfData.exchange })),
+          __html: JSON.stringify(
+            generateEtfDetailBreadcrumbJsonLd({
+              etfName: etfData.name,
+              symbol: etfData.symbol,
+              exchange: etfData.exchange,
+              ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
+            })
+          ),
         }}
       />
 

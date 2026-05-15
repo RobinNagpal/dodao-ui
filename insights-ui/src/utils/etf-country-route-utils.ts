@@ -3,7 +3,7 @@ import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfSupportedCountry, ETF_SUPPORTED_COUNTRIES, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
-export type EtfBrowseSection = 'groups' | 'categories' | 'asset-classes' | 'providers';
+export type EtfBrowseSection = 'groups' | 'asset-classes' | 'providers';
 
 const COUNTRY_DISPLAY_NAME: Record<EtfSupportedCountry, string> = {
   [SupportedCountries.US]: 'US',

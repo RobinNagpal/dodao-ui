@@ -4,7 +4,7 @@ import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfFilterParamKey, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfCategoryByName, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
+import { etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { notFound, permanentRedirect } from 'next/navigation';
 
 interface EtfGroupCategoryDetailProps {
@@ -44,7 +44,6 @@ export default async function EtfGroupCategoryDetail({ country, groupKey, catego
       currentCountry={country}
       switcherSection="groups"
       extraBreadcrumbs={[
-        { name: 'All Groups', href: etfSectionIndexPath(country, 'groups'), current: false },
         { name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: false },
         { name: knownCategory.name, href: etfGroupCategoryPath(country, groupObj.key, knownCategory.name), current: true },
       ]}

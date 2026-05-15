@@ -6,7 +6,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
+import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -72,11 +72,13 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse;
 
-  const breadcrumbs: BreadcrumbsOjbect[] = [
-    { name: 'US ETFs', href: '/etfs', current: false },
-    { name: `${etfData.name} (${symbol})`, href: `/etfs/${exchange}/${symbol}`, current: false },
-    { name: 'Holdings', href: `/etfs/${exchange}/${symbol}/holdings`, current: true },
-  ];
+  const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
+    exchange,
+    symbol,
+    fundCategory: etfData.stockAnalyzerInfo?.category,
+    sectionName: 'Holdings',
+    sectionSlug: 'holdings',
+  });
 
   const totalHoldings = holdings?.holdings?.length ?? 0;
 
