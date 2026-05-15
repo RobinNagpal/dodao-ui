@@ -219,23 +219,15 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
   return (
     <div className="space-y-5">
       {/* AI Score Thresholds — hero band */}
-      <div>
-        <div className="flex items-baseline justify-between mb-2">
-          <h3 className="text-white font-semibold text-sm">AI Score Thresholds</h3>
-          <p className="text-[#9CA3AF] text-[11px]">
-            Minimum scores from KoalaGains&apos; per-category analysis. Total is summed across the four categories (max 20).
-          </p>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
-          {ETF_CATEGORY_SCORE_DEFS.map((def) => (
-            <ScoreTile key={def.paramKey} def={def} value={selectedFilters[def.paramKey] || ''} onChange={(v) => handleChange(def.paramKey, v)} />
-          ))}
-          <ScoreTile
-            def={ETF_TOTAL_SCORE_DEF}
-            value={selectedFilters[ETF_TOTAL_SCORE_DEF.paramKey] || ''}
-            onChange={(v) => handleChange(ETF_TOTAL_SCORE_DEF.paramKey, v)}
-          />
-        </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+        {ETF_CATEGORY_SCORE_DEFS.map((def) => (
+          <ScoreTile key={def.paramKey} def={def} value={selectedFilters[def.paramKey] || ''} onChange={(v) => handleChange(def.paramKey, v)} />
+        ))}
+        <ScoreTile
+          def={ETF_TOTAL_SCORE_DEF}
+          value={selectedFilters[ETF_TOTAL_SCORE_DEF.paramKey] || ''}
+          onChange={(v) => handleChange(ETF_TOTAL_SCORE_DEF.paramKey, v)}
+        />
       </div>
 
       {/* Cost & Size */}
@@ -339,20 +331,22 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         <button
           type="button"
           onClick={() => setAdvancedOpen((v) => !v)}
-          className="flex w-full items-center justify-between rounded-md bg-[#374151] hover:bg-[#3B4252] px-3 py-2 text-left"
+          className="relative flex w-full items-center justify-center rounded-md bg-[#374151] hover:bg-[#3B4252] px-3 py-2"
           aria-expanded={advancedOpen}
         >
           <span className="text-gray-200 text-xs font-semibold uppercase tracking-wider">Advanced — Period-Based Risk Capture</span>
-          {advancedOpen ? <ChevronUpIcon className="h-4 w-4 text-gray-300" /> : <ChevronDownIcon className="h-4 w-4 text-gray-300" />}
+          <span className="absolute right-3 inline-flex items-center">
+            {advancedOpen ? <ChevronUpIcon className="h-4 w-4 text-gray-300" /> : <ChevronDownIcon className="h-4 w-4 text-gray-300" />}
+          </span>
         </button>
 
         {advancedOpen && (
           <div className="mt-3">
-            <p className="text-[#9CA3AF] text-[11px] mb-2">
+            <p className="text-[#9CA3AF] text-[11px] mb-2 text-center">
               Only ETFs with risk data are shown when these are active. Pick a time period; the three filters below apply to it.
             </p>
 
-            <div className="mb-3 flex flex-wrap items-center gap-2">
+            <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
               <span className="text-gray-300 text-[10px] font-medium uppercase tracking-wider">Time Period:</span>
               <div className="inline-flex gap-1.5">
                 {MOR_PERIODS.map((p) => (
