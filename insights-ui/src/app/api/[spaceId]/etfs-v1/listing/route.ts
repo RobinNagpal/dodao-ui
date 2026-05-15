@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import {
+  createEtfCachedScoreFilter,
   createEtfFinancialFilter,
   createEtfStockAnalyzerFilter,
   createEtfSearchFilter,
@@ -142,6 +143,14 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   // When advanced Mor filters are active, require morRiskInfo to exist
   if (hasMorFilters) {
     etfWhere.morRiskInfo = { isNot: null };
+  }
+
+  // KoalaGains score thresholds — match on the EtfCachedScore relation. An ETF
+  // without a cachedScore row has no score to threshold against, so when any
+  // score filter is active we also require the relation to exist.
+  const cachedScoreFilter = createEtfCachedScoreFilter(filters);
+  if (cachedScoreFilter) {
+    etfWhere.cachedScore = { is: cachedScoreFilter };
   }
 
   // Check if we need application-level post-filtering

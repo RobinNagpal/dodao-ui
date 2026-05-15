@@ -25,6 +25,12 @@ export enum EtfFilterType {
   GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
+  // KoalaGains category + total scores (per-category 0-5, total 0-20)
+  SCORE_PERFORMANCE_AND_RETURNS = 'scorePerformanceAndReturns',
+  SCORE_COST_EFFICIENCY_AND_TEAM = 'scoreCostEfficiencyAndTeam',
+  SCORE_RISK_ANALYSIS = 'scoreRiskAnalysis',
+  SCORE_FUTURE_PERFORMANCE_OUTLOOK = 'scoreFuturePerformanceOutlook',
+  SCORE_TOTAL = 'scoreTotal',
   // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
@@ -56,6 +62,12 @@ export enum EtfFilterParamKey {
   GROUP = 'group',
   ISSUER = 'issuer',
   SEARCH = 'search',
+  // KoalaGains category + total scores
+  SCORE_PERFORMANCE_AND_RETURNS = 'scorePerformanceAndReturns',
+  SCORE_COST_EFFICIENCY_AND_TEAM = 'scoreCostEfficiencyAndTeam',
+  SCORE_RISK_ANALYSIS = 'scoreRiskAnalysis',
+  SCORE_FUTURE_PERFORMANCE_OUTLOOK = 'scoreFuturePerformanceOutlook',
+  SCORE_TOTAL = 'scoreTotal',
   // Advanced (Mor) filters — per period
   MOR_UPSIDE_3YR = 'morUpside3yr',
   MOR_UPSIDE_5YR = 'morUpside5yr',
@@ -111,6 +123,13 @@ type SelectFilterType =
   | EtfFilterType.MOR_RISK_5YR
   | EtfFilterType.MOR_RISK_10YR;
 
+type ScoreFilterType =
+  | EtfFilterType.SCORE_PERFORMANCE_AND_RETURNS
+  | EtfFilterType.SCORE_COST_EFFICIENCY_AND_TEAM
+  | EtfFilterType.SCORE_RISK_ANALYSIS
+  | EtfFilterType.SCORE_FUTURE_PERFORMANCE_OUTLOOK
+  | EtfFilterType.SCORE_TOTAL;
+
 export interface AppliedEtfRangeFilter extends AppliedEtfFilterBase {
   type: RangeFilterType;
   minValue?: number;
@@ -122,12 +141,18 @@ export interface AppliedEtfSelectFilter extends AppliedEtfFilterBase {
   selectedValue: string;
 }
 
+export interface AppliedEtfScoreFilter extends AppliedEtfFilterBase {
+  type: ScoreFilterType;
+  /** Minimum score threshold (≥). 0-5 for per-category, 0-20 for total. */
+  threshold: number;
+}
+
 export interface AppliedEtfSearchFilter extends AppliedEtfFilterBase {
   type: EtfFilterType.SEARCH;
   searchQuery: string;
 }
 
-export type AppliedEtfFilter = AppliedEtfRangeFilter | AppliedEtfSelectFilter | AppliedEtfSearchFilter;
+export type AppliedEtfFilter = AppliedEtfRangeFilter | AppliedEtfSelectFilter | AppliedEtfScoreFilter | AppliedEtfSearchFilter;
 
 export type EtfSelectedFiltersMap = Record<string, string>;
 
@@ -313,6 +338,84 @@ export const ETF_MOR_RISK_LEVEL_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Extreme', value: 'Extreme' },
 ] as const;
 
+/**
+ * Per-category score options (each category yields a 0–5 pass count from its 5 factor
+ * results). Mirrors `CATEGORY_THRESHOLD_OPTIONS` on the stocks side.
+ */
+export const ETF_CATEGORY_SCORE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: '≥ 3', value: '3' },
+  { label: '≥ 4', value: '4' },
+  { label: '≥ 5', value: '5' },
+] as const;
+
+/**
+ * Total score options (sum of the 4 category scores, range 0–20). Buckets chosen
+ * to match the `getScoreColorClasses` boundaries: 8 (poor→fair), 14 (fair→good),
+ * 18 (good→excellent).
+ */
+export const ETF_TOTAL_SCORE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: '≥ 12', value: '12' },
+  { label: '≥ 15', value: '15' },
+  { label: '≥ 18', value: '18' },
+] as const;
+
+export interface EtfScoreFilterDef {
+  paramKey: EtfFilterParamKey;
+  filterType: ScoreFilterType;
+  /** Prisma field name on EtfCachedScore. */
+  scoreColumn: 'performanceAndReturnsScore' | 'costEfficiencyAndTeamScore' | 'riskAnalysisScore' | 'futurePerformanceOutlookScore' | 'finalScore';
+  label: string;
+  shortLabel: string;
+  options: ReadonlyArray<ThresholdOption>;
+}
+
+export const ETF_SCORE_FILTERS: ReadonlyArray<EtfScoreFilterDef> = [
+  {
+    paramKey: EtfFilterParamKey.SCORE_PERFORMANCE_AND_RETURNS,
+    filterType: EtfFilterType.SCORE_PERFORMANCE_AND_RETURNS,
+    scoreColumn: 'performanceAndReturnsScore',
+    label: 'Performance & Returns Score',
+    shortLabel: 'Performance & Returns',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    paramKey: EtfFilterParamKey.SCORE_COST_EFFICIENCY_AND_TEAM,
+    filterType: EtfFilterType.SCORE_COST_EFFICIENCY_AND_TEAM,
+    scoreColumn: 'costEfficiencyAndTeamScore',
+    label: 'Cost, Efficiency & Team Score',
+    shortLabel: 'Cost & Team',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    paramKey: EtfFilterParamKey.SCORE_RISK_ANALYSIS,
+    filterType: EtfFilterType.SCORE_RISK_ANALYSIS,
+    scoreColumn: 'riskAnalysisScore',
+    label: 'Risk Analysis Score',
+    shortLabel: 'Risk',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    paramKey: EtfFilterParamKey.SCORE_FUTURE_PERFORMANCE_OUTLOOK,
+    filterType: EtfFilterType.SCORE_FUTURE_PERFORMANCE_OUTLOOK,
+    scoreColumn: 'futurePerformanceOutlookScore',
+    label: 'Future Performance Outlook Score',
+    shortLabel: 'Future Outlook',
+    options: ETF_CATEGORY_SCORE_OPTIONS,
+  },
+  {
+    paramKey: EtfFilterParamKey.SCORE_TOTAL,
+    filterType: EtfFilterType.SCORE_TOTAL,
+    scoreColumn: 'finalScore',
+    label: 'Total KoalaGains Score',
+    shortLabel: 'Total Score',
+    options: ETF_TOTAL_SCORE_OPTIONS,
+  },
+];
+
+export const ETF_SCORE_FILTER_KEYS: ReadonlyArray<EtfFilterParamKey> = ETF_SCORE_FILTERS.map((f) => f.paramKey);
+
 const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.AUM,
   EtfFilterParamKey.EXPENSE_RATIO,
@@ -332,6 +435,11 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.GROUP,
   EtfFilterParamKey.ISSUER,
   EtfFilterParamKey.SEARCH,
+  EtfFilterParamKey.SCORE_PERFORMANCE_AND_RETURNS,
+  EtfFilterParamKey.SCORE_COST_EFFICIENCY_AND_TEAM,
+  EtfFilterParamKey.SCORE_RISK_ANALYSIS,
+  EtfFilterParamKey.SCORE_FUTURE_PERFORMANCE_OUTLOOK,
+  EtfFilterParamKey.SCORE_TOTAL,
   EtfFilterParamKey.MOR_UPSIDE_3YR,
   EtfFilterParamKey.MOR_UPSIDE_5YR,
   EtfFilterParamKey.MOR_UPSIDE_10YR,
@@ -485,6 +593,14 @@ const SELECT_FILTER_TYPES: Set<string> = new Set([
   EtfFilterType.MOR_RISK_3YR,
   EtfFilterType.MOR_RISK_5YR,
   EtfFilterType.MOR_RISK_10YR,
+]);
+
+const SCORE_FILTER_TYPES: Set<string> = new Set([
+  EtfFilterType.SCORE_PERFORMANCE_AND_RETURNS,
+  EtfFilterType.SCORE_COST_EFFICIENCY_AND_TEAM,
+  EtfFilterType.SCORE_RISK_ANALYSIS,
+  EtfFilterType.SCORE_FUTURE_PERFORMANCE_OUTLOOK,
+  EtfFilterType.SCORE_TOTAL,
 ]);
 
 /** ----- Client-side Helpers ----- */
@@ -675,6 +791,20 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
     });
   }
 
+  // KoalaGains category + total scores
+  for (const def of ETF_SCORE_FILTERS) {
+    const raw = searchParams.get(def.paramKey);
+    if (!raw || !raw.trim()) continue;
+    const threshold = parseInt(raw, 10);
+    if (!Number.isFinite(threshold)) continue;
+    filters.push({
+      type: def.filterType,
+      paramKey: def.paramKey,
+      threshold,
+      label: `${def.shortLabel}: ≥ ${threshold}`,
+    });
+  }
+
   // Mor advanced filters (per-period)
   for (const def of MOR_ADVANCED_FILTERS) {
     const raw = searchParams.get(def.paramKey);
@@ -713,6 +843,8 @@ export function buildInitialEtfSelected(filters: ReadonlyArray<AppliedEtfFilter>
   for (const filter of filters) {
     if (filter.type === EtfFilterType.SEARCH) {
       initial[EtfFilterParamKey.SEARCH] = (filter as AppliedEtfSearchFilter).searchQuery;
+    } else if (SCORE_FILTER_TYPES.has(filter.type)) {
+      initial[filter.paramKey] = String((filter as AppliedEtfScoreFilter).threshold);
     } else if (SELECT_FILTER_TYPES.has(filter.type)) {
       initial[filter.paramKey] = (filter as AppliedEtfSelectFilter).selectedValue;
     } else {
@@ -971,6 +1103,24 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
   }
 
   return where;
+}
+
+export function createEtfCachedScoreFilter(filters: EtfFilterParams): Prisma.EtfCachedScoreWhereInput | null {
+  const where: Prisma.EtfCachedScoreWhereInput = {};
+  let hasAny = false;
+  for (const def of ETF_SCORE_FILTERS) {
+    const raw = filters[def.paramKey]?.trim();
+    if (!raw) continue;
+    const threshold = parseInt(raw, 10);
+    if (!Number.isFinite(threshold)) continue;
+    where[def.scoreColumn] = { gte: threshold };
+    hasAny = true;
+  }
+  return hasAny ? where : null;
+}
+
+export function hasEtfScoreFilters(filters: EtfFilterParams): boolean {
+  return ETF_SCORE_FILTER_KEYS.some((key) => !!filters[key]?.trim());
 }
 
 export function createEtfSearchFilter(spaceId: string, filters: EtfFilterParams): Prisma.EtfWhereInput {
