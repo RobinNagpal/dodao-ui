@@ -1,9 +1,8 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import type { EtfGroupsIndexResponse } from '@/app/api/[spaceId]/etfs-v1/listings/groups-index/route';
 import { ETF_OTHERS_GROUP, getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
-import { fetchEtfsForGroupings, fetchUncategorizedEtfPreview } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { EtfBrowseSection, etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { ReactNode } from 'react';
@@ -11,6 +10,7 @@ import Link from 'next/link';
 
 interface EtfGroupsIndexProps {
   country: EtfSupportedCountry;
+  data: EtfGroupsIndexResponse;
   title?: string;
   description?: string;
   switcherSection?: EtfBrowseSection;
@@ -18,41 +18,9 @@ interface EtfGroupsIndexProps {
   headSlot?: ReactNode;
 }
 
-export default async function EtfGroupsIndex({ country, title, description, switcherSection, extraBreadcrumbs, headSlot }: EtfGroupsIndexProps) {
+export default function EtfGroupsIndex({ country, data, title, description, switcherSection, extraBreadcrumbs, headSlot }: EtfGroupsIndexProps) {
   const groups = getAllEtfGroups();
-
-  // Bucket every category in every group so we can fetch top-N ETFs per category.
-  const categoryValueToKey = new Map<string, string>();
-  for (const group of groups) {
-    for (const cat of getCategoriesForGroupKey(group.key)) {
-      categoryValueToKey.set(cat.name, cat.name);
-    }
-  }
-
-  // Also bucket categories by group key so we can compute total ETFs per group
-  // (sum of category counts) for the "Show all" header link.
-  const groupValueToKey = new Map<string, string>();
-  for (const group of groups) {
-    for (const cat of getCategoriesForGroupKey(group.key)) {
-      groupValueToKey.set(cat.name, group.key);
-    }
-  }
-
-  const [{ values: categoryValues, counts: categoryCounts }, { counts: groupCounts }, others] = await Promise.all([
-    fetchEtfsForGroupings({
-      spaceId: KoalaGainsSpaceId,
-      mode: 'category',
-      valueToKey: categoryValueToKey,
-      country,
-    }),
-    fetchEtfsForGroupings({
-      spaceId: KoalaGainsSpaceId,
-      mode: 'category',
-      valueToKey: groupValueToKey,
-      country,
-    }),
-    fetchUncategorizedEtfPreview(KoalaGainsSpaceId, country),
-  ]);
+  const { categoryValues, categoryCounts, groupCounts, others } = data;
 
   const displayName = etfCountryDisplayName(country);
   const resolvedTitle = title ?? `${displayName} ETFs by Group`;
@@ -71,10 +39,10 @@ export default async function EtfGroupsIndex({ country, title, description, swit
       {headSlot}
       {groups.map((group) => {
         const categories = getCategoriesForGroupKey(group.key);
-        const categoriesWithEtfs = categories.filter((cat) => (categoryValues.get(cat.name)?.length ?? 0) > 0);
+        const categoriesWithEtfs = categories.filter((cat) => (categoryValues[cat.name]?.length ?? 0) > 0);
         if (categoriesWithEtfs.length === 0) return null;
 
-        const totalEtfsInGroup = groupCounts.get(group.key) ?? 0;
+        const totalEtfsInGroup = groupCounts[group.key] ?? 0;
         const groupHref = etfBrowseDetailPath(country, 'groups', group.key);
 
         return (
@@ -96,8 +64,8 @@ export default async function EtfGroupsIndex({ country, title, description, swit
                   key={cat.name}
                   title={cat.name}
                   href={etfGroupCategoryPath(country, group.key, cat.name)}
-                  totalCount={categoryCounts.get(cat.name) ?? 0}
-                  etfs={categoryValues.get(cat.name) ?? []}
+                  totalCount={categoryCounts[cat.name] ?? 0}
+                  etfs={categoryValues[cat.name] ?? []}
                 />
               ))}
             </div>

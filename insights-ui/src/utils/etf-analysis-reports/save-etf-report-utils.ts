@@ -10,7 +10,7 @@ import {
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
-import { revalidateEtfAndExchangeTag, revalidateEtfListingTag } from '@/utils/etf-cache-utils';
+import { revalidateEtfAndExchangeTag } from '@/utils/etf-cache-utils';
 import { USExchanges } from '@/utils/countryExchangeUtils';
 
 const SUPPORTED_SIMILAR_ETF_EXCHANGES: ReadonlySet<string> = new Set<string>([USExchanges.BATS, USExchanges.NASDAQ, USExchanges.NYSE, USExchanges.NYSEARCA]);
@@ -89,9 +89,9 @@ export async function saveEtfFactorAnalysisResponse(
   const score = validFactors.filter((f) => f.result && f.result.toLowerCase().includes('pass')).length;
   await updateEtfCachedScore(etfRecord.id, categoryKey, score);
 
-  // Per-ETF detail tag plus listing tag — score change affects the listing-page ranking.
+  // Listing pages have their own 2-week TTL cache + tag scheme and intentionally
+  // do NOT depend on per-ETF report saves to refresh — keeps ISR writes bounded.
   revalidateEtfAndExchangeTag(symbol, exchange);
-  revalidateEtfListingTag();
 }
 
 export async function saveEtfFinalSummaryResponse(symbol: string, exchange: string, response: EtfFinalSummaryResponse): Promise<void> {

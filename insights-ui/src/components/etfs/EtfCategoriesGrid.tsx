@@ -1,5 +1,5 @@
 import EtfCategoryCard from '@/components/etfs/EtfCategoryCard';
-import { EtfGroupingPreviewItem } from '@/utils/etf-grouping-utils';
+import type { EtfGroupingPreviewItem } from '@/types/etf/etf-listings-types';
 import React from 'react';
 
 export interface EtfCategoryCardSpec {
