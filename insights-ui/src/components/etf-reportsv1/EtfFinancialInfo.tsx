@@ -1,4 +1,4 @@
-import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
+import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-types';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';

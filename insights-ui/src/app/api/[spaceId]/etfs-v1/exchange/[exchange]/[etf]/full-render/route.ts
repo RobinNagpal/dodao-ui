@@ -10,12 +10,10 @@
  * `tickers-v1/.../full-render` on the stocks side.
  */
 import { EtfAnalysisResponse, EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
-import { EtfFinancialInfoResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/financial-info/route';
 import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/portfolio-holdings/route';
-import { PriceHistoryResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/price-history/route';
+import { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
-import { EtfScoresResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/scores/route';
-import { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
+import type { EtfFinancialInfoResponse, EtfScoresResponse, SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
 import type { EtfCompetitionResponse, EtfCompetitor } from '@/types/etf/etf-analysis-types';

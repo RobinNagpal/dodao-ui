@@ -1,4 +1,4 @@
-import type { SimilarEtf } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/similar-etfs/route';
+import type { SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { formatNumber, formatPercentageDecimal, formatVolume } from '@/components/reportsv1/financialFormatters';
 import { formatCompactAmount, formatCompactMillions } from '@/utils/etf-display-format-utils';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
