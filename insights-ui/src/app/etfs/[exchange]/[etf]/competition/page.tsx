@@ -1,5 +1,5 @@
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
-import { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
@@ -77,7 +77,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
-  const data = await fetchEtfCompetition(exchangeUpper, etfUpper);
+  const [data, availableSlugs] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfAvailableSlugs(exchangeUpper, etfUpper)]);
   if (!data || !data.etf) {
     notFound();
   }
@@ -103,12 +103,10 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
           { name: 'Competition', href: `/etfs/${exchangeUpper}/${etfUpper}/competition`, current: true },
         ];
 
-  const availableSiblingSlugsPromise = data.etf?.id ? getAvailableSiblingSlugsForEtf(data.etf.id) : undefined;
-
   return (
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCompetitionFullView data={data} availableSiblingSlugsPromise={availableSiblingSlugsPromise} />
+      <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
     </PageWrapper>
   );
 }

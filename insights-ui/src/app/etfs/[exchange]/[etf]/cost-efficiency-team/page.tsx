@@ -1,7 +1,7 @@
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
-import { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
@@ -82,7 +82,11 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, analysisData] = await Promise.all([fetchEtf(exchange, symbol), fetchAnalysis(exchange, symbol)]);
+  const [etfData, analysisData, availableSlugs] = await Promise.all([
+    fetchEtf(exchange, symbol),
+    fetchAnalysis(exchange, symbol),
+    fetchEtfAvailableSlugs(exchange, symbol),
+  ]);
   if (!etfData) notFound();
 
   const categoryResult = analysisData.categories.find((c) => c.categoryKey === CATEGORY_KEY);
@@ -133,7 +137,7 @@ export default async function CostEfficiencyTeamPage({ params }: { params: Route
         issuer={etfData.stockAnalyzerInfo?.issuer}
         indexName={etfData.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
-        availableSiblingSlugsPromise={getAvailableSiblingSlugsForEtf(etfData.id)}
+        availableSlugs={availableSlugs}
       />
     </PageWrapper>
   );

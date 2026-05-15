@@ -1,7 +1,7 @@
 import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/portfolio-holdings/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
-import EtfRelatedSections, { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
+import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -10,7 +10,6 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 export const dynamic = 'force-static';
 export const dynamicParams = true;
@@ -65,7 +64,11 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, holdings] = await Promise.all([fetchEtf(exchange, symbol), fetchHoldings(exchange, symbol)]);
+  const [etfData, holdings, availableSlugs] = await Promise.all([
+    fetchEtf(exchange, symbol),
+    fetchHoldings(exchange, symbol),
+    fetchEtfAvailableSlugs(exchange, symbol),
+  ]);
   if (!etfData) notFound();
 
   const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -76,17 +79,8 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const totalHoldings = holdings?.holdings?.length ?? 0;
 
-  const availableSiblingSlugsPromise = getAvailableSiblingSlugsForEtf(etfData.id);
   const relatedSections = (
-    <Suspense fallback={null}>
-      <EtfRelatedSections
-        availableSlugsPromise={availableSiblingSlugsPromise}
-        exchange={exchange}
-        symbol={symbol}
-        etfName={etfData.name}
-        currentSlug="holdings"
-      />
-    </Suspense>
+    <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfData.name} currentSlug="holdings" />
   );
 
   return (
