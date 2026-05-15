@@ -1,7 +1,9 @@
 import EtfGroupCategoryDetail from '@/components/etfs/EtfGroupCategoryDetail';
 import { EtfSearchParams } from '@/utils/etf-filter-utils';
-import { getEtfCategoryByName, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { getEtfCategoryByName, getEtfCategoryBySlug, getEtfGroupByKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
+import { etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -16,7 +18,7 @@ export async function generateMetadata(props: { params: Promise<{ group: string;
   const decodedGroup = decodeURIComponent(group);
   const decodedCategory = decodeURIComponent(category);
   const groupObj = getEtfGroupByKey(decodedGroup);
-  const cat = getEtfCategoryByName(decodedCategory);
+  const cat = getEtfCategoryBySlug(decodedCategory) ?? getEtfCategoryByName(decodedCategory);
   const categoryName = cat?.name ?? decodedCategory;
   const groupName = groupObj?.name ?? decodedGroup;
   return {
@@ -27,11 +29,20 @@ export async function generateMetadata(props: { params: Promise<{ group: string;
 
 export default async function EtfGroupCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
   const { group, category } = await params;
+  const decodedGroup = decodeURIComponent(group);
+  const decodedCategory = decodeURIComponent(category);
+
+  const resolved = getEtfCategoryBySlug(decodedCategory) ?? getEtfCategoryByName(decodedCategory);
+  if (!resolved) notFound();
+  if (decodedCategory !== slugifyEtfCategory(resolved.name)) {
+    permanentRedirect(etfGroupCategoryPath(SupportedCountries.US, resolved.group, resolved.name));
+  }
+
   const searchParams = await searchParamsPromise;
   return EtfGroupCategoryDetail({
     country: SupportedCountries.US,
-    groupKey: decodeURIComponent(group),
-    category: decodeURIComponent(category),
+    groupKey: decodedGroup,
+    category: resolved.name,
     searchParams,
   });
 }

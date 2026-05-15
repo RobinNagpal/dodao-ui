@@ -85,3 +85,17 @@ export function getEtfCategoryByName(name: string | null | undefined): EtfCatego
   const canonical = canonicalizeCategory(name);
   return categoriesConfig.categories.find((c) => c.name === canonical);
 }
+
+/** URL-safe slug for a category name. `Large Value` → `large-value`, `Mid-Cap Blend` → `mid-cap-blend`. */
+export function slugifyEtfCategory(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function getEtfCategoryBySlug(slug: string | null | undefined): EtfCategoryToGroup | undefined {
+  if (!slug) return undefined;
+  const needle = slug.toLowerCase();
+  return categoriesConfig.categories.find((c) => slugifyEtfCategory(c.name) === needle);
+}

@@ -10,8 +10,6 @@ export default async function EtfsPage() {
   return EtfGroupsIndex({
     country: SupportedCountries.US,
     title: 'US ETFs',
-    description:
-      'Browse US exchange-traded funds organized by analysis group — diversified, sector, fixed income, and alternative-strategy. Each card lists the top-rated ETFs in that category.',
     headSlot: (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />

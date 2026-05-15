@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfSupportedCountry, ETF_SUPPORTED_COUNTRIES, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
 export type EtfBrowseSection = 'groups' | 'categories' | 'asset-classes' | 'providers';
 
@@ -37,9 +38,13 @@ export function etfBrowseDetailPath(country: EtfSupportedCountry, section: EtfBr
   return `${etfBrowsePath(country, section)}/${encodeURIComponent(slug)}`;
 }
 
-/** Path to a category page nested under a group: `/etfs/groups/<group>/categories/<category>`. */
+/**
+ * Path to a category page nested under a group: `/etfs/groups/<group>/categories/<category-slug>`.
+ * The category segment is slugified so URLs stay readable in sitemaps and shared links
+ * (`Large Value` → `large-value`).
+ */
 export function etfGroupCategoryPath(country: EtfSupportedCountry, groupKey: string, categoryName: string): string {
-  return `${etfBrowseDetailPath(country, 'groups', groupKey)}/categories/${encodeURIComponent(categoryName)}`;
+  return `${etfBrowseDetailPath(country, 'groups', groupKey)}/categories/${slugifyEtfCategory(categoryName)}`;
 }
 
 export const ALL_ETF_COUNTRIES = ETF_SUPPORTED_COUNTRIES;
