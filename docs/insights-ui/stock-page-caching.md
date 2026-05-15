@@ -4,13 +4,17 @@
 
 Each of the 8 pages under `/stocks/[exchange]/[ticker]` subscribes to exactly **one** cache tag. No fetch attaches more than one tag, and no tag is shared between pages — so a `revalidateTag(X)` call invalidates exactly one page's cache. The only "fan-out" invalidations are deliberate and named in code (e.g. `revalidateAllTickerTags`), not implicit through shared tags.
 
-After PRs [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472), [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473), and the `/full-render` consolidation in this PR, one rebuild = **1 HTML + 1 Data Cache write = 2 cache writes per page**. Writes will lead reads only when the cron cadence (or admin actions) invalidate pages faster than crawlers can revisit them.
+After PRs [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472), [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473), and the `/full-render` consolidation in this PR, one rebuild = **1 HTML + 1 Data Cache write = 2 cache writes per page**. The per-rebuild cost is now at the floor.
 
-**Biggest remaining levers** (in order — see §6):
+The remaining `writes > reads` mismatch is **structural**: the cron + admin actions invalidate pages faster than people visit them. Production sample: 281 reads vs 1.8k writes across 818 unique paths in one window → each ticker page is rebuilt ~1.1 times and read ~0.34 times. Cache hit rate ≈ 13%. See **§4.5** for the math and ranked solutions.
 
-1. ETF pages still use the OLD stock architecture (~8 fetches per page sharing one tag across 4 subpages).
-2. The `*/3 * * * *` `generate-ticker-v1-request` cron drives most invalidations.
-3. `revalidateAllTickerTags` invalidates 8 pages per admin click — audit how often it fires.
+**Biggest remaining levers** (in order):
+
+1. **Lengthen the `*/3 * * * *` cron to `*/15`** — one-line change to `insights-ui/vercel.json`, ~5× reduction in cron-driven invalidations.
+2. **Narrow `revalidateAllTickerTags` on admin "Edit stock details"** — currently fires 8 tags on every text-only edit; only needs all 8 when `movedExchange` / `movedSymbol` / `isDeleted` change.
+3. **ETF pages still use the OLD stock architecture** (~8 fetches per page sharing one tag across 4 subpages — same anti-pattern stocks just escaped).
+
+Full ranked list with code pointers and trade-offs lives in §4.5 and §6.
 
 ---
 
@@ -104,6 +108,55 @@ A page rebuild costs **1 HTML ISR write + 1 Data Cache write (the single tagged 
 | Admin "Refresh financial data" batch | Main page only | **2** |
 
 A pure cache hit serves the stored HTML + the stored Data Cache entry — both count as reads, neither writes.
+
+## 4.5. "But writes still exceed reads after the consolidation" — read this first
+
+Reported production sample for `/stocks/[exchange]/[ticker]`: **281 reads, 1.8k writes, 818 unique paths** in one window. Decoded:
+
+- **818 unique paths** = 818 different `[exchange]/[ticker]` combinations had cache activity in the window.
+- **1.8k writes / 818 paths ≈ 2.2 writes per path.** With the consolidation, one rebuild costs 2 writes (1 HTML + 1 Data Cache). So **each ticker page was rebuilt ~1.1 times on average** in the window. That's near the theoretical floor — you can't rebuild less than once per invalidation cycle.
+- **281 reads / 818 paths ≈ 0.34 reads per path.** Each unique ticker page was served from cache fewer than once on average between rebuilds.
+- **Cache hit rate = 281 / (1.8k + 281) ≈ 13%.** Most requests to a ticker page hit a cold cache.
+
+The consolidation already collapsed the per-rebuild cost from 7 writes → 2 writes. The remaining mismatch is structural: **invalidations are happening faster than people visit the pages**. As long as that's true, writes will exceed reads no matter how cheap each rebuild becomes — you can't get reads above writes when the average ticker is being invalidated more often than it's being read.
+
+### Root cause
+
+For any per-page `writes:reads` ratio under ISR with on-demand invalidation:
+
+```
+writes_per_path  ≈  invalidations_per_path × writes_per_rebuild
+reads_per_path   ≈  total_visits_per_path − invalidations_per_path
+ratio            =  writes_per_path / reads_per_path
+```
+
+With the consolidation, `writes_per_rebuild = 2`. With ~1.1 invalidations per active ticker per window and only ~1.45 total visits per active ticker (1.1 trigger-rebuild visits + 0.34 cache-hit visits), the ratio is locked at ≈ 6.4× regardless of per-rebuild cost. **The lever has shifted from "per-rebuild cost" to "invalidations per path vs. visits per path".**
+
+Concretely, the 818 active paths in the window are tickers that were touched by:
+
+1. A cron-driven regen pipeline completing (umbrella fires on `FINAL_SUMMARY` save) — biggest contributor.
+2. A category / competition / management-team save firing a narrow tag → subpage rebuild → if the subpage is `/stocks/[exchange]/[ticker]/X`, it shows up under that route, not the main route, so it doesn't bloat the main-route count. But the umbrella also fires at the end of the same regen → main route +1 rebuild.
+3. Admin actions (`revalidateAllTickerTags`, `revalidateTickerCache` button, admin PUT, `fetch-financial-data` batch) — one click fires the umbrella; check the Vercel function logs for `Cache invalidated for` to count how often.
+
+### Solutions, ranked by expected impact
+
+Each one trades off against either freshness, regen latency, or admin ergonomics.
+
+| # | Solution | Mechanism | Expected writes reduction | Trade-off |
+|---|---|---|---|---|
+| 1 | **Lengthen the `*/3 * * * *` cron to `*/15`** (`insights-ui/vercel.json`) | Fewer regen pipelines complete per hour → fewer umbrella invalidations | **5×** on cron-driven invalidations | Up to 15-minute additional latency before a queued ticker starts its regen |
+| 2 | **Batch admin invalidations.** `revalidateAllTickerTags` is a sledgehammer — admin "Edit stock details" fires it on every save even when only the `summary` text changed. Narrow it: only fire all-8-tags when `movedExchange` / `movedSymbol` / `isDeleted` actually change; otherwise fire only `tickerAndExchangeTag` (umbrella) since text-only edits only affect the main aggregate page. | Cuts per-admin-action invalidations from 8 → 1 for the common case | **8×** on admin-driven invalidations | Subpages stay stale briefly after a text-only edit. Acceptable since the subpages don't render `summary` at all. |
+| 3 | **Stop firing the umbrella on every regen step's last invocation.** Today every completed pipeline fires the umbrella, even for partial regens triggered by `createSingleAnalysisBackgroundRequest` (admin "Generate just Fair Value"). For a single-step regen, the umbrella is redundant — the narrow tag already invalidates the main page's view of that slice via the consolidated `/full-render` fetch (which subscribes to the umbrella). Audit `save-report-callback/route.ts`: if there was only one step in the request, skip the umbrella. | Cuts umbrella invalidations on partial regens roughly in half | **2-3×** on partial-regen-driven invalidations | None significant — main page won't rebuild on partial regens, but the consolidated fetch already pulls in the new data when something else invalidates the umbrella |
+| 4 | **Switch `/full-render` to direct Prisma + `unstable_cache`** instead of fetch-to-self HTTP. The cache entry becomes one `unstable_cache` blob tagged with the umbrella, no internal HTTP round-trip, and the rebuild is slightly faster — same write count but lower per-rebuild cost. | Marginal write reduction; bigger win is reduced function GB-seconds | **~10%** | None; same cache surface |
+| 5 | **Audit `fetch-financial-data` batch usage.** Every batch call invalidates one umbrella per ticker in the request. If the admin runs a 500-ticker batch, that's 500 umbrella invalidations in one shot — directly explains a chunk of the 818 unique paths in the window. Run it less often or skip the revalidate when the underlying data didn't actually change. | Depends on usage; could be the entire reason | Variable | None |
+
+If you do #1 + #2 + #3 together, the projected steady-state for the main page drops from 1.8k writes / window to roughly 300–400 writes / window, while reads stay roughly the same. At that point reads should match or exceed writes. **#1 is the single biggest immediate lever and is a one-line change to `vercel.json`.**
+
+### What won't move the needle
+
+- More aggressive per-fetch consolidation. The main page is already at 1 tagged fetch.
+- Bot detection (see prior session — saves at most one rebuild per invalidation, at the cost of slower bot responses and SEO risk).
+- Longer `revalidate` window on the consolidated fetch. The 8-day backstop only fires for dormant tickers; active tickers' invalidations already win that race.
 
 ## 5. Mental model in five bullets
 
