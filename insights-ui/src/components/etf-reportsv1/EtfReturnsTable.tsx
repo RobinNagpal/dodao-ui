@@ -8,6 +8,21 @@ function isPlaceholder(value: unknown): boolean {
   return PLACEHOLDER_TOKENS.has(normalized);
 }
 
+const HIDDEN_LABELS: ReadonlySet<string> = new Set(['investment (price)', 'category name']);
+
+const LABEL_RENAME: Readonly<Record<string, string>> = {
+  '# of invest. in cat.': 'Funds in Category',
+};
+
+function renameLabel(label: string): string {
+  const key = label.trim().toLowerCase();
+  return LABEL_RENAME[key] ?? label;
+}
+
+function isHiddenLabel(label: string): boolean {
+  return HIDDEN_LABELS.has(label.trim().toLowerCase());
+}
+
 export interface EtfReturnsTableProps {
   rows: EtfMorReturnsRow[] | null | undefined;
   title?: string;
@@ -28,7 +43,8 @@ export default function EtfReturnsTable({ rows, title = 'Returns', subtitle }: E
   if (list.length === 0) return null;
 
   const visibleRows = list.filter((row) => {
-    const values = row?.values ?? {};
+    if (!row?.label || isHiddenLabel(row.label)) return false;
+    const values = row.values ?? {};
     return Object.values(values).some((v) => !isPlaceholder(v));
   });
   if (visibleRows.length === 0) return null;
@@ -71,7 +87,7 @@ export default function EtfReturnsTable({ rows, title = 'Returns', subtitle }: E
           <tbody className="divide-y divide-gray-700">
             {visibleRows.map((row, idx) => (
               <tr key={`${row.label}-${idx}`} className={idx % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800/50'}>
-                <td className="px-4 py-3 text-sm text-gray-200 font-medium whitespace-nowrap">{row.label}</td>
+                <td className="px-4 py-3 text-sm text-gray-200 font-medium whitespace-nowrap">{renameLabel(row.label)}</td>
                 {visiblePeriods.map((p) => {
                   const cell = row.values?.[p];
                   const empty = isPlaceholder(cell);
