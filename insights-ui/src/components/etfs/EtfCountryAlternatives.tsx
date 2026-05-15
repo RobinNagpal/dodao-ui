@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { ALL_ETF_COUNTRIES, EtfBrowseSection, etfBasePath, etfBrowsePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
+import { ALL_ETF_COUNTRIES, EtfBrowseSection, etfBasePath, etfCountryDisplayName, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
 
 interface EtfCountryAlternativesProps {
   currentCountry: EtfSupportedCountry;
@@ -21,7 +21,7 @@ export default function EtfCountryAlternatives({ currentCountry, section, classN
       </div>
       <div className="flex flex-wrap gap-2 sm:ml-2">
         {alternatives.map((country, index) => {
-          const href = section ? etfBrowsePath(country, section) : etfBasePath(country);
+          const href = section ? etfSectionIndexPath(country, section) : etfBasePath(country);
           return (
             <span key={country} className="inline-flex items-center">
               <Link href={href} className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-semibold">

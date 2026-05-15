@@ -1,6 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfSupportedCountry, ETF_SUPPORTED_COUNTRIES, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
 export type EtfBrowseSection = 'groups' | 'categories' | 'asset-classes' | 'providers';
 
@@ -22,13 +23,28 @@ export function etfBrowsePath(country: EtfSupportedCountry, section: EtfBrowseSe
   return `${etfBasePath(country)}/${section}`;
 }
 
+/**
+ * Where the section's *index* lives in the UI. Equals `etfBrowsePath` for most cases, but the US
+ * `groups` index is collapsed onto the country root (`/etfs`) — that page is the by-group view.
+ */
+export function etfSectionIndexPath(country: EtfSupportedCountry, section: EtfBrowseSection): string {
+  if (country === SupportedCountries.US && section === 'groups') {
+    return etfBasePath(country);
+  }
+  return etfBrowsePath(country, section);
+}
+
 export function etfBrowseDetailPath(country: EtfSupportedCountry, section: EtfBrowseSection, slug: string): string {
   return `${etfBrowsePath(country, section)}/${encodeURIComponent(slug)}`;
 }
 
-/** Path to a category page nested under a group: `/etfs/groups/<group>/categories/<category>`. */
+/**
+ * Path to a category page nested under a group: `/etfs/groups/<group>/categories/<category-slug>`.
+ * The category segment is slugified so URLs stay readable in sitemaps and shared links
+ * (`Large Value` → `large-value`).
+ */
 export function etfGroupCategoryPath(country: EtfSupportedCountry, groupKey: string, categoryName: string): string {
-  return `${etfBrowseDetailPath(country, 'groups', groupKey)}/categories/${encodeURIComponent(categoryName)}`;
+  return `${etfBrowseDetailPath(country, 'groups', groupKey)}/categories/${slugifyEtfCategory(categoryName)}`;
 }
 
 export const ALL_ETF_COUNTRIES = ETF_SUPPORTED_COUNTRIES;

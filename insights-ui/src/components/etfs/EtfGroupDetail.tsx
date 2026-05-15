@@ -4,7 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getEtfGroupByKey, getCategoriesForGroupKey, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import { fetchAllEtfsByCategory, fetchUncategorizedEtfPreview } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
+import { etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath, etfSectionIndexPath } from '@/utils/etf-country-route-utils';
 import { notFound } from 'next/navigation';
 
 interface EtfGroupDetailProps {
@@ -57,7 +57,7 @@ export default async function EtfGroupDetail({ country, groupKey }: EtfGroupDeta
       currentCountry={country}
       switcherSection="groups"
       extraBreadcrumbs={[
-        { name: 'All Groups', href: etfBrowsePath(country, 'groups'), current: false },
+        { name: 'All Groups', href: etfSectionIndexPath(country, 'groups'), current: false },
         { name: groupObj.name, href: etfBrowseDetailPath(country, 'groups', groupObj.key), current: true },
       ]}
     >
