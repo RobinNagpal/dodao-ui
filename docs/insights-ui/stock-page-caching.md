@@ -32,23 +32,53 @@ Every per-ticker page is `force-static` with `revalidate = false` and `dynamicPa
 
 ## 2) Where the cache is invalidated (write side)
 
-Everything below either calls one of the `revalidate*` helpers in `utils/ticker-v1-cache-utils.ts` or relies on a fetch-level `revalidate` window.
+Three classes of trigger: LLM report saves during the regen pipeline, admin actions on the ticker page, and a time-based fetch-cache expiry. All `revalidate*` helpers are in `utils/ticker-v1-cache-utils.ts`.
 
-| Trigger | Source file | Which tags |
+### 2a) LLM report saves
+
+Every save runs through `bumpUpdatedAtAndInvalidateCache` (`utils/ticker-v1-model-utils.ts`), called from the matching saver in `utils/analysis-reports/save-report-utils.ts`. The narrow subpage tag always fires immediately; the umbrella is deferred (skipped) during intermediate steps of a multi-step regen — the last step of the pipeline always fires the umbrella.
+
+| Report type saved (via `save-report-callback`) | Narrow tag invalidated | Umbrella `tickerAndExchangeTag` |
 |---|---|---|
-| LLM save: business/financial/past/future/fair-value factor result | `utils/analysis-reports/save-report-utils.ts` → `saveFactorAnalysisResponse` → `bumpUpdatedAtAndInvalidateCache(record, {kind:'category', category})` | `tickerCategoryReportTag(t,e,category)` always, `tickerAndExchangeTag(t,e)` unless `skipRevalidation` |
-| LLM save: competition | `save-report-utils.ts` → `saveCompetitionAnalysisResponse` → `bumpUpdatedAtAndInvalidateCache(record, {kind:'competition'})` | `tickerCompetitionTag(t,e)` always, umbrella unless `skipRevalidation` |
-| LLM save: management team | `save-report-utils.ts` → `saveManagementTeamResponse` → `bumpUpdatedAtAndInvalidateCache(record, {kind:'managementTeam'})` | `tickerManagementTeamTag(t,e)` always, umbrella unless `skipRevalidation` |
-| LLM save: investor analysis | `save-report-utils.ts` → `saveInvestorAnalysisResponse` → `bumpUpdatedAtAndInvalidateCache(record, {kind:'core'})` | umbrella only (no subpage renders this slice) |
-| LLM save: final summary | `save-report-utils.ts` → `saveFinalSummaryResponse` | umbrella only, unless `skipRevalidation` |
-| Admin "Revalidate" button on a ticker page | `app/stocks/[exchange]/[ticker]/StockActions.tsx` → `cache-actions.ts#revalidateTickerCache` → `revalidateAllTickerTags` | umbrella + competition + management-team + all 5 category tags |
-| Admin PUT to `…/exchange/<e>/<t>` (edit stockAnalyzeUrl / mark moved / mark deleted) | `app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/route.ts` putHandler | `revalidateAllTickerTags` — every per-ticker tag (moved/deleted state is enforced at the top of every per-ticker page render) |
-| Admin "Refresh financial data" batch | `app/api/[spaceId]/tickers-v1/fetch-financial-data/route.ts` | umbrella only (scraper data only feeds the main page) |
-| Time-based fetch revalidate on the main page's consolidated `…/full-render` fetch | `app/stocks/[exchange]/[ticker]/page.tsx` (`EIGHT_DAYS_IN_SECONDS`) | Not a tag invalidation — the single Data Cache entry expires after 8 days, forcing the consolidated fetch to re-execute. Backstop for dormant tickers so the underlying scraper / Yahoo data can refresh without an external invalidation. |
-| `ensurePriceHistoryIsFresh`, `fetchAndUpdateStockAnalyzerData`, `refreshMarketSummaryForFairValue` | `utils/price-history-utils.ts`, `utils/stock-analyzer-scraper-utils.ts` | **Intentionally none.** Per #1472, these used to call `revalidateTag` from the read path and were evicting the cache entry that was about to be filled — that's removed. |
-| ETF-only cache invalidations | `utils/etf-*` files | Out of scope; don't touch ticker tags. |
+| `BUSINESS_AND_MOAT` | `tickerCategoryReportTag(t,e,BusinessAndMoat)` | yes (deferred during partial regen) |
+| `FINANCIAL_ANALYSIS` | `tickerCategoryReportTag(t,e,FinancialStatementAnalysis)` | yes (deferred) |
+| `PAST_PERFORMANCE` | `tickerCategoryReportTag(t,e,PastPerformance)` | yes (deferred) |
+| `FUTURE_GROWTH` | `tickerCategoryReportTag(t,e,FutureGrowth)` | yes (deferred) |
+| `FAIR_VALUE` | `tickerCategoryReportTag(t,e,FairValue)` | yes (deferred) |
+| `COMPETITION` | `tickerCompetitionTag(t,e)` | yes (deferred) |
+| `MANAGEMENT_TEAM` | `tickerManagementTeamTag(t,e)` | yes (deferred) |
+| `INVESTOR_ANALYSIS` | (none — no subpage renders this slice) | yes |
+| `FINAL_SUMMARY` | (none) | yes |
 
-**No-op for ticker caches** (worth confirming so they don't show up in future audits): tariff cache utils, ETF cache utils, scenario cache utils, daily-mover cache utils, portfolio-manager cache utils. None of those revalidate a `ticker_*` tag.
+So a full 8-step regen invalidates each touched narrow tag once + the umbrella once at the end. A partial regen (e.g. only `BUSINESS_AND_MOAT`) invalidates only that one narrow tag + the umbrella.
+
+### 2b) Admin actions
+
+| Trigger | Source | Tags invalidated |
+|---|---|---|
+| "Invalidate cache" button on ticker page | `StockActions.tsx#handleDropdownSelect('invalidate-cache')` → `cache-actions.ts#revalidateTickerCache` → `revalidateAllTickerTags` | **everything** (umbrella + competition + management-team + all 5 category tags) |
+| "Edit stock details" modal save | `StockActions.tsx#handleEditDetailsSaved` → `revalidateTickerCache` | **everything** |
+| Admin PUT `/api/[spaceId]/tickers-v1/exchange/<e>/<t>` (edit `stockAnalyzeUrl`, set `movedExchange` / `movedSymbol` / `isDeleted`) | `exchange/[exchange]/[ticker]/route.ts` putHandler → `revalidateAllTickerTags` | **everything** (moved/deleted state is enforced at the top of every per-ticker page render) |
+| Admin "Refresh financial data" batch | `app/api/[spaceId]/tickers-v1/fetch-financial-data/route.ts` → `revalidateTickerAndExchangeTag` | umbrella only (scraper data only feeds the main page) |
+
+### 2c) Time-based fetch-cache expiry (not a tag invalidation)
+
+| Trigger | Effect |
+|---|---|
+| 8-day `revalidate` on the consolidated `…/full-render` fetch (`app/stocks/[exchange]/[ticker]/page.tsx`, `EIGHT_DAYS_IN_SECONDS`) | The single Data Cache entry expires after 8 days, forcing the consolidated fetch to re-execute on the next request. Backstop so dormant tickers can refresh their underlying scraper / Yahoo data without an external invalidation. |
+
+### 2d) What does NOT invalidate ticker caches
+
+- `ensurePriceHistoryIsFresh`, `fetchAndUpdateStockAnalyzerData`, `refreshMarketSummaryForFairValue` — **intentionally none.** Per #1472 these used to call `revalidateTag` from the read path and were evicting the cache entry they were about to fill; that's removed.
+- ETF saves, scenarios, tariffs, daily-movers, portfolio-managers — separate cache namespaces (`etf_*`, `koalagains:etf-scenario:*`, `tariff_*`, `koalagains:daily-movers:*`, `koalagains:portfolio-*`). None of them call a `revalidateTicker*Tag` helper.
+
+### 2e) Mental model
+
+- **A coding save** → only that report's subpage + main page rebuild.
+- **Admin "revalidate" / "edit ticker" / "mark moved or deleted"** → every page for that ticker rebuilds.
+- **Admin "refresh financial data"** → only main page rebuilds.
+- **8 days idle** → main page Data Cache entry expires once, scraper data refreshes on next view.
+- **Anything ETF / tariff / scenario / mover-related** → ticker caches untouched.
 
 ## 3) Why ISR writes used to exceed reads (and what changed)
 
