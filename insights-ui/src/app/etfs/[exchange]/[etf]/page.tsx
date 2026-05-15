@@ -30,7 +30,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense, use } from 'react';
+import { Suspense, use, type ReactNode } from 'react';
 
 /**
  * Static-by-default with on-demand invalidation.
@@ -424,13 +424,15 @@ function EtfAnalysisSection({
   analysisPromise,
   exchange,
   symbol,
+  afterPerformanceReturns,
 }: {
   analysisPromise: Promise<EtfAnalysisResponse>;
   exchange: string;
   symbol: string;
+  afterPerformanceReturns?: ReactNode;
 }): JSX.Element | null {
   const analysis: EtfAnalysisResponse = use(analysisPromise);
-  return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} />;
+  return <EtfAnalysisSections data={analysis} exchange={exchange} symbol={symbol} afterPerformanceReturns={afterPerformanceReturns} />;
 }
 
 const HOLDINGS_PREVIEW_LIMIT = 10;
@@ -554,11 +556,16 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
         </Suspense>
 
         <Suspense fallback={null}>
-          <EtfAnalysisSection analysisPromise={analysisPromise} exchange={exchange} symbol={etf} />
-        </Suspense>
-
-        <Suspense fallback={null}>
-          <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
+          <EtfAnalysisSection
+            analysisPromise={analysisPromise}
+            exchange={exchange}
+            symbol={etf}
+            afterPerformanceReturns={
+              <Suspense fallback={null}>
+                <EtfCompetitionChartSection dataPromise={competitionPromise} exchange={exchange} etf={etf} />
+              </Suspense>
+            }
+          />
         </Suspense>
 
         <div className="mx-auto max-w-7xl">

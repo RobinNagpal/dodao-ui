@@ -13,6 +13,7 @@ import {
   ETF_DIVIDEND_YIELD_OPTIONS,
   ETF_PAYOUT_FREQUENCY_OPTIONS,
   ETF_HOLDINGS_OPTIONS,
+  ETF_VOLUME_OPTIONS,
   ETF_BETA_OPTIONS,
   ETF_DIVIDEND_YEARS_OPTIONS,
   ETF_ASSET_CLASS_OPTIONS,
@@ -260,6 +261,13 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           options={ETF_HOLDINGS_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
         />
+        <FilterDropdown
+          id="volume"
+          label="Volume"
+          value={selectedFilters[EtfFilterParamKey.VOLUME] || ''}
+          options={ETF_VOLUME_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.VOLUME, v)}
+        />
       </SubSection>
 
       {/* Performance & Risk */}
@@ -277,6 +285,20 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           value={selectedFilters[EtfFilterParamKey.BETA] || ''}
           options={ETF_BETA_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.BETA, v)}
+        />
+        <FilterDropdown
+          id="assetClass"
+          label="Asset Class"
+          value={selectedFilters[EtfFilterParamKey.ASSET_CLASS] || ''}
+          options={ETF_ASSET_CLASS_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.ASSET_CLASS, v)}
+        />
+        <FilterDropdown
+          id="issuer"
+          label="Issuer"
+          value={selectedFilters[EtfFilterParamKey.ISSUER] || ''}
+          options={ETF_ISSUER_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.ISSUER, v)}
         />
       </SubSection>
 
@@ -309,24 +331,6 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           value={selectedFilters[EtfFilterParamKey.DIVIDEND_YEARS] || ''}
           options={ETF_DIVIDEND_YEARS_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YEARS, v)}
-        />
-      </SubSection>
-
-      {/* Classification */}
-      <SubSection title="Classification">
-        <FilterDropdown
-          id="assetClass"
-          label="Asset Class"
-          value={selectedFilters[EtfFilterParamKey.ASSET_CLASS] || ''}
-          options={ETF_ASSET_CLASS_OPTIONS}
-          onChange={(v) => handleChange(EtfFilterParamKey.ASSET_CLASS, v)}
-        />
-        <FilterDropdown
-          id="issuer"
-          label="Issuer"
-          value={selectedFilters[EtfFilterParamKey.ISSUER] || ''}
-          options={ETF_ISSUER_OPTIONS}
-          onChange={(v) => handleChange(EtfFilterParamKey.ISSUER, v)}
         />
       </SubSection>
 
