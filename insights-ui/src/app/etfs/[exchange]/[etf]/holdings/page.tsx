@@ -82,7 +82,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
     <PageWrapper>
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="py-4">
         <header className="mb-4 mt-2">
           <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
             {etfData.name} ({symbol}) &mdash; Holdings

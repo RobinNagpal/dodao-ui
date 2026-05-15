@@ -46,8 +46,8 @@ export default function EtfCompetitionFullView({ data, availableSiblingSlugsProm
   const executiveSummary = `A peer-vs-peer read of ${etf.name} (${etf.symbol}) against ${competitorListText} on past returns, future outlook, cost efficiency, and risk.`;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/Article">
+    <div className="py-4">
+      <article className="bg-gray-900 rounded-lg shadow-sm border border-color p-3 sm:p-6 md:p-8" itemScope itemType="https://schema.org/Article">
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
         <header className="mb-6 pb-4 border-b border-color">
