@@ -1,6 +1,7 @@
 import { EtfMorPortfolioHoldingRow, EtfMorPortfolioHoldings } from '@/types/prismaTypes';
 import { buildEtfHoldingColumnDefs } from '@/utils/etf-holdings-utils';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface EtfHoldingsProps {
   data: EtfMorPortfolioHoldings | null;
@@ -9,9 +10,11 @@ interface EtfHoldingsProps {
   /** When set and the full list is longer than `maxRows`, renders a "View more" link to this href. */
   viewMoreHref?: string;
   title?: string;
+  /** Optional content rendered inside the same black card, after the holdings table. */
+  relatedSections?: ReactNode;
 }
 
-export default function EtfHoldings({ data, maxRows, viewMoreHref, title }: EtfHoldingsProps): JSX.Element | null {
+export default function EtfHoldings({ data, maxRows, viewMoreHref, title, relatedSections }: EtfHoldingsProps): JSX.Element | null {
   if (!data) return null;
   const list: EtfMorPortfolioHoldingRow[] = Array.isArray(data.holdings) ? data.holdings : [];
   if (list.length === 0) return null;
@@ -72,6 +75,8 @@ export default function EtfHoldings({ data, maxRows, viewMoreHref, title }: EtfH
           </Link>
         </div>
       ) : null}
+
+      {relatedSections}
     </section>
   );
 }

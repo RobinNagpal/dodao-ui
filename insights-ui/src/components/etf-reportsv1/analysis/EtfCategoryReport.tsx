@@ -1,12 +1,12 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
-import EtfRelatedSections, { AvailableEtfSiblingSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { ReactNode } from 'react';
 
 const PASS_RESULT = 'Pass';
 
@@ -29,10 +29,12 @@ export interface EtfCategoryReportProps {
   fundCategory?: string | null;
   issuer?: string | null;
   indexName?: string | null;
-  /** Slug of the current sibling page (e.g. "performance-returns"). When set with {@link availableSiblingSlugsPromise}, renders a related-sections nav before the footer. */
+  /** Slug of the current sibling page (e.g. "performance-returns"). When set, renders a related-sections nav before the footer. */
   currentSlug?: string;
-  /** Promise of slugs known to have publishable content. Awaited inside a Suspense boundary. */
-  availableSiblingSlugsPromise?: Promise<AvailableEtfSiblingSlugs>;
+  /** Slugs of sibling pages with publishable content, resolved upstream. */
+  availableSlugs?: string[];
+  /** Optional content rendered immediately after the Executive Summary section. */
+  afterSummaryContent?: ReactNode;
 }
 
 export default function EtfCategoryReport({
@@ -49,7 +51,8 @@ export default function EtfCategoryReport({
   issuer,
   indexName,
   currentSlug,
-  availableSiblingSlugsPromise,
+  availableSlugs,
+  afterSummaryContent,
 }: EtfCategoryReportProps): JSX.Element | null {
   if (!categoryResult) return null;
 
@@ -109,6 +112,8 @@ export default function EtfCategoryReport({
             )}
           </section>
 
+          {afterSummaryContent}
+
           {categoryResult.overallAnalysisDetails && (
             <section className="mb-6" itemProp="articleBody">
               <h2 className="text-xl font-semibold text-color mb-3">Comprehensive Analysis</h2>
@@ -153,16 +158,8 @@ export default function EtfCategoryReport({
           )}
         </div>
 
-        {currentSlug && availableSiblingSlugsPromise && (
-          <Suspense fallback={null}>
-            <EtfRelatedSections
-              availableSlugsPromise={availableSiblingSlugsPromise}
-              exchange={exchange}
-              symbol={symbol}
-              etfName={etfName}
-              currentSlug={currentSlug}
-            />
-          </Suspense>
+        {currentSlug && availableSlugs && (
+          <EtfRelatedSections availableSlugs={availableSlugs} exchange={exchange} symbol={symbol} etfName={etfName} currentSlug={currentSlug} />
         )}
 
         <footer className="mt-8 pt-6 border-t border-color">

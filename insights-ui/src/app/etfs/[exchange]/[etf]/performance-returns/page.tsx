@@ -1,10 +1,13 @@
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
+import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
-import { getAvailableSiblingSlugsForEtf } from '@/components/etf-reportsv1/EtfRelatedSections';
+import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import EtfReturnsTable from '@/components/etf-reportsv1/EtfReturnsTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import { EtfMorReturnsRow } from '@/types/prismaTypes';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
@@ -41,6 +44,17 @@ async function fetchAnalysis(exchange: string, etf: string): Promise<EtfAnalysis
     return (await res.json()) as EtfAnalysisResponse;
   } catch {
     return { categories: [] };
+  }
+}
+
+async function fetchMorInfo(exchange: string, etf: string): Promise<EtfMorInfoOptionalWrapper | null> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/mor-info`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    if (!res.ok) return null;
+    return (await res.json()) as EtfMorInfoOptionalWrapper;
+  } catch {
+    return null;
   }
 }
 
@@ -82,11 +96,19 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
   const exchange = rawExchange.toUpperCase();
   const symbol = rawEtf.toUpperCase();
 
-  const [etfData, analysisData] = await Promise.all([fetchEtf(exchange, symbol), fetchAnalysis(exchange, symbol)]);
+  const [etfData, analysisData, morInfo, availableSlugs] = await Promise.all([
+    fetchEtf(exchange, symbol),
+    fetchAnalysis(exchange, symbol),
+    fetchMorInfo(exchange, symbol),
+    fetchEtfAvailableSlugs(exchange, symbol),
+  ]);
   if (!etfData) notFound();
 
   const categoryResult = analysisData.categories.find((c) => c.categoryKey === CATEGORY_KEY);
   if (!categoryResult) notFound();
+
+  const returnsAnnual = (morInfo?.morAnalyzerInfo?.returnsAnnual ?? null) as EtfMorReturnsRow[] | null;
+  const returnsTable = returnsAnnual ? <EtfReturnsTable rows={returnsAnnual} title="Annual Returns" /> : null;
 
   const now = new Date().toISOString();
   const publishedDate = etfData.createdAt?.toISOString?.() || now;
@@ -133,7 +155,8 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
         issuer={etfData.stockAnalyzerInfo?.issuer}
         indexName={etfData.stockAnalyzerInfo?.indexName}
         currentSlug={CATEGORY_SLUG}
-        availableSiblingSlugsPromise={getAvailableSiblingSlugsForEtf(etfData.id)}
+        availableSlugs={availableSlugs}
+        afterSummaryContent={returnsTable}
       />
     </PageWrapper>
   );

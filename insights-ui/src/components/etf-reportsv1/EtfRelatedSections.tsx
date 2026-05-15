@@ -1,8 +1,8 @@
-import { prisma } from '@/prisma';
+import { EtfAvailableSectionsResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/available-sections/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import Link from 'next/link';
-import { use } from 'react';
 
 const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'performance-returns', label: 'Past Returns' },
@@ -13,54 +13,29 @@ const SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
   { slug: 'holdings', label: 'Holdings' },
 ];
 
-const ANALYSIS_CATEGORY_TO_SLUG: Readonly<Record<string, string>> = {
-  [EtfAnalysisCategory.PerformanceAndReturns]: 'performance-returns',
-  [EtfAnalysisCategory.CostEfficiencyAndTeam]: 'cost-efficiency-team',
-  [EtfAnalysisCategory.RiskAnalysis]: 'risk-analysis',
-  [EtfAnalysisCategory.FuturePerformanceOutlook]: 'future-performance-outlook',
-};
-
-export type AvailableEtfSiblingSlugs = ReadonlySet<string>;
+const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 /**
- * Server-side lookup of which sibling ETF detail pages have publishable
- * content. Mirrors the `getAvailableSiblingSlugs` helper used by stock pages so
- * the in-page link graph stays in sync with what actually renders.
+ * Server-side helper for ETF detail/category pages. Calls the
+ * `/available-sections` API so the page's other parallel fetches can share
+ * the result via `Promise.all`, and so revalidation rides the same
+ * per-ETF cache tag as the rest of the page data.
  */
-export async function getAvailableSiblingSlugsForEtf(etfId: string): Promise<AvailableEtfSiblingSlugs> {
-  const [analysisRows, competitionRow, holdingsRow] = await Promise.all([
-    prisma.etfCategoryAnalysisResult.findMany({
-      where: {
-        spaceId: KoalaGainsSpaceId,
-        etfId,
-        summary: { not: '' },
-        overallAnalysisDetails: { not: '' },
-      },
-      select: { categoryKey: true },
-    }),
-    prisma.etfVsCompetition.findFirst({
-      where: { spaceId: KoalaGainsSpaceId, etfId, overallAnalysisDetails: { not: '' } },
-      select: { id: true },
-    }),
-    prisma.etfMorPortfolioInfo.findFirst({
-      where: { etfId },
-      select: { id: true },
-    }),
-  ]);
-
-  const available = new Set<string>();
-  for (const row of analysisRows) {
-    const slug = ANALYSIS_CATEGORY_TO_SLUG[row.categoryKey as string];
-    if (slug) available.add(slug);
+export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): Promise<string[]> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${symbol.toUpperCase()}/available-sections`;
+  try {
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(symbol, exchange)] } });
+    if (!res.ok) return [];
+    const data = (await res.json()) as EtfAvailableSectionsResponse;
+    return data.slugs ?? [];
+  } catch {
+    return [];
   }
-  if (competitionRow) available.add('competition');
-  if (holdingsRow) available.add('holdings');
-  return available;
 }
 
 export interface EtfRelatedSectionsProps {
-  /** Promise returned by {@link getAvailableSiblingSlugsForEtf}. Awaited inside this server component. */
-  availableSlugsPromise: Promise<AvailableEtfSiblingSlugs>;
+  /** Slugs known to have publishable content; resolved upstream so this stays a sync render. */
+  availableSlugs: string[];
   exchange: string;
   symbol: string;
   etfName: string;
@@ -68,10 +43,10 @@ export interface EtfRelatedSectionsProps {
   currentSlug: string;
 }
 
-export default function EtfRelatedSections({ availableSlugsPromise, exchange, symbol, etfName, currentSlug }: EtfRelatedSectionsProps): JSX.Element | null {
+export default function EtfRelatedSections({ availableSlugs, exchange, symbol, etfName, currentSlug }: EtfRelatedSectionsProps): JSX.Element | null {
   const ex = exchange.toUpperCase();
   const sym = symbol.toUpperCase();
-  const available = use(availableSlugsPromise);
+  const available = new Set(availableSlugs);
   const others = SECTIONS.filter((s) => s.slug !== currentSlug && available.has(s.slug));
 
   if (others.length === 0) return null;
