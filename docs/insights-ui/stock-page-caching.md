@@ -4,17 +4,21 @@
 
 Each of the 8 pages under `/stocks/[exchange]/[ticker]` subscribes to exactly **one** cache tag. No fetch attaches more than one tag, and no tag is shared between pages — so a `revalidateTag(X)` call invalidates exactly one page's cache. The only "fan-out" invalidations are deliberate and named in code (e.g. `revalidateAllTickerTags`), not implicit through shared tags.
 
-After PRs [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472), [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473), and the `/full-render` consolidation in this PR, one rebuild = **1 HTML + 1 Data Cache write = 2 cache writes per page**. The per-rebuild cost is now at the floor.
+After PRs [#1472](https://github.com/RobinNagpal/dodao-ui/pull/1472), [#1473](https://github.com/RobinNagpal/dodao-ui/pull/1473), and the `/full-render` consolidation in this PR, one rebuild = **1 HTML + 1 Data Cache write = 2 cache writes per page**. The per-rebuild cost is at the floor.
 
-The remaining `writes > reads` mismatch is **structural**: the cron + admin actions invalidate pages faster than people visit them. Production sample: 281 reads vs 1.8k writes across 818 unique paths in one window → each ticker page is rebuilt ~1.1 times and read ~0.34 times. Cache hit rate ≈ 13%. See **§4.5** for the math and ranked solutions.
+Production sample: **281 reads / 1.8k writes / 818 unique paths** in a window with no regens and no admin actions. Math: ~1.1 rebuilds per path × 2 writes ≈ 1.8k writes; cache hit rate ~13%. Because no `revalidateTag` fired during that window, the rebuilds must come from cache state being reset by something other than an explicit invalidation. **The most likely cause is a production deployment in the same window** — Vercel resets ISR cache per build ID, so every first-visit-after-deploy is a cache miss. Multi-region cold caches and internal eviction are secondary candidates.
 
-**Biggest remaining levers** (in order):
+**Biggest immediate lever**:
 
-1. **Lengthen the `*/3 * * * *` cron to `*/15`** — one-line change to `insights-ui/vercel.json`, ~5× reduction in cron-driven invalidations.
-2. **Narrow `revalidateAllTickerTags` on admin "Edit stock details"** — currently fires 8 tags on every text-only edit; only needs all 8 when `movedExchange` / `movedSymbol` / `isDeleted` change.
-3. **ETF pages still use the OLD stock architecture** (~8 fetches per page sharing one tag across 4 subpages — same anti-pattern stocks just escaped).
+1. **Reduce deploy frequency** to `main` (don't ship docs-only / dependabot-only PRs on their own), **or enable Vercel Skew Protection** so the ISR cache carries across deploys. Project-level setting, no code change.
 
-Full ranked list with code pointers and trade-offs lives in §4.5 and §6.
+**Lower-priority levers** (only relevant once deploy-driven resets stop dominating):
+
+2. Lengthen the `*/3 * * * *` cron to `*/15` — ~5× reduction in cron-driven invalidations once regens start firing again.
+3. Narrow `revalidateAllTickerTags` on admin "Edit stock details" — fires 8 tags on every text-only edit; only needs all 8 when `movedExchange` / `movedSymbol` / `isDeleted` change.
+4. **ETF pages still use the OLD stock architecture** (~8 fetches per page sharing one tag across 4 subpages).
+
+Diagnosis steps + full ranked solutions in §4.5.
 
 ---
 
@@ -111,52 +115,57 @@ A pure cache hit serves the stored HTML + the stored Data Cache entry — both c
 
 ## 4.5. "But writes still exceed reads after the consolidation" — read this first
 
-Reported production sample for `/stocks/[exchange]/[ticker]`: **281 reads, 1.8k writes, 818 unique paths** in one window. Decoded:
+Reported production sample for `/stocks/[exchange]/[ticker]`: **281 reads, 1.8k writes, 818 unique paths** in one window — with **no regens, no admin saves, and no admin invalidation clicks** during the window. The `*/3` cron fired but every tick was a no-op (no pending generation requests). So **no `revalidateTag` calls fired for ticker tags during the window.**
 
-- **818 unique paths** = 818 different `[exchange]/[ticker]` combinations had cache activity in the window.
-- **1.8k writes / 818 paths ≈ 2.2 writes per path.** With the consolidation, one rebuild costs 2 writes (1 HTML + 1 Data Cache). So **each ticker page was rebuilt ~1.1 times on average** in the window. That's near the theoretical floor — you can't rebuild less than once per invalidation cycle.
-- **281 reads / 818 paths ≈ 0.34 reads per path.** Each unique ticker page was served from cache fewer than once on average between rebuilds.
-- **Cache hit rate = 281 / (1.8k + 281) ≈ 13%.** Most requests to a ticker page hit a cold cache.
+Decoded:
 
-The consolidation already collapsed the per-rebuild cost from 7 writes → 2 writes. The remaining mismatch is structural: **invalidations are happening faster than people visit the pages**. As long as that's true, writes will exceed reads no matter how cheap each rebuild becomes — you can't get reads above writes when the average ticker is being invalidated more often than it's being read.
+- **818 unique paths** = 818 different `[exchange]/[ticker]` URLs had cache activity in the window.
+- **1.8k writes / 818 paths ≈ 2.2 writes per path.** With the consolidation, one rebuild costs 2 writes (1 HTML + 1 Data Cache). So **each ticker page was rebuilt ~1.1 times on average** in the window.
+- **281 reads / 818 paths ≈ 0.34 reads per path.** Cache hit rate ≈ 13%.
 
-### Root cause
+If no `revalidateTag` fired, **why did 900-ish rebuilds happen?** Cache writes don't only happen when you call `revalidateTag`. They also happen any time the cache entry simply isn't there when a request arrives. The candidates that fit "no explicit invalidation but 800+ cold-cache misses":
 
-For any per-page `writes:reads` ratio under ISR with on-demand invalidation:
+### Root cause hypotheses, ranked by likelihood
 
-```
-writes_per_path  ≈  invalidations_per_path × writes_per_rebuild
-reads_per_path   ≈  total_visits_per_path − invalidations_per_path
-ratio            =  writes_per_path / reads_per_path
-```
+**1. (Most likely) A production deployment during the window wiped the ISR cache.** Vercel's default behavior: every new deployment gets a fresh build ID, and the ISR cache is keyed by that build ID. Old cache entries from prior deployments are not transferred forward. After the deploy, the first request to every unique ticker URL is a cache miss → triggers a rebuild → 1 HTML write + 1 Data Cache write. With ~818 unique tickers crawled (likely Googlebot crawling sitemap entries) and one rebuild apiece, that's exactly **~1,636 writes** — matching the observed 1.8k. The ~280 tickers that got a second visit before any subsequent invalidation became the 281 reads.
 
-With the consolidation, `writes_per_rebuild = 2`. With ~1.1 invalidations per active ticker per window and only ~1.45 total visits per active ticker (1.1 trigger-rebuild visits + 0.34 cache-hit visits), the ratio is locked at ≈ 6.4× regardless of per-rebuild cost. **The lever has shifted from "per-rebuild cost" to "invalidations per path vs. visits per path".**
+   **How to verify:** Check Vercel's Deployments tab. If there was a deploy that fell inside this window (including auto-deploys from PR merges, dependabot bumps, or anything else that lands on `main`), this is your culprit. **Even one deploy per day produces this exact pattern on a heavily-crawled site.**
 
-Concretely, the 818 active paths in the window are tickers that were touched by:
+**2. (Second most likely) Multi-region ISR cold caches.** Vercel serves ISR pages from edge nodes that maintain their own per-region cache state. A ticker page cached in `iad1` (US East) needs to be rebuilt the first time it's served from `fra1` (Frankfurt), even though no tag was invalidated. The ~1.1 rebuilds per path number is consistent with: most pages served from one region (1 rebuild), a long tail served from two (2 rebuilds). For Googlebot specifically, this is common — Google crawls from a global pool of IPs and hits whichever edge region is closest.
 
-1. A cron-driven regen pipeline completing (umbrella fires on `FINAL_SUMMARY` save) — biggest contributor.
-2. A category / competition / management-team save firing a narrow tag → subpage rebuild → if the subpage is `/stocks/[exchange]/[ticker]/X`, it shows up under that route, not the main route, so it doesn't bloat the main-route count. But the umbrella also fires at the end of the same regen → main route +1 rebuild.
-3. Admin actions (`revalidateAllTickerTags`, `revalidateTickerCache` button, admin PUT, `fetch-financial-data` batch) — one click fires the umbrella; check the Vercel function logs for `Cache invalidated for` to count how often.
+   **How to verify:** Look at the per-region breakdown in Vercel's Edge Network analytics (if available) or filter logs by `x-vercel-id` prefix.
 
-### Solutions, ranked by expected impact
+**3. (Possible) Vercel's internal cache eviction.** Vercel doesn't publish exact thresholds, but ISR cache entries can be evicted under storage pressure or by their internal LRU policy. For a site with thousands of static pages where each entry is relatively large (the consolidated `/full-render` response is the whole page payload), individual entries can get evicted on the timeline of hours-to-days even without an explicit `revalidateTag`. The first request after eviction = a rebuild.
 
-Each one trades off against either freshness, regen latency, or admin ergonomics.
+   **How to verify:** Hard to verify directly. Look for a correlation between writes and time — if writes spike every 12-24 hours independent of deploys/admin activity, this is likely it.
 
-| # | Solution | Mechanism | Expected writes reduction | Trade-off |
-|---|---|---|---|---|
-| 1 | **Lengthen the `*/3 * * * *` cron to `*/15`** (`insights-ui/vercel.json`) | Fewer regen pipelines complete per hour → fewer umbrella invalidations | **5×** on cron-driven invalidations | Up to 15-minute additional latency before a queued ticker starts its regen |
-| 2 | **Batch admin invalidations.** `revalidateAllTickerTags` is a sledgehammer — admin "Edit stock details" fires it on every save even when only the `summary` text changed. Narrow it: only fire all-8-tags when `movedExchange` / `movedSymbol` / `isDeleted` actually change; otherwise fire only `tickerAndExchangeTag` (umbrella) since text-only edits only affect the main aggregate page. | Cuts per-admin-action invalidations from 8 → 1 for the common case | **8×** on admin-driven invalidations | Subpages stay stale briefly after a text-only edit. Acceptable since the subpages don't render `summary` at all. |
-| 3 | **Stop firing the umbrella on every regen step's last invocation.** Today every completed pipeline fires the umbrella, even for partial regens triggered by `createSingleAnalysisBackgroundRequest` (admin "Generate just Fair Value"). For a single-step regen, the umbrella is redundant — the narrow tag already invalidates the main page's view of that slice via the consolidated `/full-render` fetch (which subscribes to the umbrella). Audit `save-report-callback/route.ts`: if there was only one step in the request, skip the umbrella. | Cuts umbrella invalidations on partial regens roughly in half | **2-3×** on partial-regen-driven invalidations | None significant — main page won't rebuild on partial regens, but the consolidated fetch already pulls in the new data when something else invalidates the umbrella |
-| 4 | **Switch `/full-render` to direct Prisma + `unstable_cache`** instead of fetch-to-self HTTP. The cache entry becomes one `unstable_cache` blob tagged with the umbrella, no internal HTTP round-trip, and the rebuild is slightly faster — same write count but lower per-rebuild cost. | Marginal write reduction; bigger win is reduced function GB-seconds | **~10%** | None; same cache surface |
-| 5 | **Audit `fetch-financial-data` batch usage.** Every batch call invalidates one umbrella per ticker in the request. If the admin runs a 500-ticker batch, that's 500 umbrella invalidations in one shot — directly explains a chunk of the 818 unique paths in the window. Run it less often or skip the revalidate when the underlying data didn't actually change. | Depends on usage; could be the entire reason | Variable | None |
+**4. (Unlikely for this scale)** The 8-day `revalidate` backstop on the consolidated fetch. 818 tickers all hitting their 8-day expiry in the same window would require they were all originally cached on roughly the same day. Possible if there was a mass cache reset 8 days prior, but unlikely as a recurring driver.
 
-If you do #1 + #2 + #3 together, the projected steady-state for the main page drops from 1.8k writes / window to roughly 300–400 writes / window, while reads stay roughly the same. At that point reads should match or exceed writes. **#1 is the single biggest immediate lever and is a one-line change to `vercel.json`.**
+**5. (Ruled out)** Any explicit `revalidateTag` path. The user confirmed no regens / admin actions in the window, and `grep -rn revalidateTag insights-ui/src/` shows the only ticker-tag callers are: `bumpUpdatedAtAndInvalidateCache` (fires only on saves), `revalidateAllTickerTags` (fires only on admin actions or admin PUT), `saveFinalSummaryResponse` (fires only on the last regen step), and `fetch-financial-data` (fires only on admin batch). With none of those triggered, no tag invalidation happened.
 
-### What won't move the needle
+### Solutions, ranked by what actually addresses each hypothesis
 
-- More aggressive per-fetch consolidation. The main page is already at 1 tagged fetch.
-- Bot detection (see prior session — saves at most one rebuild per invalidation, at the cost of slower bot responses and SEO risk).
-- Longer `revalidate` window on the consolidated fetch. The 8-day backstop only fires for dormant tickers; active tickers' invalidations already win that race.
+| # | If the cause is… | Solution | Trade-off |
+|---|---|---|---|
+| 1 | **Deploy resets** (hypothesis 1) | Reduce deployment frequency on `main` (don't deploy docs-only or dependabot-only changes), or enable Vercel **Skew Protection** which preserves the ISR cache across compatible deployments. Skew Protection is a per-project setting; enable it from the Project → Settings → General → Skew Protection. | Skew Protection: small storage overhead. Reduced deploy frequency: slower iteration |
+| 2 | **Multi-region cold caches** (hypothesis 2) | Move some routes to a single-region runtime so there's only one cache to fill. Or accept the 2-3× multiplier as a cost of global edge serving. | Single-region serving = higher latency for users far from that region |
+| 3 | **Cache eviction** (hypothesis 3) | Increase the `revalidate` backstop from 8 days to something shorter (counter-intuitive — but a shorter backstop means more requests are "in-flight" stale-while-revalidate refreshes instead of cold misses, depending on Vercel's eviction model). Or switch to `unstable_cache` + Prisma to skip the HTTP/fetch-cache hop. | Marginal; might not move the needle |
+| 4 | **8-day fetch expiry coinciding** (hypothesis 4) | Lengthen the backstop further (14d or 30d). Cheap to test. | Dormant tickers go even longer without refreshing scraper data |
+| 5 | **Future regen / admin volume** (when it returns) | Lengthen `*/3` cron → `*/15`. Narrow `revalidateAllTickerTags` on admin "Edit stock" to only fire all-8-tags when moved/deleted state changes. Skip the umbrella for single-step partial regens. | Regen latency, admin sub-page staleness |
+
+**The single most productive next step for this user**: check Vercel's Deployments tab for activity in the same window the metrics cover. If there was a deploy, the writes are 100% explained and the right fix is one of:
+
+- **Reduce deploy frequency** to `main` (only deploy code that affects user-facing behavior; merge docs/dependabot PRs into a batched release).
+- **Enable Vercel Skew Protection** to carry the ISR cache forward across deploys (project-level setting; no code change).
+
+These are the two levers that flatten the write-spike-per-deploy pattern. Cron / admin-action tuning (the previous suggestions) only matters once deploys are no longer the dominant driver.
+
+### How to confirm in 10 minutes
+
+1. Open Vercel → Deployments. Filter by the window. Was there a successful Production deployment? If yes → **hypothesis 1 confirmed**, stop here.
+2. If no deploys: open the Vercel logs for `/stocks/[exchange]/[ticker]` in the same window. Search for `Cache invalidated for`. Count occurrences. If you see 800+ entries, an explicit revalidate path exists that this audit missed — share the logs.
+3. If no logs match and no deploys: look at the per-region breakdown of writes. If writes are split across 2+ regions, **hypothesis 2** is your answer.
+4. If none of the above: hypothesis 3 (cache eviction) — confirm by sampling writes/reads in 1-hour buckets across a full week. A flat eviction rate independent of deploy/admin activity points there.
 
 ## 5. Mental model in five bullets
 
