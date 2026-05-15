@@ -1,5 +1,5 @@
 import EtfGroupsIndex from '@/components/etfs/EtfGroupsIndex';
-import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
+import { etfBrowsePath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +19,10 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function CountryEtfsGroupsIndexPage({ params }: PageProps) {
   const { country } = await params;
-  const decoded = resolveEtfCountryParam(country, '/etfs/groups');
-  return EtfGroupsIndex({ country: decoded });
+  const decoded = resolveEtfCountryParam(country, '/etfs');
+  return EtfGroupsIndex({
+    country: decoded,
+    switcherSection: 'groups',
+    extraBreadcrumbs: [{ name: 'Groups', href: etfBrowsePath(decoded, 'groups'), current: true }],
+  });
 }

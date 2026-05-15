@@ -22,6 +22,17 @@ export function etfBrowsePath(country: EtfSupportedCountry, section: EtfBrowseSe
   return `${etfBasePath(country)}/${section}`;
 }
 
+/**
+ * Where the section's *index* lives in the UI. Equals `etfBrowsePath` for most cases, but the US
+ * `groups` index is collapsed onto the country root (`/etfs`) — that page is the by-group view.
+ */
+export function etfSectionIndexPath(country: EtfSupportedCountry, section: EtfBrowseSection): string {
+  if (country === SupportedCountries.US && section === 'groups') {
+    return etfBasePath(country);
+  }
+  return etfBrowsePath(country, section);
+}
+
 export function etfBrowseDetailPath(country: EtfSupportedCountry, section: EtfBrowseSection, slug: string): string {
   return `${etfBrowsePath(country, section)}/${encodeURIComponent(slug)}`;
 }

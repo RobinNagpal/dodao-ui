@@ -1,17 +1,24 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import CompactEtfGroupingCard from '@/components/etfs/CompactEtfGroupingCard';
+import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ETF_OTHERS_GROUP, getAllEtfGroups, getCategoriesForGroupKey } from '@/utils/etf-categorization-utils';
 import { fetchEtfsForGroupings, fetchUncategorizedEtfPreview } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
-import { etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
+import { EtfBrowseSection, etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
+import { ReactNode } from 'react';
 import Link from 'next/link';
 
 interface EtfGroupsIndexProps {
   country: EtfSupportedCountry;
+  title?: string;
+  description?: string;
+  switcherSection?: EtfBrowseSection;
+  extraBreadcrumbs?: BreadcrumbsOjbect[];
+  headSlot?: ReactNode;
 }
 
-export default async function EtfGroupsIndex({ country }: EtfGroupsIndexProps) {
+export default async function EtfGroupsIndex({ country, title, description, switcherSection, extraBreadcrumbs, headSlot }: EtfGroupsIndexProps) {
   const groups = getAllEtfGroups();
 
   // Bucket every category in every group so we can fetch top-N ETFs per category.
@@ -48,16 +55,20 @@ export default async function EtfGroupsIndex({ country }: EtfGroupsIndexProps) {
   ]);
 
   const displayName = etfCountryDisplayName(country);
-  const groupsPath = etfBrowsePath(country, 'groups');
+  const resolvedTitle = title ?? `${displayName} ETFs by Group`;
+  const resolvedDescription =
+    description ??
+    `Diversified, sector, fixed income, and alternative-strategy fund groups for ${displayName} ETFs. Each card lists the top-rated ETFs in that category.`;
 
   return (
     <EtfPageLayout
-      title={`${displayName} ETFs by Group`}
-      description={`Diversified, sector, fixed income, and alternative-strategy fund groups for ${displayName} ETFs. Each card lists the top-rated ETFs in that category.`}
+      title={resolvedTitle}
+      description={resolvedDescription}
       currentCountry={country}
-      switcherSection="groups"
-      extraBreadcrumbs={[{ name: 'Groups', href: groupsPath, current: true }]}
+      switcherSection={switcherSection}
+      extraBreadcrumbs={extraBreadcrumbs}
     >
+      {headSlot}
       {groups.map((group) => {
         const categories = getCategoriesForGroupKey(group.key);
         const categoriesWithEtfs = categories.filter((cat) => (categoryValues.get(cat.name)?.length ?? 0) > 0);
