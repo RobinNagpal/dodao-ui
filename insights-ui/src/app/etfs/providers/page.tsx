@@ -7,7 +7,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-static';
-export const revalidate = TWO_WEEKS_IN_SECONDS;
+export const revalidate = 1209600; // 14 days — must be a literal for Next.js segment config
 
 export const metadata: Metadata = {
   title: 'US ETFs by Provider | KoalaGains',

@@ -7,7 +7,7 @@ import { generateEtfListingMetadata, generateEtfListingJsonLd } from '@/utils/et
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 export const dynamic = 'force-static';
-export const revalidate = TWO_WEEKS_IN_SECONDS;
+export const revalidate = 1209600; // 14 days — must be a literal for Next.js segment config
 
 export const metadata = generateEtfListingMetadata();
 
