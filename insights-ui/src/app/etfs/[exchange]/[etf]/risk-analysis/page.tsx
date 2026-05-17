@@ -7,7 +7,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { etfCategoryReportTag } from '@/utils/etf-cache-utils';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -29,7 +29,7 @@ const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -37,7 +37,7 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
 async function fetchAnalysis(exchange: string, etf: string): Promise<EtfAnalysisResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/analysis`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCategoryReportTag(etf, exchange, CATEGORY_KEY)] } });
     if (!res.ok) return { categories: [] };
     return (await res.json()) as EtfAnalysisResponse;
   } catch {

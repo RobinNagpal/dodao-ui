@@ -1,8 +1,7 @@
 import EtfPageLayout from '@/components/etfs/EtfPageLayout';
 import EtfCategoriesGrid, { EtfCategoryCardSpec } from '@/components/etfs/EtfCategoriesGrid';
-import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listings/group/route';
 import { getEtfGroupByKey, getCategoriesForGroupKey, ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
-import { fetchAllEtfsByCategory, fetchUncategorizedEtfPreview } from '@/utils/etf-grouping-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBrowseDetailPath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { notFound } from 'next/navigation';
@@ -10,42 +9,40 @@ import { notFound } from 'next/navigation';
 interface EtfGroupDetailProps {
   country: EtfSupportedCountry;
   groupKey: string;
+  data: EtfGroupDetailResponse;
 }
 
-export default async function EtfGroupDetail({ country, groupKey }: EtfGroupDetailProps) {
+export default function EtfGroupDetail({ country, groupKey, data }: EtfGroupDetailProps) {
+  if (!data.found) notFound();
+
   const groupObj = getEtfGroupByKey(groupKey);
   if (!groupObj) notFound();
 
   const displayCountry = etfCountryDisplayName(country);
 
-  const categories = getCategoriesForGroupKey(groupObj.key);
-  const categoryNames = categories.map((c) => c.name);
-
   let cardSpecs: EtfCategoryCardSpec[] = [];
 
   if (groupObj.key === ETF_OTHERS_GROUP_KEY) {
-    // "Others" has no analysis categories — render uncategorized ETFs as a single card.
-    const others = await fetchUncategorizedEtfPreview(KoalaGainsSpaceId, country);
-    if (others.count > 0) {
+    if (data.others && data.others.count > 0) {
       cardSpecs = [
         {
           key: ETF_OTHERS_GROUP_KEY,
           categoryName: 'Uncategorized',
           href: etfBrowseDetailPath(country, 'groups', ETF_OTHERS_GROUP_KEY),
-          etfs: others.items,
-          total: others.count,
+          etfs: data.others.items,
+          total: data.others.count,
         },
       ];
     }
   } else {
-    const { values, counts } = await fetchAllEtfsByCategory(KoalaGainsSpaceId, categoryNames, country);
+    const categories = getCategoriesForGroupKey(groupObj.key);
     cardSpecs = categories
       .map((cat) => ({
         key: cat.name,
         categoryName: cat.name,
         href: etfGroupCategoryPath(country, groupObj.key, cat.name),
-        etfs: values.get(cat.name) ?? [],
-        total: counts.get(cat.name) ?? 0,
+        etfs: data.values[cat.name] ?? [],
+        total: data.counts[cat.name] ?? 0,
       }))
       .filter((spec) => spec.etfs.length > 0);
   }

@@ -4,7 +4,7 @@ import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSec
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
-import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { etfCompetitionTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
@@ -23,7 +23,7 @@ const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCompetitionResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}/competition`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCompetitionTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfCompetitionResponse | null;
 }
@@ -31,7 +31,7 @@ async function fetchEtfCompetition(exchange: string, etf: string): Promise<EtfCo
 async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange.toUpperCase()}/${etf.toUpperCase()}?allowNull=true`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfCompetitionTag(etf, exchange)] } });
     if (!res.ok) return null;
     return (await res.json()) as EtfFastResponse | null;
   } catch {

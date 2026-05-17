@@ -4,7 +4,7 @@ import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { etfAndExchangeTag } from '@/utils/etf-cache-utils';
+import { etfHoldingsTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
 import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
@@ -22,7 +22,7 @@ const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
 
 async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse | null> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}?allowNull=true`;
-  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+  const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
   if (!res.ok) return null;
   return (await res.json()) as EtfFastResponse | null;
 }
@@ -30,7 +30,7 @@ async function fetchEtf(exchange: string, etf: string): Promise<EtfFastResponse 
 async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
   const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/exchange/${exchange}/${etf}/portfolio-holdings`;
   try {
-    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfAndExchangeTag(etf, exchange)] } });
+    const res = await fetch(url, { next: { revalidate: WEEK_IN_SECONDS, tags: [etfHoldingsTag(etf, exchange)] } });
     if (!res.ok) return { holdings: null, updatedAt: null };
     return (await res.json()) as EtfPortfolioHoldingsResponse;
   } catch {

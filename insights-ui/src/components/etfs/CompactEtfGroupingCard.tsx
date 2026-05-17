@@ -1,4 +1,4 @@
-import { EtfGroupingPreviewItem } from '@/utils/etf-grouping-utils';
+import type { EtfGroupingPreviewItem } from '@/types/etf/etf-listings-types';
 import { getEtfScoreColorClasses } from '@/utils/score-utils';
 import Link from 'next/link';
 import React from 'react';

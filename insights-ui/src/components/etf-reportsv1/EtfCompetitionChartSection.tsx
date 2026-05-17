@@ -2,10 +2,9 @@ import EtfCompetitionQuadrantWithLegend from '@/components/etf-reportsv1/EtfComp
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { buildEtfQuadrantDataPoints } from '@/utils/etf-competition-utils';
 import Link from 'next/link';
-import { use } from 'react';
 
 export interface EtfCompetitionChartSectionProps {
-  dataPromise: Promise<EtfCompetitionResponse | null>;
+  data: EtfCompetitionResponse | null;
   exchange: string;
   etf: string;
 }
@@ -16,9 +15,7 @@ export interface EtfCompetitionChartSectionProps {
  * peer-list legend, heading, SEO table, and "View Full Analysis" link are all
  * present in the initial server HTML (good for SEO + first paint).
  */
-export default function EtfCompetitionChartSection({ dataPromise, exchange, etf }: EtfCompetitionChartSectionProps): JSX.Element | null {
-  const data = use(dataPromise);
-
+export default function EtfCompetitionChartSection({ data, exchange, etf }: EtfCompetitionChartSectionProps): JSX.Element | null {
   if (!data || !data.etf) return null;
 
   const quadrantDataPoints = buildEtfQuadrantDataPoints(data);

@@ -1,13 +1,41 @@
+import type { EtfGroupDetailResponse } from '@/app/api/[spaceId]/etfs-v1/listings/group/route';
 import EtfGroupDetail from '@/components/etfs/EtfGroupDetail';
-import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getEtfGroupDetailTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
+export const dynamicParams = true;
+export const revalidate = 1209600; // 14 days — must be a literal for Next.js segment config
 
 type PageProps = {
   params: Promise<{ group: string }>;
 };
+
+const EMPTY_GROUP_DETAIL: EtfGroupDetailResponse = { found: false, values: {}, counts: {}, others: null };
+
+// Fail-soft so the first preview/prod build after introducing the listings
+// API routes can still prerender. The 2-week tag + ISR repopulates the page
+// on the first real request once the new route is live in the target env.
+async function fetchGroupDetail(country: SupportedCountries, groupKey: string): Promise<EtfGroupDetailResponse> {
+  const url = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/etfs-v1/listings/group?country=${encodeURIComponent(
+    country
+  )}&groupKey=${encodeURIComponent(groupKey)}`;
+  try {
+    const res = await fetch(url, { next: { revalidate: TWO_WEEKS_IN_SECONDS, tags: [getEtfGroupDetailTag(country, groupKey)] } });
+    if (!res.ok) {
+      console.error(`fetchGroupDetail failed (${res.status}): ${url}`);
+      return EMPTY_GROUP_DETAIL;
+    }
+    return (await res.json()) as EtfGroupDetailResponse;
+  } catch (e) {
+    console.error('fetchGroupDetail error:', e);
+    return EMPTY_GROUP_DETAIL;
+  }
+}
 
 export async function generateMetadata(props: { params: Promise<{ group: string }> }): Promise<Metadata> {
   const { group } = await props.params;
@@ -22,5 +50,7 @@ export async function generateMetadata(props: { params: Promise<{ group: string 
 
 export default async function EtfsByGroupPage({ params }: PageProps) {
   const { group } = await params;
-  return EtfGroupDetail({ country: SupportedCountries.US, groupKey: decodeURIComponent(group) });
+  const groupKey = decodeURIComponent(group);
+  const data = await fetchGroupDetail(SupportedCountries.US, groupKey);
+  return <EtfGroupDetail country={SupportedCountries.US} groupKey={groupKey} data={data} />;
 }
