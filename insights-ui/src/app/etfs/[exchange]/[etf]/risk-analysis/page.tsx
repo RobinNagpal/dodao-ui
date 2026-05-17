@@ -19,9 +19,7 @@ const CATEGORY_NAME = 'Risk Analysis';
 const CATEGORY_SLUG = 'risk-analysis';
 const BADGE_CLASS = 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-300';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 

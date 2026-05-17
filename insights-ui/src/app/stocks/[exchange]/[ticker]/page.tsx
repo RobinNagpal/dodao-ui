@@ -58,9 +58,7 @@ import { TickerRadarChart } from './TickerRadarChart';
 /**
  * Static-by-default with on-demand invalidation.
  */
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 /** Route params (strict) */
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;

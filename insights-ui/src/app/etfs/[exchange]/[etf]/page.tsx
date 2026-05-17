@@ -34,9 +34,7 @@ import { Suspense, type ReactNode } from 'react';
  * read by THIS page only — subpages have their own narrow tags and don't see
  * umbrella invalidations.
  */
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 

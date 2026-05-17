@@ -7,9 +7,7 @@ import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = 1209600; // 14 days — must be a literal for Next.js segment config
+export const dynamic = 'force-dynamic';
 
 type PageProps = {
   params: Promise<{ group: string }>;

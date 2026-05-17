@@ -6,7 +6,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 const PAGE_URL = 'https://koalagains.com/tariff-calculator';
 const PAGE_TITLE = 'US Tariff Calculator 2026 – Free Import Duty Estimator by HTS Code';

@@ -6,8 +6,7 @@ import { getEtfAssetClassesIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-ca
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
-export const dynamic = 'force-static';
-export const revalidate = 1209600; // 14 days — must be a literal for Next.js segment config
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'US ETFs by Asset Class | KoalaGains',

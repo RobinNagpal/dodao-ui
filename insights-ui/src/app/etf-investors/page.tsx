@@ -3,8 +3,7 @@ import EtfInvestorListingGrid from '@/components/etf-investors/EtfInvestorListin
 import EtfInvestorPageLayout from '@/components/etf-investors/EtfInvestorPageLayout';
 import { getInvestorTaxonomy } from '@/etf-analysis-data/etf-investor-taxonomy';
 
-export const dynamic = 'force-static';
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'ETF Investor Goals | KoalaGains',

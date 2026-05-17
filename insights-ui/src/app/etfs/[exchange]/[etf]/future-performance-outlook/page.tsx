@@ -19,9 +19,7 @@ const CATEGORY_NAME = 'Future Performance Outlook';
 const CATEGORY_SLUG = 'future-performance-outlook';
 const BADGE_CLASS = 'bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-300';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
