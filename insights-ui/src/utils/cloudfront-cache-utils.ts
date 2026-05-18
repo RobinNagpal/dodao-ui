@@ -32,14 +32,19 @@ import { waitUntil } from '@vercel/functions';
 
 const DISTRIBUTION_ID = process.env.CLOUDFRONT_DISTRIBUTION_ID;
 
-const CACHED_PATH_PATTERNS = [
-  /^\/stocks(\/|$)/,
-  /^\/etfs(\/|$)/,
-  /^\/industry-tariff-report(\/|$)/,
-  /^\/tariff-reports(\/|\*|$)/,
-  /^\/api\/koala_gains\/tickers-v1\/exchange\//,
-  /^\/api\/koala_gains\/tickers-v1\/country\//,
-];
+/**
+ * Literal mirror of the cached prefixes in `dodao-api-v2-deployment/cloudfront.tf`.
+ * An invalidation path is forwarded to AWS only if it starts with one of these.
+ * Add a new entry here whenever a new `ordered_cache_behavior` is added there.
+ */
+const CACHED_PATH_PREFIXES = [
+  '/stocks/',
+  '/etfs/',
+  '/industry-tariff-report/',
+  '/tariff-reports', // matches the bare `/tariff-reports` listing and `/tariff-reports/...`
+  '/api/koala_gains/tickers-v1/exchange/',
+  '/api/koala_gains/tickers-v1/country/',
+] as const;
 
 let client: CloudFrontClient | null = null;
 
@@ -53,7 +58,7 @@ function getClient(): CloudFrontClient | null {
 }
 
 function isCloudFrontCachedPath(path: string): boolean {
-  return CACHED_PATH_PATTERNS.some((pattern) => pattern.test(path));
+  return CACHED_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
 /**
