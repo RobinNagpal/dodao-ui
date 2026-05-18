@@ -11,7 +11,7 @@ The single reference for everything cache-related on koalagains.com: how each la
 1. [TL;DR](#tldr)
 2. [Glossary of cache layers](#glossary-of-cache-layers)
 3. [The journey: how we got to today's architecture](#the-journey-how-we-got-to-todays-architecture)
-4. [Current architecture (post-Phase-4)](#current-architecture-post-phase-4)
+4. [Current architecture (post-Phase-5)](#current-architecture-post-phase-5)
 5. [CloudFront configuration deep dive](#cloudfront-configuration-deep-dive)
 6. [Vercel-side configuration](#vercel-side-configuration)
 7. [Cache invalidation today](#cache-invalidation-today)
@@ -29,12 +29,13 @@ The single reference for everything cache-related on koalagains.com: how each la
 
 ## TL;DR
 
-The caching architecture for koalagains.com's cacheable URL families (`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`) has been through four phases:
+The caching architecture for koalagains.com's cacheable URL families (`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`, plus the per-stocks-page GET API endpoints) has been through five phases:
 
 1. **Phase 1 — `force-static` + Vercel ISR (original).** Fast page loads but the dominant Vercel cost driver: every page rebuild wrote a new HTML entry + one Data Cache entry per tagged `fetch()`, and **the ISR cache was flushed on every deploy** so every deploy triggered a wave of rebuilds.
 2. **Phase 2 — Add CloudFront in front of Vercel for `/stocks/*` and `/etfs/*`.** CloudFront absorbed hot traffic at the edge for 7 days, but introduced a deploy-skew bug ("Something went wrong" on direct page loads after a Vercel deploy) because CloudFront cached HTML from build N while live JS chunks came from build N+1.
 3. **Phase 3 — `force-dynamic` + CloudFront (6-day TTL) + Vercel Skew Protection (7-day window).** Zero ISR writes, no deploy invalidations, deploy-skew bug fixed. Long-tail and cold-cache pages still pay a full SSR cost on first visit per region — accepted trade-off in exchange for the cost savings.
 4. **Phase 4 — Targeted per-save invalidation + tariff cache coverage + manual flush workflow.** Save-event flows now call `invalidateCloudFrontPaths()` alongside `revalidateTag()` so the affected URL is purged from the edge cache the same moment the upstream tag is invalidated — no waiting for the 6-day TTL. Tariff report pages joined `/stocks/*` and `/etfs/*` as CloudFront-cached prefixes. A new `flush-cloudfront-cache` GitHub workflow gives admins a checkbox UI to bulk-purge any combination of stocks / etfs / tariffs on demand.
+5. **Phase 5 — CloudFront caching for the GET API endpoints behind `/stocks/*` pages.** The 8 per-ticker GET endpoints (`/full-render`, the 5 `*-data` endpoints, `/competition`, `/management-team`) and the 2 country-listing endpoints under `/api/koala_gains/tickers-v1/country/*` are now cached at CloudFront with the same 6-day TTL. A CloudFront miss on a `/stocks/{e}/{t}` page render no longer fans out to Vercel for every data fetch — most fetches hit CloudFront. Every per-stocks-page `revalidate*` helper now also invalidates the corresponding API URL alongside the page URL, so a save flushes both layers in lockstep.
 
 Current state: cheap, deploy-safe, with fresh content on save (not on TTL expiry), with known soft spots (cold cache per region, RSC client-side nav falls back to full reload). Sections 11–13 cover the slow paths and the options for closing them.
 
@@ -47,7 +48,7 @@ The phrase "the cache" hides at least five distinct things in this stack. The jo
 | Layer | What it caches | Where it lives | When it writes | When it invalidates |
 |---|---|---|---|---|
 | **Browser HTTP cache** | Static assets (JS/CSS/images) | Each user's browser | First load | Per `Cache-Control` (long-lived for hashed chunks) |
-| **CloudFront edge cache** | Whatever Vercel returned for `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*` | ~218 CloudFront PoPs, each isolated | First request per PoP (cache miss → write) | TTL expiry (currently 6 days), LRU eviction, **per-save targeted invalidation via `invalidateCloudFrontPaths()`** (section 7), manual bulk flush via GitHub workflow (section 8) |
+| **CloudFront edge cache** | Whatever Vercel returned for `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`, **plus the 10 GET API endpoints under `/api/koala_gains/tickers-v1/` that back `/stocks/*` page renders** | ~218 CloudFront PoPs, each isolated | First request per PoP (cache miss → write) | TTL expiry (currently 6 days), LRU eviction, **per-save targeted invalidation via `invalidateCloudFrontPaths()`** (section 7), manual bulk flush via GitHub workflow (section 8) |
 | **Vercel ISR cache** | Pre-rendered HTML for `force-static` pages | Vercel's CDN | Page rebuild (after invalidation or first request) | `revalidateTag()`, `revalidatePath()`, time-based, **deploy** |
 | **Vercel Data Cache** | Individual `fetch()` response bodies | Vercel's compute layer | Each uncached, opted-in fetch (`next: { tags }` / `revalidate`) | `revalidateTag()` matching one of the fetch's tags, time-based, **deploy** |
 | **Next.js client-side cache** | RSC payloads for in-session navigation | Each user's browser memory | Successful client navigation or prefetch | Page reload, deployment-id mismatch |
@@ -126,6 +127,49 @@ IAM setup that enables all of this:
 
 After Phase 4, the architecture matches the journey's original goal: cheap, deploy-safe, **and** fresh on user-visible save events.
 
+### Phase 5 — CloudFront caching for the GET API endpoints behind `/stocks/*` pages
+
+Phase 4 covered HTML at the edge. The pages themselves are `force-dynamic` though — every CloudFront miss triggers an SSR on Vercel, and that SSR fetches its data from same-domain API endpoints (`fetch(${getBaseUrl()}/api/koala_gains/tickers-v1/...)` — see `getBaseUrlForServerSidePages.ts`). Those fetches go out through CloudFront too, which means the SSR's data calls also hit the edge — and before Phase 5, they passed straight through to Vercel because only the page URL was cached, not the API URL.
+
+Phase 5 extends CloudFront caching to the GET API endpoints that the `/stocks/*` page tree renders from. After Phase 5, a CloudFront miss on `/stocks/NASDAQ/AAPL` triggers an SSR that calls `/api/koala_gains/tickers-v1/exchange/NASDAQ/AAPL/full-render` — and that call hits CloudFront (already-warm for popular tickers from prior SSRs), avoiding the Vercel function invocation for the API fetch.
+
+**What got cached.** Ten endpoints, enumerated explicitly (not a broad `/api/koala_gains/tickers-v1/*` wildcard):
+
+| API endpoint | Backs the page |
+|---|---|
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/full-render` | `/stocks/{e}/{t}` (main aggregate) |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/past-performance-data` | `/stocks/{e}/{t}/past-performance` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/future-performance-data` | `/stocks/{e}/{t}/future-performance` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/financial-statement-analysis-data` | `/stocks/{e}/{t}/financial-statement-analysis` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/business-and-moat-data` | `/stocks/{e}/{t}/business-and-moat` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/fair-value-data` | `/stocks/{e}/{t}/fair-value` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/competition` | `/stocks/{e}/{t}/competition` |
+| `/api/koala_gains/tickers-v1/exchange/{e}/{t}/management-team` | `/stocks/{e}/{t}/management-team` |
+| `/api/koala_gains/tickers-v1/country/{c}/tickers/industries` | `/stocks/countries/{c}` |
+| `/api/koala_gains/tickers-v1/country/{c}/tickers/industries/{industryKey}` | `/stocks/countries/{c}/industries/{industryKey}` and `/stocks/industries/{industryKey}` |
+
+**Why enumerate instead of using `/api/koala_gains/tickers-v1/*`.** The same prefix hosts ~8 admin-protected GETs (e.g. `/generation-requests`, `/missing-reports`, `/missing-factor-analysis`, `/oldest-by-report-type`). The `koalagains_one_week` cache policy strips cookies on forward, so an admin GET would return 401 — and CloudFront would cache that 401 publicly and serve it to authenticated admins on subsequent requests. Each of the 10 cached paths is hand-picked as a public read endpoint with no per-user variance. New cached endpoints have to be added to the path list deliberately.
+
+**Method handling.** `cached_methods = ["GET", "HEAD"]` and `allowed_methods = ["GET", "HEAD"]` on each behavior. POST/PUT/DELETE are not allowed on these specific patterns. Mutating endpoints under `/api/koala_gains/tickers-v1/` continue to match the default `Managed-CachingDisabled` behavior (which allows all methods), so admin saves are unaffected.
+
+**Per-save invalidation.** Every existing `revalidate*` helper in `utils/ticker-v1-cache-utils.ts` was extended to also invalidate the corresponding API URL alongside the page URL:
+
+| Helper | Page path | API path |
+|---|---|---|
+| `revalidateTickerAndExchangeTag(t, e)` | `/stocks/{e}/{t}` | `…/exchange/{e}/{t}/full-render` |
+| `revalidateTickerCategoryReportTag(t, e, cat)` | `/stocks/{e}/{t}/{slug}` | `…/exchange/{e}/{t}/{slug}-data` |
+| `revalidateTickerCompetitionTag(t, e)` | `/stocks/{e}/{t}/competition` | `…/exchange/{e}/{t}/competition` |
+| `revalidateTickerManagementTeamTag(t, e)` | `/stocks/{e}/{t}/management-team` | `…/exchange/{e}/{t}/management-team` |
+| `revalidateAllTickerTags(t, e)` | `/stocks/{e}/{t}*` (wildcard) | `…/exchange/{e}/{t}*` (wildcard) |
+| `revalidateStocksPageTag(country)` | `/stocks/countries/{c}*` | `…/country/{c}*` (wildcard) |
+| `revalidateIndustryPageTag(country, industryKey)` | `/stocks/industries/{k}`, `/stocks/countries/{c}/industries/{k}` | `…/country/{c}/tickers/industries/{k}` |
+
+A save now costs 2 billable paths instead of 1 (one for page, one for API), still effectively free against the 1,000-path/month free quota. The bulk admin "Invalidate cache" still uses 2 wildcards (one per layer) instead of fanning out to 16 individual paths.
+
+The `flush-cloudfront-cache` GitHub workflow's `flush_stocks` checkbox now also flushes `/api/koala_gains/tickers-v1/exchange/*` and `/api/koala_gains/tickers-v1/country/*` alongside `/stocks/*`, so a bulk operator flush wipes both layers in one click.
+
+Scope: stocks only for now. ETF, tariff, and other API trees keep their pass-through default behavior — they're candidates for the same treatment in a follow-up if their CloudFront-miss SSR cost shows up in the metrics.
+
 ### Phase 3 — Fix deploy skew, then drop ISR entirely
 
 Two locked-in changes:
@@ -162,18 +206,25 @@ export const dynamic = 'force-dynamic';
 
 ---
 
-## Current architecture (post-Phase-4)
+## Current architecture (post-Phase-5)
 
 ```
                                        (per region, isolated)
-                                    ┌──────────────────────────────────────┐
-                                    │  CloudFront edge cache               │
-Browser (any region)  ───── HTTPS ──┤  /stocks/*                : 6-day    │
-                                    │  /etfs/*                  : 6-day    │
-                                    │  /industry-tariff-report/*: 6-day    │
-                                    │  /tariff-reports*         : 6-day    │
-                                    │  everything else          : pass     │
-                                    └────────────┬─────────────────────────┘
+                                    ┌──────────────────────────────────────────────┐
+                                    │  CloudFront edge cache                       │
+Browser (any region)  ───── HTTPS ──┤  Pages (6-day TTL):                          │
+                                    │    /stocks/*                                 │
+                                    │    /etfs/*                                   │
+                                    │    /industry-tariff-report/*                 │
+                                    │    /tariff-reports*                          │
+                                    │  Stocks GET API (6-day TTL):                 │
+                                    │    /api/koala_gains/tickers-v1/exchange/.../ │
+                                    │      full-render, *-data, competition,       │
+                                    │      management-team                         │
+                                    │    /api/koala_gains/tickers-v1/country/.../  │
+                                    │      tickers/industries[/...]                │
+                                    │  everything else          : pass             │
+                                    └────────────┬─────────────────────────────────┘
                                                  │ cache miss
                                                  │ (or non-cached path)
                                                  ▼
@@ -194,7 +245,7 @@ Browser (any region)  ───── HTTPS ──┤  /stocks/*                
 
 Key invariants:
 
-- **`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, and `/tariff-reports*` are the cached paths at CloudFront**, all for 6 days. Everything else (API routes, `_next/static`, OAuth callbacks, admin routes, `/tariff-calculator/*`, `/hts-codes/*`) passes through unchanged.
+- **`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`, and the 10 enumerated GET API endpoints under `/api/koala_gains/tickers-v1/` are the cached paths at CloudFront**, all for 6 days. Everything else (other API routes, admin GETs under the same tickers-v1 prefix, `_next/static`, OAuth callbacks, `/tariff-calculator/*`, `/hts-codes/*`) passes through unchanged.
 - **All headers are forwarded to Vercel** via the `Managed-AllViewer` origin request policy — crucial because NextAuth on Vercel derives the OAuth `redirect_uri` from the `Host` header.
 - **Query strings are part of the cache key** (`query_string_behavior = "all"`) — required so `?dpl=N` and `?dpl=N+1` chunk requests cache separately.
 - **CloudFront's `min_ttl = 518400` (6 days)** overrides Vercel's `Cache-Control: no-store` on dynamic responses. We force CloudFront to cache despite Vercel saying "don't cache."
@@ -281,7 +332,7 @@ The trade-off: with the Host header forwarded, Vercel sees the real domain (whic
 
 ### Cache behaviors
 
-Five cache behaviors on the distribution (one default + four ordered):
+Fifteen cache behaviors on the distribution (one default + fourteen ordered: four for the cached page prefixes, ten for the stocks GET API endpoints):
 
 #### Default behavior — `Managed-CachingDisabled`
 
@@ -340,6 +391,44 @@ Identical configuration to `/stocks/*`. Covers the cover page, all per-industry 
 #### `/tariff-reports*` ordered behavior
 
 Identical configuration to `/stocks/*`. The pattern uses `*` (not `/*`) so it matches both the exact `/tariff-reports` listing page and any future subroutes like `/tariff-reports/<id>`.
+
+#### Stocks GET API endpoints — ten ordered behaviors
+
+```hcl
+locals {
+  stocks_api_cached_paths = [
+    "/api/koala_gains/tickers-v1/exchange/*/*/full-render",
+    "/api/koala_gains/tickers-v1/exchange/*/*/past-performance-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/future-performance-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/financial-statement-analysis-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/business-and-moat-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/fair-value-data",
+    "/api/koala_gains/tickers-v1/exchange/*/*/competition",
+    "/api/koala_gains/tickers-v1/exchange/*/*/management-team",
+    "/api/koala_gains/tickers-v1/country/*/tickers/industries",
+    "/api/koala_gains/tickers-v1/country/*/tickers/industries/*",
+  ]
+}
+
+dynamic "ordered_cache_behavior" {
+  for_each = local.stocks_api_cached_paths
+  content {
+    path_pattern             = ordered_cache_behavior.value
+    cache_policy_id          = aws_cloudfront_cache_policy.koalagains_one_week.id
+    origin_request_policy_id = "216adef6-5c7f-47e4-b989-5492eafa07d3"
+    allowed_methods          = ["GET", "HEAD"]
+    cached_methods           = ["GET", "HEAD"]
+    compress                 = true
+    ...
+  }
+}
+```
+
+Each pattern is one of the GET endpoints that a public `/stocks/*` page renders from. They share the `koalagains_one_week` 6-day cache policy and the `Managed-AllViewer` origin request policy with the page behaviors above.
+
+Mutating methods (POST/PUT/etc.) are not allowed on these specific patterns — admin saves under `/api/koala_gains/tickers-v1/...` use different sub-paths (e.g. `/exchange/{e}/{t}` for PUT, `/save-report-callback` for POST, `/generation-requests` for POST) and continue to match the default `Managed-CachingDisabled` behavior.
+
+**Why each endpoint is enumerated instead of using one wildcard.** The `/api/koala_gains/tickers-v1/*` prefix also hosts ~8 admin-protected GETs (`/generation-requests`, `/generation-requests/by-ids`, `/missing-reports`, `/missing-factor-analysis`, `/oldest-by-report-type`, plus admin GETs under `/[ticker]/`). The `koalagains_one_week` cache policy strips cookies, so an admin GET behind this prefix would return 401 — and CloudFront would cache that 401 publicly. Hand-picking the 10 known public endpoints avoids this footgun. New cached endpoints have to be added to `local.stocks_api_cached_paths` deliberately.
 
 ### CloudFront Function — `koalagains-www-to-apex`
 
@@ -522,8 +611,8 @@ The path filter (`CACHED_PATH_PATTERNS`) is the source of truth for "which prefi
 
 | Helper module | Helpers that purge CloudFront | URL pattern(s) purged |
 |---|---|---|
-| `utils/ticker-v1-cache-utils.ts` | `revalidateTickerAndExchangeTag`, `revalidateTickerCategoryReportTag`, `revalidateTickerCompetitionTag`, `revalidateTickerManagementTeamTag`, `revalidateAllTickerTags` (wildcard), `revalidateStocksPageTag`, `revalidateIndustryPageTag`, `revalidateIndustryAnalysisTag`, `revalidateBuildingBlockAnalysisTag` | `/stocks/...` (exact or wildcard) |
-| `utils/etf-cache-utils.ts` | `revalidateEtfAndExchangeTag`, `revalidateEtfCategoryReportTag`, `revalidateEtfCompetitionTag`, `revalidateEtfHoldingsTag`, `revalidateAllEtfTags` (wildcard), `revalidateEtfGroupsIndexTag`, `revalidateEtfGroupDetailTag`, `revalidateEtfAssetClassesIndexTag`, `revalidateEtfProvidersIndexTag`, `revalidateEtfListingFilterableTag` | `/etfs/...` (exact or wildcard) |
+| `utils/ticker-v1-cache-utils.ts` | `revalidateTickerAndExchangeTag`, `revalidateTickerCategoryReportTag`, `revalidateTickerCompetitionTag`, `revalidateTickerManagementTeamTag`, `revalidateAllTickerTags` (wildcard), `revalidateStocksPageTag`, `revalidateIndustryPageTag`, `revalidateIndustryAnalysisTag`, `revalidateBuildingBlockAnalysisTag` | `/stocks/...` (exact or wildcard) **and** the matching `/api/koala_gains/tickers-v1/exchange/{e}/{t}/...` or `/api/koala_gains/tickers-v1/country/{c}/...` URL — see Phase 5 in section 3 for the per-helper page↔API mapping |
+| `utils/etf-cache-utils.ts` | `revalidateEtfAndExchangeTag`, `revalidateEtfCategoryReportTag`, `revalidateEtfCompetitionTag`, `revalidateEtfHoldingsTag`, `revalidateAllEtfTags` (wildcard), `revalidateEtfGroupsIndexTag`, `revalidateEtfGroupDetailTag`, `revalidateEtfAssetClassesIndexTag`, `revalidateEtfProvidersIndexTag`, `revalidateEtfListingFilterableTag` | `/etfs/...` (exact or wildcard). ETF API endpoints are not yet behind CloudFront — candidate for a future phase. |
 | `utils/tariff-report-cache-utils.ts` | `revalidateTariffReportIndustry`, `revalidateTariffReportChapter`, `revalidateTariffReportsListing` | `/industry-tariff-report/...` (exact or wildcard), `/tariff-reports*` |
 
 **Helpers that intentionally do NOT call CloudFront invalidation:**
@@ -576,7 +665,7 @@ Lives in `.github/workflows/flush-cloudfront-cache.yml`. Manually-triggered (`wo
 1. Go to **GitHub → dodao-ui → Actions → "Flush CloudFront cache"**.
 2. Click **Run workflow**.
 3. Tick whichever cache groups should be purged:
-   - `flush_stocks` → `/stocks/*`
+   - `flush_stocks` → `/stocks/*` **and** `/api/koala_gains/tickers-v1/exchange/*` **and** `/api/koala_gains/tickers-v1/country/*` (the two API path wildcards cover all 10 cached stocks API endpoints)
    - `flush_etfs` → `/etfs/*`
    - `flush_tariffs` → `/industry-tariff-report/*` and `/tariff-reports*`
 4. Click **Run workflow**.
@@ -604,9 +693,10 @@ Until the policy is attached, the workflow's `create-invalidation` step will fai
 ### Cost
 
 Per workflow run:
-- 1 path if only one group is ticked (e.g., `/stocks/*`).
-- 2 paths if `flush_tariffs` is included (`/industry-tariff-report/*` + `/tariff-reports*`).
-- Up to 4 paths if all three groups are ticked.
+- 3 paths if only `flush_stocks` is ticked (`/stocks/*` + the two stocks API wildcards).
+- 1 path if only `flush_etfs` is ticked (`/etfs/*`).
+- 2 paths if only `flush_tariffs` is ticked (`/industry-tariff-report/*` + `/tariff-reports*`).
+- Up to 6 paths if all three groups are ticked.
 
 Well under the 1,000-path/month free quota even with daily runs.
 
@@ -947,7 +1037,7 @@ Both still do real work (queue and process regen requests). The `revalidateTag` 
 | Module | `revalidateTag` half | `invalidateCloudFrontPaths` half |
 |---|---|---|
 | `utils/cloudfront-cache-utils.ts` | (n/a — this IS the CloudFront helper) | LIVE — owns the path filter and the AWS call |
-| `utils/ticker-v1-cache-utils.ts` | Inert (`force-dynamic`) | LIVE for `/stocks/*` paths; intentionally absent for portfolio / home / daily-mover helpers |
+| `utils/ticker-v1-cache-utils.ts` | Inert (`force-dynamic`) | LIVE for `/stocks/*` page paths **and** the 10 per-stocks-page API paths under `/api/koala_gains/tickers-v1/`; intentionally absent for portfolio / home / daily-mover helpers |
 | `utils/etf-cache-utils.ts` | Inert | LIVE for `/etfs/*` paths (per-ETF and listings) |
 | `utils/tariff-report-cache-utils.ts` | Inert | LIVE for `/industry-tariff-report/*` and `/tariff-reports*` |
 | `utils/etf-scenario-cache-utils.ts` | Inert | Not wired — scenario URLs aren't cached at CloudFront |
@@ -1058,7 +1148,7 @@ Cost: 1 path from your monthly 1,000 free quota. Effectively free.
 
 ### Infrastructure (Terraform)
 
-- `dodao-api-v2-deployment/cloudfront.tf` — the entire CloudFront stack: ACM cert, Route53 records, cache policy `koalagains_one_week`, the `koalagains-www-to-apex` CloudFront Function, the distribution, and all four ordered cache behaviors (`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`).
+- `dodao-api-v2-deployment/cloudfront.tf` — the entire CloudFront stack: ACM cert, Route53 records, cache policy `koalagains_one_week`, the `koalagains-www-to-apex` CloudFront Function, the distribution, the four page-prefix ordered cache behaviors (`/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`), and the ten stocks-API ordered cache behaviors generated from `local.stocks_api_cached_paths` (8 under `/api/koala_gains/tickers-v1/exchange/*/*/...` + 2 under `/api/koala_gains/tickers-v1/country/*/tickers/industries[/...]`).
 - `dodao-api-v2-deployment/iam.tf` — the `insights-ui-project-policy` IAM policy (CloudFront invalidation rights scoped to the koalagains distribution) and its attachment to the `insights-ui-vercel-project` IAM user.
 
 ### GitHub workflows
