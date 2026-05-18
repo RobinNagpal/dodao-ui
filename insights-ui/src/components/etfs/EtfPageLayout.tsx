@@ -5,6 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import EtfFiltersButton from '@/components/etfs/EtfFiltersButton';
 import EtfAppliedFilterChips from '@/components/etfs/EtfAppliedFilterChips';
 import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
+import EtfListingSidebar from '@/components/etfs/EtfListingSidebar';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfBrowseSection, etfBasePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -45,28 +46,35 @@ export default function EtfPageLayout({
   return (
     <PageWrapper>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <div className="overflow-x-auto">
-        <Breadcrumbs
-          breadcrumbs={breadcrumbs}
-          rightButton={
-            <div className="flex">
-              <EtfFiltersButton />
+      <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+        <aside className="hidden lg:block w-64 shrink-0 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto rounded-lg border border-white/10 bg-white/[0.02] p-3">
+          <EtfListingSidebar country={currentCountry} />
+        </aside>
+        <div className="flex-1 min-w-0">
+          <div className="overflow-x-auto">
+            <Breadcrumbs
+              breadcrumbs={breadcrumbs}
+              rightButton={
+                <div className="flex">
+                  <EtfFiltersButton />
+                </div>
+              }
+            />
+          </div>
+
+          {showAppliedFilters && <EtfAppliedFilterChips showClearAll={true} />}
+
+          <div className="w-full mb-8">
+            <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
+            <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
+            <div className="mt-2 mb-2">
+              <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} className="text-sm" />
             </div>
-          }
-        />
-      </div>
+          </div>
 
-      {showAppliedFilters && <EtfAppliedFilterChips showClearAll={true} />}
-
-      <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-white mb-4">{title}</h1>
-        <p className="text-[#E5E7EB] text-md mb-4">{description}</p>
-        <div className="mt-2 mb-2">
-          <EtfCountryAlternatives currentCountry={currentCountry} section={switcherSection} className="text-sm" />
+          {children}
         </div>
       </div>
-
-      {children}
     </PageWrapper>
   );
 }
