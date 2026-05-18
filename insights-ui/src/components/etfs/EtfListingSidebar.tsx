@@ -8,7 +8,7 @@ import type { EtfProvidersIndexResponse } from '@/app/api/[spaceId]/etfs-v1/list
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { etfBasePath, etfBrowseDetailPath, etfBrowsePath } from '@/utils/etf-country-route-utils';
-import { getAllEtfGroups, getCategoriesForGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
+import { ETF_OTHERS_GROUP, getAllEtfGroups, getCategoriesForGroupKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-utils';
 import { slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 
@@ -132,21 +132,26 @@ interface GroupRowProps {
 }
 
 function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategorySlug, onToggle, buildCategoryHref }: GroupRowProps) {
+  const hasCategories = group.categories.length > 0;
   return (
     <li>
-      <div className="flex items-center gap-1">
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-label={isExpanded ? `Collapse ${group.name}` : `Expand ${group.name}`}
-          aria-expanded={isExpanded}
-          className="shrink-0 p-1 rounded text-gray-400 hover:text-white hover:bg-white/5"
-        >
-          {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
-        </button>
+      <div className="flex items-start gap-1">
+        {hasCategories ? (
+          <button
+            type="button"
+            onClick={onToggle}
+            aria-label={isExpanded ? `Collapse ${group.name}` : `Expand ${group.name}`}
+            aria-expanded={isExpanded}
+            className="shrink-0 p-1 mt-0.5 rounded text-gray-400 hover:text-white hover:bg-white/5"
+          >
+            {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
+          </button>
+        ) : (
+          <span aria-hidden="true" className="shrink-0 inline-block h-6 w-6" />
+        )}
         <Link
           href={groupHref}
-          className={`flex-1 min-w-0 truncate px-1.5 py-1 text-sm rounded border-l-2 ${
+          className={`flex-1 min-w-0 break-words px-1.5 py-1 text-sm leading-snug rounded border-l-2 ${
             isActiveGroup && !activeCategorySlug
               ? 'text-white font-medium bg-white/5 border-[#F59E0B]'
               : 'text-gray-200 hover:text-white hover:bg-white/5 border-transparent'
@@ -155,7 +160,7 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
           {group.name}
         </Link>
       </div>
-      {isExpanded && group.categories.length > 0 && (
+      {isExpanded && hasCategories && (
         <ul className="mt-0.5 mb-1 space-y-0.5">
           {group.categories.map((cat) => (
             <li key={cat.slug}>
@@ -184,7 +189,7 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
 
   const groups: SidebarGroup[] = useMemo(
     () =>
-      getAllEtfGroups().map((g) => ({
+      [...getAllEtfGroups(), ETF_OTHERS_GROUP].map((g) => ({
         key: g.key,
         name: g.name,
         categories: getCategoriesForGroupKey(g.key).map((c) => ({ name: c.name, slug: slugifyEtfCategory(c.name) })),
