@@ -595,8 +595,8 @@ The wiring lives in two places:
 ```ts
 export function invalidateCloudFrontPaths(paths: ReadonlyArray<string>): void {
   // 1. No-op if CLOUDFRONT_DISTRIBUTION_ID is unset (preview, local dev).
-  // 2. Filter paths against CACHED_PATH_PATTERNS so calls for uncached
-  //    prefixes don't waste the monthly free quota.
+  // 2. Filter paths against CACHED_PATH_PREFIXES (startsWith check) so
+  //    calls for uncached prefixes don't waste the monthly free quota.
   // 3. Send CreateInvalidation behind waitUntil() — the response is not
   //    awaited inline, but Vercel keeps the function alive until the AWS
   //    call completes so the invalidation survives the function returning.
@@ -605,7 +605,7 @@ export function invalidateCloudFrontPaths(paths: ReadonlyArray<string>): void {
 }
 ```
 
-The path filter (`CACHED_PATH_PATTERNS`) is the source of truth for "which prefixes does CloudFront cache today." Whenever a new ordered cache behavior is added to `cloudfront.tf`, that filter needs a matching regex.
+The path filter (`CACHED_PATH_PREFIXES`) is the source of truth for "which prefixes does CloudFront cache today." It's a plain list of prefix strings that mirrors the `ordered_cache_behavior` paths in `cloudfront.tf` — whenever a new ordered cache behavior is added there, a matching entry needs to be added to this list.
 
 **Every `revalidate*` helper for a CloudFront-cached path calls it alongside `revalidateTag()`.**
 
