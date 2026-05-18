@@ -15,8 +15,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
 
 interface RouteParams {
   section: string;

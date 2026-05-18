@@ -10,7 +10,7 @@ import { Calculator, ChevronRight, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'HTS Code Lookup – Browse HTSUS Sections, Chapters & Duty Rates',

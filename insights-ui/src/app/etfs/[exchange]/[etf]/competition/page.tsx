@@ -13,9 +13,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 /** Static-by-default with on-demand invalidation (matches the ETF detail page). */
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 

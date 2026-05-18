@@ -8,9 +8,7 @@ import { etfScenarioBySlugTag } from '@/utils/etf-scenario-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { parseMarkdown } from '@/util/parse-markdown';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ slug: string }>>;
 

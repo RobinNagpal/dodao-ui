@@ -19,9 +19,7 @@ const CATEGORY_NAME = 'Cost, Efficiency & Team';
 const CATEGORY_SLUG = 'cost-efficiency-team';
 const BADGE_CLASS = 'bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 

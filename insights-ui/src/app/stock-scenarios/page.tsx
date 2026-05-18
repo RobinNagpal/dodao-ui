@@ -13,9 +13,7 @@ import {
   generateStockScenarioListingMetadata,
 } from '@/utils/stock-scenario-metadata-generators';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours
+export const dynamic = 'force-dynamic';
 
 const DEFAULT_PAGE_SIZE = 200; // dataset should stay under ~100 for the foreseeable future; 200 leaves headroom
 const TWO_WEEKS_IN_SECONDS = 14 * 24 * 60 * 60;

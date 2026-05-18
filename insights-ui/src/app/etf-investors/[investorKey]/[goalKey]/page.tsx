@@ -4,9 +4,7 @@ import EtfInvestorGoalDetailView from '@/components/etf-investors/EtfInvestorGoa
 import EtfInvestorPageLayout from '@/components/etf-investors/EtfInvestorPageLayout';
 import { getAllInvestors, getInvestorGoal } from '@/etf-analysis-data/etf-investor-taxonomy';
 
-export const dynamic = 'force-static';
-export const dynamicParams = false;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ investorKey: string; goalKey: string }>>;
 

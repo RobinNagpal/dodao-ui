@@ -13,9 +13,7 @@ import {
   generateEtfScenarioDetailMetadata,
 } from '@/utils/etf-scenario-metadata-generators';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ slug: string }>>;
 

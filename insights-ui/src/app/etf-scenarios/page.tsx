@@ -13,9 +13,7 @@ import {
   generateEtfScenarioListingItemListJsonLd,
 } from '@/utils/etf-scenario-metadata-generators';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours
+export const dynamic = 'force-dynamic';
 
 const DEFAULT_PAGE_SIZE = 100; // fixed 31-row dataset today; 100 leaves headroom
 const WEEK_IN_SECONDS = 7 * 24 * 60 * 60;

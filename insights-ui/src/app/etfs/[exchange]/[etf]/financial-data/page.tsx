@@ -10,9 +10,7 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-static';
-export const dynamicParams = true;
-export const revalidate = false;
+export const dynamic = 'force-dynamic';
 
 type RouteParams = Promise<Readonly<{ exchange: string; etf: string }>>;
 
