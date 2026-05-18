@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import EtfFiltersButton from '@/components/etfs/EtfFiltersButton';
 import EtfAppliedFilterChips from '@/components/etfs/EtfAppliedFilterChips';
 import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
-import EtfListingSidebar from '@/components/etfs/EtfListingSidebar';
+import EtfPageLayoutShell from '@/components/etfs/EtfPageLayoutShell';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { EtfBrowseSection, etfBasePath, etfCountryDisplayName } from '@/utils/etf-country-route-utils';
@@ -30,17 +30,6 @@ function buildBreadcrumbs(currentCountry: EtfSupportedCountry, extraBreadcrumbs?
   return [{ name: rootName, href: rootHref, current: false }, ...extraBreadcrumbs];
 }
 
-// PageWrapper centers content at max-w-7xl (1280px). On screens wide enough to
-// host a sidebar in the left margin without pushing the content, we fixed-position
-// the sidebar there so the breadcrumb / cards keep their original width.
-//
-// Math (w-52 = 208px sidebar, 16px gap to content): the sidebar fits beside the
-// centered content when viewport ≥ 1696px (≈ 1700px breakpoint chosen for safety).
-// `left: max(1rem, calc(50vw - 832px))` keeps the sidebar pinned 16px to the left
-// of the content area at every viewport ≥ that breakpoint, gracefully approaching
-// the viewport's left edge as it narrows.
-const SIDEBAR_LEFT_STYLE: React.CSSProperties = { left: 'max(1rem, calc(50vw - 832px))' };
-
 export default function EtfPageLayout({
   title,
   description,
@@ -55,13 +44,7 @@ export default function EtfPageLayout({
   const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
   return (
-    <>
-      <aside
-        style={SIDEBAR_LEFT_STYLE}
-        className="hidden min-[1700px]:block fixed top-24 w-52 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-lg border border-white/10 bg-white/[0.02] p-3 z-10"
-      >
-        <EtfListingSidebar country={currentCountry} />
-      </aside>
+    <EtfPageLayoutShell country={currentCountry}>
       <PageWrapper>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
         <div className="overflow-x-auto">
@@ -87,6 +70,6 @@ export default function EtfPageLayout({
 
         {children}
       </PageWrapper>
-    </>
+    </EtfPageLayoutShell>
   );
 }
