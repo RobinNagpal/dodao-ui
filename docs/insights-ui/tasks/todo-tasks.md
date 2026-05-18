@@ -85,6 +85,36 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
+### Curate deep ETF investment-analysis resources (articles + videos)
+
+> Goal: assemble a vetted reading/watching list that helps a retail investor go from "what is an ETF" to "how do I pick the best ~20 ETFs out of the entire US ETF universe." Output feeds prompt design (factors, instructions), methodology pages, and an eventual reader-facing "How we analyze ETFs" learning hub. Avoid 101-level explainers (what is AUM, what is an index fund, ETF vs mutual fund) — focus on selection frameworks, decision criteria, pitfalls, and goal-driven portfolio construction.
+
+- [ ] **Scope + inclusion bar** — write a one-page criteria doc: source authority (issuer research desks, academic / SSRN, Morningstar / S&P / FactSet research, reputable practitioner blogs, fee-only RIA channels, CFA Institute), recency window (favor last 3–5 years; flag evergreen frameworks separately), depth bar (must go beyond definitions — must discuss screening, weighting trade-offs, factor exposures, tax/structure, or portfolio-fit), and exclusion rules (sponsored content, single-ticker promos, pure newsletter clickbait, broker affiliate pages). Save as `docs/insights-ui/etf-analysis/resources-inclusion-criteria.md`.
+- [ ] **Topic taxonomy** — enumerate the buckets the curated list must cover so we don't end up with 40 articles all about expense ratios:
+  - ETF selection frameworks (what to look at, in what order)
+  - Goal-driven selection (income, growth, capital preservation, tax-aware, retirement glide-path, accumulation vs decumulation)
+  - Cost & total cost of ownership (expense ratio, bid/ask, premium-discount, tracking difference vs tracking error, securities-lending revenue)
+  - Index construction & methodology (cap-weight vs equal-weight vs fundamental vs factor; reconstitution; concentration limits)
+  - Liquidity & trading (AUM thresholds, ADV, creation/redemption mechanics, primary vs secondary liquidity)
+  - Tax efficiency & structure (`'40 Act vs grantor trust vs partnership; in-kind redemptions; K-1s; foreign withholding)
+  - Asset-class-specific selection: equities (broad, factor, sector/thematic, international/EM), fixed income (duration, credit, floating-rate, munis), commodities, real assets, crypto, alternatives, multi-asset
+  - Risk analysis (drawdowns, correlations, tail risk, leverage decay, futures-roll, single-stock concentration)
+  - Active vs passive vs systematic (when each makes sense; closet-indexing red flags)
+  - Portfolio construction & "top ~20 ETFs" style shortlists (how practitioners pick a small core list)
+  - Common pitfalls + behavioral traps (yield chasing, thematic-launch underperformance, leveraged/inverse misuse)
+- [ ] **Source candidates to mine** — capture as a working list before curation; expand during research:
+  - Issuer/asset-manager research: Vanguard, BlackRock/iShares, State Street/SPDR, Invesco, Schwab, JPMorgan AM, Dimensional, Avantis, Research Affiliates
+  - Independent research / data: Morningstar (Russ Kinnel, Ben Johnson, Jeff Ptak), S&P DJI SPIVA + index research, ETF.com / VettaFi, ETFGI, FactSet ETF research, Bloomberg Intelligence ETF (Eric Balchunas, Athanasios Psarofagis)
+  - Academic / practitioner papers: SSRN, Journal of Index Investing, Financial Analysts Journal, CFA Institute Research Foundation
+  - Fee-only RIAs / writers: Ben Carlson (A Wealth of Common Sense), Cullen Roche, Larry Swedroe, Rick Ferri, Allan Roth, Meb Faber, Corey Hoffstein (Newfound / Flirting with Models), Cliff Asness / AQR
+  - YouTube channels: Ben Felix / Rational Reminder, The Plain Bagel, Patrick Boyle, Bloomberg's "Trillions" podcast (audio), Morningstar UK / US channels, ETF.com video desk, CFA Institute, Aswath Damodaran (for valuation context applied to thematic ETFs)
+  - Books worth a deep-link section: "The Bogleheads' Guide to Investing", "Common Sense on Mutual Funds" (Bogle), "A Random Walk Down Wall Street" (Malkiel), "The ETF Book" (Ferri), "Your Complete Guide to Factor-Based Investing" (Berkin/Swedroe), "Asset Allocation" (Gibson)
+- [ ] **Curation pass** — for each topic bucket pick 3–7 strongest sources; capture per-entry: title, author, publisher, URL, publish date, format (article / paper / video / podcast / book chapter), 2–3 sentence "why it's on the list" annotation, key frameworks/heuristics it contributes, and which KoalaGains prompt(s) or methodology page(s) it should feed. Track in a structured file (`docs/insights-ui/etf-analysis/resources.md` with grouped tables, or `resources.json` if we want to render it on-site later — decide during the task).
+- [ ] **Cross-link to existing methodology docs** — for each curated entry note which existing prompt finalization doc it should inform: `etf-prompts/intro-strategy.md`, `past-returns.md`, `cost-efficiency-team.md`, `risk-analysis.md`, `future-performance-outlook.md`, `competition.md`, and `prompt-finalization-approach.md`. Surface gaps where a category has no strong source.
+- [ ] **Synthesize an opinionated "How we pick the top 20 US ETFs" framework page** — `docs/insights-ui/etf-analysis/top-20-selection-framework.md`: starting universe + filters (AUM floor, ADV floor, age, structure), goal-to-sleeve mapping, per-sleeve scoring (cost, tracking, liquidity, methodology fit, risk), tie-breakers, refresh cadence. Cite curated sources inline so the framework isn't free-floating opinion.
+- [ ] **Refresh cadence** — schedule a quarterly review to prune dead links, add new strong pieces, and re-rank as issuers publish updated research; owner + checklist captured in the resources doc.
+- [ ] Open: render curated list publicly as a `/etfs/learn` (or `/learn/etfs`) hub vs keep it internal-only to inform prompts; structured JSON vs markdown for the canonical store; treatment of paywalled-but-high-quality sources (link + summary vs skip).
+
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
 - [ ] Filter to active ETFs only via `Etf.isActive` (or `managementStyle` enum); suppress entirely for passive/index.
