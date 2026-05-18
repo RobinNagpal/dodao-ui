@@ -38,14 +38,18 @@
   }
 }
 
-/* Thin, transparent scrollbar — used by the ETF listing sidebar so the
-   scrollbar gutter doesn't eat horizontal space from group names. */
+/* Thin, transparent scrollbar — used by the ETF listing sidebar (both the
+   outer rail and the inner provider list) so the scrollbar gutter doesn't eat
+   horizontal space from group names. Thumb color uses the same white tint as
+   the sidebar link hover state (`hover:bg-white/10` ≈ rgba(255,255,255,0.10))
+   so the scrollbar visually complements the hover feedback. */
 .etf-sidebar-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
 
   &::-webkit-scrollbar {
     width: 4px;
+    height: 4px;
   }
 
   &::-webkit-scrollbar-track {
@@ -53,11 +57,12 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.22);
     border-radius: 2px;
   }
 
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+  &::-webkit-scrollbar-thumb:hover,
+  &::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.4);
   }
 }

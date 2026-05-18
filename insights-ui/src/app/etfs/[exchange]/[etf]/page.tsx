@@ -1,6 +1,8 @@
 import type { EtfFullRenderResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/full-render/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfActions from '@/app/etfs/[exchange]/[etf]/EtfActions';
+import EtfSidebarShell from '@/components/etfs/EtfSidebarShell';
+import { ETF_EXCHANGE_TO_COUNTRY, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
@@ -168,127 +170,131 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
   const competitionAfter: ReactNode = data.competition ? <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} /> : null;
 
+  const sidebarCountry = isEtfExchange(exchange) ? ETF_EXCHANGE_TO_COUNTRY[exchange] : SupportedCountries.US;
+
   return (
-    <PageWrapper>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            generateEtfDetailArticleJsonLd({
-              etfName: etfData.name,
-              symbol: etfData.symbol,
-              exchange: etfData.exchange,
-              publishedDate: publishedDate.toISOString(),
-              modifiedDate: modifiedDate.toISOString(),
-            })
-          ),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            generateEtfDetailBreadcrumbJsonLd({
-              etfName: etfData.name,
-              symbol: etfData.symbol,
-              exchange: etfData.exchange,
-              ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
-            })
-          ),
-        }}
-      />
+    <EtfSidebarShell country={sidebarCountry} reportContext={{ exchange, etf, currentSection: '' }}>
+      <PageWrapper>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              generateEtfDetailArticleJsonLd({
+                etfName: etfData.name,
+                symbol: etfData.symbol,
+                exchange: etfData.exchange,
+                publishedDate: publishedDate.toISOString(),
+                modifiedDate: modifiedDate.toISOString(),
+              })
+            ),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              generateEtfDetailBreadcrumbJsonLd({
+                etfName: etfData.name,
+                symbol: etfData.symbol,
+                exchange: etfData.exchange,
+                ...getEtfFundCategoryHierarchy(etfData.stockAnalyzerInfo?.category),
+              })
+            ),
+          }}
+        />
 
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} rightButton={<EtfActions etf={{ symbol: etf, exchange }} />} />
 
-      <article itemScope itemType="https://schema.org/Article">
-        <meta itemProp="datePublished" content={publishedDate.toISOString()} />
+        <article itemScope itemType="https://schema.org/Article">
+          <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
-        <section id="introduction" className="text-left">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
-            <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
-              {etfData.name} ({etfData.symbol})
-            </h1>
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(etfData.exchange)}</span>
+          <section id="introduction" className="text-left">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
+              <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-4xl min-w-0" itemProp="headline">
+                {etfData.name} ({etfData.symbol})
+              </h1>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <span className="text-sm font-medium text-gray-400">{formatExchangeWithCountry(etfData.exchange)}</span>
+              </div>
             </div>
-          </div>
 
-          <EtfMetadataBadges
-            exchange={etfData.exchange}
-            assetClass={etfData.stockAnalyzerInfo?.assetClass}
-            category={etfData.stockAnalyzerInfo?.category}
-            issuer={etfData.stockAnalyzerInfo?.issuer}
-            indexName={etfData.stockAnalyzerInfo?.indexName}
-            className="mb-4"
-          />
+            <EtfMetadataBadges
+              exchange={etfData.exchange}
+              assetClass={etfData.stockAnalyzerInfo?.assetClass}
+              category={etfData.stockAnalyzerInfo?.category}
+              issuer={etfData.stockAnalyzerInfo?.issuer}
+              indexName={etfData.stockAnalyzerInfo?.indexName}
+              className="mb-4"
+            />
 
-          {etfData.summary && etfData.summary.trim() && (
-            <div className="mb-2" itemProp="description">
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(etfData.summary) }} />
+            {etfData.summary && etfData.summary.trim() && (
+              <div className="mb-2" itemProp="description">
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(etfData.summary) }} />
+              </div>
+            )}
+
+            {indexStrategyHead && (
+              <div className="mb-2">
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyHead) }} />
+              </div>
+            )}
+          </section>
+
+          <section className="mb-8">
+            <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
+              <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
+                {data.financialInfo ? <EtfFinancialInfo data={data.financialInfo} /> : <EtfFinancialInfoSkeleton />}
+              </div>
+              <div className="lg:w-1/2 flex justify-center">
+                <Suspense fallback={<RadarSkeleton />}>
+                  <EtfRadarChart scores={data.scores} analysis={data.analysis} />
+                </Suspense>
+              </div>
             </div>
+
+            {data.priceHistory && <PriceChart data={data.priceHistory} />}
+          </section>
+
+          {indexStrategyTail && (
+            <section id="index-strategy-tail" className="mb-8">
+              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyTail) }} />
+            </section>
           )}
 
-          {indexStrategyHead && (
-            <div className="mb-2">
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyHead) }} />
-            </div>
-          )}
-        </section>
+          <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 
-        <section className="mb-8">
-          <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
-            <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
-              {data.financialInfo ? <EtfFinancialInfo data={data.financialInfo} /> : <EtfFinancialInfoSkeleton />}
-            </div>
-            <div className="lg:w-1/2 flex justify-center">
-              <Suspense fallback={<RadarSkeleton />}>
-                <EtfRadarChart scores={data.scores} analysis={data.analysis} />
-              </Suspense>
-            </div>
+          <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} afterPerformanceReturns={competitionAfter} />
+
+          <div className="mx-auto max-w-7xl">
+            <section className="mb-6">
+              <SimilarEtfs data={data.similarEtfs} />
+            </section>
           </div>
 
-          {data.priceHistory && <PriceChart data={data.priceHistory} />}
-        </section>
-
-        {indexStrategyTail && (
-          <section id="index-strategy-tail" className="mb-8">
-            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyTail) }} />
-          </section>
-        )}
-
-        <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
-
-        <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} afterPerformanceReturns={competitionAfter} />
-
-        <div className="mx-auto max-w-7xl">
-          <section className="mb-6">
-            <SimilarEtfs data={data.similarEtfs} />
-          </section>
-        </div>
-
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
-              <span>Last updated by </span>
-              <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                <span itemProp="name">KoalaGains</span>
-              </span>
-              <span> on </span>
-              <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                {formattedModifiedDate}
-              </time>
+          <footer className="mt-8 pt-6 border-t border-color">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="text-sm text-muted-foreground">
+                <span>Last updated by </span>
+                <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+                  <span itemProp="name">KoalaGains</span>
+                </span>
+                <span> on </span>
+                <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+                  {formattedModifiedDate}
+                </time>
+              </div>
+              <div className="flex gap-2">
+                <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
+                  ETF Analysis
+                </span>
+                <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
+                  Investment Report
+                </span>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                ETF Analysis
-              </span>
-              <span className="inline-flex items-center rounded-full bg-purple-100 dark:bg-purple-900 px-2.5 py-0.5 text-xs font-medium text-purple-800 dark:text-purple-300">
-                Investment Report
-              </span>
-            </div>
-          </div>
-        </footer>
-      </article>
-    </PageWrapper>
+          </footer>
+        </article>
+      </PageWrapper>
+    </EtfSidebarShell>
   );
 }

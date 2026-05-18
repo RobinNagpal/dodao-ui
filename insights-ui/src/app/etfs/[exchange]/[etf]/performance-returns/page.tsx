@@ -2,10 +2,13 @@ import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[excha
 import { EtfMorInfoOptionalWrapper } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/mor-info/route';
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCategoryReport from '@/components/etf-reportsv1/analysis/EtfCategoryReport';
+import EtfSidebarShell from '@/components/etfs/EtfSidebarShell';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import EtfReturnsTable from '@/components/etf-reportsv1/EtfReturnsTable';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { ETF_EXCHANGE_TO_COUNTRY, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { EtfMorReturnsRow } from '@/types/prismaTypes';
 import { generateEtfCategoryMetadata, generateEtfCategoryArticleJsonLd, generateEtfCategoryBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
@@ -141,27 +144,31 @@ export default async function PerformanceReturnsPage({ params }: { params: Route
     sectionSlug: CATEGORY_SLUG,
   });
 
+  const sidebarCountry = isEtfExchange(exchange) ? ETF_EXCHANGE_TO_COUNTRY[exchange] : SupportedCountries.US;
+
   return (
-    <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCategoryReport
-        etfName={etfData.name}
-        symbol={symbol}
-        exchange={exchange}
-        categoryResult={categoryResult}
-        analysisTitle={`${etfData.name} (${symbol}) ${CATEGORY_NAME} Analysis`}
-        categoryBadgeText={CATEGORY_NAME}
-        categoryBadgeClassName={BADGE_CLASS}
-        updatedAt={modifiedDate}
-        assetClass={etfData.stockAnalyzerInfo?.assetClass}
-        fundCategory={etfData.stockAnalyzerInfo?.category}
-        issuer={etfData.stockAnalyzerInfo?.issuer}
-        indexName={etfData.stockAnalyzerInfo?.indexName}
-        currentSlug={CATEGORY_SLUG}
-        availableSlugs={availableSlugs}
-        afterSummaryContent={returnsTable}
-      />
-    </PageWrapper>
+    <EtfSidebarShell country={sidebarCountry} reportContext={{ exchange, etf: symbol, currentSection: CATEGORY_SLUG }}>
+      <PageWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleSchema, breadcrumbSchema]) }} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+        <EtfCategoryReport
+          etfName={etfData.name}
+          symbol={symbol}
+          exchange={exchange}
+          categoryResult={categoryResult}
+          analysisTitle={`${etfData.name} (${symbol}) ${CATEGORY_NAME} Analysis`}
+          categoryBadgeText={CATEGORY_NAME}
+          categoryBadgeClassName={BADGE_CLASS}
+          updatedAt={modifiedDate}
+          assetClass={etfData.stockAnalyzerInfo?.assetClass}
+          fundCategory={etfData.stockAnalyzerInfo?.category}
+          issuer={etfData.stockAnalyzerInfo?.issuer}
+          indexName={etfData.stockAnalyzerInfo?.indexName}
+          currentSlug={CATEGORY_SLUG}
+          availableSlugs={availableSlugs}
+          afterSummaryContent={returnsTable}
+        />
+      </PageWrapper>
+    </EtfSidebarShell>
   );
 }

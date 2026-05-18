@@ -2,8 +2,11 @@ import { EtfPortfolioHoldingsResponse } from '@/app/api/[spaceId]/etfs-v1/exchan
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfRelatedSections, { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
+import EtfSidebarShell from '@/components/etfs/EtfSidebarShell';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { ETF_EXCHANGE_TO_COUNTRY, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { etfHoldingsTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
@@ -105,28 +108,32 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
     </>
   );
 
+  const sidebarCountry = isEtfExchange(exchange) ? ETF_EXCHANGE_TO_COUNTRY[exchange] : SupportedCountries.US;
+
   return (
-    <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+    <EtfSidebarShell country={sidebarCountry} reportContext={{ exchange, etf: symbol, currentSection: 'holdings' }}>
+      <PageWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <div className="py-4">
-        <header className="mb-4 mt-2">
-          <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
-            {etfData.name} ({symbol}) &mdash; Holdings
-          </h1>
-          <p className="text-sm text-gray-400 mt-1">Top holdings reported by this ETF.</p>
-        </header>
+        <div className="py-4">
+          <header className="mb-4 mt-2">
+            <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
+              {etfData.name} ({symbol}) &mdash; Holdings
+            </h1>
+            <p className="text-sm text-gray-400 mt-1">Top holdings reported by this ETF.</p>
+          </header>
 
-        {totalHoldings > 0 ? (
-          <EtfHoldings data={holdings} title="Top Holdings" relatedSections={relatedSections} />
-        ) : (
-          <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
-            <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
-            {relatedSections}
-          </section>
-        )}
-      </div>
-    </PageWrapper>
+          {totalHoldings > 0 ? (
+            <EtfHoldings data={holdings} title="Top Holdings" relatedSections={relatedSections} />
+          ) : (
+            <section className="bg-gray-900 rounded-lg shadow-sm px-3 py-6 sm:p-6 mt-6">
+              <p className="text-sm text-gray-400">No holdings data available for this ETF.</p>
+              {relatedSections}
+            </section>
+          )}
+        </div>
+      </PageWrapper>
+    </EtfSidebarShell>
   );
 }

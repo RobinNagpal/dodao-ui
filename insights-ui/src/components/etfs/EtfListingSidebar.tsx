@@ -57,40 +57,56 @@ function parseActive(pathname: string, country: EtfSupportedCountry): ActiveRout
   return { kind: 'other' };
 }
 
-const SECTION_KEYS = ['assetClasses', 'groups', 'providers'] as const;
+const SECTION_KEYS = ['reportSections', 'assetClasses', 'groups', 'providers'] as const;
 type SectionKey = (typeof SECTION_KEYS)[number];
 
 const SECTION_LABEL: Record<SectionKey, string> = {
+  reportSections: 'Report Sections',
   assetClasses: 'Asset Classes',
   groups: 'ETFs Groups',
   providers: 'Provider',
 };
 
+/** Slug → label for the 7 ETF report sub-pages the sidebar surfaces. `''` is the
+ *  main report (index page under `/etfs/[exchange]/[etf]`). */
+const REPORT_SECTIONS: ReadonlyArray<{ slug: string; label: string }> = [
+  { slug: '', label: 'Main Report' },
+  { slug: 'performance-returns', label: 'Performance Returns' },
+  { slug: 'cost-efficiency-team', label: 'Cost & Team' },
+  { slug: 'risk-analysis', label: 'Risk Analysis' },
+  { slug: 'future-performance-outlook', label: 'Future Outlook' },
+  { slug: 'competition', label: 'Competition' },
+  { slug: 'holdings', label: 'Holdings' },
+];
+
 interface SectionHeaderProps {
   label: string;
-  href: string;
+  href?: string;
   isOpen: boolean;
   isActive: boolean;
   onToggle: () => void;
 }
 
 function SectionHeader({ label, href, isOpen, isActive, onToggle }: SectionHeaderProps) {
+  const labelClass = `flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded ${isActive ? 'text-white' : 'text-gray-200'} ${
+    href ? 'hover:bg-white/10 hover:text-white' : ''
+  }`;
+
   return (
     <div className="flex items-center justify-between gap-1">
-      <Link
-        href={href}
-        className={`flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded hover:bg-white/5 ${
-          isActive ? 'text-white' : 'text-gray-200 hover:text-white'
-        }`}
-      >
-        {label}
-      </Link>
+      {href ? (
+        <Link href={href} className={labelClass}>
+          {label}
+        </Link>
+      ) : (
+        <span className={labelClass}>{label}</span>
+      )}
       <button
         type="button"
         onClick={onToggle}
         aria-label={isOpen ? `Collapse ${label}` : `Expand ${label}`}
         aria-expanded={isOpen}
-        className="shrink-0 p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/5"
+        className="shrink-0 p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/10"
       >
         {isOpen ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
       </button>
@@ -113,7 +129,7 @@ function LeafLink({ href, label, isActive, indent = 1, size = 'sm' }: LeafLinkPr
     <Link
       href={href}
       className={`block ${padLeft} pr-2 py-1 ${textSize} rounded truncate border-l-2 ${
-        isActive ? 'text-white font-medium bg-white/5 border-[#F59E0B]' : 'text-gray-300 hover:text-white hover:bg-white/5 border-transparent'
+        isActive ? 'text-white font-medium bg-white/10 border-[#F59E0B]' : 'text-gray-300 hover:text-white hover:bg-white/10 border-transparent'
       }`}
     >
       {label}
@@ -142,7 +158,7 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
             onClick={onToggle}
             aria-label={isExpanded ? `Collapse ${group.name}` : `Expand ${group.name}`}
             aria-expanded={isExpanded}
-            className="shrink-0 p-0.5 mt-0.5 rounded text-gray-400 hover:text-white hover:bg-white/5"
+            className="shrink-0 p-0.5 mt-0.5 rounded text-gray-400 hover:text-white hover:bg-white/10"
           >
             {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
           </button>
@@ -153,8 +169,8 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
           href={groupHref}
           className={`flex-1 min-w-0 break-words px-1 py-0.5 text-[0.9rem] leading-snug rounded border-l-2 ${
             isActiveGroup && !activeCategorySlug
-              ? 'text-white font-medium bg-white/5 border-[#F59E0B]'
-              : 'text-gray-200 hover:text-white hover:bg-white/5 border-transparent'
+              ? 'text-white font-medium bg-white/10 border-[#F59E0B]'
+              : 'text-gray-200 hover:text-white hover:bg-white/10 border-transparent'
           }`}
         >
           {group.name}
@@ -179,13 +195,24 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
   );
 }
 
-interface EtfListingSidebarProps {
-  country: EtfSupportedCountry;
+export interface EtfReportSidebarContext {
+  /** Uppercased exchange code (e.g. "NYSEARCA"). */
+  exchange: string;
+  /** Uppercased ETF symbol (e.g. "VOO"). */
+  etf: string;
+  /** Slug of the active sub-page (e.g. `'risk-analysis'`). Empty/undefined = main report. */
+  currentSection?: string;
 }
 
-export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
+interface EtfListingSidebarProps {
+  country: EtfSupportedCountry;
+  reportContext?: EtfReportSidebarContext;
+}
+
+export default function EtfListingSidebar({ country, reportContext }: EtfListingSidebarProps) {
   const pathname = usePathname();
   const active = useMemo(() => parseActive(pathname, country), [pathname, country]);
+  const isReportPage = !!reportContext;
 
   const groups: SidebarGroup[] = useMemo(
     () =>
@@ -209,11 +236,15 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
   const assetClassesPath = etfBrowsePath(country, 'asset-classes');
   const groupsIndexPath = etfBasePath(country);
   const providersPath = etfBrowsePath(country, 'providers');
+  const reportBasePath = reportContext ? `/etfs/${reportContext.exchange}/${reportContext.etf}` : '';
 
+  // On report pages: Report Sections + Asset Classes open, Groups + Provider closed.
+  // On listing pages: Asset Classes + Groups open, Provider open only if currently on a provider page.
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>(() => ({
+    reportSections: isReportPage,
     assetClasses: true,
-    groups: true,
-    providers: active.kind === 'providers',
+    groups: !isReportPage,
+    providers: !isReportPage && active.kind === 'providers',
   }));
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     if (active.kind === 'groups' && active.groupKey) {
@@ -270,9 +301,40 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
   const buildCategoryHref = (group: SidebarGroup, cat: { slug: string }) =>
     `${etfBrowseDetailPath(country, 'groups', group.key)}/categories/${encodeURIComponent(cat.slug)}`;
 
+  const currentReportSlug = reportContext?.currentSection ?? '';
+
   return (
     <nav aria-label="ETF browse navigation" className="text-sm">
       <div className="space-y-1">
+        {/* Report Sections — only when rendered inside an ETF detail / report page */}
+        {reportContext && (
+          <>
+            <section>
+              <SectionHeader
+                label={SECTION_LABEL.reportSections}
+                isOpen={openSections.reportSections}
+                isActive={false}
+                onToggle={() => toggleSection('reportSections')}
+              />
+              {openSections.reportSections && (
+                <ul className="mt-1 space-y-0.5">
+                  {REPORT_SECTIONS.map((sec) => (
+                    <li key={sec.slug || 'main'}>
+                      <LeafLink
+                        href={sec.slug ? `${reportBasePath}/${sec.slug}` : reportBasePath}
+                        label={sec.label}
+                        isActive={currentReportSlug === sec.slug}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            <div className="h-px bg-white/10 my-2" />
+          </>
+        )}
+
         {/* Asset Classes */}
         <section>
           <SectionHeader
@@ -328,7 +390,9 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
 
         <div className="h-px bg-white/10 my-2" />
 
-        {/* Providers — lazy loaded on first open */}
+        {/* Providers — lazy loaded on first open. Uses the same thin overlay
+            scrollbar as the outer rail so we don't get a fat default browser
+            scrollbar inside a thin custom one. */}
         <section>
           <SectionHeader
             label={SECTION_LABEL.providers}
@@ -338,7 +402,7 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
             onToggle={() => toggleSection('providers')}
           />
           {openSections.providers && (
-            <ul className="mt-1 max-h-80 overflow-y-auto pr-1 space-y-0.5">
+            <ul className="etf-sidebar-scroll mt-1 max-h-80 overflow-y-auto pr-1 space-y-0.5">
               {providersLoading && <li className="px-3 py-1.5 text-xs text-gray-400">Loading providers…</li>}
               {!providersLoading && providersError && <li className="px-3 py-1.5 text-xs text-red-400">Failed to load providers.</li>}
               {!providersLoading && !providersError && providers && providers.length === 0 && (

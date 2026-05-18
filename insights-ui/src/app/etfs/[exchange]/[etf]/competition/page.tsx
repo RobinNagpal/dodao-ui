@@ -1,9 +1,12 @@
 import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/route';
 import EtfCompetitionFullView from '@/components/etf-reportsv1/EtfCompetitionFullView';
+import EtfSidebarShell from '@/components/etfs/EtfSidebarShell';
 import { fetchEtfAvailableSlugs } from '@/components/etf-reportsv1/EtfRelatedSections';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
+import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { ETF_EXCHANGE_TO_COUNTRY, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { etfCompetitionTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
@@ -107,11 +110,15 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   });
   const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
+  const sidebarCountry = isEtfExchange(exchangeUpper) ? ETF_EXCHANGE_TO_COUNTRY[exchangeUpper] : SupportedCountries.US;
+
   return (
-    <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
-      <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
-    </PageWrapper>
+    <EtfSidebarShell country={sidebarCountry} reportContext={{ exchange: exchangeUpper, etf: etfUpper, currentSection: 'competition' }}>
+      <PageWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
+        <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
+      </PageWrapper>
+    </EtfSidebarShell>
   );
 }
