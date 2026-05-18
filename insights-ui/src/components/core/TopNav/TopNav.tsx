@@ -49,10 +49,14 @@ export default function TopNav() {
   const isEtfsRoute = pathname.startsWith('/etfs');
   const isHomeRoute = pathname === '/';
 
-  // Wrap the whole header in a parent with className="dark" to force dark mode here
+  // Wrap the whole header in a parent with className="dark" to force dark mode here.
+  // Sticky lives on this outer wrapper (not the <header>) so the sticky element's
+  // containing block is the body (tall, scrolls) — putting `sticky` on <header>
+  // makes the containing block exactly header-height and the stickiness has
+  // nowhere to scroll within, so it appears not to stick at all.
   return (
-    <div className="dark">
-      <header className="bg-white dark:bg-gray-900 lg:sticky lg:top-0 lg:z-40 lg:border-b lg:border-white/5">
+    <div className="dark lg:sticky lg:top-0 lg:z-40">
+      <header className="bg-white dark:bg-gray-900 lg:border-b lg:border-white/5">
         <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 lg:px-6">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">

@@ -88,9 +88,14 @@ interface SectionHeaderProps {
 }
 
 function SectionHeader({ label, href, isOpen, isActive, onToggle }: SectionHeaderProps) {
-  const labelClass = `flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded ${isActive ? 'text-white' : 'text-blue-400'} ${
-    href ? 'hover:bg-white/10 hover:text-blue-300' : ''
-  }`;
+  // When a section's own index page is the current route (e.g. /etfs/asset-classes,
+  // /etfs, /etfs/providers), highlight the header the same way leaf rows are
+  // highlighted: amber left border + bg + bold + white text. Sections without
+  // an `href` (Report Sections) skip the active treatment entirely.
+  const activeHighlight = href && isActive;
+  const labelClass = `flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded border-l-2 ${
+    activeHighlight ? 'text-white font-bold bg-white/10 border-[#F59E0B]' : `border-transparent ${isActive ? 'text-white' : 'text-blue-400'}`
+  } ${href && !activeHighlight ? 'hover:bg-white/10 hover:text-blue-300' : ''}`;
 
   return (
     <div className="flex items-center justify-between gap-1">
