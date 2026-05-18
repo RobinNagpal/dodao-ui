@@ -52,8 +52,8 @@ export default function TopNav() {
   // Wrap the whole header in a parent with className="dark" to force dark mode here
   return (
     <div className="dark">
-      <header className="bg-white dark:bg-gray-900">
-        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-6">
+      <header className="bg-white dark:bg-gray-900 lg:sticky lg:top-0 lg:z-40">
+        <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 lg:px-6">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5 shrink-0" aria-label="KoalaGains home">
               <span className="sr-only">KoalaGains</span>
