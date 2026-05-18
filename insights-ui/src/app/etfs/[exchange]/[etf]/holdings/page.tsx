@@ -7,7 +7,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { etfHoldingsTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
-import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
+import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -44,19 +44,20 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const symbol = rawEtf.toUpperCase();
 
   let etfName = symbol;
+  let createdTime: string | undefined;
+  let updatedTime: string | undefined;
   try {
     const data = await fetchEtf(exchange, symbol);
-    if (data) etfName = data.name ?? etfName;
+    if (data) {
+      etfName = data.name ?? etfName;
+      createdTime = data.createdAt?.toISOString();
+      updatedTime = data.updatedAt?.toISOString();
+    }
   } catch {
     /* keep generic */
   }
 
-  const title = `${etfName} (${symbol}) Holdings`;
-  return {
-    title,
-    description: `Top reported holdings for ${etfName} (${symbol}) ETF, including portfolio weights and sector exposure.`,
-    alternates: { canonical: `/etfs/${exchange}/${symbol}/holdings` },
-  };
+  return generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime });
 }
 
 export default async function EtfHoldingsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
@@ -91,9 +92,13 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
     <footer className="mt-8 pt-6 border-t border-color">
       <div className="text-sm text-muted-foreground">
         <span>Last updated by </span>
-        <span>KoalaGains</span>
+        <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+          <span itemProp="name">KoalaGains</span>
+        </span>
         <span> on </span>
-        <time dateTime={lastUpdatedDate.toISOString()}>{formattedLastUpdated}</time>
+        <time dateTime={lastUpdatedDate.toISOString()} itemProp="dateModified">
+          {formattedLastUpdated}
+        </time>
       </div>
     </footer>
   );
@@ -110,12 +115,15 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
 
-      <div className="py-4">
+      <article className="py-4" itemScope itemType="https://schema.org/Article">
+        <meta itemProp="datePublished" content={lastUpdatedDate.toISOString()} />
         <header className="mb-4 mt-2">
-          <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h1 className="text-pretty text-2xl font-semibold tracking-tight sm:text-3xl" itemProp="headline">
             {etfData.name} ({symbol}) &mdash; Holdings
           </h1>
-          <p className="text-sm text-gray-400 mt-1">Top holdings reported by this ETF.</p>
+          <p className="text-sm text-gray-400 mt-1" itemProp="description">
+            Top holdings reported by this ETF.
+          </p>
         </header>
 
         {totalHoldings > 0 ? (
@@ -126,7 +134,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
             {relatedSections}
           </section>
         )}
-      </div>
+      </article>
     </PageWrapper>
   );
 }

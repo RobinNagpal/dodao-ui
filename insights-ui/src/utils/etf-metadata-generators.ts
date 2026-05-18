@@ -203,11 +203,13 @@ export function generateEtfDetailMetadata({ etfName, symbol, exchange, createdTi
       type: 'article',
       publishedTime: createdTime ?? updatedTime,
       modifiedTime: updatedTime ?? createdTime,
+      images: [LOGO_URL],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${etfName} (${symbol}) ETF Analysis & Key Metrics | ${SITE_NAME}`,
       description,
+      images: [LOGO_URL],
     },
   };
 }
@@ -328,11 +330,13 @@ export function generateEtfCategoryMetadata(input: EtfCategoryMetadataInput): Me
       type: 'article',
       publishedTime: createdTime,
       modifiedTime: updatedTime,
+      images: [LOGO_URL],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${etfName} (${symbol}) ${categoryName} Analysis | ${SITE_NAME}`,
       description: shortDesc,
+      images: [LOGO_URL],
     },
   };
 }
@@ -550,4 +554,151 @@ export function generateEtfProviderDetailBreadcrumbJsonLd({ country, providerCan
     { name: 'Providers', href: etfBrowsePath(country, 'providers') },
     { name: providerCanonical, href: etfBrowseDetailPath(country, 'providers', providerSlug) },
   ]);
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+// ETF Holdings Sub-page (/etfs/[exchange]/[etf]/holdings)
+// ────────────────────────────────────────────────────────────────────────────────
+
+interface EtfHoldingsMetadataInput {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+  createdTime?: string;
+  updatedTime?: string;
+}
+
+export function generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime }: EtfHoldingsMetadataInput): Metadata {
+  const year = new Date().getFullYear();
+  const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}/holdings`;
+  const description = truncateForMeta(
+    `Top reported holdings for ${etfName} (${symbol}) ETF — portfolio weights, sector exposure, and underlying positions on ${exchange}.`
+  );
+  const title = `${etfName} (${symbol}) Holdings — Portfolio & Top Positions (${year}) | ${SITE_NAME}`;
+  const ogTitle = `${etfName} (${symbol}) Holdings & Portfolio Weights | ${SITE_NAME}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    keywords: [
+      `${etfName} holdings`,
+      `${symbol} ETF holdings`,
+      `${symbol} portfolio`,
+      `${symbol} top holdings`,
+      `${symbol} sector exposure`,
+      `${etfName} portfolio weights`,
+      `${exchange} ETFs`,
+      'ETF holdings',
+      'ETF portfolio composition',
+      'exchange-traded funds',
+      SITE_NAME,
+    ],
+    openGraph: {
+      title: ogTitle,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      type: 'article',
+      publishedTime: createdTime,
+      modifiedTime: updatedTime ?? createdTime,
+      images: [LOGO_URL],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description,
+      images: [LOGO_URL],
+    },
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+// ETF Competition Sub-page (/etfs/[exchange]/[etf]/competition)
+// ────────────────────────────────────────────────────────────────────────────────
+
+interface EtfCompetitionMetadataInput {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+  createdTime?: string;
+  updatedTime?: string;
+}
+
+export function generateEtfCompetitionMetadata({ etfName, symbol, exchange, createdTime, updatedTime }: EtfCompetitionMetadataInput): Metadata {
+  const year = new Date().getFullYear();
+  const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}/competition`;
+  const description = truncateForMeta(
+    `Peer-vs-peer competitive analysis of ${etfName} (${symbol}). Compare against its closest peer ETFs on past returns, future outlook, cost efficiency, and risk.`
+  );
+  const title = `${etfName} (${symbol}) Competitive Analysis & Peer Comparison (${year}) | ${SITE_NAME}`;
+  const ogTitle = `${etfName} (${symbol}) Competitive Analysis | ${SITE_NAME}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: canonicalUrl },
+    keywords: [
+      `${etfName} competition`,
+      `${symbol} ETF peers`,
+      `${symbol} vs peer ETFs`,
+      `${symbol} competitor comparison`,
+      `${etfName} peer comparison`,
+      `${exchange} ETFs`,
+      'ETF competitive analysis',
+      'ETF peer comparison',
+      'exchange-traded funds',
+      SITE_NAME,
+    ],
+    openGraph: {
+      title: ogTitle,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      type: 'article',
+      publishedTime: createdTime,
+      modifiedTime: updatedTime ?? createdTime,
+      images: [LOGO_URL],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description,
+      images: [LOGO_URL],
+    },
+  };
+}
+
+export function generateEtfCompetitionArticleJsonLd({
+  etfName,
+  symbol,
+  exchange,
+  publishedDate,
+  modifiedDate,
+}: {
+  etfName: string;
+  symbol: string;
+  exchange: string;
+  publishedDate: string;
+  modifiedDate: string;
+}) {
+  const canonicalUrl = `${BASE_URL}/etfs/${exchange}/${symbol}/competition`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `${etfName} (${symbol}) Competitive Analysis & Peer Comparison`,
+    description: `Peer-vs-peer competitive analysis of ${etfName} (${symbol}) on ${exchange} — past returns, future outlook, cost efficiency, and risk vs closest peer ETFs.`,
+    image: [LOGO_URL],
+    datePublished: publishedDate,
+    dateModified: modifiedDate,
+    author: { '@type': 'Organization', name: SITE_NAME, url: BASE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: BASE_URL,
+      logo: { '@type': 'ImageObject', url: LOGO_URL, width: 600, height: 60 },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+    articleSection: 'ETF Competitive Analysis',
+  };
 }
