@@ -135,23 +135,23 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
   const hasCategories = group.categories.length > 0;
   return (
     <li>
-      <div className="flex items-start gap-1">
+      <div className="flex items-start gap-0.5">
         {hasCategories ? (
           <button
             type="button"
             onClick={onToggle}
             aria-label={isExpanded ? `Collapse ${group.name}` : `Expand ${group.name}`}
             aria-expanded={isExpanded}
-            className="shrink-0 p-1 mt-0.5 rounded text-gray-400 hover:text-white hover:bg-white/5"
+            className="shrink-0 p-0.5 mt-0.5 rounded text-gray-400 hover:text-white hover:bg-white/5"
           >
             {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
           </button>
         ) : (
-          <span aria-hidden="true" className="shrink-0 inline-block h-6 w-6" />
+          <span aria-hidden="true" className="shrink-0 inline-block h-5 w-5" />
         )}
         <Link
           href={groupHref}
-          className={`flex-1 min-w-0 break-words px-1.5 py-1 text-sm leading-snug rounded border-l-2 ${
+          className={`flex-1 min-w-0 break-words px-1 py-0.5 text-[0.9rem] leading-snug rounded border-l-2 ${
             isActiveGroup && !activeCategorySlug
               ? 'text-white font-medium bg-white/5 border-[#F59E0B]'
               : 'text-gray-200 hover:text-white hover:bg-white/5 border-transparent'

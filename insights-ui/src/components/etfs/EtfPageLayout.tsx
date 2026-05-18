@@ -60,7 +60,7 @@ export default function EtfPageLayout({
 
   return (
     <div className="lg:flex lg:items-start lg:gap-1 min-[1700px]:block">
-      <aside className="hidden lg:block w-52 shrink-0 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto border border-white/10 bg-white/[0.02] p-3 rounded-r-lg min-[1700px]:rounded-lg min-[1700px]:fixed min-[1700px]:left-[max(1rem,calc(50vw-832px))] min-[1700px]:top-24 min-[1700px]:max-h-[calc(100vh-7rem)]">
+      <aside className="hidden lg:block w-56 shrink-0 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto etf-sidebar-scroll border border-white/10 bg-white/[0.02] p-2 rounded-r-lg min-[1700px]:rounded-lg min-[1700px]:fixed min-[1700px]:left-[max(1rem,calc(50vw-848px))] min-[1700px]:top-24 min-[1700px]:max-h-[calc(100vh-7rem)]">
         <EtfListingSidebar country={currentCountry} />
       </aside>
       <div className="lg:flex-1 lg:min-w-0 lg:-ml-6 min-[1700px]:ml-0">
