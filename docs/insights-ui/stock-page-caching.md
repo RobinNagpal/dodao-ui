@@ -1,5 +1,7 @@
 # Stock Page Caching — Quick Reference
 
+> **⚠️ Historical reference only.** This document describes the Phase-1 ISR / Data Cache tag map as it existed before the `force-dynamic` migration. Most of the architecture below is now **inert** — the tags still exist in code but `force-dynamic` ignores them. The canonical, current cache reference is [cloudfront-deploy-skew.md](cloudfront-deploy-skew.md). Read this file only if you're reading legacy code that references the tag helpers and want to know what they used to do.
+
 ## TL;DR
 
 Each of the 8 pages under `/stocks/[exchange]/[ticker]` subscribes to exactly **one** cache tag. No fetch attaches more than one tag, and no tag is shared between pages — so a `revalidateTag(X)` call invalidates exactly one page's cache. The only "fan-out" invalidations are deliberate and named in code (e.g. `revalidateAllTickerTags`), not implicit through shared tags.
