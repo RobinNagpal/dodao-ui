@@ -32,15 +32,13 @@ function buildBreadcrumbs(currentCountry: EtfSupportedCountry, extraBreadcrumbs?
 
 // Layout modes — pure-CSS responsive (no JS toggle), so there's no CLS / no SEO penalty.
 //
-// • 1024px–1699px: in-flow flex. Sidebar (w-52) sits flush against the viewport's
-//   left edge (no left padding, no left rounding/border so it reads as attached).
-//   PageWrapper's max-w-7xl shrinks within the remaining flex slot — content sits
-//   slightly right of the original centered position.
+// • 1024px–1489px: in-flow flex. Sidebar (w-52) sits flush against the viewport's
+//   left edge. Content uses a small negative left margin so the visible gap
+//   between sidebar and content text is roughly halved.
 //
-// • ≥1700px: outer becomes `display: block`, sidebar switches to `position: fixed`
-//   inside the left margin (`left: max(1rem, calc(50vw - 832px))`), so it leaves
-//   the flow entirely and the content goes back to its original max-w-7xl mx-auto
-//   centered position — breadcrumb is exactly where it used to be.
+// • ≥1490px: outer becomes `display: block`, sidebar switches to `position: fixed`
+//   inside the left margin (`left: max(1rem, calc(50vw - 832px))`), so the
+//   content goes back to its original max-w-7xl mx-auto centered position.
 //
 // • Below 1024px: sidebar is `display: none` (mobile/tablet unaffected).
 export default function EtfPageLayout({
@@ -57,11 +55,11 @@ export default function EtfPageLayout({
   const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
   return (
-    <div className="lg:flex lg:items-start lg:gap-2 min-[1700px]:block">
-      <aside className="hidden lg:block w-52 shrink-0 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto border border-white/10 bg-white/[0.02] p-3 rounded-r-lg min-[1700px]:rounded-lg min-[1700px]:fixed min-[1700px]:left-[max(1rem,calc(50vw-832px))] min-[1700px]:top-24 min-[1700px]:max-h-[calc(100vh-7rem)]">
+    <div className="lg:flex lg:items-start lg:gap-1 min-[1490px]:block">
+      <aside className="hidden lg:block w-52 shrink-0 lg:sticky lg:top-4 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto border border-white/10 bg-white/[0.02] p-3 rounded-r-lg min-[1490px]:rounded-lg min-[1490px]:fixed min-[1490px]:left-[max(1rem,calc(50vw-832px))] min-[1490px]:top-24 min-[1490px]:max-h-[calc(100vh-7rem)]">
         <EtfListingSidebar country={currentCountry} />
       </aside>
-      <div className="lg:flex-1 lg:min-w-0">
+      <div className="lg:flex-1 lg:min-w-0 lg:-ml-6 min-[1490px]:ml-0">
         <PageWrapper>
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
           <div className="overflow-x-auto">

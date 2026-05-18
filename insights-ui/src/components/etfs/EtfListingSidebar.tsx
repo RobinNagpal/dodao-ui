@@ -62,7 +62,7 @@ type SectionKey = (typeof SECTION_KEYS)[number];
 
 const SECTION_LABEL: Record<SectionKey, string> = {
   assetClasses: 'Asset Classes',
-  groups: 'Groups Categories',
+  groups: 'ETFs Groups',
   providers: 'Provider',
 };
 
@@ -146,7 +146,7 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
         </button>
         <Link
           href={groupHref}
-          className={`flex-1 min-w-0 truncate px-1.5 py-1 text-xs rounded border-l-2 ${
+          className={`flex-1 min-w-0 truncate px-1.5 py-1 text-sm rounded border-l-2 ${
             isActiveGroup && !activeCategorySlug
               ? 'text-white font-medium bg-white/5 border-[#F59E0B]'
               : 'text-gray-200 hover:text-white hover:bg-white/5 border-transparent'
