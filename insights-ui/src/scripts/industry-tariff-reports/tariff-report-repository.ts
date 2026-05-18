@@ -15,7 +15,7 @@ import type {
 } from '@/scripts/industry-tariff-reports/tariff-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 
-import { revalidateTariffReport, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
+import { revalidateTariffReportChapter, revalidateTariffReportIndustry, revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
 
 /**
  * Prisma JSON columns accept "JSON-ish" values, but Prisma's generated TS types
@@ -199,9 +199,9 @@ async function writeSection(slug: string, data: Prisma.TariffChapterReportUpdate
   // Chapter routes (`/industry-tariff-report/chapters/<slug>`) cache their
   // fetches under a slug-keyed tag; legacy industry routes (when oldUrl is
   // set) cache under the oldUrl. Bust both so neither URL serves stale data.
-  revalidateTariffReport(slug);
+  revalidateTariffReportChapter(slug);
   if (row.oldUrl && row.oldUrl !== slug) {
-    revalidateTariffReport(row.oldUrl);
+    revalidateTariffReportIndustry(row.oldUrl);
   }
   // The /tariff-reports listing is cached via unstable_cache and shows the
   // updatedAt for every chapter; bust it on every write so the homepage card

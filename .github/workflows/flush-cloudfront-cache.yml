@@ -1,0 +1,81 @@
+name: Flush CloudFront cache
+
+# Manually-triggered: purges cached pages on the koalagains CloudFront
+# distribution. Tick whichever cache groups you want flushed — the workflow
+# combines them into a single CreateInvalidation call (1 quota path per
+# wildcard pattern, against the 1,000-path/month free tier).
+#
+# Cache groups:
+#   - stocks   → /stocks/*
+#   - etfs     → /etfs/*
+#   - tariffs  → /industry-tariff-report/*, /tariff-reports*
+#
+# /tariff-calculator/* and /hts-codes/* are force-dynamic and live outside
+# the CloudFront cache behaviors, so they're not invalidated here.
+
+on:
+  workflow_dispatch:
+    inputs:
+      flush_stocks:
+        description: 'Flush /stocks/* cache'
+        type: boolean
+        default: false
+      flush_etfs:
+        description: 'Flush /etfs/* cache'
+        type: boolean
+        default: false
+      flush_tariffs:
+        description: 'Flush /industry-tariff-report/* and /tariff-reports* cache'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flush-cloudfront-cache
+  cancel-in-progress: false
+
+env:
+  CLOUDFRONT_DISTRIBUTION_ID: EZI5H8FKNE9R1
+  AWS_ACCESS_KEY_ID: ${{ secrets.KOALA_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.KOALA_AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:
+  flush:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Temporary debug step so we can confirm which IAM identity the
+      # KOALA_AWS_* secrets correspond to. Once verified, remove this step.
+      - name: Show AWS caller identity
+        run: aws sts get-caller-identity
+
+      - name: Build path list from selected cache groups
+        id: paths
+        run: |
+          paths=()
+          if [ "${{ github.event.inputs.flush_stocks }}" = "true" ]; then
+            paths+=("/stocks/*")
+          fi
+          if [ "${{ github.event.inputs.flush_etfs }}" = "true" ]; then
+            paths+=("/etfs/*")
+          fi
+          if [ "${{ github.event.inputs.flush_tariffs }}" = "true" ]; then
+            paths+=("/industry-tariff-report/*" "/tariff-reports*")
+          fi
+          if [ ${#paths[@]} -eq 0 ]; then
+            echo "::error::No cache group selected. Tick at least one of flush_stocks / flush_etfs / flush_tariffs."
+            exit 1
+          fi
+          echo "Selected paths: ${paths[*]}"
+          # Space-separated for the aws CLI invocation in the next step.
+          printf 'aws_paths=%s\n' "${paths[*]}" >> "$GITHUB_OUTPUT"
+
+      - name: Create CloudFront invalidation
+        run: |
+          # shellcheck disable=SC2086
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths ${{ steps.paths.outputs.aws_paths }}
