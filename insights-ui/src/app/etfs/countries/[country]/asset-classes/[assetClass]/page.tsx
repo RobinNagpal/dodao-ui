@@ -3,6 +3,7 @@ import { EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-uti
 import { etfBrowseDetailPath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { generateEtfAssetClassDetailBreadcrumbJsonLd, generateEtfAssetClassDetailMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -25,13 +26,15 @@ function resolveAssetClass(rawParam: string): { canonical: string; slug: string 
 
 export async function generateMetadata(props: { params: Promise<{ country: string; assetClass: string }> }): Promise<Metadata> {
   const { country, assetClass } = await props.params;
-  const decodedCountry = decodeURIComponent(country);
   const resolved = resolveAssetClass(assetClass);
-  const display = resolved?.canonical ?? decodeURIComponent(assetClass);
-  return {
-    title: `${display} ${decodedCountry} ETFs | KoalaGains`,
-    description: `Browse ${decodedCountry} ETFs in the ${display} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  const canonical = resolved?.canonical ?? decodeURIComponent(assetClass);
+  const slug = resolved?.slug ?? slugifyEtfTag(canonical);
+  const decodedCountry = resolveEtfCountryParam(country, etfBrowseDetailPath(SupportedCountries.US, 'asset-classes', slug));
+  return generateEtfAssetClassDetailMetadata({
+    country: decodedCountry,
+    assetClass: canonical,
+    assetClassSlug: slug,
+  });
 }
 
 export default async function CountryEtfsByAssetClassPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -46,5 +49,15 @@ export default async function CountryEtfsByAssetClassPage({ params, searchParams
   }
 
   const searchParams = await searchParamsPromise;
-  return EtfAssetClassDetail({ country: decodedCountry, assetClass: resolved.canonical, searchParams });
+  const breadcrumb = generateEtfAssetClassDetailBreadcrumbJsonLd({
+    country: decodedCountry,
+    assetClass: resolved.canonical,
+    assetClassSlug: resolved.slug,
+  });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {await EtfAssetClassDetail({ country: decodedCountry, assetClass: resolved.canonical, searchParams })}
+    </>
+  );
 }

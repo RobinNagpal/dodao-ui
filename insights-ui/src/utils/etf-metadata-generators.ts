@@ -1,10 +1,60 @@
 import { Metadata } from 'next';
 import type { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import type { EtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
+import { etfBasePath, etfBrowseDetailPath, etfBrowsePath, etfCountryDisplayName, etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
+import type { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 
 const SITE_NAME = 'KoalaGains';
 const BASE_URL = 'https://koalagains.com';
 const LOGO_URL = `${BASE_URL}/koalagain_logo.png`;
+
+const DEFAULT_LISTING_KEYWORDS = [
+  'ETFs',
+  'ETF analysis',
+  'ETF comparison',
+  'exchange-traded funds',
+  'ETF performance',
+  'ETF expense ratio',
+  'ETF risk analysis',
+  SITE_NAME,
+];
+
+interface ListingMetadataInput {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+}
+
+function buildListingMetadata({ title, description, path, keywords }: ListingMetadataInput): Metadata {
+  const fullTitle = `${title} | ${SITE_NAME}`;
+  const desc = truncateForMeta(description);
+  const url = `${BASE_URL}${path}`;
+  return {
+    title: fullTitle,
+    description: desc,
+    alternates: { canonical: url },
+    keywords: keywords ?? DEFAULT_LISTING_KEYWORDS,
+    openGraph: {
+      title: fullTitle,
+      description: desc,
+      url,
+      siteName: SITE_NAME,
+      type: 'website',
+      images: [LOGO_URL],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: fullTitle,
+      description: desc,
+      images: [LOGO_URL],
+    },
+  };
+}
+
+function listingBaseCrumb(country: EtfSupportedCountry): { name: string; href: string } {
+  return { name: `${etfCountryDisplayName(country)} ETFs`, href: etfBasePath(country) };
+}
 
 function toAbsoluteUrl(href: string): string {
   return href.startsWith('http') ? href : `${BASE_URL}${href.startsWith('/') ? '' : '/'}${href}`;
@@ -66,11 +116,13 @@ export function generateEtfListingMetadata(): Metadata {
       url,
       siteName: SITE_NAME,
       type: 'website',
+      images: [LOGO_URL],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [LOGO_URL],
     },
   };
 }
@@ -348,4 +400,154 @@ export function generateEtfCategoryBreadcrumbJsonLd(
     '@type': 'BreadcrumbList',
     itemListElement: items,
   };
+}
+
+// ────────────────────────────────────────────────────────────────────────────────
+// ETF Listing Sub-Pages (countries, groups, asset-classes, providers)
+// ────────────────────────────────────────────────────────────────────────────────
+
+export function generateEtfCountryListingMetadata(country: EtfSupportedCountry): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${countryName} ETFs — Exchange Traded Funds Analysis & Insights`,
+    description: `Browse ${countryName} exchange-traded funds with AI-driven analysis on performance, risk, cost efficiency, expense ratios, dividends, and portfolio holdings.`,
+    path: etfBasePath(country),
+  });
+}
+
+export function generateEtfCountryListingBreadcrumbJsonLd(country: EtfSupportedCountry) {
+  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country)]);
+}
+
+export function generateEtfGroupsIndexMetadata(country: EtfSupportedCountry): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${countryName} ETFs by Group`,
+    description: `Browse ${countryName} ETFs organised by analysis group. Each group highlights the top-rated ETFs by report score and AUM.`,
+    path: etfBrowsePath(country, 'groups'),
+  });
+}
+
+export function generateEtfGroupsIndexBreadcrumbJsonLd(country: EtfSupportedCountry) {
+  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country), { name: 'Groups', href: etfBrowsePath(country, 'groups') }]);
+}
+
+interface EtfGroupDetailMetadataInput {
+  country: EtfSupportedCountry;
+  groupKey: string;
+  groupName: string;
+}
+
+export function generateEtfGroupDetailMetadata({ country, groupKey, groupName }: EtfGroupDetailMetadataInput): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${groupName} ${countryName} ETFs`,
+    description: `Browse ${countryName} ETFs in the ${groupName} group organised by analysis category, with the top-rated ETFs in each category.`,
+    path: etfBrowseDetailPath(country, 'groups', groupKey),
+  });
+}
+
+export function generateEtfGroupDetailBreadcrumbJsonLd({ country, groupKey, groupName }: EtfGroupDetailMetadataInput) {
+  return generateBreadcrumbJsonLdFromCrumbs([
+    listingBaseCrumb(country),
+    { name: 'Groups', href: etfBrowsePath(country, 'groups') },
+    { name: groupName, href: etfBrowseDetailPath(country, 'groups', groupKey) },
+  ]);
+}
+
+interface EtfGroupCategoryListingMetadataInput {
+  country: EtfSupportedCountry;
+  groupKey: string;
+  groupName: string;
+  categoryName: string;
+}
+
+export function generateEtfGroupCategoryListingMetadata({ country, groupKey, groupName, categoryName }: EtfGroupCategoryListingMetadataInput): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${categoryName} ${countryName} ETFs`,
+    description: `Browse ${countryName} ETFs in the ${categoryName} category (part of ${groupName}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
+    path: etfGroupCategoryPath(country, groupKey, categoryName),
+  });
+}
+
+export function generateEtfGroupCategoryListingBreadcrumbJsonLd({ country, groupKey, groupName, categoryName }: EtfGroupCategoryListingMetadataInput) {
+  return generateBreadcrumbJsonLdFromCrumbs([
+    listingBaseCrumb(country),
+    { name: 'Groups', href: etfBrowsePath(country, 'groups') },
+    { name: groupName, href: etfBrowseDetailPath(country, 'groups', groupKey) },
+    { name: categoryName, href: etfGroupCategoryPath(country, groupKey, categoryName) },
+  ]);
+}
+
+export function generateEtfAssetClassesIndexMetadata(country: EtfSupportedCountry): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${countryName} ETFs by Asset Class`,
+    description: `Browse ${countryName} ETFs by asset class — Equity, Fixed Income, Commodity, Alternatives, and more. Each card highlights the top-rated ETFs in that class.`,
+    path: etfBrowsePath(country, 'asset-classes'),
+  });
+}
+
+export function generateEtfAssetClassesIndexBreadcrumbJsonLd(country: EtfSupportedCountry) {
+  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country), { name: 'Asset Classes', href: etfBrowsePath(country, 'asset-classes') }]);
+}
+
+interface EtfAssetClassDetailMetadataInput {
+  country: EtfSupportedCountry;
+  assetClass: string;
+  assetClassSlug: string;
+}
+
+export function generateEtfAssetClassDetailMetadata({ country, assetClass, assetClassSlug }: EtfAssetClassDetailMetadataInput): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${assetClass} ${countryName} ETFs`,
+    description: `Browse ${countryName} ETFs in the ${assetClass} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
+    path: etfBrowseDetailPath(country, 'asset-classes', assetClassSlug),
+  });
+}
+
+export function generateEtfAssetClassDetailBreadcrumbJsonLd({ country, assetClass, assetClassSlug }: EtfAssetClassDetailMetadataInput) {
+  return generateBreadcrumbJsonLdFromCrumbs([
+    listingBaseCrumb(country),
+    { name: 'Asset Classes', href: etfBrowsePath(country, 'asset-classes') },
+    { name: assetClass, href: etfBrowseDetailPath(country, 'asset-classes', assetClassSlug) },
+  ]);
+}
+
+export function generateEtfProvidersIndexMetadata(country: EtfSupportedCountry): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${countryName} ETFs by Provider`,
+    description: `Browse ${countryName} ETFs grouped by issuer. Each card highlights the top-rated ETFs from that provider.`,
+    path: etfBrowsePath(country, 'providers'),
+  });
+}
+
+export function generateEtfProvidersIndexBreadcrumbJsonLd(country: EtfSupportedCountry) {
+  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country), { name: 'Providers', href: etfBrowsePath(country, 'providers') }]);
+}
+
+interface EtfProviderDetailMetadataInput {
+  country: EtfSupportedCountry;
+  providerCanonical: string;
+  providerSlug: string;
+}
+
+export function generateEtfProviderDetailMetadata({ country, providerCanonical, providerSlug }: EtfProviderDetailMetadataInput): Metadata {
+  const countryName = etfCountryDisplayName(country);
+  return buildListingMetadata({
+    title: `${providerCanonical} ${countryName} ETFs`,
+    description: `Browse ${countryName} ETFs issued by ${providerCanonical} with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
+    path: etfBrowseDetailPath(country, 'providers', providerSlug),
+  });
+}
+
+export function generateEtfProviderDetailBreadcrumbJsonLd({ country, providerCanonical, providerSlug }: EtfProviderDetailMetadataInput) {
+  return generateBreadcrumbJsonLdFromCrumbs([
+    listingBaseCrumb(country),
+    { name: 'Providers', href: etfBrowsePath(country, 'providers') },
+    { name: providerCanonical, href: etfBrowseDetailPath(country, 'providers', providerSlug) },
+  ]);
 }

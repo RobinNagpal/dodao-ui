@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getEtfGroupsIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { etfBrowsePath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { generateEtfGroupsIndexBreadcrumbJsonLd, generateEtfGroupsIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
@@ -42,11 +43,8 @@ async function fetchGroupsIndex(country: EtfSupportedCountry): Promise<EtfGroups
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { country } = await props.params;
-  const decoded = decodeURIComponent(country);
-  return {
-    title: `${decoded} ETFs by Group | KoalaGains`,
-    description: `Browse ${decoded} ETFs organized by analysis group. Each group highlights top-rated ETFs by report score and AUM.`,
-  };
+  const decoded = resolveEtfCountryParam(country, '/etfs');
+  return generateEtfGroupsIndexMetadata(decoded);
 }
 
 export default async function CountryEtfsGroupsIndexPage({ params }: PageProps) {
@@ -59,6 +57,7 @@ export default async function CountryEtfsGroupsIndexPage({ params }: PageProps) 
       data={data}
       switcherSection="groups"
       extraBreadcrumbs={[{ name: 'Groups', href: etfBrowsePath(decoded, 'groups'), current: true }]}
+      headSlot={<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfGroupsIndexBreadcrumbJsonLd(decoded)) }} />}
     />
   );
 }

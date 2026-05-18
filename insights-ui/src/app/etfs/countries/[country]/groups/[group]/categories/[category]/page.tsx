@@ -3,6 +3,7 @@ import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfCategoryByName, getEtfCategoryBySlug, getEtfGroupByKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { etfGroupCategoryPath, resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { generateEtfGroupCategoryListingBreadcrumbJsonLd, generateEtfGroupCategoryListingMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -15,17 +16,17 @@ type PageProps = {
 
 export async function generateMetadata(props: { params: Promise<{ country: string; group: string; category: string }> }): Promise<Metadata> {
   const { country, group, category } = await props.params;
-  const decodedCountry = decodeURIComponent(country);
   const decodedGroup = decodeURIComponent(group);
   const decodedCategory = decodeURIComponent(category);
-  const groupObj = getEtfGroupByKey(decodedGroup);
   const cat = getEtfCategoryBySlug(decodedCategory) ?? getEtfCategoryByName(decodedCategory);
-  const categoryName = cat?.name ?? decodedCategory;
-  const groupName = groupObj?.name ?? decodedGroup;
-  return {
-    title: `${categoryName} ${decodedCountry} ETFs | KoalaGains`,
-    description: `Browse ${decodedCountry} ETFs in the ${categoryName} category (part of ${groupName}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  const decodedCountry = resolveEtfCountryParam(country, etfGroupCategoryPath(SupportedCountries.US, cat?.group ?? decodedGroup, cat?.name ?? decodedCategory));
+  const groupObj = getEtfGroupByKey(decodedGroup);
+  return generateEtfGroupCategoryListingMetadata({
+    country: decodedCountry,
+    groupKey: cat?.group ?? decodedGroup,
+    groupName: groupObj?.name ?? decodedGroup,
+    categoryName: cat?.name ?? decodedCategory,
+  });
 }
 
 export default async function CountryEtfsByGroupCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -42,10 +43,17 @@ export default async function CountryEtfsByGroupCategoryPage({ params, searchPar
   }
 
   const searchParams = await searchParamsPromise;
-  return EtfGroupCategoryDetail({
+  const groupObj = getEtfGroupByKey(decodedGroupKey);
+  const breadcrumb = generateEtfGroupCategoryListingBreadcrumbJsonLd({
     country: decodedCountry,
     groupKey: decodedGroupKey,
-    category: resolved.name,
-    searchParams,
+    groupName: groupObj?.name ?? decodedGroupKey,
+    categoryName: resolved.name,
   });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {await EtfGroupCategoryDetail({ country: decodedCountry, groupKey: decodedGroupKey, category: resolved.name, searchParams })}
+    </>
+  );
 }
