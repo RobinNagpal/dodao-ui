@@ -12,9 +12,10 @@ import { waitUntil } from '@vercel/functions';
  * keeps the old HTML at the edge for up to its TTL (currently 6 days), so
  * users can see stale pages even after a successful save.
  *
- * Only paths under `/stocks/*` or `/etfs/*` are cached at CloudFront today
- * (see `dodao-api-v2-deployment/cloudfront.tf`). Calls for any other path
- * are filtered out before reaching the AWS API — they would not have a cache
+ * Only paths under `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, or
+ * `/tariff-reports*` are cached at CloudFront today (see
+ * `dodao-api-v2-deployment/cloudfront.tf`). Calls for any other path are
+ * filtered out before reaching the AWS API — they would not have a cache
  * entry to purge and would just consume the monthly invalidation quota.
  *
  * Configuration:
@@ -26,7 +27,7 @@ import { waitUntil } from '@vercel/functions';
 
 const DISTRIBUTION_ID = process.env.CLOUDFRONT_DISTRIBUTION_ID;
 
-const CACHED_PATH_PATTERNS = [/^\/stocks(\/|$)/, /^\/etfs(\/|$)/];
+const CACHED_PATH_PATTERNS = [/^\/stocks(\/|$)/, /^\/etfs(\/|$)/, /^\/industry-tariff-report(\/|$)/, /^\/tariff-reports(\/|\*|$)/];
 
 let client: CloudFrontClient | null = null;
 
