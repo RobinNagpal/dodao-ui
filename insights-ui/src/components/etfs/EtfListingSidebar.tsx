@@ -88,8 +88,8 @@ interface SectionHeaderProps {
 }
 
 function SectionHeader({ label, href, isOpen, isActive, onToggle }: SectionHeaderProps) {
-  const labelClass = `flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded ${isActive ? 'text-white' : 'text-gray-200'} ${
-    href ? 'hover:bg-white/10 hover:text-white' : ''
+  const labelClass = `flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded ${isActive ? 'text-white' : 'text-blue-400'} ${
+    href ? 'hover:bg-white/10 hover:text-blue-300' : ''
   }`;
 
   return (
