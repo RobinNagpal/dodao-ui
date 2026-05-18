@@ -119,6 +119,15 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] SEO/metadata review after new sections — titles/descriptions cover comparison + competition keywords; JSON-LD remains valid and updated.
 - [ ] Daily generation + sitemap updates — generate 5–10 ETFs daily; push generated URLs to sitemap (or sitemap index) automatically.
 
+### Meta tags audit across all ETF pages
+
+- [ ] **Inventory every ETF page route** and confirm each one exports either `generateMetadata` or a `metadata` constant — listing index (`/etfs`), listing sub-pages (`/etfs/categories[/...]`, `/etfs/countries[/...]` and its nested `groups` / `asset-classes` / `providers` subtrees, `/etfs/asset-classes[/...]`, `/etfs/groups[/...]` and its `categories` subtree, `/etfs/providers[/...]`), and ETF detail pages (`/etfs/[exchange]/[etf]` + its `performance-returns`, `risk-analysis`, `financial-data`, `holdings`, `cost-efficiency-team`, `future-performance-outlook`, `competition` sub-routes). Today `app/etfs/[exchange]/[etf]/financial-data/page.tsx` has no metadata export at all and inherits whatever the parent layout sets — fix as part of this audit.
+- [ ] **Verify each page emits a complete tag set**: unique `<title>`, `description`, `keywords` (where used elsewhere), canonical, `openGraph` (title / description / url / siteName / type / image), `twitter` (card / title / description / image), and `robots` (especially for partial-data ETFs gated by the upcoming `isComplete` filter — they should not be indexable while incomplete). Centralize anything still inline through `src/utils/etf-metadata-generators.ts` instead of duplicating per-page.
+- [ ] **Check uniqueness at scale**: pull the rendered `<title>` + `<meta name="description">` for a representative slice (top listing pages + ~50 ETF detail pages across exchanges/groups) and confirm no duplicates and no truncation against the standard 60-char title / 155-char description limits. Spot-check sub-page titles (e.g. `risk-analysis`) include the ETF symbol + section so they don't collide with the root detail page.
+- [ ] **JSON-LD parity** — every page that ships JSON-LD via `headSlot` (listing index, ETF detail) validates against schema.org and matches what the visible page actually shows; pages currently missing structured data (most sub-listing variants, ETF detail sub-routes) get a decision: add `ItemList` / `Article` schema or explicitly skip with a one-line rationale in `etf-metadata-generators.ts`.
+- [ ] **Crawler + social preview sanity**: render each page type with `curl` + a headless fetch, confirm meta tags appear in the SSR'd HTML (not injected client-side), then run the URL through the LinkedIn Post Inspector and Twitter card validator for one example of each page type and capture the screenshots in the PR.
+- [ ] Output of the audit: a short table (page type → status: ok / missing tag X / duplicate / truncated) in the PR description plus code fixes for every non-ok row in the same PR.
+
 ### Suggestion — Connect ETFs to the home page + categorization
 
 > ETF category pages and country pages exist (see closed-tasks). Remaining:
