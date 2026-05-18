@@ -12,11 +12,16 @@ import { waitUntil } from '@vercel/functions';
  * keeps the old HTML at the edge for up to its TTL (currently 6 days), so
  * users can see stale pages even after a successful save.
  *
- * Only paths under `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, or
- * `/tariff-reports*` are cached at CloudFront today (see
- * `dodao-api-v2-deployment/cloudfront.tf`). Calls for any other path are
- * filtered out before reaching the AWS API — they would not have a cache
- * entry to purge and would just consume the monthly invalidation quota.
+ * Only the following paths are cached at CloudFront today (see
+ * `dodao-api-v2-deployment/cloudfront.tf`):
+ *   - Pages: `/stocks/*`, `/etfs/*`, `/industry-tariff-report/*`, `/tariff-reports*`
+ *   - Stocks API: `/api/koala_gains/tickers-v1/exchange/{e}/{t}/*` (the 8
+ *     per-ticker GET endpoints that back the /stocks/[exchange]/[ticker] page
+ *     tree) and `/api/koala_gains/tickers-v1/country/{c}/tickers/industries[/...]`
+ *
+ * Calls for any other path are filtered out before reaching the AWS API — they
+ * would not have a cache entry to purge and would just consume the monthly
+ * invalidation quota.
  *
  * Configuration:
  * - `CLOUDFRONT_DISTRIBUTION_ID` env var must be set on Vercel.
@@ -27,7 +32,19 @@ import { waitUntil } from '@vercel/functions';
 
 const DISTRIBUTION_ID = process.env.CLOUDFRONT_DISTRIBUTION_ID;
 
-const CACHED_PATH_PATTERNS = [/^\/stocks(\/|$)/, /^\/etfs(\/|$)/, /^\/industry-tariff-report(\/|$)/, /^\/tariff-reports(\/|\*|$)/];
+/**
+ * Literal mirror of the cached prefixes in `dodao-api-v2-deployment/cloudfront.tf`.
+ * An invalidation path is forwarded to AWS only if it starts with one of these.
+ * Add a new entry here whenever a new `ordered_cache_behavior` is added there.
+ */
+const CACHED_PATH_PREFIXES = [
+  '/stocks/',
+  '/etfs/',
+  '/industry-tariff-report/',
+  '/tariff-reports', // matches the bare `/tariff-reports` listing and `/tariff-reports/...`
+  '/api/koala_gains/tickers-v1/exchange/',
+  '/api/koala_gains/tickers-v1/country/',
+] as const;
 
 let client: CloudFrontClient | null = null;
 
@@ -41,7 +58,7 @@ function getClient(): CloudFrontClient | null {
 }
 
 function isCloudFrontCachedPath(path: string): boolean {
-  return CACHED_PATH_PATTERNS.some((pattern) => pattern.test(path));
+  return CACHED_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
 /**

@@ -6,7 +6,9 @@ name: Flush CloudFront cache
 # wildcard pattern, against the 1,000-path/month free tier).
 #
 # Cache groups:
-#   - stocks   → /stocks/*
+#   - stocks   → /stocks/*, plus the per-stocks-page API endpoints under
+#                /api/koala_gains/tickers-v1/exchange/* and
+#                /api/koala_gains/tickers-v1/country/*
 #   - etfs     → /etfs/*
 #   - tariffs  → /industry-tariff-report/*, /tariff-reports*
 #
@@ -17,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       flush_stocks:
-        description: 'Flush /stocks/* cache'
+        description: 'Flush /stocks/* + stocks API endpoints'
         type: boolean
         default: false
       flush_etfs:
@@ -57,7 +59,7 @@ jobs:
         run: |
           paths=()
           if [ "${{ github.event.inputs.flush_stocks }}" = "true" ]; then
-            paths+=("/stocks/*")
+            paths+=("/stocks/*" "/api/koala_gains/tickers-v1/exchange/*" "/api/koala_gains/tickers-v1/country/*")
           fi
           if [ "${{ github.event.inputs.flush_etfs }}" = "true" ]; then
             paths+=("/etfs/*")

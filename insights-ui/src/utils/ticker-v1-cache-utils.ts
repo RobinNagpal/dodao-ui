@@ -17,10 +17,12 @@ import { invalidateCloudFrontPaths } from './cloudfront-cache-utils';
  * subpage) instead of all seven.
  *
  * Each `revalidate*` helper also purges the CloudFront edge cache for the
- * corresponding URL. CloudFront is the longer-lived layer (6-day TTL) and
- * would otherwise keep the old HTML at the edge until natural expiry. See
- * `cloudfront-cache-utils.ts` for the no-op semantics when the distribution
- * env var is unset.
+ * corresponding page URL AND the API endpoint(s) that page renders from.
+ * CloudFront caches both layers (6-day TTL) and would otherwise keep stale
+ * responses at the edge until natural expiry — purging only the page would
+ * leave the next render to re-fetch a stale API response from CloudFront. See
+ * `cloudfront-cache-utils.ts` for the list of cached prefixes and the no-op
+ * semantics when the distribution env var is unset.
  */
 const TICKER_EXCHANGE_TAG_PREFIX = 'ticker_exchange:' as const;
 
@@ -33,12 +35,16 @@ const TICKER_CATEGORY_TO_PATH: Record<TickerAnalysisCategory, string> = {
   [TickerAnalysisCategory.FairValue]: 'fair-value',
 };
 
+/** Base path for the per-ticker API endpoints that back `/stocks/[exchange]/[ticker]/*`. */
+const tickerApiBase = (ticker: string, exchange: string) => `/api/koala_gains/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}`;
+
 export const tickerAndExchangeTag = (t: string, exchange: string): `${typeof TICKER_EXCHANGE_TAG_PREFIX}${string}` =>
   `${TICKER_EXCHANGE_TAG_PREFIX}_${t.toUpperCase()}_${exchange.toUpperCase()}`;
 
 export const revalidateTickerAndExchangeTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}`]);
+  // Main page renders from the consolidated `/full-render` endpoint.
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}`, `${tickerApiBase(ticker, exchange)}/full-render`]);
 };
 
 /** Per-category report tag — used by `/business-and-moat`, `/financial-statement-analysis`, `/past-performance`, `/future-performance`, `/fair-value` subpages. */
@@ -47,7 +53,9 @@ export const tickerCategoryReportTag = (ticker: string, exchange: string, catego
 
 export const revalidateTickerCategoryReportTag = (ticker: string, exchange: string, category: TickerAnalysisCategory) => {
   revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/${TICKER_CATEGORY_TO_PATH[category]}`]);
+  // Subpage URL slug (`fair-value`) and its API endpoint (`fair-value-data`).
+  const slug = TICKER_CATEGORY_TO_PATH[category];
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/${slug}`, `${tickerApiBase(ticker, exchange)}/${slug}-data`]);
 };
 
 /** Competition subpage tag — used by `/competition`. */
@@ -55,7 +63,7 @@ export const tickerCompetitionTag = (ticker: string, exchange: string): string =
 
 export const revalidateTickerCompetitionTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerCompetitionTag(ticker, exchange));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/competition`]);
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/competition`, `${tickerApiBase(ticker, exchange)}/competition`]);
 };
 
 /** Management-team subpage tag — used by `/management-team`. */
@@ -64,14 +72,15 @@ export const tickerManagementTeamTag = (ticker: string, exchange: string): strin
 
 export const revalidateTickerManagementTeamTag = (ticker: string, exchange: string) => {
   revalidateTag(tickerManagementTeamTag(ticker, exchange));
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/management-team`]);
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}/management-team`, `${tickerApiBase(ticker, exchange)}/management-team`]);
 };
 
 /**
  * Invalidate every per-ticker cache. Used by the admin "Revalidate" button so
- * it behaves like the old umbrella-only flow. Uses a single CloudFront
- * wildcard invalidation (`/stocks/{e}/{t}*`) instead of 8 individual paths so
- * it counts as 1 billable path against the monthly free quota.
+ * it behaves like the old umbrella-only flow. Uses two CloudFront wildcard
+ * invalidations (one for pages, one for the per-ticker API endpoints) instead
+ * of 16 individual paths — counts as 2 billable paths against the monthly free
+ * quota.
  */
 export const revalidateAllTickerTags = (ticker: string, exchange: string) => {
   revalidateTag(tickerAndExchangeTag(ticker, exchange));
@@ -80,7 +89,7 @@ export const revalidateAllTickerTags = (ticker: string, exchange: string) => {
   for (const category of Object.values(TickerAnalysisCategory)) {
     revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
   }
-  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}*`]);
+  invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}*`, `${tickerApiBase(ticker, exchange)}*`]);
 };
 
 export const getStocksPageTag = (country: SupportedCountries) => `koalagains:${country}:stocks`;
@@ -89,15 +98,21 @@ export const revalidateStocksPageTag = (country: SupportedCountries) => {
   revalidateTag(getStocksPageTag(country));
   // The country listing page and its industry sub-pages are all under `/stocks/*`
   // and CloudFront-cached. The bare `/stocks` and `/` use the same tag but live
-  // outside CloudFront's cache behaviors, so we don't purge them here.
-  invalidateCloudFrontPaths([`/stocks/countries/${country}*`]);
+  // outside CloudFront's cache behaviors, so we don't purge those page URLs here.
+  // The API wildcard covers both `/tickers/industries` and `/tickers/industries/*`
+  // (used by the country page and its industry sub-pages alike).
+  invalidateCloudFrontPaths([`/stocks/countries/${country}*`, `/api/koala_gains/tickers-v1/country/${country}*`]);
 };
 
 export const getIndustryPageTag = (country: SupportedCountries, industryKey: string) => `koalagains:${country}:industry:${industryKey}`;
 
 export const revalidateIndustryPageTag = (country: SupportedCountries, industryKey: string) => {
   revalidateTag(getIndustryPageTag(country, industryKey));
-  invalidateCloudFrontPaths([`/stocks/industries/${industryKey}`, `/stocks/countries/${country}/industries/${industryKey}`]);
+  invalidateCloudFrontPaths([
+    `/stocks/industries/${industryKey}`,
+    `/stocks/countries/${country}/industries/${industryKey}`,
+    `/api/koala_gains/tickers-v1/country/${country}/tickers/industries/${industryKey}`,
+  ]);
 };
 
 /** Industry analysis cache tags */
