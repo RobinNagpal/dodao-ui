@@ -3,6 +3,7 @@ import { EtfSearchParams, ETF_ASSET_CLASS_OPTIONS } from '@/utils/etf-filter-uti
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfAssetClassBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { etfBrowseDetailPath } from '@/utils/etf-country-route-utils';
+import { generateEtfAssetClassDetailBreadcrumbJsonLd, generateEtfAssetClassDetailMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -26,11 +27,13 @@ function resolveAssetClass(rawParam: string): { canonical: string; slug: string 
 export async function generateMetadata(props: { params: Promise<{ assetClass: string }> }): Promise<Metadata> {
   const { assetClass } = await props.params;
   const resolved = resolveAssetClass(assetClass);
-  const display = resolved?.canonical ?? decodeURIComponent(assetClass);
-  return {
-    title: `${display} ETFs | KoalaGains`,
-    description: `Browse US ETFs in the ${display} asset class with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  const canonical = resolved?.canonical ?? decodeURIComponent(assetClass);
+  const slug = resolved?.slug ?? slugifyEtfTag(canonical);
+  return generateEtfAssetClassDetailMetadata({
+    country: SupportedCountries.US,
+    assetClass: canonical,
+    assetClassSlug: slug,
+  });
 }
 
 export default async function EtfsByAssetClassPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -43,5 +46,15 @@ export default async function EtfsByAssetClassPage({ params, searchParams: searc
   }
 
   const searchParams = await searchParamsPromise;
-  return EtfAssetClassDetail({ country: SupportedCountries.US, assetClass: resolved.canonical, searchParams });
+  const breadcrumb = generateEtfAssetClassDetailBreadcrumbJsonLd({
+    country: SupportedCountries.US,
+    assetClass: resolved.canonical,
+    assetClassSlug: resolved.slug,
+  });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {await EtfAssetClassDetail({ country: SupportedCountries.US, assetClass: resolved.canonical, searchParams })}
+    </>
+  );
 }

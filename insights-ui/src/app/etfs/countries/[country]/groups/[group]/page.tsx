@@ -5,6 +5,7 @@ import { getEtfGroupDetailTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-ut
 import { getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { generateEtfGroupDetailBreadcrumbJsonLd, generateEtfGroupDetailMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
@@ -38,14 +39,14 @@ async function fetchGroupDetail(country: EtfSupportedCountry, groupKey: string):
 
 export async function generateMetadata(props: { params: Promise<{ country: string; group: string }> }): Promise<Metadata> {
   const { country, group } = await props.params;
-  const decodedCountry = decodeURIComponent(country);
   const decodedGroup = decodeURIComponent(group);
+  const decodedCountry = resolveEtfCountryParam(country, `/etfs/groups/${encodeURIComponent(decodedGroup)}`);
   const groupObj = getEtfGroupByKey(decodedGroup);
-  const displayName = groupObj?.name ?? decodedGroup;
-  return {
-    title: `${displayName} ${decodedCountry} ETFs | KoalaGains`,
-    description: `Browse ${decodedCountry} ETFs in the ${displayName} group organised by analysis category, with top-rated ETFs in each category.`,
-  };
+  return generateEtfGroupDetailMetadata({
+    country: decodedCountry,
+    groupKey: decodedGroup,
+    groupName: groupObj?.name ?? decodedGroup,
+  });
 }
 
 export default async function CountryEtfsByGroupPage({ params }: PageProps) {
@@ -53,5 +54,16 @@ export default async function CountryEtfsByGroupPage({ params }: PageProps) {
   const decodedGroupKey = decodeURIComponent(group);
   const decodedCountry = resolveEtfCountryParam(country, `/etfs/groups/${encodeURIComponent(decodedGroupKey)}`);
   const data = await fetchGroupDetail(decodedCountry, decodedGroupKey);
-  return <EtfGroupDetail country={decodedCountry} groupKey={decodedGroupKey} data={data} />;
+  const groupObj = getEtfGroupByKey(decodedGroupKey);
+  const breadcrumb = generateEtfGroupDetailBreadcrumbJsonLd({
+    country: decodedCountry,
+    groupKey: decodedGroupKey,
+    groupName: groupObj?.name ?? decodedGroupKey,
+  });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <EtfGroupDetail country={decodedCountry} groupKey={decodedGroupKey} data={data} />
+    </>
+  );
 }

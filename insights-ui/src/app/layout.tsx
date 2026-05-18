@@ -9,6 +9,7 @@ import Providers from './providers/Providers';
 import ClarityComponent from './ClarityComponent';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://koalagains.com'),
   title: 'KoalaGains',
   description:
     'KoalaGains gives retail investors access to institutional-level reports—helping you understand a business, its financials, and the competition from first principles so you can make the best decisions when investing in a stock.',

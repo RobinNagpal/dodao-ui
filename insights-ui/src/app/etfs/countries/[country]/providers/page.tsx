@@ -4,6 +4,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getEtfProvidersIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
+import { generateEtfProvidersIndexBreadcrumbJsonLd, generateEtfProvidersIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { Metadata } from 'next';
 
@@ -35,16 +36,18 @@ async function fetchProvidersIndex(country: EtfSupportedCountry): Promise<EtfPro
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { country } = await props.params;
-  const decoded = decodeURIComponent(country);
-  return {
-    title: `${decoded} ETFs by Provider | KoalaGains`,
-    description: `Browse ${decoded} ETFs grouped by issuer. Each card highlights the top-rated ETFs from that provider.`,
-  };
+  const decoded = resolveEtfCountryParam(country, '/etfs/providers');
+  return generateEtfProvidersIndexMetadata(decoded);
 }
 
 export default async function CountryEtfsProvidersIndexPage({ params }: PageProps) {
   const { country } = await params;
   const decoded = resolveEtfCountryParam(country, '/etfs/providers');
   const data = await fetchProvidersIndex(decoded);
-  return <EtfProvidersIndex country={decoded} data={data} />;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfProvidersIndexBreadcrumbJsonLd(decoded)) }} />
+      <EtfProvidersIndex country={decoded} data={data} />
+    </>
+  );
 }

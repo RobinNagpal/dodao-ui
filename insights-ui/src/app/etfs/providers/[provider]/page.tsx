@@ -3,6 +3,7 @@ import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfProviderBySlug, slugifyEtfTag } from '@/utils/etf-tag-slug-utils';
 import { etfBrowseDetailPath } from '@/utils/etf-country-route-utils';
+import { generateEtfProviderDetailBreadcrumbJsonLd, generateEtfProviderDetailMetadata } from '@/utils/etf-metadata-generators';
 import { permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -15,12 +16,12 @@ type PageProps = {
 
 export async function generateMetadata(props: { params: Promise<{ provider: string }> }): Promise<Metadata> {
   const { provider } = await props.params;
-  const decoded = decodeURIComponent(provider);
-  const display = getEtfProviderBySlug(slugifyEtfTag(decoded));
-  return {
-    title: `${display} ETFs | KoalaGains`,
-    description: `Browse US ETFs issued by ${display} with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  const slug = slugifyEtfTag(decodeURIComponent(provider));
+  return generateEtfProviderDetailMetadata({
+    country: SupportedCountries.US,
+    providerCanonical: getEtfProviderBySlug(slug),
+    providerSlug: slug,
+  });
 }
 
 export default async function EtfsByProviderPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -33,5 +34,15 @@ export default async function EtfsByProviderPage({ params, searchParams: searchP
 
   const canonical = getEtfProviderBySlug(slug);
   const searchParams = await searchParamsPromise;
-  return EtfProviderDetail({ country: SupportedCountries.US, provider: canonical, searchParams });
+  const breadcrumb = generateEtfProviderDetailBreadcrumbJsonLd({
+    country: SupportedCountries.US,
+    providerCanonical: canonical,
+    providerSlug: slug,
+  });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {await EtfProviderDetail({ country: SupportedCountries.US, provider: canonical, searchParams })}
+    </>
+  );
 }

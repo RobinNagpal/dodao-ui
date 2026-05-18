@@ -3,6 +3,7 @@ import WithSuspenseEtfListingGrid from '@/components/etfs/WithSuspenseEtfListing
 import { fetchEtfListingData } from '@/utils/etf-data-utils';
 import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { resolveEtfCountryParam } from '@/utils/etf-country-route-utils';
+import { generateEtfCountryListingBreadcrumbJsonLd, generateEtfCountryListingMetadata } from '@/utils/etf-metadata-generators';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -14,11 +15,8 @@ type PageProps = {
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const { country } = await props.params;
-  const decoded = decodeURIComponent(country);
-  return {
-    title: `${decoded} ETFs | KoalaGains`,
-    description: `Browse ${decoded} exchange-traded funds with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  const decoded = resolveEtfCountryParam(country, '/etfs');
+  return generateEtfCountryListingMetadata(decoded);
 }
 
 export default async function CountryEtfsPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -29,12 +27,15 @@ export default async function CountryEtfsPage({ params, searchParams: searchPara
   const dataPromise = fetchEtfListingData(searchParams, decoded);
 
   return (
-    <EtfPageLayout
-      title={`${decoded} ETFs`}
-      description={`Explore ${decoded} exchange-traded funds with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
-      currentCountry={decoded}
-    >
-      <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
-    </EtfPageLayout>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfCountryListingBreadcrumbJsonLd(decoded)) }} />
+      <EtfPageLayout
+        title={`${decoded} ETFs`}
+        description={`Explore ${decoded} exchange-traded funds with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`}
+        currentCountry={decoded}
+      >
+        <WithSuspenseEtfListingGrid dataPromise={dataPromise} />
+      </EtfPageLayout>
+    </>
   );
 }

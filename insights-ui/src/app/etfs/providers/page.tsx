@@ -3,15 +3,12 @@ import EtfProvidersIndex from '@/components/etfs/EtfProvidersIndex';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfProvidersIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { generateEtfProvidersIndexBreadcrumbJsonLd, generateEtfProvidersIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'US ETFs by Provider | KoalaGains',
-  description: 'Browse US ETFs grouped by issuer. Each card highlights the top-rated ETFs from that provider.',
-};
+export const metadata = generateEtfProvidersIndexMetadata(SupportedCountries.US);
 
 const EMPTY_PROVIDERS_INDEX: EtfProvidersIndexResponse = { providers: [], values: {}, counts: {} };
 
@@ -35,5 +32,13 @@ async function fetchProvidersIndex(country: SupportedCountries): Promise<EtfProv
 
 export default async function EtfsProvidersIndexPage() {
   const data = await fetchProvidersIndex(SupportedCountries.US);
-  return <EtfProvidersIndex country={SupportedCountries.US} data={data} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfProvidersIndexBreadcrumbJsonLd(SupportedCountries.US)) }}
+      />
+      <EtfProvidersIndex country={SupportedCountries.US} data={data} />
+    </>
+  );
 }

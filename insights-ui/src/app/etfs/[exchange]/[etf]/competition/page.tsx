@@ -7,7 +7,7 @@ import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
 import { etfCompetitionTag } from '@/utils/etf-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils';
-import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
+import { generateBreadcrumbJsonLdFromCrumbs, generateEtfCompetitionArticleJsonLd, generateEtfCompetitionMetadata } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -37,49 +37,24 @@ async function fetchEtfFast(exchange: string, etf: string): Promise<EtfFastRespo
   }
 }
 
-function truncateForMeta(text: string, maxLength: number = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
-
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { exchange, etf } = await params;
   const exchangeUpper = exchange.toUpperCase();
   const etfUpper = etf.toUpperCase();
 
   let etfName = etfUpper;
+  let createdTime: string | undefined;
+  let updatedTime: string | undefined;
   try {
-    const data = await fetchEtfCompetition(exchangeUpper, etfUpper);
-    etfName = data?.etf?.name ?? etfName;
+    const [competition, fast] = await Promise.all([fetchEtfCompetition(exchangeUpper, etfUpper), fetchEtfFast(exchangeUpper, etfUpper)]);
+    etfName = competition?.etf?.name ?? fast?.name ?? etfName;
+    createdTime = fast?.createdAt?.toISOString();
+    updatedTime = fast?.updatedAt?.toISOString();
   } catch {
     /* keep generic */
   }
 
-  const year = new Date().getFullYear();
-  const shortDesc = truncateForMeta(
-    `Peer-vs-peer competitive analysis of ${etfName} (${etfUpper}). Compare against its closest peer ETFs on past returns, future outlook, cost efficiency, and risk.`
-  );
-  const canonicalUrl = `https://koalagains.com/etfs/${exchangeUpper}/${etfUpper}/competition`;
-
-  return {
-    title: `${etfName} (${etfUpper}) Competitive Analysis & Peer Comparison (${year})`,
-    description: shortDesc,
-    alternates: { canonical: canonicalUrl },
-    openGraph: {
-      title: `${etfName} (${etfUpper}) Competitive Analysis | KoalaGains`,
-      description: shortDesc,
-      url: canonicalUrl,
-      siteName: 'KoalaGains',
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${etfName} (${etfUpper}) Competitive Analysis | KoalaGains`,
-      description: shortDesc,
-      site: '@koalagains',
-      creator: '@koalagains',
-    },
-  };
+  return generateEtfCompetitionMetadata({ etfName, symbol: etfUpper, exchange: exchangeUpper, createdTime, updatedTime });
 }
 
 export default async function EtfCompetitionPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
@@ -105,9 +80,27 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
   });
   const breadcrumbJsonLd = generateBreadcrumbJsonLdFromCrumbs(breadcrumbs);
 
+  const safeDate = (val: unknown): Date => {
+    if (val instanceof Date && !isNaN(val.getTime())) return val;
+    if (typeof val === 'string' && val.trim()) {
+      const parsed = new Date(val);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return new Date();
+  };
+  const publishedDate = safeDate(data.vsCompetition?.createdAt ?? etfFast?.createdAt).toISOString();
+  const modifiedDate = safeDate(data.vsCompetition?.updatedAt ?? etfFast?.updatedAt).toISOString();
+  const articleJsonLd = generateEtfCompetitionArticleJsonLd({
+    etfName: data.etf.name,
+    symbol: etfUpper,
+    exchange: exchangeUpper,
+    publishedDate,
+    modifiedDate,
+  });
+
   return (
     <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([articleJsonLd, breadcrumbJsonLd]) }} />
       <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} />
       <EtfCompetitionFullView data={data} availableSlugs={availableSlugs} />
     </PageWrapper>

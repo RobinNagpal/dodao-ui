@@ -3,6 +3,7 @@ import { EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfCategoryByName, getEtfCategoryBySlug, getEtfGroupByKey, slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { etfGroupCategoryPath } from '@/utils/etf-country-route-utils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
+import { generateEtfGroupCategoryListingBreadcrumbJsonLd, generateEtfGroupCategoryListingMetadata } from '@/utils/etf-metadata-generators';
 import { notFound, permanentRedirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -19,12 +20,12 @@ export async function generateMetadata(props: { params: Promise<{ group: string;
   const decodedCategory = decodeURIComponent(category);
   const groupObj = getEtfGroupByKey(decodedGroup);
   const cat = getEtfCategoryBySlug(decodedCategory) ?? getEtfCategoryByName(decodedCategory);
-  const categoryName = cat?.name ?? decodedCategory;
-  const groupName = groupObj?.name ?? decodedGroup;
-  return {
-    title: `${categoryName} ETFs | KoalaGains`,
-    description: `Browse US ETFs in the ${categoryName} category (part of ${groupName}) with detailed financial metrics, expense ratios, dividend analysis, and AI-driven insights.`,
-  };
+  return generateEtfGroupCategoryListingMetadata({
+    country: SupportedCountries.US,
+    groupKey: cat?.group ?? decodedGroup,
+    groupName: groupObj?.name ?? decodedGroup,
+    categoryName: cat?.name ?? decodedCategory,
+  });
 }
 
 export default async function EtfGroupCategoryPage({ params, searchParams: searchParamsPromise }: PageProps) {
@@ -39,10 +40,17 @@ export default async function EtfGroupCategoryPage({ params, searchParams: searc
   }
 
   const searchParams = await searchParamsPromise;
-  return EtfGroupCategoryDetail({
+  const groupObj = getEtfGroupByKey(decodedGroup);
+  const breadcrumb = generateEtfGroupCategoryListingBreadcrumbJsonLd({
     country: SupportedCountries.US,
     groupKey: decodedGroup,
-    category: resolved.name,
-    searchParams,
+    groupName: groupObj?.name ?? decodedGroup,
+    categoryName: resolved.name,
   });
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {await EtfGroupCategoryDetail({ country: SupportedCountries.US, groupKey: decodedGroup, category: resolved.name, searchParams })}
+    </>
+  );
 }

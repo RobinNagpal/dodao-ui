@@ -3,7 +3,7 @@ import EtfGroupsIndex from '@/components/etfs/EtfGroupsIndex';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfGroupsIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
-import { generateEtfListingMetadata, generateEtfListingJsonLd } from '@/utils/etf-metadata-generators';
+import { generateEtfListingBreadcrumbJsonLd, generateEtfListingJsonLd, generateEtfListingMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 export const dynamic = 'force-dynamic';
@@ -42,7 +42,12 @@ export default async function EtfsPage() {
       country={SupportedCountries.US}
       data={data}
       title="US ETFs"
-      headSlot={<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />}
+      headSlot={
+        <>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingBreadcrumbJsonLd()) }} />
+        </>
+      }
     />
   );
 }

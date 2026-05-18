@@ -3,16 +3,12 @@ import EtfAssetClassesIndex from '@/components/etfs/EtfAssetClassesIndex';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getEtfAssetClassesIndexTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
+import { generateEtfAssetClassesIndexBreadcrumbJsonLd, generateEtfAssetClassesIndexMetadata } from '@/utils/etf-metadata-generators';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
-import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'US ETFs by Asset Class | KoalaGains',
-  description:
-    'Browse US ETFs by asset class — Equity, Fixed Income, Commodity, Alternatives, and more. Each card highlights the top-rated ETFs in that class.',
-};
+export const metadata = generateEtfAssetClassesIndexMetadata(SupportedCountries.US);
 
 const EMPTY_ASSET_CLASSES: EtfAssetClassesIndexResponse = { values: {}, counts: {} };
 
@@ -36,5 +32,13 @@ async function fetchAssetClassesIndex(country: SupportedCountries): Promise<EtfA
 
 export default async function EtfsAssetClassesIndexPage() {
   const data = await fetchAssetClassesIndex(SupportedCountries.US);
-  return <EtfAssetClassesIndex country={SupportedCountries.US} data={data} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfAssetClassesIndexBreadcrumbJsonLd(SupportedCountries.US)) }}
+      />
+      <EtfAssetClassesIndex country={SupportedCountries.US} data={data} />
+    </>
+  );
 }
