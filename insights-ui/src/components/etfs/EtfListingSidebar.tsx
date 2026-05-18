@@ -62,8 +62,8 @@ type SectionKey = (typeof SECTION_KEYS)[number];
 
 const SECTION_LABEL: Record<SectionKey, string> = {
   assetClasses: 'Asset Classes',
-  groups: 'Groups',
-  providers: 'Providers',
+  groups: 'Groups Categories',
+  providers: 'Provider',
 };
 
 interface SectionHeaderProps {
@@ -79,8 +79,8 @@ function SectionHeader({ label, href, isOpen, isActive, onToggle }: SectionHeade
     <div className="flex items-center justify-between gap-1">
       <Link
         href={href}
-        className={`flex-1 min-w-0 truncate text-xs font-semibold uppercase tracking-wider px-2 py-2 rounded hover:bg-white/5 ${
-          isActive ? 'text-white' : 'text-gray-300 hover:text-white'
+        className={`flex-1 min-w-0 truncate text-sm font-semibold px-2 py-2 rounded hover:bg-white/5 ${
+          isActive ? 'text-white' : 'text-gray-200 hover:text-white'
         }`}
       >
         {label}
@@ -103,14 +103,16 @@ interface LeafLinkProps {
   label: string;
   isActive: boolean;
   indent?: 1 | 2;
+  size?: 'sm' | 'xs';
 }
 
-function LeafLink({ href, label, isActive, indent = 1 }: LeafLinkProps) {
+function LeafLink({ href, label, isActive, indent = 1, size = 'sm' }: LeafLinkProps) {
   const padLeft = indent === 1 ? 'pl-4' : 'pl-7';
+  const textSize = size === 'xs' ? 'text-xs' : 'text-sm';
   return (
     <Link
       href={href}
-      className={`block ${padLeft} pr-2 py-1.5 text-sm rounded truncate border-l-2 ${
+      className={`block ${padLeft} pr-2 py-1 ${textSize} rounded truncate border-l-2 ${
         isActive ? 'text-white font-medium bg-white/5 border-[#F59E0B]' : 'text-gray-300 hover:text-white hover:bg-white/5 border-transparent'
       }`}
     >
@@ -144,7 +146,7 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
         </button>
         <Link
           href={groupHref}
-          className={`flex-1 min-w-0 truncate px-1.5 py-1.5 text-sm rounded border-l-2 ${
+          className={`flex-1 min-w-0 truncate px-1.5 py-1 text-xs rounded border-l-2 ${
             isActiveGroup && !activeCategorySlug
               ? 'text-white font-medium bg-white/5 border-[#F59E0B]'
               : 'text-gray-200 hover:text-white hover:bg-white/5 border-transparent'
@@ -157,7 +159,13 @@ function GroupRow({ group, groupHref, isExpanded, isActiveGroup, activeCategoryS
         <ul className="mt-0.5 mb-1 space-y-0.5">
           {group.categories.map((cat) => (
             <li key={cat.slug}>
-              <LeafLink href={buildCategoryHref(group, cat)} label={cat.name} isActive={isActiveGroup && activeCategorySlug === cat.slug} indent={2} />
+              <LeafLink
+                href={buildCategoryHref(group, cat)}
+                label={cat.name}
+                isActive={isActiveGroup && activeCategorySlug === cat.slug}
+                indent={2}
+                size="xs"
+              />
             </li>
           ))}
         </ul>
@@ -339,6 +347,7 @@ export default function EtfListingSidebar({ country }: EtfListingSidebarProps) {
                       href={etfBrowseDetailPath(country, 'providers', p.slug)}
                       label={p.name}
                       isActive={active.kind === 'providers' && active.slug === p.slug}
+                      size="xs"
                     />
                   </li>
                 ))}
