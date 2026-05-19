@@ -2,20 +2,32 @@
 
 /**
  * Client-side dynamic wrapper around PriceChart. The chart pulls in chart.js +
- * react-chartjs-2 (~100 KB combined gzipped); deferring it out of the main
- * bundle cuts main-bundle parse/hydration cost on initial load. The chart
- * lives below the fold, so it's not on the LCP path.
+ * react-chartjs-2 (~260 KB raw / ~80 KB gz across the radar / price /
+ * quarterly / quadrant set that share the chart.js chunk).
  *
- * The loading skeleton mirrors the chart section's outer layout (background,
- * padding, header row, chart canvas height) so there's no layout shift when
- * the chart chunk arrives and renders.
+ * Two-layer deferral:
+ *   1. `dynamic({ ssr: false })` keeps the chart out of the server render
+ *      and the main client bundle.
+ *   2. `useInView` keeps the dynamic import from firing until the section is
+ *      near the viewport — without this Next.js still fetches and evaluates
+ *      the chunk right after hydration even though `ssr: false` skipped SSR.
+ *      That hydration burst was the dominant source of TBT on mobile.
+ *
+ * The skeleton mirrors the chart's outer layout so there's no layout shift
+ * when the real chart swaps in. It's reused by both the not-yet-in-view
+ * state and the dynamic loader.
  */
 
+import type { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
+import { useInView } from '@/util/use-in-view';
 import dynamic from 'next/dynamic';
 
-const PriceChartLazy = dynamic(() => import('./PriceChart'), {
-  ssr: false,
-  loading: () => (
+interface PriceChartLazyProps {
+  data: PriceHistoryResponse;
+}
+
+function PriceChartSkeleton(): JSX.Element {
+  return (
     <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       {/* min-h matches the real chart's header row (text-lg title + text-xs meta + mt-1 = ~44px). */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
@@ -32,7 +44,15 @@ const PriceChartLazy = dynamic(() => import('./PriceChart'), {
       </div>
       <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
     </section>
-  ),
+  );
+}
+
+const PriceChartImpl = dynamic(() => import('./PriceChart'), {
+  ssr: false,
+  loading: () => <PriceChartSkeleton />,
 });
 
-export default PriceChartLazy;
+export default function PriceChartLazy(props: PriceChartLazyProps): JSX.Element {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  return <div ref={ref}>{inView ? <PriceChartImpl {...props} /> : <PriceChartSkeleton />}</div>;
+}

@@ -1,9 +1,21 @@
 import type { NextConfig } from 'next';
+import bundleAnalyzer from '@next/bundle-analyzer';
+
+// Run `pnpm analyze` (or `ANALYZE=true pnpm build`) to emit chunk/treemap
+// reports for the client + server bundles. No effect on regular builds.
+const withBundleAnalyzer = bundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 
 const nextConfig: NextConfig = {
   compiler: {
     // Enables the styled-components SWC transform so components from @dodao/web-core work correctly
     styledComponents: true,
+  },
+  // Tree-shake re-export barrels (`@heroicons/react`, `@headlessui/react`,
+  // `@react-icons/all-files`) down to only the icons/components actually used.
+  // Next.js maintains a list of well-known optimized packages, but for these
+  // big icon barrels we have to opt in explicitly.
+  experimental: {
+    optimizePackageImports: ['@heroicons/react', '@headlessui/react', '@react-icons/all-files'],
   },
   /* config options here */
   sassOptions: {
@@ -123,4 +135,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
