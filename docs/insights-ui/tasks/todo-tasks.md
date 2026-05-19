@@ -95,6 +95,17 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest; admin verification UI for stale rows.
 - [ ] Open: compliance (store URL only); coverage threshold; cross-fund PM modelling (`Person` table vs denormalized); confirm we never render for passive products.
 
+### Best dividend ETFs shortlist
+
+- [ ] Define "dividend ETF" scope for the shortlist: dividend-equity funds (e.g. SCHD-style quality-yield, VYM-style high-yield, NOBL-style dividend-growth) — explicitly exclude derivative-income / covered-call wrappers and pure bond/preferred-income funds (those have their own decision frameworks).
+- [ ] Cast initial pool from existing ETF data: filter to dividend-equity Morningstar categories ("Large Value", "Mid Value", dividend-themed sleeves in `sector-thematic-equity`), require `isComplete = true`, minimum AUM + ADV floor for liquidity, and a trailing-12-month yield above the broad-market base (e.g. SPY).
+- [ ] Score each survivor through the dividend lens — trailing & forward yield, 5-yr dividend growth, payout ratio + coverage, distribution character (qualified vs ordinary vs ROC), worst-12-month drawdown, expense ratio, sector concentration vs broad market, and behavior in 2020 / 2022 dividend-cut episodes. Reuse Past Returns / Cost & Team / Risk factor outputs where they already cover the dimension.
+- [ ] Require a composite score above a stated threshold to make the shortlist; hand-pick top ~10 funds split across the dividend sub-styles (quality-yield, high-yield, dividend-growth, international dividend).
+- [ ] Surface at `/etfs/best-dividend-etfs` (or under an ETF "Shortlists" area) — one card per fund with score, yield, expense ratio, sub-style badge, and a 1-paragraph thesis; methodology + filters visible on the page; cross-link from each card into the full ETF detail report.
+- [ ] Wire the shortlist into the home-page ETF section (when that lands) and into the `retirement-income-with-preservation` / `high-current-yield-income` target-investor-group pages in `etf-target-investor-groups.json`.
+- [ ] Re-run quarterly on the off-hours Claude-Code runner; track entries added/removed/promoted/cut; surface changes in admin.
+- [ ] Open: persist a `dividendShortlistScore` + subscores on the ETF row so the score is queryable independent of the shortlist; whether to publish separate sub-style shortlists (quality vs high-yield vs growth vs international) or one merged list; how to treat REIT-heavy funds (separate sleeve vs included); coverage of non-US dividend ETFs in v1.
+
 ### Misc prompt updates
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
