@@ -95,6 +95,10 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest; admin verification UI for stale rows.
 - [ ] Open: compliance (store URL only); coverage threshold; cross-fund PM modelling (`Person` table vs denormalized); confirm we never render for passive products.
 
+### Understanding ETFs in detail (user education)
+
+- [ ] **ETF primer / education surface** — give first-time users a concrete grasp of how ETFs work before they read individual reports. Cover ETF structure (creation/redemption, AP role), expense ratio + total cost of ownership, NAV vs. market price + premium/discount, tracking error, replication (full vs. sampled vs. synthetic), distributions + tax treatment (qualified dividends, 19a, ROC, K-1 vs. 1099, in-kind tax efficiency), securities lending revenue, holdings overlap, and how active vs. passive vs. derivative-income mandates change what the report should emphasize. Decide form: standalone `/learn/etfs` primer page vs. a glossary surface vs. contextual help tooltips on ETF detail pages (or a mix). Cross-link from ETF detail pages, the ETFs list, and category pages so users land on the explainer one click away from any ETF.
+
 ### Misc prompt updates
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
