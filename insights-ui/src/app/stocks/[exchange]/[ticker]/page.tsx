@@ -414,15 +414,15 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
         ]
       : country
-        ? [
-            { name: `${country} Stocks`, href: `/stocks/countries/${country}`, current: false },
-            { name: industryName, href: `/stocks/countries/${country}/industries/${d.industryKey}`, current: false },
-            { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
-          ]
-        : [
-            { name: 'Stocks', href: `/stocks`, current: false },
-            { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
-          ];
+      ? [
+          { name: `${country} Stocks`, href: `/stocks/countries/${country}`, current: false },
+          { name: industryName, href: `/stocks/countries/${country}/industries/${d.industryKey}`, current: false },
+          { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
+        ]
+      : [
+          { name: 'Stocks', href: `/stocks`, current: false },
+          { name: ticker, href: `/stocks/${exchange}/${ticker}`, current: true },
+        ];
 
   return (
     <Breadcrumbs
@@ -511,7 +511,7 @@ function TickerChartsInfo({
         })) || [{ score: 0, comment: 'No analysis available' }],
       };
       return [categoryKey, pieData];
-    }),
+    })
   ) as SpiderGraphForTicker;
 
   const score: number = getSpiderGraphScorePercentage(spiderGraph);
@@ -661,7 +661,7 @@ function TickerAnalysisInfo({
                   <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
                   <span
                     className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
-                      managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict,
+                      managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
                     )}`}
                   >
                     {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
