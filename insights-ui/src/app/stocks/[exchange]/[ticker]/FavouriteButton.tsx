@@ -1,9 +1,9 @@
 'use client';
 
-import AddEditFavouriteModal from '@/app/stocks/[exchange]/[ticker]/AddEditFavouriteModal';
 import { KoalaGainsSession } from '@/types/auth';
 import { HeartIcon as HeartOutline } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolid } from '@heroicons/react/24/solid';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -11,8 +11,12 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import { FavouriteTickerResponse, UserListResponse, UserTickerTagResponse } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import ManageListsModal from '@/components/favourites/ManageListsModal';
-import ManageTagsModal from '@/components/favourites/ManageTagsModal';
+
+// Heavy modals (~700 lines combined) — only needed after the user clicks the
+// Favourite button. Deferring keeps them out of the main bundle.
+const AddEditFavouriteModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/AddEditFavouriteModal'), { ssr: false });
+const ManageListsModal = dynamic(() => import('@/components/favourites/ManageListsModal'), { ssr: false });
+const ManageTagsModal = dynamic(() => import('@/components/favourites/ManageTagsModal'), { ssr: false });
 
 export interface FavouriteButtonProps {
   tickerId: string;
@@ -24,6 +28,7 @@ type ModalView = 'manage-lists' | 'manage-tags';
 
 export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: FavouriteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasMountedModal, setHasMountedModal] = useState(false);
   const [manageModalView, setManageModalView] = useState<ModalView | null>(null);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
@@ -59,6 +64,7 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
       router.push('/login');
       return;
     }
+    setHasMountedModal(true);
     setIsModalOpen(true);
   };
 
@@ -95,7 +101,7 @@ export default function FavouriteButton({ tickerId, tickerSymbol, tickerName }: 
         )}
         <span>Favourite</span>
       </button>
-      {session && (
+      {session && hasMountedModal && (
         <>
           <AddEditFavouriteModal
             isOpen={isModalOpen}
