@@ -12,8 +12,10 @@ import FavouriteButton from '@/app/stocks/[exchange]/[ticker]/FavouriteButton';
 import NotesButton from '@/app/stocks/[exchange]/[ticker]/NotesButton';
 import CompetitionChartSection from '@/components/ticker-reportsv1/CompetitionChartSection';
 import FinancialInfo, { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
-import PriceChart from '@/components/ticker-reportsv1/PriceChart';
-import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChart';
+// Lazy wrappers — chart.js + react-chartjs-2 deferred out of the main bundle.
+// See PriceChartLazy.tsx / QuarterlyMetricsChartLazy.tsx for the dynamic config.
+import PriceChart from '@/components/ticker-reportsv1/PriceChartLazy';
+import QuarterlyMetricsChart from '@/components/ticker-reportsv1/QuarterlyMetricsChartLazy';
 import SimilarTickers from '@/components/ticker-reportsv1/SimilarTickers';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
