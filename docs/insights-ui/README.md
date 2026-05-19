@@ -5,6 +5,7 @@ Topical reference docs for the Insights-UI (KoalaGains) app — patterns, prompt
 ## Subfolders
 
 - **[etf-analysis/](etf-analysis/)** — How the ETF analysis pipeline works end-to-end: report generation and the ETF Scenarios system (winner / loser model + admin/automation paths). See [etf-analysis/README.md](etf-analysis/README.md).
+- **[etf-education/](etf-education/)** — Short investor-education reference notes feeding the "Understanding ETFs in detail" primer surface: filters to use when picking an ETF, and ETF tax behavior + account-type guidance. See [etf-education/README.md](etf-education/README.md).
 - **[stock-analysis/](stock-analysis/)** — Runbooks for adding new stocks (`yarn stocks:add`) and triggering stock report generation (`yarn stocks:trigger`). See [stock-analysis/README.md](stock-analysis/README.md).
 - **[etf-prompts/](etf-prompts/)** — Source-of-truth prompt text for each ETF analysis category (past returns, cost & efficiency, risk, future outlook, intro/strategy, competition) plus the prompt-finalization approach. See [etf-prompts/README.md](etf-prompts/README.md).
 - **[scenario-prompts/](scenario-prompts/)** — Reusable prompt templates for stock & ETF scenario authoring. Currently: `detailed-analysis.md` for generating the optional `detailedAnalysis` long-form section.
