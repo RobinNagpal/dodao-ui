@@ -3,24 +3,29 @@
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';
+import type { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import Link from 'next/link';
 import { use } from 'react';
 
 export interface CompetitionChartSectionProps {
   dataPromise: Promise<CompetitionResponse | null>;
+  // Source of truth for the main ticker's symbol/name/exchange/cachedScoreEntry.
+  // The consolidated `/full-render` endpoint no longer ships these in
+  // `competition.ticker` (they duplicated the top-level `ticker` field) so the
+  // parent passes the top-level ticker directly here.
+  tickerData: TickerV1FastResponse;
   exchange: string;
   ticker: string;
 }
 
-export default function CompetitionChartSection({ dataPromise, exchange, ticker }: CompetitionChartSectionProps): JSX.Element | null {
+export default function CompetitionChartSection({ dataPromise, tickerData, exchange, ticker }: CompetitionChartSectionProps): JSX.Element | null {
   const data = use(dataPromise);
 
-  if (!data || !data.ticker) {
+  if (!data) {
     return null;
   }
 
   const { competitorTickers } = data;
-  const tickerData = data.ticker;
 
   const quadrantDataPoints: QuadrantDataPoint[] = [];
 

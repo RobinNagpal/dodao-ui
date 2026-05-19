@@ -13,7 +13,7 @@ import { getMissingReportsForTicker } from '@/utils/missing-reports-utils';
 import { ensurePriceHistoryIsFresh } from '@/utils/price-history-utils';
 import { ensureStockAnalyzerDataIsFresh } from '@/utils/stock-analyzer-scraper-utils';
 import { SimilarTicker, TickerV1FastResponse, getCompetitorTickers, tickerV1IncludeWithRelations } from '@/utils/ticker-v1-model-utils';
-import { Prisma, TickerV1PriceHistory, TickerV1StockAnalyzerScrapperInfo, TickerV1VsCompetition } from '@prisma/client';
+import { Prisma, TickerV1PriceHistory, TickerV1StockAnalyzerScrapperInfo } from '@prisma/client';
 
 /**
  * Consolidated response payload for the main `/stocks/[exchange]/[ticker]` page.
@@ -281,17 +281,29 @@ export async function fetchTickerFullRenderData(rawSpaceId: string | undefined, 
     throw new Error(`fetchTickerFullRenderData: failed to get missing reports for ${symbol}`);
   }
 
-  const tickerResponse: TickerV1FastResponse = { ...tickerRecord, ...missingReports };
+  // Slim the response for the main page render. The fields stripped below
+  // are not read by `app/stocks/[exchange]/[ticker]/page.tsx` or any component
+  // it renders — they were inflating the consolidated payload by ~215 KB
+  // (4× that in the inlined RSC HTML). The standalone endpoints (e.g.
+  // `/competition`, the per-category data endpoints) continue to return the
+  // full shape for their subpage consumers.
+  //
+  //   ~42 KB  ticker.vsCompetition                     — not rendered on main page
+  //   ~132 KB competition.ticker                       — duplicate of top-level `ticker`
+  //   ~42 KB  competition.vsCompetition                — not rendered on main page
+  //   ~40 KB  competitorTickers[].detailedComparison   — only used on /competition subpage
+  const tickerResponse: TickerV1FastResponse = { ...tickerRecord, vsCompetition: null, ...missingReports };
 
   const summary = scraperInfo?.summary as StockFundamentalsSummary | null | undefined;
   const financialInfo = buildFinancialInfoFromSummary(summary, tickerRecord.symbol);
   const quarterlyChart = buildQuarterlyChartFromScraperInfo(scraperInfo);
   const priceHistory = buildPriceHistoryFromPriceInfo(priceInfo, tickerRecord.symbol);
 
+  const slimmedCompetitors = competitorTickers.map(({ detailedComparison: _detailedComparison, ...rest }) => rest);
   const competition: CompetitionResponse = {
-    vsCompetition: (tickerRecord.vsCompetition as TickerV1VsCompetition | null) || null,
-    competitorTickers,
-    ticker: tickerRecord,
+    vsCompetition: null,
+    competitorTickers: slimmedCompetitors,
+    // `ticker` intentionally omitted; consumers read from the top-level `ticker` field.
   };
 
   return {
