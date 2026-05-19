@@ -42,7 +42,6 @@ import { tickerAndExchangeTag } from '@/utils/ticker-v1-cache-utils';
 import { generateStockReportArticleSchema, generateStockReportBreadcrumbSchema } from '@/utils/metadata-generators';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
-import { TickerFullRenderResponse } from '@/utils/ticker-full-render-utils';
 import { FullTickerV1CategoryAnalysisResult, SimilarTicker, TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -51,12 +50,20 @@ import { Metadata } from 'next';
 import { unstable_noStore as noStore } from 'next/cache';
 import { notFound, permanentRedirect } from 'next/navigation';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { Suspense, use } from 'react';
 
 import { TickerRadarChart } from './TickerRadarChart';
 
 /**
- * Static-by-default with on-demand invalidation.
+ * Render dynamically per request. Pages were flipped from `force-static` to
+ * `force-dynamic` in the broader ISR-disable migration (see
+ * `docs/insights-ui/cloudfront-deploy-skew.md`). CloudFront in front of Vercel
+ * absorbs hot-path traffic at the edge; long-tail requests pay an SSR cost.
+ *
+ * Suspense + per-slice fetches below stream the page shell + skeletons to the
+ * client immediately, then fill in each section as its data resolves. This is
+ * the per-slice streaming pattern that the May-15 `/full-render` consolidation
+ * had removed, and that the user-perceived performance metrics depend on.
  */
 export const dynamic = 'force-dynamic';
 
@@ -69,83 +76,163 @@ function truncateForMeta(text: string, maxLength: number = 155): string {
   return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
 }
 
-/**
- * Refresh window for the consolidated render fetch. The underlying scraper /
- * Yahoo upserts use a 7-day staleness threshold (`yahoo-price-history.ts` /
- * `stock-analyzer-scraper-utils.ts` FETCH_CONFIGS). 8 days — one full day
- * beyond the staleness window — guarantees that when the cache entry expires
- * the next request sees DB rows older than 7 days, so the freshness check
- * actually fires. The umbrella tag is invalidated independently by savers /
- * admin actions; this time-based revalidate is only a backstop for dormant
- * tickers.
- */
-const EIGHT_DAYS_IN_SECONDS = 8 * 24 * 60 * 60;
-
-/**
- * Single consolidated fetch for everything the page renders. Replaces the six
- * separately-tagged fetches the page used to issue (ticker, similar,
- * financial-info, quarterly-chart, price-history, competition) — each of
- * which was one Data Cache entry. Folding them into one entry cuts the per-
- * rebuild cache-write count from ~7 (1 HTML + 6 Data Cache) to ~2 (1 HTML +
- * 1 Data Cache). See `docs/insights-ui/stock-page-caching.md`.
- */
-async function fetchFullRender(exchange: string, ticker: string): Promise<TickerFullRenderResponse> {
-  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/full-render`;
-  const res: Response = await fetch(url, {
-    next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS },
-  });
+/** Data fetchers */
+async function fetchTickerByExchange(exchange: string, ticker: string): Promise<TickerV1FastResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}?allowNull=true`;
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
   if (!res.ok) {
-    throw new Error(`fetchFullRender failed (${res.status}): ${url}`);
+    // Server error (DB down, etc.) - throw to show error.tsx
+    throw new Error(`fetchTickerByExchange failed (${res.status}): ${url}`);
   }
-  return (await res.json()) as TickerFullRenderResponse;
+  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
+  return data;
 }
 
-/** Uncached fallback used only when the canonical exchange is unknown — same shape as the cached endpoint. */
-async function fetchFullRenderAnyExchange(ticker: string): Promise<TickerV1FastResponse | null> {
-  // No full-render endpoint exists for the "any exchange" lookup — fall back
-  // to the lighter ticker-only endpoint just to discover the canonical
-  // exchange, then let the cached path handle the actual data load on the
-  // redirected URL.
+async function fetchTickerAnyExchange(ticker: string): Promise<TickerV1FastResponse | null> {
   const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/${ticker.toUpperCase()}?allowNull=true`;
   const res: Response = await fetch(url, { cache: 'no-store' });
   if (!res.ok) {
-    throw new Error(`fetchFullRenderAnyExchange failed (${res.status}): ${url}`);
+    // Server error (DB down, etc.) - throw to show error.tsx
+    throw new Error(`fetchTickerAnyExchange failed (${res.status}): ${url}`);
   }
-  return (await res.json()) as TickerV1FastResponse | null;
+  const data: TickerV1FastResponse | null = (await res.json()) as TickerV1FastResponse | null;
+  return data;
 }
 
-/** Exchange-aware fetch with uncached fallback + canonical redirect. */
-async function getFullRenderOrRedirect(params: RouteParams): Promise<TickerFullRenderResponse> {
+/** Exchange-aware fetch with uncached fallback + canonical redirect */
+async function getTickerOrRedirect(params: RouteParams): Promise<TickerV1FastResponse> {
   const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
-  const cached = await fetchFullRender(exchange, ticker);
-  if (cached.ticker) {
-    enforceDeletedTicker(cached.ticker);
-    enforceMovedRedirect(cached.ticker, exchange, ticker);
-    return cached;
+  // Try fetching by specific exchange first
+  const tickerByExchange = await fetchTickerByExchange(exchange, ticker);
+  if (tickerByExchange) {
+    enforceDeletedTicker(tickerByExchange);
+    enforceMovedRedirect(tickerByExchange, exchange, ticker);
+    return tickerByExchange;
   }
 
-  // Not found on the specified exchange — try any exchange (uncached).
+  // Not found on specified exchange, try any exchange (uncached)
   noStore();
-  const tickerAnyExchange = await fetchFullRenderAnyExchange(ticker);
+  const tickerAnyExchange = await fetchTickerAnyExchange(ticker);
 
+  // Ticker doesn't exist at all - show 404
   if (!tickerAnyExchange) {
     notFound();
   }
 
   enforceDeletedTicker(tickerAnyExchange);
 
+  // Found on a different exchange - redirect to canonical URL
   const canonicalExchange: string = tickerAnyExchange.exchange.toUpperCase();
   if (canonicalExchange !== exchange) {
     permanentRedirect(`/stocks/${canonicalExchange}/${tickerAnyExchange.symbol.toUpperCase()}`);
   }
 
   enforceMovedRedirect(tickerAnyExchange, exchange, ticker);
+  return tickerAnyExchange;
+}
 
-  // Same-exchange case with a stale cache miss — load the consolidated payload
-  // directly so we still render a complete page.
-  return fetchFullRender(canonicalExchange, tickerAnyExchange.symbol.toUpperCase());
+/**
+ * Refresh window for time-driven scraper / market-data fetches. These hit
+ * external services (Stock Analyzer Lambda, Yahoo Finance) whose underlying
+ * upserts use a 7-day staleness threshold (`yahoo-price-history.ts` /
+ * `stock-analyzer-scraper-utils.ts` FETCH_CONFIGS).
+ *
+ * We deliberately pick 8 days — one full day beyond the staleness threshold —
+ * so that when this fetch's cache does expire and the API route runs, the DB
+ * row's `lastUpdatedAt*` is guaranteed to be older than 7 days, which makes
+ * the freshness check fire and the upstream Lambda/Yahoo call actually
+ * happen. At exactly 7 days the comparison (`ageInDays > 7`) can fall on the
+ * wrong side and skip the refresh.
+ *
+ * Only the 3 fetches that depend on external freshness (price-history,
+ * financial-info, quarterly-chart) carry this revalidate. The umbrella tag
+ * is invalidated independently by savers/admin actions; the time-based
+ * revalidate is purely a backstop for dormant tickers.
+ */
+const EIGHT_DAYS_IN_SECONDS = 8 * 24 * 60 * 60;
+
+/** Similar + financial fetchers (promise-based for Suspense) */
+async function fetchSimilar(exchange: string, ticker: string): Promise<SimilarTicker[]> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/similar-tickers`;
+
+  const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+  if (!res.ok) throw new Error(`fetchSimilar failed (${res.status}): ${url}`);
+
+  const arr = (await res.json()) as SimilarTicker[];
+  return arr;
+}
+
+async function fetchFinancialInfo(exchange: string, ticker: string): Promise<FinancialInfoResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/financial-info`;
+
+  try {
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
+    if (!res.ok) {
+      console.error(`fetchFinancialInfo failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    const wrapper = (await res.json()) as { financialInfo: FinancialInfoResponse | null };
+    return wrapper.financialInfo;
+  } catch (error) {
+    console.error(`fetchFinancialInfo error for ${ticker}:`, error);
+    return null;
+  }
+}
+
+async function fetchQuarterlyChartData(exchange: string, ticker: string): Promise<QuarterlyChartDataResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/quarterly-chart-data`;
+
+  try {
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
+    if (!res.ok) {
+      console.error(`fetchQuarterlyChartData failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    const wrapper = (await res.json()) as { chartData: QuarterlyChartDataResponse | null };
+    return wrapper.chartData;
+  } catch (error) {
+    console.error(`fetchQuarterlyChartData error for ${ticker}:`, error);
+    return null;
+  }
+}
+
+async function fetchPriceHistory(exchange: string, ticker: string): Promise<PriceHistoryResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/price-history`;
+
+  try {
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)], revalidate: EIGHT_DAYS_IN_SECONDS } });
+    if (!res.ok) {
+      console.error(`fetchPriceHistory failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    const wrapper = (await res.json()) as { priceHistory: PriceHistoryResponse | null };
+    return wrapper.priceHistory;
+  } catch (error) {
+    console.error(`fetchPriceHistory error for ${ticker}:`, error);
+    return null;
+  }
+}
+
+async function fetchCompetitionData(exchange: string, ticker: string): Promise<CompetitionResponse | null> {
+  const url: string = `${getBaseUrlForServerSidePages()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange.toUpperCase()}/${ticker.toUpperCase()}/competition-tickers`;
+
+  try {
+    const res: Response = await fetch(url, { next: { tags: [tickerAndExchangeTag(ticker, exchange)] } });
+    if (!res.ok) {
+      console.error(`fetchCompetitionData failed (${res.status}): ${url}`);
+      return null;
+    }
+
+    return (await res.json()) as CompetitionResponse;
+  } catch (error) {
+    console.error(`fetchCompetitionData error for ${ticker}:`, error);
+    return null;
+  }
 }
 
 /** Metadata */
@@ -160,17 +247,13 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   let updatedTime: string | undefined;
 
   try {
-    // Shares the umbrella-tagged cache entry with the page render — Next.js
-    // dedupes the fetch within a request, so metadata generation costs nothing
-    // extra after the page itself has hit (or built) the cache.
-    const data = await fetchFullRender(exchange, ticker);
-    const t = data.ticker;
-    if (t) {
-      companyName = t.name ?? companyName;
-      summary = t.summary ?? summary;
-      metaDescription = t.metaDescription ?? '';
-      createdTime = t.createdAt?.toISOString();
-      updatedTime = t.updatedAt?.toISOString() ?? createdTime;
+    const data = await fetchTickerByExchange(exchange, ticker);
+    if (data) {
+      companyName = data.name ?? companyName;
+      summary = data.summary ?? summary;
+      metaDescription = data.metaDescription ?? '';
+      createdTime = data.createdAt?.toISOString();
+      updatedTime = data.updatedAt?.toISOString() ?? createdTime;
     }
   } catch {
     /* keep generic */
@@ -238,12 +321,85 @@ function FinancialInfoSkeleton(): JSX.Element {
   );
 }
 
+function QuarterlyChartSkeleton(): JSX.Element {
+  return (
+    <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <div className="h-6 w-48 rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-32 rounded bg-gray-800 animate-pulse mt-1" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-8 w-20 rounded-md bg-gray-800 animate-pulse" />
+          ))}
+        </div>
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+    </section>
+  );
+}
+
+function PriceChartSkeleton(): JSX.Element {
+  return (
+    <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mt-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div>
+          <div className="h-6 w-36 rounded bg-gray-800 animate-pulse" />
+          <div className="h-4 w-24 rounded bg-gray-800 animate-pulse mt-1" />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {['1M', '6M', '1Y', '3Y', '5Y'].map((label) => (
+            <div key={label} className="h-8 w-12 rounded-md bg-gray-800 animate-pulse" />
+          ))}
+        </div>
+      </div>
+      <div className="h-64 sm:h-72 rounded bg-gray-800 animate-pulse" />
+    </section>
+  );
+}
+
+/** Skeleton for TickerChartsInfo: Financial table (left) + Radar chart (right) + Quarterly chart (below) */
+function ChartsInfoSkeleton(): JSX.Element {
+  return (
+    <section className="mb-8">
+      {/* Financial Info (left) and Spider Chart (right) side by side */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Left: Financial Information Skeleton */}
+        <div className="lg:w-1/2" style={{ minHeight: '340px' }}>
+          <FinancialInfoSkeleton />
+        </div>
+
+        {/* Right: Spider Chart Skeleton */}
+        <div className="lg:w-1/2 flex justify-center">
+          <div className="w-full max-w-lg relative pb-4" style={{ minHeight: '400px', contain: 'layout size' }}>
+            <div className="absolute top-20 right-0 flex space-x-2" style={{ zIndex: 10 }}>
+              <div className="h-8 w-12 rounded bg-gray-800 animate-pulse" />
+            </div>
+            <RadarSkeleton />
+          </div>
+        </div>
+      </div>
+
+      {/* Price Chart Skeleton (rendered above the quarterly chart) */}
+      <div style={{ minHeight: '320px' }}>
+        <PriceChartSkeleton />
+      </div>
+
+      {/* Quarterly Metrics Chart Skeleton */}
+      <div style={{ minHeight: '320px' }}>
+        <QuarterlyChartSkeleton />
+      </div>
+    </section>
+  );
+}
+
 /* =============================================================================
    CHILD SERVER COMPONENTS (strictly typed, minimal)
 ============================================================================= */
 
-function BreadcrumbsFromData({ data }: { data: TickerV1FastResponse }): JSX.Element {
-  const d: TickerV1FastResponse = data;
+function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
   const exchange: string = d.exchange.toUpperCase();
   const ticker: string = d.symbol.toUpperCase();
   const country: SupportedCountries = getCountryByExchange(d.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
@@ -295,8 +451,8 @@ function BreadcrumbsFromData({ data }: { data: TickerV1FastResponse }): JSX.Elem
   );
 }
 
-function TickerSummaryInfo({ data }: { data: TickerV1FastResponse }): JSX.Element {
-  const d: TickerV1FastResponse = data;
+function TickerSummaryInfo({ data }: { data: Promise<TickerV1FastResponse> }): JSX.Element {
+  const d: TickerV1FastResponse = use(data);
 
   return (
     <section id="introduction" className="text-left mb-2">
@@ -328,16 +484,19 @@ function TickerSummaryInfo({ data }: { data: TickerV1FastResponse }): JSX.Elemen
 
 function TickerChartsInfo({
   data,
-  financialData,
-  quarterlyChartData,
-  priceHistoryData,
+  financialInfoPromise,
+  quarterlyChartPromise,
+  priceHistoryPromise,
 }: {
-  data: TickerV1FastResponse;
-  financialData: FinancialInfoResponse | null;
-  quarterlyChartData: QuarterlyChartDataResponse | null;
-  priceHistoryData: PriceHistoryResponse | null;
+  data: Promise<TickerV1FastResponse>;
+  financialInfoPromise: Promise<FinancialInfoResponse | null>;
+  quarterlyChartPromise: Promise<QuarterlyChartDataResponse | null>;
+  priceHistoryPromise: Promise<PriceHistoryResponse | null>;
 }): JSX.Element {
-  const d: TickerV1FastResponse = data;
+  const d: TickerV1FastResponse = use(data);
+  const financialData: FinancialInfoResponse | null = use(financialInfoPromise);
+  const quarterlyChartData: QuarterlyChartDataResponse | null = use(quarterlyChartPromise);
+  const priceHistoryData: PriceHistoryResponse | null = use(priceHistoryPromise);
 
   const spiderGraph: SpiderGraphForTicker = Object.fromEntries(
     Object.entries(CATEGORY_MAPPINGS).map(([categoryKey, categoryTitle]: [string, string]) => {
@@ -468,16 +627,16 @@ function CategorySummaryCard({ categoryKey, d }: { categoryKey: TickerAnalysisCa
 
 function TickerAnalysisInfo({
   data,
-  competitionData,
+  competitionPromise,
   exchange,
   ticker,
 }: {
-  data: TickerV1FastResponse;
-  competitionData: CompetitionResponse | null;
+  data: Promise<TickerV1FastResponse>;
+  competitionPromise: Promise<CompetitionResponse | null>;
   exchange: string;
   ticker: string;
 }): JSX.Element {
-  const d: TickerV1FastResponse = data;
+  const d: TickerV1FastResponse = use(data);
   const managementTeamReport = d.managementTeamReports?.[0];
 
   return (
@@ -486,7 +645,7 @@ function TickerAnalysisInfo({
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
-        <CompetitionChartSection dataPromise={Promise.resolve(competitionData)} tickerData={d} exchange={exchange} ticker={ticker} />
+        <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
         {managementTeamReport && (
           <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
@@ -556,22 +715,39 @@ function TickerArticleFooter({ modifiedDate, formattedModifiedDate }: { modified
 }
 /** PAGE */
 export default async function TickerDetailsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {
-  const fullRender = await getFullRenderOrRedirect(params);
-  const tickerData = fullRender.ticker;
-  if (!tickerData) {
-    notFound();
-  }
+  // Main ticker data (promise for selective Suspense usage)
+  const tickerInfo = getTickerOrRedirect(params);
 
+  // Get ticker data for structured data generation
+  const tickerData = await tickerInfo;
   const country = getCountryByExchange(tickerData.exchange as USExchanges | CanadaExchanges | IndiaExchanges | UKExchanges);
 
   // Generate structured data
   const articleSchema = generateStockReportArticleSchema(tickerData);
   const breadcrumbSchema = generateStockReportBreadcrumbSchema(tickerData, country);
 
-  const exchange: string = tickerData.exchange.toUpperCase();
-  const ticker: string = tickerData.symbol.toUpperCase();
+  // We only need params (not data) to kick off Competition/Similar fetch promises up front
+  const routeParams: Readonly<{ exchange: string; ticker: string }> = await params;
+  const exchange: string = routeParams.exchange.toUpperCase();
+  const ticker: string = routeParams.ticker.toUpperCase();
 
-  const similarTickersForChild: SimilarTicker[] = fullRender.similar;
+  // Helper: try with route {exchange,ticker}; on error, wait for canonical then retry
+  const retryWithCanonical: <T>(fn: (ex: string, tk: string) => Promise<T>) => Promise<T> = <T,>(fn: (ex: string, tk: string) => Promise<T>): Promise<T> =>
+    (async () => {
+      try {
+        return await fn(exchange, ticker); // optimistic, fastest when route is already canonical
+      } catch {
+        const d = await tickerInfo; // wait for canonical only if first attempt fails
+        return fn(d.exchange.toUpperCase(), d.symbol.toUpperCase());
+      }
+    })();
+
+  // Promises consumed by child components via `use()` under Suspense
+  const similarPromise = retryWithCanonical(fetchSimilar);
+  const financialInfoPromise = retryWithCanonical(fetchFinancialInfo);
+  const quarterlyChartPromise = retryWithCanonical(fetchQuarterlyChartData);
+  const priceHistoryPromise = retryWithCanonical(fetchPriceHistory);
+  const competitionPromise = retryWithCanonical(fetchCompetitionData);
 
   // Derive dates for semantic footer (based solely on tickerData)
   const createdAtRaw = tickerData.createdAt || new Date();
@@ -595,26 +771,28 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
       />
 
       {/* Breadcrumbs - server rendered, no skeleton needed */}
-      <BreadcrumbsFromData data={tickerData} />
+      <BreadcrumbsFromData data={tickerInfo} />
 
       <article itemScope itemType="https://schema.org/Article">
         {/* Hidden datePublished for schema - machine readable only */}
         <meta itemProp="datePublished" content={publishedDate.toISOString()} />
 
         {/* Summary info - server rendered, no skeleton needed */}
-        <TickerSummaryInfo data={tickerData} />
+        <TickerSummaryInfo data={tickerInfo} />
 
-        <TickerChartsInfo
-          data={tickerData}
-          financialData={fullRender.financialInfo}
-          quarterlyChartData={fullRender.quarterlyChart}
-          priceHistoryData={fullRender.priceHistory}
-        />
+        <Suspense fallback={<ChartsInfoSkeleton />}>
+          <TickerChartsInfo
+            data={tickerInfo}
+            financialInfoPromise={financialInfoPromise}
+            quarterlyChartPromise={quarterlyChartPromise}
+            priceHistoryPromise={priceHistoryPromise}
+          />
+        </Suspense>
 
         {/* Analysis info - server rendered, no skeleton needed */}
-        <TickerAnalysisInfo data={tickerData} competitionData={fullRender.competition} exchange={exchange} ticker={ticker} />
+        <TickerAnalysisInfo data={tickerInfo} competitionPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
-        <SimilarTickers dataPromise={Promise.resolve(similarTickersForChild)} />
+        <SimilarTickers dataPromise={similarPromise} />
 
         <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
       </article>
