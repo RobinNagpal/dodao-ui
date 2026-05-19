@@ -486,7 +486,7 @@ function TickerAnalysisInfo({
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
-        <CompetitionChartSection dataPromise={Promise.resolve(competitionData)} exchange={exchange} ticker={ticker} />
+        <CompetitionChartSection dataPromise={Promise.resolve(competitionData)} tickerData={d} exchange={exchange} ticker={ticker} />
 
         {managementTeamReport && (
           <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
