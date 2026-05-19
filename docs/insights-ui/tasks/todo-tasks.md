@@ -212,6 +212,10 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 ## Site-wide / Other
 
+### SEO
+
+- [ ] **SEO — Ahrefs site-audit fixes** — run a full-site Ahrefs Site Audit, export the issue list (errors + warnings + notices) and bulk-export affected URLs per issue; triage by category (broken links / 4xx-5xx, redirect chains + loops, missing or duplicate `<title>` + meta description, missing/conflicting canonicals, hreflang gaps, render-blocking JS/CSS, slow CWV pages, oversized or non-`next/image` images, missing `alt` text, orphan pages, thin/low-word-count pages, internal-link depth > 3, JSON-LD validation errors, mixed-content + HTTPS issues); fix in priority order (crawl/indexability blockers → on-page metadata + canonicals → CWV + image hygiene → schema/JSON-LD → internal-linking depth + orphans → thin-content rewrites); capture baseline counts per category before fixing and re-crawl after each batch to measure delta; document the audit, fix order, and per-batch impact under `docs/insights-ui/seo/` so the workflow can be re-run quarterly; cross-check Search Console "Crawled — currently not indexed" delta from the per-section sitemap task once fixes land.
+
 - [ ] **Dark/light theme toggle** — some users find current dark theme reports unreadable. Decide: global header vs per-report toggle; default theme for first-time visitors; persist per user (cookie / localStorage); print-friendly variant separate from light theme?
 - [ ] **Logged-in user growth + daily-returning retention** — baseline ~300 logged-in / ~1k DAU / ~80 returning. Define hypotheses + experiments; tie to login gate, watchlists, alert digests.
 - [ ] **Traffic from AI platforms** (ChatGPT, Gemini, Perplexity) — content, structured data, brand/citation presence; track inbound referrals.
