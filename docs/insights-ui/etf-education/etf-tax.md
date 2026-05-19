@@ -8,7 +8,7 @@ When an ETF sells a stock at a profit inside the portfolio, US tax law forces it
 
 ETFs largely avoid this through **in-kind redemption**: when a big institutional investor cashes out, the ETF hands them a basket of stocks (the lowest-cost-basis lots) instead of selling for cash, so the unrealized gain walks out the door without becoming a taxable event. Result: most broad US-equity ETFs distribute **$0 in capital gains** year after year. Vanguard reports that 82% of its ETFs had no capital-gains distributions over the last 5 years.
 
-**Note on how it reaches you:** the ETF doesn't withhold tax. It pays the distribution to you in cash (alongside dividends), reports it on **Form 1099-DIV** (capital gains in Box 2a, dividends in Boxes 1a / 1b), and you pay the IRS yourself when you file your 1040.
+**How it reaches you:** capital-gain distributions and dividends are **two separate cash payouts**, not one combined "dividend with tax taken out." Dividends are paid through the year (quarterly / monthly); cap-gain distributions, if any, are paid once in December. The ETF withholds nothing — it sends you the full cash, reports the split on **Form 1099-DIV** (cap gains in Box 2a, dividends in Boxes 1a / 1b), and you pay the IRS yourself when you file.
 
 **Where the in-kind trick breaks down:**
 - Bond ETFs and REIT ETFs — their return is mostly interest / non-qualified dividends, which in-kind doesn't suppress.
@@ -23,6 +23,8 @@ What the ETF pays you as a regular dividend is taxed two ways:
 - **Non-qualified (ordinary) dividends** — taxed at your full ordinary-income rate. This covers most REIT distributions, bond interest, MLP payouts, and dividends from short-held stocks.
 
 Funds that **pay dividends often** (monthly distributors, REIT ETFs, high-yield bond ETFs, dividend-focused ETFs like SCHD/VYM/HDV) produce a steady ordinary-income stream. That's fine in a tax-sheltered account but is a real drag in a taxable account, especially at higher tax brackets. The ETF's 1099-DIV breaks it out: **Box 1a** = total ordinary dividends, **Box 1b** = qualified portion (the lower-taxed slice).
+
+**61-day rule (background only):** dividends only qualify for the lower rate if the fund held the underlying stock > 60 days around the ex-dividend date. ETF creation/redemption can force the fund to hand out shares before that window closes, so a small slice of dividends gets bumped to ordinary. Not a per-fund filter — already captured in Morningstar's Tax-Cost Ratio and in the Box 1a vs 1b split on your 1099-DIV.
 
 ## 3. Account type — taxable vs. tax-advantaged
 
