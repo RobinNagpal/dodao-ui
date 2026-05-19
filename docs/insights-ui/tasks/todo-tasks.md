@@ -85,6 +85,15 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
+### Best 5 ETFs shortlist
+
+- [ ] Define "best" precisely — agree on the metric mix (e.g. 5y total return vs comparison base, expense ratio, max drawdown, Sharpe, AUM + ADV floor, Final Summary verdict tier) and the weighting per dimension. Decide single global shortlist vs one-per-group (broad equity, sector, fixed-income, etc.).
+- [ ] Filter universe to `isComplete = true` ETFs with reports across all six evaluation categories; apply liquidity + AUM floors so the picks are investable.
+- [ ] Score each survivor on the chosen dimensions; pick top 5 with a human-review gate before publishing.
+- [ ] Surface at `/etfs/best` (or a "Featured" rail on the ETFs index) — one card per ETF with composite score, expense ratio, headline returns, 1-paragraph thesis; methodology + filters visible from the page.
+- [ ] Re-run quarterly on the off-hours Claude-Code runner; track entries added / removed / promoted / cut.
+- [ ] Open: persist a `bestEtfScore` + subscores on `Etf` so the score is queryable independent of the shortlist; honorable-mentions tier vs hard cut at 5; global vs per-group ("best 5 overall" vs "best 5 per group"); geographic scope (US first, Canadian after).
+
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
 - [ ] Filter to active ETFs only via `Etf.isActive` (or `managementStyle` enum); suppress entirely for passive/index.
