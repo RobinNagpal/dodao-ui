@@ -132,6 +132,51 @@ Single source of truth for active KoalaGains work. Completed items live in
 
 - [ ] **Audit + fix UI issues across the ETF listing surfaces** — `/etfs` (index), `/etfs/categories` (+ `[category]`), `/etfs/countries` (+ `[country]`), `/etfs/asset-classes` (+ `[assetClass]`), `/etfs/groups` (+ `[group]`), `/etfs/providers` (+ `[provider]`). Walk each page on desktop + mobile and capture concrete issues here as sub-bullets before scheduling fixes: layout/spacing, card alignment, header + breadcrumb consistency across the sub-listing variants, empty/loading/error states, sort + filter UX, pagination, and dark/light theme rendering. Cross-check against the `isComplete` filter behavior once that lands.
 
+### ETF reports evaluation + best-ETFs shortlist
+
+> Two halves of the same task: (a) evaluate the **quality** of the analyses we
+> currently publish for each ETF, and (b) use the surviving evaluation to surface
+> a curated **best-ETFs** shortlist per group/category so visitors land on
+> high-conviction picks instead of paging through the full universe. ETF-side
+> parallel to the stock 10-bagger shortlist task above.
+
+- [ ] **Report-quality evaluation pass** — run the existing retail-investor
+  review loop (`docs/insights-ui/etf-prompt-improvement/run-prompt-analysis.md`)
+  across every category (`performance-and-returns`, `cost-efficiency-and-team`,
+  `risk-analysis`, `future-performance-outlook`) plus Index & Strategy and
+  Final Summary; capture per-category findings and cross-cutting issues; feed
+  the worst-offender findings into the next prompt-tuning iteration before
+  the shortlist is computed.
+- [ ] **Define "best" per group** — per group in
+  `etf-analysis-categories.json`, write the criteria (e.g. broad-equity:
+  expense ratio + tracking error + AUM/liquidity floor + 3y/5y return vs
+  comparison base; fixed-income-core: duration + credit + cost; leveraged-
+  inverse: explicitly excluded or flagged "tactical only"). Criteria must be
+  computable from existing report fields — no new ingestion.
+- [ ] **Scoring + thresholds** — convert per-group criteria into a numeric
+  score (`bestEtfScore`) with subscores per criterion; require a minimum
+  score + minimum completeness (`isComplete = true`) to be eligible; cap
+  shortlist size per group (e.g. top 5–10).
+- [ ] **Persistence** — store `bestEtfScore` + subscores on `Etf` so the
+  score is queryable independent of the shortlist surface; recompute on the
+  off-hours runner whenever a category report is regenerated.
+- [ ] **Surface** — `/etfs/best` (or under a "Featured" rail on the ETFs
+  index) — one card per ETF with score, group, 1-paragraph thesis, link to
+  full report; group sections in the same order as the ETFs landing page;
+  methodology + criteria visible on the page.
+- [ ] **Home-page entry** — small "Best ETFs by group" rail mirroring the
+  stocks 10-bagger entry once it lands; cross-link from each group/category
+  page to the shortlist filtered to that group.
+- [ ] **Refresh cadence** — quarterly recompute on the off-hours Claude-Code
+  runner; per-run diff of entries added/removed/promoted/cut surfaced in
+  admin.
+- [ ] Open: leveraged/inverse + single-commodity + crypto — exclude entirely
+  vs flag as "tactical only" with a different badge; honourable-mentions
+  tier vs hard cut; whether to also expose a country-scoped best list
+  (US-only first, Canadian once the Canadian universe is fully scored);
+  whether to fold this into the same shortlist UI used by stocks or keep
+  separate surfaces.
+
 ### Known limitations in the new 8-group taxonomy (follow-up cleanups)
 
 - [ ] **Split strategy funds back out of `derivative-income`** — managed-futures / market-neutral / long-short (~50 funds) don't share a decision framework with the ~600 option-engineered payoff funds; prompt has to branch internally. Highest-impact follow-up.
