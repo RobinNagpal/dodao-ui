@@ -114,6 +114,18 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Storage: `insights-ui/src/etf-analysis-data/etf-comparison-bases.json` keyed by group with `{ primary: { symbol, name, source }, secondary?, rationale }`; injected into generation pipeline.
 - [ ] Prompt impact: every "vs. category" claim paired with "vs. {comparisonBase.name} ({comparisonBase.symbol})".
 
+### Future-performance comparison across ETF peers
+
+> Today's Future Performance Outlook is single-ETF only; the competition prompt mentions a "future outlook" paragraph but doesn't produce structured per-peer data. Goal: a dedicated surface that compares the target ETF's forward outlook against its peer set + the group's comparison base.
+
+- [ ] **Scope the surface** — decide between (a) a new "Future performance vs peers" block on the ETF detail page that pulls from a dedicated comparison report, or (b) restructuring the competition section's Paragraph 3 to render from structured per-peer data instead of free-form prose. Lean (a) so the block can render on ETFs that don't have a full competition report yet.
+- [ ] **Peer set + base** — reuse the competition prompt's 4–6 peers; layer in the group's primary `etf-comparison-bases.json` entry as a mandatory comparison row. Skip peers that lack a generated Future Performance Outlook so the table doesn't render half-empty.
+- [ ] **Output schema** — per-peer record: `{ symbol, name, outlookDirection (BULLISH | NEUTRAL | BEARISH), confidence, horizonMonths, headlineDriver, divergenceFromTarget }`. Top-level: `consensusDirection`, `targetVsConsensus`, `keyDifferentiators[]`. Persist as a new report category (`future-performance-comparison`) so it has its own cache tag + regenerate hook alongside the existing Future Performance Outlook.
+- [ ] **Prompt** — new `docs/insights-ui/etf-prompts/future-performance-comparison.md`; inputs are the target ETF's Future Performance Outlook output + each peer's Future Performance Outlook output + the comparison-base context. Forbid re-deriving forecasts from raw holdings — only reconcile across already-generated outlooks so the comparison is internally consistent with the per-ETF reports.
+- [ ] **Rendering** — side-by-side table (rows = peers + base, columns = direction badge / horizon / driver) plus a short narrative paragraph that calls out where the target ETF diverges from the peer consensus. Reuse the existing direction-badge component from the scenarios work.
+- [ ] **Generation pipeline** — wire into `regenerate*` family alongside the other report categories; include in the "is the ETF complete?" definition once it stabilizes, but ship behind a per-ETF readiness check first so partial peer coverage doesn't block listing inclusion.
+- [ ] Open: dedupe vs competition Paragraph 3 (replace it, link to it, or let both coexist during rollout?); suppress for groups where forward differentiation is weak (broad-market passive); how to handle peers whose outlook is > N weeks stale (regenerate first, or annotate "as-of"?); include the comparison base as a peer row or as a separate "vs. category benchmark" footer?
+
 ### Phase 4 — SEO, metadata, sitemap
 
 - [ ] SEO/metadata review after new sections — titles/descriptions cover comparison + competition keywords; JSON-LD remains valid and updated.
