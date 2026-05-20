@@ -7,6 +7,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useRouter } from 'next/navigation';
@@ -54,7 +55,9 @@ function buildPayload(etf: EtfIdentifier, key: GenerateKey): EtfGenerationReques
 
 export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Element {
   const router = useRouter();
+  const { showNotification } = useNotificationContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [flushing, setFlushing] = useState(false);
 
   const { postData: createGenerationRequest, loading: creatingGenRequest } = usePostData<unknown, EtfGenerationRequestPayload[]>({
     successMessage: 'Analysis generation request created!',
@@ -63,15 +66,21 @@ export default function EtfActions({ etf, session }: EtfActionsProps): JSX.Eleme
 
   const dropdownItems: EllipsisDropdownItem[] = [
     { key: 'generate-report', label: 'Generate Report' },
-    { key: 'invalidate-cache', label: 'Invalidate Cache' },
+    { key: 'invalidate-cache', label: flushing ? 'Invalidating…' : 'Invalidate Cache', disabled: flushing },
   ];
 
   const handleDropdownSelect = async (key: string) => {
     if (key === 'generate-report') {
       setIsModalOpen(true);
     } else if (key === 'invalidate-cache') {
-      await revalidateEtfCache(etf.symbol, etf.exchange);
-      router.refresh();
+      setFlushing(true);
+      try {
+        const result = await revalidateEtfCache(etf.symbol, etf.exchange);
+        showNotification({ type: result.success ? 'success' : 'error', message: result.message });
+        router.refresh();
+      } finally {
+        setFlushing(false);
+      }
     }
   };
 

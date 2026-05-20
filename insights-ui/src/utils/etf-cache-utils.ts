@@ -1,6 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import { invalidateCloudFrontPaths } from './cloudfront-cache-utils';
+import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateCloudFrontPathsAwaited } from './cloudfront-cache-utils';
 
 /**
  * Cache-tag helpers for per-ETF revalidation.
@@ -79,6 +79,22 @@ export const revalidateAllEtfTags = (symbol: string, exchange: string) => {
     revalidateTag(etfCategoryReportTag(symbol, exchange, category));
   }
   invalidateCloudFrontPaths([`/etfs/${exchange}/${symbol}*`]);
+};
+
+/**
+ * Awaited variant of `revalidateAllEtfTags`. Use from the admin-facing
+ * "Invalidate cache" / "Flush Cache" actions so the user gets real
+ * success/failure feedback from CloudFront instead of an always-success
+ * fire-and-forget call.
+ */
+export const revalidateAllEtfTagsAwaited = async (symbol: string, exchange: string): Promise<CloudFrontInvalidationResult> => {
+  revalidateTag(etfAndExchangeTag(symbol, exchange));
+  revalidateTag(etfCompetitionTag(symbol, exchange));
+  revalidateTag(etfHoldingsTag(symbol, exchange));
+  for (const category of Object.values(EtfAnalysisCategory)) {
+    revalidateTag(etfCategoryReportTag(symbol, exchange, category));
+  }
+  return invalidateCloudFrontPathsAwaited([`/etfs/${exchange}/${symbol}*`]);
 };
 
 /**

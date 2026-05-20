@@ -62,6 +62,78 @@ function isCloudFrontCachedPath(path: string): boolean {
 }
 
 /**
+ * Discriminated result of a CloudFront invalidation attempt. Used by the
+ * awaited variant so callers (admin "Invalidate cache" actions) can show a
+ * specific success/error/no-op message to the user instead of pretending the
+ * call succeeded.
+ *
+ * - `sent`: AWS accepted the invalidation request; `id` is the
+ *   CloudFront invalidation ID.
+ * - `skipped-no-distribution`: `CLOUDFRONT_DISTRIBUTION_ID` is unset on this
+ *   runtime — the helper is a deliberate no-op (preview / local dev). When
+ *   this surfaces in production it means the env var is missing on Vercel.
+ * - `skipped-no-cached-paths`: every provided path was outside the
+ *   CloudFront-cached prefixes, so AWS would have nothing to purge.
+ * - `failed`: AWS rejected the call (most commonly IAM `AccessDenied` if the
+ *   `insights-ui-project-policy` is not attached to the runtime's IAM user).
+ */
+export type CloudFrontInvalidationResult =
+  | { status: 'sent'; id: string; paths: string[] }
+  | { status: 'skipped-no-distribution'; paths: string[] }
+  | { status: 'skipped-no-cached-paths'; paths: string[] }
+  | { status: 'failed'; error: string; paths: string[] };
+
+/**
+ * Result of an admin-triggered cache-flush action. Shared shape used by the
+ * stocks and ETF flush server actions in `cache-actions.ts` so the UI can
+ * render a single notification regardless of which surface was flushed.
+ *
+ * `success` reflects the CloudFront outcome (env-missing / IAM-failure /
+ * no-matching-path all surface as `false`); `cloudfront` carries the
+ * structured detail for diagnostics.
+ */
+export interface CacheFlushResult {
+  success: boolean;
+  message: string;
+  cloudfront: CloudFrontInvalidationResult;
+}
+
+export function formatCloudFrontResult(label: string, result: CloudFrontInvalidationResult): CacheFlushResult {
+  switch (result.status) {
+    case 'sent':
+      return { success: true, message: `Cache invalidated for ${label} (CloudFront invalidation ${result.id})`, cloudfront: result };
+    case 'skipped-no-distribution':
+      return {
+        success: false,
+        message: `Vercel-side tags were cleared for ${label}, but CloudFront was NOT purged — CLOUDFRONT_DISTRIBUTION_ID env var is not set on this runtime.`,
+        cloudfront: result,
+      };
+    case 'skipped-no-cached-paths':
+      return {
+        success: false,
+        message: `Vercel-side tags were cleared for ${label}, but no provided paths matched a CloudFront-cached prefix. Check the path list in cloudfront-cache-utils.ts.`,
+        cloudfront: result,
+      };
+    case 'failed':
+      return {
+        success: false,
+        message: `Vercel-side tags were cleared for ${label}, but CloudFront invalidation failed: ${result.error}`,
+        cloudfront: result,
+      };
+  }
+}
+
+function buildInvalidationCommand(dist: string, cachedPaths: string[]): CreateInvalidationCommand {
+  return new CreateInvalidationCommand({
+    DistributionId: dist,
+    InvalidationBatch: {
+      Paths: { Quantity: cachedPaths.length, Items: [...cachedPaths] },
+      CallerReference: `revalidate-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+    },
+  });
+}
+
+/**
  * Schedule a CloudFront cache invalidation for the given paths. Fire-and-
  * forget: the response is not awaited inline. `waitUntil` keeps the Vercel
  * function alive until the AWS call completes so the invalidation survives
@@ -85,13 +157,7 @@ export function invalidateCloudFrontPaths(paths: ReadonlyArray<string>): void {
   const cachedPaths = paths.filter(isCloudFrontCachedPath);
   if (cachedPaths.length === 0) return;
 
-  const command = new CreateInvalidationCommand({
-    DistributionId: dist,
-    InvalidationBatch: {
-      Paths: { Quantity: cachedPaths.length, Items: [...cachedPaths] },
-      CallerReference: `revalidate-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
-    },
-  });
+  const command = buildInvalidationCommand(dist, cachedPaths);
 
   const promise = c.send(command).then(
     (res) => console.log(`[cloudfront] Invalidated ${cachedPaths.join(', ')} (id=${res.Invalidation?.Id ?? '?'})`),
@@ -105,5 +171,35 @@ export function invalidateCloudFrontPaths(paths: ReadonlyArray<string>): void {
     waitUntil(promise);
   } catch {
     void promise;
+  }
+}
+
+/**
+ * Awaited variant of `invalidateCloudFrontPaths`. Use from admin-triggered
+ * flush actions that want to report real success/failure back to the user.
+ * The save-flow callers should keep using `invalidateCloudFrontPaths` so user
+ * saves don't block on the AWS round-trip.
+ */
+export async function invalidateCloudFrontPathsAwaited(paths: ReadonlyArray<string>): Promise<CloudFrontInvalidationResult> {
+  const dist = DISTRIBUTION_ID;
+  const c = getClient();
+  if (!dist || !c) {
+    return { status: 'skipped-no-distribution', paths: [...paths] };
+  }
+
+  const cachedPaths = paths.filter(isCloudFrontCachedPath);
+  if (cachedPaths.length === 0) {
+    return { status: 'skipped-no-cached-paths', paths: [...paths] };
+  }
+
+  try {
+    const res = await c.send(buildInvalidationCommand(dist, cachedPaths));
+    const id = res.Invalidation?.Id ?? '?';
+    console.log(`[cloudfront] Invalidated ${cachedPaths.join(', ')} (id=${id})`);
+    return { status: 'sent', id, paths: cachedPaths };
+  } catch (err) {
+    const error = err instanceof Error ? err.message : String(err);
+    console.error(`[cloudfront] Failed to invalidate ${cachedPaths.join(', ')}:`, err);
+    return { status: 'failed', error, paths: cachedPaths };
   }
 }

@@ -2,7 +2,7 @@ import { revalidateTag } from 'next/cache';
 import { SupportedCountries } from './countryExchangeUtils';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { invalidateCloudFrontPaths } from './cloudfront-cache-utils';
+import { CloudFrontInvalidationResult, invalidateCloudFrontPaths, invalidateCloudFrontPathsAwaited } from './cloudfront-cache-utils';
 
 /**
  * Cache-tag helpers for per-ticker revalidation.
@@ -90,6 +90,21 @@ export const revalidateAllTickerTags = (ticker: string, exchange: string) => {
     revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
   }
   invalidateCloudFrontPaths([`/stocks/${exchange}/${ticker}*`, `${tickerApiBase(ticker, exchange)}*`]);
+};
+
+/**
+ * Awaited variant of `revalidateAllTickerTags`. Use from the admin-facing
+ * "Invalidate cache" action so the user gets real success/failure feedback
+ * from CloudFront instead of an always-success fire-and-forget call.
+ */
+export const revalidateAllTickerTagsAwaited = async (ticker: string, exchange: string): Promise<CloudFrontInvalidationResult> => {
+  revalidateTag(tickerAndExchangeTag(ticker, exchange));
+  revalidateTag(tickerCompetitionTag(ticker, exchange));
+  revalidateTag(tickerManagementTeamTag(ticker, exchange));
+  for (const category of Object.values(TickerAnalysisCategory)) {
+    revalidateTag(tickerCategoryReportTag(ticker, exchange, category));
+  }
+  return invalidateCloudFrontPathsAwaited([`/stocks/${exchange}/${ticker}*`, `${tickerApiBase(ticker, exchange)}*`]);
 };
 
 export const getStocksPageTag = (country: SupportedCountries) => `koalagains:${country}:stocks`;
