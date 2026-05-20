@@ -321,8 +321,7 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
     about: {
       '@type': 'Corporation',
       name: mover.ticker.name,
-      tickerSymbol: mover.ticker.symbol,
-      exchange: mover.ticker.exchange,
+      tickerSymbol: `${mover.ticker.exchange} ${mover.ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -448,8 +447,7 @@ export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndus
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -600,8 +598,7 @@ export const generateCompetitionArticleSchema = (ticker: TickerWithOptionalIndus
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -723,8 +720,7 @@ export const generatePastPerformanceArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -846,8 +842,7 @@ export const generateFuturePerformanceArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -919,8 +914,7 @@ export const generateBusinessAndMoatArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -1091,8 +1085,7 @@ export const generateFinancialStatementAnalysisArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -1214,8 +1207,7 @@ export const generateFairValueArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
@@ -1336,8 +1328,7 @@ export const generateManagementTeamArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
+      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
     },
     inLanguage: 'en-US',
   };
