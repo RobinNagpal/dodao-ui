@@ -22,9 +22,10 @@ interface StockActionsAdminPanelProps {
   movedExchange?: string | null;
   movedSymbol?: string | null;
   isDeleted?: boolean;
+  websiteUrl?: string | null;
 }
 
-export default function StockActionsAdminPanel({ ticker, movedExchange, movedSymbol, isDeleted }: StockActionsAdminPanelProps): JSX.Element {
+export default function StockActionsAdminPanel({ ticker, movedExchange, movedSymbol, isDeleted, websiteUrl }: StockActionsAdminPanelProps): JSX.Element {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
@@ -373,6 +374,7 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
         initialMovedExchange={movedExchange ?? null}
         initialMovedSymbol={movedSymbol ?? null}
         initialIsDeleted={isDeleted ?? false}
+        initialWebsiteUrl={websiteUrl ?? null}
         onSaved={handleEditDetailsSaved}
       />
     </>

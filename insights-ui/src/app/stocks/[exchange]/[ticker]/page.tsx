@@ -289,11 +289,13 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       type: 'article',
       publishedTime: createdTime ?? updatedTime,
       modifiedTime: updatedTime ?? createdTime,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
       description: shortDesc,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     keywords,
   };
@@ -435,6 +437,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           movedExchange={d.movedExchange ?? null}
           movedSymbol={d.movedSymbol ?? null}
           isDeleted={d.isDeleted ?? false}
+          websiteUrl={d.websiteUrl ?? null}
         >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />

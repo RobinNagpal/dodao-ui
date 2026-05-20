@@ -40,11 +40,13 @@ export const generateCountryStocksMetadata = (countryName: string): Metadata => 
       url,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${countryName} Stocks by Industry | KoalaGains`,
       description: openGraphDescription,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     alternates: {
       canonical: url,
@@ -108,11 +110,13 @@ export const generateCountryIndustryStocksMetadata = async (countryName: string,
       url: base,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: industrySummary,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
   };
 };
@@ -174,11 +178,13 @@ export const generateDailyMoversListMetadata = (country: string, type: DailyMove
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
   };
 };
@@ -238,6 +244,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       authors: ['KoalaGains'],
       section: 'Stock Market Analysis',
       tags: keywords,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
@@ -245,6 +252,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       description,
       site: '@koalagains',
       creator: '@koalagains',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     keywords,
   };
@@ -322,7 +330,6 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
       '@type': 'Corporation',
       name: mover.ticker.name,
       tickerSymbol: mover.ticker.symbol,
-      exchange: mover.ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -449,7 +456,6 @@ export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndus
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -601,7 +607,6 @@ export const generateCompetitionArticleSchema = (ticker: TickerWithOptionalIndus
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -724,7 +729,6 @@ export const generatePastPerformanceArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -847,7 +851,6 @@ export const generateFuturePerformanceArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -920,7 +923,6 @@ export const generateBusinessAndMoatArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -1092,7 +1094,6 @@ export const generateFinancialStatementAnalysisArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -1215,7 +1216,6 @@ export const generateFairValueArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };
@@ -1337,7 +1337,6 @@ export const generateManagementTeamArticleSchema = (
       '@type': 'Corporation',
       name: ticker.name,
       tickerSymbol: ticker.symbol,
-      exchange: ticker.exchange,
     },
     inLanguage: 'en-US',
   };

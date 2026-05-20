@@ -19,14 +19,15 @@ interface StockActionsProps {
   movedExchange?: string | null;
   movedSymbol?: string | null;
   isDeleted?: boolean;
+  websiteUrl?: string | null;
 }
 
-export default function StockActions({ ticker, children, session, movedExchange, movedSymbol, isDeleted }: StockActionsProps): JSX.Element {
+export default function StockActions({ ticker, children, session, movedExchange, movedSymbol, isDeleted, websiteUrl }: StockActionsProps): JSX.Element {
   return (
     <div className="flex flex-wrap items-center gap-2 z-10">
       {children}
       <PrivateWrapper session={session}>
-        <StockActionsAdminPanel ticker={ticker} movedExchange={movedExchange} movedSymbol={movedSymbol} isDeleted={isDeleted} />
+        <StockActionsAdminPanel ticker={ticker} movedExchange={movedExchange} movedSymbol={movedSymbol} isDeleted={isDeleted} websiteUrl={websiteUrl} />
       </PrivateWrapper>
     </div>
   );

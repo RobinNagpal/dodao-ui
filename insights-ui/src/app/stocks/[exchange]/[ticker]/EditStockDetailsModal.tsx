@@ -19,6 +19,7 @@ interface EditStockDetailsModalProps {
   initialMovedExchange: string | null;
   initialMovedSymbol: string | null;
   initialIsDeleted: boolean;
+  initialWebsiteUrl: string | null;
   onSaved: () => void;
 }
 
@@ -30,11 +31,13 @@ export default function EditStockDetailsModal({
   initialMovedExchange,
   initialMovedSymbol,
   initialIsDeleted,
+  initialWebsiteUrl,
   onSaved,
 }: EditStockDetailsModalProps): JSX.Element {
   const [movedExchange, setMovedExchange] = useState<string>('');
   const [movedSymbol, setMovedSymbol] = useState<string>('');
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [websiteUrl, setWebsiteUrl] = useState<string>('');
   const [error, setError] = useState<string>('');
 
   const { putData, loading } = usePutData<TickerV1, UpdateStockAnalyzeUrlRequest>({
@@ -47,9 +50,10 @@ export default function EditStockDetailsModal({
       setMovedExchange(initialMovedExchange ?? '');
       setMovedSymbol(initialMovedSymbol ?? '');
       setIsDeleted(initialIsDeleted);
+      setWebsiteUrl(initialWebsiteUrl ?? '');
       setError('');
     }
-  }, [open, initialMovedExchange, initialMovedSymbol, initialIsDeleted]);
+  }, [open, initialMovedExchange, initialMovedSymbol, initialIsDeleted, initialWebsiteUrl]);
 
   const movedSet = movedExchange.trim().length > 0 || movedSymbol.trim().length > 0;
   const conflict = isDeleted && movedSet;
@@ -71,12 +75,26 @@ export default function EditStockDetailsModal({
       setError('Moved exchange/symbol points back to this same ticker. Either clear both fields or set a different destination.');
       return;
     }
+    const trimmedWebsite = websiteUrl.trim();
+    if (trimmedWebsite) {
+      try {
+        const parsed = new URL(trimmedWebsite);
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+          setError('Website URL must start with http:// or https://');
+          return;
+        }
+      } catch {
+        setError('Website URL is not a valid URL.');
+        return;
+      }
+    }
     setError('');
 
     const payload: UpdateStockAnalyzeUrlRequest = {
       movedExchange: movedExchange.trim() ? movedExchange.trim().toUpperCase() : null,
       movedSymbol: movedSymbol.trim() ? movedSymbol.trim().toUpperCase() : null,
       isDeleted,
+      websiteUrl: trimmedWebsite || null,
     };
 
     const result = await putData(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/tickers-v1/exchange/${exchange}/${symbol}`, payload);
@@ -115,6 +133,18 @@ export default function EditStockDetailsModal({
           <p className="text-xs text-gray-400 mt-1">
             Set when this ticker has been renamed. If only one of exchange/symbol is set, the other is taken from the current URL.
           </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1 dark:text-gray-300">Website URL</label>
+          <input
+            type="url"
+            value={websiteUrl}
+            onChange={(e) => setWebsiteUrl(e.target.value)}
+            placeholder="https://www.example.com"
+            className="w-full px-3 py-2 bg-transparent border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+          />
+          <p className="text-xs text-gray-400 mt-1">Company homepage. Clear the field to remove the link (some scraped URLs 404 and need fixing).</p>
         </div>
 
         <div>

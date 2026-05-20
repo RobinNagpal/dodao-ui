@@ -86,6 +86,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       type: 'article',
       publishedTime: createdTime,
       modifiedTime: updatedTime,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
@@ -93,6 +94,7 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       description: shortDesc,
       site: '@koalagains',
       creator: '@koalagains',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     keywords,
   };
