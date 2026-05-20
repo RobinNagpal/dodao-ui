@@ -49,6 +49,7 @@ export interface UpdateStockAnalyzeUrlRequest {
   movedExchange?: string | null;
   movedSymbol?: string | null;
   isDeleted?: boolean;
+  websiteUrl?: string | null;
 }
 
 async function putHandler(
@@ -58,7 +59,7 @@ async function putHandler(
 ): Promise<TickerV1> {
   const { spaceId, ticker, exchange } = await context.params;
   const body: UpdateStockAnalyzeUrlRequest = await req.json();
-  const { stockAnalyzeUrl, movedExchange, movedSymbol, isDeleted } = body;
+  const { stockAnalyzeUrl, movedExchange, movedSymbol, isDeleted, websiteUrl } = body;
 
   const data: Prisma.TickerV1UpdateInput = {
     updatedBy: 'ui-user',
@@ -94,6 +95,30 @@ async function putHandler(
       throw new Error('isDeleted must be a boolean');
     }
     data.isDeleted = isDeleted;
+  }
+
+  if (websiteUrl !== undefined) {
+    if (websiteUrl === null) {
+      data.websiteUrl = null;
+    } else if (typeof websiteUrl === 'string') {
+      const trimmed = websiteUrl.trim();
+      if (!trimmed) {
+        data.websiteUrl = null;
+      } else {
+        let parsed: URL;
+        try {
+          parsed = new URL(trimmed);
+        } catch {
+          throw new Error(`Invalid websiteUrl "${websiteUrl}" — must be a valid http(s) URL`);
+        }
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+          throw new Error(`Invalid websiteUrl "${websiteUrl}" — must use http:// or https://`);
+        }
+        data.websiteUrl = trimmed;
+      }
+    } else {
+      throw new Error('websiteUrl must be a string or null');
+    }
   }
 
   // "Gone" and "moved" are conceptually exclusive: a deleted ticker shouldn't

@@ -435,6 +435,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           movedExchange={d.movedExchange ?? null}
           movedSymbol={d.movedSymbol ?? null}
           isDeleted={d.isDeleted ?? false}
+          websiteUrl={d.websiteUrl ?? null}
         >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
