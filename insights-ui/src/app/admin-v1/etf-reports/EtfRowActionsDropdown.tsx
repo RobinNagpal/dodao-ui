@@ -4,6 +4,7 @@ import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/rout
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -23,6 +24,7 @@ type TriggerMorResponse = {
 
 export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDropdownProps): JSX.Element {
   const [flushing, setFlushing] = useState(false);
+  const { showNotification } = useNotificationContext();
 
   const { postData: fetchFinancialInfo, loading: fetchingFinancialInfo } = usePostData<FetchResponse, unknown>({
     successMessage: 'Fetched financial info successfully!',
@@ -185,8 +187,12 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
           });
         } else if (key === 'flushCache') {
           setFlushing(true);
-          await revalidateEtfCache(etf.symbol, etf.exchange);
-          setFlushing(false);
+          try {
+            const result = await revalidateEtfCache(etf.symbol, etf.exchange);
+            showNotification({ type: result.success ? 'success' : 'error', message: result.message });
+          } finally {
+            setFlushing(false);
+          }
         }
       }}
     />

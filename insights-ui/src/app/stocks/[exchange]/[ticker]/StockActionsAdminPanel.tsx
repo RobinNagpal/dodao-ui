@@ -16,6 +16,7 @@ import RawJsonEditModal from '@/components/prompts/RawJsonEditModal';
 import { LLMResponse, SaveJsonReportRequest } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/save-json-report/route';
 import { revalidateTickerCache } from '@/utils/cache-actions';
 import EditStockDetailsModal from '@/app/stocks/[exchange]/[ticker]/EditStockDetailsModal';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 
 interface StockActionsAdminPanelProps {
   ticker: TickerIdentifier;
@@ -26,6 +27,7 @@ interface StockActionsAdminPanelProps {
 
 export default function StockActionsAdminPanel({ ticker, movedExchange, movedSymbol, isDeleted }: StockActionsAdminPanelProps): JSX.Element {
   const router = useRouter();
+  const { showNotification } = useNotificationContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
   const [selectedPromptType, setSelectedPromptType] = useState<ReportType | null>(null);
@@ -77,7 +79,7 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
       setIsPromptModalOpen(true);
     } else if (key === 'invalidate-cache') {
       const result = await revalidateTickerCache(ticker.symbol, ticker.exchange);
-      console.log('[invalidate-cache]', result.message);
+      showNotification({ type: result.success ? 'success' : 'error', message: result.message });
       router.refresh();
     } else if (key === 'edit-stock') {
       setIsEditDetailsOpen(true);
@@ -85,7 +87,12 @@ export default function StockActionsAdminPanel({ ticker, movedExchange, movedSym
   };
 
   const handleEditDetailsSaved = async (): Promise<void> => {
-    await revalidateTickerCache(ticker.symbol, ticker.exchange);
+    const result = await revalidateTickerCache(ticker.symbol, ticker.exchange);
+    // After an edit-save, only surface CloudFront problems — the save itself
+    // already shows its own success notification via usePostData.
+    if (!result.success) {
+      showNotification({ type: 'error', message: result.message });
+    }
     router.refresh();
   };
 
