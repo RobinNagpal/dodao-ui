@@ -4,7 +4,6 @@ import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/rout
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
 import { EtfGenerationRequestPayload } from '@/app/api/[spaceId]/etfs-v1/generation-requests/route';
-import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -20,7 +19,6 @@ export interface BulkActionsBarProps {
 
 export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefresh }: BulkActionsBarProps): JSX.Element {
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
-  const { showNotification } = useNotificationContext();
 
   const { postData: fetchFinancialInfo, loading: fetchingFinancialInfo } = usePostData<FetchResponse, unknown>({
     successMessage: 'Fetched financial info successfully!',
@@ -66,9 +64,6 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     const total = selectedEtfs.length;
     setProgress({ done: 0, total });
 
-    const flushFailures: string[] = [];
-    let flushSuccesses = 0;
-
     for (let i = 0; i < total; i++) {
       if (i > 0) {
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -88,35 +83,13 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       } else if (action === 'morPortfolio') {
         await triggerMorScrape(`${base}/fetch-mor-info`, { kind: 'portfolio' });
       } else if (action === 'flushCache') {
-        const result = await revalidateEtfCache(etf.symbol, etf.exchange);
-        if (result.success) {
-          flushSuccesses++;
-        } else {
-          flushFailures.push(`${etf.exchange}:${etf.symbol} — ${result.cloudfront.status}`);
-        }
+        await revalidateEtfCache(etf.symbol, etf.exchange);
       }
 
       setProgress({ done: i + 1, total });
     }
 
     setProgress(null);
-
-    if (action === 'flushCache') {
-      if (flushFailures.length === 0) {
-        showNotification({ type: 'success', message: `Flushed CloudFront cache for ${flushSuccesses} ETF${flushSuccesses === 1 ? '' : 's'}.` });
-      } else if (flushSuccesses === 0) {
-        showNotification({
-          type: 'error',
-          message: `Flush failed for all ${flushFailures.length} ETF${flushFailures.length === 1 ? '' : 's'}: ${flushFailures.join('; ')}`,
-        });
-      } else {
-        showNotification({
-          type: 'info',
-          message: `Flushed ${flushSuccesses} / ${total}. Failures: ${flushFailures.join('; ')}`,
-        });
-      }
-    }
-
     onRefresh();
   }
 
