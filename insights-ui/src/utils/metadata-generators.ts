@@ -40,11 +40,13 @@ export const generateCountryStocksMetadata = (countryName: string): Metadata => 
       url,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${countryName} Stocks by Industry | KoalaGains`,
       description: openGraphDescription,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     alternates: {
       canonical: url,
@@ -108,11 +110,13 @@ export const generateCountryIndustryStocksMetadata = async (countryName: string,
       url: base,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: industrySummary,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
   };
 };
@@ -174,11 +178,13 @@ export const generateDailyMoversListMetadata = (country: string, type: DailyMove
       url: canonicalUrl,
       siteName: 'KoalaGains',
       type: 'website',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
   };
 };
@@ -238,6 +244,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       authors: ['KoalaGains'],
       section: 'Stock Market Analysis',
       tags: keywords,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
@@ -245,6 +252,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       description,
       site: '@koalagains',
       creator: '@koalagains',
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     keywords,
   };
@@ -321,7 +329,7 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
     about: {
       '@type': 'Corporation',
       name: mover.ticker.name,
-      tickerSymbol: `${mover.ticker.exchange} ${mover.ticker.symbol}`,
+      tickerSymbol: mover.ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -447,7 +455,7 @@ export const generateStockReportArticleSchema = (ticker: TickerWithOptionalIndus
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -598,7 +606,7 @@ export const generateCompetitionArticleSchema = (ticker: TickerWithOptionalIndus
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -720,7 +728,7 @@ export const generatePastPerformanceArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -842,7 +850,7 @@ export const generateFuturePerformanceArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -914,7 +922,7 @@ export const generateBusinessAndMoatArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -1085,7 +1093,7 @@ export const generateFinancialStatementAnalysisArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -1207,7 +1215,7 @@ export const generateFairValueArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
@@ -1328,7 +1336,7 @@ export const generateManagementTeamArticleSchema = (
     about: {
       '@type': 'Corporation',
       name: ticker.name,
-      tickerSymbol: `${ticker.exchange} ${ticker.symbol}`,
+      tickerSymbol: ticker.symbol,
     },
     inLanguage: 'en-US',
   };
