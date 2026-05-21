@@ -3,7 +3,7 @@
 import StockTickerItem from '@/components/stocks/StockTickerItem';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { formatExchangeWithCountry } from '@/utils/countryExchangeUtils';
-import { getScoreColorClasses } from '@/utils/score-utils';
+import { getEtfScoreColorClasses, getScoreColorClasses } from '@/utils/score-utils';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import * as Tooltip from '@radix-ui/react-tooltip';
@@ -248,12 +248,17 @@ export default function SearchBar({
   // component — i.e. when `onResultClick` is provided, or for ETF results where
   // we don't have a stock-specific ticker item with notes/favourites.
   const renderInlineRow = (result: SearchResult): JSX.Element => {
-    const { textColorClass, bgColorClass } = getScoreColorClasses(result.cachedScoreEntry?.finalScore ?? 0);
+    const score = result.cachedScoreEntry?.finalScore ?? 0;
+    const isEtf = kind === 'etfs';
+    const { textColorClass, bgColorClass } = isEtf ? getEtfScoreColorClasses(score) : getScoreColorClasses(score);
+    const scoreDenominator = isEtf ? 20 : 25;
 
     return (
       <div className="flex gap-1.5 items-center min-w-0">
         <p className={`${textColorClass} px-1 rounded-md ${bgColorClass} bg-opacity-15 hover:bg-opacity-25 w-[45px] text-right shrink-0`}>
-          <span className="font-mono tabular-nums text-right text-xs">{result.cachedScoreEntry?.finalScore ?? 0}/25</span>
+          <span className="font-mono tabular-nums text-right text-xs">
+            {score}/{scoreDenominator}
+          </span>
         </p>
         <p className="whitespace-nowrap rounded-md px-2 py-0.5 text-sm font-medium bg-[#4F46E5] text-white self-center shadow-sm shrink-0">{result.symbol}</p>
         <p className="text-sm font-medium text-break break-words text-white truncate min-w-0 flex-1">{result.name}</p>
