@@ -135,99 +135,98 @@ monetary regimes.
   underlying index goes up. Mathematically broken for long holds.
 - **Crypto**: Regulatory + volatility risk over a decade is too high. Acknowledge BTC
   could surprise, but not picking it as a core 10-year holding.
-- **Oil / Energy (traditional)**: 10-year electrification curves (EVs, heat pumps, grid
-  storage) eat into oil demand. Major oils likely underperform. Skipped at broad level.
-- **Broad REITs**: Office + retail in structural decline. Data center, industrial,
-  cell tower sub-REITs are different but better picked directly.
-- **Japan / Europe (broad developed ex-US)**: Demographics are negative — working-age
-  population shrinking without immigration replacement. Hard to grow earnings when the
-  workforce shrinks.
-- **Broad China / Greater China**: Working-age population peaked 2014. Property bubble
-  unwinding. Government intervenes in private sector. Skipped.
+- **Oil / Energy (traditional)**: Oil demand will most likely peak within the coming
+  10 years (EV adoption + heat pumps + grid storage eat into it). Can't hold it.
+- **Solar / Broad Clean Energy (TAN / ICLN)**: Solar is already dominated by China —
+  thin margins for panel makers, no clean US-listed pure play to ride the growth. We
+  capture the energy transition through power infrastructure + upstream materials
+  instead (see picks).
+- **Broad REITs**: Office + retail in structural decline. Data center / industrial
+  sub-REITs are different but better picked directly.
+- **Japan / Europe (broad developed ex-US)**: Negative demographics — working-age
+  population shrinking without immigration replacement.
+- **Broad China / Greater China**: Working-age population peaked 2014. Property
+  bubble unwinding. Government intervenes in private sector.
+- **Foreign Large Blend (broad)**: 10 years is long enough that we want concentrated
+  bets on specific countries with real growth, not a diffuse blended index.
 - **Consumer Discretionary (broad)**: Tracks GDP — gives index returns not
   outperformance over a decade.
 - **Consumer Staples**: 6-8% defensives. Not enough.
 - **Financials (broad)**: Net interest margin compressed long-term. Fintech disruption
   ongoing. Mixed.
 - **Communications Services**: Already overlapping with broad large-cap quality.
+- **S&P 500 (broad)**: Considered as the 5th pick but ruled out — Wide-Moat is
+  essentially a quality-screened S&P 500 (~70-80% overlap with the same mega-caps).
+  Adding broad S&P 500 doubles up the same exposure rather than diversifying. See the
+  Healthcare pick below for the alternative we chose.
 
-**Categories we ARE picking**
+**Categories we ARE picking (5 finalized)**
 
-- **Quality / Wide-Moat Equities** (lower risk, core of the basket)
-   - Compounders with durable competitive advantages (MOAT / QUAL / wide-moat funds).
-     Boring but reliable 10-12% compounding over a decade.
-   - Same foundational role as "large growth" plays in the 1-year basket, but with a
-     quality screen instead of growth screen.
+- **Gold and Precious Metals** (moderate-to-high risk)
+   - Ultimate choice for a longer run. Right now it is already priced in, but if we
+     see the trend gold will not come too down. Central banks are buying it more, and
+     some other countries want to move out of the US dollar. US debt is also
+     increasing. So over a 10-year cycle gold has potential to increase a lot.
 
-- **AI Infrastructure (semis + power + data center)** (high risk + high reward)
-   - Is it priced in? Partially for the 3-year horizon. But 10 years out, AI compute
-     demand likely doubles many times. Today's high P/E becomes reasonable if revenue
-     compounds 30-40% for several years.
-   - Pick the infrastructure layer, NOT the model layer. Model companies (OpenAI,
-     Anthropic) are winner-take-most and hard to play through public ETFs. Chips,
-     fabs, cooling, power equipment, fiber all benefit regardless of which AI company
-     wins the model war.
-   - Risk: an AI winter (like 1990s) flattens returns for years.
+- **Energy / Industrial Sector (AI infra + power + data center)** (moderate risk)
+   - AI will also grow in the coming years more, which means AI infrastructure and AI
+     data centers are needed. Power demand from data centers + EVs + reshoring
+     roughly doubles over 10 years — the picks-and-shovels (chips, power equipment,
+     grid, electrical, HVAC, uranium, copper) capture that demand regardless of which
+     AI model company wins.
+   - Solar is already dominated by China so we skip the broad clean-energy bucket; we
+     focus on the upstream + infrastructure layer. Oil demand likely peaks in this
+     coming 10 years so we can't hold it either.
 
-- **Energy Transition + Power Materials (uranium, copper, grid, renewables)**
-  (moderate-to-high risk)
-   - Electricity demand from AI + EVs + reshoring set to roughly double over 10 years.
-     Generation has to come from somewhere.
-   - Uranium: nuclear is back. SMRs coming online 2028-2032. Existing fleet getting
-     relicensed. Microsoft restarting Three Mile Island is a signal.
-   - Copper: every EV needs ~3x more copper than an ICE car. Every data center +
-     every grid upgrade needs copper. Supply is constrained — no major new mines for
-     5+ years.
-   - Why not broad clean energy (TAN / ICLN)? Solar panels and wind turbines are
-     commoditized — the panel makers compete on thin margins. Upstream materials and
-     power infrastructure capture more of the value over a decade.
+- **Foreign Market — specific country, NOT broad** (moderate risk)
+   - Reason for not picking any foreign large blend: the time horizon is 10 years.
+     We can pick some specific country index if we think they have potential to grow
+     in the next 10 years.
+   - Likely targets: India (cleanest demographic + growth story — median age 28,
+     middle class growing, GDP compounding 6-7%); Vietnam, Indonesia, Philippines as
+     smaller variants.
+   - Skipped at the country level: China (workforce peaked, regulatory risk), Japan
+     and Europe (negative demographics).
 
-- **Healthcare / Biotech (aging demographics)** (moderate risk)
-   - US, Europe, China, Japan all aging fast. By 2035 the US 65+ population will be
-     70M+.
-   - Aging = more drugs, more devices, more procedures.
+- **Quality / Wide-Moat Category** (lower risk)
+   - Businesses which are actually good businesses and can survive over the next 10
+     years — durable competitive advantages, pricing power, recurring revenue. Boring
+     but reliable 10-12% compounders (MOAT / QUAL style).
+   - Foundation of the basket. Same role that "large growth" plays in the 1-year
+     basket but with a quality screen instead of a growth screen.
+
+- **Healthcare / Biotech (aging demographics)** (moderate risk) — **5th pick, chosen
+  over S&P 500**
+   - **Why Healthcare and not a simple S&P 500 as the last pick?**
+     - Wide-Moat is already kind of an S&P 500 — ~70-80% overlap with the same
+       mega-caps (Apple, Microsoft, Google, Meta, Berkshire, Visa, etc.). Adding
+       broad S&P 500 on top just doubles the same exposure with extra fees. The
+       basket needs *different* exposure, not more of the same.
+     - Healthcare is genuinely uncorrelated to AI / tech / mega-caps. If the AI
+       bucket corrects, healthcare doesn't move with it. Real diversification.
+     - 10-year structural tailwind: aging demographics. US, Europe, China, Japan
+       all aging fast. By 2035 the US 65+ population will be 70M+. More drugs, more
+       devices, more procedures.
+     - Currently undervalued relative to history — healthcare has been a relative
+       underperformer over the last 2-3 years, so we are not paying a premium.
    - Pick biotech (innovation catalyst) + medical devices (steady demand). Avoid
-     hospital operators (regulated margins).
-   - Why this for 10-year and NOT 3-year? Demographics is a slow trend. Doesn't move
-     stock prices reliably in any given 1-3 year window but compounds over 10.
-
-- **Gold / Precious Metals (small allocation, lower risk)**
-   - Already priced in? For the short term, yes. But the 10-year story is structural:
-     fiscal deficits running 6-7% of GDP year after year in developed markets, central
-     bank debasement, BRICS de-dollarization. Gold goes up because money supply goes
-     up.
-   - 1-year may catch the top of the recent rally; 10-year the trend continues
-     regardless of cycle.
-   - Allocation should be small (5-10% of basket) — gold is a hedge, not a growth
-     driver.
-
-- **Emerging Markets — India + Southeast Asia (targeted)** (moderate risk)
-   - India: cleanest 10-year demographic + growth story. Median age 28, growing
-     middle class, GDP compounding 6-7%, government push on infrastructure.
-   - Vietnam, Indonesia, Philippines: same story, smaller scale.
-   - Why not broad EM index? Too much China weight. Pick targeted country ETFs.
-   - Why not Africa / Latin America? Higher political + currency risk. Could add a
-     small frontier sleeve but not core.
-
-- **Industrials (reshoring + infrastructure)** (moderate risk)
-   - Reshoring is a 15-year project not a 3-year one. CHIPS Act + IRA seeded plants
-     today; the second-order beneficiaries (automation, electrical equipment,
-     machinery, HVAC) keep getting work through 2035+.
-   - Defense also structural — Europe + Asia rearmament likely a multi-decade trend.
+     hospital operators (regulated margins, slow growth).
+   - Why this for 10-year and NOT 3-year? Demographics is a slow trend — doesn't
+     move stock prices reliably in any given 1-3 year window but compounds over 10.
 
 #### Is it already priced in? (per pick)
 
-- **AI / Semis**: Priced in for a 3-year horizon, much less priced in for a 10-year
-  one. If AI revenue 5x's over 10 years, today's prices look cheap.
 - **Gold**: Priced in for the short term, not for the long term — debasement is a
-  multi-decade story, not a 1-year story.
-- **Copper / Uranium**: Spot prices have moved but mining equities haven't fully
-  reflected the supply shortage yet. Underlying commodity bull case still has runway.
-- **Healthcare / Biotech**: Biotech is beat-down — not priced in. Medical devices
-  closer to fair value.
-- **India**: Trades at a premium to broader EM but not bubble territory. P/E ~20-22
-  with ~15% earnings growth — reasonable PEG.
-- **Quality / Wide-Moat**: Fair to slightly expensive. Returns will be earnings-driven.
+  multi-decade story.
+- **AI / Energy infrastructure**: Priced in for a 3-year horizon, much less so for
+  10. If AI revenue 5x's over 10 years, today's prices look cheap. Power equipment,
+  copper, uranium mining equities still cheap relative to the underlying setup.
+- **India (foreign target)**: Trades at a premium to broader EM but not bubble
+  territory. P/E ~20-22 with ~15% earnings growth — reasonable PEG.
+- **Quality / Wide-Moat**: Fair to slightly expensive. Returns will be
+  earnings-driven, not multiple-expansion-driven.
+- **Healthcare**: Biotech is beat-down — not priced in. Medical devices closer to
+  fair value but still reasonable.
 
 #### Macro tailwinds + risks
 
@@ -245,10 +244,11 @@ monetary regimes.
 
 ## What's next
 
-1. Validate the picks above with the user. Adjust the skip-list reasoning if anything
-   feels weak or missing.
-2. For each chosen category, define the **numeric filters** (CAGR thresholds, expense
-   ratio, AUM, drawdown, etc.) — same step the 1-year doc did under "Filters Under
-   Each Finalized Category/Index".
-3. Then run the screens, shortlist, and pick 2 ETFs per horizon (same pattern as the
+1. **10-year**: categories are finalized (Gold, Energy/Industrial AI infra, Foreign
+   specific country, Quality/Wide-Moat, Healthcare). Move on to numeric filters.
+2. **3-year**: still draft. Validate the picks and the skip-list reasoning.
+3. For each chosen category (per horizon), define the **numeric filters** (CAGR
+   thresholds, expense ratio, AUM, drawdown, etc.) — same step the 1-year doc did
+   under "Filters Under Each Finalized Category/Index".
+4. Then run the screens, shortlist, and pick 2 ETFs per horizon (same pattern as the
    1-year doc's "5 Shortlisted ETFs → 2 Selected ETFs").
