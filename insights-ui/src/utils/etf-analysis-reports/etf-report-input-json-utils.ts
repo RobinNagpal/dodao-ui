@@ -248,6 +248,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
       overviewSecYield: mor?.overviewSecYield,
       overviewTtmYield: mor?.overviewTtmYield,
       payoutFrequency: fin?.payoutFrequency,
+      payoutRatio: fin?.payoutRatio,
       dividendTtm: fin?.dividendTtm,
       divGrowth3y: sa?.divGrowth3y,
       divGrowth5y: sa?.divGrowth5y,
