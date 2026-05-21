@@ -90,6 +90,23 @@ export function findFactorDefinition(categoryKey: EtfAnalysisCategory, factorKey
   return found ? normalizeGroupFactor(found) : undefined;
 }
 
+function humanizeFactorKey(factorKey: string): string {
+  if (!factorKey) return factorKey;
+  return factorKey
+    .replace(/[_-]+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+// Display title for a factor result row. Resolves the live `factorTitle` from
+// the category JSON; falls back to a humanized form of the raw key when the
+// stored result references a renamed/legacy factor (so the UI never shows
+// snake_case like `aum_growth_trend` to readers).
+export function getEtfFactorDisplayTitle(categoryKey: string, factorKey: string): string {
+  const factor = findFactorDefinition(categoryKey as EtfAnalysisCategory, factorKey);
+  return factor?.factorAnalysisTitle ?? humanizeFactorKey(factorKey);
+}
+
 function prepareFactorAnalysisArray(factors: EtfAnalysisFactorDefinition[]) {
   return factors.map((f) => ({
     factorAnalysisKey: f.factorAnalysisKey,
