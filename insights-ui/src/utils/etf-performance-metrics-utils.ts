@@ -11,10 +11,10 @@ import type { EtfStockAnalyzerInfo } from '@prisma/client';
 
 export type EtfPerformanceMetric = 'return' | 'cagr';
 
-export type EtfReturnPeriodKey = '1M' | '3M' | '6M' | 'YTD' | '1Y' | '3Y' | '5Y' | '10Y' | '15Y' | '20Y';
+export type EtfReturnPeriodKey = '1M' | '6M' | '1Y' | '3Y' | '5Y' | '10Y' | '15Y' | '20Y';
 export type EtfCagrPeriodKey = '1Y' | '3Y' | '5Y' | '10Y' | '15Y' | '20Y';
 
-type ReturnFieldKey = 'return1m' | 'return3m' | 'return6m' | 'returnYtd' | 'return1y' | 'return3y' | 'return5y' | 'return10y' | 'return15y' | 'return20y';
+type ReturnFieldKey = 'return1m' | 'return6m' | 'return1y' | 'return3y' | 'return5y' | 'return10y' | 'return15y' | 'return20y';
 
 type CagrFieldKey = 'cagr1y' | 'cagr3y' | 'cagr5y' | 'cagr10y' | 'cagr15y' | 'cagr20y';
 
@@ -27,14 +27,13 @@ export interface EtfPerformancePeriod {
   cagrField: CagrFieldKey | null;
 }
 
-// Source: user spec — Returns includes intra-year + 1Y..20Y; CAGR is annualized
-// only and only meaningful for >= 1Y. Order is short -> long to read left to
+// Returns mirrors the Price chart's range set (1M/6M/1Y/3Y/5Y) and adds the
+// longer 10Y/15Y/20Y windows the screener exposes. CAGR is annualized so it is
+// only meaningful for >= 1Y windows. Order is short -> long to read left to
 // right as a "near to far" timeline.
 export const ETF_PERFORMANCE_PERIODS: ReadonlyArray<EtfPerformancePeriod> = [
   { key: '1M', label: '1M', returnField: 'return1m', cagrField: null },
-  { key: '3M', label: '3M', returnField: 'return3m', cagrField: null },
   { key: '6M', label: '6M', returnField: 'return6m', cagrField: null },
-  { key: 'YTD', label: 'YTD', returnField: 'returnYtd', cagrField: null },
   { key: '1Y', label: '1Y', returnField: 'return1y', cagrField: 'cagr1y' },
   { key: '3Y', label: '3Y', returnField: 'return3y', cagrField: 'cagr3y' },
   { key: '5Y', label: '5Y', returnField: 'return5y', cagrField: 'cagr5y' },

@@ -10,6 +10,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 interface PriceChartProps {
   data: PriceHistoryResponse;
+  /**
+   * Render without the outer `<section>` wrapper and title — used when this
+   * chart is hosted inside another tabbed container (e.g. the ETF detail
+   * page's combined Price / Returns / CAGR section). The range buttons still
+   * render so the user can change the duration.
+   */
+  embedded?: boolean;
 }
 
 const RANGES: PriceRangeKey[] = ['1M', '6M', '1Y', '3Y', '5Y'];
@@ -61,7 +68,7 @@ function formatPrice(value: number | null, currency: string | null): string {
   return currency ? `${formatted} ${currency}` : formatted;
 }
 
-export default function PriceChart({ data }: PriceChartProps) {
+export default function PriceChart({ data, embedded = false }: PriceChartProps) {
   const [selectedRange, setSelectedRange] = useState<PriceRangeKey>('5Y');
 
   const series = useMemo(() => {
@@ -134,6 +141,46 @@ export default function PriceChart({ data }: PriceChartProps) {
   const intervalNote = DAILY_RANGES.has(selectedRange) ? 'daily' : 'weekly';
   const metaLine = [data.currency, intervalNote].filter(Boolean).join(' • ');
 
+  const rangeButtons = (
+    <div className="flex flex-wrap gap-2">
+      {RANGES.map((range) => (
+        <button
+          key={range}
+          onClick={() => setSelectedRange(range)}
+          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+            selectedRange === range ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+          }`}
+          style={selectedRange === range ? { backgroundColor: LINE_COLOR.border } : {}}
+        >
+          {range}
+        </button>
+      ))}
+    </div>
+  );
+
+  const chartBody = (
+    <div className="h-64 sm:h-72">
+      {hasData ? (
+        <Line data={chartData} options={options} />
+      ) : (
+        <div className="h-full flex items-center justify-center text-sm text-gray-400">No price data available for this range.</div>
+      )}
+    </div>
+  );
+
+  if (embedded) {
+    // Caller (e.g. EtfChartTabs) owns the section wrapper and tab strip — we
+    // just render the range buttons inline (so users can still change the
+    // duration) and the chart body. `metaLine` is intentionally dropped since
+    // the host already shows a meta row.
+    return (
+      <div>
+        <div className="flex justify-end mb-3">{rangeButtons}</div>
+        {chartBody}
+      </div>
+    );
+  }
+
   return (
     <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
       {/* min-h locks the header height so swapping the lazy skeleton with the rendered chart causes no layout shift. */}
@@ -142,28 +189,9 @@ export default function PriceChart({ data }: PriceChartProps) {
           <h3 className="text-lg font-semibold text-gray-100">Price History</h3>
           {metaLine && <p className="text-xs text-gray-400 mt-1">{metaLine}</p>}
         </div>
-        <div className="flex flex-wrap gap-2">
-          {RANGES.map((range) => (
-            <button
-              key={range}
-              onClick={() => setSelectedRange(range)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                selectedRange === range ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
-              }`}
-              style={selectedRange === range ? { backgroundColor: LINE_COLOR.border } : {}}
-            >
-              {range}
-            </button>
-          ))}
-        </div>
+        {rangeButtons}
       </div>
-      <div className="h-64 sm:h-72">
-        {hasData ? (
-          <Line data={chartData} options={options} />
-        ) : (
-          <div className="h-full flex items-center justify-center text-sm text-gray-400">No price data available for this range.</div>
-        )}
-      </div>
+      {chartBody}
     </section>
   );
 }
