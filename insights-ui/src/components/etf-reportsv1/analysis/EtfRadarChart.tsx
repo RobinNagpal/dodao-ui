@@ -3,7 +3,7 @@
 import type { EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import { getEtfFactorDisplayTitle } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';
@@ -22,6 +22,12 @@ const CATEGORY_NAMES: Record<string, string> = {
   [EtfAnalysisCategory.FuturePerformanceOutlook]: 'Future Outlook',
 };
 
+function getFactorTitle(categoryKey: string, factorKey: string): string {
+  const category = categoryKey as EtfAnalysisCategory;
+  const factor = findFactorDefinition(category, factorKey);
+  return factor?.factorAnalysisTitle || factorKey;
+}
+
 export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: EtfAnalysisResponse | null): SpiderGraphForTicker | null {
   if (!scores && (!analysis || analysis.categories.length === 0)) return null;
 
@@ -38,7 +44,7 @@ export function buildEtfSpiderGraph(scores: EtfScoresResponse | null, analysis: 
     const factorScores = categoryResult
       ? categoryResult.factorResults.map((f) => ({
           score: f.result === 'Pass' ? 1 : 0,
-          comment: `${getEtfFactorDisplayTitle(cat, f.factorKey)}: ${f.oneLineExplanation}`,
+          comment: `${getFactorTitle(cat, f.factorKey)}: ${f.oneLineExplanation}`,
         }))
       : [];
 

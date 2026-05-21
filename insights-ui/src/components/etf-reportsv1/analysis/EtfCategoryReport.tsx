@@ -1,13 +1,20 @@
 import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
-import { getEtfFactorDisplayTitle } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 
 const PASS_RESULT = 'Pass';
+
+function getFactorTitle(categoryKey: string, factorKey: string): string {
+  const category = categoryKey as EtfAnalysisCategory;
+  const factor = findFactorDefinition(category, factorKey);
+  return factor?.factorAnalysisTitle || factorKey;
+}
 
 export interface EtfCategoryReportProps {
   etfName: string;
@@ -131,7 +138,7 @@ export default function EtfCategoryReport({
                           ) : (
                             <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
                           )}
-                          <h3 className="font-semibold">{getEtfFactorDisplayTitle(categoryResult.categoryKey, factor.factorKey)}</h3>
+                          <h3 className="font-semibold">{getFactorTitle(categoryResult.categoryKey, factor.factorKey)}</h3>
                         </div>
                         <span
                           className={`px-2 py-1 rounded-full text-sm font-medium ${
