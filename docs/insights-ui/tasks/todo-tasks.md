@@ -85,6 +85,10 @@ Single source of truth for active KoalaGains work. Completed items live in
   - Stock detail → ETF reports: list top-N (by weight) ETFs that hold the ticker.
   - Revisit cross-links from category / scenario / trends pages so the link graph is dense.
 
+### Best ETF picks by time horizon (3-year + 10-year)
+
+- [ ] **Curated "best ETF" shortlists for 3-year and 10-year holding horizons** — two parallel ranked lists ("Best ETFs to hold for 3 years" and "Best ETFs to hold for 10 years") with explicit selection criteria mapped onto the existing evaluation categories (Performance, Cost & Team, Risk, Future Outlook, Index & Strategy, Final Summary). For the 3-year horizon weight recent risk-adjusted returns, drawdown profile, cost, and the Future Performance Outlook view; for the 10-year horizon weight long-run performance vs base, total cost drag, strategy/index durability, and manager/team stability. Score each eligible ETF, surface top-N per horizon (overall + per category-group), and render the picks under `/etfs/best/3-year` and `/etfs/best/10-year` (or a shared `/etfs/best?horizon=...` page) with per-ETF rationale, the scoring methodology, and a link back to the full report. Gate the eligible pool on `isComplete` once that lands, persist scores/picks so the list is queryable, and run a quarterly refresh on the off-hours runner. Capture concrete sub-decisions (per-horizon scoring weights, per-group caps, eligibility filters, leveraged/inverse exclusion, US vs Canadian handling, home-page + ETFs-landing surfacing) as sub-bullets before implementation.
+
 ### Active-ETF management team — LinkedIn-sourced info (ETF-side parallel to stock task)
 
 - [ ] Filter to active ETFs only via `Etf.isActive` (or `managementStyle` enum); suppress entirely for passive/index.
