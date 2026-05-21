@@ -5,12 +5,12 @@ import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import EtfAnalysisSections from '@/components/etf-reportsv1/analysis/EtfAnalysisSections';
 import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
+import EtfChartTabs from '@/components/etf-reportsv1/EtfChartTabs';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
-import PriceChart from '@/components/ticker-reportsv1/PriceChart';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
@@ -245,7 +245,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             </div>
           </div>
 
-          {data.priceHistory && <PriceChart data={data.priceHistory} />}
+          <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
         </section>
 
         {indexStrategyTail && (
