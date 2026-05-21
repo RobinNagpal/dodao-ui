@@ -98,7 +98,6 @@ Single source of truth for active KoalaGains work. Completed items live in
 ### Misc prompt updates
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
-- [ ] **Review and update ETF prompts** — sweep the source-of-truth prompt files in `docs/insights-ui/etf-prompts/` (`past-returns.md`, `cost-efficiency-team.md`, `risk-analysis.md`, `future-performance-outlook.md`, `intro-strategy.md`, `competition.md`) for clarity, output-schema discipline, and citation rules. Run the retail-review loop in `docs/insights-ui/etf-prompt-improvement/run-prompt-analysis.md` against the representative-ETF set before editing each prompt, then mirror the edits into the live prompt registrations and re-run the prompt-finalization loop (`docs/insights-ui/etf-prompts/prompt-finalization-approach.md`) to verify no regressions on the previously-validated edge cases.
 
 ### Simplify analysis factors + prompt instructions
 
