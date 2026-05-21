@@ -1,7 +1,7 @@
 'use client';
 
-import type { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
-import PriceChart from '@/components/ticker-reportsv1/PriceChart';
+import type { PriceHistoryResponse, PriceRangeKey } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
+import PriceChart, { PRICE_CHART_RANGES } from '@/components/ticker-reportsv1/PriceChart';
 import { BarElement, CategoryScale, Chart as ChartJS, type ChartData, type ChartOptions, Legend, LinearScale, Tooltip } from 'chart.js';
 import { useMemo, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
@@ -23,6 +23,16 @@ const TAB_LABELS: Record<ChartTabKey, string> = {
   cagr: 'CAGR',
 };
 
+// Per-tab heading shown on the left of the header row. Price reuses the
+// standalone PriceChart's familiar "Price History" label so users moving
+// between standalone (stocks) and embedded (ETFs) chart UIs don't have to
+// re-learn it.
+const TAB_HEADINGS: Record<ChartTabKey, string> = {
+  price: 'Price History',
+  return: 'Returns',
+  cagr: 'CAGR',
+};
+
 const ACCENT_COLOR = '#10b981';
 const CATEGORY_COLOR = '#7f78ff';
 
@@ -33,9 +43,6 @@ function formatPct(value: number | null): string {
 }
 
 export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymbol }: EtfChartTabsProps): JSX.Element | null {
-  // Decide once which tabs are eligible to render. We never show a tab whose
-  // backing data is empty — the user shouldn't be able to click into a blank
-  // panel.
   const hasReturnsData = useMemo(() => !!performanceMetrics?.returns.values.some((v) => v.etf !== null), [performanceMetrics]);
   const hasCagrData = useMemo(() => !!performanceMetrics?.cagr.values.some((v) => v.etf !== null), [performanceMetrics]);
   const hasPriceData = !!priceHistory;
@@ -46,27 +53,57 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
   if (hasCagrData) availableTabs.push('cagr');
 
   const [activeTab, setActiveTab] = useState<ChartTabKey>(availableTabs[0] ?? 'price');
+  // Range state lives here (not inside PriceChart) so the range pill can sit
+  // in the section header row alongside the main tabs.
+  const [priceRange, setPriceRange] = useState<PriceRangeKey>('5Y');
 
   if (availableTabs.length === 0) return null;
 
-  // If the previously-selected tab dropped out (e.g. partial data refresh),
-  // fall back to the first available one without forcing a re-render.
   const safeTab: ChartTabKey = availableTabs.includes(activeTab) ? activeTab : availableTabs[0];
+
+  // Meta line shown under the heading. Drop the daily/weekly hint that the
+  // standalone chart shows — it adds vertical noise and the user can infer
+  // the cadence from the time-axis labels.
+  const metaLine: string | null =
+    safeTab === 'price'
+      ? priceHistory?.currency ?? null
+      : performanceMetrics?.category
+      ? `Category: ${performanceMetrics.category}${performanceMetrics.categoryPeerCount > 0 ? ` • ${performanceMetrics.categoryPeerCount} peers` : ''}`
+      : null;
 
   return (
     <section id="etf-chart-tabs" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-100">Performance</h3>
-          {safeTab !== 'price' && performanceMetrics?.category && (
-            <p className="text-xs text-gray-400 mt-1">
-              Category: {performanceMetrics.category}
-              {performanceMetrics.categoryPeerCount > 0 ? ` • ${performanceMetrics.categoryPeerCount} peers` : ''}
-            </p>
-          )}
-          {safeTab === 'price' && priceHistory?.currency && <p className="text-xs text-gray-400 mt-1">{priceHistory.currency}</p>}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <div className="sm:flex-shrink-0 min-w-0">
+          <h3 className="text-lg font-semibold text-gray-100">{TAB_HEADINGS[safeTab]}</h3>
+          {metaLine && <p className="text-xs text-gray-400 mt-1 truncate">{metaLine}</p>}
         </div>
-        <div className="flex flex-wrap gap-2">
+
+        {/* Center: range pill (Price tab only). Sits in its own segmented-
+           control container so it reads as a sub-control belonging to Price,
+           distinct from the main Price/Returns/CAGR tabs on the right. */}
+        {safeTab === 'price' && (
+          <div className="sm:flex-1 flex sm:justify-center">
+            <div className="inline-flex items-center gap-1 rounded-lg bg-gray-800/70 p-1 ring-1 ring-gray-700/70">
+              {PRICE_CHART_RANGES.map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setPriceRange(r)}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
+                    priceRange === r ? 'text-white' : 'text-gray-300 hover:bg-gray-700/60 hover:text-white'
+                  }`}
+                  style={priceRange === r ? { backgroundColor: ACCENT_COLOR } : {}}
+                  aria-pressed={priceRange === r}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2 sm:flex-shrink-0">
           {availableTabs.map((tab) => (
             <button
               key={tab}
@@ -83,7 +120,7 @@ export default function EtfChartTabs({ priceHistory, performanceMetrics, etfSymb
         </div>
       </div>
 
-      {safeTab === 'price' && priceHistory && <PriceChart data={priceHistory} embedded />}
+      {safeTab === 'price' && priceHistory && <PriceChart data={priceHistory} embedded range={priceRange} hideRangeButtons />}
       {safeTab === 'return' && performanceMetrics && <PerformanceBars series={performanceMetrics.returns.values} etfSymbol={etfSymbol} />}
       {safeTab === 'cagr' && performanceMetrics && <PerformanceBars series={performanceMetrics.cagr.values} etfSymbol={etfSymbol} />}
     </section>

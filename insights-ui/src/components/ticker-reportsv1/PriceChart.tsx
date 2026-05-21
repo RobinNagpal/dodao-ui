@@ -13,13 +13,23 @@ interface PriceChartProps {
   /**
    * Render without the outer `<section>` wrapper and title — used when this
    * chart is hosted inside another tabbed container (e.g. the ETF detail
-   * page's combined Price / Returns / CAGR section). The range buttons still
-   * render so the user can change the duration.
+   * page's combined Price / Returns / CAGR section).
    */
   embedded?: boolean;
+  /**
+   * Controlled range. When provided, the chart reflects this range instead of
+   * its internal state — used by the embedded host that renders the range
+   * buttons itself in a different layout slot.
+   */
+  range?: PriceRangeKey;
+  /**
+   * Skip rendering the range button row. Pair with `range` when the host owns
+   * the button UI; the line chart still updates because `range` is honored.
+   */
+  hideRangeButtons?: boolean;
 }
 
-const RANGES: PriceRangeKey[] = ['1M', '6M', '1Y', '3Y', '5Y'];
+export const PRICE_CHART_RANGES: ReadonlyArray<PriceRangeKey> = ['1M', '6M', '1Y', '3Y', '5Y'] as const;
 
 // 1M and 6M use daily points; 1Y / 3Y / 5Y use weekly points.
 const DAILY_RANGES: ReadonlySet<PriceRangeKey> = new Set(['1M', '6M']);
@@ -68,8 +78,14 @@ function formatPrice(value: number | null, currency: string | null): string {
   return currency ? `${formatted} ${currency}` : formatted;
 }
 
-export default function PriceChart({ data, embedded = false }: PriceChartProps) {
-  const [selectedRange, setSelectedRange] = useState<PriceRangeKey>('5Y');
+export default function PriceChart({ data, embedded = false, range, hideRangeButtons = false }: PriceChartProps) {
+  const [internalRange, setInternalRange] = useState<PriceRangeKey>('5Y');
+  const selectedRange = range ?? internalRange;
+  const setSelectedRange = (next: PriceRangeKey) => {
+    // Only update internal state when uncontrolled — callers that pass
+    // `range` are expected to handle changes via their own state.
+    if (range === undefined) setInternalRange(next);
+  };
 
   const series = useMemo(() => {
     const source = DAILY_RANGES.has(selectedRange) ? data.daily : data.weekly;
@@ -143,16 +159,16 @@ export default function PriceChart({ data, embedded = false }: PriceChartProps) 
 
   const rangeButtons = (
     <div className="flex flex-wrap gap-2">
-      {RANGES.map((range) => (
+      {PRICE_CHART_RANGES.map((r) => (
         <button
-          key={range}
-          onClick={() => setSelectedRange(range)}
+          key={r}
+          onClick={() => setSelectedRange(r)}
           className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-            selectedRange === range ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+            selectedRange === r ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
           }`}
-          style={selectedRange === range ? { backgroundColor: LINE_COLOR.border } : {}}
+          style={selectedRange === r ? { backgroundColor: LINE_COLOR.border } : {}}
         >
-          {range}
+          {r}
         </button>
       ))}
     </div>
@@ -169,11 +185,12 @@ export default function PriceChart({ data, embedded = false }: PriceChartProps) 
   );
 
   if (embedded) {
-    // Caller (e.g. EtfChartTabs) owns the section wrapper and tab strip — we
-    // just render the range buttons inline (so users can still change the
-    // duration) and the chart body. `metaLine` is intentionally dropped since
-    // the host already shows a meta row.
-    return (
+    // Caller (e.g. EtfChartTabs) owns the section wrapper, title, and tab
+    // strip. When `hideRangeButtons` is set the host also owns the range
+    // buttons, so we render only the chart body.
+    return hideRangeButtons ? (
+      chartBody
+    ) : (
       <div>
         <div className="flex justify-end mb-3">{rangeButtons}</div>
         {chartBody}
