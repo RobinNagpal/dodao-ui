@@ -8,6 +8,7 @@ import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitio
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
+import EtfPerformanceBarsChart from '@/components/etf-reportsv1/EtfPerformanceBarsChart';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import PriceChart from '@/components/ticker-reportsv1/PriceChart';
@@ -246,6 +247,8 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           </div>
 
           {data.priceHistory && <PriceChart data={data.priceHistory} />}
+
+          {data.performanceMetrics && <EtfPerformanceBarsChart data={data.performanceMetrics} etfSymbol={etfData.symbol} />}
         </section>
 
         {indexStrategyTail && (
