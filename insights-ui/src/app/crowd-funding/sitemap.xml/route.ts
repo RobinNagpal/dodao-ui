@@ -5,6 +5,8 @@ import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
 
+export const dynamic = 'force-dynamic';
+
 interface SiteMapUrl {
   url: string;
   changefreq: string;

@@ -4,6 +4,8 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
+export const dynamic = 'force-dynamic';
+
 interface SiteMapUrl {
   url: string;
   changefreq: string;

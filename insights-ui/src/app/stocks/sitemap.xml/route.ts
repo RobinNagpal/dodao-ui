@@ -6,6 +6,8 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
+export const dynamic = 'force-dynamic';
+
 // Countries with no live tickers — skip in sitemap to avoid orphan pages that Google
 // flags as "Crawled — currently not indexed" and Ahrefs reports as "Orphan page".
 // US is the default (no /stocks/countries/US route); the rest currently have no

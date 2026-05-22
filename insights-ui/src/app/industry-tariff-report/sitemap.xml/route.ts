@@ -5,6 +5,8 @@ import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
+export const dynamic = 'force-dynamic';
+
 interface SiteMapUrl {
   url: string;
   changefreq: string;

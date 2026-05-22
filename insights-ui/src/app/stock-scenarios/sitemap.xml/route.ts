@@ -5,6 +5,8 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import type { StockScenarioListingResponse } from '@/app/api/[spaceId]/stock-scenarios/listing/route';
 
+export const dynamic = 'force-dynamic';
+
 interface SiteMapUrl {
   url: string;
   changefreq: string;
