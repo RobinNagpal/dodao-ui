@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 
 // Countries with no live tickers — skip in sitemap to avoid orphan pages that Google
 // flags as "Crawled — currently not indexed" and Ahrefs reports as "Orphan page".
@@ -143,12 +144,10 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
-  const host = req.headers.get('host') as string;
-
+async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateTickerUrls();
-    const smStream = new SitemapStream({ hostname: 'https://' + host });
+    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
 
     for (const url of urls) {
       smStream.write(url);

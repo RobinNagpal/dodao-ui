@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { NextRequest, NextResponse } from 'next/server';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
 interface SiteMapUrl {
@@ -45,9 +46,7 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer | string>> {
-  const host = req.headers.get('host') as string;
-
+async function GET(): Promise<NextResponse<Buffer | string>> {
   try {
     const urls = await generateManagementTeamUrls();
 
@@ -63,7 +62,7 @@ async function GET(req: NextRequest): Promise<NextResponse<Buffer | string>> {
       });
     }
 
-    const smStream = new SitemapStream({ hostname: 'https://' + host });
+    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
 
     for (const url of urls) {
       smStream.write(url);
