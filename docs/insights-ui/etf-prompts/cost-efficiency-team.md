@@ -7,7 +7,7 @@ Categories in this group: {{groupCategories}} — some are very similar; treat t
 
 {{#if categoryInstructions}}**Category-specific lens (`{{fundCategory}}`).** Read this BEFORE the factor list. It tells you which strategy-specific cost levers matter for funds in this Mor category and how to weight them against the generic group instructions. Apply each lever only when it is genuinely relevant to this ETF — skip a lever you cannot source confidently, and ignore the whole block if the fund's actual strategy does not match the description.
 
-{{categoryInstructions}}
+{{categoryInstructions}} 
 
 **Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
 
