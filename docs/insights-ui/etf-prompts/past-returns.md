@@ -9,8 +9,6 @@ Categories in this group: {{groupCategories}} — some are very similar; treat t
 
 {{categoryInstructions}}
 
-{{/if}}This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
-
 **Reader profile.** The reader has `$1,000`–`$50,000` to allocate, is choosing between this ETF and one or two obvious alternatives, and is not a professional. Every paragraph should advance their decision. A number without a comparison point does not help them — "is that return good?" is the question you must answer, not just "what is the return?". Translate technical terms on first use ("high yield" = below-investment-grade credit with real default risk, "duration" = expected loss per `1 pp` rate rise, "covered call" = giving up equity upside to earn an option premium, etc.) — one short parenthetical is enough.
 
 **Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
