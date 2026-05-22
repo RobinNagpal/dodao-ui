@@ -32,7 +32,7 @@ function buildBreadcrumbs(currentCountry: EtfSupportedCountry, extraBreadcrumbs?
 export default function EtfPageLayout({
   title,
   description,
-  showAppliedFilters = false,
+  showAppliedFilters = true,
   extraBreadcrumbs,
   currentCountry = SupportedCountries.US,
   switcherSection,

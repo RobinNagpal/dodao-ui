@@ -27,6 +27,7 @@ import {
   getMorFilterShortLabel,
   getMorParamKey,
   getAppliedEtfFilters,
+  getEtfFilterDestination,
   buildInitialEtfSelected,
   applySelectedEtfFiltersToParams,
   ADVANCED_MOR_FILTER_KEYS,
@@ -204,11 +205,11 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
     const hasFilters = Object.values(selectedFilters).some((v) => v && v.length > 0);
 
     if (hasFilters) {
-      let filteredPath = pathname;
-      if (!pathname.includes('/etfs-filtered')) {
-        filteredPath = pathname.replace('/etfs', '/etfs-filtered');
+      const { path, extraParams } = getEtfFilterDestination(pathname);
+      for (const [k, v] of Object.entries(extraParams)) {
+        if (!nextParams.get(k)) nextParams.set(k, v);
       }
-      router.push(`${filteredPath}?${nextParams.toString()}`);
+      router.push(`${path}?${nextParams.toString()}`);
     } else {
       router.push(`${pathname}?${nextParams.toString()}`);
     }
