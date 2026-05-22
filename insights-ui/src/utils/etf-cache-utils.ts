@@ -114,7 +114,7 @@ export const getEtfListingFilterableTag = (country: string): string => `${ETF_LI
 
 export const revalidateEtfGroupsIndexTag = (country: string) => {
   revalidateTag(getEtfGroupsIndexTag(country));
-  invalidateCloudFrontPaths([`/etfs/countries/${country}/groups`]);
+  invalidateCloudFrontPaths([`/etfs/countries/${country}`]);
 };
 
 export const revalidateEtfGroupDetailTag = (country: string, groupKey: string) => {

@@ -423,19 +423,6 @@ export function generateEtfCountryListingBreadcrumbJsonLd(country: EtfSupportedC
   return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country)]);
 }
 
-export function generateEtfGroupsIndexMetadata(country: EtfSupportedCountry): Metadata {
-  const countryName = etfCountryDisplayName(country);
-  return buildListingMetadata({
-    title: `${countryName} ETFs by Group`,
-    description: `Browse ${countryName} ETFs organised by analysis group. Each group highlights the top-rated ETFs by report score and AUM.`,
-    path: etfBrowsePath(country, 'groups'),
-  });
-}
-
-export function generateEtfGroupsIndexBreadcrumbJsonLd(country: EtfSupportedCountry) {
-  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country), { name: 'Groups', href: etfBrowsePath(country, 'groups') }]);
-}
-
 interface EtfGroupDetailMetadataInput {
   country: EtfSupportedCountry;
   groupKey: string;
@@ -452,11 +439,7 @@ export function generateEtfGroupDetailMetadata({ country, groupKey, groupName }:
 }
 
 export function generateEtfGroupDetailBreadcrumbJsonLd({ country, groupKey, groupName }: EtfGroupDetailMetadataInput) {
-  return generateBreadcrumbJsonLdFromCrumbs([
-    listingBaseCrumb(country),
-    { name: 'Groups', href: etfBrowsePath(country, 'groups') },
-    { name: groupName, href: etfBrowseDetailPath(country, 'groups', groupKey) },
-  ]);
+  return generateBreadcrumbJsonLdFromCrumbs([listingBaseCrumb(country), { name: groupName, href: etfBrowseDetailPath(country, 'groups', groupKey) }]);
 }
 
 interface EtfGroupCategoryListingMetadataInput {
@@ -478,7 +461,6 @@ export function generateEtfGroupCategoryListingMetadata({ country, groupKey, gro
 export function generateEtfGroupCategoryListingBreadcrumbJsonLd({ country, groupKey, groupName, categoryName }: EtfGroupCategoryListingMetadataInput) {
   return generateBreadcrumbJsonLdFromCrumbs([
     listingBaseCrumb(country),
-    { name: 'Groups', href: etfBrowsePath(country, 'groups') },
     { name: groupName, href: etfBrowseDetailPath(country, 'groups', groupKey) },
     { name: categoryName, href: etfGroupCategoryPath(country, groupKey, categoryName) },
   ]);
