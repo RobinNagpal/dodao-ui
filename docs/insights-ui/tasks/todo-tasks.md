@@ -95,6 +95,15 @@ Single source of truth for active KoalaGains work. Completed items live in
 - [ ] Quarterly re-ingest; admin verification UI for stale rows.
 - [ ] Open: compliance (store URL only); coverage threshold; cross-fund PM modelling (`Person` table vs denormalized); confirm we never render for passive products.
 
+### Best ETFs shortlist — top picks per ETF group
+
+- [ ] Cast initial pool per group from `etf-analysis-categories.json` (broad equity, sector/thematic, factor/style, fixed-income-core, etc.): `isComplete = true`, AUM floor (e.g. ≥ $50M), liquidity floor (≥ $1M ADV), data-complete + recent reports.
+- [ ] Score each survivor against a group-aware lens: long-run total return vs `comparisonBase` (1y/3y/5y), expense ratio vs peers, tracking efficiency, manager tenure / index discipline, liquidity (ADV + bid-ask), drawdown behavior + risk metrics, tax efficiency, distribution policy. Reuse factor outputs already produced by the Performance, Cost & Team, and Risk reports rather than re-deriving.
+- [ ] Score 1–5 per lens dimension; require average ≥ 3.5 (and no sub-score < 2) to make the shortlist; hand-pick top 3–5 names per group.
+- [ ] Surface at `/etfs/best` (or under a curated "Picks" area) — grouped by category-group, one card per ETF with score, AUM, expense ratio, 1-paragraph thesis; methodology + filters visible. Cross-link to the home-page ETF section and the per-group / per-category pages.
+- [ ] Re-run quarterly on the off-hours Claude-Code runner; track entries added/removed/promoted/cut per group; emit a change-log so the social-media pipeline can pick up the deltas.
+- [ ] Open: persist `bestScore` + subscores on `Etf` so the score is queryable independent of the shortlist; honorable-mentions tier vs hard cut; handling of thin groups (leveraged-inverse, currency, crypto) where < 3 funds clear the bar; whether to display the comparison base side-by-side on each card; whether passive and active funds are scored on the same scale or in separate ranked lists.
+
 ### Misc prompt updates
 
 - [ ] Include the **report-generation date** in the Final Summary prompt so the date appears in the output.
