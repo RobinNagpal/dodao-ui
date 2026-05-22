@@ -62,6 +62,23 @@ function isCloudFrontCachedPath(path: string): boolean {
 }
 
 /**
+ * Bucket a list of paths into the subset that CloudFront caches (and would
+ * therefore actually invalidate) vs paths outside any cached prefix (a no-op
+ * at AWS — sending them would still consume the monthly free invalidation
+ * quota). Used by the admin "Invalidate cache" page so the operator can see
+ * which entries were forwarded to CloudFront and which were ignored.
+ */
+export function classifyCloudFrontPaths(paths: ReadonlyArray<string>): { cached: string[]; uncached: string[] } {
+  const cached: string[] = [];
+  const uncached: string[] = [];
+  for (const p of paths) {
+    if (isCloudFrontCachedPath(p)) cached.push(p);
+    else uncached.push(p);
+  }
+  return { cached, uncached };
+}
+
+/**
  * Discriminated result of a CloudFront invalidation attempt. Used by the
  * awaited variant so callers (admin "Invalidate cache" actions) can show a
  * specific success/error/no-op message to the user instead of pretending the
