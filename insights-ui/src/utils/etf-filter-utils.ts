@@ -821,6 +821,63 @@ export function applySelectedEtfFiltersToParams(searchParams: ReadonlyURLSearchP
   return params;
 }
 
+export interface EtfFilterDestination {
+  path: string;
+  extraParams: Record<string, string>;
+}
+
+// Page patterns that read searchParams and pass them into fetchEtfListingData —
+// applying filters should keep the user on the same path, not redirect.
+// Keep in sync with the routes in src/app/etfs/**/page.tsx.
+const ETF_INLINE_FILTER_PATH_PATTERNS: ReadonlyArray<RegExp> = [
+  /^\/etfs-filtered$/,
+  /^\/etfs\/countries\/[^/]+$/,
+  /^\/etfs\/countries\/[^/]+\/asset-classes\/[^/]+$/,
+  /^\/etfs\/countries\/[^/]+\/providers\/[^/]+$/,
+  /^\/etfs\/countries\/[^/]+\/groups\/[^/]+\/categories\/[^/]+$/,
+  /^\/etfs\/groups\/[^/]+\/categories\/[^/]+$/,
+  /^\/etfs\/asset-classes\/[^/]+$/,
+  /^\/etfs\/providers\/[^/]+$/,
+];
+
+/**
+ * Decide where to route when the user applies ETF filters from a given pathname.
+ *
+ * Inline-filter pages (above) stay put — the page itself respects searchParams.
+ * Grid pages (`/etfs`, `/etfs/groups/[group]`, the per-country group/asset-class/provider
+ * grids) redirect to a filterable listing, lifting path-derived scope (group / country)
+ * into filter params so the new listing inherits the user's context.
+ */
+export function getEtfFilterDestination(pathname: string): EtfFilterDestination {
+  if (ETF_INLINE_FILTER_PATH_PATTERNS.some((re) => re.test(pathname))) {
+    return { path: pathname, extraParams: {} };
+  }
+
+  // /etfs/countries/<country>/groups/<group> → /etfs/countries/<country>?group=<group>
+  const countryGroupMatch = pathname.match(/^\/etfs\/countries\/([^/]+)\/groups\/([^/]+)$/);
+  if (countryGroupMatch) {
+    const [, country, group] = countryGroupMatch;
+    return { path: `/etfs/countries/${country}`, extraParams: { [EtfFilterParamKey.GROUP]: decodeURIComponent(group) } };
+  }
+
+  // /etfs/countries/<country>/{groups|asset-classes|providers} → /etfs/countries/<country>
+  const countryGridMatch = pathname.match(/^\/etfs\/countries\/([^/]+)\/(?:groups|asset-classes|providers)$/);
+  if (countryGridMatch) {
+    const [, country] = countryGridMatch;
+    return { path: `/etfs/countries/${country}`, extraParams: {} };
+  }
+
+  // /etfs/groups/<group> → /etfs-filtered?group=<group>
+  const groupMatch = pathname.match(/^\/etfs\/groups\/([^/]+)$/);
+  if (groupMatch) {
+    const [, group] = groupMatch;
+    return { path: '/etfs-filtered', extraParams: { [EtfFilterParamKey.GROUP]: decodeURIComponent(group) } };
+  }
+
+  // /etfs, /etfs/asset-classes, /etfs/providers, and any unmatched fallback → /etfs-filtered
+  return { path: '/etfs-filtered', extraParams: {} };
+}
+
 const toScalar = (v: string | string[] | undefined): string | undefined => (Array.isArray(v) ? v.join(',') : v);
 
 export const etfToSortedQueryString = (sp: EtfSearchParams): string => {
