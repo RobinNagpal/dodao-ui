@@ -170,6 +170,17 @@ export interface EtfGroup {
 export interface EtfCategoryToGroup {
   name: string;
   group: string;
+  /**
+   * Optional Mor-category-level prompt instructions. Keyed by EtfAnalysisCategory
+   * (PerformanceAndReturns / CostEfficiencyAndTeam / RiskAnalysis /
+   * FuturePerformanceOutlook). When present, the matching entry is plumbed into
+   * the per-category prompt as `categoryInstructions` so the LLM can read the
+   * fund through a category-specific lens (e.g. covered-call levers for
+   * "Derivative Income") on top of the existing group-level guidance. Populate
+   * sparingly — only for categories whose decision frame materially diverges
+   * from the rest of its group.
+   */
+  categoryInstructions?: Partial<Record<EtfAnalysisCategory, string>>;
 }
 
 export interface EtfCategoriesConfig {

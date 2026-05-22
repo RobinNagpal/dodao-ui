@@ -88,6 +88,15 @@ properties:
     type: string
     description: 'Comma-separated list of every Mor fund category that maps to this group. Some categories are very similar — the LLM should treat them as a valid peer set for category-level comparisons.'
 
+  # Optional Mor-category-level instructions for this analysis category, sourced from
+  # etf-analysis-categories.json → categories[].categoryInstructions[<analysisCategory>].
+  # Renders alongside the per-factor group instructions to give the LLM a category-specific
+  # lens (e.g. covered-call levers for "Derivative Income"). Null when the fund's category
+  # has no override registered for this analysis category.
+  categoryInstructions:
+    type: ['string', 'null']
+    description: 'Optional Mor-category-level prompt instructions for this analysis category (e.g., covered-call levers when the fund category is "Derivative Income"). Null when no override is registered.'
+
   # Benchmark index name — sourced from EtfStockAnalyzerInfo.indexName; may be null when the upstream data does not carry an index reference.
   indexName:
     type: ['string', 'null']
