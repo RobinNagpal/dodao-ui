@@ -101,6 +101,9 @@ export default function AdminNav() {
         <Link href="/admin-v1/users" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">
           Users
         </Link>
+        <Link href="/admin-v1/invalidate-cache" className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">
+          Invalidate Cache
+        </Link>
       </PopoverGroup>
     </div>
   );

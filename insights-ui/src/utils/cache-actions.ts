@@ -8,7 +8,13 @@ import {
   revalidatePortfolioProfileTag,
 } from '@/utils/ticker-v1-cache-utils';
 import { revalidateAllEtfTagsAwaited } from '@/utils/etf-cache-utils';
-import { CacheFlushResult, formatCloudFrontResult } from '@/utils/cloudfront-cache-utils';
+import {
+  CacheFlushResult,
+  classifyCloudFrontPaths,
+  CloudFrontInvalidationResult,
+  formatCloudFrontResult,
+  invalidateCloudFrontPathsAwaited,
+} from '@/utils/cloudfront-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
@@ -96,4 +102,23 @@ export async function revalidateHtsChapterDetailCache(chapterNumber: number) {
   revalidateTariffChapterRelatedReportTag(chapterNumber);
   revalidateHtsChapterRefsTag();
   return { success: true, message: `Revalidated HTS chapter ${chapterNumber} cache` };
+}
+
+export interface AdminInvalidateCacheResult {
+  cloudfront: CloudFrontInvalidationResult;
+  cachedPaths: string[];
+  uncachedPaths: string[];
+}
+
+/**
+ * Admin-facing CloudFront invalidation. Accepts arbitrary paths the operator
+ * pasted on the `/admin-v1/invalidate-cache` page, classifies them against the
+ * cached-prefix allowlist so the UI can show which entries were actually sent
+ * to AWS vs which were ignored as no-ops, and forwards the cached subset to
+ * CloudFront.
+ */
+export async function invalidateCloudFrontPathsForAdmin(paths: string[]): Promise<AdminInvalidateCacheResult> {
+  const { cached, uncached } = classifyCloudFrontPaths(paths);
+  const cloudfront = await invalidateCloudFrontPathsAwaited(paths);
+  return { cloudfront, cachedPaths: cached, uncachedPaths: uncached };
 }
