@@ -158,6 +158,8 @@ export async function saveEtfIndexStrategyResponse(symbol: string, exchange: str
     where: { id: etfRecord.id },
     data: {
       indexStrategy: response.indexStrategy,
+      indexStrategyGreenFlags: response.greenFlags ?? [],
+      indexStrategyRedFlags: response.redFlags ?? [],
       updatedAt: new Date(),
     },
   });

@@ -98,6 +98,12 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   return sections.join('\n\n');
 }
 
+/** Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for a fund category, or undefined. */
+function getCategoryInstructionEntry(fundCategory: string | null | undefined) {
+  if (!fundCategory) return undefined;
+  return morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
+}
+
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {
   if (f.groups === 'all') return true;
   return f.groups.includes(groupKey);
@@ -530,6 +536,7 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
 
 export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
+  const entry = getCategoryInstructionEntry(sa?.category);
   return {
     name: etf.name,
     exchange: etf.exchange,
@@ -537,6 +544,9 @@ export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
     issuer: sa?.issuer || null,
     category: sa?.category || null,
     indexName: sa?.indexName || null,
+    mostImportant: entry?.mostImportant ?? [],
+    greenFlags: entry?.greenFlags ?? [],
+    redFlags: entry?.redFlags ?? [],
   };
 }
 

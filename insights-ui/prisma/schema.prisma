@@ -1316,6 +1316,8 @@ model Etf {
   inception     String?  @map("inception")
   summary       String?  @map("summary")
   indexStrategy String?  @map("index_strategy")
+  indexStrategyGreenFlags Json? @map("index_strategy_green_flags")
+  indexStrategyRedFlags   Json? @map("index_strategy_red_flags")
   spaceId       String   @default("koala_gains") @map("space_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")

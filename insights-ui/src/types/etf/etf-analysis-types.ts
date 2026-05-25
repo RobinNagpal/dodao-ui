@@ -113,8 +113,22 @@ export interface EtfIndexStrategySimilarEtf {
   exchange: string;
 }
 
+/**
+ * One green/red flag assessed against a specific ETF. Reuses the factor
+ * Pass/Fail shape: a one-line takeaway + a detailed line (the "two lines") and a
+ * Pass/Fail verdict. `flag` echoes the category flag text being judged.
+ */
+export interface EtfIndexStrategyFlagAssessment {
+  flag: string;
+  oneLineExplanation: string;
+  detailedExplanation: string;
+  result: 'Pass' | 'Fail';
+}
+
 export interface EtfIndexStrategyResponse {
   indexStrategy: string;
+  greenFlags: EtfIndexStrategyFlagAssessment[];
+  redFlags: EtfIndexStrategyFlagAssessment[];
   similarEtfs: EtfIndexStrategySimilarEtf[];
 }
 
