@@ -62,17 +62,30 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json` and concatenates the bullet list into a
- * single markdown block. The same block renders in all four ETF analysis prompts
- * (Past Returns / Cost & Team / Risk / Future Outlook). Returns undefined when
- * the fund's category has no entry registered, so the prompt template renders
- * nothing extra.
+ * `etf-mor-category-instructions.json`, renders the `topQualities` bullets
+ * under a "What separates top funds in this category" heading and the
+ * `watchOuts` bullets under a "Category-specific risks to flag" heading.
+ * The same block renders in all four ETF analysis prompts (Past Returns /
+ * Cost & Team / Risk / Future Outlook). Returns undefined when the fund's
+ * category has no entry registered, so the prompt template renders nothing
+ * extra.
  */
 function getCategoryInstructions(fundCategory: string | null | undefined): string | undefined {
   if (!fundCategory) return undefined;
-  const bullets = morCategoryInstructionsConfig.instructions[fundCategory];
-  if (!bullets || bullets.length === 0) return undefined;
-  return bullets.map((b) => `- ${b}`).join('\n');
+  const entry = morCategoryInstructionsConfig.instructions[fundCategory];
+  if (!entry) return undefined;
+  const topQualities = entry.topQualities ?? [];
+  const watchOuts = entry.watchOuts ?? [];
+  if (topQualities.length === 0 && watchOuts.length === 0) return undefined;
+
+  const sections: string[] = [];
+  if (topQualities.length > 0) {
+    sections.push(['**What separates top funds in this category:**', ...topQualities.map((b) => `- ${b}`)].join('\n'));
+  }
+  if (watchOuts.length > 0) {
+    sections.push(['**Category-specific risks to flag:**', ...watchOuts.map((b) => `- ${b}`)].join('\n'));
+  }
+  return sections.join('\n\n');
 }
 
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {

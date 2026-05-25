@@ -173,13 +173,24 @@ export interface EtfCategoryToGroup {
 }
 
 /**
+ * One Mor category's prompt-instruction entry. Splits the per-category guidance
+ * into 3 `topQualities` (what separates the top decile / quintile of ETFs in
+ * the category from the rest) and 3 `watchOuts` (category-specific risks and
+ * traps the retail reader should flag). The helper that consumes this renders
+ * both lists into a single markdown block with section headings, which is
+ * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
+ */
+export interface EtfMorCategoryInstructionEntry {
+  topQualities: string[];
+  watchOuts: string[];
+}
+
+/**
  * Mor-category-level prompt instructions stored separately from
  * `etf-analysis-categories.json` in `etf-mor-category-instructions.json`.
  * Keyed by exact Mor category name (matching `EtfCategoryToGroup.name`).
- * Each value is a short bullet list (3-5 items, 1-2 lines each) that
- * describes what separates the top decile / quintile of ETFs in that
- * category from the rest. The same bullets render in all four ETF analysis
- * prompts (Past Returns / Cost & Team / Risk / Future Outlook).
+ * The same rendered block goes into all four ETF analysis prompts
+ * (Past Returns / Cost & Team / Risk / Future Outlook).
  */
 export interface EtfMorCategoryInstructionsConfig {
   _meta?: {
@@ -189,7 +200,7 @@ export interface EtfMorCategoryInstructionsConfig {
     keyConvention?: string;
     lastReviewed?: string;
   };
-  instructions: Record<string, string[]>;
+  instructions: Record<string, EtfMorCategoryInstructionEntry>;
 }
 
 export interface EtfCategoriesConfig {
