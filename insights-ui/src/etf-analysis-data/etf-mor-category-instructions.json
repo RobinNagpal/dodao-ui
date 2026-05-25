@@ -3,11 +3,11 @@
     "purpose": "Mor-category-level prompt instructions plumbed into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook) as `categoryInstructions`. The same rendered block goes into all four prompts when the fund's Mor category has an entry here.",
     "coverageRule": "Populated for Mor categories with approximately >=50 US-listed ETFs as of 2026-05. Categories below the threshold render no category-specific block — the per-factor group instructions cover them.",
     "instructionStyle": "Each category carries two lists of 3-5 bullets — `greenFlags` (non-obvious signs of a strong fund in the category) and `redFlags` (non-obvious signs of a weak or risky one). Rules: (1) include ONLY genuinely impactful signals — omit anything that barely moves outcomes and omit obvious basics like a plain low/high expense ratio; (2) `redFlags` must NOT be the mirror-image negation of `greenFlags` — each red flag is its own distinct non-obvious failure mode, so a given dial appears on at most one side; (3) each bullet takes the form 'signal — why it matters', plain-retail and short, keeping concrete anchors (tickers, bps, %) brief.",
-    "keyConvention": "Keys MUST be exact Mor category names from etf-analysis-categories.json -> categories[].name. Unknown keys are silently ignored.",
+    "keyConvention": "Keys MUST be category slugs — slugifyEtfCategory(name) from etf-categorization-utils, e.g. 'Large Blend' -> 'large-blend', 'Trading--Leveraged Equity' -> 'trading-leveraged-equity'. This is the same identifier used in category URLs and getEtfCategoryBySlug. Each slug MUST resolve to a categories[].name in etf-analysis-categories.json; unknown keys are silently ignored.",
     "lastReviewed": "2026-05-25"
   },
   "instructions": {
-    "Large Blend": {
+    "large-blend": {
       "greenFlags": [
         "Net cost below the headline expense ratio from rebated securities-lending income — quietly lets the fund track at or just above the index (VOO/VTI/IVV).",
         "Near-zero realised capital-gains distributions over 5Y — strong in-kind redemption discipline that compounds in a taxable account.",
@@ -19,7 +19,7 @@
         "A mid-life benchmark switch or widened sampling — the basket no longer matches the name you bought."
       ]
     },
-    "Large Growth": {
+    "large-growth": {
       "greenFlags": [
         "High realised growth-factor loading (forward P/E, EPS-growth) vs the index — you own the growth tilt you pay for (VUG/SCHG), not closet blend.",
         "Matches or beats Russell 1000 Growth net of fees over 5-10Y — the strategy earns its keep after costs.",
@@ -31,7 +31,7 @@
         "Above ~0.30% with no active mandate — the fee quietly loses to low-cost peers over time."
       ]
     },
-    "Large Value": {
+    "large-value": {
       "greenFlags": [
         "Lower P/B and higher dividend yield than the S&P 500 in the actual holdings — real value (VTV/IUSV), not just a label.",
         "A quality/profitability screen layered on cheapness — filters out the value traps that drag pure-cheap funds.",
@@ -43,7 +43,7 @@
         "A few cheap-but-deteriorating names dominating — value traps, cheap because the business stalled, not because they're mispriced."
       ]
     },
-    "Mid-Cap Blend": {
+    "mid-cap-blend": {
       "greenFlags": [
         "Holdings stay inside the Russell Midcap / S&P 400 band — you actually get the mid-cap premium (VO/IJH), not large/small drift.",
         "Low realised cap-gains distributions over 5Y — uncommon mid-cap in-kind discipline, a real hidden tax edge.",
@@ -55,7 +55,7 @@
         "Heavy weight in names about to graduate to large-cap — you're buying tomorrow's large-caps, diluting the mid-cap exposure."
       ]
     },
-    "Mid-Cap Growth": {
+    "mid-cap-growth": {
       "greenFlags": [
         "Strong realised growth loading (P/E, EPS-growth) on top of the mid-cap band — captures the actual mid-growth premium (IJK/VOT).",
         "Stays inside the Russell Midcap / S&P 400 band — resists the pull up into large-cap mega-cap tech.",
@@ -67,7 +67,7 @@
         "Above ~0.40% with no active mandate — most active mid-growth funds don't beat passive net of fees."
       ]
     },
-    "Mid-Cap Value": {
+    "mid-cap-value": {
       "greenFlags": [
         "A profitability screen on top of cheapness — the single biggest quality lever; without it you hold low-quality 'zombie' names.",
         "Genuinely lower P/B and higher dividend yield vs the index — the value premise is in the holdings, not the label.",
@@ -79,7 +79,7 @@
         "Drift down into small-cap — drawdowns get materially deeper than mid-cap value."
       ]
     },
-    "Small Blend": {
+    "small-blend": {
       "greenFlags": [
         "Built on a profitability-filtered index (S&P 600) — that screen is why it has historically beaten Russell 2000 by ~2 pp annualised.",
         "Stays inside the Russell 2000 / S&P 600 band (VB/IJR) — captures the small-cap premium with spreads kept tight despite harder microstructure.",
@@ -91,7 +91,7 @@
         "Tracking drift above ~30 bps — small-cap funds miss more than large-cap, but top funds don't miss by that much."
       ]
     },
-    "Small Growth": {
+    "small-growth": {
       "greenFlags": [
         "Strong realised growth loading (EPS, sales growth) vs the index — captures the factor, not just volatile small names.",
         "Stays inside the small-cap band (IJT/VBK) — keeps you where the growth premium actually lives, not drifting to mid-cap.",
@@ -103,7 +103,7 @@
         "Drift up into mid-cap — the fund stops doing the small-growth job you bought."
       ]
     },
-    "Small Value": {
+    "small-value": {
       "greenFlags": [
         "A profitability filter (AVUV-style) — historically the decisive edge over pure cheap-P/B small value.",
         "Lower P/B and higher dividend yield vs the index while inside the small-cap band — real value where it has paid off.",
@@ -115,7 +115,7 @@
         "Above ~0.40% with no active mandate — hard to justify vs AVUV-style active or cheap passive peers."
       ]
     },
-    "Foreign Large Blend": {
+    "foreign-large-blend": {
       "greenFlags": [
         "A clear, stable currency-hedge policy (hedged or unhedged, not switching) — hedging drives most of the return gap between otherwise-identical funds.",
         "Transparent disclosure of the foreign-withholding-tax drag — a real cost hidden from the expense ratio.",
@@ -127,7 +127,7 @@
         "Large mid-day premiums/discounts during European/Asian hours — weak market-making while the underlying market is closed."
       ]
     },
-    "Diversified Emerging Mkts": {
+    "diversified-emerging-mkts": {
       "greenFlags": [
         "An explicit single-country cap (China+Taiwan below ~30-35%) — keeps 'diversified' actually diversified (IEMG/VWO/SCHE).",
         "Deep liquidity ($5B+, tight spreads) even during the EM open-hours mismatch — holds up in stress.",
@@ -139,7 +139,7 @@
         "Large NAV mark-downs during stress when underlying markets are closed — common in smaller EM funds."
       ]
     },
-    "Technology": {
+    "technology": {
       "greenFlags": [
         "Discloses the software/semis/internet split (XLK/VGT/FTEC) — you know the exact tech-cycle bet you're taking.",
         "Tracks the broad tech cycle (Nasdaq 100 direction) — moves with tech without hidden sub-sector overshoots.",
@@ -151,7 +151,7 @@
         "Above ~0.50% with no thematic mandate — broad tech doesn't beat low-cost peers at that fee."
       ]
     },
-    "Real Estate": {
+    "real-estate": {
       "greenFlags": [
         "Pure-play equity REITs (>=90%; VNQ/USRT/SCHH) — clean REIT exposure without dilution.",
         "Multi-year consecutive distribution growth — signals tenant and debt health in the portfolio.",
@@ -163,7 +163,7 @@
         "A rate-shock drawdown deeper than the category (~25-30% in 2022) — concentration or sub-sector issues."
       ]
     },
-    "Health": {
+    "health": {
       "greenFlags": [
         "Explicit sub-sector mix (broad vs pharma-pure vs biotech-only; XLV/VHT/IYH) — you know the basket and the risk.",
         "Stays in the top two quartiles across 1Y/3Y/5Y — consistent, not a one-cycle fluke.",
@@ -175,7 +175,7 @@
         "Bouncing between top and bottom quartile across cycles — a hidden sub-sector tilt the label hides."
       ]
     },
-    "Intermediate Core Bond": {
+    "intermediate-core-bond": {
       "greenFlags": [
         "Credit mix matching the 'core' label (~70-80% Treasury / agency-MBS / IG corporate; AGG/BND/SCHZ) — you own core, not a tilt.",
         "Duration held near the Agg's ~5-7Y — delivers core-bond rate exposure cleanly.",
@@ -187,7 +187,7 @@
         "A loss much deeper than the -13% Agg year (2022) — signals credit or duration drift."
       ]
     },
-    "Short-Term Bond": {
+    "short-term-bond": {
       "greenFlags": [
         "Duration held at 1-3Y from Treasury + IG corporate (BSV/SHY/VGSH) — low-duration income paid for by duration risk only.",
         "Low realised trading cost despite continuous bond rolling — turnover is high here and quietly eats return if managed poorly.",
@@ -199,7 +199,7 @@
         "Yield below a high-yield savings account net of fees — no reason to hold unless you're betting rates fall."
       ]
     },
-    "Ultrashort Bond": {
+    "ultrashort-bond": {
       "greenFlags": [
         "Effective duration under 1Y (BIL/SGOV/USFR) — behaves like cash with a small premium.",
         "Yield clearly beating HYSA net of fees — with the minor 1-3 cent NAV moves disclosed up front (it isn't a $1 money-market fund).",
@@ -211,7 +211,7 @@
         "Above ~0.20% expense — fees eat directly into the thin premium over cash."
       ]
     },
-    "Corporate Bond": {
+    "corporate-bond": {
       "greenFlags": [
         "Stays strictly IG without crossover BB names for extra yield — you're not taking hidden HY risk.",
         "Duration matching the named benchmark — your rate exposure is the one intended.",
@@ -223,7 +223,7 @@
         "A loss beyond the ~13-18% IG drawdown of 2022 — long-duration drift or low-BBB concentration."
       ]
     },
-    "High Yield Bond": {
+    "high-yield-bond": {
       "greenFlags": [
         "Captures fallen angels (downgraded IG) — they historically outperform original-issue HY because the market over-sells the downgrade.",
         "Publishes the CCC % and sector breakdown plainly (HYG/JNK/USHY) — you can see the real risk being taken.",
@@ -235,7 +235,7 @@
         "A headline yield well above peers — almost always extra CCC exposure, not selection skill."
       ]
     },
-    "Muni National Interm": {
+    "muni-national-interm": {
       "greenFlags": [
         "Quotes tax-equivalent yield (TEY) at a realistic bracket plus state exemption (MUB/VTEB/TFI) — lets you compare honestly to taxable bonds.",
         "Duration matched to the intermediate benchmark — clean tax-exempt rate exposure.",
@@ -247,7 +247,7 @@
         "Above ~0.30% expense — hard to justify vs 0.05-0.10% passive muni peers."
       ]
     },
-    "Trading--Leveraged Equity": {
+    "trading-leveraged-equity": {
       "greenFlags": [
         "Hits ~3x (or its stated multiple) of the daily move within tight tolerance (TQQQ/SPXL/SOXL) — does the one job it exists for.",
         "$5-25B AUM with billions in daily volume — deep enough to actually trade the thesis.",
@@ -259,7 +259,7 @@
         "Fees above ~1.20% — pay for nothing extra in this category."
       ]
     },
-    "Trading--Inverse Equity": {
+    "trading-inverse-equity": {
       "greenFlags": [
         "Hits the stated inverse multiple within tight tolerance daily (SQQQ/SDS/SPXS) — the entire job of the product.",
         "$1-5B AUM with high daily volume — tradable for tactical hedging.",
@@ -271,7 +271,7 @@
         "Fees above ~1.20% — hard to justify for a tactical tool."
       ]
     },
-    "Derivative Income": {
+    "derivative-income": {
       "greenFlags": [
         "Total return (price + distributions) keeps pace with the underlying over a full cycle — it isn't just converting growth into taxable income.",
         "Distributions classified as qualified dividends or capital gains rather than ordinary income — materially better after tax.",
@@ -283,7 +283,7 @@
         "Opaque option mechanics — no disclosure of % overwritten, strikes, or roll, so you can't price the upside you give up."
       ]
     },
-    "Defined Outcome": {
+    "defined-outcome": {
       "greenFlags": [
         "Laddered series across multiple outcome periods — you're not locked to a single cap window, diluting entry-timing risk.",
         "States plainly that buffer + cap realise only at period end, net of fees — sets the holding-period expectation correctly.",
@@ -295,7 +295,7 @@
         "Fees above ~1.00% — above the 0.65-0.85% norm, paying for option-spread and admin overhead."
       ]
     },
-    "Equity Hedged": {
+    "equity-hedged": {
       "greenFlags": [
         "Discloses how the hedge is financed (paid outright, call-sale, or spreads) — you can see the bull-market lag you're paying for.",
         "Laddered or rolling hedges with no gaps — protection is always on, not lapsing between expirations.",

@@ -14,6 +14,7 @@ import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-c
 import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
 import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
+import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
 
@@ -62,7 +63,8 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json` and renders two sections in order:
+ * `etf-mor-category-instructions.json` (keyed by category slug) and renders two
+ * sections in order:
  *  1. `greenFlags` — non-obvious signs of a strong fund in the category.
  *  2. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
  *     the green flags).
@@ -73,7 +75,7 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
  */
 function getCategoryInstructions(fundCategory: string | null | undefined): string | undefined {
   if (!fundCategory) return undefined;
-  const entry = morCategoryInstructionsConfig.instructions[fundCategory];
+  const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
   if (!entry) return undefined;
   const greenFlags = entry.greenFlags ?? [];
   const redFlags = entry.redFlags ?? [];

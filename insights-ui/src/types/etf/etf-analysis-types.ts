@@ -191,7 +191,8 @@ export interface EtfMorCategoryInstructionEntry {
 /**
  * Mor-category-level prompt instructions stored separately from
  * `etf-analysis-categories.json` in `etf-mor-category-instructions.json`.
- * Keyed by exact Mor category name (matching `EtfCategoryToGroup.name`).
+ * Keyed by category slug (`slugifyEtfCategory(EtfCategoryToGroup.name)`,
+ * e.g. `large-blend`) — the same identifier groups and category URLs use.
  * The same rendered block goes into all four ETF analysis prompts
  * (Past Returns / Cost & Team / Risk / Future Outlook).
  */
