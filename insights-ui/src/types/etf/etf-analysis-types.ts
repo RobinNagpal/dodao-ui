@@ -173,23 +173,19 @@ export interface EtfCategoryToGroup {
 }
 
 /**
- * One Mor category's prompt-instruction entry. Splits the per-category guidance
- * into three lists of three bullets each:
- *  - `toKnow` — the core but non-obvious metrics that actually decide quality
- *    in the category: the parameters retail overlooks because they reach for
- *    the obvious number instead (headline yield, expense ratio, recent return).
- *  - `topQualities` — what separates the top decile / quintile of ETFs in the
- *    category from the rest (positive signals to look for).
- *  - `watchOuts` — category-specific risks and traps the retail reader should
- *    flag (negatives to be wary of).
- * The helper that consumes this renders all three lists into a single markdown
- * block with section headings, which is plumbed through to all four ETF
- * analysis prompts as `categoryInstructions`.
+ * One Mor category's prompt-instruction entry. Two lists of 3-5 bullets each:
+ *  - `greenFlags` — non-obvious signs of a strong fund in the category.
+ *  - `redFlags` — non-obvious signs of a weak or risky fund. These are NOT the
+ *    mirror-image negation of `greenFlags`; each is its own distinct failure
+ *    mode, so a given dial appears on at most one side.
+ * Only genuinely impactful, non-obvious signals are listed (no obvious basics
+ * like a plain low/high expense ratio). The helper that consumes this renders
+ * both lists into a single markdown block with section headings, which is
+ * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
  */
 export interface EtfMorCategoryInstructionEntry {
-  toKnow: string[];
-  topQualities: string[];
-  watchOuts: string[];
+  greenFlags: string[];
+  redFlags: string[];
 }
 
 /**

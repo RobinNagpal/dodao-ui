@@ -62,10 +62,10 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json` and renders three sections in order:
- *  1. `toKnow` — the non-obvious metrics that actually decide quality here.
- *  2. `topQualities` — what separates top funds in the category from the rest.
- *  3. `watchOuts` — category-specific risks the retail reader should flag.
+ * `etf-mor-category-instructions.json` and renders two sections in order:
+ *  1. `greenFlags` — non-obvious signs of a strong fund in the category.
+ *  2. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
+ *     the green flags).
  * The same block renders in all four ETF analysis prompts (Past Returns /
  * Cost & Team / Risk / Future Outlook). Returns undefined when the fund's
  * category has no entry registered, so the prompt template renders nothing
@@ -75,20 +75,16 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   if (!fundCategory) return undefined;
   const entry = morCategoryInstructionsConfig.instructions[fundCategory];
   if (!entry) return undefined;
-  const toKnow = entry.toKnow ?? [];
-  const topQualities = entry.topQualities ?? [];
-  const watchOuts = entry.watchOuts ?? [];
-  if (toKnow.length === 0 && topQualities.length === 0 && watchOuts.length === 0) return undefined;
+  const greenFlags = entry.greenFlags ?? [];
+  const redFlags = entry.redFlags ?? [];
+  if (greenFlags.length === 0 && redFlags.length === 0) return undefined;
 
   const sections: string[] = [];
-  if (toKnow.length > 0) {
-    sections.push(['**The non-obvious metrics that decide quality in this category:**', ...toKnow.map((b) => `- ${b}`)].join('\n'));
+  if (greenFlags.length > 0) {
+    sections.push(['**Green flags — non-obvious signs of a strong fund in this category:**', ...greenFlags.map((b) => `- ${b}`)].join('\n'));
   }
-  if (topQualities.length > 0) {
-    sections.push(['**What separates top funds in this category:**', ...topQualities.map((b) => `- ${b}`)].join('\n'));
-  }
-  if (watchOuts.length > 0) {
-    sections.push(['**Category-specific risks to flag:**', ...watchOuts.map((b) => `- ${b}`)].join('\n'));
+  if (redFlags.length > 0) {
+    sections.push(['**Red flags — non-obvious signs of a weak or risky fund in this category:**', ...redFlags.map((b) => `- ${b}`)].join('\n'));
   }
   return sections.join('\n\n');
 }

@@ -2,434 +2,309 @@
   "_meta": {
     "purpose": "Mor-category-level prompt instructions plumbed into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook) as `categoryInstructions`. The same rendered block goes into all four prompts when the fund's Mor category has an entry here.",
     "coverageRule": "Populated for Mor categories with approximately >=50 US-listed ETFs as of 2026-05. Categories below the threshold render no category-specific block — the per-factor group instructions cover them.",
-    "instructionStyle": "Each category carries 9 bullets total — 3 `toKnow` naming the core but non-obvious metrics that actually decide quality in the category: the parameters retail overlooks because they reach for the obvious number instead (headline yield, expense ratio, recent return). Each `toKnow` bullet states the metric AND why it is the real decider for this category (e.g. tracking error + realised cap-gains distributions for Large Blend; CCC-% + IG-spread for High Yield; price-only-NAV trend + ROC-share for Derivative Income). Construction / selection mechanics appear ONLY as the 'why' behind a metric, never as standalone trivia. The other two lists hold the verdict on those metrics: 3 `topQualities` describing what separates the top decile / quintile of ETFs from the rest (the positives to look for), and 3 `watchOuts` describing category-specific risks and traps a retail reader should flag (the negatives to be wary of). Each bullet is 1-2 lines max — do not pad.",
+    "instructionStyle": "Each category carries two lists of 3-5 bullets — `greenFlags` (non-obvious signs of a strong fund in the category) and `redFlags` (non-obvious signs of a weak or risky one). Rules: (1) include ONLY genuinely impactful signals — omit anything that barely moves outcomes and omit obvious basics like a plain low/high expense ratio; (2) `redFlags` must NOT be the mirror-image negation of `greenFlags` — each red flag is its own distinct non-obvious failure mode, so a given dial appears on at most one side; (3) each bullet takes the form 'signal — why it matters', plain-retail and short, keeping concrete anchors (tickers, bps, %) brief.",
     "keyConvention": "Keys MUST be exact Mor category names from etf-analysis-categories.json -> categories[].name. Unknown keys are silently ignored.",
     "lastReviewed": "2026-05-25"
   },
   "instructions": {
     "Large Blend": {
-      "toKnow": [
-        "Tracking error vs the named index is the decider, not headline return — a blend fund's whole job is to match the index, so persistent drift above ~25 bps is pure lost return even in an up market.",
-        "Realised capital-gains distributions over a rolling 5Y — the hidden annual cost; near-zero signals strong in-kind redemption discipline, while recurring payouts quietly tax you in a fund that looks 'passive'.",
-        "True top-10 weight, not the holdings count — cap-weighting pushes it past ~30%, so a 'diversified' large-blend fund is partly a mega-cap bet retail doesn't price."
+      "greenFlags": [
+        "Net cost below the headline expense ratio from rebated securities-lending income — quietly lets the fund track at or just above the index (VOO/VTI/IVV).",
+        "Near-zero realised capital-gains distributions over 5Y — strong in-kind redemption discipline that compounds in a taxable account.",
+        "Low index-reconstitution turnover — fewer forced taxable trades than rules-based peers."
       ],
-      "topQualities": [
-        "Tracking error vs the named benchmark — top funds hold within ~5 bps and consistently deliver index-grade performance year after year.",
-        "Cost discipline — top decile is 0.03-0.05% (VOO, VTI, IVV), letting compounding work uninterrupted across decades.",
-        "Tax efficiency — top funds report near-zero realised capital-gain distributions over rolling 5Y; in-kind redemption discipline is best-in-class here."
-      ],
-      "watchOuts": [
-        "Persistent tracking drift above ~25 bps is a Fail signal for a 'passive' fund — usually a fee waiver expired or the basket is drifting from the index.",
-        "Sub-$200M Large Blend ETFs hide retail liquidity friction even when headline AUM looks stable; spreads tax round-trips.",
-        "One-off cap-gain payouts above ~0.5% of NAV signal weak in-kind redemption discipline — uncommon at scale but the warning sign in smaller Large Blend funds."
+      "redFlags": [
+        "Top-10 weight past ~35% — a 'diversified' fund that's quietly a concentrated mega-cap bet.",
+        "Tracking drift above ~25 bps — usually an expired fee waiver or basket drift, and it's pure lost return.",
+        "A mid-life benchmark switch or widened sampling — the basket no longer matches the name you bought."
       ]
     },
     "Large Growth": {
-      "toKnow": [
-        "Realised growth-factor loading (forward P/E, EPS-growth) vs the index, not the fund name — different 'growth' screens build different baskets, so a closet-blend fund charges growth fees for blend exposure.",
-        "Top-10 weight — uncapped cap-weighted growth can run 55-60% in mega-cap tech, turning a 'growth' fund into a concentrated sector bet you didn't explicitly choose.",
-        "Long-run alpha vs Russell 1000 Growth net of fees — for any fund above ~0.30% this is the test of whether the active mandate earns its cost; most don't beat low-cost passive."
+      "greenFlags": [
+        "High realised growth-factor loading (forward P/E, EPS-growth) vs the index — you own the growth tilt you pay for (VUG/SCHG), not closet blend.",
+        "Matches or beats Russell 1000 Growth net of fees over 5-10Y — the strategy earns its keep after costs.",
+        "Reconstitutes more than once a year — keeps the tilt from decaying mid-year as names cross the growth/blend line."
       ],
-      "topQualities": [
-        "Style purity — top funds load on growth (P/E, EPS-growth) versus the named index, so the bet retail signed up for is the bet they actually own.",
-        "Long-run alpha vs Russell 1000 Growth — top funds match or beat the benchmark net of fees over 5Y / 10Y windows.",
-        "Cost — top decile is 0.03-0.06% (VUG, IUSG, SCHG), giving up no compounding to fee drag."
-      ],
-      "watchOuts": [
-        "Top-10 concentration — passive cap-weighted Large Growth can hit 55-60% in mega-cap tech without an explicit cap, effectively a sector bet in disguise.",
-        "Style drift into blend or quality territory hides the tilt; retail ends up paying growth-fund fees for blend-fund exposure.",
-        "Above ~0.30% expense without a clear active mandate rarely net-beats low-cost peers consistently — most active large-growth funds don't."
+      "redFlags": [
+        "Top-10 weight 55-60% in mega-cap tech with no cap — a concentrated sector bet disguised as 'growth'.",
+        "Style drift toward blend/quality — you pay growth fees for blend exposure without noticing.",
+        "Above ~0.30% with no active mandate — the fee quietly loses to low-cost peers over time."
       ]
     },
     "Large Value": {
-      "toKnow": [
-        "Realised value-factor loading — measure P/B and dividend yield against the S&P 500, not the fund's name; many 'value' funds are closet blend and you pay for a tilt you don't own.",
-        "Sector tilt vs the broad market — true value over-weights financials/energy/industrials; if sector weights mirror the market the fund is mislabelled and won't behave like value when value rotates.",
-        "10Y CAGR gap vs Russell 1000 Value — lagging by >100 bps annualised is a style-purity failure (wrong basket), a different and worse problem than value simply being out of favour."
+      "greenFlags": [
+        "Lower P/B and higher dividend yield than the S&P 500 in the actual holdings — real value (VTV/IUSV), not just a label.",
+        "A quality/profitability screen layered on cheapness — filters out the value traps that drag pure-cheap funds.",
+        "Multi-year consecutive dividend growth in dividend-tilt funds — durable payout health, not yield chasing."
       ],
-      "topQualities": [
-        "True value tilt — top funds hold lower P/B and higher dividend yield than the S&P 500, so the value premise is in the actual basket.",
-        "Dividend stability — for dividend-tilt members, top funds show multi-year consecutive distribution growth (Aristocrats-style discipline).",
-        "Cost — top decile is 0.03-0.08% (VTV, IUSV, SCHV) and 10Y CAGR sits within tracking tolerance of Russell 1000 Value."
-      ],
-      "watchOuts": [
-        "A fund whose sector weights mirror the broad market is mis-labelled as 'value' — check actual sector tilts versus the index, not just the name.",
-        "Flat or cut distributions in the dividend-tilt sub-set signal that the underlying portfolio's payout health is deteriorating.",
-        "Lagging Russell 1000 Value by >100 bps annualised over 10Y is a style-purity issue, not a style headwind — different problems."
+      "redFlags": [
+        "Sector weights that mirror the broad market — value in name only; won't perform when value rotates.",
+        "Lagging Russell 1000 Value by >100 bps annualised over 10Y — a wrong-basket failure, worse than value being out of favour.",
+        "A few cheap-but-deteriorating names dominating — value traps, cheap because the business stalled, not because they're mispriced."
       ]
     },
     "Mid-Cap Blend": {
-      "toKnow": [
-        "Size-band purity — confirm holdings sit inside the Russell Midcap / S&P 400 band; the index bands don't align, and drift up into large-cap or down into small-cap means you've lost the mid-cap premium you bought.",
-        "Realised cap-gains distributions over 5Y — mid-cap funds carry weaker in-kind redemption discipline than large-cap, so this hidden tax cost is larger and worth checking.",
-        "AUM and dollar volume — below ~$200M, mid-cap spreads widen materially and tax your round-trips invisibly even when headline AUM looks fine."
+      "greenFlags": [
+        "Holdings stay inside the Russell Midcap / S&P 400 band — you actually get the mid-cap premium (VO/IJH), not large/small drift.",
+        "Low realised cap-gains distributions over 5Y — uncommon mid-cap in-kind discipline, a real hidden tax edge.",
+        "Full or near-full replication, not thin sampling — tighter tracking where sampling error runs larger."
       ],
-      "topQualities": [
-        "Size purity — top funds stay inside the Russell Midcap (or S&P 400) defined size band, delivering the mid-cap premium retail came for.",
-        "Cost — top decile is 0.03-0.05% (VO, IJH, SCHM); fee inflation in mid-cap is rarely justified.",
-        "AUM + liquidity — top funds run $5B+ with $50M+ daily volume and cents-tight spreads even outside large-cap."
-      ],
-      "watchOuts": [
-        "Drift down into small-cap or up into large-cap dilutes the mid-cap tilt and means the fund is no longer doing the job it was bought for.",
-        "Mid-cap spreads widen materially below ~$200M AUM and bite retail round-trips invisibly.",
-        "Weaker in-kind redemption discipline shows up as larger annual cap-gain distributions versus large-cap peers — check the 5Y record."
+      "redFlags": [
+        "Drift up into large-cap or down into small-cap — the fund quietly becomes something you didn't buy.",
+        "AUM under ~$200M — mid-cap spreads widen fast and tax round-trips invisibly.",
+        "Heavy weight in names about to graduate to large-cap — you're buying tomorrow's large-caps, diluting the mid-cap exposure."
       ]
     },
     "Mid-Cap Growth": {
-      "toKnow": [
-        "Realised growth-factor loading on top of the size band — the combined screen is narrow, so verify the fund actually loads on P/E and EPS-growth rather than just holding 'growthy' names.",
-        "Top-10 weight and large-cap creep — these funds structurally hold names about to graduate to large-cap, so check whether you're buying true mid-cap or an 'emerging-large-cap' fund in disguise.",
-        "Net-of-fee performance vs the index for any fund above ~0.40% — that fee needs an active mandate to justify it, and most active mid-cap-growth funds don't beat passive."
+      "greenFlags": [
+        "Strong realised growth loading (P/E, EPS-growth) on top of the mid-cap band — captures the actual mid-growth premium (IJK/VOT).",
+        "Stays inside the Russell Midcap / S&P 400 band — resists the pull up into large-cap mega-cap tech.",
+        "Low realised cap-gains distributions — mid-cap funds often lack large-cap in-kind discipline, so disciplined tax management is a real edge."
       ],
-      "topQualities": [
-        "Growth purity — top funds load on the actual P/E and EPS-growth screens versus the named index, capturing the mid-cap-growth premium.",
-        "Size purity (Russell Midcap / S&P 400 band) — top funds resist the gravitational pull up into large-cap mega-cap tech.",
-        "Cost — top decile is 0.05-0.08% (IJK, VOT); broad mid-cap-growth needs no active mandate to deliver."
-      ],
-      "watchOuts": [
-        "Drift up into large-cap mega-cap tech is the most common bottom-quintile signal — check the top-10 weights against the index.",
-        "Runaway top-10 concentration in a single mid-cap name flags either a closet single-stock bet or an imminent large-cap migration.",
-        "Above ~0.40% expense ratio needs an active mandate; most active mid-cap-growth funds don't beat passive net of fees."
+      "redFlags": [
+        "A single mid-cap name dominating the top-10 — a closet single-stock bet or an imminent migration out of the band.",
+        "Large-cap creep in the top holdings — you're buying tomorrow's large-caps, not mid-caps.",
+        "Above ~0.40% with no active mandate — most active mid-growth funds don't beat passive net of fees."
       ]
     },
     "Mid-Cap Value": {
-      "toKnow": [
-        "Whether the index applies a profitability screen — this single construction choice changes the basket the most; without it the fund holds low-quality 'zombie' names that drag value returns.",
-        "Realised value loading and sector tilt — mid-cap value carries more financials/industrials/REITs than large-cap value, so the sector mix is the risk profile; check it against the index, not the label.",
-        "Value-trap exposure — cheap mid-cap multiples are often cheap because business momentum stalled, so screen for low P/B paired with deteriorating fundamentals, the trap that bites harder here than in large-cap."
+      "greenFlags": [
+        "A profitability screen on top of cheapness — the single biggest quality lever; without it you hold low-quality 'zombie' names.",
+        "Genuinely lower P/B and higher dividend yield vs the index — the value premise is in the holdings, not the label.",
+        "Dividend stability in dividend-tilt sleeves — multi-year payout growth signals the cheap names aren't distressed."
       ],
-      "topQualities": [
-        "Value purity — top funds load on lower P/B and higher dividend yield versus the named index in a size band where value historically pays off.",
-        "Size purity (Russell Midcap / S&P 400 band) — top funds avoid drifting down into small-cap where the value factor behaves differently.",
-        "Dividend stability — top funds in the dividend-tilt sub-set show multi-year distribution growth."
-      ],
-      "watchOuts": [
-        "Drift down into small-cap is the most common tell — small-cap-value drawdowns are materially deeper than mid-cap-value, retail isn't pricing that.",
-        "Sector weights that mirror broad mid-cap (not value-skewed) mean the fund is mis-labelled.",
-        "Above ~0.40% expense ratio needs an active mandate to justify against low-cost passive peers."
+      "redFlags": [
+        "Sector mix that mirrors broad mid-cap — value in name only.",
+        "Cheap names with stalling fundamentals (value traps) — they bite harder in mid-cap than large-cap.",
+        "Drift down into small-cap — drawdowns get materially deeper than mid-cap value."
       ]
     },
     "Small Blend": {
-      "toKnow": [
-        "Whether the index includes unprofitable companies — Russell 2000 does, S&P 600 filters them out, and that single screen is why S&P 600 has historically beaten Russell 2000 by ~2 pp annualised; it's the biggest quality lever here.",
-        "Size-band purity and micro-cap drift — drift down into micro-cap amplifies drawdowns well beyond what a 'small-cap' label implies, so check the actual size band, not the name.",
-        "Tracking error and AUM together — small-cap microstructure is harder, so drift above ~30 bps or AUM under ~$200M means spreads and slippage are quietly eating your return."
+      "greenFlags": [
+        "Built on a profitability-filtered index (S&P 600) — that screen is why it has historically beaten Russell 2000 by ~2 pp annualised.",
+        "Stays inside the Russell 2000 / S&P 600 band (VB/IJR) — captures the small-cap premium with spreads kept tight despite harder microstructure.",
+        "Low turnover through the annual Russell rebuild — sidesteps the well-known late-June rebalance drag."
       ],
-      "topQualities": [
-        "Size purity — top funds stay inside the Russell 2000 (or S&P 600) defined size band, capturing the small-cap premium retail came for.",
-        "Cost — top decile is 0.03-0.06% (VB, IJR, SCHA); broad small-cap needs no active mandate.",
-        "AUM + liquidity — top funds run $5B+ with tight spreads despite the harder small-cap microstructure."
-      ],
-      "watchOuts": [
-        "Drift down into micro-cap is a hidden-risk tell that amplifies drawdowns beyond what retail expects from a 'small-cap' label.",
-        "Small-cap spreads can widen materially under ~$200M AUM and tax retail round-trips invisibly.",
-        "Persistent tracking drift above ~30 bps is a Fail; small-cap ETFs miss the index more than large-cap, but not by that much in top funds."
+      "redFlags": [
+        "Drift down into micro-cap — amplifies drawdowns well beyond what a 'small-cap' label implies.",
+        "AUM under ~$200M — small-cap spreads widen and tax round-trips invisibly.",
+        "Tracking drift above ~30 bps — small-cap funds miss more than large-cap, but top funds don't miss by that much."
       ]
     },
     "Small Growth": {
-      "toKnow": [
-        "How much of the basket is pre-profit — many small-growth indices (Russell 2000 Growth) include unprofitable 'story stocks' with no near-term earnings, so check the unprofitable share before trusting the growth label.",
-        "Realised growth-factor loading (EPS, sales growth) vs the index — the combined small + growth screen is narrow, so verify the fund captures the factor rather than just holding volatile small names.",
-        "Worst calendar-year drawdown vs the benchmark — a gap of 5+ pp signals micro-cap or concentration drift, not just market beta, which is the hidden risk small-growth retail underestimates."
+      "greenFlags": [
+        "Strong realised growth loading (EPS, sales growth) vs the index — captures the factor, not just volatile small names.",
+        "Stays inside the small-cap band (IJT/VBK) — keeps you where the growth premium actually lives, not drifting to mid-cap.",
+        "Caps single-name weight — no one story stock can sink the fund on a single miss."
       ],
-      "topQualities": [
-        "Growth purity — top funds load on the actual growth-defining screen (EPS, sales growth) versus the named index, not just 'growthy names'.",
-        "Size purity (Russell 2000 / S&P 600 band) — top funds stay inside the defined small-cap band where the growth premium lives.",
-        "Cost — top decile is 0.06-0.10% (IJT, VBK); broad passive small-growth at near-equity-fund prices."
-      ],
-      "watchOuts": [
-        "Drift down into micro-cap can mask the worst-year drawdown — micro-cap growth amplifies broad-market drawdowns sharply.",
-        "Drift up into mid-cap means the fund is no longer doing the job retail bought.",
-        "Worst calendar-year drawdown 5+ pp deeper than the benchmark signals concentration or size drift, not just market beta."
+      "redFlags": [
+        "A large pre-profit 'story stock' share — common in Russell 2000 Growth and the first thing to sell off in a drawdown.",
+        "Worst calendar-year drawdown 5+ pp deeper than the benchmark — signals micro-cap or concentration drift.",
+        "Drift up into mid-cap — the fund stops doing the small-growth job you bought."
       ]
     },
     "Small Value": {
-      "toKnow": [
-        "Whether a profitability filter is applied — pure cheap-P/B small value without it has historically underperformed profitability-screened small value (AVUV-style); this is the decisive construction choice in the category.",
-        "Realised value loading and the actual size band — many small-value indices stretch into micro-cap (<$500M), so confirm the fund isn't deeper and riskier than the 'small-cap' label suggests.",
-        "Worst-year drawdown — the small-value premium is large (~2-4 pp annualised) but realises in clusters, so size the downside (the category drew down ~35% intraday in 2020) rather than assuming a smooth premium."
+      "greenFlags": [
+        "A profitability filter (AVUV-style) — historically the decisive edge over pure cheap-P/B small value.",
+        "Lower P/B and higher dividend yield vs the index while inside the small-cap band — real value where it has paid off.",
+        "Cheap names that still generate cash (dividends/buybacks) — a sign they're undervalued, not just optically cheap."
       ],
-      "topQualities": [
-        "Value purity — top funds load on lower P/B and higher dividend yield versus the named index in a size band where value historically pays off.",
-        "Size purity (Russell 2000 / S&P 600 band) — top funds resist drift down into micro-cap.",
-        "Cost — top decile is 0.06-0.10% for passive (IJS, VBR), ~0.25% for actively-tilted small-value (AVUV)."
-      ],
-      "watchOuts": [
-        "Drift down into micro-cap can mask the worst-year drawdown — small-cap value drew down ~35% in 2020 intraday.",
-        "Sector weights that mirror broad small-cap (not value-skewed) mean the fund is mis-labelled.",
-        "Above ~0.40% expense without an active mandate is hard to justify against AVUV-style active or low-cost passive peers."
+      "redFlags": [
+        "Drift down into micro-cap — masks much deeper worst-year drawdowns (the category fell ~35% intraday in 2020).",
+        "Sector weights mirroring broad small-cap — value in name only.",
+        "Above ~0.40% with no active mandate — hard to justify vs AVUV-style active or cheap passive peers."
       ]
     },
     "Foreign Large Blend": {
-      "toKnow": [
-        "Exactly which geography the index covers — MSCI EAFE excludes Canada and EM while FTSE ex-US includes Canada (~6-8%); same 'foreign' label, different exposure, so confirm what you actually own.",
-        "Currency-hedge policy and whether it's stable — hedged vs unhedged drives most of the return gap between two otherwise-identical funds, and a hedge that switches mid-life is a backtest, not a strategy.",
-        "Foreign-withholding-tax drag, mostly unrecoverable in tax-advantaged accounts — top funds disclose it, weaker ones bury it, and it's the hidden cost retail never sees in the expense ratio."
+      "greenFlags": [
+        "A clear, stable currency-hedge policy (hedged or unhedged, not switching) — hedging drives most of the return gap between otherwise-identical funds.",
+        "Transparent disclosure of the foreign-withholding-tax drag — a real cost hidden from the expense ratio.",
+        "Country/region weights matching the named index tightly (IXUS/VEA/SCHF) — you own exactly the basket disclosed."
       ],
-      "topQualities": [
-        "Currency-hedge discipline — top funds clearly state hedged vs unhedged and don't switch mid-life.",
-        "Country / region weights match the named index disclosure tightly, so retail knows exactly the basket they own.",
-        "Cost — top decile is 0.03-0.07% (IXUS, VEA, SCHF) — foreign equity at near-domestic-passive prices."
-      ],
-      "watchOuts": [
-        "A hedge that's 'sometimes on' is a backtest, not a strategy — flag any fund with a shifting hedge policy.",
-        "Foreign withholding is mostly unrecoverable in tax-advantaged accounts; top funds disclose the drag, weaker ones bury it.",
-        "Closed-market premium / discount discipline matters — funds without active market-makers show large mid-day premiums during European / Asian hours."
+      "redFlags": [
+        "A hedge that switches on and off — a backtest, not a strategy.",
+        "Geography that doesn't match the label — e.g. includes or excludes Canada/EM differently than you assumed.",
+        "Large mid-day premiums/discounts during European/Asian hours — weak market-making while the underlying market is closed."
       ]
     },
     "Diversified Emerging Mkts": {
-      "toKnow": [
-        "Single-country concentration, especially China+Taiwan combined — cap-weighted EM without caps can run 50-60% in 2-3 names, turning 'diversified' into a concentrated country bet, so look for an explicit cap.",
-        "Which 'China' shares are held — A-shares, H-shares, and ADRs are different baskets with different price drivers and access rules, so the China sleeve's behaviour depends on this construction choice.",
-        "Whether the fund holds ADRs or local shares — local-share funds carry foreign trading-hours and settlement operational risk, and which countries the index includes (FTSE excludes Korea) shifts composition 10-15 pp."
+      "greenFlags": [
+        "An explicit single-country cap (China+Taiwan below ~30-35%) — keeps 'diversified' actually diversified (IEMG/VWO/SCHE).",
+        "Deep liquidity ($5B+, tight spreads) even during the EM open-hours mismatch — holds up in stress.",
+        "Rules-based, verifiable country weights — no discretionary single-country bets you can't see."
       ],
-      "topQualities": [
-        "Single-country concentration cap — top funds explicitly cap China + Taiwan combined below ~30-35% so EM stays diversified.",
-        "Cost — top decile is 0.07-0.11% (IEMG, VWO, SCHE), capturing the EM premium without paying active-EM fees.",
-        "Liquidity in stress — top funds run $5B+ with tight spreads even during EM open-hours mismatch."
-      ],
-      "watchOuts": [
-        "Cap-weighted EM ETFs without single-country caps can run 50-60% in 2-3 names, turning a 'diversified' sleeve into a concentrated country bet.",
-        "Mixed-hedge or shifting-hedge funds usually backfit performance; currency-hedge policy must be clearly stated and stable.",
-        "Smaller EM ETFs get marked off NAV materially during stress windows when the underlying markets are closed."
+      "redFlags": [
+        "No single-country cap — cap-weighted EM can run 50-60% in 2-3 names, a concentrated country bet.",
+        "Heavy direct local-share holdings — foreign trading-hours and settlement operational risk vs ADRs.",
+        "Large NAV mark-downs during stress when underlying markets are closed — common in smaller EM funds."
       ]
     },
     "Technology": {
-      "toKnow": [
-        "Sub-sector mix (software vs semis vs internet) — XLK is ~50/50 software/semis, SOXX is pure semis; two 'tech' ETFs can be completely different cycle bets, so the breakdown matters more than the label.",
-        "How the index defines 'technology' — some include Amazon/Tesla/Meta despite non-tech GICS sectors, so check whether you're double-counting names you already own in a Large Growth fund.",
-        "Top-10 weight — at 60-70% the fund is essentially a mega-cap tech bet; equal-weight and tier-2 variants are genuinely different products, so size the concentration you're taking."
+      "greenFlags": [
+        "Discloses the software/semis/internet split (XLK/VGT/FTEC) — you know the exact tech-cycle bet you're taking.",
+        "Tracks the broad tech cycle (Nasdaq 100 direction) — moves with tech without hidden sub-sector overshoots.",
+        "Rebalances on a clear quarterly schedule — new leaders enter promptly instead of leaving you with last cycle's winners."
       ],
-      "topQualities": [
-        "Sub-sector breakdown clarity — top funds disclose software vs semis vs internet weights so retail knows the exact tech-cycle exposure.",
-        "Cost — top decile is 0.08-0.10% (XLK, VGT, FTEC); passive sector tech needs no premium fee.",
-        "Calendar-year alignment with Nasdaq 100 — top funds track the broad tech cycle directionally without hidden sub-sector overshoots."
-      ],
-      "watchOuts": [
-        "Top-10 concentration at 60-70% means the fund is essentially a mega-cap tech bet; equal-weight or tier-2 variants are different products.",
-        "Mixing software + semis + internet without disclosure overlaps with retail's Large Growth holdings unintentionally.",
-        "Above ~0.50% expense needs a thematic / niche justification — broad-tech ETFs at that fee don't outperform low-cost peers."
+      "redFlags": [
+        "Top-10 weight 60-70% — essentially a mega-cap tech bet, not broad tech.",
+        "A 'tech' definition that sweeps in Amazon/Tesla/Meta — overlaps with your Large Growth holdings unknowingly.",
+        "Above ~0.50% with no thematic mandate — broad tech doesn't beat low-cost peers at that fee."
       ]
     },
     "Real Estate": {
-      "toKnow": [
-        "Whether mortgage REITs (mREITs) are included — this single choice materially changes the fund's duration and interest-rate sensitivity, so a 'REIT' fund's rate behaviour depends on it.",
-        "Sub-sector weighting (residential/office/industrial/healthcare/data-centre) — float-cap-driven and shifting with the real-estate cycle, so the property-type mix is the real exposure you're taking.",
-        "Distribution trend over multiple years — a REIT distribution cut is an early warning of tenant or debt stress, so the payout trajectory is a leading quality signal, not just a yield number."
+      "greenFlags": [
+        "Pure-play equity REITs (>=90%; VNQ/USRT/SCHH) — clean REIT exposure without dilution.",
+        "Multi-year consecutive distribution growth — signals tenant and debt health in the portfolio.",
+        "Spread across property sub-sectors (residential/industrial/healthcare/data-centre) — no single property cycle can dominate the fund."
       ],
-      "topQualities": [
-        "Pure-play equity-REIT focus — top funds hold >=90% US-listed equity REITs, delivering the REIT sleeve cleanly.",
-        "Dividend stability — top funds show multi-year consecutive distribution growth, signalling tenant + debt health in the portfolio.",
-        "Cost — top decile is 0.08-0.12% (VNQ, USRT, SCHH); broad REIT exposure at near-passive prices."
-      ],
-      "watchOuts": [
-        "Mortgage REITs, REOCs, and real-estate-adjacent stocks in the basket dilute the equity-REIT exposure retail signed up for.",
-        "A REIT distribution cut signals underlying tenant or debt stress; treat it as an early-warning indicator, not a one-off.",
-        "REITs are interest-rate-sensitive — 2022's rate shock drew the category down ~25-30%; outsized losses signal concentration or sub-sector issues."
+      "redFlags": [
+        "Mortgage REITs (mREITs) in the basket — materially change duration and rate-sensitivity vs what you expected.",
+        "A distribution cut — an early warning of tenant or debt stress, not a one-off.",
+        "A rate-shock drawdown deeper than the category (~25-30% in 2022) — concentration or sub-sector issues."
       ]
     },
     "Health": {
-      "toKnow": [
-        "Sub-sector composition (pharma/biotech/devices/payers/services) — XLV is broad, IBB is biotech-pure, IHE is pharma-pure; same 'health' label, very different basket and risk, so check the mix.",
-        "Single-name weight and binary-event exposure — pharma/biotech carry FDA-approval and patent-cliff risk, so concentration above ~5% in one name amplifies that binary risk in cap-weighted funds.",
-        "Multi-year peer-quartile consistency — a fund bouncing between top and bottom quartile across cycles signals a hidden sub-sector tilt the broad 'health' label doesn't capture."
+      "greenFlags": [
+        "Explicit sub-sector mix (broad vs pharma-pure vs biotech-only; XLV/VHT/IYH) — you know the basket and the risk.",
+        "Stays in the top two quartiles across 1Y/3Y/5Y — consistent, not a one-cycle fluke.",
+        "Steady cash generation from the payer and big-pharma sleeves — defensive ballast when biotech sells off."
       ],
-      "topQualities": [
-        "Sub-sector exposure clarity — top funds are explicit about broad health (pharma + biotech + devices + services) vs pharma-pure vs biotech-only.",
-        "Cost — top decile is 0.08-0.10% (XLV, VHT, IYH); passive broad health needs no premium fee.",
-        "Multi-year peer rank — top funds stay in the top two quartiles across 1Y / 3Y / 5Y windows."
-      ],
-      "watchOuts": [
-        "Top-10 concentration above ~40% in a broad-health fund signals hidden pharma-mega-cap concentration; pure biotech can run 50%+ structurally.",
-        "Pure biotech carries binary FDA-event risk; calendar-year drawdowns can be sharper than broad sector.",
-        "Bouncing between top and bottom quartile across cycles signals a hidden sub-sector tilt the label doesn't capture."
+      "redFlags": [
+        "Single-name weight above ~5% in a cap-weighted fund — amplifies binary FDA-approval and patent-cliff events.",
+        "Top-10 above ~40% in a 'broad' health fund — hidden pharma-mega-cap concentration.",
+        "Bouncing between top and bottom quartile across cycles — a hidden sub-sector tilt the label hides."
       ]
     },
     "Intermediate Core Bond": {
-      "toKnow": [
-        "The actual credit-sector mix — the Bloomberg US Agg is mostly Treasuries and mortgages with IG corporate only ~25%, not the corporate-heavy basket retail assumes, so confirm the fund matches the 'core' label.",
-        "Effective duration vs the Agg (~5-7Y) — the Agg has lengthened ~1.5Y since 2010, so 'core' is more rate-sensitive than it used to be, and drift to 8+ years is a rate bet you didn't sign up for.",
-        "Any HY or EM debt sneaking into the basket — undisclosed below-IG holdings dilute the 'core' label and add credit risk retail isn't pricing into a supposedly safe sleeve."
+      "greenFlags": [
+        "Credit mix matching the 'core' label (~70-80% Treasury / agency-MBS / IG corporate; AGG/BND/SCHZ) — you own core, not a tilt.",
+        "Duration held near the Agg's ~5-7Y — delivers core-bond rate exposure cleanly.",
+        "Large-sample replication of the Agg's ~12,000 bonds — keeps tracking tight where sampling error can creep in."
       ],
-      "topQualities": [
-        "Duration discipline — top funds hold ~5-7Y duration matching Bloomberg US Agg, delivering core-bond exposure cleanly.",
-        "Credit-quality mix — top funds hold ~70-80% Treasury + agency MBS + IG corporate, in line with the 'core' label.",
-        "Cost — top decile is 0.03-0.05% (AGG, BND, SCHZ); core bond at near-zero fee drag."
-      ],
-      "watchOuts": [
-        "Drift to 8+ years duration is a hidden rate bet retail does not sign up for in 'core' funds.",
-        "HY or EM debt sneaking into the 'core' basket without disclosure dilutes the label and adds credit risk retail isn't pricing.",
-        "2022 was a -13% benchmark year; outsized losses (deeper than -15%) signal credit or duration drift."
+      "redFlags": [
+        "Duration drifting to 8+ years — a hidden rate bet you didn't sign up for in 'core'.",
+        "Undisclosed HY or EM debt — dilutes the 'core' label and adds credit risk retail isn't pricing.",
+        "A loss much deeper than the -13% Agg year (2022) — signals credit or duration drift."
       ]
     },
     "Short-Term Bond": {
-      "toKnow": [
-        "Effective duration and its credit mix together — '1-3Y' indices differ widely (Treasury vs corporate), so confirm both the duration band and whether the yield comes from rate or credit risk.",
-        "Whether HY is reaching into the basket for yield — a headline yield above peers usually means credit risk added, not free income, in a sleeve meant to be low-risk.",
-        "Yield net of fees vs a high-yield savings account — if it doesn't clear HYSA, the only reason to hold is duration optionality if rates fall, not the yield itself."
+      "greenFlags": [
+        "Duration held at 1-3Y from Treasury + IG corporate (BSV/SHY/VGSH) — low-duration income paid for by duration risk only.",
+        "Low realised trading cost despite continuous bond rolling — turnover is high here and quietly eats return if managed poorly.",
+        "Duration short enough to reprice quickly when the Fed moves — the yield adjusts within months, not years."
       ],
-      "topQualities": [
-        "Duration discipline — top funds hold 1-3Y, delivering low-duration income as advertised.",
-        "Credit-quality mix — top funds are Treasury + IG corporate, paying for short-duration risk only.",
-        "Cost — top decile is 0.03-0.10% (BSV, SHY, VGSH); short-term bond at low fee drag."
-      ],
-      "watchOuts": [
-        "Drift to 4+ years duration is a hidden rate bet retail doesn't sign up for in 'short-term' funds.",
-        "Slipping into HY for yield is a tell — the headline yield isn't paid for by short-duration risk.",
-        "If the fund's yield is below HYSA net of fees, the only reason to hold is duration optionality if rates fall — not yield itself."
+      "redFlags": [
+        "Duration drifting to 4+ years — a hidden rate bet in a 'short-term' fund.",
+        "Reaching into HY for yield — the headline yield isn't paid for by short-duration risk.",
+        "Yield below a high-yield savings account net of fees — no reason to hold unless you're betting rates fall."
       ]
     },
     "Ultrashort Bond": {
-      "toKnow": [
-        "Effective duration — anything above ~1Y is misleading for an 'ultrashort' label, so check the actual figure rather than trusting the category name.",
-        "CLO-AAA and short-corporate exposure — above ~20% changes the risk character from Treasury-only ultrashort; not necessarily wrong, but not the cash-equivalent the label implies.",
-        "Yield net of fees vs HYSA, and expect 1-3 cent NAV moves (unlike a $1 money-market fund) — above ~0.20% expense, fees eat directly into the thin premium over cash."
+      "greenFlags": [
+        "Effective duration under 1Y (BIL/SGOV/USFR) — behaves like cash with a small premium.",
+        "Yield clearly beating HYSA net of fees — with the minor 1-3 cent NAV moves disclosed up front (it isn't a $1 money-market fund).",
+        "Penny spreads and same- or next-day liquidity — usable as a genuine cash sleeve."
       ],
-      "topQualities": [
-        "Duration discipline — top funds hold under 1Y effective duration, behaving like cash with a small yield premium.",
-        "Yield vs HYSA — top funds clearly beat HYSA net of fees in a positive-rate environment.",
-        "Cost — top decile is 0.05-0.10% (BIL, SGOV, USFR); ultrashort at near-cash fees."
-      ],
-      "watchOuts": [
-        "Anything above 1Y effective duration is misleading for an 'ultrashort' label — check the actual figure, not just the category.",
-        "CLO-AAA exposure above ~20% changes the risk character from Treasury-only ultrashort; not necessarily wrong, but not what the label implies.",
-        "Above ~0.20% expense is hard to justify in ultrashort — fees eat directly into the small yield premium over cash."
+      "redFlags": [
+        "Duration above ~1Y — misleading for 'ultrashort'; check the figure, not the label.",
+        "CLO-AAA above ~20% — changes the risk character from Treasury-only; not the cash-equivalent the label implies.",
+        "Above ~0.20% expense — fees eat directly into the thin premium over cash."
       ]
     },
     "Corporate Bond": {
-      "toKnow": [
-        "Credit-quality mix, specifically the BBB share — IG corporate funds heavier in BBB lose materially more in credit-stress years than the headline 'IG' label suggests.",
-        "Effective duration vs the named benchmark — corporate ETFs are cap-weighted by issuance so duration drifts with new supply; check it so the rate bet is the one you intended.",
-        "Sector concentration, especially financials — cap-by-issuance structurally pushes financials to 35-45%, so the fund is more of a financials-credit bet than retail expects."
+      "greenFlags": [
+        "Stays strictly IG without crossover BB names for extra yield — you're not taking hidden HY risk.",
+        "Duration matching the named benchmark — your rate exposure is the one intended.",
+        "Broad replication across thousands of issuers — tight tracking without single-issuer surprises."
       ],
-      "topQualities": [
-        "Credit-quality discipline — top funds hold >=85% A-rated and above, delivering IG corporate exposure cleanly.",
-        "Duration discipline — match the named benchmark, so retail's rate exposure is what they signed up for.",
-        "Cost — top decile is 0.04-0.10% (LQD, VCIT, USIG); IG corporate at low fee drag."
-      ],
-      "watchOuts": [
-        "BBB tilt-down matters materially in credit-stress years — funds heavier in BBB lose more in stress than the headline IG label suggests.",
-        "Large duration drift away from the named benchmark hides a rate call retail isn't expecting.",
-        "2022 saw IG corporate down ~13-18%; outsized losses signal long-duration drift or low-BBB concentration."
+      "redFlags": [
+        "A heavy BBB tilt — loses materially more in credit-stress years than the 'IG' label implies.",
+        "Financials concentration 35-45% from cap-by-issuance — more of a financials-credit bet than expected.",
+        "A loss beyond the ~13-18% IG drawdown of 2022 — long-duration drift or low-BBB concentration."
       ]
     },
     "High Yield Bond": {
-      "toKnow": [
-        "CCC-and-below %, not the headline yield — this is the real risk dial; an outsized yield is almost always extra CCC exposure rather than free income.",
-        "Single-sector concentration (often energy) — HY can quietly run >25% in one cyclical sector, so the yield can be a concentrated commodity bet in disguise.",
-        "Spread over comparable IG — the yield is only 'good' if the spread pays for the credit risk taken; a fat yield on a thin spread means you're underpaid for default risk."
+      "greenFlags": [
+        "Captures fallen angels (downgraded IG) — they historically outperform original-issue HY because the market over-sells the downgrade.",
+        "Publishes the CCC % and sector breakdown plainly (HYG/JNK/USHY) — you can see the real risk being taken.",
+        "Spread over comparable IG in line with peers — the yield is paid for with measured, disclosed credit risk."
       ],
-      "topQualities": [
-        "Credit + sector disclosure — top funds publish CCC % and sector concentration plainly so retail knows the actual risk taken.",
-        "Yield spread vs IG — top funds' spread above IG is in line with peers; the yield is paid for measured credit risk.",
-        "Cost — top decile is 0.15-0.25% (HYG, JNK, USHY); broad HY exposure at fee levels appropriate for the credit work."
-      ],
-      "watchOuts": [
-        "CCC >15% or single-sector concentration above ~25% (often energy) is concentration risk the headline yield doesn't fully price.",
-        "Outsized headline yield versus peers means outsized credit risk, not free income.",
-        "2008 drew HY down -25 to -30% and 2020 intra-year -20%; outsized losses signal CCC tier or sector concentration."
+      "redFlags": [
+        "Single-sector concentration above ~25% (often energy) — a sector bet hiding inside a 'diversified HY' label.",
+        "Heavy sampling (~600 of ~2,500 bonds) with high turnover — slippage and trading cost quietly erode the spread.",
+        "A headline yield well above peers — almost always extra CCC exposure, not selection skill."
       ]
     },
     "Muni National Interm": {
-      "toKnow": [
-        "Tax-equivalent yield (TEY), not the stated yield — muni income is federally tax-exempt, so only TEY (at your bracket, plus state exemption if in-state) lets you compare honestly to taxable bonds.",
-        "Credit-quality mix and any BBB/non-rated tilt-down — this matters most in stress windows, where muni liquidity also thins and spreads widen 10-50 bps vs 1-5 for Treasuries.",
-        "AMT-bond exposure — should be near zero for plain national-intermediate muni; a material AMT share matters specifically for the high-income holders the fund is aimed at."
+      "greenFlags": [
+        "Quotes tax-equivalent yield (TEY) at a realistic bracket plus state exemption (MUB/VTEB/TFI) — lets you compare honestly to taxable bonds.",
+        "Duration matched to the intermediate benchmark — clean tax-exempt rate exposure.",
+        "Broad issuer diversification across thousands of munis — limits single-issuer default impact."
       ],
-      "topQualities": [
-        "Duration discipline — match the named benchmark; top funds deliver intermediate-muni rate exposure cleanly.",
-        "Credit-quality mix — top funds hold predominantly A-rated and above, delivering tax-exempt income with low default risk.",
-        "Tax-equivalent-yield (TEY) disclosure — top funds quote TEY at ~32% federal (plus state exemption for in-state holders) so retail can compare to taxable peers."
-      ],
-      "watchOuts": [
-        "BBB or non-rated tilt-down matters in stress windows — flag any fund whose credit-quality mix has slipped over time.",
-        "AMT-bond exposure should be near zero for plain Muni National Interm — funds with material AMT % matter for high-income retail.",
-        "Above ~0.30% expense in IG muni rarely justifies itself versus low-cost passive peers (MUB, VTEB, TFI at 0.05-0.10%)."
+      "redFlags": [
+        "Material AMT-bond exposure — should be near zero; it matters specifically for the high-income holders muni targets.",
+        "A BBB/non-rated tilt-down — bites in stress windows when muni liquidity thins (spreads 10-50 bps vs 1-5 for Treasuries).",
+        "Above ~0.30% expense — hard to justify vs 0.05-0.10% passive muni peers."
       ]
     },
     "Trading--Leveraged Equity": {
-      "toKnow": [
-        "Daily-reset path dependency — the multiplier applies to one day's return, so multi-day/month return diverges from N x the underlying; this is the single fact that makes these never buy-and-hold.",
-        "Daily-tracking quality vs the stated multiple — confirm the fund actually hits ~3x (or its multiple) of the daily move within tight tolerance, since that's the only thing it's built to do.",
-        "AUM and dollar volume — below ~$500M these are unusable for the short-term trading they're sold for; spreads widen and execution costs eat any directional edge."
+      "greenFlags": [
+        "Hits ~3x (or its stated multiple) of the daily move within tight tolerance (TQQQ/SPXL/SOXL) — does the one job it exists for.",
+        "$5-25B AUM with billions in daily volume — deep enough to actually trade the thesis.",
+        "A transparent, published daily-reset methodology — no hidden path-dependency beyond the structural daily reset."
       ],
-      "topQualities": [
-        "Daily-tracking quality — top funds hit ~3x (or stated multiple) of the underlying daily move within tight tolerance.",
-        "AUM + dollar volume — top funds run $5-25B with billions in daily volume, supporting the short-term-trading thesis they exist for.",
-        "Cost discipline — top decile is 0.95-1.00% (TQQQ, SPXL, SOXL); fees above ~1.20% pay for nothing extra in this category."
-      ],
-      "watchOuts": [
-        "Daily-reset path dependency means actual return over multi-month windows is meaningfully below stated multiple × underlying — these are NEVER buy-and-hold.",
-        "Below ~$500M AUM these become unusable for the trading thesis they're sold for — spreads widen and execution costs eat any directional edge.",
-        "Anything sold to buy-and-hold retail is mis-labelled; the fund is a short-term tactical tool, not a portfolio holding."
+      "redFlags": [
+        "Marketed or held as buy-and-hold — daily-reset compounding makes multi-month return diverge sharply from N x the index.",
+        "AUM under ~$500M — unusable for short-term trading; spreads eat the directional edge.",
+        "Fees above ~1.20% — pay for nothing extra in this category."
       ]
     },
     "Trading--Inverse Equity": {
-      "toKnow": [
-        "Compounding decay in flat/choppy markets — inverse funds erode even when your directional call is broadly right, so they only work in sustained, trending drawdowns; this is the decisive misunderstanding to avoid.",
-        "Daily-tracking quality vs the stated inverse multiple — verify it tracks within tight tolerance, since precise daily tracking is the entire job of the product.",
-        "AUM and dollar volume — sub-$200M inverse funds are effectively un-tradable for the tactical hedging they exist for, so liquidity is a gating check, not a detail."
+      "greenFlags": [
+        "Hits the stated inverse multiple within tight tolerance daily (SQQQ/SDS/SPXS) — the entire job of the product.",
+        "$1-5B AUM with high daily volume — tradable for tactical hedging.",
+        "Low embedded financing/borrow cost on the short side — less hidden daily drag eating the hedge."
       ],
-      "topQualities": [
-        "Daily-tracking quality — top funds hit stated inverse multiple within tight tolerance.",
-        "AUM + dollar volume — top funds run $1-5B with high daily volume, supporting tactical hedging use.",
-        "Cost discipline — top decile is 0.85-0.95% (SQQQ, SDS, SPXS); fees above ~1.20% are hard to justify."
-      ],
-      "watchOuts": [
-        "Compounding decay erodes inverse funds faster than leveraged-long peers in flat or mildly-up markets — never a portfolio holding.",
-        "Sub-$200M inverse funds are essentially un-tradable for the short-term hedging use case — spreads and execution costs dominate.",
-        "Retail using inverse ETFs as a buy-and-hold 'protection' is bottom-quintile usage — these are tactical tools only."
+      "redFlags": [
+        "Used as buy-and-hold 'protection' — compounding decay erodes it in flat/choppy markets even when your call is right.",
+        "AUM under ~$200M — effectively un-tradable; spreads and execution costs dominate.",
+        "Fees above ~1.20% — hard to justify for a tactical tool."
       ]
     },
     "Derivative Income": {
-      "toKnow": [
-        "Price-only (NAV) trend alongside the distribution, not the headline yield — a steadily declining price NAV next to a high yield means the 'income' is partly your own capital coming back.",
-        "Return-of-capital (ROC) share of distributions, year by year — high ROC is the fund handing your money back dressed as yield, and the 1099 mix drives after-tax return more than the headline number.",
-        "Option-structure disclosure (% overwritten, strike methodology, DTE, roll discipline) — these determine how much upside you sacrifice for premium, and which strategy you actually own under the broad label."
+      "greenFlags": [
+        "Total return (price + distributions) keeps pace with the underlying over a full cycle — it isn't just converting growth into taxable income.",
+        "Distributions classified as qualified dividends or capital gains rather than ordinary income — materially better after tax.",
+        "Performed sensibly across both low-vol and high-vol regimes — not curve-fit to one environment."
       ],
-      "topQualities": [
-        "Top funds show stable or slightly-rising NAV alongside their distribution yield — true income, not capital being returned dressed as yield.",
-        "Top funds explicitly disclose option structure, % overwritten, DTE, strike methodology, roll discipline, and notional coverage ratio.",
-        "Top funds also disclose ROC share in distributions and how the strategy behaved across low-vol and high-vol regimes."
-      ],
-      "watchOuts": [
-        "A steadily declining price-only NAV next to positive total return signals structural NAV erosion — the distribution is partly your own capital.",
-        "High return-of-capital (ROC) % in distributions is the fund returning your money back as 'yield' — check the year-by-year ROC share.",
-        "Option-premium income is less tax-efficient than qualified dividends in taxable accounts — the headline yield is materially smaller after tax."
+      "redFlags": [
+        "Steadily declining price-only NAV beside a high headline yield — the 'income' is partly your own capital coming back.",
+        "A high return-of-capital (ROC) share in the 1099 year after year — capital handed back dressed as yield.",
+        "Opaque option mechanics — no disclosure of % overwritten, strikes, or roll, so you can't price the upside you give up."
       ]
     },
     "Defined Outcome": {
-      "toKnow": [
-        "That the buffer and cap are realised only at the end of the outcome period, net of fees — mid-period buyers/sellers get completely different exposure than the headline numbers, so the holding-period commitment is the key fact.",
-        "The buffer-vs-floor structure and cap-reset methodology — a buffer absorbs first-loss, a floor caps total loss; opaque or active-ratchet resets are a quality red flag, so confirm which you're getting.",
-        "FLEX-option liquidity cost — these trade in thinner markets, adding creation/redemption spread, and 'buffer slip' from basis risk means the protection isn't perfect even when held to term."
+      "greenFlags": [
+        "Laddered series across multiple outcome periods — you're not locked to a single cap window, diluting entry-timing risk.",
+        "States plainly that buffer + cap realise only at period end, net of fees — sets the holding-period expectation correctly.",
+        "Buffer-vs-floor structure and the cap-reset rule disclosed clearly — you know your protection and your ceiling."
       ],
-      "topQualities": [
-        "Top funds make it explicit that the buffer + cap are only realised at outcome-period end, so retail understands the holding-period commitment.",
-        "Top funds clearly disclose buffer vs floor structure (buffer absorbs first-loss layer; floor caps losses at a fixed level) and the cap-reset methodology.",
-        "Top laddered series spread outcome periods so retail isn't locked into a single cap window — entry-timing risk is diluted."
-      ],
-      "watchOuts": [
-        "Mid-period buyers / sellers get a completely different exposure than the headline buffer + cap — anyone trading these mid-period is mis-using them.",
-        "Active-ratchet / dynamic-reset funds need to disclose the reset trigger clearly; opaque resets are a bottom-quintile tell.",
-        "Fees above ~1.00% are structurally paying option-spread + admin overhead (category norm is 0.65-0.85%)."
+      "redFlags": [
+        "Bought or sold mid-period — you get a completely different payoff than the headline buffer + cap.",
+        "Active-ratchet / dynamic resets with an opaque trigger — you can't tell when your terms change.",
+        "Fees above ~1.00% — above the 0.65-0.85% norm, paying for option-spread and admin overhead."
       ]
     },
     "Equity Hedged": {
-      "toKnow": [
-        "How the hedge is financed — paid outright, funded by selling calls, or built via spreads — because this determines your bull-market lag, the real and hidden cost of the protection.",
-        "The hedge structure and roll cadence — most use a put-spread collar rolled quarterly/annually, so 'hedge slip' between rolls means protection varies through the period; confirm it's laddered with no gap windows.",
-        "Historical drawdowns vs the stated buffer/floor — the test of whether the hedge actually worked when needed; 'full upside with downside protection' is overselling, so check the realistic bull-market lag."
+      "greenFlags": [
+        "Discloses how the hedge is financed (paid outright, call-sale, or spreads) — you can see the bull-market lag you're paying for.",
+        "Laddered or rolling hedges with no gaps — protection is always on, not lapsing between expirations.",
+        "Historical drawdowns landed near the stated buffer/floor — the hedge actually worked when it was needed."
       ],
-      "topQualities": [
-        "Top funds disclose how puts are financed (paid outright, financed by selling calls, or built via spreads), so retail knows the trade-off.",
-        "Top funds maintain laddered or rolling hedges so protection is always in place — no gap periods between hedge expirations.",
-        "Top funds' historical drawdowns landed near the stated buffer / floor — the hedge worked when it was needed."
-      ],
-      "watchOuts": [
-        "Hidden hedge financing is a bottom-quintile tell — if you can't tell how the protection is paid for, you can't price it.",
-        "'Full upside with downside protection' is overselling — top funds disclose realistic bull-market lag (the cost of insurance).",
-        "Fees above ~1.00% need to justify the hedge construction premium (category norm is 0.50-0.85%)."
+      "redFlags": [
+        "Sold as 'full upside with downside protection' — overselling; real funds disclose a meaningful bull-market lag.",
+        "A put-spread collar whose short put caps protection at a floor — losses below that floor are unhedged.",
+        "Fees above ~1.00% — above the 0.50-0.85% norm for the structure."
       ]
     }
   }
