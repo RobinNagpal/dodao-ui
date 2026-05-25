@@ -62,9 +62,10 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json`, renders the `topQualities` bullets
- * under a "What separates top funds in this category" heading and the
- * `watchOuts` bullets under a "Category-specific risks to flag" heading.
+ * `etf-mor-category-instructions.json` and renders three sections in order:
+ *  1. `toKnow` — framing the retail reader needs about the category itself.
+ *  2. `topQualities` — what separates top funds in the category from the rest.
+ *  3. `watchOuts` — category-specific risks the retail reader should flag.
  * The same block renders in all four ETF analysis prompts (Past Returns /
  * Cost & Team / Risk / Future Outlook). Returns undefined when the fund's
  * category has no entry registered, so the prompt template renders nothing
@@ -74,11 +75,15 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   if (!fundCategory) return undefined;
   const entry = morCategoryInstructionsConfig.instructions[fundCategory];
   if (!entry) return undefined;
+  const toKnow = entry.toKnow ?? [];
   const topQualities = entry.topQualities ?? [];
   const watchOuts = entry.watchOuts ?? [];
-  if (topQualities.length === 0 && watchOuts.length === 0) return undefined;
+  if (toKnow.length === 0 && topQualities.length === 0 && watchOuts.length === 0) return undefined;
 
   const sections: string[] = [];
+  if (toKnow.length > 0) {
+    sections.push(['**What to know about this category before buying:**', ...toKnow.map((b) => `- ${b}`)].join('\n'));
+  }
   if (topQualities.length > 0) {
     sections.push(['**What separates top funds in this category:**', ...topQualities.map((b) => `- ${b}`)].join('\n'));
   }

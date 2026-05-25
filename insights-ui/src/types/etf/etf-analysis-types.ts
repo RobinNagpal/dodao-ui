@@ -174,13 +174,19 @@ export interface EtfCategoryToGroup {
 
 /**
  * One Mor category's prompt-instruction entry. Splits the per-category guidance
- * into 3 `topQualities` (what separates the top decile / quintile of ETFs in
- * the category from the rest) and 3 `watchOuts` (category-specific risks and
- * traps the retail reader should flag). The helper that consumes this renders
- * both lists into a single markdown block with section headings, which is
- * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
+ * into three lists of three bullets each:
+ *  - `toKnow` — framing knowledge a retail reader needs before buying any ETF
+ *    in the category (mechanics, benchmark, typical risk character).
+ *  - `topQualities` — what separates the top decile / quintile of ETFs in the
+ *    category from the rest (positive signals to look for).
+ *  - `watchOuts` — category-specific risks and traps the retail reader should
+ *    flag (negatives to be wary of).
+ * The helper that consumes this renders all three lists into a single markdown
+ * block with section headings, which is plumbed through to all four ETF
+ * analysis prompts as `categoryInstructions`.
  */
 export interface EtfMorCategoryInstructionEntry {
+  toKnow: string[];
   topQualities: string[];
   watchOuts: string[];
 }
