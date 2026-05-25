@@ -2,16 +2,16 @@
   "_meta": {
     "purpose": "Mor-category-level prompt instructions plumbed into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook) as `categoryInstructions`. The same rendered block goes into all four prompts when the fund's Mor category has an entry here.",
     "coverageRule": "Populated for Mor categories with approximately >=50 US-listed ETFs as of 2026-05. Categories below the threshold render no category-specific block — the per-factor group instructions cover them.",
-    "instructionStyle": "Each category carries 9 bullets total — 3 `toKnow` describing the category itself (the framing a retail reader needs before buying any ETF in the category), 3 `topQualities` describing what separates the top decile / quintile of ETFs from the rest in that category (the positives to look for), and 3 `watchOuts` describing category-specific risks and traps a retail reader should flag (the negatives to be wary of). Each bullet is 1-2 lines max — do not pad.",
+    "instructionStyle": "Each category carries 9 bullets total — 3 `toKnow` describing non-obvious-but-important construction / selection / strategy mechanics retail needs to understand the fund (e.g. how the index defines the universe, weighting scheme, reconstitution cadence, hidden screens — NOT generic statements like 'this is large-cap blend'), 3 `topQualities` describing what separates the top decile / quintile of ETFs from the rest in that category (the positives to look for), and 3 `watchOuts` describing category-specific risks and traps a retail reader should flag (the negatives to be wary of). Each bullet is 1-2 lines max — do not pad.",
     "keyConvention": "Keys MUST be exact Mor category names from etf-analysis-categories.json -> categories[].name. Unknown keys are silently ignored.",
     "lastReviewed": "2026-05-25"
   },
   "instructions": {
     "Large Blend": {
       "toKnow": [
-        "This is broad US large-cap exposure — ~70%+ of US equity market cap, the closest thing to owning the US economy in a single fund.",
-        "Historical 10Y CAGR has averaged ~10-12% with worst-year drawdowns of -30 to -40% (2008, 2020 intraday); expect bumps along the way.",
-        "Tax-efficient ETF structure means most return comes through price appreciation; dividend yield is modest (~1.3-1.8%)."
+        "Most Large Blend ETFs are cap-weighted — the top 10 names structurally drive ~30% of the basket, that's index mechanics, not active concentration.",
+        "Index reconstitution differs: S&P 500 is committee-selected with quarterly rebalances; Russell 1000 is rules-based with annual reconstitution; CRSP US Large reconstitutes quarterly. Same 'blend' label, different actual baskets.",
+        "'Blend' classification is the index's growth-vs-value tilt at construction — a Blend fund can drift mid-year as price moves push names across the style line without any active decision."
       ],
       "topQualities": [
         "Tracking error vs the named benchmark — top funds hold within ~5 bps and consistently deliver index-grade performance year after year.",
@@ -26,9 +26,9 @@
     },
     "Large Growth": {
       "toKnow": [
-        "Upper-P/E and revenue-growth half of US large-cap — currently dominated by mega-cap tech, but composition shifts across cycles.",
-        "Has outperformed Large Value over the last decade but materially underperformed in 2000-2010 — growth-vs-value cycles can last 10+ years.",
-        "Higher beta than the broad market (~1.1-1.2) and deeper drawdowns; 2022 saw Large Growth fall ~30% while the S&P 500 fell ~19%."
+        "Different 'growth' indices use different multi-factor screens (forward P/E, EPS-growth, sales-growth, momentum) and weight the factors differently — two 'Large Growth' ETFs can hold meaningfully different baskets.",
+        "Mega-cap dominance is structural to cap-weighted growth indices — when MSFT and NVDA grow faster, they get a bigger weight, which compounds the tilt year over year.",
+        "Growth indices typically reconstitute annually — style purity can drift mid-year if a top name starts to look like blend or value before the next rebalance."
       ],
       "topQualities": [
         "Style purity — top funds load on growth (P/E, EPS-growth) versus the named index, so the bet retail signed up for is the bet they actually own.",
@@ -43,9 +43,9 @@
     },
     "Large Value": {
       "toKnow": [
-        "Lower-P/E and higher-dividend-yield half of US large-cap — typically heavier in financials, energy, industrials, healthcare.",
-        "Generally lower beta than the broad market and shallower drawdowns; the trade-off is muted upside in growth-led windows.",
-        "Many funds in the category lean heavily on dividend stocks — read the yield character (qualified vs ordinary) before holding in a taxable account."
+        "'Value' is typically a multi-factor screen (P/B, dividend yield, free-cash-flow yield, sometimes E/P) — different indices weight the factors differently, so two 'Large Value' ETFs can hold meaningfully different baskets.",
+        "Most value indices intentionally exclude high-growth names even when they're cheap on E/P — there's a no-growth-stocks gate in the screen, not just a value gate.",
+        "Annual reconstitution turnover in value indices is higher than in blend — value rotates ~15-25% of names per year as the multifactor screen shifts."
       ],
       "topQualities": [
         "True value tilt — top funds hold lower P/B and higher dividend yield than the S&P 500, so the value premise is in the actual basket.",
@@ -60,9 +60,9 @@
     },
     "Mid-Cap Blend": {
       "toKnow": [
-        "Mid-cap is roughly $2B-$10B market cap — fewer headlines than large-cap, more growth runway than small-cap.",
-        "Historically delivered a mid-cap premium over large-cap but with higher volatility; expect ~25-30% worst-year drawdowns.",
-        "Often overlooked in 60/40 portfolios; a 5-10% mid-cap sleeve is the typical retail allocation if used at all."
+        "The mid-cap size band differs by index — Russell Midcap is roughly $2B-$30B; S&P 400 Mid Cap is roughly $5.6B-$18B; CRSP US Mid uses the 70th-85th percentile of US equity. These bands do NOT align.",
+        "Most mid-cap indices use float-adjusted market-cap weighting — insider holdings are excluded, so a name's effective fund weight can shift even if its raw market cap is unchanged.",
+        "Mid-cap 'graduation' is structural — names that grow past the mid-cap cap get bumped to large-cap on reconstitution; the fund constantly cycles in emerging mid-caps and cycles out graduates."
       ],
       "topQualities": [
         "Size purity — top funds stay inside the Russell Midcap (or S&P 400) defined size band, delivering the mid-cap premium retail came for.",
@@ -77,9 +77,9 @@
     },
     "Mid-Cap Growth": {
       "toKnow": [
-        "Mid-cap growth captures companies emerging from small-cap into the mid-cap band with strong revenue growth — Russell Midcap Growth is the standard benchmark.",
-        "Higher volatility than Large Growth and shallower liquidity; expect wider drawdowns and slower recoveries.",
-        "Style cycles favour mid-growth in expanding-economy windows; it underperforms materially in late-cycle and recession periods."
+        "Mid-cap growth applies a multi-factor growth screen ON TOP of the mid-cap size band — the combined screen narrows the universe, and the holdings can drift toward 'growth in any band' if the screen is loose.",
+        "Many mid-cap growth ETFs hold names about to graduate to large-cap — structurally an 'emerging-large-cap' fund as much as a true mid-cap fund.",
+        "Active-manager penetration in mid-cap growth is lower than in large-cap growth — the passive-vs-active alpha dynamic differs from what retail expects from large-cap experience."
       ],
       "topQualities": [
         "Growth purity — top funds load on the actual P/E and EPS-growth screens versus the named index, capturing the mid-cap-growth premium.",
@@ -94,9 +94,9 @@
     },
     "Mid-Cap Value": {
       "toKnow": [
-        "Mid-cap value captures lower-P/E, higher-dividend names in the $2B-$10B band — historically one of the strongest long-run factor returns.",
-        "Less interest-rate-sensitive than mid-growth but more cyclical to the broader economy.",
-        "Many funds lean into financials, industrials, REITs — sector mix matters more here than in large-cap value."
+        "Sector mix shifts the risk profile materially — mid-cap value tends to hold more financials, industrials, REITs, and consumer-cyclicals than large-cap value.",
+        "Value-trap risk is higher in mid-cap value than in large-cap value — smaller names with cheap multiples are often cheap because business momentum has stalled, not because they're misvalued.",
+        "Profitability screens (AVUV-style) materially change the holdings vs pure-value funds — funds without a profitability filter often hold low-quality / zombie names."
       ],
       "topQualities": [
         "Value purity — top funds load on lower P/B and higher dividend yield versus the named index in a size band where value historically pays off.",
@@ -111,9 +111,9 @@
     },
     "Small Blend": {
       "toKnow": [
-        "Small-cap is roughly $300M-$2B market cap — Russell 2000 or S&P 600 as the standard benchmarks.",
-        "Historically delivered a small-cap premium but with materially higher volatility; expect ~35-40% worst-year drawdowns.",
-        "Less liquid than large-cap; spreads and execution friction are real costs that aren't fully captured in headline expense ratios."
+        "The small-cap band differs by index — Russell 2000 is roughly the 1001st-3000th US-listed by size; S&P 600 has a profitability filter and goes ~$1B-$8B. These differ materially.",
+        "Most small-cap indices use float-adjusted market-cap weighting — small-caps often have material insider holdings, so the float adjustment can shift effective weights by 5-10 pp.",
+        "Russell 2000 includes unprofitable companies; S&P 600 excludes them via a quarterly earnings filter — that profitability filter is why S&P 600 has historically outperformed Russell 2000 by ~2 pp annualised."
       ],
       "topQualities": [
         "Size purity — top funds stay inside the Russell 2000 (or S&P 600) defined size band, capturing the small-cap premium retail came for.",
@@ -128,9 +128,9 @@
     },
     "Small Growth": {
       "toKnow": [
-        "Small-cap growth is the highest-volatility traditional equity sleeve in a typical portfolio — Russell 2000 Growth is the benchmark.",
-        "Many constituents are unprofitable or earnings-volatile companies; the index includes a long tail of low-quality names.",
-        "Drawdowns are sharper than the broad market — 2022 saw Russell 2000 Growth fall ~30%+ versus the S&P 500's -19%."
+        "Small-cap growth applies a growth screen ON TOP of the small-cap size band — the combined screen is narrower than either alone, so the universe is small and the holdings are concentrated by index design.",
+        "Many small-cap growth indices include unprofitable companies (Russell 2000 Growth notably) — the basket can be heavily weighted toward 'story stocks' with no near-term earnings.",
+        "Active small-cap growth managers historically have a larger alpha pool than large-cap growth — passive may not be the obvious default in this segment."
       ],
       "topQualities": [
         "Growth purity — top funds load on the actual growth-defining screen (EPS, sales growth) versus the named index, not just 'growthy names'.",
@@ -145,9 +145,9 @@
     },
     "Small Value": {
       "toKnow": [
-        "Small-cap value has historically delivered one of the strongest long-run factor premia (the 'size + value' combination).",
-        "Higher volatility than the broad market but more business-cycle-driven than rate-driven.",
-        "Many funds in this category screen for profitability (e.g. AVUV) — the screen matters because a pure value tilt without profitability includes 'value traps'."
+        "Small-cap value has historically had the largest factor-premium gap to passive (~2-4 pp annualised) — but the premium realises in clusters, not smoothly across all years.",
+        "The profitability screen is the key construction decision — pure small-cap value (cheap P/B) without a profitability filter has historically underperformed small-cap value WITH profitability (AVUV-style).",
+        "Many small-cap value indices stretch down into micro-cap names (<$500M) — the actual size band is often wider than the 'small-cap' label suggests."
       ],
       "topQualities": [
         "Value purity — top funds load on lower P/B and higher dividend yield versus the named index in a size band where value historically pays off.",
@@ -162,9 +162,9 @@
     },
     "Foreign Large Blend": {
       "toKnow": [
-        "Non-US developed-market large-cap exposure — MSCI EAFE (Europe, Australasia, Far East) is the standard benchmark.",
-        "Foreign equities have lagged US equities over the last 15 years but historical cycles run both ways; foreign allocation is a long-term diversifier, not a short-term bet.",
-        "Currency moves matter — an unhedged fund's USD return mixes underlying equity moves with the USD-vs-foreign-currency direction."
+        "The 'foreign' universe is defined differently across providers — MSCI EAFE excludes Canada and emerging markets; FTSE All-World ex-US includes Canada (~6-8% of the developed-ex-US universe). Same label, different exposure.",
+        "Most foreign large-blend ETFs are cap-weighted across countries — Japan and the UK dominate (often ~25%+ combined), and country weights shift with relative market-cap moves.",
+        "Sampling vs full replication matters — many foreign large-blend ETFs use optimised sampling (hold ~70-90% of the index by weight) rather than full replication, adding small tracking deviations."
       ],
       "topQualities": [
         "Currency-hedge discipline — top funds clearly state hedged vs unhedged and don't switch mid-life.",
@@ -179,9 +179,9 @@
     },
     "Diversified Emerging Mkts": {
       "toKnow": [
-        "Broad EM equity exposure — typically dominated by China, Taiwan, India, South Korea — MSCI Emerging Markets is the standard benchmark.",
-        "Higher volatility and country-specific political risk than developed markets; expect ~30-40% worst-year drawdowns.",
-        "Returns are highly cyclical and correlated with the US dollar trend (weak USD typically lifts EM); not a 'set it and forget it' sleeve."
+        "The EM universe is defined by the index provider — MSCI EM includes ~25 countries; FTSE EM excludes South Korea; S&P EM has its own list. Country composition can differ by 10-15 pp between providers.",
+        "Most EM ETFs hold ADRs (American Depositary Receipts), not direct local shares — funds that hold local shares directly carry foreign trading-hours and settlement operational risk.",
+        "China weighting depends on which 'China' shares are included — A-shares (Shanghai/Shenzhen), H-shares (Hong Kong), ADRs (US-listed) are different baskets with different price drivers and access rules."
       ],
       "topQualities": [
         "Single-country concentration cap — top funds explicitly cap China + Taiwan combined below ~30-35% so EM stays diversified.",
@@ -196,9 +196,9 @@
     },
     "Technology": {
       "toKnow": [
-        "Sector-focused exposure to US technology companies — typically ~75%+ overlap with Large Growth at the top of the index.",
-        "Higher beta than the broad market (~1.2-1.5); the sector amplifies broad-market moves and has had three drawdowns >40% since 2000.",
-        "Mega-cap tech (MSFT, NVDA, AAPL, GOOGL, AMZN, META) dominates most tech ETFs — holding broad-market + tech-sector ETFs creates concentrated overlap retail often misses."
+        "'Technology' is defined by index methodology — S&P selects via GICS; some thematic indices use a broader definition that includes Amazon, Tesla, Meta despite their non-tech GICS sector. The label hides large composition differences.",
+        "Sub-sector composition is set by index construction — XLK is roughly 50% software / 50% semis; SOXX is pure semis; FTEC includes broader tech-services. Two 'tech' ETFs are NOT the same exposure.",
+        "Sector ETFs rebalance on the sector-index schedule (typically quarterly) — a name added or removed mid-quarter takes time to show up in the fund's basket."
       ],
       "topQualities": [
         "Sub-sector breakdown clarity — top funds disclose software vs semis vs internet weights so retail knows the exact tech-cycle exposure.",
@@ -213,9 +213,9 @@
     },
     "Real Estate": {
       "toKnow": [
-        "REIT ETFs invest in publicly-traded equity REITs — landlords of office, residential, retail, industrial, healthcare, data-centre properties.",
-        "REIT distributions are mostly ordinary income (not qualified dividends) — less tax-efficient than equity in taxable accounts; better in IRAs / 401(k)s.",
-        "REITs are interest-rate-sensitive — the category lost ~25-30% in 2022's rate shock."
+        "REIT ETFs use a REIT-defined universe (FTSE NAREIT, MSCI US REIT, S&P US REIT) — these typically include only US-listed equity REITs that meet the 75%-real-estate-assets test.",
+        "Sub-sector weighting (residential vs office vs industrial vs healthcare vs data-centre) is float-adjusted market-cap-driven — composition shifts as real-estate cycles favour different property types.",
+        "Most REIT ETFs exclude or underweight mortgage REITs (mREITs) — different funds make different choices, and mREIT inclusion materially changes the duration / interest-rate sensitivity."
       ],
       "topQualities": [
         "Pure-play equity-REIT focus — top funds hold >=90% US-listed equity REITs, delivering the REIT sleeve cleanly.",
@@ -230,9 +230,9 @@
     },
     "Health": {
       "toKnow": [
-        "Sector-focused exposure to US healthcare — pharma, biotech, devices, payers, services.",
-        "Demographic tailwinds (aging US population) are durable, but the sector also carries political risk (drug-pricing legislation, FDA actions).",
-        "Defensive in recessions (utilities-like demand), but sub-sector composition determines beta — biotech is high-vol, devices and services are lower."
+        "'Health' by GICS includes pharma, biotech, devices, payers, services — but different ETFs apply sub-sector weighting differently (XLV is broad, IBB is biotech-pure, IHE is pharma-pure). Same label, very different basket.",
+        "Concentration depends on the weighting scheme — cap-weighted health ETFs are typically ~40-50% pharma; equal-weighted variants spread risk but carry higher turnover and rebalance cost.",
+        "The pharma sub-sector includes companies with binary-event risk (FDA approvals, patent cliffs) — concentration in any single name above ~5% materially amplifies that risk in cap-weighted funds."
       ],
       "topQualities": [
         "Sub-sector exposure clarity — top funds are explicit about broad health (pharma + biotech + devices + services) vs pharma-pure vs biotech-only.",
@@ -247,9 +247,9 @@
     },
     "Intermediate Core Bond": {
       "toKnow": [
-        "The 'core' of fixed income — Bloomberg US Aggregate is the standard benchmark, ~5-7Y duration, mostly Treasury + agency MBS + IG corporate.",
-        "Bond ETFs lose value when rates rise; 2022 saw the Agg fall ~13% — bonds are not 'guaranteed safe'.",
-        "Yield is the long-run driver of bond returns; bond-fund total return roughly equals starting yield over the duration of the fund."
+        "The Bloomberg US Aggregate ('core' benchmark) is dominated by mortgages and Treasuries — IG corporate is only ~25% of the index, not the largest sleeve as many retail readers assume.",
+        "Most core-bond ETFs are sampled, not fully replicated — the Agg has ~12,000+ holdings, so funds hold a representative subset (~8,000-10,000), introducing small tracking deviations.",
+        "The Agg's duration shifts as new bonds enter / mature — it has lengthened by ~1.5 years since 2010 because Treasury issuance has lengthened, making 'core' more rate-sensitive than it used to be."
       ],
       "topQualities": [
         "Duration discipline — top funds hold ~5-7Y duration matching Bloomberg US Agg, delivering core-bond exposure cleanly.",
@@ -264,9 +264,9 @@
     },
     "Short-Term Bond": {
       "toKnow": [
-        "1-3Y duration band — lower yield than intermediate core but materially less rate sensitivity.",
-        "Bond-fund total return = (yield + price change); short-duration funds barely move on rates — 2022 saw the category fall ~3-4% vs Agg's -13%.",
-        "A bond-fund SEC yield close to a cash HYSA rate means the only reason to hold the fund is duration optionality if rates fall."
+        "'Short-term' is index-defined and varies — Bloomberg 1-3Y Treasury, Bloomberg US Aggregate 1-3Y, Bloomberg US Corp 1-3Y all have different credit / sector mixes despite identical maturity bands.",
+        "Short-term bond ETFs hold many small-position bonds and roll continuously — average maturity stays near the band, but turnover is high and shows up as ongoing transaction cost.",
+        "Short-term yields react faster to Fed moves than long-term yields — when the Fed cuts, short-term fund yields drop within months; long-term yields can move the opposite direction in the same window."
       ],
       "topQualities": [
         "Duration discipline — top funds hold 1-3Y, delivering low-duration income as advertised.",
@@ -281,9 +281,9 @@
     },
     "Ultrashort Bond": {
       "toKnow": [
-        "Under 1Y duration — behaves almost like a cash equivalent with a slight yield premium.",
-        "Yields move with the Fed funds rate — when the Fed cuts, ultrashort yields drop fast.",
-        "Not FDIC-insured; ultrashort funds can mark down slightly in stress (rare but did happen briefly to some funds in March 2020)."
+        "The ultrashort basket can be 90-180 day T-bills, commercial paper, or short-duration IG corporate — composition matters a lot for the risk character despite the same 'ultrashort' label.",
+        "Active vs passive matters more here than in longer-duration funds — active managers often outperform passive by reaching into CLO-AAA or short corporate for incremental yield.",
+        "Unlike money-market funds (stable $1 NAV), ultrashort ETF NAV can move 1-3 cents intraday — retail should expect minor mark-to-market variability, not strict cash-equivalence."
       ],
       "topQualities": [
         "Duration discipline — top funds hold under 1Y effective duration, behaving like cash with a small yield premium.",
@@ -298,9 +298,9 @@
     },
     "Corporate Bond": {
       "toKnow": [
-        "Investment-grade US corporate exposure — Bloomberg US Corp IG is the standard benchmark.",
-        "Carries both rate risk (duration) AND credit risk (spread widening); 2022 saw the category fall ~13-18% as rates rose AND spreads widened.",
-        "Yield = Treasury yield + credit spread; the credit-spread portion is the compensation for default risk over Treasuries."
+        "Most IG corporate ETFs are cap-weighted by issuance — the largest debt-issuers (financials especially) dominate, often 35-45% financials. Cap-by-issuance is structurally different from equity cap-weighting.",
+        "Sector weights shift with new-issuance volume — when financials issue more debt (typically late-cycle), the financial weight grows in the fund even though no active decision was made.",
+        "Corporate bond ETFs typically use full replication or large-sample of the named index across ~5,000-8,000 IG corporate bonds; sampling intensity affects tracking precision."
       ],
       "topQualities": [
         "Credit-quality discipline — top funds hold >=85% A-rated and above, delivering IG corporate exposure cleanly.",
@@ -315,9 +315,9 @@
     },
     "High Yield Bond": {
       "toKnow": [
-        "Below-investment-grade ('junk') US corporate exposure — credit risk is the primary risk, not duration.",
-        "Default risk is real — average HY default rate is ~3-4% annually and spikes to ~10%+ in recessions.",
-        "2008 drew HY down -25 to -30%, 2020 intra-year fell -20% — these are equity-like drawdowns at fixed-income yields."
+        "The HY universe is ~2,000-3,000 below-IG corporate bonds — most HY ETFs use heavy sampling (~600-1,000 holdings) rather than full replication, so two HY ETFs can have meaningfully different baskets.",
+        "Sector composition has shifted materially over time — energy was ~15% of HY in the 2014 oil crash; CCC-tier has fluctuated from 10% to 25% of the index across cycles.",
+        "Most HY ETFs include 'fallen angels' (IG bonds downgraded to HY) — fallen angels often outperform original HY because the market over-sells on downgrade."
       ],
       "topQualities": [
         "Credit + sector disclosure — top funds publish CCC % and sector concentration plainly so retail knows the actual risk taken.",
@@ -332,9 +332,9 @@
     },
     "Muni National Interm": {
       "toKnow": [
-        "Tax-exempt at the federal level (and state-exempt for in-state holders) — distributions are not subject to federal income tax.",
-        "For high-income taxable accounts the after-tax yield often beats Treasury yields; the comparison is tax-equivalent yield (TEY).",
-        "Carries duration risk like any other bond fund; 2022 saw IG muni down ~7-10%."
+        "The muni-bond universe is fragmented — there are ~50,000+ active US muni issuers, and muni indices heavily sample (~3,000-5,000 holdings) rather than full-replicate.",
+        "Most national muni ETFs hold investment-grade muni only — muni HY is a separate category, not part of the standard 'Muni National Interm' basket.",
+        "Muni-bond liquidity is materially lower than corporate or Treasury — bid-ask spreads can widen to 10-50 bps in stress windows vs 1-5 bps for Treasuries."
       ],
       "topQualities": [
         "Duration discipline — match the named benchmark; top funds deliver intermediate-muni rate exposure cleanly.",
@@ -349,9 +349,9 @@
     },
     "Trading--Leveraged Equity": {
       "toKnow": [
-        "2x or 3x daily-reset leveraged products — designed for traders, not long-term holders.",
-        "Multi-day return is path-dependent and decays in choppy markets; even with a flat underlying, the fund can lose meaningfully over weeks.",
-        "Compounding works against you in any non-trending market — these can fall 90%+ from peaks during prolonged volatility."
+        "Daily reset means the leverage multiplier applies to ONE day's return — over multi-day windows, actual return diverges from N × underlying due to compounding (this is structural, not a defect).",
+        "Most leveraged ETFs use total-return swaps with major bank counterparties — counterparty risk is small (collateralised, multi-counterparty) but not zero, and the swap pricing introduces small daily tracking errors.",
+        "The fund's NAV is computed daily from the swap's mark-to-market — gaps between swap pricing and the underlying introduce small daily tracking errors even when the leverage math is correct."
       ],
       "topQualities": [
         "Daily-tracking quality — top funds hit ~3x (or stated multiple) of the underlying daily move within tight tolerance.",
@@ -366,9 +366,9 @@
     },
     "Trading--Inverse Equity": {
       "toKnow": [
-        "-1x, -2x, or -3x daily-reset inverse products — designed for short-term tactical hedging only.",
-        "Decays even faster than leveraged-long funds in any market that isn't a sustained downtrend.",
-        "Buying-and-holding inverse ETFs as 'portfolio insurance' is the most common retail mistake in this category."
+        "Inverse ETFs use short-equivalent swaps — they don't actually short shares; they enter total-return swaps where the fund pays the equity return and receives a fixed rate.",
+        "Decay in flat / mildly-up markets is more severe than for leveraged-long funds — at -2x or -3x, daily volatility compounds against the holder asymmetrically.",
+        "Inverse funds only work in sustained, trending drawdowns — choppy down-then-up markets erode both the protection AND the principal even when direction is broadly correct."
       ],
       "topQualities": [
         "Daily-tracking quality — top funds hit stated inverse multiple within tight tolerance.",
@@ -383,9 +383,9 @@
     },
     "Derivative Income": {
       "toKnow": [
-        "These funds trade equity upside for higher distribution yield — they will lag the underlying index in bull markets and that's by design.",
-        "Headline yield is gross; option-premium income isn't a qualified dividend, so the after-tax yield in taxable accounts is materially lower.",
-        "Distribution rates are not guaranteed — they fluctuate with realised volatility (option-premium availability shrinks in low-vol regimes)."
+        "The 'derivative income' label wraps several distinct strategies — covered-call, put-write, collar, defined-outcome, equity-hedged all sit here, and they behave very differently across vol regimes.",
+        "Most covered-call funds write calls at-the-money or slightly out-of-the-money — strike distance from spot determines how much upside the fund sacrifices for premium income.",
+        "Distribution composition (ordinary income, qualified dividend, ROC, short-term capital gain) varies fund-to-fund AND year-to-year — the 1099 mix matters as much as the headline yield for after-tax return."
       ],
       "topQualities": [
         "Top funds show stable or slightly-rising NAV alongside their distribution yield — true income, not capital being returned dressed as yield.",
@@ -400,9 +400,9 @@
     },
     "Defined Outcome": {
       "toKnow": [
-        "These funds use FLEX options to deliver a stated buffer (e.g. 9 / 15 / 30%) plus an upside cap over a fixed outcome period (usually 12 months).",
-        "The buffer + cap are only honored if you hold across the full outcome period — mid-period buys / sells get a different exposure.",
-        "Suited to retail with a defined time horizon and a need for downside protection; not a substitute for a balanced portfolio."
+        "Most defined-outcome funds use FLEX options (custom-tailored exchange-traded options) — these allow precise buffer / cap construction but trade in thinner markets, adding creation / redemption spread cost.",
+        "The buffer + cap are set at the start of the outcome period and are net of fund expenses — the marketed cap is slightly lower after fees actually accrue.",
+        "Buffer 'slip' is real — the buffer protection isn't perfect because of basis risk between the options' settlement price and the underlying's market price at expiry."
       ],
       "topQualities": [
         "Top funds make it explicit that the buffer + cap are only realised at outcome-period end, so retail understands the holding-period commitment.",
@@ -417,9 +417,9 @@
     },
     "Equity Hedged": {
       "toKnow": [
-        "These funds use put / collar / spread overlays on top of equity to cap downside while keeping most of the upside.",
-        "The hedge isn't free — it's paid for either upfront (premium) or by giving up upside (selling calls). Either way, expect a bull-market lag.",
-        "Suited to retail near retirement or with low risk tolerance who wants equity-like exposure with a softer drawdown."
+        "Most hedged-equity funds use a put-spread collar (long put + short put further OTM + short call) — structurally different from a simple long-put hedge and changes both the protection floor and the cost profile.",
+        "The hedge is rolled quarterly or annually — between roll dates, the protection level shifts as the underlying moves (the 'hedge slip' creates variable protection during the period).",
+        "The cost of the hedge is paid via the upside cap and / or fund expense ratio — there's no free-protection structure, and which side absorbs the cost determines the fund's bull-market lag."
       ],
       "topQualities": [
         "Top funds disclose how puts are financed (paid outright, financed by selling calls, or built via spreads), so retail knows the trade-off.",
