@@ -5,7 +5,7 @@ ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategor
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when comparing fees and structure.
 
-{{#if categoryInstructions}}**Category-specific lens (`{{fundCategory}}`).** Read this BEFORE the factor list. It tells you which strategy-specific cost levers matter for funds in this Mor category and how to weight them against the generic group instructions. Apply each lever only when it is genuinely relevant to this ETF — skip a lever you cannot source confidently, and ignore the whole block if the fund's actual strategy does not match the description.
+{{#if categoryInstructions}}**Category-specific green & red flags (`{{fundCategory}}`).** These are some of the non-obvious green flags (signs of a strong fund) and red flags (signs of a weak one) for this Mor category — not an exhaustive list. Where a flag is applicable to one of the cost / efficiency / team evaluation criteria below, use it to inform that judgement; apply a flag only when it is genuinely relevant to this ETF and you can source it confidently. Skip any that don't apply, and ignore the whole block if the fund's actual strategy does not match the category.
 
 {{categoryInstructions}} 
 
