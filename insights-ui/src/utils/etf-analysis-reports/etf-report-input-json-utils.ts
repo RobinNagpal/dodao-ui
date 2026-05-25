@@ -4,18 +4,22 @@ import {
   EtfCategoriesConfig,
   EtfGroupBasedFactorsConfig,
   EtfGroupFactorDefinition,
+  EtfMorCategoryInstructionsConfig,
 } from '@/types/etf/etf-analysis-types';
 import { serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
+import etfMorCategoryInstructionsRaw from '@/etf-analysis-data/etf-mor-category-instructions.json';
 import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
 import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
 import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
 import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
+import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
 
 const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
+const morCategoryInstructionsConfig = etfMorCategoryInstructionsRaw as EtfMorCategoryInstructionsConfig;
 const performanceAndReturnsConfig = performanceAndReturnsRaw as EtfGroupBasedFactorsConfig;
 const costEfficiencyAndTeamConfig = costEfficiencyAndTeamRaw as EtfGroupBasedFactorsConfig;
 const riskAnalysisConfig = riskAnalysisRaw as EtfGroupBasedFactorsConfig;
@@ -58,15 +62,33 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 }
 
 /**
- * Resolve the optional Mor-category-level instructions for a given analysis category.
- * Returns the matching string from `etf-analysis-categories.json` when the fund's
- * category has a `categoryInstructions` block for that analysis category, otherwise
- * undefined so the prompt template can render nothing.
+ * Resolve the optional Mor-category-level instructions for the fund. Reads from
+ * `etf-mor-category-instructions.json` (keyed by category slug) and renders two
+ * sections in order:
+ *  1. `greenFlags` — non-obvious signs of a strong fund in the category.
+ *  2. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
+ *     the green flags).
+ * The same block renders in all four ETF analysis prompts (Past Returns /
+ * Cost & Team / Risk / Future Outlook). Returns undefined when the fund's
+ * category has no entry registered, so the prompt template renders nothing
+ * extra.
  */
-function getCategoryInstructions(fundCategory: string | null | undefined, analysisCategory: EtfAnalysisCategory): string | undefined {
+function getCategoryInstructions(fundCategory: string | null | undefined): string | undefined {
   if (!fundCategory) return undefined;
-  const match = categoriesConfig.categories.find((c) => c.name === fundCategory);
-  return match?.categoryInstructions?.[analysisCategory];
+  const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
+  if (!entry) return undefined;
+  const greenFlags = entry.greenFlags ?? [];
+  const redFlags = entry.redFlags ?? [];
+  if (greenFlags.length === 0 && redFlags.length === 0) return undefined;
+
+  const sections: string[] = [];
+  if (greenFlags.length > 0) {
+    sections.push(['**Green flags — non-obvious signs of a strong fund in this category:**', ...greenFlags.map((b) => `- ${b}`)].join('\n'));
+  }
+  if (redFlags.length > 0) {
+    sections.push(['**Red flags — non-obvious signs of a weak or risky fund in this category:**', ...redFlags.map((b) => `- ${b}`)].join('\n'));
+  }
+  return sections.join('\n\n');
 }
 
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {
@@ -181,7 +203,7 @@ export function preparePerformanceAndReturnsInputJson(etf: EtfWithAllData) {
     groupKey,
     groupName: getGroupNameForGroupKey(groupKey),
     groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
-    categoryInstructions: getCategoryInstructions(fundCategory, EtfAnalysisCategory.PerformanceAndReturns) ?? null,
+    categoryInstructions: getCategoryInstructions(fundCategory) ?? null,
     indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerReturns: JSON.stringify({
@@ -308,7 +330,7 @@ export function prepareCostEfficiencyAndTeamInputJson(etf: EtfWithAllData) {
     groupKey,
     groupName: getGroupNameForGroupKey(groupKey),
     groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
-    categoryInstructions: getCategoryInstructions(fundCategory, EtfAnalysisCategory.CostEfficiencyAndTeam) ?? null,
+    categoryInstructions: getCategoryInstructions(fundCategory) ?? null,
     indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     financialInfo: JSON.stringify({
@@ -374,7 +396,7 @@ export function prepareRiskAnalysisInputJson(etf: EtfWithAllData) {
     groupKey,
     groupName: getGroupNameForGroupKey(groupKey),
     groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
-    categoryInstructions: getCategoryInstructions(fundCategory, EtfAnalysisCategory.RiskAnalysis) ?? null,
+    categoryInstructions: getCategoryInstructions(fundCategory) ?? null,
     indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
     stockAnalyzerRiskMetrics: JSON.stringify({
@@ -481,7 +503,7 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
     groupKey,
     groupName: getGroupNameForGroupKey(groupKey),
     groupCategories: getCategoriesForGroupKey(groupKey).join(', '),
-    categoryInstructions: getCategoryInstructions(fundCategory, EtfAnalysisCategory.FuturePerformanceOutlook) ?? null,
+    categoryInstructions: getCategoryInstructions(fundCategory) ?? null,
     indexName: sa?.indexName ?? null,
     factorAnalysisArray: prepareFactorAnalysisArray(factors),
 

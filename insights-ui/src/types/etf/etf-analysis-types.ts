@@ -170,17 +170,41 @@ export interface EtfGroup {
 export interface EtfCategoryToGroup {
   name: string;
   group: string;
-  /**
-   * Optional Mor-category-level prompt instructions. Keyed by EtfAnalysisCategory
-   * (PerformanceAndReturns / CostEfficiencyAndTeam / RiskAnalysis /
-   * FuturePerformanceOutlook). When present, the matching entry is plumbed into
-   * the per-category prompt as `categoryInstructions` so the LLM can read the
-   * fund through a category-specific lens (e.g. covered-call levers for
-   * "Derivative Income") on top of the existing group-level guidance. Populate
-   * sparingly — only for categories whose decision frame materially diverges
-   * from the rest of its group.
-   */
-  categoryInstructions?: Partial<Record<EtfAnalysisCategory, string>>;
+}
+
+/**
+ * One Mor category's prompt-instruction entry. Two lists of 3-5 bullets each:
+ *  - `greenFlags` — non-obvious signs of a strong fund in the category.
+ *  - `redFlags` — non-obvious signs of a weak or risky fund. These are NOT the
+ *    mirror-image negation of `greenFlags`; each is its own distinct failure
+ *    mode, so a given dial appears on at most one side.
+ * Only genuinely impactful, non-obvious signals are listed (no obvious basics
+ * like a plain low/high expense ratio). The helper that consumes this renders
+ * both lists into a single markdown block with section headings, which is
+ * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
+ */
+export interface EtfMorCategoryInstructionEntry {
+  greenFlags: string[];
+  redFlags: string[];
+}
+
+/**
+ * Mor-category-level prompt instructions stored separately from
+ * `etf-analysis-categories.json` in `etf-mor-category-instructions.json`.
+ * Keyed by category slug (`slugifyEtfCategory(EtfCategoryToGroup.name)`,
+ * e.g. `large-blend`) — the same identifier groups and category URLs use.
+ * The same rendered block goes into all four ETF analysis prompts
+ * (Past Returns / Cost & Team / Risk / Future Outlook).
+ */
+export interface EtfMorCategoryInstructionsConfig {
+  _meta?: {
+    purpose?: string;
+    coverageRule?: string;
+    instructionStyle?: string;
+    keyConvention?: string;
+    lastReviewed?: string;
+  };
+  instructions: Record<string, EtfMorCategoryInstructionEntry>;
 }
 
 export interface EtfCategoriesConfig {
