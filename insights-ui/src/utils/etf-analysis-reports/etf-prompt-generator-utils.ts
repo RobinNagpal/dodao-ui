@@ -12,6 +12,7 @@ import {
   prepareRiskAnalysisInputJson,
 } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
 import { compileTemplate, loadSchema, validateData } from '@/util/get-llm-response';
+import { resolveEtfPromptTemplate } from '@/utils/etf-analysis-reports/etf-prompt-template-utils';
 import path from 'path';
 
 export interface GeneratedEtfPromptResult {
@@ -74,7 +75,8 @@ export async function generateEtfPromptForReportType(symbol: string, exchange: s
     }
   }
 
-  const finalPrompt = compileTemplate(prompt.activePromptVersion.promptTemplate, inputJson);
+  const templateContent = resolveEtfPromptTemplate(reportType, prompt.activePromptVersion.promptTemplate);
+  const finalPrompt = compileTemplate(templateContent, inputJson);
 
   return { prompt: finalPrompt, inputJson, reportType, promptKey };
 }
