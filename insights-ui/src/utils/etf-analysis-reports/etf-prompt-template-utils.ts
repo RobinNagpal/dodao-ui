@@ -3,10 +3,10 @@ import path from 'path';
 import { EtfReportType } from '@/types/etf/etf-analysis-types';
 
 /**
- * The four ETF analysis prompts whose template text is sourced from the
+ * The ETF analysis prompts whose template text is sourced from the
  * version-controlled markdown files in `insights-ui/etf-prompts/` instead of the
- * DB `Prompt.promptTemplate`. Every other prompt (index-strategy, competition,
- * final-summary, and everything outside ETFs) keeps using its DB template.
+ * DB `Prompt.promptTemplate`. Every other prompt (competition, final-summary,
+ * and everything outside ETFs) keeps using its DB template.
  *
  * Filenames are read at request time relative to `process.cwd()` — the same
  * runtime-file pattern used for `schemas/` and `blogs/`, so they ship with the
@@ -18,6 +18,7 @@ const FILE_BACKED_ETF_PROMPT_FILES: Partial<Record<EtfReportType, string>> = {
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: 'cost-efficiency-team.md',
   [EtfReportType.RISK_ANALYSIS]: 'risk-analysis.md',
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'future-performance-outlook.md',
+  [EtfReportType.INDEX_STRATEGY]: 'index-strategy.md',
 };
 
 /**
