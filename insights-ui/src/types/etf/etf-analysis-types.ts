@@ -170,17 +170,26 @@ export interface EtfGroup {
 export interface EtfCategoryToGroup {
   name: string;
   group: string;
-  /**
-   * Optional Mor-category-level prompt instructions. Keyed by EtfAnalysisCategory
-   * (PerformanceAndReturns / CostEfficiencyAndTeam / RiskAnalysis /
-   * FuturePerformanceOutlook). When present, the matching entry is plumbed into
-   * the per-category prompt as `categoryInstructions` so the LLM can read the
-   * fund through a category-specific lens (e.g. covered-call levers for
-   * "Derivative Income") on top of the existing group-level guidance. Populate
-   * sparingly — only for categories whose decision frame materially diverges
-   * from the rest of its group.
-   */
-  categoryInstructions?: Partial<Record<EtfAnalysisCategory, string>>;
+}
+
+/**
+ * Mor-category-level prompt instructions stored separately from
+ * `etf-analysis-categories.json` in `etf-mor-category-instructions.json`.
+ * Keyed by exact Mor category name (matching `EtfCategoryToGroup.name`).
+ * Each value is a short bullet list (3-5 items, 1-2 lines each) that
+ * describes what separates the top decile / quintile of ETFs in that
+ * category from the rest. The same bullets render in all four ETF analysis
+ * prompts (Past Returns / Cost & Team / Risk / Future Outlook).
+ */
+export interface EtfMorCategoryInstructionsConfig {
+  _meta?: {
+    purpose?: string;
+    coverageRule?: string;
+    instructionStyle?: string;
+    keyConvention?: string;
+    lastReviewed?: string;
+  };
+  instructions: Record<string, string[]>;
 }
 
 export interface EtfCategoriesConfig {
