@@ -175,8 +175,9 @@ export interface EtfCategoryToGroup {
 /**
  * One Mor category's prompt-instruction entry. Splits the per-category guidance
  * into three lists of three bullets each:
- *  - `toKnow` — framing knowledge a retail reader needs before buying any ETF
- *    in the category (mechanics, benchmark, typical risk character).
+ *  - `toKnow` — the core but non-obvious metrics that actually decide quality
+ *    in the category: the parameters retail overlooks because they reach for
+ *    the obvious number instead (headline yield, expense ratio, recent return).
  *  - `topQualities` — what separates the top decile / quintile of ETFs in the
  *    category from the rest (positive signals to look for).
  *  - `watchOuts` — category-specific risks and traps the retail reader should

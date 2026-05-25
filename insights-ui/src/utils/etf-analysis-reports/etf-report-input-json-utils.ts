@@ -63,7 +63,7 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
  * `etf-mor-category-instructions.json` and renders three sections in order:
- *  1. `toKnow` — framing the retail reader needs about the category itself.
+ *  1. `toKnow` — the non-obvious metrics that actually decide quality here.
  *  2. `topQualities` — what separates top funds in the category from the rest.
  *  3. `watchOuts` — category-specific risks the retail reader should flag.
  * The same block renders in all four ETF analysis prompts (Past Returns /
@@ -82,7 +82,7 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
 
   const sections: string[] = [];
   if (toKnow.length > 0) {
-    sections.push(['**What to know about this category before buying:**', ...toKnow.map((b) => `- ${b}`)].join('\n'));
+    sections.push(['**The non-obvious metrics that decide quality in this category:**', ...toKnow.map((b) => `- ${b}`)].join('\n'));
   }
   if (topQualities.length > 0) {
     sections.push(['**What separates top funds in this category:**', ...topQualities.map((b) => `- ${b}`)].join('\n'));
