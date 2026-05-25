@@ -5,7 +5,7 @@ ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategor
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when doing within-category comparison.
 
-{{#if categoryInstructions}}**Category-specific green & red flags (`{{fundCategory}}`).** These are some of the non-obvious green flags (signs of a strong fund) and red flags (signs of a weak one) for this Mor category — not an exhaustive list. Where a flag is applicable to one of the performance/returns evaluation criteria below, use it to inform that judgement; apply a flag only when it is genuinely relevant to this ETF and you can source it confidently. Skip any that don't apply, and ignore the whole block if the fund's actual strategy does not match the category.
+{{#if categoryInstructions}}**Category context (`{{fundCategory}}`).** This block has two parts. First, the most important qualitative facts about this kind of fund (how it selects holdings, its portfolio character, its income & tax nature) — surface the ones that genuinely apply to this ETF. Then some non-exhaustive green flags (signs of a strong fund) and red flags (signs of a weak one): where one is applicable to a performance/returns evaluation criterion below, use it to inform that judgement. Apply anything only when it is genuinely relevant to this ETF and you can source it confidently, and ignore the whole block if the fund's actual strategy does not match the category.
 
 {{categoryInstructions}}
 

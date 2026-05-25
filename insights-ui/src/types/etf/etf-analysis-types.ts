@@ -173,17 +173,22 @@ export interface EtfCategoryToGroup {
 }
 
 /**
- * One Mor category's prompt-instruction entry. Two lists of 3-5 bullets each:
+ * One Mor category's prompt-instruction entry:
+ *  - `mostImportant` (optional) — qualitative facts describing what this kind of
+ *    fund IS (index/selection methodology, portfolio character, income & tax
+ *    nature). Neutral context, no verdict and no numeric thresholds; the facts
+ *    the index-strategy prompt asks the LLM to surface for a specific ETF.
  *  - `greenFlags` — non-obvious signs of a strong fund in the category.
- *  - `redFlags` — non-obvious signs of a weak or risky fund. These are NOT the
- *    mirror-image negation of `greenFlags`; each is its own distinct failure
- *    mode, so a given dial appears on at most one side.
- * Only genuinely impactful, non-obvious signals are listed (no obvious basics
- * like a plain low/high expense ratio). The helper that consumes this renders
- * both lists into a single markdown block with section headings, which is
+ *  - `redFlags` — non-obvious signs of a weak or risky fund. NOT the mirror-image
+ *    negation of `greenFlags`; each is its own distinct failure mode, so a given
+ *    dial appears on at most one side.
+ * `greenFlags`/`redFlags` list only genuinely impactful, non-obvious signals (no
+ * obvious basics like a plain low/high expense ratio). The helper that consumes
+ * this renders the lists into a single markdown block with section headings,
  * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
  */
 export interface EtfMorCategoryInstructionEntry {
+  mostImportant?: string[];
   greenFlags: string[];
   redFlags: string[];
 }
