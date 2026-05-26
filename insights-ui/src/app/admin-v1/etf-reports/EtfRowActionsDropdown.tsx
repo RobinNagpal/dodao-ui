@@ -51,7 +51,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
     { key: 'generateCostEfficiencyTeam', label: 'Generate Cost, Efficiency & Team', disabled: isBusyAll },
     { key: 'generateRiskAnalysis', label: 'Generate Risk Analysis', disabled: isBusyAll },
     { key: 'generateFutureOutlook', label: 'Generate Future Outlook', disabled: isBusyAll },
-    { key: 'generateKeyFacts', label: 'Generate Index & Strategy', disabled: isBusyAll },
+    { key: 'generateKeyFacts', label: 'Generate Key Facts', disabled: isBusyAll },
     { key: 'generateCompetition', label: 'Generate Competition', disabled: isBusyAll },
     { key: 'generateFinalSummary', label: 'Generate Final Summary', disabled: isBusyAll },
     { key: 'financial', label: 'Financial Info', disabled: isBusyAll },

@@ -20,7 +20,7 @@ ALTER TABLE "etf_key_facts_reports" ADD CONSTRAINT "etf_key_facts_reports_etf_id
 
 -- Backfill existing index_strategy text into the new table
 INSERT INTO "etf_key_facts_reports" ("id", "etf_id", "space_id", "key_facts", "created_at", "updated_at")
-SELECT gen_random_uuid(), "id", "space_id", "index_strategy", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+SELECT (md5(random()::text || clock_timestamp()::text))::uuid, "id", "space_id", "index_strategy", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
 FROM "etfs"
 WHERE "index_strategy" IS NOT NULL;
 

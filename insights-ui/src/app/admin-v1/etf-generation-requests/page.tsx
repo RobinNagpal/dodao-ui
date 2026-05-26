@@ -29,7 +29,7 @@ const ETF_FIELD_LABELS: Record<EtfRegenerateField, string> = {
   regenerateCostEfficiencyAndTeam: 'Cost & Team',
   regenerateRiskAnalysis: 'Risk',
   regenerateFuturePerformanceOutlook: 'Future Outlook',
-  regenerateKeyFacts: 'Index & Strategy',
+  regenerateKeyFacts: 'Key Facts',
   regenerateCompetition: 'Competition',
   regenerateFinalSummary: 'Final Summary',
 };

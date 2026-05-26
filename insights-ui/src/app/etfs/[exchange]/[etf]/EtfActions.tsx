@@ -34,7 +34,7 @@ const REPORT_OPTIONS: Array<{ key: GenerateKey; label: string }> = [
   { key: 'cost-efficiency-and-team', label: 'Generate Cost, Efficiency & Team' },
   { key: 'risk-analysis', label: 'Generate Risk Analysis' },
   { key: 'future-performance-outlook', label: 'Generate Future Outlook' },
-  { key: 'key-facts', label: 'Generate Index & Strategy' },
+  { key: 'key-facts', label: 'Generate Key Facts' },
   { key: 'competition', label: 'Generate Competition' },
   { key: 'final-summary', label: 'Generate Final Summary' },
 ];
