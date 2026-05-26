@@ -7,7 +7,9 @@ Categories in this group: {{groupCategories}} — some are very similar; treat t
 
 {{#if categoryInstructions}}**Category context (`{{fundCategory}}`).** This block has two parts. First, the most important qualitative facts about this kind of fund (how it selects holdings, its portfolio character, its income & tax nature) — surface the ones that genuinely apply to this ETF. Then some non-exhaustive green flags (signs of a strong fund) and red flags (signs of a weak one): where one is applicable to a cost / efficiency / team evaluation criterion below, use it to inform that judgement. Apply anything only when it is genuinely relevant to this ETF and you can source it confidently, and ignore the whole block if the fund's actual strategy does not match the category.
 
-{{categoryInstructions}} 
+{{categoryInstructions}}
+
+{{/if}}
 
 **Missing data or factor relevance.** The factors below come from `factorAnalysisArray` (each item's description and group instructions define what to measure). If specific data is missing for a factor, or a listed analysis factor is not meaningfully relevant to this ETF, judge that factor from the fund's **overall quality within its category** and **`{{groupKey}}`** peer framing. When the ETF is **clearly high quality on balance** versus comparable funds in that lens, assign **`Pass`** for that factor rather than failing it only for absent data or weak applicability. When you have direct metric evidence, the factor's Pass/Fail bar still governs.
 
