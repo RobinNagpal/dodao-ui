@@ -27,12 +27,7 @@ const EVALUATION_CATEGORIES: readonly EtfReportType[] = [
   EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
 ];
 
-const ALL_REPORT_TYPES: readonly EtfReportType[] = [
-  ...EVALUATION_CATEGORIES,
-  EtfReportType.KEY_FACTS,
-  EtfReportType.COMPETITION,
-  EtfReportType.FINAL_SUMMARY,
-];
+const ALL_REPORT_TYPES: readonly EtfReportType[] = [...EVALUATION_CATEGORIES, EtfReportType.KEY_FACTS, EtfReportType.COMPETITION, EtfReportType.FINAL_SUMMARY];
 
 const MAX_ETFS_PER_INVOCATION = 50;
 const DEFAULT_DELAY_MS = 10_000;

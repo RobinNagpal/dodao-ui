@@ -34,9 +34,7 @@ function FlagList({ title, flags }: { title: string; flags: EtfKeyFactsFlagAsses
                 </span>
               </div>
               {f.oneLineExplanation && <p className="text-sm text-gray-400">{f.oneLineExplanation}</p>}
-              {f.detailedExplanation && (
-                <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(f.detailedExplanation) }} />
-              )}
+              {f.detailedExplanation && <div className="markdown markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(f.detailedExplanation) }} />}
             </div>
           </li>
         ))}

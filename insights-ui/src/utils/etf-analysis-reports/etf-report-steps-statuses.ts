@@ -36,11 +36,7 @@ export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfRepo
     pendingSteps.push(EtfReportType.FUTURE_PERFORMANCE_OUTLOOK);
   }
 
-  if (
-    request.regenerateKeyFacts &&
-    !request.completedSteps.includes(EtfReportType.KEY_FACTS) &&
-    !request.failedSteps.includes(EtfReportType.KEY_FACTS)
-  ) {
+  if (request.regenerateKeyFacts && !request.completedSteps.includes(EtfReportType.KEY_FACTS) && !request.failedSteps.includes(EtfReportType.KEY_FACTS)) {
     pendingSteps.push(EtfReportType.KEY_FACTS);
   }
 
