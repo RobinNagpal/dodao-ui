@@ -51,7 +51,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
     { key: 'generateCostEfficiencyTeam', label: 'Generate Cost, Efficiency & Team', disabled: isBusyAll },
     { key: 'generateRiskAnalysis', label: 'Generate Risk Analysis', disabled: isBusyAll },
     { key: 'generateFutureOutlook', label: 'Generate Future Outlook', disabled: isBusyAll },
-    { key: 'generateIndexStrategy', label: 'Generate Index & Strategy', disabled: isBusyAll },
+    { key: 'generateKeyFacts', label: 'Generate Index & Strategy', disabled: isBusyAll },
     { key: 'generateCompetition', label: 'Generate Competition', disabled: isBusyAll },
     { key: 'generateFinalSummary', label: 'Generate Final Summary', disabled: isBusyAll },
     { key: 'financial', label: 'Financial Info', disabled: isBusyAll },
@@ -74,7 +74,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: true,
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: true,
-              regenerateIndexStrategy: true,
+              regenerateKeyFacts: true,
               regenerateCompetition: true,
               regenerateFinalSummary: true,
             },
@@ -88,7 +88,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -101,7 +101,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: true,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -114,7 +114,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -127,12 +127,12 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: true,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
           onDone();
-        } else if (key === 'generateIndexStrategy') {
+        } else if (key === 'generateKeyFacts') {
           await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
             {
               etf: { symbol: etf.symbol, exchange: etf.exchange },
@@ -140,7 +140,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: true,
+              regenerateKeyFacts: true,
               regenerateFinalSummary: false,
             },
           ]);
@@ -153,7 +153,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateCompetition: true,
               regenerateFinalSummary: false,
             },
@@ -167,7 +167,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: true,
             },
           ]);

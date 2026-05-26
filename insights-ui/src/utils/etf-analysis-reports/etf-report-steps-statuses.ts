@@ -37,11 +37,11 @@ export function calculateEtfPendingSteps(request: EtfGenerationRequest): EtfRepo
   }
 
   if (
-    request.regenerateIndexStrategy &&
-    !request.completedSteps.includes(EtfReportType.INDEX_STRATEGY) &&
-    !request.failedSteps.includes(EtfReportType.INDEX_STRATEGY)
+    request.regenerateKeyFacts &&
+    !request.completedSteps.includes(EtfReportType.KEY_FACTS) &&
+    !request.failedSteps.includes(EtfReportType.KEY_FACTS)
   ) {
-    pendingSteps.push(EtfReportType.INDEX_STRATEGY);
+    pendingSteps.push(EtfReportType.KEY_FACTS);
   }
 
   if (

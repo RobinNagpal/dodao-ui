@@ -18,7 +18,7 @@ const FILE_BACKED_ETF_PROMPT_FILES: Partial<Record<EtfReportType, string>> = {
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: 'cost-efficiency-team.md',
   [EtfReportType.RISK_ANALYSIS]: 'risk-analysis.md',
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'future-performance-outlook.md',
-  [EtfReportType.INDEX_STRATEGY]: 'index-strategy.md',
+  [EtfReportType.KEY_FACTS]: 'key-facts.md',
 };
 
 /**

@@ -16,7 +16,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import type { EtfFinancialInfoResponse, EtfScoresResponse, SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
-import type { EtfCompetitionResponse, EtfCompetitor } from '@/types/etf/etf-analysis-types';
+import type { EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
@@ -24,6 +24,12 @@ import { ensureEtfPriceHistoryIsFresh } from '@/utils/etf-price-history-utils';
 import { buildEtfPerformanceMetricsPayload, type EtfPerformanceMetricFields, type EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+
+export interface EtfKeyFactsReportResponse {
+  keyFacts: string | null;
+  greenFlags: EtfKeyFactsFlagAssessment[];
+  redFlags: EtfKeyFactsFlagAssessment[];
+}
 
 export interface EtfFullRenderResponse {
   etf: EtfFastResponse | null;
@@ -35,6 +41,7 @@ export interface EtfFullRenderResponse {
   competition: EtfCompetitionResponse | null;
   priceHistory: PriceHistoryResponse | null;
   performanceMetrics: EtfPerformanceMetricsPayload | null;
+  keyFacts: EtfKeyFactsReportResponse | null;
 }
 
 const EMPTY: EtfFullRenderResponse = {
@@ -47,6 +54,7 @@ const EMPTY: EtfFullRenderResponse = {
   competition: null,
   priceHistory: null,
   performanceMetrics: null,
+  keyFacts: null,
 };
 
 async function getHandler(
@@ -70,6 +78,7 @@ async function getHandler(
       morPortfolioInfo: { select: { holdings: true, updatedAt: true } },
       vsCompetition: true,
       similarEtfs: { orderBy: { sortOrder: 'asc' }, take: 6 },
+      keyFactsReport: true,
     },
   });
   if (!etfRecord) return EMPTY;
@@ -103,7 +112,16 @@ async function getHandler(
     vsCompetition: undefined,
     similarEtfs: undefined,
     cachedScore: undefined,
+    keyFactsReport: undefined,
   });
+
+  const keyFacts: EtfKeyFactsReportResponse | null = etfRecord.keyFactsReport
+    ? {
+        keyFacts: etfRecord.keyFactsReport.keyFacts,
+        greenFlags: (etfRecord.keyFactsReport.greenFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
+        redFlags: (etfRecord.keyFactsReport.redFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
+      }
+    : null;
 
   const financialInfo: EtfFinancialInfoResponse | null = etfRecord.financialInfo
     ? {
@@ -197,6 +215,7 @@ async function getHandler(
     competition,
     priceHistory,
     performanceMetrics,
+    keyFacts,
   };
 }
 

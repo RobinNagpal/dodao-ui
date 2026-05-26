@@ -6,7 +6,7 @@ import {
   prepareCostEfficiencyAndTeamInputJson,
   prepareEtfCompetitionInputJson,
   prepareFuturePerformanceOutlookInputJson,
-  prepareIndexStrategyInputJson,
+  prepareKeyFactsInputJson,
   prepareEtfFinalSummaryInputJson,
   preparePerformanceAndReturnsInputJson,
   prepareRiskAnalysisInputJson,
@@ -20,7 +20,7 @@ export const etfReportDependencyMap: Record<EtfReportType, EtfReportType[]> = {
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: [],
   [EtfReportType.RISK_ANALYSIS]: [],
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: [],
-  [EtfReportType.INDEX_STRATEGY]: [],
+  [EtfReportType.KEY_FACTS]: [],
   [EtfReportType.COMPETITION]: [],
   [EtfReportType.FINAL_SUMMARY]: [
     EtfReportType.PERFORMANCE_AND_RETURNS,
@@ -35,7 +35,7 @@ export const etfDependencyBasedReportOrder: EtfReportType[] = [
   EtfReportType.COST_EFFICIENCY_AND_TEAM,
   EtfReportType.RISK_ANALYSIS,
   EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
-  EtfReportType.INDEX_STRATEGY,
+  EtfReportType.KEY_FACTS,
   EtfReportType.COMPETITION,
   EtfReportType.FINAL_SUMMARY,
 ];
@@ -50,8 +50,8 @@ function prepareInputJsonForReportType(etf: EtfWithAllData, reportType: EtfRepor
       return prepareRiskAnalysisInputJson(etf);
     case EtfReportType.FUTURE_PERFORMANCE_OUTLOOK:
       return prepareFuturePerformanceOutlookInputJson(etf);
-    case EtfReportType.INDEX_STRATEGY:
-      return prepareIndexStrategyInputJson(etf);
+    case EtfReportType.KEY_FACTS:
+      return prepareKeyFactsInputJson(etf);
     case EtfReportType.COMPETITION:
       return prepareEtfCompetitionInputJson(etf);
     case EtfReportType.FINAL_SUMMARY:

@@ -9,7 +9,7 @@ interface EtfGenerationRequestPayload {
   regenerateCostEfficiencyAndTeam: boolean;
   regenerateRiskAnalysis: boolean;
   regenerateFuturePerformanceOutlook?: boolean;
-  regenerateIndexStrategy?: boolean;
+  regenerateKeyFacts?: boolean;
   regenerateCompetition?: boolean;
   regenerateFinalSummary?: boolean;
 }
@@ -29,7 +29,7 @@ const EVALUATION_CATEGORIES: readonly EtfReportType[] = [
 
 const ALL_REPORT_TYPES: readonly EtfReportType[] = [
   ...EVALUATION_CATEGORIES,
-  EtfReportType.INDEX_STRATEGY,
+  EtfReportType.KEY_FACTS,
   EtfReportType.COMPETITION,
   EtfReportType.FINAL_SUMMARY,
 ];
@@ -45,7 +45,7 @@ function buildPayload(etf: { symbol: string; exchange: string }, categories: Etf
     regenerateCostEfficiencyAndTeam: set.has(EtfReportType.COST_EFFICIENCY_AND_TEAM),
     regenerateRiskAnalysis: set.has(EtfReportType.RISK_ANALYSIS),
     regenerateFuturePerformanceOutlook: set.has(EtfReportType.FUTURE_PERFORMANCE_OUTLOOK),
-    regenerateIndexStrategy: set.has(EtfReportType.INDEX_STRATEGY),
+    regenerateKeyFacts: set.has(EtfReportType.KEY_FACTS),
     regenerateCompetition: set.has(EtfReportType.COMPETITION),
     regenerateFinalSummary: set.has(EtfReportType.FINAL_SUMMARY),
   };

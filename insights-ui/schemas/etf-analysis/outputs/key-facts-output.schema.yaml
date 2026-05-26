@@ -2,7 +2,7 @@ $schema: 'http://json-schema.org/draft-07/schema#'
 type: object
 additionalProperties: false
 properties:
-  indexStrategy:
+  keyFacts:
     type: string
     description: 'Exactly TWO plain-prose paragraphs (separated by a blank line) covering the most important things a retail investor should know about this ETF — what it is and how it is run, and how it differs from close peers. No headings, no bullets, no markdown. This is the "important things to know" block shown above the charts.'
   greenFlags:
@@ -74,7 +74,7 @@ properties:
         - symbol
         - exchange
 required:
-  - indexStrategy
+  - keyFacts
   - greenFlags
   - redFlags
   - similarEtfs

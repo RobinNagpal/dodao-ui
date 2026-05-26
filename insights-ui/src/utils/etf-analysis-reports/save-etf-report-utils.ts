@@ -4,8 +4,8 @@ import {
   EtfAnalysisCategory,
   EtfCategoryAnalysisResponse,
   EtfFinalSummaryResponse,
-  EtfIndexStrategyResponse,
-  EtfIndexStrategySimilarEtf,
+  EtfKeyFactsResponse,
+  EtfKeyFactsSimilarEtf,
 } from '@/types/etf/etf-analysis-types';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
@@ -151,16 +151,23 @@ export async function saveEtfCompetitionResponse(symbol: string, exchange: strin
   revalidateEtfAndExchangeTag(symbol, exchange);
 }
 
-export async function saveEtfIndexStrategyResponse(symbol: string, exchange: string, response: EtfIndexStrategyResponse): Promise<void> {
+export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, response: EtfKeyFactsResponse): Promise<void> {
   const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
 
-  await prisma.etf.update({
-    where: { id: etfRecord.id },
-    data: {
-      indexStrategy: response.indexStrategy,
-      indexStrategyGreenFlags: response.greenFlags ?? [],
-      indexStrategyRedFlags: response.redFlags ?? [],
+  await prisma.etfKeyFactsReport.upsert({
+    where: { etfId: etfRecord.id },
+    update: {
+      keyFacts: response.keyFacts,
+      greenFlags: response.greenFlags ?? [],
+      redFlags: response.redFlags ?? [],
       updatedAt: new Date(),
+    },
+    create: {
+      spaceId: etfRecord.spaceId,
+      etfId: etfRecord.id,
+      keyFacts: response.keyFacts,
+      greenFlags: response.greenFlags ?? [],
+      redFlags: response.redFlags ?? [],
     },
   });
 
@@ -185,7 +192,7 @@ async function replaceEtfSimilarEtfs(
   spaceId: string,
   sourceSymbol: string,
   sourceExchange: string,
-  similarEtfs: ReadonlyArray<EtfIndexStrategySimilarEtf>
+  similarEtfs: ReadonlyArray<EtfKeyFactsSimilarEtf>
 ): Promise<void> {
   const sourceSymbolUpper: string = sourceSymbol.trim().toUpperCase();
   const sourceExchangeUpper: string = sourceExchange.trim().toUpperCase();

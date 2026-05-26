@@ -7,7 +7,7 @@ import {
   prepareEtfCompetitionInputJson,
   prepareEtfFinalSummaryInputJson,
   prepareFuturePerformanceOutlookInputJson,
-  prepareIndexStrategyInputJson,
+  prepareKeyFactsInputJson,
   preparePerformanceAndReturnsInputJson,
   prepareRiskAnalysisInputJson,
 } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
@@ -32,8 +32,8 @@ function prepareEtfInputJsonForReportType(etf: EtfWithAllData, reportType: EtfRe
       return prepareRiskAnalysisInputJson(etf);
     case EtfReportType.FUTURE_PERFORMANCE_OUTLOOK:
       return prepareFuturePerformanceOutlookInputJson(etf);
-    case EtfReportType.INDEX_STRATEGY:
-      return prepareIndexStrategyInputJson(etf);
+    case EtfReportType.KEY_FACTS:
+      return prepareKeyFactsInputJson(etf);
     case EtfReportType.COMPETITION:
       return prepareEtfCompetitionInputJson(etf);
     case EtfReportType.FINAL_SUMMARY:

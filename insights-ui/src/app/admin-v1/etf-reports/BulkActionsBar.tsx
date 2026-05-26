@@ -42,7 +42,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     costEfficiencyAndTeam?: boolean;
     riskAnalysis?: boolean;
     futurePerformanceOutlook?: boolean;
-    indexStrategy?: boolean;
+    keyFacts?: boolean;
     competition?: boolean;
   }) {
     const allTypes = !options;
@@ -52,7 +52,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       regenerateCostEfficiencyAndTeam: allTypes || (options?.costEfficiencyAndTeam ?? false),
       regenerateRiskAnalysis: allTypes || (options?.riskAnalysis ?? false),
       regenerateFuturePerformanceOutlook: allTypes || (options?.futurePerformanceOutlook ?? false),
-      regenerateIndexStrategy: allTypes || (options?.indexStrategy ?? false),
+      regenerateKeyFacts: allTypes || (options?.keyFacts ?? false),
       regenerateCompetition: allTypes || (options?.competition ?? false),
       regenerateFinalSummary: allTypes,
     }));

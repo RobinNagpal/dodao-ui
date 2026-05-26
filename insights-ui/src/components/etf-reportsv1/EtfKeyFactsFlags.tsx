@@ -1,13 +1,13 @@
-import { EtfIndexStrategyFlagAssessment } from '@/types/etf/etf-analysis-types';
+import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 
-interface EtfIndexStrategyFlagsProps {
-  greenFlags?: EtfIndexStrategyFlagAssessment[] | null;
-  redFlags?: EtfIndexStrategyFlagAssessment[] | null;
+interface EtfKeyFactsFlagsProps {
+  greenFlags?: EtfKeyFactsFlagAssessment[] | null;
+  redFlags?: EtfKeyFactsFlagAssessment[] | null;
 }
 
-function FlagList({ title, flags }: { title: string; flags: EtfIndexStrategyFlagAssessment[] }): JSX.Element | null {
+function FlagList({ title, flags }: { title: string; flags: EtfKeyFactsFlagAssessment[] }): JSX.Element | null {
   if (flags.length === 0) return null;
   return (
     <div className="mb-6">
@@ -46,17 +46,17 @@ function FlagList({ title, flags }: { title: string; flags: EtfIndexStrategyFlag
 }
 
 /**
- * Green/red flag Pass/Fail assessments for the index-strategy report, rendered
+ * Green/red flag Pass/Fail assessments for the key-facts report, rendered
  * below the charts on the ETF detail page. Renders nothing for ETFs analysed
  * before this feature (no stored flags), so older reports are unaffected.
  */
-export default function EtfIndexStrategyFlags({ greenFlags, redFlags }: EtfIndexStrategyFlagsProps): JSX.Element | null {
+export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFlagsProps): JSX.Element | null {
   const green = greenFlags ?? [];
   const red = redFlags ?? [];
   if (green.length === 0 && red.length === 0) return null;
 
   return (
-    <section id="index-strategy-flags" className="mb-8">
+    <section id="key-facts-flags" className="mb-8">
       <FlagList title="Green Flags" flags={green} />
       <FlagList title="Red Flags" flags={red} />
     </section>

@@ -10,9 +10,9 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce four outputs: `indexStrategy` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), and `similarEtfs`.
+You will produce four outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), and `similarEtfs`.
 
-## 1. `indexStrategy` — exactly two plain-prose paragraphs
+## 1. `keyFacts` — exactly two plain-prose paragraphs
 
 Write the most important things a retail investor should know about this ETF, as two distinct paragraphs separated by a single blank line. No headings, no bullets, no markdown — plain prose only. Define any jargon on first use. Be concrete and specific (prefer "tracks the S&P 500, a market-cap-weighted index of roughly 500 large U.S. companies" over "a popular U.S. equity index").
 

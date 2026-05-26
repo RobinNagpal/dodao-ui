@@ -534,7 +534,7 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
   };
 }
 
-export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
+export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
   const entry = getCategoryInstructionEntry(sa?.category);
   return {

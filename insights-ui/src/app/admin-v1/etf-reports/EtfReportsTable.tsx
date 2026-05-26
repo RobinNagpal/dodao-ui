@@ -123,7 +123,7 @@ export default function EtfReportsTable({ etfs, onRefresh, selectedIds, onToggle
                 <ReportStatusPill status={e.reportStatuses.summary} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
-                <ReportStatusPill status={e.reportStatuses.indexStrategy} />
+                <ReportStatusPill status={e.reportStatuses.keyFacts} />
               </td>
               <td className="px-4 py-3 text-sm text-center">
                 <ReportStatusPill status={e.reportStatuses.competition} />
