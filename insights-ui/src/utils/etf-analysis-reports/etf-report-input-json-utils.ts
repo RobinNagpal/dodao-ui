@@ -14,6 +14,7 @@ import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-c
 import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
 import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
+import { getAllInvestors } from '@/etf-analysis-data/etf-investor-taxonomy';
 import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
@@ -548,6 +549,11 @@ export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
     mostImportant: entry?.mostImportant ?? [],
     greenFlags: entry?.greenFlags ?? [],
     redFlags: entry?.redFlags ?? [],
+    investorTypes: getAllInvestors().map((inv) => ({
+      key: inv.key,
+      name: inv.name,
+      shortDescription: inv.shortDescription,
+    })),
   };
 }
 

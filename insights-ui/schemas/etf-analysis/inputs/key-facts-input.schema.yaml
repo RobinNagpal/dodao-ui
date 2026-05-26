@@ -38,6 +38,26 @@ properties:
     description: 'Category-defined red flags (signs of a weak/risky fund) to assess one-by-one against this ETF. May be empty.'
     items:
       type: string
+  investorTypes:
+    type: array
+    description: 'The canonical investor-type taxonomy. Pick the keys of the types this ETF genuinely suits for the applicableInvestorTypes output.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+          description: 'Stable key to return in applicableInvestorTypes (e.g., retail-individual).'
+        name:
+          type: string
+          description: 'Human-readable investor-type name.'
+        shortDescription:
+          type: string
+          description: 'What defines this investor type — use it to judge fit.'
+      required:
+        - key
+        - name
+        - shortDescription
 required:
   - name
   - symbol

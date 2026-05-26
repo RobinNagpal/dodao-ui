@@ -29,6 +29,7 @@ export interface EtfKeyFactsReportResponse {
   keyFacts: string | null;
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
+  applicableInvestorTypes: string[];
 }
 
 export interface EtfFullRenderResponse {
@@ -120,6 +121,7 @@ async function getHandler(
         keyFacts: etfRecord.keyFactsReport.keyFacts,
         greenFlags: (etfRecord.keyFactsReport.greenFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
         redFlags: (etfRecord.keyFactsReport.redFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
+        applicableInvestorTypes: (etfRecord.keyFactsReport.applicableInvestorTypes as unknown as string[] | null) ?? [],
       }
     : null;
 

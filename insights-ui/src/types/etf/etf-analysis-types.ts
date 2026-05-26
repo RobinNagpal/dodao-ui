@@ -130,6 +130,8 @@ export interface EtfKeyFactsResponse {
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
   similarEtfs: EtfKeyFactsSimilarEtf[];
+  /** 0-4 investor-type keys (from the investor taxonomy) this ETF genuinely suits. */
+  applicableInvestorTypes: string[];
 }
 
 export interface EtfAnalysisFactorDefinition {

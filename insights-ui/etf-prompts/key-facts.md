@@ -11,7 +11,7 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce four outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), and `similarEtfs`.
+You will produce five outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, and `applicableInvestorTypes` (the investor types this fund genuinely suits).
 
 ## 1. `keyFacts` — exactly two plain-prose paragraphs
 
@@ -64,6 +64,21 @@ Constraints for each entry:
 - `symbol` and `exchange` must be uppercase.
 - Do not include the analyzed ETF itself.
 - Do not invent tickers — only include ETFs you can verify exist on one of the listed exchanges.
+
+## 5. `applicableInvestorTypes`
+
+Return an `applicableInvestorTypes` array of **0 to 4** investor-type `key`s identifying who this ETF is genuinely appropriate for. Choose only from the taxonomy below and return the exact `key` strings (never the display name, never a new key).
+
+Investor types:
+{{#each investorTypes}}
+- `{{this.key}}` — {{this.name}}: {{this.shortDescription}}
+{{/each}}
+
+Rules:
+- Judge fit strictly against the fund's mandate, cost, structure, liquidity, and risk — not its popularity.
+- A strong, well-run, broadly useful ETF should fit **at least 2** investor types.
+- Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that no investor type should reasonably hold.
+- Never exceed 4. Order from best-fit to weakest-fit, and do not pad the list to reach a count — include a type only when the fund truly suits it.
 
 ## Style rules
 
