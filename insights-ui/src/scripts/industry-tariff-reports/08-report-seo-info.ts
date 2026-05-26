@@ -63,7 +63,7 @@ async function generateSeoDetailsForSection(
     ${JSON.stringify(sectionContent, null, 2)}
   `;
 
-  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
+  return await getLlmResponse<PageSeoDetails>(prompt, PageSeoDetailsSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_1_PRO_PREVIEW);
 }
 
 export async function generateReportCoverSeo(slug: string): Promise<PageSeoDetails | undefined> {

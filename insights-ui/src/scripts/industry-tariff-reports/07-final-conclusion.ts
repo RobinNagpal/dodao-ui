@@ -97,7 +97,7 @@ export async function getFinalConclusionAndSaveToFile(slug: string): Promise<voi
     prompt,
     FinalConclusionSchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
+    GeminiModel.GEMINI_3_1_PRO_PREVIEW
   );
   await writeFinalConclusion(slug, finalConclusion);
 }

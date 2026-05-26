@@ -59,7 +59,7 @@ export async function getAndWriteIndustryHeadings(slug: string) {
     getMainIndustryPrompt(ctx),
     IndustryAreasSchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
+    GeminiModel.GEMINI_3_1_PRO_PREVIEW
   );
   console.log(JSON.stringify(areas, null, 2));
 

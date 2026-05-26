@@ -88,7 +88,7 @@ async function generateDailyMoverAnalysis(
       inputJson,
       promptKey: 'US/public-equities-v1/daily-movers',
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: GeminiModel.GEMINI_3_1_PRO_PREVIEW,
       requestFrom: 'ui',
     },
     // reportType is optional for daily movers

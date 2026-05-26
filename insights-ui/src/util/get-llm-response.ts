@@ -241,9 +241,9 @@ export async function getLLMResponse<Output>({
 
       // Handle Gemini with grounding
       if (llmProvider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        // Only use single-call grounded structured output for GEMINI_3_PRO_PREVIEW
-        if (modelName === GeminiModel.GEMINI_3_PRO_PREVIEW) {
-          console.log('Using Gemini 3 Pro Preview with grounding - trying single-call grounded structured output...');
+        // Only use single-call grounded structured output for GEMINI_3_1_PRO_PREVIEW
+        if (modelName === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
+          console.log('Using Gemini 3.1 Pro Preview with grounding - trying single-call grounded structured output...');
 
           try {
             const groundedStructured = await getGroundedStructuredResponse<Output>(prompt, modelName, outputSchema);

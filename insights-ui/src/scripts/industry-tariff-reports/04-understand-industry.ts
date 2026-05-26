@@ -125,7 +125,7 @@ ${chapterSeoGuidance(ctx)}
     prompt,
     UnderstandIndustrySchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
+    GeminiModel.GEMINI_3_1_PRO_PREVIEW
   );
   console.log('Understand Industry:', understandIndustry);
 
