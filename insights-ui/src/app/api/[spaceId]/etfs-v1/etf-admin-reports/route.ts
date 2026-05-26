@@ -12,7 +12,7 @@ export interface EtfReportStatuses {
   costEfficiencyAndTeam: EtfReportStatus;
   risk: EtfReportStatus;
   futureOutlook: EtfReportStatus;
-  indexStrategy: EtfReportStatus;
+  keyFacts: EtfReportStatus;
   competition: EtfReportStatus;
   summary: EtfReportStatus;
 }
@@ -28,7 +28,7 @@ export interface EtfReportRow {
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
   hasMorPortfolioInfo: boolean;
-  hasIndexStrategy: boolean;
+  hasKeyFacts: boolean;
   hasSummary: boolean;
   performanceAnalysisCount: number;
   costEfficiencyAnalysisCount: number;
@@ -87,7 +87,7 @@ type LatestRequestSummary = {
   regenerateCostEfficiencyAndTeam: boolean;
   regenerateRiskAnalysis: boolean;
   regenerateFuturePerformanceOutlook: boolean;
-  regenerateIndexStrategy: boolean;
+  regenerateKeyFacts: boolean;
   regenerateCompetition: boolean;
   regenerateFinalSummary: boolean;
   completedSteps: string[];
@@ -99,7 +99,7 @@ type RegenerateFlagKey =
   | 'regenerateCostEfficiencyAndTeam'
   | 'regenerateRiskAnalysis'
   | 'regenerateFuturePerformanceOutlook'
-  | 'regenerateIndexStrategy'
+  | 'regenerateKeyFacts'
   | 'regenerateCompetition'
   | 'regenerateFinalSummary';
 
@@ -171,7 +171,7 @@ const getHandler = async (
         name: true,
         exchange: true,
         summary: true,
-        indexStrategy: true,
+        keyFactsReport: { select: { keyFacts: true } },
         financialInfo: { select: { id: true } },
         stockAnalyzerInfo: { select: { id: true } },
         morAnalyzerInfo: { select: { id: true } },
@@ -191,7 +191,7 @@ const getHandler = async (
             regenerateCostEfficiencyAndTeam: true,
             regenerateRiskAnalysis: true,
             regenerateFuturePerformanceOutlook: true,
-            regenerateIndexStrategy: true,
+            regenerateKeyFacts: true,
             regenerateCompetition: true,
             regenerateFinalSummary: true,
             completedSteps: true,
@@ -222,7 +222,7 @@ const getHandler = async (
       const costEfficiencyAnalysisCount = factorResults.filter((r) => r.categoryKey === 'CostEfficiencyAndTeam').length;
       const riskAnalysisCount = factorResults.filter((r) => r.categoryKey === 'RiskAnalysis').length;
       const futureOutlookAnalysisCount = factorResults.filter((r) => r.categoryKey === 'FuturePerformanceOutlook').length;
-      const hasIndexStrategy = Boolean(e.indexStrategy && e.indexStrategy.trim());
+      const hasKeyFacts = Boolean(e.keyFactsReport?.keyFacts && e.keyFactsReport.keyFacts.trim());
       const hasSummary = Boolean(e.summary && e.summary.trim());
       const hasVsCompetition = !!e.vsCompetition;
 
@@ -243,7 +243,7 @@ const getHandler = async (
           'regenerateFuturePerformanceOutlook',
           latestRequest
         ),
-        indexStrategy: computeReportStatus(hasIndexStrategy, EtfReportType.INDEX_STRATEGY, 'regenerateIndexStrategy', latestRequest),
+        keyFacts: computeReportStatus(hasKeyFacts, EtfReportType.KEY_FACTS, 'regenerateKeyFacts', latestRequest),
         competition: computeReportStatus(hasVsCompetition, EtfReportType.COMPETITION, 'regenerateCompetition', latestRequest),
         summary: computeReportStatus(hasSummary, EtfReportType.FINAL_SUMMARY, 'regenerateFinalSummary', latestRequest),
       };
@@ -259,7 +259,7 @@ const getHandler = async (
         hasMorRiskInfo: !!e.morRiskInfo,
         hasMorPeopleInfo: !!e.morPeopleInfo,
         hasMorPortfolioInfo: !!e.morPortfolioInfo,
-        hasIndexStrategy,
+        hasKeyFacts,
         hasSummary,
         performanceAnalysisCount,
         costEfficiencyAnalysisCount,

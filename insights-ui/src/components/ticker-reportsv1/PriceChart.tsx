@@ -10,9 +10,26 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 interface PriceChartProps {
   data: PriceHistoryResponse;
+  /**
+   * Render without the outer `<section>` wrapper and title — used when this
+   * chart is hosted inside another tabbed container (e.g. the ETF detail
+   * page's combined Price / Returns / CAGR section).
+   */
+  embedded?: boolean;
+  /**
+   * Controlled range. When provided, the chart reflects this range instead of
+   * its internal state — used by the embedded host that renders the range
+   * buttons itself in a different layout slot.
+   */
+  range?: PriceRangeKey;
+  /**
+   * Skip rendering the range button row. Pair with `range` when the host owns
+   * the button UI; the line chart still updates because `range` is honored.
+   */
+  hideRangeButtons?: boolean;
 }
 
-const RANGES: PriceRangeKey[] = ['1M', '6M', '1Y', '3Y', '5Y'];
+export const PRICE_CHART_RANGES: ReadonlyArray<PriceRangeKey> = ['1M', '6M', '1Y', '3Y', '5Y'] as const;
 
 // 1M and 6M use daily points; 1Y / 3Y / 5Y use weekly points.
 const DAILY_RANGES: ReadonlySet<PriceRangeKey> = new Set(['1M', '6M']);
@@ -61,8 +78,14 @@ function formatPrice(value: number | null, currency: string | null): string {
   return currency ? `${formatted} ${currency}` : formatted;
 }
 
-export default function PriceChart({ data }: PriceChartProps) {
-  const [selectedRange, setSelectedRange] = useState<PriceRangeKey>('5Y');
+export default function PriceChart({ data, embedded = false, range, hideRangeButtons = false }: PriceChartProps) {
+  const [internalRange, setInternalRange] = useState<PriceRangeKey>('5Y');
+  const selectedRange = range ?? internalRange;
+  const setSelectedRange = (next: PriceRangeKey) => {
+    // Only update internal state when uncontrolled — callers that pass
+    // `range` are expected to handle changes via their own state.
+    if (range === undefined) setInternalRange(next);
+  };
 
   const series = useMemo(() => {
     const source = DAILY_RANGES.has(selectedRange) ? data.daily : data.weekly;
@@ -134,35 +157,58 @@ export default function PriceChart({ data }: PriceChartProps) {
   const intervalNote = DAILY_RANGES.has(selectedRange) ? 'daily' : 'weekly';
   const metaLine = [data.currency, intervalNote].filter(Boolean).join(' • ');
 
+  const rangeButtons = (
+    <div className="flex flex-wrap gap-2">
+      {PRICE_CHART_RANGES.map((r) => (
+        <button
+          key={r}
+          onClick={() => setSelectedRange(r)}
+          className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+            selectedRange === r ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
+          }`}
+          style={selectedRange === r ? { backgroundColor: LINE_COLOR.border } : {}}
+        >
+          {r}
+        </button>
+      ))}
+    </div>
+  );
+
+  const chartBody = (
+    <div className="h-64 sm:h-72">
+      {hasData ? (
+        <Line data={chartData} options={options} />
+      ) : (
+        <div className="h-full flex items-center justify-center text-sm text-gray-400">No price data available for this range.</div>
+      )}
+    </div>
+  );
+
+  if (embedded) {
+    // Caller (e.g. EtfChartTabs) owns the section wrapper, title, and tab
+    // strip. When `hideRangeButtons` is set the host also owns the range
+    // buttons, so we render only the chart body.
+    return hideRangeButtons ? (
+      chartBody
+    ) : (
+      <div>
+        <div className="flex justify-end mb-3">{rangeButtons}</div>
+        {chartBody}
+      </div>
+    );
+  }
+
   return (
     <section id="price-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+      {/* min-h locks the header height so swapping the lazy skeleton with the rendered chart causes no layout shift. */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
         <div>
           <h3 className="text-lg font-semibold text-gray-100">Price History</h3>
           {metaLine && <p className="text-xs text-gray-400 mt-1">{metaLine}</p>}
         </div>
-        <div className="flex flex-wrap gap-2">
-          {RANGES.map((range) => (
-            <button
-              key={range}
-              onClick={() => setSelectedRange(range)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                selectedRange === range ? 'text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100'
-              }`}
-              style={selectedRange === range ? { backgroundColor: LINE_COLOR.border } : {}}
-            >
-              {range}
-            </button>
-          ))}
-        </div>
+        {rangeButtons}
       </div>
-      <div className="h-64 sm:h-72">
-        {hasData ? (
-          <Line data={chartData} options={options} />
-        ) : (
-          <div className="h-full flex items-center justify-center text-sm text-gray-400">No price data available for this range.</div>
-        )}
-      </div>
+      {chartBody}
     </section>
   );
 }

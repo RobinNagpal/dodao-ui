@@ -1,5 +1,3 @@
-'use client';
-
 import { computeQuadrantScores, classifyStock, QuadrantDataPoint } from '@/util/quadrant-chart-utils';
 import CompetitionQuadrantChart from '@/components/ticker-reportsv1/CompetitionQuadrantChart';
 import type { CompetitionResponse } from '@/types/ticker-typesv1';

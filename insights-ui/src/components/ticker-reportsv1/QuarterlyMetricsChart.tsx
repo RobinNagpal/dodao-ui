@@ -133,7 +133,8 @@ export default function QuarterlyMetricsChart({ data }: QuarterlyMetricsChartPro
 
   return (
     <section id="quarterly-metrics-chart" className="bg-gray-900 rounded-lg shadow-sm px-2 py-3 sm:p-4 mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+      {/* min-h locks the header height so swapping the lazy skeleton with the rendered chart causes no layout shift. */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 min-h-[44px]">
         <div>
           <h3 className="text-lg font-semibold text-gray-100">
             {data.dataFrequency === 'annual' ? 'Annual Financial Metrics' : 'Quarterly Financial Metrics'}

@@ -109,11 +109,13 @@ export const metadata: Metadata = {
     url: 'https://koalagains.com',
     siteName: 'KoalaGains',
     type: 'website',
+    images: ['https://koalagains.com/koalagain_logo.png'],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Global Stocks by Industry — Deep Value Insights | KoalaGains',
     description: 'Global deep value insights across all major exchanges—research once limited to select investors, now free for retail.',
+    images: ['https://koalagains.com/koalagain_logo.png'],
   },
   alternates: { canonical: 'https://koalagains.com' },
 };

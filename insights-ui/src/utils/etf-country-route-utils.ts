@@ -24,11 +24,12 @@ export function etfBrowsePath(country: EtfSupportedCountry, section: EtfBrowseSe
 }
 
 /**
- * Where the section's *index* lives in the UI. Equals `etfBrowsePath` for most cases, but the US
- * `groups` index is collapsed onto the country root (`/etfs`) — that page is the by-group view.
+ * Where the section's *index* lives in the UI. Equals `etfBrowsePath` for most cases, but the
+ * `groups` index is collapsed onto the country root for every country — `/etfs` is the US
+ * by-group view, `/etfs/countries/<country>` is the same view for other countries.
  */
 export function etfSectionIndexPath(country: EtfSupportedCountry, section: EtfBrowseSection): string {
-  if (country === SupportedCountries.US && section === 'groups') {
+  if (section === 'groups') {
     return etfBasePath(country);
   }
   return etfBrowsePath(country, section);

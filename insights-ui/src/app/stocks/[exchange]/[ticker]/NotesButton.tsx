@@ -1,9 +1,9 @@
 'use client';
 
-import AddEditNotesModal from '@/app/stocks/[exchange]/[ticker]/AddEditNotesModal';
 import { KoalaGainsSession } from '@/types/auth';
 import { DocumentTextIcon as DocumentTextOutline } from '@heroicons/react/24/outline';
 import { DocumentTextIcon as DocumentTextSolid } from '@heroicons/react/24/solid';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -13,6 +13,9 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { TickerNotesResponse } from '@/app/api/[spaceId]/users/ticker-notes/route';
 import { TickerV1Notes } from '@prisma/client';
 
+// Modal only opens when the user clicks Notes — defer its 225-line chunk.
+const AddEditNotesModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/AddEditNotesModal'), { ssr: false });
+
 export interface NotesButtonProps {
   tickerId: string;
   tickerSymbol: string;
@@ -21,6 +24,7 @@ export interface NotesButtonProps {
 
 export default function NotesButton({ tickerId, tickerSymbol, tickerName }: NotesButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasMountedModal, setHasMountedModal] = useState(false);
   const { data: koalaSession } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
   const router = useRouter();
@@ -39,6 +43,7 @@ export default function NotesButton({ tickerId, tickerSymbol, tickerName }: Note
       router.push('/login');
       return;
     }
+    setHasMountedModal(true);
     setIsModalOpen(true);
   };
 
@@ -66,7 +71,7 @@ export default function NotesButton({ tickerId, tickerSymbol, tickerName }: Note
         )}
         <span>Notes</span>
       </button>
-      {session && (
+      {session && hasMountedModal && (
         <AddEditNotesModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

@@ -21,6 +21,22 @@ export const metadata: Metadata = {
     'Tariff Impact Analysis',
     'Ticker Reports',
   ],
+  openGraph: {
+    title: 'Reports | KoalaGains',
+    description:
+      'KoalaGains gives retail investors access to institutional-level reports—understand businesses, their financials, and the competition from first principles to make the best decisions about a stock.',
+    url: 'https://koalagains.com/reports',
+    siteName: 'KoalaGains',
+    type: 'website',
+    images: ['https://koalagains.com/koalagain_logo.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Reports | KoalaGains',
+    description:
+      'KoalaGains gives retail investors access to institutional-level reports—understand businesses, their financials, and the competition from first principles to make the best decisions about a stock.',
+    images: ['https://koalagains.com/koalagain_logo.png'],
+  },
 };
 
 const breadcrumbs: BreadcrumbsOjbect[] = [
@@ -73,9 +89,9 @@ export default function Page() {
       <div className="background-color py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <p className="mt-2 text-4xl font-semibold tracking-tight heading-color sm:text-5xl lg:text-balance">
+            <h1 className="mt-2 text-4xl font-semibold tracking-tight heading-color sm:text-5xl lg:text-balance">
               Institutional-level reports for retail investors
-            </p>
+            </h1>
             <p className="mt-6 text-lg/8 text-color">
               KoalaGains gives retail investors access to institutional-level research. Understand a business, its financials, and the competition from first
               principles—then make the best decision about investing in the stock. Explore reports across crowdfunding, REITs, tariffs, and tickers.

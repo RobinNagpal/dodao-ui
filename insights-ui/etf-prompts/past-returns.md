@@ -5,7 +5,9 @@ ETF group: **{{groupName}}** (`{{groupKey}}`) — fund category: **{{fundCategor
 Benchmark index: **{{indexName}}** (may be blank — in that case pick the most suitable benchmark for the fund)
 Categories in this group: {{groupCategories}} — some are very similar; treat them as a valid peer set when doing within-category comparison.
 
-This report covers only returns, consistency, benchmark/category comparison, momentum, and the risk context that explains the return pattern. Nothing else.
+{{#if categoryInstructions}}**Category context (`{{fundCategory}}`).** This block has two parts. First, the most important qualitative facts about this kind of fund (how it selects holdings, its portfolio character, its income & tax nature) — surface the ones that genuinely apply to this ETF. Then some non-exhaustive green flags (signs of a strong fund) and red flags (signs of a weak one): where one is applicable to a performance/returns evaluation criterion below, use it to inform that judgement. Apply anything only when it is genuinely relevant to this ETF and you can source it confidently, and ignore the whole block if the fund's actual strategy does not match the category.
+
+{{categoryInstructions}}
 
 **Reader profile.** The reader has `$1,000`–`$50,000` to allocate, is choosing between this ETF and one or two obvious alternatives, and is not a professional. Every paragraph should advance their decision. A number without a comparison point does not help them — "is that return good?" is the question you must answer, not just "what is the return?". Translate technical terms on first use ("high yield" = below-investment-grade credit with real default risk, "duration" = expected loss per `1 pp` rate rise, "covered call" = giving up equity upside to earn an option premium, etc.) — one short parenthetical is enough.
 

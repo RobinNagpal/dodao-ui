@@ -4,6 +4,7 @@ import { EtfReportRow } from '@/app/api/[spaceId]/etfs-v1/etf-admin-reports/rout
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { revalidateEtfCache } from '@/utils/cache-actions';
 import EllipsisDropdown, { EllipsisDropdownItem } from '@dodao/web-core/components/core/dropdowns/EllipsisDropdown';
+import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useState } from 'react';
@@ -23,6 +24,7 @@ type TriggerMorResponse = {
 
 export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDropdownProps): JSX.Element {
   const [flushing, setFlushing] = useState(false);
+  const { showNotification } = useNotificationContext();
 
   const { postData: fetchFinancialInfo, loading: fetchingFinancialInfo } = usePostData<FetchResponse, unknown>({
     successMessage: 'Fetched financial info successfully!',
@@ -49,7 +51,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
     { key: 'generateCostEfficiencyTeam', label: 'Generate Cost, Efficiency & Team', disabled: isBusyAll },
     { key: 'generateRiskAnalysis', label: 'Generate Risk Analysis', disabled: isBusyAll },
     { key: 'generateFutureOutlook', label: 'Generate Future Outlook', disabled: isBusyAll },
-    { key: 'generateIndexStrategy', label: 'Generate Index & Strategy', disabled: isBusyAll },
+    { key: 'generateKeyFacts', label: 'Generate Key Facts', disabled: isBusyAll },
     { key: 'generateCompetition', label: 'Generate Competition', disabled: isBusyAll },
     { key: 'generateFinalSummary', label: 'Generate Final Summary', disabled: isBusyAll },
     { key: 'financial', label: 'Financial Info', disabled: isBusyAll },
@@ -72,7 +74,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: true,
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: true,
-              regenerateIndexStrategy: true,
+              regenerateKeyFacts: true,
               regenerateCompetition: true,
               regenerateFinalSummary: true,
             },
@@ -86,7 +88,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -99,7 +101,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: true,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -112,7 +114,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -125,12 +127,12 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: true,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: false,
             },
           ]);
           onDone();
-        } else if (key === 'generateIndexStrategy') {
+        } else if (key === 'generateKeyFacts') {
           await createGenerationRequest(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, [
             {
               etf: { symbol: etf.symbol, exchange: etf.exchange },
@@ -138,7 +140,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: true,
+              regenerateKeyFacts: true,
               regenerateFinalSummary: false,
             },
           ]);
@@ -151,7 +153,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateCompetition: true,
               regenerateFinalSummary: false,
             },
@@ -165,7 +167,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateCostEfficiencyAndTeam: false,
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
-              regenerateIndexStrategy: false,
+              regenerateKeyFacts: false,
               regenerateFinalSummary: true,
             },
           ]);
@@ -185,8 +187,12 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
           });
         } else if (key === 'flushCache') {
           setFlushing(true);
-          await revalidateEtfCache(etf.symbol, etf.exchange);
-          setFlushing(false);
+          try {
+            const result = await revalidateEtfCache(etf.symbol, etf.exchange);
+            showNotification({ type: result.success ? 'success' : 'error', message: result.message });
+          } finally {
+            setFlushing(false);
+          }
         }
       }}
     />

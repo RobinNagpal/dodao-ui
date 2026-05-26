@@ -1,8 +1,13 @@
 'use client';
 
-import ComparisonModal from '@/app/stocks/[exchange]/[ticker]/ComparisonModal';
 import { ScaleIcon } from '@heroicons/react/24/outline';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
+
+// ComparisonModal pulls in TickerComparison (multi-ticker table) +
+// FullScreenModal. Loaded on first click only — saves several hundred ms of
+// main-thread eval on initial page load.
+const ComparisonModal = dynamic(() => import('@/app/stocks/[exchange]/[ticker]/ComparisonModal'), { ssr: false });
 
 export interface TickerComparisonButtonProps {
   tickerName: string;
@@ -22,8 +27,12 @@ export default function TickerComparisonButton({
   tickerSubIndustryName,
 }: TickerComparisonButtonProps) {
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+  // Once mounted we keep it mounted so the close animation stays smooth; the
+  // dynamic chunk only fetches the first time `hasMountedModal` flips to true.
+  const [hasMountedModal, setHasMountedModal] = useState(false);
 
   const handleCompareClick = () => {
+    setHasMountedModal(true);
     setIsComparisonModalOpen(true);
   };
 
@@ -38,18 +47,20 @@ export default function TickerComparisonButton({
         </span>
         Compare with others
       </button>
-      <ComparisonModal
-        isOpen={isComparisonModalOpen}
-        onClose={() => setIsComparisonModalOpen(false)}
-        currentTicker={{
-          symbol: tickerSymbol,
-          name: tickerName,
-          industryKey: tickerIndustryKey,
-          subIndustryKey: tickerSubIndustryKey,
-          industryName: tickerIndustryName,
-          subIndustryName: tickerSubIndustryName,
-        }}
-      />
+      {hasMountedModal && (
+        <ComparisonModal
+          isOpen={isComparisonModalOpen}
+          onClose={() => setIsComparisonModalOpen(false)}
+          currentTicker={{
+            symbol: tickerSymbol,
+            name: tickerName,
+            industryKey: tickerIndustryKey,
+            subIndustryKey: tickerSubIndustryKey,
+            industryName: tickerIndustryName,
+            subIndustryName: tickerSubIndustryName,
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -1,8 +1,11 @@
 import { REPORT_TYPES_TO_DISPLAY } from '@/types/project/project';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
-import { NextRequest, NextResponse } from 'next/server';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import crowdFundingLastmod from '@/utils/lastmod/crowd-funding-lastmod.json';
+
+export const dynamic = 'force-dynamic';
 
 interface SiteMapUrl {
   url: string;
@@ -56,11 +59,10 @@ async function generateCrowdFundingUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
-  const host = req.headers.get('host') as string;
+async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateCrowdFundingUrls();
-    const smStream = new SitemapStream({ hostname: 'https://' + host });
+    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
 
     for (const url of urls) {
       smStream.write(url);

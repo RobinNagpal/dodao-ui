@@ -16,13 +16,20 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import type { EtfFinancialInfoResponse, EtfScoresResponse, SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
-import type { EtfCompetitionResponse, EtfCompetitor } from '@/types/etf/etf-analysis-types';
+import type { EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { ensureEtfPriceHistoryIsFresh } from '@/utils/etf-price-history-utils';
+import { buildEtfPerformanceMetricsPayload, type EtfPerformanceMetricFields, type EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
+
+export interface EtfKeyFactsReportResponse {
+  keyFacts: string | null;
+  greenFlags: EtfKeyFactsFlagAssessment[];
+  redFlags: EtfKeyFactsFlagAssessment[];
+}
 
 export interface EtfFullRenderResponse {
   etf: EtfFastResponse | null;
@@ -33,6 +40,8 @@ export interface EtfFullRenderResponse {
   portfolioHoldings: EtfPortfolioHoldingsResponse;
   competition: EtfCompetitionResponse | null;
   priceHistory: PriceHistoryResponse | null;
+  performanceMetrics: EtfPerformanceMetricsPayload | null;
+  keyFacts: EtfKeyFactsReportResponse | null;
 }
 
 const EMPTY: EtfFullRenderResponse = {
@@ -44,6 +53,8 @@ const EMPTY: EtfFullRenderResponse = {
   portfolioHoldings: { holdings: null, updatedAt: null },
   competition: null,
   priceHistory: null,
+  performanceMetrics: null,
+  keyFacts: null,
 };
 
 async function getHandler(
@@ -67,13 +78,15 @@ async function getHandler(
       morPortfolioInfo: { select: { holdings: true, updatedAt: true } },
       vsCompetition: true,
       similarEtfs: { orderBy: { sortOrder: 'asc' }, take: 6 },
+      keyFactsReport: true,
     },
   });
   if (!etfRecord) return EMPTY;
 
   const etfId = etfRecord.id;
+  const focalCategory = etfRecord.stockAnalyzerInfo?.category ?? null;
 
-  const [analysisRows, similarHydrated, competitorHydrated, priceInfo] = await Promise.all([
+  const [analysisRows, similarHydrated, competitorHydrated, priceInfo, categoryPeers] = await Promise.all([
     prisma.etfCategoryAnalysisResult.findMany({
       where: { etfId, spaceId: where.spaceId },
       include: {
@@ -85,6 +98,7 @@ async function getHandler(
     hydrateSimilarEtfs(etfRecord.spaceId, etfRecord.similarEtfs),
     hydrateCompetitors(etfRecord.vsCompetition?.competitionAnalysisArray as unknown as CompetitionAnalysis[] | undefined),
     ensureEtfPriceHistoryIsFresh(etfRecord).catch(() => null),
+    fetchCategoryPeerAnalyzerInfo(etfRecord.spaceId, focalCategory, etfId),
   ]);
 
   // Shape responses to match the original per-route payloads so the main page
@@ -98,7 +112,16 @@ async function getHandler(
     vsCompetition: undefined,
     similarEtfs: undefined,
     cachedScore: undefined,
+    keyFactsReport: undefined,
   });
+
+  const keyFacts: EtfKeyFactsReportResponse | null = etfRecord.keyFactsReport
+    ? {
+        keyFacts: etfRecord.keyFactsReport.keyFacts,
+        greenFlags: (etfRecord.keyFactsReport.greenFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
+        redFlags: (etfRecord.keyFactsReport.redFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
+      }
+    : null;
 
   const financialInfo: EtfFinancialInfoResponse | null = etfRecord.financialInfo
     ? {
@@ -166,6 +189,10 @@ async function getHandler(
       }
     : null;
 
+  const performanceMetrics: EtfPerformanceMetricsPayload | null = etfRecord.stockAnalyzerInfo
+    ? buildEtfPerformanceMetricsPayload(etfRecord.stockAnalyzerInfo, categoryPeers, focalCategory)
+    : null;
+
   const priceHistory: PriceHistoryResponse | null =
     priceInfo &&
     (((priceInfo.dailyData as unknown as PriceHistoryPoint[] | null)?.length ?? 0) > 0 ||
@@ -187,7 +214,45 @@ async function getHandler(
     portfolioHoldings,
     competition,
     priceHistory,
+    performanceMetrics,
+    keyFacts,
   };
+}
+
+/**
+ * Pull only the cagr/return fields for the focal ETF's category peers (same
+ * `spaceId`, same `category`, excluding the focal ETF itself). Returns
+ * `EtfStockAnalyzerInfo`-shaped partials whose unread fields are filled with
+ * `null` so the shared averaging util can read them safely.
+ *
+ * Returns `[]` if the focal ETF has no category — the chart will then render
+ * with the ETF-only series.
+ */
+async function fetchCategoryPeerAnalyzerInfo(spaceId: string, category: string | null, focalEtfId: string): Promise<EtfPerformanceMetricFields[]> {
+  if (!category) return [];
+
+  return prisma.etfStockAnalyzerInfo.findMany({
+    where: {
+      etf: { spaceId, NOT: { id: focalEtfId } },
+      category,
+    },
+    select: {
+      cagr1y: true,
+      cagr3y: true,
+      cagr5y: true,
+      cagr10y: true,
+      cagr15y: true,
+      cagr20y: true,
+      return1m: true,
+      return6m: true,
+      return1y: true,
+      return3y: true,
+      return5y: true,
+      return10y: true,
+      return15y: true,
+      return20y: true,
+    },
+  });
 }
 
 async function hydrateSimilarEtfs(spaceId: string, stored: Array<{ id: string; symbol: string; exchange: string; sortOrder: number }>): Promise<SimilarEtf[]> {

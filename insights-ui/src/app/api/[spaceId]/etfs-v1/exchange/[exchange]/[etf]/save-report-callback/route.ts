@@ -5,7 +5,7 @@ import {
   saveEtfCompetitionResponse,
   saveEtfFactorAnalysisResponse,
   saveEtfFinalSummaryResponse,
-  saveEtfIndexStrategyResponse,
+  saveEtfKeyFactsResponse,
 } from '@/utils/etf-analysis-reports/save-etf-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
@@ -20,8 +20,8 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
 
   if (reportType === EtfReportType.FINAL_SUMMARY) {
     await saveEtfFinalSummaryResponse(etf, exchange, llmResponse);
-  } else if (reportType === EtfReportType.INDEX_STRATEGY) {
-    await saveEtfIndexStrategyResponse(etf, exchange, llmResponse);
+  } else if (reportType === EtfReportType.KEY_FACTS) {
+    await saveEtfKeyFactsResponse(etf, exchange, llmResponse);
   } else if (reportType === EtfReportType.COMPETITION) {
     await saveEtfCompetitionResponse(etf, exchange, llmResponse);
   } else {

@@ -1,13 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+
+export const dynamic = 'force-dynamic';
+
+// Countries with no live tickers — skip in sitemap to avoid orphan pages that Google
+// flags as "Crawled — currently not indexed" and Ahrefs reports as "Orphan page".
+// US is the default (no /stocks/countries/US route); the rest currently have no
+// listed tickers, so their per-country pages would render empty. Re-add a country
+// here once it has at least one ticker.
+const COUNTRIES_EXCLUDED_FROM_SITEMAP: ReadonlySet<SupportedCountries> = new Set([
+  SupportedCountries.US,
+  SupportedCountries.Japan,
+  SupportedCountries.Taiwan,
+  SupportedCountries.HongKong,
+]);
 
 interface Industry {
   industryKey: string;
   name: string;
+  tickerCount?: number;
 }
 
 interface SiteMapUrl {
@@ -62,22 +78,15 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   const urls: SiteMapUrl[] = [];
 
   // Main stocks pages
-  urls.push(
-    {
-      url: '/stocks',
-      changefreq: 'daily',
-      priority: 0.8,
-    },
-    {
-      url: '/stocks/comparison',
-      changefreq: 'weekly',
-      priority: 0.7,
-    }
-  );
+  urls.push({
+    url: '/stocks',
+    changefreq: 'daily',
+    priority: 0.8,
+  });
 
-  // Country pages - /stocks/countries/{country} (excluding US as it's the default)
+  // Country pages - /stocks/countries/{country} (skipping countries with no live tickers)
   for (const country of ALL_SUPPORTED_COUNTRIES) {
-    if (country !== SupportedCountries.US) {
+    if (!COUNTRIES_EXCLUDED_FROM_SITEMAP.has(country)) {
       urls.push({
         url: `/stocks/countries/${country}`,
         changefreq: 'weekly',
@@ -86,26 +95,31 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
     }
   }
 
-  // Industry pages - /stocks/industries/{industryKey}
+  // Industry pages - /stocks/industries/{industryKey} (only industries that have at
+  // least one ticker; empty industries render as thin pages and end up orphaned).
   const industries = await getAllIndustries();
   for (const industry of industries) {
-    urls.push({
-      url: `/stocks/industries/${industry.industryKey}`,
-      changefreq: 'weekly',
-      priority: 0.7,
-    });
+    if ((industry.tickerCount ?? 0) > 0) {
+      urls.push({
+        url: `/stocks/industries/${industry.industryKey}`,
+        changefreq: 'weekly',
+        priority: 0.7,
+      });
+    }
   }
 
-  // Country-specific industry pages - /stocks/countries/{country}/industries/{industryKey} (excluding US as it's the default)
+  // Country-specific industry pages - /stocks/countries/{country}/industries/{industryKey}
   for (const country of ALL_SUPPORTED_COUNTRIES) {
-    if (country !== SupportedCountries.US) {
+    if (!COUNTRIES_EXCLUDED_FROM_SITEMAP.has(country)) {
       const countryIndustries = await getAllIndustriesByCountry(country);
       for (const industry of countryIndustries) {
-        urls.push({
-          url: `/stocks/countries/${country}/industries/${industry.industryKey}`,
-          changefreq: 'weekly',
-          priority: 0.7,
-        });
+        if ((industry.tickerCount ?? 0) > 0) {
+          urls.push({
+            url: `/stocks/countries/${country}/industries/${industry.industryKey}`,
+            changefreq: 'weekly',
+            priority: 0.7,
+          });
+        }
       }
     }
   }
@@ -132,12 +146,10 @@ async function generateTickerUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
-  const host = req.headers.get('host') as string;
-
+async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateTickerUrls();
-    const smStream = new SitemapStream({ hostname: 'https://' + host });
+    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
 
     for (const url of urls) {
       smStream.write(url);

@@ -1,0 +1,436 @@
+{
+  "_meta": {
+    "purpose": "Mor-category-level prompt instructions plumbed into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook) as `categoryInstructions`. The same rendered block goes into all four prompts when the fund's Mor category has an entry here.",
+    "coverageRule": "Populated for Mor categories with approximately >=50 US-listed ETFs as of 2026-05. Categories below the threshold render no category-specific block — the per-factor group instructions cover them.",
+    "instructionStyle": "Each category carries three lists. `mostImportant` (3-5 bullets) — qualitative facts describing what this KIND of fund is: its index/selection methodology, the character of the resulting portfolio, and its income & tax nature. Neutral context with no verdict and no numeric thresholds; these are the facts the Key Facts prompt asks the LLM to surface for a specific ETF, in the form 'the fact — its character'. `greenFlags` and `redFlags` (3-5 bullets each) are the evaluative lists, in the form 'signal — why it matters' with brief numeric anchors (tickers, bps, %). Rules: (1) include ONLY genuinely impactful signals — omit obvious basics like a plain low/high expense ratio; (2) `redFlags` must NOT be the mirror-image negation of `greenFlags` — each red flag is its own distinct failure mode, so a given dial appears on at most one side.",
+    "keyConvention": "Keys MUST be category slugs — slugifyEtfCategory(name) from etf-categorization-utils, e.g. 'Large Blend' -> 'large-blend', 'Trading--Leveraged Equity' -> 'trading-leveraged-equity'. This is the same identifier used in category URLs and getEtfCategoryBySlug. Each slug MUST resolve to a categories[].name in etf-analysis-categories.json; unknown keys are silently ignored.",
+    "lastReviewed": "2026-05-25"
+  },
+  "instructions": {
+    "large-blend": {
+      "mostImportant": [
+        "The kind of index it tracks and how it picks and weights holdings — a rules-based, passively cap-weighted broad index (e.g. S&P 500, CRSP US Total Market) with no discretionary stock-picking.",
+        "The character of the resulting portfolio — broadly diversified but dominated by the largest companies, so its behaviour leans on a handful of mega-caps and the sectors they sit in (currently mega-cap tech).",
+        "The nature of its income — distributions are mostly qualified dividends rather than ordinary income."
+      ],
+      "greenFlags": [
+        "Net cost below the headline expense ratio from rebated securities-lending income — quietly lets the fund track at or just above the index (VOO/VTI/IVV).",
+        "Near-zero realised capital-gains distributions over 5Y — strong in-kind redemption discipline that compounds in a taxable account.",
+        "Low index-reconstitution turnover — fewer forced taxable trades than rules-based peers."
+      ],
+      "redFlags": [
+        "Top-10 weight past ~35% — a 'diversified' fund that's quietly a concentrated mega-cap bet.",
+        "Tracking drift above ~25 bps — usually an expired fee waiver or basket drift, and it's pure lost return.",
+        "A mid-life benchmark switch or widened sampling — the basket no longer matches the name you bought."
+      ]
+    },
+    "large-growth": {
+      "mostImportant": [
+        "How the index defines and selects \"growth\" — a rules-based screen on traits like sales/earnings growth, momentum and high valuation, with the exact definition varying by provider (CRSP / Russell / S&P).",
+        "The character of the resulting portfolio — growth screens cluster holdings in tech and communication-services names, giving it a pronounced sector personality rather than broad balance.",
+        "The nature of its return and income — return is expected almost entirely from price appreciation, with a structurally low dividend yield."
+      ],
+      "greenFlags": [
+        "High realised growth-factor loading (forward P/E, EPS-growth) vs the index — you own the growth tilt you pay for (VUG/SCHG), not closet blend.",
+        "Matches or beats Russell 1000 Growth net of fees over 5-10Y — the strategy earns its keep after costs.",
+        "Reconstitutes more than once a year — keeps the tilt from decaying mid-year as names cross the growth/blend line."
+      ],
+      "redFlags": [
+        "Top-10 weight 55-60% in mega-cap tech with no cap — a concentrated sector bet disguised as 'growth'.",
+        "Style drift toward blend/quality — you pay growth fees for blend exposure without noticing.",
+        "Above ~0.30% with no active mandate — the fee quietly loses to low-cost peers over time."
+      ]
+    },
+    "large-value": {
+      "mostImportant": [
+        "How the index defines and selects \"value\" — a rules-based screen on traits like low price-to-book, low P/E and high dividend yield, with definitions differing more between providers than for blend funds.",
+        "The character of the resulting portfolio — value screens tilt holdings toward financials, healthcare, energy and industrials, giving it a defensive/cyclical sector personality.",
+        "The nature of its income — it carries a structurally higher dividend yield than the broad market, so more of the total return arrives as income."
+      ],
+      "greenFlags": [
+        "Lower P/B and higher dividend yield than the S&P 500 in the actual holdings — real value (VTV/IUSV), not just a label.",
+        "A quality/profitability screen layered on cheapness — filters out the value traps that drag pure-cheap funds.",
+        "Multi-year consecutive dividend growth in dividend-tilt funds — durable payout health, not yield chasing."
+      ],
+      "redFlags": [
+        "Sector weights that mirror the broad market — value in name only; won't perform when value rotates.",
+        "Lagging Russell 1000 Value by >100 bps annualised over 10Y — a wrong-basket failure, worse than value being out of favour.",
+        "A few cheap-but-deteriorating names dominating — value traps, cheap because the business stalled, not because they're mispriced."
+      ]
+    },
+    "mid-cap-blend": {
+      "mostImportant": [
+        "The index and size band it tracks — a rules-based cap-weighted mid-cap index (e.g. Russell Midcap, S&P 400) sitting between large- and small-cap, with no stock-picking.",
+        "The character of the resulting portfolio — companies large enough to be established yet still growing, more cyclical and far less mega-cap-concentrated than large blend.",
+        "The nature of its income and turnover — a modest dividend yield, with periodic turnover as names graduate up to large-cap or fall to small-cap."
+      ],
+      "greenFlags": [
+        "Holdings stay inside the Russell Midcap / S&P 400 band — you actually get the mid-cap premium (VO/IJH), not large/small drift.",
+        "Low realised cap-gains distributions over 5Y — uncommon mid-cap in-kind discipline, a real hidden tax edge.",
+        "Full or near-full replication, not thin sampling — tighter tracking where sampling error runs larger."
+      ],
+      "redFlags": [
+        "Drift up into large-cap or down into small-cap — the fund quietly becomes something you didn't buy.",
+        "AUM under ~$200M — mid-cap spreads widen fast and tax round-trips invisibly.",
+        "Heavy weight in names about to graduate to large-cap — you're buying tomorrow's large-caps, diluting the mid-cap exposure."
+      ]
+    },
+    "mid-cap-growth": {
+      "mostImportant": [
+        "How the index selects mid-cap \"growth\" — a rules-based growth screen applied within the mid-cap size band, with the definition varying by provider.",
+        "The character of the resulting portfolio — faster-growing mid-sized companies with a tech / consumer / industrial tilt and higher volatility than mid blend.",
+        "The nature of its return — return comes mainly from price appreciation, with a minimal dividend yield."
+      ],
+      "greenFlags": [
+        "Strong realised growth loading (P/E, EPS-growth) on top of the mid-cap band — captures the actual mid-growth premium (IJK/VOT).",
+        "Stays inside the Russell Midcap / S&P 400 band — resists the pull up into large-cap mega-cap tech.",
+        "Low realised cap-gains distributions — mid-cap funds often lack large-cap in-kind discipline, so disciplined tax management is a real edge."
+      ],
+      "redFlags": [
+        "A single mid-cap name dominating the top-10 — a closet single-stock bet or an imminent migration out of the band.",
+        "Large-cap creep in the top holdings — you're buying tomorrow's large-caps, not mid-caps.",
+        "Above ~0.40% with no active mandate — most active mid-growth funds don't beat passive net of fees."
+      ]
+    },
+    "mid-cap-value": {
+      "mostImportant": [
+        "How the index selects mid-cap \"value\" — a rules-based value screen (low P/B, low P/E, higher yield) applied within the mid-cap band.",
+        "The character of the resulting portfolio — cheaper, more cyclical mid-sized companies tilted toward financials, industrials and real estate.",
+        "The nature of its income — a higher dividend yield than mid blend, with more of the return arriving as income."
+      ],
+      "greenFlags": [
+        "A profitability screen on top of cheapness — the single biggest quality lever; without it you hold low-quality 'zombie' names.",
+        "Genuinely lower P/B and higher dividend yield vs the index — the value premise is in the holdings, not the label.",
+        "Dividend stability in dividend-tilt sleeves — multi-year payout growth signals the cheap names aren't distressed."
+      ],
+      "redFlags": [
+        "Sector mix that mirrors broad mid-cap — value in name only.",
+        "Cheap names with stalling fundamentals (value traps) — they bite harder in mid-cap than large-cap.",
+        "Drift down into small-cap — drawdowns get materially deeper than mid-cap value."
+      ]
+    },
+    "small-blend": {
+      "mostImportant": [
+        "The index and size band it tracks — a rules-based small-cap index (e.g. Russell 2000, S&P 600), where the choice matters because the S&P 600 applies a profitability filter and the Russell 2000 does not.",
+        "The character of the resulting portfolio — many small, less-established companies, more economically sensitive and more volatile than mid or large blend.",
+        "The nature of its trading and income — wider spreads and a meaningful annual reconstitution, with a low dividend yield."
+      ],
+      "greenFlags": [
+        "Built on a profitability-filtered index (S&P 600) — that screen is why it has historically beaten Russell 2000 by ~2 pp annualised.",
+        "Stays inside the Russell 2000 / S&P 600 band (VB/IJR) — captures the small-cap premium with spreads kept tight despite harder microstructure.",
+        "Low turnover through the annual Russell rebuild — sidesteps the well-known late-June rebalance drag."
+      ],
+      "redFlags": [
+        "Drift down into micro-cap — amplifies drawdowns well beyond what a 'small-cap' label implies.",
+        "AUM under ~$200M — small-cap spreads widen and tax round-trips invisibly.",
+        "Tracking drift above ~30 bps — small-cap funds miss more than large-cap, but top funds don't miss by that much."
+      ]
+    },
+    "small-growth": {
+      "mostImportant": [
+        "How the index selects small-cap \"growth\" — a rules-based growth screen applied within the small-cap band.",
+        "The character of the resulting portfolio — fast-growing but often early-stage or pre-profit companies, giving high return dispersion and volatility.",
+        "The nature of its return — return is almost entirely price appreciation, with little to no dividend."
+      ],
+      "greenFlags": [
+        "Strong realised growth loading (EPS, sales growth) vs the index — captures the factor, not just volatile small names.",
+        "Stays inside the small-cap band (IJT/VBK) — keeps you where the growth premium actually lives, not drifting to mid-cap.",
+        "Caps single-name weight — no one story stock can sink the fund on a single miss."
+      ],
+      "redFlags": [
+        "A large pre-profit 'story stock' share — common in Russell 2000 Growth and the first thing to sell off in a drawdown.",
+        "Worst calendar-year drawdown 5+ pp deeper than the benchmark — signals micro-cap or concentration drift.",
+        "Drift up into mid-cap — the fund stops doing the small-growth job you bought."
+      ]
+    },
+    "small-value": {
+      "mostImportant": [
+        "How the index selects small-cap \"value\" — a rules-based value screen within the small-cap band, with some funds adding a profitability filter.",
+        "The character of the resulting portfolio — cheap, smaller, cyclical companies tilted to financials, industrials and real estate; historically the home of the size-plus-value premium.",
+        "The nature of its income and risk — a higher dividend yield than small blend, with deeper drawdowns in stress."
+      ],
+      "greenFlags": [
+        "A profitability filter (AVUV-style) — historically the decisive edge over pure cheap-P/B small value.",
+        "Lower P/B and higher dividend yield vs the index while inside the small-cap band — real value where it has paid off.",
+        "Cheap names that still generate cash (dividends/buybacks) — a sign they're undervalued, not just optically cheap."
+      ],
+      "redFlags": [
+        "Drift down into micro-cap — masks much deeper worst-year drawdowns (the category fell ~35% intraday in 2020).",
+        "Sector weights mirroring broad small-cap — value in name only.",
+        "Above ~0.40% with no active mandate — hard to justify vs AVUV-style active or cheap passive peers."
+      ]
+    },
+    "foreign-large-blend": {
+      "mostImportant": [
+        "The geography and index it tracks — a rules-based cap-weighted index of large developed-market companies outside the US (e.g. MSCI EAFE, FTSE Developed ex-US), with the country/region scope defined by the index.",
+        "Whether and how currency is handled — returns include foreign-currency exposure unless the fund explicitly hedges it back to USD.",
+        "The nature of its income and tax — typically a higher dividend yield than the US market, subject to foreign withholding tax."
+      ],
+      "greenFlags": [
+        "A clear, stable currency-hedge policy (hedged or unhedged, not switching) — hedging drives most of the return gap between otherwise-identical funds.",
+        "Transparent disclosure of the foreign-withholding-tax drag — a real cost hidden from the expense ratio.",
+        "Country/region weights matching the named index tightly (IXUS/VEA/SCHF) — you own exactly the basket disclosed."
+      ],
+      "redFlags": [
+        "A hedge that switches on and off — a backtest, not a strategy.",
+        "Geography that doesn't match the label — e.g. includes or excludes Canada/EM differently than you assumed.",
+        "Large mid-day premiums/discounts during European/Asian hours — weak market-making while the underlying market is closed."
+      ]
+    },
+    "diversified-emerging-mkts": {
+      "mostImportant": [
+        "The index and country scope it tracks — a rules-based cap-weighted emerging-markets index (e.g. MSCI EM, FTSE EM), where the included countries and China-share definition vary by provider.",
+        "The character of the resulting portfolio — concentrated in a few large countries (China, Taiwan, India), held via local shares and/or ADRs, and carrying currency exposure.",
+        "The nature of its risk — sensitive to single-country political, currency and trading-hours factors far more than a developed-market fund."
+      ],
+      "greenFlags": [
+        "An explicit single-country cap (China+Taiwan below ~30-35%) — keeps 'diversified' actually diversified (IEMG/VWO/SCHE).",
+        "Deep liquidity ($5B+, tight spreads) even during the EM open-hours mismatch — holds up in stress.",
+        "Rules-based, verifiable country weights — no discretionary single-country bets you can't see."
+      ],
+      "redFlags": [
+        "No single-country cap — cap-weighted EM can run 50-60% in 2-3 names, a concentrated country bet.",
+        "Heavy direct local-share holdings — foreign trading-hours and settlement operational risk vs ADRs.",
+        "Large NAV mark-downs during stress when underlying markets are closed — common in smaller EM funds."
+      ]
+    },
+    "technology": {
+      "mostImportant": [
+        "How the fund defines \"technology\" — the index's sector boundaries (pure software/semis vs a broad definition that sweeps in internet and some consumer names) decide what you actually own.",
+        "The character of the resulting portfolio — concentrated and cap-weighted, so a handful of mega-cap tech names usually dominate.",
+        "The nature of its behaviour — a single-sector, high-beta fund whose return rides the tech cycle rather than the broad market."
+      ],
+      "greenFlags": [
+        "Discloses the software/semis/internet split (XLK/VGT/FTEC) — you know the exact tech-cycle bet you're taking.",
+        "Tracks the broad tech cycle (Nasdaq 100 direction) — moves with tech without hidden sub-sector overshoots.",
+        "Rebalances on a clear quarterly schedule — new leaders enter promptly instead of leaving you with last cycle's winners."
+      ],
+      "redFlags": [
+        "Top-10 weight 60-70% — essentially a mega-cap tech bet, not broad tech.",
+        "A 'tech' definition that sweeps in Amazon/Tesla/Meta — overlaps with your Large Growth holdings unknowingly.",
+        "Above ~0.50% with no thematic mandate — broad tech doesn't beat low-cost peers at that fee."
+      ]
+    },
+    "real-estate": {
+      "mostImportant": [
+        "What it holds — predominantly equity REITs selected by a rules-based real-estate index, sometimes including specialised or mortgage REITs.",
+        "The character of the resulting portfolio — exposure spread across property sub-sectors (residential, industrial, retail, healthcare, data-centre) whose mix drives its behaviour.",
+        "The nature of its income and tax — high distributions that are largely non-qualified (taxed as ordinary income), and notable interest-rate sensitivity."
+      ],
+      "greenFlags": [
+        "Pure-play equity REITs (>=90%; VNQ/USRT/SCHH) — clean REIT exposure without dilution.",
+        "Multi-year consecutive distribution growth — signals tenant and debt health in the portfolio.",
+        "Spread across property sub-sectors (residential/industrial/healthcare/data-centre) — no single property cycle can dominate the fund."
+      ],
+      "redFlags": [
+        "Mortgage REITs (mREITs) in the basket — materially change duration and rate-sensitivity vs what you expected.",
+        "A distribution cut — an early warning of tenant or debt stress, not a one-off.",
+        "A rate-shock drawdown deeper than the category (~25-30% in 2022) — concentration or sub-sector issues."
+      ]
+    },
+    "health": {
+      "mostImportant": [
+        "How the fund defines \"healthcare\" — its sub-sector mix (broad vs pharma-only vs biotech-only) sets the risk and return character.",
+        "The character of the resulting portfolio — cap-weighted, so large pharma and managed-care names usually anchor it, with biotech adding binary event risk.",
+        "The nature of its behaviour — a defensive sector with steady cash generation, exposed to regulatory and patent-cycle events."
+      ],
+      "greenFlags": [
+        "Explicit sub-sector mix (broad vs pharma-pure vs biotech-only; XLV/VHT/IYH) — you know the basket and the risk.",
+        "Stays in the top two quartiles across 1Y/3Y/5Y — consistent, not a one-cycle fluke.",
+        "Steady cash generation from the payer and big-pharma sleeves — defensive ballast when biotech sells off."
+      ],
+      "redFlags": [
+        "Single-name weight above ~5% in a cap-weighted fund — amplifies binary FDA-approval and patent-cliff events.",
+        "Top-10 above ~40% in a 'broad' health fund — hidden pharma-mega-cap concentration.",
+        "Bouncing between top and bottom quartile across cycles — a hidden sub-sector tilt the label hides."
+      ]
+    },
+    "intermediate-core-bond": {
+      "mostImportant": [
+        "What it holds — a rules-based investment-grade bond index blending Treasuries, agency MBS and IG corporates (e.g. Bloomberg US Aggregate).",
+        "The character of the portfolio — intermediate duration, so its main driver is interest-rate moves rather than default risk.",
+        "The nature of its income and tax — steady taxable interest income, with structurally low credit risk."
+      ],
+      "greenFlags": [
+        "Credit mix matching the 'core' label (~70-80% Treasury / agency-MBS / IG corporate; AGG/BND/SCHZ) — you own core, not a tilt.",
+        "Duration held near the Agg's ~5-7Y — delivers core-bond rate exposure cleanly.",
+        "Large-sample replication of the Agg's ~12,000 bonds — keeps tracking tight where sampling error can creep in."
+      ],
+      "redFlags": [
+        "Duration drifting to 8+ years — a hidden rate bet you didn't sign up for in 'core'.",
+        "Undisclosed HY or EM debt — dilutes the 'core' label and adds credit risk retail isn't pricing.",
+        "A loss much deeper than the -13% Agg year (2022) — signals credit or duration drift."
+      ]
+    },
+    "short-term-bond": {
+      "mostImportant": [
+        "What it holds — short-maturity Treasury and investment-grade corporate bonds selected by a rules-based index.",
+        "The character of the portfolio — low duration, so it reprices quickly to rate changes and moves little in price.",
+        "The nature of its role — a low-volatility income / cash-parking sleeve paying taxable interest."
+      ],
+      "greenFlags": [
+        "Duration held at 1-3Y from Treasury + IG corporate (BSV/SHY/VGSH) — low-duration income paid for by duration risk only.",
+        "Low realised trading cost despite continuous bond rolling — turnover is high here and quietly eats return if managed poorly.",
+        "Duration short enough to reprice quickly when the Fed moves — the yield adjusts within months, not years."
+      ],
+      "redFlags": [
+        "Duration drifting to 4+ years — a hidden rate bet in a 'short-term' fund.",
+        "Reaching into HY for yield — the headline yield isn't paid for by short-duration risk.",
+        "Yield below a high-yield savings account net of fees — no reason to hold unless you're betting rates fall."
+      ]
+    },
+    "ultrashort-bond": {
+      "mostImportant": [
+        "What it holds — very short-maturity Treasury, IG corporate and sometimes structured paper, under a rules-based or lightly-active mandate.",
+        "The character of the portfolio — near-cash duration, so price barely moves; it behaves like a cash alternative.",
+        "The nature of its income — a modest yield over money-market funds, paid as taxable interest, with minimal NAV variability."
+      ],
+      "greenFlags": [
+        "Effective duration under 1Y (BIL/SGOV/USFR) — behaves like cash with a small premium.",
+        "Yield clearly beating HYSA net of fees — with the minor 1-3 cent NAV moves disclosed up front (it isn't a $1 money-market fund).",
+        "Penny spreads and same- or next-day liquidity — usable as a genuine cash sleeve."
+      ],
+      "redFlags": [
+        "Duration above ~1Y — misleading for 'ultrashort'; check the figure, not the label.",
+        "CLO-AAA above ~20% — changes the risk character from Treasury-only; not the cash-equivalent the label implies.",
+        "Above ~0.20% expense — fees eat directly into the thin premium over cash."
+      ]
+    },
+    "corporate-bond": {
+      "mostImportant": [
+        "What it holds — investment-grade corporate bonds selected by a rules-based index and weighted by amount issued.",
+        "The character of the portfolio — issuance-weighting tilts it toward the largest debt issuers (notably financials), at intermediate-to-long duration.",
+        "The nature of its income — a higher taxable yield than Treasuries, paid for with credit and duration risk rather than default-heavy risk."
+      ],
+      "greenFlags": [
+        "Stays strictly IG without crossover BB names for extra yield — you're not taking hidden HY risk.",
+        "Duration matching the named benchmark — your rate exposure is the one intended.",
+        "Broad replication across thousands of issuers — tight tracking without single-issuer surprises."
+      ],
+      "redFlags": [
+        "A heavy BBB tilt — loses materially more in credit-stress years than the 'IG' label implies.",
+        "Financials concentration 35-45% from cap-by-issuance — more of a financials-credit bet than expected.",
+        "A loss beyond the ~13-18% IG drawdown of 2022 — long-duration drift or low-BBB concentration."
+      ]
+    },
+    "high-yield-bond": {
+      "mostImportant": [
+        "What it holds — below-investment-grade (\"junk\") corporate bonds selected by a rules-based index, often via sampling rather than full replication.",
+        "The character of the portfolio — credit-driven, so its return and risk come from default and spread risk far more than from interest rates.",
+        "The nature of its income — a high taxable yield that compensates for real default risk, with equity-like drawdowns in credit stress."
+      ],
+      "greenFlags": [
+        "Captures fallen angels (downgraded IG) — they historically outperform original-issue HY because the market over-sells the downgrade.",
+        "Publishes the CCC % and sector breakdown plainly (HYG/JNK/USHY) — you can see the real risk being taken.",
+        "Spread over comparable IG in line with peers — the yield is paid for with measured, disclosed credit risk."
+      ],
+      "redFlags": [
+        "Single-sector concentration above ~25% (often energy) — a sector bet hiding inside a 'diversified HY' label.",
+        "Heavy sampling (~600 of ~2,500 bonds) with high turnover — slippage and trading cost quietly erode the spread.",
+        "A headline yield well above peers — almost always extra CCC exposure, not selection skill."
+      ]
+    },
+    "muni-national-interm": {
+      "mostImportant": [
+        "What it holds — a diversified, national set of investment-grade municipal bonds selected by a rules-based index, at intermediate duration.",
+        "The character of the portfolio — high credit quality, with rate sensitivity as the main risk and thinner liquidity than Treasuries in stress.",
+        "The nature of its income and tax — interest is federally tax-exempt, so it is best judged on tax-equivalent yield for a given bracket."
+      ],
+      "greenFlags": [
+        "Quotes tax-equivalent yield (TEY) at a realistic bracket plus state exemption (MUB/VTEB/TFI) — lets you compare honestly to taxable bonds.",
+        "Duration matched to the intermediate benchmark — clean tax-exempt rate exposure.",
+        "Broad issuer diversification across thousands of munis — limits single-issuer default impact."
+      ],
+      "redFlags": [
+        "Material AMT-bond exposure — should be near zero; it matters specifically for the high-income holders muni targets.",
+        "A BBB/non-rated tilt-down — bites in stress windows when muni liquidity thins (spreads 10-50 bps vs 1-5 for Treasuries).",
+        "Above ~0.30% expense — hard to justify vs 0.05-0.10% passive muni peers."
+      ]
+    },
+    "trading-leveraged-equity": {
+      "mostImportant": [
+        "What it does — uses swaps and futures to deliver a multiple (e.g. 2x/3x) of an index's return for a single day, reset daily.",
+        "The character of the product — daily resetting means multi-day returns compound and diverge from the stated multiple, especially in choppy markets (decay).",
+        "The nature of its intended use — a short-term trading tool, not a buy-and-hold investment, carrying high fees and financing cost."
+      ],
+      "greenFlags": [
+        "Hits ~3x (or its stated multiple) of the daily move within tight tolerance (TQQQ/SPXL/SOXL) — does the one job it exists for.",
+        "$5-25B AUM with billions in daily volume — deep enough to actually trade the thesis.",
+        "A transparent, published daily-reset methodology — no hidden path-dependency beyond the structural daily reset."
+      ],
+      "redFlags": [
+        "Marketed or held as buy-and-hold — daily-reset compounding makes multi-month return diverge sharply from N x the index.",
+        "AUM under ~$500M — unusable for short-term trading; spreads eat the directional edge.",
+        "Fees above ~1.20% — pay for nothing extra in this category."
+      ]
+    },
+    "trading-inverse-equity": {
+      "mostImportant": [
+        "What it does — uses derivatives to deliver the inverse (e.g. -1x/-2x/-3x) of an index's daily return, reset daily.",
+        "The character of the product — daily reset causes compounding decay, so it erodes over time in flat or choppy markets even when the directional call is right.",
+        "The nature of its intended use — a short-term hedging / trading instrument, not a long-term short position."
+      ],
+      "greenFlags": [
+        "Hits the stated inverse multiple within tight tolerance daily (SQQQ/SDS/SPXS) — the entire job of the product.",
+        "$1-5B AUM with high daily volume — tradable for tactical hedging.",
+        "Low embedded financing/borrow cost on the short side — less hidden daily drag eating the hedge."
+      ],
+      "redFlags": [
+        "Used as buy-and-hold 'protection' — compounding decay erodes it in flat/choppy markets even when your call is right.",
+        "AUM under ~$200M — effectively un-tradable; spreads and execution costs dominate.",
+        "Fees above ~1.20% — hard to justify for a tactical tool."
+      ]
+    },
+    "derivative-income": {
+      "mostImportant": [
+        "What it does — holds an equity portfolio and sells options (covered calls or an index-option overlay) to convert potential upside into current income.",
+        "The character of the product — it caps upside in exchange for yield, so total return tends to lag a rising market and the income varies with the volatility regime.",
+        "The nature of its income and tax — a high headline distribution whose composition (qualified dividends, option income, return-of-capital) drives the real after-tax yield."
+      ],
+      "greenFlags": [
+        "Total return (price + distributions) keeps pace with the underlying over a full cycle — it isn't just converting growth into taxable income.",
+        "Distributions classified as qualified dividends or capital gains rather than ordinary income — materially better after tax.",
+        "Performed sensibly across both low-vol and high-vol regimes — not curve-fit to one environment."
+      ],
+      "redFlags": [
+        "Steadily declining price-only NAV beside a high headline yield — the 'income' is partly your own capital coming back.",
+        "A high return-of-capital (ROC) share in the 1099 year after year — capital handed back dressed as yield.",
+        "Opaque option mechanics — no disclosure of % overwritten, strikes, or roll, so you can't price the upside you give up."
+      ]
+    },
+    "defined-outcome": {
+      "mostImportant": [
+        "What it does — uses a layered options structure to deliver a defined payoff (a downside buffer and a capped upside) over a set outcome period.",
+        "The character of the product — the buffer and cap apply in full only if held from the start to the end of the outcome period; mid-period the payoff differs.",
+        "The nature of its use — a structured, outcome-shaping holding tied to an outcome-period calendar, not a continuously-compounding fund."
+      ],
+      "greenFlags": [
+        "Laddered series across multiple outcome periods — you're not locked to a single cap window, diluting entry-timing risk.",
+        "States plainly that buffer + cap realise only at period end, net of fees — sets the holding-period expectation correctly.",
+        "Buffer-vs-floor structure and the cap-reset rule disclosed clearly — you know your protection and your ceiling."
+      ],
+      "redFlags": [
+        "Bought or sold mid-period — you get a completely different payoff than the headline buffer + cap.",
+        "Active-ratchet / dynamic resets with an opaque trigger — you can't tell when your terms change.",
+        "Fees above ~1.00% — above the 0.65-0.85% norm, paying for option-spread and admin overhead."
+      ]
+    },
+    "equity-hedged": {
+      "mostImportant": [
+        "What it does — holds equities alongside an options hedge (collar, put-spread or buffer) to reduce downside in exchange for giving up some upside.",
+        "The character of the product — designed to lag in strong bull markets and cushion drawdowns, with how the hedge is financed deciding how much upside is given up.",
+        "The nature of its use — a risk-managed equity sleeve whose payoff depends on the specific hedge structure and roll schedule."
+      ],
+      "greenFlags": [
+        "Discloses how the hedge is financed (paid outright, call-sale, or spreads) — you can see the bull-market lag you're paying for.",
+        "Laddered or rolling hedges with no gaps — protection is always on, not lapsing between expirations.",
+        "Historical drawdowns landed near the stated buffer/floor — the hedge actually worked when it was needed."
+      ],
+      "redFlags": [
+        "Sold as 'full upside with downside protection' — overselling; real funds disclose a meaningful bull-market lag.",
+        "A put-spread collar whose short put caps protection at a floor — losses below that floor are unhedged.",
+        "Fees above ~1.00% — above the 0.50-0.85% norm for the structure."
+      ]
+    }
+  }
+}

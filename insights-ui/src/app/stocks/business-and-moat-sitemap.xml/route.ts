@@ -1,8 +1,11 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { TickerAnalysisCategory } from '@/types/ticker-typesv1';
-import { NextRequest, NextResponse } from 'next/server';
+import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+
+export const dynamic = 'force-dynamic';
 
 interface SiteMapUrl {
   url: string;
@@ -49,12 +52,10 @@ async function generateBusinessAndMoatUrls(): Promise<SiteMapUrl[]> {
   return urls;
 }
 
-async function GET(req: NextRequest): Promise<NextResponse<Buffer>> {
-  const host = req.headers.get('host') as string;
-
+async function GET(): Promise<NextResponse<Buffer>> {
   try {
     const urls = await generateBusinessAndMoatUrls();
-    const smStream = new SitemapStream({ hostname: 'https://' + host });
+    const smStream = new SitemapStream({ hostname: getBaseUrlForServerSidePages() });
 
     for (const url of urls) {
       smStream.write(url);

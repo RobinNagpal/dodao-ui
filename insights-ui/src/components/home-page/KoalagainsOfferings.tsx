@@ -97,10 +97,10 @@ export default function KoalagainsOfferings() {
               Explore Our Platform
             </Link>
             <Link
-              href="mailto:robinnagpal@koalagains.com"
+              href="/genai-business"
               className="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-transparent px-6 py-3 text-base font-semibold text-indigo-300 hover:bg-indigo-600 hover:text-white transition-all duration-200 backdrop-blur-sm"
             >
-              Get In Touch
+              GenAI Services
             </Link>
           </div>
         </div>

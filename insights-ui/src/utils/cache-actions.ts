@@ -1,13 +1,20 @@
 'use server';
 
 import {
-  revalidateAllTickerTags,
+  revalidateAllTickerTagsAwaited,
   revalidateStocksPageTag,
   revalidateIndustryPageTag,
   revalidatePortfolioManagersByTypeTag,
   revalidatePortfolioProfileTag,
 } from '@/utils/ticker-v1-cache-utils';
-import { revalidateAllEtfTags } from '@/utils/etf-cache-utils';
+import { revalidateAllEtfTagsAwaited } from '@/utils/etf-cache-utils';
+import {
+  CacheFlushResult,
+  classifyCloudFrontPaths,
+  CloudFrontInvalidationResult,
+  formatCloudFrontResult,
+  invalidateCloudFrontPathsAwaited,
+} from '@/utils/cloudfront-cache-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { revalidateStockScenarioBySlugTag, revalidateStockScenarioListingTag } from '@/utils/stock-scenario-cache-utils';
 import { revalidateTariffReportsListing } from '@/utils/tariff-report-cache-utils';
@@ -48,18 +55,21 @@ export async function revalidatePortfolioProfileCache(portfolioManagerId: string
   return { success: true, message: `Revalidated portfolio profile cache for ${portfolioManagerId}` };
 }
 
-export async function revalidateTickerCache(ticker: string, exchange: string) {
+export async function revalidateTickerCache(ticker: string, exchange: string): Promise<CacheFlushResult> {
   // The admin-facing "Revalidate" action is meant to clear *everything* for a
-  // ticker — main page plus every per-subpage cache slice.
-  revalidateAllTickerTags(ticker, exchange);
-  return { success: true, message: `Cache invalidated for ${exchange.toUpperCase()}:${ticker.toUpperCase()}` };
+  // ticker — main page plus every per-subpage cache slice. We await the
+  // CloudFront round-trip (instead of fire-and-forget) so the UI gets real
+  // success/failure feedback — env-missing and IAM-denied are surfaced
+  // instead of hiding behind a blanket `success: true`.
+  const cf = await revalidateAllTickerTagsAwaited(ticker, exchange);
+  return formatCloudFrontResult(`${exchange.toUpperCase()}:${ticker.toUpperCase()}`, cf);
 }
 
-export async function revalidateEtfCache(symbol: string, exchange: string) {
-  // Admin "Invalidate cache" is meant to clear *everything* for an ETF —
-  // main page plus every per-subpage cache slice.
-  revalidateAllEtfTags(symbol, exchange);
-  return { success: true, message: `Cache invalidated for ETF ${exchange.toUpperCase()}:${symbol.toUpperCase()}` };
+export async function revalidateEtfCache(symbol: string, exchange: string): Promise<CacheFlushResult> {
+  // Admin "Invalidate cache" / "Flush Cache" — clears everything for an ETF.
+  // Awaited so the UI sees the real CloudFront outcome (see comment above).
+  const cf = await revalidateAllEtfTagsAwaited(symbol, exchange);
+  return formatCloudFrontResult(`ETF ${exchange.toUpperCase()}:${symbol.toUpperCase()}`, cf);
 }
 
 export async function revalidateEtfScenariosListingCache() {
@@ -92,4 +102,23 @@ export async function revalidateHtsChapterDetailCache(chapterNumber: number) {
   revalidateTariffChapterRelatedReportTag(chapterNumber);
   revalidateHtsChapterRefsTag();
   return { success: true, message: `Revalidated HTS chapter ${chapterNumber} cache` };
+}
+
+export interface AdminInvalidateCacheResult {
+  cloudfront: CloudFrontInvalidationResult;
+  cachedPaths: string[];
+  uncachedPaths: string[];
+}
+
+/**
+ * Admin-facing CloudFront invalidation. Accepts arbitrary paths the operator
+ * pasted on the `/admin-v1/invalidate-cache` page, classifies them against the
+ * cached-prefix allowlist so the UI can show which entries were actually sent
+ * to AWS vs which were ignored as no-ops, and forwards the cached subset to
+ * CloudFront.
+ */
+export async function invalidateCloudFrontPathsForAdmin(paths: string[]): Promise<AdminInvalidateCacheResult> {
+  const { cached, uncached } = classifyCloudFrontPaths(paths);
+  const cloudfront = await invalidateCloudFrontPathsAwaited(paths);
+  return { cloudfront, cachedPaths: cached, uncachedPaths: uncached };
 }

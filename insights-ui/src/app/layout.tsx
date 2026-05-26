@@ -81,8 +81,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           `}
         </Script>
 
-        <Script id="amazon-connect-chat" src="/scripts/amazon-koala-chat.js" strategy="afterInteractive" />
-
         <LogRocketComponent />
         <ClarityComponent />
       </body>

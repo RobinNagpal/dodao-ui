@@ -30,7 +30,7 @@ or more `EtfGenerationRequestPayload` entries. Each entry sets per-step
 | `cost-efficiency-and-team` | `regenerateCostEfficiencyAndTeam` |
 | `risk-analysis` | `regenerateRiskAnalysis` |
 | `future-performance-outlook` | `regenerateFuturePerformanceOutlook` |
-| `index-strategy` | `regenerateIndexStrategy` |
+| `key-facts` | `regenerateKeyFacts` |
 | `final-summary` | `regenerateFinalSummary` |
 
 ### Shortcuts
@@ -112,7 +112,7 @@ So:
 
 - Per-ETF detail page tag (`etf_exchange:_<SYM>_<EX>`): invalidated on every
   `saveEtfFactorAnalysisResponse`, `saveEtfFinalSummaryResponse`, and
-  `saveEtfIndexStrategyResponse` call.
+  `saveEtfKeyFactsResponse` call.
 - ETF listing tag (`etf_listing`): invalidated on every
   `saveEtfFactorAnalysisResponse` (where scores update).
 

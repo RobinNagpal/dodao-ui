@@ -289,11 +289,13 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
       type: 'article',
       publishedTime: createdTime ?? updatedTime,
       modifiedTime: updatedTime ?? createdTime,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${companyName} (${ticker}) Stock Analysis & Key Metrics | KoalaGains`,
       description: shortDesc,
+      images: ['https://koalagains.com/koalagain_logo.png'],
     },
     keywords,
   };
@@ -435,6 +437,7 @@ function BreadcrumbsFromData({ data }: { data: Promise<TickerV1FastResponse> }):
           movedExchange={d.movedExchange ?? null}
           movedSymbol={d.movedSymbol ?? null}
           isDeleted={d.isDeleted ?? false}
+          websiteUrl={d.websiteUrl ?? null}
         >
           <FavouriteButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
           <NotesButton tickerId={d.id} tickerSymbol={d.symbol} tickerName={d.name} />
@@ -647,43 +650,51 @@ function TickerAnalysisInfo({
       <div className="space-y-4">
         <CategorySummaryCard categoryKey={TickerAnalysisCategory.BusinessAndMoat} d={d} />
 
-        <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
+        {/*
+          content-visibility: auto — defers layout/paint for everything below the Business & Moat card
+          until it nears the viewport. HTML is fully rendered server-side so crawlers still index every
+          section. contain-intrinsic-size reserves a height estimate to avoid scrollbar jumps before
+          first paint; the browser remembers the actual measured size after that.
+        */}
+        <div className="space-y-4 [content-visibility:auto] [contain-intrinsic-size:auto_2500px]">
+          <CompetitionChartSection dataPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
-        {managementTeamReport && (
-          <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
-                <span
-                  className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
-                    managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
-                  )}`}
+          {managementTeamReport && (
+            <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-lg font-semibold">Management Team Experience &amp; Alignment</h3>
+                  <span
+                    className={`inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-medium ${getManagementTeamVerdictBadgeClasses(
+                      managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict
+                    )}`}
+                  >
+                    {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
+                      managementTeamReport.alignmentVerdict}
+                  </span>
+                  {managementTeamReport.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
+                </div>
+                <Link
+                  href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
+                  prefetch={false}
+                  className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
+                  style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
                 >
-                  {MANAGEMENT_TEAM_ALIGNMENT_VERDICT_LABELS[managementTeamReport.alignmentVerdict as ManagementTeamAlignmentVerdict] ||
-                    managementTeamReport.alignmentVerdict}
-                </span>
-                {managementTeamReport.updatedAt && <AdminTimestamp date={managementTeamReport.updatedAt} />}
+                  View Detailed Analysis →
+                </Link>
               </div>
-              <Link
-                href={`/stocks/${d.exchange.toUpperCase()}/${d.symbol.toUpperCase()}/management-team`}
-                prefetch={false}
-                className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-                style={{ backgroundColor: 'var(--primary-color, #3b82f6)' }}
-              >
-                View Detailed Analysis →
-              </Link>
+              <div
+                className="text-gray-300 markdown markdown-body"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
+              />
             </div>
-            <div
-              className="text-gray-300 markdown markdown-body"
-              dangerouslySetInnerHTML={{ __html: parseMarkdown(managementTeamReport.summary || 'No summary available.') }}
-            />
-          </div>
-        )}
+          )}
 
-        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FinancialStatementAnalysis} d={d} />
-        <CategorySummaryCard categoryKey={TickerAnalysisCategory.PastPerformance} d={d} />
-        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FutureGrowth} d={d} />
-        <CategorySummaryCard categoryKey={TickerAnalysisCategory.FairValue} d={d} />
+          <CategorySummaryCard categoryKey={TickerAnalysisCategory.FinancialStatementAnalysis} d={d} />
+          <CategorySummaryCard categoryKey={TickerAnalysisCategory.PastPerformance} d={d} />
+          <CategorySummaryCard categoryKey={TickerAnalysisCategory.FutureGrowth} d={d} />
+          <CategorySummaryCard categoryKey={TickerAnalysisCategory.FairValue} d={d} />
+        </div>
       </div>
     </section>
   );
@@ -794,9 +805,15 @@ export default async function TickerDetailsPage({ params }: { params: RouteParam
         {/* Analysis info - server rendered, no skeleton needed */}
         <TickerAnalysisInfo data={tickerInfo} competitionPromise={competitionPromise} exchange={exchange} ticker={ticker} />
 
-        <SimilarTickers dataPromise={similarPromise} />
+        {/* content-visibility: auto — see TickerAnalysisInfo for rationale. Each below-fold block
+            gets its own wrapper so the browser can paint them independently as they scroll in. */}
+        <div className="[content-visibility:auto] [contain-intrinsic-size:auto_800px]">
+          <SimilarTickers dataPromise={similarPromise} />
+        </div>
 
-        <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
+        <div className="[content-visibility:auto] [contain-intrinsic-size:auto_200px]">
+          <TickerArticleFooter modifiedDate={modifiedDate} formattedModifiedDate={formattedModifiedDate} />
+        </div>
       </article>
     </PageWrapper>
   );

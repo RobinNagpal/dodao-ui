@@ -29,7 +29,7 @@ const VALID_REPORT_TYPES: readonly EtfReportType[] = [
   EtfReportType.COST_EFFICIENCY_AND_TEAM,
   EtfReportType.RISK_ANALYSIS,
   EtfReportType.FUTURE_PERFORMANCE_OUTLOOK,
-  EtfReportType.INDEX_STRATEGY,
+  EtfReportType.KEY_FACTS,
   EtfReportType.COMPETITION,
   EtfReportType.FINAL_SUMMARY,
 ];

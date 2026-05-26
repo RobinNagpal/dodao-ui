@@ -26,7 +26,7 @@ For ETFs there is one extra step: before the first report, Claude asks the serve
 Report type slugs:
 
 - **Stocks:** `financial-analysis`, `competition`, `business-and-moat`, `past-performance`, `future-growth`, `fair-value`, `future-risk`, `final-summary`
-- **ETFs:** `performance-and-returns`, `cost-efficiency-and-team`, `risk-analysis`, `future-performance-outlook`, `index-strategy`, `competition`, `final-summary`
+- **ETFs:** `performance-and-returns`, `cost-efficiency-and-team`, `risk-analysis`, `future-performance-outlook`, `key-facts`, `competition`, `final-summary`
 
 ## When to use which flow
 
@@ -66,7 +66,7 @@ Report types, in the order you should run them:
 2. `cost-efficiency-and-team`
 3. `risk-analysis`
 4. `future-performance-outlook`
-5. `index-strategy`
+5. `key-facts`
 6. `competition`
 7. `final-summary` — **must be last**, the prompt pulls the saved summaries and factor results from the first four.
 
@@ -206,11 +206,11 @@ The schemas below are the **minimum** shape each save call needs. Each prompt it
 
 Same shape as the stock factor reports above.
 
-### ETF `index-strategy`
+### ETF `key-facts`
 
 ```json
 {
-  "indexStrategy": "4 paragraphs of markdown + a final \"Red Flags & Risks\" bulleted list",
+  "keyFacts": "4 paragraphs of markdown + a final \"Red Flags & Risks\" bulleted list",
   "similarEtfs": [
     { "symbol": "HLAL", "exchange": "NASDAQ" }
   ]
@@ -331,7 +331,7 @@ yarn etfs:save --symbol $SYMBOL --exchange $EXCHANGE \
 # Reminder: in a real Claude session, run each step as a separate tool call so the
 # LLM can read the prompt and write the response file between them — the loop below
 # is illustrative only.
-for RT in cost-efficiency-and-team risk-analysis future-performance-outlook index-strategy competition; do
+for RT in cost-efficiency-and-team risk-analysis future-performance-outlook key-facts competition; do
   yarn etfs:prompt --symbol $SYMBOL --exchange $EXCHANGE \
     --report-type $RT --out "$DIR/XX-$RT.prompt.txt" --skip-mor-check
   # <<< act as the LLM >>>
@@ -384,7 +384,7 @@ For stocks, the analysis route is `/api/koala_gains/tickers-v1/exchange/$EXCHANG
   - Picks the input-JSON preparer (`preparePerformanceAndReturnsInputJson`, etc.), fetches the active prompt at the matching key (`US/etfs/<slug>` — see `ETF_PROMPT_KEYS`), compiles the template, returns the final prompt.
 - `etfs:save` → `POST /api/<spaceId>/etfs-v1/exchange/<exchange>/<etf>/save-report-callback` with `{ llmResponse, additionalData: { reportType } }`.
   - Re-uses the endpoint the normal pipeline's lambda calls. Because we do **not** send a `generationRequestId`, the endpoint only persists the response — it does not chain-trigger the next step's lambda.
-  - Writes to `EtfCategoryAnalysisResult` (+ factor results), `EtfVsCompetition`, or directly on the `Etf` row for index-strategy and final-summary.
+  - Writes to `EtfCategoryAnalysisResult` (+ factor results), `EtfVsCompetition`, or directly on the `Etf` row for key-facts and final-summary.
 
 ## Authentication
 
