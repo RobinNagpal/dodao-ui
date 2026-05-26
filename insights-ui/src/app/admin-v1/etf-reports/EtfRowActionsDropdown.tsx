@@ -89,6 +89,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
               regenerateKeyFacts: false,
+              regenerateCompetition: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -102,6 +103,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
               regenerateKeyFacts: false,
+              regenerateCompetition: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -115,6 +117,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: true,
               regenerateFuturePerformanceOutlook: false,
               regenerateKeyFacts: false,
+              regenerateCompetition: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -128,6 +131,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: true,
               regenerateKeyFacts: false,
+              regenerateCompetition: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -141,6 +145,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
               regenerateKeyFacts: true,
+              regenerateCompetition: false,
               regenerateFinalSummary: false,
             },
           ]);
@@ -168,6 +173,7 @@ export default function EtfRowActionsDropdown({ etf, onDone }: EtfRowActionsDrop
               regenerateRiskAnalysis: false,
               regenerateFuturePerformanceOutlook: false,
               regenerateKeyFacts: false,
+              regenerateCompetition: false,
               regenerateFinalSummary: true,
             },
           ]);

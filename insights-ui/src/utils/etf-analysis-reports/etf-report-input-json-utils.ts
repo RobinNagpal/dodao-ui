@@ -539,6 +539,7 @@ export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
   const entry = getCategoryInstructionEntry(sa?.category);
   return {
     name: etf.name,
+    symbol: etf.symbol,
     exchange: etf.exchange,
     assetClass: sa?.assetClass || null,
     issuer: sa?.issuer || null,

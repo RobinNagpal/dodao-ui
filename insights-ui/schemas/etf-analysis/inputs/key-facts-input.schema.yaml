@@ -5,6 +5,9 @@ properties:
   name:
     type: string
     description: 'The full name of the ETF (e.g., SPDR S&P 500 ETF Trust).'
+  symbol:
+    type: string
+    description: 'Ticker symbol of the ETF in uppercase (e.g., SPY, VOO).'
   exchange:
     type: string
     description: 'Exchange code (e.g., NYSEARCA, NASDAQ).'
@@ -37,4 +40,5 @@ properties:
       type: string
 required:
   - name
+  - symbol
   - exchange

@@ -22,7 +22,7 @@ const FILE_BACKED_ETF_PROMPT_FILES: Partial<Record<EtfReportType, string>> = {
 };
 
 /**
- * Resolve the prompt template for an ETF report type. For the four file-backed
+ * Resolve the prompt template for an ETF report type. For the five file-backed
  * report types it returns the markdown read from `insights-ui/etf-prompts/`; for
  * every other type it returns `dbTemplate` unchanged so the rest of the pipeline
  * behaves exactly as before.

@@ -44,6 +44,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
     futurePerformanceOutlook?: boolean;
     keyFacts?: boolean;
     competition?: boolean;
+    finalSummary?: boolean;
   }) {
     const allTypes = !options;
     const payloads: EtfGenerationRequestPayload[] = selectedEtfs.map((etf) => ({
@@ -54,7 +55,7 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       regenerateFuturePerformanceOutlook: allTypes || (options?.futurePerformanceOutlook ?? false),
       regenerateKeyFacts: allTypes || (options?.keyFacts ?? false),
       regenerateCompetition: allTypes || (options?.competition ?? false),
-      regenerateFinalSummary: allTypes,
+      regenerateFinalSummary: allTypes || (options?.finalSummary ?? false),
     }));
     await createGenerationRequests(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/etfs-v1/generation-requests`, payloads);
     onRefresh();
@@ -117,8 +118,14 @@ export default function BulkActionsBar({ selectedEtfs, onClearSelection, onRefre
       <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ futurePerformanceOutlook: true })}>
         Future Outlook
       </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ keyFacts: true })}>
+        Key Facts
+      </button>
       <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ competition: true })}>
         Competition
+      </button>
+      <button className={buttonClass} disabled={isBusy} onClick={() => handleGenerateAnalysis({ finalSummary: true })}>
+        Final Summary
       </button>
 
       <div className="h-4 w-px bg-indigo-700/60" />
