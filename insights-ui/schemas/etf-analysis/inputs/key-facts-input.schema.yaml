@@ -20,6 +20,21 @@ properties:
   indexName:
     type: ['string', 'null']
     description: 'Index name the ETF aims to track (if known).'
+  mostImportant:
+    type: array
+    description: 'Qualitative facts about this KIND of fund (from the category) to guide the two "important things to know" paragraphs. May be empty when the category has no entry.'
+    items:
+      type: string
+  greenFlags:
+    type: array
+    description: 'Category-defined green flags (signs of a strong fund) to assess one-by-one against this ETF. May be empty.'
+    items:
+      type: string
+  redFlags:
+    type: array
+    description: 'Category-defined red flags (signs of a weak/risky fund) to assess one-by-one against this ETF. May be empty.'
+    items:
+      type: string
 required:
   - name
   - exchange

@@ -1315,7 +1315,6 @@ model Etf {
   exchange      String   @map("exchange")
   inception     String?  @map("inception")
   summary       String?  @map("summary")
-  indexStrategy String?  @map("index_strategy")
   spaceId       String   @default("koala_gains") @map("space_id")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
@@ -1334,10 +1333,29 @@ model Etf {
   priceHistory                  EtfPriceHistory?
   similarEtfs                   EtfSimilarEtf[]                   @relation("EtfSimilarEtfSource")
   vsCompetition                 EtfVsCompetition?
+  keyFactsReport                EtfKeyFactsReport?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
   @@map("etfs")
+}
+
+/// Key Facts report for an ETF (the "important things to know" paragraphs plus
+/// the green/red flag Pass/Fail assessments). One row per ETF. similarEtfs from
+/// the same report live in the EtfSimilarEtf table.
+model EtfKeyFactsReport {
+  id         String   @id @default(uuid())
+  etfId      String   @unique @map("etf_id")
+  spaceId    String   @default("koala_gains") @map("space_id")
+  keyFacts   String?  @map("key_facts")
+  greenFlags Json?    @map("green_flags")
+  redFlags   Json?    @map("red_flags")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@map("etf_key_facts_reports")
 }
 
 model EtfPriceHistory {
@@ -1685,7 +1703,7 @@ model EtfGenerationRequest {
   regenerateCostEfficiencyAndTeam    Boolean @default(false) @map("regenerate_cost_efficiency_and_team")
   regenerateRiskAnalysis             Boolean @default(false) @map("regenerate_risk_analysis")
   regenerateFuturePerformanceOutlook Boolean @default(false) @map("regenerate_future_performance_outlook")
-  regenerateIndexStrategy            Boolean @default(false) @map("regenerate_index_strategy")
+  regenerateKeyFacts                 Boolean @default(false) @map("regenerate_key_facts")
   regenerateCompetition              Boolean @default(false) @map("regenerate_competition")
   regenerateFinalSummary             Boolean @default(false) @map("regenerate_final_summary")
 
@@ -1801,7 +1819,7 @@ model EtfVsCompetition {
 // --------------------------
 // ETF Similar ETFs
 // --------------------------
-// Per source-ETF list of similar/peer ETFs produced by the INDEX_STRATEGY LLM step.
+// Per source-ETF list of similar/peer ETFs produced by the KEY_FACTS LLM step.
 // Symbol + exchange are sufficient to link the card to the peer's report page.
 model EtfSimilarEtf {
   id          String @id @default(uuid())

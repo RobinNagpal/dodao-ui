@@ -18,7 +18,7 @@ export interface EtfGenerationRequestPayload {
   regenerateCostEfficiencyAndTeam: boolean;
   regenerateRiskAnalysis: boolean;
   regenerateFuturePerformanceOutlook?: boolean;
-  regenerateIndexStrategy?: boolean;
+  regenerateKeyFacts?: boolean;
   regenerateCompetition?: boolean;
   regenerateFinalSummary?: boolean;
 }
@@ -215,7 +215,7 @@ async function postHandler(
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam || existingRequest.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis || existingRequest.regenerateRiskAnalysis,
           regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook || existingRequest.regenerateFuturePerformanceOutlook,
-          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy || existingRequest.regenerateIndexStrategy,
+          regenerateKeyFacts: regenerateOptions.regenerateKeyFacts || existingRequest.regenerateKeyFacts,
           regenerateCompetition: regenerateOptions.regenerateCompetition || existingRequest.regenerateCompetition,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary || existingRequest.regenerateFinalSummary,
           updatedAt: new Date(),
@@ -230,7 +230,7 @@ async function postHandler(
           regenerateCostEfficiencyAndTeam: regenerateOptions.regenerateCostEfficiencyAndTeam,
           regenerateRiskAnalysis: regenerateOptions.regenerateRiskAnalysis,
           regenerateFuturePerformanceOutlook: regenerateOptions.regenerateFuturePerformanceOutlook ?? true,
-          regenerateIndexStrategy: regenerateOptions.regenerateIndexStrategy ?? true,
+          regenerateKeyFacts: regenerateOptions.regenerateKeyFacts ?? true,
           regenerateCompetition: regenerateOptions.regenerateCompetition ?? true,
           regenerateFinalSummary: regenerateOptions.regenerateFinalSummary ?? true,
         },

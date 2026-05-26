@@ -24,7 +24,7 @@ type GenerateKey =
   | 'cost-efficiency-and-team'
   | 'risk-analysis'
   | 'future-performance-outlook'
-  | 'index-strategy'
+  | 'key-facts'
   | 'competition'
   | 'final-summary';
 
@@ -34,7 +34,7 @@ const REPORT_OPTIONS: Array<{ key: GenerateKey; label: string }> = [
   { key: 'cost-efficiency-and-team', label: 'Generate Cost, Efficiency & Team' },
   { key: 'risk-analysis', label: 'Generate Risk Analysis' },
   { key: 'future-performance-outlook', label: 'Generate Future Outlook' },
-  { key: 'index-strategy', label: 'Generate Index & Strategy' },
+  { key: 'key-facts', label: 'Generate Key Facts' },
   { key: 'competition', label: 'Generate Competition' },
   { key: 'final-summary', label: 'Generate Final Summary' },
 ];
@@ -47,7 +47,7 @@ function buildPayload(etf: EtfIdentifier, key: GenerateKey): EtfGenerationReques
     regenerateCostEfficiencyAndTeam: all || key === 'cost-efficiency-and-team',
     regenerateRiskAnalysis: all || key === 'risk-analysis',
     regenerateFuturePerformanceOutlook: all || key === 'future-performance-outlook',
-    regenerateIndexStrategy: all || key === 'index-strategy',
+    regenerateKeyFacts: all || key === 'key-facts',
     regenerateCompetition: all || key === 'competition',
     regenerateFinalSummary: all || key === 'final-summary',
   };

@@ -1,0 +1,80 @@
+$schema: 'http://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+properties:
+  keyFacts:
+    type: string
+    description: 'Exactly TWO plain-prose paragraphs (separated by a blank line) covering the most important things a retail investor should know about this ETF — what it is and how it is run, and how it differs from close peers. No headings, no bullets, no markdown. This is the "important things to know" block shown above the charts.'
+  greenFlags:
+    type: array
+    description: 'One assessment per green flag provided in the input `greenFlags`. Judge whether THIS ETF exhibits each green flag. Return them in the same order as the input.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        flag:
+          type: string
+          description: 'The green-flag text being assessed, copied from the input greenFlags entry.'
+        oneLineExplanation:
+          type: string
+          description: 'One sentence: the key takeaway on whether this ETF shows this green flag.'
+        detailedExplanation:
+          type: string
+          description: 'A second line (1–2 sentences) with the specific evidence/reasoning for the verdict for this ETF.'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+          description: 'Pass when this ETF genuinely exhibits the green flag; Fail when it does not. If it cannot be confidently sourced, Fail and say so in the explanation.'
+      required:
+        - flag
+        - oneLineExplanation
+        - detailedExplanation
+        - result
+  redFlags:
+    type: array
+    description: 'One assessment per red flag provided in the input `redFlags`. Judge whether THIS ETF trips each red flag. Return them in the same order as the input.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        flag:
+          type: string
+          description: 'The red-flag text being assessed, copied from the input redFlags entry.'
+        oneLineExplanation:
+          type: string
+          description: 'One sentence: the key takeaway on whether this ETF trips this red flag.'
+        detailedExplanation:
+          type: string
+          description: 'A second line (1–2 sentences) with the specific evidence/reasoning for the verdict for this ETF.'
+        result:
+          type: string
+          enum: ['Pass', 'Fail']
+          description: 'Pass when this ETF AVOIDS the red flag (the good outcome); Fail when the ETF actually trips the red flag.'
+      required:
+        - flag
+        - oneLineExplanation
+        - detailedExplanation
+        - result
+  similarEtfs:
+    type: array
+    minItems: 6
+    description: 'At least 6 ETFs that are genuine substitutes for the analyzed ETF — same/very-similar underlying index, same category, same broad exposure mechanics. Not just famous or popular peers. All entries must be US-listed on BATS, NASDAQ, NYSE, or NYSEARCA.'
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        symbol:
+          type: string
+          description: 'Ticker symbol of the similar ETF in uppercase (e.g., VOO, IVV).'
+        exchange:
+          type: string
+          enum: ['BATS', 'NASDAQ', 'NYSE', 'NYSEARCA']
+          description: 'Exchange code in uppercase. Must be one of: BATS, NASDAQ, NYSE, NYSEARCA.'
+      required:
+        - symbol
+        - exchange
+required:
+  - keyFacts
+  - greenFlags
+  - redFlags
+  - similarEtfs

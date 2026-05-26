@@ -10,7 +10,7 @@ export enum EtfReportType {
   COST_EFFICIENCY_AND_TEAM = 'cost-efficiency-and-team',
   RISK_ANALYSIS = 'risk-analysis',
   FUTURE_PERFORMANCE_OUTLOOK = 'future-performance-outlook',
-  INDEX_STRATEGY = 'index-strategy',
+  KEY_FACTS = 'key-facts',
   COMPETITION = 'competition',
   FINAL_SUMMARY = 'final-summary',
 }
@@ -27,9 +27,9 @@ export const ETF_REPORT_TYPE_TO_CATEGORY: Record<EtfReportType, EtfAnalysisCateg
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: EtfAnalysisCategory.CostEfficiencyAndTeam,
   [EtfReportType.RISK_ANALYSIS]: EtfAnalysisCategory.RiskAnalysis,
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: EtfAnalysisCategory.FuturePerformanceOutlook,
-  // INDEX_STRATEGY is saved directly on the ETF record (not a category analysis).
+  // KEY_FACTS is saved in its own EtfKeyFactsReport table (not a category analysis).
   // We still provide a placeholder mapping to satisfy the Record<> type; it is not used.
-  [EtfReportType.INDEX_STRATEGY]: EtfAnalysisCategory.PerformanceAndReturns,
+  [EtfReportType.KEY_FACTS]: EtfAnalysisCategory.PerformanceAndReturns,
   // COMPETITION lives in its own table (mirroring TickerV1VsCompetition), not a category analysis.
   // Placeholder mapping to satisfy the Record<> type; it is not used.
   [EtfReportType.COMPETITION]: EtfAnalysisCategory.PerformanceAndReturns,
@@ -43,7 +43,7 @@ export const ETF_PROMPT_KEYS: Record<EtfReportType, string> = {
   [EtfReportType.COST_EFFICIENCY_AND_TEAM]: 'US/etfs/cost-efficiency-team',
   [EtfReportType.RISK_ANALYSIS]: 'US/etfs/risk-analysis',
   [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'US/etfs/future-performance-outlook',
-  [EtfReportType.INDEX_STRATEGY]: 'US/etfs/index-strategy',
+  [EtfReportType.KEY_FACTS]: 'US/etfs/key-facts',
   [EtfReportType.COMPETITION]: 'US/etfs/competition',
   [EtfReportType.FINAL_SUMMARY]: 'US/etfs/final-summary',
 };
@@ -108,14 +108,28 @@ export interface EtfCompetitionResponse {
   };
 }
 
-export interface EtfIndexStrategySimilarEtf {
+export interface EtfKeyFactsSimilarEtf {
   symbol: string;
   exchange: string;
 }
 
-export interface EtfIndexStrategyResponse {
-  indexStrategy: string;
-  similarEtfs: EtfIndexStrategySimilarEtf[];
+/**
+ * One green/red flag assessed against a specific ETF. Reuses the factor
+ * Pass/Fail shape: a one-line takeaway + a detailed line (the "two lines") and a
+ * Pass/Fail verdict. `flag` echoes the category flag text being judged.
+ */
+export interface EtfKeyFactsFlagAssessment {
+  flag: string;
+  oneLineExplanation: string;
+  detailedExplanation: string;
+  result: 'Pass' | 'Fail';
+}
+
+export interface EtfKeyFactsResponse {
+  keyFacts: string;
+  greenFlags: EtfKeyFactsFlagAssessment[];
+  redFlags: EtfKeyFactsFlagAssessment[];
+  similarEtfs: EtfKeyFactsSimilarEtf[];
 }
 
 export interface EtfAnalysisFactorDefinition {
@@ -173,17 +187,22 @@ export interface EtfCategoryToGroup {
 }
 
 /**
- * One Mor category's prompt-instruction entry. Two lists of 3-5 bullets each:
+ * One Mor category's prompt-instruction entry:
+ *  - `mostImportant` (optional) — qualitative facts describing what this kind of
+ *    fund IS (index/selection methodology, portfolio character, income & tax
+ *    nature). Neutral context, no verdict and no numeric thresholds; the facts
+ *    the key-facts prompt asks the LLM to surface for a specific ETF.
  *  - `greenFlags` — non-obvious signs of a strong fund in the category.
- *  - `redFlags` — non-obvious signs of a weak or risky fund. These are NOT the
- *    mirror-image negation of `greenFlags`; each is its own distinct failure
- *    mode, so a given dial appears on at most one side.
- * Only genuinely impactful, non-obvious signals are listed (no obvious basics
- * like a plain low/high expense ratio). The helper that consumes this renders
- * both lists into a single markdown block with section headings, which is
+ *  - `redFlags` — non-obvious signs of a weak or risky fund. NOT the mirror-image
+ *    negation of `greenFlags`; each is its own distinct failure mode, so a given
+ *    dial appears on at most one side.
+ * `greenFlags`/`redFlags` list only genuinely impactful, non-obvious signals (no
+ * obvious basics like a plain low/high expense ratio). The helper that consumes
+ * this renders the lists into a single markdown block with section headings,
  * plumbed through to all four ETF analysis prompts as `categoryInstructions`.
  */
 export interface EtfMorCategoryInstructionEntry {
+  mostImportant?: string[];
   greenFlags: string[];
   redFlags: string[];
 }

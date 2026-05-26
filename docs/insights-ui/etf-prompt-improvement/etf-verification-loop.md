@@ -168,7 +168,7 @@ yarn etfs:trigger \
 ```
 
 `requests.json` contains the new generation-request IDs and is only consumed by A3. The
-request also leaves `index-strategy` / `final-summary` flags as `false` — exactly one
+request also leaves `key-facts` / `final-summary` flags as `false` — exactly one
 category fires.
 
 ### A3. Wait for the queue to settle

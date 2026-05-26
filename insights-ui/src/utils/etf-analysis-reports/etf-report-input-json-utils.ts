@@ -63,10 +63,11 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 
 /**
  * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json` (keyed by category slug) and renders two
- * sections in order:
- *  1. `greenFlags` — non-obvious signs of a strong fund in the category.
- *  2. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
+ * `etf-mor-category-instructions.json` (keyed by category slug) and renders up
+ * to three sections in order:
+ *  1. `mostImportant` — qualitative facts describing what this kind of fund is.
+ *  2. `greenFlags` — non-obvious signs of a strong fund in the category.
+ *  3. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
  *     the green flags).
  * The same block renders in all four ETF analysis prompts (Past Returns /
  * Cost & Team / Risk / Future Outlook). Returns undefined when the fund's
@@ -77,11 +78,17 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   if (!fundCategory) return undefined;
   const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
   if (!entry) return undefined;
+  const mostImportant = entry.mostImportant ?? [];
   const greenFlags = entry.greenFlags ?? [];
   const redFlags = entry.redFlags ?? [];
-  if (greenFlags.length === 0 && redFlags.length === 0) return undefined;
+  if (mostImportant.length === 0 && greenFlags.length === 0 && redFlags.length === 0) return undefined;
 
   const sections: string[] = [];
+  if (mostImportant.length > 0) {
+    sections.push(
+      ['**Most important — qualitative facts about this kind of fund (surface the ones that fit this ETF):**', ...mostImportant.map((b) => `- ${b}`)].join('\n')
+    );
+  }
   if (greenFlags.length > 0) {
     sections.push(['**Green flags — non-obvious signs of a strong fund in this category:**', ...greenFlags.map((b) => `- ${b}`)].join('\n'));
   }
@@ -89,6 +96,12 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
     sections.push(['**Red flags — non-obvious signs of a weak or risky fund in this category:**', ...redFlags.map((b) => `- ${b}`)].join('\n'));
   }
   return sections.join('\n\n');
+}
+
+/** Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for a fund category, or undefined. */
+function getCategoryInstructionEntry(fundCategory: string | null | undefined) {
+  if (!fundCategory) return undefined;
+  return morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
 }
 
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {
@@ -521,8 +534,9 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
   };
 }
 
-export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
+export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
+  const entry = getCategoryInstructionEntry(sa?.category);
   return {
     name: etf.name,
     exchange: etf.exchange,
@@ -530,6 +544,9 @@ export function prepareIndexStrategyInputJson(etf: EtfWithAllData) {
     issuer: sa?.issuer || null,
     category: sa?.category || null,
     indexName: sa?.indexName || null,
+    mostImportant: entry?.mostImportant ?? [],
+    greenFlags: entry?.greenFlags ?? [],
+    redFlags: entry?.redFlags ?? [],
   };
 }
 

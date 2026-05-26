@@ -10,8 +10,10 @@ import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
+import EtfKeyFactsFlags from '@/components/etf-reportsv1/EtfKeyFactsFlags';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
@@ -162,7 +164,9 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   });
 
   const breadcrumbs = buildBreadcrumbs(etfData);
-  const { head: indexStrategyHead, tail: indexStrategyTail } = splitMarkdownAtParagraph(etfData.indexStrategy, 2);
+  const { head: keyFactsHead, tail: keyFactsTail } = splitMarkdownAtParagraph(data.keyFacts?.keyFacts ?? null, 2);
+  const keyFactsGreenFlags: EtfKeyFactsFlagAssessment[] = data.keyFacts?.greenFlags ?? [];
+  const keyFactsRedFlags: EtfKeyFactsFlagAssessment[] = data.keyFacts?.redFlags ?? [];
 
   const competitionAfter: ReactNode = data.competition ? <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} /> : null;
 
@@ -226,9 +230,9 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             </div>
           )}
 
-          {indexStrategyHead && (
+          {keyFactsHead && (
             <div className="mb-2">
-              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyHead) }} />
+              <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsHead) }} />
             </div>
           )}
         </section>
@@ -248,11 +252,13 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
           <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
         </section>
 
-        {indexStrategyTail && (
-          <section id="index-strategy-tail" className="mb-8">
-            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(indexStrategyTail) }} />
+        {keyFactsTail && (
+          <section id="key-facts-tail" className="mb-8">
+            <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsTail) }} />
           </section>
         )}
+
+        <EtfKeyFactsFlags greenFlags={keyFactsGreenFlags} redFlags={keyFactsRedFlags} />
 
         <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 

@@ -4,6 +4,7 @@ import { EtfReportType } from '@/types/etf/etf-analysis-types';
 import { getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { compileTemplate, createPromptInvocation, loadSchema, updateInvocationStatus, validateData } from '@/util/get-llm-response';
 import { callLambdaForLLMResponseViaCallback, LLMResponseViaLambdaRequest } from '@/utils/analysis-reports/llm-callback-lambda-utils';
+import { resolveEtfPromptTemplate } from '@/utils/etf-analysis-reports/etf-prompt-template-utils';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
 
@@ -51,7 +52,7 @@ export async function callEtfLambdaForLLMResponse(args: EtfLLMRequest): Promise<
   );
 
   try {
-    const templateContent = prompt.activePromptVersion.promptTemplate;
+    const templateContent = resolveEtfPromptTemplate(reportType, prompt.activePromptVersion.promptTemplate);
 
     let inputSchemaObject: object | null = null;
     if (prompt.inputSchema && prompt.inputSchema.trim() !== '') {
