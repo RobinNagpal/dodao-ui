@@ -4,6 +4,16 @@ import { NextRequest } from 'next/server';
 
 const staticPageGenerationError = 'rendered statically ';
 
+// Transient client-side fetch failures (e.g. NextAuth polling /api/auth/session
+// while the tab is backgrounded, offline, or navigating away). These are benign
+// network blips, so we still console-log them but skip the Discord webhook to
+// avoid alert noise.
+const transientClientFetchErrors = ['CLIENT_FETCH_ERROR', 'Load failed', 'Failed to fetch', 'NetworkError when attempting to fetch resource'];
+
+function isTransientClientFetchError(value: string): boolean {
+  return transientClientFetchErrors.some((pattern) => value.includes(pattern));
+}
+
 export async function logError(
   message: string,
   params: Record<string, any> = {},
@@ -127,10 +137,20 @@ function shouldIgnoreError(e: Error | string) {
     return true;
   }
 
+  if (typeof e === 'string' && isTransientClientFetchError(e)) {
+    console.log('[errorLogger] Ignoring error: transient client fetch error');
+    return true;
+  }
+
   const error = e as Error;
 
   if (error?.message?.includes(staticPageGenerationError)) {
     console.log('[errorLogger] Ignoring error: error.message contains staticPageGenerationError');
+    return true;
+  }
+
+  if (error?.message && isTransientClientFetchError(error.message)) {
+    console.log('[errorLogger] Ignoring error: transient client fetch error');
     return true;
   }
 
