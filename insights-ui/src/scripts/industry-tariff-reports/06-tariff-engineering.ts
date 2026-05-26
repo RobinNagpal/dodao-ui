@@ -270,7 +270,7 @@ ${chapterSeoGuidance(ctx)}
     prompt,
     TariffEngineeringSchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
+    GeminiModel.GEMINI_3_1_PRO_PREVIEW
   );
 
   await writeTariffEngineering(slug, tariffEngineering);

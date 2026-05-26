@@ -150,7 +150,7 @@ function getTariffUpdatesForIndustryPrompt(chapterLabel: string, date: string, h
 async function fetchCountryTariff(chapterLabel: string, date: string, headings: IndustryAreasWrapper, country: string): Promise<CountrySpecificTariff> {
   const prompt = getTariffUpdatesForIndustryPrompt(chapterLabel, date, headings, country);
   console.log(`Fetching tariffs for ${country}…`);
-  return getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
+  return getLlmResponse<CountrySpecificTariff>(prompt, CountrySpecificTariffSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_1_PRO_PREVIEW);
 }
 
 // Multi-country generation path. Persists after each country so a mid-flight

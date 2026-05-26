@@ -66,7 +66,7 @@ export async function getExecutiveSummaryAndSaveToFile(slug: string): Promise<vo
     prompt,
     ExecutiveSummarySchema,
     LLMProvider.GEMINI_WITH_GROUNDING,
-    GeminiModel.GEMINI_3_PRO_PREVIEW
+    GeminiModel.GEMINI_3_1_PRO_PREVIEW
   );
   await writeExecutiveSummary(slug, executiveSummary);
 }

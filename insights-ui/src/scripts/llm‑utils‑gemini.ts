@@ -28,7 +28,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Prompt the right Gemini client (static vs. search-grounded).
- * For Gemini 3 Pro Preview with grounding, uses single-call structured output when possible.
+ * For Gemini 3.1 Pro Preview with grounding, uses single-call structured output when possible.
  */
 export async function getLlmResponse<T extends Record<string, any>>(
   prompt: string,
@@ -44,9 +44,9 @@ export async function getLlmResponse<T extends Record<string, any>>(
   for (let i = 1; i <= maxRetries; i++) {
     try {
       if (provider === LLMProvider.GEMINI_WITH_GROUNDING) {
-        // For Gemini 3 Pro Preview, try single-call grounded structured output first
-        if (model === GeminiModel.GEMINI_3_PRO_PREVIEW) {
-          console.log('Using Gemini 3 Pro Preview with grounding - trying single-call grounded structured output...');
+        // For Gemini 3.1 Pro Preview, try single-call grounded structured output first
+        if (model === GeminiModel.GEMINI_3_1_PRO_PREVIEW) {
+          console.log('Using Gemini 3.1 Pro Preview with grounding - trying single-call grounded structured output...');
 
           try {
             const jsonSchema = zodToJsonSchema(schema, { $refStrategy: 'none' });

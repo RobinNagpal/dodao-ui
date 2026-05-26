@@ -66,6 +66,6 @@ export async function getReportCoverAndSaveToFile(slug: string): Promise<void> {
     # Tariff Updates
     ${JSON.stringify(tariffUpdates, null, 2)}
   `;
-  const reportCover = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_PRO_PREVIEW);
+  const reportCover = await getLlmResponse<ReportCover>(prompt, ReportCoverSchema, LLMProvider.GEMINI_WITH_GROUNDING, GeminiModel.GEMINI_3_1_PRO_PREVIEW);
   await writeReportCover(slug, reportCover);
 }

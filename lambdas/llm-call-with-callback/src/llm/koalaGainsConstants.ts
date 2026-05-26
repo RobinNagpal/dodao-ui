@@ -8,5 +8,5 @@ export enum LLMProvider {
 
 export enum GeminiModel {
   GEMINI_2_5_PRO = "gemini-2.5-pro",
-  GEMINI_3_PRO_PREVIEW = "gemini-3-pro-preview",
+  GEMINI_3_1_PRO_PREVIEW = "gemini-3.1-pro-preview",
 }

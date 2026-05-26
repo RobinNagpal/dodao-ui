@@ -115,7 +115,7 @@ async function postHandler(
       inputJson,
       promptKey,
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: GeminiModel.GEMINI_3_PRO_PREVIEW,
+      model: GeminiModel.GEMINI_3_1_PRO_PREVIEW,
       requestFrom: 'ui',
     });
 
