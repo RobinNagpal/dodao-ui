@@ -255,6 +255,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         {keyFactsTail && (
           <section id="key-facts-tail" className="mb-8">
+            <h3 className="text-lg font-semibold text-color mb-3">ETF Summary</h3>
             <div className="markdown-body" dangerouslySetInnerHTML={{ __html: parseMarkdown(keyFactsTail) }} />
           </section>
         )}

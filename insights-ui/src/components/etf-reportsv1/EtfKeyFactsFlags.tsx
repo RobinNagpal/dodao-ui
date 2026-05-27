@@ -10,9 +10,9 @@ interface EtfKeyFactsFlagsProps {
 function FlagList({ title, flags }: { title: string; flags: EtfKeyFactsFlagAssessment[] }): JSX.Element | null {
   if (flags.length === 0) return null;
   return (
-    <div className="mb-6">
-      <h2 className="text-xl font-semibold text-color mb-3">{title}</h2>
-      <ul className="space-y-3 mt-2">
+    <div className="mb-3">
+      <h4 className="text-base font-semibold text-color mb-2">{title}</h4>
+      <ul className="space-y-3 mt-1">
         {flags.map((f, i) => (
           <li key={`${f.flag}-${i}`} className="bg-gray-800 px-2 py-4 sm:p-4 rounded-md">
             <div className="flex flex-col gap-y-2">
@@ -55,6 +55,7 @@ export default function EtfKeyFactsFlags({ greenFlags, redFlags }: EtfKeyFactsFl
 
   return (
     <section id="key-facts-flags" className="mb-8">
+      <h3 className="text-lg font-semibold text-color mb-3">Key Facts</h3>
       <FlagList title="Green Flags" flags={green} />
       <FlagList title="Red Flags" flags={red} />
     </section>
