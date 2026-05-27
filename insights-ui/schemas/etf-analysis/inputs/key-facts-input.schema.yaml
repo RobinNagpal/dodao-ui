@@ -63,10 +63,35 @@ properties:
                 description: 'Goal key to return in applicableInvestorGoals.goalKeys.'
               name:
                 type: string
-                description: 'Human-readable goal name — judge fit from this.'
+                description: 'Human-readable goal name.'
+              profile:
+                type: object
+                additionalProperties: false
+                description: 'The investor profile this goal targets — use it to judge whether the ETF fits.'
+                properties:
+                  investmentHorizon:
+                    type: string
+                  riskTolerance:
+                    type: string
+                  primaryGoal:
+                    type: string
+                  incomeNeed:
+                    type: string
+                  taxSensitivity:
+                    type: string
+                  typicalInvestor:
+                    type: string
+                required:
+                  - investmentHorizon
+                  - riskTolerance
+                  - primaryGoal
+                  - incomeNeed
+                  - taxSensitivity
+                  - typicalInvestor
             required:
               - key
               - name
+              - profile
       required:
         - key
         - name

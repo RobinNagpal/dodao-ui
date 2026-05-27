@@ -67,11 +67,11 @@ Constraints for each entry:
 
 Return an `applicableInvestorGoals` array describing which investor **goals** this ETF can genuinely help achieve, grouped by investor type. The goal — not the investor type alone — is what tells the reader what the fund is actually useful for. For each investor type that has at least one matching goal, add one object with `investorTypeKey` (the exact type key) and `goalKeys` (the exact keys of that type's goals this fund satisfies). Use only keys from the taxonomy below — never invent keys or return display names.
 
-Investor types and their goals:
+Investor types and their goals (each goal lists the investor profile it targets — use it to judge fit):
 {{#each investorTypes}}
 - `{{this.key}}` — {{this.name}}
 {{#each this.goals}}
-  - `{{this.key}}` — {{this.name}}
+  - `{{this.key}}` — {{this.name}} (Horizon: {{this.profile.investmentHorizon}}; Risk tolerance: {{this.profile.riskTolerance}}; Primary goal: {{this.profile.primaryGoal}}; Income need: {{this.profile.incomeNeed}}; Tax sensitivity: {{this.profile.taxSensitivity}}; Typical investor: {{this.profile.typicalInvestor}})
 {{/each}}
 {{/each}}
 

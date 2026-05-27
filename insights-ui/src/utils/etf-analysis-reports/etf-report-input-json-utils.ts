@@ -552,7 +552,11 @@ export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
     investorTypes: getAllInvestors().map((inv) => ({
       key: inv.key,
       name: inv.name,
-      goals: inv.etfInvestorGoals.map((goal) => ({ key: goal.key, name: goal.name })),
+      goals: inv.etfInvestorGoals.map((goal) => ({
+        key: goal.key,
+        name: goal.name,
+        profile: goal.profile,
+      })),
     })),
   };
 }
