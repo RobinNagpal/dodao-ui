@@ -68,14 +68,13 @@ properties:
   applicableInvestorTypes:
     type: array
     maxItems: 4
-    uniqueItems: true
     description: >-
       Between 0 and 4 investor-type keys (chosen from the `investorTypes` list in the input) for whom THIS ETF is a
       genuinely appropriate holding given its mandate, cost, structure, and risk. Use the exact `key` strings provided
       in the input — never invent a key or return a display name. Judge fit strictly: a strong, well-run, broadly useful
       ETF should map to at least 2 investor types; return 0 ONLY for a fundamentally flawed, broken, or so-narrow fund
-      that no investor type should reasonably hold it. Order from best-fit to weakest-fit, and do not pad the list to
-      reach a count — only include a type when the fund truly suits it.
+      that no investor type should reasonably hold it. Order from best-fit to weakest-fit, do not repeat a key, and do
+      not pad the list to reach a count — only include a type when the fund truly suits it.
     items:
       type: string
       enum:

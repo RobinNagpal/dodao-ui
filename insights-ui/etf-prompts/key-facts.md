@@ -76,7 +76,7 @@ Rules:
 - Judge fit strictly against the fund's mandate, cost, structure, liquidity, and risk — not its popularity.
 - A strong, well-run, broadly useful ETF should fit **at least 2** investor types.
 - Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that no investor type should reasonably hold.
-- Never exceed 4. Order from best-fit to weakest-fit, and do not pad the list to reach a count — include a type only when the fund truly suits it.
+- Never exceed 4, and never repeat a key. Order from best-fit to weakest-fit, and do not pad the list to reach a count — include a type only when the fund truly suits it.
 
 ## Style rules
 
