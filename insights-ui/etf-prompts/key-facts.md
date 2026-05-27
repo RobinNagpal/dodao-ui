@@ -69,7 +69,7 @@ Return an `applicableInvestorTypes` array of **0 to 4** investor-type `key`s ide
 
 Investor types:
 {{#each investorTypes}}
-- `{{this.key}}` — {{this.name}}: {{this.shortDescription}}
+- `{{this.key}}` — {{this.name}}
 {{/each}}
 
 Rules:

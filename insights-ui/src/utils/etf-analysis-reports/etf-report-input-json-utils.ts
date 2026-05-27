@@ -552,7 +552,6 @@ export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
     investorTypes: getAllInvestors().map((inv) => ({
       key: inv.key,
       name: inv.name,
-      shortDescription: inv.shortDescription,
     })),
   };
 }

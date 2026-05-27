@@ -50,14 +50,10 @@ properties:
           description: 'Stable key to return in applicableInvestorTypes (e.g., retail-individual).'
         name:
           type: string
-          description: 'Human-readable investor-type name.'
-        shortDescription:
-          type: string
-          description: 'What defines this investor type — use it to judge fit.'
+          description: 'Human-readable investor-type name — judge fit from this.'
       required:
         - key
         - name
-        - shortDescription
 required:
   - name
   - symbol
