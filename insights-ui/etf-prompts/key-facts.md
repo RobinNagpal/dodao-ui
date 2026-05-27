@@ -30,8 +30,7 @@ Use the following category facts as a checklist of what tends to matter for this
 For EACH green flag listed below, return one object with:
 - `flag` — copy the green-flag text exactly.
 - `result` — `"Pass"` if this specific ETF genuinely exhibits the green flag, `"Fail"` if it does not (or you cannot confidently verify it for this fund).
-- `oneLineExplanation` — one sentence: the key takeaway.
-- `detailedExplanation` — a second line (1–2 sentences) with the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
+- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
 
 Return the assessments in the same order as the list. If the list below is empty, return an empty array.
 
@@ -45,8 +44,7 @@ Green flags to assess:
 For EACH red flag listed below, return one object with:
 - `flag` — copy the red-flag text exactly.
 - `result` — `"Pass"` if this ETF AVOIDS the red flag (the good outcome), `"Fail"` if the ETF actually trips it. (Pass always means good news for the investor, for both green and red flags.)
-- `oneLineExplanation` — one sentence: the key takeaway.
-- `detailedExplanation` — a second line (1–2 sentences) with the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
+- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
 
 Return the assessments in the same order as the list. If the list below is empty, return an empty array.
 

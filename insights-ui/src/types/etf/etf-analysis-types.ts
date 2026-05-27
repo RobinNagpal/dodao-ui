@@ -114,15 +114,20 @@ export interface EtfKeyFactsSimilarEtf {
 }
 
 /**
- * One green/red flag assessed against a specific ETF. Reuses the factor
- * Pass/Fail shape: a one-line takeaway + a detailed line (the "two lines") and a
- * Pass/Fail verdict. `flag` echoes the category flag text being judged.
+ * One green/red flag assessed against a specific ETF: a single ~2-line
+ * `explanation` and a Pass/Fail verdict. `flag` echoes the category flag text
+ * being judged.
+ *
+ * `oneLineExplanation` / `detailedExplanation` are the legacy two-line shape
+ * kept optional so reports stored before the single-explanation change still
+ * render (the UI falls back to them when `explanation` is absent).
  */
 export interface EtfKeyFactsFlagAssessment {
   flag: string;
-  oneLineExplanation: string;
-  detailedExplanation: string;
+  explanation?: string;
   result: 'Pass' | 'Fail';
+  oneLineExplanation?: string;
+  detailedExplanation?: string;
 }
 
 export interface EtfKeyFactsResponse {

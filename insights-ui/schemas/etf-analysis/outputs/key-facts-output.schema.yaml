@@ -15,20 +15,16 @@ properties:
         flag:
           type: string
           description: 'The green-flag text being assessed, copied from the input greenFlags entry.'
-        oneLineExplanation:
+        explanation:
           type: string
-          description: 'One sentence: the key takeaway on whether this ETF shows this green flag.'
-        detailedExplanation:
-          type: string
-          description: 'A second line (1–2 sentences) with the specific evidence/reasoning for the verdict for this ETF.'
+          description: 'About two sentences (roughly two lines): the key takeaway on whether this ETF shows this green flag plus the specific evidence/reasoning, with a numeric anchor where one exists.'
         result:
           type: string
           enum: ['Pass', 'Fail']
           description: 'Pass when this ETF genuinely exhibits the green flag; Fail when it does not. If it cannot be confidently sourced, Fail and say so in the explanation.'
       required:
         - flag
-        - oneLineExplanation
-        - detailedExplanation
+        - explanation
         - result
   redFlags:
     type: array
@@ -40,20 +36,16 @@ properties:
         flag:
           type: string
           description: 'The red-flag text being assessed, copied from the input redFlags entry.'
-        oneLineExplanation:
+        explanation:
           type: string
-          description: 'One sentence: the key takeaway on whether this ETF trips this red flag.'
-        detailedExplanation:
-          type: string
-          description: 'A second line (1–2 sentences) with the specific evidence/reasoning for the verdict for this ETF.'
+          description: 'About two sentences (roughly two lines): the key takeaway on whether this ETF trips this red flag plus the specific evidence/reasoning, with a numeric anchor where one exists.'
         result:
           type: string
           enum: ['Pass', 'Fail']
           description: 'Pass when this ETF AVOIDS the red flag (the good outcome); Fail when the ETF actually trips the red flag.'
       required:
         - flag
-        - oneLineExplanation
-        - detailedExplanation
+        - explanation
         - result
   similarEtfs:
     type: array
