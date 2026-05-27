@@ -2,6 +2,7 @@ import { DODAO_ACCESS_TOKEN_KEY } from '@dodao/web-core/types/deprecated/models/
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
 import { UpdateDataOptions } from '@dodao/web-core/ui/hooks/fetch/UpdateDataOptions';
 import { useDeepCompareMemoize } from '@dodao/web-core/ui/hooks/fetch/useDeepCompareMemoize';
+import { handleUnauthorized } from '@dodao/web-core/ui/hooks/fetch/handleUnauthorized';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
@@ -53,6 +54,10 @@ export const useUpdateData = <RESPONSE_TYPE, REQUEST_TYPE>(
         setLoading(false);
 
         if (!response.ok) {
+          if (response.status === 401) {
+            await handleUnauthorized(showNotification);
+            return;
+          }
           let errorText = await response.text();
           try {
             errorText = JSON.parse(errorText).error || errorText;

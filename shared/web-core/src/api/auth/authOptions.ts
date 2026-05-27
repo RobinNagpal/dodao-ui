@@ -12,6 +12,20 @@ import DiscordProvider from 'next-auth/providers/discord';
 import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 
+// JSON.stringify replacer that expands Error objects (which otherwise serialize
+// to `{}`) so the full name/message/stack/cause is printed in logs.
+function nextAuthErrorReplacer(_key: string, value: unknown): unknown {
+  if (value instanceof Error) {
+    return {
+      name: value.name,
+      message: value.message,
+      stack: value.stack,
+      ...((value as any).cause ? { cause: (value as any).cause } : {}),
+    };
+  }
+  return value;
+}
+
 export type PrismaUserHelper = {
   user: PrismaUserAdapter;
   verificationToken: PrismaVerificationTokenAdapter;
@@ -379,8 +393,20 @@ export function getAuthOptions(
     },
     logger: {
       error(code, metadata) {
-        console.error('[authOptions] NextAuth error:', code, metadata);
-        logError(`NextAuth error: ${code}`, metadata || {}).catch((err) => {
+        // `metadata` can be a raw Error, or an object that wraps one under `.error`.
+        // For client-proxied errors (CLIENT_FETCH_ERROR etc.) NextAuth serializes the
+        // nested error with URLSearchParams before POSTing to /api/auth/_log, so it
+        // arrives here as the string "[object Object]" and the stack is already lost.
+        // Pull out a real Error when one is available and always print the fully
+        // serialized metadata so nothing is hidden behind console depth limits.
+        const errorObject: Error | undefined =
+          metadata instanceof Error ? metadata : (metadata as any)?.error instanceof Error ? (metadata as any).error : undefined;
+
+        const serializedMetadata = JSON.stringify(metadata, nextAuthErrorReplacer, 2);
+        console.error('[authOptions] NextAuth error:', code, serializedMetadata);
+
+        const params = metadata instanceof Error ? {} : (metadata as Record<string, any>) || {};
+        logError(`NextAuth error: ${code}`, params, errorObject ?? null).catch((err) => {
           console.error('[authOptions] Failed to log NextAuth error:', err);
         });
       },
