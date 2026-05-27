@@ -1350,7 +1350,7 @@ model EtfKeyFactsReport {
   keyFacts                String?  @map("key_facts")
   greenFlags              Json?    @map("green_flags")
   redFlags                Json?    @map("red_flags")
-  applicableInvestorTypes Json?    @map("applicable_investor_types")
+  applicableInvestorGoals Json?    @map("applicable_investor_goals")
   createdAt               DateTime @default(now()) @map("created_at")
   updatedAt               DateTime @updatedAt @map("updated_at")
 

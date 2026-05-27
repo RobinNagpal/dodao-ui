@@ -11,7 +11,7 @@ import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import EtfKeyFactsFlags from '@/components/etf-reportsv1/EtfKeyFactsFlags';
-import EtfApplicableInvestorTypes from '@/components/etf-reportsv1/EtfApplicableInvestorTypes';
+import EtfApplicableInvestorGoals from '@/components/etf-reportsv1/EtfApplicableInvestorGoals';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
@@ -262,7 +262,7 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <EtfKeyFactsFlags greenFlags={keyFactsGreenFlags} redFlags={keyFactsRedFlags} />
 
-        <EtfApplicableInvestorTypes investorTypeKeys={data.keyFacts?.applicableInvestorTypes} />
+        <EtfApplicableInvestorGoals investorGoals={data.keyFacts?.applicableInvestorGoals} />
 
         <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 

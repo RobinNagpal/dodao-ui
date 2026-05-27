@@ -160,7 +160,7 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       keyFacts: response.keyFacts,
       greenFlags: response.greenFlags ?? [],
       redFlags: response.redFlags ?? [],
-      applicableInvestorTypes: response.applicableInvestorTypes ?? [],
+      applicableInvestorGoals: response.applicableInvestorGoals ?? [],
       updatedAt: new Date(),
     },
     create: {
@@ -169,7 +169,7 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       keyFacts: response.keyFacts,
       greenFlags: response.greenFlags ?? [],
       redFlags: response.redFlags ?? [],
-      applicableInvestorTypes: response.applicableInvestorTypes ?? [],
+      applicableInvestorGoals: response.applicableInvestorGoals ?? [],
     },
   });
 
