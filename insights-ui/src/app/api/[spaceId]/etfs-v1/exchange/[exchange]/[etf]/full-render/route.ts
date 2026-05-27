@@ -16,7 +16,7 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import type { EtfFinancialInfoResponse, EtfScoresResponse, SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
-import type { EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
+import type { EtfApplicableInvestorGoals, EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
@@ -29,7 +29,7 @@ export interface EtfKeyFactsReportResponse {
   keyFacts: string | null;
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
-  applicableInvestorTypes: string[];
+  applicableInvestorGoals: EtfApplicableInvestorGoals[];
 }
 
 export interface EtfFullRenderResponse {
@@ -121,7 +121,7 @@ async function getHandler(
         keyFacts: etfRecord.keyFactsReport.keyFacts,
         greenFlags: (etfRecord.keyFactsReport.greenFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
         redFlags: (etfRecord.keyFactsReport.redFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
-        applicableInvestorTypes: (etfRecord.keyFactsReport.applicableInvestorTypes as unknown as string[] | null) ?? [],
+        applicableInvestorGoals: (etfRecord.keyFactsReport.applicableInvestorGoals as unknown as EtfApplicableInvestorGoals[] | null) ?? [],
       }
     : null;
 

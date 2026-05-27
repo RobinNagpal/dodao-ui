@@ -130,13 +130,23 @@ export interface EtfKeyFactsFlagAssessment {
   detailedExplanation?: string;
 }
 
+/**
+ * Goals (from the investor taxonomy) an ETF can help achieve, grouped under the
+ * investor type that pursues them. `goalKeys` are keys of that investor type's
+ * `etfInvestorGoals`.
+ */
+export interface EtfApplicableInvestorGoals {
+  investorTypeKey: string;
+  goalKeys: string[];
+}
+
 export interface EtfKeyFactsResponse {
   keyFacts: string;
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
   similarEtfs: EtfKeyFactsSimilarEtf[];
-  /** 0-4 investor-type keys (from the investor taxonomy) this ETF genuinely suits. */
-  applicableInvestorTypes: string[];
+  /** Investor goals this ETF can help achieve, grouped by investor type. */
+  applicableInvestorGoals: EtfApplicableInvestorGoals[];
 }
 
 export interface EtfAnalysisFactorDefinition {
