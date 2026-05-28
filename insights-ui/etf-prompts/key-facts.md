@@ -11,7 +11,7 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce six outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type), and the expected forward returns (`expectedNext1YrReturns`, `expectedNext3YrReturns`, `expectedNext10YrReturns`).
+You will produce six outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type), and the expected forward returns (`expectedNext1YrReturns`, `expectedNext3YrReturns`, `expectedNext5YrReturns`).
 
 ## 1. `keyFacts` — exactly two plain-prose paragraphs
 
@@ -87,9 +87,9 @@ Estimate this ETF's expected **annualized** total return (price appreciation plu
 
 - `expectedNext1YrReturns` — expected annualized return over the next 1 year.
 - `expectedNext3YrReturns` — expected annualized return over the next 3 years.
-- `expectedNext10YrReturns` — expected annualized return over the next 10 years.
+- `expectedNext5YrReturns` — expected annualized return over the next 5 years.
 
-Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 10-year figure — be more conservative the shorter the window. If you genuinely cannot form a defensible estimate for a horizon, return `null` for that field rather than guessing.
+Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. If you genuinely cannot form a defensible estimate for a horizon, return `null` for that field rather than guessing.
 
 ## Style rules
 

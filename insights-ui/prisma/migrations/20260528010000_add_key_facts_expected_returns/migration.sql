@@ -4,4 +4,4 @@
 -- simply have no value.
 ALTER TABLE "etf_key_facts_reports" ADD COLUMN "expected_next_1yr_returns" DOUBLE PRECISION;
 ALTER TABLE "etf_key_facts_reports" ADD COLUMN "expected_next_3yr_returns" DOUBLE PRECISION;
-ALTER TABLE "etf_key_facts_reports" ADD COLUMN "expected_next_10yr_returns" DOUBLE PRECISION;
+ALTER TABLE "etf_key_facts_reports" ADD COLUMN "expected_next_5yr_returns" DOUBLE PRECISION;

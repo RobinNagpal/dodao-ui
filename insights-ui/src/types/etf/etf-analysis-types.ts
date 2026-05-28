@@ -151,8 +151,8 @@ export interface EtfKeyFactsResponse {
   expectedNext1YrReturns: number | null;
   /** Expected annualized return (%) over the next 3 years; null if not estimable. */
   expectedNext3YrReturns: number | null;
-  /** Expected annualized return (%) over the next 10 years; null if not estimable. */
-  expectedNext10YrReturns: number | null;
+  /** Expected annualized return (%) over the next 5 years; null if not estimable. */
+  expectedNext5YrReturns: number | null;
 }
 
 export interface EtfAnalysisFactorDefinition {

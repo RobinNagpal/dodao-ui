@@ -1353,7 +1353,7 @@ model EtfKeyFactsReport {
   applicableInvestorGoals Json?    @map("applicable_investor_goals")
   expectedNext1YrReturns  Float?   @map("expected_next_1yr_returns")
   expectedNext3YrReturns  Float?   @map("expected_next_3yr_returns")
-  expectedNext10YrReturns Float?   @map("expected_next_10yr_returns")
+  expectedNext5YrReturns  Float?   @map("expected_next_5yr_returns")
   createdAt               DateTime @default(now()) @map("created_at")
   updatedAt               DateTime @updatedAt @map("updated_at")
 

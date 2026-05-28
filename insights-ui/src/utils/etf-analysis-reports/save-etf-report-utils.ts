@@ -163,7 +163,7 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       applicableInvestorGoals: response.applicableInvestorGoals ?? [],
       expectedNext1YrReturns: response.expectedNext1YrReturns ?? null,
       expectedNext3YrReturns: response.expectedNext3YrReturns ?? null,
-      expectedNext10YrReturns: response.expectedNext10YrReturns ?? null,
+      expectedNext5YrReturns: response.expectedNext5YrReturns ?? null,
       updatedAt: new Date(),
     },
     create: {
@@ -175,7 +175,7 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       applicableInvestorGoals: response.applicableInvestorGoals ?? [],
       expectedNext1YrReturns: response.expectedNext1YrReturns ?? null,
       expectedNext3YrReturns: response.expectedNext3YrReturns ?? null,
-      expectedNext10YrReturns: response.expectedNext10YrReturns ?? null,
+      expectedNext5YrReturns: response.expectedNext5YrReturns ?? null,
     },
   });
 
