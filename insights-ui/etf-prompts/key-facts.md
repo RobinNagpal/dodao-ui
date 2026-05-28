@@ -11,7 +11,7 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce five outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, and `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type).
+You will produce six outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type), and the expected forward returns (`expectedNext1YrReturns`, `expectedNext3YrReturns`, `expectedNext10YrReturns`).
 
 ## 1. `keyFacts` — exactly two plain-prose paragraphs
 
@@ -81,8 +81,18 @@ Rules:
 - Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that serves no goal well.
 - Include an investor type only if it has at least one matching goal. Do not repeat a goal key within a type, and do not pad — include a goal only when the fund truly suits it.
 
+## 6. Expected forward returns
+
+Estimate this ETF's expected **annualized** total return (price appreciation plus reinvested distributions, net of fees) over three horizons, and return each as a plain number representing a percent (e.g. `7.5` means 7.5% per year, `-2` means -2% per year):
+
+- `expectedNext1YrReturns` — expected annualized return over the next 1 year.
+- `expectedNext3YrReturns` — expected annualized return over the next 3 years.
+- `expectedNext10YrReturns` — expected annualized return over the next 10 years.
+
+Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 10-year figure — be more conservative the shorter the window. If you genuinely cannot form a defensible estimate for a horizon, return `null` for that field rather than guessing.
+
 ## Style rules
 
 - Plain English; define jargon on first use. The two paragraphs must be accessible to a beginner and contain no headings, bullets, or markdown.
-- Neutral and factual — no buy/sell/hold opinions and no return forecasts. Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison; do not rank or recommend one over another.
+- Neutral and factual — no buy/sell/hold opinions, and keep the two `keyFacts` paragraphs free of return forecasts (the forward-return estimates belong only in the `expectedNext*Returns` fields). Naming specific competitor ETFs (by name or ticker) is fine when it sharpens a comparison; do not rank or recommend one over another.
 - In the flag assessments, be critical and specific: tie each verdict to a concrete, verifiable property of this fund, not a generic statement about the category.
