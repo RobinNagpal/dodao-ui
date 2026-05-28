@@ -107,6 +107,15 @@ const emailBody = (link: string) => `
 export const sendVerificationRequest = async (params: { identifier: string; url: string; expires: Date; token: string; from?: string }) => {
   const { identifier: email, url } = params;
 
+  // Silently ignore likely-abusive email addresses (four or more dots). We skip sending the email
+  // entirely, but callers still observe a normal success so the UI shows the usual "email sent"
+  // message without leaking that the request was dropped.
+  const dotCount = (email.match(/\./g) || []).length;
+  if (dotCount >= 4) {
+    console.log('Email has four or more dots, skipping send silently:', email);
+    return;
+  }
+
   const from = params.from || 'support@tidbitshub.org';
   console.log('Sending email to', email, 'from', from);
   console.log('Email body: ', emailBody(url));
