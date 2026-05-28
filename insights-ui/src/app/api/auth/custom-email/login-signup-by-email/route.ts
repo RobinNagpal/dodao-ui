@@ -100,6 +100,15 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
     const { spaceId, email, context } = reqBody;
     console.log('[login-signup-by-email] Extracted parameters:', { spaceId, email, context });
 
+    // Silently ignore likely-abusive email addresses (more than four dots). We don't create a user,
+    // generate a token, or send an email, but we still return success so the UI shows the normal
+    // "email sent" message without leaking that the request was dropped.
+    const dotCount = (email.match(/\./g) || []).length;
+    if (dotCount > 4) {
+      console.log('[login-signup-by-email] Email has more than four dots, skipping silently:', email);
+      return {};
+    }
+
     console.log('[login-signup-by-email] Request cookies:', JSON.stringify(req.cookies.getAll()));
 
     console.log('[login-signup-by-email] Normalizing email');
