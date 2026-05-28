@@ -17,6 +17,8 @@ export enum EtfFilterType {
   VOLUME = 'volume',
   BETA = 'beta',
   DIVIDEND_YEARS = 'dividendYears',
+  SORTINO = 'sortino',
+  SHARPE = 'sharpe',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
@@ -51,6 +53,8 @@ export enum EtfFilterParamKey {
   VOLUME = 'volume',
   BETA = 'beta',
   DIVIDEND_YEARS = 'dividendYears',
+  SORTINO = 'sortino',
+  SHARPE = 'sharpe',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
@@ -81,6 +85,84 @@ export interface ThresholdOption {
   value: string;
 }
 
+/** Comparator for custom numeric filters: `>` (gt), `<` (lt), `=` (eq). */
+export type NumericFilterOp = 'gt' | 'lt' | 'eq';
+
+export const NUMERIC_FILTER_OP_SYMBOLS: Record<NumericFilterOp, string> = {
+  lt: '<',
+  eq: '=',
+  gt: '>',
+};
+
+export interface NumericFilterCriteria {
+  op?: NumericFilterOp;
+  value?: number;
+  min?: number;
+  max?: number;
+  negative?: boolean;
+}
+
+/**
+ * Parse a numeric filter URL value into structured criteria. Supports three
+ * coexisting encodings:
+ *  - `negative`            → values below zero (where a `Negative` bucket exists)
+ *  - `gt:`/`lt:`/`eq:`<n>  → custom operator + value (n may use K/M/B/T suffixes)
+ *  - `<min>-<max>`         → legacy preset bucket range (either bound optional)
+ */
+export function parseNumericFilterValue(raw: string | undefined): NumericFilterCriteria | null {
+  if (!raw || !raw.trim()) return null;
+  const v = raw.trim();
+
+  if (v === 'negative') return { negative: true };
+
+  const opMatch = v.match(/^(gt|lt|eq):(.+)$/);
+  if (opMatch) {
+    const value = parseNumericStringValue(opMatch[2]);
+    if (value === null) return null;
+    return { op: opMatch[1] as NumericFilterOp, value };
+  }
+
+  const range = parseRangeParam(v);
+  if (range) return { min: range.min, max: range.max };
+  return null;
+}
+
+/** Build a Prisma numeric `where` fragment from parsed criteria. The shape is
+ *  shared by Float and Int nullable filters, so callers cast to the right type. */
+export function numericCriteriaToPrismaFilter(c: NumericFilterCriteria): Record<string, number> | null {
+  if (c.negative) return { lt: 0 };
+  if (c.op === 'gt') return { gt: c.value as number };
+  if (c.op === 'lt') return { lt: c.value as number };
+  if (c.op === 'eq') return { equals: c.value as number };
+  const f: Record<string, number> = {};
+  if (c.min !== undefined) f.gte = c.min;
+  if (c.max !== undefined) f.lte = c.max;
+  return Object.keys(f).length > 0 ? f : null;
+}
+
+/** App-level equivalent of {@link numericCriteriaToPrismaFilter}, used where the
+ *  source column is a formatted string (e.g. AUM) and must be parsed in code. */
+export function matchesNumericCriteria(value: number | null, c: NumericFilterCriteria): boolean {
+  if (value === null) return false;
+  if (c.negative) return value < 0;
+  if (c.op === 'gt') return value > (c.value as number);
+  if (c.op === 'lt') return value < (c.value as number);
+  if (c.op === 'eq') return value === (c.value as number);
+  if (c.min !== undefined && value < c.min) return false;
+  if (c.max !== undefined && value > c.max) return false;
+  return true;
+}
+
+/** Compact human-readable number for filter chip labels (e.g. 1.5B, 250M, 0.3). */
+export function formatCompactNumber(v: number): string {
+  const abs = Math.abs(v);
+  const trim = (n: number, suffix: string): string => `${parseFloat(n.toFixed(2))}${suffix}`;
+  if (abs >= 1e9) return trim(v / 1e9, 'B');
+  if (abs >= 1e6) return trim(v / 1e6, 'M');
+  if (abs >= 1e3) return trim(v / 1e3, 'K');
+  return `${parseFloat(v.toFixed(4))}`;
+}
+
 export interface AppliedEtfFilterBase {
   type: EtfFilterType;
   label: string;
@@ -97,6 +179,8 @@ type RangeFilterType =
   | EtfFilterType.VOLUME
   | EtfFilterType.BETA
   | EtfFilterType.DIVIDEND_YEARS
+  | EtfFilterType.SORTINO
+  | EtfFilterType.SHARPE
   | EtfFilterType.MOR_UPSIDE_3YR
   | EtfFilterType.MOR_UPSIDE_5YR
   | EtfFilterType.MOR_UPSIDE_10YR
@@ -123,8 +207,15 @@ type SelectFilterType =
 
 export interface AppliedEtfRangeFilter extends AppliedEtfFilterBase {
   type: RangeFilterType;
+  // The original URL param value, kept verbatim so the modal can round-trip it
+  // back into the matching control (bucket value, `negative`, or `op:value`).
+  raw?: string;
   minValue?: number;
   maxValue?: number;
+  // Operator form: `op` + `value` (e.g. expense ratio < 0.3).
+  op?: NumericFilterOp;
+  value?: number;
+  negative?: boolean;
 }
 
 export interface AppliedEtfSelectFilter extends AppliedEtfFilterBase {
@@ -250,6 +341,25 @@ export const ETF_DIVIDEND_YEARS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Established (3 - 10)', value: '3-10' },
   { label: 'Long (10 - 20)', value: '10-20' },
   { label: 'Aristocrat (20+)', value: '20-' },
+] as const;
+
+// Risk-adjusted return ratios (higher is better). Sourced from EtfStockAnalyzerInfo.
+export const ETF_SHARPE_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0)', value: 'negative' },
+  { label: 'Low (0 - 1)', value: '0-1' },
+  { label: 'Good (1 - 2)', value: '1-2' },
+  { label: 'Very Good (2 - 3)', value: '2-3' },
+  { label: 'Excellent (> 3)', value: '3-' },
+] as const;
+
+export const ETF_SORTINO_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0)', value: 'negative' },
+  { label: 'Low (0 - 1)', value: '0-1' },
+  { label: 'Good (1 - 2)', value: '1-2' },
+  { label: 'Very Good (2 - 3)', value: '2-3' },
+  { label: 'Excellent (> 3)', value: '3-' },
 ] as const;
 
 export const ETF_ASSET_CLASS_OPTIONS: ReadonlyArray<ThresholdOption> = [
@@ -392,6 +502,8 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.VOLUME,
   EtfFilterParamKey.BETA,
   EtfFilterParamKey.DIVIDEND_YEARS,
+  EtfFilterParamKey.SORTINO,
+  EtfFilterParamKey.SHARPE,
   EtfFilterParamKey.ASSET_CLASS,
   EtfFilterParamKey.CATEGORY,
   EtfFilterParamKey.GROUP,
@@ -567,23 +679,42 @@ function parseRangeFilter(
   defaultLabel: string
 ): AppliedEtfRangeFilter | null {
   if (!raw || !raw.trim()) return null;
+  const v = raw.trim();
 
-  if (raw === 'negative') {
+  if (v === 'negative') {
     return {
       type,
       paramKey,
+      raw: v,
+      negative: true,
       label: options.find((o) => o.value === 'negative')?.label || `${defaultLabel}: Negative / N/A`,
     };
   }
 
-  const [minStr, maxStr] = raw.split('-');
+  // Custom operator form: gt:/lt:/eq:<value>
+  const opMatch = v.match(/^(gt|lt|eq):(.+)$/);
+  if (opMatch) {
+    const op = opMatch[1] as NumericFilterOp;
+    const value = parseNumericStringValue(opMatch[2]);
+    const shown = value !== null ? formatCompactNumber(value) : opMatch[2];
+    return {
+      type,
+      paramKey,
+      raw: v,
+      op,
+      value: value ?? undefined,
+      label: `${defaultLabel} ${NUMERIC_FILTER_OP_SYMBOLS[op]} ${shown}`,
+    };
+  }
+
+  const [minStr, maxStr] = v.split('-');
   const minValue = minStr ? parseFloat(minStr) : undefined;
   const maxValue = maxStr ? parseFloat(maxStr) : undefined;
 
-  const matchingOption = options.find((opt) => opt.value === raw);
+  const matchingOption = options.find((opt) => opt.value === v);
   const label = matchingOption ? matchingOption.label : `${defaultLabel}: ${formatRange(minValue, maxValue)}`;
 
-  return { type, paramKey, minValue, maxValue, label };
+  return { type, paramKey, raw: v, minValue, maxValue, label };
 }
 
 function formatRange(min?: number, max?: number): string {
@@ -674,6 +805,20 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
   const divYearsRaw = searchParams.get(EtfFilterParamKey.DIVIDEND_YEARS);
   if (divYearsRaw) {
     const f = parseRangeFilter(divYearsRaw, EtfFilterType.DIVIDEND_YEARS, EtfFilterParamKey.DIVIDEND_YEARS, ETF_DIVIDEND_YEARS_OPTIONS, 'Dividend Years');
+    if (f) filters.push(f);
+  }
+
+  // Sortino Ratio
+  const sortinoRaw = searchParams.get(EtfFilterParamKey.SORTINO);
+  if (sortinoRaw) {
+    const f = parseRangeFilter(sortinoRaw, EtfFilterType.SORTINO, EtfFilterParamKey.SORTINO, ETF_SORTINO_OPTIONS, 'Sortino');
+    if (f) filters.push(f);
+  }
+
+  // Sharpe Ratio
+  const sharpeRaw = searchParams.get(EtfFilterParamKey.SHARPE);
+  if (sharpeRaw) {
+    const f = parseRangeFilter(sharpeRaw, EtfFilterType.SHARPE, EtfFilterParamKey.SHARPE, ETF_SHARPE_OPTIONS, 'Sharpe');
     if (f) filters.push(f);
   }
 
@@ -782,7 +927,11 @@ export function buildInitialEtfSelected(filters: ReadonlyArray<AppliedEtfFilter>
       initial[filter.paramKey] = (filter as AppliedEtfSelectFilter).selectedValue;
     } else {
       const rangeFilter = filter as AppliedEtfRangeFilter;
-      if (filter.label.includes('Negative')) {
+      // `raw` preserves the exact URL value (bucket, `negative`, or `op:value`)
+      // so the modal control re-hydrates to the user's original selection.
+      if (rangeFilter.raw !== undefined) {
+        initial[filter.paramKey] = rangeFilter.raw;
+      } else if (rangeFilter.negative || filter.label.includes('Negative')) {
         initial[filter.paramKey] = 'negative';
       } else {
         const min = rangeFilter.minValue !== undefined ? rangeFilter.minValue : '';
@@ -1029,68 +1178,40 @@ export function parseRangeParam(param: string | undefined): { min?: number; max?
   return { min, max };
 }
 
+/** Assign a numeric filter (bucket range, operator, or negative) onto `target[key]`
+ *  when the param resolves to usable criteria. Shared by financial + analyzer filters. */
+function assignNumericFilter<T extends object>(target: T, key: keyof T, raw: string | undefined): void {
+  const criteria = parseNumericFilterValue(raw);
+  if (!criteria) return;
+  const prismaFilter = numericCriteriaToPrismaFilter(criteria);
+  if (prismaFilter) (target as Record<string, unknown>)[key as string] = prismaFilter;
+}
+
 export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFinancialInfoWhereInput {
   const where: Prisma.EtfFinancialInfoWhereInput = {};
 
-  const erRange = parseRangeParam(filters[EtfFilterParamKey.EXPENSE_RATIO]);
-  if (erRange) {
-    const erFilter: Prisma.FloatNullableFilter = {};
-    if (erRange.min !== undefined) erFilter.gte = erRange.min;
-    if (erRange.max !== undefined) erFilter.lte = erRange.max;
-    where.expenseRatio = erFilter;
-  }
+  assignNumericFilter(where, 'expenseRatio', filters[EtfFilterParamKey.EXPENSE_RATIO]);
 
-  const peParam = filters[EtfFilterParamKey.PE_RATIO];
-  if (peParam && peParam.trim()) {
+  // P/E keeps its special "Negative / N/A" bucket, which also matches null P/E.
+  const peParam = filters[EtfFilterParamKey.PE_RATIO]?.trim();
+  if (peParam) {
     if (peParam === 'negative') {
       where.OR = [{ pe: { lt: 0 } }, { pe: null }];
     } else {
-      const peRange = parseRangeParam(peParam);
-      if (peRange) {
-        const peFilter: Prisma.FloatNullableFilter = {};
-        if (peRange.min !== undefined) peFilter.gte = peRange.min;
-        if (peRange.max !== undefined) peFilter.lte = peRange.max;
-        where.pe = peFilter;
-      }
+      assignNumericFilter(where, 'pe', peParam);
     }
   }
 
-  const divRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_TTM]);
-  if (divRange) {
-    const divFilter: Prisma.FloatNullableFilter = {};
-    if (divRange.min !== undefined) divFilter.gte = divRange.min;
-    if (divRange.max !== undefined) divFilter.lte = divRange.max;
-    where.dividendTtm = divFilter;
-  }
+  assignNumericFilter(where, 'dividendTtm', filters[EtfFilterParamKey.DIVIDEND_TTM]);
 
   const pf = filters[EtfFilterParamKey.PAYOUT_FREQUENCY];
   if (pf && pf.trim()) {
     where.payoutFrequency = { equals: pf, mode: 'insensitive' };
   }
 
-  const holdingsRange = parseRangeParam(filters[EtfFilterParamKey.HOLDINGS]);
-  if (holdingsRange) {
-    const holdingsFilter: Prisma.IntNullableFilter = {};
-    if (holdingsRange.min !== undefined) holdingsFilter.gte = holdingsRange.min;
-    if (holdingsRange.max !== undefined) holdingsFilter.lte = holdingsRange.max;
-    where.holdings = holdingsFilter;
-  }
-
-  const volumeRange = parseRangeParam(filters[EtfFilterParamKey.VOLUME]);
-  if (volumeRange) {
-    const volumeFilter: Prisma.FloatNullableFilter = {};
-    if (volumeRange.min !== undefined) volumeFilter.gte = volumeRange.min;
-    if (volumeRange.max !== undefined) volumeFilter.lte = volumeRange.max;
-    where.volume = volumeFilter;
-  }
-
-  const dyRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YIELD]);
-  if (dyRange) {
-    const dyFilter: Prisma.FloatNullableFilter = {};
-    if (dyRange.min !== undefined) dyFilter.gte = dyRange.min;
-    if (dyRange.max !== undefined) dyFilter.lte = dyRange.max;
-    where.dividendYield = dyFilter;
-  }
+  assignNumericFilter(where, 'holdings', filters[EtfFilterParamKey.HOLDINGS]);
+  assignNumericFilter(where, 'volume', filters[EtfFilterParamKey.VOLUME]);
+  assignNumericFilter(where, 'dividendYield', filters[EtfFilterParamKey.DIVIDEND_YIELD]);
 
   return where;
 }
@@ -1098,28 +1219,10 @@ export function createEtfFinancialFilter(filters: EtfFilterParams): Prisma.EtfFi
 export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.EtfStockAnalyzerInfoWhereInput {
   const where: Prisma.EtfStockAnalyzerInfoWhereInput = {};
 
-  const betaParam = filters[EtfFilterParamKey.BETA]?.trim();
-  if (betaParam) {
-    if (betaParam === 'negative') {
-      where.beta1y = { lt: 0 };
-    } else {
-      const betaRange = parseRangeParam(betaParam);
-      if (betaRange) {
-        const betaFilter: Prisma.FloatNullableFilter = {};
-        if (betaRange.min !== undefined) betaFilter.gte = betaRange.min;
-        if (betaRange.max !== undefined) betaFilter.lte = betaRange.max;
-        where.beta1y = betaFilter;
-      }
-    }
-  }
-
-  const divYearsRange = parseRangeParam(filters[EtfFilterParamKey.DIVIDEND_YEARS]);
-  if (divYearsRange) {
-    const divYearsFilter: Prisma.IntNullableFilter = {};
-    if (divYearsRange.min !== undefined) divYearsFilter.gte = divYearsRange.min;
-    if (divYearsRange.max !== undefined) divYearsFilter.lte = divYearsRange.max;
-    where.divYears = divYearsFilter;
-  }
+  assignNumericFilter(where, 'beta1y', filters[EtfFilterParamKey.BETA]);
+  assignNumericFilter(where, 'divYears', filters[EtfFilterParamKey.DIVIDEND_YEARS]);
+  assignNumericFilter(where, 'sortino', filters[EtfFilterParamKey.SORTINO]);
+  assignNumericFilter(where, 'sharpe', filters[EtfFilterParamKey.SHARPE]);
 
   const assetClass = filters[EtfFilterParamKey.ASSET_CLASS]?.trim();
   if (assetClass) {

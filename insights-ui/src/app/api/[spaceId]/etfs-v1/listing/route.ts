@@ -10,6 +10,8 @@ import {
   parseEtfFilterParams,
   parseNumericStringValue,
   parseRangeParam,
+  parseNumericFilterValue,
+  matchesNumericCriteria,
   extractCaptureRatioForPeriod,
   extractRiskLevelForPeriod,
   getAppliedEtfSort,
@@ -178,9 +180,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const dbOrderBy = buildEtfDbOrderBy(sort);
   const needsAppSort = sort?.field === EtfSortField.AUM;
 
-  // Check if we need application-level post-filtering / sorting
-  const aumRange = parseRangeParam(filters[EtfFilterParamKey.AUM]);
-  const needsPostFilter = aumRange !== null || hasMorFilters || needsAppSort;
+  // Check if we need application-level post-filtering / sorting. AUM is a
+  // formatted string column, so its numeric filter is evaluated in app code.
+  const aumCriteria = parseNumericFilterValue(filters[EtfFilterParamKey.AUM]);
+  const needsPostFilter = aumCriteria !== null || hasMorFilters || needsAppSort;
 
   // Pre-parse active Mor advanced filters for post-filtering
   const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
@@ -199,9 +202,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     });
 
     const filtered = allEtfs.filter((etf) => {
-      if (aumRange) {
+      if (aumCriteria) {
         const aumValue = parseNumericStringValue(etf.financialInfo?.aum);
-        if (!isInRange(aumValue, aumRange.min, aumRange.max)) return false;
+        if (!matchesNumericCriteria(aumValue, aumCriteria)) return false;
       }
       const riskPeriods = (etf as any).morRiskInfo?.riskPeriods;
       for (const mf of activeMorFilters) {
