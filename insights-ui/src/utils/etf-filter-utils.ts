@@ -903,6 +903,94 @@ export const hasEtfFiltersApplied = (sp?: EtfSearchParams): boolean => {
   return ALL_ETF_PARAM_KEYS.some((key) => Boolean(toScalar(sp[key])));
 };
 
+/** ----- Sort ----- */
+
+export enum EtfSortParamKey {
+  SORT_BY = 'sortBy',
+  SORT_ORDER = 'sortOrder',
+}
+
+export type EtfSortOrder = 'asc' | 'desc';
+
+export enum EtfSortField {
+  AUM = 'aum',
+  EXPENSE_RATIO = 'expenseRatio',
+  PE_RATIO = 'pe',
+  DIVIDEND_YIELD = 'dividendYield',
+}
+
+export interface EtfSortFieldDef {
+  field: EtfSortField;
+  label: string;
+  // The direction picked the first time a field is selected (largest AUM first,
+  // cheapest expense ratio first, etc.). Re-selecting the active field flips it.
+  defaultOrder: EtfSortOrder;
+}
+
+export const ETF_SORT_FIELD_DEFS: ReadonlyArray<EtfSortFieldDef> = [
+  { field: EtfSortField.AUM, label: 'AUM', defaultOrder: 'desc' },
+  { field: EtfSortField.EXPENSE_RATIO, label: 'Expense Ratio', defaultOrder: 'asc' },
+  { field: EtfSortField.PE_RATIO, label: 'P/E Ratio', defaultOrder: 'asc' },
+  { field: EtfSortField.DIVIDEND_YIELD, label: 'Dividend Yield', defaultOrder: 'desc' },
+] as const;
+
+const ETF_SORT_FIELD_VALUES: Set<string> = new Set(ETF_SORT_FIELD_DEFS.map((d) => d.field));
+
+export interface AppliedEtfSort {
+  field: EtfSortField;
+  order: EtfSortOrder;
+  def: EtfSortFieldDef;
+}
+
+type ReadableSearchParams = { get(name: string): string | null };
+
+/** Resolve the active sort from URL params. Works for both client
+ *  (ReadonlyURLSearchParams) and server (URLSearchParams) callers. */
+export function getAppliedEtfSort(searchParams: ReadableSearchParams): AppliedEtfSort | null {
+  const rawField = searchParams.get(EtfSortParamKey.SORT_BY)?.trim();
+  if (!rawField || !ETF_SORT_FIELD_VALUES.has(rawField)) return null;
+  const def = ETF_SORT_FIELD_DEFS.find((d) => d.field === rawField)!;
+  const rawOrder = searchParams.get(EtfSortParamKey.SORT_ORDER)?.trim();
+  const order: EtfSortOrder = rawOrder === 'asc' || rawOrder === 'desc' ? rawOrder : def.defaultOrder;
+  return { field: def.field, order, def };
+}
+
+export function applyEtfSortToParams(searchParams: ReadonlyURLSearchParams, field: EtfSortField | null, order: EtfSortOrder): URLSearchParams {
+  const params = new URLSearchParams(searchParams.toString());
+  if (field) {
+    params.set(EtfSortParamKey.SORT_BY, field);
+    params.set(EtfSortParamKey.SORT_ORDER, order);
+  } else {
+    params.delete(EtfSortParamKey.SORT_BY);
+    params.delete(EtfSortParamKey.SORT_ORDER);
+  }
+  params.delete('page');
+  return params;
+}
+
+export function hasEtfSortApplied(sp?: EtfSearchParams): boolean {
+  if (!sp) return false;
+  const field = toScalar(sp[EtfSortParamKey.SORT_BY]);
+  return Boolean(field && ETF_SORT_FIELD_VALUES.has(field));
+}
+
+/** Server-side Prisma orderBy. AUM is a formatted string column, so it can't be
+ *  ordered numerically in the DB — callers fall back to app-level sorting for it. */
+export function buildEtfDbOrderBy(sort: AppliedEtfSort | null): Prisma.EtfOrderByWithRelationInput[] {
+  if (!sort || sort.field === EtfSortField.AUM) return [{ symbol: 'asc' }];
+  const dir: Prisma.SortOrderInput = { sort: sort.order, nulls: 'last' };
+  switch (sort.field) {
+    case EtfSortField.EXPENSE_RATIO:
+      return [{ financialInfo: { expenseRatio: dir } }, { symbol: 'asc' }];
+    case EtfSortField.PE_RATIO:
+      return [{ financialInfo: { pe: dir } }, { symbol: 'asc' }];
+    case EtfSortField.DIVIDEND_YIELD:
+      return [{ financialInfo: { dividendYield: dir } }, { symbol: 'asc' }];
+    default:
+      return [{ symbol: 'asc' }];
+  }
+}
+
 /** ----- Server-side Helpers ----- */
 
 export function parseEtfFilterParams(req: NextRequest): EtfFilterParams {
