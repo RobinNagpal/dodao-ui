@@ -3,6 +3,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import EtfFiltersButton from '@/components/etfs/EtfFiltersButton';
+import EtfSortButton from '@/components/etfs/EtfSortButton';
 import EtfAppliedFilterChips from '@/components/etfs/EtfAppliedFilterChips';
 import EtfCountryAlternatives from '@/components/etfs/EtfCountryAlternatives';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -49,8 +50,9 @@ export default function EtfPageLayout({
         <Breadcrumbs
           breadcrumbs={breadcrumbs}
           rightButton={
-            <div className="flex">
+            <div className="flex items-center gap-2">
               <EtfFiltersButton />
+              <EtfSortButton />
             </div>
           }
         />

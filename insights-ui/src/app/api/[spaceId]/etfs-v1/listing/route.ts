@@ -12,7 +12,10 @@ import {
   parseRangeParam,
   extractCaptureRatioForPeriod,
   extractRiskLevelForPeriod,
+  getAppliedEtfSort,
+  buildEtfDbOrderBy,
   EtfFilterParamKey,
+  EtfSortField,
   MOR_ADVANCED_FILTERS,
 } from '@/utils/etf-filter-utils';
 import { getEtfExchangesByCountry, isEtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
@@ -58,6 +61,18 @@ function isInRange(value: number | null, min?: number, max?: number): boolean {
   if (min !== undefined && value < min) return false;
   if (max !== undefined && value > max) return false;
   return true;
+}
+
+// AUM is stored as a formatted string ("$1.2B"), so numeric ordering happens in
+// app code. Nulls sort last; ties break on symbol to keep ordering stable.
+function compareByParsedAum(a: any, b: any, order: 'asc' | 'desc'): number {
+  const av = parseNumericStringValue(a.financialInfo?.aum);
+  const bv = parseNumericStringValue(b.financialInfo?.aum);
+  if (av === null && bv === null) return a.symbol.localeCompare(b.symbol);
+  if (av === null) return 1;
+  if (bv === null) return -1;
+  if (av !== bv) return order === 'asc' ? av - bv : bv - av;
+  return a.symbol.localeCompare(b.symbol);
 }
 
 function toEtfListingItem(etf: any): EtfListingItem {
@@ -159,9 +174,13 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     etfWhere.morRiskInfo = { isNot: null };
   }
 
-  // Check if we need application-level post-filtering
+  const sort = getAppliedEtfSort(searchParams);
+  const dbOrderBy = buildEtfDbOrderBy(sort);
+  const needsAppSort = sort?.field === EtfSortField.AUM;
+
+  // Check if we need application-level post-filtering / sorting
   const aumRange = parseRangeParam(filters[EtfFilterParamKey.AUM]);
-  const needsPostFilter = aumRange !== null || hasMorFilters;
+  const needsPostFilter = aumRange !== null || hasMorFilters || needsAppSort;
 
   // Pre-parse active Mor advanced filters for post-filtering
   const activeMorFilters = MOR_ADVANCED_FILTERS.map((def) => ({
@@ -176,7 +195,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     const allEtfs = await prisma.etf.findMany({
       where: etfWhere,
       include,
-      orderBy: [{ symbol: 'asc' }],
+      orderBy: dbOrderBy,
     });
 
     const filtered = allEtfs.filter((etf) => {
@@ -200,6 +219,10 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       return true;
     });
 
+    if (needsAppSort && sort) {
+      filtered.sort((a, b) => compareByParsedAum(a, b, sort.order));
+    }
+
     const totalCount = filtered.length;
     const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
     const start = (page - 1) * pageSize;
@@ -220,7 +243,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     prisma.etf.findMany({
       where: etfWhere,
       include,
-      orderBy: [{ symbol: 'asc' }],
+      orderBy: dbOrderBy,
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
