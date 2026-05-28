@@ -7,6 +7,7 @@ import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
 import EtfChartTabs from '@/components/etf-reportsv1/EtfChartTabs';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
+import EtfKeyMetrics from '@/components/etf-reportsv1/EtfKeyMetrics';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
@@ -249,6 +250,8 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
               </Suspense>
             </div>
           </div>
+
+          <EtfKeyMetrics metrics={data.keyMetrics} />
 
           <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
         </section>
