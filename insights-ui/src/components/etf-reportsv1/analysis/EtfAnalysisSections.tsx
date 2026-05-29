@@ -31,7 +31,13 @@ interface EtfAnalysisSectionsProps {
   futureOutlookTop?: ReactNode;
 }
 
-export default function EtfAnalysisSections({ data, exchange, symbol, afterPerformanceReturns, futureOutlookTop }: EtfAnalysisSectionsProps): JSX.Element | null {
+export default function EtfAnalysisSections({
+  data,
+  exchange,
+  symbol,
+  afterPerformanceReturns,
+  futureOutlookTop,
+}: EtfAnalysisSectionsProps): JSX.Element | null {
   if (!data.categories || data.categories.length === 0) {
     return null;
   }
