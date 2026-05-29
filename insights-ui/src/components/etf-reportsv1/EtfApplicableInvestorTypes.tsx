@@ -18,18 +18,20 @@ export default function EtfApplicableInvestorTypes({ investorTypeKeys }: EtfAppl
 
   return (
     <section id="applicable-investor-types" className="mb-8">
-      <h2 className="text-xl font-semibold text-color mb-3">Who This ETF Suits</h2>
-      <div className="flex flex-wrap gap-2">
-        {investors.map((investor) => (
-          <span
-            key={investor.key}
-            title={investor.shortDescription}
-            className="inline-flex items-center gap-1.5 rounded-full bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-200"
-          >
-            <UserGroupIcon className="h-4 w-4 flex-shrink-0 text-gray-400" />
-            {investor.name}
-          </span>
-        ))}
+      <div className="bg-gray-900 p-3 sm:p-4 rounded-md shadow-sm">
+        <h3 className="text-lg font-semibold text-color mb-3">Who This ETF Suits</h3>
+        <div className="flex flex-wrap gap-2">
+          {investors.map((investor) => (
+            <span
+              key={investor.key}
+              title={investor.shortDescription}
+              className="inline-flex items-center gap-1.5 rounded-full bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-200"
+            >
+              <UserGroupIcon className="h-4 w-4 flex-shrink-0 text-gray-400" />
+              {investor.name}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
