@@ -16,6 +16,25 @@ import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factor
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { getAllInvestors } from '@/etf-analysis-data/etf-investor-taxonomy';
 import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
+import { EtfMorPortfolioSectorExposure } from '@/types/prismaTypes';
+
+/** Trailing windows surfaced to the key-facts prompt: total return + annualized/CAGR. */
+const KEY_FACTS_PERFORMANCE_WINDOWS: ReadonlyArray<{ period: string; returnKey: string; cagrKey: string | null }> = [
+  { period: '1M', returnKey: 'return1m', cagrKey: null },
+  { period: '3M', returnKey: 'return3m', cagrKey: null },
+  { period: '6M', returnKey: 'return6m', cagrKey: null },
+  { period: '1Y', returnKey: 'return1y', cagrKey: 'cagr1y' },
+  { period: '3Y', returnKey: 'return3y', cagrKey: 'cagr3y' },
+  { period: '5Y', returnKey: 'return5y', cagrKey: 'cagr5y' },
+  { period: '10Y', returnKey: 'return10y', cagrKey: 'cagr10y' },
+  { period: '15Y', returnKey: 'return15y', cagrKey: 'cagr15y' },
+  { period: '20Y', returnKey: 'return20y', cagrKey: 'cagr20y' },
+];
+
+/** Asset-class label (case-insensitive) that marks a fund as equity for sector exposure. */
+function isEquityEtf(assetClass: string | null | undefined, sectorType: string | undefined): boolean {
+  return (assetClass ?? '').toLowerCase() === 'equity' || sectorType === 'EQUITY';
+}
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
 
@@ -538,6 +557,29 @@ export function prepareFuturePerformanceOutlookInputJson(etf: EtfWithAllData) {
 export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
   const sa = etf.stockAnalyzerInfo;
   const entry = getCategoryInstructionEntry(sa?.category);
+
+  const saFields = (sa ?? {}) as Record<string, unknown>;
+  const readPct = (key: string | null): string | null => {
+    if (!key) return null;
+    const v = saFields[key];
+    return typeof v === 'string' && v.trim() ? v : null;
+  };
+  const historicalPerformance = KEY_FACTS_PERFORMANCE_WINDOWS.map((w) => ({
+    period: w.period,
+    totalReturn: readPct(w.returnKey),
+    annualizedReturn: readPct(w.cagrKey),
+  })).filter((p) => p.totalReturn !== null || p.annualizedReturn !== null);
+
+  const sectorExposure = etf.morPortfolioInfo?.sectorExposure as EtfMorPortfolioSectorExposure | null | undefined;
+  const sectorAllocation =
+    sectorExposure && isEquityEtf(sa?.assetClass, sectorExposure.type)
+      ? (sectorExposure.vsCategoryPct ?? []).map((row) => ({
+          sector: row.sector,
+          fundWeight: row.investmentPct ?? null,
+          categoryWeight: row.comparisonPct ?? null,
+        }))
+      : [];
+
   return {
     name: etf.name,
     symbol: etf.symbol,
@@ -549,6 +591,9 @@ export function prepareKeyFactsInputJson(etf: EtfWithAllData) {
     mostImportant: entry?.mostImportant ?? [],
     greenFlags: entry?.greenFlags ?? [],
     redFlags: entry?.redFlags ?? [],
+    currentPrice: typeof sa?.stockPrice === 'string' && sa.stockPrice.trim() ? sa.stockPrice : null,
+    historicalPerformance,
+    sectorAllocation,
     investorTypes: getAllInvestors().map((inv) => ({
       key: inv.key,
       name: inv.name,

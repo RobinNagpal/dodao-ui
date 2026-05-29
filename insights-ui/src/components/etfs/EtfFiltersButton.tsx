@@ -19,6 +19,7 @@ import {
   ETF_DIVIDEND_YEARS_OPTIONS,
   ETF_SORTINO_OPTIONS,
   ETF_SHARPE_OPTIONS,
+  ETF_EXPECTED_RETURN_OPTIONS,
   ETF_ASSET_CLASS_OPTIONS,
   ETF_ISSUER_OPTIONS,
   ETF_CATEGORY_SCORE_DEFS,
@@ -312,6 +313,34 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           value={selectedFilters[EtfFilterParamKey.ISSUER] || ''}
           options={ETF_ISSUER_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.ISSUER, v)}
+        />
+      </SubSection>
+
+      {/* Expected Returns (AI estimates) */}
+      <SubSection title="Expected Returns">
+        <NumericFilterControl
+          id="expectedReturn1yr"
+          label="Exp. Return (1Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_1YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_1YR, v)}
+          hint="Percent, e.g. 8"
+        />
+        <NumericFilterControl
+          id="expectedReturn3yr"
+          label="Exp. Return (3Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_3YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_3YR, v)}
+          hint="Percent, e.g. 8"
+        />
+        <NumericFilterControl
+          id="expectedReturn5yr"
+          label="Exp. Return (5Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_5YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_5YR, v)}
+          hint="Percent, e.g. 8"
         />
       </SubSection>
 

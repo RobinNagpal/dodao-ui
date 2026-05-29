@@ -51,8 +51,11 @@ export interface EtfKeyMetricsResponse {
   /** Worst peak-to-trough loss as a percent (negative, e.g. -18.4). */
   maxDrawdown: number | null;
   expectedNext1YrReturns: number | null;
+  expectedNext1YrReturnsReason: string | null;
   expectedNext3YrReturns: number | null;
+  expectedNext3YrReturnsReason: string | null;
   expectedNext5YrReturns: number | null;
+  expectedNext5YrReturnsReason: string | null;
 }
 
 export interface EtfFullRenderResponse {
@@ -75,8 +78,11 @@ const EMPTY_KEY_METRICS: EtfKeyMetricsResponse = {
   beta5y: null,
   maxDrawdown: null,
   expectedNext1YrReturns: null,
+  expectedNext1YrReturnsReason: null,
   expectedNext3YrReturns: null,
+  expectedNext3YrReturnsReason: null,
   expectedNext5YrReturns: null,
+  expectedNext5YrReturnsReason: null,
 };
 
 const EMPTY: EtfFullRenderResponse = {
@@ -170,8 +176,11 @@ async function getHandler(
     beta5y: sa?.beta5y ?? null,
     maxDrawdown: extractMaxDrawdown(etfRecord.morRiskInfo?.riskPeriods),
     expectedNext1YrReturns: kf?.expectedNext1YrReturns ?? null,
+    expectedNext1YrReturnsReason: kf?.expectedNext1YrReturnsReason ?? null,
     expectedNext3YrReturns: kf?.expectedNext3YrReturns ?? null,
+    expectedNext3YrReturnsReason: kf?.expectedNext3YrReturnsReason ?? null,
     expectedNext5YrReturns: kf?.expectedNext5YrReturns ?? null,
+    expectedNext5YrReturnsReason: kf?.expectedNext5YrReturnsReason ?? null,
   };
 
   const financialInfo: EtfFinancialInfoResponse | null = etfRecord.financialInfo

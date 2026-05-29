@@ -1344,18 +1344,21 @@ model Etf {
 /// the green/red flag Pass/Fail assessments). One row per ETF. similarEtfs from
 /// the same report live in the EtfSimilarEtf table.
 model EtfKeyFactsReport {
-  id                      String   @id @default(uuid())
-  etfId                   String   @unique @map("etf_id")
-  spaceId                 String   @default("koala_gains") @map("space_id")
-  keyFacts                String?  @map("key_facts")
-  greenFlags              Json?    @map("green_flags")
-  redFlags                Json?    @map("red_flags")
-  applicableInvestorGoals Json?    @map("applicable_investor_goals")
-  expectedNext1YrReturns  Float?   @map("expected_next_1yr_returns")
-  expectedNext3YrReturns  Float?   @map("expected_next_3yr_returns")
-  expectedNext5YrReturns  Float?   @map("expected_next_5yr_returns")
-  createdAt               DateTime @default(now()) @map("created_at")
-  updatedAt               DateTime @updatedAt @map("updated_at")
+  id                           String   @id @default(uuid())
+  etfId                        String   @unique @map("etf_id")
+  spaceId                      String   @default("koala_gains") @map("space_id")
+  keyFacts                     String?  @map("key_facts")
+  greenFlags                   Json?    @map("green_flags")
+  redFlags                     Json?    @map("red_flags")
+  applicableInvestorGoals      Json?    @map("applicable_investor_goals")
+  expectedNext1YrReturns       Float?   @map("expected_next_1yr_returns")
+  expectedNext1YrReturnsReason String?  @map("expected_next_1yr_returns_reason")
+  expectedNext3YrReturns       Float?   @map("expected_next_3yr_returns")
+  expectedNext3YrReturnsReason String?  @map("expected_next_3yr_returns_reason")
+  expectedNext5YrReturns       Float?   @map("expected_next_5yr_returns")
+  expectedNext5YrReturnsReason String?  @map("expected_next_5yr_returns_reason")
+  createdAt                    DateTime @default(now()) @map("created_at")
+  updatedAt                    DateTime @updatedAt @map("updated_at")
 
   etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
 

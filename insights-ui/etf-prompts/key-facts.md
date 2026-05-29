@@ -11,7 +11,7 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce six outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type), and the expected forward returns (`expectedNext1YrReturns`, `expectedNext3YrReturns`, `expectedNext5YrReturns`).
+You will produce these outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type), and — for each of three horizons — an expected forward return paired with a short reason (`expectedNext1YrReturns`/`expectedNext1YrReturnsReason`, `expectedNext3YrReturns`/`expectedNext3YrReturnsReason`, `expectedNext5YrReturns`/`expectedNext5YrReturnsReason`).
 
 ## 1. `keyFacts` — exactly two plain-prose paragraphs
 
@@ -81,15 +81,36 @@ Rules:
 - Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that serves no goal well.
 - Include an investor type only if it has at least one matching goal. Do not repeat a goal key within a type, and do not pad — include a goal only when the fund truly suits it.
 
-## 6. Expected forward returns
+## 6. Expected forward returns (with reasons)
 
-Estimate this ETF's expected **annualized** total return (price appreciation plus reinvested distributions, net of fees) over three horizons, and return each as a plain number representing a percent (e.g. `7.5` means 7.5% per year, `-2` means -2% per year):
+Use the fund's own history and exposure as evidence when forming your estimates:
+{{#if currentPrice}}
+- Current price: {{currentPrice}}
+{{/if}}
+{{#if historicalPerformance}}
 
-- `expectedNext1YrReturns` — expected annualized return over the next 1 year.
-- `expectedNext3YrReturns` — expected annualized return over the next 3 years.
-- `expectedNext5YrReturns` — expected annualized return over the next 5 years.
+Historical performance (total return over the window, and annualized/CAGR):
+{{#each historicalPerformance}}
+- {{this.period}}: total return {{this.totalReturn}}, annualized {{this.annualizedReturn}}
+{{/each}}
+{{/if}}
+{{#if sectorAllocation}}
 
-Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. All three fields are required: always provide a numeric best estimate, falling back to the long-run expected return for the fund's asset class/category when fund-specific data is sparse.
+Sector allocation (fund weight vs category average):
+{{#each sectorAllocation}}
+- {{this.sector}}: {{this.fundWeight}} (category avg {{this.categoryWeight}})
+{{/each}}
+{{/if}}
+
+Estimate this ETF's expected **annualized** total return (price appreciation plus reinvested distributions, net of fees) over three horizons. Return each as a plain number representing a percent (e.g. `7.5` means 7.5% per year, `-2` means -2% per year), and pair each with a reason:
+
+- `expectedNext1YrReturns` / `expectedNext1YrReturnsReason` — expected annualized return over the next 1 year, and why.
+- `expectedNext3YrReturns` / `expectedNext3YrReturnsReason` — expected annualized return over the next 3 years, and why.
+- `expectedNext5YrReturns` / `expectedNext5YrReturnsReason` — expected annualized return over the next 5 years, and why.
+
+Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, the historical returns/CAGR and sector mix shown above, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. All six fields are required: always provide a numeric best estimate, falling back to the long-run expected return for the fund's asset class/category when fund-specific data is sparse.
+
+Each `...Reason` must be about three lines long (2–3 sentences): name the main drivers behind that horizon's number — e.g. valuation/yield starting point, expense drag, the fund's historical CAGR, sector concentration, and the category/macro outlook — citing the concrete figures above where relevant. Keep it specific to THIS fund, not generic.
 
 ## Style rules
 
