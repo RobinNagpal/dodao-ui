@@ -13,7 +13,7 @@
   },
   "private": true,
   "engines": {
-    "node": ">=23.11.0"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.2",

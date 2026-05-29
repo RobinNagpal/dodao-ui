@@ -14,7 +14,7 @@ properties:
       properties:
         flag:
           type: string
-          description: 'The green-flag text being assessed, copied from the input greenFlags entry.'
+          description: 'A 4-8 word plain-English headline that names the underlying check (used as the row title on the ETF detail page). DO NOT copy the input bullet verbatim — strip numeric anchors, jargon, em-dash rationale, and "why it matters" clauses; those go in `explanation`. Examples: "Low Realised Capital Gains", "Tracks Index Within A Few Basis Points".'
         explanation:
           type: string
           description: 'About two sentences (roughly two lines): the key takeaway on whether this ETF shows this green flag plus the specific evidence/reasoning, with a numeric anchor where one exists.'
@@ -35,7 +35,7 @@ properties:
       properties:
         flag:
           type: string
-          description: 'The red-flag text being assessed, copied from the input redFlags entry.'
+          description: 'A 4-8 word plain-English headline naming the underlying weakness (used as the row title on the ETF detail page). DO NOT copy the input bullet verbatim — strip numeric anchors, jargon, and rationale; those go in `explanation`. Name the underlying weakness, not a verdict. Examples: "Heavy Top-10 Concentration", "Wide Tracking Drift".'
         explanation:
           type: string
           description: 'About two sentences (roughly two lines): the key takeaway on whether this ETF trips this red flag plus the specific evidence/reasoning, with a numeric anchor where one exists.'

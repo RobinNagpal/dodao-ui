@@ -16,7 +16,7 @@
     "run-script": "ts-node src/scripts/courses/coursesMigrate.ts"
   },
   "engines": {
-    "node": ">=23.11.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@apollo/client": "^3.7.12",

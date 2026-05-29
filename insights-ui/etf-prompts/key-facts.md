@@ -28,13 +28,13 @@ Use the following category facts as a checklist of what tends to matter for this
 ## 2. `greenFlags` — assess each green flag for THIS ETF
 
 For EACH green flag listed below, return one object with:
-- `flag` — copy the green-flag text exactly.
+- `flag` — a **4-8 word plain-English headline** that names the underlying check in a way any retail investor can scan in one glance. Do NOT copy the source bullet verbatim. Drop numeric anchors (`bps`, `%`, ticker examples), jargon, em-dashes, and "why it matters" clauses — those belong in `explanation`. Use Title Case-style capitalisation only where it reads naturally; otherwise sentence case. Examples of acceptable headlines: "Low Realised Capital Gains", "Tracks Index Within A Few Basis Points", "Tight Bid-Ask Spread", "Strong Securities-Lending Rebates". Stay specific to the underlying check — do not collapse different checks into the same headline.
 - `result` — `"Pass"` if this specific ETF genuinely exhibits the green flag, `"Fail"` if it does not (or you cannot confidently verify it for this fund).
-- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
+- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists. Put the detail and any numbers stripped from the headline here.
 
 Return the assessments in the same order as the list. If the list below is empty, return an empty array.
 
-Green flags to assess:
+Green flags to assess (each bullet describes the underlying check; rewrite the headline yourself, do not copy):
 {{#each greenFlags}}
 - {{this}}
 {{/each}}
@@ -42,13 +42,13 @@ Green flags to assess:
 ## 3. `redFlags` — assess each red flag for THIS ETF
 
 For EACH red flag listed below, return one object with:
-- `flag` — copy the red-flag text exactly.
+- `flag` — a **4-8 word plain-English headline** following the same rule as the green-flag headlines above (no numbers, no jargon, no em-dash rationale; ≤ 8 words). The headline should name the underlying weakness, NOT phrase it as a verdict — e.g. "Heavy Top-10 Concentration", "Wide Tracking Drift", "Frequent Benchmark Changes". Do NOT copy the source bullet verbatim.
 - `result` — `"Pass"` if this ETF AVOIDS the red flag (the good outcome), `"Fail"` if the ETF actually trips it. (Pass always means good news for the investor, for both green and red flags.)
-- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists.
+- `explanation` — about two sentences (roughly two lines): the key takeaway plus the specific evidence/reasoning for this ETF, with a numeric anchor where one exists. Put the detail and any numbers stripped from the headline here.
 
 Return the assessments in the same order as the list. If the list below is empty, return an empty array.
 
-Red flags to assess:
+Red flags to assess (each bullet describes the underlying check; rewrite the headline yourself, do not copy):
 {{#each redFlags}}
 - {{this}}
 {{/each}}

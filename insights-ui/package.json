@@ -29,7 +29,7 @@
     "tariff-candidate-codes:verify": "tsx src/scripts/tariff-candidate-codes/verify.ts"
   },
   "engines": {
-    "node": ">=23.11.0"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.9.3",
