@@ -4,7 +4,7 @@ import { EtfReportType } from '@/types/etf/etf-analysis-types';
 import { getDefaultGeminiModel, getDefaultLLMProvider } from '@/types/llmConstants';
 import { compileTemplate, createPromptInvocation, loadSchema, updateInvocationStatus, validateData } from '@/util/get-llm-response';
 import { callLambdaForLLMResponseViaCallback, LLMResponseViaLambdaRequest } from '@/utils/analysis-reports/llm-callback-lambda-utils';
-import { resolveEtfPromptTemplate } from '@/utils/etf-analysis-reports/etf-prompt-template-utils';
+import { resolveEtfOutputSchema, resolveEtfPromptTemplate } from '@/utils/etf-analysis-reports/etf-prompt-template-utils';
 import path from 'path';
 import { PromptInvocationStatus } from '@prisma/client';
 
@@ -74,8 +74,9 @@ export async function callEtfLambdaForLLMResponse(args: EtfLLMRequest): Promise<
       promptRequestToLlm: finalPrompt,
     });
 
-    const outputSchemaPath = path.join(process.cwd(), 'schemas', prompt.outputSchema);
-    const outputSchema = await loadSchema(outputSchemaPath, prompt.outputSchema);
+    const outputSchemaName = resolveEtfOutputSchema(reportType, prompt.outputSchema);
+    const outputSchemaPath = path.join(process.cwd(), 'schemas', outputSchemaName);
+    const outputSchema = await loadSchema(outputSchemaPath, outputSchemaName);
 
     const callbackBaseUrl = process.env.REPORT_GENERATION_CALLBACK_BASE_URL || 'https://koalagains.com';
     const callbackUrl = `${callbackBaseUrl}/api/${spaceId}/etfs-v1/exchange/${exchange}/${symbol}/save-report-callback`;

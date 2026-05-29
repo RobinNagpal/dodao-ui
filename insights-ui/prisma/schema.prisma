@@ -1334,6 +1334,7 @@ model Etf {
   similarEtfs                   EtfSimilarEtf[]                   @relation("EtfSimilarEtfSource")
   vsCompetition                 EtfVsCompetition?
   keyFactsReport                EtfKeyFactsReport?
+  futureReturns                 EtfFutureReturns?
 
   @@unique([spaceId, symbol, exchange])
   @@index([symbol])
@@ -1351,15 +1352,32 @@ model EtfKeyFactsReport {
   greenFlags              Json?    @map("green_flags")
   redFlags                Json?    @map("red_flags")
   applicableInvestorGoals Json?    @map("applicable_investor_goals")
-  expectedNext1YrReturns  Float?   @map("expected_next_1yr_returns")
-  expectedNext3YrReturns  Float?   @map("expected_next_3yr_returns")
-  expectedNext5YrReturns  Float?   @map("expected_next_5yr_returns")
   createdAt               DateTime @default(now()) @map("created_at")
   updatedAt               DateTime @updatedAt @map("updated_at")
 
   etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
 
   @@map("etf_key_facts_reports")
+}
+
+// Forward-return estimates produced as an extra output of the Future Performance
+// Outlook report (kept separate from the category analysis it is generated with).
+model EtfFutureReturns {
+  id                           String   @id @default(uuid())
+  etfId                        String   @unique @map("etf_id")
+  spaceId                      String   @default("koala_gains") @map("space_id")
+  expectedNext1YrReturns       Float?   @map("expected_next_1yr_returns")
+  expectedNext1YrReturnsReason String?  @map("expected_next_1yr_returns_reason")
+  expectedNext3YrReturns       Float?   @map("expected_next_3yr_returns")
+  expectedNext3YrReturnsReason String?  @map("expected_next_3yr_returns_reason")
+  expectedNext5YrReturns       Float?   @map("expected_next_5yr_returns")
+  expectedNext5YrReturnsReason String?  @map("expected_next_5yr_returns_reason")
+  createdAt                    DateTime @default(now()) @map("created_at")
+  updatedAt                    DateTime @updatedAt @map("updated_at")
+
+  etf Etf @relation(fields: [etfId], references: [id], onDelete: Cascade)
+
+  @@map("etf_future_returns")
 }
 
 model EtfPriceHistory {

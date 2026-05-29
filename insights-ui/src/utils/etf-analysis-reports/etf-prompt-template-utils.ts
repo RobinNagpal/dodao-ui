@@ -51,3 +51,21 @@ export function resolveEtfPromptTemplateByKey(promptKey: string, dbTemplate: str
     return dbTemplate;
   }
 }
+
+/**
+ * ETF report types whose LLM output schema is overridden in code (rather than the
+ * DB `Prompt.outputSchema`). The Future Performance Outlook report shares the
+ * common category-analysis schema but additionally returns expected forward
+ * returns, so it points at its own schema file. Paths are relative to `schemas/`.
+ */
+const FILE_BACKED_ETF_OUTPUT_SCHEMAS: Partial<Record<EtfReportType, string>> = {
+  [EtfReportType.FUTURE_PERFORMANCE_OUTLOOK]: 'etf-analysis/outputs/future-performance-outlook-output.schema.yaml',
+};
+
+/**
+ * Resolve the output-schema filename for an ETF report type, preferring the
+ * code-defined override and falling back to the DB-configured `dbSchemaName`.
+ */
+export function resolveEtfOutputSchema(reportType: EtfReportType, dbSchemaName: string): string {
+  return FILE_BACKED_ETF_OUTPUT_SCHEMAS[reportType] ?? dbSchemaName;
+}

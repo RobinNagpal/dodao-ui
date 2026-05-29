@@ -19,6 +19,10 @@ export enum EtfFilterType {
   DIVIDEND_YEARS = 'dividendYears',
   SORTINO = 'sortino',
   SHARPE = 'sharpe',
+  // Expected forward returns (AI estimates) — backed by EtfKeyFactsReport.
+  EXPECTED_RETURN_1YR = 'expectedReturn1yr',
+  EXPECTED_RETURN_3YR = 'expectedReturn3yr',
+  EXPECTED_RETURN_5YR = 'expectedReturn5yr',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
@@ -55,6 +59,10 @@ export enum EtfFilterParamKey {
   DIVIDEND_YEARS = 'dividendYears',
   SORTINO = 'sortino',
   SHARPE = 'sharpe',
+  // Expected forward returns (AI estimates) — backed by EtfKeyFactsReport.
+  EXPECTED_RETURN_1YR = 'expectedReturn1yr',
+  EXPECTED_RETURN_3YR = 'expectedReturn3yr',
+  EXPECTED_RETURN_5YR = 'expectedReturn5yr',
   ASSET_CLASS = 'assetClass',
   CATEGORY = 'category',
   GROUP = 'group',
@@ -181,6 +189,9 @@ type RangeFilterType =
   | EtfFilterType.DIVIDEND_YEARS
   | EtfFilterType.SORTINO
   | EtfFilterType.SHARPE
+  | EtfFilterType.EXPECTED_RETURN_1YR
+  | EtfFilterType.EXPECTED_RETURN_3YR
+  | EtfFilterType.EXPECTED_RETURN_5YR
   | EtfFilterType.MOR_UPSIDE_3YR
   | EtfFilterType.MOR_UPSIDE_5YR
   | EtfFilterType.MOR_UPSIDE_10YR
@@ -362,6 +373,17 @@ export const ETF_SORTINO_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Excellent (> 3)', value: '3-' },
 ] as const;
 
+// Expected forward annualized return buckets (percent). AI estimates sourced from
+// EtfKeyFactsReport; shared across the 1Y/3Y/5Y filters.
+export const ETF_EXPECTED_RETURN_OPTIONS: ReadonlyArray<ThresholdOption> = [
+  { label: 'Any', value: '' },
+  { label: 'Negative (< 0%)', value: 'negative' },
+  { label: 'Low (0% - 5%)', value: '0-5' },
+  { label: 'Moderate (5% - 10%)', value: '5-10' },
+  { label: 'High (10% - 15%)', value: '10-15' },
+  { label: 'Very High (> 15%)', value: '15-' },
+] as const;
+
 export const ETF_ASSET_CLASS_OPTIONS: ReadonlyArray<ThresholdOption> = [
   { label: 'Any', value: '' },
   { label: 'Equity', value: 'Equity' },
@@ -504,6 +526,9 @@ const ALL_ETF_PARAM_KEYS: EtfFilterParamKey[] = [
   EtfFilterParamKey.DIVIDEND_YEARS,
   EtfFilterParamKey.SORTINO,
   EtfFilterParamKey.SHARPE,
+  EtfFilterParamKey.EXPECTED_RETURN_1YR,
+  EtfFilterParamKey.EXPECTED_RETURN_3YR,
+  EtfFilterParamKey.EXPECTED_RETURN_5YR,
   EtfFilterParamKey.ASSET_CLASS,
   EtfFilterParamKey.CATEGORY,
   EtfFilterParamKey.GROUP,
@@ -820,6 +845,20 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
   if (sharpeRaw) {
     const f = parseRangeFilter(sharpeRaw, EtfFilterType.SHARPE, EtfFilterParamKey.SHARPE, ETF_SHARPE_OPTIONS, 'Sharpe');
     if (f) filters.push(f);
+  }
+
+  // Expected forward returns (AI estimates)
+  const expectedReturnFilterDefs: Array<[EtfFilterParamKey, RangeFilterType, string]> = [
+    [EtfFilterParamKey.EXPECTED_RETURN_1YR, EtfFilterType.EXPECTED_RETURN_1YR, 'Exp. Return 1Y'],
+    [EtfFilterParamKey.EXPECTED_RETURN_3YR, EtfFilterType.EXPECTED_RETURN_3YR, 'Exp. Return 3Y'],
+    [EtfFilterParamKey.EXPECTED_RETURN_5YR, EtfFilterType.EXPECTED_RETURN_5YR, 'Exp. Return 5Y'],
+  ];
+  for (const [paramKey, type, label] of expectedReturnFilterDefs) {
+    const raw = searchParams.get(paramKey);
+    if (raw) {
+      const f = parseRangeFilter(raw, type, paramKey, ETF_EXPECTED_RETURN_OPTIONS, label);
+      if (f) filters.push(f);
+    }
   }
 
   // Asset Class
@@ -1260,6 +1299,16 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
     where.issuer = { contains: issuer, mode: 'insensitive' };
   }
 
+  return where;
+}
+
+/** Build the relation `where` for the AI expected-return filters, stored on
+ *  EtfFutureReturns. Returns an empty object when no expected-return filter is set. */
+export function createEtfFutureReturnsFilter(filters: EtfFilterParams): Prisma.EtfFutureReturnsWhereInput {
+  const where: Prisma.EtfFutureReturnsWhereInput = {};
+  assignNumericFilter(where, 'expectedNext1YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_1YR]);
+  assignNumericFilter(where, 'expectedNext3YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_3YR]);
+  assignNumericFilter(where, 'expectedNext5YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_5YR]);
   return where;
 }
 
