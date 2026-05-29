@@ -89,7 +89,7 @@ Estimate this ETF's expected **annualized** total return (price appreciation plu
 - `expectedNext3YrReturns` — expected annualized return over the next 3 years.
 - `expectedNext5YrReturns` — expected annualized return over the next 5 years.
 
-Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. If you genuinely cannot form a defensible estimate for a horizon, return `null` for that field rather than guessing.
+Ground each estimate in the fund's actual exposure: its asset class and category, long-run asset-class return expectations, current yield/valuation where relevant, and its expense ratio (which should drag the figure down). Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. All three fields are required: always provide a numeric best estimate, falling back to the long-run expected return for the fund's asset class/category when fund-specific data is sparse.
 
 ## Style rules
 
