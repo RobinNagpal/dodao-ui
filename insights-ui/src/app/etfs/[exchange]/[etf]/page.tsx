@@ -251,8 +251,6 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
             </div>
           </div>
 
-          <EtfKeyMetrics metrics={data.keyMetrics} />
-
           <EtfChartTabs priceHistory={data.priceHistory} performanceMetrics={data.performanceMetrics} etfSymbol={etfData.symbol} />
         </section>
 
@@ -269,7 +267,13 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 
-        <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} afterPerformanceReturns={competitionAfter} />
+        <EtfAnalysisSections
+          data={data.analysis}
+          exchange={exchange}
+          symbol={etf}
+          afterPerformanceReturns={competitionAfter}
+          futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
+        />
 
         <div className="mx-auto max-w-7xl">
           <section className="mb-6">
