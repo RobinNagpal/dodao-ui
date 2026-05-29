@@ -130,13 +130,37 @@ export interface EtfKeyFactsFlagAssessment {
   detailedExplanation?: string;
 }
 
+/**
+ * Goals (from the investor taxonomy) an ETF can help achieve, grouped under the
+ * investor type that pursues them. `goalKeys` are keys of that investor type's
+ * `etfInvestorGoals`.
+ */
+export interface EtfApplicableInvestorGoals {
+  investorTypeKey: string;
+  goalKeys: string[];
+}
+
 export interface EtfKeyFactsResponse {
   keyFacts: string;
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
   similarEtfs: EtfKeyFactsSimilarEtf[];
-  /** 0-4 investor-type keys (from the investor taxonomy) this ETF genuinely suits. */
-  applicableInvestorTypes: string[];
+  /** Investor goals this ETF can help achieve, grouped by investor type. */
+  applicableInvestorGoals: EtfApplicableInvestorGoals[];
+}
+
+/**
+ * Forward-return estimates produced as extra fields of the Future Performance
+ * Outlook LLM response and stored in the EtfFutureReturns table. Each return is
+ * an expected annualized percent; each reason is a ~3-line rationale.
+ */
+export interface EtfFutureReturnsResponse {
+  expectedNext1YrReturns: number | null;
+  expectedNext1YrReturnsReason: string | null;
+  expectedNext3YrReturns: number | null;
+  expectedNext3YrReturnsReason: string | null;
+  expectedNext5YrReturns: number | null;
+  expectedNext5YrReturnsReason: string | null;
 }
 
 export interface EtfAnalysisFactorDefinition {

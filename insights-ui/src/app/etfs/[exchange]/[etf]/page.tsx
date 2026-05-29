@@ -7,11 +7,12 @@ import EtfRadarChart from '@/components/etf-reportsv1/analysis/EtfRadarChart';
 import EtfCompetitionChartSection from '@/components/etf-reportsv1/EtfCompetitionChartSection';
 import EtfChartTabs from '@/components/etf-reportsv1/EtfChartTabs';
 import EtfFinancialInfo from '@/components/etf-reportsv1/EtfFinancialInfo';
+import EtfKeyMetrics from '@/components/etf-reportsv1/EtfKeyMetrics';
 import EtfHoldings from '@/components/etf-reportsv1/EtfHoldings';
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import SimilarEtfs from '@/components/etf-reportsv1/SimilarEtfs';
 import EtfKeyFactsFlags from '@/components/etf-reportsv1/EtfKeyFactsFlags';
-import EtfApplicableInvestorTypes from '@/components/etf-reportsv1/EtfApplicableInvestorTypes';
+import EtfApplicableInvestorGoals from '@/components/etf-reportsv1/EtfApplicableInvestorGoals';
 import { FinancialCard } from '@/components/ticker-reportsv1/FinancialInfo';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
@@ -263,11 +264,17 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
 
         <EtfKeyFactsFlags greenFlags={keyFactsGreenFlags} redFlags={keyFactsRedFlags} />
 
-        <EtfApplicableInvestorTypes investorTypeKeys={data.keyFacts?.applicableInvestorTypes} />
+        <EtfApplicableInvestorGoals investorGoals={data.keyFacts?.applicableInvestorGoals} />
 
         <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 
-        <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} afterPerformanceReturns={competitionAfter} />
+        <EtfAnalysisSections
+          data={data.analysis}
+          exchange={exchange}
+          symbol={etf}
+          afterPerformanceReturns={competitionAfter}
+          futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
+        />
 
         <div className="mx-auto max-w-7xl">
           <section className="mb-6">

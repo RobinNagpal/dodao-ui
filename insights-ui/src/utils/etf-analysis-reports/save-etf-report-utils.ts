@@ -4,6 +4,7 @@ import {
   EtfAnalysisCategory,
   EtfCategoryAnalysisResponse,
   EtfFinalSummaryResponse,
+  EtfFutureReturnsResponse,
   EtfKeyFactsResponse,
   EtfKeyFactsSimilarEtf,
 } from '@/types/etf/etf-analysis-types';
@@ -160,7 +161,7 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       keyFacts: response.keyFacts,
       greenFlags: response.greenFlags ?? [],
       redFlags: response.redFlags ?? [],
-      applicableInvestorTypes: response.applicableInvestorTypes ?? [],
+      applicableInvestorGoals: response.applicableInvestorGoals ?? [],
       updatedAt: new Date(),
     },
     create: {
@@ -169,11 +170,37 @@ export async function saveEtfKeyFactsResponse(symbol: string, exchange: string, 
       keyFacts: response.keyFacts,
       greenFlags: response.greenFlags ?? [],
       redFlags: response.redFlags ?? [],
-      applicableInvestorTypes: response.applicableInvestorTypes ?? [],
+      applicableInvestorGoals: response.applicableInvestorGoals ?? [],
     },
   });
 
   await replaceEtfSimilarEtfs(etfRecord.id, etfRecord.spaceId, symbol, exchange, response.similarEtfs ?? []);
+
+  revalidateEtfAndExchangeTag(symbol, exchange);
+}
+
+/**
+ * Save the forward-return estimates produced alongside the Future Performance
+ * Outlook report. The category analysis itself is saved separately via
+ * {@link saveEtfFactorAnalysisResponse}; this only persists the extra return fields.
+ */
+export async function saveEtfFutureReturns(symbol: string, exchange: string, response: EtfFutureReturnsResponse): Promise<void> {
+  const etfRecord = await fetchEtfBySymbolAndExchange(symbol, exchange);
+
+  const data = {
+    expectedNext1YrReturns: response.expectedNext1YrReturns ?? null,
+    expectedNext1YrReturnsReason: response.expectedNext1YrReturnsReason ?? null,
+    expectedNext3YrReturns: response.expectedNext3YrReturns ?? null,
+    expectedNext3YrReturnsReason: response.expectedNext3YrReturnsReason ?? null,
+    expectedNext5YrReturns: response.expectedNext5YrReturns ?? null,
+    expectedNext5YrReturnsReason: response.expectedNext5YrReturnsReason ?? null,
+  };
+
+  await prisma.etfFutureReturns.upsert({
+    where: { etfId: etfRecord.id },
+    update: { ...data, updatedAt: new Date() },
+    create: { spaceId: etfRecord.spaceId, etfId: etfRecord.id, ...data },
+  });
 
   revalidateEtfAndExchangeTag(symbol, exchange);
 }

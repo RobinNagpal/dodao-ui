@@ -5,6 +5,7 @@ import {
   saveEtfCompetitionResponse,
   saveEtfFactorAnalysisResponse,
   saveEtfFinalSummaryResponse,
+  saveEtfFutureReturns,
   saveEtfKeyFactsResponse,
 } from '@/utils/etf-analysis-reports/save-etf-report-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
@@ -31,6 +32,12 @@ async function postHandler(req: NextRequest, { params }: { params: Promise<{ spa
     }
 
     await saveEtfFactorAnalysisResponse(etf, exchange, llmResponse, categoryKey);
+
+    // The Future Performance Outlook report returns the standard category analysis
+    // plus expected forward returns; persist the latter in their own table.
+    if (reportType === EtfReportType.FUTURE_PERFORMANCE_OUTLOOK) {
+      await saveEtfFutureReturns(etf, exchange, llmResponse);
+    }
   }
 
   if (generationRequestId) {

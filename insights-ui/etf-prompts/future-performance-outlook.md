@@ -134,6 +134,18 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 - **When `factorAnalysisArray` contains a factor whose core metric does not meaningfully apply to this fund's mandate** (e.g. income factor on a commodity fund, credit-cycle factor on a 100% Treasury fund), say so in one sentence inside that factor's `detailedExplanation`, and follow the factor's own carve-out language if it provides one. Do not default-Fail.
 - **Forward-return horizons — inline only.** If you break down the expected-return reasoning by horizon (e.g. `1 year`, `3 year`, `5 year`), write each horizon as an inline bold prefix on the same line as its reasoning — `**1 year:** <reason in the same sentence>.` — separated by a normal blank line between horizons. NEVER put the period label (`**1 year**`, `### 1 year`, `1 year:` on its own line, etc.) alone on one line with the reasoning starting on the next paragraph. This applies in `overallSummary`, every paragraph of `overallAnalysisDetails`, and every factor `detailedExplanation`. The same rule applies to any other horizon label (`6 months`, `10 year`, etc.).
 
+## 6. Expected forward returns (with reasons)
+
+In addition to the category analysis above, estimate this ETF's expected **annualized** total return (price appreciation plus reinvested distributions, net of fees) over three horizons. Use the data blocks below — especially the multi-period returns/CAGR in `etfStockAnalyzerInfo`, the yield/valuation signals, the expense ratio, and (for equity funds) the sector mix in `etfMorPortfolioInfo`. Keep these numbers consistent with the qualitative forward-return band you gave in `overallSummary`.
+
+Return each as a plain number representing a percent (e.g. `7.5` means 7.5% per year, `-2` means -2% per year), each paired with a reason:
+
+- `expectedNext1YrReturns` / `expectedNext1YrReturnsReason` — expected annualized return over the next 1 year, and why.
+- `expectedNext3YrReturns` / `expectedNext3YrReturnsReason` — expected annualized return over the next 3 years, and why.
+- `expectedNext5YrReturns` / `expectedNext5YrReturnsReason` — expected annualized return over the next 5 years, and why.
+
+Shorter horizons are inherently less certain than the 5-year figure — be more conservative the shorter the window. All six fields are required: always provide a numeric best estimate, falling back to the long-run expected return for the fund's asset class/category when fund-specific data is sparse. Each `...Reason` must be about three lines long (2–3 sentences): name the main drivers behind that horizon's number — e.g. valuation/yield starting point, expense drag, the fund's historical CAGR, sector concentration, and the macro/cycle read — citing concrete figures where relevant. Keep it specific to THIS fund, not generic.
+
 ---
 
 ### Factors to analyse

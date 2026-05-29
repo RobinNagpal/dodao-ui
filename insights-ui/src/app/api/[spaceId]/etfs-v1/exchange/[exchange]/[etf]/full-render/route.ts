@@ -16,12 +16,17 @@ import { EtfFastResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]
 import type { EtfFinancialInfoResponse, EtfScoresResponse, SimilarEtf } from '@/types/etf/etf-detail-response-types';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
-import type { EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
+import type { EtfApplicableInvestorGoals, EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PriceHistoryPoint } from '@/types/prismaTypes';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import { ensureEtfPriceHistoryIsFresh } from '@/utils/etf-price-history-utils';
-import { buildEtfPerformanceMetricsPayload, type EtfPerformanceMetricFields, type EtfPerformanceMetricsPayload } from '@/utils/etf-performance-metrics-utils';
+import {
+  buildEtfPerformanceMetricsPayload,
+  parsePercentString,
+  type EtfPerformanceMetricFields,
+  type EtfPerformanceMetricsPayload,
+} from '@/utils/etf-performance-metrics-utils';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -29,7 +34,28 @@ export interface EtfKeyFactsReportResponse {
   keyFacts: string | null;
   greenFlags: EtfKeyFactsFlagAssessment[];
   redFlags: EtfKeyFactsFlagAssessment[];
-  applicableInvestorTypes: string[];
+  applicableInvestorGoals: EtfApplicableInvestorGoals[];
+}
+
+/**
+ * Compact risk/return figures surfaced as a tight row under the financial-info
+ * + radar block on the main ETF page. Sharpe/Sortino/beta come from the
+ * screener (`stockAnalyzerInfo`), max drawdown from the Morningstar risk JSON,
+ * and the expected forward returns from the key-facts report. All nullable —
+ * the row renders only the figures that exist.
+ */
+export interface EtfKeyMetricsResponse {
+  sharpe: number | null;
+  sortino: number | null;
+  beta5y: number | null;
+  /** Worst peak-to-trough loss as a percent (negative, e.g. -18.4). */
+  maxDrawdown: number | null;
+  expectedNext1YrReturns: number | null;
+  expectedNext1YrReturnsReason: string | null;
+  expectedNext3YrReturns: number | null;
+  expectedNext3YrReturnsReason: string | null;
+  expectedNext5YrReturns: number | null;
+  expectedNext5YrReturnsReason: string | null;
 }
 
 export interface EtfFullRenderResponse {
@@ -43,7 +69,21 @@ export interface EtfFullRenderResponse {
   priceHistory: PriceHistoryResponse | null;
   performanceMetrics: EtfPerformanceMetricsPayload | null;
   keyFacts: EtfKeyFactsReportResponse | null;
+  keyMetrics: EtfKeyMetricsResponse;
 }
+
+const EMPTY_KEY_METRICS: EtfKeyMetricsResponse = {
+  sharpe: null,
+  sortino: null,
+  beta5y: null,
+  maxDrawdown: null,
+  expectedNext1YrReturns: null,
+  expectedNext1YrReturnsReason: null,
+  expectedNext3YrReturns: null,
+  expectedNext3YrReturnsReason: null,
+  expectedNext5YrReturns: null,
+  expectedNext5YrReturnsReason: null,
+};
 
 const EMPTY: EtfFullRenderResponse = {
   etf: null,
@@ -56,6 +96,7 @@ const EMPTY: EtfFullRenderResponse = {
   priceHistory: null,
   performanceMetrics: null,
   keyFacts: null,
+  keyMetrics: EMPTY_KEY_METRICS,
 };
 
 async function getHandler(
@@ -77,9 +118,11 @@ async function getHandler(
       stockAnalyzerInfo: true,
       cachedScore: true,
       morPortfolioInfo: { select: { holdings: true, updatedAt: true } },
+      morRiskInfo: { select: { riskPeriods: true } },
       vsCompetition: true,
       similarEtfs: { orderBy: { sortOrder: 'asc' }, take: 6 },
       keyFactsReport: true,
+      futureReturns: true,
     },
   });
   if (!etfRecord) return EMPTY;
@@ -110,10 +153,12 @@ async function getHandler(
     // serialized blob is leaner; the main page only reads financialInfo /
     // stockAnalyzerInfo / top-level fields from this slot.
     morPortfolioInfo: undefined,
+    morRiskInfo: undefined,
     vsCompetition: undefined,
     similarEtfs: undefined,
     cachedScore: undefined,
     keyFactsReport: undefined,
+    futureReturns: undefined,
   });
 
   const keyFacts: EtfKeyFactsReportResponse | null = etfRecord.keyFactsReport
@@ -121,9 +166,24 @@ async function getHandler(
         keyFacts: etfRecord.keyFactsReport.keyFacts,
         greenFlags: (etfRecord.keyFactsReport.greenFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
         redFlags: (etfRecord.keyFactsReport.redFlags as unknown as EtfKeyFactsFlagAssessment[] | null) ?? [],
-        applicableInvestorTypes: (etfRecord.keyFactsReport.applicableInvestorTypes as unknown as string[] | null) ?? [],
+        applicableInvestorGoals: (etfRecord.keyFactsReport.applicableInvestorGoals as unknown as EtfApplicableInvestorGoals[] | null) ?? [],
       }
     : null;
+
+  const sa = etfRecord.stockAnalyzerInfo;
+  const fr = etfRecord.futureReturns;
+  const keyMetrics: EtfKeyMetricsResponse = {
+    sharpe: sa?.sharpe ?? null,
+    sortino: sa?.sortino ?? null,
+    beta5y: sa?.beta5y ?? null,
+    maxDrawdown: extractMaxDrawdown(etfRecord.morRiskInfo?.riskPeriods),
+    expectedNext1YrReturns: fr?.expectedNext1YrReturns ?? null,
+    expectedNext1YrReturnsReason: fr?.expectedNext1YrReturnsReason ?? null,
+    expectedNext3YrReturns: fr?.expectedNext3YrReturns ?? null,
+    expectedNext3YrReturnsReason: fr?.expectedNext3YrReturnsReason ?? null,
+    expectedNext5YrReturns: fr?.expectedNext5YrReturns ?? null,
+    expectedNext5YrReturnsReason: fr?.expectedNext5YrReturnsReason ?? null,
+  };
 
   const financialInfo: EtfFinancialInfoResponse | null = etfRecord.financialInfo
     ? {
@@ -218,7 +278,35 @@ async function getHandler(
     priceHistory,
     performanceMetrics,
     keyFacts,
+    keyMetrics,
   };
+}
+
+/**
+ * Pull the fund's worst peak-to-trough loss from the Morningstar risk JSON.
+ * Prefers the 5-Yr window (falling back to 3-Yr then 10-Yr), reads the
+ * "Max Drawdown" row, and takes the fund's own column ("Investment") rather
+ * than the category/index columns. Returns a negative percent or null.
+ */
+function extractMaxDrawdown(riskPeriods: unknown): number | null {
+  if (!riskPeriods || typeof riskPeriods !== 'object') return null;
+  const periods = riskPeriods as Record<string, any>;
+
+  for (const period of ['5-Yr', '3-Yr', '10-Yr']) {
+    const table = periods[period]?.marketVolatilityMeasures?.drawdown;
+    const rows: any[] = Array.isArray(table?.rows) ? table.rows : [];
+    if (!rows.length) continue;
+
+    const row = rows.find((r) => typeof r?.label === 'string' && r.label.toLowerCase().includes('max drawdown')) ?? rows[0];
+    const values: Record<string, unknown> = row?.values ?? {};
+    const columns: string[] = Array.isArray(table?.columns) ? table.columns : Object.keys(values);
+
+    const preferredColumn = columns.find((c) => c.toLowerCase() === 'investment') ?? columns.find((c) => c.toLowerCase() !== 'index') ?? columns[0];
+    const raw = preferredColumn ? values[preferredColumn] : Object.values(values)[0];
+    const parsed = parsePercentString(typeof raw === 'string' ? raw : null);
+    if (parsed !== null) return parsed;
+  }
+  return null;
 }
 
 /**

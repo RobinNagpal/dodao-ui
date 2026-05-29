@@ -12,11 +12,13 @@ const CATEGORY_DISPLAY: Record<string, { name: string; order: number; slug: stri
   [EtfAnalysisCategory.FuturePerformanceOutlook]: { name: 'Future Performance Outlook', order: 4, slug: 'future-performance-outlook' },
 };
 
+// Future Performance Outlook leads the Summary Analysis (it carries the
+// forward-return figures), followed by the backward-looking reports.
 const CATEGORY_ORDER = [
+  EtfAnalysisCategory.FuturePerformanceOutlook,
   EtfAnalysisCategory.PerformanceAndReturns,
   EtfAnalysisCategory.CostEfficiencyAndTeam,
   EtfAnalysisCategory.RiskAnalysis,
-  EtfAnalysisCategory.FuturePerformanceOutlook,
 ];
 
 interface EtfAnalysisSectionsProps {
@@ -25,9 +27,17 @@ interface EtfAnalysisSectionsProps {
   symbol: string;
   /** Optional content rendered inside the Summary Analysis flow, immediately after the Performance & Returns card. */
   afterPerformanceReturns?: ReactNode;
+  /** Optional content rendered at the top of the Future Performance Outlook card (e.g. expected-return figures). */
+  futureOutlookTop?: ReactNode;
 }
 
-export default function EtfAnalysisSections({ data, exchange, symbol, afterPerformanceReturns }: EtfAnalysisSectionsProps): JSX.Element | null {
+export default function EtfAnalysisSections({
+  data,
+  exchange,
+  symbol,
+  afterPerformanceReturns,
+  futureOutlookTop,
+}: EtfAnalysisSectionsProps): JSX.Element | null {
   if (!data.categories || data.categories.length === 0) {
     return null;
   }
@@ -65,6 +75,7 @@ export default function EtfAnalysisSections({ data, exchange, symbol, afterPerfo
                     </Link>
                   )}
                 </div>
+                {categoryKey === EtfAnalysisCategory.FuturePerformanceOutlook && futureOutlookTop}
                 <div
                   className="text-gray-300 markdown markdown-body"
                   dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}

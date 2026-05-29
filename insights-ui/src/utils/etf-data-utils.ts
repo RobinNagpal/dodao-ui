@@ -1,6 +1,6 @@
 import { EtfListingResponse } from '@/app/api/[spaceId]/etfs-v1/listing/route';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { hasEtfFiltersApplied, etfToSortedQueryString, EtfSearchParams } from '@/utils/etf-filter-utils';
+import { hasEtfFiltersApplied, hasEtfSortApplied, etfToSortedQueryString, EtfSearchParams } from '@/utils/etf-filter-utils';
 import { getEtfListingFilterableTag, TWO_WEEKS_IN_SECONDS } from '@/utils/etf-cache-utils';
 import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
@@ -15,7 +15,8 @@ import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePag
 export async function fetchEtfListingData(searchParams?: EtfSearchParams, country?: EtfSupportedCountry): Promise<EtfListingResponse> {
   const baseUrl = getBaseUrlForServerSidePages();
   const filters = hasEtfFiltersApplied(searchParams);
-  const hasPageOrFilters = filters || (searchParams?.page && searchParams.page !== '1');
+  const sortApplied = hasEtfSortApplied(searchParams);
+  const hasPageOrFilters = filters || sortApplied || (searchParams?.page && searchParams.page !== '1');
 
   const baseUrlPath = `${baseUrl}/api/${KoalaGainsSpaceId}/etfs-v1/listing`;
   const qsParts: string[] = [];

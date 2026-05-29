@@ -40,20 +40,62 @@ properties:
       type: string
   investorTypes:
     type: array
-    description: 'The canonical investor-type taxonomy. Pick the keys of the types this ETF genuinely suits for the applicableInvestorTypes output.'
+    description: 'The canonical investor-type taxonomy with the goals each type pursues with ETFs. Use it to pick, per investor type, the goals THIS ETF can genuinely help achieve (the applicableInvestorGoals output).'
     items:
       type: object
       additionalProperties: false
       properties:
         key:
           type: string
-          description: 'Stable key to return in applicableInvestorTypes (e.g., retail-individual).'
+          description: 'Investor-type key (e.g., retail-individual).'
         name:
           type: string
-          description: 'Human-readable investor-type name — judge fit from this.'
+          description: 'Human-readable investor-type name.'
+        goals:
+          type: array
+          description: 'Goals this investor type pursues with ETFs.'
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              key:
+                type: string
+                description: 'Goal key to return in applicableInvestorGoals.goalKeys.'
+              name:
+                type: string
+                description: 'Human-readable goal name.'
+              profile:
+                type: object
+                additionalProperties: false
+                description: 'The investor profile this goal targets — use it to judge whether the ETF fits.'
+                properties:
+                  investmentHorizon:
+                    type: string
+                  riskTolerance:
+                    type: string
+                  primaryGoal:
+                    type: string
+                  incomeNeed:
+                    type: string
+                  taxSensitivity:
+                    type: string
+                  typicalInvestor:
+                    type: string
+                required:
+                  - investmentHorizon
+                  - riskTolerance
+                  - primaryGoal
+                  - incomeNeed
+                  - taxSensitivity
+                  - typicalInvestor
+            required:
+              - key
+              - name
+              - profile
       required:
         - key
         - name
+        - goals
 required:
   - name
   - symbol

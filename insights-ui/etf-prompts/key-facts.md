@@ -11,7 +11,7 @@ ETF being analyzed
 
 Some fields above may be missing or null. When that happens, research the ETF online using its name, ticker, exchange, and issuer, and fill the gap from the issuer's official fact sheet, prospectus, or summary prospectus. Prefer primary sources (issuer site, SEC filings) over secondary aggregators. Do not invent or guess — if a fact cannot be reliably verified, omit it (for the paragraphs) or mark the corresponding flag accordingly (for the assessments).
 
-You will produce five outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, and `applicableInvestorTypes` (the investor types this fund genuinely suits).
+You will produce five outputs: `keyFacts` (two plain-English paragraphs), `greenFlags` (a Pass/Fail assessment of each green flag below), `redFlags` (a Pass/Fail assessment of each red flag below), `similarEtfs`, and `applicableInvestorGoals` (the investor goals this fund can help achieve, grouped by investor type).
 
 ## 1. `keyFacts` — exactly two plain-prose paragraphs
 
@@ -63,20 +63,23 @@ Constraints for each entry:
 - Do not include the analyzed ETF itself.
 - Do not invent tickers — only include ETFs you can verify exist on one of the listed exchanges.
 
-## 5. `applicableInvestorTypes`
+## 5. `applicableInvestorGoals`
 
-Return an `applicableInvestorTypes` array of **0 to 4** investor-type `key`s identifying who this ETF is genuinely appropriate for. Choose only from the taxonomy below and return the exact `key` strings (never the display name, never a new key).
+Return an `applicableInvestorGoals` array describing which investor **goals** this ETF can genuinely help achieve, grouped by investor type. The goal — not the investor type alone — is what tells the reader what the fund is actually useful for. For each investor type that has at least one matching goal, add one object with `investorTypeKey` (the exact type key) and `goalKeys` (the exact keys of that type's goals this fund satisfies). Use only keys from the taxonomy below — never invent keys or return display names.
 
-Investor types:
+Investor types and their goals (each goal lists the investor profile it targets — use it to judge fit):
 {{#each investorTypes}}
 - `{{this.key}}` — {{this.name}}
+{{#each this.goals}}
+  - `{{this.key}}` — {{this.name}} (Horizon: {{this.profile.investmentHorizon}}; Risk tolerance: {{this.profile.riskTolerance}}; Primary goal: {{this.profile.primaryGoal}}; Income need: {{this.profile.incomeNeed}}; Tax sensitivity: {{this.profile.taxSensitivity}}; Typical investor: {{this.profile.typicalInvestor}})
+{{/each}}
 {{/each}}
 
 Rules:
-- Judge fit strictly against the fund's mandate, cost, structure, liquidity, and risk — not its popularity.
-- A strong, well-run, broadly useful ETF should fit **at least 2** investor types.
-- Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that no investor type should reasonably hold.
-- Never exceed 4, and never repeat a key. Order from best-fit to weakest-fit, and do not pad the list to reach a count — include a type only when the fund truly suits it.
+- Judge fit strictly against the fund's mandate, cost, structure, liquidity, and risk — pick a goal only when the fund genuinely helps achieve it.
+- A solid, well-run fund typically satisfies **2+ goals**; a broad, low-cost core fund (e.g., an S&P 500 tracker) may legitimately satisfy **4-8 goals** spanning several investor types.
+- Return an **empty array** ONLY for a fundamentally flawed, broken, or so-narrow fund that serves no goal well.
+- Include an investor type only if it has at least one matching goal. Do not repeat a goal key within a type, and do not pad — include a goal only when the fund truly suits it.
 
 ## Style rules
 

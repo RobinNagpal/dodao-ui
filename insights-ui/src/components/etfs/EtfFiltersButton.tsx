@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
 import { AdjustmentsHorizontalIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
+import NumericFilterControl from '@/components/etfs/NumericFilterControl';
 
 import {
   ETF_AUM_OPTIONS,
@@ -16,6 +17,9 @@ import {
   ETF_VOLUME_OPTIONS,
   ETF_BETA_OPTIONS,
   ETF_DIVIDEND_YEARS_OPTIONS,
+  ETF_SORTINO_OPTIONS,
+  ETF_SHARPE_OPTIONS,
+  ETF_EXPECTED_RETURN_OPTIONS,
   ETF_ASSET_CLASS_OPTIONS,
   ETF_ISSUER_OPTIONS,
   ETF_CATEGORY_SCORE_DEFS,
@@ -233,51 +237,68 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
 
       {/* Cost & Size */}
       <SubSection title="Cost & Size">
-        <FilterDropdown
+        <NumericFilterControl
           id="aum"
           label="AUM"
           value={selectedFilters[EtfFilterParamKey.AUM] || ''}
           options={ETF_AUM_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.AUM, v)}
+          hint="e.g. 1B, 500M"
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="expenseRatio"
           label="Expense Ratio"
           value={selectedFilters[EtfFilterParamKey.EXPENSE_RATIO] || ''}
           options={ETF_EXPENSE_RATIO_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.EXPENSE_RATIO, v)}
+          hint="Percent, e.g. 0.3"
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="holdings"
           label="Holdings"
           value={selectedFilters[EtfFilterParamKey.HOLDINGS] || ''}
           options={ETF_HOLDINGS_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.HOLDINGS, v)}
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="volume"
           label="Volume"
           value={selectedFilters[EtfFilterParamKey.VOLUME] || ''}
           options={ETF_VOLUME_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.VOLUME, v)}
+          hint="Shares, e.g. 1M"
         />
       </SubSection>
 
       {/* Performance & Risk */}
       <SubSection title="Performance & Risk">
-        <FilterDropdown
+        <NumericFilterControl
           id="peRatio"
           label="P/E Ratio"
           value={selectedFilters[EtfFilterParamKey.PE_RATIO] || ''}
           options={ETF_PE_RATIO_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.PE_RATIO, v)}
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="beta"
           label="Beta (1Y)"
           value={selectedFilters[EtfFilterParamKey.BETA] || ''}
           options={ETF_BETA_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.BETA, v)}
+        />
+        <NumericFilterControl
+          id="sharpe"
+          label="Sharpe Ratio"
+          value={selectedFilters[EtfFilterParamKey.SHARPE] || ''}
+          options={ETF_SHARPE_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.SHARPE, v)}
+        />
+        <NumericFilterControl
+          id="sortino"
+          label="Sortino Ratio"
+          value={selectedFilters[EtfFilterParamKey.SORTINO] || ''}
+          options={ETF_SORTINO_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.SORTINO, v)}
         />
         <FilterDropdown
           id="assetClass"
@@ -295,21 +316,51 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
         />
       </SubSection>
 
+      {/* Expected Returns (AI estimates) */}
+      <SubSection title="Expected Returns">
+        <NumericFilterControl
+          id="expectedReturn1yr"
+          label="Exp. Return (1Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_1YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_1YR, v)}
+          hint="Percent, e.g. 8"
+        />
+        <NumericFilterControl
+          id="expectedReturn3yr"
+          label="Exp. Return (3Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_3YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_3YR, v)}
+          hint="Percent, e.g. 8"
+        />
+        <NumericFilterControl
+          id="expectedReturn5yr"
+          label="Exp. Return (5Y)"
+          value={selectedFilters[EtfFilterParamKey.EXPECTED_RETURN_5YR] || ''}
+          options={ETF_EXPECTED_RETURN_OPTIONS}
+          onChange={(v) => handleChange(EtfFilterParamKey.EXPECTED_RETURN_5YR, v)}
+          hint="Percent, e.g. 8"
+        />
+      </SubSection>
+
       {/* Dividends */}
       <SubSection title="Dividends">
-        <FilterDropdown
+        <NumericFilterControl
           id="dividendTtm"
           label="Dividend TTM"
           value={selectedFilters[EtfFilterParamKey.DIVIDEND_TTM] || ''}
           options={ETF_DIVIDEND_TTM_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_TTM, v)}
+          hint="Dollars, e.g. 2.5"
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="dividendYield"
           label="Dividend Yield"
           value={selectedFilters[EtfFilterParamKey.DIVIDEND_YIELD] || ''}
           options={ETF_DIVIDEND_YIELD_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.DIVIDEND_YIELD, v)}
+          hint="Percent, e.g. 4"
         />
         <FilterDropdown
           id="payoutFrequency"
@@ -318,7 +369,7 @@ function EtfFilterModalContent({ initialSelected, onClose }: EtfFilterModalConte
           options={ETF_PAYOUT_FREQUENCY_OPTIONS}
           onChange={(v) => handleChange(EtfFilterParamKey.PAYOUT_FREQUENCY, v)}
         />
-        <FilterDropdown
+        <NumericFilterControl
           id="dividendYears"
           label="Dividend Years"
           value={selectedFilters[EtfFilterParamKey.DIVIDEND_YEARS] || ''}
