@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { EtfReportType } from '@/types/etf/etf-analysis-types';
+import { ETF_PROMPT_KEYS, EtfReportType } from '@/types/etf/etf-analysis-types';
 
 /**
  * The ETF analysis prompts whose template text is sourced from the
@@ -32,4 +32,22 @@ export function resolveEtfPromptTemplate(reportType: EtfReportType, dbTemplate: 
   if (!fileName) return dbTemplate;
   const filePath = path.join(process.cwd(), 'etf-prompts', fileName);
   return fs.readFileSync(filePath, 'utf8');
+}
+
+/**
+ * Display-side counterpart of {@link resolveEtfPromptTemplate}: given a prompt
+ * `key` (e.g. `US/etfs/key-facts`), return the template that is actually sent at
+ * runtime — the file-backed markdown for the five file-backed ETF prompts, or
+ * `dbTemplate` unchanged for everything else. Used so invocation views show the
+ * real template instead of the stale DB copy. Falls back to `dbTemplate` if the
+ * key is unknown or the file cannot be read, so viewing never errors.
+ */
+export function resolveEtfPromptTemplateByKey(promptKey: string, dbTemplate: string): string {
+  const entry = (Object.entries(ETF_PROMPT_KEYS) as Array<[EtfReportType, string]>).find(([, key]) => key === promptKey);
+  if (!entry) return dbTemplate;
+  try {
+    return resolveEtfPromptTemplate(entry[0], dbTemplate);
+  } catch {
+    return dbTemplate;
+  }
 }
