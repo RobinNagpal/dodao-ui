@@ -32,7 +32,7 @@ export default function EtfKeyMetrics({ metrics }: EtfKeyMetricsProps): JSX.Elem
   if (cells.every((c) => c.value === undefined)) return null;
 
   return (
-    <section id="etf-key-metrics" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-3">
+    <section id="etf-key-metrics" className="bg-gray-900 rounded-lg shadow-sm px-2 py-2 sm:p-3 mt-1 mb-6">
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
         {cells.map((c) => (
           <FinancialCard key={c.label} label={c.label} value={c.value ?? '—'} />
