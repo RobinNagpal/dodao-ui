@@ -848,7 +848,7 @@ export function getAppliedEtfFilters(searchParams: ReadonlyURLSearchParams): App
   }
 
   // Expected forward returns (AI estimates)
-  const expectedReturnFilterDefs: Array<[EtfFilterParamKey, EtfFilterType, string]> = [
+  const expectedReturnFilterDefs: Array<[EtfFilterParamKey, RangeFilterType, string]> = [
     [EtfFilterParamKey.EXPECTED_RETURN_1YR, EtfFilterType.EXPECTED_RETURN_1YR, 'Exp. Return 1Y'],
     [EtfFilterParamKey.EXPECTED_RETURN_3YR, EtfFilterType.EXPECTED_RETURN_3YR, 'Exp. Return 3Y'],
     [EtfFilterParamKey.EXPECTED_RETURN_5YR, EtfFilterType.EXPECTED_RETURN_5YR, 'Exp. Return 5Y'],
