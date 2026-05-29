@@ -5,7 +5,7 @@ import {
   createEtfStockAnalyzerFilter,
   createEtfSearchFilter,
   createEtfCachedScoreFilter,
-  createEtfKeyFactsReportFilter,
+  createEtfFutureReturnsFilter,
   hasEtfFiltersAppliedServer,
   hasAdvancedMorFilters,
   parseEtfFilterParams,
@@ -156,9 +156,9 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     etfWhere.cachedScore = { is: cachedScoreFilter };
   }
 
-  const keyFactsReportFilter = createEtfKeyFactsReportFilter(filters);
-  if (Object.keys(keyFactsReportFilter).length > 0) {
-    etfWhere.keyFactsReport = { is: keyFactsReportFilter };
+  const futureReturnsFilter = createEtfFutureReturnsFilter(filters);
+  if (Object.keys(futureReturnsFilter).length > 0) {
+    etfWhere.futureReturns = { is: futureReturnsFilter };
   }
 
   const stockAnalyzerFilter = createEtfStockAnalyzerFilter(filters);

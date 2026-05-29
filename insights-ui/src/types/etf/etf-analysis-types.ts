@@ -147,17 +147,19 @@ export interface EtfKeyFactsResponse {
   similarEtfs: EtfKeyFactsSimilarEtf[];
   /** Investor goals this ETF can help achieve, grouped by investor type. */
   applicableInvestorGoals: EtfApplicableInvestorGoals[];
-  /** Expected annualized return (%) over the next 1 year; null if not estimable. */
+}
+
+/**
+ * Forward-return estimates produced as extra fields of the Future Performance
+ * Outlook LLM response and stored in the EtfFutureReturns table. Each return is
+ * an expected annualized percent; each reason is a ~3-line rationale.
+ */
+export interface EtfFutureReturnsResponse {
   expectedNext1YrReturns: number | null;
-  /** ~3-line rationale for the 1-year expected return. */
   expectedNext1YrReturnsReason: string | null;
-  /** Expected annualized return (%) over the next 3 years; null if not estimable. */
   expectedNext3YrReturns: number | null;
-  /** ~3-line rationale for the 3-year expected return. */
   expectedNext3YrReturnsReason: string | null;
-  /** Expected annualized return (%) over the next 5 years; null if not estimable. */
   expectedNext5YrReturns: number | null;
-  /** ~3-line rationale for the 5-year expected return. */
   expectedNext5YrReturnsReason: string | null;
 }
 

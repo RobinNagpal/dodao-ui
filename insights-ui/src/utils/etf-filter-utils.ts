@@ -1303,9 +1303,9 @@ export function createEtfStockAnalyzerFilter(filters: EtfFilterParams): Prisma.E
 }
 
 /** Build the relation `where` for the AI expected-return filters, stored on
- *  EtfKeyFactsReport. Returns an empty object when no expected-return filter is set. */
-export function createEtfKeyFactsReportFilter(filters: EtfFilterParams): Prisma.EtfKeyFactsReportWhereInput {
-  const where: Prisma.EtfKeyFactsReportWhereInput = {};
+ *  EtfFutureReturns. Returns an empty object when no expected-return filter is set. */
+export function createEtfFutureReturnsFilter(filters: EtfFilterParams): Prisma.EtfFutureReturnsWhereInput {
+  const where: Prisma.EtfFutureReturnsWhereInput = {};
   assignNumericFilter(where, 'expectedNext1YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_1YR]);
   assignNumericFilter(where, 'expectedNext3YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_3YR]);
   assignNumericFilter(where, 'expectedNext5YrReturns', filters[EtfFilterParamKey.EXPECTED_RETURN_5YR]);

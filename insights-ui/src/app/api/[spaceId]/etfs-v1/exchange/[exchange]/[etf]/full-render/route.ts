@@ -122,6 +122,7 @@ async function getHandler(
       vsCompetition: true,
       similarEtfs: { orderBy: { sortOrder: 'asc' }, take: 6 },
       keyFactsReport: true,
+      futureReturns: true,
     },
   });
   if (!etfRecord) return EMPTY;
@@ -157,6 +158,7 @@ async function getHandler(
     similarEtfs: undefined,
     cachedScore: undefined,
     keyFactsReport: undefined,
+    futureReturns: undefined,
   });
 
   const keyFacts: EtfKeyFactsReportResponse | null = etfRecord.keyFactsReport
@@ -169,18 +171,18 @@ async function getHandler(
     : null;
 
   const sa = etfRecord.stockAnalyzerInfo;
-  const kf = etfRecord.keyFactsReport;
+  const fr = etfRecord.futureReturns;
   const keyMetrics: EtfKeyMetricsResponse = {
     sharpe: sa?.sharpe ?? null,
     sortino: sa?.sortino ?? null,
     beta5y: sa?.beta5y ?? null,
     maxDrawdown: extractMaxDrawdown(etfRecord.morRiskInfo?.riskPeriods),
-    expectedNext1YrReturns: kf?.expectedNext1YrReturns ?? null,
-    expectedNext1YrReturnsReason: kf?.expectedNext1YrReturnsReason ?? null,
-    expectedNext3YrReturns: kf?.expectedNext3YrReturns ?? null,
-    expectedNext3YrReturnsReason: kf?.expectedNext3YrReturnsReason ?? null,
-    expectedNext5YrReturns: kf?.expectedNext5YrReturns ?? null,
-    expectedNext5YrReturnsReason: kf?.expectedNext5YrReturnsReason ?? null,
+    expectedNext1YrReturns: fr?.expectedNext1YrReturns ?? null,
+    expectedNext1YrReturnsReason: fr?.expectedNext1YrReturnsReason ?? null,
+    expectedNext3YrReturns: fr?.expectedNext3YrReturns ?? null,
+    expectedNext3YrReturnsReason: fr?.expectedNext3YrReturnsReason ?? null,
+    expectedNext5YrReturns: fr?.expectedNext5YrReturns ?? null,
+    expectedNext5YrReturnsReason: fr?.expectedNext5YrReturnsReason ?? null,
   };
 
   const financialInfo: EtfFinancialInfoResponse | null = etfRecord.financialInfo
