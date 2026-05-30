@@ -241,7 +241,7 @@ export interface EtfMorCategoryInstructionEntry {
 /**
  * Mor-category-level prompt instructions stored separately from
  * `etf-analysis-categories.json`, split into one file per analysis group under
- * the app-root `category-flags/` dir (e.g. `category-flags/broad-equity.json`).
+ * `src/etf-analysis/category-flags/` (e.g. `category-flags/broad-equity.json`).
  * Each file is a flat object keyed by category slug
  * (`slugifyEtfCategory(EtfCategoryToGroup.name)`, e.g. `large-blend`) — the same
  * identifier groups and category URLs use — mapping to an

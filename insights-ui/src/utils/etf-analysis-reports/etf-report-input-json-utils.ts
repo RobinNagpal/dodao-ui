@@ -3,7 +3,7 @@ import path from 'path';
 import { EtfAnalysisCategory, EtfAnalysisFactorDefinition, EtfCategoryFlagsFile, EtfMorCategoryInstructionEntry } from '@/types/etf/etf-analysis-types';
 import { serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
-import { getAllInvestors } from '@/etf-analysis-data/etf-investor-taxonomy';
+import { getAllInvestors } from '@/etf-analysis/etf-investor-taxonomy';
 import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
 import { canonicalizeCategory } from '@/utils/etf-category-aliases';
 import {
@@ -15,20 +15,21 @@ import {
 } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 
 /**
- * Lazily load a single ETF analysis group's category-flag file from the
- * app-root `category-flags/` dir (one JSON per group, keyed by category slug).
- * Read at request time with `fs` relative to `process.cwd()` — the same
- * runtime-file pattern used for `etf-prompts/` and `schemas/` — and cached per
- * group, so building one ETF's analysis only ever parses the flags for that
- * fund's group rather than the full multi-group set. Returns `null` (cached)
- * when the group has no file so a missing group is not re-read every call.
+ * Lazily load a single ETF analysis group's category-flag file from
+ * `src/etf-analysis/category-flags/` (one JSON per group, keyed by category
+ * slug). Read at request time with `fs` relative to `process.cwd()` and cached
+ * per group, so building one ETF's analysis only ever parses the flags for that
+ * fund's group rather than the full multi-group set. The files are picked up by
+ * Next's output file tracing for the ETF generation routes, so they ship with
+ * the serverless bundle. Returns `null` (cached) when the group has no file so a
+ * missing group is not re-read every call.
  */
 const groupCategoryFlagsCache = new Map<string, EtfCategoryFlagsFile | null>();
 
 function loadGroupCategoryFlags(groupKey: string): EtfCategoryFlagsFile | null {
   const cached = groupCategoryFlagsCache.get(groupKey);
   if (cached !== undefined) return cached;
-  const filePath = path.join(process.cwd(), 'category-flags', `${groupKey}.json`);
+  const filePath = path.join(process.cwd(), 'src', 'etf-analysis', 'category-flags', `${groupKey}.json`);
   let data: EtfCategoryFlagsFile | null = null;
   try {
     data = JSON.parse(fs.readFileSync(filePath, 'utf8')) as EtfCategoryFlagsFile;

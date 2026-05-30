@@ -8,7 +8,7 @@ Mor category has an entry.
 ## One file per analysis group (lazy-loaded)
 
 The flags are split into **one JSON file per ETF analysis group** — the `group` keys defined
-in `src/etf-analysis-data/etf-analysis-categories.json`:
+in `src/etf-analysis/etf-analysis-categories.json`:
 
 - `broad-equity.json`
 - `sector-thematic-equity.json`
@@ -24,9 +24,9 @@ category and reads **only that group's file** (`getCategoryInstructionEntry` in
 `src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`, cached per group), so the
 full multi-group flag set is never loaded into a single prompt-build.
 
-These live at the app root (like `etf-prompts/`, `schemas/`, `blogs/`) rather than under
-`src/` because they are read at request time with `fs` relative to `process.cwd()`, and
-app-root dirs ship with the Next deployment while `docs/` does not.
+These are read at request time with `fs` relative to `process.cwd()`
+(`src/etf-analysis/category-flags/<group>.json`). Next's output file tracing picks them up
+for the ETF generation routes, so they ship with the serverless bundle.
 
 ## File shape
 

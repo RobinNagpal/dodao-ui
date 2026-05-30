@@ -5,11 +5,11 @@ import {
   EtfGroupBasedFactorsConfig,
   EtfGroupFactorDefinition,
 } from '@/types/etf/etf-analysis-types';
-import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
-import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
-import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
-import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
-import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factors-future-performance-outlook.json';
+import etfCategoriesRaw from '@/etf-analysis/etf-analysis-categories.json';
+import performanceAndReturnsRaw from '@/etf-analysis/etf-analysis-factors-performance-and-returns.json';
+import costEfficiencyAndTeamRaw from '@/etf-analysis/etf-analysis-factors-cost-efficiency-and-team.json';
+import riskAnalysisRaw from '@/etf-analysis/etf-analysis-factors-risk-analysis.json';
+import futurePerformanceOutlookRaw from '@/etf-analysis/etf-analysis-factors-future-performance-outlook.json';
 import { canonicalizeCategory } from '@/utils/etf-category-aliases';
 
 /**
