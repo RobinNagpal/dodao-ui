@@ -1,0 +1,243 @@
+{
+  "derivative-income": {
+    "mostImportant": [
+      "What it does — holds an equity portfolio and sells options (covered calls or an index-option overlay) to convert potential upside into current income.",
+      "The character of the product — it caps upside in exchange for yield, so total return tends to lag a rising market and the income varies with the volatility regime.",
+      "The nature of its income and tax — a high headline distribution whose composition (qualified dividends, option income, return-of-capital) drives the real after-tax yield."
+    ],
+    "greenFlags": [
+      "Total return (price + distributions) keeps pace with the underlying over a full cycle — it isn't just converting growth into taxable income.",
+      "Distributions classified as qualified dividends or capital gains rather than ordinary income — materially better after tax.",
+      "Performed sensibly across both low-vol and high-vol regimes — not curve-fit to one environment."
+    ],
+    "redFlags": [
+      "Steadily declining price-only NAV beside a high headline yield — the 'income' is partly your own capital coming back.",
+      "A high return-of-capital (ROC) share in the 1099 year after year — capital handed back dressed as yield.",
+      "Opaque option mechanics — no disclosure of % overwritten, strikes, or roll, so you can't price the upside you give up."
+    ]
+  },
+  "defined-outcome": {
+    "mostImportant": [
+      "What it does — uses a layered options structure to deliver a defined payoff (a downside buffer and a capped upside) over a set outcome period.",
+      "The character of the product — the buffer and cap apply in full only if held from the start to the end of the outcome period; mid-period the payoff differs.",
+      "The nature of its use — a structured, outcome-shaping holding tied to an outcome-period calendar, not a continuously-compounding fund."
+    ],
+    "greenFlags": [
+      "Laddered series across multiple outcome periods — you're not locked to a single cap window, diluting entry-timing risk.",
+      "States plainly that buffer + cap realise only at period end, net of fees — sets the holding-period expectation correctly.",
+      "Buffer-vs-floor structure and the cap-reset rule disclosed clearly — you know your protection and your ceiling."
+    ],
+    "redFlags": [
+      "Bought or sold mid-period — you get a completely different payoff than the headline buffer + cap.",
+      "Active-ratchet / dynamic resets with an opaque trigger — you can't tell when your terms change.",
+      "Fees above ~1.00% — above the 0.65-0.85% norm, paying for option-spread and admin overhead."
+    ]
+  },
+  "equity-hedged": {
+    "mostImportant": [
+      "What it does — holds equities alongside an options hedge (collar, put-spread or buffer) to reduce downside in exchange for giving up some upside.",
+      "The character of the product — designed to lag in strong bull markets and cushion drawdowns, with how the hedge is financed deciding how much upside is given up.",
+      "The nature of its use — a risk-managed equity sleeve whose payoff depends on the specific hedge structure and roll schedule."
+    ],
+    "greenFlags": [
+      "Discloses how the hedge is financed (paid outright, call-sale, or spreads) — you can see the bull-market lag you're paying for.",
+      "Laddered or rolling hedges with no gaps — protection is always on, not lapsing between expirations.",
+      "Historical drawdowns landed near the stated buffer/floor — the hedge actually worked when it was needed."
+    ],
+    "redFlags": [
+      "Sold as 'full upside with downside protection' — overselling; real funds disclose a meaningful bull-market lag.",
+      "A put-spread collar whose short put caps protection at a floor — losses below that floor are unhedged.",
+      "Fees above ~1.00% — above the 0.50-0.85% norm for the structure."
+    ]
+  },
+  "systematic-trend": {
+    "mostImportant": [
+      "How it generates returns — a rules-based managed-futures program that takes long and short positions across equity, bond, currency and commodity futures based on price momentum, with no view on fundamentals.",
+      "The character of the resulting portfolio — direction and gross exposure shift continuously with trends, so it can be net-short stocks and long bonds one quarter and the reverse the next, giving returns little structural relationship to the equity market.",
+      "The nature of its income and tax — gains come from futures, so US '40 Act versions distribute mostly via Section 1256 (60/40 long-term/short-term) marks, and the fund is built as a crisis-period diversifier, not an income vehicle."
+    ],
+    "greenFlags": [
+      "A long, positive payoff in sharp equity drawdowns (e.g. 2022, Q1 2020) — confirms the 'crisis alpha' convexity the strategy is bought for (DBMF, KMLM).",
+      "Low or negative rolling correlation to the S&P 500 across multiple regimes — the diversification is real, not just a low full-period average that masks rising correlation in stress.",
+      "Trades a broad, balanced contract universe spanning all four asset classes — wider breadth smooths the equity-curve versus a program leaning mostly on bond and equity-index trends.",
+      "Replication or transparent rules with disclosed positioning — you can see the bets driving returns rather than trusting an opaque discretionary overlay."
+    ],
+    "redFlags": [
+      "A multi-year flat-to-down stretch in range-bound, trendless markets with no offsetting carry — the strategy's structural weakness; whipsaw losses with nothing to cushion them.",
+      "High correlation to a 60/40 portfolio in calm periods — the fund is collecting beta you already own and only earns its fee in the rare tail event.",
+      "Heavy reliance on a single asset class (e.g. mostly rate trends) — concentration that turns the 'diversifier' into a one-way bet when that trend reverses.",
+      "Persistent gap between the fund and its replicated SG Trend / managed-futures benchmark — execution slippage, roll-cost drag or a model that no longer captures the index."
+    ]
+  },
+  "long-short-equity": {
+    "mostImportant": [
+      "How it is built — a stock-picking strategy holding long positions in favoured names and short positions in disliked ones, run at a chosen net market exposure (often 30-70% net long) rather than fully invested.",
+      "The character of the resulting portfolio — return depends on the spread between the long and short books (security selection) plus whatever residual market beta the net exposure carries, so it should capture part of an equity rally while cushioning declines.",
+      "The nature of its income and tax — primarily a total-return capital-appreciation vehicle, with short-rebate and dividend-payment frictions on the short book and limited dividend income."
+    ],
+    "greenFlags": [
+      "Positive long-short spread (longs beat shorts) even in down quarters — proof the manager's selection adds value on both sides, not just from being net long in a bull market.",
+      "Upside/downside capture that is meaningfully asymmetric versus the S&P 500 — participates in rallies while losing materially less in drawdowns, the whole point of the hedge.",
+      "Stable, disclosed net and gross exposure consistent with the mandate — the manager isn't quietly cranking net long to chase beta, then calling it alpha.",
+      "Short book that actually detracts in selloffs as a true hedge — confirms shorts are positioned for downside, not just a basket of low-conviction names."
+    ],
+    "redFlags": [
+      "Returns explained almost entirely by net-long beta with a near-zero or negative long-short spread — you are paying hedge-fund fees for an expensive, watered-down index fund.",
+      "Net exposure that drifts up after a rally and down after a selloff — performance-chasing that buys high and de-risks low.",
+      "A short book that bleeds in flat and up markets without protecting in declines — a persistent cost drag that never delivers the convexity it is meant to.",
+      "Trailing a simple 50% S&P 500 / 50% T-bills blend over a full cycle — the active management is destroying value versus a cheap static-net-exposure proxy."
+    ]
+  },
+  "multistrategy": {
+    "mostImportant": [
+      "How it is built — a single fund allocating capital across several distinct, lowly-correlated sub-strategies (e.g. trend, market-neutral equity, arbitrage, macro, credit), often with internal risk budgeting and rebalancing.",
+      "The character of the resulting portfolio — the headline return is a blend whose smoothness depends on genuine diversification among the sleeves, so the key question is whether the pieces really behave differently or all lean the same way.",
+      "The nature of its income and tax — a total-return, absolute-return-style vehicle mixing 1256 futures gains, short-book frictions and ordinary income, generally tax-inefficient and not held for yield."
+    ],
+    "greenFlags": [
+      "Low pairwise correlation among the sleeves with offsetting drawdowns — one strategy earning while another loses is the diversification engine that produces a smooth equity curve.",
+      "A steady, modest realised volatility with a positive Sharpe across regimes — the multi-strategy promise of risk-adjusted return delivered, not just average return.",
+      "Transparent per-sleeve attribution and disciplined risk-budget rebalancing — you can verify which strategies are contributing rather than trusting an opaque blend.",
+      "Resilience in both 2022 (rates/equity selloff) and calm trendless years — shows the mix isn't secretly dependent on a single favourable environment."
+    ],
+    "redFlags": [
+      "All sleeves drawing down together in stress — hidden common factor exposure (usually long credit/equity beta) that collapses the diversification exactly when it's needed.",
+      "Layered fees from underlying managers or funds on top of the wrapper — a fee stack that quietly consumes the risk-adjusted edge the blend is supposed to add.",
+      "One dominant sleeve driving nearly all the return and risk — a 'multi-strategy' label on what is really a single concentrated bet.",
+      "Style drift or frequent sleeve reshuffling chasing recent winners — performance-chasing that resets the strategy mix at the worst moments and muddies attribution."
+    ]
+  },
+  "event-driven": {
+    "mostImportant": [
+      "How it generates returns — positioning around corporate events (merger arbitrage, spin-offs, restructurings, distressed and special situations) to capture deal spreads and event outcomes rather than market direction.",
+      "The character of the resulting portfolio — merger-arb in particular behaves like selling insurance: many small, steady gains as deals close, punctuated by sharp losses when a deal breaks, so the return stream is positively skewed in calm times and tail-risky in stress.",
+      "The nature of its income and tax — returns arrive largely as short-term capital gains from deal spreads plus some interest on cash collateral, making it tax-inefficient and a low-volatility cash-plus alternative rather than an income fund."
+    ],
+    "greenFlags": [
+      "An annualised deal-spread return that holds a meaningful premium over T-bills net of fees — the strategy is being paid for the deal-break risk it carries (MNA, MERG).",
+      "Broad diversification across many simultaneous deals with position-size caps — limits the damage any single deal-break can do to the equity curve.",
+      "Low equity-market beta with shallow, quick-recovering drawdowns — confirms returns come from event outcomes, not hidden market exposure.",
+      "Strong returns in years of heavy M&A activity and wider spreads — shows the manager harvests the opportunity set when it's rich rather than sitting in cash."
+    ],
+    "redFlags": [
+      "A handful of deals dominating the book — concentration that turns one regulatory blocking or financing collapse into an outsized, lasting loss.",
+      "Persistent beta to high-yield credit or small-cap equity — the fund is taking directional risk dressed up as arbitrage and will sell off with risk assets.",
+      "Spread capture that barely clears cash after fees in a low-M&A environment — paying active fees for a return you could get from T-bills.",
+      "Drift into distressed/credit or pre-announcement 'soft catalyst' bets — a quiet move up the risk spectrum that breaks the low-volatility profile investors bought."
+    ]
+  },
+  "macro-trading": {
+    "mostImportant": [
+      "How it generates returns — discretionary or systematic top-down bets on currencies, rates, equity indices and commodities driven by views on economies, policy and global imbalances, expressed long or short via futures, forwards and options.",
+      "The character of the resulting portfolio — exposure is opportunistic and can be net-long, net-short or market-neutral at any time, so returns are theme-driven and bear little structural relationship to stocks or bonds.",
+      "The nature of its income and tax — gains come mainly from derivatives (futures 1256 marks, FX forwards), so distributions are uneven and tax character is mixed; it is an absolute-return diversifier, not an income vehicle."
+    ],
+    "greenFlags": [
+      "Positive returns clustered in regime shifts — rate-hiking cycles, currency crises, policy pivots — the macro turning points the strategy is designed to exploit.",
+      "Low full-cycle correlation to both equities and bonds that holds up in stress — genuine diversification rather than hidden directional beta.",
+      "Disciplined risk sizing and stop-outs with controlled drawdowns — confirms the manager limits the damage when a macro thesis is wrong, the key survival skill in discretionary macro.",
+      "Returns spread across several uncorrelated themes rather than one big trade — breadth that makes the equity curve less dependent on a single call being right."
+    ],
+    "redFlags": [
+      "Long stretches of flat-to-negative return when no clear macro theme is in play — the strategy's structural dead zone, with high fees eroding capital while it waits.",
+      "A single dominant position (e.g. a large short-bond or long-dollar bet) driving the P&L — concentration that makes the fund a one-trade vehicle dressed as diversified macro.",
+      "Quietly persistent net-long equity beta — the fund is collecting market beta in calm periods and only looks like macro when it blows up.",
+      "Heavy reliance on a star manager with opaque positioning — key-person and transparency risk that leaves investors unable to judge the bets they're funding."
+    ]
+  },
+  "equity-market-neutral": {
+    "mostImportant": [
+      "How it is built — balanced long and short equity books sized to roughly zero net market exposure (and often zero net sector/factor exposure), so return comes almost entirely from the long-short stock-selection spread.",
+      "The character of the resulting portfolio — by design it should move independently of the S&P 500, producing a low-volatility, cash-plus-style return stream whose success is measured against T-bills, not the equity market.",
+      "The nature of its income and tax — returns are short-term-gain-heavy from the long/short spread plus interest on collateral, net of dividend payments on shorts and borrow costs, making it tax-inefficient and held for diversification rather than yield."
+    ],
+    "greenFlags": [
+      "A consistently positive long-short spread with realised beta to the S&P 500 genuinely near zero — proof the fund is delivering selection alpha, not disguised market exposure.",
+      "Controlled net sector, factor and beta exposures disclosed in holdings — confirms the 'neutral' is real and the return isn't a hidden value or momentum tilt.",
+      "Positive return in equity selloffs (2022, Q1 2020) — the market-independence that justifies owning it shows up exactly when correlated assets fall.",
+      "Steady low single-digit volatility with a positive Sharpe over T-bills — the cash-plus mandate met, the right yardstick for this category."
+    ],
+    "redFlags": [
+      "Realised beta or net exposure drifting away from zero — a quiet directional tilt that means you're paying for market beta inside a 'neutral' wrapper.",
+      "Returns that track a single style factor (e.g. momentum or low-vol) — factor beta masquerading as stock-selection alpha, and it will reverse when the factor does.",
+      "A flat-to-negative spread after fees and borrow costs — the selection engine isn't working and the fund underperforms plain T-bills net of its expensive structure.",
+      "Crowding into the same popular long/short names as peer quant funds — exposure to violent factor-unwind 'quant quake' events that hit the whole cohort at once."
+    ]
+  },
+  "relative-value-arbitrage": {
+    "mostImportant": [
+      "How it generates returns — capturing small pricing discrepancies between related securities (convertible vs underlying, on/off-the-run bonds, cross-asset spreads, cap-structure pairs) expected to converge, often with leverage to make thin spreads meaningful.",
+      "The character of the resulting portfolio — hedged and low-beta with many small positions, so it normally produces steady incremental gains punctuated by sharp losses when spreads diverge instead of converging, a positively-skewed, tail-risky profile.",
+      "The nature of its income and tax — a mix of interest, financing spreads and short-term convergence gains, typically tax-inefficient and run as a low-volatility absolute-return strategy benchmarked to cash."
+    ],
+    "greenFlags": [
+      "A steady stream of small convergence gains with low equity and rate beta — confirms returns come from spread compression, not hidden directional or credit risk.",
+      "Modest, disclosed leverage with liquid positions that can be unwound quickly — the strategy survives a liquidity squeeze instead of being forced to sell at the worst time.",
+      "Diversification across many independent relative-value trades — limits the damage from any single spread blowing out, the classic arbitrage failure mode.",
+      "Positive risk-adjusted return measured against T-bills, not the S&P 500 — the appropriate yardstick for a market-neutral convergence strategy."
+    ],
+    "redFlags": [
+      "Smooth, bond-like returns that suddenly gap down in a liquidity event — the hallmark of an under-hedged, over-levered carry trade (the LTCM/2008 convertible-arb pattern) selling cheap convergence insurance.",
+      "High or undisclosed leverage amplifying thin spreads — small adverse moves become large losses, and forced deleveraging turns a paper loss permanent.",
+      "Persistent exposure to credit or liquidity premia dressed as 'arbitrage' — directional risk that correlates with risk assets exactly when convergence trades also break.",
+      "Crowding into the same well-known spreads as other arb funds — when the trade reverses, everyone exits at once and convergence becomes a self-reinforcing divergence."
+    ]
+  },
+  "multialternative": {
+    "mostImportant": [
+      "How it is built — a single liquid-alternatives fund packaging multiple non-traditional exposures (hedge-fund replication, risk premia, alternative betas, or a fund-of-funds mix) to deliver a diversified non-correlated sleeve in one ticker.",
+      "The character of the resulting portfolio — a broad alternatives blend whose behaviour depends on what's actually inside, so the central question is whether it provides true equity/bond diversification or just repackages familiar beta with extra fees.",
+      "The nature of its income and tax — a total-return absolute-return vehicle mixing derivative gains, short frictions and interest, generally tax-inefficient and held for portfolio diversification rather than income."
+    ],
+    "greenFlags": [
+      "Low realised correlation to both stocks and bonds that persists in stress — the diversification mandate met, not just a flattering full-period average.",
+      "Transparent exposure to recognised alternative risk premia (trend, carry, value, merger-arb) rather than an opaque black box — you can see and stress-test the return drivers.",
+      "A single, reasonable all-in fee with no hidden underlying-fund layer — many multialternative wrappers stack fees that quietly eat the diversification benefit.",
+      "Smooth risk-adjusted return across multiple regimes including 2022 — shows the blend isn't secretly long equity/credit beta."
+    ],
+    "redFlags": [
+      "Correlation to a 60/40 portfolio that spikes in drawdowns — closet beta that fails to diversify exactly when protection is needed most.",
+      "A fund-of-funds fee stack on top of the wrapper — double-layer fees that turn a mediocre raw return into a poor net one.",
+      "An ever-changing strategy mix chasing whatever worked recently — performance-chasing that destroys the stable, diversifying profile investors bought.",
+      "A long flat-to-negative track record versus simply holding cash plus a cheap trend fund — the complexity and fees add cost without adding the promised non-correlated return."
+    ]
+  },
+  "downside-hedge": {
+    "mostImportant": [
+      "How it is built — a fund whose explicit job is to cushion equity drawdowns, typically by holding equities alongside a standing put/collar overlay, tail-risk options, or a defensive long-vol/managed-overlay sleeve.",
+      "The character of the resulting portfolio — it deliberately trades away some upside (option premium drag, hedge cost) for protection, so it should lag a rising market and lose materially less in selloffs, making it a convexity tool rather than a growth holding.",
+      "The nature of its income and tax — option costs and resets create uneven, often 1256-flavoured tax flows, and any yield is incidental; the product is bought for its drawdown profile, not income."
+    ],
+    "greenFlags": [
+      "A clearly asymmetric capture profile — small upside give-up for a large reduction in downside (high downside-protection-per-unit-of-upside-forgone) versus the S&P 500.",
+      "Hedges that actually pay off and are monetised in a real selloff (2022, Q1 2020) — confirms the protection is live, not a perpetual premium drain that never delivers.",
+      "A transparent, rules-based hedge reset (laddered puts, scheduled collar rolls) — you know exactly when and how protection renews rather than relying on manager timing.",
+      "Cost-of-carry kept low through spread structures or partial financing — the chronic bleed that kills most tail-hedge funds is being actively managed down."
+    ],
+    "redFlags": [
+      "Heavy upside lag in normal markets with little corresponding downside relief — the hedge is all cost and no payoff, the most common way these funds disappoint.",
+      "Discretionary hedge timing that was off in the last drawdown — the protection wasn't on when it mattered, defeating the entire purpose.",
+      "A static always-on long-vol position bleeding premium every calm year — a structural drag that needs a rare crash just to break even.",
+      "Basis risk between the hedge and the held equities (index puts against a different portfolio) — the cushion underperforms exactly in the selloff it was meant to offset."
+    ]
+  },
+  "volatility": {
+    "mostImportant": [
+      "How it generates returns — trading volatility itself via VIX futures, variance swaps or options, either long-vol (buying protection/convexity) or short-vol (harvesting the volatility-risk premium by selling it), a distinction that defines the entire risk profile.",
+      "The character of the resulting portfolio — long-vol funds bleed steadily and spike up in crashes, while short-vol funds earn a steady premium and can lose catastrophically in a vol spike; VIX-futures vehicles also carry persistent roll cost (contango) or gain (backwardation).",
+      "The nature of its income and tax — returns come from derivatives with 1256 treatment and are highly path-dependent; these are tactical convexity or premium-harvesting tools, not income or buy-and-hold holdings."
+    ],
+    "greenFlags": [
+      "For long-vol: a large, fast positive payoff in vol spikes (Feb 2018, Q1 2020) that outweighs the calm-period bleed — the convexity is doing its job.",
+      "For short-vol: position sizing and stop-rules that survived a major spike with a recoverable drawdown — proof the premium harvest isn't a hidden blow-up waiting to happen.",
+      "Active roll management or dynamic VIX-curve positioning that limits contango drag — addresses the structural cost that erodes naive volatility products.",
+      "A clearly disclosed, stable long-vs-short-vol stance — you know which side of the convexity trade you own rather than holding an ambiguous mix."
+    ],
+    "redFlags": [
+      "A short-vol payoff profile that looks like free money for years — picking up pennies in front of a steamroller, with one spike (the 2018 'Volmageddon' VXX/XIV episode) capable of wiping out the fund.",
+      "A long-vol product whose contango bleed exceeds its crash payoffs over a full cycle — a perpetual decay machine that loses even across the events it's built for (the classic VXX long-hold trap).",
+      "Embedded leverage or inverse exposure (2x/-1x VIX) held longer than intended — compounding and roll decay that guarantee large losses over time regardless of direction.",
+      "Opaque switching between long and short vol — the manager can flip the fund's entire risk character without warning, leaving you short convexity right before a spike."
+    ]
+  }
+}

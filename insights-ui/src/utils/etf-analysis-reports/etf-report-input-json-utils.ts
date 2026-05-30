@@ -1,14 +1,16 @@
+import fs from 'fs';
+import path from 'path';
 import {
   EtfAnalysisCategory,
   EtfAnalysisFactorDefinition,
   EtfCategoriesConfig,
   EtfGroupBasedFactorsConfig,
   EtfGroupFactorDefinition,
-  EtfMorCategoryInstructionsConfig,
+  EtfCategoryFlagsFile,
+  EtfMorCategoryInstructionEntry,
 } from '@/types/etf/etf-analysis-types';
 import { serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
-import etfMorCategoryInstructionsRaw from '@/etf-analysis-data/etf-mor-category-instructions.json';
 import performanceAndReturnsRaw from '@/etf-analysis-data/etf-analysis-factors-performance-and-returns.json';
 import costEfficiencyAndTeamRaw from '@/etf-analysis-data/etf-analysis-factors-cost-efficiency-and-team.json';
 import riskAnalysisRaw from '@/etf-analysis-data/etf-analysis-factors-risk-analysis.json';
@@ -21,7 +23,6 @@ import { canonicalizeCategory } from '@/utils/etf-category-aliases';
 const DEFAULT_GROUP_KEY = 'broad-equity';
 
 const categoriesConfig = etfCategoriesRaw as EtfCategoriesConfig;
-const morCategoryInstructionsConfig = etfMorCategoryInstructionsRaw as EtfMorCategoryInstructionsConfig;
 const performanceAndReturnsConfig = performanceAndReturnsRaw as EtfGroupBasedFactorsConfig;
 const costEfficiencyAndTeamConfig = costEfficiencyAndTeamRaw as EtfGroupBasedFactorsConfig;
 const riskAnalysisConfig = riskAnalysisRaw as EtfGroupBasedFactorsConfig;
@@ -69,9 +70,49 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
 }
 
 /**
- * Resolve the optional Mor-category-level instructions for the fund. Reads from
- * `etf-mor-category-instructions.json` (keyed by category slug) and renders up
- * to three sections in order:
+ * Lazily load a single ETF analysis group's category-flag file from the
+ * app-root `category-flags/` dir (one JSON per group, keyed by category slug).
+ * Read at request time with `fs` relative to `process.cwd()` — the same
+ * runtime-file pattern used for `etf-prompts/` and `schemas/` — and cached per
+ * group, so building one ETF's analysis only ever parses the flags for that
+ * fund's group rather than the full multi-group set. Returns `null` (cached)
+ * when the group has no file so a missing group is not re-read every call.
+ */
+const groupCategoryFlagsCache = new Map<string, EtfCategoryFlagsFile | null>();
+
+function loadGroupCategoryFlags(groupKey: string): EtfCategoryFlagsFile | null {
+  const cached = groupCategoryFlagsCache.get(groupKey);
+  if (cached !== undefined) return cached;
+  const filePath = path.join(process.cwd(), 'category-flags', `${groupKey}.json`);
+  let data: EtfCategoryFlagsFile | null = null;
+  try {
+    data = JSON.parse(fs.readFileSync(filePath, 'utf8')) as EtfCategoryFlagsFile;
+  } catch {
+    data = null;
+  }
+  groupCategoryFlagsCache.set(groupKey, data);
+  return data;
+}
+
+/**
+ * Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for
+ * a fund category, or undefined. The stored category is the raw per-country
+ * label, so it is canonicalized (e.g. Canada's "Information Technology" ->
+ * "Technology") before resolving the group file and the slug key, so lookups
+ * resolve for both US and Canada funds.
+ */
+function getCategoryInstructionEntry(fundCategory: string | null | undefined): EtfMorCategoryInstructionEntry | undefined {
+  const groupKey = getEtfGroupKeyForCategory(fundCategory);
+  if (!groupKey) return undefined;
+  const flags = loadGroupCategoryFlags(groupKey);
+  if (!flags) return undefined;
+  return flags[slugifyEtfCategory(canonicalizeCategory(fundCategory as string))];
+}
+
+/**
+ * Resolve the optional Mor-category-level instructions for the fund. Reads the
+ * fund's group file from `category-flags/` (keyed by category slug) and renders
+ * up to three sections in order:
  *  1. `mostImportant` — qualitative facts describing what this kind of fund is.
  *  2. `greenFlags` — non-obvious signs of a strong fund in the category.
  *  3. `redFlags` — non-obvious signs of a weak or risky fund (not the mirror of
@@ -82,11 +123,7 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
  * extra.
  */
 function getCategoryInstructions(fundCategory: string | null | undefined): string | undefined {
-  if (!fundCategory) return undefined;
-  // The stored category is the raw per-country label; canonicalize it (e.g. Canada's
-  // "Information Technology" -> "Technology") before slugifying so the instruction key
-  // resolves for both US and Canada funds.
-  const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(canonicalizeCategory(fundCategory))];
+  const entry = getCategoryInstructionEntry(fundCategory);
   if (!entry) return undefined;
   const mostImportant = entry.mostImportant ?? [];
   const greenFlags = entry.greenFlags ?? [];
@@ -96,7 +133,9 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   const sections: string[] = [];
   if (mostImportant.length > 0) {
     sections.push(
-      ['**Most important — qualitative facts about this kind of fund (surface the ones that fit this ETF):**', ...mostImportant.map((b) => `- ${b}`)].join('\n')
+      ['**Most important — qualitative facts about this kind of fund (surface the ones that fit this ETF):**', ...mostImportant.map((b) => `- ${b}`)].join(
+        '\n',
+      ),
     );
   }
   if (greenFlags.length > 0) {
@@ -106,12 +145,6 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
     sections.push(['**Red flags — non-obvious signs of a weak or risky fund in this category:**', ...redFlags.map((b) => `- ${b}`)].join('\n'));
   }
   return sections.join('\n\n');
-}
-
-/** Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for a fund category, or undefined. */
-function getCategoryInstructionEntry(fundCategory: string | null | undefined) {
-  if (!fundCategory) return undefined;
-  return morCategoryInstructionsConfig.instructions[slugifyEtfCategory(canonicalizeCategory(fundCategory))];
 }
 
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {

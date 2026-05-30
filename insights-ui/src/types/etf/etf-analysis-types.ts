@@ -240,22 +240,16 @@ export interface EtfMorCategoryInstructionEntry {
 
 /**
  * Mor-category-level prompt instructions stored separately from
- * `etf-analysis-categories.json` in `etf-mor-category-instructions.json`.
- * Keyed by category slug (`slugifyEtfCategory(EtfCategoryToGroup.name)`,
- * e.g. `large-blend`) — the same identifier groups and category URLs use.
- * The same rendered block goes into all four ETF analysis prompts
- * (Past Returns / Cost & Team / Risk / Future Outlook).
+ * `etf-analysis-categories.json`, split into one file per analysis group under
+ * the app-root `category-flags/` dir (e.g. `category-flags/broad-equity.json`).
+ * Each file is a flat object keyed by category slug
+ * (`slugifyEtfCategory(EtfCategoryToGroup.name)`, e.g. `large-blend`) — the same
+ * identifier groups and category URLs use — mapping to an
+ * {@link EtfMorCategoryInstructionEntry}. The lookup loads only the fund's group
+ * file at analysis-generation time. The same rendered block goes into all four
+ * ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook).
  */
-export interface EtfMorCategoryInstructionsConfig {
-  _meta?: {
-    purpose?: string;
-    coverageRule?: string;
-    instructionStyle?: string;
-    keyConvention?: string;
-    lastReviewed?: string;
-  };
-  instructions: Record<string, EtfMorCategoryInstructionEntry>;
-}
+export type EtfCategoryFlagsFile = Record<string, EtfMorCategoryInstructionEntry>;
 
 export interface EtfCategoriesConfig {
   groups: EtfGroup[];

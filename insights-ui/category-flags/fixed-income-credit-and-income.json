@@ -1,0 +1,206 @@
+{
+  "high-yield-bond": {
+    "mostImportant": [
+      "What it holds — below-investment-grade (\"junk\") corporate bonds selected by a rules-based index, often via sampling rather than full replication.",
+      "The character of the portfolio — credit-driven, so its return and risk come from default and spread risk far more than from interest rates.",
+      "The nature of its income — a high taxable yield that compensates for real default risk, with equity-like drawdowns in credit stress."
+    ],
+    "greenFlags": [
+      "Captures fallen angels (downgraded IG) — they historically outperform original-issue HY because the market over-sells the downgrade.",
+      "Publishes the CCC % and sector breakdown plainly (HYG/JNK/USHY) — you can see the real risk being taken.",
+      "Spread over comparable IG in line with peers — the yield is paid for with measured, disclosed credit risk."
+    ],
+    "redFlags": [
+      "Single-sector concentration above ~25% (often energy) — a sector bet hiding inside a 'diversified HY' label.",
+      "Heavy sampling (~600 of ~2,500 bonds) with high turnover — slippage and trading cost quietly erode the spread.",
+      "A headline yield well above peers — almost always extra CCC exposure, not selection skill."
+    ]
+  },
+  "multisector-bond": {
+    "mostImportant": [
+      "How the fund allocates across sectors — an actively managed go-anywhere mandate that mixes investment-grade corporates, high yield, securitized, and EM debt, with the sleeve weights shifting at the manager's discretion rather than tracking a single index.",
+      "The character of the resulting portfolio — credit risk and yield come mostly from the high-yield and EM sleeves, so total return tracks credit spreads far more than the Treasury curve.",
+      "The nature of its income — a high distribution yield built from below-investment-grade and emerging-market coupons, paid monthly as ordinary income."
+    ],
+    "greenFlags": [
+      "A through-cycle track record where the fund cut credit/EM exposure ahead of 2020 and 2022 drawdowns (PIMCO, Loomis Sayles) — evidence the go-anywhere mandate is used defensively, not just to harvest yield.",
+      "Distribution funded by portfolio yield rather than return of capital — a 19a-1 notice showing little or no ROC means the payout is earned, not your own principal returned.",
+      "Disclosed sleeve-level credit-quality and duration breakdowns updated monthly — transparency that lets you see the real risk behind a headline 6-7% yield."
+    ],
+    "redFlags": [
+      "A distribution yield well above peers paired with a falling NAV over multiple years — the payout is being financed by return of capital, eroding principal.",
+      "Heavy use of derivatives, leverage, or CCC-and-below buckets to reach a yield target — magnifies the 2020-style drawdown the multisector label is supposed to soften.",
+      "Style drift into a near-permanent maximum high-yield/EM posture — you bought flexibility but own a static junk fund that sells off hard when spreads widen past ~500 bps."
+    ]
+  },
+  "securitized-bond-focused": {
+    "mostImportant": [
+      "What collateral and tranches it holds — a fund concentrated in structured credit (CLOs, ABS, non-agency RMBS, CMBS), where return depends on the seniority of the tranche and the credit of the underlying loan pool, not on a corporate issuer.",
+      "The character of the resulting portfolio — floating-rate CLO and ABS exposure carries little duration but real subordination risk, so losses come from collateral defaults eating through junior tranches in a credit downturn.",
+      "The nature of its income — a high floating-rate coupon that resets with short-term rates, paid as ordinary income and sensitive to where in the capital structure the fund sits."
+    ],
+    "greenFlags": [
+      "A portfolio skewed to AAA/AA CLO tranches (JAAA, ICLO) — these sit above ~30-40% subordination and took near-zero principal losses even through 2008, so the yield is paid for liquidity not default risk.",
+      "Transparent disclosure of tranche-level attachment points and weighted-average collateral rating — lets you verify the fund isn't reaching for yield in BB/equity tranches.",
+      "Manager with a deal-sourcing and surveillance team across cycles (Janus Henderson, PGIM) — structured credit rewards underwriting depth that an index can't replicate."
+    ],
+    "redFlags": [
+      "A concentration in BB or equity CLO tranches to lift yield — these are first-loss pieces that can be wiped out when collateral defaults spike, as 2020 mark-downs showed.",
+      "Wide bid-ask and gating risk in stress — structured credit can become untradeable, so the ETF traded at a steep discount to NAV in March 2020 even for high-quality holdings.",
+      "Opaque or stale collateral marks — when the fund can't show current attachment points and pool performance, a benign-looking NAV can hide deteriorating subordination."
+    ]
+  },
+  "preferred-stock": {
+    "mostImportant": [
+      "What it holds and how it weights — mostly bank and insurance preferred and hybrid securities, often a rules-based index heavily concentrated in financial issuers because banks are the dominant issuers of preferreds.",
+      "The character of the resulting portfolio — these are deeply subordinated, long-duration or perpetual instruments that behave like a hybrid of long bonds and equity, so they fall in both rate spikes and credit stress.",
+      "The nature of its income — a high yield often paid as qualified dividends (for $25-par retail preferreds) rather than ordinary income, a meaningful after-tax advantage versus bonds."
+    ],
+    "greenFlags": [
+      "A high share of qualified-dividend income (PFFV, PGX structure) — the after-tax yield can beat a higher-coupon bond fund for a taxable holder.",
+      "Diversification beyond US banks into insurance, utilities, and $1000-par institutional preferreds — reduces the single-sector blowup risk that hit pure bank-preferred funds in March 2023.",
+      "An index that screens out or limits non-cumulative and extension-risk structures — avoids the issues most likely to skip dividends or never get called."
+    ],
+    "redFlags": [
+      "Near-total concentration in bank preferreds (PFF-style) — a banking-sector shock like March 2023 hit these securities far harder than the broad bond market.",
+      "Heavy weight in fixed-rate perpetual preferreds priced well above call — when rates rose they showed bond-like duration losses of 15%+, and when rates fell the best names got called away.",
+      "A large slug of non-cumulative preferreds from weaker issuers — dividends can be skipped without ever being repaid, unlike a missed bond coupon."
+    ]
+  },
+  "emerging-markets-bond": {
+    "mostImportant": [
+      "What it tracks and in which currency — hard-currency (mostly USD-denominated) sovereign and quasi-sovereign EM debt, typically an index like the JPM EMBI, so currency risk is limited but country credit risk is the main driver.",
+      "The character of the resulting portfolio — a long list of sovereign issuers spanning investment-grade (e.g. Mexico, Indonesia) down to distressed frontier names, where a single default (Argentina, Russia, Sri Lanka) can mark a position to a fraction of par.",
+      "The nature of its income — a high USD coupon that compensates for sovereign default and geopolitical risk, paid as ordinary income."
+    ],
+    "greenFlags": [
+      "A credit-quality tilt toward higher-rated sovereigns with a capped weight per country (EMB, VWOB) — limits the damage when one frontier issuer defaults or gets sanctioned.",
+      "Exclusion or quick removal of sanctioned/defaulted issuers from the index — funds that held Russian debt to maturity in 2022 took avoidable marks.",
+      "Spread-per-unit-of-rating that's wide versus US high yield at comparable ratings — genuine compensation for EM risk rather than just duration."
+    ],
+    "redFlags": [
+      "Outsized single-country exposure to a fiscally fragile sovereign — concentration that turns one restructuring into a fund-level loss, as Argentina and Lebanon showed.",
+      "A heavy frontier/CCC sleeve reaching for yield — these names gap down 30-50% on default with little recovery, unlike a diversified IG sovereign book.",
+      "A label that hides local-currency or corporate exposure — adds FX and issuer risk the buyer of a hard-currency sovereign fund didn't expect."
+    ]
+  },
+  "nontraditional-bond": {
+    "mostImportant": [
+      "How it differs from a core bond fund — an unconstrained, benchmark-agnostic strategy that can go short duration, hold negative duration, use derivatives, and take long/short credit positions rather than track an aggregate index.",
+      "The character of the resulting portfolio — returns depend almost entirely on the manager's tactical calls on rates and credit, so outcomes diverge widely across funds carrying the same label.",
+      "The nature of its income — yield and total return are manufactured from a flexible mix of credit, carry, and derivative positions rather than a stable bond coupon."
+    ],
+    "greenFlags": [
+      "A genuinely low or negative correlation to the Agg over a full cycle — proof the unconstrained mandate delivers diversification rather than just being a closet high-yield fund.",
+      "Transparent disclosure of net duration, gross/net credit exposure, and derivative notionals — lets you see the real risk behind a smooth-looking NAV.",
+      "A manager that demonstrably dialed down risk before 2020 and 2022 (e.g. short-duration positioning into the rate spike) — the flexibility was used to protect capital."
+    ],
+    "redFlags": [
+      "A high distribution yield generated by selling volatility or running large derivative carry trades — hidden tail risk that detonates in a liquidity shock.",
+      "Embedded leverage pushing gross exposure well above 100% — amplifies losses when both rate and credit bets move against the fund at once.",
+      "A smooth NAV that masks illiquid private or structured holdings — the calm line breaks suddenly when those positions have to be marked in stress."
+    ]
+  },
+  "bank-loan": {
+    "mostImportant": [
+      "What it holds and where it sits in the capital structure — senior-secured floating-rate leveraged loans to below-investment-grade companies, ranking ahead of bonds and backed by collateral, typically tracking the Morningstar LSTA Loan Index.",
+      "The character of the resulting portfolio — the floating-rate coupon means almost no duration risk, so the entire risk is corporate default and recovery, and losses come from spread widening and defaults, not rising rates.",
+      "The nature of its income — a high coupon that resets with SOFR, so the distribution rises when short rates rise and falls when the Fed cuts, paid as ordinary income."
+    ],
+    "greenFlags": [
+      "A higher weighted-average recovery and a low CCC bucket (BKLN, SRLN) — senior-secured loans historically recover ~60-70 cents versus ~40 for unsecured high-yield bonds, so quality collateral cushions defaults.",
+      "Disclosed exposure to second-lien and covenant-lite loans kept modest — these are the loans where 2020-style defaults produced thin recoveries.",
+      "An ETF that managed T+ settlement and liquidity well in March 2020 — bank loans settle slowly, and funds that didn't gate or trade at deep discounts proved their plumbing."
+    ],
+    "redFlags": [
+      "A large CCC/second-lien sleeve reaching for yield — these default earliest and recover least, so the fund's downside in a credit cycle far exceeds its senior-secured label.",
+      "A persistent NAV discount and redemption stress in selloffs — loans are illiquid and slow-settling, so the ETF can trade well below NAV exactly when you want out (March 2020).",
+      "Heavy concentration in a few highly levered sponsors or sectors — turns idiosyncratic LBO defaults into a fund-level drawdown."
+    ]
+  },
+  "high-yield-muni": {
+    "mostImportant": [
+      "What it holds — below-investment-grade and unrated municipal bonds (tobacco, land-secured/dirt, healthcare, project finance), where credit analysis of the specific project matters more than a state's general-obligation rating.",
+      "The character of the resulting portfolio — long-duration and thinly traded, so it carries both real default risk on weak projects and sharp liquidity-driven price swings in stress.",
+      "The nature of its income — a high coupon that is federally tax-exempt, so the taxable-equivalent yield for a top-bracket investor is materially higher than the stated yield."
+    ],
+    "greenFlags": [
+      "A taxable-equivalent yield that beats comparable-risk taxable high yield for a top-bracket holder (HYD, HYMB) — the tax exemption is the whole point and only pays off after-tax.",
+      "Diversification across many small issues with capped single-project weight — limits the damage from one Puerto Rico- or land-deal-style default.",
+      "Low exposure to the most default-prone sectors (speculative dirt bonds, distressed hospitals) — avoids the credits that drove past muni-HY blowups."
+    ],
+    "redFlags": [
+      "Heavy concentration in tobacco settlement, land-secured, or a single distressed state (e.g. pre-restructuring Puerto Rico) — sector bets that turn one event into a fund-level loss.",
+      "A large unrated sleeve with little disclosed project-level analysis — you can't see the default risk you're being paid for.",
+      "Severe NAV discounts and redemption pressure in muni selloffs (March 2020, 2022) — the asset class is illiquid, so forced selling marks even sound bonds far below fair value."
+    ]
+  },
+  "emerging-markets-local-currency-bond": {
+    "mostImportant": [
+      "What it tracks and the currency it pays in — EM sovereign debt denominated in local currencies (peso, real, rand), typically a GBI-EM-style index, so the dominant driver is FX moves against the dollar rather than credit spreads.",
+      "The character of the resulting portfolio — for an unhedged US investor, returns swing primarily with the dollar and EM currency volatility, with the local-rate and credit components secondary.",
+      "The nature of its income — high local-currency coupons reflecting EM inflation and policy rates, paid as ordinary income and exposed to currency translation."
+    ],
+    "greenFlags": [
+      "Diversification across many currencies with per-country caps (EMLC, LEMB) — keeps a single currency crisis (Turkish lira, Argentine peso) from dominating returns.",
+      "A real-yield (nominal coupon minus local inflation) that is genuinely high — compensation for FX risk rather than yield that just offsets a depreciating currency.",
+      "A tilt toward countries with credible, independent central banks and positive real rates — currencies more likely to hold value through a dollar-strength cycle."
+    ],
+    "redFlags": [
+      "Large weight in a high-inflation, weak-policy currency — the coupon gets eaten by depreciation, producing negative dollar returns despite a fat headline yield.",
+      "A label investors confuse with the hard-currency version — the FX exposure means a strong-dollar year can deliver double-digit losses with zero defaults.",
+      "Concentration in commodity-exporter currencies that move together — diversification on paper but a single correlated drawdown when commodities fall."
+    ]
+  },
+  "convertibles": {
+    "mostImportant": [
+      "What it holds and how it behaves — bonds convertible into equity, giving an asymmetric profile that tracks the issuer's stock on the upside and acts like a credit-sensitive bond on the downside via the bond floor.",
+      "The character of the resulting portfolio — issuance is dominated by growth and tech companies, so the fund carries a strong equity-style tilt and rises and falls largely with that sector.",
+      "The nature of its income — a low coupon (the conversion option is paid for with yield), so most of the total return is expected to come from equity upside, not income."
+    ],
+    "greenFlags": [
+      "A portfolio of balanced convertibles trading near parity (CWB, ICVT) — these capture the most equity upside while keeping a meaningful bond floor, the asymmetry the asset class is bought for.",
+      "Credit quality solid enough that the bond floor actually holds — the downside cushion only works if the issuer can repay, which is what failed for distressed names in 2008.",
+      "Diversification beyond mega-cap tech issuers — reduces the risk that the fund is just a leveraged bet on a single hot sector's equity."
+    ],
+    "redFlags": [
+      "A heavy weight in deeply out-of-the-money 'busted' converts — these have lost their equity sensitivity and trade purely on weak credit, with little upside left.",
+      "Concentration in speculative-grade growth issuers (2021 SPAC/tech vintage) — when the stocks fell, the thin bond floor gave way and the converts dropped like equity.",
+      "Distributions padded by return of capital to mask the structurally low coupon — a payout that quietly erodes NAV."
+    ]
+  },
+  "private-debt-general": {
+    "mostImportant": [
+      "What it holds and how it's valued — direct loans to private middle-market companies (often via BDC holdings or interval-fund structures), marked to model rather than to an observable market price.",
+      "The character of the resulting portfolio — illiquid, floating-rate senior loans whose true risk is sponsor and borrower default, with a smooth NAV that understates real volatility because the assets aren't traded daily.",
+      "The nature of its income — a very high floating-rate yield reflecting illiquidity and credit risk, paid as ordinary income."
+    ],
+    "greenFlags": [
+      "Third-party or transparent valuation of holdings with disclosed mark methodology — reduces the appraisal-smoothing that lets weak books look stable.",
+      "Underlying BDCs trading near or below NAV with covered dividends and low non-accruals — evidence the high yield is earned, not borrowed against deteriorating loans.",
+      "A first-lien, senior-secured tilt with diversified sponsor exposure — the part of private credit with the best recovery when a borrower defaults."
+    ],
+    "redFlags": [
+      "A rising non-accrual rate or growing PIK (payment-in-kind) income share in the underlying loans — borrowers paying with more debt instead of cash, a classic pre-default signal.",
+      "A suspiciously smooth NAV through 2022 stress — model marks hiding real credit deterioration that surfaces abruptly when loans are restructured.",
+      "Layered leverage or wide premiums to NAV on the underlying BDCs — you're paying up for, and amplifying, illiquid credit risk."
+    ]
+  },
+  "broad-credit": {
+    "mostImportant": [
+      "What it tracks — a diversified corporate-credit index spanning investment-grade and high-yield issuers, so return is driven by aggregate credit spreads across the quality spectrum rather than a single rating band.",
+      "The character of the resulting portfolio — it blends the modest spread and longer duration of IG with the higher default risk of HY, giving a middle-of-the-road credit beta that widens with the whole market in a risk-off move.",
+      "The nature of its income — a coupon between pure IG and pure HY, paid as ordinary income, reflecting the blended credit risk taken."
+    ],
+    "greenFlags": [
+      "A transparent, rules-based quality and liquidity screen on the index — keeps the fund from drifting into the least-liquid CCC names to juice yield.",
+      "Tight tracking and effective in-kind creation/redemption in credit stress — IG/HY ETFs that held near NAV in March 2020 proved their basket liquidity.",
+      "A spread-per-unit-of-duration that compensates for the credit taken — yield earned from credit risk, not from quietly extending duration."
+    ],
+    "redFlags": [
+      "A creeping shift down in quality (rising BB/CCC weight) without a name change — credit-beta drift that raises the 2020-style drawdown the buyer didn't sign up for.",
+      "Persistent NAV discounts and widening bid-ask in selloffs — a sign the underlying bonds are less liquid than the daily-traded ETF implies.",
+      "Heavy issuer or sector concentration (e.g. energy in a spread-widening shock) — turns a 'broad' label into a concentrated bet that gaps in a downturn."
+    ]
+  }
+}

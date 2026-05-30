@@ -1,0 +1,393 @@
+{
+  "diversified-emerging-mkts": {
+    "mostImportant": [
+      "The index and country scope it tracks — a rules-based cap-weighted emerging-markets index (e.g. MSCI EM, FTSE EM), where the included countries and China-share definition vary by provider.",
+      "The character of the resulting portfolio — concentrated in a few large countries (China, Taiwan, India), held via local shares and/or ADRs, and carrying currency exposure.",
+      "The nature of its risk — sensitive to single-country political, currency and trading-hours factors far more than a developed-market fund."
+    ],
+    "greenFlags": [
+      "An explicit single-country cap (China+Taiwan below ~30-35%) — keeps 'diversified' actually diversified (IEMG/VWO/SCHE).",
+      "Deep liquidity ($5B+, tight spreads) even during the EM open-hours mismatch — holds up in stress.",
+      "Rules-based, verifiable country weights — no discretionary single-country bets you can't see."
+    ],
+    "redFlags": [
+      "No single-country cap — cap-weighted EM can run 50-60% in 2-3 names, a concentrated country bet.",
+      "Heavy direct local-share holdings — foreign trading-hours and settlement operational risk vs ADRs.",
+      "Large NAV mark-downs during stress when underlying markets are closed — common in smaller EM funds."
+    ]
+  },
+  "technology": {
+    "mostImportant": [
+      "How the fund defines \"technology\" — the index's sector boundaries (pure software/semis vs a broad definition that sweeps in internet and some consumer names) decide what you actually own.",
+      "The character of the resulting portfolio — concentrated and cap-weighted, so a handful of mega-cap tech names usually dominate.",
+      "The nature of its behaviour — a single-sector, high-beta fund whose return rides the tech cycle rather than the broad market."
+    ],
+    "greenFlags": [
+      "Discloses the software/semis/internet split (XLK/VGT/FTEC) — you know the exact tech-cycle bet you're taking.",
+      "Tracks the broad tech cycle (Nasdaq 100 direction) — moves with tech without hidden sub-sector overshoots.",
+      "Rebalances on a clear quarterly schedule — new leaders enter promptly instead of leaving you with last cycle's winners."
+    ],
+    "redFlags": [
+      "Top-10 weight 60-70% — essentially a mega-cap tech bet, not broad tech.",
+      "A 'tech' definition that sweeps in Amazon/Tesla/Meta — overlaps with your Large Growth holdings unknowingly.",
+      "Above ~0.50% with no thematic mandate — broad tech doesn't beat low-cost peers at that fee."
+    ]
+  },
+  "real-estate": {
+    "mostImportant": [
+      "What it holds — predominantly equity REITs selected by a rules-based real-estate index, sometimes including specialised or mortgage REITs.",
+      "The character of the resulting portfolio — exposure spread across property sub-sectors (residential, industrial, retail, healthcare, data-centre) whose mix drives its behaviour.",
+      "The nature of its income and tax — high distributions that are largely non-qualified (taxed as ordinary income), and notable interest-rate sensitivity."
+    ],
+    "greenFlags": [
+      "Pure-play equity REITs (>=90%; VNQ/USRT/SCHH) — clean REIT exposure without dilution.",
+      "Multi-year consecutive distribution growth — signals tenant and debt health in the portfolio.",
+      "Spread across property sub-sectors (residential/industrial/healthcare/data-centre) — no single property cycle can dominate the fund."
+    ],
+    "redFlags": [
+      "Mortgage REITs (mREITs) in the basket — materially change duration and rate-sensitivity vs what you expected.",
+      "A distribution cut — an early warning of tenant or debt stress, not a one-off.",
+      "A rate-shock drawdown deeper than the category (~25-30% in 2022) — concentration or sub-sector issues."
+    ]
+  },
+  "health": {
+    "mostImportant": [
+      "How the fund defines \"healthcare\" — its sub-sector mix (broad vs pharma-only vs biotech-only) sets the risk and return character.",
+      "The character of the resulting portfolio — cap-weighted, so large pharma and managed-care names usually anchor it, with biotech adding binary event risk.",
+      "The nature of its behaviour — a defensive sector with steady cash generation, exposed to regulatory and patent-cycle events."
+    ],
+    "greenFlags": [
+      "Explicit sub-sector mix (broad vs pharma-pure vs biotech-only; XLV/VHT/IYH) — you know the basket and the risk.",
+      "Stays in the top two quartiles across 1Y/3Y/5Y — consistent, not a one-cycle fluke.",
+      "Steady cash generation from the payer and big-pharma sleeves — defensive ballast when biotech sells off."
+    ],
+    "redFlags": [
+      "Single-name weight above ~5% in a cap-weighted fund — amplifies binary FDA-approval and patent-cliff events.",
+      "Top-10 above ~40% in a 'broad' health fund — hidden pharma-mega-cap concentration.",
+      "Bouncing between top and bottom quartile across cycles — a hidden sub-sector tilt the label hides."
+    ]
+  },
+  "natural-resources": {
+    "mostImportant": [
+      "How the index defines the sleeve — a rules-based basket spanning energy, metals & mining, agriculture and timber/paper equities, so the mix of upstream commodity producers vs. downstream processors drives behaviour.",
+      "The character of the resulting portfolio — concentrated, cyclical and inflation-sensitive, with returns tied to underlying commodity prices and global capex cycles rather than broad-market earnings.",
+      "The nature of its income — distributions come largely from cash-generative producers and can be lumpy, swinging with commodity-driven payout and buyback cycles."
+    ],
+    "greenFlags": [
+      "Spread across energy, metals and agriculture rather than a single commodity (GUNR/FTRI) — diversifies the sub-sector booms and busts that sink narrow resource funds.",
+      "Tilt toward integrated, low-cost producers with strong reserves — survives the trough of the commodity cycle when high-cost marginal names get wiped out.",
+      "Includes upstream resource owners (royalties, reserves, timberland) — captures the price upside rather than just margin-squeezed refiners and processors."
+    ],
+    "redFlags": [
+      "Single-commodity concentration hidden under a broad 'natural resources' label — really an oil or copper bet that ignores the diversification the name implies.",
+      "Heavy weight in high-cost marginal producers — first to cut payouts and bleed cash when prices roll over, amplifying the downcycle.",
+      "Lagging a broad resources benchmark by >150 bps annualised through a full cycle — usually a wrong-basket tilt to laggard sub-sectors, not just commodities being out of favour."
+    ]
+  },
+  "industrials": {
+    "mostImportant": [
+      "How the index scopes 'industrials' — a rules-based sector basket of capital goods, aerospace & defense, machinery, transports and commercial services, cap-weighted within the sector.",
+      "The character of the resulting portfolio — economically cyclical and capex-driven, so it leads early in recoveries and lags into slowdowns, with a heavy mega-cap aerospace/machinery tilt.",
+      "The nature of its income — moderate dividend yield from mature manufacturers, mostly qualified, with payouts that track the industrial capex cycle."
+    ],
+    "greenFlags": [
+      "Balanced across aerospace/defense, machinery and transports rather than top-heavy in a few mega-caps (VIS/XLI) — avoids being a hidden bet on one or two names.",
+      "Meaningful aerospace & defense weight with order-backlog visibility — provides a counter-cyclical anchor when broad capex stalls.",
+      "Exposure to automation and electrification capital goods — captures the structural reshoring/efficiency spend, not just old-economy heavy machinery."
+    ],
+    "redFlags": [
+      "Top-10 weight past ~45% in a handful of mega-cap industrials — sector beta in name, single-stock risk in practice.",
+      "Overweight late-cycle transports and freight just as PMIs roll over — the most cyclical corner, first to de-rate in a slowdown.",
+      "A benchmark switch that quietly folds in services or conglomerates — dilutes the industrial-cyclical exposure the name promised."
+    ]
+  },
+  "financial": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket of banks, insurers, capital-markets firms and diversified financials, cap-weighted within the sector (serves Canada's 'Financials' label too).",
+      "The character of the resulting portfolio — rate-sensitive and balance-sheet-driven, with returns hinging on the yield curve, credit cycle and regulatory capital rules; in Canada, dominated by a few large national banks.",
+      "The nature of its income — a structurally higher dividend yield than the broad market, so more total return arrives as income, much of it qualified."
+    ],
+    "greenFlags": [
+      "Spread across banks, insurers and capital-markets firms (XLF/VFH) — insurance and exchanges offset the credit-cycle risk that pure-bank funds carry.",
+      "Quality screen favouring well-capitalised lenders with strong CET1 ratios — survives credit shocks that impair thinly-capitalised peers.",
+      "Capital-markets and asset-manager weight that earns fee income — diversifies away from pure net-interest-margin dependence on the yield curve."
+    ],
+    "redFlags": [
+      "Heavy regional-bank concentration — deposit-flight and duration-mismatch risk, as the 2023 SVB-driven regional rout showed.",
+      "Top-5 weight past ~55% in a few national banks (common in Canada-style baskets) — sector label masking a near-single-stock credit bet.",
+      "Outsized exposure to a stressed credit niche (CRE, consumer subprime) — concentrated loss vector that doesn't show up in the sector name."
+    ]
+  },
+  "equity-energy": {
+    "mostImportant": [
+      "How the index scopes 'energy' — a rules-based basket of oil & gas producers, refiners, services and (increasingly) some clean-energy names, cap-weighted and historically dominated by integrated majors (serves Canada's 'Energy' label).",
+      "The character of the resulting portfolio — highly concentrated, commodity-price-driven and volatile, with returns tracking crude/gas spot and global supply discipline rather than broad earnings.",
+      "The nature of its income — high, cash-flow-funded dividends from the majors, often supplemented by variable buybacks that swing with the oil price."
+    ],
+    "greenFlags": [
+      "Tilt to integrated majors and low-breakeven producers (XLE/VDE) — generate free cash and sustain payouts even when crude trades near marginal cost.",
+      "Includes midstream/infrastructure alongside E&P — toll-like cash flows dampen the swings of pure upstream price exposure.",
+      "Capital-discipline tilt favouring shareholder returns over drilling growth — the post-2020 shift that rewards balance-sheet strength over production volume."
+    ],
+    "redFlags": [
+      "Concentrated in high-cost shale or small-cap E&P — cash-burn and solvency risk the moment crude drops toward breakeven.",
+      "Heavy oilfield-services weight — the most operationally levered, cyclical corner, first to cut payouts when capex budgets freeze.",
+      "Lagging a broad energy benchmark by >150 bps annualised through a cycle — a wrong-basket sub-sector tilt, distinct from oil simply being weak."
+    ]
+  },
+  "miscellaneous-sector": {
+    "mostImportant": [
+      "What lands here — narrow, hard-to-classify single-sector or niche-industry funds (e.g. gaming, cannabis, water, space) that don't fit a standard GICS sleeve, so the index rules vary wildly by product.",
+      "The character of the resulting portfolio — typically concentrated, often small/mid-cap and illiquid, with a bespoke selection methodology that needs to be read directly rather than assumed.",
+      "The nature of its income — usually low or no dividend yield, since these niches skew toward growth or pre-profit thematic names."
+    ],
+    "greenFlags": [
+      "A transparent, rules-based screen with clear inclusion criteria — avoids the manager-discretion drift that plagues novelty niche funds.",
+      "Liquidity-weighted or float-adjusted construction rather than equal-weight on micro-caps — limits the impact-cost bleed when the fund rebalances.",
+      "Sufficient AUM and tight bid/ask spreads relative to peers — a niche fund that won't trade at large premiums or face closure risk."
+    ],
+    "redFlags": [
+      "Tiny AUM (well under ~$50M) with wide spreads — closure/delisting risk and costly entry/exit in a thin niche.",
+      "Equal-weighting illiquid micro-caps — forced rebalance trades move the very names it holds, leaking return to market impact.",
+      "A vague or frequently-revised methodology — a 'theme' chasing a fad rather than a durable, investable basket."
+    ]
+  },
+  "china-region": {
+    "mostImportant": [
+      "How the index defines the universe — a rules-based basket of China-region equities that may mix mainland A-shares, Hong Kong H-shares, ADRs and sometimes Taiwan, so share-class scope drives what you actually own.",
+      "The character of the resulting portfolio — single-country/region concentrated, heavily tech-and-internet-weighted, and exposed to state policy, VIE legal structures and ADR-delisting risk.",
+      "The nature of its income — modest dividends, often subject to foreign withholding, with total return dominated by price and currency (CNY/HKD) moves."
+    ],
+    "greenFlags": [
+      "Broad share-class coverage spanning A-shares, H-shares and ADRs (MCHI/FXI vs. narrow ADR-only funds) — captures the full opportunity set and reduces single-venue delisting risk.",
+      "Caps on the largest internet names — limits the single-stock policy-shock risk that concentrated China funds carry.",
+      "Direct A-share access via Stock Connect rather than ADR-only — sidesteps the VIE-structure and US-delisting overhang on offshore listings."
+    ],
+    "redFlags": [
+      "ADR-only construction with heavy VIE exposure — a US-delisting or audit-access dispute can force a costly forced sale at depressed prices.",
+      "Top-5 weight dominated by two or three internet mega-caps — a regulatory crackdown on one name craters the whole fund.",
+      "Unhedged share-class arbitrage between A and H lines — persistent NAV dislocations and tracking drift versus the stated benchmark."
+    ]
+  },
+  "consumer-cyclical": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket of discretionary spending names: autos, retail, apparel, restaurants, travel and homebuilders, cap-weighted within the sector (serves Canada's 'Consumer Discretionary' label).",
+      "The character of the resulting portfolio — economically sensitive and consumer-spending-driven, typically top-heavy in one or two e-commerce/auto mega-caps that dominate the cap-weighting.",
+      "The nature of its income — a low dividend yield, since the sector reinvests for growth, so total return is overwhelmingly price-driven."
+    ],
+    "greenFlags": [
+      "Spread across retail, autos, leisure and homebuilders rather than dominated by one e-commerce giant (XLY's Amazon/Tesla concentration is the cautionary case) — true sector exposure, not a two-stock proxy.",
+      "Tilt toward off-price and value retail with pricing power — holds up through consumer downturns when discretionary spend contracts.",
+      "Balanced goods-vs-services discretionary mix — captures the post-pandemic rotation into experiences rather than just durable goods."
+    ],
+    "redFlags": [
+      "Top-2 weight past ~40% in a couple of mega-caps — sector beta that's really an idiosyncratic bet on Amazon/Tesla-type names.",
+      "Overweight big-ticket durables (autos, furniture) heading into a credit tightening — the first discretionary spend consumers defer.",
+      "Heavy mall-based or fashion-cyclical retail — structurally challenged names that lag even when the broad consumer is healthy."
+    ]
+  },
+  "communications": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket blending legacy telecom/media with interactive-media and internet platforms after the 2018 GICS reshuffle, cap-weighted (serves Canada's 'Communication Services' label).",
+      "The character of the resulting portfolio — barbelled between a few mega-cap internet/advertising platforms and slower-growth telecom incumbents, so the top names dominate behaviour.",
+      "The nature of its income — bifurcated: high-yield telecoms supply most of the dividends while the internet platforms pay little, so income concentration sits in the legacy names."
+    ],
+    "greenFlags": [
+      "Caps on the largest platform names so the basket isn't two mega-caps (XLC's Meta/Alphabet weight is the cautionary case) — keeps it a sector fund, not a duopoly bet.",
+      "Genuine telecom and media diversification alongside the platforms — the dividend-paying incumbents cushion advertising-cycle drawdowns.",
+      "Exposure to interactive media beyond search/social (gaming, streaming) — broadens the growth engine past the ad-dependent giants."
+    ],
+    "redFlags": [
+      "Top-2 weight past ~40% in two internet platforms — an ad-recession or antitrust action on one name sinks the fund.",
+      "Heavy weight in over-levered legacy telecom — high yields masking secular decline and dividend-cut risk.",
+      "A post-GICS benchmark that still leans old-economy telecom — misses the interactive-media growth the modern sector name implies."
+    ]
+  },
+  "equity-digital-assets": {
+    "mostImportant": [
+      "What the fund actually holds — equities of crypto-exposed businesses (miners, exchanges, treasury-holding companies) and/or spot/futures crypto vehicles, so the structure ranges from operating-company equity to direct coin exposure.",
+      "The character of the resulting portfolio — extremely concentrated and high-beta to bitcoin/crypto prices, with returns amplified versus the underlying coins through operating and balance-sheet leverage.",
+      "The nature of its income — typically none; total return is pure price, and for Canada-listed spot products the wrapper, custody and currency-hedge mechanics define the exposure."
+    ],
+    "greenFlags": [
+      "For Canada spot products, qualified cold-storage custody with tight premium/discount to NAV (BTCC/EBIT) — you get clean coin exposure without paying a structural NAV markup.",
+      "A management fee well below buying and self-custodying the asset, with that fee disclosed against in-kind creation — minimal drag versus holding the coin directly.",
+      "Clear hedge mechanics on currency-hedged classes (the 'Short CAD' leg hedges CAD back to USD exposure) — removes FX noise so the fund tracks the coin, not the loonie."
+    ],
+    "redFlags": [
+      "Persistent premium/discount to NAV beyond a few percent — you're buying or selling the wrapper, not the asset, and the gap can snap against you.",
+      "Equity baskets dominated by one treasury-strategy proxy (MSTR-type names) — layered balance-sheet leverage that can magnify drawdowns far beyond the coin itself.",
+      "Custody or counterparty opacity on a synthetic/futures-based structure — roll cost and basis risk silently erode tracking versus spot."
+    ]
+  },
+  "infrastructure": {
+    "mostImportant": [
+      "How the index defines 'infrastructure' — a rules-based basket of utilities, pipelines, toll roads, airports, towers and other long-lived hard assets, so the utility-vs-transport-vs-energy-midstream mix shapes the risk.",
+      "The character of the resulting portfolio — lower-beta, cash-flow-stable and rate-sensitive, with regulated/contracted revenues that often carry inflation linkage.",
+      "The nature of its income — a structurally high, contractually-supported dividend yield, so a large share of total return arrives as income."
+    ],
+    "greenFlags": [
+      "Genuine spread across utilities, transport and midstream rather than a relabeled utilities fund (IGF/NFRA) — diversifies regulatory and commodity exposures.",
+      "Holdings with explicit CPI-linked or regulated tariff escalators — real inflation pass-through, the core reason to own the asset class.",
+      "Concession/contracted-asset weight (toll roads, airports, towers) — long-duration cash flows that hold up when rates and the economy wobble."
+    ],
+    "redFlags": [
+      "Effectively a utilities fund wearing an 'infrastructure' label — pure rate-duration risk without the diversification the name implies.",
+      "Heavy unregulated power or merchant-generation exposure — commodity-price risk that undercuts the stable-cash-flow thesis.",
+      "Elevated leverage across holdings into a rising-rate regime — refinancing pressure that threatens the very distributions the fund is bought for."
+    ]
+  },
+  "energy-limited-partnership": {
+    "mostImportant": [
+      "What the fund holds and how it's wrapped — primarily midstream MLPs (pipelines, storage, processing); a >25% MLP allocation forces a C-corp structure that pays entity-level tax, so the wrapper choice is central.",
+      "The character of the resulting portfolio — concentrated in a handful of large midstream names with toll-like, fee-based cash flows, less commodity-sensitive than upstream energy but still energy-linked.",
+      "The nature of its income — very high distribution yield, often part return-of-capital, with the C-corp/RIC structure determining whether you receive a K-1 or 1099 and how it's taxed."
+    ],
+    "greenFlags": [
+      "RIC-structured (1099, capped MLP weight) for tax-deferred accounts vs. C-corp for taxable — matching the wrapper to the account avoids the deferred-tax-liability drag (AMLP's C-corp drag is the cautionary case).",
+      "Fee-based, volume-contracted midstream rather than commodity-spread processors — stable distribution coverage through the oil cycle.",
+      "Strong distribution coverage ratios across holdings (cash flow comfortably above payout) — durable yield rather than a payout funded by new debt or equity."
+    ],
+    "redFlags": [
+      "A C-corp structure accruing a deferred tax liability that silently widens NAV tracking drag versus the underlying index — a hidden, compounding cost unique to this wrapper.",
+      "Top-heavy concentration in two or three midstream giants — a single distribution cut or counterparty failure craters the fund's income.",
+      "Distributions heavily reliant on return-of-capital with thin coverage — yield that erodes the NAV base rather than reflecting earnings."
+    ]
+  },
+  "equity-precious-metals": {
+    "mostImportant": [
+      "What the fund holds — equities of gold/silver miners (and sometimes streamers/royalties), not the metal itself, so returns are levered to the metal price through mining operating margins.",
+      "The character of the resulting portfolio — concentrated, high-beta and operationally levered to gold/silver spot, amplifying both rallies and drawdowns versus the underlying metal.",
+      "The nature of its income — generally low yield; total return is dominated by metal-price moves and mine-level cost and execution risk."
+    ],
+    "greenFlags": [
+      "Tilt to senior, low-all-in-sustaining-cost producers (GDX vs. GDXJ's junior risk) — margins survive when the metal price falls toward marginal cost.",
+      "Meaningful royalty/streaming weight (Franco-Nevada, Wheaton-type names) — captures metal-price upside without mine-level cost inflation and execution risk.",
+      "Geographic diversification across stable jurisdictions — limits the resource-nationalism and permitting shocks that hit single-country miners."
+    ],
+    "redFlags": [
+      "Heavy junior/explorer weight — financing and execution risk that turns into permanent capital loss in a weak-metal tape, beyond the gold price itself.",
+      "Concentration in miners operating in high-political-risk jurisdictions — expropriation or permit-revocation tail risk the metal price doesn't carry.",
+      "Holdings with rising all-in sustaining costs eroding margins even as gold holds — operational decay masked by a flat metal price."
+    ]
+  },
+  "india-equity": {
+    "mostImportant": [
+      "How the index defines the universe — a rules-based single-country basket of Indian equities, accessed via local listings or ADRs, with FPI rules and access-vehicle structure shaping what's actually held.",
+      "The character of the resulting portfolio — single-country concentrated, heavily weighted to financials, IT services and consumer names, and exposed to INR currency and domestic-policy risk.",
+      "The nature of its income — low dividend yield; total return is dominated by price and the rupee, with a structurally high domestic valuation premium baked in."
+    ],
+    "greenFlags": [
+      "Broad large-and-mid-cap coverage rather than a handful of ADRs (INDA/EPI) — captures the domestic growth story, not just the offshore-listed minority.",
+      "Caps on the largest financials/conglomerates — limits single-group concentration risk (Adani/Reliance-style episodes are the cautionary case).",
+      "Transparent, fully-invested replication with low cash drag — avoids the access-fee and P-note structure that can decouple a fund from the index."
+    ],
+    "redFlags": [
+      "ADR-heavy or P-note-based construction — structural access risk and tracking drift versus the local-market index.",
+      "Concentration in a single business group across multiple holdings — a governance or leverage shock to one promoter group hits the whole fund.",
+      "Buying at a stretched domestic valuation premium with thin earnings support — high re-rating risk distinct from the long-term growth thesis."
+    ]
+  },
+  "global-real-estate": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based global basket of listed REITs and property companies spanning regions and property types (residential, office, retail, industrial, data centers), cap-weighted.",
+      "The character of the resulting portfolio — rate-sensitive and yield-oriented, with returns driven by cap rates, property-type cycles and, for non-US holdings, foreign currency.",
+      "The nature of its income — high distribution yield from rental cash flows, much of it ordinary (non-qualified) income, so the tax character matters in taxable accounts."
+    ],
+    "greenFlags": [
+      "Diversified across regions and property types rather than concentrated in one (REET/VNQI) — spreads the divergent office, retail and logistics cycles.",
+      "Weight toward secular-growth property types (data centers, logistics, towers) — structural demand that offsets the decline in legacy office and mall assets.",
+      "Holdings with conservative balance sheets and laddered debt maturities — survive a refinancing squeeze when cap rates rise."
+    ],
+    "redFlags": [
+      "Heavy office and traditional-retail concentration — structurally impaired property types that lag even as the broad sector recovers.",
+      "Elevated portfolio-level leverage into a rising-rate regime — refinancing pressure that threatens the distributions the fund is bought for.",
+      "Unhedged currency exposure presented as a property play — FX swings that swamp the underlying real-estate return for a single-currency investor."
+    ]
+  },
+  "consumer-defensive": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket of non-discretionary staples: food, beverage, household products, tobacco and discount retail, cap-weighted (serves Canada's 'Consumer Staples' label).",
+      "The character of the resulting portfolio — low-beta and defensive, with stable demand and pricing power, so it lags in risk-on rallies and cushions drawdowns.",
+      "The nature of its income — a steady, above-market dividend yield from mature, cash-generative brands, so a large share of total return arrives as income."
+    ],
+    "greenFlags": [
+      "Spread across food, beverage, household and retail rather than top-heavy in a couple of mega-caps (XLP/VDC) — true defensive breadth, not a two-stock bet.",
+      "Tilt to brands with demonstrated pricing power — protects real margins when input-cost inflation squeezes weaker peers.",
+      "Discount-retail and private-label exposure — captures the trade-down spending that grows when consumers tighten budgets."
+    ],
+    "redFlags": [
+      "Top-heavy concentration in a few legacy packaged-food giants — exactly the brands losing share to private label and challengers.",
+      "Heavy tobacco or single-category weight — secular-decline and regulatory risk masked by an attractive headline yield.",
+      "Holdings squeezed between input-cost inflation and retailer pricing power — margin erosion that undercuts the stable-cash-flow thesis."
+    ]
+  },
+  "utilities": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket of regulated electric, gas and water utilities plus some independent power producers, cap-weighted within the sector.",
+      "The character of the resulting portfolio — low-beta, bond-proxy and highly rate-sensitive, with regulated returns on capital that move inversely to interest rates.",
+      "The nature of its income — a structurally high, regulator-supported dividend yield, so income is the dominant component of total return."
+    ],
+    "greenFlags": [
+      "Tilt to regulated utilities in constructive regulatory jurisdictions (XLU/VPU) — predictable allowed returns and rate-base growth, not merchant-power volatility.",
+      "Rate-base growth tied to grid modernization and electrification capex — a structural earnings tailwind beyond the bond-proxy yield.",
+      "Conservative balance sheets with manageable refinancing schedules — protects the dividend when rates rise and capital costs climb."
+    ],
+    "redFlags": [
+      "Heavy unregulated/merchant power-generation weight — commodity-price risk that breaks the stable regulated-return thesis.",
+      "Concentration in utilities facing adverse rate-case outcomes or wildfire/liability exposure — tail risks the sector label hides.",
+      "Stretched leverage into rising rates — refinancing pressure that threatens the dividend the fund is bought for."
+    ]
+  },
+  "latin-america-stock": {
+    "mostImportant": [
+      "How the index defines the universe — a rules-based regional basket dominated by Brazil and Mexico, heavily weighted to commodities, financials and consumer names, cap-weighted.",
+      "The character of the resulting portfolio — concentrated by country and sector, commodity-and-currency-driven, and exposed to political and macro-policy swings across the region.",
+      "The nature of its income — a relatively high dividend yield from commodity and bank holdings, with total return swamped by local-currency (BRL/MXN) moves."
+    ],
+    "greenFlags": [
+      "Genuine country diversification beyond a single market (ILF spans Brazil and Mexico) — limits the single-election or single-policy shock that hits one-country funds.",
+      "Caps on the largest commodity/bank names — reduces the idiosyncratic single-stock risk these concentrated baskets carry.",
+      "Liquid, fully-invested replication with tight spreads — avoids the access-cost and cash-drag problems of thin frontier-style vehicles."
+    ],
+    "redFlags": [
+      "Top-5 weight dominated by two or three commodity/bank giants — a single state-owned-enterprise or political shock craters the fund.",
+      "Unhedged exposure marketed as an equity play — currency depreciation that erases the local-equity gain for a foreign holder.",
+      "Heavy single-country (Brazil) concentration under a 'Latin America' label — a policy or fiscal shock to one nation drives the whole vehicle."
+    ]
+  },
+  "theme": {
+    "mostImportant": [
+      "How the fund picks holdings — a bespoke thematic screen (AI, clean energy, cybersecurity, robotics) that selects across sectors by exposure to a trend, so the methodology and 'purity' rules vary widely by product.",
+      "The character of the resulting portfolio — concentrated, often mid/small-cap and high-beta, frequently launched late in a hype cycle when valuations are already stretched.",
+      "The nature of its income — typically little to no dividend yield, since thematic baskets skew toward growth and pre-profit names; total return is pure price."
+    ],
+    "greenFlags": [
+      "A 'pure-play' revenue screen requiring meaningful theme exposure rather than tangential mega-caps — you own the theme, not a diluted large-blend proxy.",
+      "Transparent, rules-based reconstitution with disclosed inclusion thresholds — avoids the manager-discretion drift that lets a theme fund chase the next fad.",
+      "Sufficient AUM, tight spreads and durable demand (vs. fad themes) — a fund that won't face closure or wide premiums once the hype fades."
+    ],
+    "redFlags": [
+      "Launched at the peak of media attention with stretched holding valuations — structural buy-high risk baked into the timing.",
+      "'Theme-washing' — top weights are diversified mega-caps with only marginal exposure, so it behaves like a costlier large-blend fund.",
+      "Tiny AUM with wide spreads and high turnover — closure risk and rebalance-impact cost that quietly erode a thin, illiquid niche."
+    ]
+  },
+  "materials": {
+    "mostImportant": [
+      "How the index scopes the sleeve — a rules-based basket of chemicals, metals & mining, construction materials, containers and packaging, cap-weighted within the sector.",
+      "The character of the resulting portfolio — cyclical and input-cost-and-commodity-driven, with returns tied to global industrial demand and often top-heavy in a few diversified chemical or mining names.",
+      "The nature of its income — a moderate dividend yield from mature producers, with payouts that ebb and flow with the commodity and industrial cycle."
+    ],
+    "greenFlags": [
+      "Balanced across chemicals, metals/mining and packaging rather than dominated by one mega-cap (XLB/VAW) — diversifies the divergent sub-sector cycles.",
+      "Specialty-chemical and value-added materials weight — higher, more stable margins than pure commodity producers exposed to spot prices.",
+      "Low-cost producers with strong balance sheets — survive the trough of the commodity cycle when high-cost marginal names cut payouts."
+    ],
+    "redFlags": [
+      "Top-heavy concentration in one or two diversified chemical/mining giants — sector beta in name, single-stock risk in practice.",
+      "Heavy commodity-chemical exposure with no specialty buffer — full margin compression when feedstock costs spike or demand softens.",
+      "Lagging a broad materials benchmark by >150 bps annualised through a cycle — a wrong-basket sub-sector tilt, not just commodities being weak."
+    ]
+  }
+}

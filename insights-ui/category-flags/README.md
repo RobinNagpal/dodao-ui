@@ -1,0 +1,71 @@
+# Category Flags
+
+Mor-category-level prompt instructions ("most important facts" + green/red flags) plumbed
+into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future Outlook) as
+`categoryInstructions`. The same rendered block goes into all four prompts when the fund's
+Mor category has an entry.
+
+## One file per analysis group (lazy-loaded)
+
+The flags are split into **one JSON file per ETF analysis group** — the `group` keys defined
+in `src/etf-analysis-data/etf-analysis-categories.json`:
+
+- `broad-equity.json`
+- `sector-thematic-equity.json`
+- `commodities-and-digital-assets.json`
+- `derivative-income.json`
+- `allocation-target-date.json`
+- `fixed-income-investment-grade.json`
+- `fixed-income-credit-and-income.json`
+- `leveraged-inverse.json`
+
+At analysis-generation time the lookup resolves the fund's group from its (canonicalized)
+category and reads **only that group's file** (`getCategoryInstructionEntry` in
+`src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`, cached per group), so the
+full multi-group flag set is never loaded into a single prompt-build.
+
+These live at the app root (like `etf-prompts/`, `schemas/`, `blogs/`) rather than under
+`src/` because they are read at request time with `fs` relative to `process.cwd()`, and
+app-root dirs ship with the Next deployment while `docs/` does not.
+
+## File shape
+
+Each file is a flat object keyed by category slug — `slugifyEtfCategory(name)` from
+`etf-categorization-utils` (e.g. `Large Blend` -> `large-blend`,
+`Trading--Leveraged Equity` -> `trading-leveraged-equity`), the same identifier used in
+category URLs and `getEtfCategoryBySlug`. Each slug MUST resolve to a `categories[].name`
+in `etf-analysis-categories.json`; unknown keys are silently ignored.
+
+```json
+{
+  "large-blend": {
+    "mostImportant": ["…", "…"],
+    "greenFlags": ["…", "…"],
+    "redFlags": ["…", "…"]
+  }
+}
+```
+
+## Coverage
+
+Populated for **every** canonical Mor category in `etf-analysis-categories.json` (US
+Morningstar-style and Canada Stock-Analysis-style names alike). Lookups canonicalize the raw
+per-country category through `etf-category-aliases.json` first, so an aliased Canada label
+(e.g. `Financials` -> `Financial`, `Information Technology` -> `Technology`) resolves to the
+same entry as its US equivalent.
+
+## Authoring style
+
+Each category carries three lists:
+
+- `mostImportant` (3-5 bullets) — qualitative facts describing what this KIND of fund is: its
+  index/selection methodology, the character of the resulting portfolio, and its income & tax
+  nature. Neutral context with no verdict and no numeric thresholds, in the form
+  "the fact — its character".
+- `greenFlags` / `redFlags` (3-5 bullets each) — evaluative, in the form
+  "signal — why it matters" with brief numeric anchors (tickers, bps, %). Rules: (1) include
+  ONLY genuinely impactful signals — omit obvious basics like a plain low/high expense ratio;
+  (2) `redFlags` must NOT be the mirror-image negation of `greenFlags` — each red flag is its
+  own distinct failure mode, so a given dial appears on at most one side.
+
+_Last reviewed: 2026-05-30._
