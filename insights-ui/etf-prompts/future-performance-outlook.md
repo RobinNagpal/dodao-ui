@@ -117,7 +117,7 @@ If a factor’s core metric is missing, use the lookup rule first; otherwise jud
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — exact key from the input, unchanged.
+- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `short_term_hold_outlook`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
 - `oneLineExplanation` — one sentence with the clearest investor takeaway.
 - `detailedExplanation` — one short paragraph that applies the factor’s bar to THIS ETF. Use the listed metrics and any strongly relevant input field or lookup result. Anchor conclusions with at least one concrete detail.
 - `result` — `"Pass"` or `"Fail"` per Section 3 and the factor’s own description.
@@ -152,7 +152,7 @@ Shorter horizons are inherently less certain than the 5-year figure — be more 
 
 {{#each factorAnalysisArray}}
 
-- **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
+- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}

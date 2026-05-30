@@ -83,7 +83,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 ## 4. For each item in `factorAnalysisArray` produce
 
-- `factorAnalysisKey` — exact key from the input, unchanged.
+- `factorAnalysisKey` — the exact snake_case key from the input (the value wrapped in backticks at the start of each factor block below, e.g. `risk_adjusted_return`). Use the backticked key, NOT the bolded title and NOT any rephrased form.
 - `oneLineExplanation` — one sentence with the clearest takeaway, stated in terms a retail reader can act on (not a metric definition).
 - `detailedExplanation` — one short paragraph. Use the metrics listed in `factorAnalysisMetrics` and any other strongly relevant input field. Every conclusion needs a numeric anchor. Every cited metric must sit next to a peer / category / benchmark comparison number plus a plain-English direction word (`better than`, `in line with`, `worse than`, `above`, `below`) — never leave a Sharpe, drawdown, capture, or risk score stranded. Close with one clause translating the `Pass` / `Fail` into what it means for an investor holding this fund (e.g. "Pass here means the fund is delivering the promised decorrelation", "Fail here means the fund's fate is tethered to a handful of mega-cap names"). If the factor is a weak fit for this ETF, say so and judge on the closest relevant evidence rather than forcing a Fail.
 - `result` — `"Pass"` or `"Fail"` per the factor's own description and Section 3.
@@ -106,7 +106,7 @@ If a factor's core metric is absent, first try the "Factor-metric lookup" rule. 
 
 {{#each factorAnalysisArray}}
 
-- **{{factorAnalysisTitle}}** (`{{factorAnalysisKey}}`)
+- `{{factorAnalysisKey}}` — **{{factorAnalysisTitle}}**
   {{factorAnalysisDescription}}
   {{#if factorAnalysisGroupInstructions}}Group-specific perspective ({{../groupKey}}): {{factorAnalysisGroupInstructions}}
   {{/if}}Metrics: {{factorAnalysisMetrics}}

@@ -27,13 +27,15 @@ export async function saveEtfFactorAnalysisResponse(
 
   // Keep only factors whose keys are recognized for this category. Unknown keys
   // are logged and dropped so they can't become stale rows on a replace.
-  const validFactors = response.factors.filter((factor) => {
+  // Resolve each factor to its canonical snake_case key here so the DB never
+  // stores the bolded title that the LLM sometimes returns by mistake.
+  const validFactors = response.factors.flatMap((factor) => {
     const factorDef = findFactorDefinition(categoryKey, factor.factorAnalysisKey);
     if (!factorDef) {
       console.warn(`Unknown factor key: ${factor.factorAnalysisKey} for ETF ${symbol}`);
-      return false;
+      return [];
     }
-    return true;
+    return [{ ...factor, factorAnalysisKey: factorDef.factorAnalysisKey }];
   });
 
   // Replace the category's factor results atomically: the current prompt
