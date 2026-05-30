@@ -133,9 +133,7 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
   const sections: string[] = [];
   if (mostImportant.length > 0) {
     sections.push(
-      ['**Most important — qualitative facts about this kind of fund (surface the ones that fit this ETF):**', ...mostImportant.map((b) => `- ${b}`)].join(
-        '\n',
-      ),
+      ['**Most important — qualitative facts about this kind of fund (surface the ones that fit this ETF):**', ...mostImportant.map((b) => `- ${b}`)].join('\n')
     );
   }
   if (greenFlags.length > 0) {
