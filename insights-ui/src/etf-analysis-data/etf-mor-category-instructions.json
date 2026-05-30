@@ -1144,8 +1144,7 @@
       "redFlags": [
         "Persistent premium or discount to NAV (single-digit % or more) — the classic closed-end-style trap where you buy the asset dear and sell it cheap regardless of spot.",
         "Futures-based exposure where the named asset is liquid in spot — you eat contango roll cost for an inferior, laggier proxy.",
-        "Custody concentrated at a single unaudited counterparty with no proof-of-reserves — structural failure risk that has no relation to the coin price.",
-        "Tracking error several times the MER — a sign of cash drag, rebalancing slippage, or a swap spread silently bleeding return."
+        "Custody concentrated at a single unaudited counterparty with no proof-of-reserves — structural failure risk that has no relation to the coin price."
       ]
     },
     "commodities-focused": {
@@ -1180,7 +1179,6 @@
         "Tracking its stated index within a tight margin across a roll-heavy year — shows the rebalancing is disciplined."
       ],
       "redFlags": [
-        "Energy weight dominating the basket so it trades like an oil fund — diversification in name only when one sector drives most of the variance.",
         "Chronic negative roll yield dragging multi-year returns below spot commodity moves — the index design, not the market, is the leak.",
         "A K-1 partnership structure where the investor wasn't expecting one — surprise tax complexity that erodes after-tax return.",
         "Thin volume forcing trades at a discount to intraday NAV — common in smaller broad-basket wrappers."
@@ -1200,7 +1198,6 @@
       ],
       "redFlags": [
         "Negative carry the fund silently bears when the target currency yields less than the funding currency — a steady drag even if spot is flat.",
-        "Forward-roll slippage showing up as tracking error well above the fee — the FX desk is leaking basis.",
         "Wide premium/discount in a thinly traded exotic-currency wrapper — you transact away from the true rate.",
         "Counterparty-swap structure without collateral disclosure — the 'currency' is really a bank's credit promise."
       ]
@@ -1252,14 +1249,12 @@
       "greenFlags": [
         "ETH staked with rewards flowing back to NAV to offset the fee — can push net carry below the headline MER, a structural edge over non-staking peers.",
         "Spot tokens in audited cold-storage custody with proof-of-reserves — direct claim on ETH, not a futures proxy (e.g. ETHA, FETH).",
-        "Premium/discount to NAV under ~0.5% via active creation/redemption — you trade near the real coin value.",
-        "Tracking gap close to the fee (net of staking) over a full year — confirms custody and rebalancing are clean."
+        "Premium/discount to NAV under ~0.5% via active creation/redemption — you trade near the real coin value."
       ],
       "redFlags": [
         "Futures-based ETH exposure paying contango when spot ETFs exist — a laggy, costlier way to own a liquid coin.",
         "Staking enabled but the reward retained or opaquely shared — holders bear validator/slashing risk without the full yield.",
-        "Persistent NAV premium/discount in a thin Canada-listed wrapper — entry and exit happen away from spot.",
-        "Single-custodian concentration with no reserve attestation — structural risk independent of the ETH price."
+        "Persistent NAV premium/discount in a thin Canada-listed wrapper — entry and exit happen away from spot."
       ]
     },
     "long-btc": {
@@ -1271,13 +1266,11 @@
       "greenFlags": [
         "Spot BTC in qualified cold-storage custody with on-chain proof-of-reserves — your claim is the actual coin (IBIT, FBTC, BTCC).",
         "Daily creation/redemption holding price within a tight band of NAV — premium/discount under ~0.5% so you don't overpay versus spot.",
-        "A low MER on a flagship spot vehicle — on a no-yield asset, fee is pure permanent drag, so single-digit-bps leaders compound an edge.",
-        "Annual tracking gap close to the fee — proves custody, cash management and rebalancing aren't leaking return."
+        "A low MER on a flagship spot vehicle — on a no-yield asset, fee is pure permanent drag, so single-digit-bps leaders compound an edge."
       ],
       "redFlags": [
         "Futures-based BTC exposure paying persistent contango — meaningfully lags spot in steep-curve regimes (BITO-style roll drag).",
         "A standing premium or discount to NAV in a closed-end-style or thin wrapper — buy dear, sell cheap regardless of BTC's move.",
-        "Custody at a single unaudited counterparty with no reserve proof — coin-independent failure risk.",
         "Cash drag or borrowing inside the wrapper widening tracking error to multiples of the MER."
       ]
     },
@@ -1309,14 +1302,12 @@
       "greenFlags": [
         "All constituents in audited cold-storage custody with proof-of-reserves — every coin in the basket is actually held, not synthesized.",
         "Staking the eligible tokens (ETH, SOL) and returning rewards to NAV — offsets fee across the stakeable slice.",
-        "Transparent, rules-based rebalancing with published weights — no discretionary altcoin punts hiding in the index.",
-        "Aggregate tracking gap close to the fee across all constituents — shows multi-token custody and rebalancing are clean."
+        "Transparent, rules-based rebalancing with published weights — no discretionary altcoin punts hiding in the index."
       ],
       "redFlags": [
         "Heavy tail of illiquid altcoins in the index — these trade far from quoted prices and inflate real tracking error.",
         "Persistent premium/discount to NAV in a thin basket wrapper — multi-asset NAV is harder to arbitrage, widening the gap.",
-        "Concentration so high in BTC/ETH that the 'basket' duplicates owning the two majors — diversification you pay extra for but don't get.",
-        "Opaque or single-custodian arrangement across many tokens — one custody failure hits the whole basket."
+        "Concentration so high in BTC/ETH that the 'basket' duplicates owning the two majors — diversification you pay extra for but don't get."
       ]
     },
     "natural-gas": {
@@ -1333,7 +1324,6 @@
       ],
       "redFlags": [
         "Naive front-month roll in steep contango — natural-gas funds are notorious for losing large double-digit % a year to roll even when spot rises.",
-        "Holders expecting spot exposure who actually own a decaying futures position — the structural decoupling from Henry Hub spot is severe over time.",
         "Reverse-split history signalling chronic NAV erosion — a tell that roll drag has compounded badly.",
         "Surprise K-1 tax reporting in a vehicle marketed to retail — complexity that eats after-tax return."
       ]
@@ -1352,7 +1342,6 @@
       ],
       "redFlags": [
         "Naive front-month roll in contango — USO's structure decayed so badly it required reverse splits and rule changes; the curve, not spot, is the risk.",
-        "Investors treating it as a spot-oil proxy — in steep contango it can fall while spot rises, a structural decoupling.",
         "Backwardation-dependent return assumptions baked into marketing — the favourable roll vanishes when the curve flips.",
         "Surprise K-1 reporting and a single-swap counterparty — tax and credit complexity beyond the oil bet."
       ]
@@ -1366,13 +1355,11 @@
       "greenFlags": [
         "Spot XRP in audited cold-storage custody with proof-of-reserves — a direct claim on the coin rather than a derivative proxy.",
         "Premium/discount to NAV kept tight by active creation/redemption — important because XRP's thinner market widens gaps more easily.",
-        "Tracking gap close to the fee over a full year — confirms custody and rebalancing handle a less-liquid token cleanly.",
         "A modest MER on a no-yield single coin — fee is permanent drag with no staking to offset it."
       ],
       "redFlags": [
         "Synthetic or futures-based XRP where spot custody is feasible — adds roll/counterparty cost on top of an already volatile coin.",
         "Persistent premium/discount in a thin wrapper — XRP's lower liquidity makes NAV arbitrage looser, so you trade off-spot.",
-        "Single-custodian concentration with no reserve attestation — coin-independent structural risk.",
         "Wide bid/ask and small AUM — round-trip cost compounds XRP's high volatility."
       ]
     },
@@ -1385,14 +1372,12 @@
       "greenFlags": [
         "SOL staked with rewards passed back to NAV — Solana's higher staking yield can offset much of the fee, a real structural edge.",
         "Spot tokens in audited cold-storage custody with proof-of-reserves — direct claim rather than a futures proxy.",
-        "Premium/discount to NAV held tight despite SOL's volatility — active creation/redemption keeps you near spot.",
-        "Tracking gap close to the fee net of staking — confirms custody and validator operations are clean."
+        "Premium/discount to NAV held tight despite SOL's volatility — active creation/redemption keeps you near spot."
       ],
       "redFlags": [
         "Staking enabled but rewards retained or sharing undisclosed — holders bear slashing/validator risk without the yield.",
         "Futures or synthetic SOL exposure when spot custody is available — roll and counterparty cost on a volatile coin.",
-        "Persistent premium/discount in a thin wrapper — SOL's swings plus loose arbitrage compound entry/exit cost.",
-        "Single unaudited custodian with no proof-of-reserves — structural risk separate from the SOL price."
+        "Persistent premium/discount in a thin wrapper — SOL's swings plus loose arbitrage compound entry/exit cost."
       ]
     },
     "long-usd": {
@@ -1409,7 +1394,6 @@
       ],
       "redFlags": [
         "Negative carry borne when the home currency out-yields USD — a steady drag even with flat spot.",
-        "Forward-roll slippage showing as tracking error above the fee — the FX desk is leaking basis.",
         "A swap-only structure without collateral disclosure — the 'dollar' is really a bank's credit promise.",
         "Premium/discount in a small wrapper despite USD's deep market — a sign of poor market-making, not currency risk."
       ]
@@ -1422,13 +1406,11 @@
       ],
       "greenFlags": [
         "Collateral in Canadian T-bills earning the Bank of Canada rate — captures the loonie's carry on top of spot.",
-        "Tight tracking of spot CAD net of the rate differential — confirms clean forward rolls.",
         "Liquid CAD forward market behind the wrapper keeping premium/discount negligible — CAD is a major, deeply traded pair.",
         "Transparent daily NAV off interbank fixings — leaves no room for stale-price arbitrage."
       ],
       "redFlags": [
         "Negative carry when the funding currency out-yields CAD — a steady drag independent of spot.",
-        "Forward-roll slippage widening tracking error beyond the fee — basis leaking at the FX desk.",
         "Hidden oil/commodity beta surprising holders who wanted pure FX — CAD moves with crude, not just rates.",
         "Swap-only structure with no collateral disclosure — currency exposure that's really bank credit."
       ]
@@ -1448,7 +1430,6 @@
       "redFlags": [
         "Single-program concentration (EUA-only) — one regulatory U-turn can reprice the whole fund overnight.",
         "Exposure to voluntary/offset credits with thin, opaque pricing rather than regulated allowances — valuation and integrity risk.",
-        "Roll drag in a contangoed allowance curve eroding NAV versus the spot permit — a structural leak.",
         "Low AUM and wide spreads in a niche thematic wrapper — you trade well away from intraday NAV."
       ]
     },
@@ -1467,8 +1448,7 @@
       "redFlags": [
         "Hedge slippage from monthly-reset forwards leaving residual CAD/USD exposure — you didn't get the clean hedge you paid for.",
         "Negative hedge carry quietly dragging NAV when CAD out-yields USD — a cost layered onto the BTC fee.",
-        "Compounded tracking error from stacking BTC spot drift on top of hedge drift — two leaks instead of one.",
-        "Persistent premium/discount in a thin Canada-listed wrapper — two-leg NAV is harder to arbitrage, so you trade off-fair-value."
+        "Compounded tracking error from stacking BTC spot drift on top of hedge drift — two leaks instead of one."
       ]
     },
     "long-btc-short-usd": {
@@ -1486,8 +1466,7 @@
       "redFlags": [
         "Forward-reset slippage leaving residual USD exposure between rolls — incomplete hedge versus what was marketed.",
         "Negative carry dragging NAV when USD out-yields CAD — a steady cost on top of the BTC fee.",
-        "Stacked tracking error from BTC spot drift plus hedge drift — compounding two sources of leakage.",
-        "Wide premium/discount in a thin wrapper — two-leg NAV is harder to keep at fair value."
+        "Stacked tracking error from BTC spot drift plus hedge drift — compounding two sources of leakage."
       ]
     },
     "long-cryptocurrency-basket-short-cad": {
@@ -1505,8 +1484,7 @@
       "redFlags": [
         "Illiquid altcoins in the basket inflating tracking error before the hedge even applies — the underlying leg leaks first.",
         "Negative hedge carry when CAD out-yields USD dragging the whole basket's NAV — a cost on top of the coin fees.",
-        "Compounded drift from basket rebalancing plus hedge rolls — multiple leak points stacked together.",
-        "Persistent premium/discount in a thin multi-leg wrapper — the hardest NAV to arbitrage, so you trade well off fair value."
+        "Compounded drift from basket rebalancing plus hedge rolls — multiple leak points stacked together."
       ]
     },
     "long-eth-short-cad": {
@@ -1524,8 +1502,7 @@
       "redFlags": [
         "Hedge slippage between forward resets leaving residual CAD exposure — incomplete neutralization.",
         "Staking risk (slashing/validator) borne without the reward clearly flowing to holders — cost without benefit.",
-        "Negative carry dragging NAV when CAD out-yields USD — a steady drag on top of the ETH fee.",
-        "Compounded tracking error from ETH drift plus hedge drift in a thin wrapper — multiple leaks plus off-NAV trading."
+        "Negative carry dragging NAV when CAD out-yields USD — a steady drag on top of the ETH fee."
       ]
     },
     "long-eth-short-usd": {
@@ -1543,8 +1520,7 @@
       "redFlags": [
         "Forward-reset slippage leaving residual USD exposure — the hedge isn't as clean as marketed.",
         "Validator/slashing risk borne without the staking reward clearly reaching holders — cost without benefit.",
-        "Negative carry when USD out-yields CAD dragging NAV — a steady cost on top of the ETH fee.",
-        "Stacked drift from ETH spot plus hedge rolls in a thin wrapper — compounding leaks and off-NAV trading."
+        "Negative carry when USD out-yields CAD dragging NAV — a steady cost on top of the ETH fee."
       ]
     },
     "long-sol-short-usd": {
@@ -1562,8 +1538,7 @@
       "redFlags": [
         "Forward-reset slippage leaving residual USD exposure — incomplete hedge versus what was sold.",
         "Slashing/validator risk on the staked SOL borne without the reward clearly reaching holders — cost without benefit.",
-        "Negative carry when USD out-yields CAD dragging NAV — a drag on top of the SOL fee.",
-        "Stacked drift from SOL's high volatility plus hedge rolls in a thin wrapper — amplified leaks and off-NAV trading."
+        "Negative carry when USD out-yields CAD dragging NAV — a drag on top of the SOL fee."
       ]
     },
     "long-usd-short-cad": {
@@ -1580,7 +1555,6 @@
       ],
       "redFlags": [
         "Net negative carry borne when Canadian rates exceed US rates — a steady drag even if USD/CAD spot is flat.",
-        "Forward-roll slippage widening tracking error beyond the fee — basis leaking on the pair trade.",
         "Leverage or reset mechanics that decay in choppy markets — a daily-reset pair product can lose to volatility even when the rate ends higher.",
         "Premium/discount in a thin wrapper despite the deep pair market — a market-making failure, not currency risk."
       ]
@@ -1600,8 +1574,7 @@
       "redFlags": [
         "Hedge slippage between resets leaving residual CAD exposure — incomplete neutralization on top of a volatile coin.",
         "Negative carry when CAD out-yields USD dragging NAV — a steady cost above the XRP fee.",
-        "Compounded drift from XRP's thin spot market plus hedge rolls — two leaks amplified by low liquidity.",
-        "Persistent premium/discount in a thin two-leg wrapper — you trade well off fair value."
+        "Compounded drift from XRP's thin spot market plus hedge rolls — two leaks amplified by low liquidity."
       ]
     },
     "long-xrp-short-usd": {
@@ -1619,8 +1592,7 @@
       "redFlags": [
         "Forward-reset slippage leaving residual USD exposure — incomplete hedge on a volatile coin.",
         "Negative carry when USD out-yields CAD dragging NAV — a steady cost above the XRP fee.",
-        "Stacked drift from XRP's thin spot market plus hedge rolls — leaks amplified by low liquidity.",
-        "Persistent premium/discount in a thin two-leg wrapper — trading well off fair value."
+        "Stacked drift from XRP's thin spot market plus hedge rolls — leaks amplified by low liquidity."
       ]
     },
     "target-maturity": {
@@ -2318,7 +2290,6 @@
       "redFlags": [
         "Equity creep toward 75%+ in a 'moderate' fund — quietly more aggressive than the label, so it falls harder than buyers expect in a selloff.",
         "A long-duration bond sleeve doing the diversifying — adds rate risk that correlated with equities in 2022 and broke the balance.",
-        "Total expense well above ~0.40% once underlying funds are counted — cost layering that compounds against a middle-of-the-road return stream.",
         "Higher drawdown than aggressive-allocation peers in a stress window — a sign the bond sleeve failed to cushion and the 'moderate' label is misleading."
       ]
     },
@@ -2336,7 +2307,6 @@
       "redFlags": [
         "Home-country bias so strong the 'global' fund is ~80% US — paying a global mandate's complexity for a domestic balanced fund.",
         "Unhedged foreign-bond sleeve where FX swamps the yield — currency noise overwhelms the diversification the bonds were meant to add.",
-        "Equity weight drifting outside the 50–70% band — mandate slippage that changes the risk profile buyers signed up for.",
         "Layered fees plus foreign withholding drag pushing net cost past ~0.50% — a quiet leakage that a moderate global return can't absorb."
       ]
     },
@@ -2354,8 +2324,7 @@
       "redFlags": [
         "Reaching for yield via long-duration or lower-credit global bonds — adds the very volatility a conservative buyer wanted to avoid.",
         "Equity creep above ~50% — the fund is more moderate than moderately-conservative, mis-stating its risk.",
-        "Unhedged foreign-bond FX exposure dominating return swings — currency risk overwhelms the modest yield in a defensive sleeve.",
-        "Net cost past ~0.45% on a low-return profile — fee drag eats a large share of a deliberately muted total return."
+        "Unhedged foreign-bond FX exposure dominating return swings — currency risk overwhelms the modest yield in a defensive sleeve."
       ]
     },
     "moderately-conservative-allocation": {
@@ -2372,8 +2341,7 @@
       "redFlags": [
         "Yield-reaching into high-yield or long-duration bonds — manufactures income at the cost of the stability the fund is meant to provide.",
         "Equity weight drifting toward 55%+ — quietly a moderate fund, falling harder than a conservative buyer signed up for.",
-        "Bond sleeve that fell alongside equities in a 2022-style shock — the 'safe' portion failed its only job of diversifying.",
-        "All-in fees above ~0.40% on a low-return mandate — cost consumes an outsized slice of the modest expected return."
+        "Bond sleeve that fell alongside equities in a 2022-style shock — the 'safe' portion failed its only job of diversifying."
       ]
     },
     "global-moderately-aggressive-allocation": {
@@ -2390,8 +2358,7 @@
       "redFlags": [
         "Equity weight pushing past ~88% — effectively an all-equity fund mislabeled as having a cushion, exposing buyers to deeper drawdowns.",
         "Heavy single-region (usually US) concentration — the 'global' diversification that justifies the wrapper is largely absent.",
-        "Bond sleeve in long-duration or junk credit — the small defensive piece adds correlated risk instead of dampening it.",
-        "Net cost above ~0.50% with foreign withholding leakage — fee and tax drag that a growth mandate's higher return still shouldn't have to carry."
+        "Bond sleeve in long-duration or junk credit — the small defensive piece adds correlated risk instead of dampening it."
       ]
     },
     "global-conservative-allocation": {
@@ -2408,8 +2375,7 @@
       "redFlags": [
         "Yield-chasing via emerging-market or long-duration global bonds — adds volatility and credit risk that contradicts a conservative mandate.",
         "Unhedged FX dominating the return of a 'safe' bond sleeve — currency noise overwhelms the modest yield buyers came for.",
-        "Equity creep past ~40% — the fund behaves more moderately than its conservative label implies.",
-        "All-in cost above ~0.45% on a low-return profile — a heavy fee bite relative to the muted total return."
+        "Equity creep past ~40% — the fund behaves more moderately than its conservative label implies."
       ]
     },
     "aggressive-allocation": {
@@ -2426,8 +2392,7 @@
       "redFlags": [
         "Equity weight drifting toward 90%+ — effectively an all-equity fund charging for a cushion that barely exists.",
         "A long-duration bond sleeve as the 'diversifier' — adds rate risk that moved with equities in 2022, negating the buffer.",
-        "Underperforming a simple equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside.",
-        "Total fees above ~0.40% once underlying funds are counted — cost layering on a fund that mostly delivers equity-like beta."
+        "Underperforming a simple equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside."
       ]
     },
     "miscellaneous-allocation": {
@@ -2444,8 +2409,7 @@
       "redFlags": [
         "Opaque holdings or heavy use of leverage and derivatives without clear disclosure — risk that can't be sized from the outside.",
         "Distributions that are largely return-of-capital — income that is quietly eroding NAV rather than being earned.",
-        "Volatility or drawdown that spiked far beyond a 60/40 in stress — the 'alternative' label masking outsized, poorly-hedged risk.",
-        "Expense ratios above ~1% with high turnover — an exotic fee load that the strategy's edge rarely overcomes."
+        "Volatility or drawdown that spiked far beyond a 60/40 in stress — the 'alternative' label masking outsized, poorly-hedged risk."
       ]
     },
     "target-date-2065": {
@@ -2480,8 +2444,7 @@
       "redFlags": [
         "Yield-reaching via high-yield or long-duration bonds — manufactures income at the cost of the stability the fund exists to provide.",
         "Equity creep toward 45%+ — the fund behaves more moderately than its conservative label implies.",
-        "Bond sleeve that fell with equities in a 2022-style rate shock — the safe portion failed its core diversifying job.",
-        "All-in fees above ~0.40% on a low-return mandate — cost eats an outsized share of a deliberately muted total return."
+        "Bond sleeve that fell with equities in a 2022-style rate shock — the safe portion failed its core diversifying job."
       ]
     },
     "global-allocation": {
@@ -2515,7 +2478,6 @@
       ],
       "redFlags": [
         "An equity weight that has barely moved from the early-glide level — under-de-risked, exposing a mid-career investor to more drawdown than the date implies.",
-        "All-in fees above ~0.30% from active underlyings — cost layering that still compounds meaningfully over 15 years.",
         "A bond sleeve loading up on long duration as de-risking begins — substituting rate risk for the equity risk it's removing.",
         "Glide-path or underlying-fund changes that quietly shift the risk profile mid-stream — the fund you bought no longer matches its stated path."
       ]
@@ -2534,7 +2496,6 @@
       "redFlags": [
         "A landing point so equity-light it can't outpace inflation — sequence and longevity risk that quietly erodes a retiree's capital.",
         "Long-duration bonds dominating the sleeve — large rate-driven drawdowns at exactly the wrong life stage, as 2022 showed.",
-        "All-in fees above ~0.30% in the drawdown phase — cost consuming an outsized share of a deliberately low return.",
         "A 'through' glide path that keeps de-risking past the date when the holder expected a stable mix — risk profile drifting under the retiree."
       ]
     },
@@ -2552,7 +2513,6 @@
       "redFlags": [
         "An overly conservative early glide path (sizeable bond sleeve at 2060) — drags long-run growth for an investor with decades to ride out drawdowns.",
         "All-in fees above ~0.30% from active underlyings — cost layering that compounds badly over a very long horizon.",
-        "Home-country concentration with thin international exposure — under-diversified for a global-growth accumulation vehicle.",
         "Underlying-fund swaps creating taxable turnover in taxable accounts — needless drag on a buy-and-hold accumulation fund."
       ]
     },
@@ -2570,7 +2530,6 @@
       "redFlags": [
         "Still near-max equity this close to retirement — dangerous sequence-of-returns exposure, a deep selloff near the date is hard to recover from.",
         "A bond sleeve loaded with long duration as de-risking accelerates — swapping equity risk for the rate risk that hit hard in 2022.",
-        "All-in fees above ~0.30% from active underlyings — cost drag that bites a now-lower expected return.",
         "Glide-path changes that quietly re-risk the fund near the date — the risk profile no longer matches what a near-retiree signed up for."
       ]
     },
@@ -2588,7 +2547,6 @@
       "redFlags": [
         "Equity weight still north of ~60% five years from retirement — acute sequence-of-returns risk the date implies it should have shed.",
         "Long-duration bonds dominating the ballast — large rate-driven losses at the worst possible time, as 2022 demonstrated.",
-        "All-in fees above ~0.30% from active underlyings — cost consuming an outsized share of a now-conservative return.",
         "A late re-risking or glide-path revision near the date — the fund drifting away from the defensive profile a near-retiree expected."
       ]
     },
@@ -2606,7 +2564,6 @@
       "redFlags": [
         "An overly conservative early glide path (large bond sleeve at 2055) — drags long-run growth for an investor with ample time to recover from drawdowns.",
         "All-in fees above ~0.30% from active underlyings — cost layering that compounds badly over a long horizon.",
-        "Home-country concentration with thin international exposure — under-diversified for a long-horizon global-growth fund.",
         "Underlying-fund turnover creating taxable events in taxable accounts — needless drag on a buy-and-hold accumulation vehicle."
       ]
     },
@@ -2624,7 +2581,6 @@
       "redFlags": [
         "An early glide path that already carries a sizeable bond sleeve — drags growth for an investor with decades of runway left.",
         "All-in fees above ~0.30% from active underlyings — cost layering that compounds against a long horizon.",
-        "Home-country concentration with thin international exposure — under-diversified for a long-horizon global-growth fund.",
         "Underlying-fund swaps creating taxable turnover in taxable accounts — avoidable drag on a buy-and-hold accumulation fund."
       ]
     },
@@ -2642,8 +2598,7 @@
       "redFlags": [
         "Equity weight drifting past ~88% — effectively an all-equity fund charging for a cushion that barely exists.",
         "A long-duration bond sleeve as the diversifier — rate risk that correlated with equities in 2022, undoing the buffer.",
-        "Underperforming a plain equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside.",
-        "Total fees above ~0.40% once underlying funds are counted — cost layering on what is mostly equity-like beta."
+        "Underperforming a plain equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside."
       ]
     },
     "target-date-2045": {
@@ -2659,7 +2614,6 @@
       ],
       "redFlags": [
         "Equity weight essentially unchanged from the earliest glide stage — under-de-risked for a fund 20 years from its date.",
-        "All-in fees above ~0.30% from active underlyings — cost layering that compounds over the remaining horizon.",
         "A bond sleeve adding long duration as the taper begins — substituting rate risk for the equity risk being removed.",
         "Underlying-fund or glide-path changes that quietly alter the risk profile — drift from the path investors bought."
       ]
@@ -2678,8 +2632,7 @@
       "redFlags": [
         "A near-total equity weight with a negligible bond sleeve — effectively all-equity, exposing buyers to the deepest drawdowns with no real cushion.",
         "Heavy single-region (usually US) concentration — the global diversification justifying the wrapper is largely absent.",
-        "Unhedged FX dominating return swings on top of equity volatility — currency risk stacked on already-high equity risk.",
-        "Net cost above ~0.50% with foreign withholding leakage — fee and tax drag the growth mandate shouldn't have to carry."
+        "Unhedged FX dominating return swings on top of equity volatility — currency risk stacked on already-high equity risk."
       ]
     },
     "target-risk": {
@@ -2696,7 +2649,6 @@
       "redFlags": [
         "Risk drift — realized volatility creeping outside the stated band — meaning lax rebalancing has let the mix wander from its target.",
         "A bond sleeve whose duration or credit quietly raises the true risk above the labeled tier — the stated risk level understates reality.",
-        "Total fees above ~0.40% once underlying funds are counted — cost layering on a strategy whose only job is to hold a fixed mix.",
         "Rebalancing so infrequent that equity rallies leave the fund materially over-weighted — unmanaged risk creep between rebalances."
       ]
     },
