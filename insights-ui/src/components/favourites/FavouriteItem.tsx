@@ -37,8 +37,8 @@ export default function FavouriteItem({
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg p-3 border border-gray-700">
-      <div className="flex justify-between items-start mb-2">
+    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+      <div className="flex justify-between items-start gap-2 mb-3">
         <div className="flex-1 flex items-center gap-2 flex-wrap">
           {selectable && (
             <div className="mr-1" onClick={(e) => e.stopPropagation()}>
