@@ -1,4 +1,4 @@
-import aliasesRaw from '@/etf-analysis-data/etf-category-aliases.json';
+import aliasesRaw from '@/etf-analysis/etf-category-aliases.json';
 
 interface EtfCategoryAliasesConfig {
   description?: string;

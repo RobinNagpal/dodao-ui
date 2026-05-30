@@ -3,7 +3,7 @@
 import type { EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { EtfAnalysisResponse } from '@/app/api/[spaceId]/etfs-v1/exchange/[exchange]/[etf]/analysis/route';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { SpiderGraphForTicker } from '@/types/public-equity/ticker-report-types';
 import { getSpiderGraphScorePercentage } from '@/util/radar-chart-utils';
 import SpiderChartFlyoutMenu from '@/app/public-equities/tickers/[tickerKey]/SpiderChartFlyoutMenu';

@@ -9,7 +9,7 @@ import {
   EtfKeyFactsSimilarEtf,
 } from '@/types/etf/etf-analysis-types';
 import { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
-import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { fetchEtfBySymbolAndExchange } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { revalidateEtfAndExchangeTag, revalidateEtfCategoryReportTag, revalidateEtfCompetitionTag } from '@/utils/etf-cache-utils';
 import { USExchanges } from '@/utils/countryExchangeUtils';

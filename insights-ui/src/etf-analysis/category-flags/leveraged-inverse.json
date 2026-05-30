@@ -1,0 +1,155 @@
+{
+  "trading-leveraged-equity": {
+    "mostImportant": [
+      "What it does — uses swaps and futures to deliver a multiple (e.g. 2x/3x) of an index's return for a single day, reset daily.",
+      "The character of the product — daily resetting means multi-day returns compound and diverge from the stated multiple, especially in choppy markets (decay).",
+      "The nature of its intended use — a short-term trading tool, not a buy-and-hold investment, carrying high fees and financing cost."
+    ],
+    "greenFlags": [
+      "Hits ~3x (or its stated multiple) of the daily move within tight tolerance (TQQQ/SPXL/SOXL) — does the one job it exists for.",
+      "$5-25B AUM with billions in daily volume — deep enough to actually trade the thesis.",
+      "A transparent, published daily-reset methodology — no hidden path-dependency beyond the structural daily reset."
+    ],
+    "redFlags": [
+      "Marketed or held as buy-and-hold — daily-reset compounding makes multi-month return diverge sharply from N x the index.",
+      "AUM under ~$500M — unusable for short-term trading; spreads eat the directional edge.",
+      "Fees above ~1.20% — pay for nothing extra in this category."
+    ]
+  },
+  "trading-inverse-equity": {
+    "mostImportant": [
+      "What it does — uses derivatives to deliver the inverse (e.g. -1x/-2x/-3x) of an index's daily return, reset daily.",
+      "The character of the product — daily reset causes compounding decay, so it erodes over time in flat or choppy markets even when the directional call is right.",
+      "The nature of its intended use — a short-term hedging / trading instrument, not a long-term short position."
+    ],
+    "greenFlags": [
+      "Hits the stated inverse multiple within tight tolerance daily (SQQQ/SDS/SPXS) — the entire job of the product.",
+      "$1-5B AUM with high daily volume — tradable for tactical hedging.",
+      "Low embedded financing/borrow cost on the short side — less hidden daily drag eating the hedge."
+    ],
+    "redFlags": [
+      "Used as buy-and-hold 'protection' — compounding decay erodes it in flat/choppy markets even when your call is right.",
+      "AUM under ~$200M — effectively un-tradable; spreads and execution costs dominate.",
+      "Fees above ~1.20% — hard to justify for a tactical tool."
+    ]
+  },
+  "trading-miscellaneous": {
+    "mostImportant": [
+      "What the fund actually targets each day — a tactical, daily-rebalanced product (leveraged, inverse, or a packaged options/VIX strategy) that resets exposure every session rather than tracking an index buy-and-hold.",
+      "The character of the resulting exposure — returns are path-dependent and compounded daily, so multi-day results drift away from a simple multiple of the underlying's cumulative move.",
+      "The nature of its income and structure — distributions are incidental, often return-of-capital or short-term, and many of these are designed as short-horizon trading tools, not holdings."
+    ],
+    "greenFlags": [
+      "Daily return tracks its stated objective tightly (e.g. within a few bps of the target multiple) — confirms the swap/derivatives book is doing its job day to day.",
+      "Deep secondary-market liquidity and penny-wide spreads (SVXY-tier names) — lets traders enter/exit at NAV intraday, which is the whole point of a tactical vehicle.",
+      "Transparent daily disclosure of swap counterparties and notional exposure — you can verify the fund is actually positioned the way the name implies."
+    ],
+    "redFlags": [
+      "Held more than a few days in a choppy tape — volatility decay quietly erodes value even when the underlying ends flat, the core failure mode of daily-reset products.",
+      "A history of reverse splits every 12–24 months — structural NAV erosion baked into the strategy, not bad luck.",
+      "Wide or unstable premium/discount to intraday NAV — the arbitrage mechanism is thin, so you trade against yourself on entry and exit."
+    ]
+  },
+  "multi-asset-leveraged": {
+    "mostImportant": [
+      "How leverage is applied across the sleeve — a daily-rebalanced multiplier (often 2x or 3x) layered onto a blend of asset classes such as equities, bonds, gold or crypto, reset every session.",
+      "The character of the resulting portfolio — cross-asset correlations shift the realized leverage, so the fund's behaviour in a stress event rarely matches its headline multiple of any single asset.",
+      "The nature of its return stream — gains and losses compound daily and financing costs accrue continuously, so the holding-period outcome is a function of path, not just direction."
+    ],
+    "greenFlags": [
+      "Daily NAV move stays close to the stated multiple of its own blended benchmark — the multi-asset swap basket is being rebalanced cleanly each day.",
+      "Disclosed financing spread over the funding rate is tight (well under ~100 bps) — leverage is being financed efficiently, which compounds in the holder's favour intraday.",
+      "Rebalance band logic that trims a runaway sleeve — keeps one asset from silently dominating the leveraged exposure."
+    ],
+    "redFlags": [
+      "Realized decay larger than a single-asset 3x peer over the same window — cross-asset whipsaw compounds the daily-reset drag rather than diversifying it away.",
+      "Embedded financing cost above ~150 bps annualized — a structural drag that swamps the diversification benefit in flat or sideways markets.",
+      "Marketed for 'core' or 'long-term' allocation — a daily-reset leveraged blend is a short-horizon trade, and that framing invites holding through the decay."
+    ]
+  },
+  "trading-leveraged-commodities": {
+    "mostImportant": [
+      "What it actually levers — a daily 2x/3x multiple on a commodity or commodity-futures index (oil, natural gas, gold), so it rides the futures curve, not the spot price.",
+      "The character of the exposure — daily reset plus futures roll means two separate sources of path dependency stack on top of each other (volatility decay and contango/backwardation).",
+      "The nature of its structure and taxes — many are commodity-pool products issuing K-1s with mark-to-market treatment, distinct from a 1099 equity ETF."
+    ],
+    "greenFlags": [
+      "Daily tracking holds its target multiple of the underlying futures index within a few bps — the roll and swap book are being managed cleanly (e.g. UCO/BOIL on calm days).",
+      "Backwardated curve on the targeted contract during the holding window — roll yield works with the leveraged holder instead of bleeding NAV.",
+      "Spreads stay penny-wide even on high-volatility commodity days — confirms the AP arbitrage survives the exact moments traders need to exit."
+    ],
+    "redFlags": [
+      "Steep contango in the rolled futures — negative roll yield compounds with daily-reset decay, so the fund bleeds even when spot grinds higher (classic UNG/BOIL trap).",
+      "A string of reverse splits in natural-gas or oil names — confirmation the structure erodes capital across a full cycle, not just in one bad month.",
+      "Held across a multi-week trend reversal — daily compounding turns a modest underlying round-trip into an outsized NAV loss."
+    ]
+  },
+  "trading-inverse-commodities": {
+    "mostImportant": [
+      "What it shorts and how — a daily -1x/-2x/-3x exposure to a commodity-futures index, delivering the inverse of the underlying's daily move via swaps, reset each session.",
+      "The character of the exposure — being short futures, it earns or pays roll yield in the opposite direction of a long fund, so a contangoed curve can actually help the inverse holder.",
+      "The nature of its structure — typically a commodity pool with K-1 tax reporting, and distributions are incidental to a vehicle built for short-horizon directional bets."
+    ],
+    "greenFlags": [
+      "Inverse daily tracking sits within a few bps of the -1x/-2x target (SCO, KOLD) — the short swap book is being marked and rebalanced correctly.",
+      "Contango in the underlying curve during the holding window — positive roll yield accrues to the short, a tailwind a naive trader overlooks.",
+      "Tight spreads and real volume during sharp commodity rallies — the moment shorts are squeezed is exactly when exit liquidity matters most."
+    ],
+    "redFlags": [
+      "Held through a sustained commodity rally — inverse daily compounding produces losses larger than the underlying's gain, and the loss is mathematically capped only at -100%.",
+      "Backwardated curve while short — negative roll yield bleeds the inverse position even when spot moves its way.",
+      "Thin assets with frequent reverse splits — the inverse structure has been grinding NAV lower across the cycle and may face closure."
+    ]
+  },
+  "trading-inverse-debt": {
+    "mostImportant": [
+      "What it shorts — a daily inverse multiple (-1x/-2x/-3x) on Treasury or bond-index exposure, so its NAV rises when bond prices fall and yields climb, reset every session.",
+      "The character of the exposure — effectively a daily-rebalanced short-duration bet whose realized beta to rates drifts from the headline multiple as the curve moves.",
+      "The nature of its income — it pays the financing cost of the short and any underlying coupon it owes, so carry generally works against the holder over time."
+    ],
+    "greenFlags": [
+      "Daily move closely tracks the inverse of its target Treasury index (TBT, TMV, TBF) — the rate-short swap is being reset accurately each day.",
+      "A steepening or rising-rate regime during the holding window — the directional thesis and daily compounding briefly align in the holder's favour.",
+      "Tight spreads on volatile auction/CPI days — exit liquidity holds when rate moves are largest, which is when the trade is decided."
+    ],
+    "redFlags": [
+      "Held through a rate round-trip (rates up then back down) — negative convexity of daily reset leaves NAV below where a flat-rate path would imply.",
+      "Negative carry from coupon and financing dragging multi-week returns — the short bleeds even in a sideways-rate market, an under-appreciated cost.",
+      "-3x rate products held more than a few sessions — leverage plus daily reset amplifies whipsaw far beyond the move in 10Y/30Y yields."
+    ]
+  },
+  "trading-leveraged-debt": {
+    "mostImportant": [
+      "What it levers — a daily 2x/3x multiple on a Treasury or bond index (TYD, UBT, TMF), so its NAV swings on duration amplified and reset each session.",
+      "The character of the exposure — long leveraged duration means small yield moves drive large daily NAV moves, and the realized multiple drifts as the curve shifts.",
+      "The nature of its return — it earns the underlying coupon but pays financing on the leveraged sleeve, so net carry depends on the gap between coupon and funding cost."
+    ],
+    "greenFlags": [
+      "Daily NAV tracks its stated multiple of the long-bond index within a few bps — the leveraged-duration swap is being rebalanced cleanly (UBT/TMF on trend days).",
+      "Funding cost below the underlying portfolio yield — positive net carry that quietly works for the holder, rare in an inverted-curve regime.",
+      "Spreads stay tight during large rate moves — the AP mechanism survives the exact bond-volatility spikes the fund is built to trade."
+    ],
+    "redFlags": [
+      "Held through a rate round-trip in a volatile bond tape — daily compounding of 3x duration turns a flat yield path into a sizable NAV loss (TMF's drawdown history).",
+      "Negative net carry from financing exceeding coupon in an inverted curve — the leveraged long bleeds even before any price move.",
+      "Recurring reverse splits on long-duration names — structural erosion confirming these are tactical instruments, not buy-and-hold bond exposure."
+    ]
+  },
+  "long-cad-short-btc": {
+    "mostImportant": [
+      "What the product actually does — a Canada-listed daily-reset inverse-crypto vehicle that holds a short bitcoin position financed in CAD, delivering roughly the inverse of BTC's daily move to a Canadian-dollar investor.",
+      "The character of the exposure — daily rebalancing against an asset as volatile as BTC makes the position intensely path-dependent, so multi-day results diverge sharply from the inverse of BTC's cumulative move.",
+      "The nature of its structure — CAD financing and the short leg mean the holder pays borrow and roll costs, and any USD/CAD mismatch is hedged back to the named currency rather than left open."
+    ],
+    "greenFlags": [
+      "Daily NAV tracks close to -1x BTC's daily return in CAD terms — confirms the short and the currency hedge are both being reset correctly each session.",
+      "Premium/discount to NAV stays tight on high-volatility crypto days — the in-kind/cash creation mechanism survives exactly when BTC gaps and shorts get squeezed.",
+      "Transparent disclosure of borrow cost and the CAD hedge leg — lets the holder see the carry they are paying to stay short, which compounds daily."
+    ],
+    "redFlags": [
+      "Held more than a day or two through a BTC rally — inverse daily compounding produces losses far larger than BTC's gain, with the structure capable of near-total NAV loss in a violent up-move.",
+      "Persistent premium to NAV at entry — paying up to short BTC means the decay and the premium erosion stack against the holder from day one.",
+      "Management-fee and borrow drag wide of simply shorting BTC directly — in a flat or choppy tape, the fee plus volatility decay can lose money while BTC goes nowhere."
+    ]
+  }
+}

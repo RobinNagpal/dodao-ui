@@ -1,0 +1,414 @@
+{
+  "tactical-allocation": {
+    "mostImportant": [
+      "How the mandate works — a manager-driven strategy that actively shifts between stocks, bonds and cash based on momentum, valuation or macro signals rather than holding a fixed mix.",
+      "The character of the resulting portfolio — equity exposure can swing widely over a cycle, so the fund's risk profile is a moving target that depends on the model being right.",
+      "The nature of its income and tax — frequent rotation between sleeves drives turnover and short-term gains, making it tax-inefficient and income that is mostly ordinary."
+    ],
+    "greenFlags": [
+      "A disciplined, rules-based shift framework with a published signal logic — repeatable execution rather than gut-feel timing, the difference between systematic tactical and a single-PM bet.",
+      "Demonstrated downside capture below ~70% in past equity drawdowns (e.g. 2020, 2022) — evidence the de-risking signal actually fired and protected capital.",
+      "Long-run return that keeps pace with a static 60/40 net of its higher fee — proof the timing added enough to overcome the cost and turnover drag it imposes."
+    ],
+    "redFlags": [
+      "A pattern of being defensive into rebounds and risk-on into selloffs — whipsaw that shows the model lags turning points and bleeds return at the worst times.",
+      "Trailing a simple 60/40 by >150 bps annualised over a full cycle — the active timing is destroying value versus just holding the mix.",
+      "Expense ratio north of ~0.85% stacked on high turnover — a fee and tax burden the timing edge rarely overcomes.",
+      "Equity weight that quietly never strays far from a fixed band — 'tactical' in name only, charging active fees for a closet static allocation."
+    ]
+  },
+  "moderate-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a roughly balanced 50–70% equity / 30–50% bond mix, the classic 'balanced fund' band, rebalanced back toward a target rather than left to drift.",
+      "The character of the resulting portfolio — a single-ticket diversified holding whose return and volatility sit between pure stock and pure bond funds.",
+      "The nature of its income and structure — a blend of qualified equity dividends and ordinary bond interest, often built as a fund-of-funds so costs can layer."
+    ],
+    "greenFlags": [
+      "Equity weight that genuinely sits inside the 50–70% band in live holdings (AOM, AOR) — true label adherence rather than a stealth tilt that mis-prices its risk.",
+      "All-in cost held near index-of-index levels (~0.15–0.35%) despite the fund-of-funds wrapper — no hidden second layer of underlying-fund fees.",
+      "Volatility and drawdown that land between conservative and aggressive peers — the moderate sleeve is doing its job of muting equity swings without giving up too much upside."
+    ],
+    "redFlags": [
+      "Equity creep toward 75%+ in a 'moderate' fund — quietly more aggressive than the label, so it falls harder than buyers expect in a selloff.",
+      "A long-duration bond sleeve doing the diversifying — adds rate risk that correlated with equities in 2022 and broke the balance.",
+      "Higher drawdown than aggressive-allocation peers in a stress window — a sign the bond sleeve failed to cushion and the 'moderate' label is misleading."
+    ]
+  },
+  "global-moderate-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a balanced ~50–70% equity mix that deliberately spreads stocks and bonds across global markets, not a US-only balanced fund.",
+      "The character of the resulting portfolio — adds non-US equity, international bonds and currency exposure to a moderate base, so returns reflect global diversification and FX swings.",
+      "The nature of its income and structure — mixes qualified and foreign dividends with global bond interest; foreign tax may be withheld, and it is usually a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Genuine multi-region equity weight rather than a token sliver of non-US — the global label earns its keep by diversifying away single-country risk.",
+      "Currency exposure that is explicit and intentional (hedged bond sleeve, unhedged equity) — a deliberate FX stance instead of accidental drift.",
+      "All-in cost near ~0.20–0.40% despite the wrapper and foreign holdings — the global tilt isn't paid for with a bloated fee stack."
+    ],
+    "redFlags": [
+      "Home-country bias so strong the 'global' fund is ~80% US — paying a global mandate's complexity for a domestic balanced fund.",
+      "Unhedged foreign-bond sleeve where FX swamps the yield — currency noise overwhelms the diversification the bonds were meant to add.",
+      "Layered fees plus foreign withholding drag pushing net cost past ~0.50% — a quiet leakage that a moderate global return can't absorb."
+    ]
+  },
+  "global-moderately-conservative-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a bond-tilted global balanced fund, roughly 30–50% equity, holding more fixed income than stocks while diversifying both sleeves worldwide.",
+      "The character of the resulting portfolio — lower volatility than a global moderate fund, with returns driven more by global bonds and FX than by equity beta.",
+      "The nature of its income and structure — income-heavy with global bond interest plus foreign dividends, usually a fund-of-funds where withholding and fee layering matter."
+    ],
+    "greenFlags": [
+      "Equity weight reliably in the ~30–50% band with the larger bond sleeve carrying the load — true moderately-conservative posture, not an equity fund in disguise.",
+      "A short-to-intermediate global bond sleeve, often currency-hedged — keeps the defensive ballast from being undone by rate or FX shocks.",
+      "Shallow drawdown in equity stress windows relative to global moderate peers — evidence the conservative tilt is actually muting losses for income-focused holders."
+    ],
+    "redFlags": [
+      "Reaching for yield via long-duration or lower-credit global bonds — adds the very volatility a conservative buyer wanted to avoid.",
+      "Equity creep above ~50% — the fund is more moderate than moderately-conservative, mis-stating its risk.",
+      "Unhedged foreign-bond FX exposure dominating return swings — currency risk overwhelms the modest yield in a defensive sleeve."
+    ]
+  },
+  "moderately-conservative-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a bond-heavy balanced fund, roughly 30–50% equity, weighted toward fixed income for capital preservation with measured growth.",
+      "The character of the resulting portfolio — lower volatility and shallower drawdowns than a 60/40, with bonds as the dominant return and risk driver.",
+      "The nature of its income and structure — ordinary bond interest dominates over equity dividends, typically delivered as a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Equity weight that genuinely sits in the 30–50% band (AOK) — accurate labeling so risk-averse buyers get the cushion they expect.",
+      "A high-quality, intermediate-duration bond core — real ballast that diversifies equity rather than adding hidden credit or rate bets.",
+      "Drawdown materially below moderate-allocation peers in a selloff — proof the conservative tilt translates into capital preservation in practice."
+    ],
+    "redFlags": [
+      "Yield-reaching into high-yield or long-duration bonds — manufactures income at the cost of the stability the fund is meant to provide.",
+      "Equity weight drifting toward 55%+ — quietly a moderate fund, falling harder than a conservative buyer signed up for.",
+      "Bond sleeve that fell alongside equities in a 2022-style shock — the 'safe' portion failed its only job of diversifying."
+    ]
+  },
+  "global-moderately-aggressive-allocation": {
+    "mostImportant": [
+      "The mandate it runs — an equity-tilted global balanced fund, roughly 70–85% stocks, prioritizing growth while keeping a small bond cushion, diversified worldwide.",
+      "The character of the resulting portfolio — most return and risk come from global equity beta and FX, with the bond sleeve only lightly dampening drawdowns.",
+      "The nature of its income and structure — mostly qualified and foreign equity dividends with modest bond interest, usually a fund-of-funds with possible withholding drag."
+    ],
+    "greenFlags": [
+      "Equity weight squarely in the ~70–85% band with broad regional spread — true growth posture with genuine global diversification, not a US closet fund.",
+      "A bond sleeve that still cushioned in a sharp selloff — even a small ballast firing on cue distinguishes a thoughtful build from a near-all-equity proxy.",
+      "All-in cost near ~0.25–0.45% despite global holdings — the equity-heavy mandate isn't quietly paying for an expensive fund-of-funds stack."
+    ],
+    "redFlags": [
+      "Equity weight pushing past ~88% — effectively an all-equity fund mislabeled as having a cushion, exposing buyers to deeper drawdowns.",
+      "Heavy single-region (usually US) concentration — the 'global' diversification that justifies the wrapper is largely absent.",
+      "Bond sleeve in long-duration or junk credit — the small defensive piece adds correlated risk instead of dampening it."
+    ]
+  },
+  "global-conservative-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a bond-dominant global fund, roughly 20–40% equity, built for capital preservation with worldwide diversification of both sleeves.",
+      "The character of the resulting portfolio — low volatility driven mostly by global bonds and FX, with a small equity slice for modest growth.",
+      "The nature of its income and structure — income-led from global bond interest plus some foreign dividends, typically a fund-of-funds where withholding and hedging matter."
+    ],
+    "greenFlags": [
+      "Equity weight reliably in the ~20–40% band — accurate conservative labeling so preservation-focused buyers aren't over-exposed to stock risk.",
+      "A currency-hedged, high-quality global bond core — keeps the defensive ballast from being undermined by FX swings on the portion meant to be stable.",
+      "Very shallow drawdown versus global moderate peers in equity stress — the conservative global tilt delivers the cushion it promises."
+    ],
+    "redFlags": [
+      "Yield-chasing via emerging-market or long-duration global bonds — adds volatility and credit risk that contradicts a conservative mandate.",
+      "Unhedged FX dominating the return of a 'safe' bond sleeve — currency noise overwhelms the modest yield buyers came for.",
+      "Equity creep past ~40% — the fund behaves more moderately than its conservative label implies."
+    ]
+  },
+  "aggressive-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a growth-focused balanced fund, roughly 70–85% equity, with only a thin bond sleeve, sitting just below an all-stock portfolio on the risk ladder.",
+      "The character of the resulting portfolio — return and volatility are dominated by equity beta, so it behaves much like a stock fund with a small drawdown buffer.",
+      "The nature of its income and structure — mostly qualified equity dividends with limited bond interest, commonly built as a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Equity weight that genuinely sits in the 70–85% band (AOA) — accurate labeling so buyers understand they're near full equity risk.",
+      "A bond sleeve that still trimmed the worst of an equity drawdown — even a small, well-placed ballast proves the fund isn't just a costlier equity proxy.",
+      "All-in cost near index-of-index levels (~0.15–0.35%) — the small bond piece and wrapper aren't quietly inflating the fee versus a plain equity ETF."
+    ],
+    "redFlags": [
+      "Equity weight drifting toward 90%+ — effectively an all-equity fund charging for a cushion that barely exists.",
+      "A long-duration bond sleeve as the 'diversifier' — adds rate risk that moved with equities in 2022, negating the buffer.",
+      "Underperforming a simple equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside."
+    ]
+  },
+  "miscellaneous-allocation": {
+    "mostImportant": [
+      "What lands here — a catch-all for multi-asset funds that don't fit a standard equity-band bucket, including unconstrained, alternative-heavy, or non-traditional mixes.",
+      "The character of the resulting portfolio — highly variable by fund, often holding alternatives, commodities, derivatives or leverage, so two funds in this bucket can behave nothing alike.",
+      "The nature of its income and structure — frequently complex, with derivative income, return-of-capital distributions, and tax treatment that varies widely by strategy."
+    ],
+    "greenFlags": [
+      "A clearly disclosed, repeatable allocation process despite the unconstrained label — transparency that lets buyers actually understand what they own.",
+      "Low correlation to a 60/40 delivered with controlled volatility — a genuine diversifier earning its place rather than a black box.",
+      "Costs and turnover kept reasonable for an alternative strategy (sub-~0.75%) — the differentiated exposure isn't eaten by fees and tax drag."
+    ],
+    "redFlags": [
+      "Opaque holdings or heavy use of leverage and derivatives without clear disclosure — risk that can't be sized from the outside.",
+      "Distributions that are largely return-of-capital — income that is quietly eroding NAV rather than being earned.",
+      "Volatility or drawdown that spiked far beyond a 60/40 in stress — the 'alternative' label masking outsized, poorly-hedged risk."
+    ]
+  },
+  "target-date-2065": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2065+ fund sits at the start of its glide path, so it holds a near-all-equity mix for investors decades from retirement.",
+      "The character of the resulting portfolio — almost entirely equity beta with a wide global spread, so short-term volatility is high and expected over the long accumulation runway.",
+      "The nature of its income and structure — a fund-of-funds whose underlying equity dividends are largely reinvested, with cost layering and glide-path design being the durable differentiators."
+    ],
+    "greenFlags": [
+      "Equity weight near ~90%+ as designed at this early stage — the glide path is correctly maximizing growth for a multi-decade horizon (e.g. Vanguard/Fidelity 2065 series).",
+      "Low all-in cost (~0.10–0.15%) on the underlying index funds — fees compound over 40 years, so a thin stack is worth far more here than at any near-dated fund.",
+      "Broad global equity diversification including emerging markets — captures the full opportunity set during the long accumulation phase."
+    ],
+    "redFlags": [
+      "A surprisingly conservative early glide path (large bond sleeve at 2065) — drags long-run growth for an investor with decades to recover from drawdowns.",
+      "All-in fees above ~0.30% from actively managed underlying funds — cost layering that compounds badly over the longest horizon in the lineup.",
+      "Home-country concentration with thin international exposure — under-diversified for a fund meant to capture global growth for 40 years.",
+      "Frequent underlying-fund swaps creating taxable turnover in taxable accounts — needless drag on a buy-and-hold accumulation vehicle."
+    ]
+  },
+  "conservative-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a bond-dominant balanced fund, roughly 20–40% equity, built for capital preservation and income over growth.",
+      "The character of the resulting portfolio — low volatility and shallow drawdowns, with bonds as the primary return and risk driver and equity as a small growth sleeve.",
+      "The nature of its income and structure — ordinary bond interest dominates over equity dividends, typically delivered as a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Equity weight genuinely in the ~20–40% band — accurate labeling so preservation-focused buyers aren't quietly over-exposed to stocks.",
+      "A high-quality, intermediate-duration bond core — provides real ballast rather than reaching for yield through credit or duration risk.",
+      "Drawdown far below moderate peers in an equity selloff — the conservative tilt delivers the capital protection it advertises."
+    ],
+    "redFlags": [
+      "Yield-reaching via high-yield or long-duration bonds — manufactures income at the cost of the stability the fund exists to provide.",
+      "Equity creep toward 45%+ — the fund behaves more moderately than its conservative label implies.",
+      "Bond sleeve that fell with equities in a 2022-style rate shock — the safe portion failed its core diversifying job."
+    ]
+  },
+  "global-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a flexible, often manager-driven multi-asset fund investing across global stocks, bonds and sometimes alternatives, without a fixed equity band.",
+      "The character of the resulting portfolio — broad worldwide exposure with FX swings, where the allocation can shift and so the risk profile depends on the manager's stance.",
+      "The nature of its income and structure — a mix of qualified and foreign dividends plus global bond interest, with foreign withholding and possible fund-of-funds layering."
+    ],
+    "greenFlags": [
+      "Genuinely global, multi-asset positioning rather than a US-heavy balanced fund — the mandate's breadth is real, delivering true diversification.",
+      "A consistent, disclosed allocation framework — repeatable process rather than opaque, drifting bets that can't be evaluated.",
+      "Risk-adjusted return competitive with a global 60/40 net of fees — the flexible mandate is adding value over a static global mix."
+    ],
+    "redFlags": [
+      "Strong home-country bias undermining the 'global' label — paying for a global mandate that behaves like a domestic balanced fund.",
+      "Wide, unexplained allocation swings — style drift that makes the fund's future risk profile unknowable.",
+      "Expense ratio past ~0.75% for active global management — a high bar the flexible mandate must clear and often doesn't.",
+      "FX exposure left fully unhedged where currency dominates returns — risk that swamps the underlying asset-allocation decisions."
+    ]
+  },
+  "target-date-2040": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2040 fund is mid-glide, with about 15 years to retirement, so it is steadily trimming equity but still equity-tilted.",
+      "The character of the resulting portfolio — still growth-oriented with a meaningful bond sleeve beginning to dampen volatility as the de-risking ramp accelerates.",
+      "The nature of its income and structure — a fund-of-funds blending equity dividends and growing bond interest, where glide-path shape and cost layering drive long-run outcomes."
+    ],
+    "greenFlags": [
+      "A glide path that has begun trimming equity meaningfully (toward ~70–80%) by this stage — disciplined de-risking on schedule rather than staying max-equity too long.",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — fees still compound over ~15 years, so a thin stack matters.",
+      "Broad global diversification across the still-large equity sleeve — capturing growth while the horizon supports it."
+    ],
+    "redFlags": [
+      "An equity weight that has barely moved from the early-glide level — under-de-risked, exposing a mid-career investor to more drawdown than the date implies.",
+      "A bond sleeve loading up on long duration as de-risking begins — substituting rate risk for the equity risk it's removing.",
+      "Glide-path or underlying-fund changes that quietly shift the risk profile mid-stream — the fund you bought no longer matches its stated path."
+    ]
+  },
+  "target-date-retirement": {
+    "mostImportant": [
+      "What this fund is — the landing-point fund for investors already at or in retirement, sitting at the conservative end of the glide path with a static, income-oriented mix.",
+      "The character of the resulting portfolio — bond-heavy and low-volatility, designed to preserve capital and supply income while still holding some equity for longevity risk.",
+      "The nature of its income and structure — income-led from bond interest, with the 'to vs through' design and underlying fund-of-funds costs being the key differentiators."
+    ],
+    "greenFlags": [
+      "A clearly stated landing equity weight (often ~30%) held for longevity protection — enough growth to outlast a long retirement without excess drawdown risk.",
+      "Inflation protection in the bond sleeve (TIPS, short duration) — defends retiree purchasing power, the risk that matters most at this stage.",
+      "Low all-in cost (~0.10–0.15%) — fees bite directly into a low-return, drawdown-phase portfolio where every basis point matters."
+    ],
+    "redFlags": [
+      "A landing point so equity-light it can't outpace inflation — sequence and longevity risk that quietly erodes a retiree's capital.",
+      "Long-duration bonds dominating the sleeve — large rate-driven drawdowns at exactly the wrong life stage, as 2022 showed.",
+      "A 'through' glide path that keeps de-risking past the date when the holder expected a stable mix — risk profile drifting under the retiree."
+    ]
+  },
+  "target-date-2060": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2060 fund is near the start of its glide path, holding a near-all-equity mix for investors roughly 35 years from retirement.",
+      "The character of the resulting portfolio — dominated by global equity beta with high but appropriate short-term volatility over a long accumulation runway.",
+      "The nature of its income and structure — a fund-of-funds with reinvested equity dividends, where cost layering and glide-path design are the durable differentiators."
+    ],
+    "greenFlags": [
+      "Equity weight near ~90% as designed at this early stage — correctly maximizing growth for a multi-decade horizon (e.g. Vanguard/Fidelity/Schwab 2060 series).",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — fees compound over ~35 years, magnifying the value of a thin stack.",
+      "Broad global equity diversification including emerging markets — full opportunity-set capture during accumulation."
+    ],
+    "redFlags": [
+      "An overly conservative early glide path (sizeable bond sleeve at 2060) — drags long-run growth for an investor with decades to ride out drawdowns.",
+      "All-in fees above ~0.30% from active underlyings — cost layering that compounds badly over a very long horizon.",
+      "Underlying-fund swaps creating taxable turnover in taxable accounts — needless drag on a buy-and-hold accumulation fund."
+    ]
+  },
+  "target-date-2035": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2035 fund is approaching the steep part of its glide path, about 10 years out, actively trimming equity as sequence-of-returns risk rises.",
+      "The character of the resulting portfolio — balanced and de-risking, with a substantial and growing bond sleeve that increasingly drives risk as retirement nears.",
+      "The nature of its income and structure — a fund-of-funds blending equity dividends and rising bond interest, where the de-risking pace and cost layering matter most."
+    ],
+    "greenFlags": [
+      "A glide path meaningfully de-risked (toward ~55–65% equity) by this stage — protecting an investor who can no longer recover from a deep drawdown before retiring.",
+      "A high-quality, intermediate-duration bond sleeve doing the de-risking — real ballast against equity drawdowns rather than added rate risk.",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — every basis point matters more as the growth runway shortens."
+    ],
+    "redFlags": [
+      "Still near-max equity this close to retirement — dangerous sequence-of-returns exposure, a deep selloff near the date is hard to recover from.",
+      "A bond sleeve loaded with long duration as de-risking accelerates — swapping equity risk for the rate risk that hit hard in 2022.",
+      "Glide-path changes that quietly re-risk the fund near the date — the risk profile no longer matches what a near-retiree signed up for."
+    ]
+  },
+  "target-date-2030": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2030 fund is in the steepest, most sequence-sensitive part of its glide path, only about 5 years from retirement and de-risking quickly.",
+      "The character of the resulting portfolio — now bond-leaning to balanced, where a deep equity drawdown near the date would be hard to recover before withdrawals begin.",
+      "The nature of its income and structure — a fund-of-funds with a large bond sleeve driving income, where de-risking discipline and cost layering are decisive."
+    ],
+    "greenFlags": [
+      "Equity trimmed toward ~45–55% by this stage — appropriately defensive given there is little time to recover from a selloff before retirement.",
+      "Inflation and rate awareness in the bond sleeve (TIPS, intermediate duration) — protects a near-retiree from both inflation and 2022-style rate shocks.",
+      "Low all-in cost (~0.10–0.15%) — fee drag bites hardest now that the expected return is muted and the horizon short."
+    ],
+    "redFlags": [
+      "Equity weight still north of ~60% five years from retirement — acute sequence-of-returns risk the date implies it should have shed.",
+      "Long-duration bonds dominating the ballast — large rate-driven losses at the worst possible time, as 2022 demonstrated.",
+      "A late re-risking or glide-path revision near the date — the fund drifting away from the defensive profile a near-retiree expected."
+    ]
+  },
+  "target-date-2055": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2055 fund sits early on its glide path, roughly 30 years from retirement, holding a near-all-equity growth mix.",
+      "The character of the resulting portfolio — dominated by global equity beta with high but appropriate volatility over a long accumulation phase.",
+      "The nature of its income and structure — a fund-of-funds with reinvested equity dividends, where cost layering and glide-path design are the durable differentiators."
+    ],
+    "greenFlags": [
+      "Equity weight near ~88–90% as designed at this stage — correctly growth-maximizing for a roughly 30-year runway (e.g. Vanguard/Fidelity 2055 series).",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — fees compound heavily over three decades, so a thin stack adds real value.",
+      "Broad global equity diversification including emerging markets — capturing the full opportunity set during accumulation."
+    ],
+    "redFlags": [
+      "An overly conservative early glide path (large bond sleeve at 2055) — drags long-run growth for an investor with ample time to recover from drawdowns.",
+      "All-in fees above ~0.30% from active underlyings — cost layering that compounds badly over a long horizon.",
+      "Underlying-fund turnover creating taxable events in taxable accounts — needless drag on a buy-and-hold accumulation vehicle."
+    ]
+  },
+  "target-date-2050": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2050 fund is still early on its glide path, roughly 25 years out, holding a near-all-equity growth mix with de-risking not yet begun in earnest.",
+      "The character of the resulting portfolio — equity-dominated with high but appropriate volatility, suited to a long accumulation runway.",
+      "The nature of its income and structure — a fund-of-funds with reinvested equity dividends, where cost layering and glide-path design drive long-run outcomes."
+    ],
+    "greenFlags": [
+      "Equity weight near ~88–90% as designed — correctly maximizing growth for a roughly 25-year horizon (e.g. Vanguard/Fidelity/Schwab 2050 series).",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — fees compound substantially over 25 years.",
+      "Broad global equity diversification including emerging markets — full opportunity-set capture during accumulation."
+    ],
+    "redFlags": [
+      "An early glide path that already carries a sizeable bond sleeve — drags growth for an investor with decades of runway left.",
+      "All-in fees above ~0.30% from active underlyings — cost layering that compounds against a long horizon.",
+      "Underlying-fund swaps creating taxable turnover in taxable accounts — avoidable drag on a buy-and-hold accumulation fund."
+    ]
+  },
+  "moderately-aggressive-allocation": {
+    "mostImportant": [
+      "The mandate it runs — an equity-tilted balanced fund, roughly 70–85% stocks with a modest bond cushion, sitting just below a pure aggressive allocation.",
+      "The character of the resulting portfolio — return and volatility driven mainly by equity beta, with a small bond sleeve providing limited drawdown relief.",
+      "The nature of its income and structure — mostly qualified equity dividends with modest bond interest, commonly built as a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Equity weight genuinely in the ~70–85% band — accurate labeling so growth-oriented buyers understand they're near full equity risk.",
+      "A bond sleeve that still cushioned a sharp equity drawdown — even a small, well-placed ballast distinguishes a real build from an equity proxy.",
+      "All-in cost near index-of-index levels (~0.15–0.35%) — the small bond sleeve and wrapper aren't quietly inflating the fee."
+    ],
+    "redFlags": [
+      "Equity weight drifting past ~88% — effectively an all-equity fund charging for a cushion that barely exists.",
+      "A long-duration bond sleeve as the diversifier — rate risk that correlated with equities in 2022, undoing the buffer.",
+      "Underperforming a plain equity ETF over a cycle without lower drawdown — the bond sleeve costs return without earning its keep on the downside."
+    ]
+  },
+  "target-date-2045": {
+    "mostImportant": [
+      "How the glide path works at this horizon — a 2045 fund is in the earlier-middle of its glide path, roughly 20 years out, still equity-heavy but beginning to taper.",
+      "The character of the resulting portfolio — growth-oriented with a small-but-growing bond sleeve, where most risk still comes from global equity beta.",
+      "The nature of its income and structure — a fund-of-funds blending equity dividends and modest bond interest, where glide-path shape and cost layering matter."
+    ],
+    "greenFlags": [
+      "A glide path that has started a measured equity taper (toward ~80–85%) — disciplined de-risking on schedule for a 20-year horizon.",
+      "Low all-in cost (~0.10–0.15%) on index underlyings — fees still compound meaningfully over two decades.",
+      "Broad global diversification across the large equity sleeve — capturing growth while the runway supports it."
+    ],
+    "redFlags": [
+      "Equity weight essentially unchanged from the earliest glide stage — under-de-risked for a fund 20 years from its date.",
+      "A bond sleeve adding long duration as the taper begins — substituting rate risk for the equity risk being removed.",
+      "Underlying-fund or glide-path changes that quietly alter the risk profile — drift from the path investors bought."
+    ]
+  },
+  "global-aggressive-allocation": {
+    "mostImportant": [
+      "The mandate it runs — a growth-focused global balanced fund, roughly 80–95% equity with only a thin bond sleeve, diversified across world markets.",
+      "The character of the resulting portfolio — almost entirely global equity beta plus FX, so it behaves much like a global stock fund with a slim drawdown buffer.",
+      "The nature of its income and structure — mostly qualified and foreign equity dividends with little bond interest, usually a fund-of-funds with possible withholding drag."
+    ],
+    "greenFlags": [
+      "Equity weight in the ~80–95% band with broad regional spread — true aggressive global growth, not a US-only equity fund in disguise.",
+      "Genuine emerging-market and developed-international exposure — the global label delivering real diversification of the equity risk.",
+      "All-in cost near ~0.20–0.40% despite global holdings — the growth mandate isn't quietly paying for an expensive fund stack."
+    ],
+    "redFlags": [
+      "A near-total equity weight with a negligible bond sleeve — effectively all-equity, exposing buyers to the deepest drawdowns with no real cushion.",
+      "Heavy single-region (usually US) concentration — the global diversification justifying the wrapper is largely absent.",
+      "Unhedged FX dominating return swings on top of equity volatility — currency risk stacked on already-high equity risk."
+    ]
+  },
+  "target-risk": {
+    "mostImportant": [
+      "What this fund is — a static-risk allocation fund pinned to a fixed risk level (e.g. conservative, moderate, aggressive) that is rebalanced back to its target rather than glided over time.",
+      "The character of the resulting portfolio — a constant intended risk profile, so the equity/bond mix stays put and the fund's volatility band is meant to remain stable across cycles.",
+      "The nature of its income and structure — a blend of equity dividends and bond interest set by the chosen risk tier, typically built as a fund-of-funds."
+    ],
+    "greenFlags": [
+      "Realized volatility that has stayed inside its stated risk band across cycles — the fund delivers the constant risk profile it promises (e.g. iShares Core AOK/AOM/AOR/AOA).",
+      "Tight, disciplined rebalancing back to target weights — keeps the risk level from drifting as markets move, the core job of a target-risk fund.",
+      "All-in cost near index-of-index levels (~0.15–0.35%) — the static mandate isn't paying for active management it doesn't need."
+    ],
+    "redFlags": [
+      "Risk drift — realized volatility creeping outside the stated band — meaning lax rebalancing has let the mix wander from its target.",
+      "A bond sleeve whose duration or credit quietly raises the true risk above the labeled tier — the stated risk level understates reality.",
+      "Rebalancing so infrequent that equity rallies leave the fund materially over-weighted — unmanaged risk creep between rebalances."
+    ]
+  },
+  "target-outcome": {
+    "mostImportant": [
+      "What this fund is — a defined-outcome (buffer/floor) strategy using options on an index to shape returns over a set outcome period, capping upside in exchange for a downside buffer.",
+      "The character of the resulting portfolio — payoff is engineered by an FLEX-options layer, so returns are path- and timing-dependent and only fully match the stated cap and buffer if held the entire period.",
+      "The nature of its income and structure — typically little or no dividend income since the options layer forgoes the index payout, with gains realized through the structured payoff."
+    ],
+    "greenFlags": [
+      "A meaningful net cap left after fees relative to the buffer offered — the structured trade-off is still attractive once costs are deducted (e.g. Innovator/FT buffer series).",
+      "Entering near the start of the outcome period at favorable cap/buffer reset levels — buying mid-period distorts the actual protection and upside you receive.",
+      "A laddered set of outcome periods within a family — smooths the timing risk of any single start date locking in a poor cap."
+    ],
+    "redFlags": [
+      "Buying mid-outcome-period when the buffer is already partly used up — the remaining downside protection is far less than the headline buffer implies.",
+      "A cap compressed by high fees (~0.75–0.85%) in a low-volatility regime — little upside left after costs to justify the capped structure.",
+      "Misreading the buffer as a guarantee — losses beyond the buffer are fully borne, and the floor only holds if held to the period's end.",
+      "Thin liquidity or wide bid-ask spreads on the options-based shares — entry and exit costs that erode the engineered payoff."
+    ]
+  }
+}

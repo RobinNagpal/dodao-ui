@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import EtfInvestorGoalDetailView from '@/components/etf-investors/EtfInvestorGoalDetailView';
 import EtfInvestorPageLayout from '@/components/etf-investors/EtfInvestorPageLayout';
-import { getAllInvestors, getInvestorGoal } from '@/etf-analysis-data/etf-investor-taxonomy';
+import { getAllInvestors, getInvestorGoal } from '@/etf-analysis/etf-investor-taxonomy';
 
 export const dynamic = 'force-dynamic';
 

@@ -1,0 +1,468 @@
+{
+  "digital-assets": {
+    "mostImportant": [
+      "What the wrapper actually holds and how it gets exposure — either spot tokens in cold storage or futures/swaps, with the choice driving whether you track the asset cleanly or pay roll and counterparty costs.",
+      "The character of the resulting product — a single-asset or basket crypto vehicle whose entire return is the underlying token price plus or minus tracking drift, with no manager alpha and no income unless it stakes.",
+      "The nature of its economics and tax — typically non-distributing (price-return only), and any staking yield it earns is itself taxable and often netted against the fee."
+    ],
+    "greenFlags": [
+      "Spot holdings in qualified cold-storage custody with on-chain proof-of-reserves — your claim is the actual coin, not an IOU or a swap (e.g. IBIT, FBTC).",
+      "Daily creation/redemption keeping the market price within a tight band of NAV — premium/discount under ~0.5% means you aren't overpaying versus the underlying.",
+      "Staked tokens passing the reward back to NAV to offset the fee — lowers the net carry below the headline MER on stakeable assets like ETH/SOL.",
+      "Annual tracking gap close to the stated fee, not multiples of it — proves the custody and rebalancing machinery is clean."
+    ],
+    "redFlags": [
+      "Persistent premium or discount to NAV (single-digit % or more) — the classic closed-end-style trap where you buy the asset dear and sell it cheap regardless of spot.",
+      "Futures-based exposure where the named asset is liquid in spot — you eat contango roll cost for an inferior, laggier proxy.",
+      "Custody concentrated at a single unaudited counterparty with no proof-of-reserves — structural failure risk that has no relation to the coin price."
+    ]
+  },
+  "commodities-focused": {
+    "mostImportant": [
+      "How it gets exposure to a single commodity or a tight theme — physical bars, futures rolled along a curve, or swaps, which determines whether you track spot or a roll-adjusted index.",
+      "The character of the resulting product — a concentrated bet on one commodity's price with no diversification cushion, so it moves with that commodity's idiosyncratic supply/demand cycle.",
+      "The nature of its income and tax — most physical-commodity wrappers pay no distributions and may carry collectibles-style or K-1/T5 tax treatment depending on structure."
+    ],
+    "greenFlags": [
+      "Front-month or optimized roll that minimizes contango drag — futures funds that pick the curve point reduce the silent bleed versus naive front-month roll.",
+      "Allocated, audited physical inventory for metals-style funds — bars assigned to the fund, not pooled claims, so there's no rehypothecation risk.",
+      "Tracking the spot reference within roughly the fee over a full year — confirms the roll and collateral are managed, not leaking.",
+      "Collateral held in T-bills earning yield that offsets the fee — the cash backing futures works for you instead of sitting idle."
+    ],
+    "redFlags": [
+      "Steep persistent contango eroding NAV while spot is flat — naive-roll futures funds can lose double-digit % a year to negative roll yield (classic USO-style decay).",
+      "Wide bid/ask and small AUM in a single-commodity wrapper — illiquidity means you trade far from NAV and pay to exit.",
+      "A structure that tracks a sub-index or basket rather than the headline commodity — the name implies pure exposure you don't actually get.",
+      "Swap counterparty concentration with no collateral disclosure — return depends on a bank's solvency, not just the commodity."
+    ]
+  },
+  "commodities-broad-basket": {
+    "mostImportant": [
+      "How the basket is built and weighted — a rules-based multi-commodity index (e.g. Bloomberg Commodity, S&P GSCI) spanning energy, metals and agriculture, with weighting (production vs liquidity vs capped) driving its personality.",
+      "The character of the resulting portfolio — diversification across sectors smooths single-commodity shocks but bakes in an energy or precious-metals tilt depending on the index chosen.",
+      "The nature of its income and tax — futures-based baskets often issue a K-1 (or T-form) and any T-bill collateral yield shows up as income rather than commodity return."
+    ],
+    "greenFlags": [
+      "An optimized or laddered roll across the curve rather than front-month only — materially reduces the basket's structural contango drag (e.g. PDBC, COMT vs naive GSCI).",
+      "Caps on any single commodity or sector weight — prevents the 'broad' basket from becoming a covert energy bet.",
+      "Collateral T-bill yield disclosed and offsetting fees — the cash backing the futures meaningfully cushions the carry.",
+      "Tracking its stated index within a tight margin across a roll-heavy year — shows the rebalancing is disciplined."
+    ],
+    "redFlags": [
+      "Chronic negative roll yield dragging multi-year returns below spot commodity moves — the index design, not the market, is the leak.",
+      "A K-1 partnership structure where the investor wasn't expecting one — surprise tax complexity that erodes after-tax return.",
+      "Thin volume forcing trades at a discount to intraday NAV — common in smaller broad-basket wrappers."
+    ]
+  },
+  "single-currency": {
+    "mostImportant": [
+      "How it delivers the currency — bank deposits, short-dated sovereign bills, or forward/swap contracts in the target currency, which sets whether you earn the local short rate or just track spot FX.",
+      "The character of the resulting product — a near-pure bet on one exchange rate relative to your home currency, with returns dominated by the interest-rate differential plus spot moves.",
+      "The nature of its income and tax — the carry (foreign short rate) typically arrives as taxable income, and FX gains may be treated differently from capital gains depending on jurisdiction."
+    ],
+    "greenFlags": [
+      "Collateral parked in the target-currency T-bills earning the local policy rate — you capture the carry, not just spot, which can dominate total return.",
+      "Tight tracking of the spot exchange rate net of the short-rate differential — confirms the forwards are rolled cleanly.",
+      "Deep, liquid forward market behind the wrapper (USD, EUR, JPY) — keeps premium/discount to NAV negligible.",
+      "Transparent daily NAV struck off interbank fixings — leaves no room for stale-price arbitrage against holders."
+    ],
+    "redFlags": [
+      "Negative carry the fund silently bears when the target currency yields less than the funding currency — a steady drag even if spot is flat.",
+      "Wide premium/discount in a thinly traded exotic-currency wrapper — you transact away from the true rate.",
+      "Counterparty-swap structure without collateral disclosure — the 'currency' is really a bank's credit promise."
+    ]
+  },
+  "commodities-precious-metals": {
+    "mostImportant": [
+      "How it holds the metal — allocated physical bars in a vault, unallocated pooled claims, or futures, which determines counterparty risk and how closely it tracks the spot price.",
+      "The character of the resulting product — a direct bet on one or a few precious metals (gold, silver, platinum, palladium) with no yield, valued purely off the metal price.",
+      "The nature of its income and tax — pays no distributions and, in some jurisdictions, physical-metal funds face higher collectibles-rate capital-gains tax than ordinary securities."
+    ],
+    "greenFlags": [
+      "Fully allocated, serial-numbered bars with independent vault audits and a published bar list — your metal is ring-fenced, not a pooled IOU (e.g. PHYS, SGOL, IAU).",
+      "Net tracking gap close to the MER over a full year — confirms storage and insurance costs are inside the fee, not extra leakage.",
+      "Premium/discount to NAV held within a tight band by active creation/redemption — you buy and sell near the metal's real value.",
+      "Low storage/insurance fees baked into the MER for a physically-backed fund — minimizes the carry of holding metal you can't lend out."
+    ],
+    "redFlags": [
+      "Unallocated or pooled metal held at one bullion bank — exposure to that bank's solvency on top of the metal price.",
+      "A persistent NAV premium that compresses in stress — you pay up in calm markets and lose the premium exactly when you want to exit.",
+      "Futures-backed metal exposure carrying roll cost when allocated-physical alternatives exist — an inferior structure for a storable asset.",
+      "Hidden storage-fee escalators or fee waivers about to expire — a step-up in carry that quietly widens future tracking drift."
+    ]
+  },
+  "gold": {
+    "mostImportant": [
+      "How it holds gold — allocated London Good Delivery bars in a vault versus unallocated claims or futures, the single biggest driver of custody safety and tracking fidelity.",
+      "The character of the resulting product — a pure spot-gold price bet with no income, used as a monetary hedge whose return is just the bullion price minus the fee.",
+      "The nature of its income and tax — non-distributing, and in some jurisdictions physical gold is taxed at a higher collectibles rate while a few funds use structures that avoid it."
+    ],
+    "greenFlags": [
+      "Allocated, audited bars with a public bar list and redeemability (GLD, IAU, PHYS) — direct claim on metal rather than a counterparty promise.",
+      "Tracking spot gold within roughly the MER over a year — storage and insurance costs are fully captured in the fee.",
+      "Premium/discount to NAV inside a fraction of a percent — tight arbitrage keeps you near the bullion price.",
+      "A low all-in MER for a flagship vehicle (IAU at ~25 bps undercutting GLD) — every basis point of carry is permanent on a no-yield asset."
+    ],
+    "redFlags": [
+      "Unallocated gold or a single-custodian pooled structure — bank-credit risk layered onto the gold price.",
+      "Futures-based 'gold' funds carrying roll drag versus spot — needless decay when physical wrappers exist.",
+      "A NAV premium that appears in safe-haven rallies then collapses — you overpay entering and underperform exiting.",
+      "Currency exposure the holder didn't intend (an unhedged gold fund in a non-USD account) — FX swings swamp the gold thesis."
+    ]
+  },
+  "long-eth": {
+    "mostImportant": [
+      "How it holds ETH and whether it stakes — spot tokens in cold storage that may or may not be staked, which determines if holders earn the network yield or just the price.",
+      "The character of the resulting product — a single-asset spot-ETH bet whose return is the token price plus any staking reward minus the fee, with no manager strategy.",
+      "The nature of its income and tax — typically non-distributing on price, but staking rewards (where enabled) are taxable income and may be reinvested into NAV."
+    ],
+    "greenFlags": [
+      "ETH staked with rewards flowing back to NAV to offset the fee — can push net carry below the headline MER, a structural edge over non-staking peers.",
+      "Spot tokens in audited cold-storage custody with proof-of-reserves — direct claim on ETH, not a futures proxy (e.g. ETHA, FETH).",
+      "Premium/discount to NAV under ~0.5% via active creation/redemption — you trade near the real coin value."
+    ],
+    "redFlags": [
+      "Futures-based ETH exposure paying contango when spot ETFs exist — a laggy, costlier way to own a liquid coin.",
+      "Staking enabled but the reward retained or opaquely shared — holders bear validator/slashing risk without the full yield.",
+      "Persistent NAV premium/discount in a thin Canada-listed wrapper — entry and exit happen away from spot."
+    ]
+  },
+  "long-btc": {
+    "mostImportant": [
+      "How it holds Bitcoin — spot BTC in cold storage versus a futures-rolling structure, the key determinant of tracking fidelity and roll cost.",
+      "The character of the resulting product — a pure single-asset spot-BTC bet returning the coin price minus fee, with no yield and no manager alpha.",
+      "The nature of its income and tax — non-distributing price-return product; in Canada-listed form, USD-denominated economics may differ from the CAD trading price."
+    ],
+    "greenFlags": [
+      "Spot BTC in qualified cold-storage custody with on-chain proof-of-reserves — your claim is the actual coin (IBIT, FBTC, BTCC).",
+      "Daily creation/redemption holding price within a tight band of NAV — premium/discount under ~0.5% so you don't overpay versus spot.",
+      "A low MER on a flagship spot vehicle — on a no-yield asset, fee is pure permanent drag, so single-digit-bps leaders compound an edge."
+    ],
+    "redFlags": [
+      "Futures-based BTC exposure paying persistent contango — meaningfully lags spot in steep-curve regimes (BITO-style roll drag).",
+      "A standing premium or discount to NAV in a closed-end-style or thin wrapper — buy dear, sell cheap regardless of BTC's move.",
+      "Cash drag or borrowing inside the wrapper widening tracking error to multiples of the MER."
+    ]
+  },
+  "silver": {
+    "mostImportant": [
+      "How it holds silver — allocated physical bars in a vault versus unallocated or futures exposure, which sets custody risk and how tightly it tracks spot.",
+      "The character of the resulting product — a pure silver-price bet with no yield, more volatile than gold given silver's industrial-demand swing, valued off the metal price.",
+      "The nature of its income and tax — non-distributing, and physical silver may carry sales-tax or higher collectibles-rate treatment in some jurisdictions."
+    ],
+    "greenFlags": [
+      "Allocated, audited bars with a published bar list (PSLV, SIVR) — ring-fenced metal rather than a pooled bank claim.",
+      "Tracking spot silver within roughly the MER despite silver's bulk and storage cost — confirms storage fees sit inside the fee.",
+      "Premium/discount held in a tight band by active creation/redemption — you transact near the real metal value.",
+      "Storage and insurance fully captured in a modest MER — important because silver's lower value density makes storage proportionally costlier."
+    ],
+    "redFlags": [
+      "Unallocated silver at a single bullion bank — solvency risk on top of an already volatile metal price.",
+      "Futures-backed silver carrying roll drag versus spot — avoidable decay for a storable metal.",
+      "A NAV premium that spikes in silver squeezes then collapses — you overpay into the frenzy and lose the premium exiting.",
+      "Thin AUM and wide spreads amplifying the cost of silver's high volatility — round-trip trading cost compounds the swings."
+    ]
+  },
+  "long-cryptocurrency-basket": {
+    "mostImportant": [
+      "How the basket is built and weighted — a multi-token index (often cap-weighted, BTC/ETH-heavy) held as spot, with weighting and rebalance rules driving the personality.",
+      "The character of the resulting product — diversified across coins but usually dominated by Bitcoin and Ether, so it largely tracks the two majors plus some altcoin beta.",
+      "The nature of its income and tax — generally price-return and non-distributing, with any staking yield on eligible tokens netted into NAV and taxable."
+    ],
+    "greenFlags": [
+      "All constituents in audited cold-storage custody with proof-of-reserves — every coin in the basket is actually held, not synthesized.",
+      "Staking the eligible tokens (ETH, SOL) and returning rewards to NAV — offsets fee across the stakeable slice.",
+      "Transparent, rules-based rebalancing with published weights — no discretionary altcoin punts hiding in the index."
+    ],
+    "redFlags": [
+      "Heavy tail of illiquid altcoins in the index — these trade far from quoted prices and inflate real tracking error.",
+      "Persistent premium/discount to NAV in a thin basket wrapper — multi-asset NAV is harder to arbitrage, widening the gap.",
+      "Concentration so high in BTC/ETH that the 'basket' duplicates owning the two majors — diversification you pay extra for but don't get."
+    ]
+  },
+  "natural-gas": {
+    "mostImportant": [
+      "How it gets exposure — almost always front-month or near-month natural-gas futures rolled forward, since gas can't be vaulted, so the roll curve dominates returns.",
+      "The character of the resulting product — a highly volatile, seasonally driven single-commodity bet where the futures curve, not just spot, determines what you actually earn.",
+      "The nature of its income and tax — futures-based wrappers commonly issue a K-1 (or T-form) and collateral T-bill yield appears as income separate from the gas move."
+    ],
+    "greenFlags": [
+      "An optimized or laddered roll across multiple contract months — softens natural gas's famously steep contango (UNL vs front-month-only UNG).",
+      "Collateral held in T-bills earning yield that offsets the roll drag — the cash backing the futures works against the carry.",
+      "Tight tracking of the stated futures index rather than spot — sets the right expectation that you own the curve, not Henry Hub spot.",
+      "Deep liquidity and tight spreads in the wrapper — essential given gas's violent intraday swings."
+    ],
+    "redFlags": [
+      "Naive front-month roll in steep contango — natural-gas funds are notorious for losing large double-digit % a year to roll even when spot rises.",
+      "Reverse-split history signalling chronic NAV erosion — a tell that roll drag has compounded badly.",
+      "Surprise K-1 tax reporting in a vehicle marketed to retail — complexity that eats after-tax return."
+    ]
+  },
+  "crude-oil": {
+    "mostImportant": [
+      "How it gets exposure — front-month or laddered WTI/Brent futures rolled forward (oil can't be practically vaulted), so the curve shape drives realized return.",
+      "The character of the resulting product — a single-commodity bet on oil whose return is the futures index, including roll yield, not the headline spot barrel.",
+      "The nature of its income and tax — futures wrappers often issue a K-1 (or T-form), and T-bill collateral yield is income distinct from the oil price move."
+    ],
+    "greenFlags": [
+      "A spread or multi-month roll strategy reducing contango exposure (USL/DBO vs front-month USO) — limits the structural decay.",
+      "Collateral T-bill yield offsetting fees and roll — the cash backing the contracts cushions the carry.",
+      "Tracking its stated futures benchmark closely — correctly sets expectations versus chasing spot WTI.",
+      "Robust liquidity letting large flows trade near intraday NAV — important during oil's sharp moves."
+    ],
+    "redFlags": [
+      "Naive front-month roll in contango — USO's structure decayed so badly it required reverse splits and rule changes; the curve, not spot, is the risk.",
+      "Backwardation-dependent return assumptions baked into marketing — the favourable roll vanishes when the curve flips.",
+      "Surprise K-1 reporting and a single-swap counterparty — tax and credit complexity beyond the oil bet."
+    ]
+  },
+  "long-xrp": {
+    "mostImportant": [
+      "How it holds XRP — spot tokens in cold storage versus a synthetic/futures structure, which sets custody risk and tracking fidelity for a less-liquid major.",
+      "The character of the resulting product — a single-asset spot-XRP bet returning the token price minus fee, with no staking yield and no manager strategy.",
+      "The nature of its income and tax — non-distributing price-return product; Canada-listed versions trade in CAD while economics are USD-referenced to the spot coin."
+    ],
+    "greenFlags": [
+      "Spot XRP in audited cold-storage custody with proof-of-reserves — a direct claim on the coin rather than a derivative proxy.",
+      "Premium/discount to NAV kept tight by active creation/redemption — important because XRP's thinner market widens gaps more easily.",
+      "A modest MER on a no-yield single coin — fee is permanent drag with no staking to offset it."
+    ],
+    "redFlags": [
+      "Synthetic or futures-based XRP where spot custody is feasible — adds roll/counterparty cost on top of an already volatile coin.",
+      "Persistent premium/discount in a thin wrapper — XRP's lower liquidity makes NAV arbitrage looser, so you trade off-spot.",
+      "Wide bid/ask and small AUM — round-trip cost compounds XRP's high volatility."
+    ]
+  },
+  "long-sol": {
+    "mostImportant": [
+      "How it holds SOL and whether it stakes — spot tokens in cold storage that may be staked for Solana's relatively high network yield, determining whether holders capture that yield.",
+      "The character of the resulting product — a single-asset spot-SOL bet returning the token price plus any staking reward minus fee, with no manager alpha.",
+      "The nature of its income and tax — non-distributing on price, but staking rewards (where enabled) are taxable income often reinvested into NAV."
+    ],
+    "greenFlags": [
+      "SOL staked with rewards passed back to NAV — Solana's higher staking yield can offset much of the fee, a real structural edge.",
+      "Spot tokens in audited cold-storage custody with proof-of-reserves — direct claim rather than a futures proxy.",
+      "Premium/discount to NAV held tight despite SOL's volatility — active creation/redemption keeps you near spot."
+    ],
+    "redFlags": [
+      "Staking enabled but rewards retained or sharing undisclosed — holders bear slashing/validator risk without the yield.",
+      "Futures or synthetic SOL exposure when spot custody is available — roll and counterparty cost on a volatile coin.",
+      "Persistent premium/discount in a thin wrapper — SOL's swings plus loose arbitrage compound entry/exit cost."
+    ]
+  },
+  "long-usd": {
+    "mostImportant": [
+      "How it delivers USD exposure — US T-bills or USD deposits versus forwards/swaps, which sets whether you earn the US short rate as carry or just track the spot dollar.",
+      "The character of the resulting product — a near-pure bet on the US dollar versus your home currency, dominated by the rate differential plus spot FX moves.",
+      "The nature of its income and tax — the US short-rate carry typically arrives as taxable income, and FX gains may be taxed differently from securities gains."
+    ],
+    "greenFlags": [
+      "Collateral in US T-bills earning the policy rate — you capture the dollar's carry, which can dominate total return when US rates are high.",
+      "Tight tracking of spot USD net of the rate differential — confirms the forwards or bills are rolled cleanly.",
+      "Deep, liquid USD market behind the wrapper — keeps premium/discount to NAV negligible for the world's most-traded currency.",
+      "Transparent daily NAV off interbank fixings — no stale-price arbitrage against holders."
+    ],
+    "redFlags": [
+      "Negative carry borne when the home currency out-yields USD — a steady drag even with flat spot.",
+      "A swap-only structure without collateral disclosure — the 'dollar' is really a bank's credit promise.",
+      "Premium/discount in a small wrapper despite USD's deep market — a sign of poor market-making, not currency risk."
+    ]
+  },
+  "long-cad": {
+    "mostImportant": [
+      "How it delivers CAD exposure — Canadian T-bills or CAD deposits versus forwards/swaps, which sets whether you earn the Canadian short rate as carry or just track spot CAD.",
+      "The character of the resulting product — a near-pure bet on the Canadian dollar versus your home currency, dominated by the rate differential plus spot FX and CAD's commodity sensitivity.",
+      "The nature of its income and tax — the CAD short-rate carry arrives as taxable income, and FX gains may receive different tax treatment from securities gains."
+    ],
+    "greenFlags": [
+      "Collateral in Canadian T-bills earning the Bank of Canada rate — captures the loonie's carry on top of spot.",
+      "Liquid CAD forward market behind the wrapper keeping premium/discount negligible — CAD is a major, deeply traded pair.",
+      "Transparent daily NAV off interbank fixings — leaves no room for stale-price arbitrage."
+    ],
+    "redFlags": [
+      "Negative carry when the funding currency out-yields CAD — a steady drag independent of spot.",
+      "Hidden oil/commodity beta surprising holders who wanted pure FX — CAD moves with crude, not just rates.",
+      "Swap-only structure with no collateral disclosure — currency exposure that's really bank credit."
+    ]
+  },
+  "carbon-credits": {
+    "mostImportant": [
+      "How it gets exposure — futures on regulated emissions allowances (EU ETS/EUA, California CCA, RGGI) rolled forward, since the underlying is a policy-created permit, not a storable good.",
+      "The character of the resulting product — a bet on the price of the right to emit, driven heavily by regulatory supply decisions and political risk rather than ordinary supply/demand.",
+      "The nature of its income and tax — futures-based wrappers may issue a K-1 (or T-form), and collateral T-bill yield is income separate from the allowance-price move."
+    ],
+    "greenFlags": [
+      "Diversification across multiple allowance markets (KRBN spanning EUA, CCA, RGGI) — spreads single-jurisdiction regulatory risk.",
+      "A roll strategy that manages the allowance futures curve — limits roll drag where the curve is in contango.",
+      "Collateral T-bill yield disclosed and offsetting fees — the cash backing the futures cushions the carry.",
+      "Tight tracking of the stated carbon index — correctly frames it as a regulated-allowance bet, not a voluntary-offset one."
+    ],
+    "redFlags": [
+      "Single-program concentration (EUA-only) — one regulatory U-turn can reprice the whole fund overnight.",
+      "Exposure to voluntary/offset credits with thin, opaque pricing rather than regulated allowances — valuation and integrity risk.",
+      "Low AUM and wide spreads in a niche thematic wrapper — you trade well away from intraday NAV."
+    ]
+  },
+  "long-btc-short-cad": {
+    "mostImportant": [
+      "How the two legs work — long spot BTC with a short-CAD overlay that hedges the Canadian-dollar value back, so a CAD investor gets BTC priced in USD terms stripped of CAD/USD swings.",
+      "The character of the resulting product — effectively USD-denominated Bitcoin exposure for a CAD holder, isolating the coin move from loonie fluctuations via a rolling FX hedge.",
+      "The nature of its income and tax — non-distributing on the BTC leg, while the currency hedge generates FX gains/losses and a carry cost that flow through NAV and may be taxed as income."
+    ],
+    "greenFlags": [
+      "Spot BTC in audited cold storage plus a cleanly rolled CAD/USD forward hedge — both the coin claim and the hedge are real and transparent.",
+      "Hedge tracking error kept small so realized currency neutralization matches the target — the overlay actually removes CAD/USD noise rather than adding it.",
+      "Positive hedge carry when USD out-yields CAD passed to NAV — the rate differential works in the holder's favour on top of BTC.",
+      "Premium/discount to NAV held tight despite two moving legs — active creation/redemption keeps both priced fairly."
+    ],
+    "redFlags": [
+      "Hedge slippage from monthly-reset forwards leaving residual CAD/USD exposure — you didn't get the clean hedge you paid for.",
+      "Negative hedge carry quietly dragging NAV when CAD out-yields USD — a cost layered onto the BTC fee.",
+      "Compounded tracking error from stacking BTC spot drift on top of hedge drift — two leaks instead of one."
+    ]
+  },
+  "long-btc-short-usd": {
+    "mostImportant": [
+      "How the two legs work — long spot BTC with a short-USD overlay that hedges the US-dollar value back, removing USD/CAD translation so a CAD holder gets the coin move in local terms.",
+      "The character of the resulting product — CAD-denominated Bitcoin exposure where the USD leg is hedged out, isolating BTC's price from dollar fluctuations via a rolling forward.",
+      "The nature of its income and tax — non-distributing on BTC, while the hedge produces FX gains/losses and carry that flow through NAV and may be taxed as income."
+    ],
+    "greenFlags": [
+      "Spot BTC in audited cold storage plus a cleanly rolled USD hedge — coin claim and hedge both real and disclosed.",
+      "Small hedge tracking error so the realized USD neutralization matches target — the overlay removes dollar noise rather than adding it.",
+      "Favourable hedge carry passed to NAV when CAD out-yields USD — the rate differential adds to the BTC return.",
+      "Tight premium/discount despite two legs — disciplined market-making keeps both priced fairly."
+    ],
+    "redFlags": [
+      "Forward-reset slippage leaving residual USD exposure between rolls — incomplete hedge versus what was marketed.",
+      "Negative carry dragging NAV when USD out-yields CAD — a steady cost on top of the BTC fee.",
+      "Stacked tracking error from BTC spot drift plus hedge drift — compounding two sources of leakage."
+    ]
+  },
+  "long-cryptocurrency-basket-short-cad": {
+    "mostImportant": [
+      "How the legs work — a long multi-token spot basket plus a short-CAD overlay hedging the Canadian-dollar value back, giving a CAD holder USD-terms basket exposure stripped of CAD/USD swings.",
+      "The character of the resulting product — a BTC/ETH-dominated basket with the loonie hedged out, so return is the coins' aggregate move plus hedge carry, minus fee.",
+      "The nature of its income and tax — price-return on the coins (staking yield where enabled netted to NAV) plus FX gains/losses and carry from the hedge, with tax varying by component."
+    ],
+    "greenFlags": [
+      "All basket constituents in audited cold storage with proof-of-reserves alongside a cleanly rolled CAD hedge — every leg verifiably real.",
+      "Staking the eligible tokens and returning rewards to NAV while the hedge neutralizes CAD/USD — two structural tailwinds combined.",
+      "Small aggregate hedge tracking error across the whole basket — the overlay actually removes currency noise from the blended NAV.",
+      "Tight premium/discount despite many coins plus an FX leg — disciplined creation/redemption across a complex structure."
+    ],
+    "redFlags": [
+      "Illiquid altcoins in the basket inflating tracking error before the hedge even applies — the underlying leg leaks first.",
+      "Negative hedge carry when CAD out-yields USD dragging the whole basket's NAV — a cost on top of the coin fees.",
+      "Compounded drift from basket rebalancing plus hedge rolls — multiple leak points stacked together."
+    ]
+  },
+  "long-eth-short-cad": {
+    "mostImportant": [
+      "How the legs work — long spot ETH (possibly staked) with a short-CAD overlay hedging the Canadian-dollar value back, giving a CAD holder USD-terms ETH exposure free of CAD/USD swings.",
+      "The character of the resulting product — USD-denominated Ether exposure where the loonie is hedged out, returning the coin move plus any staking yield plus hedge carry, minus fee.",
+      "The nature of its income and tax — non-distributing on price; staking rewards (where enabled) are taxable income, and the hedge adds FX gains/losses and carry to NAV."
+    ],
+    "greenFlags": [
+      "Spot ETH in audited cold storage, staked with rewards to NAV, plus a cleanly rolled CAD hedge — yield offset and currency neutralization both working.",
+      "Small hedge tracking error so realized CAD/USD removal matches target — the overlay does its job.",
+      "Positive hedge carry passed to NAV when USD out-yields CAD — the differential adds to ETH return.",
+      "Tight premium/discount despite staking plus an FX leg — disciplined pricing across a multi-part structure."
+    ],
+    "redFlags": [
+      "Hedge slippage between forward resets leaving residual CAD exposure — incomplete neutralization.",
+      "Staking risk (slashing/validator) borne without the reward clearly flowing to holders — cost without benefit.",
+      "Negative carry dragging NAV when CAD out-yields USD — a steady drag on top of the ETH fee."
+    ]
+  },
+  "long-eth-short-usd": {
+    "mostImportant": [
+      "How the legs work — long spot ETH (possibly staked) with a short-USD overlay hedging the US-dollar value back, giving a CAD holder local-terms ETH exposure free of USD/CAD swings.",
+      "The character of the resulting product — CAD-denominated Ether exposure with the dollar hedged out, returning the coin move plus any staking yield plus hedge carry, minus fee.",
+      "The nature of its income and tax — non-distributing on price; staking rewards (where enabled) are taxable income, and the hedge adds FX gains/losses and carry to NAV."
+    ],
+    "greenFlags": [
+      "Spot ETH in audited cold storage, staked with rewards to NAV, plus a cleanly rolled USD hedge — yield and currency neutralization both functioning.",
+      "Small hedge tracking error so the realized USD removal matches target — the overlay removes dollar noise.",
+      "Favourable carry to NAV when CAD out-yields USD — the rate differential adds to ETH return.",
+      "Tight premium/discount despite staking plus an FX leg — disciplined market-making across the structure."
+    ],
+    "redFlags": [
+      "Forward-reset slippage leaving residual USD exposure — the hedge isn't as clean as marketed.",
+      "Validator/slashing risk borne without the staking reward clearly reaching holders — cost without benefit.",
+      "Negative carry when USD out-yields CAD dragging NAV — a steady cost on top of the ETH fee."
+    ]
+  },
+  "long-sol-short-usd": {
+    "mostImportant": [
+      "How the legs work — long spot SOL (often staked for Solana's high yield) with a short-USD overlay hedging the US-dollar value back, giving a CAD holder local-terms SOL exposure free of USD/CAD swings.",
+      "The character of the resulting product — CAD-denominated Solana exposure with the dollar hedged out, returning the coin move plus staking yield plus hedge carry, minus fee.",
+      "The nature of its income and tax — non-distributing on price; SOL staking rewards are taxable income often netted to NAV, and the hedge adds FX gains/losses and carry."
+    ],
+    "greenFlags": [
+      "Spot SOL in audited cold storage, staked with Solana's high reward flowing to NAV, plus a cleanly rolled USD hedge — strong yield offset and currency neutralization combined.",
+      "Small hedge tracking error so the realized USD removal matches target — the overlay does its job on a volatile coin.",
+      "Favourable carry to NAV when CAD out-yields USD — the differential adds to SOL return.",
+      "Tight premium/discount despite SOL's volatility plus staking plus an FX leg — disciplined pricing across the structure."
+    ],
+    "redFlags": [
+      "Forward-reset slippage leaving residual USD exposure — incomplete hedge versus what was sold.",
+      "Slashing/validator risk on the staked SOL borne without the reward clearly reaching holders — cost without benefit.",
+      "Negative carry when USD out-yields CAD dragging NAV — a drag on top of the SOL fee."
+    ]
+  },
+  "long-usd-short-cad": {
+    "mostImportant": [
+      "How the legs work — long USD against a short-CAD leg, a direct CAD/USD pair-trade expressing a stronger-dollar / weaker-loonie view rather than holding a single currency in isolation.",
+      "The character of the resulting product — a near-pure bet on the USD/CAD exchange rate, driven by the US-minus-Canada rate differential and spot FX, with no equity or commodity content.",
+      "The nature of its income and tax — the net carry (US short rate minus Canadian short rate) flows through NAV as income/cost, and FX gains may be taxed differently from securities gains."
+    ],
+    "greenFlags": [
+      "Net positive carry captured and passed to NAV when US rates exceed Canadian rates — the differential, not just spot, drives much of the return.",
+      "Tight tracking of the USD/CAD spot rate net of carry — confirms the forward pair is rolled cleanly.",
+      "Deep liquidity in the USD/CAD forward market keeping premium/discount negligible — among the most-traded pairs.",
+      "Transparent daily NAV off interbank fixings — no stale-price arbitrage against holders."
+    ],
+    "redFlags": [
+      "Net negative carry borne when Canadian rates exceed US rates — a steady drag even if USD/CAD spot is flat.",
+      "Leverage or reset mechanics that decay in choppy markets — a daily-reset pair product can lose to volatility even when the rate ends higher.",
+      "Premium/discount in a thin wrapper despite the deep pair market — a market-making failure, not currency risk."
+    ]
+  },
+  "long-xrp-short-cad": {
+    "mostImportant": [
+      "How the legs work — long spot XRP with a short-CAD overlay hedging the Canadian-dollar value back, giving a CAD holder USD-terms XRP exposure stripped of CAD/USD swings.",
+      "The character of the resulting product — USD-denominated XRP exposure with the loonie hedged out, returning the coin move plus hedge carry minus fee, with no staking yield.",
+      "The nature of its income and tax — non-distributing on price; the hedge adds FX gains/losses and carry to NAV that may be taxed as income."
+    ],
+    "greenFlags": [
+      "Spot XRP in audited cold storage plus a cleanly rolled CAD hedge — both coin claim and hedge real and disclosed for a thinner-market token.",
+      "Small hedge tracking error so realized CAD/USD removal matches target — the overlay works despite XRP's lower liquidity.",
+      "Positive hedge carry to NAV when USD out-yields CAD — the differential adds to XRP return.",
+      "Tight premium/discount despite a less-liquid coin plus an FX leg — disciplined market-making across the structure."
+    ],
+    "redFlags": [
+      "Hedge slippage between resets leaving residual CAD exposure — incomplete neutralization on top of a volatile coin.",
+      "Negative carry when CAD out-yields USD dragging NAV — a steady cost above the XRP fee.",
+      "Compounded drift from XRP's thin spot market plus hedge rolls — two leaks amplified by low liquidity."
+    ]
+  },
+  "long-xrp-short-usd": {
+    "mostImportant": [
+      "How the legs work — long spot XRP with a short-USD overlay hedging the US-dollar value back, giving a CAD holder local-terms XRP exposure stripped of USD/CAD swings.",
+      "The character of the resulting product — CAD-denominated XRP exposure with the dollar hedged out, returning the coin move plus hedge carry minus fee, with no staking yield.",
+      "The nature of its income and tax — non-distributing on price; the hedge adds FX gains/losses and carry to NAV that may be taxed as income."
+    ],
+    "greenFlags": [
+      "Spot XRP in audited cold storage plus a cleanly rolled USD hedge — coin claim and hedge both real and disclosed.",
+      "Small hedge tracking error so realized USD removal matches target — the overlay works despite XRP's thinner market.",
+      "Favourable carry to NAV when CAD out-yields USD — the differential adds to XRP return.",
+      "Tight premium/discount despite a less-liquid coin plus an FX leg — disciplined pricing across the structure."
+    ],
+    "redFlags": [
+      "Forward-reset slippage leaving residual USD exposure — incomplete hedge on a volatile coin.",
+      "Negative carry when USD out-yields CAD dragging NAV — a steady cost above the XRP fee.",
+      "Stacked drift from XRP's thin spot market plus hedge rolls — leaks amplified by low liquidity."
+    ]
+  }
+}

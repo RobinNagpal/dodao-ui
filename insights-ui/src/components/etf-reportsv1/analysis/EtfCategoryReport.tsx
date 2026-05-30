@@ -2,7 +2,7 @@ import { EtfCategoryAnalysisResultResponse } from '@/app/api/[spaceId]/etfs-v1/e
 import EtfMetadataBadges from '@/components/etf-reportsv1/EtfMetadataBadges';
 import EtfRelatedSections from '@/components/etf-reportsv1/EtfRelatedSections';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
-import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-report-input-json-utils';
+import { findFactorDefinition } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';

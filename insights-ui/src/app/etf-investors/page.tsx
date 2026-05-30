@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import EtfInvestorListingGrid from '@/components/etf-investors/EtfInvestorListingGrid';
 import EtfInvestorPageLayout from '@/components/etf-investors/EtfInvestorPageLayout';
-import { getInvestorTaxonomy } from '@/etf-analysis-data/etf-investor-taxonomy';
+import { getInvestorTaxonomy } from '@/etf-analysis/etf-investor-taxonomy';
 
 export const dynamic = 'force-dynamic';
 

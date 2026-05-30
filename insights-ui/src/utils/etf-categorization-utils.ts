@@ -1,4 +1,4 @@
-import etfCategoriesRaw from '@/etf-analysis-data/etf-analysis-categories.json';
+import etfCategoriesRaw from '@/etf-analysis/etf-analysis-categories.json';
 import { canonicalizeCategory, getCategoryAliasMap } from '@/utils/etf-category-aliases';
 import { EtfCategoriesConfig, EtfCategoryToGroup, EtfGroup } from '@/types/etf/etf-analysis-types';
 

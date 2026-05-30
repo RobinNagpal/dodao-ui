@@ -1,4 +1,4 @@
-import { getInvestorByKey } from '@/etf-analysis-data/etf-investor-taxonomy';
+import { getInvestorByKey } from '@/etf-analysis/etf-investor-taxonomy';
 import { EtfApplicableInvestorGoals as EtfApplicableInvestorGoalsType } from '@/types/etf/etf-analysis-types';
 import {
   BanknotesIcon,

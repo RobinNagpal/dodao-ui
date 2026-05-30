@@ -1,0 +1,563 @@
+{
+  "intermediate-core-bond": {
+    "mostImportant": [
+      "What it holds — a rules-based investment-grade bond index blending Treasuries, agency MBS and IG corporates (e.g. Bloomberg US Aggregate).",
+      "The character of the portfolio — intermediate duration, so its main driver is interest-rate moves rather than default risk.",
+      "The nature of its income and tax — steady taxable interest income, with structurally low credit risk."
+    ],
+    "greenFlags": [
+      "Credit mix matching the 'core' label (~70-80% Treasury / agency-MBS / IG corporate; AGG/BND/SCHZ) — you own core, not a tilt.",
+      "Duration held near the Agg's ~5-7Y — delivers core-bond rate exposure cleanly.",
+      "Large-sample replication of the Agg's ~12,000 bonds — keeps tracking tight where sampling error can creep in."
+    ],
+    "redFlags": [
+      "Duration drifting to 8+ years — a hidden rate bet you didn't sign up for in 'core'.",
+      "Undisclosed HY or EM debt — dilutes the 'core' label and adds credit risk retail isn't pricing.",
+      "A loss much deeper than the -13% Agg year (2022) — signals credit or duration drift."
+    ]
+  },
+  "short-term-bond": {
+    "mostImportant": [
+      "What it holds — short-maturity Treasury and investment-grade corporate bonds selected by a rules-based index.",
+      "The character of the portfolio — low duration, so it reprices quickly to rate changes and moves little in price.",
+      "The nature of its role — a low-volatility income / cash-parking sleeve paying taxable interest."
+    ],
+    "greenFlags": [
+      "Duration held at 1-3Y from Treasury + IG corporate (BSV/SHY/VGSH) — low-duration income paid for by duration risk only.",
+      "Low realised trading cost despite continuous bond rolling — turnover is high here and quietly eats return if managed poorly.",
+      "Duration short enough to reprice quickly when the Fed moves — the yield adjusts within months, not years."
+    ],
+    "redFlags": [
+      "Duration drifting to 4+ years — a hidden rate bet in a 'short-term' fund.",
+      "Reaching into HY for yield — the headline yield isn't paid for by short-duration risk.",
+      "Yield below a high-yield savings account net of fees — no reason to hold unless you're betting rates fall."
+    ]
+  },
+  "ultrashort-bond": {
+    "mostImportant": [
+      "What it holds — very short-maturity Treasury, IG corporate and sometimes structured paper, under a rules-based or lightly-active mandate.",
+      "The character of the portfolio — near-cash duration, so price barely moves; it behaves like a cash alternative.",
+      "The nature of its income — a modest yield over money-market funds, paid as taxable interest, with minimal NAV variability."
+    ],
+    "greenFlags": [
+      "Effective duration under 1Y (BIL/SGOV/USFR) — behaves like cash with a small premium.",
+      "Yield clearly beating HYSA net of fees — with the minor 1-3 cent NAV moves disclosed up front (it isn't a $1 money-market fund).",
+      "Penny spreads and same- or next-day liquidity — usable as a genuine cash sleeve."
+    ],
+    "redFlags": [
+      "Duration above ~1Y — misleading for 'ultrashort'; check the figure, not the label.",
+      "CLO-AAA above ~20% — changes the risk character from Treasury-only; not the cash-equivalent the label implies.",
+      "Above ~0.20% expense — fees eat directly into the thin premium over cash."
+    ]
+  },
+  "corporate-bond": {
+    "mostImportant": [
+      "What it holds — investment-grade corporate bonds selected by a rules-based index and weighted by amount issued.",
+      "The character of the portfolio — issuance-weighting tilts it toward the largest debt issuers (notably financials), at intermediate-to-long duration.",
+      "The nature of its income — a higher taxable yield than Treasuries, paid for with credit and duration risk rather than default-heavy risk."
+    ],
+    "greenFlags": [
+      "Stays strictly IG without crossover BB names for extra yield — you're not taking hidden HY risk.",
+      "Duration matching the named benchmark — your rate exposure is the one intended.",
+      "Broad replication across thousands of issuers — tight tracking without single-issuer surprises."
+    ],
+    "redFlags": [
+      "A heavy BBB tilt — loses materially more in credit-stress years than the 'IG' label implies.",
+      "Financials concentration 35-45% from cap-by-issuance — more of a financials-credit bet than expected.",
+      "A loss beyond the ~13-18% IG drawdown of 2022 — long-duration drift or low-BBB concentration."
+    ]
+  },
+  "muni-national-interm": {
+    "mostImportant": [
+      "What it holds — a diversified, national set of investment-grade municipal bonds selected by a rules-based index, at intermediate duration.",
+      "The character of the portfolio — high credit quality, with rate sensitivity as the main risk and thinner liquidity than Treasuries in stress.",
+      "The nature of its income and tax — interest is federally tax-exempt, so it is best judged on tax-equivalent yield for a given bracket."
+    ],
+    "greenFlags": [
+      "Quotes tax-equivalent yield (TEY) at a realistic bracket plus state exemption (MUB/VTEB/TFI) — lets you compare honestly to taxable bonds.",
+      "Duration matched to the intermediate benchmark — clean tax-exempt rate exposure.",
+      "Broad issuer diversification across thousands of munis — limits single-issuer default impact."
+    ],
+    "redFlags": [
+      "Material AMT-bond exposure — should be near zero; it matters specifically for the high-income holders muni targets.",
+      "A BBB/non-rated tilt-down — bites in stress windows when muni liquidity thins (spreads 10-50 bps vs 1-5 for Treasuries).",
+      "Above ~0.30% expense — hard to justify vs 0.05-0.10% passive muni peers."
+    ]
+  },
+  "target-maturity": {
+    "mostImportant": [
+      "How it selects and holds bonds — a defined-maturity (\"BulletShares\"/\"iBonds\") fund holding IG corporate or Treasury bonds that all mature in one stated year, then returning cash to holders, so it behaves like a single bond rather than a perpetually-rolling index.",
+      "The character of the resulting portfolio — duration mechanically shortens every month as the maturity date approaches, so rate sensitivity in the final years collapses toward zero unlike a constant-maturity fund.",
+      "The nature of its income — coupon income is ordinary, the terminal payout is at-then-current NAV (not a guaranteed par value), and the wind-down year often parks proceeds in cash that dilutes yield."
+    ],
+    "greenFlags": [
+      "Tight maturity clustering with little reinvestment cash in the final 12 months — preserves the bond-ladder behaviour investors bought (iBonds IBDR, BulletShares BSCP).",
+      "Stated yield-to-maturity disclosed and stable near purchase — lets the holder lock an expected return the way an individual bond would.",
+      "Low credit dispersion within the bucket — avoids a single defaulting issuer disproportionately denting a fund that can't recover over later years."
+    ],
+    "redFlags": [
+      "Large early calls or pre-maturity cash drag inside the bucket — erodes the locked-in YTM the structure promised before the maturity date arrives.",
+      "Terminal-year NAV well below par expectations from buying premium bonds — the final distribution returns less than holders assume from the name.",
+      "A thinly traded vintage trading at a persistent discount to NAV — forced sellers before maturity realise less than the bond math implies."
+    ]
+  },
+  "intermediate-core-plus-bond": {
+    "mostImportant": [
+      "What \"plus\" adds — a core IG bond fund (benchmarked loosely to the Agg) given a sleeve to invest off-benchmark in high yield, EM debt, and non-agency securitized credit, so it is partly an active credit bet on top of a duration vehicle.",
+      "The character of the resulting portfolio — intermediate duration around the Agg with a credit profile that can dip below IG in part, making spread and default risk a real driver alongside rates.",
+      "The nature of its income — yield runs above plain core funds precisely because of the lower-rated sleeve, and distributions are mostly ordinary income."
+    ],
+    "greenFlags": [
+      "Off-benchmark sleeve sized modestly and disclosed (e.g. <20% below-IG) — adds yield without turning a core holding into a junk fund (PIMIX, BOND).",
+      "Outperforming the Agg through a full credit cycle including a spread-widening year — evidence the active plus bets actually add value net of fees.",
+      "Stable duration kept near the benchmark — keeps it usable as the core ballast it's marketed as rather than a hidden rate bet."
+    ],
+    "redFlags": [
+      "Credit quality drifting deep into BB/B to chase yield — the fund quietly correlates with equities and sells off when investors want ballast.",
+      "Duration ranging far from the benchmark via derivatives — turns a \"core\" allocation into an unadvertised macro rate bet.",
+      "Yield far above peers with a benchmark-like SEC yield gap — distribution propped by return-of-capital or aggressive amortization rather than real income."
+    ]
+  },
+  "muni-target-maturity": {
+    "mostImportant": [
+      "How it is built — a defined-maturity fund of investment-grade municipal bonds all maturing in a single stated year, combining a bond-ladder rung's behaviour with federal tax-exempt income.",
+      "The character of the resulting portfolio — duration shortens toward zero as the maturity year nears, and value is best judged on tax-equivalent yield (TEY) versus a comparable taxable target-maturity fund, not raw yield.",
+      "The nature of its income — coupons are exempt from federal tax (and possibly AMT-relevant), so the headline yield understates the after-tax return for high-bracket holders."
+    ],
+    "greenFlags": [
+      "TEY meaningfully above a same-year taxable target-maturity peer for a top-bracket investor — the structural muni advantage is actually present (iBonds Muni IBMM).",
+      "High-grade, geographically diversified issuers in the bucket — limits single-issuer credit risk a fixed-maturity fund can't grow out of.",
+      "Minimal AMT-subject private-activity bonds disclosed — keeps the tax exemption clean for AMT-exposed holders."
+    ],
+    "redFlags": [
+      "TEY no better than taxable target-maturity alternatives — paying muni fees for income with no after-tax edge.",
+      "Concentration in a few lower-grade local issuers — a single downgrade or default can't be recovered in later years of a defined-maturity fund.",
+      "Premium-bond bucket whose terminal NAV lands below cost — the final payout disappoints holders expecting a par-like return."
+    ]
+  },
+  "long-government": {
+    "mostImportant": [
+      "What it holds — long-dated US Treasuries (and sometimes long agency debt), essentially default-free paper whose entire risk is interest-rate sensitivity.",
+      "The character of the resulting portfolio — very long duration (often 15-18+ years), so small yield moves swing price violently, and it tends to rally hard in flight-to-quality risk-off episodes.",
+      "The nature of its income — coupon income is ordinary but exempt from state and local tax, and total return is dominated by price changes rather than carry."
+    ],
+    "greenFlags": [
+      "Duration that genuinely matches the long benchmark with tight tracking — delivers the convex equity-hedge payoff buyers want from TLT/VGLT in a crash.",
+      "Deep liquidity and pennies-wide spreads — long Treasury ETFs are used as tactical duration tools, so execution cost matters more than the tiny fee gap.",
+      "Negative stock-bond correlation holding up in stress — confirms the diversification role rather than the rates-and-equities-falling-together regime."
+    ],
+    "redFlags": [
+      "STRIPS/zero-coupon tilt unnoticed by the buyer — even more extreme duration and drawdowns than a coupon long-Treasury fund (e.g. EDV/ZROZ-style).",
+      "Persistent lag to the benchmark beyond fees — sampling or roll drag in the long end that compounds over the long holding periods these are bought for.",
+      "Marketed as \"safe\" without flagging interest-rate drawdown risk — long government can fall 30%+ when yields rise, the opposite of capital preservation."
+    ]
+  },
+  "muni-national-short": {
+    "mostImportant": [
+      "What it holds — short-maturity investment-grade municipal bonds from issuers nationwide, delivering federally tax-exempt income with low duration.",
+      "The character of the resulting portfolio — short duration keeps rate sensitivity modest, so it serves as a tax-exempt near-cash or low-volatility sleeve rather than a total-return play.",
+      "The nature of its income — yields look low in absolute terms but are federal-tax-free, so the relevant comparison is tax-equivalent yield versus short taxable bonds and cash."
+    ],
+    "greenFlags": [
+      "TEY beating short taxable alternatives (T-bills, ultrashort IG) for a high-bracket holder — the tax exemption earns its keep at the short end (SUB, SHM).",
+      "High average credit quality with broad issuer diversification — appropriate for a sleeve used as a stable parking spot.",
+      "Low duration paired with a tight bid-ask — keeps it usable as a liquid tax-exempt cash alternative."
+    ],
+    "redFlags": [
+      "Reaching for yield via longer or lower-grade bonds than the \"short\" label implies — adds duration/credit risk to what's bought as a stable sleeve.",
+      "Heavy use of bonds with near-term call risk — reinvestment at lower rates quietly erodes the modest yield.",
+      "TEY no better than T-bills after fees — no tax advantage left once the expense ratio is netted out at the short end."
+    ]
+  },
+  "short-government": {
+    "mostImportant": [
+      "What it holds — short-maturity US Treasuries and agency debt, default-free paper with low duration used as a high-quality cash-like sleeve.",
+      "The character of the resulting portfolio — low rate sensitivity means it preserves capital well but offers little price upside, tracking closely to prevailing short yields.",
+      "The nature of its income — coupon income is ordinary and state-tax-exempt for the Treasury portion, with return dominated by carry rather than price moves."
+    ],
+    "greenFlags": [
+      "Yield that tracks the front of the curve with minimal drag — the fund passes through nearly all of the available short-rate income (SHY, VGSH).",
+      "Tight tracking and deep liquidity — matters because these are used for cash management where basis points and execution count.",
+      "Pure Treasury/agency composition — keeps the state-tax exemption and the default-free character clean."
+    ],
+    "redFlags": [
+      "Creeping into corporates or longer maturities to lift yield — abandons the default-free, low-duration mandate buyers chose it for.",
+      "Net yield lagging T-bills after fees — a high expense ratio eats the thin short-Treasury carry entirely.",
+      "Surprising NAV dips in a rate-spike — a sign duration crept above the short label and capital preservation isn't as tight as assumed."
+    ]
+  },
+  "muni-national-long": {
+    "mostImportant": [
+      "What it holds — long-maturity investment-grade municipal bonds from issuers nationwide, maximizing tax-exempt yield in exchange for high duration.",
+      "The character of the resulting portfolio — long duration makes it the most rate-sensitive muni category, so price swings are large and it is a total-return/income vehicle rather than a stable sleeve.",
+      "The nature of its income — high federally tax-exempt yield means tax-equivalent yield can be very attractive for top-bracket holders, the core reason to accept the duration."
+    ],
+    "greenFlags": [
+      "TEY well above comparable long taxable IG for a high earner — the long muni duration is being compensated on an after-tax basis (MLN, TFI-style long sleeves).",
+      "Broad state and sector diversification at the long end — limits single-issuer credit shocks that hit harder when duration is long.",
+      "Disciplined high-grade selection — long-dated lower-grade munis carry outsized spread and liquidity risk this category should avoid."
+    ],
+    "redFlags": [
+      "Heavy private-activity/AMT bonds undisclosed — can claw back the exemption for AMT-exposed holders, gutting the TEY case.",
+      "Concentration in a few large issuers or revenue sectors — a downgrade is amplified by the long duration.",
+      "Yield chased via lower-grade long bonds — illiquidity and default risk that the long-government-grade label is supposed to exclude."
+    ]
+  },
+  "securitized-bond-diversified": {
+    "mostImportant": [
+      "What it holds — a mix of securitized credit (agency and non-agency MBS, CMBS, ABS, CLOs) rather than plain corporate or government bonds, so structure and prepayment behaviour drive returns.",
+      "The character of the resulting portfolio — cash flows are sensitive to prepayment and extension as rates move (negative convexity in MBS), and credit ranges from government-guaranteed agency paper to credit-sensitive non-agency tranches.",
+      "The nature of its income — yields often exceed comparable-duration corporates as compensation for complexity and prepayment risk, with distributions taxed as ordinary income."
+    ],
+    "greenFlags": [
+      "Transparent disclosure of the agency vs non-agency mix and tranche seniority — lets the buyer see how much is government-backed versus credit-exposed.",
+      "Yield premium over same-duration IG corporates that's justified by structure, not by reaching down in credit — genuine securitized carry.",
+      "Stress-tested through a prepayment-shock period without outsized drawdown — the manager's handling of convexity actually works."
+    ],
+    "redFlags": [
+      "Heavy lower-rated non-agency and CLO equity tranches dressed as IG — the fund carries hidden credit and liquidity risk that surfaces in stress.",
+      "Severe negative convexity unmanaged — the fund underperforms badly both when rates fall (prepayments) and rise (extension).",
+      "Opaque holdings and stale third-party pricing on illiquid tranches — NAV may not reflect true marks until a forced sale reveals it."
+    ]
+  },
+  "global-bond-usd-hedged": {
+    "mostImportant": [
+      "What it holds — investment-grade government and corporate bonds from around the world with the foreign-currency exposure hedged back to the US dollar, so currency moves are largely stripped out.",
+      "The character of the resulting portfolio — return is driven by global interest-rate and spread movements plus the hedging carry, not FX, making it behave like a diversified global-rates duration fund.",
+      "The nature of its income — the hedge adds or subtracts a carry component tied to rate differentials, and distributions are ordinary income."
+    ],
+    "greenFlags": [
+      "Hedge that captures positive carry when US rates exceed foreign rates — adds return on top of the bonds (BNDX is the benchmark example).",
+      "Genuine country and issuer diversification reducing single-market rate shocks — the diversification the category is bought for.",
+      "Low residual currency exposure confirming the hedge is doing its job — keeps volatility near a hedged-duration profile rather than leaking FX risk."
+    ],
+    "redFlags": [
+      "Hedging costs quietly turning negative when foreign rates exceed US rates — the carry becomes a drag that erodes the yield advantage.",
+      "Concentration in a handful of low-yielding developed sovereigns — duration risk with little income to compensate.",
+      "Incomplete or lagged hedge leaving unintended FX swings — volatility the \"USD-hedged\" label promised to remove."
+    ]
+  },
+  "inflation-protected-bond": {
+    "mostImportant": [
+      "What it holds — US Treasury Inflation-Protected Securities (TIPS) whose principal adjusts with CPI, so they compensate for realized inflation rather than offering a fixed nominal coupon.",
+      "The character of the resulting portfolio — return is driven by real yields and the inflation accrual, and the broad category carries meaningful duration so real-rate moves can cause large price swings even when inflation is high.",
+      "The nature of its income — the inflation accrual is taxable in the year it accrues even though it isn't paid out (\"phantom income\"), making these most efficient in tax-advantaged accounts."
+    ],
+    "greenFlags": [
+      "Tight tracking of the TIPS index with low fees — captures the inflation accrual cleanly (SCHP, VTIP at the short end).",
+      "Duration matched to the holder's inflation-hedging horizon — avoids the mismatch where real-rate moves swamp the inflation protection.",
+      "Strong real-yield carry at purchase — a positive real yield means inflation protection plus a real return, not just breakeven."
+    ],
+    "redFlags": [
+      "Long duration sold as a low-risk inflation hedge — the fund can fall sharply when real yields rise even amid high inflation (2022 drawdowns).",
+      "Held in a taxable account given phantom-income taxation — after-tax return badly undershoots the headline.",
+      "Breakeven inflation already elevated at purchase — much of the expected inflation is priced in, leaving thin upside for the protection."
+    ]
+  },
+  "intermediate-government": {
+    "mostImportant": [
+      "What it holds — intermediate-maturity US Treasuries and agency debt, default-free paper anchoring the middle of the curve as a portfolio's core duration ballast.",
+      "The character of the resulting portfolio — moderate duration balances rate sensitivity against carry, and it tends to provide the cleanest negative correlation to equities of the government categories in risk-off moves.",
+      "The nature of its income — ordinary coupon income, state-tax-exempt for the Treasury portion, with return split between carry and modest price moves."
+    ],
+    "greenFlags": [
+      "Tight tracking to the intermediate Treasury benchmark with minimal drag — the fund delivers clean duration as ballast (VGIT, IEI).",
+      "Negative equity correlation intact in stress — confirms its diversification role in a balanced portfolio.",
+      "Pure Treasury/agency composition — preserves the default-free character and state-tax exemption that define the category."
+    ],
+    "redFlags": [
+      "Agency or mortgage paper creeping in unnoticed — adds prepayment/convexity risk that a buyer wanting plain Treasuries didn't sign up for.",
+      "Duration drifting off the benchmark — turns a ballast holding into an unintended rate bet.",
+      "Net yield lagging comparable Treasury funds after fees — fee drag eats the modest intermediate carry."
+    ]
+  },
+  "government-mortgage-backed-bond": {
+    "mostImportant": [
+      "What it holds — agency mortgage-backed securities (Ginnie/Fannie/Freddie pools) that are government-credit-backed but pass through homeowner prepayments, so default risk is minimal and prepayment risk is the defining feature.",
+      "The character of the resulting portfolio — negative convexity: the fund's duration shortens when rates fall (refis) and extends when rates rise, so it tends to underperform straight Treasuries in big rate moves either way.",
+      "The nature of its income — yields run above same-duration Treasuries as compensation for prepayment uncertainty, with distributions taxed as ordinary income."
+    ],
+    "greenFlags": [
+      "Yield spread over Treasuries that compensates for prepayment risk without reaching into non-agency credit — genuine agency-MBS carry (VMBS, MBB).",
+      "Coupon stack positioned to limit refi exposure (seasoned or specified pools) — softens negative convexity when rates fall.",
+      "Tight tracking with low fees — important because MBS index replication via TBA rolls is where managers add or lose value."
+    ],
+    "redFlags": [
+      "Heavy concentration in high-coupon current-production pools — maximum prepayment burn when rates drop.",
+      "Reaching into non-agency or CMO tranches under a \"government MBS\" label — adds credit and liquidity risk the category implies away.",
+      "Persistent underperformance versus the MBS index — TBA-roll or convexity-hedging mistakes that compound over time."
+    ]
+  },
+  "long-term-bond": {
+    "mostImportant": [
+      "What it holds — long-maturity investment-grade bonds spanning Treasuries and corporates, combining high duration with corporate spread exposure.",
+      "The character of the resulting portfolio — very long duration makes it extremely rate-sensitive, and the corporate sleeve adds spread risk that correlates with equities in stress, so it is less of a pure safe-haven than long government.",
+      "The nature of its income — high coupon income (ordinary) reflects both the long maturity and the corporate credit premium."
+    ],
+    "greenFlags": [
+      "Strong issuer diversification across the long corporate sleeve — limits the single-name blowup risk that's amplified by long duration (BLV, VCLT-style).",
+      "Spread premium over long Treasuries that fairly pays for the credit risk taken — genuine compensation rather than label.",
+      "Tight benchmark tracking — at long duration even small drag compounds heavily over typical holding periods."
+    ],
+    "redFlags": [
+      "Heavy BBB tilt at the long end — these downgrade to junk first in a recession, and long duration magnifies the price hit.",
+      "Sector concentration in a few large long-dated corporate issuers — idiosyncratic risk amplified by duration.",
+      "Marketed as safe with no duration warning — long-term bond funds can suffer 25%+ drawdowns when yields rise."
+    ]
+  },
+  "global-bond": {
+    "mostImportant": [
+      "What it holds — investment-grade government and corporate bonds from around the world with foreign-currency exposure left unhedged, so FX moves are a primary return driver alongside global rates.",
+      "The character of the resulting portfolio — returns blend global duration, spreads, and currency swings, giving it a different risk profile from US-only bonds and meaningful sensitivity to the dollar's direction.",
+      "The nature of its income — yields reflect a global mix of rate environments, and distributions are ordinary income with possible foreign-tax considerations."
+    ],
+    "greenFlags": [
+      "Genuine country and currency diversification that lowers correlation to US bonds — the diversification benefit the unhedged category exists to provide.",
+      "Disclosed currency exposures so the buyer knows the dollar bet they're taking — transparency on the dominant risk factor.",
+      "Quality sovereign and IG corporate tilt rather than EM/junk creep — keeps it an IG global allocation, not a high-risk play."
+    ],
+    "redFlags": [
+      "Concentrated FX exposure to one or two currencies — an unadvertised, dominant macro bet that can swamp the bond returns.",
+      "Drift into EM or below-IG debt to lift yield — the fund stops behaving like the IG global allocation its category implies.",
+      "Currency volatility overwhelming the bond carry — total return driven by FX noise rather than the fixed-income role intended."
+    ]
+  },
+  "short-term-inflation-protected-bond": {
+    "mostImportant": [
+      "What it holds — short-maturity TIPS, isolating the near-term inflation accrual while stripping out most of the real-rate duration risk of broad TIPS funds.",
+      "The character of the resulting portfolio — low duration means it tracks realized short-term inflation closely with far smaller price swings, making it the cleaner pure inflation hedge of the TIPS categories.",
+      "The nature of its income — the inflation accrual is taxable as it accrues (phantom income), so it is most efficient in tax-advantaged accounts."
+    ],
+    "greenFlags": [
+      "Low duration that delivered positive returns when broad TIPS fell in a real-rate spike — the short structure protected capital (VTIP, STIP in 2022).",
+      "Tight tracking of the short-TIPS index at low cost — captures the inflation accrual without leakage.",
+      "Responsiveness to actual CPI prints rather than long real-rate moves — confirms it functions as a near-term inflation hedge."
+    ],
+    "redFlags": [
+      "Duration longer than the \"short-term\" label implies — reintroduces the real-rate drawdown risk buyers chose this category to avoid.",
+      "Held in a taxable account — phantom-income taxation erodes the already-modest yield.",
+      "Negative real yield at purchase locked in — the holder pays for inflation protection while accepting a guaranteed real loss if held to maturity."
+    ]
+  },
+  "money-market-taxable": {
+    "mostImportant": [
+      "What it holds — a government or Treasury money market fund holding very short, highest-quality instruments (T-bills, repo, agency discount notes) managed to a stable $1.00 NAV.",
+      "The character of the resulting portfolio — near-zero duration and credit risk, with yield resetting quickly to the prevailing short-rate, so it is a cash vehicle rather than a return-seeking allocation.",
+      "The nature of its income — distributions are ordinary income, though Treasury-heavy funds pass through a portion that is state-tax-exempt."
+    ],
+    "greenFlags": [
+      "7-day SEC yield near the top of the government MMF peer group — most differentiation here comes from fee level (SPAXX, SGOV as the ETF analog).",
+      "High share of state-tax-exempt Treasury/repo income disclosed — lifts the after-tax yield for high-state-tax holders.",
+      "Deep scale and stable WAM — supports same-day liquidity at $1.00 even in stress."
+    ],
+    "redFlags": [
+      "Fee waivers propping the yield that can be removed — the headline yield isn't durable once waivers lapse.",
+      "Reaching into lower-quality or longer paper to lift yield — adds NAV-break risk to a vehicle whose whole point is stability.",
+      "Low state-tax-exempt percentage despite a \"government\" label — after-tax yield undershoots peers for high-tax-state investors."
+    ]
+  },
+  "muni-california-intermediate": {
+    "mostImportant": [
+      "What it holds — intermediate-maturity investment-grade California municipal bonds, delivering income exempt from both federal and California state tax for CA residents.",
+      "The character of the resulting portfolio — double-tax-exempt income concentrated in a single state's issuers, so the in-state tax benefit comes with California-specific economic and credit concentration.",
+      "The nature of its income — value is judged on tax-equivalent yield using the combined federal+CA top rates, where the in-state exemption can make a modest raw yield highly competitive."
+    ],
+    "greenFlags": [
+      "TEY at the combined federal+CA top bracket beating national-muni and taxable peers — the double exemption genuinely pays for a CA resident.",
+      "Diversification across CA issuers and revenue sectors — softens the single-state concentration that defines the category.",
+      "High average credit quality in GO and essential-service revenue bonds — appropriate given the state-concentration risk already present."
+    ],
+    "redFlags": [
+      "Concentration in a few stressed CA issuers or one revenue sector — single-state risk compounded by issuer concentration.",
+      "Reaching into lower-grade CA paper for yield — adds default risk that's harder to diversify away within one state.",
+      "TEY no better than a national muni fund after the in-state benefit — the single-state concentration isn't being compensated."
+    ]
+  },
+  "muni-california-long": {
+    "mostImportant": [
+      "What it holds — long-maturity investment-grade California municipal bonds, maximizing double-tax-exempt (federal + CA) income at the cost of high duration.",
+      "The character of the resulting portfolio — long duration plus single-state concentration, so both rate moves and California-specific credit events drive large price swings.",
+      "The nature of its income — high double-exempt yield gives a strong tax-equivalent yield for top-bracket CA residents, the reason to accept the duration and concentration."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+CA top rates well above long national-muni and long taxable IG — the long single-state duration is compensated after tax.",
+      "Broad spread across CA issuers and sectors at the long end — limits the issuer shocks magnified by long duration.",
+      "High-grade selection avoiding distressed local-government long bonds — keeps single-state long-duration risk within IG bounds."
+    ],
+    "redFlags": [
+      "Heavy AMT-subject private-activity CA bonds undisclosed — can erase the exemption for AMT-exposed holders, gutting the TEY.",
+      "Concentration in one CA revenue sector or large issuer at the long end — a downgrade is amplified by both duration and state concentration.",
+      "Yield reached via lower-grade long CA paper — illiquidity and default risk that single-state long funds can't easily diversify."
+    ]
+  },
+  "muni-new-york-long": {
+    "mostImportant": [
+      "What it holds — long-maturity investment-grade New York municipal bonds, delivering income exempt from federal and NY state (and NYC) tax for residents, with high duration.",
+      "The character of the resulting portfolio — long duration combined with single-state NY concentration, so NY-specific credit and rate moves both drive large swings.",
+      "The nature of its income — high triple-exempt yield for NYC residents produces a strong tax-equivalent yield, the rationale for the duration and concentration taken on."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+NY+NYC top rates beating national-muni and taxable long IG — the in-state exemption genuinely pays for a NYC resident.",
+      "Diversification across NY state and local issuers and sectors — limits the concentration risk amplified by long duration.",
+      "High-grade GO and essential-service revenue tilt — appropriate given the single-state, long-duration profile."
+    ],
+    "redFlags": [
+      "Concentration in stressed NY issuers (e.g. a single transit or healthcare authority) — single-state credit risk magnified by long duration.",
+      "Undisclosed AMT private-activity NY bonds — claws back the exemption for AMT-exposed holders.",
+      "TEY no better than national long muni after the in-state benefit — single-state concentration not being compensated."
+    ]
+  },
+  "muni-single-state-short": {
+    "mostImportant": [
+      "What it holds — short-maturity investment-grade municipal bonds from a single state, pairing low duration with in-state double-tax-exempt income for residents of that state.",
+      "The character of the resulting portfolio — low rate sensitivity makes it a tax-exempt near-cash sleeve, but it carries undiversified single-state credit concentration.",
+      "The nature of its income — modest in absolute terms but federal- and in-state-exempt, so tax-equivalent yield versus short taxable cash is the right comparison."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+state top rates beating short taxable cash for a resident — the in-state exemption pays even at the short end.",
+      "Broad in-state issuer diversification despite the single-state mandate — softens the concentration risk in a stability-focused sleeve.",
+      "High credit quality and low duration — keeps it usable as a stable tax-exempt parking spot."
+    ],
+    "redFlags": [
+      "Concentration in a few in-state issuers — credit risk in a sleeve bought for stability, hard to diversify within one state.",
+      "Reaching for yield via longer or lower-grade in-state paper — adds duration/credit risk inconsistent with the short label.",
+      "TEY no better than national short muni or T-bills after fees — the single-state concentration earns no after-tax premium."
+    ]
+  },
+  "muni-minnesota": {
+    "mostImportant": [
+      "What it holds — investment-grade Minnesota municipal bonds, delivering income exempt from federal and Minnesota state tax for MN residents.",
+      "The character of the resulting portfolio — in-state double-tax-exempt income concentrated in Minnesota issuers, with MN-specific economic and credit concentration as the trade-off.",
+      "The nature of its income — judged on tax-equivalent yield at combined federal+MN top rates, where the in-state exemption lifts an otherwise modest raw yield."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+MN top rates beating national-muni and taxable peers — the in-state exemption pays for an MN resident.",
+      "Diversification across MN issuers and revenue sectors — eases the single-state concentration in a smaller muni market.",
+      "High-grade GO and essential-service revenue selection — appropriate given the concentrated, smaller-state issuer base."
+    ],
+    "redFlags": [
+      "Concentration in a few MN issuers given the state's limited bond supply — single-state risk hard to diversify in a small market.",
+      "Thin liquidity in MN-specific names — wider trading costs and harder NAV recovery under stress.",
+      "Reaching into lower-grade MN paper for yield — default risk that can't be spread across a small issuer pool."
+    ]
+  },
+  "muni-massachusetts": {
+    "mostImportant": [
+      "What it holds — investment-grade Massachusetts municipal bonds, delivering income exempt from federal and Massachusetts state tax for MA residents.",
+      "The character of the resulting portfolio — in-state double-tax-exempt income concentrated in MA issuers, carrying Massachusetts-specific credit and economic concentration.",
+      "The nature of its income — judged on tax-equivalent yield at combined federal+MA top rates, where the in-state exemption makes a modest raw yield competitive."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+MA top rates beating national-muni and taxable peers — the in-state exemption genuinely pays for an MA resident.",
+      "Diversification across MA issuers and revenue sectors — softens single-state concentration in a market dominated by a few large issuers.",
+      "High-grade GO and essential-service revenue tilt — appropriate given the concentration profile."
+    ],
+    "redFlags": [
+      "Concentration in a few large MA issuers (e.g. state GO, MBTA, hospital systems) — single-state credit risk hard to diversify.",
+      "Thin liquidity in MA-specific bonds — wider spreads and harder NAV recovery in stress.",
+      "Reaching for yield via lower-grade MA paper — default risk concentrated in one state's economy."
+    ]
+  },
+  "prime-money-market": {
+    "mostImportant": [
+      "What it holds — a prime money market fund holding short, high-quality corporate and bank paper (commercial paper, CDs, repo) in addition to government securities, so it carries modest credit exposure unlike a government MMF.",
+      "The character of the resulting portfolio — slightly higher yield than government MMFs as compensation for that credit risk, but with potential liquidity fees/gates and (for institutional prime) a floating NAV in stress.",
+      "The nature of its income — ordinary income with little or no state-tax exemption, since holdings are mostly non-Treasury."
+    ],
+    "greenFlags": [
+      "A durable yield premium over government MMFs that fairly pays for the credit step — the reason to choose prime over government.",
+      "High-quality, well-diversified issuer roster with short WAM — limits the single-name credit event that hits prime funds first.",
+      "Strong daily/weekly liquid-asset buffers above regulatory minimums — reduces the risk of gates or fees in a run."
+    ],
+    "redFlags": [
+      "Yield premium over government MMFs too thin to justify the credit and gate risk — taking risk for almost no extra carry.",
+      "Concentration in a few financial issuers or weaker-rated paper — exactly the exposure that froze prime funds in 2008/2020 stress.",
+      "Thin liquid-asset buffers near regulatory minimums — elevated risk of redemption gates or fees precisely when cash is needed."
+    ]
+  },
+  "muni-new-york-intermediate": {
+    "mostImportant": [
+      "What it holds — intermediate-maturity investment-grade New York municipal bonds, delivering income exempt from federal and NY state (and NYC) tax for residents.",
+      "The character of the resulting portfolio — intermediate duration balances rate sensitivity and carry, with single-state NY credit and economic concentration as the trade-off.",
+      "The nature of its income — judged on tax-equivalent yield at combined federal+NY+NYC top rates, where the in-state exemption makes a modest raw yield highly competitive."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+NY+NYC top rates beating national-muni and taxable intermediate peers — the in-state exemption pays for a NYC resident.",
+      "Diversification across NY state and local issuers and sectors — softens the single-state concentration.",
+      "High-grade GO and essential-service revenue selection — appropriate for the single-state credit profile."
+    ],
+    "redFlags": [
+      "Concentration in stressed NY issuers or one revenue sector — single-state credit risk in a less-diversified fund.",
+      "Undisclosed AMT private-activity NY bonds — claws back the exemption for AMT-exposed holders.",
+      "TEY no better than national intermediate muni after the in-state benefit — concentration not being compensated."
+    ]
+  },
+  "miscellaneous-fixed-income": {
+    "mostImportant": [
+      "What it holds — fixed-income strategies that don't fit a standard category: interest-rate-hedged bond funds, rate-volatility plays, niche duration or curve trades, and other structured fixed-income exposures.",
+      "The character of the resulting portfolio — the risk/return profile varies enormously by fund, so the specific strategy and what it actually owns must be read directly rather than inferred from the category.",
+      "The nature of its income — income character ranges from ordinary coupon to derivative-driven distributions, depending entirely on the underlying strategy."
+    ],
+    "greenFlags": [
+      "A clearly explained, repeatable strategy whose behaviour matches its stated objective in live markets — transparency in a catch-all category where opacity is common.",
+      "Delivering the specific exposure it advertises (e.g. rate-hedged credit isolating spread) without hidden tail bets — it does what it says.",
+      "Reasonable liquidity and tight tracking to its stated objective — the structure works as designed under stress."
+    ],
+    "redFlags": [
+      "Derivative-heavy structure with opaque holdings and stale pricing — true risk and NAV are hard to verify until stress reveals them.",
+      "Distribution yield propped by return-of-capital or option premium rather than real income — the headline yield isn't sustainable.",
+      "Behaviour diverging from the stated strategy in live markets — the fund isn't delivering the exposure it was bought for."
+    ]
+  },
+  "muni-new-jersey": {
+    "mostImportant": [
+      "What it holds — investment-grade New Jersey municipal bonds, delivering income exempt from federal and New Jersey state tax for NJ residents.",
+      "The character of the resulting portfolio — in-state double-tax-exempt income concentrated in NJ issuers, carrying New Jersey's specific (and historically weaker) state credit profile as the concentration trade-off.",
+      "The nature of its income — judged on tax-equivalent yield at combined federal+NJ top rates, where the in-state exemption lifts a modest raw yield."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+NJ top rates beating national-muni and taxable peers — the in-state exemption pays for an NJ resident.",
+      "Diversification across NJ issuers and sectors — eases concentration in a state with elevated pension and budget pressures.",
+      "Tilt toward essential-service revenue and higher-grade GO — appropriate given NJ's weaker historical state credit."
+    ],
+    "redFlags": [
+      "Heavy exposure to NJ state GO or pension-pressured issuers — single-state risk concentrated in a relatively lower-rated state.",
+      "Reaching for yield via lower-grade NJ paper — default risk amplified by the state's fiscal profile.",
+      "Thin liquidity in NJ-specific names — wider spreads and harder NAV recovery in stress."
+    ]
+  },
+  "muni-ohio": {
+    "mostImportant": [
+      "What it holds — investment-grade Ohio municipal bonds, delivering income exempt from federal and Ohio state tax for OH residents.",
+      "The character of the resulting portfolio — in-state double-tax-exempt income concentrated in Ohio issuers, with OH-specific credit and economic concentration as the trade-off.",
+      "The nature of its income — judged on tax-equivalent yield at combined federal+OH top rates, where the in-state exemption makes a modest raw yield competitive."
+    ],
+    "greenFlags": [
+      "TEY at combined federal+OH top rates beating national-muni and taxable peers — the in-state exemption pays for an OH resident.",
+      "Diversification across OH issuers and revenue sectors — softens single-state concentration in a smaller muni market.",
+      "High-grade GO and essential-service revenue selection — appropriate for the concentrated, smaller-state issuer base."
+    ],
+    "redFlags": [
+      "Concentration in a few OH issuers given limited in-state bond supply — single-state risk hard to diversify.",
+      "Thin liquidity in OH-specific names — wider trading costs and harder NAV recovery under stress.",
+      "Reaching into lower-grade OH paper for yield — default risk concentrated in one state's economy."
+    ]
+  },
+  "investment-grade": {
+    "mostImportant": [
+      "What it holds — a broad investment-grade corporate (and sometimes mixed IG) bond portfolio rated BBB- and above, where the main risks are interest-rate duration and credit-spread movement rather than default.",
+      "The character of the resulting portfolio — duration and quality vary by fund, but it sits between government bonds (more spread/yield) and high yield (far less default risk), with returns driven by rates and spreads together.",
+      "The nature of its income — coupon income is ordinary, and yield carries a credit-spread premium over comparable-duration Treasuries."
+    ],
+    "greenFlags": [
+      "Broad issuer and sector diversification keeping single-name risk low — the core strength of an IG corporate fund (LQD, VCIT, IGIB).",
+      "Spread premium over Treasuries that fairly compensates for the credit and duration taken — genuine carry rather than reaching for yield.",
+      "Quality skewed toward A/AA rather than crowding the BBB edge — more resilient when spreads widen in a downturn."
+    ],
+    "redFlags": [
+      "Heavy concentration at the BBB- edge of IG — these names are downgraded to junk first in a recession, forcing index sellers and price hits.",
+      "Sector or single-issuer concentration (e.g. heavy bank/financial weighting) — idiosyncratic credit risk in a fund bought for diversification.",
+      "Yield well above peers driven by lower-quality or longer-duration tilt — extra income masking extra credit and rate risk."
+    ]
+  }
+}
