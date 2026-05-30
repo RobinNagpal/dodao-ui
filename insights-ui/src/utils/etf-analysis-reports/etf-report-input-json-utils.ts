@@ -130,12 +130,19 @@ export function getEtfAnalysisFactorsForCategory(categoryKey: EtfAnalysisCategor
 
 /**
  * Find a factor definition by key for a given category. Searches across every
- * group definition in that category.
+ * group definition in that category. Falls back to a case-insensitive title
+ * match when the key lookup misses, since the LLM occasionally returns the
+ * factor's bolded title in the `factorAnalysisKey` slot instead of the
+ * snake_case key — without this fallback every factor in such a response
+ * gets silently dropped by `saveEtfFactorAnalysisResponse`.
  */
 export function findFactorDefinition(categoryKey: EtfAnalysisCategory, factorKey: string): EtfAnalysisFactorDefinition | undefined {
   const config = CATEGORY_CONFIGS[categoryKey];
-  const found = config.factors.find((f) => f.factorKey === factorKey);
-  return found ? normalizeGroupFactor(found) : undefined;
+  const byKey = config.factors.find((f) => f.factorKey === factorKey);
+  if (byKey) return normalizeGroupFactor(byKey);
+  const normalized = factorKey.trim().toLowerCase();
+  const byTitle = config.factors.find((f) => f.factorTitle.trim().toLowerCase() === normalized);
+  return byTitle ? normalizeGroupFactor(byTitle) : undefined;
 }
 
 function prepareFactorAnalysisArray(factors: EtfAnalysisFactorDefinition[]) {
