@@ -16,6 +16,7 @@ import futurePerformanceOutlookRaw from '@/etf-analysis-data/etf-analysis-factor
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
 import { getAllInvestors } from '@/etf-analysis-data/etf-investor-taxonomy';
 import { slugifyEtfCategory } from '@/utils/etf-categorization-utils';
+import { canonicalizeCategory } from '@/utils/etf-category-aliases';
 
 const DEFAULT_GROUP_KEY = 'broad-equity';
 
@@ -45,12 +46,17 @@ function normalizeGroupFactor(f: EtfGroupFactorDefinition, groupKey?: string): E
 
 /**
  * Resolve the ETF group key (e.g. "broad-equity") from the fund's category string
- * (e.g. "Large Blend") as stored in EtfStockAnalyzerInfo.category. Returns undefined
- * when the category is unknown so callers can decide how to fall back.
+ * (e.g. "Large Blend") as stored in EtfStockAnalyzerInfo.category. The stored value
+ * is the raw, per-country category label (US Morningstar names, Canada Stock-Analysis
+ * / GICS sector labels, etc.), so we canonicalize it through the shared alias map
+ * before matching — otherwise a Canada-listed fund tagged e.g. "Financials" would
+ * never resolve to the canonical "Financial" category. Returns undefined when the
+ * category is unknown so callers can decide how to fall back.
  */
 export function getEtfGroupKeyForCategory(category: string | null | undefined): string | undefined {
   if (!category) return undefined;
-  const match = categoriesConfig.categories.find((c) => c.name === category);
+  const canonical = canonicalizeCategory(category);
+  const match = categoriesConfig.categories.find((c) => c.name === canonical);
   return match?.group;
 }
 
@@ -77,7 +83,10 @@ function getCategoriesForGroupKey(groupKey: string): string[] {
  */
 function getCategoryInstructions(fundCategory: string | null | undefined): string | undefined {
   if (!fundCategory) return undefined;
-  const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
+  // The stored category is the raw per-country label; canonicalize it (e.g. Canada's
+  // "Information Technology" -> "Technology") before slugifying so the instruction key
+  // resolves for both US and Canada funds.
+  const entry = morCategoryInstructionsConfig.instructions[slugifyEtfCategory(canonicalizeCategory(fundCategory))];
   if (!entry) return undefined;
   const mostImportant = entry.mostImportant ?? [];
   const greenFlags = entry.greenFlags ?? [];
@@ -102,7 +111,7 @@ function getCategoryInstructions(fundCategory: string | null | undefined): strin
 /** Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for a fund category, or undefined. */
 function getCategoryInstructionEntry(fundCategory: string | null | undefined) {
   if (!fundCategory) return undefined;
-  return morCategoryInstructionsConfig.instructions[slugifyEtfCategory(fundCategory)];
+  return morCategoryInstructionsConfig.instructions[slugifyEtfCategory(canonicalizeCategory(fundCategory))];
 }
 
 function factorAppliesToGroup(f: EtfGroupFactorDefinition, groupKey: string): boolean {
