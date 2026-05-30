@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { EtfAnalysisCategory, EtfAnalysisFactorDefinition, EtfCategoryFlagsFile, EtfMorCategoryInstructionEntry } from '@/types/etf/etf-analysis-types';
 import { serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { EtfWithAllData } from '@/utils/etf-analysis-reports/get-etf-report-data-utils';
@@ -13,44 +11,44 @@ import {
   getEtfGroupKeyForCategory,
   getGroupNameForGroupKey,
 } from '@/utils/etf-analysis-reports/etf-analysis-factor-utils';
+import broadEquityFlags from '@/etf-analysis/category-flags/broad-equity.json';
+import sectorThematicEquityFlags from '@/etf-analysis/category-flags/sector-thematic-equity.json';
+import commoditiesAndDigitalAssetsFlags from '@/etf-analysis/category-flags/commodities-and-digital-assets.json';
+import derivativeIncomeFlags from '@/etf-analysis/category-flags/derivative-income.json';
+import allocationTargetDateFlags from '@/etf-analysis/category-flags/allocation-target-date.json';
+import fixedIncomeInvestmentGradeFlags from '@/etf-analysis/category-flags/fixed-income-investment-grade.json';
+import fixedIncomeCreditAndIncomeFlags from '@/etf-analysis/category-flags/fixed-income-credit-and-income.json';
+import leveragedInverseFlags from '@/etf-analysis/category-flags/leveraged-inverse.json';
 
 /**
- * Lazily load a single ETF analysis group's category-flag file from
- * `src/etf-analysis/category-flags/` (one JSON per group, keyed by category
- * slug). Read at request time with `fs` relative to `process.cwd()` and cached
- * per group, so building one ETF's analysis only ever parses the flags for that
- * fund's group rather than the full multi-group set. The files are picked up by
- * Next's output file tracing for the ETF generation routes, so they ship with
- * the serverless bundle. Returns `null` (cached) when the group has no file so a
- * missing group is not re-read every call.
+ * Category-flag entries split into one file per ETF analysis group under
+ * `src/etf-analysis/category-flags/`, mapped by group key. The files are
+ * imported (bundled) rather than read at runtime, so they always ship with the
+ * deployment. The lookup only ever indexes into the fund's own group, so a
+ * single ETF's analysis never touches the other groups' flags.
  */
-const groupCategoryFlagsCache = new Map<string, EtfCategoryFlagsFile | null>();
-
-function loadGroupCategoryFlags(groupKey: string): EtfCategoryFlagsFile | null {
-  const cached = groupCategoryFlagsCache.get(groupKey);
-  if (cached !== undefined) return cached;
-  const filePath = path.join(process.cwd(), 'src', 'etf-analysis', 'category-flags', `${groupKey}.json`);
-  let data: EtfCategoryFlagsFile | null = null;
-  try {
-    data = JSON.parse(fs.readFileSync(filePath, 'utf8')) as EtfCategoryFlagsFile;
-  } catch {
-    data = null;
-  }
-  groupCategoryFlagsCache.set(groupKey, data);
-  return data;
-}
+const GROUP_CATEGORY_FLAGS: Record<string, EtfCategoryFlagsFile> = {
+  'broad-equity': broadEquityFlags,
+  'sector-thematic-equity': sectorThematicEquityFlags,
+  'commodities-and-digital-assets': commoditiesAndDigitalAssetsFlags,
+  'derivative-income': derivativeIncomeFlags,
+  'allocation-target-date': allocationTargetDateFlags,
+  'fixed-income-investment-grade': fixedIncomeInvestmentGradeFlags,
+  'fixed-income-credit-and-income': fixedIncomeCreditAndIncomeFlags,
+  'leveraged-inverse': leveragedInverseFlags,
+};
 
 /**
  * Raw Mor-category instruction entry (mostImportant / greenFlags / redFlags) for
  * a fund category, or undefined. The stored category is the raw per-country
  * label, so it is canonicalized (e.g. Canada's "Information Technology" ->
- * "Technology") before resolving the group file and the slug key, so lookups
- * resolve for both US and Canada funds.
+ * "Technology") before resolving the group and the slug key, so lookups resolve
+ * for both US and Canada funds.
  */
 function getCategoryInstructionEntry(fundCategory: string | null | undefined): EtfMorCategoryInstructionEntry | undefined {
   const groupKey = getEtfGroupKeyForCategory(fundCategory);
   if (!groupKey) return undefined;
-  const flags = loadGroupCategoryFlags(groupKey);
+  const flags = GROUP_CATEGORY_FLAGS[groupKey];
   if (!flags) return undefined;
   return flags[slugifyEtfCategory(canonicalizeCategory(fundCategory as string))];
 }

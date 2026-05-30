@@ -5,7 +5,7 @@ into the four ETF analysis prompts (Past Returns / Cost & Team / Risk / Future O
 `categoryInstructions`. The same rendered block goes into all four prompts when the fund's
 Mor category has an entry.
 
-## One file per analysis group (lazy-loaded)
+## One file per analysis group
 
 The flags are split into **one JSON file per ETF analysis group** — the `group` keys defined
 in `src/etf-analysis/etf-analysis-categories.json`:
@@ -19,14 +19,11 @@ in `src/etf-analysis/etf-analysis-categories.json`:
 - `fixed-income-credit-and-income.json`
 - `leveraged-inverse.json`
 
-At analysis-generation time the lookup resolves the fund's group from its (canonicalized)
-category and reads **only that group's file** (`getCategoryInstructionEntry` in
-`src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`, cached per group), so the
-full multi-group flag set is never loaded into a single prompt-build.
-
-These are read at request time with `fs` relative to `process.cwd()`
-(`src/etf-analysis/category-flags/<group>.json`). Next's output file tracing picks them up
-for the ETF generation routes, so they ship with the serverless bundle.
+Each file is imported (bundled) and registered in a `group key -> flags` map in
+`src/utils/etf-analysis-reports/etf-report-input-json-utils.ts`. At analysis-generation time
+the lookup (`getCategoryInstructionEntry`) resolves the fund's group from its (canonicalized)
+category and indexes into **only that group's entries**, so a single ETF's analysis never
+touches the other groups' flags.
 
 ## File shape
 
