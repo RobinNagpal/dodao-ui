@@ -1,9 +1,9 @@
-name: Deploy insights-ui (AWS)
+name: Deploy insights-ui (AWS / Lightsail)
 
-# Builds the insights-ui container, pushes it to ECR, uploads static assets to S3 (retained
-# across builds for deploy-skew safety), and rolls the ECS Fargate service to the new image.
-# See docs/insights-ui/aws-migration-plan.md. This REPLACES koalagains-deploy-full-ssg.yml at
-# cut-over; until then it is opt-in via workflow_dispatch.
+# Builds the insights-ui container, pushes it to ECR, (optionally) uploads static assets to S3
+# for deploy-skew safety, and rolls the Lightsail container service to the new image via
+# `terraform apply` against deploy/aws/terraform-lightsail. See docs/insights-ui/aws-migration-plan.md.
+# REPLACES koalagains-deploy-full-ssg.yml at cut-over; until then it is opt-in via dispatch.
 
 on:
   workflow_dispatch:
@@ -25,9 +25,9 @@ concurrency:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: insights-ui
-  ECS_CLUSTER: insights-ui-cluster
-  ECS_SERVICE: insights-ui-svc
   STATIC_BUCKET: insights-ui-static-assets
+  TF_DIR: insights-ui/deploy/aws/terraform-lightsail
+  APP_SECRETS_ID: insights-ui/app-env # Secrets Manager JSON consumed as the app_secrets map
 
 jobs:
   deploy:
@@ -55,8 +55,7 @@ jobs:
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
           # Build context = repo root (workspace dependency @dodao/web-core).
-          # Var names match what shared getBaseUrl() reads (plan §5.6). NEXT_PUBLIC_VERCEL_URL
-          # is a bare host (no scheme) — getBaseUrl() prepends https://.
+          # NEXT_PUBLIC_VERCEL_URL is a bare host — shared getBaseUrl() prepends https:// (plan §5.6).
           docker build \
             -f insights-ui/deploy/aws/Dockerfile \
             --build-arg NEXT_PUBLIC_VERCEL_URL="koalagains.com" \
@@ -65,10 +64,11 @@ jobs:
           docker push "$IMAGE"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
-      # Upload this build's static assets to S3 WITHOUT deleting prior builds (skew safety).
-      # Hashed filenames never collide, so old chunks remain fetchable for CloudFront-cached
-      # HTML from previous builds. Extract them from the freshly built image.
+      # Optional: upload this build's static assets to S3 WITHOUT deleting prior builds (skew
+      # safety, plan §10). Hashed filenames never collide, so old chunks stay fetchable for
+      # CloudFront-cached HTML from previous builds. No-op if the bucket isn't in use.
       - name: Extract & upload static assets to S3
+        continue-on-error: true
         env:
           TAG: ${{ steps.build.outputs.tag }}
           REGISTRY: ${{ steps.ecr.outputs.registry }}
@@ -78,35 +78,24 @@ jobs:
           docker cp "$CID:/app/insights-ui/.next/static" ./_assets/static
           docker cp "$CID:/app/insights-ui/public" ./_assets/public
           docker rm "$CID"
-          # NOTE: no --delete — we intentionally retain old build assets.
           aws s3 sync ./_assets/static "s3://$STATIC_BUCKET/_next/static" --cache-control "public,max-age=31536000,immutable"
           aws s3 sync ./_assets/public "s3://$STATIC_BUCKET/public"
 
-      # Register a new task-definition revision pointing at the new immutable image tag, then
-      # roll the service onto it. (Alternatively run `terraform apply -var image_tag=$TAG`,
-      # which is the canonical path in docs/insights-ui/aws-migration-plan.md §8.)
-      - name: Render new task definition
-        id: taskdef
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Deploy = terraform apply, which registers a new Lightsail deployment version pointing at
+      # the new image and injects secrets (read here from Secrets Manager) into its environment.
+      - name: Terraform apply (Lightsail)
+        working-directory: ${{ env.TF_DIR }}
         env:
           TAG: ${{ steps.build.outputs.tag }}
-          REGISTRY: ${{ steps.ecr.outputs.registry }}
         run: |
-          aws ecs describe-task-definition --task-definition "$ECR_REPOSITORY" \
-            --query 'taskDefinition' --output json > taskdef.json
-          # Swap the container image to the new tag.
-          jq --arg IMG "$REGISTRY/$ECR_REPOSITORY:$TAG" \
-            '.containerDefinitions[0].image = $IMG
-             | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
-            taskdef.json > new-taskdef.json
-          echo "file=new-taskdef.json" >> "$GITHUB_OUTPUT"
-
-      - name: Deploy to ECS (rolling)
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.taskdef.outputs.file }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+          SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text)
+          terraform init -input=false
+          terraform apply -input=false -auto-approve \
+            -var "image_tag=$TAG" \
+            -var "app_secrets=$SECRETS_JSON"
 
       - name: Smoke check
         run: curl -fsS https://koalagains.com/api/health
