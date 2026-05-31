@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { createHash } from '@dodao/web-core/api/auth/createHash';
-import { defaultNormalizer, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
+import { defaultNormalizer, isLikelySpamEmail, randomString, sendVerificationRequest } from '@dodao/web-core/api/auth/custom-email/send-verification';
 import { logError } from '@dodao/web-core/api/helpers/adapters/errorLogger';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { PredefinedSpaces } from '@dodao/web-core/src/utils/constants/constants';
@@ -105,6 +105,14 @@ async function postHandler(req: NextRequest): Promise<LoginSignupByEmailResponse
     console.log('[login-signup-by-email] Normalizing email');
     const userEmail = defaultNormalizer(email);
     console.log('[login-signup-by-email] Normalized email:', userEmail);
+
+    // Silently drop likely-abusive sign-ups (e.g. four or more dots) before touching the database
+    // or sending any email. We return the normal empty success so the UI still shows "email sent"
+    // and the spammer cannot tell the request was a no-op.
+    if (isLikelySpamEmail(userEmail)) {
+      console.log('[login-signup-by-email] Detected likely spam email, skipping all server-side actions:', userEmail);
+      return {};
+    }
 
     const defaultUser = { id: uuidv4(), email: userEmail, emailVerified: null };
     console.log('[login-signup-by-email] Created default user object with ID:', defaultUser.id);

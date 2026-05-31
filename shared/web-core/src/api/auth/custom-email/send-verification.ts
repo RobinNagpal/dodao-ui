@@ -104,14 +104,27 @@ const emailBody = (link: string) => `
 </html>
 `;
 
+/**
+ * Returns true for email addresses we treat as likely spam/abuse and silently drop.
+ *
+ * Currently flags any address containing four or more dots (e.g. "m.ike.6.61.81.0@gmail.com"),
+ * which is the pattern we keep seeing from automated sign-up bots. Callers MUST treat a positive
+ * result as a complete no-op — skip creating users/accounts/tokens and skip sending the email —
+ * while still reporting success to the client so the spammer cannot tell the request was dropped.
+ */
+export function isLikelySpamEmail(email?: string): boolean {
+  if (!email) return false;
+  const dotCount = (email.match(/\./g) || []).length;
+  return dotCount >= 4;
+}
+
 export const sendVerificationRequest = async (params: { identifier: string; url: string; expires: Date; token: string; from?: string }) => {
   const { identifier: email, url } = params;
 
-  // Silently ignore likely-abusive email addresses (four or more dots). We skip sending the email
-  // entirely, but callers still observe a normal success so the UI shows the usual "email sent"
-  // message without leaking that the request was dropped.
-  const dotCount = (email.match(/\./g) || []).length;
-  if (dotCount >= 4) {
+  // Defense-in-depth: even if a caller forgets the early no-op, never email a likely-abusive
+  // address. Callers still observe a normal success so the UI shows the usual "email sent" message
+  // without leaking that the request was dropped.
+  if (isLikelySpamEmail(email)) {
     console.log('Email has four or more dots, skipping send silently:', email);
     return;
   }
