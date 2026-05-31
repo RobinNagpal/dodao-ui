@@ -73,11 +73,11 @@ export default function BulkAddTagsModal({ isOpen, onClose, tags, selectedFavour
             </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Select Tags</label>
-            <div className="space-y-1 max-h-60 overflow-y-auto bg-gray-900 rounded-md p-2">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">Select Tags</label>
+            <div className="space-y-0.5 max-h-52 overflow-y-auto bg-gray-900 rounded-md p-1.5">
               {tags.length === 0 ? (
-                <p className="text-gray-500 text-sm p-2">No tags available. Create tags first.</p>
+                <p className="text-gray-400 text-sm px-2 py-1.5">No tags available. Create tags first.</p>
               ) : (
                 <Checkboxes
                   items={tags.map(

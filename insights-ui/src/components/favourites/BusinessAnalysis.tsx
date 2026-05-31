@@ -11,10 +11,10 @@ export default function BusinessAnalysis({ summary, showBusinessAnalysis }: Busi
   }
 
   return (
-    <div className="mb-2">
-      <p className="text-xs font-medium text-gray-400 mb-1">Business & Moat Analysis:</p>
+    <div className="mb-1.5">
+      <h5 className="text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wide">Business & Moat Analysis</h5>
       <div
-        className="text-xs text-gray-300 leading-relaxed markdown-body"
+        className="text-xs text-gray-200 leading-snug markdown-body"
         dangerouslySetInnerHTML={{
           __html: parseMarkdown(summary),
         }}

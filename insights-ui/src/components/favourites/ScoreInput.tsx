@@ -19,9 +19,9 @@ interface ScoreInputProps {
 export default function ScoreInput({ value, onChange, max = 20, disabled = false }: ScoreInputProps) {
   const range = `0-${max}`;
   return (
-    <div className="flex items-center gap-3">
-      <label className="text-sm font-medium whitespace-nowrap">My Score ({range}):</label>
-      <div className="flex-1 max-w-xs">
+    <div className="flex items-center gap-2">
+      <label className="text-xs font-medium text-gray-300 whitespace-nowrap">My Score ({range}):</label>
+      <div className="flex-1 max-w-[120px]">
         <Input
           modelValue={value}
           onUpdate={(v) => onChange(v?.toString() || '')}

@@ -34,33 +34,33 @@ export default function FavouritesToolbar({
   onManageTags,
 }: FavouritesToolbarProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
       <ToggleWithIcon label="Show Business Summary" enabled={showBusinessAnalysis} setEnabled={onToggleBusinessAnalysis} onClickOnLabel={true} />
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-1.5">
         {bulkActionMode ? (
           <>
-            <Button onClick={onToggleBulkActionMode} variant="outlined" className="inline-flex items-center">
+            <Button onClick={onToggleBulkActionMode} variant="outlined" className="inline-flex items-center text-sm">
               Cancel Selection
             </Button>
-            <Button onClick={onSelectAll} variant="outlined" className="inline-flex items-center">
+            <Button onClick={onSelectAll} variant="outlined" className="inline-flex items-center text-sm">
               Select All
             </Button>
-            <Button onClick={onDeselectAll} variant="outlined" className="inline-flex items-center" disabled={selectedCount === 0}>
+            <Button onClick={onDeselectAll} variant="outlined" className="inline-flex items-center text-sm" disabled={selectedCount === 0}>
               Deselect All
             </Button>
           </>
         ) : (
           <>
-            <Button onClick={onToggleBulkActionMode} variant="outlined" className="inline-flex items-center">
+            <Button onClick={onToggleBulkActionMode} variant="outlined" className="inline-flex items-center text-sm">
               Select Multiple
             </Button>
-            <Button onClick={onManageLists} variant="outlined" className="inline-flex items-center">
-              <ListBulletIcon className="w-4 h-4 mr-2" />
+            <Button onClick={onManageLists} variant="outlined" className="inline-flex items-center text-sm">
+              <ListBulletIcon className="w-4 h-4 mr-1.5" />
               Manage Lists
             </Button>
-            <Button onClick={onManageTags} variant="outlined" className="inline-flex items-center">
-              <TagIcon className="w-4 h-4 mr-2" />
+            <Button onClick={onManageTags} variant="outlined" className="inline-flex items-center text-sm">
+              <TagIcon className="w-4 h-4 mr-1.5" />
               Manage Tags
             </Button>
           </>

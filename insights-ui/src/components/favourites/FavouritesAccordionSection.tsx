@@ -45,7 +45,7 @@ export default function FavouritesAccordionSection({
 
   return (
     <Accordion isOpen={isOpen} label={label} onClick={(e) => onToggle(e, sectionId)}>
-      <div className="space-y-3">
+      <div className="space-y-2">
         {favourites.map((favourite) => (
           <FavouriteItem
             key={favourite.id}
